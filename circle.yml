@@ -1,0 +1,11 @@
+machine:
+  java:
+    version: openjdk7
+
+dependencies:
+  override:
+    - cd java-conversion-tool; mvn dependency:resolve
+
+test:
+  override:
+    - cd java-conversion-tool; mvn integration-test
