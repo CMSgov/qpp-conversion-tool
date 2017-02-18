@@ -1,0 +1,70 @@
+id: https://github.com/CMSgov/qpp-measures-data/versions/0.0.1/measures-schema.yaml
+$schema: http://json-schema.org/schema#
+type: array
+items: { $ref: #/definitions/measure }
+
+definitions:
+  measure:
+    type: object
+    properties:
+      measureId: { type: string }
+      title: { type: string }
+      description: { type: string }
+      category: { enum: [ia, quality, aci, cost] }
+      metricType: { enum: [boolean, proportion, performanceRatio, continuous] }
+      firstPerformanceYear: { type: integer }
+      lastPerformanceYear: { enum: [integer, null] }
+      measureSet: { enum: [transition, null] }
+    required: [measureId, title, description, category, metricType, firstPerformanceYear]
+    oneOf:
+      - { $ref: #/definitions/iaMeasure }
+      - { $ref: #/definitions/aciMeasure }
+
+  iaMeasure:
+    type: object
+    properties:
+      category: { enum: [ia] }
+      weight: { enum: [null, medium, high] }
+      subcategoryId:
+        oneOf: [{ $ref: #/definitions/subcategoryIds }]
+      cehrtEligible: { type: boolean }
+    required: [weight, subcategoryId, cehrtEligible]
+
+  aciMeasure:
+    type: object
+    properties:
+      category: { enum: [aci] }
+      weight: { enum: [0, 5, 10, 20] }
+      objective:
+        oneOf: [{ $ref: #/definitions/objectives }]
+      isRequired: { type: boolean }
+      isBonus: { type: boolean }
+    required: [weight, objective, isRequired, isBonus, measureSet]
+
+  # TODO (Mari) : If these subcategory names change, we will need a lookup
+  # table that maps IDs to names.
+  subcategoryIds:
+    enum:
+      - achievingHealthEquity
+      - behavioralAndMentalHealth
+      - beneficiaryEngagement
+      - careCoordination
+      - emergencyResponseAndPreparedness
+      - expandedPracticeAccess
+      - patientSafetyAndPracticeAssessment
+      - populationManagement
+      - null
+
+  objectives:
+    enum:
+      - publicHealthAndClinicalDataRegistryReporting
+      - healthInformationExchange
+      - electronicPrescribing
+      - coordinationOfCareThroughPatientEngagement
+      - patientElectronicAccess
+      - protectPatientHealthInformation
+      - publicHealthReporting
+      - medicationReconciliation
+      - patientSpecificEducation
+      - secureMessaging
+      - null

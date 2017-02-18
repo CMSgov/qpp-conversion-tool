@@ -12,7 +12,7 @@ public class XmlToJsonTest {
 
 	@Test
 	public void TransformTest() throws Exception {
-		ClassPathResource xmlResource = new ClassPathResource("QRDA_III_1.xml");
+		ClassPathResource xmlResource = new ClassPathResource("measures-data.xml");
 		ClassPathResource xslResource = new ClassPathResource("xml2json.xsl");
 		
 		TransformerFactory tFactory = TransformerFactory.newInstance();
