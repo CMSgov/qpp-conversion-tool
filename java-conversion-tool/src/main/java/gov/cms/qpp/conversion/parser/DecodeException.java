@@ -1,9 +1,9 @@
 package gov.cms.qpp.conversion.parser;
 
-public class DecodeEception extends Exception {
+public class DecodeException extends Exception {
 	private static final long serialVersionUID = 1L;
 
-	public DecodeEception(String message, Exception cause) {
+	public DecodeException(String message, Exception cause) {
 		super(message, cause);
 	}
 }

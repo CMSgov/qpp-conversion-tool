@@ -7,5 +7,5 @@ import gov.cms.qpp.conversion.model.Node;
  *
  */
 public interface InputParser {
-	Node parse() throws DecodeEception;
+	Node parse() throws DecodeException;
 }

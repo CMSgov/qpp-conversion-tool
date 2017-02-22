@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 //import org.w3c.dom.Node;
 
-import gov.cms.qpp.conversion.parser.DecodeEception;
+import gov.cms.qpp.conversion.parser.DecodeException;
 import gov.cms.qpp.conversion.parser.InputParser;
 import gov.cms.qpp.conversion.parser.RateAggregationInputParser;
 
@@ -68,7 +68,7 @@ class Placeholder implements InputParser  {
 	}
 
 	@Override
-	public Node parse() throws DecodeEception {
+	public Node parse() throws DecodeException {
 		return null;
 	}
 };

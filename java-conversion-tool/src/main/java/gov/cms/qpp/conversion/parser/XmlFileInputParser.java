@@ -25,13 +25,13 @@ public class XmlFileInputParser implements InputParser {
 	}
 	
 	@Override
-	public Node parse() throws DecodeEception {
+	public Node parse() throws DecodeException {
 		Element dom;
 		try {
 			dom = XmlUtils.fileToDom(file);
 			subparser.setDom(dom);
 		} catch (XmlException e) {
-			throw new DecodeEception("Failed to load file " + file.getAbsolutePath(), e);
+			throw new DecodeException("Failed to load file " + file.getAbsolutePath(), e);
 		}
 		return subparser.parse();
 	}
