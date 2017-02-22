@@ -1,7 +1,8 @@
 package gov.cms.qpp.conversion.model;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import gov.cms.qpp.conversion.parser.DecodeEception;
 import gov.cms.qpp.conversion.parser.InputParser;
+import gov.cms.qpp.conversion.parser.RateAggregationInputParser;
 
 public class TransformRegistryTest {
 
@@ -43,20 +45,16 @@ public class TransformRegistryTest {
 		InputParser parser = registry.getConverter("el", "id");
 		assertTrue("Registry should have been reset.", parser instanceof Placeholder);
 	}
-/*
+	
 	// This test must reside here in order to call the protected methods on the registry
 	@Test
 	public void testRegistry_placeAndFetch() throws Exception {
-		ConverterRegistry.reset();
-		ConverterRegistry.registerAnnotatedHandlers();
+		Map<String, String> params = registry.getAnnotationParams(RateAggregationInputParser.class);
+		InputParser parser = registry.getConverter(params.get("elementName"),params.get("templateId"));
 		
-		String xpath = ConverterRegistry.getHanlderXpath(ACINumeratorDenominatorValue.class);
-		Handler handler = registry.getConverter(xpath);
-		
-		assertNotNull("A handler is expected", handler);
-		assertEquals("Handler should be an instance of the handler for the given XPATH", ACINumeratorDenominatorValue.class, handler.getClass());
+		assertNotNull("A handler is expected", parser);
+		assertEquals("Handler should be an instance of the handler for the given XPATH", RateAggregationInputParser.class, parser.getClass());
 	}
-*/	
 }
 
 class Placeholder implements InputParser  {
