@@ -83,7 +83,7 @@ public class TransformRegistry {
 	 * appropriate handler
 	 * @param xpath
 	 */
-	public InputParser getConverter(String elementName, String templateId) {
+	public InputParser get(String elementName, String templateId) {
 		try {
 			Class<?> parserClass = registry.get(new NodeId(elementName,templateId));
 			if (parserClass == null) {

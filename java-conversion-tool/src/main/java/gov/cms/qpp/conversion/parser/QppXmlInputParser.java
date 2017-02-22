@@ -52,7 +52,7 @@ public class QppXmlInputParser extends XmlInputParser {
 					// create a NodeId and see if we get a match inside
 					// parserMap
 
-					QppXmlInputParser childParser = (QppXmlInputParser) parsers.getConverter(elementName, templateId);
+					QppXmlInputParser childParser = (QppXmlInputParser) parsers.get(elementName, templateId);
 
 					if (null != childParser) {
 						Node childNodeValue = childParser.internalParse(ele);

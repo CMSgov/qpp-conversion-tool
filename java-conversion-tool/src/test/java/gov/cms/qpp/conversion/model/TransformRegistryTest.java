@@ -35,14 +35,14 @@ public class TransformRegistryTest {
 	public void testRegistryInit() throws Exception {
 		registry.register("el", "id", Placeholder.class);
 		registry.init();
-		InputParser parser = registry.getConverter("el", "id");
+		InputParser parser = registry.get("el", "id");
 		assertTrue("Registry should have been reset.", parser==null);
 	}
 	
 	@Test
 	public void testRegistryGetConverterHandler() throws Exception {
 		registry.register("el", "id", Placeholder.class);
-		InputParser parser = registry.getConverter("el", "id");
+		InputParser parser = registry.get("el", "id");
 		assertTrue("Registry should have been reset.", parser instanceof Placeholder);
 	}
 	
@@ -50,7 +50,7 @@ public class TransformRegistryTest {
 	@Test
 	public void testRegistry_placeAndFetch() throws Exception {
 		Map<String, String> params = registry.getAnnotationParams(RateAggregationInputParser.class);
-		InputParser parser = registry.getConverter(params.get("elementName"),params.get("templateId"));
+		InputParser parser = registry.get(params.get("elementName"),params.get("templateId"));
 		
 		assertNotNull("A handler is expected", parser);
 		assertEquals("Handler should be an instance of the handler for the given XPATH", RateAggregationInputParser.class, parser.getClass());
