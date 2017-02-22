@@ -10,13 +10,13 @@ import org.junit.Test;
 import gov.cms.qpp.conversion.parser.DecodeEception;
 import gov.cms.qpp.conversion.parser.InputParser;
 
-public class ConverterRegistryTest {
+public class TransformRegistryTest {
 
-	ConverterRegistry registry;
+	TransformRegistry registry;
 	
 	@Before
 	public void before() {
-		registry = new ConverterRegistry();
+		registry = new TransformRegistry();
 	}
 	
 	@Test

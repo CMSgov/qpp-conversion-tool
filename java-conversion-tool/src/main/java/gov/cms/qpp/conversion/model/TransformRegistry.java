@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 
-import gov.cms.qpp.conversion.handlers.TransformHandler;
 import gov.cms.qpp.conversion.parser.InputParser;
 
 /**
@@ -17,7 +16,7 @@ import gov.cms.qpp.conversion.parser.InputParser;
  * 
  * @author daviduselmann
  */
-public class ConverterRegistry {
+public class TransformRegistry {
 	
 	// For now this is static and can be refactored into an instance
 	// variable when/if we have an orchestrator that instantiates an registry
@@ -31,7 +30,7 @@ public class ConverterRegistry {
 	/**
 	 * initialize and configure the registry
 	 */
-	public ConverterRegistry() {
+	public TransformRegistry() {
 		init();
 		registerAnnotatedHandlers();
 	}

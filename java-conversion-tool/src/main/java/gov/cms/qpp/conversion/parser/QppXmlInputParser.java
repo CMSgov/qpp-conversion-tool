@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.jdom2.Element;
 
-import gov.cms.qpp.conversion.model.ConverterRegistry;
+import gov.cms.qpp.conversion.model.TransformRegistry;
 import gov.cms.qpp.conversion.model.Node;
 
 /**
@@ -14,7 +14,7 @@ import gov.cms.qpp.conversion.model.Node;
 public class QppXmlInputParser extends XmlInputParser {
 	
 
-	protected static ConverterRegistry parsers = new ConverterRegistry();
+	protected static TransformRegistry parsers = new TransformRegistry();
 
 	public QppXmlInputParser() {
 	}
