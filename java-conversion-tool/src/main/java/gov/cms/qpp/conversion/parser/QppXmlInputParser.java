@@ -14,7 +14,7 @@ import gov.cms.qpp.conversion.model.Node;
 public class QppXmlInputParser extends XmlInputParser {
 	
 
-	protected static ConverterRegistry<QppXmlInputParser> parsers = new ConverterRegistry<>();
+	protected static ConverterRegistry parsers = new ConverterRegistry();
 
 	public QppXmlInputParser() {
 	}
@@ -52,7 +52,7 @@ public class QppXmlInputParser extends XmlInputParser {
 					// create a NodeId and see if we get a match inside
 					// parserMap
 
-					QppXmlInputParser childParser = parsers.getConverter(elementName, templateId);
+					QppXmlInputParser childParser = (QppXmlInputParser) parsers.getConverter(elementName, templateId);
 
 					if (null != childParser) {
 						Node childNodeValue = childParser.internalParse(ele);

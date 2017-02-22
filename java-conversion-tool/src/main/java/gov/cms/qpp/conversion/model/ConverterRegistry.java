@@ -9,7 +9,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 import gov.cms.qpp.conversion.handlers.TransformHandler;
-import gov.cms.qpp.conversion.parser.XmlInputParser;
+import gov.cms.qpp.conversion.parser.InputParser;
 
 /**
  * This class manages the available transformation handlers.
@@ -17,7 +17,7 @@ import gov.cms.qpp.conversion.parser.XmlInputParser;
  * 
  * @author daviduselmann
  */
-public class ConverterRegistry<P extends XmlInputParser> {
+public class ConverterRegistry {
 	
 	// For now this is static and can be refactored into an instance
 	// variable when/if we have an orchestrator that instantiates an registry
@@ -25,7 +25,7 @@ public class ConverterRegistry<P extends XmlInputParser> {
 	 * This will be an XPATH string to converter handler registration
 	 * Since Converter was taken for the main stub, I chose Handler for now.
 	 */
-	private Map<NodeId, P> registry;
+	private Map<NodeId, Class<?>> registry;
 
 	
 	/**
@@ -58,13 +58,13 @@ public class ConverterRegistry<P extends XmlInputParser> {
 			try {
 				Class<?> annotatedClass = Class.forName(bd.getBeanClassName());
 				Map<String,String> params = getAnnotationParams(annotatedClass);
-				register(params.get("elementName"), params.get("templateId"), (P) Class.forName(bd.getBeanClassName()).newInstance());
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				register(params.get("elementName"), params.get("templateId"), 
+						(Class<? extends InputParser>) Class.forName(bd.getBeanClassName()));
+			} catch (Exception e) {
+				e.printStackTrace();
 				// TODO logger.error("Failed to register new transformation handler because: " + e.getMessage());
 			}
-
 		}
-		
 	}
 	
 	public Map<String,String> getAnnotationParams(Class<?> annotatedClass) {
@@ -84,8 +84,16 @@ public class ConverterRegistry<P extends XmlInputParser> {
 	 * appropriate handler
 	 * @param xpath
 	 */
-	public P getConverter(String elementName, String templateId) {
-		return registry.get(new NodeId(elementName,templateId));
+	public InputParser getConverter(String elementName, String templateId) {
+		try {
+			Class<?> parserClass = registry.get(new NodeId(elementName,templateId));
+			if (parserClass == null) {
+				return null;
+			}
+			return (InputParser) parserClass.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			return null;
+		}
 	}
 	
 	/**
@@ -93,7 +101,7 @@ public class ConverterRegistry<P extends XmlInputParser> {
 	 * @param xpath
 	 * @param handler
 	 */
-	public void register(String elementName, String templateId, P parser) {
+	public void register(String elementName, String templateId, Class<? extends InputParser> parser) {
 		// TODO logger.info("Registering new Handler {}, {}". xpath, handler.getClass().getName());
 		// This could be a class or class name and instantiated on lookup
 		registry.put(new NodeId(elementName,templateId), parser);

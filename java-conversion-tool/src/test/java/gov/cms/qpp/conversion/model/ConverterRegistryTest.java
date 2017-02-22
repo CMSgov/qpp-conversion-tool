@@ -1,47 +1,28 @@
 package gov.cms.qpp.conversion.model;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.jdom2.Element;
 import org.junit.Before;
 import org.junit.Test;
 //import org.w3c.dom.Node;
 
-import gov.cms.qpp.conversion.parser.XmlInputParser;
+import gov.cms.qpp.conversion.parser.DecodeEception;
+import gov.cms.qpp.conversion.parser.InputParser;
 
 public class ConverterRegistryTest {
 
-	String key = "observation[templateId/@root = '2.16.840.1.113883.10.20.27.3.32:2016-09-01']";
-	
-	
-	ConverterRegistry<XmlInputParser> registry;
-	
-	XmlInputParser placeholder = new XmlInputParser() {
-		@Override
-		public String toString() {
-			return "PLACEHOLDER";
-		}
-		@Override
-		protected Node parse(Element element, Node parent) {
-			return null;
-		}
-		@Override
-		protected Node internalParse(Element element) {
-			return null;
-		}
-	};
+	ConverterRegistry registry;
 	
 	@Before
 	public void before() {
-		registry = new ConverterRegistry<>();
+		registry = new ConverterRegistry();
 	}
 	
 	@Test
 	public void testRegistryExistsByDefault() throws Exception {
 		try {
-			registry.register("el", "id", placeholder);
+			registry.register("el", "id", Placeholder.class);
 		} catch (NullPointerException e) {
 			fail("Registry should always exist.");
 		}
@@ -50,17 +31,17 @@ public class ConverterRegistryTest {
 	
 	@Test
 	public void testRegistryInit() throws Exception {
-		registry.register("el", "id", placeholder);
+		registry.register("el", "id", Placeholder.class);
 		registry.init();
-		XmlInputParser parser = registry.getConverter("el", "id");
+		InputParser parser = registry.getConverter("el", "id");
 		assertTrue("Registry should have been reset.", parser==null);
 	}
 	
 	@Test
 	public void testRegistryGetConverterHandler() throws Exception {
-		registry.register("el", "id", placeholder);
-		XmlInputParser parser = registry.getConverter("el", "id");
-		assertEquals("Registry should have been reset.", placeholder, parser);
+		registry.register("el", "id", Placeholder.class);
+		InputParser parser = registry.getConverter("el", "id");
+		assertTrue("Registry should have been reset.", parser instanceof Placeholder);
 	}
 /*
 	// This test must reside here in order to call the protected methods on the registry
@@ -77,3 +58,20 @@ public class ConverterRegistryTest {
 	}
 */	
 }
+
+class Placeholder implements InputParser  {
+	public Placeholder() {
+		// required
+	}
+	
+	@Override
+	public String toString() {
+		return "PLACEHOLDER";
+	}
+
+	@Override
+	public Node parse() throws DecodeEception {
+		return null;
+	}
+};
+

@@ -1,23 +1,29 @@
 package gov.cms.qpp.conversion.parser;
 
-import org.jdom2.Document;
 import org.jdom2.Element;
 
 import gov.cms.qpp.conversion.model.Node;
 
-public abstract class XmlInputParser {
+public abstract class XmlInputParser implements InputParser {
 
-	protected Document xmlDoc;
+	protected Element xmlDoc;
+	
+	public XmlInputParser() {
+	}
 
+	public void setDom(Element xmlDoc) {
+		this.xmlDoc = xmlDoc;
+	}
+	
 	/**
 	 * Parse a file into a Node
 	 */
-	public Node parse(Element dom) {
+	public Node parse() {
 
 		Node rootParentNode = new Node();
-		rootParentNode.setId(dom.getName(), "placeholder");
+		rootParentNode.setId(xmlDoc.getName(), "placeholder");
 
-		return parse(dom, rootParentNode);
+		return parse(xmlDoc, rootParentNode);
 	}
 
 	/**

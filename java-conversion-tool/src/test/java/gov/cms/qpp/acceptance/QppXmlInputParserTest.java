@@ -32,8 +32,9 @@ public class QppXmlInputParserTest {
 		Element dom =  XmlUtils.stringToDOM(xmlFragment);
 		
 		QppXmlInputParser parser = new QppXmlInputParser();
+		parser.setDom(dom);
 
-		Node rateAggrNode = parser.parse(dom);
+		Node rateAggrNode = parser.parse();
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the
