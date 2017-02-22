@@ -17,7 +17,6 @@ public class QppXmlInputParser extends XmlInputParser {
 	protected static ConverterRegistry<QppXmlInputParser> parsers = new ConverterRegistry<>();
 
 	public QppXmlInputParser() {
-		System.out.println("default constructor");
 	}
 
 	/**
