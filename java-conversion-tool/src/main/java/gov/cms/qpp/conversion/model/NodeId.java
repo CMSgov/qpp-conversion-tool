@@ -8,7 +8,7 @@ import java.io.Serializable;
  * a template id.
  * 
  */
-public class NodeId implements Serializable {
+class NodeId implements Serializable {
 
 	private static final long serialVersionUID = -39984254082771401L;
 	

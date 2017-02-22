@@ -5,21 +5,34 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import java.io.File;
-
+import org.jdom2.Element;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.parser.QppXmlInputParser;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class QppXmlInputParserTest {
 
+	
+	
 	@Test
-	public void parseRateAggregationAsNode() {
+	public void parseRateAggregationAsNode() throws Exception {
+		String xmlFragment = XmlUtils.buildString("<root>",
+			"<observation classCode=\"OBS\" moodCode=\"EVN\">",
+			"  <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
+			"  <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>",
+			"  <statusCode code=\"completed\"/>",
+			"  <value xsi:type=\"INT\" value=\"600\"/>",
+			"  <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>",
+			"</observation>",
+			"<root>"
+		 );
+		Element dom =  XmlUtils.stringToDOM(xmlFragment);
+		
+		QppXmlInputParser parser = new QppXmlInputParser();
 
-		QppXmlInputParser parser = new QppXmlInputParser(true);
-
-		Node rateAggrNode = parser.parse(new File("src/test/resources/qpp3-rateaggr-snippet.xml"));
+		Node rateAggrNode = parser.parse(dom);
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the

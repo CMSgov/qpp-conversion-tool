@@ -1,22 +1,18 @@
 package gov.cms.qpp.conversion.parser;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.jdom2.Element;
 
+import gov.cms.qpp.conversion.handlers.TransformHandler;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.NodeId;
 
+
+
+@TransformHandler(elementName="observation", templateId="2.16.840.1.113883.10.20.27.3.3")
 public class RateAggregationInputParser extends QppXmlInputParser {
 
 	public RateAggregationInputParser() {
-		super();
-		// if this element parser required children for parsing, then we would
-		// just
+		// if this element parser required children for parsing, then we would just
 		// add another NodeId/QppXmlInputParser to the parent class's parserMap
-		System.out.println("in rate aggr constructor");
 	}
 
 	// we do not override parse(Element, Node)
@@ -44,20 +40,17 @@ public class RateAggregationInputParser extends QppXmlInputParser {
 			templateId = templateIdElement.getAttributeValue("root");
 		}
 
-		returnNode.setInternalId(new NodeId(element.getName(), templateId));
+		returnNode.setId(element.getName(), templateId);
 
-		Map<String, Serializable> valueMap = new HashMap<>();
 
 		if (null != valueElement) {
 			valueText = valueElement.getAttributeValue("value");
 
 			if (null != valueText) {
-				valueMap.put("rateAggregationDenominator", valueText);
+				returnNode.putValue("rateAggregationDenominator", valueText);
 			}
 
 		}
-
-		returnNode.setData(valueMap);
 
 		return returnNode;
 	}
