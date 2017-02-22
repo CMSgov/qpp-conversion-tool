@@ -45,13 +45,10 @@ public class XmlUtils {
 	public static String buildString(String ... parts) {
 		StringBuilder buff = new StringBuilder();
 		
-		buff.append("<observation classCode=\"OBS\" moodCode=\"EVN\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">")
-			.append("  <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>")
-			.append("  <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>")
-			.append("  <statusCode code=\"completed\"/>")
-			.append("  <value xsi:type=\"INT\" value=\"600\"/>")
-			.append("  <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>")
-			.append("</observation>");
+		for (String part : parts) {
+			buff.append(part);
+		}
+		
 		return buff.toString();
 	}
 	

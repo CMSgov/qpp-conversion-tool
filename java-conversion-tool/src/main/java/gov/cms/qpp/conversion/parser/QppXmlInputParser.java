@@ -13,7 +13,6 @@ import gov.cms.qpp.conversion.model.Node;
  */
 public class QppXmlInputParser extends XmlInputParser {
 	
-	public static String TEMPLATE_ID = "templateId";
 
 	protected static ConverterRegistry<QppXmlInputParser> parsers = new ConverterRegistry<>();
 
@@ -35,13 +34,19 @@ public class QppXmlInputParser extends XmlInputParser {
 
 		List<Element> childElements = element.getChildren();
 
-		String elementName = element.getName();
+		String elementName;
 		String templateId;
 
+		for (Element ele : childElements) {
+			elementName = ele.getName();
 
-			for (Element ele : childElements) {
-				if ("templateId".equals(ele.getName())) {
-					templateId = ele.getAttributeValue("root");
+			// should any of the child elements be parsed with one of our
+			// parsers?
+			List<Element> chchildElements = ele.getChildren();
+
+			for (Element eleele : chchildElements) {
+				if ("templateId".equals(eleele.getName())) {
+					templateId = eleele.getAttributeValue("root");
 
 					// at this point we have both an element name and a child
 					// element of template id
@@ -51,7 +56,7 @@ public class QppXmlInputParser extends XmlInputParser {
 					QppXmlInputParser childParser = parsers.getConverter(elementName, templateId);
 
 					if (null != childParser) {
-						Node childNodeValue = childParser.internalParse(element);
+						Node childNodeValue = childParser.internalParse(ele);
 
 						if (null != childNodeValue) {
 							parentNode.addChildNode(childNodeValue);
@@ -72,6 +77,7 @@ public class QppXmlInputParser extends XmlInputParser {
 					}
 
 				}
+			}
 
 		}
 
