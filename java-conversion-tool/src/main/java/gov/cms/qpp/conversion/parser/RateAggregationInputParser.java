@@ -47,7 +47,7 @@ public class RateAggregationInputParser extends QppXmlInputParser {
 			valueText = valueElement.getAttributeValue("value");
 
 			if (null != valueText) {
-				returnNode.putValue("rateAggregationDenominator", valueText);
+				returnNode.putValue("rateAggregation", valueText);
 			}
 
 		}
