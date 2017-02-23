@@ -68,4 +68,12 @@ public class Node implements Serializable {
 		return "Node: internalId: " + internalId + ", data: " + data + ", childNodes: " + childNodes;
 	}
 
+	public String getIdElement() {
+		return internalId.getElementName();
+	}
+
+	public String getIdTemplate() {
+		return internalId.getTemplateId();
+	}
+
 }
