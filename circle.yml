@@ -9,6 +9,6 @@ dependencies:
 test:
   override:
     - cd java-conversion-tool; mvn integration-test
-    - cd java-conversion-tool; mvn cobertura:cobertura
+    - cd java-conversion-tool; mvn cobertura:check
   post:
     - cp -R java-conversion-tool/target/site/cobertura $CIRCLE_ARTIFACTS
