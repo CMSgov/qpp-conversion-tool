@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.parser;
 
-import java.io.File;
-
 import gov.cms.qpp.conversion.model.Node;
 
 /**
@@ -9,5 +7,5 @@ import gov.cms.qpp.conversion.model.Node;
  *
  */
 public interface InputParser {
-	Node parse(File inputFile);
+	Node parse() throws DecodeException;
 }

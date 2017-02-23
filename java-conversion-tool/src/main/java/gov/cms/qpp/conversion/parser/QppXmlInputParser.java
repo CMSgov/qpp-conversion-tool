@@ -1,36 +1,22 @@
 package gov.cms.qpp.conversion.parser;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.jdom2.Element;
 
+import gov.cms.qpp.conversion.model.TransformRegistry;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.NodeId;
 
 /**
  * Top level parser for parsing into QPP format. Contains a map of child parsers
  * that can parse an element.
  */
 public class QppXmlInputParser extends XmlInputParser {
+	
 
-	protected Map<NodeId, QppXmlInputParser> parserMap;
+	protected static TransformRegistry parsers = new TransformRegistry();
 
 	public QppXmlInputParser() {
-		System.out.println("default constructor");
-	}
-
-	public QppXmlInputParser(boolean initMap) {
-		if (initMap) {
-			System.out.println("in qpp parser constructor");
-			parserMap = new HashMap<>();
-			System.out.println(parserMap);
-
-			parserMap.put(new NodeId("observation", "2.16.840.1.113883.10.20.27.3.3"),
-					new RateAggregationInputParser());
-			System.out.println("finished with qpp parser constructor");
-		}
 	}
 
 	/**
@@ -66,7 +52,7 @@ public class QppXmlInputParser extends XmlInputParser {
 					// create a NodeId and see if we get a match inside
 					// parserMap
 
-					QppXmlInputParser childParser = parserMap.get(new NodeId(elementName, templateId));
+					QppXmlInputParser childParser = (QppXmlInputParser) parsers.get(elementName, templateId);
 
 					if (null != childParser) {
 						Node childNodeValue = childParser.internalParse(ele);
@@ -82,7 +68,7 @@ public class QppXmlInputParser extends XmlInputParser {
 							// placeholder node as parent
 
 							Node placeholderNode = new Node();
-							placeholderNode.setInternalId(new NodeId(elementName, "placeholder"));
+							placeholderNode.setId(elementName, "placeholder");
 
 							parse(ele, placeholderNode);
 
