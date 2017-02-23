@@ -80,8 +80,8 @@ public class Registry {
 			params.put("elementName", specific.elementName());
 			params.put("templateId", specific.templateId());
 		}
-		if (annotation instanceof Decoder) {
-			Decoder specific = (Decoder) annotation;
+		if (annotation instanceof Encoder) {
+			Encoder specific = (Encoder) annotation;
 			params.put("elementName", specific.elementName());
 			params.put("templateId", specific.templateId());
 		}
