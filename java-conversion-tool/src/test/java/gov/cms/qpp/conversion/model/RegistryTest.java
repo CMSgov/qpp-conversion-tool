@@ -6,19 +6,18 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-//import org.w3c.dom.Node;
 
 import gov.cms.qpp.conversion.parser.DecodeException;
 import gov.cms.qpp.conversion.parser.InputParser;
 import gov.cms.qpp.conversion.parser.RateAggregationInputParser;
 
-public class TransformRegistryTest {
+public class RegistryTest {
 
-	TransformRegistry registry;
+	Registry registry;
 	
 	@Before
 	public void before() {
-		registry = new TransformRegistry();
+		registry = new Registry(Decoder.class);
 	}
 	
 	@Test
