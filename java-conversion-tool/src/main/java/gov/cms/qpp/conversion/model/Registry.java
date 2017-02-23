@@ -9,17 +9,15 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 
-import gov.cms.qpp.conversion.parser.InputParser;
-
 /**
  * This class manages the available transformation handlers. Currently it takes
  * the XPATH that the handler will transform.
  * 
+ * R is the stored and return interface type.
+ * 
  * @author daviduselmann
  */
-public class Registry {
-	// TODO: Template this class as Registry<T> so that we can ensure
-	// type-safety when retrieving items
+public class Registry<R extends Object> {
 
 	// For now this is static and can be refactored into an instance
 	// variable when/if we have an orchestrator that instantiates an registry
@@ -27,7 +25,7 @@ public class Registry {
 	 * This will be an XPATH string to converter handler registration Since
 	 * Converter was taken for the main stub, I chose Handler for now.
 	 */
-	private Map<NodeId, Class<?>> registry;
+	private Map<NodeId, Class<? extends R>> registry;
 
 	private Class<? extends Annotation> annotationClass;
 
@@ -62,11 +60,10 @@ public class Registry {
 				Class<?> annotatedClass = Class.forName(bd.getBeanClassName());
 				Map<String, String> params = getAnnotationParams(annotatedClass);
 				register(params.get("elementName"), params.get("templateId"),
-						(Class<? extends InputParser>) Class.forName(bd.getBeanClassName()));
+						(Class<R>) Class.forName(bd.getBeanClassName()));
 			} catch (Exception e) {
 				e.printStackTrace();
-				// TODO logger.error("Failed to register new transformation
-				// handler because: " + e.getMessage());
+				// TODO logger.error("Failed to register new transformation handler because: " + e.getMessage());
 			}
 		}
 	}
@@ -97,9 +94,9 @@ public class Registry {
 	 * 
 	 * @param xpath
 	 */
-	public Object get(String elementName, String templateId) {
+	public R get(String elementName, String templateId) {
 		try {
-			Class<?> parserClass = registry.get(new NodeId(elementName, templateId));
+			Class<? extends R> parserClass = registry.get(new NodeId(elementName, templateId));
 			if (parserClass == null) {
 				return null;
 			}
@@ -115,7 +112,7 @@ public class Registry {
 	 * @param xpath
 	 * @param handler
 	 */
-	public void register(String elementName, String templateId, Class<? extends InputParser> parser) {
+	public void register(String elementName, String templateId, Class<? extends R> parser) {
 		// TODO logger.info("Registering new Handler {}, {}". xpath,
 		// handler.getClass().getName());
 		// This could be a class or class name and instantiated on lookup

@@ -15,7 +15,7 @@ import gov.cms.qpp.conversion.model.Node;
 public class QppXmlInputParser extends XmlInputParser {
 	
 
-	protected static Registry parsers = new Registry(Decoder.class);
+	protected static Registry<InputParser> parsers = new Registry<>(Decoder.class);
 
 	public QppXmlInputParser() {
 	}

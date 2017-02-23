@@ -43,10 +43,6 @@ public class Node implements Serializable {
 		return this.data.get(key);
 	}
 
-	public NodeId getInternalId() {
-		return internalId;
-	}
-
 	public void setId(String elementName, String templateId) {
 		this.internalId = new NodeId(elementName, templateId);
 	}
