@@ -45,7 +45,7 @@ public class QppXmlInputParserTest {
 		assertThat("returned node should have one child node", rateAggrNode.getChildNodes().size(), is(1));
 
 		assertThat("rate aggregation should be 600",
-				(String) rateAggrNode.getChildNodes().get(0).get("rateAggregationDenominator"), is("600"));
+				(String) rateAggrNode.getChildNodes().get(0).get("rateAggregation"), is("600"));
 
 	}
 
