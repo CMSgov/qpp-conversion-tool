@@ -58,7 +58,7 @@ public class QppXmlInputParser extends XmlInputParser {
 						QppXmlInputParser childParser = (QppXmlInputParser) parsers.get(elementName, templateId);
 	
 						if (null != childParser) {
-							Node childNodeValue = childParser.internalParse(ele);
+							Node childNodeValue = childParser.internalParse(ele, createNode(ele));
 	
 							if (null != childNodeValue) {
 								parentNode.addChildNode(childNodeValue);
@@ -87,10 +87,25 @@ public class QppXmlInputParser extends XmlInputParser {
 	}
 
 	@Override
-	protected Node internalParse(Element element) {
+	protected Node internalParse(Element element, Node thisnode) {
 		// this is the top level, so just return null
 
 		return null;
+	}
+	
+	private Node createNode(Element element) {
+		Node thisNode = new Node();
+
+		String templateId = null;
+		// we will also need the template id
+		Element templateIdElement = element.getChild("templateId");
+
+		if (null != templateIdElement) {
+			templateId = templateIdElement.getAttributeValue("root");
+		}
+
+		thisNode.setId(element.getName(), templateId);
+		return thisNode;
 	}
 
 }

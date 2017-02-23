@@ -38,7 +38,8 @@ public abstract class XmlInputParser implements InputParser {
 	 * Represents an internal parsing of an element
 	 * 
 	 * @param element
+	 * @param thisNode created for this parse
 	 * @return
 	 */
-	abstract protected Node internalParse(Element element);
+	abstract protected Node internalParse(Element element, Node thisnode);
 }
