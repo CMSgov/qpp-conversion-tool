@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import gov.cms.qpp.conversion.parser.InputParser;
  * 
  * @author daviduselmann
  */
-public class TransformRegistry {
+public class Registry {
 	
 	// For now this is static and can be refactored into an instance
 	// variable when/if we have an orchestrator that instantiates an registry
@@ -26,11 +27,13 @@ public class TransformRegistry {
 	 */
 	private Map<NodeId, Class<?>> registry;
 
+	private Class<? extends Annotation> annotationClass;
 	
 	/**
 	 * initialize and configure the registry
 	 */
-	public TransformRegistry() {
+	public Registry(Class<? extends Annotation> annotationClass) {
+		this.annotationClass = annotationClass;
 		init();
 		registerAnnotatedHandlers();
 	}
@@ -52,7 +55,7 @@ public class TransformRegistry {
 	@SuppressWarnings("unchecked")
 	void registerAnnotatedHandlers() {
 		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
-		scanner.addIncludeFilter(new AnnotationTypeFilter(TransformHandler.class));
+		scanner.addIncludeFilter(new AnnotationTypeFilter(annotationClass));
 		for (BeanDefinition bd : scanner.findCandidateComponents("gov.cms")) {
 			try {
 				Class<?> annotatedClass = Class.forName(bd.getBeanClassName());
@@ -67,13 +70,21 @@ public class TransformRegistry {
 	}
 	
 	public Map<String,String> getAnnotationParams(Class<?> annotatedClass) {
-		TransformHandler annotation = AnnotationUtils.findAnnotation(annotatedClass, TransformHandler.class);
+		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
 		if (annotation == null) {
 			return null;
 		}
 		Map<String,String> params = new HashMap<>();
-		params.put("elementName", annotation.elementName());
-		params.put("templateId", annotation.templateId());
+		if (annotation instanceof Decoder) {
+			Decoder specific = (Decoder) annotation;
+			params.put("elementName", specific.elementName());
+			params.put("templateId", specific.templateId());
+		}
+		if (annotation instanceof Encoder) {
+			Encoder specific = (Encoder) annotation;
+			params.put("elementName", specific.elementName());
+			params.put("templateId", specific.templateId());
+		}
 		return params;
 	}
 

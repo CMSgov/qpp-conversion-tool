@@ -9,14 +9,14 @@ import java.lang.annotation.Target;
 
 /**
  * This is the annotation to mark class implementations that should be
- * registered for transforming a section for the XML document.
+ * registered for encoding nodes into some output like JSON.
  * 
  * @author daviduselmann
  *
  */
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface TransformHandler {
+public @interface Encoder {
 	/**
 	 * The param(s) is/are the string pattern(s) that the defined handler will act.
 	 * @return
