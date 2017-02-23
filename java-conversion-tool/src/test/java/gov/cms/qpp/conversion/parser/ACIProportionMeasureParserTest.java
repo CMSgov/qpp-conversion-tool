@@ -110,15 +110,15 @@ public class ACIProportionMeasureParserTest {
 		QppXmlInputParser parser = new QppXmlInputParser();
 		parser.setDom(dom);
 
-		Node victim = parser.parse();
+		Node root = parser.parse();
 
 		// This node is the place holder around the root node
-		assertThat("returned node should not be null", victim, is(not(nullValue())));
+		assertThat("returned node should not be null", root, is(not(nullValue())));
 
 		// For all parsers this should be either a value or child node
-		assertThat("returned node should have one child node", victim.getChildNodes().size(), is(1));
+		assertThat("returned node should have one child node", root.getChildNodes().size(), is(1));
 		// This is the child node that is produced by the intended parser
-		Node aciProportionMeasureNode = victim.getChildNodes().get(0);
+		Node aciProportionMeasureNode = root.getChildNodes().get(0);
 		// Should have a aggregate count node 
 		assertThat("returned node should have two child parser nodes", aciProportionMeasureNode.getChildNodes().size(), is(2));
 		
