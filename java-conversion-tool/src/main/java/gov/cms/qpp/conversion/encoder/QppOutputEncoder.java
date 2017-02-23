@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.Registry;
 
 public class QppOutputEncoder extends JsonOutputEncoder {
 
-	protected static Registry encoders = new Registry(Encoder.class);
+	protected static Registry<OutputEncoder> encoders = new Registry<>(Encoder.class);
 
 	public QppOutputEncoder() {
 	}

@@ -16,7 +16,7 @@ import gov.cms.qpp.conversion.parser.InputParser;
 
 public class RegistryTest {
 
-	Registry<Decoder, InputParser> registry;
+	Registry<InputParser> registry;
 
 	@Before
 	public void before() {

@@ -13,12 +13,11 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
  * This class manages the available transformation handlers. Currently it takes
  * the XPATH that the handler will transform.
  * 
- * A is the annotation that this class will discover
- * and R is the stored and return interface type.
+ * R is the stored and return interface type.
  * 
  * @author daviduselmann
  */
-public class Registry<A extends Annotation, R extends Object> {
+public class Registry<R extends Object> {
 
 	// For now this is static and can be refactored into an instance
 	// variable when/if we have an orchestrator that instantiates an registry
@@ -33,7 +32,7 @@ public class Registry<A extends Annotation, R extends Object> {
 	/**
 	 * initialize and configure the registry
 	 */
-	public Registry(Class<A> annotationClass) {
+	public Registry(Class<? extends Annotation> annotationClass) {
 		this.annotationClass = annotationClass;
 		init();
 		registerAnnotatedHandlers();
