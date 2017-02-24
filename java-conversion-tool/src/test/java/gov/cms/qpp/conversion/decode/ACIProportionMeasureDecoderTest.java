@@ -124,7 +124,7 @@ public class ACIProportionMeasureDecoderTest {
 		assertThat("returned node should have two child decoder nodes", aciProportionMeasureNode.getChildNodes().size(), is(2));
 		
 		assertThat("measureId should be ACI-PEA-1",
-				(String) aciProportionMeasureNode.get("measureId"), is("ACI-PEA-1"));
+				(String) aciProportionMeasureNode.getValue("measureId"), is("ACI-PEA-1"));
 	
 		List<String> testTemplateIds = new ArrayList<>();
 		for (Node node : aciProportionMeasureNode.getChildNodes()) {

@@ -56,7 +56,7 @@ public class ACIProportionNumeratorDecoderTest {
 		// This is the node with the numerator value
 		Node numDenomNode = aciProportionNumeratorNode.getChildNodes().get(0);
 		// Get the actual value
-		String actual = (String) numDenomNode.get("aciNumeratorDenominator");
+		String actual = (String) numDenomNode.getValue("aciNumeratorDenominator");
 		assertThat("aci numerator should be 600", actual, is("600"));
 
 	}

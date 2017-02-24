@@ -37,7 +37,7 @@ public class QEDDecoderTest {
 
 		Node target = root.getChildNodes().get(0);
 
-		assertThat("test value should be mytestvalue", target.get("result"), is("mytestvalue"));
+		assertThat("test value should be mytestvalue", target.getValue("result"), is("mytestvalue"));
 
 	}
 

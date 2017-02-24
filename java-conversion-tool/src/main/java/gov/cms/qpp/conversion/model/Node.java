@@ -35,14 +35,6 @@ public class Node implements Serializable {
 		data.put(name, value);
 	}
 
-	public void add(String key, String value) {
-		this.data.put(key, value);
-	}
-
-	public Serializable get(String key) {
-		return this.data.get(key);
-	}
-
 	public void setId(String templateId) {
 		this.internalId = templateId;
 	}
@@ -66,7 +58,4 @@ public class Node implements Serializable {
 	public String toString() {
 		return "Node: internalId: " + internalId + ", data: " + data + ", childNodes: " + childNodes;
 	}
-
-
-
 }

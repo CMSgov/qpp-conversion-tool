@@ -8,13 +8,10 @@ import gov.cms.qpp.conversion.model.Node;
 @JsonEncoder(templateId = "placeholder")
 public class RootPlaceholderEncoder extends QppOutputEncoder {
 
-	public RootPlaceholderEncoder() {
-	}
+	public RootPlaceholderEncoder() {}
 
 	@Override
 	public void encode(Writer writer, Node node, int indentLevel) throws EncodeException {
 		// does not do anything
-
 	}
-
 }

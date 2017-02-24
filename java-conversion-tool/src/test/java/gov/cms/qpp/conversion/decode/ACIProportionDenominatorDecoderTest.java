@@ -53,7 +53,7 @@ public class ACIProportionDenominatorDecoderTest {
 		// This is stubbed node with the test value
 		Node target = aciProportionDenominatorNode.getChildNodes().get(0);
 		// Get the test value
-		assertThat("test value should be mytestvalue", target.get("aciNumeratorDenominator"), is("600"));
+		assertThat("test value should be mytestvalue", target.getValue("aciNumeratorDenominator"), is("600"));
 
 	}
 
