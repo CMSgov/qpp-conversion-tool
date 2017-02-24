@@ -25,13 +25,11 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 		if (null != encoder) {
 			encoder.encode(writer, node, indentLevel);
 
-			for (Node child : node.getChildNodes()) {
-				encoder = (JsonOutputEncoder) encoders.get(child.getIdElement(), child.getIdTemplate());
-
-				if (null != encoder) {
-					encoder.encode(writer, child, indentLevel + 1);
-				}
-			}
+			// each Node understands whether or not it has children and the
+			// corresponding Encoders
+			// also understand this, so we leave it to each Encoder
+			// implementation to call encode() on
+			// the child nodes of the node it's encoding
 		}
 	}
 

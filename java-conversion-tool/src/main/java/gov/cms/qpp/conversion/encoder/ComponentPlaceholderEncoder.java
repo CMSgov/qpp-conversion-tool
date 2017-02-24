@@ -5,10 +5,14 @@ import java.io.Writer;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 
-@Encoder(elementName = "root", templateId = "placeholder")
-public class RootPlaceholderEncoder extends QppOutputEncoder {
+/**
+ * temporary until the element name is removed
+ *
+ */
+@Encoder(elementName = "component", templateId = "placeholder")
+public class ComponentPlaceholderEncoder extends QppOutputEncoder {
 
-	public RootPlaceholderEncoder() {
+	public ComponentPlaceholderEncoder() {
 	}
 
 	@Override

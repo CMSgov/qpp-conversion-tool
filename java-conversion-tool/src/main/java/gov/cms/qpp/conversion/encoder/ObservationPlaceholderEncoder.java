@@ -13,7 +13,13 @@ public class ObservationPlaceholderEncoder extends QppOutputEncoder {
 
 	@Override
 	public void encode(Writer writer, Node node, int indentLevel) throws EncodeException {
-		// does not do anything
+		// does not do anything except call write on any children
+
+		for (Node child : node.getChildNodes()) {
+			QppOutputEncoder encoder = (QppOutputEncoder) encoders.get(child.getIdElement(), child.getIdTemplate());
+
+			encoder.encode(writer, child, indentLevel);
+		}
 
 	}
 

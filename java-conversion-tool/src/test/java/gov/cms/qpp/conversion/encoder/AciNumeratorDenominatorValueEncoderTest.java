@@ -14,14 +14,14 @@ import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
 
-public class AciNumeratorDenominatorEncoderTest {
+public class AciNumeratorDenominatorValueEncoderTest {
 
-	private static final String EXPECTED = "{\n\t600\n}";
+	private static final String EXPECTED = "{\n600\n}";
 
 	private Node numeratorDenominatorNode;
 	private List<Node> nodes;
 
-	public AciNumeratorDenominatorEncoderTest() {
+	public AciNumeratorDenominatorValueEncoderTest() {
 	}
 
 	@Before
