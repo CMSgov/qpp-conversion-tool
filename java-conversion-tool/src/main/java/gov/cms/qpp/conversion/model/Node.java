@@ -17,7 +17,7 @@ public class Node implements Serializable {
 
 	private static final long serialVersionUID = 4602134063479322076L;
 
-	private NodeId internalId;
+	private String internalId;
 	private Map<String, String> data = new HashMap<>();
 
 	private List<Node> childNodes;
@@ -43,8 +43,11 @@ public class Node implements Serializable {
 		return this.data.get(key);
 	}
 
-	public void setId(String elementName, String templateId) {
-		this.internalId = new NodeId(elementName, templateId);
+	public void setId(String templateId) {
+		this.internalId = templateId;
+	}
+	public String getId() {
+		return internalId;
 	}
 
 	public List<Node> getChildNodes() {
@@ -64,12 +67,6 @@ public class Node implements Serializable {
 		return "Node: internalId: " + internalId + ", data: " + data + ", childNodes: " + childNodes;
 	}
 
-	public String getIdElement() {
-		return internalId.getElementName();
-	}
 
-	public String getIdTemplate() {
-		return internalId.getTemplateId();
-	}
 
 }

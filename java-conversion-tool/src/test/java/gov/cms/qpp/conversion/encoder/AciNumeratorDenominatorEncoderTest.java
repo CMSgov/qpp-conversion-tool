@@ -27,7 +27,7 @@ public class AciNumeratorDenominatorEncoderTest {
 	@Before
 	public void createNode() {
 		numeratorDenominatorNode = new Node();
-		numeratorDenominatorNode.setId("observation", "2.16.840.1.113883.10.20.27.3.3");
+		numeratorDenominatorNode.setId("2.16.840.1.113883.10.20.27.3.3");
 		numeratorDenominatorNode.add("aciNumeratorDenominator", "600");
 
 		nodes = new ArrayList<>();

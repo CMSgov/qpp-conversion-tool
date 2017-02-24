@@ -3,9 +3,9 @@ package gov.cms.qpp.conversion.parser;
 import org.jdom2.Element;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Decoder;
+import gov.cms.qpp.conversion.model.XmlDecoder;
 
-@Decoder(elementName="qed", templateId="Q.E.D")
+@XmlDecoder(templateId="Q.E.D")
 public class QEDParser extends QppXmlInputParser {
 	@Override
 	protected Node internalParse(Element element, Node thisnode) {

@@ -16,12 +16,11 @@ import java.lang.annotation.Target;
  */
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface Decoder {
+public @interface XmlDecoder {
 	/**
 	 * The param(s) is/are the string pattern(s) that the defined handler will act.
 	 * @return
 	 */
-	String elementName();
 	String templateId();
 	
 }

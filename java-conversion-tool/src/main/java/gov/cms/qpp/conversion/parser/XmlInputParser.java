@@ -21,7 +21,7 @@ public abstract class XmlInputParser implements InputParser {
 	public Node parse() {
 
 		Node rootParentNode = new Node();
-		rootParentNode.setId(xmlDoc.getName(), "placeholder");
+		rootParentNode.setId("placeholder");
 
 		return parse(xmlDoc, rootParentNode);
 	}

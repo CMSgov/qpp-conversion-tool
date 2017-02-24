@@ -5,7 +5,7 @@ import java.util.List;
 import org.jdom2.Element;
 
 import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.model.Decoder;
+import gov.cms.qpp.conversion.model.XmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 
 /**
@@ -15,10 +15,9 @@ import gov.cms.qpp.conversion.model.Node;
 public class QppXmlInputParser extends XmlInputParser {
 	
 
-	protected static Registry<InputParser> parsers = new Registry<>(Decoder.class);
+	protected static Registry<QppXmlInputParser> parsers = new Registry<>(XmlDecoder.class);
 
-	public QppXmlInputParser() {
-	}
+	public QppXmlInputParser() {}
 
 	/**
 	 * Iterates over the element to find all child elements. Finds any elements
@@ -32,53 +31,49 @@ public class QppXmlInputParser extends XmlInputParser {
 
 		Node returnNode = parentNode;
 		
-		if (null != element) {
+		if (null == element) {
+			return returnNode;
+		}
 			
 
-			List<Element> childElements = element.getChildren();
+		List<Element> childElements = element.getChildren();
+
+		for (Element ele : childElements) {
+
+			// should any of the child elements be parsed with one of our
+			// parsers?
+			List<Element> chchildElements = ele.getChildren();
+
+			for (Element eleele : chchildElements) {
+				if ("templateId".equals(eleele.getName())) {
+					String templateId = eleele.getAttributeValue("root");
+
+					// at this point we have both an element name and a child
+					// element of template id
+					// create a NodeId and see if we get a match inside
+					// parserMap
+
+					QppXmlInputParser childParser = parsers.get(templateId);
+
+					if (null != childParser) {
+						Node childNodeValue = childParser.internalParse(ele, createNode(ele));
 	
-			String elementName;
-			String templateId;
+						if (null != childNodeValue) {
+							parentNode.addChildNode(childNodeValue);
 	
-			for (Element ele : childElements) {
-				elementName = ele.getName();
+							// recursively call parse(element, node) with this
+							// child as parent
+							parse(ele, childNodeValue);
+						} else {
+							// recursively call parse(element, node) with a
+							// placeholder node as parent
 	
-				// should any of the child elements be parsed with one of our
-				// parsers?
-				List<Element> chchildElements = ele.getChildren();
+							Node placeholderNode = new Node();
+							placeholderNode.setId("placeholder");
 	
-				for (Element eleele : chchildElements) {
-					if ("templateId".equals(eleele.getName())) {
-						templateId = eleele.getAttributeValue("root");
+							parse(ele, placeholderNode);
 	
-						// at this point we have both an element name and a child
-						// element of template id
-						// create a NodeId and see if we get a match inside
-						// parserMap
-	
-						QppXmlInputParser childParser = (QppXmlInputParser) parsers.get(elementName, templateId);
-	
-						if (null != childParser) {
-							Node childNodeValue = childParser.internalParse(ele, createNode(ele));
-	
-							if (null != childNodeValue) {
-								parentNode.addChildNode(childNodeValue);
-	
-								// recursively call parse(element, node) with this
-								// child as parent
-								parse(ele, childNodeValue);
-							} else {
-								// recursively call parse(element, node) with a
-								// placeholder node as parent
-	
-								Node placeholderNode = new Node();
-								placeholderNode.setId(elementName, "placeholder");
-	
-								parse(ele, placeholderNode);
-	
-							}
 						}
-	
 					}
 				}
 			}
@@ -105,8 +100,14 @@ public class QppXmlInputParser extends XmlInputParser {
 			templateId = templateIdElement.getAttributeValue("root");
 		}
 
-		thisNode.setId(element.getName(), templateId);
+		thisNode.setId(templateId);
 		return thisNode;
 	}
 
 }
+// 2.16.840.1.113883.10.20.27.3.28=class gov.cms.qpp.conversion.parser.ACIProportionMeasureParser,
+// 2.16.840.1.113883.10.20.27.3.3=class gov.cms.qpp.conversion.parser.AciNumeratorDenominatorInputParser,
+// Q.E.D=class gov.cms.qpp.conversion.parser.QEDParser,
+// 2.16.840.1.113883.10.20.27.3.32=class gov.cms.qpp.conversion.parser.ACIProportionDenominatorParser, 
+// 2.16.840.1.113883.10.20.27.3.31=class gov.cms.qpp.conversion.parser.ACIProportionNumeratorParser
+

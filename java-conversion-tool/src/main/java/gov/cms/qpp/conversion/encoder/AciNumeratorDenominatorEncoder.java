@@ -3,10 +3,10 @@ package gov.cms.qpp.conversion.encoder;
 import java.io.IOException;
 import java.io.Writer;
 
-import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.JsonEncoder;
 import gov.cms.qpp.conversion.model.Node;
 
-@Encoder(elementName = "observation", templateId = "2.16.840.1.113883.10.20.27.3.3")
+@JsonEncoder(templateId = "2.16.840.1.113883.10.20.27.3.3")
 public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 
 	public AciNumeratorDenominatorEncoder() {

@@ -127,7 +127,7 @@ public class ACIProportionMeasureParserTest {
 	
 		List<String> testTemplateIds = new ArrayList<>();
 		for (Node node : aciProportionMeasureNode.getChildNodes()) {
-			testTemplateIds.add(node.getIdTemplate());
+			testTemplateIds.add(node.getId());
 		}
 		
 		assertThat("Should have Numerator", testTemplateIds.contains("2.16.840.1.113883.10.20.27.3.31"), is(true));

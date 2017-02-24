@@ -2,17 +2,17 @@ package gov.cms.qpp.conversion.encoder;
 
 import java.io.Writer;
 
-import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.JsonEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 
 public class QppOutputEncoder extends JsonOutputEncoder {
 
-	protected static Registry<OutputEncoder> encoders = new Registry<>(Encoder.class);
+	protected static Registry<JsonOutputEncoder> encoders = new Registry<>(JsonEncoder.class);
 
-	public QppOutputEncoder() {
-	}
+	public QppOutputEncoder() {}
 
+	
 	@Override
 	public void encode(Writer writer, Node node, int indentLevel) throws EncodeException {
 
@@ -20,17 +20,18 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 		// check the encoder Registry for
 		// an Encoder to call for the Node, and then call its children
 
-		JsonOutputEncoder encoder = (JsonOutputEncoder) encoders.get(node.getIdElement(), node.getIdTemplate());
+		JsonOutputEncoder encoder = encoders.get(node.getId());
 
-		if (null != encoder) {
-			encoder.encode(writer, node, indentLevel);
+		if (null == encoder) {
+			return;
+		}
+		encoder.encode(writer, node, indentLevel);
 
-			for (Node child : node.getChildNodes()) {
-				encoder = (JsonOutputEncoder) encoders.get(child.getIdElement(), child.getIdTemplate());
+		for (Node child : node.getChildNodes()) {
+			encoder = encoders.get(child.getId());
 
-				if (null != encoder) {
-					encoder.encode(writer, child, indentLevel + 1);
-				}
+			if (null != encoder) {
+				encoder.encode(writer, child, indentLevel + 1);
 			}
 		}
 	}
