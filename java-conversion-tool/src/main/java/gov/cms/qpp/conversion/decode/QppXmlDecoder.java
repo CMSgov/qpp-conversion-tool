@@ -49,7 +49,10 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					QppXmlDecoder childDecoder = decoders.get(templateId);
 
 					if (null != childDecoder) {
-						Node childNodeValue = childDecoder.internalDecode(ele, createNode(ele));
+						Node thisNode = new Node();
+						thisNode.setId(templateId);
+						
+						Node childNodeValue = childDecoder.internalDecode(ele, thisNode);
 	
 						if (null != childNodeValue) {
 							parentNode.addChildNode(childNodeValue);
@@ -81,11 +84,4 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return null;
 	}
 	
-	private Node createNode(Element element) {
-		Node thisNode = new Node();
-		// We cannot get here without a templateId element
-		thisNode.setId(element.getChild("templateId").getAttributeValue("root"));
-		return thisNode;
-	}
-
 }
