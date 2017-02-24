@@ -30,22 +30,25 @@ public class ACIProportionNumeratorParserTest {
 				+ "				<statusCode code=\"completed\" />\n"
 				+ "				<value xsi:type=\"INT\" value=\"600\" />\n"
 				+ "				<methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\" />\n"
-				+ "			</observation>\n" + "		</entryRelationship>\n" + "	</observation>\n" + "</component>";
+				+ "			</observation>\n"
+				+ "		</entryRelationship>\n"
+				+ "	</observation>\n"
+				+ "</component>";
 
 		Element dom = XmlUtils.stringToDOM(xmlFragment);
 
 		QppXmlInputParser parser = new QppXmlInputParser();
 		parser.setDom(dom);
 
-		Node victim = parser.parse();
+		Node root = parser.parse();
 
 		// This node is the place holder around the root node
-		assertThat("returned node should not be null", victim, is(not(nullValue())));
+		assertThat("returned node should not be null", root, is(not(nullValue())));
 
 		// For all parsers this should be either a value or child node
-		assertThat("returned node should have one child node", victim.getChildNodes().size(), is(1));
+		assertThat("returned node should have one child node", root.getChildNodes().size(), is(1));
 		// This is the child node that is produced by the intended parser
-		Node aciProportionNumeratorNode = victim.getChildNodes().get(0);
+		Node aciProportionNumeratorNode = root.getChildNodes().get(0);
 		// Should have a aggregate count node
 		assertThat("returned node should have one child parser node", aciProportionNumeratorNode.getChildNodes().size(),
 				is(1));
