@@ -20,18 +20,11 @@ public class AciProportionNumeratorDecoderTest {
 				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
 				+ "	<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
 				+ "		<templateId root=\"2.16.840.1.113883.10.20.27.3.31\" extension=\"2016-09-01\" />\n"
-				+ "		<code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"Assertion\" />\n"
-				+ "		<statusCode code=\"completed\" />\n"
-				+ "		<value xsi:type=\"CD\" code=\"NUMER\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" />\n"
 				+ "		<!-- Numerator Count -->\n"
 				+ "		<entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-				+ "			<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-				+ "				<templateId root=\"2.16.840.1.113883.10.20.27.3.3\" />\n"
-				+ "				<code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\" />\n"
-				+ "				<statusCode code=\"completed\" />\n"
-				+ "				<value xsi:type=\"INT\" value=\"600\" />\n"
-				+ "				<methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\" />\n"
-				+ "			</observation>\n"
+				+ "			<qed resultName=\"aciNumeratorDenominator\" resultValue=\"600\">\n"
+				+ "				<templateId root=\"Q.E.D\"/>\n"
+				+ "			</qed>"
 				+ "		</entryRelationship>\n"
 				+ "	</observation>\n"
 				+ "</component>";
@@ -58,6 +51,34 @@ public class AciProportionNumeratorDecoderTest {
 		// Get the actual value
 		String actual = (String) numDenomNode.getValue("aciNumeratorDenominator");
 		assertThat("aci numerator should be 600", actual, is("600"));
+
+	}
+	
+	@Test
+	public void decodeACIProportionNumeratorWithNoChildAsNode() throws Exception {
+		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
+				+ "	<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
+				+ "		<templateId root=\"2.16.840.1.113883.10.20.27.3.31\" extension=\"2016-09-01\" />\n"
+				+ "		<!-- Numerator Count **missing ** -->\n"
+				+ "	</observation>\n"
+				+ "</component>";
+
+		Element dom = XmlUtils.stringToDOM(xmlFragment);
+
+		QppXmlDecoder decoder = new QppXmlDecoder();
+		decoder.setDom(dom);
+
+		Node root = decoder.decode();
+
+		// This node is the place holder around the root node
+		assertThat("returned node should not be null", root, is(not(nullValue())));
+		// We are missing the child node with the numerator count
+		assertThat("returned node should have one child node", root.getChildNodes().size(), is(1));
+		// This is the child node that is produced by the intended Decoder
+		Node aciProportionNumeratorNode = root.getChildNodes().get(0);
+		// We are missing the child node with the numerator count
+		assertThat("returned node should have one child decoder node", aciProportionNumeratorNode.getChildNodes().size(),is(0));
 
 	}
 

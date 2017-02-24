@@ -52,55 +52,19 @@ public class AciProportionMeasureDecoderTest {
 				"		<component>\n" + 
 				"			<observation classCode=\"OBS\" moodCode=\"EVN\">\n" + 
 				"				<!-- ACI Numerator Denominator Type Measure Numerator Data templateId -->\n" + 
-				"				<templateId root=\"2.16.840.1.113883.10.20.27.3.31\"\n" + 
-				"					extension=\"2016-09-01\"/>\n" + 
-				"				<code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\"\n" + 
-				"					codeSystemName=\"ActCode\" displayName=\"Assertion\"/>\n" + 
-				"				<statusCode code=\"completed\"/>\n" + 
-				"				<value xsi:type=\"CD\" code=\"NUMER\"\n" + 
-				"					codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\"/>\n" + 
-				"				<!-- Numerator Count-->\n" + 
-				"				<entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n" + 
-				"					<observation classCode=\"OBS\" moodCode=\"EVN\">\n" + 
-				"						<templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n" + 
-				"						<code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\"\n" + 
-				"							codeSystemName=\"ActCode\"\n" + 
-				"							displayName=\"rate aggregation\"/>\n" + 
-				"						<statusCode code=\"completed\"/>\n" + 
-				"						<value xsi:type=\"INT\" value=\"600\"/>\n" + 
-				"						<methodCode code=\"COUNT\"\n" + 
-				"							codeSystem=\"2.16.840.1.113883.5.84\"\n" + 
-				"							codeSystemName=\"ObservationMethod\"\n" + 
-				"							displayName=\"Count\"/>\n" + 
-				"					</observation>\n" + 
-				"				</entryRelationship>\n" + 
+				"				<templateId root=\"2.16.840.1.113883.10.20.27.3.31\" extension=\"2016-09-01\"/>\n" + 
+				"				<qed resultName=\"aciNumeratorDenominator\" resultValue=\"600\">\n" +
+				"					<templateId root=\"Q.E.D\"/>\n" +
+				"				</qed>" +
 				"			</observation>\n" + 
 				"		</component>\n" + 
 				"		<component>\n" + 
 				"			<observation classCode=\"OBS\" moodCode=\"EVN\">\n" + 
 				"				<!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->\n" + 
-				"				<templateId root=\"2.16.840.1.113883.10.20.27.3.32\"\n" + 
-				"					extension=\"2016-09-01\"/>\n" + 
-				"				<code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\"\n" + 
-				"					codeSystemName=\"ActCode\" displayName=\"Assertion\"/>\n" + 
-				"				<statusCode code=\"completed\"/>\n" + 
-				"				<value xsi:type=\"CD\" code=\"DENOM\"\n" + 
-				"					codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\"/>\n" + 
-				"				<!-- Denominator Count-->\n" + 
-				"				<entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n" + 
-				"					<observation classCode=\"OBS\" moodCode=\"EVN\">\n" + 
-				"						<templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n" + 
-				"						<code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\"\n" + 
-				"							codeSystemName=\"ActCode\"\n" + 
-				"							displayName=\"rate aggregation\"/>\n" + 
-				"						<statusCode code=\"completed\"/>\n" + 
-				"						<value xsi:type=\"INT\" value=\"800\"/>\n" + 
-				"						<methodCode code=\"COUNT\"\n" + 
-				"							codeSystem=\"2.16.840.1.113883.5.84\"\n" + 
-				"							codeSystemName=\"ObservationMethod\"\n" + 
-				"							displayName=\"Count\"/>\n" + 
-				"					</observation>\n" + 
-				"				</entryRelationship>\n" + 
+				"				<templateId root=\"2.16.840.1.113883.10.20.27.3.32\" extension=\"2016-09-01\"/>\n" + 
+				"				<qed resultName=\"aciNumeratorDenominator\" resultValue=\"800\">\n" +
+				"					<templateId root=\"Q.E.D\"/>\n" +
+				"				</qed>" +
 				"			</observation>\n" + 
 				"		</component>\n" + 
 				"	</organizer>\n" + 
