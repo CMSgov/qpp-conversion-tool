@@ -25,7 +25,7 @@ public class Registry<R extends Object> {
 	 * This will be an XPATH string to converter handler registration Since
 	 * Converter was taken for the main stub, I chose Handler for now.
 	 */
-	private Map<NodeId, Class<? extends R>> registry;
+	private Map<String, Class<? extends R>> registry;
 
 	private Class<? extends Annotation> annotationClass;
 
@@ -58,9 +58,8 @@ public class Registry<R extends Object> {
 		for (BeanDefinition bd : scanner.findCandidateComponents("gov.cms")) {
 			try {
 				Class<?> annotatedClass = Class.forName(bd.getBeanClassName());
-				Map<String, String> params = getAnnotationParams(annotatedClass);
-				register(params.get("elementName"), params.get("templateId"),
-						(Class<R>) Class.forName(bd.getBeanClassName()));
+				String templateId = getAnnotationParam(annotatedClass);
+				register(templateId, (Class<R>) Class.forName(bd.getBeanClassName()));
 			} catch (Exception e) {
 				e.printStackTrace();
 				// TODO logger.error("Failed to register new transformation handler because: " + e.getMessage());
@@ -68,23 +67,18 @@ public class Registry<R extends Object> {
 		}
 	}
 
-	public Map<String, String> getAnnotationParams(Class<?> annotatedClass) {
+	public String getAnnotationParam(Class<?> annotatedClass) {
 		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
-		if (annotation == null) {
-			return null;
-		}
-		Map<String, String> params = new HashMap<>();
-		if (annotation instanceof Decoder) {
-			Decoder specific = (Decoder) annotation;
-			params.put("elementName", specific.elementName());
-			params.put("templateId", specific.templateId());
+		
+		if (annotation instanceof XmlDecoder) {
+			XmlDecoder decoder = (XmlDecoder) annotation;
+			return decoder.templateId();
 		}
 		if (annotation instanceof Encoder) {
-			Encoder specific = (Encoder) annotation;
-			params.put("elementName", specific.elementName());
-			params.put("templateId", specific.templateId());
+			Encoder encoder = (Encoder) annotation;
+			return encoder.templateId();
 		}
-		return params;
+		return null;
 	}
 
 	/**
@@ -94,13 +88,13 @@ public class Registry<R extends Object> {
 	 * 
 	 * @param xpath
 	 */
-	public R get(String elementName, String templateId) {
+	public R get(String templateId) {
 		try {
-			Class<? extends R> parserClass = registry.get(new NodeId(elementName, templateId));
-			if (parserClass == null) {
+			Class<? extends R> handlerClass = registry.get(templateId);
+			if (handlerClass == null) {
 				return null;
 			}
-			return parserClass.newInstance();
+			return handlerClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			return null;
 		}
@@ -112,10 +106,10 @@ public class Registry<R extends Object> {
 	 * @param xpath
 	 * @param handler
 	 */
-	public void register(String elementName, String templateId, Class<? extends R> parser) {
+	public void register(String templateId, Class<? extends R> handler) {
 		// TODO logger.info("Registering new Handler {}, {}". xpath,
 		// handler.getClass().getName());
 		// This could be a class or class name and instantiated on lookup
-		registry.put(new NodeId(elementName, templateId), parser);
+		registry.put(templateId, handler);
 	}
 }

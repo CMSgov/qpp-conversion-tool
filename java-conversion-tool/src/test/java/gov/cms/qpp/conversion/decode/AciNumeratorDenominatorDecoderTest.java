@@ -1,26 +1,18 @@
-package gov.cms.qpp.acceptance;
+package gov.cms.qpp.conversion.decode;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-
-import java.io.BufferedWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.jdom2.Element;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class AciNumeratorDenominatorValueRoundTripTest {
-
-	// we currently have a root placeholder node, so the numerator/denominator
-	// is indented an extra level
-	private static final String EXPECTED = "{\n600\n}";
+public class AciNumeratorDenominatorDecoderTest {
 
 	@Test
 	public void decodeAciNumeratorDenominatorAsNode() throws Exception {
@@ -39,15 +31,16 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 
 		Node numDenomNode = decoder.decode();
 
-		QppOutputEncoder encoder = new QppOutputEncoder();
-		List<Node> nodes = new ArrayList<>();
-		nodes.add(numDenomNode);
-		encoder.setNodes(nodes);
+		// the returned Node object from the snippet should be:
+		// a top level placeholder node with a single child node that has the
+		// "rateAggregationDenominator" key in it
 
-		StringWriter sw = new StringWriter();
-		encoder.encode(new BufferedWriter(sw));
+		assertThat("returned node should not be null", numDenomNode, is(not(nullValue())));
 
-		assertThat("expected encoder to return a single number numerator/denominator", sw.toString(), is(EXPECTED));
+		assertThat("returned node should have one child node", numDenomNode.getChildNodes().size(), is(1));
+
+		assertThat("aci numerator/denominator value should be 600",
+				(String) numDenomNode.getChildNodes().get(0).getValue("aciNumeratorDenominator"), is("600"));
 
 	}
 
