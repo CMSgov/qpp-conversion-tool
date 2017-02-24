@@ -18,9 +18,9 @@ public class QEDDecoderTest {
 	public void decodeQEDAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				+ "<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
-				+ "	<qed resultName=\"result\" resultValue=\"mytestvalue\">\n"
+				+ "	<observation resultName=\"result\" resultValue=\"mytestvalue\">\n"
 				+ "		<templateId root=\"Q.E.D\"/>\n"
-				+ "	</qed>"
+				+ "	</observation>"
 				+ "</root>";
 				
 

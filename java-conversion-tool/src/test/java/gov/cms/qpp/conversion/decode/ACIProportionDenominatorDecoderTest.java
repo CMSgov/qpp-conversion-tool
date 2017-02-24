@@ -26,9 +26,9 @@ public class ACIProportionDenominatorDecoderTest {
 				+ "		<value xsi:type=\"CD\" code=\"DENOM\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" />\n"
 				+ "		<!-- Denominator Count -->\n"
 				+ "		<entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-				+ "			<qed resultName=\"aciNumeratorDenominator\" resultValue=\"600\">\n"
+				+ "			<observation resultName=\"aciNumeratorDenominator\" resultValue=\"600\">\n"
 				+ "				<templateId root=\"Q.E.D\"/>\n"
-				+ "			</qed>"
+				+ "			</observation>"
 				+ "		</entryRelationship>\n" 
 				+ "	</observation>\n" 
 				+ "</component>";
