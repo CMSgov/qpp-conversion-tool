@@ -99,5 +99,44 @@ public class AciProportionMeasureDecoderTest {
 		assertThat("Should have Denominator", testTemplateIds.contains("2.16.840.1.113883.10.20.27.3.32"), is(true));
 
 	}
+	
+	
+	@Test
+	public void decodeACIProportionMeasureAsMissingElementsNode() throws Exception {
+		String xmlFragment = 
+				"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + 
+				"<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" + 
+				"	<organizer classCode=\"CLUSTER\" moodCode=\"EVN\">\n" + 
+				"		<!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->\n" + 
+				"		<templateId root=\"2.16.840.1.113883.10.20.27.3.28\" extension=\"2016-09-01\"/>\n" + 
+				"		<id root=\"ac575aef-7062-4ea2-b723-df517cfa470a\"/>\n" + 
+				"		<statusCode code=\"completed\"/>\n" + 
+				"		<reference typeCode=\"REFR\">\n" + 
+				"			<!-- Reference to a particular ACI measure's unique identifier. *** missing *** -->\n" + 
+				"		</reference>\n" + 
+				"	</organizer>\n" + 
+				"</entry>";
+		
+		Element dom =  XmlUtils.stringToDOM(xmlFragment);
+		
+		QppXmlDecoder decoder = new QppXmlDecoder();
+		decoder.setDom(dom);
+
+		Node root = decoder.decode();
+
+		// This node is the place holder around the root node
+		assertThat("returned node should not be null", root, is(not(nullValue())));
+
+		// For all decoders this should be either a value or child node
+		assertThat("returned node should have one child node", root.getChildNodes().size(), is(1));
+		// This is the child node that is produced by the intended decoder
+		Node aciProportionMeasureNode = root.getChildNodes().get(0);
+		// We have no component nodes
+		assertThat("returned node should have two child decoder nodes", aciProportionMeasureNode.getChildNodes().size(), is(0));
+		// We measureId in not reachable
+		assertThat("measureId should be null", (String) aciProportionMeasureNode.getValue("measureId"), is(nullValue()));
+
+	}
+
 
 }

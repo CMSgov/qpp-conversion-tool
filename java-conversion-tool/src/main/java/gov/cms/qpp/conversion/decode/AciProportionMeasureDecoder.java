@@ -36,10 +36,6 @@ public class AciProportionMeasureDecoder extends QppXmlDecoder {
 	private String getMethodId(Element element) {
 		String measureId = null;
 		
-		if (null == element) {
-			return measureId;
-		}
-		
 		List<String> nameList = Arrays.asList("reference", "externalDocument", "id");
 		Element ele = element;
 		for (String n : nameList) {
