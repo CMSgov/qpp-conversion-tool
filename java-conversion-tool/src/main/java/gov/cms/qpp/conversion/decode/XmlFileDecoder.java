@@ -28,7 +28,7 @@ public class XmlFileDecoder implements InputDecoder {
 	public Node decode() throws DecodeException {
 		Element dom;
 		try {
-			dom = XmlUtils.fileToDom(file);
+			dom = XmlUtils.fileToDOM(file);
 			subDecoder.setDom(dom);
 		} catch (XmlException e) {
 			throw new DecodeException("Failed to load file " + file.getAbsolutePath(), e);

@@ -58,7 +58,7 @@ public class Registry<R extends Object> {
 		for (BeanDefinition bd : scanner.findCandidateComponents("gov.cms")) {
 			try {
 				Class<?> annotatedClass = Class.forName(bd.getBeanClassName());
-				String templateId = getAnnotationParams(annotatedClass);
+				String templateId = getAnnotationParam(annotatedClass);
 				register(templateId, (Class<R>) Class.forName(bd.getBeanClassName()));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -67,7 +67,7 @@ public class Registry<R extends Object> {
 		}
 	}
 
-	public String getAnnotationParams(Class<?> annotatedClass) {
+	public String getAnnotationParam(Class<?> annotatedClass) {
 		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
 		
 		if (annotation instanceof XmlDecoder) {
