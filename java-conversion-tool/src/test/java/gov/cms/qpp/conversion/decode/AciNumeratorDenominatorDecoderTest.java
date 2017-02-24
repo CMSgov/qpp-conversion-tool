@@ -79,7 +79,6 @@ public class AciNumeratorDenominatorDecoderTest {
 				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
 				"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
-				"    <value xsi:type=\"INT\"/>",
 				"  </observation>",
 				"</root>");
 
