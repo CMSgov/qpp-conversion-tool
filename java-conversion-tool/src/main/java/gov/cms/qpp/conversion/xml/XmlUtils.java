@@ -13,6 +13,10 @@ public class XmlUtils {
 	
 	public static Element stringToDOM(String xml) throws XmlException {
 		
+		if (xml == null) {
+			return null;
+		}
+		
 		Document dom;
 		try {
 			SAXBuilder saxBuilder = new SAXBuilder();
@@ -25,11 +29,15 @@ public class XmlUtils {
 	}
 	
 	
-	public static Element fileToDom(String filename) throws XmlException {
-		return fileToDom(new File(filename));
+	public static Element fileToDOM(String filename) throws XmlException {
+		if (filename == null) {
+			return null;
+		}
+		
+		return fileToDOM(new File(filename));
 	}
 	
-	public static Element fileToDom(File file) throws XmlException {
+	public static Element fileToDOM(File file) throws XmlException {
 		
 		Document dom;
 		try {
