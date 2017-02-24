@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class ACIProportionDenominatorDecoderTest {
+public class AciProportionDenominatorDecoderTest {
 
 	@Test
 	public void decodeACIProportionNumeratorAsNode() throws Exception {

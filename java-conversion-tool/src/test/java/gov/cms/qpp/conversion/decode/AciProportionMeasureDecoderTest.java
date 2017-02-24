@@ -15,7 +15,7 @@ import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class ACIProportionMeasureDecoderTest {
+public class AciProportionMeasureDecoderTest {
 
 	@Test
 	public void decodeACIProportionMeasureAsNode() throws Exception {

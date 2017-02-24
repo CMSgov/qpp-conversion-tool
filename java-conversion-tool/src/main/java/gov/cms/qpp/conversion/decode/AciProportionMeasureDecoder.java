@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 
 @XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.28")
-public class ACIProportionMeasureDecoder extends QppXmlDecoder {
+public class AciProportionMeasureDecoder extends QppXmlDecoder {
 	@Override
 	protected Node internalDecode(Element element, Node thisnode) {
 		

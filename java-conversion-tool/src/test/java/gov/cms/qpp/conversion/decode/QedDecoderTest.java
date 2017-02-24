@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class QEDDecoderTest {
+public class QedDecoderTest {
 
 	@Test
 	public void decodeQEDAsNode() throws Exception {
