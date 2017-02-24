@@ -8,13 +8,13 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.parser.AciNumeratorDenominatorInputParser;
-import gov.cms.qpp.conversion.parser.DecodeException;
-import gov.cms.qpp.conversion.parser.InputParser;
+import gov.cms.qpp.conversion.decode.AciNumeratorDenominatorDecoder;
+import gov.cms.qpp.conversion.decode.DecodeException;
+import gov.cms.qpp.conversion.decode.InputDecoder;
 
 public class RegistryTest {
 
-	Registry<InputParser> registry;
+	Registry<InputDecoder> registry;
 
 	@Before
 	public void before() {
@@ -35,31 +35,31 @@ public class RegistryTest {
 	public void testRegistryInit() throws Exception {
 		registry.register("id", Placeholder.class);
 		registry.init();
-		InputParser parser = (InputParser) registry.get("id");
-		assertTrue("Registry should have been reset.", parser == null);
+		InputDecoder decoder = (InputDecoder) registry.get("id");
+		assertTrue("Registry should have been reset.", decoder == null);
 	}
 
 	@Test
 	public void testRegistryGetConverterHandler() throws Exception {
 		registry.register("id", Placeholder.class);
-		InputParser parser = (InputParser) registry.get("id");
-		assertTrue("Registry should have been reset.", parser instanceof Placeholder);
+		InputDecoder decoder = (InputDecoder) registry.get("id");
+		assertTrue("Registry should have been reset.", decoder instanceof Placeholder);
 	}
 
 	// This test must reside here in order to call the protected methods on the
 	// registry
 	@Test
 	public void testRegistry_placeAndFetch() throws Exception {
-		String templateId = registry.getAnnotationParams(AciNumeratorDenominatorInputParser.class);
-		InputParser parser = (InputParser) registry.get(templateId);
+		String templateId = registry.getAnnotationParams(AciNumeratorDenominatorDecoder.class);
+		InputDecoder decoder = (InputDecoder) registry.get(templateId);
 
-		assertNotNull("A handler is expected", parser);
+		assertNotNull("A handler is expected", decoder);
 		assertEquals("Handler should be an instance of the handler for the given XPATH",
-				AciNumeratorDenominatorInputParser.class, parser.getClass());
+				AciNumeratorDenominatorDecoder.class, decoder.getClass());
 	}
 }
 
-class Placeholder implements InputParser {
+class Placeholder implements InputDecoder {
 	public Placeholder() {
 		// required
 	}

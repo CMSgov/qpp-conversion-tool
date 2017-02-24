@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.parser;
+package gov.cms.qpp.conversion.decode;
 
 import java.util.List;
 
@@ -9,20 +9,20 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 
 /**
- * Top level parser for parsing into QPP format. Contains a map of child parsers
- * that can parse an element.
+ * Top level Decoder for parsing into QPP format. Contains a map of child Decoders
+ * that can Decode an element.
  */
-public class QppXmlInputParser extends XmlInputParser {
+public class QppXmlDecoder extends XmlInputDecoder {
 	
 
-	protected static Registry<QppXmlInputParser> parsers = new Registry<>(XmlDecoder.class);
+	protected static Registry<QppXmlDecoder> decoders = new Registry<>(XmlDecoder.class);
 
-	public QppXmlInputParser() {}
+	public QppXmlDecoder() {}
 
 	/**
 	 * Iterates over the element to find all child elements. Finds any elements
-	 * that match a NodeId in the parserMap. If there are any matches, calls
-	 * internalParse with that Element on the parser class. Aggregates Nodes
+	 * that match a templateId in the Decoder registry. If there are any matches,
+	 * calls internalParse with that Element on the Decoder class. Aggregates Nodes
 	 * that are returned.
 	 * 
 	 */
@@ -40,23 +40,16 @@ public class QppXmlInputParser extends XmlInputParser {
 
 		for (Element ele : childElements) {
 
-			// should any of the child elements be parsed with one of our
-			// parsers?
 			List<Element> chchildElements = ele.getChildren();
 
 			for (Element eleele : chchildElements) {
 				if ("templateId".equals(eleele.getName())) {
 					String templateId = eleele.getAttributeValue("root");
 
-					// at this point we have both an element name and a child
-					// element of template id
-					// create a NodeId and see if we get a match inside
-					// parserMap
+					QppXmlDecoder childDecoder = decoders.get(templateId);
 
-					QppXmlInputParser childParser = parsers.get(templateId);
-
-					if (null != childParser) {
-						Node childNodeValue = childParser.internalParse(ele, createNode(ele));
+					if (null != childDecoder) {
+						Node childNodeValue = childDecoder.internalParse(ele, createNode(ele));
 	
 						if (null != childNodeValue) {
 							parentNode.addChildNode(childNodeValue);
@@ -105,9 +98,3 @@ public class QppXmlInputParser extends XmlInputParser {
 	}
 
 }
-// 2.16.840.1.113883.10.20.27.3.28=class gov.cms.qpp.conversion.parser.ACIProportionMeasureParser,
-// 2.16.840.1.113883.10.20.27.3.3=class gov.cms.qpp.conversion.parser.AciNumeratorDenominatorInputParser,
-// Q.E.D=class gov.cms.qpp.conversion.parser.QEDParser,
-// 2.16.840.1.113883.10.20.27.3.32=class gov.cms.qpp.conversion.parser.ACIProportionDenominatorParser, 
-// 2.16.840.1.113883.10.20.27.3.31=class gov.cms.qpp.conversion.parser.ACIProportionNumeratorParser
-

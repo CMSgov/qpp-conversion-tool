@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.parser;
+package gov.cms.qpp.conversion.decode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 
 @XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.28")
-public class ACIProportionMeasureParser extends QppXmlInputParser {
+public class ACIProportionMeasureDecoder extends QppXmlDecoder {
 	@Override
 	protected Node internalParse(Element element, Node thisnode) {
 		

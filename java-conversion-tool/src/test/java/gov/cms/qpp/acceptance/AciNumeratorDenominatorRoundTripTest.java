@@ -11,9 +11,9 @@ import java.util.List;
 import org.jdom2.Element;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.encoder.QppOutputEncoder;
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.parser.QppXmlInputParser;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class AciNumeratorDenominatorRoundTripTest {
@@ -34,10 +34,10 @@ public class AciNumeratorDenominatorRoundTripTest {
 
 		Element dom = XmlUtils.stringToDOM(xmlFragment);
 
-		QppXmlInputParser parser = new QppXmlInputParser();
-		parser.setDom(dom);
+		QppXmlDecoder decoder = new QppXmlDecoder();
+		decoder.setDom(dom);
 
-		Node numDenomNode = parser.parse();
+		Node numDenomNode = decoder.parse();
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();

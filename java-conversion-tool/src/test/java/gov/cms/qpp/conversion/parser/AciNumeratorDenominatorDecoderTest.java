@@ -8,10 +8,11 @@ import static org.junit.Assert.assertThat;
 import org.jdom2.Element;
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class AciNumeratorDenominatorParserTest {
+public class AciNumeratorDenominatorDecoderTest {
 
 	@Test
 	public void parseAciNumeratorDenominatorAsNode() throws Exception {
@@ -25,10 +26,10 @@ public class AciNumeratorDenominatorParserTest {
 
 		Element dom = XmlUtils.stringToDOM(xmlFragment);
 
-		QppXmlInputParser parser = new QppXmlInputParser();
-		parser.setDom(dom);
+		QppXmlDecoder decoder = new QppXmlDecoder();
+		decoder.setDom(dom);
 
-		Node numDenomNode = parser.parse();
+		Node numDenomNode = decoder.parse();
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the

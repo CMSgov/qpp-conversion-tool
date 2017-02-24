@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.parser;
+package gov.cms.qpp.conversion.decode;
 
 import java.io.File;
 
@@ -9,19 +9,19 @@ import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
 /**
- * Defines a contract for all input parsers
+ * Defines a contract for all input decoders
  *
  */
-public class XmlFileInputParser implements InputParser {
+public class XmlFileDecoder implements InputDecoder {
 
 	
 	private File file;
-	private XmlInputParser subparser;
+	private XmlInputDecoder subDecoder;
 	
 
-	public XmlFileInputParser(File file, XmlInputParser subparser) {
+	public XmlFileDecoder(File file, XmlInputDecoder subDecoder) {
 		this.file = file;
-		this.subparser = subparser;
+		this.subDecoder = subDecoder;
 	}
 	
 	@Override
@@ -29,11 +29,11 @@ public class XmlFileInputParser implements InputParser {
 		Element dom;
 		try {
 			dom = XmlUtils.fileToDom(file);
-			subparser.setDom(dom);
+			subDecoder.setDom(dom);
 		} catch (XmlException e) {
 			throw new DecodeException("Failed to load file " + file.getAbsolutePath(), e);
 		}
-		return subparser.parse();
+		return subDecoder.parse();
 	}
 	
 }

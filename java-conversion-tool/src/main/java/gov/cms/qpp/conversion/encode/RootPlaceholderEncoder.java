@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.encoder;
+package gov.cms.qpp.conversion.encode;
 
 import java.io.Writer;
 
@@ -6,9 +6,9 @@ import gov.cms.qpp.conversion.model.JsonEncoder;
 import gov.cms.qpp.conversion.model.Node;
 
 @JsonEncoder(templateId = "placeholder")
-public class ObservationPlaceholderEncoder extends QppOutputEncoder {
+public class RootPlaceholderEncoder extends QppOutputEncoder {
 
-	public ObservationPlaceholderEncoder() {
+	public RootPlaceholderEncoder() {
 	}
 
 	@Override

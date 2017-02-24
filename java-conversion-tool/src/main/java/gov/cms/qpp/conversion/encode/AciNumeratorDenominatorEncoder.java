@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.encoder;
+package gov.cms.qpp.conversion.encode;
 
 import java.io.IOException;
 import java.io.Writer;

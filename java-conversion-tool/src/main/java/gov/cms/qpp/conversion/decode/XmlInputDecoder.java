@@ -1,14 +1,14 @@
-package gov.cms.qpp.conversion.parser;
+package gov.cms.qpp.conversion.decode;
 
 import org.jdom2.Element;
 
 import gov.cms.qpp.conversion.model.Node;
 
-public abstract class XmlInputParser implements InputParser {
+public abstract class XmlInputDecoder implements InputDecoder {
 
 	protected Element xmlDoc;
 	
-	public XmlInputParser() {
+	public XmlInputDecoder() {
 	}
 
 	public void setDom(Element xmlDoc) {

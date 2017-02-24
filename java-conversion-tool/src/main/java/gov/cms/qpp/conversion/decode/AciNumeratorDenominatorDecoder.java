@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.parser;
+package gov.cms.qpp.conversion.decode;
 
 import org.jdom2.Element;
 
@@ -6,17 +6,13 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 
 @XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.3")
-public class AciNumeratorDenominatorInputParser extends QppXmlInputParser {
+public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
 
-	public AciNumeratorDenominatorInputParser() {
-		// if this element parser required children for parsing, then we would
-		// just
-		// add another NodeId/QppXmlInputParser to the parent class's parserMap
+	public AciNumeratorDenominatorDecoder() {
+		// if this element decoder required children for parsing, 
+		// then we would just
+		// add another NodeId/QppXmlInputDecoder to the parent class's decoder registry
 	}
-
-	// we do not override parse(Element, Node)
-
-	// we DO override internalParse(Element)
 
 	@Override
 	protected Node internalParse(Element element, Node thisnode) {

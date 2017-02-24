@@ -90,11 +90,11 @@ public class Registry<R extends Object> {
 	 */
 	public R get(String templateId) {
 		try {
-			Class<? extends R> parserClass = registry.get(templateId);
-			if (parserClass == null) {
+			Class<? extends R> handlerClass = registry.get(templateId);
+			if (handlerClass == null) {
 				return null;
 			}
-			return parserClass.newInstance();
+			return handlerClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			return null;
 		}
@@ -106,10 +106,10 @@ public class Registry<R extends Object> {
 	 * @param xpath
 	 * @param handler
 	 */
-	public void register(String templateId, Class<? extends R> parser) {
+	public void register(String templateId, Class<? extends R> handler) {
 		// TODO logger.info("Registering new Handler {}, {}". xpath,
 		// handler.getClass().getName());
 		// This could be a class or class name and instantiated on lookup
-		registry.put(templateId, parser);
+		registry.put(templateId, handler);
 	}
 }

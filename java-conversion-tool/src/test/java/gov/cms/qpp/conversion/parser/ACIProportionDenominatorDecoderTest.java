@@ -8,10 +8,11 @@ import static org.junit.Assert.assertThat;
 import org.jdom2.Element;
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class ACIProportionDenominatorParserTest {
+public class ACIProportionDenominatorDecoderTest {
 
 	@Test
 	public void parseACIProportionNumeratorAsNode() throws Exception {
@@ -34,20 +35,20 @@ public class ACIProportionDenominatorParserTest {
 
 		Element dom = XmlUtils.stringToDOM(xmlFragment);
 
-		QppXmlInputParser parser = new QppXmlInputParser();
-		parser.setDom(dom);
+		QppXmlDecoder decoder = new QppXmlDecoder();
+		decoder.setDom(dom);
 
-		Node root = parser.parse();
+		Node root = decoder.parse();
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));
 
-		// For all parsers this should be either a value or child node
+		// For all decoders this should be either a value or child node
 		assertThat("returned node should have one child node", root.getChildNodes().size(), is(1));
-		// This is the child node that is produced by the intended parser
+		// This is the child node that is produced by the intended decoder
 		Node aciProportionDenominatorNode = root.getChildNodes().get(0);
 		// Should have a aggregate count node
-		assertThat("returned node should have one child parser node",
+		assertThat("returned node should have one child decoder node",
 				aciProportionDenominatorNode.getChildNodes().size(), is(1));
 		// This is stubbed node with the test value
 		Node target = aciProportionDenominatorNode.getChildNodes().get(0);

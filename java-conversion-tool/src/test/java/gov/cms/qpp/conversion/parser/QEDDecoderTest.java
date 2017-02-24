@@ -8,13 +8,14 @@ import static org.junit.Assert.assertThat;
 import org.jdom2.Element;
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class QEDParserTest {
+public class QEDDecoderTest {
 
 	@Test
-	public void parseQEDAsNode() throws Exception {
+	public void decodeQEDAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				+ "<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
 				+ "	<qed resultName=\"result\" resultValue=\"mytestvalue\">\n"
@@ -25,11 +26,11 @@ public class QEDParserTest {
 
 		Element dom = XmlUtils.stringToDOM(xmlFragment);
 
-		QppXmlInputParser parser = new QppXmlInputParser();
-		parser.setDom(dom);
+		QppXmlDecoder decoder = new QppXmlDecoder();
+		decoder.setDom(dom);
 
 		// Get the root wrapper node
-		Node root = parser.parse();
+		Node root = decoder.parse();
 		assertThat("root node should not be null", root, is(not(nullValue())));
 		// Make sure we get have target
 		assertThat("root node should have one child node", root.getChildNodes().size(), is(1));

@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.encoder;
+package gov.cms.qpp.conversion.encode;
 
 public class EncodeException extends Exception {
 
