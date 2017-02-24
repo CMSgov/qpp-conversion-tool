@@ -21,7 +21,7 @@ public class AciNumeratorDenominatorValueEncoder extends QppOutputEncoder {
 			// no indenting of the value... this is just a raw value that will
 			// be included with a
 			// numerator or denominator
-			writer.write(node.getValue("aciNumeratorDenominator") + "\n");
+			writer.write(node.getValue("aciNumeratorDenominator"));
 		} catch (IOException e) {
 			throw new EncodeException("Failure to write ACI Numerator/Denominator value", e);
 		}

@@ -33,7 +33,7 @@ public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 			denominatorValueEncoder.encode(writer, denominatorValueNode, indentLevel + 1);
 
 		} catch (IOException e) {
-			throw new EncodeException("Failure to write ACI Numerator/Denominator value", e);
+			throw new EncodeException("Failure to write ACI Denominator", e);
 		}
 
 	}
