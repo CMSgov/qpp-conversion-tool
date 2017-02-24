@@ -25,7 +25,7 @@ public class XmlFileDecoder implements InputDecoder {
 	}
 	
 	@Override
-	public Node parse() throws DecodeException {
+	public Node decode() throws DecodeException {
 		Element dom;
 		try {
 			dom = XmlUtils.fileToDom(file);
@@ -33,7 +33,7 @@ public class XmlFileDecoder implements InputDecoder {
 		} catch (XmlException e) {
 			throw new DecodeException("Failed to load file " + file.getAbsolutePath(), e);
 		}
-		return subDecoder.parse();
+		return subDecoder.decode();
 	}
 	
 }

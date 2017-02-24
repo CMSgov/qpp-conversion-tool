@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.parser;
+package gov.cms.qpp.conversion.decode;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -18,7 +18,7 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 public class ACIProportionMeasureDecoderTest {
 
 	@Test
-	public void parseACIProportionMeasureAsNode() throws Exception {
+	public void decodeACIProportionMeasureAsNode() throws Exception {
 		String xmlFragment = 
 				"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + 
 				"<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" + 
@@ -111,7 +111,7 @@ public class ACIProportionMeasureDecoderTest {
 		QppXmlDecoder decoder = new QppXmlDecoder();
 		decoder.setDom(dom);
 
-		Node root = decoder.parse();
+		Node root = decoder.decode();
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));

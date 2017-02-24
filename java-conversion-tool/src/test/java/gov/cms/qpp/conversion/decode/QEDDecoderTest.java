@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.parser;
+package gov.cms.qpp.conversion.decode;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -30,7 +30,7 @@ public class QEDDecoderTest {
 		decoder.setDom(dom);
 
 		// Get the root wrapper node
-		Node root = decoder.parse();
+		Node root = decoder.decode();
 		assertThat("root node should not be null", root, is(not(nullValue())));
 		// Make sure we get have target
 		assertThat("root node should have one child node", root.getChildNodes().size(), is(1));

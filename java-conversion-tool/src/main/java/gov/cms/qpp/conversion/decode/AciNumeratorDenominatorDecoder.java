@@ -15,7 +15,7 @@ public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
 	}
 
 	@Override
-	protected Node internalParse(Element element, Node thisnode) {
+	protected Node internalDecode(Element element, Node thisnode) {
 		// for the rate aggregation element, we want to get the
 		// value element and then the value attribute
 

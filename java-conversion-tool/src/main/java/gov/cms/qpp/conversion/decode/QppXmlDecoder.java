@@ -22,12 +22,12 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	/**
 	 * Iterates over the element to find all child elements. Finds any elements
 	 * that match a templateId in the Decoder registry. If there are any matches,
-	 * calls internalParse with that Element on the Decoder class. Aggregates Nodes
+	 * calls internalDecode with that Element on the Decoder class. Aggregates Nodes
 	 * that are returned.
 	 * 
 	 */
 	@Override
-	protected Node parse(Element element, Node parentNode) {
+	protected Node decode(Element element, Node parentNode) {
 
 		Node returnNode = parentNode;
 		
@@ -49,22 +49,22 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					QppXmlDecoder childDecoder = decoders.get(templateId);
 
 					if (null != childDecoder) {
-						Node childNodeValue = childDecoder.internalParse(ele, createNode(ele));
+						Node childNodeValue = childDecoder.internalDecode(ele, createNode(ele));
 	
 						if (null != childNodeValue) {
 							parentNode.addChildNode(childNodeValue);
 	
-							// recursively call parse(element, node) with this
+							// recursively call decode(element, node) with this
 							// child as parent
-							parse(ele, childNodeValue);
+							decode(ele, childNodeValue);
 						} else {
-							// recursively call parse(element, node) with a
+							// recursively call decode(element, node) with a
 							// placeholder node as parent
 	
 							Node placeholderNode = new Node();
 							placeholderNode.setId("placeholder");
 	
-							parse(ele, placeholderNode);
+							decode(ele, placeholderNode);
 	
 						}
 					}
@@ -76,7 +76,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	}
 
 	@Override
-	protected Node internalParse(Element element, Node thisnode) {
+	protected Node internalDecode(Element element, Node thisnode) {
 		// this is the top level, so just return null
 
 		return null;

@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.encoder;
+package gov.cms.qpp.conversion.encode;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

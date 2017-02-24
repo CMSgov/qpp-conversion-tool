@@ -23,7 +23,7 @@ public class AciNumeratorDenominatorRoundTripTest {
 	private static final String EXPECTED = "{\n\t\t600\n}";
 
 	@Test
-	public void parseAciNumeratorDenominatorAsNode() throws Exception {
+	public void decodeAciNumeratorDenominatorAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString("<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
 				"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
@@ -37,7 +37,7 @@ public class AciNumeratorDenominatorRoundTripTest {
 		QppXmlDecoder decoder = new QppXmlDecoder();
 		decoder.setDom(dom);
 
-		Node numDenomNode = decoder.parse();
+		Node numDenomNode = decoder.decode();
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();

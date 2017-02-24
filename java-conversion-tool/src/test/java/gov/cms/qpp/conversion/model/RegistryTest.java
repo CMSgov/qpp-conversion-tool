@@ -70,7 +70,7 @@ class Placeholder implements InputDecoder {
 	}
 
 	@Override
-	public Node parse() throws DecodeException {
+	public Node decode() throws DecodeException {
 		return null;
 	}
 };

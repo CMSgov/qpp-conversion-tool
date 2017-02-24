@@ -16,30 +16,30 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	}
 	
 	/**
-	 * Parse a file into a Node
+	 * Decode a document into a Node
 	 */
-	public Node parse() {
+	public Node decode() {
 
 		Node rootParentNode = new Node();
 		rootParentNode.setId("placeholder");
 
-		return parse(xmlDoc, rootParentNode);
+		return decode(xmlDoc, rootParentNode);
 	}
 
 	/**
-	 * Represents some sort of higher level parse of an element
+	 * Represents some sort of higher level decode of an element
 	 * 
 	 * @param element
 	 * @return
 	 */
-	abstract protected Node parse(Element element, Node parent);
+	abstract protected Node decode(Element element, Node parent);
 
 	/**
 	 * Represents an internal parsing of an element
 	 * 
 	 * @param element
-	 * @param thisNode created for this parse
+	 * @param thisNode created for this decode
 	 * @return
 	 */
-	abstract protected Node internalParse(Element element, Node thisnode);
+	abstract protected Node internalDecode(Element element, Node thisnode);
 }

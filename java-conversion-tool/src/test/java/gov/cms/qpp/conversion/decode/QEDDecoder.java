@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.parser;
+package gov.cms.qpp.conversion.decode;
 
 import org.jdom2.Element;
 
@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 @XmlDecoder(templateId="Q.E.D")
 public class QEDDecoder extends QppXmlDecoder {
 	@Override
-	protected Node internalParse(Element element, Node thisnode) {
+	protected Node internalDecode(Element element, Node thisnode) {
 		thisnode.putValue(element.getAttributeValue("resultName"), element.getAttributeValue("resultValue"));
 		return thisnode;
 	}

@@ -11,7 +11,7 @@ import gov.cms.qpp.conversion.model.Node;
 @XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.28")
 public class ACIProportionMeasureDecoder extends QppXmlDecoder {
 	@Override
-	protected Node internalParse(Element element, Node thisnode) {
+	protected Node internalDecode(Element element, Node thisnode) {
 		
 		String measureId = getMethodId(element);
 		
@@ -23,7 +23,7 @@ public class ACIProportionMeasureDecoder extends QppXmlDecoder {
 		
 		if (children != null) {
 			for (Element child : children) {
-				this.parse(child, thisnode);
+				this.decode(child, thisnode);
 			}
 		}
 		
