@@ -49,7 +49,10 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					QppXmlDecoder childDecoder = decoders.get(templateId);
 
 					if (null != childDecoder) {
-						Node childNodeValue = childDecoder.internalDecode(ele, createNode(ele));
+						Node thisNode = new Node();
+						thisNode.setId(templateId);
+						
+						Node childNodeValue = childDecoder.internalDecode(ele, thisNode);
 	
 						if (null != childNodeValue) {
 							parentNode.addChildNode(childNodeValue);
@@ -78,23 +81,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	@Override
 	protected Node internalDecode(Element element, Node thisnode) {
 		// this is the top level, so just return null
-
 		return null;
 	}
 	
-	private Node createNode(Element element) {
-		Node thisNode = new Node();
-
-		String templateId = null;
-		// we will also need the template id
-		Element templateIdElement = element.getChild("templateId");
-
-		if (null != templateIdElement) {
-			templateId = templateIdElement.getAttributeValue("root");
-		}
-
-		thisNode.setId(templateId);
-		return thisNode;
-	}
-
 }

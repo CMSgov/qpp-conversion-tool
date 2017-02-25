@@ -19,15 +19,10 @@ public class AciProportionMeasureDecoder extends QppXmlDecoder {
 			thisnode.putValue("measureId", measureId);
 		}
 		
-		List<Element> children = element.getChildren("component");
-		
-		if (children != null) {
-			for (Element child : children) {
-				this.decode(child, thisnode);
-			}
+		// getChildren always returns at least an empty list
+		for (Element child : element.getChildren("component")) {
+			this.decode(child, thisnode);
 		}
-		
-	
 		
 		return thisnode;
 		
@@ -35,10 +30,6 @@ public class AciProportionMeasureDecoder extends QppXmlDecoder {
 
 	private String getMethodId(Element element) {
 		String measureId = null;
-		
-		if (null == element) {
-			return measureId;
-		}
 		
 		List<String> nameList = Arrays.asList("reference", "externalDocument", "id");
 		Element ele = element;
