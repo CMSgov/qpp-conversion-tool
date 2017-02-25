@@ -74,8 +74,8 @@ public class Registry<R extends Object> {
 			XmlDecoder decoder = (XmlDecoder) annotation;
 			return decoder.templateId();
 		}
-		if (annotation instanceof JsonEncoder) {
-			JsonEncoder encoder = (JsonEncoder) annotation;
+		if (annotation instanceof Encoder) {
+			Encoder encoder = (Encoder) annotation;
 			return encoder.templateId();
 		}
 		return null;

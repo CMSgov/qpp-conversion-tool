@@ -16,11 +16,11 @@ import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class AciNumeratorDenominatorRoundTripTest {
+public class AciNumeratorDenominatorValueRoundTripTest {
 
 	// we currently have a root placeholder node, so the numerator/denominator
 	// is indented an extra level
-	private static final String EXPECTED = "{\n\t\t600\n}";
+	private static final String EXPECTED = "{\n600\n}";
 
 	@Test
 	public void decodeAciNumeratorDenominatorAsNode() throws Exception {

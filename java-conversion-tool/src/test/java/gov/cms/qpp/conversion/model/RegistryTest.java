@@ -14,7 +14,7 @@ import org.junit.Test;
 import gov.cms.qpp.conversion.decode.AciNumeratorDenominatorDecoder;
 import gov.cms.qpp.conversion.decode.DecodeException;
 import gov.cms.qpp.conversion.decode.InputDecoder;
-import gov.cms.qpp.conversion.encode.AciNumeratorDenominatorEncoder;
+import gov.cms.qpp.conversion.encode.AciNumeratorDenominatorValueEncoder;
 
 public class RegistryTest {
 
@@ -61,41 +61,39 @@ public class RegistryTest {
 		assertEquals("Handler should be an instance of the handler for the given XPATH",
 				AciNumeratorDenominatorDecoder.class, decoder.getClass());
 	}
-	
+
 	@Test
 	public void testRegistry_getAnnotationParam() throws Exception {
 		String templateId = registry.getAnnotationParam(AciNumeratorDenominatorDecoder.class);
 		assertNotNull("A templateId is expected", templateId);
-		assertEquals("The templateId should be",
-				"2.16.840.1.113883.10.20.27.3.3", templateId);
-		
+		assertEquals("The templateId should be", "2.16.840.1.113883.10.20.27.3.3", templateId);
 
-		templateId = new Registry<>(JsonEncoder.class).getAnnotationParam(AciNumeratorDenominatorEncoder.class);
+		templateId = new Registry<>(Encoder.class).getAnnotationParam(AciNumeratorDenominatorValueEncoder.class);
 		assertNotNull("A templateId is expected", templateId);
-		assertEquals("The templateId should be",
-				"2.16.840.1.113883.10.20.27.3.3", templateId);
+		assertEquals("The templateId should be", "2.16.840.1.113883.10.20.27.3.3", templateId);
 	}
+
 	@Test
 	public void testRegistry_getAnnotationParam_NullReturn() throws Exception {
 		String templateId = new Registry<>(SuppressWarnings.class).getAnnotationParam(Placeholder.class);
-		assertTrue("A templateId is expected", templateId==null);
+		assertTrue("A templateId is expected", templateId == null);
 	}
-	
+
 	@Test
 	public void testRegistryGetHandlerThatFailsConstruction() throws Exception {
 		registry.register("id", PrivateConstructor.class);
 		InputDecoder decoder = (InputDecoder) registry.get("id");
-		assertThat("Registry should return null for faile construction not an exception.",
-				decoder, is(nullValue()) );
+		assertThat("Registry should return null for faile construction not an exception.", decoder, is(nullValue()));
 	}
-	
+
 }
 
 @SuppressWarnings("unused") // this is here for a the annotation tests
 class Placeholder implements InputDecoder {
 	private String unused;
-	
-	public Placeholder() {}
+
+	public Placeholder() {
+	}
 
 	@Override
 	public Node decode() throws DecodeException {
@@ -104,7 +102,8 @@ class Placeholder implements InputDecoder {
 };
 
 class PrivateConstructor implements InputDecoder {
-	private PrivateConstructor() {}
+	private PrivateConstructor() {
+	}
 
 	@Override
 	public Node decode() throws DecodeException {

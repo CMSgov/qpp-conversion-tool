@@ -14,7 +14,8 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 
 	List<Node> nodes;
 
-	public JsonOutputEncoder() {}
+	public JsonOutputEncoder() {
+	}
 
 	@Override
 	public void encode(Writer writer) throws EncodeException {
@@ -25,7 +26,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 				encode(writer, curNode, 1);
 			}
 
-			writer.write("}");
+			writer.write("\n}");
 
 			writer.flush();
 
