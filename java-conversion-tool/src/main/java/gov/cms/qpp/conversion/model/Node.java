@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -38,6 +39,7 @@ public class Node implements Serializable {
 	public void setId(String templateId) {
 		this.internalId = templateId;
 	}
+
 	public String getId() {
 		return internalId;
 	}
@@ -57,5 +59,9 @@ public class Node implements Serializable {
 	@Override
 	public String toString() {
 		return "Node: internalId: " + internalId + ", data: " + data + ", childNodes: " + childNodes;
+	}
+
+	public Set<String> getKeys() {
+		return data.keySet();
 	}
 }
