@@ -20,7 +20,6 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 
 	// we currently have a root placeholder node, so the numerator/denominator
 	// is indented an extra level
-	private static final String EXPECTED = "{\n600\n}";
 
 	@Test
 	public void decodeAciNumeratorDenominatorAsNode() throws Exception {
@@ -47,8 +46,7 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
+		String EXPECTED = "[ \"600\" ]";
 		assertThat("expected encoder to return a single number numerator/denominator", sw.toString(), is(EXPECTED));
-
 	}
-
 }
