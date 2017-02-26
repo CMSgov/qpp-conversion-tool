@@ -14,7 +14,6 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
  */
 public class QppXmlDecoder extends XmlInputDecoder {
  	
-
 	protected static Registry<String, QppXmlDecoder> decoders = new Registry<>(XmlDecoder.class);
 
 	public QppXmlDecoder() {}
@@ -34,8 +33,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		if (null == element) {
 			return returnNode;
 		}
-			
-
+		
+		setNamespace(element, this);
+		
 		List<Element> childElements = element.getChildren();
 
 		for (Element ele : childElements) {
@@ -51,6 +51,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					if (null != childDecoder) {
 						Node thisNode = new Node();
 						thisNode.setId(templateId);
+						
+						setNamespace(eleele, childDecoder);
 						
 						Node childNodeValue = childDecoder.internalDecode(ele, thisNode);
 	

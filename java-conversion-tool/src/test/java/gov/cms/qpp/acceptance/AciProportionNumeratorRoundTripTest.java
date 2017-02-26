@@ -23,7 +23,7 @@ public class AciProportionNumeratorRoundTripTest {
 	@Test
 	public void parseAciNumeratorDenominatorAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
+				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 				+ "	<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
 				+ "		<templateId root=\"2.16.840.1.113883.10.20.27.3.31\" extension=\"2016-09-01\" />\n"
 				+ "		<code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"Assertion\" />\n"

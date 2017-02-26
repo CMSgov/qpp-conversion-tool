@@ -29,6 +29,8 @@ public class ClinicalDocumentDecoderTest {
 		Node root = decoder.decode();
 
 		assertThat("returned node should not be null", decoder, is(not(nullValue())));
+		
+		assertThat("template ID is correct", root.getId(), is("2.16.840.1.113883.10.20.27.1.2"));
 
 	}
 	

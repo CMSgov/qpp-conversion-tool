@@ -10,7 +10,7 @@ public class AciSectionDecoder extends QppXmlDecoder {
 	@Override
 	protected Node internalDecode(Element element, Node thisnode) {
 		thisnode.putValue("category", "aci");
-		this.decode(element.getChild("entry", this.namespace), thisnode);
+		this.decode(element.getChild("entry", defaultNs), thisnode);
 		return thisnode;
 	}
 		
