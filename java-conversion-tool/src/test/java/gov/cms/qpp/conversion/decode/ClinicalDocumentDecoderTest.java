@@ -38,7 +38,7 @@ public class ClinicalDocumentDecoderTest {
 		assertThat("performanceEnd correct", root.getValue("performanceEnd"), is("20171231"));
 
 		assertThat("returned node should not be null", root, is(not(nullValue())));
-		assertThat("returned node should have one child decoder node", root.getChildNodes().size(), is(1));
+		assertThat("returned node should have one child decoder node", root.getChildNodes().size(), is(2));
 		Node aciSectionNode = root.getChildNodes().get(0);
 
 		// Should have a section node 
@@ -46,7 +46,19 @@ public class ClinicalDocumentDecoderTest {
 		// Should have a section node 
 		assertThat("returned node should have one child decoder node", aciSectionNode.getChildNodes().size(), is(1));
 		// Should have a section node 
-		assertThat("returned QED child should have measure measure1", aciSectionNode.getChildNodes().get(0).getValue("measureId"), is("ACI-PEA-1"));
+		assertThat("returned measureId ACI-PEA-1", aciSectionNode.getChildNodes().get(0).getValue("measureId"), is("ACI-PEA-1"));
+
+		Node iaSectionNode = root.getChildNodes().get(1);
+		// Should have a section node 
+		assertThat("returned category should be ia", iaSectionNode.getValue("category"), is("ia"));
+		// Should have a measure node
+		assertThat("returned node should have one child decoder node", iaSectionNode.getChildNodes().size(), is(1));
+		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
+		assertThat("returned measureId IA_EPA_1", iaMeasureNode.getValue("measureId"), is("IA_EPA_1"));
+		// Should have a measurement node
+		assertThat("returned node should have one child decoder node", iaMeasureNode.getChildNodes().size(), is(1));
+		Node iaMeasurementNode = iaMeasureNode.getChildNodes().get(0);
+		assertThat("returned ", iaMeasurementNode.getValue("iaMeasureNode"), is("Y"));
 
 	}
 	
