@@ -18,8 +18,6 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class AciProportionDenominatorRoundTripTest {
 
-	private static final String EXPECTED = "{\n\t\"denominator\" : 600\n}";
-
 	@Test
 	public void parseAciNumeratorDenominatorAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -55,9 +53,8 @@ public class AciProportionDenominatorRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
+		String EXPECTED = "{\n  \"denominator\" : \"600\"\n}";
 		assertThat("expected encoder to return a representation of a denominator with a value", sw.toString(),
 				is(EXPECTED));
-
 	}
-
 }

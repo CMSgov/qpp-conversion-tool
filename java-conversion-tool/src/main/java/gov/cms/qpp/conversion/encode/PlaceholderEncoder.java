@@ -12,13 +12,13 @@ public class PlaceholderEncoder extends QppOutputEncoder {
 	}
 
 	@Override
-	public void encode(Writer writer, Node node, int indentLevel) throws EncodeException {
+	public void encode(JsonWrapper wrapper, Node node) {
 		// does not do anything except call write on any children
 
 		for (Node child : node.getChildNodes()) {
 			JsonOutputEncoder encoder = encoders.get(child.getId());
 
-			encoder.encode(writer, child, indentLevel);
+			encoder.encode(wrapper, child);
 		}
 	}
 }
