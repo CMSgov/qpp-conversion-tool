@@ -11,7 +11,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 
 	protected static Registry<String, XmlInputDecoder> rootDecoders = new Registry<String, XmlInputDecoder>(XmlRootDecoder.class);
 	protected Element rootElement;
-	protected Namespace namespace;
+	protected Namespace namespace = Namespace.NO_NAMESPACE;
 	protected Element xmlDoc;
 	
 	public XmlInputDecoder() {
@@ -20,7 +20,6 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	public void setDom(Element xmlDoc) {
 		this.xmlDoc = xmlDoc;
 		rootElement = xmlDoc.getDocument().getRootElement();
-		namespace = rootElement.getNamespace();
 	}
 	
 	/**

@@ -94,9 +94,9 @@ public class Registry<V extends Object, R extends Object> {
 	 * 
 	 * @param xpath
 	 */
-	public R get(String templateId) {
+	public R get(String registryKey) {
 		try {
-			Class<? extends R> handlerClass = registry.get(templateId);
+			Class<? extends R> handlerClass = registry.get(registryKey);
 			if (handlerClass == null) {
 				return null;
 			}
@@ -113,7 +113,7 @@ public class Registry<V extends Object, R extends Object> {
 	 * @param handler
 	 */
 	public void register(V registryKey, Class<? extends R> handler) {
-		LOG.info("Registering " + handler.getName() + " to '" + registryKey + "' for " + annotationClass.getSimpleName() +".");
+		LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for " + annotationClass.getSimpleName() +".");
 		// This could be a class or class name and instantiated on lookup
 		registry.put(registryKey, handler);
 	}
