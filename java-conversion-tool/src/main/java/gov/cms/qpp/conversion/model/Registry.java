@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -17,7 +19,8 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
  * 
  * @author daviduselmann
  */
-public class Registry<R extends Object> {
+public class Registry<V extends Object, R extends Object> {
+    static final Logger LOG = LoggerFactory.getLogger(Registry.class);
 
 	// For now this is static and can be refactored into an instance
 	// variable when/if we have an orchestrator that instantiates an registry
@@ -25,7 +28,7 @@ public class Registry<R extends Object> {
 	 * This will be an XPATH string to converter handler registration Since
 	 * Converter was taken for the main stub, I chose Handler for now.
 	 */
-	private Map<String, Class<? extends R>> registry;
+	private Map<V, Class<? extends R>> registry;
 
 	private Class<? extends Annotation> annotationClass;
 
@@ -58,25 +61,28 @@ public class Registry<R extends Object> {
 		for (BeanDefinition bd : scanner.findCandidateComponents("gov.cms")) {
 			try {
 				Class<?> annotatedClass = Class.forName(bd.getBeanClassName());
-				String templateId = getAnnotationParam(annotatedClass);
-				register(templateId, (Class<R>) Class.forName(bd.getBeanClassName()));
+				register(getAnnotationParam(annotatedClass), (Class<R>) annotatedClass);
 			} catch (Exception e) {
-				e.printStackTrace();
-				// TODO logger.error("Failed to register new transformation handler because: " + e.getMessage());
+				LOG.error("Failed to register new transformation handler because: ", e);
 			}
 		}
 	}
 
-	public String getAnnotationParam(Class<?> annotatedClass) {
+	@SuppressWarnings("unchecked")
+	public V getAnnotationParam(Class<?> annotatedClass) {
 		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
 		
+		if (annotation instanceof XmlRootDecoder) {
+			XmlRootDecoder decoder = (XmlRootDecoder) annotation;
+			return (V) decoder.rootElement();
+		}
 		if (annotation instanceof XmlDecoder) {
 			XmlDecoder decoder = (XmlDecoder) annotation;
-			return decoder.templateId();
+			return (V) decoder.templateId();
 		}
 		if (annotation instanceof Encoder) {
 			Encoder encoder = (Encoder) annotation;
-			return encoder.templateId();
+			return (V) encoder.templateId();
 		}
 		return null;
 	}
@@ -106,10 +112,9 @@ public class Registry<R extends Object> {
 	 * @param xpath
 	 * @param handler
 	 */
-	public void register(String templateId, Class<? extends R> handler) {
-		// TODO logger.info("Registering new Handler {}, {}". xpath,
-		// handler.getClass().getName());
+	public void register(V registryKey, Class<? extends R> handler) {
+		LOG.info("Registering " + handler.getName() + " to '" + registryKey + "' for " + annotationClass.getSimpleName() +".");
 		// This could be a class or class name and instantiated on lookup
-		registry.put(templateId, handler);
+		registry.put(registryKey, handler);
 	}
 }

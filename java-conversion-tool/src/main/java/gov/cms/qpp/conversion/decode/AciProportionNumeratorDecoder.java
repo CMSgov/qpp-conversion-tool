@@ -9,6 +9,6 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 public class AciProportionNumeratorDecoder extends QppXmlDecoder {
 	@Override
 	protected Node internalDecode(Element element, Node thisnode) {
-		return this.decode(element.getChild("entryRelationship"), thisnode);
+		return this.decode(element.getChild("entryRelationship", this.namespace), thisnode);
 	}
 }

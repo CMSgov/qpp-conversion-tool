@@ -20,7 +20,7 @@ public class AciProportionMeasureDecoder extends QppXmlDecoder {
 		}
 		
 		// getChildren always returns at least an empty list
-		for (Element child : element.getChildren("component")) {
+		for (Element child : element.getChildren("component", this.namespace)) {
 			this.decode(child, thisnode);
 		}
 		
@@ -34,7 +34,7 @@ public class AciProportionMeasureDecoder extends QppXmlDecoder {
 		List<String> nameList = Arrays.asList("reference", "externalDocument", "id");
 		Element ele = element;
 		for (String n : nameList) {
-			ele = ele.getChild(n);
+			ele = ele.getChild(n, this.namespace);
 			if (null == ele) {
 				break;
 			}

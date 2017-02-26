@@ -18,7 +18,7 @@ import gov.cms.qpp.conversion.encode.AciNumeratorDenominatorValueEncoder;
 
 public class RegistryTest {
 
-	Registry<InputDecoder> registry;
+	Registry<String, InputDecoder> registry;
 
 	@Before
 	public void before() {
@@ -68,14 +68,14 @@ public class RegistryTest {
 		assertNotNull("A templateId is expected", templateId);
 		assertEquals("The templateId should be", "2.16.840.1.113883.10.20.27.3.3", templateId);
 
-		templateId = new Registry<>(Encoder.class).getAnnotationParam(AciNumeratorDenominatorValueEncoder.class);
+		templateId = new Registry<String, Encoder>(Encoder.class).getAnnotationParam(AciNumeratorDenominatorValueEncoder.class);
 		assertNotNull("A templateId is expected", templateId);
 		assertEquals("The templateId should be", "2.16.840.1.113883.10.20.27.3.3", templateId);
 	}
 
 	@Test
 	public void testRegistry_getAnnotationParam_NullReturn() throws Exception {
-		String templateId = new Registry<>(SuppressWarnings.class).getAnnotationParam(Placeholder.class);
+		String templateId = new Registry<String, Encoder>(SuppressWarnings.class).getAnnotationParam(Placeholder.class);
 		assertTrue("A templateId is expected", templateId == null);
 	}
 

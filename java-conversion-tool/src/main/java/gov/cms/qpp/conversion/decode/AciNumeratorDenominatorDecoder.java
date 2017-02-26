@@ -23,7 +23,7 @@ public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
 		// and the value that we find
 		String valueText = null;
 
-		Element valueElement = element.getChild("value");
+		Element valueElement = element.getChild("value", this.namespace);
 
 		if (null != valueElement) {
 			valueText = valueElement.getAttributeValue("value");
