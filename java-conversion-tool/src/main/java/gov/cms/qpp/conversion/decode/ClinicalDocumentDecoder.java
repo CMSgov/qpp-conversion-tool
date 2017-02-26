@@ -54,7 +54,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 		Optional.ofNullable(performanceEndExpr.evaluateFirst(element)).ifPresent(p -> thisnode.putValue("performanceEnd", p.getValue()));
 		
 		Optional.ofNullable(componentExpr.evaluate(element)).ifPresent(p -> this.decode(p, thisnode));
-		
+
 		return thisnode;
 	}
 

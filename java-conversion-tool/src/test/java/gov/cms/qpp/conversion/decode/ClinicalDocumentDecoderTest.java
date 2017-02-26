@@ -37,6 +37,17 @@ public class ClinicalDocumentDecoderTest {
 		assertThat("performanceStart  correct", root.getValue("performanceStart"), is("20170101"));
 		assertThat("performanceEnd correct", root.getValue("performanceEnd"), is("20171231"));
 
+		assertThat("returned node should not be null", root, is(not(nullValue())));
+		assertThat("returned node should have one child decoder node", root.getChildNodes().size(), is(1));
+		Node aciSectionNode = root.getChildNodes().get(0);
+
+		// Should have a section node 
+		assertThat("returned category should be aci", aciSectionNode.getValue("category"), is("aci"));
+		// Should have a section node 
+		assertThat("returned node should have one child decoder node", aciSectionNode.getChildNodes().size(), is(1));
+		// Should have a section node 
+		assertThat("returned QED child should have measure measure1", aciSectionNode.getChildNodes().get(0).getValue("measureId"), is("ACI-PEA-1"));
+
 	}
 	
 
