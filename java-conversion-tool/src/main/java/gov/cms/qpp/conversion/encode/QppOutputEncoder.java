@@ -14,7 +14,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	}
 
 	@Override
-	public void encode(Writer writer, Node node, int indentLevel) throws EncodeException {
+	public void encode(JsonWrapper wrapper, Node node) {
 
 		// write nothing top level specific at this point
 		// check the encoder Registry for
@@ -23,7 +23,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 		JsonOutputEncoder encoder = encoders.get(node.getId());
 
 		if (null != encoder) {
-			encoder.encode(writer, node, indentLevel);
+			encoder.encode(wrapper, node);
 
 			// each Node understands whether or not it has children and the
 			// corresponding Encoders

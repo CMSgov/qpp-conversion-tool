@@ -16,8 +16,6 @@ import gov.cms.qpp.conversion.model.Node;
 
 public class AciNumeratorDenominatorValueEncoderTest {
 
-	private static final String EXPECTED = "{\n600\n}";
-
 	private Node numeratorDenominatorNode;
 	private List<Node> nodes;
 
@@ -48,6 +46,8 @@ public class AciNumeratorDenominatorValueEncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
+		// NOTE: This test is only relevant in that it finds the deep value but it is not actually a result
+		String EXPECTED = "[ \"600\" ]";
 		assertThat("expected encoder to return a single number numerator/denominator", sw.toString(), is(EXPECTED));
 	}
 

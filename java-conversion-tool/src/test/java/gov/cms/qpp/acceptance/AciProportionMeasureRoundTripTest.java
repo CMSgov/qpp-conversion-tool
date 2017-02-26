@@ -18,7 +18,6 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class AciProportionMeasureRoundTripTest {
 
-	private static final String EXPECTED = "{\n\t\"measureId\" : \"ACI-PEA-1\",\n\t\"value\" : {\n\t\t\"numerator\" : 600,\n\t\t\"denominator\" : 800\n\t}\n}";
 
 	@Test
 	public void parseAciNumeratorDenominatorAsNode() throws Exception {
@@ -108,8 +107,7 @@ public class AciProportionMeasureRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
+		String EXPECTED = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : \"600\",\n    \"denominator\" : \"800\"\n  }\n}";
 		assertThat("expected encoder to return a representation of a measure", sw.toString(), is(EXPECTED));
-
 	}
-
 }

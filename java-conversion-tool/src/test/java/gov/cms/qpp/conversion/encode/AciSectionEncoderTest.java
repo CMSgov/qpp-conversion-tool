@@ -9,14 +9,19 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
 
-public class AciProportionMeasureEncoderTest {
+public class AciSectionEncoderTest {
 
+	private static final String EXPECTED = "{\n" + "\t\"category\" : \"aci\",\n" + "\t\"measurements\" : [\n"
+			+ "\t\t{\n" + "\t\t\t\"measureId\" : \"ACI-PEA-1\",\n" + "\t\t\t\"value\" : {\n"
+			+ "\t\t\t\t\"numerator\" : 400,\n" + "\t\t\t\t\"denominator\" : 600\n" + "\t\t\t}\n" + "\t\t}\n" + "\t]\n"
+			+ "}";
+
+	private Node aciSectionNode;
 	private Node aciProportionMeasureNode;
 	private Node aciProportionNumeratorNode;
 	private Node aciProportionDenominatorNode;
@@ -24,7 +29,7 @@ public class AciProportionMeasureEncoderTest {
 	private Node denominatorValueNode;
 	private List<Node> nodes;
 
-	public AciProportionMeasureEncoderTest() {
+	public AciSectionEncoderTest() {
 	}
 
 	@Before
@@ -51,8 +56,13 @@ public class AciProportionMeasureEncoderTest {
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
 		aciProportionMeasureNode.putValue("measureId", "ACI-PEA-1");
 
+		aciSectionNode = new Node();
+		aciSectionNode.setId("2.16.840.1.113883.10.20.27.2.5");
+		aciSectionNode.putValue("category", "aci");
+		aciSectionNode.addChildNode(aciProportionMeasureNode);
+
 		nodes = new ArrayList<>();
-		nodes.add(aciProportionMeasureNode);
+		nodes.add(aciSectionNode);
 	}
 
 	@Test
@@ -69,9 +79,8 @@ public class AciProportionMeasureEncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
-		String EXPECTED = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : \"400\",\n    \"denominator\" : \"600\"\n  }\n}";
-		Assert.assertEquals(EXPECTED, sw.toString());
-		assertThat("expected encoder to return a json representation of a measure node", sw.toString(), is(EXPECTED));
+		assertThat("expected encoder to return a json representation of an ACI Section node", sw.toString(),
+				is(EXPECTED));
 	}
 
 }
