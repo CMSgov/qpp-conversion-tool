@@ -68,7 +68,7 @@ public class JsonWrapper<T> {
 	@Override
 	public String toString() {
 		try {
-			return ow.writeValueAsString(object);
+			return ow.writeValueAsString(isObject() ?object :list);
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException("Issue rendering JSON from JsonWrapper Map", e);
 		}

@@ -16,8 +16,6 @@ import gov.cms.qpp.conversion.model.Node;
 
 public class AciProportionNumeratorEncoderTest {
 
-	private static final String EXPECTED = "{\n\t\"numerator\" : 600\n}";
-
 	private Node aciProportionNumeratorNode;
 	private Node numeratorDenominatorValueNode;
 	private List<Node> nodes;
@@ -53,6 +51,7 @@ public class AciProportionNumeratorEncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
+		String EXPECTED = "{\n  \"numerator\" : \"600\"\n}";
 		assertThat("expected encoder to return a json representation of a numerator with a value", sw.toString(),
 				is(EXPECTED));
 	}

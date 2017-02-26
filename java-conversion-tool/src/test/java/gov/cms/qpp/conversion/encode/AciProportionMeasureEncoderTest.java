@@ -9,14 +9,13 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
 
 public class AciProportionMeasureEncoderTest {
-
-	private static final String EXPECTED = "{\n\t\"measureId\" : \"ACI-PEA-1\",\n\t\"value\" : {\n\t\t\"numerator\" : 400,\n\t\t\"denominator\" : 600\n\t}\n}";
 
 	private Node aciProportionMeasureNode;
 	private Node aciProportionNumeratorNode;
@@ -70,6 +69,8 @@ public class AciProportionMeasureEncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
+		String EXPECTED = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : \"400\",\n    \"denominator\" : \"600\"\n  }\n}";
+		Assert.assertEquals(EXPECTED, sw.toString());
 		assertThat("expected encoder to return a json representation of a measure node", sw.toString(), is(EXPECTED));
 	}
 

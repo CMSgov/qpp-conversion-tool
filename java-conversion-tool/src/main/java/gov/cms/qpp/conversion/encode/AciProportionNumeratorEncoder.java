@@ -14,27 +14,19 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 	}
 
 	@Override
-	public void encode(Writer writer, Node node, int indentLevel) throws EncodeException {
+	public void encode(JsonWrapper wrapper, Node node) {
 		// simply writes the value in the Node
 
-		try {
-			writeIndents(writer, indentLevel);
-			writer.write("\"numerator\" : ");
+		// the ACI Proportion Numerator Node should have a single child node
+		// that holds the value
 
-			// the ACI Proportion Numerator Node should have a single child node
-			// that holds the value
+		List<Node> children = node.getChildNodes();
+		Node numeratorValueNode = children.get(0);
+		JsonOutputEncoder numeratorValueEncoder = encoders.get(numeratorValueNode.getId());
 
-			List<Node> children = node.getChildNodes();
-			Node numeratorValueNode = children.get(0);
-
-			JsonOutputEncoder numeratorValueEncoder = encoders.get(numeratorValueNode.getId());
-
-			numeratorValueEncoder.encode(writer, numeratorValueNode, indentLevel + 1);
-
-		} catch (IOException e) {
-			throw new EncodeException("Failure to write ACI Numerator", e);
-		}
-
+		JsonWrapper value = new JsonWrapper();
+		numeratorValueEncoder.encode(value, numeratorValueNode);
+		
+		wrapper.put("numerator", ((List<?>)value.getObject()).get(0));
 	}
-
 }

@@ -9,14 +9,13 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
 
 public class AciProportionDenominatorEncoderTest {
-
-	private static final String EXPECTED = "{\n\t\"denominator\" : 600\n}";
 
 	private Node aciProportionDenominatorNode;
 	private Node numeratorDenominatorValueNode;
@@ -53,6 +52,7 @@ public class AciProportionDenominatorEncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
+		String EXPECTED = "{\n  \"denominator\" : \"600\"\n}";
 		assertThat("expected encoder to return a json representation of a denominator with a value", sw.toString(),
 				is(EXPECTED));
 	}
