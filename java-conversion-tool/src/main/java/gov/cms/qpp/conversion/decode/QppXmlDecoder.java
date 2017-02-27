@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.jdom2.Element;
@@ -85,5 +86,27 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		// this is the top level, so just return null
 		return null;
 	}
+	@Override
+	public Iterator<String> iterator() {
+		return null;
+	}
+
+	@Override
+	public List<String> getValidations(String templateId) {
+		return validations.get(templateId);
+	}
+
+	@Override
+	public void addValidation(String templateId, String validation) {
+		List<String> validationList = getValidations(templateId);
+		
+		if (null != validationList) {
+			validations.put(templateId, validationList);
+		}
+		
+		validationList.add(validation);
+		
+	}
+
 	
 }

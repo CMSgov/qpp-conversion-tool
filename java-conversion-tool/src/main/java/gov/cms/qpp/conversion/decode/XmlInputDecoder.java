@@ -1,15 +1,20 @@
 package gov.cms.qpp.conversion.decode;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 
+import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.XmlRootDecoder;
 
-public abstract class XmlInputDecoder implements InputDecoder {
+public abstract class XmlInputDecoder implements InputDecoder, Validatable<String> {
+	
+	protected static Map<String, List<String>> validations = new ConcurrentHashMap<>();
 
 	protected static Registry<String, XmlInputDecoder> rootDecoders = new Registry<String, XmlInputDecoder>(XmlRootDecoder.class);
 	protected Element xmlDoc;
@@ -58,7 +63,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 		decoder.defaultNs = el.getNamespace();
 		decoder.xpathNs = Namespace.getNamespace("ns", decoder.defaultNs.getURI());
 	}
-
+	
 	
 	/**
 	 * Represents some sort of higher level decode of an element
