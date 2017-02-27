@@ -18,7 +18,7 @@ public class AciSectionDecoderTest {
 	public void decodeAciSectionAsNode() throws Exception {
 		String xmlFragment = 
 				"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-				"<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
+				"<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n" +
 				"	<section>\n" + 
 				"		<!-- Measure Section -->\n" + 
 				"		<templateId root=\"2.16.840.1.113883.10.20.24.2.2\"/>\n" + 

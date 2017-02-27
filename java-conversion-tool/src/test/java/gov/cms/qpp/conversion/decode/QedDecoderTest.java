@@ -17,10 +17,10 @@ public class QedDecoderTest {
 	@Test
 	public void decodeQEDAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-				+ "<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
-				+ "	<observation resultName=\"result\" resultValue=\"mytestvalue\">\n"
+				+ "<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
+				+ "	<qed resultName=\"result\" resultValue=\"mytestvalue\">\n"
 				+ "		<templateId root=\"Q.E.D\"/>\n"
-				+ "	</observation>"
+				+ "	</qed>"
 				+ "</root>";
 				
 

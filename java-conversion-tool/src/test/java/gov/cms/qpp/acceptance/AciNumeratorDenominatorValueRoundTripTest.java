@@ -23,7 +23,7 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 
 	@Test
 	public void decodeAciNumeratorDenominatorAsNode() throws Exception {
-		String xmlFragment = XmlUtils.buildString("<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
+		String xmlFragment = XmlUtils.buildString("<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
 				"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
 				"    <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>",

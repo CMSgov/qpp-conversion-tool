@@ -9,13 +9,9 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 public class AciSectionDecoder extends QppXmlDecoder {
 	@Override
 	protected Node internalDecode(Element element, Node thisnode) {
-		
 		thisnode.putValue("category", "aci");
-	
-		this.decode(element.getChild("entry"), thisnode);
-		
+		this.decode(element.getChild("entry", defaultNs), thisnode);
 		return thisnode;
-		
 	}
 		
 }

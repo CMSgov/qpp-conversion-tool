@@ -4,18 +4,17 @@ import java.util.List;
 
 import org.jdom2.Element;
 
+import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.XmlDecoder;
-import gov.cms.qpp.conversion.model.Node;
 
 /**
  * Top level Decoder for parsing into QPP format. Contains a map of child Decoders
  * that can Decode an element.
  */
 public class QppXmlDecoder extends XmlInputDecoder {
-	
-
-	protected static Registry<QppXmlDecoder> decoders = new Registry<>(XmlDecoder.class);
+ 	
+	protected static Registry<String, QppXmlDecoder> decoders = new Registry<>(XmlDecoder.class);
 
 	public QppXmlDecoder() {}
 
@@ -34,8 +33,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		if (null == element) {
 			return returnNode;
 		}
-			
-
+		
+		setNamespace(element, this);
+		
 		List<Element> childElements = element.getChildren();
 
 		for (Element ele : childElements) {
@@ -51,6 +51,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					if (null != childDecoder) {
 						Node thisNode = new Node();
 						thisNode.setId(templateId);
+						
+						setNamespace(eleele, childDecoder);
 						
 						Node childNodeValue = childDecoder.internalDecode(ele, thisNode);
 	

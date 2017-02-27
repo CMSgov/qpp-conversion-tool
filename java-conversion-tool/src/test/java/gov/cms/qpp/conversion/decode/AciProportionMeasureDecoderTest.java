@@ -21,7 +21,7 @@ public class AciProportionMeasureDecoderTest {
 	public void decodeACIProportionMeasureAsNode() throws Exception {
 		String xmlFragment = 
 				"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + 
-				"<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" + 
+				"<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n" + 
 				"	<organizer classCode=\"CLUSTER\" moodCode=\"EVN\">\n" + 
 				"		<!-- Implied template Measure Reference templateId -->\n" + 
 				"		<templateId root=\"2.16.840.1.113883.10.20.24.3.98\"/>\n" + 
@@ -105,7 +105,7 @@ public class AciProportionMeasureDecoderTest {
 	public void decodeACIProportionMeasureAsMissingElementsNode() throws Exception {
 		String xmlFragment = 
 				"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + 
-				"<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" + 
+				"<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\" >\n" + 
 				"	<organizer classCode=\"CLUSTER\" moodCode=\"EVN\">\n" + 
 				"		<!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->\n" + 
 				"		<templateId root=\"2.16.840.1.113883.10.20.27.3.28\" extension=\"2016-09-01\"/>\n" + 

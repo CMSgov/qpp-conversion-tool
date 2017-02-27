@@ -16,13 +16,15 @@ public class AciNumeratorDenominatorDecoderTest {
 
 	@Test
 	public void decodeAciNumeratorDenominatorAsNode() throws Exception {
-		String xmlFragment = XmlUtils.buildString("<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
+		String xmlFragment = XmlUtils.buildString(
+				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
 				"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
 				"    <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>",
 				"    <statusCode code=\"completed\"/>", "    <value xsi:type=\"INT\" value=\"600\"/>",
 				"    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>",
-				"  </observation>", "</root>");
+				"  </observation>",
+				"</root>");
 
 		Element dom = XmlUtils.stringToDOM(xmlFragment);
 
@@ -47,7 +49,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	@Test
 	public void decodeAciNumeratorDenominatorNullValueAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString(
-				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
+				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\" >",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
 				"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
 				"    <value xsi:type=\"INT\"/>",
@@ -76,7 +78,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	@Test
 	public void decodeAciNumeratorDenominatorNullElementAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString(
-				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
+				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
 				"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
 				"  </observation>",

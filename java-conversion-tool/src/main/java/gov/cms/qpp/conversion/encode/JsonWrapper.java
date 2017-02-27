@@ -21,7 +21,12 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 public class JsonWrapper<T> {
 
 	// package access allows for simpler testing
-	/*package*/ ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+	/*package*/ ObjectWriter ow;
+	
+	public JsonWrapper() {
+		System.setProperty("line.separator", "\n");
+		ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+	}
 
 	private Map<String, T> object;
 	private List<T> list;

@@ -11,24 +11,18 @@ import org.jdom2.xpath.XPathFactory;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.XmlDecoder;
 
-@XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.3")
-public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
-
+@XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.27")
+public class IaMeasurePerformed extends QppXmlDecoder {
 	@Override
 	protected Node internalDecode(Element element, Node thisnode) {
 		
 		XPathExpression<Attribute> valueExpr = XPathFactory.instance()
-				.compile("./ns:value/@value", Filters.attribute(), null, xpathNs);
+				.compile("./ns:value/@code", Filters.attribute(), null, xpathNs);
 		
-		// for the rate aggregation element, we want to get the
-		// value element and then the value attribute
-
-		// we'll store the value with the key: rateAggregationDenominator
-		// and the value that we find
 		Optional.ofNullable(valueExpr.evaluateFirst(element))
-					.ifPresent(p -> thisnode.putValue("aciNumeratorDenominator", p.getValue()));
+					.ifPresent(p -> thisnode.putValue("iaMeasureNode", p.getValue()));
 
 		return thisnode;
 	}
-
+	
 }
