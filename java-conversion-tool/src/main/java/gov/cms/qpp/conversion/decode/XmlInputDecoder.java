@@ -1,8 +1,8 @@
 package gov.cms.qpp.conversion.decode;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.jdom2.Element;
 import org.jdom2.Namespace;
@@ -13,8 +13,9 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.XmlRootDecoder;
 
 public abstract class XmlInputDecoder implements InputDecoder, Validatable<String> {
-	
-	protected static Map<String, List<String>> validations = new ConcurrentHashMap<>();
+	// keep it ordered since we can only 
+	// use this storage method on a single threaded app anyway
+	protected static Map<String, List<String>> validations = new LinkedHashMap<>();
 
 	protected static Registry<String, XmlInputDecoder> rootDecoders = new Registry<String, XmlInputDecoder>(XmlRootDecoder.class);
 	protected Element xmlDoc;
