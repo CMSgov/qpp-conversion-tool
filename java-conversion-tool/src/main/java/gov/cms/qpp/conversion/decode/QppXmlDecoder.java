@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -90,29 +89,29 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	}
 	
 	@Override
-	public Iterator<String> iterator() {
+	public Iterable<String> validations() {
 		List<String> validationMsgs = new ArrayList<>();
 		
 		for (Entry<String, List<String>> templateEntry : validations.entrySet()) {
 			for (String msg : templateEntry.getValue()) {
-				
 				validationMsgs.add(templateEntry.getKey() + " - " + msg);
 			}
 		}
-		
-		return validationMsgs.iterator();
+				
+		return validationMsgs;
 	}
 
 	@Override
-	public List<String> getValidations(String templateId) {
+	public List<String> getValidationsById(String templateId) {
 		return validations.get(templateId);
 	}
-
+	
 	@Override
 	public void addValidation(String templateId, String validation) {
-		List<String> validationList = getValidations(templateId);
+		List<String> validationList = getValidationsById(templateId);
 		
-		if (null != validationList) {
+		if (null == validationList) {
+			validationList = new ArrayList<>();
 			validations.put(templateId, validationList);
 		}
 		

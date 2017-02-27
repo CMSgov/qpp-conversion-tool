@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.XmlRootDecoder;
 
-public abstract class XmlInputDecoder implements InputDecoder, Validatable<String> {
+public abstract class XmlInputDecoder implements InputDecoder, Validatable<String, String> {
 	// keep it ordered since we can only 
 	// use this storage method on a single threaded app anyway
 	protected static Map<String, List<String>> validations = new LinkedHashMap<>();
