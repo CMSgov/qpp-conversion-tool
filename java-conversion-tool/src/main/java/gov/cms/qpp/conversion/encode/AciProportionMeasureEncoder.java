@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.encode;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.List;
 
 import gov.cms.qpp.conversion.model.Encoder;
@@ -21,13 +19,13 @@ public class AciProportionMeasureEncoder extends QppOutputEncoder {
 		// one for the numerator and one for the denominator
 		List<Node> children = node.getChildNodes();
 
-		JsonWrapper childWrapper = new JsonWrapper<>();
+		JsonWrapper childWrapper = new JsonWrapper();
 		for (Node child : children) {
 			JsonOutputEncoder denominatorValueEncoder = encoders.get(child.getId());
 			denominatorValueEncoder.encode(childWrapper, child);
 		}
-		wrapper.put("measureId", node.getValue("measureId"));
-		wrapper.put("value", childWrapper.getObject());
+		wrapper.putObject("measureId", node.getValue("measureId"));
+		wrapper.putObject("value", childWrapper.getObject());
 		
 	}
 }

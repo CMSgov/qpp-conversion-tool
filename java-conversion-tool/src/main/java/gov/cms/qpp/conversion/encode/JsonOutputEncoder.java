@@ -20,7 +20,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	@Override
 	public void encode(Writer writer) throws EncodeException {
 		try {
-			JsonWrapper wrapper = new JsonWrapper<>();
+			JsonWrapper wrapper = new JsonWrapper();
 			for (Node curNode : nodes) {
 				encode(wrapper, curNode);
 			}

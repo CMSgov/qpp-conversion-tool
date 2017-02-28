@@ -12,7 +12,7 @@ public class AciNumeratorDenominatorValueEncoder extends QppOutputEncoder {
 	@Override
 	public void encode(JsonWrapper wrapper, Node node) {
 		// simply writes the value in the Node
-		wrapper.put(node.getValue("aciNumeratorDenominator"));
+		wrapper.putObject(node.getValue("aciNumeratorDenominator"));
 	}
 
 }

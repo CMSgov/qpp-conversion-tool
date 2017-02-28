@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.encode;
 
-import java.io.Writer;
-
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
