@@ -47,6 +47,10 @@ public class ClinicalDocumentDecoderTest {
 		assertThat("returned node should have one child decoder node", aciSectionNode.getChildNodes().size(), is(3));
 		// Should have a section node 
 		assertThat("returned measureId ACI-PEA-1", aciSectionNode.getChildNodes().get(0).getValue("measureId"), is("ACI-PEA-1"));
+		// Should have a section node 
+		assertThat("returned measureId ACI_EP_1", aciSectionNode.getChildNodes().get(1).getValue("measureId"), is("ACI_EP_1"));
+		// Should have a section node 
+		assertThat("returned measureId ACI_CCTPE_3", aciSectionNode.getChildNodes().get(2).getValue("measureId"), is("ACI_CCTPE_3"));
 
 
 		Node iaSectionNode = root.getChildNodes().get(1);
