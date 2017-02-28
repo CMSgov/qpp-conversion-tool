@@ -17,6 +17,7 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
 
 public class Converter {
     static final Logger LOG = LoggerFactory.getLogger(Converter.class);
@@ -32,12 +33,16 @@ public class Converter {
 			if (inFile.exists()) {
 				Writer writer = null;
 				try {
+					Validations.init();
 					XmlFileDecoder fileDecoder = new XmlFileDecoder(inFile, new QppXmlDecoder());
 					Node decoded = fileDecoder.decode();
 					JsonOutputEncoder encoder = new QppOutputEncoder();
 					
 					String name = inFile.getName().trim();
 					System.out.println("Decoded template ID " + decoded.getId() + " from file '" + name + "'");
+					//do something  with decode validations
+					Validations.clear();
+					Validations.init();
 					
 					String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
 					
@@ -48,11 +53,13 @@ public class Converter {
 					writer.write("Begin\n");
 					encoder.encode(writer);
 					writer.write("\nEnd\n");
+					//do something  with encode validations
 
 				} catch (DecodeException | IOException | EncodeException e) {
 					e.printStackTrace();
 				} finally {
 					IOUtils.closeQuietly(writer);
+					Validations.clear();
 				}
 			}
 		}
