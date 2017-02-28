@@ -6,6 +6,7 @@ import org.jdom2.Element;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.model.XmlDecoder;
 
 /**
@@ -88,17 +89,17 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	
 	@Override
 	public Iterable<String> validations() {
-		return validations.get().validations();
+		return Validations.values();
 	}
 
 	@Override
 	public List<String> getValidationsById(String templateId) {
-		return validations.get().getValidationsById(templateId);
+		return Validations.getValidationsById(templateId);
 	}
 	
 	@Override
 	public void addValidation(String templateId, String validation) {
-		validations.get().addValidation(templateId, validation);
+		Validations.addValidation(templateId, validation);
 	}
 	
 }
