@@ -26,7 +26,11 @@ public class ClinicalDocumentRoundTripTest {
 			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\"," + "\n  \"performanceYear\" : 2017,"
 			+ "\n  \"measurementSets\" : [ " + "{\n    \"category\" : \"aci\",\n    \"measurements\" : [ "
 			+ "{\n      \"measureId\" : \"ACI-PEA-1\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 600,\n        \"denominator\" : 800\n      }\n    } ],"
+			+ "        \"numerator\" : 600,\n        \"denominator\" : 800\n      }\n    }, "
+			+ "{\n      \"measureId\" : \"ACI_EP_1\",\n      \"value\" : {\n"
+			+ "        \"numerator\" : 500,\n        \"denominator\" : 700\n      }\n    }, "
+			+ "{\n      \"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n"
+			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
 			+ "\n    \"source\" : \"provider\"," + "\n    \"performanceStart\" : \"20170101\","
 			+ "\n    \"performanceEnd\" : \"20171231\"" + "\n  } ]\n}";
 

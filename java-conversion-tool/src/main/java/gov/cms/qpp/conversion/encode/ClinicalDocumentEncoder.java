@@ -29,8 +29,9 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 
-		JsonWrapper childWrapper = new JsonWrapper();
+		JsonWrapper childWrapper;
 		for (Node child : children) {
+			childWrapper = new JsonWrapper();
 			JsonOutputEncoder sectionEncoder = encoders.get(child.getId());
 
 			if (null != sectionEncoder) { // currently don't have a set of IA
