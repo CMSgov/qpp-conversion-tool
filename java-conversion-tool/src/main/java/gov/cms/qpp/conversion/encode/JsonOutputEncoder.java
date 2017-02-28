@@ -5,7 +5,7 @@ import java.io.Writer;
 import java.util.List;
 
 import gov.cms.qpp.conversion.Validatable;
-import gov.cms.qpp.conversion.Validations;
+import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.model.Node;
 
 /**
@@ -14,10 +14,6 @@ import gov.cms.qpp.conversion.model.Node;
  */
 public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<String, String> {
 
-	// keep it ordered since we can only 
-	// use this storage method on a single threaded app anyway
-	protected static ThreadLocal<Validations<String, String>> validations = new ThreadLocal<>();
-
 	List<Node> nodes;
 
 	public JsonOutputEncoder() {
@@ -25,7 +21,6 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 
 	@Override
 	public void encode(Writer writer) throws EncodeException {
-		validations.set(new Validations<>());
 		
 		try {
 			JsonWrapper wrapper = new JsonWrapper();
@@ -42,21 +37,21 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 
 	@Override
 	public Iterable<String> validations() {
-		return validations.get().validations();
+		return Validations.values();
 	}
 
 	@Override
 	public List<String> getValidationsById(String templateId) {
-		return validations.get().getValidationsById(templateId);
+		return Validations.getValidationsById(templateId);
 	}
 	
 	@Override
 	public void addValidation(String templateId, String validation) {
-		validations.get().addValidation(templateId, validation);
+		Validations.addValidation(templateId, validation);
 	}
 	
 	public void addValidation(String templateId, EncodeException e) {
-		validations.get().addValidation(templateId, e.getMessage());
+		Validations.addValidation(templateId, e.getMessage());
 	}
 	
 	
@@ -69,7 +64,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 		try {
 			internalEcode(wrapper, node);
 		} catch (EncodeException e) {
-			validations.get().addValidation(e.getTemplateId(), e.getMessage());
+			Validations.addValidation(e.getTemplateId(), e.getMessage());
 		}
 	}
 	
