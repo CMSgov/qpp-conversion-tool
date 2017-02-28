@@ -5,30 +5,30 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.model.Validations;
+
 public class QppXmlDecoderTest extends QppXmlDecoder {
 	
 	@Before
 	public void setup() throws Exception {
-		QppXmlDecoder.validations.set(new LinkedHashMap<>());
+		Validations.init();
 	}
 	
 	@After
 	public void teardown() throws Exception {
-		QppXmlDecoder.validations.set(null);
+		Validations.clear();
 	}
 	
 	@Test
 	public void validationFormatTest() throws Exception {
 		XmlInputDecoder target = new QppXmlDecoder();
 		
-		XmlInputDecoder.validations.set(new LinkedHashMap<>());
 		target.addValidation("templateid.1", "validation.1");
 		target.addValidation("templateid.1", "validation.2");
 		target.addValidation("templateid.3", "validation.3");
