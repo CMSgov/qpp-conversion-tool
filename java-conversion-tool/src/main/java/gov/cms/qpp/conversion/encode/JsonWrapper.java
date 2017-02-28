@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,6 +42,15 @@ public class JsonWrapper {
 	
 	public JsonWrapper putString(String name, String value) {
 		return putObject(name, value);
+	}
+	
+	public JsonWrapper putDate(String name, String value) throws EncodeException {
+		try {
+			return putObject(name, validDate(value) );
+		} catch (EncodeException e) {
+			putObject(name, value);
+			throw e;
+		}
 	}
 	
 	public JsonWrapper putInteger(String name, String value) throws EncodeException {
@@ -89,6 +100,15 @@ public class JsonWrapper {
 		}
 	}
 	
+	public JsonWrapper putDate(String value) throws EncodeException {
+		try {
+			return putObject( validDate(value) );
+		} catch (EncodeException e) {
+			putObject(value);
+			throw e;
+		}
+	}
+	
 	public JsonWrapper putFloat(String value) throws EncodeException {
 		try {
 			return putObject( validFloat(value) );
@@ -121,6 +141,15 @@ public class JsonWrapper {
 			throw new EncodeException(value + " is not an integer.", e);
 		}
 	}
+	protected String validDate(String value) throws EncodeException {
+		try {
+			LocalDate thisDate = LocalDate.parse(cleanString(value),  DateTimeFormatter.ofPattern("yyyyMMdd"));
+			return thisDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		} catch (Exception e) {
+			throw new EncodeException(value + " is not an date of format YYYYMMDD.", e);
+		}
+	}
+
 	protected Float validFloat(String value) throws EncodeException {
 		try {
 			return Float.parseFloat( cleanString(value) );

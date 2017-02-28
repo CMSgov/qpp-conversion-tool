@@ -9,10 +9,12 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
 
 public class ClinicalDocumentEncoderTest {
 
@@ -39,6 +41,8 @@ public class ClinicalDocumentEncoderTest {
 
 	@Before
 	public void createNode() {
+		Validations.init();
+
 		numeratorValueNode = new Node();
 		numeratorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
 		numeratorValueNode.putValue("aciNumeratorDenominator", "400");
@@ -71,12 +75,17 @@ public class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.putValue("performanceStart", "2017-01-01");
-		clinicalDocumentNode.putValue("performanceEnd", "2017-12-31");
+		clinicalDocumentNode.putValue("performanceStart", "20170101");
+		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		nodes = new ArrayList<>();
 		nodes.add(clinicalDocumentNode);
+	}
+	
+	@After
+	public void teardown() throws Exception {
+		Validations.clear();
 	}
 
 	@Test
