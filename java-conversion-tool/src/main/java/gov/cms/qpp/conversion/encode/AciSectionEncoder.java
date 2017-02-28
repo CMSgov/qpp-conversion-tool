@@ -20,8 +20,9 @@ public class AciSectionEncoder extends QppOutputEncoder {
 
 		JsonWrapper measurementsWrapper = new JsonWrapper();
 
-		JsonWrapper childWrapper = new JsonWrapper();
+		JsonWrapper childWrapper;
 		for (Node child : children) {
+			childWrapper = new JsonWrapper();
 			JsonOutputEncoder measureEncoder = encoders.get(child.getId());
 			measureEncoder.encode(childWrapper, child);
 			measurementsWrapper.putObject(childWrapper.getObject());
