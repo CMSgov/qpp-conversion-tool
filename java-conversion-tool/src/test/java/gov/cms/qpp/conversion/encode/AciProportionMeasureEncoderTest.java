@@ -69,7 +69,7 @@ public class AciProportionMeasureEncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
-		String EXPECTED = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : \"400\",\n    \"denominator\" : \"600\"\n  }\n}";
+		String EXPECTED = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : 400,\n    \"denominator\" : 600\n  }\n}";
 		Assert.assertEquals(EXPECTED, sw.toString());
 		assertThat("expected encoder to return a json representation of a measure node", sw.toString(), is(EXPECTED));
 	}

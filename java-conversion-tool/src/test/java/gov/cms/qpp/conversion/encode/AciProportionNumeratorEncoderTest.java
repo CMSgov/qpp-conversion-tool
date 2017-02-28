@@ -51,7 +51,7 @@ public class AciProportionNumeratorEncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
-		String EXPECTED = "{\n  \"numerator\" : \"600\"\n}";
+		String EXPECTED = "{\n  \"numerator\" : 600\n}";
 		assertThat("expected encoder to return a json representation of a numerator with a value", sw.toString(),
 				is(EXPECTED));
 	}

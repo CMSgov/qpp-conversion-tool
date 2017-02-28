@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.encode;
 
-import java.io.Writer;
-
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
@@ -14,7 +12,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	}
 
 	@Override
-	public void encode(JsonWrapper wrapper, Node node) {
+	protected void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
 
 		// write nothing top level specific at this point
 		// check the encoder Registry for

@@ -46,7 +46,7 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		String EXPECTED = "[ \"600\" ]";
+		String EXPECTED = "[ 600 ]";
 		assertThat("expected encoder to return a single number numerator/denominator", sw.toString(), is(EXPECTED));
 	}
 }

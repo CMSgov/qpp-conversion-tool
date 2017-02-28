@@ -10,9 +10,9 @@ public class AciNumeratorDenominatorValueEncoder extends QppOutputEncoder {
 	}
 	
 	@Override
-	public void encode(JsonWrapper wrapper, Node node) {
+	protected void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
 		// simply writes the value in the Node
-		wrapper.put(node.getValue("aciNumeratorDenominator"));
+		wrapper.putInteger(node.getValue("aciNumeratorDenominator"));
 	}
 
 }
