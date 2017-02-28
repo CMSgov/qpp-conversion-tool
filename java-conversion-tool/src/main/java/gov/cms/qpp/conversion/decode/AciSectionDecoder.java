@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
+import java.util.List;
+
 import org.jdom2.Element;
 
 import gov.cms.qpp.conversion.model.Node;
@@ -10,7 +12,8 @@ public class AciSectionDecoder extends QppXmlDecoder {
 	@Override
 	protected Node internalDecode(Element element, Node thisnode) {
 		thisnode.putValue("category", "aci");
-		this.decode(element.getChild("entry", defaultNs), thisnode);
+		List<Element> children = element.getChildren("entry", defaultNs);
+		this.decode(children, thisnode);
 		return thisnode;
 	}
 		
