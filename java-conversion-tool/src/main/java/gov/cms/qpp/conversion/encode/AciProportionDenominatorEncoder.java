@@ -12,7 +12,7 @@ public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 	}
 
 	@Override
-	public void encode(JsonWrapper wrapper, Node node) {
+	protected void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
 		// simply writes the value in the Node
 
 		// the ACI Proportion Denominator Node should have a single child

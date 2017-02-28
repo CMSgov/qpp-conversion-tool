@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface Validatable<V, T> {
 	
-	List<T> getValidationsById (String id);
+	List<T> getValidationsById (V id);
 	
-	Iterable<T> validations();
+	Iterable<String> validations();
 	
 	void addValidation(V templateId, T validation);
 

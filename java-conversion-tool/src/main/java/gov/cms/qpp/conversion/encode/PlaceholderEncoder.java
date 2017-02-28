@@ -10,7 +10,7 @@ public class PlaceholderEncoder extends QppOutputEncoder {
 	}
 
 	@Override
-	public void encode(JsonWrapper wrapper, Node node) {
+	protected void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
 		// does not do anything except call write on any children
 
 		for (Node child : node.getChildNodes()) {
