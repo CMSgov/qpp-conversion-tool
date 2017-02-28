@@ -223,6 +223,52 @@ public class JsonWrapperTest {
 		assertEquals("expect a simple object of JSON",
 				expect, json);
 	}
+	@Test
+	public void testToString_integerArray() throws Exception {
+		objectStrWrapper.putString("value1");
+		objectStrWrapper.putInteger("100");
+		
+		String json = objectStrWrapper.toString();
+		
+		String expect = "[ \"value1\", 100 ]";
+		assertEquals("expect a integer array of JSON",
+				expect, json);
+	}
+	@Test(expected=EncodeException.class)
+	public void testToString_integerParseExcpetion2() throws Exception {
+		objectStrWrapper.putInteger("nope");
+		fail("Should not make it here because of integer parse exception");
+	}
+	@Test
+	public void testToString_floatArray() throws Exception {
+		objectStrWrapper.putString("value1");
+		objectStrWrapper.putFloat("1.01");
+		
+		String json = objectStrWrapper.toString();
+		
+		String expect = "[ \"value1\", 1.01 ]";
+		assertEquals("expect a float value array of JSON",
+				expect, json);
+	}
+	@Test(expected=EncodeException.class)
+	public void testToString_floatParseExcpetion2() throws Exception {
+		objectStrWrapper.putInteger("nope");
+		fail("Should not make it here because of float parse exception");
+	}
+	@Test
+	public void testToString_booleanArray() throws Exception {
+		objectStrWrapper.putString("True"); // as string where case is preserved
+		objectStrWrapper.putBoolean("True");
+		objectStrWrapper.putBoolean("TRUE");
+		objectStrWrapper.putBoolean("true");
+		objectStrWrapper.putBoolean("trUe");
+		
+		String json = objectStrWrapper.toString();
+		
+		String expect = "[ \"True\", true, true, true, true ]";
+		assertEquals("expect a boolean value object of JSON",
+				expect, json);
+	}
 
 	@Test
 	public void testToString_objectWithArray() throws Exception {
@@ -236,6 +282,53 @@ public class JsonWrapperTest {
 				"  \"name2\" : [ \"A\", \"B\", \"C\" ],\n" +
 				"  \"name3\" : \"value3\"\n}";
 		assertEquals("expect array to use [] rather than {} block",
+				expect, json);
+	}
+
+	@Test
+	public void testToString_integerObject() throws Exception {
+		objectStrWrapper.putString("name1", "value1");
+		objectStrWrapper.putInteger("name2", "100");
+		
+		String json = objectStrWrapper.toString();
+		
+		String expect = "{\n  \"name1\" : \"value1\",\n  \"name2\" : 100\n}";
+		assertEquals("expect a integer object of JSON",
+				expect, json);
+	}
+	@Test(expected=EncodeException.class)
+	public void testToString_integerParseExcpetion() throws Exception {
+		objectStrWrapper.putInteger("name2", "nope");
+		fail("Should not make it here because of integer parse exception");
+	}
+	@Test
+	public void testToString_floatObject() throws Exception {
+		objectStrWrapper.putString("name1", "value1");
+		objectStrWrapper.putFloat("name2", "1.01");
+		
+		String json = objectStrWrapper.toString();
+		
+		String expect = "{\n  \"name1\" : \"value1\",\n  \"name2\" : 1.01\n}";
+		assertEquals("expect a float value object of JSON",
+				expect, json);
+	}
+	@Test(expected=EncodeException.class)
+	public void testToString_floatParseExcpetion() throws Exception {
+		objectStrWrapper.putInteger("name2", "nope");
+		fail("Should not make it here because of float parse exception");
+	}
+	@Test
+	public void testToString_booleanObject() throws Exception {
+		objectStrWrapper.putString("name", "True"); // as string where case is preserved
+		objectStrWrapper.putBoolean("name1", "True");
+		objectStrWrapper.putBoolean("name2", "TRUE");
+		objectStrWrapper.putBoolean("name3", "true");
+		objectStrWrapper.putBoolean("name4", "trUe");
+		
+		String json = objectStrWrapper.toString();
+		
+		String expect = "{\n  \"name\" : \"True\",\n  \"name1\" : true,\n  \"name2\" : true,\n  \"name3\" : true,\n  \"name4\" : true\n}";
+		assertEquals("expect a boolean value object of JSON",
 				expect, json);
 	}
 	
