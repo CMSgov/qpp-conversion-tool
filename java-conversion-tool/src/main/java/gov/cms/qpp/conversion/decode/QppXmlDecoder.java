@@ -89,17 +89,17 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	
 	@Override
 	public Iterable<String> validations() {
-		return Validations.values();
+		return validations.get().validations();
 	}
 
 	@Override
 	public List<String> getValidationsById(String templateId) {
-		return Validations.getValidationsById(templateId);
+		return validations.get().getValidationsById(templateId);
 	}
 	
 	@Override
 	public void addValidation(String templateId, String validation) {
-		Validations.addValidation(templateId, validation);
+		validations.get().addValidation(templateId, validation);
 	}
 	
 }

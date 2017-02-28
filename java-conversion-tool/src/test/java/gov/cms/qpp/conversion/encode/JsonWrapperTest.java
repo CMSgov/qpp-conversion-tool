@@ -17,17 +17,17 @@ public class JsonWrapperTest {
 
 	ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 	
-	public JsonWrapper<Object> objectObjWrapper;
-	public JsonWrapper<String> objectStrWrapper;
-	public JsonWrapper<Object> listObjWrapper;
-	public JsonWrapper<String> listStrWrapper;
+	public JsonWrapper objectObjWrapper;
+	public JsonWrapper objectStrWrapper;
+	public JsonWrapper listObjWrapper;
+	public JsonWrapper listStrWrapper;
 	
 	@Before
 	public void before() {
-		objectObjWrapper = new JsonWrapper<>();
-		objectStrWrapper = new JsonWrapper<>();
-		listObjWrapper   = new JsonWrapper<>();
-		listStrWrapper   = new JsonWrapper<>();
+		objectObjWrapper = new JsonWrapper();
+		objectStrWrapper = new JsonWrapper();
+		listObjWrapper   = new JsonWrapper();
+		listStrWrapper   = new JsonWrapper();
 	}
 
 	
@@ -35,11 +35,11 @@ public class JsonWrapperTest {
 	@Test
 	public void testInitAsList() {
 		assertTrue("Object should be null until the first put", listStrWrapper.getObject() == null);
-		listStrWrapper.put("name");
+		listStrWrapper.putString("name");
 		Object list1 = listStrWrapper.getObject();
 		assertNotNull("Init should be as a list", list1);
 		assertTrue("Init should be as a list", list1 instanceof List);
-		listStrWrapper.put("value");
+		listStrWrapper.putString("value");
 		Object list2 = listStrWrapper.getObject();
 		assertEquals("The internal instance should not change upon addition put", list1,list2);
 	}
@@ -48,37 +48,37 @@ public class JsonWrapperTest {
 	@Test
 	public void testInitAsObject() {
 		assertTrue("Object should be null until the first put", objectStrWrapper.getObject() == null);
-		objectStrWrapper.put("name", "value");
+		objectStrWrapper.putString("name", "value");
 		Object obj1 = objectStrWrapper.getObject();
 		assertNotNull("Init should be as a map", obj1);
 		assertTrue("Init should be as a map", obj1 instanceof Map);
-		objectStrWrapper.put("name", "value");
+		objectStrWrapper.putString("name", "value");
 		Object obj2 = objectStrWrapper.getObject();
 		assertEquals("The internal instance should not change upon addition put", obj1,obj2);
 	}
 	
 	@Test(expected=IllegalStateException.class)
 	public void testCheckState_objectThenList() {
-		objectStrWrapper.put("name", "value");
-		objectStrWrapper.put("value");
+		objectStrWrapper.putString("name", "value");
+		objectStrWrapper.putString("value");
 		fail("should not make it here, prior line should throw exception");
 	}
 	@Test(expected=IllegalStateException.class)
 	public void testCheckState_listThenLObject() {
-		listStrWrapper.put("value");
-		listStrWrapper.put("name", "value");
+		listStrWrapper.putString("value");
+		listStrWrapper.putString("name", "value");
 		fail("should not make it here, prior line should throw exception");
 	}
 	
 	@Test
 	public void testGetObject_map() {
-		objectStrWrapper.put("name", "value");
+		objectStrWrapper.putString("name", "value");
 		assertTrue("should be as a map", objectStrWrapper.getObject() instanceof Map);
 		assertEquals("map should contain put value", 
 				"value", ((Map<?,?>)objectStrWrapper.getObject()).get("name"));
 		
 		Object obj = new Object();
-		objectObjWrapper.put("name", obj);
+		objectObjWrapper.putObject("name", obj);
 		assertTrue("should be as a map",  objectObjWrapper.getObject() instanceof Map);
 		assertEquals("map should contain put value",
 				obj, ((Map<?,?>)objectObjWrapper.getObject()).get("name"));
@@ -86,13 +86,13 @@ public class JsonWrapperTest {
 	
 	@Test
 	public void testGetObject_list() {
-		listStrWrapper.put("name");
+		listStrWrapper.putString("name");
 		assertTrue("should be as a list", listStrWrapper.getObject() instanceof List);
 		assertTrue("lsit should contian put value",
 				((List<?>)listStrWrapper.getObject()).contains("name"));
 		
 		Object obj = new Object();
-		listObjWrapper.put(obj);
+		listObjWrapper.putObject(obj);
 		assertTrue("should be as a list", listObjWrapper.getObject() instanceof List);
 		assertTrue("lsit should contian put value",
 				((List<?>)listObjWrapper.getObject()).contains(obj));
@@ -101,22 +101,22 @@ public class JsonWrapperTest {
 	@Test
 	public void testIsObject_true() {
 		assertFalse("should not be an object container until first put", objectStrWrapper.isObject());
-		objectStrWrapper.put("name", "value");
+		objectStrWrapper.putString("name", "value");
 		assertTrue("should be an object container after first put", objectStrWrapper.isObject());
 		
 		assertFalse("should not be an object container until first map put", objectObjWrapper.isObject());
-		objectObjWrapper.put("name", new Object());
+		objectObjWrapper.putObject("name", new Object());
 		assertTrue("should be an object container after first map put", objectObjWrapper.isObject());
 	}
 	
 	@Test
 	public void testIsObject_false() {
 		assertFalse("should not be an object container", listStrWrapper.isObject());
-		listStrWrapper.put("name");
+		listStrWrapper.putString("name");
 		assertFalse("should not be an object container after first list put", listStrWrapper.isObject());
 		
 		assertFalse("should not be an object container", listObjWrapper.isObject());
-		listObjWrapper.put(new Object());
+		listObjWrapper.putObject(new Object());
 		assertFalse("should not be an object container after first list put", listObjWrapper.isObject());
 	}
 	
@@ -214,8 +214,8 @@ public class JsonWrapperTest {
 
 	@Test
 	public void testToString_simpleObject() throws Exception {
-		objectStrWrapper.put("name1", "value1");
-		objectStrWrapper.put("name2", "value2");
+		objectStrWrapper.putString("name1", "value1");
+		objectStrWrapper.putString("name2", "value2");
 		
 		String json = objectStrWrapper.toString();
 		
@@ -226,9 +226,9 @@ public class JsonWrapperTest {
 
 	@Test
 	public void testToString_objectWithArray() throws Exception {
-		objectObjWrapper.put("name1", "value1");
-		objectObjWrapper.put("name2", new String[] {"A","B","C"});
-		objectObjWrapper.put("name3", "value3");
+		objectObjWrapper.putString("name1", "value1");
+		objectObjWrapper.putObject("name2", new String[] {"A","B","C"});
+		objectObjWrapper.putString("name3", "value3");
 		
 		String json = objectObjWrapper.toString();
 		
@@ -241,13 +241,13 @@ public class JsonWrapperTest {
 	
 	@Test
 	public void testToString_objectWithList() throws Exception {
-		listStrWrapper.put("A");
-		listStrWrapper.put("B");
-		listStrWrapper.put("C");
+		listStrWrapper.putString("A");
+		listStrWrapper.putString("B");
+		listStrWrapper.putString("C");
 		
-		objectObjWrapper.put("name1", "value1");
-		objectObjWrapper.put("name2", listStrWrapper.getObject());
-		objectObjWrapper.put("name3", "value3");
+		objectObjWrapper.putString("name1", "value1");
+		objectObjWrapper.putObject("name2", listStrWrapper.getObject());
+		objectObjWrapper.putString("name3", "value3");
 		
 		String json = objectObjWrapper.toString();
 		
@@ -260,12 +260,12 @@ public class JsonWrapperTest {
 	
 	@Test
 	public void testToString_objectWithChild() throws Exception {
-		objectStrWrapper.put("obj1", "A");
-		objectStrWrapper.put("obj2", "B");
+		objectStrWrapper.putString("obj1", "A");
+		objectStrWrapper.putString("obj2", "B");
 		
-		objectObjWrapper.put("name1", "value1");
-		objectObjWrapper.put("name2", objectStrWrapper.getObject());
-		objectObjWrapper.put("name3", "value3");
+		objectObjWrapper.putString("name1", "value1");
+		objectObjWrapper.putObject("name2", objectStrWrapper.getObject());
+		objectObjWrapper.putString("name3", "value3");
 		
 		String json = objectObjWrapper.toString();
 		
@@ -279,12 +279,12 @@ public class JsonWrapperTest {
 	
 	@Test
 	public void testToString_objectWithChild_commaAndOrder() throws Exception {
-		objectStrWrapper.put("obj1", "A");
-		objectStrWrapper.put("obj2", "B");
+		objectStrWrapper.putString("obj1", "A");
+		objectStrWrapper.putString("obj2", "B");
 		
-		objectObjWrapper.put("name1", "value1");
-		objectObjWrapper.put("name3", "value3");
-		objectObjWrapper.put("name2", objectStrWrapper.getObject());
+		objectObjWrapper.putString("name1", "value1");
+		objectObjWrapper.putString("name3", "value3");
+		objectObjWrapper.putObject("name2", objectStrWrapper.getObject());
 		
 		String json = objectObjWrapper.toString();
 		
@@ -297,7 +297,7 @@ public class JsonWrapperTest {
 	
 	@Test(expected=RuntimeException.class)
 	public void testToString_exception() {
-		objectObjWrapper.put("name", new MockBadJsonTarget());
+		objectObjWrapper.putObject("name", new MockBadJsonTarget());
 		objectObjWrapper.toString();
 		fail("should not get here, expecting runtime parse exception");
 	}
