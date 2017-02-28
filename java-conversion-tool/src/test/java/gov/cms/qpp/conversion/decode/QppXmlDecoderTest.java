@@ -26,9 +26,9 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 	
 	@Test
 	public void validationFormatTest() throws Exception {
-		QppXmlDecoder target = new QppXmlDecoder();
+		XmlInputDecoder target = new QppXmlDecoder();
 		
-		QppXmlDecoder.validations.set(new LinkedHashMap<>());
+		XmlInputDecoder.validations.set(new LinkedHashMap<>());
 		target.addValidation("templateid.1", "validation.1");
 		target.addValidation("templateid.1", "validation.2");
 		target.addValidation("templateid.3", "validation.3");
