@@ -92,7 +92,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	public Iterable<String> validations() {
 		List<String> validationMsgs = new ArrayList<>();
 		
-		for (Entry<String, List<String>> templateEntry : validations.entrySet()) {
+		for (Entry<String, List<String>> templateEntry : validations.get().entrySet()) {
 			for (String msg : templateEntry.getValue()) {
 				validationMsgs.add(templateEntry.getKey() + " - " + msg);
 			}
@@ -103,7 +103,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 	@Override
 	public List<String> getValidationsById(String templateId) {
-		return validations.get(templateId);
+		return validations.get().get(templateId);
 	}
 	
 	@Override
@@ -112,7 +112,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		
 		if (null == validationList) {
 			validationList = new ArrayList<>();
-			validations.put(templateId, validationList);
+			validations.get().put(templateId, validationList);
 		}
 		
 		validationList.add(validation);
