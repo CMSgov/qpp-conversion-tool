@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.Collection;
 
 import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
 
 public class ConverterTest {
 
@@ -60,7 +61,7 @@ public class ConverterTest {
 	@Test
 	public void testExtractDir_unix() {
 		String regex  = Converter.extractDir("path/to/dir/*.xml");
-		String expect = "path/to/dir/";
+		String expect = "path" + File.separator + "to" + File.separator + "dir" + File.separator; 
 		assertEquals(expect, regex);
 	}
 	@Test
@@ -68,7 +69,7 @@ public class ConverterTest {
 		// testing the extraction not the building on windows
 		String regex  = Converter.extractDir("path\\to\\dir\\*.xml");
 		// this test is running on *nix so expect this path while testing
-		String expect = "path/to/dir/"; 
+		String expect = "path" + File.separator + "to" + File.separator + "dir" + File.separator; 
 		
 		assertEquals(expect, regex);
 	}
@@ -154,12 +155,18 @@ public class ConverterTest {
 	}
 	
 	@Test
-	public void testMultiThreadRun() {
+	public void testMultiThreadRun() throws Exception {
 		long start = System.currentTimeMillis();
 		
+		ClassPathResource pathTestDir = new ClassPathResource("pathTest");
+		ClassPathResource subDir = new ClassPathResource("pathTest/subdir");
+		
+		System.out.println(pathTestDir.getFile().getAbsolutePath());
+		System.out.println(subDir.getFile().getAbsolutePath());
+		
 		Converter.main(new String[] {
-				"src/test/resources/pathTest/a.xml", 
-				"src/test/resources/pathTest/subdir/*.xml"
+				pathTestDir.getFile() + File.separator + "a.xml", 
+				subDir.getFile() + File.separator + "*.xml"
 			});
 		
 		long finish = System.currentTimeMillis();

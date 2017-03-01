@@ -75,9 +75,14 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void setOnNode(Element element, String expressionStr, Consumer consumer, Filter<?> filter) {
+	protected void setOnNode(Element element, String expressionStr, Consumer consumer, Filter<?> filter, boolean selectOne) {
 		XPathExpression<?> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
-		Optional.ofNullable(expression.evaluate(element)).ifPresent(consumer);
+		
+		if (selectOne) {
+			Optional.ofNullable(expression.evaluateFirst(element)).ifPresent(consumer);
+		} else {
+			Optional.ofNullable(expression.evaluate(element)).ifPresent(consumer);
+		}
 	}
 
 	/**

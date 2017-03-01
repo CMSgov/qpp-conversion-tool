@@ -32,26 +32,26 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 
 	protected void setTemplateIdOnNode(Element element, Node thisnode) {
 		String expressionStr = "./ns:templateId[@root='2.16.840.1.113883.10.20.27.1.2']/@root";
-		Consumer<? super List<Attribute>> consumer = p -> thisnode.setId(p.get(0).getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute());
+		Consumer<? super Attribute> consumer = p -> thisnode.setId(p.getValue());
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 
 	protected void setProgramNameOnNode(Element element, Node thisnode) {
 		String expressionStr = "./ns:informationRecipient/ns:intendedRecipient/ns:id[@root='2.16.840.1.113883.3.249.7']/@extension";
-		Consumer<? super List<Attribute>> consumer = p -> thisnode.putValue("programName", p.get(0).getValue().toLowerCase());
-		setOnNode(element, expressionStr, consumer, Filters.attribute());
+		Consumer<? super Attribute> consumer = p -> thisnode.putValue("programName", p.getValue().toLowerCase());
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 
 	protected void setNationalProviderIdOnNode(Element element, Node thisnode) {
 		String expressionStr = "./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/ns:id[@root='2.16.840.1.113883.4.6']/@extension";
-		Consumer<? super List<Attribute>> consumer = p -> thisnode.putValue("nationalProviderIdentifier", p.get(0).getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute());
+		Consumer<? super Attribute> consumer = p -> thisnode.putValue("nationalProviderIdentifier", p.getValue());
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 
 	protected void setTaxProviderTaxIdOnNode(Element element, Node thisnode) {
 		String expressionStr = "./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/ns:representedOrganization/ns:id[@root='2.16.840.1.113883.4.2']/@extension";
-		Consumer<? super List<Attribute>> consumer = p -> thisnode.putValue("taxpayerIdentificationNumber", p.get(0).getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute());
+		Consumer<? super Attribute> consumer = p -> thisnode.putValue("taxpayerIdentificationNumber", p.getValue());
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 
 	protected void setPerformanceTimeRangeOnNode(Element element, Node thisnode) {
@@ -59,17 +59,17 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 		String performanceStartExprStr = effTimeStr + "/ns:low/@value";
 		String performanceEndExprStr = effTimeStr + "/ns:high/@value";
 
-		Consumer<? super List<Attribute>> performanceStartConsumer = p -> thisnode.putValue("performanceStart", p.get(0).getValue());
-		Consumer<? super List<Attribute>> performanceEndConsumer = p -> thisnode.putValue("performanceEnd", p.get(0).getValue());
+		Consumer<? super Attribute> performanceStartConsumer = p -> thisnode.putValue("performanceStart", p.getValue());
+		Consumer<? super Attribute> performanceEndConsumer = p -> thisnode.putValue("performanceEnd", p.getValue());
 
-		setOnNode(element, performanceStartExprStr, performanceStartConsumer, Filters.attribute());
-		setOnNode(element, performanceEndExprStr, performanceEndConsumer, Filters.attribute());
+		setOnNode(element, performanceStartExprStr, performanceStartConsumer, Filters.attribute(), true);
+		setOnNode(element, performanceEndExprStr, performanceEndConsumer, Filters.attribute(), true);
 	}
 
 	protected void processComponentElement(Element element, Node thisnode) {
 		String expressionStr = "./ns:component/ns:structuredBody/ns:component";
 		Consumer<? super List<Element>> consumer = p -> this.decode(p, thisnode);
-		setOnNode(element, expressionStr, consumer, Filters.element());
+		setOnNode(element, expressionStr, consumer, Filters.element(), false);
 	}
 
 }
