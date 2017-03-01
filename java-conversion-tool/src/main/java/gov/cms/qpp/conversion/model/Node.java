@@ -23,6 +23,8 @@ public class Node implements Serializable {
 
 	private List<Node> childNodes;
 
+	private boolean validated;
+
 	public Node() {
 		this.data = new HashMap<>();
 		this.setChildNodes(new ArrayList<>());
@@ -63,5 +65,27 @@ public class Node implements Serializable {
 
 	public Set<String> getKeys() {
 		return data.keySet();
+	}
+
+	public boolean isValidated() {
+		return validated;
+	}
+
+	public void setValidated(boolean validated) {
+		this.validated = validated;
+	}
+
+	public List<Node> findNode(String id) {
+		List<Node> foundNodes = new ArrayList<>();
+
+		if (id.equals(this.internalId)) {
+			foundNodes.add(this);
+		}
+
+		for (Node childNode : childNodes) {
+			foundNodes.addAll(childNode.findNode(id));
+		}
+
+		return foundNodes;
 	}
 }

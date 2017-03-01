@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.model;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
  * @author daviduselmann
  */
 public class Registry<V extends Object, R extends Object> {
-    static final Logger LOG = LoggerFactory.getLogger(Registry.class);
+	static final Logger LOG = LoggerFactory.getLogger(Registry.class);
 
 	// For now this is static and can be refactored into an instance
 	// variable when/if we have an orchestrator that instantiates an registry
@@ -67,7 +68,7 @@ public class Registry<V extends Object, R extends Object> {
 			}
 		}
 	}
-	
+
 	// This allows for testing the ClassNotFoundException
 	protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
 		return Class.forName(className);
@@ -76,7 +77,7 @@ public class Registry<V extends Object, R extends Object> {
 	@SuppressWarnings("unchecked")
 	public V getAnnotationParam(Class<?> annotatedClass) {
 		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
-		
+
 		if (annotation instanceof XmlRootDecoder) {
 			XmlRootDecoder decoder = (XmlRootDecoder) annotation;
 			return (V) decoder.rootElement();
@@ -118,8 +119,13 @@ public class Registry<V extends Object, R extends Object> {
 	 * @param handler
 	 */
 	public void register(V registryKey, Class<? extends R> handler) {
-		LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for " + annotationClass.getSimpleName() +".");
+		LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
+				+ annotationClass.getSimpleName() + ".");
 		// This could be a class or class name and instantiated on lookup
 		registry.put(registryKey, handler);
+	}
+
+	public Set<V> getKeys() {
+		return registry.keySet();
 	}
 }
