@@ -1,9 +1,14 @@
 package gov.cms.qpp.conversion.decode;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.jdom2.Element;
 import org.jdom2.Namespace;
+import org.jdom2.filter.Filter;
+import org.jdom2.xpath.XPathExpression;
+import org.jdom2.xpath.XPathFactory;
 
 import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
@@ -60,7 +65,12 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 		decoder.xpathNs = Namespace.getNamespace("ns", decoder.defaultNs.getURI());
 	}
 	
-	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected void setOnNode(Element element, String expressionStr, Consumer consumer, Filter<?> filter) {
+		XPathExpression<?> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
+		Optional.ofNullable(expression.evaluate(element)).ifPresent(consumer);
+	}
+
 	/**
 	 * Represents some sort of higher level decode of an element
 	 * 
