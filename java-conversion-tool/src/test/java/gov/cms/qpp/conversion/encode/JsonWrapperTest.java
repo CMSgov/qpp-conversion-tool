@@ -57,18 +57,6 @@ public class JsonWrapperTest {
 		assertEquals("The internal instance should not change upon addition put", obj1,obj2);
 	}
 	
-	@Test(expected=IllegalStateException.class)
-	public void testCheckState_objectThenList() {
-		objectStrWrapper.putString("name", "value");
-		objectStrWrapper.putString("value");
-		fail("should not make it here, prior line should throw exception");
-	}
-	@Test(expected=IllegalStateException.class)
-	public void testCheckState_listThenLObject() {
-		listStrWrapper.putString("value");
-		listStrWrapper.putString("name", "value");
-		fail("should not make it here, prior line should throw exception");
-	}
 	
 	@Test
 	public void testGetObject_map() {
@@ -234,11 +222,6 @@ public class JsonWrapperTest {
 		assertEquals("expect a integer array of JSON",
 				expect, json);
 	}
-	@Test(expected=EncodeException.class)
-	public void testToString_integerParseExcpetion2() throws Exception {
-		objectStrWrapper.putInteger("nope");
-		fail("Should not make it here because of integer parse exception");
-	}
 	@Test
 	public void testToString_floatArray() throws Exception {
 		objectStrWrapper.putString("value1");
@@ -250,11 +233,68 @@ public class JsonWrapperTest {
 		assertEquals("expect a float value array of JSON",
 				expect, json);
 	}
+	@Test(expected=RuntimeException.class)
+	public void testToString_exception() {
+		objectObjWrapper.putObject("name", new MockBadJsonTarget());
+		objectObjWrapper.toString();
+		fail("should not get here, expecting runtime parse exception");
+	}
+	@Test(expected=IllegalStateException.class)
+	public void testCheckState_objectThenList() {
+		objectStrWrapper.putString("name", "value");
+		objectStrWrapper.putString("value");
+		fail("should not make it here, prior line should throw exception");
+	}
+	@Test(expected=IllegalStateException.class)
+	public void testCheckState_listThenLObject() {
+		listStrWrapper.putString("value");
+		listStrWrapper.putString("name", "value");
+		fail("should not make it here, prior line should throw exception");
+	}
 	@Test(expected=EncodeException.class)
-	public void testToString_floatParseExcpetion2() throws Exception {
+	public void testToString_integerParseExcpetion() throws Exception {
+		objectStrWrapper.putInteger("name2", "nope");
+		fail("Should not make it here because of integer parse exception");
+	}
+	@Test(expected=EncodeException.class)
+	public void testToString_integerParseExcpetion2() throws Exception {
 		objectStrWrapper.putInteger("nope");
+		fail("Should not make it here because of integer parse exception");
+	}
+	@Test(expected=EncodeException.class)
+	public void testToString_floatParseExcpetion() throws Exception {
+		objectStrWrapper.putFloat("nope");
 		fail("Should not make it here because of float parse exception");
 	}
+	@Test(expected=EncodeException.class)
+	public void testToString_floatParseExcpetion2() throws Exception {
+		objectStrWrapper.putFloat("name","nope");
+		fail("Should not make it here because of float parse exception");
+	}
+	@Test(expected=EncodeException.class)
+	public void testToString_booleanParseExcpetion() throws Exception {
+		objectStrWrapper.putBoolean("nope");
+		fail("Should not make it here because of float parse exception");
+	}
+	@Test(expected=EncodeException.class)
+	public void testToString_booleanParseExcpetion2() throws Exception {
+		objectStrWrapper.putBoolean("name","nope");
+		fail("Should not make it here because of float parse exception");
+	}
+	@Test
+	public void testValidBoolean() throws Exception {
+		assertTrue(objectStrWrapper.validBoolean("True"));
+		assertTrue(objectStrWrapper.validBoolean("Yes"));
+		assertTrue(objectStrWrapper.validBoolean("Y"));
+		assertFalse(objectStrWrapper.validBoolean("false"));
+		assertFalse(objectStrWrapper.validBoolean("no"));
+		assertFalse(objectStrWrapper.validBoolean("N"));
+	}
+	@Test
+	public void testCleanString_null() throws Exception {
+		assertNotNull(objectStrWrapper.cleanString(null));
+	}
+	
 	@Test
 	public void testToString_booleanArray() throws Exception {
 		objectStrWrapper.putString("True"); // as string where case is preserved
@@ -296,11 +336,6 @@ public class JsonWrapperTest {
 		assertEquals("expect a integer object of JSON",
 				expect, json);
 	}
-	@Test(expected=EncodeException.class)
-	public void testToString_integerParseExcpetion() throws Exception {
-		objectStrWrapper.putInteger("name2", "nope");
-		fail("Should not make it here because of integer parse exception");
-	}
 	@Test
 	public void testToString_floatObject() throws Exception {
 		objectStrWrapper.putString("name1", "value1");
@@ -311,11 +346,6 @@ public class JsonWrapperTest {
 		String expect = "{\n  \"name1\" : \"value1\",\n  \"name2\" : 1.01\n}";
 		assertEquals("expect a float value object of JSON",
 				expect, json);
-	}
-	@Test(expected=EncodeException.class)
-	public void testToString_floatParseExcpetion() throws Exception {
-		objectStrWrapper.putInteger("name2", "nope");
-		fail("Should not make it here because of float parse exception");
 	}
 	@Test
 	public void testToString_booleanObject() throws Exception {
@@ -388,12 +418,6 @@ public class JsonWrapperTest {
 				expect, json);
 	}
 	
-	@Test(expected=RuntimeException.class)
-	public void testToString_exception() {
-		objectObjWrapper.putObject("name", new MockBadJsonTarget());
-		objectObjWrapper.toString();
-		fail("should not get here, expecting runtime parse exception");
-	}
 }
 
 class MockBadJsonTarget {

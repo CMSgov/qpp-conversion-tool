@@ -28,7 +28,7 @@ public class Registry<V extends Object, R extends Object> {
 	 * This will be an XPATH string to converter handler registration Since
 	 * Converter was taken for the main stub, I chose Handler for now.
 	 */
-	private Map<V, Class<? extends R>> registry;
+	Map<V, Class<? extends R>> registry;
 
 	private Class<? extends Annotation> annotationClass;
 
@@ -60,12 +60,17 @@ public class Registry<V extends Object, R extends Object> {
 		scanner.addIncludeFilter(new AnnotationTypeFilter(annotationClass));
 		for (BeanDefinition bd : scanner.findCandidateComponents("gov.cms")) {
 			try {
-				Class<?> annotatedClass = Class.forName(bd.getBeanClassName());
+				Class<?> annotatedClass = getAnnotatedClass(bd.getBeanClassName());
 				register(getAnnotationParam(annotatedClass), (Class<R>) annotatedClass);
-			} catch (Exception e) {
+			} catch (ClassNotFoundException e) {
 				LOG.error("Failed to register new transformation handler because: ", e);
 			}
 		}
+	}
+	
+	// This allows for testing the ClassNotFoundException
+	protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
+		return Class.forName(className);
 	}
 
 	@SuppressWarnings("unchecked")

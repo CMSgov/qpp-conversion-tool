@@ -158,11 +158,17 @@ public class JsonWrapper {
 		}
 	}
 	protected Boolean validBoolean(String value) throws EncodeException {
-		try {
-			return Boolean.parseBoolean( cleanString(value) );
-		} catch (Exception e) {
-			throw new EncodeException(value + " is not a boolean.", e);
+		value = cleanString(value);
+		
+		if ("true".equals(value) || "yes".equals(value) || "y".equals(value)) {
+			return true;
 		}
+		
+		if ("false".equals(value) || "no".equals(value) || "n".equals(value)) {
+			return false;
+		}
+		
+		throw new EncodeException(value + " is not a boolean.", null);
 	}
 
 	protected void initAsObject() {
