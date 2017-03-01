@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -71,7 +73,16 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	
 	protected void setNamespace(Element el, XmlInputDecoder decoder) {
 		decoder.defaultNs = el.getNamespace();
-		decoder.xpathNs = Namespace.getNamespace("ns", decoder.defaultNs.getURI());
+		
+		// this handle the case where there is no URI for a default namespace (test)
+		try {
+			Constructor<Namespace> constructor = Namespace.class.getDeclaredConstructor(String.class, String.class);
+			constructor.setAccessible(true);
+			decoder.xpathNs = constructor.newInstance("ns", decoder.defaultNs.getURI());
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			throw new XmlInputFileException("Cannot construct special xpath namespace", e);
+		}
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
