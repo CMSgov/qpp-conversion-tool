@@ -18,4 +18,4 @@ test:
   post:
     - cp -R java-conversion-tool/target/site/cobertura $CIRCLE_ARTIFACTS
     - mkdir $CIRCLE_ARTIFACTS/sonarlint
-    - cp -R java-conversion-tool/.sonarlint/* $CIRCLE_ARTIFACTS/sonarlint
+    - cp -R java-conversion-tool/src/main/.sonarlint/* $CIRCLE_ARTIFACTS/sonarlint
