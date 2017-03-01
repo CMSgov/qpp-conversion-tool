@@ -70,9 +70,7 @@ public class Converter implements Callable<Integer> {
 			
 			try (Writer writer = new FileWriter(outFile)) {
 				encoder.setNodes(Arrays.asList(decoded));
-				writer.write("Begin\n");
 				encoder.encode(writer);
-				writer.write("\nEnd\n");
 				//do something  with encode validations
 
 			} catch (IOException | EncodeException e) {
@@ -82,6 +80,9 @@ public class Converter implements Callable<Integer> {
 			}
 		} catch (XmlInputFileException | XmlException xe) {
 			System.err.println("The file is not a QDRA-III xml document");
+		} catch (Exception allE) {
+			// Eat all exceptions in the call
+			allE.printStackTrace();
 		}
 		return null;
     }
@@ -227,7 +228,7 @@ public class Converter implements Callable<Integer> {
 			} catch (InterruptedException | ExecutionException e) {
 				System.err.println("Transformation interrupted. ");
 				e.printStackTrace();
-				throw new XmlInputFileException("Could not process file(s).", e);
+				throw new RuntimeException("Could not process file(s).", e);
 			}
 		}
 	}
