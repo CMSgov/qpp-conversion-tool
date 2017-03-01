@@ -6,7 +6,6 @@ import java.io.File;
 import java.util.Collection;
 
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
 
 public class ConverterTest {
 
@@ -155,18 +154,12 @@ public class ConverterTest {
 	}
 	
 	@Test
-	public void testMultiThreadRun() throws Exception {
+	public void testMultiThreadRun() {
 		long start = System.currentTimeMillis();
 		
-		ClassPathResource pathTestDir = new ClassPathResource("pathTest");
-		ClassPathResource subDir = new ClassPathResource("pathTest/subdir");
-		
-		System.out.println(pathTestDir.getFile().getAbsolutePath());
-		System.out.println(subDir.getFile().getAbsolutePath());
-		
 		Converter.main(new String[] {
-				pathTestDir.getFile() + File.separator + "a.xml", 
-				subDir.getFile() + File.separator + "*.xml"
+				"src/test/resources/pathTest/a.xml", 
+				"src/test/resources/pathTest/subdir/*.xml"
 			});
 		
 		long finish = System.currentTimeMillis();
