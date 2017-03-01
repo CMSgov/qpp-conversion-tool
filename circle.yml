@@ -14,7 +14,7 @@ test:
     - cd java-conversion-tool; mvn integration-test
     - cd java-conversion-tool; mvn cobertura:cobertura
     - cd java-conversion-tool; mvn cobertura:check
-    - cd java-conversion-tool; ../sonarlint-cli-2.1.0.566/bin/sonarlint
+    - cd java-conversion-tool/src/main; ../sonarlint-cli-2.1.0.566/bin/sonarlint
   post:
     - cp -R java-conversion-tool/target/site/cobertura $CIRCLE_ARTIFACTS
     - mkdir $CIRCLE_ARTIFACTS/sonarlint
