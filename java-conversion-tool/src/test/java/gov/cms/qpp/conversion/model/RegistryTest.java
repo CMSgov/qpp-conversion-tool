@@ -86,6 +86,24 @@ public class RegistryTest {
 		assertThat("Registry should return null for faile construction not an exception.", decoder, is(nullValue()));
 	}
 
+	@Test
+	public void testClassNotFoundCausesMissingEntriesInRegistry_throwsNoException() {
+		Registry<String,XmlDecoder> registryA = new Registry<String,XmlDecoder>(XmlDecoder.class);
+		
+		// Mock the condition where a class is not found during registry building
+		Registry<String,XmlDecoder> registryB = new Registry<String,XmlDecoder>(XmlDecoder.class) {
+			@Override
+			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
+				if ("gov.cms.qpp.conversion.decode.AciNumeratorDenominatorDecoder".equals(className)) {
+					throw new ClassNotFoundException();
+				}
+				return Class.forName(className);
+			}
+		};
+		
+		assertEquals("The class not found should cause B to be missing a decoder",
+				registryA.registry.size(), registryB.registry.size() + 1);
+	}
 }
 
 @SuppressWarnings("unused") // this is here for a the annotation tests
