@@ -22,17 +22,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.decode.XmlFileDecoder;
+import gov.cms.qpp.conversion.decode.XmlInputDecoder;
+import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class Converter implements Callable<Integer> {
     static final Logger LOG = LoggerFactory.getLogger(Converter.class);
 
-    static final int MAX_THREADS = 10;
+    static final int MAX_THREADS = 1;
     
     final File inFile;
     
@@ -48,32 +51,37 @@ public class Converter implements Callable<Integer> {
 		}
 		
 		Validations.init();
-		XmlFileDecoder fileDecoder = new XmlFileDecoder(inFile, new QppXmlDecoder());
-		Node decoded = fileDecoder.decode();
-		JsonOutputEncoder encoder = new QppOutputEncoder();
-		
-		String name = inFile.getName().trim();
-		System.out.println("Decoded template ID " + decoded.getId() + " from file '" + name + "'");
-		//do something  with decode validations
-		Validations.clear();
-		Validations.init();
-		
-		String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
-		
-		File outFile = new File(outName);
-		System.out.println("Writing to file '" + outFile.getAbsolutePath() + "'");
-		
-		try (Writer writer = new FileWriter(outFile)) {
-			encoder.setNodes(Arrays.asList(decoded));
-			writer.write("Begin\n");
-			encoder.encode(writer);
-			writer.write("\nEnd\n");
-			//do something  with encode validations
-
-		} catch (IOException | EncodeException e) {
-			e.printStackTrace();
-		} finally {
+		XmlInputDecoder fileDecoder = new QppXmlDecoder();
+		try {
+			Node decoded = fileDecoder.decode(XmlUtils.fileToDOM(inFile));
+			
+			JsonOutputEncoder encoder = new QppOutputEncoder();
+			
+			String name = inFile.getName().trim();
+			System.out.println("Decoded template ID " + decoded.getId() + " from file '" + name + "'");
+			//do something  with decode validations
 			Validations.clear();
+			Validations.init();
+			
+			String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
+			
+			File outFile = new File(outName);
+			System.out.println("Writing to file '" + outFile.getAbsolutePath() + "'");
+			
+			try (Writer writer = new FileWriter(outFile)) {
+				encoder.setNodes(Arrays.asList(decoded));
+				writer.write("Begin\n");
+				encoder.encode(writer);
+				writer.write("\nEnd\n");
+				//do something  with encode validations
+
+			} catch (IOException | EncodeException e) {
+				throw new XmlInputFileException("Issues decoding/encoding.", e);
+			} finally {
+				Validations.clear();
+			}
+		} catch (XmlInputFileException | XmlException xe) {
+			System.err.println("The file is not a QDRA-III xml document");
 		}
 		return null;
     }
@@ -210,13 +218,16 @@ public class Converter implements Callable<Integer> {
 	private static void waitForAllToFinish(int count, CompletionService<Integer> completionService) {
 		int finished = 0;
 		while (finished < count) {
+			Future<Integer> resultFuture = null;
 			try {
-				Future<Integer> resultFuture = completionService.take();
+				resultFuture = completionService.take();
 				Integer result = resultFuture.get(); // TODO do something with result (and pick a good result)
 				finished++;
 				
 			} catch (InterruptedException | ExecutionException e) {
 				System.err.println("Transformation interrupted. ");
+				e.printStackTrace();
+				throw new XmlInputFileException("Could not process file(s).", e);
 			}
 		}
 	}

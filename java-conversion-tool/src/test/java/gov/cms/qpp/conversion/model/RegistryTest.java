@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.jdom2.Element;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -114,7 +115,7 @@ class Placeholder implements InputDecoder {
 	}
 
 	@Override
-	public Node decode() throws DecodeException {
+	public Node decode(Element xmlDoc) throws DecodeException {
 		return null;
 	}
 };
@@ -124,7 +125,7 @@ class PrivateConstructor implements InputDecoder {
 	}
 
 	@Override
-	public Node decode() throws DecodeException {
+	public Node decode(Element xmlDoc) throws DecodeException {
 		return null;
 	}
 };

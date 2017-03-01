@@ -17,34 +17,43 @@ import gov.cms.qpp.conversion.model.XmlRootDecoder;
 
 public abstract class XmlInputDecoder implements InputDecoder, Validatable<String, String> {
 	protected static Registry<String, XmlInputDecoder> rootDecoders = new Registry<String, XmlInputDecoder>(XmlRootDecoder.class);
-	protected Element xmlDoc;
 	protected Namespace defaultNs; 
 	protected Namespace xpathNs;
 	
 	public XmlInputDecoder() {
 	}
 
-	public void setDom(Element xmlDoc) {
-		this.xmlDoc = xmlDoc;
-	}
-	
 	/**
 	 * Decode a document into a Node
 	 */
-	public Node decode() {
+	public Node decode(Element xmlDoc) {
 		
 		XmlInputDecoder decoder = rootDecoders.get(xmlDoc.getDocument().getRootElement().getName());
 		
 		if (null != decoder) {
 			setNamespace(xmlDoc, decoder);
-			return decoder.internalDecode(xmlDoc, new Node());
+			Node parsedNode = decoder.internalDecode(xmlDoc, new Node());
+			
+			if (null == parsedNode.getId()) {
+				throw new XmlInputFileException("ClinicalDocument templateId cannot be found.");
+			}
+			
+			return parsedNode;
+		} else {
+			throw new XmlInputFileException("ClinicalDocument node cannot be parsed.");
 		}
+		
+	}
+	
+	/**
+	 * Decode a XML fragment into a Node
+	 */
+	public Node decodeFragment(Element xmlDoc) {
 		
 		Node rootParentNode = new Node();
 		rootParentNode.setId("placeholder");
 
 		return decode(xmlDoc, rootParentNode);
-		
 	}
 
 	/**
