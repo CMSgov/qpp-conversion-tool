@@ -21,9 +21,11 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 		String performanceStart = node.getValue("performanceStart");
 		String performanceEnd = node.getValue("performanceEnd");
-		String performanceYear = performanceStart.substring(0, 4);
-
-		wrapper.putInteger("performanceYear", performanceYear);
+		
+		if (null != performanceStart) {
+			String performanceYear = performanceStart.substring(0, 4);
+			wrapper.putInteger("performanceYear", performanceYear);
+		}
 
 		List<Node> children = node.getChildNodes();
 

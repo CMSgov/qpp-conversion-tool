@@ -8,10 +8,8 @@ import static org.junit.Assert.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jdom2.Element;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
@@ -70,12 +68,7 @@ public class AciProportionMeasureDecoderTest {
 				"	</organizer>\n" + 
 				"</entry>";
 		
-		Element dom =  XmlUtils.stringToDOM(xmlFragment);
-		
-		QppXmlDecoder decoder = new QppXmlDecoder();
-		decoder.setDom(dom);
-
-		Node root = decoder.decode();
+		Node root = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));
@@ -117,12 +110,7 @@ public class AciProportionMeasureDecoderTest {
 				"	</organizer>\n" + 
 				"</entry>";
 		
-		Element dom =  XmlUtils.stringToDOM(xmlFragment);
-		
-		QppXmlDecoder decoder = new QppXmlDecoder();
-		decoder.setDom(dom);
-
-		Node root = decoder.decode();
+		Node root = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));

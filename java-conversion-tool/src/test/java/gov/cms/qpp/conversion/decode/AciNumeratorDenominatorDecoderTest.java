@@ -5,10 +5,8 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import org.jdom2.Element;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
@@ -26,12 +24,7 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Element dom = XmlUtils.stringToDOM(xmlFragment);
-
-		QppXmlDecoder decoder = new QppXmlDecoder();
-		decoder.setDom(dom);
-
-		Node numDenomNode = decoder.decode();
+		Node numDenomNode = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the
@@ -56,12 +49,7 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Element dom = XmlUtils.stringToDOM(xmlFragment);
-
-		QppXmlDecoder decoder = new QppXmlDecoder();
-		decoder.setDom(dom);
-
-		Node numDenomNode = decoder.decode();
+		Node numDenomNode = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the
@@ -84,12 +72,8 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Element dom = XmlUtils.stringToDOM(xmlFragment);
 
-		QppXmlDecoder decoder = new QppXmlDecoder();
-		decoder.setDom(dom);
-
-		Node numDenomNode = decoder.decode();
+		Node numDenomNode = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the

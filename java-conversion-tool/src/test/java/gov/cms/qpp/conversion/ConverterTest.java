@@ -60,7 +60,7 @@ public class ConverterTest {
 	@Test
 	public void testExtractDir_unix() {
 		String regex  = Converter.extractDir("path/to/dir/*.xml");
-		String expect = "path/to/dir/";
+		String expect = "path" + File.separator + "to" + File.separator + "dir" + File.separator; 
 		assertEquals(expect, regex);
 	}
 	@Test
@@ -68,7 +68,7 @@ public class ConverterTest {
 		// testing the extraction not the building on windows
 		String regex  = Converter.extractDir("path\\to\\dir\\*.xml");
 		// this test is running on *nix so expect this path while testing
-		String expect = "path/to/dir/"; 
+		String expect = "path" + File.separator + "to" + File.separator + "dir" + File.separator; 
 		
 		assertEquals(expect, regex);
 	}

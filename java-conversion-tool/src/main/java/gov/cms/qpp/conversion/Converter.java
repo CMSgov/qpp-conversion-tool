@@ -22,12 +22,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.decode.XmlFileDecoder;
+import gov.cms.qpp.conversion.decode.XmlInputDecoder;
+import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class Converter implements Callable<Integer> {
     static final Logger LOG = LoggerFactory.getLogger(Converter.class);
@@ -48,32 +51,38 @@ public class Converter implements Callable<Integer> {
 		}
 		
 		Validations.init();
-		XmlFileDecoder fileDecoder = new XmlFileDecoder(inFile, new QppXmlDecoder());
-		Node decoded = fileDecoder.decode();
-		JsonOutputEncoder encoder = new QppOutputEncoder();
-		
-		String name = inFile.getName().trim();
-		System.out.println("Decoded template ID " + decoded.getId() + " from file '" + name + "'");
-		//do something  with decode validations
-		Validations.clear();
-		Validations.init();
-		
-		String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
-		
-		File outFile = new File(outName);
-		System.out.println("Writing to file '" + outFile.getAbsolutePath() + "'");
-		
-		try (Writer writer = new FileWriter(outFile)) {
-			encoder.setNodes(Arrays.asList(decoded));
-			writer.write("Begin\n");
-			encoder.encode(writer);
-			writer.write("\nEnd\n");
-			//do something  with encode validations
-
-		} catch (IOException | EncodeException e) {
-			e.printStackTrace();
-		} finally {
+		XmlInputDecoder fileDecoder = new QppXmlDecoder();
+		try {
+			Node decoded = fileDecoder.decode(XmlUtils.fileToDOM(inFile));
+			
+			JsonOutputEncoder encoder = new QppOutputEncoder();
+			
+			String name = inFile.getName().trim();
+			LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
+			//do something  with decode validations
 			Validations.clear();
+			Validations.init();
+			
+			String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
+			
+			File outFile = new File(outName);
+			LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
+			
+			try (Writer writer = new FileWriter(outFile)) {
+				encoder.setNodes(Arrays.asList(decoded));
+				encoder.encode(writer);
+				//do something  with encode validations
+
+			} catch (IOException | EncodeException e) {
+				throw new XmlInputFileException("Issues decoding/encoding.", e);
+			} finally {
+				Validations.clear();
+			}
+		} catch (XmlInputFileException | XmlException xe) {
+			LOG.error("The file is not a QDRA-III xml document");
+		} catch (Exception allE) {
+			// Eat all exceptions in the call
+			LOG.error(allE.getMessage());
 		}
 		return null;
     }
@@ -81,7 +90,7 @@ public class Converter implements Callable<Integer> {
     
     public static Collection<File> validArgs(String[] args) {
 		if (args.length < 1) {
-			System.err.println("No filename found...");
+			LOG.error("No filename found...");
 			return new LinkedList<>();
 		}
 		
@@ -109,7 +118,7 @@ public class Converter implements Callable<Integer> {
     	if ( file.exists() ) {
     		existingFiles.add(file);
     	} else {
-    		System.err.println(path + " does not exist.");
+    		LOG.error(path + " does not exist.");
     	}
     	
     	return existingFiles;
@@ -124,7 +133,7 @@ public class Converter implements Callable<Integer> {
     			  new RegexFileFilter(fileRegex), DirectoryFileFilter.DIRECTORY);
     		return existingFiles;
     	} catch (Exception e) {
-    		System.err.println("Cannot file path " + inDir+fileRegex);
+    		LOG.error("Cannot file path {}{}", inDir,fileRegex);
     		return new LinkedList<>();
     	}
 	}
@@ -162,7 +171,7 @@ public class Converter implements Callable<Integer> {
 		String[] parts = wild.split("[\\/\\\\]");
 		
 		if (parts.length > 2) {
-			System.err.println("Too many wild cards in " + path);
+			LOG.error("Too many wild cards in {}", path);
 			return "";
 		}
 		String lastPart = parts[ parts.length-1 ];
@@ -210,13 +219,16 @@ public class Converter implements Callable<Integer> {
 	private static void waitForAllToFinish(int count, CompletionService<Integer> completionService) {
 		int finished = 0;
 		while (finished < count) {
+			Future<Integer> resultFuture = null;
 			try {
-				Future<Integer> resultFuture = completionService.take();
+				resultFuture = completionService.take();
 				Integer result = resultFuture.get(); // TODO do something with result (and pick a good result)
 				finished++;
 				
 			} catch (InterruptedException | ExecutionException e) {
-				System.err.println("Transformation interrupted. ");
+				LOG.error("Transformation interrupted.");
+				LOG.error(e.getMessage());
+				throw new RuntimeException("Could not process file(s).", e);
 			}
 		}
 	}

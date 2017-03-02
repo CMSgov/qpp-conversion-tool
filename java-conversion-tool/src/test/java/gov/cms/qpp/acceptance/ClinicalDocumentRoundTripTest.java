@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.jdom2.Element;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,14 +49,9 @@ public class ClinicalDocumentRoundTripTest {
 	@Test
 	public void parseAciNumeratorDenominatorAsNode() throws Exception {
 		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III.xml");
-		String xmlString = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
-		Element dom = XmlUtils.stringToDOM(xmlString);
-
-		QppXmlDecoder parser = new QppXmlDecoder();
-		parser.setDom(dom);
-
-		Node clinicalDocumentNode = parser.decode();
+		Node clinicalDocumentNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();
