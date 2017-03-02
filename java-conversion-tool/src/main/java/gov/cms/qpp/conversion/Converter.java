@@ -35,7 +35,7 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 public class Converter implements Callable<Integer> {
     static final Logger LOG = LoggerFactory.getLogger(Converter.class);
 
-    static final int MAX_THREADS = 1;
+    static final int MAX_THREADS = 10;
     
     final File inFile;
     
@@ -58,7 +58,7 @@ public class Converter implements Callable<Integer> {
 			JsonOutputEncoder encoder = new QppOutputEncoder();
 			
 			String name = inFile.getName().trim();
-			System.out.println("Decoded template ID " + decoded.getId() + " from file '" + name + "'");
+			LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
 			//do something  with decode validations
 			Validations.clear();
 			Validations.init();
@@ -66,7 +66,7 @@ public class Converter implements Callable<Integer> {
 			String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
 			
 			File outFile = new File(outName);
-			System.out.println("Writing to file '" + outFile.getAbsolutePath() + "'");
+			LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
 			
 			try (Writer writer = new FileWriter(outFile)) {
 				encoder.setNodes(Arrays.asList(decoded));
@@ -79,10 +79,10 @@ public class Converter implements Callable<Integer> {
 				Validations.clear();
 			}
 		} catch (XmlInputFileException | XmlException xe) {
-			System.err.println("The file is not a QDRA-III xml document");
+			LOG.error("The file is not a QDRA-III xml document");
 		} catch (Exception allE) {
 			// Eat all exceptions in the call
-			allE.printStackTrace();
+			LOG.error(allE.getMessage());
 		}
 		return null;
     }
@@ -90,7 +90,7 @@ public class Converter implements Callable<Integer> {
     
     public static Collection<File> validArgs(String[] args) {
 		if (args.length < 1) {
-			System.err.println("No filename found...");
+			LOG.error("No filename found...");
 			return new LinkedList<>();
 		}
 		
@@ -118,7 +118,7 @@ public class Converter implements Callable<Integer> {
     	if ( file.exists() ) {
     		existingFiles.add(file);
     	} else {
-    		System.err.println(path + " does not exist.");
+    		LOG.error(path + " does not exist.");
     	}
     	
     	return existingFiles;
@@ -133,7 +133,7 @@ public class Converter implements Callable<Integer> {
     			  new RegexFileFilter(fileRegex), DirectoryFileFilter.DIRECTORY);
     		return existingFiles;
     	} catch (Exception e) {
-    		System.err.println("Cannot file path " + inDir+fileRegex);
+    		LOG.error("Cannot file path {}{}", inDir,fileRegex);
     		return new LinkedList<>();
     	}
 	}
@@ -171,7 +171,7 @@ public class Converter implements Callable<Integer> {
 		String[] parts = wild.split("[\\/\\\\]");
 		
 		if (parts.length > 2) {
-			System.err.println("Too many wild cards in " + path);
+			LOG.error("Too many wild cards in {}", path);
 			return "";
 		}
 		String lastPart = parts[ parts.length-1 ];
@@ -226,8 +226,8 @@ public class Converter implements Callable<Integer> {
 				finished++;
 				
 			} catch (InterruptedException | ExecutionException e) {
-				System.err.println("Transformation interrupted. ");
-				e.printStackTrace();
+				LOG.error("Transformation interrupted.");
+				LOG.error(e.getMessage());
 				throw new RuntimeException("Could not process file(s).", e);
 			}
 		}
