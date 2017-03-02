@@ -71,6 +71,15 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 			assertThat("Expected XmlInputFileException", e instanceof XmlInputFileException, is(true));
 		}
 		
+		xmlResource = new ClassPathResource("bogus-QDRA-III-root");
+		xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		
+		try {
+			new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		} catch (Exception e) {
+			assertThat("Expected XmlInputFileException", e instanceof XmlInputFileException, is(true));
+		}
+		
 		xmlResource = new ClassPathResource("non-xml-file.xml");
 		xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 		
