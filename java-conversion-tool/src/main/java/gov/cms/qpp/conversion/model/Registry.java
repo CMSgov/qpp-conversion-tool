@@ -90,6 +90,10 @@ public class Registry<V extends Object, R extends Object> {
 			Encoder encoder = (Encoder) annotation;
 			return (V) encoder.templateId();
 		}
+		if (annotation instanceof Validator) {
+			Validator validator = (Validator) annotation;
+			return (V) validator.templateId();
+		}
 		return null;
 	}
 
