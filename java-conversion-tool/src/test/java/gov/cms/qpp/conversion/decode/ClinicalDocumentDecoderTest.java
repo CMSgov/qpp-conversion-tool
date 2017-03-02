@@ -55,10 +55,7 @@ public class ClinicalDocumentDecoderTest {
 		assertThat("returned node should have one child decoder node", iaSectionNode.getChildNodes().size(), is(1));
 		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
 		assertThat("returned measureId IA_EPA_1", iaMeasureNode.getValue("measureId"), is("IA_EPA_1"));
-		// Should have a measurement node
-		assertThat("returned node should have one child decoder node", iaMeasureNode.getChildNodes().size(), is(1));
-		Node iaMeasurementNode = iaMeasureNode.getChildNodes().get(0);
-		assertThat("returned ", iaMeasurementNode.getValue("iaMeasureNode"), is("Y"));
+		assertThat("returned iaMeasured Y", iaMeasureNode.getValue("iaMeasured"), is("Y"));
 
 	}
 	

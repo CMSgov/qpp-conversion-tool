@@ -4,14 +4,20 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
 
+import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class QppXmlDecoderTest extends QppXmlDecoder {
 	
@@ -53,6 +59,29 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 		
 		assertThat("Expected count", count, is(2));
 	}
+	
+	@Test
+	public void validationFileTest() throws Exception {
+		ClassPathResource xmlResource = new ClassPathResource("bogus-QDRA-III");
+		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		
+		try {
+			new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		} catch (Exception e) {
+			assertThat("Expected XmlInputFileException", e instanceof XmlInputFileException, is(true));
+		}
+		
+		xmlResource = new ClassPathResource("non-xml-file.xml");
+		xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		
+		try {
+			new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		} catch (Exception e) {
+			assertThat("Expected XmlException", e instanceof XmlException, is(true));
+		}
+		
+	}
+
 	
 	@Test
 	public void sillyCoverageTest() throws Exception {
