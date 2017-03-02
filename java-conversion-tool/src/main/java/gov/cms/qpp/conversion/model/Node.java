@@ -58,7 +58,28 @@ public class Node implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Node: internalId: " + internalId + ", data: " + data + ", childNodes: " + childNodes;
+		return toString("");// no tabs to start
+	}
+	protected String toString(String tabs) {
+		return tabs + selfToString() + "\n" + childrenToString(tabs+"\t");
+	}
+	protected String selfToString() {
+		return "Node: internalId: " + internalId + ", data: " + data;
+	}
+	protected String childrenToString(String tabs) {
+		StringBuilder children = new StringBuilder();
+		if ( childNodes.isEmpty() ) {
+			children.append(" -> (none)");
+		} else {
+			children.append(": \n");
+			String sep = "";
+			String toBeSep = "\n";
+			for (Node child : childNodes) {
+				children.append(sep).append(child.toString(tabs));
+				sep=toBeSep;
+			}
+		}
+		return tabs +"childNodes of " +internalId +children;
 	}
 
 	public Set<String> getKeys() {
