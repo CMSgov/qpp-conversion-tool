@@ -34,7 +34,11 @@ public class ClinicalDocumentRoundTripTest {
 			+ "{\n      \"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n"
 			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
 			+ "\n    \"source\" : \"provider\"," + "\n    \"performanceStart\" : \"2017-01-01\","
-			+ "\n    \"performanceEnd\" : \"2017-12-31\"" + "\n  } ]\n}";
+			+ "\n    \"performanceEnd\" : \"2017-12-31\"" + "\n  }, "
+			+ "{\n    \"category\" : \"ia\",\n    \"measurements\" : "
+			+ "[ {\n      \"measureId\" : \"IA_EPA_1\",\n      \"value\" : true\n    } ]"
+			+ ",\n    \"source\" : \"provider\",\n    \"performanceStart\" : \"2017-01-01\",\n    "
+			+ "\"performanceEnd\" : \"2017-12-31\"\n  } ]\n}";
 
 	@Before
 	public void setup() throws Exception {

@@ -1,12 +1,10 @@
 package gov.cms.qpp.conversion.decode;
 
-import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
-import org.jdom2.xpath.XPathExpression;
-import org.jdom2.xpath.XPathFactory;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.XmlDecoder;
@@ -18,19 +16,22 @@ public class AciProportionMeasureDecoder extends QppXmlDecoder {
 	@Override
 	protected Node internalDecode(Element element, Node thisnode) {
 		
-		XPathExpression<Attribute> measureIdExpr = XPathFactory.instance()
-				.compile("./ns:reference/ns:externalDocument/ns:id/@extension", Filters.attribute(), null, xpathNs);
+		setMeasureIdOnNode(element, thisnode);
 
-		Optional.ofNullable(measureIdExpr.evaluateFirst(element))
-				.ifPresent(p -> thisnode.putValue("measureId", p.getValue()));
-
-		// getChildren always returns at least an empty list
-		for (Element child : element.getChildren("component", defaultNs)) {
-			this.decode(child, thisnode);
-		}
+		processComponentElement(element, thisnode);
 
 		return thisnode;
 
+	}
+
+	protected void setMeasureIdOnNode(Element element, Node thisnode) {
+		String expressionStr = "./ns:reference/ns:externalDocument/ns:id/@extension";
+		Consumer<? super Attribute> consumer = p -> thisnode.putValue("measureId", p.getValue());
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+	}
+	
+	protected void processComponentElement(Element element, Node thisnode) {
+		this.decode(element.getChildren("component", defaultNs), thisnode);
 	}
 
 }
