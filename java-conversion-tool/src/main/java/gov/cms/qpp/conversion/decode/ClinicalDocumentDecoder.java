@@ -15,6 +15,8 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	
 	@Override
 	protected Node internalDecode(Element element, Node thisnode) {
+		setNamespace(element, this);
+		
 		setTemplateIdOnNode(element, thisnode);
 		
 		setProgramNameOnNode(element, thisnode);
