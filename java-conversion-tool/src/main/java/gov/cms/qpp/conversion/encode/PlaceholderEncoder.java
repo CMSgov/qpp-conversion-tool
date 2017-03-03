@@ -14,9 +14,13 @@ public class PlaceholderEncoder extends QppOutputEncoder {
 		// does not do anything except call write on any children
 
 		for (Node child : node.getChildNodes()) {
-			JsonOutputEncoder encoder = encoders.get(child.getId());
-
-			encoder.encode(wrapper, child);
+			String templateId = child.getId();
+			JsonOutputEncoder encoder = encoders.get(templateId);
+			if (encoder == null) {
+				addValidation(templateId, "Failed to find an encoder");
+			} else {
+				encoder.encode(wrapper, child);
+			}
 		}
 	}
 }
