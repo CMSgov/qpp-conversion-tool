@@ -11,6 +11,8 @@ import org.jdom2.Namespace;
 import org.jdom2.filter.Filter;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
@@ -18,6 +20,7 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.XmlRootDecoder;
 
 public abstract class XmlInputDecoder implements InputDecoder, Validatable<String, String> {
+    static final Logger LOG = LoggerFactory.getLogger(XmlInputDecoder.class);
 	protected static Registry<String, XmlInputDecoder> rootDecoders = new Registry<String, XmlInputDecoder>(XmlRootDecoder.class);
 	protected Namespace defaultNs; 
 	protected Namespace xpathNs;
@@ -28,23 +31,34 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	/**
 	 * Decode a document into a Node
 	 */
-	public Node decode(Element xmlDoc) {
+	public static Node decodeAll(Element xmlDoc) {
 		
 		XmlInputDecoder decoder = rootDecoders.get(xmlDoc.getDocument().getRootElement().getName());
 		
-		if (null != decoder) {
-			setNamespace(xmlDoc, decoder);
+		if (decoder instanceof QppXmlDecoder) {
 			Node parsedNode = decoder.internalDecode(xmlDoc, new Node());
 			
 			if (null == parsedNode.getId()) {
-				throw new XmlInputFileException("ClinicalDocument templateId cannot be found.");
+				LOG.error("The file is not a QDRA-III xml document");
 			}
 			
 			return parsedNode;
-		} else {
-			throw new XmlInputFileException("ClinicalDocument node cannot be parsed.");
+		} 
+		// else if (decoder instanceof <Other decoder>) {
+		//  Validation
+		//
+		else {
+			LOG.error("The file is an unknown XML document");
+			return null;
 		}
 		
+	}
+	
+	/**
+	 * Decode a document into a Node
+	 */
+	public Node decode(Element xmlDoc) {
+		return decodeAll(xmlDoc);
 	}
 	
 	/**
@@ -79,9 +93,8 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 			Constructor<Namespace> constructor = Namespace.class.getDeclaredConstructor(String.class, String.class);
 			constructor.setAccessible(true);
 			decoder.xpathNs = constructor.newInstance("ns", decoder.defaultNs.getURI());
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-			throw new XmlInputFileException("Cannot construct special xpath namespace", e);
+		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw new IllegalArgumentException("Cannot construct special Xpath namespace", e);
 		}
 	}
 	

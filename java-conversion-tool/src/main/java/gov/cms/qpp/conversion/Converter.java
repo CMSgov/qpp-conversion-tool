@@ -21,7 +21,6 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
@@ -51,9 +50,8 @@ public class Converter implements Callable<Integer> {
 		}
 		
 		Validations.init();
-		XmlInputDecoder fileDecoder = new QppXmlDecoder();
 		try {
-			Node decoded = fileDecoder.decode(XmlUtils.fileToDOM(inFile));
+			Node decoded = XmlInputDecoder.decodeAll(XmlUtils.fileToDOM(inFile));
 			
 			JsonOutputEncoder encoder = new QppOutputEncoder();
 			
