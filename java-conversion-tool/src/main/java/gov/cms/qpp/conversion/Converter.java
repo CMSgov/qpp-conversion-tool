@@ -77,7 +77,7 @@ public class Converter implements Callable<Integer> {
 				Validations.clear();
 			}
 		} catch (XmlInputFileException | XmlException xe) {
-			LOG.error("The file is not a QDRA-III xml document");
+			LOG.error("The file is not a valid XML document");
 		} catch (Exception allE) {
 			// Eat all exceptions in the call
 			LOG.error(allE.getMessage());
