@@ -8,7 +8,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jdom2.Element;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
@@ -31,12 +30,7 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 				"    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>",
 				"  </observation>", "</root>");
 
-		Element dom = XmlUtils.stringToDOM(xmlFragment);
-
-		QppXmlDecoder decoder = new QppXmlDecoder();
-		decoder.setDom(dom);
-
-		Node numDenomNode = decoder.decode();
+		Node numDenomNode = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();

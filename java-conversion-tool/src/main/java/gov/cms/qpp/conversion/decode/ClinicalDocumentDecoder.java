@@ -1,12 +1,11 @@
 package gov.cms.qpp.conversion.decode;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.function.Consumer;
 
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
-import org.jdom2.xpath.XPathExpression;
-import org.jdom2.xpath.XPathFactory;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.XmlRootDecoder;
@@ -16,46 +15,63 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	
 	@Override
 	protected Node internalDecode(Element element, Node thisnode) {
-		XPathExpression<Attribute> templateIdExpr = XPathFactory.instance()
-				.compile("./ns:templateId[@root='2.16.840.1.113883.10.20.27.1.2']/@root", 
-						Filters.attribute(), null,  xpathNs);
+		setNamespace(element, this);
 		
-		XPathExpression<Attribute> programeNameExpr = XPathFactory.instance()
-				.compile("./ns:informationRecipient/ns:intendedRecipient/ns:id[@root='2.16.840.1.113883.3.249.7']/@extension", 
-						Filters.attribute(), null,  xpathNs);
+		setTemplateIdOnNode(element, thisnode);
 		
-		XPathExpression<Attribute> nationalProviderExpr = XPathFactory.instance()
-				.compile("./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/ns:id[@root='2.16.840.1.113883.4.6']/@extension", 
-						Filters.attribute(), null,  xpathNs);
-		
-		XPathExpression<Attribute> taxIdExpr = XPathFactory.instance()
-				.compile("./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/ns:representedOrganization/ns:id[@root='2.16.840.1.113883.4.2']/@extension", 
-						Filters.attribute(), null,  xpathNs);
-		
-		String effTimeStr = "./ns:component/ns:structuredBody/ns:component/ns:section[*[local-name()='templateId' and @root='2.16.840.1.113883.10.20.27.2.6']]/ns:entry/ns:act/ns:effectiveTime";
-		XPathExpression<Attribute> performanceStartExpr = XPathFactory.instance()
-				.compile(effTimeStr + "/ns:low/@value", Filters.attribute(), null,  xpathNs);
-		XPathExpression<Attribute> performanceEndExpr = XPathFactory.instance()
-				.compile(effTimeStr + "/ns:high/@value", Filters.attribute(), null,  xpathNs);
-		
-		XPathExpression<Element> componentExpr = XPathFactory.instance()
-				.compile("./ns:component/ns:structuredBody/ns:component", 
-						Filters.element(), null, xpathNs);
-		
-		Optional.ofNullable(templateIdExpr.evaluateFirst(element)).ifPresent(p -> thisnode.setId(p.getValue()));
-		
-		Optional.ofNullable(programeNameExpr.evaluateFirst(element)).ifPresent(p -> thisnode.putValue("programName", p.getValue().toLowerCase()));
+		setProgramNameOnNode(element, thisnode);
 
-		Optional.ofNullable(nationalProviderExpr.evaluateFirst(element)).ifPresent(p -> thisnode.putValue("nationalProviderIdentifier", p.getValue()));
+		setNationalProviderIdOnNode(element, thisnode);
 		
-		Optional.ofNullable(taxIdExpr.evaluateFirst(element)).ifPresent(p -> thisnode.putValue("taxpayerIdentificationNumber", p.getValue()));
+		setTaxProviderTaxIdOnNode(element, thisnode);
 
-		Optional.ofNullable(performanceStartExpr.evaluateFirst(element)).ifPresent(p -> thisnode.putValue("performanceStart", p.getValue()));
-		Optional.ofNullable(performanceEndExpr.evaluateFirst(element)).ifPresent(p -> thisnode.putValue("performanceEnd", p.getValue()));
+		setPerformanceTimeRangeOnNode(element, thisnode);
 		
-		Optional.ofNullable(componentExpr.evaluate(element)).ifPresent(p -> this.decode(p, thisnode));
+		processComponentElement(element, thisnode);
 
 		return thisnode;
+	}
+
+	protected void setTemplateIdOnNode(Element element, Node thisnode) {
+		String expressionStr = "./ns:templateId[@root='2.16.840.1.113883.10.20.27.1.2']/@root";
+		Consumer<? super Attribute> consumer = p -> thisnode.setId(p.getValue());
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+	}
+
+	protected void setProgramNameOnNode(Element element, Node thisnode) {
+		String expressionStr = "./ns:informationRecipient/ns:intendedRecipient/ns:id[@root='2.16.840.1.113883.3.249.7']/@extension";
+		Consumer<? super Attribute> consumer = p -> thisnode.putValue("programName", p.getValue().toLowerCase());
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+	}
+
+	protected void setNationalProviderIdOnNode(Element element, Node thisnode) {
+		String expressionStr = "./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/ns:id[@root='2.16.840.1.113883.4.6']/@extension";
+		Consumer<? super Attribute> consumer = p -> thisnode.putValue("nationalProviderIdentifier", p.getValue());
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+	}
+
+	protected void setTaxProviderTaxIdOnNode(Element element, Node thisnode) {
+		String expressionStr = "./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/ns:representedOrganization/ns:id[@root='2.16.840.1.113883.4.2']/@extension";
+		Consumer<? super Attribute> consumer = p -> thisnode.putValue("taxpayerIdentificationNumber", p.getValue());
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+	}
+
+	protected void setPerformanceTimeRangeOnNode(Element element, Node thisnode) {
+		String effTimeStr = "./ns:component/ns:structuredBody/ns:component/ns:section[*[local-name()='templateId' and @root='2.16.840.1.113883.10.20.27.2.6']]/ns:entry/ns:act/ns:effectiveTime";
+		String performanceStartExprStr = effTimeStr + "/ns:low/@value";
+		String performanceEndExprStr = effTimeStr + "/ns:high/@value";
+
+		Consumer<? super Attribute> performanceStartConsumer = p -> thisnode.putValue("performanceStart", p.getValue());
+		Consumer<? super Attribute> performanceEndConsumer = p -> thisnode.putValue("performanceEnd", p.getValue());
+
+		setOnNode(element, performanceStartExprStr, performanceStartConsumer, Filters.attribute(), true);
+		setOnNode(element, performanceEndExprStr, performanceEndConsumer, Filters.attribute(), true);
+	}
+
+	protected void processComponentElement(Element element, Node thisnode) {
+		String expressionStr = "./ns:component/ns:structuredBody/ns:component";
+		Consumer<? super List<Element>> consumer = p -> this.decode(p, thisnode);
+		setOnNode(element, expressionStr, consumer, Filters.element(), false);
 	}
 
 }

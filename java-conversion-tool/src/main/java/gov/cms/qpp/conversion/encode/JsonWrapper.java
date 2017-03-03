@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -21,13 +23,19 @@ import com.fasterxml.jackson.databind.ObjectWriter;
  * @param <T> Shole be String or Object for maps of children
  */
 public class JsonWrapper {
-
+	
 	// package access allows for simpler testing
 	/*package*/ ObjectWriter ow;
 	
 	public JsonWrapper() {
-		System.setProperty("line.separator", "\n");
-		ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		ow = getObjectWriter();
+	}
+
+	public static ObjectWriter getObjectWriter() {
+		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
+		DefaultPrettyPrinter pp = new DefaultPrettyPrinter();
+		pp.indentObjectsWith(withLinefeed);
+		return new ObjectMapper().writer().with(pp);
 	}
 
 	private Map<String, Object> object;

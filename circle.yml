@@ -5,11 +5,17 @@ machine:
 dependencies:
   override:
     - cd java-conversion-tool; mvn dependency:resolve
+    # download and extract the sonarlint code quality tool
+    - wget -O sonarlint.zip https://bintray.com/sonarsource/Distribution/download_file?file_path=sonarlint-cli%2Fsonarlint-cli-2.1.0.566.zip
+    - unzip -d . sonarlint.zip
 
 test:
   override:
     - cd java-conversion-tool; mvn integration-test
     - cd java-conversion-tool; mvn cobertura:cobertura
     - cd java-conversion-tool; mvn cobertura:check
+    - cd java-conversion-tool/src/main; ../../../sonarlint-cli-2.1.0.566/bin/sonarlint
   post:
     - cp -R java-conversion-tool/target/site/cobertura $CIRCLE_ARTIFACTS
+    - mkdir $CIRCLE_ARTIFACTS/sonarlint
+    - cp -R java-conversion-tool/src/main/.sonarlint/* $CIRCLE_ARTIFACTS/sonarlint

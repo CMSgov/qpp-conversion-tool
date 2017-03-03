@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+
 import gov.cms.qpp.conversion.model.Node;
 
 /**
@@ -7,5 +9,5 @@ import gov.cms.qpp.conversion.model.Node;
  *
  */
 public interface InputDecoder {
-	Node decode() throws DecodeException;
+	Node decode(Element xmlDoc) throws DecodeException;
 }

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.jdom2.Element;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +36,11 @@ public class ClinicalDocumentRoundTripTest {
 			+ "{\n      \"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n"
 			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
 			+ "\n    \"source\" : \"provider\"," + "\n    \"performanceStart\" : \"2017-01-01\","
-			+ "\n    \"performanceEnd\" : \"2017-12-31\"" + "\n  } ]\n}";
+			+ "\n    \"performanceEnd\" : \"2017-12-31\"" + "\n  }, "
+			+ "{\n    \"category\" : \"ia\",\n    \"measurements\" : "
+			+ "[ {\n      \"measureId\" : \"IA_EPA_1\",\n      \"value\" : true\n    } ]"
+			+ ",\n    \"source\" : \"provider\",\n    \"performanceStart\" : \"2017-01-01\",\n    "
+			+ "\"performanceEnd\" : \"2017-12-31\"\n  } ]\n}";
 
 	@Before
 	public void setup() throws Exception {
@@ -53,14 +56,9 @@ public class ClinicalDocumentRoundTripTest {
 	@Test
 	public void parseAciNumeratorDenominatorAsNode() throws Exception {
 		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III.xml");
-		String xmlString = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
-		Element dom = XmlUtils.stringToDOM(xmlString);
-
-		QppXmlDecoder parser = new QppXmlDecoder();
-		parser.setDom(dom);
-
-		Node clinicalDocumentNode = parser.decode();
+		Node clinicalDocumentNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
 		QrdaValidator validator = new QrdaValidator();
 		List<ValidationError> validationErrors = validator.validate(clinicalDocumentNode);
