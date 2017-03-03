@@ -3,6 +3,8 @@ package gov.cms.qpp.conversion.decode;
 import java.util.List;
 
 import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
@@ -14,6 +16,7 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
  * that can Decode an element.
  */
 public class QppXmlDecoder extends XmlInputDecoder {
+    final Logger LOG = LoggerFactory.getLogger(getClass());
  	
 	protected static Registry<String, QppXmlDecoder> decoders = new Registry<>(XmlDecoder.class);
 
@@ -27,7 +30,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * 
 	 */
 	@Override
-	protected Node decode(Element element, Node parentNode) {
+	public Node decode(Element element, Node parentNode) {
 
 		Node returnNode = parentNode;
 		
@@ -46,10 +49,13 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			for (Element eleele : chchildElements) {
 				if ("templateId".equals(eleele.getName())) {
 					String templateId = eleele.getAttributeValue("root");
+					LOG.debug("templateIdFound:{}", templateId);
 
 					QppXmlDecoder childDecoder = decoders.get(templateId);
-
+					
 					if (null != childDecoder) {
+						LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
+						
 						Node thisNode = new Node();
 						thisNode.setId(templateId);
 						
