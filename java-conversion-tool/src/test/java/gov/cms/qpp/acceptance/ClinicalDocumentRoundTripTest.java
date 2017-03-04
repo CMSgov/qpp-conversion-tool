@@ -2,6 +2,7 @@ package gov.cms.qpp.acceptance;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
@@ -19,7 +20,8 @@ import org.springframework.core.io.ClassPathResource;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.model.ValidationError;
+import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class ClinicalDocumentRoundTripTest {
@@ -43,14 +45,15 @@ public class ClinicalDocumentRoundTripTest {
 
 	@Before
 	public void setup() throws Exception {
-		Validations.init();
+		// Validations.init();
+		QrdaValidator.resetValidationErrors();
 	}
-	
+
 	@After
 	public void teardown() throws Exception {
-		Validations.clear();
+		// Validations.clear();
 	}
-	
+
 	@Ignore // TODO this will be revised with DaveP's new impl
 	@Test
 	public void parseAciNumeratorDenominatorAsNode() throws Exception {
@@ -59,15 +62,23 @@ public class ClinicalDocumentRoundTripTest {
 
 		Node clinicalDocumentNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
-		QppOutputEncoder encoder = new QppOutputEncoder();
-		List<Node> nodes = new ArrayList<>();
-		nodes.add(clinicalDocumentNode);
-		encoder.setNodes(nodes);
+		QrdaValidator validator = new QrdaValidator();
+		List<ValidationError> validationErrors = validator.validate(clinicalDocumentNode);
 
-		StringWriter sw = new StringWriter();
-		encoder.encode(new BufferedWriter(sw));
+		if (validationErrors.isEmpty()) {
+			QppOutputEncoder encoder = new QppOutputEncoder();
+			List<Node> nodes = new ArrayList<>();
+			nodes.add(clinicalDocumentNode);
+			encoder.setNodes(nodes);
 
-		assertThat("expected encoder to return a representation of a clinical document", sw.toString(), is(EXPECTED));
+			StringWriter sw = new StringWriter();
+			encoder.encode(new BufferedWriter(sw));
+
+			assertThat("expected encoder to return a representation of a clinical document", sw.toString(),
+					is(EXPECTED));
+		} else {
+			fail("validation errors occurred");
+		}
 
 	}
 

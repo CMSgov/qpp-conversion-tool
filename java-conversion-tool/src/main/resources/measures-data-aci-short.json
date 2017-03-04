@@ -1,4 +1,5 @@
-[
+{
+"measureConfigs" : [
   {
     "category": "aci",
     "firstPerformanceYear": 2017,
@@ -98,3 +99,4 @@
     "objective": "coordinationOfCareThroughPatientEngagement"
   }
 ]
+}
