@@ -51,7 +51,7 @@ public class ClinicalDocumentRoundTripTest {
 	}
 	
 	@Test
-	public void parseAciNumeratorDenominatorAsNode() throws Exception {
+	public void parseClinicalDocument() throws Exception {
 		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III.xml");
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 

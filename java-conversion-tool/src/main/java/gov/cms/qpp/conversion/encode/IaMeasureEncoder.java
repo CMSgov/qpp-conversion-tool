@@ -16,13 +16,18 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 		wrapper.putObject("measureId", node.getValue("measureId"));
 		
 		List<Node> children = node.getChildNodes();
-		Node measurePerformedNode = children.get(0);
-		JsonOutputEncoder measurePerformedEncoder = encoders.get(measurePerformedNode.getId());
 
-		JsonWrapper value = new JsonWrapper();
-		measurePerformedEncoder.encode(value, measurePerformedNode);
-
-		wrapper.putObject("value", ((List<?>) value.getObject()).get(0));
+		if (!children.isEmpty()) {
+			Node measurePerformedNode = children.get(0);
+			JsonOutputEncoder measurePerformedEncoder = encoders.get(measurePerformedNode.getId());
+	
+			JsonWrapper value = new JsonWrapper();
+			measurePerformedEncoder.encode(value, measurePerformedNode);
+	
+			if (null != ((List<?>)value.getObject()) && !((List<?>)value.getObject()).isEmpty()) {
+				wrapper.putObject("value", ((List<?>)value.getObject()).get(0));
+			}
+		}
 	}
 
 }
