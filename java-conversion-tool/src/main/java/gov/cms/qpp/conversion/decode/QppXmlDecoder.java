@@ -33,7 +33,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	@Override
 	public DecodeResult decode(Element element, Node parentNode) {
 
-		Node returnNode = parentNode;
+		Node currentNode = parentNode;
 
 		if (null == element) {
 			return DecodeResult.Error;
@@ -51,44 +51,49 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 				QppXmlDecoder childDecoder = decoders.get(templateId);
 
-				if (null != childDecoder) { // TODO if null continue
-					LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
-
+				if (null == childDecoder) {
+					continue;
+				}
+				LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
+				
 					Node childNode = new Node(parentNode, templateId);
-
-					setNamespace(childeEl, childDecoder);
-
-					// the child decoder might require the entire its siblings
-					DecodeResult result = childDecoder.internalDecode(element, childNode);
-
-					parentNode.addChildNode(childNode); // TODO ensure we need
-														// to alwaus add
-
-					// TODO could be a switch
-					if (result == DecodeResult.TreeFinished) {
-						break; // this child is done
-					}
-					if (result == DecodeResult.TreeContinue) {
-						return decode(childeEl, childNode);
-					}
-					if (result == DecodeResult.Error) {
+				
+				setNamespace(childeEl, childDecoder);
+				
+				// the child decoder might require the entire its siblings
+				DecodeResult result = childDecoder.internalDecode(element, childNode);
+				
+				parentNode.addChildNode(childNode); // TODO ensure we need to always add
+				currentNode = childNode; // TODO this works for AciSectionDecoder
+				
+				if (result == null) {
+					// TODO this looks like a continue ????
+					// the only time we get here is NullReturnDecoderTest
+						Node placeholderNode = new Node(parentNode, "placeholder");
+					return decode(childeEl, placeholderNode);
+				}
+				switch (result) {
+					case TreeFinished:
+						// this child is done
+						return DecodeResult.TreeFinished;
+					case TreeContinue:
+						decode(childeEl, childNode);
+						break;
+					case Error:
 						// TODO Validation Error, include element data ????
 						addValidation(templateId, "Failed to decode.");
 						LOG.error("Failed to decode temlateId {} ", templateId);
-					}
-					if (result == null) {
-						// the only time we get into here is
-						// NullReturnDecoderTest
-						Node placeholderNode = new Node(parentNode, "placeholder");
-						return decode(childeEl, placeholderNode);
-					}
+						break;
+					default:
+						LOG.error("We need to define a default case. Could be TreeContiue?");
 				}
 			} else {
-				return decode(childeEl, parentNode);
+				// TODO might need a child node -- not sure
+				decode(childeEl, currentNode);
 			}
 		}
 
-		return DecodeResult.TreeFinished;
+		return DecodeResult.TreeContinue;
 	}
 
 	@Override
