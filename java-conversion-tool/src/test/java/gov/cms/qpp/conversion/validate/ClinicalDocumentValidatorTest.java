@@ -25,13 +25,17 @@ public class ClinicalDocumentValidatorTest {
 	@Test
 	public void testClinicalDocumentPresent() {
 
-		Node clinicalDocumentNode = new Node();
-		clinicalDocumentNode.setId("2.16.840.1.113883.10.20.27.1.2");
+		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
+
+		Node aciSectionNode = new Node(clinicalDocumentNode, "2.16.840.1.113883.10.20.27.2.5");
+		aciSectionNode.putValue("category", "aci");
+
+		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
 		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);

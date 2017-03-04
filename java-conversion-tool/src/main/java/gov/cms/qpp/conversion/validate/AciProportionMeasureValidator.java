@@ -8,6 +8,7 @@ import org.springframework.core.io.ClassPathResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.NodeType;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
@@ -29,9 +30,54 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 
 		List<Node> nodes = node.findNode(thisAnnotation.templateId());
 
+		// Most likely, this "required" validation can be moved into the
+		// QrdaValidator superclass
 		if (thisAnnotation.required()) {
-			if (null == nodes || nodes.size() == 0) {
+			if (null == nodes || nodes.isEmpty()) {
 				this.addValidationError(new ValidationError("At least one Aci Proportion Measure Node is required"));
+			}
+		}
+
+		// the aci measure node should have an aci section node as parent
+		// it can have a numerator node and a denominator node as children
+
+		if (null != nodes && !nodes.isEmpty()) {
+			for (Node aNode : nodes) {
+				if (NodeType.ACI_SECTION != aNode.getParent().getType()) {
+					this.addValidationError(
+							new ValidationError("This ACI Measure Node should have an ACI Section Node as a parent"));
+				}
+
+				List<Node> children = aNode.getChildNodes();
+
+				if (null != children && children.size() == 2) {
+					boolean hasNumerator = false;
+					boolean hasDenominator = false;
+
+					if (NodeType.ACI_DENOMINATOR == children.get(0).getType()
+							|| NodeType.ACI_DENOMINATOR == children.get(1).getType()) {
+						hasDenominator = true;
+					}
+
+					if (NodeType.ACI_NUMERATOR == children.get(0).getType()
+							|| NodeType.ACI_NUMERATOR == children.get(1).getType()) {
+						hasNumerator = true;
+					}
+
+					if (!hasNumerator) {
+						this.addValidationError(
+								new ValidationError("This ACI Measure Node does not contain a Numerator Node child"));
+					}
+
+					if (!hasDenominator) {
+						this.addValidationError(
+								new ValidationError("This ACI Measure Node does not contain a Denominator Node child"));
+					}
+
+				} else {
+					this.addValidationError(new ValidationError(
+							"This ACI Measure Node does not have a Numerator and Denominator Node as children"));
+				}
 			}
 		}
 

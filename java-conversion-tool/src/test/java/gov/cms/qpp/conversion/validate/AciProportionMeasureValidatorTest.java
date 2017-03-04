@@ -28,23 +28,28 @@ public class AciProportionMeasureValidatorTest {
 	@Test
 	public void testMeasurePresent() {
 
-		Node aciProportionMeasureNode = new Node();
-		aciProportionMeasureNode.setId("2.16.840.1.113883.10.20.27.3.28");
-		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
-
-		Node aciSectionNode = new Node();
-		aciSectionNode.setId("2.16.840.1.113883.10.20.27.2.5");
-		aciSectionNode.putValue("category", "aci");
-		aciSectionNode.addChildNode(aciProportionMeasureNode);
-
-		Node clinicalDocumentNode = new Node();
-		clinicalDocumentNode.setId("2.16.840.1.113883.10.20.27.1.2");
+		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
+
+		Node aciSectionNode = new Node(clinicalDocumentNode, "2.16.840.1.113883.10.20.27.2.5");
+		aciSectionNode.putValue("category", "aci");
+
 		clinicalDocumentNode.addChildNode(aciSectionNode);
+
+		Node aciProportionMeasureNode = new Node(aciSectionNode, "2.16.840.1.113883.10.20.27.3.28");
+		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
+
+		aciSectionNode.addChildNode(aciProportionMeasureNode);
+
+		Node aciDenominatorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.32");
+		Node aciNumeratorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.31");
+
+		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
+		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
 		List<ValidationError> errors = measureval.internalValidate(clinicalDocumentNode);
@@ -72,7 +77,7 @@ public class AciProportionMeasureValidatorTest {
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
 		List<ValidationError> errors = measureval.internalValidate(clinicalDocumentNode);
 
-		assertThat("there should be two error", errors, iterableWithSize(2));
+		assertThat("there should be two errors", errors, iterableWithSize(2));
 		assertThat("error should be about missing Measure node", errors.get(0).getErrorText(), is(EXPECTED_TEXT));
 		assertThat("error should be about specific required measure", errors.get(1).getErrorText(), is(EXPECTED_TEXT2));
 
