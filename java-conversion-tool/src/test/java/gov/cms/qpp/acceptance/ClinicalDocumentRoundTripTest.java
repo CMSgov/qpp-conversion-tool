@@ -12,7 +12,6 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
@@ -51,10 +50,9 @@ public class ClinicalDocumentRoundTripTest {
 		Validations.clear();
 	}
 	
-	@Ignore // TODO this will be revised with DaveP's new impl
 	@Test
 	public void parseClinicalDocument() throws Exception {
-		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III.xml");
+		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
 		Node clinicalDocumentNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
