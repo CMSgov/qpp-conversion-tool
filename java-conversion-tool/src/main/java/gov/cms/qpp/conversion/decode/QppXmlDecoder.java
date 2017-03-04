@@ -63,7 +63,14 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				DecodeResult result = childDecoder.internalDecode(element, childNode);
 				
 				parentNode.addChildNode(childNode); // TODO ensure we need to always add
+				currentNode = childNode; // TODO this works for AciSectionDecoder
 				
+				if (result == null) {
+					// TODO this looks like a continue ????
+					// the only time we get here is NullReturnDecoderTest
+					Node placeholderNode = new Node("placeholder");
+					return decode(childeEl, placeholderNode);
+				}
 				switch (result) {
 					case TreeFinished:
 						// this child is done
@@ -76,10 +83,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 						addValidation(templateId, "Failed to decode.");
 						LOG.error("Failed to decode temlateId {} ", templateId);
 						break;
-					default: //result == null
-						// the only time we get here is NullReturnDecoderTest
-						Node placeholderNode = new Node("placeholder");
-						return decode(childeEl, placeholderNode);
+					default:
+						LOG.error("We need to define a default case. Could be TreeContiue?");
 				}
 			} else {
 				// TODO might need a child node -- not sure
