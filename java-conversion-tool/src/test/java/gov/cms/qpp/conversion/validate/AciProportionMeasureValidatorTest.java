@@ -7,7 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
@@ -16,10 +16,9 @@ import gov.cms.qpp.conversion.model.ValidationError;
 public class AciProportionMeasureValidatorTest {
 
 	private static final String EXPECTED_TEXT = "At least one Aci Proportion Measure Node is required";
-	private static final String EXPECTED_TEXT2 = "The required measure 'ACI_EP_1' is not present in the source file. Please add the ACI measure and try again.";
 
-	@After
-	public void tearDown() {
+	@Before
+	public void setup() {
 		AciProportionMeasureValidator.resetValidationErrors();
 	}
 

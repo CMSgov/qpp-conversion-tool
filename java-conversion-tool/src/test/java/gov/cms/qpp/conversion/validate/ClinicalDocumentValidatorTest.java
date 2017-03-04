@@ -7,7 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
@@ -17,8 +17,8 @@ public class ClinicalDocumentValidatorTest {
 
 	private static final String EXPECTED_TEXT = "Clinical Document Node is required";
 
-	@After
-	public void tearDown() {
+	@Before
+	public void setup() {
 		ClinicalDocumentValidator.resetValidationErrors();
 	}
 
