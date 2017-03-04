@@ -14,13 +14,13 @@ public class AciProportionMeasureDecoder extends QppXmlDecoder {
 
 
 	@Override
-	protected Node internalDecode(Element element, Node thisnode) {
+	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		
 		setMeasureIdOnNode(element, thisnode);
 
 		processComponentElement(element, thisnode);
 
-		return thisnode;
+		return DecodeResult.TreeFinished;
 
 	}
 

@@ -120,6 +120,12 @@ public class Registry<V extends Object, R extends Object> {
 	public void register(V registryKey, Class<? extends R> handler) {
 		LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for " + annotationClass.getSimpleName() +".");
 		// This could be a class or class name and instantiated on lookup
+		if (registry.containsKey(registryKey)) {
+			LOG.error("Duplicate registered handler for " + registryKey
+					+ " both " + registry.get(registryKey).getName() 
+					+ " and " + handler.getName());
+		}
+		
 		registry.put(registryKey, handler);
 	}
 }

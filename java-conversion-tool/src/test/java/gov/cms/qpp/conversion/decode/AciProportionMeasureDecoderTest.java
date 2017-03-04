@@ -8,13 +8,25 @@ import static org.junit.Assert.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class AciProportionMeasureDecoderTest {
 
+	@Before
+	public void before() {
+		Validations.init();
+	}
+	@After
+	public void after() {
+		Validations.clear();
+	}
+	
 	@Test
 	public void decodeACIProportionMeasureAsNode() throws Exception {
 		String xmlFragment = 
@@ -51,28 +63,46 @@ public class AciProportionMeasureDecoderTest {
 				"			<observation classCode=\"OBS\" moodCode=\"EVN\">\n" + 
 				"				<!-- ACI Numerator Denominator Type Measure Numerator Data templateId -->\n" + 
 				"				<templateId root=\"2.16.840.1.113883.10.20.27.3.31\" extension=\"2016-09-01\"/>\n" + 
-				"				<qed resultName=\"aciNumeratorDenominator\" resultValue=\"600\">\n" +
+				"				<entryRelationship resultName=\"aciNumeratorDenominator\" resultValue=\"600\">\n" +
 				"					<templateId root=\"Q.E.D\"/>\n" +
-				"				</qed>" +
+				"				</entryRelationship>" +
 				"			</observation>\n" + 
 				"		</component>\n" + 
 				"		<component>\n" + 
 				"			<observation classCode=\"OBS\" moodCode=\"EVN\">\n" + 
 				"				<!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->\n" + 
 				"				<templateId root=\"2.16.840.1.113883.10.20.27.3.32\" extension=\"2016-09-01\"/>\n" + 
-				"				<qed resultName=\"aciNumeratorDenominator\" resultValue=\"800\">\n" +
+				"				<entryRelationship resultName=\"aciNumeratorDenominator\" resultValue=\"800\">\n" +
 				"					<templateId root=\"Q.E.D\"/>\n" +
-				"				</qed>" +
+				"				</entryRelationship>" +
 				"			</observation>\n" + 
 				"		</component>\n" + 
 				"	</organizer>\n" + 
 				"</entry>";
 		
 		Node root = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
+	System.out.println();
+	System.out.println(root);
+/*
 
+
+Node: internalId: placeholder, data: {}
+		childNodes of placeholder: 
+		Node: internalId: 2.16.840.1.113883.10.20.27.3.28, data: {measureId=ACI-PEA-1}
+	    		childNodes of 2.16.840.1.113883.10.20.27.3.28:
+	        	Node: internalId: 2.16.840.1.113883.10.20.27.3.31, data: {}
+	        			childNodes of 2.16.840.1.113883.10.20.27.3.31:
+	        			 	Node: internalId: Q.E.D, data: {aciNumeratorDenominator=600}
+	        			 		childNodes of Q.E.D -> (none)
+	        	Node: internalId: 2.16.840.1.113883.10.20.27.3.32, data: {} 
+	        			childNodes of 2.16.840.1.113883.10.20.27.3.32: 
+	        				Node: internalId: Q.E.D, data: {aciNumeratorDenominator=800}
+	        			 		childNodes of Q.E.D -> (none)
+
+ */
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));
-
+		
 		// For all decoders this should be either a value or child node
 		assertThat("returned node should have one child node", root.getChildNodes().size(), is(1));
 		// This is the child node that is produced by the intended decoder

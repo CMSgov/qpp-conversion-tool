@@ -33,6 +33,8 @@ public class ClinicalDocumentDecoderTest {
 		assertThat("performanceEnd correct", root.getValue("performanceEnd"), is("20171231"));
 
 		assertThat("returned node should not be null", root, is(not(nullValue())));
+		
+		System.out.println(root.toString());
 		assertThat("returned node should have one child decoder node", root.getChildNodes().size(), is(2));
 		Node aciSectionNode = root.getChildNodes().get(0);
 

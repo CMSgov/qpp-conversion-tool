@@ -21,8 +21,13 @@ public class AciProportionMeasureEncoder extends QppOutputEncoder {
 
 		JsonWrapper childWrapper = new JsonWrapper();
 		for (Node child : children) {
-			JsonOutputEncoder denominatorValueEncoder = encoders.get(child.getId());
-			denominatorValueEncoder.encode(childWrapper, child);
+			String templateId = child.getId();
+			JsonOutputEncoder denominatorValueEncoder = encoders.get(templateId);
+			if (denominatorValueEncoder == null) {
+				addValidation(templateId, "Failed to find an encoder");
+			} else {
+				denominatorValueEncoder.encode(childWrapper, child);
+			}
 		}
 		wrapper.putObject("measureId", node.getValue("measureId"));
 		wrapper.putObject("value", childWrapper.getObject());
