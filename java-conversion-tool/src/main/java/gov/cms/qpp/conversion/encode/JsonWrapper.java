@@ -94,7 +94,7 @@ public class JsonWrapper {
 	public JsonWrapper putObject(Object value) {
 		checkState(object);
 		initAsList();
-		if (value==null || list.contains(value)) {
+		if (value==null) {
 			return this;
 		}
 		this.list.add(value);
