@@ -55,7 +55,7 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 	}
 	
 	@Test
-	public void sillyCoverageTest() throws Exception {
-		assertThat("Should be benign", new QppXmlDecoder().internalDecode(null, null), is(nullValue()));
+	public void decodeResult_NoAction() throws Exception {
+		assertThat("Should be bengin", new QppXmlDecoder().internalDecode(null, null), is(DecodeResult.NoAction));
 	}
 }

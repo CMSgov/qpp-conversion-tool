@@ -32,9 +32,19 @@ public class Node implements Serializable {
 		this.setChildNodes(new ArrayList<>());
 	}
 
+	public Node(String id) {
+		this();
+		setId(id);
+	}
+
 	public Node(Node parentNode) {
 		this();
 		this.parent = parentNode;
+	}
+
+	public Node(Node parentNode, String id) {
+		this(parentNode);
+		setId(id);
 	}
 
 	public String getValue(String name) {
@@ -62,12 +72,39 @@ public class Node implements Serializable {
 	}
 
 	public void addChildNode(Node childNode) {
+		if (childNode == null || childNode == this) {
+			return;
+		}
 		this.childNodes.add(childNode);
 	}
 
 	@Override
 	public String toString() {
-		return "Node: internalId: " + internalId + ", data: " + data + ", childNodes: " + childNodes;
+		return toString("");// no tabs to start
+	}
+
+	protected String toString(String tabs) {
+		return tabs + selfToString() + "\n" + childrenToString(tabs + "\t");
+	}
+
+	protected String selfToString() {
+		return "Node: internalId: " + internalId + ", data: " + data;
+	}
+
+	protected String childrenToString(String tabs) {
+		StringBuilder children = new StringBuilder();
+		if (childNodes.isEmpty()) {
+			children.append(" -> (none)");
+		} else {
+			children.append(": \n");
+			String sep = "";
+			String toBeSep = "\n";
+			for (Node child : childNodes) {
+				children.append(sep).append(child.toString(tabs));
+				sep = toBeSep;
+			}
+		}
+		return tabs + "childNodes of " + internalId + children;
 	}
 
 	public Set<String> getKeys() {

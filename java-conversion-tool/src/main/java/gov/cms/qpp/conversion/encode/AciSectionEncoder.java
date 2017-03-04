@@ -23,9 +23,14 @@ public class AciSectionEncoder extends QppOutputEncoder {
 		JsonWrapper childWrapper;
 		for (Node child : children) {
 			childWrapper = new JsonWrapper();
-			JsonOutputEncoder measureEncoder = encoders.get(child.getId());
-			measureEncoder.encode(childWrapper, child);
-			measurementsWrapper.putObject(childWrapper.getObject());
+			String templateId = child.getId();
+			JsonOutputEncoder encoder = encoders.get(templateId);
+			if (encoder == null) {
+				addValidation(templateId, "Failed to find an encoder");
+			} else {
+				encoder.encode(childWrapper, child);
+				measurementsWrapper.putObject(childWrapper.getObject());
+			}
 		}
 		wrapper.putObject("measurements", measurementsWrapper.getObject());
 

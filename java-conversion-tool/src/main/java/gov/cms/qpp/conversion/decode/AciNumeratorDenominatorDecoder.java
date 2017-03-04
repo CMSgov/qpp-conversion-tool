@@ -13,9 +13,9 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
 
 	@Override
-	protected Node internalDecode(Element element, Node thisnode) {
+	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		setSciNumeratorDenominatorOnNode(element, thisnode);
-		return thisnode;
+		return DecodeResult.TreeFinished;
 	}
 	
 	protected void setSciNumeratorDenominatorOnNode(Element element, Node thisnode) {

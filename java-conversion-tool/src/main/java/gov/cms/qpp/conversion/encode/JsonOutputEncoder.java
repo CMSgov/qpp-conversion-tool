@@ -22,6 +22,8 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 	@Override
 	public void encode(Writer writer) throws EncodeException {
 		
+		Validations.init();
+		
 		try {
 			JsonWrapper wrapper = new JsonWrapper();
 			for (Node curNode : nodes) {

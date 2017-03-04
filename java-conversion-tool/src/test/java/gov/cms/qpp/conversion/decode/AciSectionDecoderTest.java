@@ -39,6 +39,7 @@ public class AciSectionDecoderTest {
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));
 		Node aciSectionNode = root.getChildNodes().get(0);
+		
 		// Should have a section node 
 		assertThat("returned category should be aci", aciSectionNode.getValue("category"), is("aci"));
 		// Should have a section node 
