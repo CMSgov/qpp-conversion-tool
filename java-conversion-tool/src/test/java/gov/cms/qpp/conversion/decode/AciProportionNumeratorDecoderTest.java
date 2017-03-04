@@ -5,12 +5,24 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class AciProportionNumeratorDecoderTest {
+
+	@Before
+	public void before() {
+		Validations.init();
+	}
+	@After
+	public void after() {
+		Validations.clear();
+	}
 
 	@Test
 	public void decodeACIProportionNumeratorAsNode() throws Exception {
