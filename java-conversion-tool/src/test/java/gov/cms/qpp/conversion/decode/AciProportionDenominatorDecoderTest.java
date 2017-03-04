@@ -21,7 +21,7 @@ public class AciProportionDenominatorDecoderTest {
 				+ "		<templateId root=\"2.16.840.1.113883.10.20.27.3.32\" extension=\"2016-09-01\" />\n"
 				+ "		<!-- Denominator Count -->\n"
 				+ "		<entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-				+ "			<qed resultName=\"aciNumeratorDenominator\" resultValue=\"800\">\n"
+				+ "			<qed resultName=\"aggregateCount\" resultValue=\"800\">\n"
 				+ "				<templateId root=\"Q.E.D\"/>\n"
 				+ "			</qed>"
 				+ "		</entryRelationship>\n" 
@@ -45,7 +45,7 @@ public class AciProportionDenominatorDecoderTest {
 		// This is stubbed node with the test value
 		Node target = aciProportionDenominatorNode.getChildNodes().get(0);
 		// Get the test value
-		assertThat("test value should be mytestvalue", target.getValue("aciNumeratorDenominator"), is("800"));
+		assertThat("test value should be mytestvalue", target.getValue("aggregateCount"), is("800"));
 
 	}
 

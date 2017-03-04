@@ -27,7 +27,7 @@ public class AciProportionDenominatorEncoderTest {
 	public void createNode() {
 		numeratorDenominatorValueNode = new Node();
 		numeratorDenominatorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
-		numeratorDenominatorValueNode.putValue("aciNumeratorDenominator", "600");
+		numeratorDenominatorValueNode.putValue("aggregateCount", "600");
 
 		aciProportionDenominatorNode = new Node();
 		aciProportionDenominatorNode.setId("2.16.840.1.113883.10.20.27.3.32");

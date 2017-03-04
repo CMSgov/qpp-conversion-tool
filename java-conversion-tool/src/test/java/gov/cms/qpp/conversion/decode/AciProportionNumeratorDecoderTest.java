@@ -32,7 +32,7 @@ public class AciProportionNumeratorDecoderTest {
 				+ "		<templateId root=\"2.16.840.1.113883.10.20.27.3.31\" extension=\"2016-09-01\" />\n"
 				+ "		<!-- Numerator Count -->\n"
 				+ "		<entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-				+ "			<qed resultName=\"aciNumeratorDenominator\" resultValue=\"600\">\n"
+				+ "			<qed resultName=\"aggregateCount\" resultValue=\"600\">\n"
 				+ "				<templateId root=\"Q.E.D\"/>\n"
 				+ "			</qed>"
 				+ "		</entryRelationship>\n"
@@ -54,7 +54,7 @@ public class AciProportionNumeratorDecoderTest {
 		// This is the node with the numerator value
 		Node numDenomNode = aciProportionNumeratorNode.getChildNodes().get(0);
 		// Get the actual value
-		String actual = (String) numDenomNode.getValue("aciNumeratorDenominator");
+		String actual = (String) numDenomNode.getValue("aggregateCount");
 		assertThat("aci numerator should be 600", actual, is("600"));
 
 	}

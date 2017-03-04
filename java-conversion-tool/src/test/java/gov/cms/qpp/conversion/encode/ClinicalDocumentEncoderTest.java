@@ -47,11 +47,11 @@ public class ClinicalDocumentEncoderTest {
 
 		numeratorValueNode = new Node();
 		numeratorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
-		numeratorValueNode.putValue("aciNumeratorDenominator", "400");
+		numeratorValueNode.putValue("aggregateCount", "400");
 
 		denominatorValueNode = new Node();
 		denominatorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
-		denominatorValueNode.putValue("aciNumeratorDenominator", "600");
+		denominatorValueNode.putValue("aggregateCount", "600");
 
 		aciProportionDenominatorNode = new Node();
 		aciProportionDenominatorNode.setId("2.16.840.1.113883.10.20.27.3.32");
