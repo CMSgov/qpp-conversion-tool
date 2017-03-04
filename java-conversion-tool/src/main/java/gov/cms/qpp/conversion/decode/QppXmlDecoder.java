@@ -10,33 +10,34 @@ import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.model.XmlDecoder;
 
 /**
- * Top level Decoder for parsing into QPP format. Contains a map of child Decoders
- * that can Decode an element.
+ * Top level Decoder for parsing into QPP format. Contains a map of child
+ * Decoders that can Decode an element.
  */
 public class QppXmlDecoder extends XmlInputDecoder {
- 	
+
 	protected static Registry<String, QppXmlDecoder> decoders = new Registry<>(XmlDecoder.class);
 
-	public QppXmlDecoder() {}
+	public QppXmlDecoder() {
+	}
 
 	/**
 	 * Iterates over the element to find all child elements. Finds any elements
-	 * that match a templateId in the Decoder registry. If there are any matches,
-	 * calls internalDecode with that Element on the Decoder class. Aggregates Nodes
-	 * that are returned.
+	 * that match a templateId in the Decoder registry. If there are any
+	 * matches, calls internalDecode with that Element on the Decoder class.
+	 * Aggregates Nodes that are returned.
 	 * 
 	 */
 	@Override
 	protected Node decode(Element element, Node parentNode) {
 
 		Node returnNode = parentNode;
-		
+
 		if (null == element) {
 			return returnNode;
 		}
-		
+
 		setNamespace(element, this);
-		
+
 		List<Element> childElements = element.getChildren();
 
 		for (Element ele : childElements) {
@@ -50,28 +51,28 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					QppXmlDecoder childDecoder = decoders.get(templateId);
 
 					if (null != childDecoder) {
-						Node thisNode = new Node();
+						Node thisNode = new Node(parentNode);
 						thisNode.setId(templateId);
-						
+
 						setNamespace(eleele, childDecoder);
-						
+
 						Node childNodeValue = childDecoder.internalDecode(ele, thisNode);
-	
+
 						if (null != childNodeValue) {
 							parentNode.addChildNode(childNodeValue);
-	
+
 							// recursively call decode(element, node) with this
 							// child as parent
 							decode(ele, childNodeValue);
 						} else {
 							// recursively call decode(element, node) with a
 							// placeholder node as parent
-	
-							Node placeholderNode = new Node();
+
+							Node placeholderNode = new Node(parentNode);
 							placeholderNode.setId("placeholder");
-	
+
 							decode(ele, placeholderNode);
-	
+
 						}
 					}
 				}
@@ -86,7 +87,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		// this is the top level, so just return null
 		return null;
 	}
-	
+
 	@Override
 	public Iterable<String> validations() {
 		return Validations.values();
@@ -96,10 +97,10 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	public List<String> getValidationsById(String templateId) {
 		return Validations.getValidationsById(templateId);
 	}
-	
+
 	@Override
 	public void addValidation(String templateId, String validation) {
 		Validations.addValidation(templateId, validation);
 	}
-	
+
 }

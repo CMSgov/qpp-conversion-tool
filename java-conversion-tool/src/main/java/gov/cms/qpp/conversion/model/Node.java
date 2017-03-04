@@ -23,11 +23,18 @@ public class Node implements Serializable {
 
 	private List<Node> childNodes;
 
+	private Node parent;
+
 	private boolean validated;
 
 	public Node() {
 		this.data = new HashMap<>();
 		this.setChildNodes(new ArrayList<>());
+	}
+
+	public Node(Node parentNode) {
+		this();
+		this.parent = parentNode;
 	}
 
 	public String getValue(String name) {
@@ -87,5 +94,13 @@ public class Node implements Serializable {
 		}
 
 		return foundNodes;
+	}
+
+	public Node getParent() {
+		return parent;
+	}
+
+	public void setParent(Node parent) {
+		this.parent = parent;
 	}
 }
