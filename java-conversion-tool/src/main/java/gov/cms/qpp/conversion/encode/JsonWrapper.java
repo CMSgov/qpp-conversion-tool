@@ -44,6 +44,9 @@ public class JsonWrapper {
 	public JsonWrapper putObject(String name, Object value) {
 		checkState(list);
 		initAsObject();
+		if (value==null) {
+			return this;
+		}
 		this.object.put(name,value);
 		return this;
 	}
@@ -91,6 +94,9 @@ public class JsonWrapper {
 	public JsonWrapper putObject(Object value) {
 		checkState(object);
 		initAsList();
+		if (value==null || list.contains(value)) {
+			return this;
+		}
 		this.list.add(value);
 		return this;
 	}
