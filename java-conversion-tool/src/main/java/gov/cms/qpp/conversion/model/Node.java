@@ -19,17 +19,35 @@ public class Node implements Serializable {
 	private static final long serialVersionUID = 4602134063479322076L;
 
 	private String internalId;
+	private NodeType type;
 	private Map<String, String> data = new HashMap<>();
 
 	private List<Node> childNodes;
+
+	private Node parent;
+
+	private boolean validated;
 
 	public Node() {
 		this.data = new HashMap<>();
 		this.setChildNodes(new ArrayList<>());
 	}
+
 	public Node(String id) {
 		this();
 		setId(id);
+		this.type = NodeType.getTypeById(id);
+	}
+
+	public Node(Node parentNode) {
+		this();
+		this.parent = parentNode;
+	}
+
+	public Node(Node parentNode, String id) {
+		this(parentNode);
+		setId(id);
+		this.type = NodeType.getTypeById(id);
 	}
 
 	public String getValue(String name) {
@@ -57,7 +75,7 @@ public class Node implements Serializable {
 	}
 
 	public void addChildNode(Node childNode) {
-		if (childNode==null || childNode==this) {
+		if (childNode == null || childNode == this) {
 			return;
 		}
 		this.childNodes.add(childNode);
@@ -67,15 +85,18 @@ public class Node implements Serializable {
 	public String toString() {
 		return toString("");// no tabs to start
 	}
+
 	protected String toString(String tabs) {
-		return tabs + selfToString() + "\n" + childrenToString(tabs+"\t");
+		return tabs + selfToString() + "\n" + childrenToString(tabs + "\t");
 	}
+
 	protected String selfToString() {
 		return "Node: internalId: " + internalId + ", data: " + data;
 	}
+
 	protected String childrenToString(String tabs) {
 		StringBuilder children = new StringBuilder();
-		if ( childNodes.isEmpty() ) {
+		if (childNodes.isEmpty()) {
 			children.append(" -> (none)");
 		} else {
 			children.append(": \n");
@@ -83,13 +104,48 @@ public class Node implements Serializable {
 			String toBeSep = "\n";
 			for (Node child : childNodes) {
 				children.append(sep).append(child.toString(tabs));
-				sep=toBeSep;
+				sep = toBeSep;
 			}
 		}
-		return tabs +"childNodes of " +internalId +children;
+		return tabs + "childNodes of " + internalId + children;
 	}
 
 	public Set<String> getKeys() {
 		return data.keySet();
 	}
+
+	public boolean isValidated() {
+		return validated;
+	}
+
+	public void setValidated(boolean validated) {
+		this.validated = validated;
+	}
+
+	public List<Node> findNode(String id) {
+		List<Node> foundNodes = new ArrayList<>();
+
+		if (id.equals(this.internalId)) {
+			foundNodes.add(this);
+		}
+
+		for (Node childNode : childNodes) {
+			foundNodes.addAll(childNode.findNode(id));
+		}
+
+		return foundNodes;
+	}
+
+	public Node getParent() {
+		return parent;
+	}
+
+	public void setParent(Node parent) {
+		this.parent = parent;
+	}
+
+	public NodeType getType() {
+		return type;
+	}
+
 }

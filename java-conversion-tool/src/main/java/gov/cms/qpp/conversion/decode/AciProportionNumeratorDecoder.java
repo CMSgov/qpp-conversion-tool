@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 public class AciProportionNumeratorDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		DecodeResult result = decode(element.getChild("entryRelationship", defaultNs), thisnode);
-		return result;
+		thisnode.putValue("name", "aciProportionNumerator");
+		return DecodeResult.TreeContinue;
 	}
 }
