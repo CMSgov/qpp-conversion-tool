@@ -38,6 +38,12 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 			}
 		}
 
+		// if we did not find any measure nodes, just return right now because
+		// there's nothing else to verify
+		if (!this.getValidationErrors().isEmpty()) {
+			return this.getValidationErrors();
+		}
+
 		// the aci measure node should have an aci section node as parent
 		// it can have a numerator node and a denominator node as children
 

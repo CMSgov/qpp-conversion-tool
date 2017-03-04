@@ -77,9 +77,8 @@ public class AciProportionMeasureValidatorTest {
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
 		List<ValidationError> errors = measureval.internalValidate(clinicalDocumentNode);
 
-		assertThat("there should be two errors", errors, iterableWithSize(2));
+		assertThat("there should be two errors", errors, iterableWithSize(1));
 		assertThat("error should be about missing Measure node", errors.get(0).getErrorText(), is(EXPECTED_TEXT));
-		assertThat("error should be about specific required measure", errors.get(1).getErrorText(), is(EXPECTED_TEXT2));
 
 	}
 
