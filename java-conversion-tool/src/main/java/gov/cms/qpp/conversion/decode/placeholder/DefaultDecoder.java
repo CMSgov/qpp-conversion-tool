@@ -103,12 +103,12 @@ public class DefaultDecoder extends QppXmlDecoder {
 			super("Measure Reference and Results - CMS (V2)");
 		}
 	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.23")
-	public static class L_Decoder extends DefaultDecoder {
-		public L_Decoder() {
-			super("Reporting Parameters Act - CMS (V2)*");
-		}
-	}
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.23")
+//	public static class L_Decoder extends DefaultDecoder {
+//		public L_Decoder() {
+//			super("Reporting Parameters Act - CMS (V2)*");
+//		}
+//	}
 //	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.27")
 //	public static class M_Decoder extends DefaultDecoder {
 //		public M_Decoder() {

@@ -2,7 +2,6 @@ package gov.cms.qpp.acceptance;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
@@ -13,15 +12,13 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.ValidationError;
-import gov.cms.qpp.conversion.validate.QrdaValidator;
+import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class ClinicalDocumentRoundTripTest {
@@ -45,40 +42,30 @@ public class ClinicalDocumentRoundTripTest {
 
 	@Before
 	public void setup() throws Exception {
-		// Validations.init();
-		QrdaValidator.resetValidationErrors();
+		Validations.init();
 	}
-
+	
 	@After
 	public void teardown() throws Exception {
-		// Validations.clear();
+		Validations.clear();
 	}
-
-	@Ignore // TODO this will be revised with DaveP's new impl
+	
 	@Test
-	public void parseAciNumeratorDenominatorAsNode() throws Exception {
-		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III.xml");
+	public void parseClinicalDocument() throws Exception {
+		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
 		Node clinicalDocumentNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
-		QrdaValidator validator = new QrdaValidator();
-		List<ValidationError> validationErrors = validator.validate(clinicalDocumentNode);
+		QppOutputEncoder encoder = new QppOutputEncoder();
+		List<Node> nodes = new ArrayList<>();
+		nodes.add(clinicalDocumentNode);
+		encoder.setNodes(nodes);
 
-		if (validationErrors.isEmpty()) {
-			QppOutputEncoder encoder = new QppOutputEncoder();
-			List<Node> nodes = new ArrayList<>();
-			nodes.add(clinicalDocumentNode);
-			encoder.setNodes(nodes);
+		StringWriter sw = new StringWriter();
+		encoder.encode(new BufferedWriter(sw));
 
-			StringWriter sw = new StringWriter();
-			encoder.encode(new BufferedWriter(sw));
-
-			assertThat("expected encoder to return a representation of a clinical document", sw.toString(),
-					is(EXPECTED));
-		} else {
-			fail("validation errors occurred");
-		}
+		assertThat("expected encoder to return a representation of a clinical document", sw.toString(), is(EXPECTED));
 
 	}
 

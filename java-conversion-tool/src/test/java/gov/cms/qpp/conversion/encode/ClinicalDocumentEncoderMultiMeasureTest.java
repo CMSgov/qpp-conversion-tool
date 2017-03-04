@@ -47,6 +47,8 @@ public class ClinicalDocumentEncoderMultiMeasureTest {
 	private Node aciProportionDenominatorNode3;
 	private Node numeratorValueNode3;
 	private Node denominatorValueNode3;
+	private Node reportingParametersActNode;
+	private Node reportingParametersSectionNode;
 	private Node clinicalDocumentNode;
 	private List<Node> nodes;
 
@@ -129,14 +131,23 @@ public class ClinicalDocumentEncoderMultiMeasureTest {
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);
 		aciSectionNode.addChildNode(aciProportionMeasureNode3);
+		
+		reportingParametersActNode = new Node();
+		reportingParametersActNode.setId("2.16.840.1.113883.10.20.27.3.23");
+		reportingParametersActNode.putValue("performanceStart", "20170101");
+		reportingParametersActNode.putValue("performanceEnd", "20171231");
+		
+		reportingParametersSectionNode = new Node();
+		reportingParametersSectionNode.setId("2.16.840.1.113883.10.20.27.2.6");
+		reportingParametersSectionNode.addChildNode(reportingParametersActNode);
+
 
 		clinicalDocumentNode = new Node();
 		clinicalDocumentNode.setId("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.putValue("performanceStart", "20170101");
-		clinicalDocumentNode.putValue("performanceEnd", "20171231");
+		clinicalDocumentNode.addChildNode(reportingParametersSectionNode);
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		nodes = new ArrayList<>();

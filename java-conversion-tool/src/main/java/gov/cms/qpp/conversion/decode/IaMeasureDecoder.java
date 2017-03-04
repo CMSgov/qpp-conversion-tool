@@ -16,7 +16,7 @@ public class IaMeasureDecoder extends QppXmlDecoder {
 		
 		setMeasureIdOnNode(element, thisnode);
 		
-		setIsMeasuredOnNode(element, thisnode);
+		decode(element.getChild("component", defaultNs), thisnode);
 
 		return DecodeResult.TreeFinished;
 
@@ -28,10 +28,5 @@ public class IaMeasureDecoder extends QppXmlDecoder {
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 	
-	protected void setIsMeasuredOnNode(Element element, Node thisnode) {
-		String expressionStr = "./ns:component/ns:observation[*[local-name()='templateId' and @root='2.16.840.1.113883.10.20.27.3.27']]/ns:value/@code";
-		Consumer<? super Attribute> consumer = p -> thisnode.putValue("iaMeasured", p.getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
-	}
 	
 }

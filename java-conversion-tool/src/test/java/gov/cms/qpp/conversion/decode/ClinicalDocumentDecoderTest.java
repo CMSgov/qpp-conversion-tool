@@ -8,7 +8,6 @@ import static org.junit.Assert.assertThat;
 import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
@@ -17,10 +16,9 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class ClinicalDocumentDecoderTest {
 
-	@Ignore // TODO this will be revised with DaveP's new impl
 	@Test
 	public void decodeClinicalDocumentDecoderAsNode() throws Exception {
-		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III.xml");
+		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
@@ -31,35 +29,49 @@ public class ClinicalDocumentDecoderTest {
 		assertThat("programName is correct", root.getValue("programName"), is("mips"));
 		assertThat("nationalProviderIdentifier correct", root.getValue("nationalProviderIdentifier"), is("2567891421"));
 		assertThat("taxpayerIdentificationNumber correct", root.getValue("taxpayerIdentificationNumber"), is("123456789"));
-		assertThat("performanceStart  correct", root.getValue("performanceStart"), is("20170101"));
-		assertThat("performanceEnd correct", root.getValue("performanceEnd"), is("20171231"));
 
 		assertThat("returned node should not be null", root, is(not(nullValue())));
 		
 		System.out.println(root.toString());
-		assertThat("returned node should have one child decoder node", root.getChildNodes().size(), is(2));
-		Node aciSectionNode = root.getChildNodes().get(0);
+		assertThat("returned node should child decoder nodes", root.getChildNodes().size(), is(3));
+		
+		Node reportParameterSectionNode = root.getChildNodes().get(0);
 
-		// Should have a section node 
+		assertThat("returned category", reportParameterSectionNode.getValue("source"), is("provider"));
+
+		// Should have a Measure node 
+		assertThat("returned node should not be null", reportParameterSectionNode.getChildNodes(), is(not(nullValue())));
+		assertThat("returned node should have one child decoder node", reportParameterSectionNode.getChildNodes().size(), is(1));
+		Node reportingActSectionNodeMeasureNode = reportParameterSectionNode.getChildNodes().get(0);
+		assertThat("returned should value", reportingActSectionNodeMeasureNode.getValue("performanceStart"), is("20170101"));
+		assertThat("returned should value", reportingActSectionNodeMeasureNode.getValue("performanceEnd"), is("20171231"));
+		
+		
+		Node aciSectionNode = root.getChildNodes().get(1);
+
+		// Should have an ACI section node 
 		assertThat("returned category should be aci", aciSectionNode.getValue("category"), is("aci"));
-		// Should have a measurement nodes
-		assertThat("returned node should have one child decoder node", aciSectionNode.getChildNodes().size(), is(3));
-		// Should have a section node 
+		assertThat("returned node should have child decoder nodes", aciSectionNode.getChildNodes().size(), is(3));
 		assertThat("returned measureId ACI-PEA-1", aciSectionNode.getChildNodes().get(0).getValue("measureId"), is("ACI-PEA-1"));
-		// Should have a section node 
 		assertThat("returned measureId ACI_EP_1", aciSectionNode.getChildNodes().get(1).getValue("measureId"), is("ACI_EP_1"));
-		// Should have a section node 
 		assertThat("returned measureId ACI_CCTPE_3", aciSectionNode.getChildNodes().get(2).getValue("measureId"), is("ACI_CCTPE_3"));
 
 
-		Node iaSectionNode = root.getChildNodes().get(1);
-		// Should have a section node 
-		assertThat("returned category should be ia", iaSectionNode.getValue("category"), is("ia"));
-		// Should have a measure node
+		// Should have an IA section node 
+		Node iaSectionNode = root.getChildNodes().get(2);
+		assertThat("returned category", iaSectionNode.getValue("category"), is("ia"));
+
+		// Should have a Measure node 
+		assertThat("returned node should not be null", iaSectionNode.getChildNodes(), is(not(nullValue())));
 		assertThat("returned node should have one child decoder node", iaSectionNode.getChildNodes().size(), is(1));
 		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
-		assertThat("returned measureId IA_EPA_1", iaMeasureNode.getValue("measureId"), is("IA_EPA_1"));
-		assertThat("returned iaMeasured Y", iaMeasureNode.getValue("iaMeasured"), is("Y"));
+		assertThat("returned should have measureId", iaMeasureNode.getValue("measureId"), is("IA_EPA_1"));
+		
+		// Should have a measure performed node 
+		assertThat("returned node should not be null", iaMeasureNode.getChildNodes(), is(not(nullValue())));
+		assertThat("returned node should have one child decoder node", iaMeasureNode.getChildNodes().size(), is(1));
+		Node iaMeasurePerformedNode = iaMeasureNode.getChildNodes().get(0);
+		assertThat("returned measurePerformed", iaMeasurePerformedNode.getValue("measurePerformed"), is("Y"));
 
 	}
 	
