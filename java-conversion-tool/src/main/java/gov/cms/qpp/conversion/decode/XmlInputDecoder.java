@@ -36,13 +36,16 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 		XmlInputDecoder decoder = rootDecoders.get(xmlDoc.getDocument().getRootElement().getName());
 		
 		if (decoder instanceof QppXmlDecoder) {
-			Node parsedNode = decoder.internalDecode(xmlDoc, new Node());
+			Node node = new Node();
+			DecodeResult result = decoder.internalDecode(xmlDoc, node);
 			
-			if (null == parsedNode.getId()) {
+			// TODO handle result
+			
+			if (null == node.getId()) {
 				LOG.error("The file is not a QDRA-III xml document");
 			}
 			
-			return parsedNode;
+			return node;
 		} 
 		// else if (decoder instanceof <Other decoder>) {
 		//  Validation
@@ -66,10 +69,11 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 */
 	public Node decodeFragment(Element xmlDoc) {
 		
-		Node rootParentNode = new Node();
-		rootParentNode.setId("placeholder");
+		Node rootParentNode = new Node("placeholder");
 
-		return decode(xmlDoc, rootParentNode);
+		decode(xmlDoc, rootParentNode);
+		
+		return rootParentNode;
 	}
 
 	/**
@@ -115,7 +119,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @param element
 	 * @return
 	 */
-	abstract protected Node decode(Element element, Node parent);
+	abstract protected DecodeResult decode(Element element, Node parent);
 	
 
 	/**
@@ -125,5 +129,5 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @param thisNode created for this decode
 	 * @return
 	 */
-	abstract protected Node internalDecode(Element element, Node thisnode);
+	abstract protected DecodeResult internalDecode(Element element, Node thisnode);
 }

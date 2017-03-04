@@ -8,13 +8,25 @@ import static org.junit.Assert.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class AciProportionMeasureDecoderTest {
 
+	@Before
+	public void before() {
+		Validations.init();
+	}
+	@After
+	public void after() {
+		Validations.clear();
+	}
+	
 	@Test
 	public void decodeACIProportionMeasureAsNode() throws Exception {
 		String xmlFragment = 
@@ -69,7 +81,7 @@ public class AciProportionMeasureDecoderTest {
 				"</entry>";
 		
 		Node root = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
-
+System.out.print(root);
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));
 		

@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 @XmlDecoder(templateId="null.return")
 public class NullReturnDecoder extends QppXmlDecoder {
 	@Override
-	protected Node internalDecode(Element element, Node thisnode) {
+	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		return null;
 	}
 }

@@ -30,67 +30,68 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * 
 	 */
 	@Override
-	public Node decode(Element element, Node parentNode) {
+	public DecodeResult decode(Element element, Node parentNode) {
 
 		Node returnNode = parentNode;
 		
 		if (null == element) {
-			return returnNode;
+			return DecodeResult.Error;
 		}
 		
 		setNamespace(element, this);
 		
 		List<Element> childElements = element.getChildren();
 
-		for (Element ele : childElements) {
+		for (Element childeEl : childElements) {
 
-			List<Element> chchildElements = ele.getChildren();
+			if ("templateId".equals(childeEl.getName())) {
+				String templateId = childeEl.getAttributeValue("root");
+				LOG.debug("templateIdFound:{}", templateId);
 
-			for (Element eleele : chchildElements) {
-				if ("templateId".equals(eleele.getName())) {
-					String templateId = eleele.getAttributeValue("root");
-					LOG.debug("templateIdFound:{}", templateId);
-
-					QppXmlDecoder childDecoder = decoders.get(templateId);
+				QppXmlDecoder childDecoder = decoders.get(templateId);
+				
+				if (null != childDecoder) { // TODO if null continue
+					LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
 					
-					if (null != childDecoder) {
-						LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
-						
-						Node thisNode = new Node();
-						thisNode.setId(templateId);
-						
-						setNamespace(eleele, childDecoder);
-						
-						Node childNodeValue = childDecoder.internalDecode(ele, thisNode);
-	
-						if (null != childNodeValue) {
-							parentNode.addChildNode(childNodeValue);
-	
-							// recursively call decode(element, node) with this
-							// child as parent
-							decode(ele, childNodeValue);
-						} else {
-							// recursively call decode(element, node) with a
-							// placeholder node as parent
-	
-							Node placeholderNode = new Node();
-							placeholderNode.setId("placeholder");
-	
-							decode(ele, placeholderNode);
-	
-						}
+					Node childNode = new Node(templateId);
+					
+					setNamespace(childeEl, childDecoder);
+					
+					// the child decoder might require the entire its siblings
+					DecodeResult result = childDecoder.internalDecode(element, childNode);
+					
+					parentNode.addChildNode(childNode); // TODO ensure we need to alwaus add
+			
+					// TODO could be a switch
+					if (result == DecodeResult.TreeFinished) {
+						break; // this child is done
+					}
+					if (result == DecodeResult.TreeContinue) {
+						return decode(childeEl, childNode);
+					}
+					if (result == DecodeResult.Error) {
+						// TODO Validation Error, include element data ????
+						addValidation(templateId, "Failed to decode.");
+						LOG.error("Failed to decode temlateId {} ", templateId);
+					}
+					if (result == null) {
+						// the only time we get into here is NullReturnDecoderTest
+						Node placeholderNode = new Node("placeholder");
+						return decode(childeEl, placeholderNode);
 					}
 				}
+			} else {
+				return decode(childeEl, parentNode);
 			}
 		}
 
-		return returnNode;
+		return DecodeResult.TreeFinished;
 	}
 
 	@Override
-	protected Node internalDecode(Element element, Node thisnode) {
+	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		// this is the top level, so just return null
-		return null;
+		return DecodeResult.NoAction;
 	}
 	
 	@Override

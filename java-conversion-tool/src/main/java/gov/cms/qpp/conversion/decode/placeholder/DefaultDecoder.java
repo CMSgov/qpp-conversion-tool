@@ -6,6 +6,7 @@ import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gov.cms.qpp.conversion.decode.DecodeResult;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.XmlDecoder;
@@ -24,12 +25,12 @@ public class DefaultDecoder extends QppXmlDecoder {
 		= new String[] {"entry","organizer","component","observation","entryRelationship"};
 	
 	@Override
-	protected Node internalDecode(Element element, Node thisnode) {
+	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		thisnode.putValue("DefaultDecoderFor", description);
 		for (Element child : element.getChildren()) {
-			Node decoded = this.decode(element, new Node());
+			decode(element, new Node()); // TODO not sure if new node is correct, need to add or use thisnode
 		}
-		return thisnode;
+		return DecodeResult.TreeContinue;
 		
 //		Node subNode = null;
 //		for (String childTag : childrenToScan) {
@@ -54,174 +55,174 @@ public class DefaultDecoder extends QppXmlDecoder {
 	
 	
 	
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.1.2")
-//	public static class A_Decoder extends DefaultDecoder {
-//		public A_Decoder() {
-//			super("Document-Level Template: QRDA Category III Report - CMS (V2)");
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.1.2")
+////	public static class A_Decoder extends DefaultDecoder {
+////		public A_Decoder() {
+////			super("Document-Level Template: QRDA Category III Report - CMS (V2)");
+////		}
+////	}
+//	// this one looks like a node that is not necessary
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.2.2")
+////	public static class B_Decoder extends DefaultDecoder {
+////		public B_Decoder() {
+////			super("Measure Section");
+////		}
+////	}
+//	// this one looks like a node that is not necessary
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.6")
+////	public static class C_Decoder extends DefaultDecoder {
+////		public C_Decoder() {
+////			super("QRDA Category III Reporting Parameters Section - CMS (V2)*");
+////		}
+////	}
+//	// this one looks like a node that is not necessary
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.3")
+////	public static class D_Decoder extends DefaultDecoder {
+////		public D_Decoder() {
+////			super("QRDA Category III Measure Section - CMS (V2)");
+////		}
+////	}
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.4")
+////	public static class E_Decoder extends DefaultDecoder {
+////		public E_Decoder() {
+////			super("Improvement Activity Section");
+////		}
+////	}
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.5")
+////	public static class F_Decoder extends DefaultDecoder {
+////		public F_Decoder() {
+////			super("Advancing Care Information Section");
+////		}
+////	}
+//	// this one looks like a root node that is not necessary
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.3.98")
+////	public static class G_Decoder extends DefaultDecoder {
+////		public G_Decoder() {
+////			super("Measure Reference");
+////		}
+////	}
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.28")
+////	public static class H_Decoder extends DefaultDecoder {
+////		public H_Decoder() {
+////			super("Advancing Care Information Numerator Denominator Type Measure Reference and Results");
+////		}
+////	}
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.29")
+//	public static class I_Decoder extends DefaultDecoder {
+//		public I_Decoder() {
+//			super("Advancing Care Information Measure Performed Measure Reference and Results");
 //		}
 //	}
-	// this one looks like a node that is not necessary
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.2.2")
-//	public static class B_Decoder extends DefaultDecoder {
-//		public B_Decoder() {
-//			super("Measure Section");
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.33")
+////	public static class J_Decoder extends DefaultDecoder {
+////		public J_Decoder() {
+////			super("Improvement Activity Performed Measure Reference and Results");
+////		}
+////	}
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.17")
+//	public static class K_Decoder extends DefaultDecoder {
+//		public K_Decoder() {
+//			super("Measure Reference and Results - CMS (V2)");
 //		}
 //	}
-	// this one looks like a node that is not necessary
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.6")
-//	public static class C_Decoder extends DefaultDecoder {
-//		public C_Decoder() {
-//			super("QRDA Category III Reporting Parameters Section - CMS (V2)*");
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.23")
+//	public static class L_Decoder extends DefaultDecoder {
+//		public L_Decoder() {
+//			super("Reporting Parameters Act - CMS (V2)*");
 //		}
 //	}
-	// this one looks like a node that is not necessary
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.3")
-//	public static class D_Decoder extends DefaultDecoder {
-//		public D_Decoder() {
-//			super("QRDA Category III Measure Section - CMS (V2)");
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.27")
+////	public static class M_Decoder extends DefaultDecoder {
+////		public M_Decoder() {
+////			super("Measure Performed");
+////		}
+////	}
+//	// this one looks like a node that is not necessary
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.30")
+////	public static class N_Decoder extends DefaultDecoder {
+////		public N_Decoder() {
+////			super("Performance Rate");
+////		}
+////	}
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.31")
+////	public static class O_Decoder extends DefaultDecoder {
+////		public O_Decoder() {
+////			super("Advancing Care Information Numerator Denominator Type Measure Numerator Data");
+////		}
+////	}
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.32")
+////	public static class P_Decoder extends DefaultDecoder {
+////		public P_Decoder() {
+////			super("Advancing Care Information Numerator Denominator Type Measure Denominator Data");
+////		}
+////	}
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.3")
+////	public static class Q_Decoder extends DefaultDecoder {
+////		public Q_Decoder() {
+////			super("Aggregate Count");
+////		}
+////	}
+////	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
+////	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.24")
+////	public static class R_Decoder extends DefaultDecoder {
+////		public R_Decoder() {
+////			super("Aggregate Count - CMS");
+////		}
+////	}
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.26")
+//	public static class S_Decoder extends DefaultDecoder {
+//		public S_Decoder() {
+//			super("Continuous Variable Measure Value - CMS");
 //		}
 //	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.4")
-//	public static class E_Decoder extends DefaultDecoder {
-//		public E_Decoder() {
-//			super("Improvement Activity Section");
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.22")
+//	public static class T_Decoder extends DefaultDecoder {
+//		public T_Decoder() {
+//			super("Ethnicity Supplemental Data Element – CMS (V2)");
 //		}
 //	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.5")
-//	public static class F_Decoder extends DefaultDecoder {
-//		public F_Decoder() {
-//			super("Advancing Care Information Section");
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.16")
+//	public static class U_Decoder extends DefaultDecoder {
+//		public U_Decoder() {
+//			super("Measure Data - CMS (V2)");
 //		}
 //	}
-	// this one looks like a root node that is not necessary
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.3.98")
-//	public static class G_Decoder extends DefaultDecoder {
-//		public G_Decoder() {
-//			super("Measure Reference");
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.20")
+//	public static class V_Decoder extends DefaultDecoder {
+//		public V_Decoder() {
+//			super("Reporting Stratum - CMS");
 //		}
 //	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.28")
-//	public static class H_Decoder extends DefaultDecoder {
-//		public H_Decoder() {
-//			super("Advancing Care Information Numerator Denominator Type Measure Reference and Results");
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.21")
+//	public static class W_Decoder extends DefaultDecoder {
+//		public W_Decoder() {
+//			super("Sex Supplemental Data Element - CMS (V2)");
 //		}
 //	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.29")
-	public static class I_Decoder extends DefaultDecoder {
-		public I_Decoder() {
-			super("Advancing Care Information Measure Performed Measure Reference and Results");
-		}
-	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.33")
-//	public static class J_Decoder extends DefaultDecoder {
-//		public J_Decoder() {
-//			super("Improvement Activity Performed Measure Reference and Results");
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.19")
+//	public static class X_Decoder extends DefaultDecoder {
+//		public X_Decoder() {
+//			super("Race Supplemental Data Element - CMS (V2)");
 //		}
 //	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.17")
-	public static class K_Decoder extends DefaultDecoder {
-		public K_Decoder() {
-			super("Measure Reference and Results - CMS (V2)");
-		}
-	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.23")
-	public static class L_Decoder extends DefaultDecoder {
-		public L_Decoder() {
-			super("Reporting Parameters Act - CMS (V2)*");
-		}
-	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.27")
-//	public static class M_Decoder extends DefaultDecoder {
-//		public M_Decoder() {
-//			super("Measure Performed");
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.18")
+//	public static class Y_Decoder extends DefaultDecoder {
+//		public Y_Decoder() {
+//			super("Payer Supplemental Data Element - CMS (V2)");
 //		}
 //	}
-	// this one looks like a node that is not necessary
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.30")
-//	public static class N_Decoder extends DefaultDecoder {
-//		public N_Decoder() {
-//			super("Performance Rate");
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.1")
+//	public static class Z_Decoder extends DefaultDecoder {
+//		public Z_Decoder() {
+//			super("Measure Reference and Results- CMS (V2)");
 //		}
 //	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.31")
-//	public static class O_Decoder extends DefaultDecoder {
-//		public O_Decoder() {
-//			super("Advancing Care Information Numerator Denominator Type Measure Numerator Data");
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.25")
+//	public static class ZZ_Decoder extends DefaultDecoder {
+//		public ZZ_Decoder() {
+//			super("Performance Rate for Proportion Measure - CMS (V2)");
 //		}
 //	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.32")
-//	public static class P_Decoder extends DefaultDecoder {
-//		public P_Decoder() {
-//			super("Advancing Care Information Numerator Denominator Type Measure Denominator Data");
-//		}
-//	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.3")
-//	public static class Q_Decoder extends DefaultDecoder {
-//		public Q_Decoder() {
-//			super("Aggregate Count");
-//		}
-//	}
-//	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.24")
-//	public static class R_Decoder extends DefaultDecoder {
-//		public R_Decoder() {
-//			super("Aggregate Count - CMS");
-//		}
-//	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.26")
-	public static class S_Decoder extends DefaultDecoder {
-		public S_Decoder() {
-			super("Continuous Variable Measure Value - CMS");
-		}
-	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.22")
-	public static class T_Decoder extends DefaultDecoder {
-		public T_Decoder() {
-			super("Ethnicity Supplemental Data Element – CMS (V2)");
-		}
-	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.16")
-	public static class U_Decoder extends DefaultDecoder {
-		public U_Decoder() {
-			super("Measure Data - CMS (V2)");
-		}
-	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.20")
-	public static class V_Decoder extends DefaultDecoder {
-		public V_Decoder() {
-			super("Reporting Stratum - CMS");
-		}
-	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.21")
-	public static class W_Decoder extends DefaultDecoder {
-		public W_Decoder() {
-			super("Sex Supplemental Data Element - CMS (V2)");
-		}
-	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.19")
-	public static class X_Decoder extends DefaultDecoder {
-		public X_Decoder() {
-			super("Race Supplemental Data Element - CMS (V2)");
-		}
-	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.18")
-	public static class Y_Decoder extends DefaultDecoder {
-		public Y_Decoder() {
-			super("Payer Supplemental Data Element - CMS (V2)");
-		}
-	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.1")
-	public static class Z_Decoder extends DefaultDecoder {
-		public Z_Decoder() {
-			super("Measure Reference and Results- CMS (V2)");
-		}
-	}
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.25")
-	public static class ZZ_Decoder extends DefaultDecoder {
-		public ZZ_Decoder() {
-			super("Performance Rate for Proportion Measure - CMS (V2)");
-		}
-	}
 
 }
 

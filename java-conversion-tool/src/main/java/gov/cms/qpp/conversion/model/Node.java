@@ -27,6 +27,10 @@ public class Node implements Serializable {
 		this.data = new HashMap<>();
 		this.setChildNodes(new ArrayList<>());
 	}
+	public Node(String id) {
+		this();
+		setId(id);
+	}
 
 	public String getValue(String name) {
 		return data.get(name);
@@ -53,6 +57,9 @@ public class Node implements Serializable {
 	}
 
 	public void addChildNode(Node childNode) {
+		if (childNode==null || childNode==this) {
+			return;
+		}
 		this.childNodes.add(childNode);
 	}
 
