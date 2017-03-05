@@ -35,7 +35,7 @@ public class AciNumeratorDenominatorDecoderTest {
 		assertThat("returned node should have one child node", numDenomNode.getChildNodes().size(), is(1));
 
 		assertThat("aci numerator/denominator value should be 600",
-				(String) numDenomNode.getChildNodes().get(0).getValue("aciNumeratorDenominator"), is("600"));
+				(String) numDenomNode.getChildNodes().get(0).getValue("aggregateCount"), is("600"));
 
 	}
 	
@@ -59,7 +59,7 @@ public class AciNumeratorDenominatorDecoderTest {
 
 		assertThat("returned node should have one child node", numDenomNode.getChildNodes().size(), is(1));
 
-		assertThat("aci numerator/denominator value should be null", numDenomNode.getChildNodes().get(0).getValue("aciNumeratorDenominator"), is(nullValue()));
+		assertThat("aci numerator/denominator value should be null", numDenomNode.getChildNodes().get(0).getValue("aggregateCount"), is(nullValue()));
 
 	}
 
@@ -83,7 +83,7 @@ public class AciNumeratorDenominatorDecoderTest {
 
 		assertThat("returned node should have one child node", numDenomNode.getChildNodes().size(), is(1));
 
-		assertThat("aci numerator/denominator value should be null", numDenomNode.getChildNodes().get(0).getValue("aciNumeratorDenominator"), is(nullValue()));
+		assertThat("aci numerator/denominator value should be null", numDenomNode.getChildNodes().get(0).getValue("aggregateCount"), is(nullValue()));
 
 	}
 

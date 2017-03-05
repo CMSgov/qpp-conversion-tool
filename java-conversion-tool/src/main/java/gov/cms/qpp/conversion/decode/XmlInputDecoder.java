@@ -37,10 +37,9 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 		
 		if (decoder instanceof QppXmlDecoder) {
 			Node node = new Node();
-			DecodeResult result = decoder.internalDecode(xmlDoc, node);
-			
+			decoder.internalDecode(xmlDoc, node);
 			// TODO handle result
-			
+			// Validation
 			if (null == node.getId()) {
 				LOG.error("The file is not a QDRA-III xml document");
 			}

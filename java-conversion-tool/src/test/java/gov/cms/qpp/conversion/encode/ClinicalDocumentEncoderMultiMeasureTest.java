@@ -47,6 +47,8 @@ public class ClinicalDocumentEncoderMultiMeasureTest {
 	private Node aciProportionDenominatorNode3;
 	private Node numeratorValueNode3;
 	private Node denominatorValueNode3;
+	private Node reportingParametersActNode;
+	private Node reportingParametersSectionNode;
 	private Node clinicalDocumentNode;
 	private List<Node> nodes;
 
@@ -59,27 +61,27 @@ public class ClinicalDocumentEncoderMultiMeasureTest {
 
 		numeratorValueNode = new Node();
 		numeratorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
-		numeratorValueNode.putValue("aciNumeratorDenominator", "400");
+		numeratorValueNode.putValue("aggregateCount", "400");
 
 		numeratorValueNode2 = new Node();
 		numeratorValueNode2.setId("2.16.840.1.113883.10.20.27.3.3");
-		numeratorValueNode2.putValue("aciNumeratorDenominator", "500");
+		numeratorValueNode2.putValue("aggregateCount", "500");
 
 		numeratorValueNode3 = new Node();
 		numeratorValueNode3.setId("2.16.840.1.113883.10.20.27.3.3");
-		numeratorValueNode3.putValue("aciNumeratorDenominator", "400");
+		numeratorValueNode3.putValue("aggregateCount", "400");
 
 		denominatorValueNode = new Node();
 		denominatorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
-		denominatorValueNode.putValue("aciNumeratorDenominator", "600");
+		denominatorValueNode.putValue("aggregateCount", "600");
 
 		denominatorValueNode2 = new Node();
 		denominatorValueNode2.setId("2.16.840.1.113883.10.20.27.3.3");
-		denominatorValueNode2.putValue("aciNumeratorDenominator", "700");
+		denominatorValueNode2.putValue("aggregateCount", "700");
 
 		denominatorValueNode3 = new Node();
 		denominatorValueNode3.setId("2.16.840.1.113883.10.20.27.3.3");
-		denominatorValueNode3.putValue("aciNumeratorDenominator", "600");
+		denominatorValueNode3.putValue("aggregateCount", "600");
 
 		aciProportionDenominatorNode = new Node();
 		aciProportionDenominatorNode.setId("2.16.840.1.113883.10.20.27.3.32");
@@ -129,14 +131,23 @@ public class ClinicalDocumentEncoderMultiMeasureTest {
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);
 		aciSectionNode.addChildNode(aciProportionMeasureNode3);
+		
+		reportingParametersActNode = new Node();
+		reportingParametersActNode.setId("2.16.840.1.113883.10.20.27.3.23");
+		reportingParametersActNode.putValue("performanceStart", "20170101");
+		reportingParametersActNode.putValue("performanceEnd", "20171231");
+		
+		reportingParametersSectionNode = new Node();
+		reportingParametersSectionNode.setId("2.16.840.1.113883.10.20.27.2.6");
+		reportingParametersSectionNode.addChildNode(reportingParametersActNode);
+
 
 		clinicalDocumentNode = new Node();
 		clinicalDocumentNode.setId("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.putValue("performanceStart", "20170101");
-		clinicalDocumentNode.putValue("performanceEnd", "20171231");
+		clinicalDocumentNode.addChildNode(reportingParametersSectionNode);
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		nodes = new ArrayList<>();

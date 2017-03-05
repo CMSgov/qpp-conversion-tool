@@ -25,7 +25,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 		
 		setTaxProviderTaxIdOnNode(element, thisnode);
 
-		setPerformanceTimeRangeOnNode(element, thisnode);
+//		setPerformanceTimeRangeOnNode(element, thisnode);
 		
 		processComponentElement(element, thisnode);
 
@@ -56,17 +56,17 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 
-	protected void setPerformanceTimeRangeOnNode(Element element, Node thisnode) {
-		String effTimeStr = "./ns:component/ns:structuredBody/ns:component/ns:section[*[local-name()='templateId' and @root='2.16.840.1.113883.10.20.27.2.6']]/ns:entry/ns:act/ns:effectiveTime";
-		String performanceStartExprStr = effTimeStr + "/ns:low/@value";
-		String performanceEndExprStr = effTimeStr + "/ns:high/@value";
-
-		Consumer<? super Attribute> performanceStartConsumer = p -> thisnode.putValue("performanceStart", p.getValue());
-		Consumer<? super Attribute> performanceEndConsumer = p -> thisnode.putValue("performanceEnd", p.getValue());
-
-		setOnNode(element, performanceStartExprStr, performanceStartConsumer, Filters.attribute(), true);
-		setOnNode(element, performanceEndExprStr, performanceEndConsumer, Filters.attribute(), true);
-	}
+//	protected void setPerformanceTimeRangeOnNode(Element element, Node thisnode) {
+//		String effTimeStr = "./ns:component/ns:structuredBody/ns:component/ns:section[*[local-name()='templateId' and @root='2.16.840.1.113883.10.20.27.2.6']]/ns:entry/ns:act/ns:effectiveTime";
+//		String performanceStartExprStr = effTimeStr + "/ns:low/@value";
+//		String performanceEndExprStr = effTimeStr + "/ns:high/@value";
+//
+//		Consumer<? super Attribute> performanceStartConsumer = p -> thisnode.putValue("performanceStart", p.getValue());
+//		Consumer<? super Attribute> performanceEndConsumer = p -> thisnode.putValue("performanceEnd", p.getValue());
+//
+//		setOnNode(element, performanceStartExprStr, performanceStartConsumer, Filters.attribute(), true);
+//		setOnNode(element, performanceEndExprStr, performanceEndConsumer, Filters.attribute(), true);
+//	}
 
 	protected void processComponentElement(Element element, Node thisnode) {
 		String expressionStr = "./ns:component/ns:structuredBody/ns:component";

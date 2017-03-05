@@ -9,18 +9,18 @@ import org.jdom2.filter.Filters;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.XmlDecoder;
 
-@XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.3")
-public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
+@XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.27")
+public class MeasurePerformedDecoder extends QppXmlDecoder {
 
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		setSciNumeratorDenominatorOnNode(element, thisnode);
+		setMeasurePerformedOnNode(element, thisnode);
 		return DecodeResult.TreeFinished;
 	}
 	
-	protected void setSciNumeratorDenominatorOnNode(Element element, Node thisnode) {
-		String expressionStr = "./ns:value/@value";
-		Consumer<? super Attribute> consumer = p -> thisnode.putValue("aciNumeratorDenominator", p.getValue());
+	protected void setMeasurePerformedOnNode(Element element, Node thisnode) {
+		String expressionStr = "./ns:value/@code";
+		Consumer<? super Attribute> consumer = p -> thisnode.putValue("measurePerformed", p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 
