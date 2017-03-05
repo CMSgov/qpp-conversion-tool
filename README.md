@@ -17,33 +17,43 @@ The following must be installed on your computer:
 * Maven version X or higher maven_url
 * Git https://git-scm.com/
 
-### Clone Project
-
-Download project from [Github](https://github.com/flexion/adele-bpa-qpp-conversion-tool), or clone via command line: git clone https://github.com/flexion/adele-bpa-qpp-conversion-tool.git qpp-conversion-tool
-
 ### Installation
 
 From the command line, navigate to the directory 'qpp-conversion-tool' and install project dependencies with the command
 
 ```shell
-# Clone your GitHub repository:
+# Clone the GitHub repository:
 git clone https://github.com/flexion/adele-bpa-qpp-conversion-tool.git qpp-conversion-tool
 
-# Go to the Angular directory:
+# Go to the qpp-conversion-tool directory:
 cd qpp-conversion-tool
 
 # Run Maven test to build and run tests locally:
 mvn test
 ```
 
+### Run the 'convert' script to verify everything's working.
 
-add the script to your path
+If you're on linux or OSX, run the shell script
+
+```shell
+./convert.sh valid-QRDA-III.xml
+
+...created valid-QRDA-III.qpp.xml
+```
+If you're on Windows, run the .bat file.
+
+```shell
+./convert.bat valid-QRDA-III.xml
+
+...created valid-QRDA-III.qpp.xml
+```
 
 ## User Instructions
 
 ### Convert a valid file
 
-convert valid-QRDA-III.xml
+./convert valid-QRDA-III.xml
 
 ### Try to convert a QRDA-III file that doesn't contain required measures
 
