@@ -135,9 +135,11 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		if ("ClinicalDocument".equals(rootElement.getName())) {
 			result = true;
 			String templateId = null;
-			for (Element e : rootElement.getChildren("templateId", rootElement.getNamespace())) {
-				if (ClinicalDocumentDecoder.ROOT_TEMPLATEID.equals(e.getAttributeValue("root", rootElement.getNamespace()))) {
-					templateId = e.getAttributeValue("root");
+			List<Element> children = rootElement.getChildren("templateId", rootElement.getNamespace());
+			for (Element e : children) {
+				String tid = e.getAttributeValue("root");
+				if (ClinicalDocumentDecoder.ROOT_TEMPLATEID.equals(tid)) {
+					templateId = tid;
 					break;
 				}
 			}
