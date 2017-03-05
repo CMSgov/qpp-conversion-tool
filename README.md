@@ -13,9 +13,9 @@ This text below models what the open souce project would look like. The process 
 ### Prerequisites
 
 The following must be installed on your computer:
-* Java JDK 8 or higher - [Download Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* Java JDK 8 or higher - [Download Java JRE](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
-  It is important that you have the right version of java on your path. Insalling the JDK rather than the JRE should talk care of your path automatically.
+  It is important that you have the right version of java on your path. If you installed the JRE, you may need to update your path manually. Insalling the JDK rather than the JRE should talk care of your path automatically.
 
   ```shell
   # When you run 'java -version', you should get 1.8.XXXXX. For example:
@@ -24,18 +24,9 @@ The following must be installed on your computer:
   ...
   ```
 
-* Maven version 3.3 or higher - [Download Maven](https://maven.apache.org/)
+### Getting and using the converter
 
-  ```shell
-  # When you run 'mvn -v', you should get 1.3.X. For example:
-  mvn -v
-  Apache Maven 3.3.9
-  ...
-  ```
-
-* Git - [Download Git](https://git-scm.com/downloads)
-
-### Installation
+If you are using a Unix-like OS like Linux or OSX, open a terminal and go to a directory in which you want the the converter tool directory to be created: 
 
 ```shell
 # Clone the GitHub repository:
@@ -44,39 +35,29 @@ git clone https://github.com/flexion/adele-bpa-qpp-conversion-tool.git qpp-conve
 # Go to the qpp-conversion-tool directory:
 cd qpp-conversion-tool
 
-# Run Maven test to build and run tests locally. All tests shoud pass:
-mvn test
+# There is a convenient bash script wrapper. Make it executable:
+chmod +x convert.sh
 
-# Run Maven package to build the JAR:
-mvn package
+# Try the convert script. If the JAR isn't built  yet, it will build it for you:
+./convert.sh java-conversion-tool/src/test/resources/valid-QRDA-III.xml 
 ```
 
-### Run the 'convert' script to verify everything's working.
-
-If you're on linux or OSX, run the shell script
+If you are using a Windows OS, open a command prompt (not PowerShell) and go to a directory in which you want the the converter tool directory to be created: 
 
 ```shell
-# Run the 'convert' shell script, passing the valid-QRDA-III.xml file as a parameter:
-./convert.sh src/test/resources/valid-QRDA-III.xml
+# Clone the GitHub repository:
+git clone https://github.com/flexion/adele-bpa-qpp-conversion-tool.git qpp-conversion-tool
 
-...
+# Go to the qpp-conversion-tool directory:
+cd qpp-conversion-tool
 
-created valid-QRDA-III.qpp.xml
-```
-If you're on Windows, run the .ps1 file.
-
-```shell
-# Run the 'convert' Powershell script, passing the valid-QRDA-III.xml file as a parameter:
-./convert.ps1 src/test/resources/valid-QRDA-III.xml
-
-...
-
-created valid-QRDA-III.qpp.xml
+# Try the convert script. If the JAR isn't built  yet, it will build it for you:
+convert.bat java-conversion-tool/src/test/resources/valid-QRDA-III.xml 
 ```
 
 ## User Instructions
 
-Note: If you are using Windows, replace `convert.sh` in the examples below with `convert.ps1`.
+Note: If you are using Windows, replace `./convert.sh` in the examples below with `.\convert.bat`.
 
 ### Convert a valid file.
 
