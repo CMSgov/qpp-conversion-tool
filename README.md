@@ -2,7 +2,7 @@
 
 # adele-bpa-qpp-conversion-tool
 
-This text below models what the open souce project would look like. The Design Process we used to build the product is documented in the [Design Process](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/DESIGN_PROCESS.md) page.
+This text below models what the open souce project would look like. The process we used to build the converter is documented in the [Design Process](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/DESIGN_PROCESS.md) page.
 
 * [Installation Instructions](#developer-installation-instructions)
 * [User Instructions](#user-instructions)
@@ -13,13 +13,29 @@ This text below models what the open souce project would look like. The Design P
 ### Prerequisites
 
 The following must be installed on your computer:
-* Java JDK 8 or higher java_url
-* Maven version X or higher maven_url
-* Git https://git-scm.com/
+* Java JDK 8 or higher - [Download Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+
+  It is important that you have the right version of java on your path. Insalling the JDK rather than the JRE should talk care of your path automatically.
+
+  ```shell
+  # When you run 'java -version', you should get 1.8.XXXXX. For example:
+  java -version
+  java version "1.8.0_121"
+  ...
+  ```
+
+* Maven version 3.3 or higher - [Download Maven](https://maven.apache.org/)
+
+  ```shell
+  # When you run 'mvn -v', you should get 1.3.X. For example:
+  mvn -v
+  Apache Maven 3.3.9
+  ...
+  ```
+
+* Git - [Download Git](https://git-scm.com/)
 
 ### Installation
-
-From the command line, navigate to the directory 'qpp-conversion-tool' and install project dependencies with the command
 
 ```shell
 # Clone the GitHub repository:
@@ -37,16 +53,22 @@ mvn test
 If you're on linux or OSX, run the shell script
 
 ```shell
+# Run the 'convert' shell script, passing the valid-QRDA-III.xml file as a parameter:
 ./convert.sh valid-QRDA-III.xml
 
-...created valid-QRDA-III.qpp.xml
+...
+
+created valid-QRDA-III.qpp.xml
 ```
-If you're on Windows, run the .bat file.
+If you're on Windows, run the .ps1 file.
 
 ```shell
-./convert.bat valid-QRDA-III.xml
+# Run the 'convert' Powershell script, passing the valid-QRDA-III.xml file as a parameter:
+./convert.ps1 valid-QRDA-III.xml
 
-...created valid-QRDA-III.qpp.xml
+...
+
+created valid-QRDA-III.qpp.xml
 ```
 
 ## User Instructions
