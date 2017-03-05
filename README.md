@@ -54,7 +54,7 @@ If you're on linux or OSX, run the shell script
 
 ```shell
 # Run the 'convert' shell script, passing the valid-QRDA-III.xml file as a parameter:
-./convert.sh valid-QRDA-III.xml
+./convert.sh src/test/resources/valid-QRDA-III.xml
 
 ...
 
@@ -64,7 +64,7 @@ If you're on Windows, run the .ps1 file.
 
 ```shell
 # Run the 'convert' Powershell script, passing the valid-QRDA-III.xml file as a parameter:
-./convert.ps1 valid-QRDA-III.xml
+./convert.ps1 src/test/resources/valid-QRDA-III.xml
 
 ...
 
@@ -73,26 +73,35 @@ created valid-QRDA-III.qpp.xml
 
 ## User Instructions
 
-### Convert a valid file
+### Convert a valid file.
 
-./convert valid-QRDA-III.xml
+```shell
+./convert.ps1 src/test/resources/valid-QRDA-III.xml
+```
 
-### Try to convert a QRDA-III file that doesn't contain required measures
+### Try to convert a QRDA-III file that doesn't contain required measures.
 
-convert invalidv-QRDA-III.xml
+```shell
+./convert.ps1 src/test/resources/missing-measure-QRDA-III.xml
+```
 
-### Convert an file without and 'xml' extension
+### Convert an file without and 'xml' extension.
 
-convert valid-QRDA-III
+```shell
+./convert.ps1 src/test/resources/valid-QRDA-III
+```
 
-### Try to convert a file that is not a QRDA-III file
+### Try to convert a file that is not a QRDA-III file.
 
-convert non-qrda-III-file.xml
+```shell
+./convert.ps1 src/test/resources/not-a-QRDA-III.xml
+```
 
-### Try to convert a file that is not a QRDA-III file
+### Try to convert a bunch of QRDA-III files.
 
-convert non-qrda-III-file.xml
-
+```shell
+./convert.ps1 src/test/resources/qrda/*.**
+```
 ## Development Instructions
 
 The application is built with the Java 8
