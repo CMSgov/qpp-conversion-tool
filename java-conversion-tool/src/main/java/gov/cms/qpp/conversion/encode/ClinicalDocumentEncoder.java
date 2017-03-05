@@ -3,8 +3,6 @@ package gov.cms.qpp.conversion.encode;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -26,8 +24,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 		List<Node> children = node.getChildNodes();
 		
-		Map<String, Node> childMapByTemplateId = children.stream().collect(
-				Collectors.toMap(Node::getId,Function.identity(), (v1,v2)->v1, LinkedHashMap::new));
+		Map<String, Node> childMapByTemplateId = new LinkedHashMap<>();
+		for (Node c : children) {
+			childMapByTemplateId.put(c.getId(), c);
+		}
 		
 		Node reportingParametersNode = childMapByTemplateId.remove("2.16.840.1.113883.10.20.27.2.6");
 		
