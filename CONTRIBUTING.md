@@ -38,6 +38,73 @@ We will be insisting on a minimal reproduce scenario in order to save maintainer
 You can file new issues by filling out our [new issue form](https://github.com/flexion/adele-bpa-qpp-conversion-tool/issues/new).
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
+
+#### Prerequisites
+
+The following must be installed on your computer:
+* Java JDK 8 or higher - [Download Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+
+  It is important that you have the right version of java on your path.
+
+  ```shell
+  # When you run 'java -version', you should get 1.8.XXXXX. For example:
+  java -version
+  java version "1.8.0_121"
+  ...
+  ```
+
+* Maven version 3.3 or higher - [Download Maven](https://maven.apache.org/)
+
+  ```shell
+  # When you run 'mvn -v', you should get 1.3.X. For example:
+  mvn -v
+  Apache Maven 3.3.9
+  ...
+  ```
+
+* Git - [Download Git](https://git-scm.com/downloads)
+
+#### Building from Source
+
+```shell
+# Clone the GitHub repository:
+git clone https://github.com/flexion/adele-bpa-qpp-conversion-tool.git qpp-conversion-tool
+
+# Go to the qpp-conversion-tool directory:
+cd qpp-conversion-tool
+
+# Run Maven test to build and run tests locally. All tests shoud pass:
+mvn test
+
+# Run Maven package to build the JAR:
+mvn package
+```
+
+#### Run the 'convert' script to verify everything's working.
+
+If you're on linux or OSX, run the shell script
+
+```shell
+# Run the 'convert' shell script, passing the valid-QRDA-III.xml file as a parameter:
+./convert.sh src/test/resources/valid-QRDA-III.xml
+
+...
+
+created valid-QRDA-III.qpp.xml
+```
+If you're on Windows, run the .ps1 file.
+
+```shell
+# Run the 'convert' Powershell script, passing the valid-QRDA-III.xml file as a parameter:
+./convert.ps1 src/test/resources/valid-QRDA-III.xml
+
+...
+
+created valid-QRDA-III.qpp.xml
+```
+
+#### Submitting a Pull Request (PR)
+
 Before you submit your Pull Request (PR) consider the following guidelines:
 
 * Search [GitHub](https://github.com/flexion/adele-bpa-qpp-conversion-tool/pulls) for an open or closed PR
