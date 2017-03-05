@@ -6,7 +6,7 @@ This text below models what the open souce project would look like. The process 
 
 * [Installation Instructions](#developer-installation-instructions)
 * [User Instructions](#user-instructions)
-* [Want to Contrinute?](#want-to-contribute?)
+* [Want to Contribute?](#want-to-contribute?)
 
 ## Installation Instructions
 
@@ -113,4 +113,4 @@ Note: If you are using Windows, replace `convert.sh` in the examples below with 
 Want to file a bug or contribute some code? Read up on our
 guidelines for [contributing][contributing].
 
-[contributing]: http://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/CONTRIBUTING.md
+[contributing]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/CONTRIBUTING.md
