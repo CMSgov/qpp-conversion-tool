@@ -9,16 +9,7 @@ We would love for you to contribute to QPP Conversion Tool. As a contributor, he
  - [Coding Rules](#rules)
 
 ## <a name="question"></a> Got a Question or Problem?
-
-Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [StackOverflow](https://stackoverflow.com/questions/tagged/qpp-conversion-tool) where the questions should be tagged with tag `qpp-conversion-tool`.
-
-StackOverflow is a much better place to ask questions since:
-
-- there are thousands of people willing to help on StackOverflow
-- questions and answers stay available for public viewing so your question / answer might help someone else
-- StackOverflow's voting system assures that the best answers are prominently visible.
-
-To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
+If you have a question or problem, please [submit an issue](#submit-issue) to our [GitHub Repository][github].
 
 ## <a name="issue"></a> Found a Bug?
 If you find a bug in the source code, you can help us by
@@ -29,12 +20,6 @@ If you find a bug in the source code, you can help us by
 You can *request* a new feature by [submitting an issue](#submit-issue) to our GitHub
 Repository. If you would like to *implement* a new feature, please submit an issue with
 a proposal for your work first, to be sure that we can use it.
-Please consider what kind of change it is:
-
-* For a **Major Feature**, first open an issue and outline your proposal so that it can be
-discussed. This will also allow us to better coordinate our efforts, prevent duplication of work,
-and help you to craft the change so that it is successfully accepted into the project.
-* **Small Features** can be crafted and directly [submitted as a Pull Request](#submit-pr).
 
 ## <a name="submit"></a> Submission Guidelines
 
@@ -42,18 +27,15 @@ and help you to craft the change so that it is successfully accepted into the pr
 
 Before you submit an issue, please search the issue tracker, maybe an issue for your problem already exists and the discussion might inform you of workarounds readily available.
 
-We want to fix all the issues as soon as possible, but before fixing a bug we need to reproduce and confirm it. In order to reproduce bugs we will systematically ask you to provide a minimal reproduction scenario using http://plnkr.co. Having a live, reproducible scenario gives us wealth of important information without going back & forth to you with additional questions like:
+We want to fix all the issues as soon as possible, but before fixing a bug we need to reproduce and confirm it. Please provide:
 
 - version of qpp-conversion-tool used
 - 3rd-party libraries and their versions
 - and most importantly - a use-case that fails
 
-We will be insisting on a minimal reproduce scenario in order to save maintainers time and ultimately be able to fix more bugs. Interestingly, from our experience users often find coding problems themselves while preparing a minimal plunk. We understand that sometimes it might be hard to extract essentials bits of code from a larger code-base but we really need to isolate the problem before we can fix it.
-
-Unfortunately we are not able to investigate / fix bugs without a minimal reproduction, so if we don't hear back from you we are going to close an issue that don't have enough info to be reproduced.
+We will be insisting on a minimal reproduce scenario in order to save maintainers time and ultimately be able to fix more bugs.
 
 You can file new issues by filling out our [new issue form](https://github.com/flexion/adele-bpa-qpp-conversion-tool/issues/new).
-
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
@@ -85,10 +67,10 @@ Before you submit your Pull Request (PR) consider the following guidelines:
     git push origin my-fix-branch
     ```
 
-* In GitHub, send a pull request to `angular:master`.
+* In GitHub, send a pull request to `adele-bpa-qpp-conversion-tool:master`.
 * If we suggest changes then:
   * Make the required updates.
-  * Re-run the Angular test suites to ensure tests are still passing.
+  * Re-run the full test suites to ensure tests are still passing.
   * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
 
     ```shell
@@ -132,20 +114,5 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 
 * All features or bug fixes **must be tested** by one or more specs (unit-tests).
 * All public API methods **must be documented**. (Details TBC).
-* We follow [Google's JavaScript Style Guide][js-style-guide], but wrap all code at
-  **100 characters**. An automated formatter is available, see
-  [DEVELOPER.md](DEVELOPER.md#clang-format).
 
-
-
-[angular-group]: https://groups.google.com/forum/#!forum/angular
-[commit-message-format]: https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#
-[corporate-cla]: http://code.google.com/legal/corporate-cla-v1.0.html
-[github]: https://github.com/angular/angular
-[gitter]: https://gitter.im/angular/angular
-[individual-cla]: http://code.google.com/legal/individual-cla-v1.0.html
-[js-style-guide]: https://google.github.io/styleguide/jsguide.html
-[jsfiddle]: http://jsfiddle.net
-[plunker]: http://plnkr.co/edit
-[runnable]: http://runnable.com
-[stackoverflow]: http://stackoverflow.com/questions/tagged/angular
+[github]: https://github.com/flexion/adele-bpa-qpp-conversion-tool
