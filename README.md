@@ -33,7 +33,7 @@ The following must be installed on your computer:
   ...
   ```
 
-* Git - [Download Git](https://git-scm.com/)
+* Git - [Download Git](https://git-scm.com/downloads)
 
 ### Installation
 
@@ -73,34 +73,36 @@ created valid-QRDA-III.qpp.xml
 
 ## User Instructions
 
+Note: If you are using Windows, replace `convert.sh` in the examples below with `convert.ps1`.
+
 ### Convert a valid file.
 
 ```shell
-./convert.ps1 src/test/resources/valid-QRDA-III.xml
+./convert.sh src/test/resources/valid-QRDA-III.xml
 ```
 
 ### Try to convert a QRDA-III file that doesn't contain required measures.
 
 ```shell
-./convert.ps1 src/test/resources/missing-measure-QRDA-III.xml
+./convert.sh src/test/resources/missing-measure-QRDA-III.xml
 ```
 
 ### Convert an file without and 'xml' extension.
 
 ```shell
-./convert.ps1 src/test/resources/valid-QRDA-III
+./convert.sh src/test/resources/valid-QRDA-III
 ```
 
 ### Try to convert a file that is not a QRDA-III file.
 
 ```shell
-./convert.ps1 src/test/resources/not-a-QRDA-III.xml
+./convert.sh src/test/resources/not-a-QRDA-III.xml
 ```
 
 ### Try to convert a bunch of QRDA-III files.
 
 ```shell
-./convert.ps1 src/test/resources/qrda/*.**
+./convert.sh src/test/resources/qrda/*.**
 ```
 ## Development Instructions
 
