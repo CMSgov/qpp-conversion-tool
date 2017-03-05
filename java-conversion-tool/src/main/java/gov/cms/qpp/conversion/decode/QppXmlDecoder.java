@@ -22,6 +22,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 	public QppXmlDecoder() {
 	}
+	
 
 	/**
 	 * Iterates over the element to find all child elements. Finds any elements
@@ -96,6 +97,61 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return DecodeResult.TreeContinue;
 	}
 
+	/**
+	 * Starting at the top of the XML or XML fragment.
+	 */
+	@Override
+	protected Node decodeRoot(Element xmlDoc) {
+		Node rootNode = new Node();
+		Element rootElement = xmlDoc.getDocument().getRootElement();
+		
+		QppXmlDecoder rootDecoder = null;
+		for (Element e : rootElement.getChildren("templateId", rootElement.getNamespace())) {
+			String templateId = e.getAttributeValue("root");
+			rootDecoder = decoders.get(templateId);
+			if (null != rootDecoder) {
+				rootNode.setId(templateId);
+				break;
+			}
+		}
+		
+		if (null != rootDecoder) {
+			rootDecoder.setNamespace(rootElement, rootDecoder);
+			rootDecoder.internalDecode(rootElement, rootNode);
+		} else {
+			rootNode.setId("placeholder");
+			this.decode(rootElement, rootNode);
+		}
+		
+		return rootNode;
+	}
+	
+	@Override
+	protected boolean accepts(Element xmlDoc) {
+		
+		boolean result;
+		Element rootElement = xmlDoc.getDocument().getRootElement();
+		
+		if ("ClinicalDocument".equals(rootElement.getName())) {
+			result = true;
+			String templateId = null;
+			for (Element e : rootElement.getChildren("templateId", rootElement.getNamespace())) {
+				if (ClinicalDocumentDecoder.ROOT_TEMPLATEID.equals(e.getAttributeValue("root", rootElement.getNamespace()))) {
+					templateId = e.getAttributeValue("root");
+					break;
+				}
+			}
+			
+			if (null == templateId) {
+				LOG.error("The file is not a QDRA-III xml document");
+			}
+		} else {
+			result = false;
+		}
+		
+		return result;
+	}
+	
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		// this is the top level, so just return null
@@ -116,5 +172,6 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	public void addValidation(String templateId, String validation) {
 		Validations.addValidation(templateId, validation);
 	}
+
 
 }

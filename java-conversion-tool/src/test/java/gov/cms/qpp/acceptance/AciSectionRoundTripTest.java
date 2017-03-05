@@ -34,7 +34,7 @@ public class AciSectionRoundTripTest {
 				+ "				<templateId root=\"Q.E.D\"/>\n" + "			</qed>" + "		</entry>\n"
 				+ "	</section>\n" + "</component>";
 
-		Node measureNode = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
+		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();

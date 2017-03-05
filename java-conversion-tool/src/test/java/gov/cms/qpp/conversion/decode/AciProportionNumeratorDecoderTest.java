@@ -39,7 +39,7 @@ public class AciProportionNumeratorDecoderTest {
 				+ "	</observation>\n"
 				+ "</component>";
 
-		Node root = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
+		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));
@@ -69,7 +69,7 @@ public class AciProportionNumeratorDecoderTest {
 				+ "	</observation>\n"
 				+ "</component>";
 
-		Node root = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
+		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));

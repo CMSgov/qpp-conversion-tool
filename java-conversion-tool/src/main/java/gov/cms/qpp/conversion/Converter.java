@@ -53,7 +53,7 @@ public class Converter implements Callable<Integer> {
 		}
 
 		try {
-			Node decoded = XmlInputDecoder.decodeAll(XmlUtils.fileToDOM(inFile));
+			Node decoded = XmlInputDecoder.decodeXml(XmlUtils.fileToDOM(inFile));
 
 			QrdaValidator validator = new QrdaValidator();
 			QrdaValidator.resetValidationErrors();

@@ -38,7 +38,7 @@ public class AutoDetectQrdaTest {
 	
 	@Test
 	public void validationFileTest() throws Exception {
-		String error1 = "[main] ERROR gov.cms.qpp.conversion.decode.XmlInputDecoder - The file is not a QDRA-III xml document\n";
+		String error1 = "[main] ERROR gov.cms.qpp.conversion.decode.QppXmlDecoder - The file is not a QDRA-III xml document\n";
 		String error2 =	"[main] ERROR gov.cms.qpp.conversion.decode.XmlInputDecoder - The file is an unknown XML document\n";
 		
 		ClassPathResource xmlResource = new ClassPathResource("bogus-QDRA-III");
@@ -47,7 +47,7 @@ public class AutoDetectQrdaTest {
 		ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
 		System.setErr(new PrintStream(baos1));
 		
-		XmlInputDecoder.decodeAll(XmlUtils.stringToDOM(xmlFragment));
+		XmlInputDecoder.decodeXml(XmlUtils.stringToDOM(xmlFragment));
 		
 		assertThat("Expected err mesage", baos1.toString(), is(error1));
 		
@@ -58,7 +58,7 @@ public class AutoDetectQrdaTest {
 		ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
 		System.setErr(new PrintStream(baos2));
 		
-		XmlInputDecoder.decodeAll(XmlUtils.stringToDOM(xmlFragment));
+		XmlInputDecoder.decodeXml(XmlUtils.stringToDOM(xmlFragment));
 		
 		assertThat("Expected err mesage", baos2.toString(), is(error2));
 		
@@ -66,7 +66,7 @@ public class AutoDetectQrdaTest {
 		xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 		
 		try {
-			XmlInputDecoder.decodeAll(XmlUtils.stringToDOM(xmlFragment));
+			XmlInputDecoder.decodeXml(XmlUtils.stringToDOM(xmlFragment));
 		} catch (Exception e) {
 			assertThat("Expected XmlException", e instanceof XmlException, is(true));
 		}

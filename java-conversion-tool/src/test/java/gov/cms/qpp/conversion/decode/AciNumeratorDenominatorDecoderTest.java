@@ -24,7 +24,7 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
+		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the
@@ -49,7 +49,7 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
+		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the
@@ -73,7 +73,7 @@ public class AciNumeratorDenominatorDecoderTest {
 				"</root>");
 
 
-		Node numDenomNode = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
+		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the
