@@ -26,7 +26,7 @@ public class AciNumeratorDenominatorValueEncoderTest {
 	public void createNode() {
 		numeratorDenominatorNode = new Node();
 		numeratorDenominatorNode.setId("2.16.840.1.113883.10.20.27.3.3");
-		numeratorDenominatorNode.putValue("aciNumeratorDenominator", "600");
+		numeratorDenominatorNode.putValue("aggregateCount", "600");
 
 		nodes = new ArrayList<>();
 		nodes.add(numeratorDenominatorNode);

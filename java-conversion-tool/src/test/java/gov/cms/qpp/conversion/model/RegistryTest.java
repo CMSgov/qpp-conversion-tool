@@ -12,10 +12,10 @@ import org.jdom2.Element;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.decode.AciNumeratorDenominatorDecoder;
+import gov.cms.qpp.conversion.decode.AggregateCount;
 import gov.cms.qpp.conversion.decode.DecodeException;
 import gov.cms.qpp.conversion.decode.InputDecoder;
-import gov.cms.qpp.conversion.encode.AciNumeratorDenominatorValueEncoder;
+import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
 
 public class RegistryTest {
 
@@ -55,21 +55,21 @@ public class RegistryTest {
 	// registry
 	@Test
 	public void testRegistry_placeAndFetch() throws Exception {
-		String templateId = registry.getAnnotationParam(AciNumeratorDenominatorDecoder.class);
+		String templateId = registry.getAnnotationParam(AggregateCount.class);
 		InputDecoder decoder = (InputDecoder) registry.get(templateId);
 
 		assertNotNull("A handler is expected", decoder);
 		assertEquals("Handler should be an instance of the handler for the given XPATH",
-				AciNumeratorDenominatorDecoder.class, decoder.getClass());
+				AggregateCount.class, decoder.getClass());
 	}
 
 	@Test
 	public void testRegistry_getAnnotationParam() throws Exception {
-		String templateId = registry.getAnnotationParam(AciNumeratorDenominatorDecoder.class);
+		String templateId = registry.getAnnotationParam(AggregateCount.class);
 		assertNotNull("A templateId is expected", templateId);
 		assertEquals("The templateId should be", "2.16.840.1.113883.10.20.27.3.3", templateId);
 
-		templateId = new Registry<String, Encoder>(Encoder.class).getAnnotationParam(AciNumeratorDenominatorValueEncoder.class);
+		templateId = new Registry<String, Encoder>(Encoder.class).getAnnotationParam(AggregateCountEncoder.class);
 		assertNotNull("A templateId is expected", templateId);
 		assertEquals("The templateId should be", "2.16.840.1.113883.10.20.27.3.3", templateId);
 	}
@@ -95,7 +95,7 @@ public class RegistryTest {
 		Registry<String,XmlDecoder> registryB = new Registry<String,XmlDecoder>(XmlDecoder.class) {
 			@Override
 			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
-				if ("gov.cms.qpp.conversion.decode.AciNumeratorDenominatorDecoder".equals(className)) {
+				if ("gov.cms.qpp.conversion.decode.AggregateCount".equals(className)) {
 					throw new ClassNotFoundException();
 				}
 				return Class.forName(className);

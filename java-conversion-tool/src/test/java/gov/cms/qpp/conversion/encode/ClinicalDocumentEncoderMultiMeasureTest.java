@@ -61,27 +61,27 @@ public class ClinicalDocumentEncoderMultiMeasureTest {
 
 		numeratorValueNode = new Node();
 		numeratorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
-		numeratorValueNode.putValue("aciNumeratorDenominator", "400");
+		numeratorValueNode.putValue("aggregateCount", "400");
 
 		numeratorValueNode2 = new Node();
 		numeratorValueNode2.setId("2.16.840.1.113883.10.20.27.3.3");
-		numeratorValueNode2.putValue("aciNumeratorDenominator", "500");
+		numeratorValueNode2.putValue("aggregateCount", "500");
 
 		numeratorValueNode3 = new Node();
 		numeratorValueNode3.setId("2.16.840.1.113883.10.20.27.3.3");
-		numeratorValueNode3.putValue("aciNumeratorDenominator", "400");
+		numeratorValueNode3.putValue("aggregateCount", "400");
 
 		denominatorValueNode = new Node();
 		denominatorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
-		denominatorValueNode.putValue("aciNumeratorDenominator", "600");
+		denominatorValueNode.putValue("aggregateCount", "600");
 
 		denominatorValueNode2 = new Node();
 		denominatorValueNode2.setId("2.16.840.1.113883.10.20.27.3.3");
-		denominatorValueNode2.putValue("aciNumeratorDenominator", "700");
+		denominatorValueNode2.putValue("aggregateCount", "700");
 
 		denominatorValueNode3 = new Node();
 		denominatorValueNode3.setId("2.16.840.1.113883.10.20.27.3.3");
-		denominatorValueNode3.putValue("aciNumeratorDenominator", "600");
+		denominatorValueNode3.putValue("aggregateCount", "600");
 
 		aciProportionDenominatorNode = new Node();
 		aciProportionDenominatorNode.setId("2.16.840.1.113883.10.20.27.3.32");
