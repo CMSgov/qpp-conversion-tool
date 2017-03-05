@@ -6,7 +6,7 @@ This text below models what the open souce project would look like. The process 
 
 * [Installation Instructions](#developer-installation-instructions)
 * [User Instructions](#user-instructions)
-* [Want to Contribute?](#want-to-contribute?)
+* [Want to Contribute?](#want-to-contribute)
 
 ## Installation Instructions
 
