@@ -10,8 +10,7 @@ public class ReportingParametersSectionDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		thisnode.putValue("source", "provider");
-		decode(element.getChild("entry", defaultNs), thisnode);
-		return DecodeResult.TreeFinished; // TODO maybe use TreeContineu and not call decode
+		return DecodeResult.TreeContinue;
 	}
 		
 }

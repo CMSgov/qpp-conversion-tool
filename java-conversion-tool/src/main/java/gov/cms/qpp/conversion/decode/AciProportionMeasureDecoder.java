@@ -18,20 +18,13 @@ public class AciProportionMeasureDecoder extends QppXmlDecoder {
 		
 		setMeasureIdOnNode(element, thisnode);
 
-		processComponentElement(element, thisnode);
-
-		return DecodeResult.TreeFinished;
-
+		return DecodeResult.TreeContinue;
 	}
 
 	protected void setMeasureIdOnNode(Element element, Node thisnode) {
 		String expressionStr = "./ns:reference/ns:externalDocument/ns:id/@extension";
 		Consumer<? super Attribute> consumer = p -> thisnode.putValue("measureId", p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
-	}
-	
-	protected void processComponentElement(Element element, Node thisnode) {
-		this.decode(element.getChildren("component", defaultNs), thisnode);
 	}
 
 }
