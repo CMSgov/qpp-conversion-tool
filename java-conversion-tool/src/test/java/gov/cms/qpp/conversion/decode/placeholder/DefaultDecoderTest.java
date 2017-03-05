@@ -35,6 +35,6 @@ public class DefaultDecoderTest {
 
 		Node node = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
-		System.err.println(node);
+		// System.err.println(node);
 	}
 }

@@ -57,7 +57,7 @@ public class NodeTest {
 		
 		String nodeStr = node.toString();
 		// This is to test the visual nature of the Node.toString();
-		System.err.println(node);
+		// System.err.println(node);
 		
 		// test a few rows of node string
 		assertFalse(nodeStr.contains("\tNode: internalId: ABC, data: {DEF=GHI}"));

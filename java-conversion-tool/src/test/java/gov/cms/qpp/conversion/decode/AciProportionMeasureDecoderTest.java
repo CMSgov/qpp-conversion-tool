@@ -81,8 +81,8 @@ public class AciProportionMeasureDecoderTest {
 				"</entry>";
 		
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
-	System.out.println();
-	System.out.println(root);
+	// System.out.println();
+	// System.out.println(root);
 /*
 
 

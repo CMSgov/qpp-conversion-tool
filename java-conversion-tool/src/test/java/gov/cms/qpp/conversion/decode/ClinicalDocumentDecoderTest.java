@@ -32,7 +32,7 @@ public class ClinicalDocumentDecoderTest {
 
 		assertThat("returned node should not be null", root, is(not(nullValue())));
 		
-		System.out.println(root.toString());
+		// System.out.println(root.toString());
 		assertThat("returned node should child decoder nodes", root.getChildNodes().size(), is(3));
 		
 		Node reportParameterSectionNode = root.getChildNodes().get(0);

@@ -8,7 +8,12 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
 import org.jdom2.Element;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +21,7 @@ import gov.cms.qpp.conversion.decode.AggregateCount;
 import gov.cms.qpp.conversion.decode.DecodeException;
 import gov.cms.qpp.conversion.decode.InputDecoder;
 import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
+import gov.cms.qpp.conversion.io.ByteCounterOutputStream;
 
 public class RegistryTest {
 
@@ -24,6 +30,11 @@ public class RegistryTest {
 	@Before
 	public void before() {
 		registry = new Registry<>(XmlDecoder.class);
+	}
+	
+	@After
+	public void tearDown() {
+		System.setErr(new PrintStream(new FileOutputStream(FileDescriptor.err)));
 	}
 
 	@Test
@@ -96,6 +107,7 @@ public class RegistryTest {
 			@Override
 			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
 				if ("gov.cms.qpp.conversion.decode.AggregateCount".equals(className)) {
+					System.setErr(new PrintStream(new ByteCounterOutputStream()));
 					throw new ClassNotFoundException();
 				}
 				return Class.forName(className);
