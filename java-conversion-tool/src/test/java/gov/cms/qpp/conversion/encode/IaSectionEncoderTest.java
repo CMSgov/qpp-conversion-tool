@@ -18,6 +18,9 @@ public class IaSectionEncoderTest {
 
 	private static final String EXPECTED = "{\n  \"category\" : \"ia\",\n  \"measurements\" : [ "
 			+ "{\n    \"measureId\" : \"IA_EPA_1\",\n    \"value\" : true\n  } ]\n}";
+	private static final String EXPECTED_NO_MEASURE = "{\n  \"category\" : \"ia\"\n}";
+	private static final String EXPECTED_NO_MEASURE_VALUE_1 = "{\n  \"category\" : \"ia\",\n  \"measurements\" : [ "
+			+ "{\n    \"measureId\" : \"IA_EPA_1\"\n  } ]\n}";
 
 	private Node iaSectionNode;
 	private Node iaMeasureNode;
@@ -64,5 +67,66 @@ public class IaSectionEncoderTest {
 		assertThat("expected encoder to return a json representation of an IA Section node", sw.toString(),
 				is(EXPECTED));
 	}
+	
+	@Test
+	public void testEncoderWithoutMeasure() {
+		
+		iaSectionNode.getChildNodes().remove(iaMeasureNode);
+		QppOutputEncoder encoder = new QppOutputEncoder();
+
+		encoder.setNodes(nodes);
+
+		StringWriter sw = new StringWriter();
+
+		try {
+			encoder.encode(new BufferedWriter(sw));
+		} catch (EncodeException e) {
+			fail("Failure to encode: " + e.getMessage());
+		}
+
+		assertThat("expected encoder to return a json representation of an IA Section node", sw.toString(),
+				is(EXPECTED_NO_MEASURE));
+	}
+	
+	@Test
+	public void testEncoderWithoutMeasureValue1() {
+		
+		iaMeasureNode.getChildNodes().remove(iaMeasurePerformedNode);
+		QppOutputEncoder encoder = new QppOutputEncoder();
+
+		encoder.setNodes(nodes);
+
+		StringWriter sw = new StringWriter();
+
+		try {
+			encoder.encode(new BufferedWriter(sw));
+		} catch (EncodeException e) {
+			fail("Failure to encode: " + e.getMessage());
+		}
+
+		assertThat("expected encoder to return a json representation of an IA Section node", sw.toString(),
+				is(EXPECTED_NO_MEASURE_VALUE_1));
+	}
+	
+	@Test
+	public void testEncoderWithoutMeasureValue2() {
+		
+		iaMeasurePerformedNode.putValue("measurePerformed", null);
+		QppOutputEncoder encoder = new QppOutputEncoder();
+
+		encoder.setNodes(nodes);
+
+		StringWriter sw = new StringWriter();
+
+		try {
+			encoder.encode(new BufferedWriter(sw));
+		} catch (EncodeException e) {
+			fail("Failure to encode: " + e.getMessage());
+		}
+
+		assertThat("expected encoder to return a json representation of an IA Section node", sw.toString(),
+				is(EXPECTED_NO_MEASURE_VALUE_1));
+	}
+
 
 }

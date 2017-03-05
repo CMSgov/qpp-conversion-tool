@@ -55,5 +55,42 @@ public class AciProportionNumeratorEncoderTest {
 		assertThat("expected encoder to return a json representation of a numerator with a value", sw.toString(),
 				is(EXPECTED));
 	}
+	
+	@Test
+	public void testEncoderWithoutChild() {
+		aciProportionNumeratorNode.getChildNodes().remove(numeratorDenominatorValueNode);
+		QppOutputEncoder encoder = new QppOutputEncoder();
+
+		encoder.setNodes(nodes);
+
+		StringWriter sw = new StringWriter();
+
+		try {
+			encoder.encode(new BufferedWriter(sw));
+		} catch (EncodeException e) {
+			fail("Failure to encode: " + e.getMessage());
+		}
+
+		assertThat("expected encoder to return null", sw.toString(), is("null"));
+	}
+	
+	@Test
+	public void testEncoderWithoutValue() {
+		numeratorDenominatorValueNode.putValue("aggregateCount", null);
+		QppOutputEncoder encoder = new QppOutputEncoder();
+
+		encoder.setNodes(nodes);
+
+		StringWriter sw = new StringWriter();
+
+		try {
+			encoder.encode(new BufferedWriter(sw));
+		} catch (EncodeException e) {
+			fail("Failure to encode: " + e.getMessage());
+		}
+
+		assertThat("expected encoder to return null", sw.toString(), is("null"));
+	}
+
 
 }
