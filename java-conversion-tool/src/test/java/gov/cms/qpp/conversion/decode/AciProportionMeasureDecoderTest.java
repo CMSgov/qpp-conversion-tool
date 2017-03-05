@@ -80,7 +80,7 @@ public class AciProportionMeasureDecoderTest {
 				"	</organizer>\n" + 
 				"</entry>";
 		
-		Node root = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
+		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 	System.out.println();
 	System.out.println(root);
 /*
@@ -140,7 +140,7 @@ Node: internalId: placeholder, data: {}
 				"	</organizer>\n" + 
 				"</entry>";
 		
-		Node root = new QppXmlDecoder().decodeFragment(XmlUtils.stringToDOM(xmlFragment));
+		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));

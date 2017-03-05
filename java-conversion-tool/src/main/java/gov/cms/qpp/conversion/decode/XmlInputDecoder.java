@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.decode;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -16,12 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.model.XmlRootDecoder;
 
 public abstract class XmlInputDecoder implements InputDecoder, Validatable<String, String> {
     static final Logger LOG = LoggerFactory.getLogger(XmlInputDecoder.class);
-	protected static Registry<String, XmlInputDecoder> rootDecoders = new Registry<String, XmlInputDecoder>(XmlRootDecoder.class);
 	protected Namespace defaultNs; 
 	protected Namespace xpathNs;
 	
@@ -31,49 +29,26 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	/**
 	 * Decode a document into a Node
 	 */
-	public static Node decodeAll(Element xmlDoc) {
-		
-		XmlInputDecoder decoder = rootDecoders.get(xmlDoc.getDocument().getRootElement().getName());
-		
-		if (decoder instanceof QppXmlDecoder) {
-			Node node = new Node();
-			decoder.internalDecode(xmlDoc, node);
-			// TODO handle result
-			// Validation
-			if (null == node.getId()) {
-				LOG.error("The file is not a QDRA-III xml document");
+	public static Node decodeXml(Element xmlDoc) {
+		List<XmlInputDecoder> xmlDecoders = Arrays.asList(new QppXmlDecoder());
+		for  (XmlInputDecoder decoder : xmlDecoders) {
+			if (decoder.accepts(xmlDoc)) {
+				return decoder.decode(xmlDoc);
 			}
-			
-			return node;
-		} 
-		// else if (decoder instanceof <Other decoder>) {
-		//  Validation
-		//
-		else {
-			LOG.error("The file is an unknown XML document");
-			return null;
 		}
 		
+		LOG.error("The file is an unknown XML document");
+		
+		return null;
 	}
 	
 	/**
 	 * Decode a document into a Node
 	 */
 	public Node decode(Element xmlDoc) {
-		return decodeAll(xmlDoc);
+		return decodeRoot(xmlDoc);
 	}
-	
-	/**
-	 * Decode a XML fragment into a Node
-	 */
-	public Node decodeFragment(Element xmlDoc) {
-		
-		Node rootParentNode = new Node("placeholder");
 
-		decode(xmlDoc, rootParentNode);
-		
-		return rootParentNode;
-	}
 
 	/**
 	 * Convenient way to pass a list into sub decoders.
@@ -119,7 +94,13 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @return
 	 */
 	abstract protected DecodeResult decode(Element element, Node parent);
-	
+
+	/**
+	 * When you have no parent
+	 * @param xmlDoc
+	 * @return
+	 */
+	abstract protected Node decodeRoot(Element xmlDoc);
 
 	/**
 	 * Represents an internal parsing of an element
@@ -129,4 +110,12 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @return
 	 */
 	abstract protected DecodeResult internalDecode(Element element, Node thisnode);
+	
+	/**
+	 * See if the Decoder can handle the input
+	 * @param xmlDoc
+	 * @return true/false
+	 */
+	protected abstract boolean accepts(Element xmlDoc);
+
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -31,6 +32,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
+// import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
@@ -53,11 +55,13 @@ public class Converter implements Callable<Integer> {
 		}
 
 		try {
-			Node decoded = XmlInputDecoder.decodeAll(XmlUtils.fileToDOM(inFile));
+			Node decoded = XmlInputDecoder.decodeXml(XmlUtils.fileToDOM(inFile));
 
 			QrdaValidator validator = new QrdaValidator();
 			QrdaValidator.resetValidationErrors();
-			List<ValidationError> validationErrors = validator.validate(decoded);
+			//TODO: make validations work
+			// List<ValidationError> validationErrors = validator.validate(decoded);
+			List<ValidationError> validationErrors = Collections.emptyList();
 
 			if (validationErrors.isEmpty()) {
 
