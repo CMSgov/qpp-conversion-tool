@@ -6,7 +6,7 @@ This text below models what the open souce project would look like. The process 
 
 * [Installation Instructions](#developer-installation-instructions)
 * [User Instructions](#user-instructions)
-* [Development Instructions](#development-instructions)
+* [Want to Contrinute?](#want-to-contribute?)
 
 ## Installation Instructions
 
@@ -44,8 +44,11 @@ git clone https://github.com/flexion/adele-bpa-qpp-conversion-tool.git qpp-conve
 # Go to the qpp-conversion-tool directory:
 cd qpp-conversion-tool
 
-# Run Maven test to build and run tests locally:
+# Run Maven test to build and run tests locally. All tests shoud pass:
 mvn test
+
+# Run Maven package to build the JAR:
+mvn package
 ```
 
 ### Run the 'convert' script to verify everything's working.
@@ -81,16 +84,22 @@ Note: If you are using Windows, replace `convert.sh` in the examples below with 
 ./convert.sh src/test/resources/valid-QRDA-III.xml
 ```
 
-### Try to convert a QRDA-III file that doesn't contain required measures.
-
-```shell
-./convert.sh src/test/resources/missing-measure-QRDA-III.xml
-```
-
 ### Convert an file without and 'xml' extension.
 
 ```shell
 ./convert.sh src/test/resources/valid-QRDA-III
+```
+
+### Convert a bunch of QRDA-III files concurrently (multi-threaded).
+
+```shell
+./convert.sh src/test/resources/qrda/*.**
+```
+
+### Try to convert a QRDA-III file that doesn't contain required measures.
+
+```shell
+./convert.sh src/test/resources/missing-measure-QRDA-III.xml
 ```
 
 ### Try to convert a file that is not a QRDA-III file.
@@ -99,22 +108,9 @@ Note: If you are using Windows, replace `convert.sh` in the examples below with 
 ./convert.sh src/test/resources/not-a-QRDA-III.xml
 ```
 
-### Try to convert a bunch of QRDA-III files.
+## Want to contribute?
 
-```shell
-./convert.sh src/test/resources/qrda/*.**
-```
-## Development Instructions
+Want to file a bug or contribute some code? Read up on our
+guidelines for [contributing][contributing].
 
-The application is built with the Java 8
-
-## Development Tasks
-
-
-### Build
-
-mvn clean compile
-
-### Running unit tests
-
-mvn test
+[contributing]: http://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/CONTRIBUTING.md
