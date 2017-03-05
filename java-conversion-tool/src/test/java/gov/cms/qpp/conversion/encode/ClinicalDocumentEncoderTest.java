@@ -26,6 +26,18 @@ public class ClinicalDocumentEncoderTest {
 			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
 			+ "\n    \"source\" : \"provider\"," + "\n    \"performanceStart\" : \"2017-01-01\","
 			+ "\n    \"performanceEnd\" : \"2017-12-31\"" + "\n  } ]\n}";
+	
+	private static final String EXPECTED_NO_REPORTING = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
+			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
+			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\","
+			+ "\n  \"measurementSets\" : [ " + "{\n    \"category\" : \"aci\",\n    \"measurements\" : [ "
+			+ "{\n      \"measureId\" : \"ACI-PEA-1\",\n      \"value\" : {\n"
+			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
+			+ "\n    \"source\" : \"provider\"\n  } ]\n}";
+	
+	private static final String EXPECTED_NO_ACI = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
+			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
+			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\"," + "\n  \"performanceYear\" : 2017\n}";
 
 	private Node aciSectionNode;
 	private Node aciProportionMeasureNode;
@@ -115,5 +127,48 @@ public class ClinicalDocumentEncoderTest {
 		assertThat("expected encoder to return a json representation of a clinical document node", sw.toString(),
 				is(EXPECTED));
 	}
+	
+	
+	@Test
+	public void testEncoderWithoutReporting() {
+		clinicalDocumentNode.getChildNodes().remove(reportingParametersSectionNode);
+		
+		QppOutputEncoder encoder = new QppOutputEncoder();
+
+		encoder.setNodes(nodes);
+
+		StringWriter sw = new StringWriter();
+
+		try {
+			encoder.encode(new BufferedWriter(sw));
+		} catch (EncodeException e) {
+			fail("Failure to encode: " + e.getMessage());
+		}
+
+		assertThat("expected encoder to return a json representation of a clinical document node", sw.toString(),
+				is(EXPECTED_NO_REPORTING));
+	}
+	
+	@Test
+	public void testEncoderWithoutMeasures() {
+		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
+		
+		QppOutputEncoder encoder = new QppOutputEncoder();
+
+		encoder.setNodes(nodes);
+
+		StringWriter sw = new StringWriter();
+
+		try {
+			encoder.encode(new BufferedWriter(sw));
+		} catch (EncodeException e) {
+			fail("Failure to encode: " + e.getMessage());
+		}
+
+		assertThat("expected encoder to return a json representation of a clinical document node", sw.toString(),
+				is(EXPECTED_NO_ACI));
+	}
+
+
 
 }

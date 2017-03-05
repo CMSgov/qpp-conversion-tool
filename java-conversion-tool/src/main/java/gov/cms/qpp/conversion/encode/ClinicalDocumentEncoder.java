@@ -1,8 +1,10 @@
 package gov.cms.qpp.conversion.encode;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -21,33 +23,22 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		wrapper.putString("taxpayerIdentificationNumber", node.getValue("taxpayerIdentificationNumber"));
 		wrapper.putString("nationalProviderIdentifier", node.getValue("nationalProviderIdentifier"));
 
-
-		List<Node> children = node.getChildNodes();
+		Map<String, Node> childMapByTemplateId = node.getChildNodes().stream().collect(
+                Collectors.toMap(Node::getId, Function.identity(), (v1,v2)->v1, LinkedHashMap::new));
 		
-		Map<String, Node> childMapByTemplateId = new LinkedHashMap<>();
-		for (Node c : children) {
-			childMapByTemplateId.put(c.getId(), c);
+		
+		
+		Optional<Node> reportingNode = 
+				Optional.ofNullable(childMapByTemplateId.remove("2.16.840.1.113883.10.20.27.2.6"))
+				.flatMap(rp -> rp.getChildNodes().stream().findFirst());
+		
+		Optional<String> performanceStart = reportingNode.flatMap(p -> Optional.of(p.getValue("performanceStart")));
+		Optional<String> performanceEnd = reportingNode.flatMap(p -> Optional.of(p.getValue("performanceEnd")));
+		
+		if (performanceStart.isPresent()) {
+			wrapper.putInteger("performanceYear", performanceStart.get().substring(0, 4));
 		}
-		
-		Node reportingParametersNode = childMapByTemplateId.remove("2.16.840.1.113883.10.20.27.2.6");
-		
-		String performanceStart = null;
-		String performanceEnd = null;
-		
-		if (null != reportingParametersNode && null != reportingParametersNode.getChildNodes() && !reportingParametersNode.getChildNodes().isEmpty()) {
-			
-			Node act = reportingParametersNode.getChildNodes().get(0);
-			
-			performanceStart = act.getValue("performanceStart");
-			performanceEnd = act.getValue("performanceEnd");
-			
-			if (null != performanceStart) {
-				String performanceYear = performanceStart.substring(0, 4);
-				wrapper.putInteger("performanceYear", performanceYear);
-			}
-
-		}
-		
+				
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 
 
@@ -63,8 +54,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				sectionEncoder.encode(childWrapper, child);
 
 				childWrapper.putString("source", "provider");
-				childWrapper.putDate("performanceStart", performanceStart);
-				childWrapper.putDate("performanceEnd", performanceEnd);
+				if (performanceStart.isPresent()) {
+					childWrapper.putDate("performanceStart", performanceStart.get());
+				}
+				if (performanceEnd.isPresent()) {
+					childWrapper.putDate("performanceEnd", performanceEnd.get());
+				}
 
 				measurementSetsWrapper.putObject(childWrapper.getObject());
 			}
