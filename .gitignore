@@ -1,2 +1,4 @@
 *.orig
-
+/target/
+/.settings/
+/.classpath
