@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.slf4j.Logger;
@@ -61,11 +62,12 @@ public class Converter implements Callable<Integer> {
 			List<ValidationError> validationErrors = validator.validate(decoded);
 			// List<ValidationError> validationErrors = Collections.emptyList();
 
+			String name = inFile.getName().trim();
+			
 			if (validationErrors.isEmpty()) {
 
 				JsonOutputEncoder encoder = new QppOutputEncoder();
 
-				String name = inFile.getName().trim();
 				LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
 				// do something with decode validations
 				// Validations.clear();
@@ -75,8 +77,10 @@ public class Converter implements Callable<Integer> {
 
 				File outFile = new File(outName);
 				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
-
-				try (Writer writer = new FileWriter(outFile)) {
+				
+				Writer writer = null;
+				try {
+					writer = new FileWriter(outFile);
 					encoder.setNodes(Arrays.asList(decoded));
 					encoder.encode(writer);
 					// do something with encode validations
@@ -84,10 +88,25 @@ public class Converter implements Callable<Integer> {
 					throw new XmlInputFileException("Issues decoding/encoding.", e);
 				} finally {
 					Validations.clear();
+					IOUtils.closeQuietly(writer);
 				}
 			} else {
-				for (ValidationError error : validationErrors) {
-					LOG.error("Validation Error: {}", error.getErrorText());
+				String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
+
+				File outFile = new File(errName);
+				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
+				
+				Writer errWriter = null;
+				try {
+					errWriter = new FileWriter(outFile);
+					for (ValidationError error : validationErrors) {
+						errWriter.write("Validation Error: " + error.getErrorText());
+					}
+				} catch (IOException e) {
+					LOG.error("Could not write to file: {}", errName);
+				} finally {
+					Validations.clear();
+					IOUtils.closeQuietly(errWriter);
 				}
 			}
 		} catch (XmlInputFileException | XmlException xe) {
