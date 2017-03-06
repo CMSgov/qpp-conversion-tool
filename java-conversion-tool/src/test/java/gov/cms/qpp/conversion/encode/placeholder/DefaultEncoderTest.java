@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.impl.SimpleLogger;
@@ -40,6 +41,6 @@ public class DefaultEncoderTest {
 		JsonWrapper wrapper = new JsonWrapper();
 		new QppOutputEncoder().encode(wrapper, node);
 		
-		// System.err.println(wrapper);
+		Assert.assertTrue(wrapper.toString().length() > 10 );
 	}
 }

@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
+import gov.cms.qpp.conversion.decode.DecoderTest;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -49,13 +50,16 @@ public class ClinicalDocumentRoundTripTest {
 	public void teardown() throws Exception {
 		Validations.clear();
 	}
-	
+
 	@Test
 	public void parseClinicalDocument() throws Exception {
 		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
 		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(XmlUtils.stringToDOM(xmlFragment));
+		
+		// remove default nodes (will fail if defaults change)
+		DecoderTest.removeDefaultNode(clinicalDocumentNode.getChildNodes());
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();

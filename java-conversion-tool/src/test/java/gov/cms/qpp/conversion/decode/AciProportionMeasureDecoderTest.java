@@ -81,25 +81,9 @@ public class AciProportionMeasureDecoderTest {
 				"</entry>";
 		
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
-	// System.out.println();
-	// System.out.println(root);
-/*
-
-
-Node: internalId: placeholder, data: {}
-		childNodes of placeholder: 
-		Node: internalId: 2.16.840.1.113883.10.20.27.3.28, data: {measureId=ACI-PEA-1}
-	    		childNodes of 2.16.840.1.113883.10.20.27.3.28:
-	        	Node: internalId: 2.16.840.1.113883.10.20.27.3.31, data: {}
-	        			childNodes of 2.16.840.1.113883.10.20.27.3.31:
-	        			 	Node: internalId: Q.E.D, data: {aciNumeratorDenominator=600}
-	        			 		childNodes of Q.E.D -> (none)
-	        	Node: internalId: 2.16.840.1.113883.10.20.27.3.32, data: {} 
-	        			childNodes of 2.16.840.1.113883.10.20.27.3.32: 
-	        				Node: internalId: Q.E.D, data: {aciNumeratorDenominator=800}
-	        			 		childNodes of Q.E.D -> (none)
-
- */
+		// remove default nodes (will fail if defaults change)
+		DecoderTest.removeDefaultNode(root.getChildNodes());
+		
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));
 		
@@ -120,7 +104,6 @@ Node: internalId: placeholder, data: {}
 		
 		assertThat("Should have Numerator", testTemplateIds.contains("2.16.840.1.113883.10.20.27.3.31"), is(true));
 		assertThat("Should have Denominator", testTemplateIds.contains("2.16.840.1.113883.10.20.27.3.32"), is(true));
-
 	}
 	
 	

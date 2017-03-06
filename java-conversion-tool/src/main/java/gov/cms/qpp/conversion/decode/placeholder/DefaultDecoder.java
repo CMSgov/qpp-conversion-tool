@@ -32,6 +32,42 @@ public class DefaultDecoder extends QppXmlDecoder {
 
 // The names of the default decoder classes does not matter.
 // TODO must comment out these defaults as real implementations are written.
+
+	// this one looks like a node that is not necessary
+	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.30")
+	public static class N_Decoder extends DefaultDecoder {
+		public N_Decoder() {
+			super("Performance Rate");
+		}
+	}
+	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
+	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.24")
+	public static class R_Decoder extends DefaultDecoder {
+		public R_Decoder() {
+			super("Aggregate Count - CMS");
+		}
+	}
+//	 this one looks like a node that is not necessary
+	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.2.2")
+	public static class B_Decoder extends DefaultDecoder {
+		public B_Decoder() {
+			super("Measure Section");
+		}
+	}
+	// this one looks like a node that is not necessary
+	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.3")
+	public static class D_Decoder extends DefaultDecoder {
+		public D_Decoder() {
+			super("QRDA Category III Measure Section - CMS (V2)");
+		}
+	}
+	// this one looks like a root node that is not necessary
+	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.3.98")
+	public static class G_Decoder extends DefaultDecoder {
+		public G_Decoder() {
+			super("Measure Reference");
+		}
+	}
 	
 //	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.1.2")
 //	public static class A_Decoder extends DefaultDecoder {
@@ -40,24 +76,10 @@ public class DefaultDecoder extends QppXmlDecoder {
 //		}
 //	}
 	// this one looks like a node that is not necessary
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.2.2")
-//	public static class B_Decoder extends DefaultDecoder {
-//		public B_Decoder() {
-//			super("Measure Section");
-//		}
-//	}
-	// this one looks like a node that is not necessary
 //	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.6")
 //	public static class C_Decoder extends DefaultDecoder {
 //		public C_Decoder() {
 //			super("QRDA Category III Reporting Parameters Section - CMS (V2)*");
-//		}
-//	}
-	// this one looks like a node that is not necessary
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.3")
-//	public static class D_Decoder extends DefaultDecoder {
-//		public D_Decoder() {
-//			super("QRDA Category III Measure Section - CMS (V2)");
 //		}
 //	}
 //	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.4")
@@ -70,13 +92,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 //	public static class F_Decoder extends DefaultDecoder {
 //		public F_Decoder() {
 //			super("Advancing Care Information Section");
-//		}
-//	}
-	// this one looks like a root node that is not necessary
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.3.98")
-//	public static class G_Decoder extends DefaultDecoder {
-//		public G_Decoder() {
-//			super("Measure Reference");
 //		}
 //	}
 //	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.28")
@@ -115,13 +130,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 //			super("Measure Performed");
 //		}
 //	}
-	// this one looks like a node that is not necessary
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.30")
-//	public static class N_Decoder extends DefaultDecoder {
-//		public N_Decoder() {
-//			super("Performance Rate");
-//		}
-//	}
 //	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.31")
 //	public static class O_Decoder extends DefaultDecoder {
 //		public O_Decoder() {
@@ -138,13 +146,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 //	public static class Q_Decoder extends DefaultDecoder {
 //		public Q_Decoder() {
 //			super("Aggregate Count");
-//		}
-//	}
-//	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.24")
-//	public static class R_Decoder extends DefaultDecoder {
-//		public R_Decoder() {
-//			super("Aggregate Count - CMS");
 //		}
 //	}
 	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.26")
