@@ -1,8 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>gov.cms.qpp.conversion</groupId>
+
+	<parent>
+		<artifactId>java-conversion</artifactId>
+		<groupId>gov.cms.qpp.conversion</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+
 	<artifactId>java-conversion-tool</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>java-conversion-tool</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,76 +21,8 @@
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>gov.cms.qpp.conversion.Converter</mainClass>
-						</manifest>
-					</archive>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<appendAssemblyId>false</appendAssemblyId>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<check>
-						<!--branchRate>85</branchRate-->
-						<!--lineRate>85</lineRate-->
-						<haltOnFailure>true</haltOnFailure>
-						<totalBranchRate>65</totalBranchRate>
-						<totalLineRate>70</totalLineRate>
-						<!--packageLineRate>85</packageLineRate-->
-						<!--packageBranchRate>85</packageBranchRate-->
-					</check>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>clean</goal>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.9</version>
-				<configuration>
-					<skip>${maven.test.skip}</skip>
-					<output>file</output>
-					<append>true</append>
-				</configuration>
-				<executions>
-					<execution>
-						<id>jacoco-initialize</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-				<execution>
-				<id>jacoco-site</id>
-				<phase>verify</phase>
-				<goals>
-					<goal>report</goal>
-				</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

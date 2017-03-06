@@ -1,2 +1,5 @@
 *.orig
-
+/target/
+/.settings/
+/.classpath
+/.project
