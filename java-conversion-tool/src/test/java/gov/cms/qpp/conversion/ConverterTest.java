@@ -158,8 +158,9 @@ public class ConverterTest {
 	public void testMultiThreadRun() {
 		long start = System.currentTimeMillis();
 
-		Converter
-				.main(new String[] { "src/test/resources/pathTest/a.xml", "src/test/resources/pathTest/subdir/*.xml" });
+		Converter.main(new String[] { 
+				"src/test/resources/pathTest/a.xml",
+				"src/test/resources/pathTest/subdir/*.xml" });
 
 		long finish = System.currentTimeMillis();
 
