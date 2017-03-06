@@ -35,6 +35,8 @@ public class AciSectionDecoderTest {
 				"</component>";
 
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		// remove default nodes (will fail if defaults change)
+		DecoderTest.removeDefaultNode(root.getChildNodes());
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));

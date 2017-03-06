@@ -22,6 +22,8 @@ public class ClinicalDocumentDecoderTest {
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		// remove default nodes (will fail if defaults change)
+		DecoderTest.removeDefaultNode(root.getChildNodes());
 
 		assertThat("returned node should not be null", root	, is(not(nullValue())));
 		

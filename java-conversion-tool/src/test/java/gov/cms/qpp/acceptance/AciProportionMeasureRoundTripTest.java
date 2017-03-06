@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.decode.DecoderTest;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -92,6 +93,8 @@ public class AciProportionMeasureRoundTripTest {
 				+ "	</organizer>\n" + "</entry>";
 
 		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		// remove default nodes (will fail if defaults change)
+		DecoderTest.removeDefaultNode(measureNode.getChildNodes());
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();
