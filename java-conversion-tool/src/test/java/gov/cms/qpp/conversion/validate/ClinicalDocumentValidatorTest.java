@@ -99,4 +99,26 @@ public class ClinicalDocumentValidatorTest {
 
 	}
 
+	@Test
+	public void testNoSectionsOtherChildren() {
+
+		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
+		clinicalDocumentNode.putValue("programName", "mips");
+		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
+		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
+		clinicalDocumentNode.putValue("performanceStart", "20170101");
+		clinicalDocumentNode.putValue("performanceEnd", "20171231");
+
+		Node placeholderNode = new Node("placeholder");
+
+		clinicalDocumentNode.addChildNode(placeholderNode);
+
+		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
+		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);
+
+		assertThat("there should be one error", errors, iterableWithSize(1));
+		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(EXPECTED_NO_SECTION));
+
+	}
+
 }

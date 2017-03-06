@@ -117,11 +117,9 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 * Create your patch, **including appropriate test cases**.
 * Follow our [Coding Rules](#rules).
-* Run the full Angular test suite, as described in the [developer documentation][dev-doc],
+* Run the full test suite,
   and ensure that all tests pass.
-* Commit your changes using a descriptive commit message that follows our
-  [commit message conventions](#commit). Adherence to these conventions
-  is necessary because release notes are automatically generated from these messages.
+* Commit your changes using a descriptive commit message.
 
      ```shell
      git commit -a

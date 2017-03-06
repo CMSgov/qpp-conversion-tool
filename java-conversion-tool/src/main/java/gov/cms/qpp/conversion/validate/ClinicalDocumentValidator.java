@@ -45,11 +45,15 @@ public class ClinicalDocumentValidator extends QrdaValidator {
 				this.addValidationError(new ValidationError(
 						"Clinical Document Node must have at least one Aci or Ia Section Node as a child"));
 			} else {
+				int aciOrIaCount = 0;
 				for (Node child : childNodes) {
-					if (NodeType.ACI_SECTION != child.getType() && NodeType.IA_SECTION != child.getType()) {
-						this.addValidationError(new ValidationError(
-								"Clinical Document Node has an invalid child node of type: " + child.getType()));
+					if (NodeType.ACI_SECTION == child.getType() || NodeType.IA_SECTION == child.getType()) {
+						aciOrIaCount++;
 					}
+				}
+				if (aciOrIaCount == 0) {
+					this.addValidationError(new ValidationError(
+							"Clinical Document Node must have at least one Aci or Ia Section Node as a child"));
 				}
 			}
 		}
