@@ -16,6 +16,8 @@ import gov.cms.qpp.conversion.model.ValidationError;
 public class ClinicalDocumentValidatorTest {
 
 	private static final String EXPECTED_TEXT = "Clinical Document Node is required";
+	private static final String EXPECTED_ONE_ALLOWED = "Only one Clinical Document Node is allowed";
+	private static final String EXPECTED_NO_SECTION = "Clinical Document Node must have at least one Aci or Ia Section Node as a child";
 
 	@Before
 	public void setup() {
@@ -57,6 +59,65 @@ public class ClinicalDocumentValidatorTest {
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing Clinical Document node", errors.get(0).getErrorText(),
 				is(EXPECTED_TEXT));
+
+	}
+
+	@Test
+	public void testTooManyClinicalDocumentNodes() {
+
+		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
+		Node clinicalDocumentNode2 = new Node("2.16.840.1.113883.10.20.27.1.2");
+
+		Node placeholder = new Node("placeholder");
+		placeholder.addChildNode(clinicalDocumentNode2);
+		placeholder.addChildNode(clinicalDocumentNode);
+
+		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
+		List<ValidationError> errors = cdval.internalValidate(placeholder);
+
+		assertThat("there should be one error", errors, iterableWithSize(1));
+		assertThat("error should be about too many Clinical Document nodes", errors.get(0).getErrorText(),
+				is(EXPECTED_ONE_ALLOWED));
+
+	}
+
+	@Test
+	public void testNoSections() {
+
+		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
+		clinicalDocumentNode.putValue("programName", "mips");
+		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
+		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
+		clinicalDocumentNode.putValue("performanceStart", "20170101");
+		clinicalDocumentNode.putValue("performanceEnd", "20171231");
+
+		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
+		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);
+
+		assertThat("there should be one error", errors, iterableWithSize(1));
+		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(EXPECTED_NO_SECTION));
+
+	}
+
+	@Test
+	public void testNoSectionsOtherChildren() {
+
+		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
+		clinicalDocumentNode.putValue("programName", "mips");
+		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
+		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
+		clinicalDocumentNode.putValue("performanceStart", "20170101");
+		clinicalDocumentNode.putValue("performanceEnd", "20171231");
+
+		Node placeholderNode = new Node("placeholder");
+
+		clinicalDocumentNode.addChildNode(placeholderNode);
+
+		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
+		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);
+
+		assertThat("there should be one error", errors, iterableWithSize(1));
+		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(EXPECTED_NO_SECTION));
 
 	}
 

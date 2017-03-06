@@ -85,7 +85,7 @@ public class MeasureConfig {
 		return isRequired;
 	}
 
-	public void setRequired(boolean isRequired) {
+	public void setIsRequired(boolean isRequired) {
 		this.isRequired = isRequired;
 	}
 
@@ -109,7 +109,7 @@ public class MeasureConfig {
 		return isBonus;
 	}
 
-	public void setBonus(boolean isBonus) {
+	public void setIsBonus(boolean isBonus) {
 		this.isBonus = isBonus;
 	}
 
