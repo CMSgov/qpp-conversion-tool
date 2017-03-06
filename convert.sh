@@ -2,7 +2,7 @@
 if [ ! -f java-conversion-tool/target/java-conversion-tool.jar ]; then
     echo "Jar not found. Building..."
     cd java-conversion-tool
-    mvn package
+    mvn package -Dmaven.test.skip=true
     if [ ! -f target/java-conversion-tool.jar ]; then
         echo "Build failed. Aborting."
         cd ..
