@@ -33,7 +33,7 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 		// Most likely, this "required" validation can be moved into the
 		// QrdaValidator superclass
 		if (thisAnnotation.required()) {
-			if (null == nodes || nodes.isEmpty()) {
+			if (nodes.isEmpty()) {
 				this.addValidationError(new ValidationError("At least one Aci Proportion Measure Node is required"));
 			}
 		}
@@ -47,7 +47,7 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 		// the aci measure node should have an aci section node as parent
 		// it can have a numerator node and a denominator node as children
 
-		if (null != nodes && !nodes.isEmpty()) {
+		if (!nodes.isEmpty()) {
 			for (Node aNode : nodes) {
 				if (NodeType.ACI_SECTION != aNode.getParent().getType()) {
 					this.addValidationError(
@@ -56,7 +56,7 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 
 				List<Node> children = aNode.getChildNodes();
 
-				if (null != children && !children.isEmpty()) {
+				if (!children.isEmpty()) {
 					int numeratorCount = 0;
 					int denominatorCount = 0;
 
