@@ -10,7 +10,8 @@ public enum NodeType {
 	ACI_NUMERATOR("2.16.840.1.113883.10.20.27.3.31"),
 	ACI_DENOMINATOR("2.16.840.1.113883.10.20.27.3.32"),
 	ACI_NUM_DENOM_VALUE("2.16.840.1.113883.10.20.27.3.3"),
-	PLACEHOLDER("placeholder");
+	PLACEHOLDER("placeholder"),
+	DEFAULT("default");
 
 	private final String templateId;
 
@@ -29,7 +30,11 @@ public enum NodeType {
 			}
 		}
 
-		return null;
+		// return node type of DEFAULT if nothing is found
+		// there are a set of default encoders that will create placeholder
+		// nodes for nodes that may
+		// have real encoders in the future
+		return NodeType.DEFAULT;
 	}
 
 }

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -59,9 +58,8 @@ public class Converter implements Callable<Integer> {
 
 			QrdaValidator validator = new QrdaValidator();
 			QrdaValidator.resetValidationErrors();
-			//TODO: make validations work
-			// List<ValidationError> validationErrors = validator.validate(decoded);
-			List<ValidationError> validationErrors = Collections.emptyList();
+			List<ValidationError> validationErrors = validator.validate(decoded);
+			// List<ValidationError> validationErrors = Collections.emptyList();
 
 			if (validationErrors.isEmpty()) {
 
