@@ -8,9 +8,7 @@
 		<relativePath>../</relativePath>
 	</parent>
 
-	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>java-conversion-tool</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>java-conversion-tool</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,6 +19,12 @@
 	</properties>
 	<build>
 		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
