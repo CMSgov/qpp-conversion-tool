@@ -42,6 +42,45 @@ public class DefaultEncoder extends JsonOutputEncoder {
 			encode(childWrapper, child);;
 		}
 	}
+
+	
+	// this one looks like a node that is not necessary
+	@Encoder(templateId="2.16.840.1.113883.10.20.27.3.30")
+	public static class N_Encoder extends DefaultEncoder {
+		public N_Encoder() {
+			super("Performance Rate");
+		}
+	}
+	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
+	@Encoder(templateId="2.16.840.1.113883.10.20.27.3.24")
+	public static class R_Encoder extends DefaultEncoder {
+		public R_Encoder() {
+			super("Aggregate Count - CMS");
+		}
+	}
+//	 this one looks like a node that is not necessary
+	@Encoder(templateId="2.16.840.1.113883.10.20.24.2.2")
+	public static class B_Encoder extends DefaultEncoder {
+		public B_Encoder() {
+			super("Measure Section");
+		}
+	}
+	// this one looks like a node that is not necessary
+	@Encoder(templateId="2.16.840.1.113883.10.20.27.2.3")
+	public static class D_Encoder extends DefaultEncoder {
+		public D_Encoder() {
+			super("QRDA Category III Measure Section - CMS (V2)");
+		}
+	}
+	// this one looks like a root node that is not necessary
+	@Encoder(templateId="2.16.840.1.113883.10.20.24.3.98")
+	public static class G_Encoder extends DefaultEncoder {
+		public G_Encoder() {
+			super("Measure Reference");
+		}
+	}
+	
+	
 	
 	
 	@Encoder(templateId="2.16.840.1.113883.10.20.27.3.29")
