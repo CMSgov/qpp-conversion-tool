@@ -40,6 +40,6 @@ public class DefaultEncoderTest {
 		JsonWrapper wrapper = new JsonWrapper();
 		new QppOutputEncoder().encode(wrapper, node);
 		
-		System.err.println(wrapper);
+		// System.err.println(wrapper);
 	}
 }

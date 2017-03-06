@@ -33,7 +33,7 @@ public class AciProportionDenominatorDecoderTest {
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));
 
-		System.out.println(root.toString());
+		// System.out.println(root.toString());
 
 		// For all decoders this should be either a value or child node
 		assertThat("returned node should have one child node", root.getChildNodes().size(), is(1));
