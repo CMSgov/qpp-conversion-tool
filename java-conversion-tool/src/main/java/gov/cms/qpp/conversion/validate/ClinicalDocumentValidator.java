@@ -24,7 +24,7 @@ public class ClinicalDocumentValidator extends QrdaValidator {
 		// Most likely, this "required" validation can be moved into the
 		// QrdaValidator superclass
 		if (thisAnnotation.required()) {
-			if (null == nodes || nodes.isEmpty()) {
+			if (nodes.isEmpty()) {
 				this.addValidationError(new ValidationError("Clinical Document Node is required"));
 			}
 		}
@@ -35,22 +35,20 @@ public class ClinicalDocumentValidator extends QrdaValidator {
 		// it should not have a parent node
 		// it can have one or more ACI or IA Section Nodes
 
-		if (null != nodes) {
-			if (nodes.size() > 1) {
-				this.addValidationError(new ValidationError("Only one Clinical Document Node is allowed"));
-			} else if (nodes.size() == 1) {
-				Node docNode = nodes.get(0);
-				List<Node> childNodes = docNode.getChildNodes();
+		if (nodes.size() > 1) {
+			this.addValidationError(new ValidationError("Only one Clinical Document Node is allowed"));
+		} else if (nodes.size() == 1) {
+			Node docNode = nodes.get(0);
+			List<Node> childNodes = docNode.getChildNodes();
 
-				if (null == childNodes || childNodes.isEmpty()) {
-					this.addValidationError(new ValidationError(
-							"Clinical Document Node must have at least one Aci or Ia Section Node as a child"));
-				} else {
-					for (Node child : childNodes) {
-						if (NodeType.ACI_SECTION != child.getType() && NodeType.IA_SECTION != child.getType()) {
-							this.addValidationError(new ValidationError(
-									"Clinical Document Node has an invalid child node of type: " + child.getType()));
-						}
+			if (childNodes.isEmpty()) {
+				this.addValidationError(new ValidationError(
+						"Clinical Document Node must have at least one Aci or Ia Section Node as a child"));
+			} else {
+				for (Node child : childNodes) {
+					if (NodeType.ACI_SECTION != child.getType() && NodeType.IA_SECTION != child.getType()) {
+						this.addValidationError(new ValidationError(
+								"Clinical Document Node has an invalid child node of type: " + child.getType()));
 					}
 				}
 			}
