@@ -17,6 +17,7 @@ import gov.cms.qpp.conversion.model.Node;
 
 public class AciProportionMeasureEncoderTest {
 
+	private Node aciPerformanceRate;
 	private Node aciProportionMeasureNode;
 	private Node aciProportionNumeratorNode;
 	private Node aciProportionDenominatorNode;
@@ -44,9 +45,14 @@ public class AciProportionMeasureEncoderTest {
 		aciProportionNumeratorNode = new Node();
 		aciProportionNumeratorNode.setId("2.16.840.1.113883.10.20.27.3.31");
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
+		
+		aciPerformanceRate = new Node();
+		aciPerformanceRate.setId("2.16.840.1.113883.10.20.27.3.30");
+		aciPerformanceRate.putValue("DefaultDecoderFor", "Performance Rate");
 
 		aciProportionMeasureNode = new Node();
 		aciProportionMeasureNode.setId("2.16.840.1.113883.10.20.27.3.28");
+		aciProportionMeasureNode.addChildNode(aciPerformanceRate);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
 		aciProportionMeasureNode.putValue("measureId", "ACI-PEA-1");
