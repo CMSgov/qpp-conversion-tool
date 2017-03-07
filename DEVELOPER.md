@@ -3,7 +3,7 @@
 This document describes how to set up your development environment to build and test qpp-conversion-tool.
 
 * [Prerequisite Software](#prerequisite-software)
-* [Getting the Sources](#getting-the-sources)
+* [Getting the Source](#getting-the-source)
 * [Building](#building)
 * [Running Tests Locally](#running-tests-locally)
 
