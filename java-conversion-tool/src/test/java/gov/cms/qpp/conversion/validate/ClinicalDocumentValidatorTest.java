@@ -7,7 +7,6 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
@@ -18,11 +17,6 @@ public class ClinicalDocumentValidatorTest {
 	private static final String EXPECTED_TEXT = "Clinical Document Node is required";
 	private static final String EXPECTED_ONE_ALLOWED = "Only one Clinical Document Node is allowed";
 	private static final String EXPECTED_NO_SECTION = "Clinical Document Node must have at least one Aci or Ia Section Node as a child";
-
-	@Before
-	public void setup() {
-		ClinicalDocumentValidator.resetValidationErrors();
-	}
 
 	@Test
 	public void testClinicalDocumentPresent() {

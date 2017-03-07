@@ -11,7 +11,7 @@ import gov.cms.qpp.conversion.model.Validator;
 public class QrdaValidator extends NodeValidator {
 
 	protected static Registry<String, QrdaValidator> validators = new Registry<>(Validator.class);
-	protected static List<ValidationError> validationErrors = new ArrayList<>();
+	protected List<ValidationError> validationErrors = new ArrayList<>();
 
 	public QrdaValidator() {
 
@@ -19,10 +19,6 @@ public class QrdaValidator extends NodeValidator {
 
 	public List<ValidationError> getValidationErrors() {
 		return validationErrors;
-	}
-
-	public static void resetValidationErrors() {
-		validationErrors.clear();
 	}
 
 	protected void addValidationError(ValidationError newError) {
