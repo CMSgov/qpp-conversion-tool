@@ -1,4 +1,4 @@
-* [Features](#features)
+* [Design Exercise Features](#design-exercise-features)
 * [Technologies](#technologies)
 * [Our Agile Dev Process](#our-agile-dev-process)
 * [Design Process](#design-process)
@@ -7,10 +7,10 @@
 * [Developer Installation Instructions](#developer-installation-instructions)
 * [Development Tasks](#development-tasks)
 
-## Features
+## Design Exercise Features
 
-* **Persona Development** - [Two personas](https://github.com/flexion/adele-bpa-beneficiary-reporting/blob/develop/documents/design-deliverables/personas) used to drive interface [epics and user stories](https://github.com/flexion/adele-bpa-beneficiary-reporting/blob/develop/documents/design-deliverables/kickoff/user-stories-whiteboard-exercise.jpg).
-* **Decoupled and highly testable design** - We decoupled decoding the XML, validating the relevant content, and encoding the JSON, each along `templateId` lines. This enabled fine-grained development and automated testing of decoding, validating, and encoding functions. Each of these for a given `templateId` were accepted by different developers, allowing the team to implement and test the conversion of one `templateId` at a time.
+* **Persona Development** - [One persona](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/QPP%20Conversion%20Tool%20Persona%20-%20Joseph.pdf) and a hpyothetical Product Owner were used to used to drive [epics and user stories](https://github.com/flexion/adele-bpa-beneficiary-reporting/blob/develop/documents/design-deliverables/kickoff/user-stories-whiteboard-exercise.jpg). The external behavior of the tool was driven by the persona, priorities of QRDA-III conversion were driven by the Product Owner.
+* **Decoupled and highly testable design** - We decoupled decoding the XML, validating the relevant content, and encoding the JSON along `templateId` lines. This enabled fine-grained development and automated testing of decoding, validating, and encoding functions. Each of these for a given `templateId` were accepted by different developers, allowing the team to effectively collaborate on of one `templateId` at a time.
 * **Automated functional tests** - [90% plus code coverage](<link-to-screenshot-of circle-code-coverage>). (See [User Instructions: Test Coverage and Reporting in CircleCI](#test-coverage-and-reporting-in-circleci) for a guide to viewing live reports.)
 * **End-to-End tests** - Automated [End-to-End Coverage](<link-to-file-level-tests>).
 * **Code review process** - Using GitHub's [PR and code review](<link-to-completed-PRs>) for merges from feature branches to main
