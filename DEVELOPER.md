@@ -1,4 +1,4 @@
-# Building and Testing qpp-conversion-tool
+# Building and Testing QPP Conversion Tool
 
 This document describes how to set up your development environment to build and test qpp-conversion-tool.
 
