@@ -19,7 +19,7 @@ following products on your development machine:
   [Windows](http://windows.github.com)); [GitHub's Guide to Installing
   Git](https://help.github.com/articles/set-up-git) is a good source of information.
 
-* [Java Development Kit](http://www.oracle.com/technetwork/es/java/javase/downloads/index.html), (version `>=8`) which is used
+* [Java Development Kit](http://www.oracle.com/technetwork/es/java/javase/downloads/index.html), (version `>=1.8`) which is used
   to develop to core library.
 
   It is important that you have the right version of java on your path.
@@ -42,9 +42,6 @@ following products on your development machine:
   ```
 
 ## Getting the Sources
-
-Login to your GitHub account or create one by following the instructions given
-   [here](https://github.com/signup/free).
 
 Clone the qpp-conversion-tool repository:
 
@@ -73,3 +70,7 @@ To run tests:
 # Run all qpp-conversion-tool tests
 mvn test
 ```
+
+You should execute the test suites before submitting a PR to github.
+
+All the tests are executed on our Continuous Integration infrastructure and a PR could only be merged once the tests pass.
