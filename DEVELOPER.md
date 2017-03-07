@@ -32,7 +32,7 @@ following products on your development machine:
   ```
 
 * [Maven](https://maven.apache.org), (version `>=3.3`) which is used to build the library, manage dependencies,
-  run tests, and generate distributable files.
+  run tests, and generate distributable files. After you unzip the Maven archive, you need to add the `bin` directory to you path, as described the [Maven installation instructions](https://maven.apache.org/install.html).
 
   ```shell
   # When you run 'mvn -v', you should get 1.3.X. For example:

@@ -12,8 +12,7 @@
 
 ### Prerequisite Software
 
-Before you can build and test qpp-conversion-tool, you must install and configure the
-following products on your development machine:
+Before you can use the qpp-conversion-tool, you must install and configure the following products on your machine:
 
 * [Git](http://git-scm.com) and/or the **GitHub app** (for [Mac](http://mac.github.com) or
   [Windows](http://windows.github.com)); [GitHub's Guide to Installing
