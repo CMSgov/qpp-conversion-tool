@@ -6,7 +6,7 @@
 
 ## Design Exercise Features
 
-* **Persona Development** - [One persona](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/QPP%20Conversion%20Tool%20Persona%20-%20Joseph.pdf) and a hpyothetical Product Owner were used to used to drive [epics and user stories](https://github.com/flexion/adele-bpa-beneficiary-reporting/blob/develop/documents/design-deliverables/kickoff/user-stories-whiteboard-exercise.jpg). The external behavior of the tool was driven by the persona, priorities of QRDA-III conversion were driven by the Product Owner.
+* **Persona Development** - [A primary persona](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/QPP%20Conversion%20Tool%20Persona%20-%20Joseph.pdf) and a hpyothetical Product Owner were used to used to drive epics and user stories. The external behavior of the tool was driven by the persona, priorities of QRDA-III conversion were driven by the Product Owner.
 * **Decoupled and highly testable design** - We decoupled decoding the XML, validating the relevant content, and encoding the JSON along `templateId` lines. 
 * **Automated functional tests** - [90% plus code coverage](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/test-coverage.png). (See [User Instructions: Test Coverage and Reporting in CircleCI](#test-coverage-and-reporting-in-circleci) for a guide to viewing live reports.)
 * **Code review process** - Using GitHub's [PR and code review](https://github.com/flexion/adele-bpa-qpp-conversion-tool/pulls?q=is%3Apr+is%3Aclosed) for merges from feature branches to main
@@ -16,8 +16,8 @@
 
 Here are the areas where we would go further in the actual project than in the design exercise.
 
-* More thourough validation - We implemented two `templateId` validators to dempnstrate how validation would be invoked, and how validation messages would be presented to users.
-* Continuous user feedback - We would have our users part of the daily process, working with the file converter to provide continuous feedback.
+* More thorough validation - We implemented two `templateId` validators to dempnstrate how validation would be invoked, and how validation messages would be presented to users.
+* Continuous user feedback - We would have our users be part of the daily process, working with the file converter to provide continuous feedback.
 
 ## Technologies
 
@@ -39,7 +39,7 @@ The purpose of creating personas and their associated epics and user stories is 
 
 1. **Name and describe the persona**
 
-[Joseph](<link to Joseph>)
+[Joseph](<https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/QPP%20Conversion%20Tool%20Persona%20-%20Joseph.pdf>)
 
 1.  **Tell the user story.** At this point, we recommend that the PO focus on business-level stories so that option space of system interactions (to achieve the business goal) is as large as possible. The UX design process explores this space of options. Here is the user story we are assuming for this exercise:
 
@@ -51,7 +51,7 @@ The purpose of refining the backlog is to subsume new PO goals into the backlog 
 
 1. **The PO explains the persona and tells the user story.**
 
-1. **Team asks clarifying questions.** If the team learns that the story is big, they "promote" it to an "epic".
+1. **Team asks clarifying questions.** If the team learns that the story is big, they "promote" it to an "epic."
 
 1.  **They negotiate and converge on draft acceptance criteria.** Acceptance criteria are the business conditions that must be true when the story is successfully completed. Detailed user interactions are not included but emerge during the development process.
 
@@ -109,19 +109,19 @@ The purpose of Sprint Planning is to pull enough work into the next upcoming spr
 
 1.  **The Scrum team drafts a cross-functional task list required to get the story to done.** The list includes *all* tasks from UX research to coding to testing to deployment. These tasks are just abstract enough to avoid becoming obsolete once related details of the work start to take shape.
 
-    In the design exercise, we use GitHub projects to hold our tasks. Click on the GitHub project's title to drill down into the task list. Here is one example:
+    In this exercise we use GitHub projects to hold our tasks. Click on the GitHub project's title to drill down into the task list. Here is one example:
 
     [As a Performance Improvement IT Analyst, in order to convert the ACI section, I want to convert an ACI Numerator Denominator Type Measure.](https://github.com/flexion/adele-bpa-qpp-conversion-tool/projects/5)
 
 ### 4. Execute the Sprint.
 
-This is the bulk of the two-week sprint where the development team develops. This includes identifying and evaluating options, developing them, testing them, and completing all tasks in the Definition of Done (DoD). This process isn't linear but can go through multiple cycles before it's done. Also, although these can be thought of as identical cycles, the order at which these things can happen is fluid and emerges based on need.
+This is the bulk of the two-week sprint where the development team *develops*. This includes identifying and evaluating options, developing them, testing them, and completing all tasks in the Definition of Done (DoD). This process isn't linear but can go through multiple cycles before it's complete. Also, although these can be thought of as identical cycles, the order at which these things can happen is fluid and emerges based on need.
 
 1.  **Create automated ATDD/BDD tests from the static click-through and the business model.** These tests drive production development and are integrated into the CI/CD pipeline.
 
     We have automated tests to drive development at multiple levels. Within the ["java-conversion-tool/src/test/java/gov/cms/qpp" directory](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/java-conversion-tool/src/test/java/gov/cms/qpp)
 
-1. **The development team collaborates to fully build out the user story and its supporting unit tests.** Implementation decouples the sofware components greatest extent possible.
+1. **The development team collaborates to fully build out the user story and its supporting unit tests.** Implementation decouples the sofware components to the greatest extent possible.
 
 1. **The user story is validated**. Validation is accomplished by testing with real people who have been identified as likely prospective users of the system.
 
@@ -162,24 +162,24 @@ The Sprint Review is the accountability ceremony, where the team demos anything 
 
 We've used [CircleCI](http://circleci.com) for our CI/CD pipeline. In order to view live reports in CircleCI there are a few extra steps you'll need to take.  
 
-Reviewers will need to authenticate within CircleCI while logged into GitHub with the 'cmsuser2' account. The steps to follow are:
+Reviewers will need to authenticate within CircleCI while logged into GitHub with the 'cmsuser1' account. The steps to follow are:
 
 1. Log into Github with the 'cmsuser2' account
 1. Navigate to [CircleCI](http://circleci.com) and select "Log In"
 1. Select "Log In With GitHub"
 1. Follow the "flexion/adele-bpa-qpp-conversion-tool" project
 
-Once you've followed this project, the "live" links to specific reports below will work correctly.
+Once you've followed this project, the "live" links to specific reports below should work correctly.
 
 ### CircleCI Report Examples
 
 * **Automated tests** - [90% plus code coverage](https://311-82203407-gh.circle-artifacts.com/0/tmp/circle-artifacts.IDxNdoM/jacoco/index.html).
-* **Continuous Integration** - CircleCI performing [full continuous integration](https://circleci.com/gh/flexion/adele-bpa-beneficiary-reporting/329) and requiring a high bar to pass.
+* **Continuous Integration** - CircleCI performing [full continuous integration](https://circleci.com/gh/flexion/adele-bpa-beneficiary-reporting/329) and requiring a high bar to pass.**TODO**
 * **SonarLint** - [Linting and source code quality metrics](https://311-82203407-gh.circle-artifacts.com/0/tmp/circle-artifacts.IDxNdoM/sonarlint/sonarlint-report.html) 
 
 ## Things we will address in the next sprint
 
-We iterated to a desired solution, with a desire to demponstrate the key features of out proposed solution, in essentially one sprint with a skeleton crew. We moved at pace that is not sustainable. As a result, some issues and problems have emerged that we will address in the next sprint, as we move to a more deliberate pace. Here's what we would address:
+We iterated to a desired solution, with a desire to demponstrate the key features of our proposed solution, in essentially one sprint with a skeleton crew. We moved at pace that is not sustainable. As a result, some issues and problems have emerged that we will address in the next sprint, as we move to a more deliberate pace. Here's what we would address:
 
 1. Ensure all criteria in the DoD have been met. 
 1. The wrapping class that handles JSON has a slightly complex feature that could be simplified. Instead of fetching out the inner contents of a sub-object, the wrapper class could do that on its own which would make subsequent decoders simpler.
