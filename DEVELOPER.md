@@ -35,7 +35,7 @@ following products on your development machine:
   run tests, and generate distributable files. After you unzip the Maven archive, you need to add the `bin` directory to you path, as described the [Maven installation instructions](https://maven.apache.org/install.html).
 
   ```shell
-  # When you run 'mvn -v', you should get 1.3.X. For example:
+  # When you run 'mvn -v', you should get 3.3.X. For example:
   mvn -v
   Apache Maven 3.3.9
   ...

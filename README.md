@@ -35,7 +35,7 @@ Before you can use the qpp-conversion-tool, you must install and configure the f
   run tests, and generate distributable files. After you unzip the Maven archive, you need to add the `bin` directory to you path, as described the [Maven installation instructions](https://maven.apache.org/install.html).
 
   ```shell
-  # When you run 'mvn -v', you should get 1.3.X. For example:
+  # When you run 'mvn -v', you should get 3.3.X. For example:
   mvn -v
   Apache Maven 3.3.9
   ...
@@ -52,7 +52,7 @@ git clone https://github.com/flexion/adele-bpa-qpp-conversion-tool.git qpp-conve
 # Go to the qpp-conversion-tool directory:
 cd qpp-conversion-tool
 
-# There is a convenient bash script wrapper. Make it executable:
+# There is a convenient bash script wrapper. Make sure it's executable:
 chmod +x convert.sh
 
 # Try the convert script. If the JAR isn't built yet, the script will build it for you:
@@ -83,6 +83,12 @@ Note: If you are using Windows, replace `./convert.sh` in the examples below wit
 ./convert.sh qrda-files/valid-QRDA-III.xml
 ```
 
+### Convert a valid file but skip inserting default stubs.
+
+```shell
+./convert.sh qrda-files/valid-QRDA-III.xml --skip-defaults
+```
+
 ### Convert an file without an 'xml' extension.
 
 ```shell
@@ -99,12 +105,6 @@ Note: If you are using Windows, replace `./convert.sh` in the examples below wit
 
 ```shell
 ./convert.sh qrda-files/QRDA-III-without-required-measure.xml
-```
-
-### Try to convert a QRDA-III file that doesn't contain required measures but skip validation.
-
-```shell
-./convert.sh --skip-validation qrda-files/QRDA-III-without-required-measure.xml
 ```
 
 ### Try to convert a file that is not a QRDA-III file.
