@@ -12,6 +12,7 @@ import java.util.Set;
  * Map that holds the data gleaned from an input file.
  * 
  * Nodes can contain other nodes as children to create a hierarchy.
+ * @author David Uselmann
  * 
  */
 public class Node implements Serializable {

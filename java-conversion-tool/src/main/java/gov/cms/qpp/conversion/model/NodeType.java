@@ -1,5 +1,11 @@
 package gov.cms.qpp.conversion.model;
 
+/**
+ * An enumeration of known templates IDs to be validated.
+ * 
+ * @author Scott Fradkin
+ * 
+ */
 public enum NodeType {
 
 	CLINICAL_DOCUMENT("2.16.840.1.113883.10.20.27.1.2"),

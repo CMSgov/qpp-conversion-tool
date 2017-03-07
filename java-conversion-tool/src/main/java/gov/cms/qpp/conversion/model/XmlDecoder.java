@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * This is the annotation to mark class implementations that should be
  * registered for transforming a section for the XML document.
  * 
- * @author daviduselmann
+ * @author David Uselmann
  *
  */
 @Target(TYPE)
