@@ -16,7 +16,7 @@
 
 Here are the areas where we would go further in the actual project than in the design exercise.
 
-* More thorough validation - We implemented two `templateId` validators to dempnstrate how validation would be invoked, and how validation messages would be presented to users.
+* More thorough validation - We implemented two `templateId` validators to demonstrate how validation would be invoked, and how validation messages would be presented to users.
 * Continuous user feedback - We would have our users be part of the daily process, working with the file converter to provide continuous feedback.
 
 ## Technologies
