@@ -59,7 +59,7 @@ chmod +x convert.sh
 ./convert.sh java-conversion-tool/src/test/resources/valid-QRDA-III.xml
 ```
 
-If you are using Windows, open a command prompt (not PowerShell) and go to the directory you want the the converter tool directory to be created in:
+If you are using Windows, open a command prompt (not PowerShell) and go to the directory you want the converter tool directory to be created in:
 
 ```shell
 # Clone the GitHub repository:
