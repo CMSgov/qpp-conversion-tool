@@ -18,4 +18,9 @@ public class ValidationError {
 		return errorText;
 	}
 
+	@Override
+	public String toString() {
+		return "ValidationError: " + errorText;
+	}
+
 }
