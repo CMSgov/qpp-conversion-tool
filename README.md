@@ -116,7 +116,7 @@ Note: If you are using Windows, replace `./convert.sh` in the examples below wit
 ## Want to contribute?
 
 Want to file a bug or contribute some code? Read up on our
-guidelines for [contributing][contributing], and [developer instructions][developer]
+guidelines for [contributing][contributing], and [developer instructions][developer].
 
 [contributing]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/CONTRIBUTING.md
 [developer]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/DEVELOPER.md
