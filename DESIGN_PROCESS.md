@@ -1,19 +1,15 @@
 * [Design Exercise Features](#design-exercise-features)
 * [Technologies](#technologies)
-* [Our Agile Dev Process](#our-agile-dev-process)
 * [Design Process](#design-process)
-* [User Instructions](#user-instructions)
-* [Hypothetical Next Steps](#hypothetical-next-steps)
-* [Developer Installation Instructions](#developer-installation-instructions)
-* [Development Tasks](#development-tasks)
+* [Design Process](#design-process)
+* [Improvements](#hypothetical-next-steps)
 
 ## Design Exercise Features
 
 * **Persona Development** - [One persona](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/QPP%20Conversion%20Tool%20Persona%20-%20Joseph.pdf) and a hpyothetical Product Owner were used to used to drive [epics and user stories](https://github.com/flexion/adele-bpa-beneficiary-reporting/blob/develop/documents/design-deliverables/kickoff/user-stories-whiteboard-exercise.jpg). The external behavior of the tool was driven by the persona, priorities of QRDA-III conversion were driven by the Product Owner.
-* **Decoupled and highly testable design** - We decoupled decoding the XML, validating the relevant content, and encoding the JSON along `templateId` lines. This enabled fine-grained development and automated testing of decoding, validating, and encoding functions. Each of these for a given `templateId` were accepted by different developers, allowing the team to effectively collaborate on of one `templateId` at a time.
-* **Automated functional tests** - [90% plus code coverage](<link-to-screenshot-of circle-code-coverage>). (See [User Instructions: Test Coverage and Reporting in CircleCI](#test-coverage-and-reporting-in-circleci) for a guide to viewing live reports.)
-* **End-to-End tests** - Automated [End-to-End Coverage](<link-to-file-level-tests>).
-* **Code review process** - Using GitHub's [PR and code review](<link-to-completed-PRs>) for merges from feature branches to main
+* **Decoupled and highly testable design** - We decoupled decoding the XML, validating the relevant content, and encoding the JSON along `templateId` lines. 
+* **Automated functional tests** - [90% plus code coverage](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/test-coverage.png). (See [User Instructions: Test Coverage and Reporting in CircleCI](#test-coverage-and-reporting-in-circleci) for a guide to viewing live reports.)
+* **Code review process** - Using GitHub's [PR and code review](https://github.com/flexion/adele-bpa-qpp-conversion-tool/pulls?q=is%3Apr+is%3Aclosed) for merges from feature branches to main
 * **Continuous Integration** - CircleCI performing [Full Continuous Integration](<link to circleCI build history screen>).
 
 ### Where we would raise the bar in the real project
@@ -31,10 +27,6 @@ Our chosen technologies include:
 * Maven 3 - <https://github.com/angular/angular-cli>
 * CircleCI - <https://circleci.com>
 
-## Our Agile Dev Process
-
-![Flexion Agile Dev Process](https://github.com/flexion/adele-bpa-beneficiary-reporting/blob/develop/documents/design-deliverables/diagrams/Agile_Dev_Methodology_Diagram.jpg)
-
 ## Design Process
 
 Below are the steps we would normally take to develop a user story. Because this is a demo constructed in a compressed time frame by a partial team, some of the steps are "stubs," listed so you can see where they fall in the process. Links will take you to the artifacts that are associated with the step in the process.
@@ -45,7 +37,9 @@ Each story goes through all of these process steps. The number of user stories t
 
 The purpose of creating personas and their associated epics and user stories is simply to better understand the design problems that need to be solved and who we are solving them for.
 
-1. **Name and describe the personas [Joseph](<link to Joseph>) and [Name](<link to name>).**
+1. **Name and describe the persona**
+
+[Joseph](<link to Joseph>)
 
 1.  **Tell the user story.** At this point, we recommend that the PO focus on business-level stories so that option space of system interactions (to achieve the business goal) is as large as possible. The UX design process explores this space of options. Here is the user story we are assuming for this exercise:
 
@@ -65,41 +59,28 @@ The purpose of refining the backlog is to subsume new PO goals into the backlog 
     >
     > Given that there are a number of QRDA-III files in a given directory, the IT Analyst can convert them all to the QPP format using a single, simple command.
 
-4.  **The team brainstorms options for meeting the goal.** Options can be mutually exclusive, or independent features that contribute to the overall goal.
+4.  **The team brainstorms options for meeting the goal.** Options can be mutually exclusive, or independent features that contribute to the overall goal. If the goal is high-level, these options are expressed as finer-grained user stories.
 
 5.  **The team estimates the value-flow rate relative to other user stories.** Two components are inputs to value-flow rate: relative cost of delay (estimated by business) and relative duration (estimated by Scrum team).
-
-    In the design exercise, the user stories were trimmed to five and ranked as follows:
-
-    > As a Perfomance Improvement IT Analyst, in order to convert an ACI "proportion" measure, I want to fetch Aggregate Count value.
-    >
-    > As a Perfomance Improvement IT Analyst, in order to convert an ACI "proportion" measure, I want to convert an ACI numerator measure.
-    >
-    > As a Perfomance Improvement IT Analyst, in order to convert the ACI section, I want to convert an ACI proportion measure.
-    >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want multiple people to enter data concurrently by allied measures.
-    >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
-    >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
-    >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
-        >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
-        >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
 
 ### 3. Plan the Sprint.
 
 The purpose of Sprint Planning is to pull enough work into the next upcoming sprint to keep the team allocated but as focused as possible in their current state. The team drafts a plan for how to organize the work in the sprint. The granularity of atomic user stories for the Product Owner will likely require that they span multiple sprints, especially when UX research, testing, and deployment are included. So sprint planning is also where atomic PO user stories might be decomposed into smaller demonstrable user stories that can be ingested into the sprint.
 
-1. **The PO introduces upcoming stories in value-flow rate order.**
+1.  **The PO introduces upcoming stories in value-flow rate order.**
 
-1.  **The team reviews the story with the PO.** Acceptance criteria and story point estimates are adjusted as needed. (We used [GitHub projects as a proxy for a story card](<link to sorted GitHub projects) for the purposes of this design exercise.)
+    For the design exercise, here are the stories we accepted into the sprint:
 
-1.  **The team accepts stories into the sprint**. This decision is based on measured velocity and estimated story points. If the next story is too large to fit into the sprint, the team divides the acceptance criteria into pieces and writes new stories based on those. This repeats until a story can be accepted.
-
-    In the design exercise, accepted the following two into the sprint:
+    > As a Perfomance Improvement IT Analyst, in order to convert an ACI Numerator Denominator Type Measure, I want to fetch Aggregate Count value.
+    >
+    > As a Perfomance Improvement IT Analyst, in order to convert an ACI Numerator Denominator Type Measure, I want to convert an ACI numerator measure.
+    >
+    > As a Perfomance Improvement IT Analyst, in order to convert the ACI section, I want to convert an ACI Numerator Denominator Type Measure.
+    >
+    > As a large practice manager, in order to enter a lot of quality measures quickly, I want multiple people to enter data concurrently by allied measures.
+    >
+    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
+    >
 
     > As a Perfomance Improvement IT Analyst, in order to convert an ACI "proportion" measure, I want to fetch Aggregate Count value.
     >
@@ -111,15 +92,26 @@ The purpose of Sprint Planning is to pull enough work into the next upcoming spr
     >
     > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
     >
+    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
+    >
+    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
+        >
+    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
+        >
+    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
 
+
+1. **The team reviews the story with the PO.** Acceptance criteria and story point estimates are adjusted as needed. (We used [GitHub projects as a proxy for a story card](https://github.com/flexion/adele-bpa-qpp-conversion-tool/projects?query=sort%3Acreated-asc) for the purposes of this design exercise.)
+
+1. **The team accepts stories into the sprint**. This decision is based on measured velocity and estimated story points. If the next story is too large to fit into the sprint, the team divides the acceptance criteria into pieces and writes new stories based on those. This repeats until a story can be accepted.
 
 1. **The team crafts a Sprint Goal.** The sprint goal is a unifying goal that binds together all user stories accepted into the sprint.
 
-1.  **The Scrum team drafts a [cross-functional task list] required to get the story to done.** The list includes *all* tasks from UX research to coding to testing to deployment. These tasks are just abstract enough to avoid becoming obsolete once related details of the work start to take shape.
+1.  **The Scrum team drafts a cross-functional task list required to get the story to done.** The list includes *all* tasks from UX research to coding to testing to deployment. These tasks are just abstract enough to avoid becoming obsolete once related details of the work start to take shape.
 
     In the design exercise, we use GitHub projects to hold our tasks. Click on the GitHub project's title to drill down into the task list. Here is one example:
 
-    [As a Perfomance Improvement IT Analyst, in order to convert an ACI "proportion" measure, I want to fetch Aggregate Count value.](<link to this prjects task in github>)
+    [As a Performance Improvement IT Analyst, in order to convert the ACI section, I want to convert an ACI Numerator Denominator Type Measure.](https://github.com/flexion/adele-bpa-qpp-conversion-tool/projects/5)
 
 ### 4. Execute the Sprint.
 
@@ -129,13 +121,7 @@ This is the bulk of the two-week sprint where the development team develops. Thi
 
     We have automated tests to drive development at multiple levels. Within the ["java-conversion-tool/src/test/java/gov/cms/qpp" directory](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/java-conversion-tool/src/test/java/gov/cms/qpp)
 
-1.  **The development team collaborates to fully build out the user story and its supporting unit tests.** Implementation decouples the sofware components greatest extent possible.
-
-    Our clean architecture allows us to [develop locally](https://github.com/flexion/adele-bpa-beneficiary-reporting/blob/develop/documents/clean-architecture/Local-Dev-Diagram.jpg) with high efficiency, as everything runs in process.
-    
-    The clean separation at the boundary between business logic and it's plugins, including the UI and database, give us deployment options that we can exercise depending on the circumstances. We can move the stateless [business logic to the server](https://github.com/flexion/adele-bpa-beneficiary-reporting/blob/develop/documents/clean-architecture/Remote-App-Server-DevProd-Diagram.jpg), leaving only the pure UI in the browser. Alternatively, we can leave the business logic in the browser and move only the [datastore to the server](https://github.com/flexion/adele-bpa-beneficiary-reporting/blob/develop/documents/clean-architecture/Remote-DB-DevProd-Diagram.jpg). Or we could do both.
-
-    In either case, a REST component is inserted at the boundary that neither the UI or business component is aware of. It completely encapsulates all security, configuration, and security to establish reliable and secure communication between browser and the server infrastructure. For the design exercise, we opted for the local model to accelerate development cycles.
+1. **The development team collaborates to fully build out the user story and its supporting unit tests.** Implementation decouples the sofware components greatest extent possible.
 
 1. **The user story is validated**. Validation is accomplished by testing with real people who have been identified as likely prospective users of the system.
 
@@ -172,13 +158,33 @@ The Sprint Review is the accountability ceremony, where the team demos anything 
 
 1. **A working version of the system is accessible to the PO.**
 
+## Test Coverage and Reporting in CircleCI
 
+We've used [CircleCI](http://circleci.com) for our CI/CD pipeline. In order to view live reports in CircleCI there are a few extra steps you'll need to take.  
 
+Reviewers will need to authenticate within CircleCI while logged into GitHub with the 'cmsuser2' account. The steps to follow are:
 
-#### CircleCI Report Examples ####
+1. Log into Github with the 'cmsuser2' account
+1. Navigate to [CircleCI](http://circleci.com) and select "Log In"
+1. Select "Log In With GitHub"
+1. Follow the "flexion/adele-bpa-qpp-conversion-tool" project
 
-* **Automated functional tests** - [90% plus code coverage](https://329-79416044-gh.circle-artifacts.com/0/tmp/circle-artifacts.XhwiBNU/coverage/index.html).
-* **End-to-End tests** - Automated [end-to-end tests](https://circleci.com/gh/flexion/adele-bpa-beneficiary-reporting/329) - *scroll to 'npm run e2e' to verify that everything is wired up.*
-* **Automated accessibility tests** - [Pa11y tests](https://circleci.com/gh/flexion/adele-bpa-beneficiary-reporting/329) - *scroll to 'npm run pa11y.'*
+Once you've followed this project, the "live" links to specific reports below will work correctly.
+
+### CircleCI Report Examples
+
+* **Automated tests** - [90% plus code coverage](https://311-82203407-gh.circle-artifacts.com/0/tmp/circle-artifacts.IDxNdoM/jacoco/index.html).
 * **Continuous Integration** - CircleCI performing [full continuous integration](https://circleci.com/gh/flexion/adele-bpa-beneficiary-reporting/329) and requiring a high bar to pass.
-* **Continuous Deployment** - Bundle [Docker image and deploy on AWS](http://adele-bpa-beneficiary-reporting.shareddev.flexion.us/) gold image after [every successful build](https://circleci.com/gh/flexion/adele-bpa-beneficiary-reporting/329) - *scroll to 'Deployment.'*
+* **SonarLint** - [Linting and source code quality metrics](https://311-82203407-gh.circle-artifacts.com/0/tmp/circle-artifacts.IDxNdoM/sonarlint/sonarlint-report.html) 
+
+## Things we will address in the next sprint
+
+We iterated to a desired solution, with a desire to demponstrate the key features of out proposed solution, in essentially one sprint with a skeleton crew. We moved at pace that is not sustainable. As a result, some issues and problems have emerged that we will address in the next sprint, as we move to a more deliberate pace. Here's what we would address:
+
+1. Ensure all criteria in the DoD have been met. 
+1. The wrapping class that handles JSON has a slightly complex feature that could be simplified. Instead of fetching out the inner contents of a sub-object, the wrapper class could do that on its own which would make subsequent decoders simpler.
+1. Apply instrumentation to analyze performance.
+1. In the code `AciProportionMeasure*` should be renamed to `AciNumDenomMeasure*`
+1. Knock out the higher priority SonarLint problems.
+1. Extract duplicated logic in encoders.
+
