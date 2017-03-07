@@ -15,8 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
-import gov.cms.qpp.conversion.decode.DecoderTest;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
@@ -59,7 +59,7 @@ public class ClinicalDocumentRoundTripTest {
 		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(XmlUtils.stringToDOM(xmlFragment));
 		
 		// remove default nodes (will fail if defaults change)
-		DecoderTest.removeDefaultNode(clinicalDocumentNode.getChildNodes());
+		DefaultDecoder.removeDefaultNode(clinicalDocumentNode.getChildNodes());
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();

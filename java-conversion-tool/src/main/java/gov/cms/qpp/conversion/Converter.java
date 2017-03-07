@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -47,9 +48,12 @@ public class Converter implements Callable<Integer> {
 	static final Logger LOG = LoggerFactory.getLogger(Converter.class);
 
 	static final int MAX_THREADS = 10;
-	static final String SKIP_VALIDATION = "--skip-validation";
 	
+	static final String SKIP_VALIDATION = "--skip-validation";
 	static boolean doValidation = true;
+	
+	static final String SKIP_DEFAULTS = "--skip-defaults";
+	static boolean doDefaults = true;
 	
 	final File inFile;
 
@@ -67,6 +71,10 @@ public class Converter implements Callable<Integer> {
 		try {
 			Node decoded = XmlInputDecoder.decodeXml(XmlUtils.fileToDOM(inFile));
 
+			if (!doDefaults) {
+				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
+			}
+			
 			QrdaValidator validator = new QrdaValidator();
 
 			List<ValidationError> validationErrors = Collections.emptyList();
@@ -142,6 +150,10 @@ public class Converter implements Callable<Integer> {
 		for (String arg : args) {
 			if (SKIP_VALIDATION.equals(arg)) {
 				doValidation = false;
+				continue;
+			}
+			if (SKIP_DEFAULTS.equals(arg)) {
+				doDefaults = false;
 				continue;
 			}
 			
