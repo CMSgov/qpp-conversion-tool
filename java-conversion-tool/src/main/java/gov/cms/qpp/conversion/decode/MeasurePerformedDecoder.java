@@ -9,6 +9,11 @@ import org.jdom2.filter.Filters;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.XmlDecoder;
 
+/**
+ * Decoder to parse Improvement Activity Section.
+ * @author David Puglielli
+ *
+ */
 @XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.27")
 public class MeasurePerformedDecoder extends QppXmlDecoder {
 

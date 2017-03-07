@@ -9,6 +9,13 @@ import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.XmlDecoder;
 
+/**
+ * Decoder used to "fill-in" decoders where none have been implemented.
+ * 
+ * Once the decoders have been fully developed, the need for this class goes away.
+ * @author David Uselmann
+ *
+ */
 public class DefaultDecoder extends QppXmlDecoder {
 	final String description;
 	

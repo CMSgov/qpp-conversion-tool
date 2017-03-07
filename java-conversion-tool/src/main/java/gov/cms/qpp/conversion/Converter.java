@@ -36,6 +36,11 @@ import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
+/**
+ * Converter provides the command line processing for QRDA III to QPP json.
+ * @author David Uselmann
+ *
+ */
 public class Converter implements Callable<Integer> {
 	static final Logger LOG = LoggerFactory.getLogger(Converter.class);
 
