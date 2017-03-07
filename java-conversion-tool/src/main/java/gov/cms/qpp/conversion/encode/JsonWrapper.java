@@ -141,6 +141,34 @@ public class JsonWrapper {
 		}
 	}
 	
+	public String getString(String name) {
+		if (isObject()) {
+			return (String)object.get(name);
+		}
+		return null;
+	}
+	
+	public Integer getInteger(String name) {
+		if (isObject()) {
+			return (Integer)object.get(name);
+		}
+		return null;
+	}
+	
+	public Integer getFloat(String name) {
+		if (isObject()) {
+			return (Integer)object.get(name);
+		}
+		return null;
+	}
+	
+	public Boolean getBoolean(String name) {
+		if (isObject()) {
+			return (Boolean)object.get(name);
+		}
+		return null;
+	}
+	
 	protected String cleanString(String value) {
 		if (value == null) {
 			return "";

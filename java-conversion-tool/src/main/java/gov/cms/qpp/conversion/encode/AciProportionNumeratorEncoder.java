@@ -32,8 +32,8 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 			JsonWrapper value = new JsonWrapper();
 			numeratorValueEncoder.encode(value, numeratorValueNode);
 			
-			if (null != ((List<?>)value.getObject()) && !((List<?>)value.getObject()).isEmpty()) {
-				wrapper.putObject("numerator", ((List<?>)value.getObject()).get(0));
+			if (null != value.getInteger("value")) {
+				wrapper.putObject("numerator", value.getInteger("value"));
 			}
 		}
 	}
