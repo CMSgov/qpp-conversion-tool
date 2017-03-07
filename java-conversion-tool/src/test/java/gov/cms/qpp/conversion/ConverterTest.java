@@ -155,10 +155,10 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testMultiThreadRun() {
+	public void testMultiThreadRun_testSkipValidationToo() {
 		long start = System.currentTimeMillis();
 
-		Converter.main(new String[] { 
+		Converter.main(new String[] { Converter.SKIP_VALIDATION,
 				"src/test/resources/pathTest/a.xml",
 				"src/test/resources/pathTest/subdir/*.xml" });
 
@@ -169,13 +169,13 @@ public class ConverterTest {
 
 		// a.qpp.json and d.qpp.json will not exist because the a.xml and d.xml
 		// file will get validation
-		// errors
-		// assertTrue( aJson.exists() );
-		// assertTrue(dJson.exists());
+		 assertTrue( aJson.exists() );
+		 assertTrue( dJson.exists() );
 
 		aJson.deleteOnExit();
 		dJson.deleteOnExit();
 
 		System.out.println("Time to run two thread transform " + (finish - start));
 	}
+	
 }

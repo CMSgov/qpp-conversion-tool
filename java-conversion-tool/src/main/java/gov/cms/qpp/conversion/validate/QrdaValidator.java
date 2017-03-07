@@ -33,7 +33,7 @@ public class QrdaValidator extends NodeValidator {
 		for (String key : validators.getKeys()) {
 			QrdaValidator aValidator = validators.get(key);
 
-			aValidator.internalValidate(node);
+			validationErrors.addAll(aValidator.internalValidate(node));
 		}
 
 		// do we need to do anything with any Nodes that weren't validated?

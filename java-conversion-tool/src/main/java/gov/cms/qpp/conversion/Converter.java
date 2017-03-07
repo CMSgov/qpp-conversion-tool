@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -46,7 +47,10 @@ public class Converter implements Callable<Integer> {
 	static final Logger LOG = LoggerFactory.getLogger(Converter.class);
 
 	static final int MAX_THREADS = 10;
-
+	static final String SKIP_VALIDATION = "--skip-validation";
+	
+	static boolean doValidation = true;
+	
 	final File inFile;
 
 	public Converter(File inFile) {
@@ -65,10 +69,14 @@ public class Converter implements Callable<Integer> {
 
 			QrdaValidator validator = new QrdaValidator();
 
-			List<ValidationError> validationErrors = validator.validate(decoded);
-
+			List<ValidationError> validationErrors = Collections.emptyList();
+			
+			if (doValidation) {
+				validationErrors = validator.validate(decoded);
+			} 
+			
 			String name = inFile.getName().trim();
-
+			
 			if (validationErrors.isEmpty()) {
 
 				JsonOutputEncoder encoder = new QppOutputEncoder();
@@ -132,6 +140,11 @@ public class Converter implements Callable<Integer> {
 		Collection<File> validFiles = new LinkedList<>();
 
 		for (String arg : args) {
+			if (SKIP_VALIDATION.equals(arg)) {
+				doValidation = false;
+				continue;
+			}
+			
 			validFiles.addAll(checkPath(arg));
 		}
 
