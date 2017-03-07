@@ -6,6 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * A utility class for holding validations.
+ * 
+ * Will be deprecated by the new Validator structure.
+ * @author David Puglielli
+ *
+ */
 public abstract class Validations {
 
 	protected static final ThreadLocal<Map<String, List<String>>> validations = new ThreadLocal<>();

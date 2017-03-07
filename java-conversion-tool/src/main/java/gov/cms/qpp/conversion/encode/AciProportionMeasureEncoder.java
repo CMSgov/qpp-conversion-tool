@@ -5,6 +5,11 @@ import java.util.List;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 
+/**
+ * Encoder to serialize Advancing Care Information Numerator Denominator Type Measure Reference and Results.
+ * @author Scott Fradkin
+ *
+ */
 @Encoder(templateId = "2.16.840.1.113883.10.20.27.3.28")
 public class AciProportionMeasureEncoder extends QppOutputEncoder {
 

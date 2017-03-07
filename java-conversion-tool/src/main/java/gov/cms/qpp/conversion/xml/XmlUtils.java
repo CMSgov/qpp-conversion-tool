@@ -12,6 +12,12 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
+/**
+ * Utility for parsing varios input types into a JDom Element.
+ * 
+ * @author David Uselmann
+ *
+ */
 public class XmlUtils {
 	
 	public static Element stringToDOM(String xml) throws XmlException {

@@ -18,6 +18,12 @@ import org.slf4j.LoggerFactory;
 import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
 
+
+/**
+ * Abstraction to parse XML files within the decoder structure.
+ * @author Scott Fradkin
+ *
+ */
 public abstract class XmlInputDecoder implements InputDecoder, Validatable<String, String> {
     static final Logger LOG = LoggerFactory.getLogger(XmlInputDecoder.class);
 	protected Namespace defaultNs; 

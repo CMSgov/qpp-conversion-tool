@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * This is the annotation to mark class implementations that should be
  * registered for encoding nodes into some output like JSON.
  * 
- * @author daviduselmann
+ * @author David Uselmann
  *
  */
 @Target(TYPE)

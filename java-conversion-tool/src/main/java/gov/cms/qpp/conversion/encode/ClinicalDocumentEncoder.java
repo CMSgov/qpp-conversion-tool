@@ -9,6 +9,11 @@ import java.util.stream.Collectors;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 
+/**
+ * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
+ * @author Scott Fradkin
+ *
+ */
 @Encoder(templateId = "2.16.840.1.113883.10.20.27.1.2")
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 

@@ -6,6 +6,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/**
+ * Indicates a class for use by validation in the validation registry.
+ * 
+ * @author Scott Fradkin
+ *
+ */
 @Target(TYPE)
 @Retention(RUNTIME)
 public @interface Validator {

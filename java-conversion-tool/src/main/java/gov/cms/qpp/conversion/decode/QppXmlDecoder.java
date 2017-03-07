@@ -14,6 +14,7 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 /**
  * Top level Decoder for parsing into QPP format. Contains a map of child
  * Decoders that can Decode an element.
+ * @author David Uselmann
  */
 public class QppXmlDecoder extends XmlInputDecoder {
 	final Logger LOG = LoggerFactory.getLogger(getClass());

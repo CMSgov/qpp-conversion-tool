@@ -17,8 +17,9 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
  * the XPATH that the handler will transform.
  * 
  * R is the stored and return interface type.
+ * V is the key type to access the registered values.
  * 
- * @author daviduselmann
+ * @author David Uselmann
  */
 public class Registry<V extends Object, R extends Object> {
 	static final Logger LOG = LoggerFactory.getLogger(Registry.class);

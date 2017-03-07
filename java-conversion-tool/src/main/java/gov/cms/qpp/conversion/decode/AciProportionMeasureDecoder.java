@@ -9,6 +9,11 @@ import org.jdom2.filter.Filters;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.XmlDecoder;
 
+/**
+ * Decoder to parse Advancing Care Information Numerator Denominator Type Measure Reference and Results.
+ * @author David Uselmann
+ *
+ */
 @XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.28")
 public class AciProportionMeasureDecoder extends QppXmlDecoder {
 

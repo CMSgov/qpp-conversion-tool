@@ -1,5 +1,10 @@
 package gov.cms.qpp.conversion.encode;
 
+/**
+ * This exception indicates an issue encountered during the encoding (json serialization) process.
+ * @author Scott Fradkin
+ *
+ */
 public class EncodeException extends Exception {
 
 	private static final long serialVersionUID = 1L;

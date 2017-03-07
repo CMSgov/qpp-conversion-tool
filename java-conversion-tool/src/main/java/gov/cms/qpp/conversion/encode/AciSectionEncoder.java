@@ -5,6 +5,11 @@ import java.util.List;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 
+/**
+ * Encoder to serialize Advancing Care Information Section.
+ * @author Scott Fradkin
+ *
+ */
 @Encoder(templateId = "2.16.840.1.113883.10.20.27.2.5")
 public class AciSectionEncoder extends QppOutputEncoder {
 
