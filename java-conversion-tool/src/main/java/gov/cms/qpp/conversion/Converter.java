@@ -64,6 +64,8 @@ public class Converter implements Callable<Integer> {
 	@Override
 	public Integer call() throws Exception {
 
+		boolean hasValidations = false;
+		
 		if (!inFile.exists()) {
 			return 0; // it should if check prior to instantiation.
 		}
@@ -112,6 +114,8 @@ public class Converter implements Callable<Integer> {
 					IOUtils.closeQuietly(writer);
 				}
 			} else {
+				hasValidations = true;
+				
 				String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
 
 				File outFile = new File(errName);
@@ -136,7 +140,7 @@ public class Converter implements Callable<Integer> {
 			// Eat all exceptions in the call
 			LOG.error(allE.getMessage());
 		}
-		return null;
+		return hasValidations ?0 :1;
 	}
 
 	public static Collection<File> validArgs(String[] args) {
@@ -279,21 +283,20 @@ public class Converter implements Callable<Integer> {
 
 	private static void waitForAllToFinish(int count, CompletionService<Integer> completionService) {
 		int finished = 0;
+		int succeeded = 0;
 		while (finished < count) {
 			Future<Integer> resultFuture = null;
 			try {
 				resultFuture = completionService.take();
-				Integer result = resultFuture.get(); // TODO do something with
-														// result (and pick a
-														// good result)
+				succeeded += resultFuture.get();
 				finished++;
-
 			} catch (InterruptedException | ExecutionException e) {
 				LOG.error("Transformation interrupted.");
 				LOG.error(e.getMessage());
 				throw new RuntimeException("Could not process file(s).", e);
 			}
 		}
+		LOG.info("{} of {} files succeeded transformation.", succeeded, finished);
 	}
 
 }
