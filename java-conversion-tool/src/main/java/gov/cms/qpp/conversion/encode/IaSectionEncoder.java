@@ -1,5 +1,10 @@
 package gov.cms.qpp.conversion.encode;
 
+/**
+ * Encoder to serialize Improvement Activity Section.
+ * @author David Puglielli
+ *
+ */
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 

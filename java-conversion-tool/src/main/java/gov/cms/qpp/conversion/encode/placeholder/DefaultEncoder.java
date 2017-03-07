@@ -9,6 +9,11 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 
+/**
+ * Encoder used as a placholder when a fully implemented encoder has yet to be developed.
+ * @author David Uselmann
+ *
+ */
 public class DefaultEncoder extends JsonOutputEncoder {
 	final String description;
 	

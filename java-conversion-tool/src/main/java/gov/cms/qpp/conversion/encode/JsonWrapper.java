@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
  * JSON renderers can convert maps and list into JSON Strings.
  * This class is a wrapper around a list/map impl.
  * 
- * @author daviduselmann
+ * @author David Uselmann
  *
  * @param <T> Shole be String or Object for maps of children
  */

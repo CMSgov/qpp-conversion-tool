@@ -4,6 +4,11 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 
+/**
+ * Top level Encoder for serializing into QPP format. 
+ * @author Scott Fradkin
+ * 
+ */
 public class QppOutputEncoder extends JsonOutputEncoder {
 
 	protected static Registry<String, JsonOutputEncoder> encoders = new Registry<>(Encoder.class);

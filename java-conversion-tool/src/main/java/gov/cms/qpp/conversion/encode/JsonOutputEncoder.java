@@ -5,11 +5,12 @@ import java.io.Writer;
 import java.util.List;
 
 import gov.cms.qpp.conversion.Validatable;
-import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
 
 /**
- * Output JSON to a Writer
+ * Output JSON to a Writer.
+ * @author Scott Fradkin
  * 
  */
 public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<String, String> {
