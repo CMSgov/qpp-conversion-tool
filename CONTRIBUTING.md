@@ -1,6 +1,6 @@
 # Contributing to QPP Conversion Tool
 
-We would love for you to contribute to QPP Conversion Tool. As a contributor, here are the guidelines we would like you to follow:
+We would love for you to contribute to the QPP Conversion Tool. As a contributor, here are the guidelines we would like you to follow:
 
  - [Question or Problem?](#question)
  - [Issues and Bugs](#issue)
@@ -25,15 +25,15 @@ a proposal for your work first, to be sure that we can use it.
 
 ### <a name="submit-issue"></a> Submitting an Issue
 
-Before you submit an issue, please search the issue tracker, maybe an issue for your problem already exists and the discussion might inform you of workarounds readily available.
+Before you submit an issue, please search the issue tracker. It's possible an issue has already been created addressing your problem and the discussion might inform you of workarounds readily available.
 
-We want to fix all the issues as soon as possible, but before fixing a bug we need to reproduce and confirm it. Please provide:
+We want to fix all issues as soon as possible, but before fixing a bug we need to be able to reproduce and confirm it. Please provide:
 
 - version of qpp-conversion-tool used
 - 3rd-party libraries and their versions
-- and most importantly - a use-case that fails
+- most importantly, a use-case that fails
 
-We will be insisting on a minimal reproduce scenario in order to save maintainers time and ultimately be able to fix more bugs.
+To be respectful of maintainer's time and ultimately fix more bugs, we will require a **minimal reproduce scenario**.
 
 You can file new issues by filling out our [new issue form](https://github.com/flexion/adele-bpa-qpp-conversion-tool/issues/new).
 
@@ -41,8 +41,7 @@ You can file new issues by filling out our [new issue form](https://github.com/f
 
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-* Search [GitHub](https://github.com/flexion/adele-bpa-qpp-conversion-tool/pulls) for an open or closed PR
-  that relates to your submission. You don't want to duplicate effort.
+* Search [GitHub](https://github.com/flexion/adele-bpa-qpp-conversion-tool/pulls) for an open or closed PR that relates to your submission. You don't want to duplicate effort.
 * Make your changes in a new git branch:
 
      ```shell
@@ -51,8 +50,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 * Create your patch, **including appropriate test cases**.
 * Follow our [Coding Rules](#rules).
-* Run the full test suite, as described in the [developer documentation][dev-doc],
-  and ensure that all tests pass.
+* Run the full test suite, as described in the [developer documentation][dev-doc], and ensure that all tests pass.
 * Commit your changes using a descriptive commit message.
 
      ```shell
@@ -109,10 +107,10 @@ from the main (upstream) repository:
     ```
 
 ## <a name="rules"></a> Coding Rules
-To ensure consistency throughout the source code, keep these rules in mind as you are working:
+To ensure consistency throughout the source code, please keep these rules in mind as you are working:
 
 * All features or bug fixes **must be tested** by one or more unit-tests.
 * All public API methods **must be documented**.
 
-[github]: https://github.com/flexion/adele-bpa-qpp-conversion-tool[developer]: 
+[github]: https://github.com/flexion/adele-bpa-qpp-conversion-tool 
 [dev-doc]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/DEVELOPER.md
