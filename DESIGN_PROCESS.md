@@ -162,7 +162,7 @@ We've used [CircleCI](http://circleci.com) for our CI/CD pipeline. In order to v
 
 Reviewers will need to authenticate within CircleCI while logged into GitHub with the 'cmsuser1' account. The steps to follow are:
 
-1. Log into Github with the 'cmsuser2' account
+1. Log into Github with the 'cmsuser1' account
 1. Navigate to [CircleCI](http://circleci.com) and select "Log In"
 1. Select "Log In With GitHub"
 1. Follow the "flexion/adele-bpa-qpp-conversion-tool" project
