@@ -78,12 +78,12 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 	// this one looks like a root node that is not necessary
-	@Encoder(templateId="2.16.840.1.113883.10.20.24.3.98")
-	public static class G_Encoder extends DefaultEncoder {
-		public G_Encoder() {
-			super("Measure Reference");
-		}
-	}
+//	@Encoder(templateId="2.16.840.1.113883.10.20.24.3.98")
+//	public static class G_Encoder extends DefaultEncoder {
+//		public G_Encoder() {
+//			super("Measure Reference");
+//		}
+//	}
 	
 	
 	

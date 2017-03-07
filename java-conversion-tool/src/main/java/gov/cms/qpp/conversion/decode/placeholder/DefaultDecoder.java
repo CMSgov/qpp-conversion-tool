@@ -69,12 +69,12 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 	// this one looks like a root node that is not necessary
-	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.3.98")
-	public static class G_Decoder extends DefaultDecoder {
-		public G_Decoder() {
-			super("Measure Reference");
-		}
-	}
+//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.3.98")
+//	public static class G_Decoder extends DefaultDecoder {
+//		public G_Decoder() {
+//			super("Measure Reference");
+//		}
+//	}
 	
 //	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.1.2")
 //	public static class A_Decoder extends DefaultDecoder {

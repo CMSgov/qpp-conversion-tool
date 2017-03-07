@@ -8,7 +8,6 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +15,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.model.XmlDecoder;
-import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class DecoderTest {
 
@@ -51,7 +49,6 @@ public class DecoderTest {
 			"2.16.840.1.113883.10.20.27.3.32",
 			"2.16.840.1.113883.10.20.27.3.33",
 			
-			"2.16.840.1.113883.10.20.24.3.98",
 	};
 	
 	
