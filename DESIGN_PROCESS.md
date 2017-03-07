@@ -7,7 +7,7 @@
 ## Design Exercise Features
 
 * **Persona Development** - [A primary user persona](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/QPP%20Conversion%20Tool%20Persona%20-%20Joseph.pdf) and a hypothetical Product Owner were used to used to drive epics and user stories. The external behavior of the tool was driven by the persona, priorities of QRDA-III conversion were driven by the Product Owner.
-* **Decoupled and highly testable design** - We decoupled decoding the XML, validating the relevant content, and encoding the JSON along `templateId` lines. 
+* **Decoupled and highly testable design** - We decoupled decoding the XML, validating the relevant content, and encoding the JSON along `templateId` lines.
 * **Automated functional tests** - [90% plus code coverage](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/test-coverage.png). (See [User Instructions: Test Coverage and Reporting in CircleCI](#test-coverage-and-reporting-in-circleci) for a guide to viewing live reports.)
 * **Code review process** - Using GitHub's [PR and code review](https://github.com/flexion/adele-bpa-qpp-conversion-tool/pulls?q=is%3Apr+is%3Aclosed) for merges from feature branches to main
 * **Continuous Integration** - CircleCI performing [Full Continuous Integration](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/continuous-integration.png).
@@ -79,7 +79,6 @@ The purpose of Sprint Planning is to pull enough work into the next upcoming spr
     >
     > As a Performance Improvement IT Analyst, in order to convert the clinical document, I want to convert the ACI section.
     >
-
     > As a Performance Improvement IT Analyst, in order to convert the QRDA-III XML file, I want to convert the clinical document.
     >
     > As a Performance Improvement IT Analyst, in order to convert QRDA-III XML files on my file system, I want to invoke the converter from the command line.
@@ -174,7 +173,7 @@ We iterated to a desired solution, with a desire to demponstrate the key feature
 1. Ensure all criteria in the DoD have been met. 
 1. The wrapping class that handles JSON has a slightly complex feature that could be simplified. Instead of fetching out the inner contents of a sub-object, the wrapper class could do that on its own which would make subsequent decoders simpler.
 1. Apply instrumentation to analyze performance.
-1. In the code `AciProportionMeasure*` should be renamed to `AciNumDenomMeasure*`
+1. There really isn't an ACI Proportion Measure. It is an ACI Numerator Denominator Type Measure. So in the code `AciProportionMeasure*` should be renamed to `AciNumDenomMeasure*`.
 1. Knock out the higher priority SonarLint problems.
 1. Extract duplicated logic in encoders.
 
