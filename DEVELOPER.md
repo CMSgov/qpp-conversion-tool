@@ -41,7 +41,7 @@ following products on your development machine:
   ...
   ```
 
-## Getting the Sources
+## Getting the Source
 
 Clone the qpp-conversion-tool repository:
 
@@ -71,6 +71,6 @@ To run tests:
 mvn test
 ```
 
-You should execute the test suites before submitting a PR to github.
+You should run the test suite before submitting a PR to github.
 
-All the tests are executed on our Continuous Integration infrastructure and a PR could only be merged once the tests pass.
+All the tests are executed on our Continuous Integration infrastructure and a PR can only be merged once the tests pass.
