@@ -105,7 +105,7 @@ public class Converter implements Callable<Integer> {
 				try {
 					errWriter = new FileWriter(outFile);
 					for (ValidationError error : validationErrors) {
-						errWriter.write("Validation Error: " + error.getErrorText());
+						errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
 					}
 				} catch (IOException e) {
 					LOG.error("Could not write to file: {}", errName);
