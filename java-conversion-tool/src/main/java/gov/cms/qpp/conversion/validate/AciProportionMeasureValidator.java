@@ -47,51 +47,49 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 		// the aci measure node should have an aci section node as parent
 		// it can have a numerator node and a denominator node as children
 
-		if (!nodes.isEmpty()) {
-			for (Node aNode : nodes) {
-				if (NodeType.ACI_SECTION != aNode.getParent().getType()) {
+		for (Node aNode : nodes) {
+			if (NodeType.ACI_SECTION != aNode.getParent().getType()) {
+				this.addValidationError(
+						new ValidationError("This ACI Measure Node should have an ACI Section Node as a parent"));
+			}
+
+			List<Node> children = aNode.getChildNodes();
+
+			if (!children.isEmpty()) {
+				int numeratorCount = 0;
+				int denominatorCount = 0;
+
+				for (Node child : children) {
+					if (NodeType.ACI_DENOMINATOR == child.getType()) {
+						denominatorCount++;
+					}
+					if (NodeType.ACI_NUMERATOR == child.getType()) {
+						numeratorCount++;
+					}
+				}
+
+				if (numeratorCount == 0) {
 					this.addValidationError(
-							new ValidationError("This ACI Measure Node should have an ACI Section Node as a parent"));
+							new ValidationError("This ACI Measure Node does not contain a Numerator Node child"));
 				}
 
-				List<Node> children = aNode.getChildNodes();
-
-				if (!children.isEmpty()) {
-					int numeratorCount = 0;
-					int denominatorCount = 0;
-
-					for (Node child : children) {
-						if (NodeType.ACI_DENOMINATOR == child.getType()) {
-							denominatorCount++;
-						}
-						if (NodeType.ACI_NUMERATOR == child.getType()) {
-							numeratorCount++;
-						}
-					}
-
-					if (numeratorCount == 0) {
-						this.addValidationError(
-								new ValidationError("This ACI Measure Node does not contain a Numerator Node child"));
-					}
-
-					if (numeratorCount > 1) {
-						this.addValidationError(
-								new ValidationError("This ACI Measure Node contains too many Numerator Node children"));
-					}
-
-					if (denominatorCount == 0) {
-						this.addValidationError(
-								new ValidationError("This ACI Measure Node does not contain a Denominator Node child"));
-					}
-
-					if (denominatorCount > 1) {
-						this.addValidationError(new ValidationError(
-								"This ACI Measure Node contains too many Denominator Node children"));
-					}
-
-				} else {
-					this.addValidationError(new ValidationError("This ACI Measure Node does not have any child Nodes"));
+				if (numeratorCount > 1) {
+					this.addValidationError(
+							new ValidationError("This ACI Measure Node contains too many Numerator Node children"));
 				}
+
+				if (denominatorCount == 0) {
+					this.addValidationError(
+							new ValidationError("This ACI Measure Node does not contain a Denominator Node child"));
+				}
+
+				if (denominatorCount > 1) {
+					this.addValidationError(
+							new ValidationError("This ACI Measure Node contains too many Denominator Node children"));
+				}
+
+			} else {
+				this.addValidationError(new ValidationError("This ACI Measure Node does not have any child Nodes"));
 			}
 		}
 

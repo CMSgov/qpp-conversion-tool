@@ -38,6 +38,7 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
+ * 
  * @author David Uselmann
  *
  */
@@ -63,12 +64,11 @@ public class Converter implements Callable<Integer> {
 			Node decoded = XmlInputDecoder.decodeXml(XmlUtils.fileToDOM(inFile));
 
 			QrdaValidator validator = new QrdaValidator();
-			QrdaValidator.resetValidationErrors();
+
 			List<ValidationError> validationErrors = validator.validate(decoded);
-			// List<ValidationError> validationErrors = Collections.emptyList();
 
 			String name = inFile.getName().trim();
-			
+
 			if (validationErrors.isEmpty()) {
 
 				JsonOutputEncoder encoder = new QppOutputEncoder();
@@ -82,7 +82,7 @@ public class Converter implements Callable<Integer> {
 
 				File outFile = new File(outName);
 				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
-				
+
 				Writer writer = null;
 				try {
 					writer = new FileWriter(outFile);
@@ -100,7 +100,7 @@ public class Converter implements Callable<Integer> {
 
 				File outFile = new File(errName);
 				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
-				
+
 				Writer errWriter = null;
 				try {
 					errWriter = new FileWriter(outFile);
