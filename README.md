@@ -32,7 +32,7 @@ Before you can use the qpp-conversion-tool, you must install and configure the f
   Sometimes the Java Runtime installer doesn't update your path. So you must do it manually. Alternatively, download and install the [Java Development Kit](http://www.oracle.com/technetwork/es/java/javase/downloads/index.html), (version `>=1.8`). The Java Development Kit is better at updating your path.
 
 * [Maven](https://maven.apache.org), (version `>=3.3`) which is used to build the library, manage dependencies,
-  run tests, and generate distributable files.
+  run tests, and generate distributable files. After you unzip the Maven archive, you need to add the `bin` directory to you path, as described the [Maven installation instructions](https://maven.apache.org/install.html).
 
   ```shell
   # When you run 'mvn -v', you should get 1.3.X. For example:
