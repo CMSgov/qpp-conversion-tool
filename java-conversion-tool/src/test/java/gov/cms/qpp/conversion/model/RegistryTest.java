@@ -31,7 +31,7 @@ public class RegistryTest {
 	public void before() {
 		registry = new Registry<>(XmlDecoder.class);
 	}
-	
+
 	@After
 	public void tearDown() {
 		System.setErr(new PrintStream(new FileOutputStream(FileDescriptor.err)));
@@ -70,8 +70,8 @@ public class RegistryTest {
 		InputDecoder decoder = (InputDecoder) registry.get(templateId);
 
 		assertNotNull("A handler is expected", decoder);
-		assertEquals("Handler should be an instance of the handler for the given XPATH",
-				AggregateCount.class, decoder.getClass());
+		assertEquals("Handler should be an instance of the handler for the given XPATH", AggregateCount.class,
+				decoder.getClass());
 	}
 
 	@Test
@@ -100,10 +100,11 @@ public class RegistryTest {
 
 	@Test
 	public void testClassNotFoundCausesMissingEntriesInRegistry_throwsNoException() {
-		Registry<String,XmlDecoder> registryA = new Registry<String,XmlDecoder>(XmlDecoder.class);
-		
-		// Mock the condition where a class is not found during registry building
-		Registry<String,XmlDecoder> registryB = new Registry<String,XmlDecoder>(XmlDecoder.class) {
+		Registry<String, XmlDecoder> registryA = new Registry<String, XmlDecoder>(XmlDecoder.class);
+
+		// Mock the condition where a class is not found during registry
+		// building
+		Registry<String, XmlDecoder> registryB = new Registry<String, XmlDecoder>(XmlDecoder.class) {
 			@Override
 			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
 				if ("gov.cms.qpp.conversion.decode.AggregateCount".equals(className)) {
@@ -113,9 +114,17 @@ public class RegistryTest {
 				return Class.forName(className);
 			}
 		};
-		
-		assertEquals("The class not found should cause B to be missing a decoder",
-				registryA.registry.size(), registryB.registry.size() + 1);
+
+		assertEquals("The class not found should cause B to be missing a decoder", registryA.registry.size(),
+				registryB.registry.size() + 1);
+	}
+
+	@Test
+	public void testRegistryAddDuplicate() throws Exception {
+		registry.register("id", Placeholder.class);
+		registry.register("id", AnotherPlaceholder.class);
+		InputDecoder decoder = (InputDecoder) registry.get("id");
+		assertTrue("Registry should have overwritten id with the second one.", decoder instanceof AnotherPlaceholder);
 	}
 }
 
@@ -124,6 +133,19 @@ class Placeholder implements InputDecoder {
 	private String unused;
 
 	public Placeholder() {
+	}
+
+	@Override
+	public Node decode(Element xmlDoc) throws DecodeException {
+		return null;
+	}
+};
+
+@SuppressWarnings("unused") // this is here for a the annotation tests
+class AnotherPlaceholder implements InputDecoder {
+	private String unused;
+
+	public AnotherPlaceholder() {
 	}
 
 	@Override
