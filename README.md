@@ -73,6 +73,7 @@ cd qpp-conversion-tool
 ```
 
 ## User Instructions
+For the examples below, make sure you're in the `qpp-conversion-tool` directory.
 
 Note: If you are using Windows, replace `./convert.sh` in the examples below with `.\convert.bat`.
 
