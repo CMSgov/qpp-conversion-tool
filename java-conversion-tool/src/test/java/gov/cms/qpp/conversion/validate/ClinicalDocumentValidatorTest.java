@@ -41,6 +41,28 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
+	public void testClinicalDocumentPresentIa() {
+
+		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
+		clinicalDocumentNode.putValue("programName", "mips");
+		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
+		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
+		clinicalDocumentNode.putValue("performanceStart", "20170101");
+		clinicalDocumentNode.putValue("performanceEnd", "20171231");
+
+		Node iaSectionNode = new Node(clinicalDocumentNode, "2.16.840.1.113883.10.20.27.2.4");
+		iaSectionNode.putValue("category", "ia");
+
+		clinicalDocumentNode.addChildNode(iaSectionNode);
+
+		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
+		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);
+
+		assertThat("no errors should be present", errors, empty());
+
+	}
+
+	@Test
 	public void testClinicalDocumentNotPresent() {
 
 		Node aciSectionNode = new Node();
