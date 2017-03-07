@@ -82,7 +82,7 @@ Note: If you are using Windows, replace `./convert.sh` in the examples below wit
 ./convert.sh qrda-files/valid-QRDA-III.xml
 ```
 
-### Convert an file without and 'xml' extension.
+### Convert an file without an 'xml' extension.
 
 ```shell
 ./convert.sh qrda-files/valid-QRDA-III-without-xml-extension
@@ -97,7 +97,7 @@ Note: If you are using Windows, replace `./convert.sh` in the examples below wit
 ### Try to convert a QRDA-III file that doesn't contain required measures.
 
 ```shell
-./convert.sh qrda-files/QRDA-III-without-requierd-measure.xml
+./convert.sh qrda-files/QRDA-III-without-required-measure.xml
 ```
 
 ### Try to convert a file that is not a QRDA-III file.
