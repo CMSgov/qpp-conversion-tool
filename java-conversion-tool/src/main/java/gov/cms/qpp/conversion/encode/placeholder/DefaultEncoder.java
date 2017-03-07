@@ -148,12 +148,12 @@ public class DefaultEncoder extends JsonOutputEncoder {
 			super("Payer Supplemental Data Element - CMS (V2)");
 		}
 	}
-	@Encoder(templateId="2.16.840.1.113883.10.20.27.3.1")
-	public static class Z_Encoder extends DefaultEncoder {
-		public Z_Encoder() {
-			super("Measure Reference and Results- CMS (V2)");
-		}
-	}
+//	@Encoder(templateId="2.16.840.1.113883.10.20.27.3.1")
+//	public static class Z_Encoder extends DefaultEncoder {
+//		public Z_Encoder() {
+//			super("Measure Reference and Results- CMS (V2)");
+//		}
+//	}
 	@Encoder(templateId="2.16.840.1.113883.10.20.27.3.25")
 	public static class ZZ_Encoder extends DefaultEncoder {
 		public ZZ_Encoder() {
