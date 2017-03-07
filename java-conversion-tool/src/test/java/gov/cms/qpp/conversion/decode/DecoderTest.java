@@ -5,18 +5,13 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import java.util.List;
-
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.model.XmlDecoder;
-import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class DecoderTest {
 
@@ -54,17 +49,6 @@ public class DecoderTest {
 			"2.16.840.1.113883.10.20.24.3.98",
 	};
 	
-	
-	public static void removeDefaultNode(List<Node> nodes) {
-		for (int n=nodes.size()-1; n>=0; n--) {
-			Node node = nodes.get(n);
-			if (node.getValue("DefaultDecoderFor") != null) {
-				nodes.remove(n);
-			} else {
-				removeDefaultNode(node.getChildNodes());
-			}
-		}
-	}
 	
 	@Before
 	public void before() {

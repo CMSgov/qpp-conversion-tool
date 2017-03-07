@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
@@ -57,7 +58,7 @@ public class IaSectionDecoderTest {
 
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 		// remove default nodes (will fail if defaults change)
-		DecoderTest.removeDefaultNode(root.getChildNodes());
+		DefaultDecoder.removeDefaultNode(root.getChildNodes());
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));

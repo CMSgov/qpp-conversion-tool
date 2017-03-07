@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
@@ -23,7 +24,7 @@ public class ClinicalDocumentDecoderTest {
 
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 		// remove default nodes (will fail if defaults change)
-		DecoderTest.removeDefaultNode(root.getChildNodes());
+		DefaultDecoder.removeDefaultNode(root.getChildNodes());
 
 		assertThat("returned node should not be null", root	, is(not(nullValue())));
 		

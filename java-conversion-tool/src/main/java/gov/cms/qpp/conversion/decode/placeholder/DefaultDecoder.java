@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.decode.placeholder;
 
+import java.util.List;
+
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,19 @@ public class DefaultDecoder extends QppXmlDecoder {
 		thisnode.putValue("DefaultDecoderFor", description);
 		return DecodeResult.TreeContinue;
 	}
+	
+	public static void removeDefaultNode(List<Node> nodes) {
+		for (int n=nodes.size()-1; n>=0; n--) {
+			Node node = nodes.get(n);
+			if (node.getValue("DefaultDecoderFor") != null) {
+				nodes.remove(n);
+			} else {
+				removeDefaultNode(node.getChildNodes());
+			}
+		}
+	}
+	
+	
 
 // The names of the default decoder classes does not matter.
 // TODO must comment out these defaults as real implementations are written.
