@@ -63,16 +63,16 @@ public class JsonWrapperTest {
 	
 	@Test
 	public void testGetObject_map() {
-		objectStrWrapper.putString("name", "value");
+		objectStrWrapper.putString("name1", "value");
 		assertTrue("should be as a map", objectStrWrapper.getObject() instanceof Map);
 		assertEquals("map should contain put value", 
-				"value", ((Map<?,?>)objectStrWrapper.getObject()).get("name"));
+				"value", objectStrWrapper.getString("name1"));
 		
 		Object obj = new Object();
-		objectObjWrapper.putObject("name", obj);
+		objectObjWrapper.putObject("name2", obj);
 		assertTrue("should be as a map",  objectObjWrapper.getObject() instanceof Map);
 		assertEquals("map should contain put value",
-				obj, ((Map<?,?>)objectObjWrapper.getObject()).get("name"));
+				obj, ((Map<?,?>)objectObjWrapper.getObject()).get("name2"));
 	}	
 	
 	@Test
@@ -366,13 +366,35 @@ public class JsonWrapperTest {
 	}
 	
 	@Test
+	public void testStripWrapper_list() {
+		listStrWrapper.putString("A");
+		listStrWrapper.putString("B");
+		listStrWrapper.putString("C");
+
+		Object result = objectObjWrapper.stripWrapper(listStrWrapper);
+		
+		assertNotNull(result);
+		assertTrue(result instanceof List<?>);
+	}
+	@Test
+	public void testStripWrapper_object() {
+		objectStrWrapper.putString("obj1", "A");
+		objectStrWrapper.putString("obj2", "B");
+
+		Object result = objectObjWrapper.stripWrapper(objectStrWrapper);
+		assertNotNull(result);
+		assertTrue(result instanceof Map<?,?>);
+	}
+	
+	
+	@Test
 	public void testToString_objectWithList() throws Exception {
 		listStrWrapper.putString("A");
 		listStrWrapper.putString("B");
 		listStrWrapper.putString("C");
 		
 		objectObjWrapper.putString("name1", "value1");
-		objectObjWrapper.putObject("name2", listStrWrapper.getObject());
+		objectObjWrapper.putObject("name2", listStrWrapper);
 		objectObjWrapper.putString("name3", "value3");
 		
 		String json = objectObjWrapper.toString();
@@ -390,7 +412,7 @@ public class JsonWrapperTest {
 		objectStrWrapper.putString("obj2", "B");
 		
 		objectObjWrapper.putString("name1", "value1");
-		objectObjWrapper.putObject("name2", objectStrWrapper.getObject());
+		objectObjWrapper.putObject("name2", objectStrWrapper);
 		objectObjWrapper.putString("name3", "value3");
 		
 		String json = objectObjWrapper.toString();
@@ -410,7 +432,7 @@ public class JsonWrapperTest {
 		
 		objectObjWrapper.putString("name1", "value1");
 		objectObjWrapper.putString("name3", "value3");
-		objectObjWrapper.putObject("name2", objectStrWrapper.getObject());
+		objectObjWrapper.putObject("name2", objectStrWrapper);
 		
 		String json = objectObjWrapper.toString();
 		

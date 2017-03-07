@@ -34,10 +34,10 @@ public class AciSectionEncoder extends QppOutputEncoder {
 				addValidation(templateId, "Failed to find an encoder");
 			} else {
 				encoder.encode(childWrapper, child);
-				measurementsWrapper.putObject(childWrapper.getObject());
+				measurementsWrapper.putObject(childWrapper);
 			}
 		}
-		wrapper.putObject("measurements", measurementsWrapper.getObject());
+		wrapper.putObject("measurements", measurementsWrapper);
 
 	}
 

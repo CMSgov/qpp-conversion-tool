@@ -43,7 +43,7 @@ public class AciProportionMeasureEncoder extends QppOutputEncoder {
 			}
 		}
 		wrapper.putObject("measureId", node.getValue("measureId"));
-		wrapper.putObject("value", childWrapper.getObject());
+		wrapper.putObject("value", childWrapper);
 		
 	}
 }
