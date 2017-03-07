@@ -32,7 +32,7 @@ Before you can use the qpp-conversion-tool, you must install and configure the f
   Sometimes the Java Runtime installer doesn't update your path. So you must do it manually. Alternatively, download and install the [Java Development Kit](http://www.oracle.com/technetwork/es/java/javase/downloads/index.html), (version `>=1.8`). The Java Development Kit is better at updating your path.
 
 * [Maven](https://maven.apache.org), (version `>=3.3`) which is used to build the library, manage dependencies,
-  run tests, and generate distributable files. After you unzip the Maven archive, you need to add the `bin` directory to you path, as described the [Maven installation instructions](https://maven.apache.org/install.html).
+  run tests, and generate distributable files. After you unzip the Maven archive, you need to add the `bin` directory to your path, as described the [Maven installation instructions](https://maven.apache.org/install.html).
 
   ```shell
   # When you run 'mvn -v', you should get 3.3.X. For example:
@@ -43,7 +43,7 @@ Before you can use the qpp-conversion-tool, you must install and configure the f
 
 ### Getting and using the converter
 
-If you are using a Unix-like OS like Linux or OSX, open a terminal and go to a directory in which you want the the converter tool directory to be created:
+If you are using a Unix-like OS like Linux or OSX, open a terminal and go to the directory you want the converter tool directory to be created in:
 
 ```shell
 # Clone the GitHub repository:
@@ -59,7 +59,7 @@ chmod +x convert.sh
 ./convert.sh java-conversion-tool/src/test/resources/valid-QRDA-III.xml
 ```
 
-If you are using Windows, open a command prompt (not PowerShell) and go to a directory in which you want the the converter tool directory to be created:
+If you are using Windows, open a command prompt (not PowerShell) and go to the directory you want the the converter tool directory to be created in:
 
 ```shell
 # Clone the GitHub repository:
