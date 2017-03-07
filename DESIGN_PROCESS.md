@@ -1,8 +1,8 @@
 * [Design Exercise Features](#design-exercise-features)
 * [Technologies](#technologies)
 * [Design Process](#design-process)
-* [Design Process](#design-process)
-* [Improvements](#hypothetical-next-steps)
+* [Test Coverage and Reporting in CircleCI](#test-coverage-and-reporting-in-circleci)
+* [Things we will address in the next sprint](#things-we-will-address-in-the-next-sprint)
 
 ## Design Exercise Features
 
@@ -10,7 +10,7 @@
 * **Decoupled and highly testable design** - We decoupled decoding the XML, validating the relevant content, and encoding the JSON along `templateId` lines. 
 * **Automated functional tests** - [90% plus code coverage](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/test-coverage.png). (See [User Instructions: Test Coverage and Reporting in CircleCI](#test-coverage-and-reporting-in-circleci) for a guide to viewing live reports.)
 * **Code review process** - Using GitHub's [PR and code review](https://github.com/flexion/adele-bpa-qpp-conversion-tool/pulls?q=is%3Apr+is%3Aclosed) for merges from feature branches to main
-* **Continuous Integration** - CircleCI performing [Full Continuous Integration](<link to circleCI build history screen>).
+* **Continuous Integration** - CircleCI performing [Full Continuous Integration](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/continuous-integration.png).
 
 ### Where we would raise the bar in the real project
 
@@ -23,8 +23,8 @@ Here are the areas where we would go further in the actual project than in the d
 
 Our chosen technologies include:
 
-* Java 8 - <https://angular.io/>
-* Maven 3 - <https://github.com/angular/angular-cli>
+* Java 8 - <https://java.com>
+* Maven 3 - <https://maven.apache.org>
 * CircleCI - <https://circleci.com>
 
 ## Design Process
