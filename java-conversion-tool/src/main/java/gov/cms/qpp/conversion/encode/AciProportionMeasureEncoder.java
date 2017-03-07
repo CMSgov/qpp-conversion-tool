@@ -1,6 +1,9 @@
 package gov.cms.qpp.conversion.encode;
 
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -22,12 +25,17 @@ public class AciProportionMeasureEncoder extends QppOutputEncoder {
 
 		// the measure node will have 2 child nodes
 		// one for the numerator and one for the denominator
-		List<Node> children = node.getChildNodes();
+		Map<String, Node> childMapByTemplateId = node.getChildNodes().stream().collect(
+                Collectors.toMap(Node::getId, Function.identity(), (v1,v2)->v1, LinkedHashMap::new));
 
+		// Performance Rate node not needed
+		childMapByTemplateId.remove("2.16.840.1.113883.10.20.27.3.30");
+			
 		JsonWrapper childWrapper = new JsonWrapper();
-		for (Node child : children) {
+		for (Node child : childMapByTemplateId.values()) {
 			String templateId = child.getId();
-			JsonOutputEncoder denominatorValueEncoder = encoders.get(templateId);
+			JsonOutputEncoder denominatorValueEncoder = encoders.get(child.getId());
+
 			if (denominatorValueEncoder == null) {
 				addValidation(templateId, "Failed to find an encoder");
 			} else {
