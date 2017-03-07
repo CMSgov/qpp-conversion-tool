@@ -31,7 +31,7 @@ following products on your development machine:
   ...
   ```
 
-* [Maven 3.3](http://nodejs.org), (version `>=3.3`) which is used to build the library, manage dependencies,
+* [Maven](https://maven.apache.org), (version `>=3.3`) which is used to build the library, manage dependencies,
   run tests, and generate distributable files.
 
   ```shell
