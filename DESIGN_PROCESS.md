@@ -69,35 +69,27 @@ The purpose of Sprint Planning is to pull enough work into the next upcoming spr
 
     For the design exercise, here are the stories we accepted into the sprint:
 
-    > As a Perfomance Improvement IT Analyst, in order to convert an ACI Numerator Denominator Type Measure, I want to fetch Aggregate Count value.
+    > As a Performance Improvement IT Analyst, in order to convert ACI Numerator Denominator Type Measures, I want to fetch Aggregate Count value.
     >
-    > As a Perfomance Improvement IT Analyst, in order to convert an ACI Numerator Denominator Type Measure, I want to convert an ACI numerator measure.
+    > As a user, in order to convert an ACI Numerator Denominator Type Measure, I want to convert an ACI numerator measure.
     >
-    > As a Perfomance Improvement IT Analyst, in order to convert the ACI section, I want to convert an ACI Numerator Denominator Type Measure.
+    > As a Performance Improvement IT Analyst, in order to convert an ACI Numerator Denominator Type Measure, I want to convert an ACI denominator measure.
     >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want multiple people to enter data concurrently by allied measures.
+    > As a Performance Improvement IT Analyst, in order to convert the ACI section, I want to convert an ACI Numerator Denominator Type Measure.
     >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
+    > As a Performance Improvement IT Analyst, in order to convert the clinical document, I want to convert the ACI section.
     >
 
-    > As a Perfomance Improvement IT Analyst, in order to convert an ACI "proportion" measure, I want to fetch Aggregate Count value.
+    > As a Performance Improvement IT Analyst, in order to convert the QRDA-III XML file, I want to convert the clinical document.
     >
-    > As a Perfomance Improvement IT Analyst, in order to convert an ACI "proportion" measure, I want to convert an ACI numerator measure.
+    > As a Performance Improvement IT Analyst, in order to convert QRDA-III XML files on my file system, I want to invoke the converter from the command line.
     >
-    > As a Perfomance Improvement IT Analyst, in order to convert the ACI section, I want to convert an ACI proportion measure.
+    > As a Performance Improvement IT Analyst, in order to avoid renaming files, I want the converter to auto-detect QRDA-III xml files.
     >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want multiple people to enter data concurrently by allied measures.
+    > As a Performance Improvement IT Analyst, in order to ensure my submission is complete, I want the converter to ensure required ACI measures are included.
     >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
+    > As a Performance Improvement IT Analyst, in order to convert a lot of QRDA-III files quickly, I want the converter to convert multiple files concurrently.
     >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
-    >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
-        >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
-        >
-    > As a large practice manager, in order to enter a lot of quality measures quickly, I want to filter inapplicable measures.
-
 
 1. **The team reviews the story with the PO.** Acceptance criteria and story point estimates are adjusted as needed. (We used [GitHub projects as a proxy for a story card](https://github.com/flexion/adele-bpa-qpp-conversion-tool/projects?query=sort%3Acreated-asc) for the purposes of this design exercise.)
 
