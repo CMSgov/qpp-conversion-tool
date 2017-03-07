@@ -71,7 +71,7 @@ The purpose of Sprint Planning is to pull enough work into the next upcoming spr
 
     > As a Performance Improvement IT Analyst, in order to convert ACI Numerator Denominator Type Measures, I want to fetch Aggregate Count value.
     >
-    > As a user, in order to convert an ACI Numerator Denominator Type Measure, I want to convert an ACI numerator measure.
+    > As a Performance Improvement IT Analyst, in order to convert an ACI Numerator Denominator Type Measure, I want to convert an ACI numerator measure.
     >
     > As a Performance Improvement IT Analyst, in order to convert an ACI Numerator Denominator Type Measure, I want to convert an ACI denominator measure.
     >
