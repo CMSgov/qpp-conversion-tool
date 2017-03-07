@@ -79,31 +79,31 @@ Note: If you are using Windows, replace `./convert.sh` in the examples below wit
 ### Convert a valid file.
 
 ```shell
-./convert.sh java-conversion-tool/src/test/resources/valid-QRDA-III.xml
+./convert.sh qrda-files/valid-QRDA-III.xml
 ```
 
-### Convert an file without and 'xml' extension.
+### Convert an file without an 'xml' extension.
 
 ```shell
-./convert.sh java-conversion-tool/src/test/resources/valid-QRDA-III
+./convert.sh qrda-files/valid-QRDA-III-without-xml-extension
 ```
 
 ### Convert a bunch of QRDA-III files concurrently (multi-threaded).
 
 ```shell
-./convert.sh java-conversion-tool/src/test/resources/qrda/*.xml
+./convert.sh qrda-files/multi/*.xml
 ```
 
 ### Try to convert a QRDA-III file that doesn't contain required measures.
 
 ```shell
-./convert.sh java-conversion-tool/src/test/resources/missing-measure-QRDA-III.xml
+./convert.sh qrda-files/QRDA-III-without-required-measure.xml
 ```
 
 ### Try to convert a file that is not a QRDA-III file.
 
 ```shell
-./convert.sh java-conversion-tool/src/test/resources/not-a-QRDA-III.xml
+./convert.sh qrda-files/not-a-QDRA-III-file.xml
 ```
 
 ## Want to contribute?
