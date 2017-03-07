@@ -6,7 +6,7 @@
 
 ## Design Exercise Features
 
-* **Persona Development** - [A primary persona](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/QPP%20Conversion%20Tool%20Persona%20-%20Joseph.pdf) and a hpyothetical Product Owner were used to used to drive epics and user stories. The external behavior of the tool was driven by the persona, priorities of QRDA-III conversion were driven by the Product Owner.
+* **Persona Development** - [A primary user persona](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/QPP%20Conversion%20Tool%20Persona%20-%20Joseph.pdf) and a hypothetical Product Owner were used to used to drive epics and user stories. The external behavior of the tool was driven by the persona, priorities of QRDA-III conversion were driven by the Product Owner.
 * **Decoupled and highly testable design** - We decoupled decoding the XML, validating the relevant content, and encoding the JSON along `templateId` lines. 
 * **Automated functional tests** - [90% plus code coverage](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/test-coverage.png). (See [User Instructions: Test Coverage and Reporting in CircleCI](#test-coverage-and-reporting-in-circleci) for a guide to viewing live reports.)
 * **Code review process** - Using GitHub's [PR and code review](https://github.com/flexion/adele-bpa-qpp-conversion-tool/pulls?q=is%3Apr+is%3Aclosed) for merges from feature branches to main
@@ -37,9 +37,7 @@ Each story goes through all of these process steps. The number of user stories t
 
 The purpose of creating personas and their associated epics and user stories is simply to better understand the design problems that need to be solved and who we are solving them for.
 
-1. **Name and describe the persona**
-
-[Joseph](<https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/QPP%20Conversion%20Tool%20Persona%20-%20Joseph.pdf>)
+1. **Name and describe the primary user persona** - [Joseph](<https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/documents/QPP%20Conversion%20Tool%20Persona%20-%20Joseph.pdf>)
 
 1.  **Tell the user story.** At this point, we recommend that the PO focus on business-level stories so that option space of system interactions (to achieve the business goal) is as large as possible. The UX design process explores this space of options. Here is the user story we are assuming for this exercise:
 
@@ -174,7 +172,7 @@ Once you've followed this project, the "live" links to specific reports below sh
 ### CircleCI Report Examples
 
 * **Automated tests** - [90% plus code coverage](https://311-82203407-gh.circle-artifacts.com/0/tmp/circle-artifacts.IDxNdoM/jacoco/index.html).
-* **Continuous Integration** - CircleCI performing [full continuous integration](https://circleci.com/gh/flexion/adele-bpa-beneficiary-reporting/329) and requiring a high bar to pass.**TODO**
+* **Continuous Integration** - CircleCI performing [full continuous integration](https://circleci.com/gh/flexion/adele-bpa-qpp-conversion-tool/311) and requiring a high bar to pass.
 * **SonarLint** - [Linting and source code quality metrics](https://311-82203407-gh.circle-artifacts.com/0/tmp/circle-artifacts.IDxNdoM/sonarlint/sonarlint-report.html) 
 
 ## Things we will address in the next sprint
