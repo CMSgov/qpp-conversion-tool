@@ -8,4 +8,4 @@ if [ ! -f java-conversion-tool/target/java-conversion-tool.jar ]; then
     fi
 fi
 
-java -jar java-conversion-tool/target/java-conversion-tool.jar $1 $2 $3 $4
+java -jar java-conversion-tool/target/java-conversion-tool.jar $@
