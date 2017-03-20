@@ -9,13 +9,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -44,11 +37,9 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
  * @author David Uselmann
  *
  */
-public class Converter implements Callable<Integer> {
+public class Converter {
 	static final Logger LOG = LoggerFactory.getLogger(Converter.class);
 
-	static final int MAX_THREADS = 10;
-	
 	static final String SKIP_VALIDATION = "--skip-validation";
 	static boolean doValidation = true;
 	
@@ -61,8 +52,7 @@ public class Converter implements Callable<Integer> {
 		this.inFile = inFile;
 	}
 
-	@Override
-	public Integer call() throws Exception {
+	public Integer transform() {
 
 		boolean hasValidations = false;
 		
@@ -255,48 +245,8 @@ public class Converter implements Callable<Integer> {
 
 	public static void main(String[] args) {
 		Collection<File> filenames = validArgs(args);
-		processFiles(filenames);
-	}
-
-	private static void processFiles(Collection<File> filenames) {
-		int threads = Math.min(MAX_THREADS, filenames.size());
-
-		final ExecutorService execService = Executors.newFixedThreadPool(threads);
-
-		try {
-			CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(execService);
-
-			startAllFileConversions(filenames, completionService);
-			waitForAllToFinish(filenames.size(), completionService);
-		} finally {
-			execService.shutdown();
-		}
-	}
-
-	private static void startAllFileConversions(Collection<File> filenames,
-			CompletionService<Integer> completionService) {
-		for (File filename : filenames) {
-			Converter instance = new Converter(filename);
-			completionService.submit(instance);
-		}
-	}
-
-	private static void waitForAllToFinish(int count, CompletionService<Integer> completionService) {
-		int finished = 0;
-		int succeeded = 0;
-		while (finished < count) {
-			Future<Integer> resultFuture = null;
-			try {
-				resultFuture = completionService.take();
-				succeeded += resultFuture.get();
-				finished++;
-			} catch (InterruptedException | ExecutionException e) {
-				LOG.error("Transformation interrupted.");
-				LOG.error(e.getMessage());
-				throw new RuntimeException("Could not process file(s).", e);
-			}
-		}
-		LOG.info("{} of {} files succeeded transformation.", succeeded, finished);
+		filenames.parallelStream().forEach(
+				(filename) -> new Converter(filename).transform());
 	}
 
 }
