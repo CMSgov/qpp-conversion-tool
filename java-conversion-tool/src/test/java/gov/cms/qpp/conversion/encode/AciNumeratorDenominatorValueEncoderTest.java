@@ -47,7 +47,7 @@ public class AciNumeratorDenominatorValueEncoderTest {
 		}
 
 		// NOTE: This test is only relevant in that it finds the deep value but it is not actually a result
-		String EXPECTED = "[ 600 ]";
+		String EXPECTED = "{\n  \"value\" : 600\n}";
 		assertThat("expected encoder to return a single number numerator/denominator", sw.toString(), is(EXPECTED));
 	}
 

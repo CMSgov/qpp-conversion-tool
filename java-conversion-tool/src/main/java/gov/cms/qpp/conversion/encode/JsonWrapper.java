@@ -44,11 +44,20 @@ public class JsonWrapper {
 	public JsonWrapper putObject(String name, Object value) {
 		checkState(list);
 		initAsObject();
+		value = stripWrapper(value);
 		if (value==null) {
 			return this;
 		}
 		this.object.put(name,value);
 		return this;
+	}
+	
+	public Object stripWrapper(Object value) {
+		if (value instanceof JsonWrapper) {
+			JsonWrapper wrapper = (JsonWrapper) value;
+			value = wrapper.getObject();
+		}
+		return value;
 	}
 	
 	public JsonWrapper putString(String name, String value) {
@@ -94,6 +103,7 @@ public class JsonWrapper {
 	public JsonWrapper putObject(Object value) {
 		checkState(object);
 		initAsList();
+		value = stripWrapper(value);
 		if (value==null) {
 			return this;
 		}
@@ -139,6 +149,34 @@ public class JsonWrapper {
 			putObject(value);
 			throw e;
 		}
+	}
+	
+	public String getString(String name) {
+		if (isObject()) {
+			return (String)object.get(name);
+		}
+		return null;
+	}
+	
+	public Integer getInteger(String name) {
+		if (isObject()) {
+			return (Integer)object.get(name);
+		}
+		return null;
+	}
+	
+	public Integer getFloat(String name) {
+		if (isObject()) {
+			return (Integer)object.get(name);
+		}
+		return null;
+	}
+	
+	public Boolean getBoolean(String name) {
+		if (isObject()) {
+			return (Boolean)object.get(name);
+		}
+		return null;
 	}
 	
 	protected String cleanString(String value) {

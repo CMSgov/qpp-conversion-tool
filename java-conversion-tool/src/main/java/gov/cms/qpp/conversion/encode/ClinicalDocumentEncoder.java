@@ -66,10 +66,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 					childWrapper.putDate("performanceEnd", performanceEnd.get());
 				}
 
-				measurementSetsWrapper.putObject(childWrapper.getObject());
+				measurementSetsWrapper.putObject(childWrapper);
 			}
 		}
-		wrapper.putObject("measurementSets", measurementSetsWrapper.getObject());
+		wrapper.putObject("measurementSets", measurementSetsWrapper);
 
 	}
 

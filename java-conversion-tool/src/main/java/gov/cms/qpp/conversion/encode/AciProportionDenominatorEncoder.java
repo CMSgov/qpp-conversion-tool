@@ -31,8 +31,8 @@ public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 			JsonWrapper value = new JsonWrapper();
 			denominatorValueEncoder.encode(value, denominatorValueNode);
 			
-			if (null != ((List<?>)value.getObject()) && !((List<?>)value.getObject()).isEmpty()) {
-				wrapper.putObject("denominator", ((List<?>)value.getObject()).get(0));
+			if (null != value.getInteger("value")) {
+				wrapper.putObject("denominator", value.getInteger("value"));
 			}
 		}
 	}
