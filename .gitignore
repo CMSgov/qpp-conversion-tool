@@ -1,5 +1,7 @@
 *.orig
-/target/
-/.settings/
-/.classpath
-/.project
+target/
+.settings/
+.classpath
+.project
+*.iml
+.idea/
