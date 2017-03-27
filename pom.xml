@@ -16,6 +16,7 @@
 	</modules>
 		
 	<build>
+		<defaultGoal>clean install</defaultGoal>
 		<finalName>${project.artifactId}</finalName>
 		<pluginManagement>
 			<plugins>
