@@ -2,21 +2,23 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>java-conversion</artifactId>
-    <packaging>pom</packaging>
+	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>java-conversion</name>
-	
+	<description>Java Conversion Prototype</description>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
-    <modules>
-        <module>java-conversion-tool</module>
-    </modules>
-    	
+
+	<modules>
+		<module>java-conversion-tool</module>
+	</modules>
+
 	<build>
+		<defaultGoal>clean install</defaultGoal>
 		<finalName>${project.artifactId}</finalName>
-        <pluginManagement>
+		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.jacoco</groupId>
@@ -46,7 +48,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -61,7 +63,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
-	<description>Java Conversion Prototype</description>
-	
+
 </project>
