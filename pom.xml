@@ -6,15 +6,15 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>java-conversion</name>
 	<description>Java Conversion Prototype</description>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<modules>
 		<module>java-conversion-tool</module>
 	</modules>
-		
+
 	<build>
 		<defaultGoal>clean install</defaultGoal>
 		<finalName>${project.artifactId}</finalName>
@@ -48,7 +48,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -63,5 +63,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 </project>
