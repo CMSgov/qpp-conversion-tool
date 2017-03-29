@@ -4,7 +4,7 @@
  */
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import com.sun.org.apache.xml.internal.utils.NameSpace;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import org.jdom2.Element;
+import org.jdom2.Namespace;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,103 +22,78 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Provides unit test coverage for the AggregateCount Decoder
+ * Provides unit test coverage for the AggregateCountDecoder Decoder
+ *
  * @author David Lauta
  */
 public class AggregateCountDecoderTest {
-    private static final String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"+
-"<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"+
-"<component>\n" +
-"<observation classCode=\"OBS\" moodCode=\"EVN\">\n" +
-"        <templateId root=\"2.16.840.1.113883.10.20.27.3.5\" extension=\"2016-09-01\"/>\n" +
-"        <templateId root=\"2.16.840.1.113883.10.20.27.3.16\" extension=\"2016-11-01\"/>\n" +
-"        <code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"Assertion\"/>\n" +
-"        <statusCode code=\"completed\"/>\n" +
-"        <value xsi:type=\"CD\" code=\"DENOM\" codeSystem=\"2.16.840.1.113883.5.1063\" codeSystemName=\"ObservationValue\"/>\n" +
-"        <!--DENOM Count-->\n" +
-"<entryRelationship typeCode=\"COMP\">\n" +
-"        <observation classCode=\"OBS\" moodCode=\"EVN\">\n" +
-//"                <templateId root=\"2.16.840.1.113883.10.20.27.3.6\" extension=\"2016-09-01\"/>\n" +
-//"                <templateId root=\"2.16.840.1.113883.10.20.27.3.21\" extension=\"2016-11-01\"/>\n" +
-//"                <id root=\"95944FD2-241B-11E5-1027-09173F13E4C5\"/>\n" +
-//"                <code code=\"76689-9\" codeSystem=\"2.16.840.1.113883.6.1\" codeSystemName=\"LOINC\" displayName=\"Sex assigned at birth\"/>\n" +
-//"                <statusCode code=\"completed\"/>\n" +
-//"                <effectiveTime>\n" +
-//"                        <low value=\"20170101\"/>\n" +
-//"                        <high value=\"20171231\"/>\n" +
-//"                </effectiveTime>\n" +
-"                <value xsi:type=\"CD\" code=\"M\" codeSystem=\"2.16.840.1.113883.5.1\" codeSystemName=\"AdministrativeGenderCode\" displayName=\"Male\"/>\n" +
-"                <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n" +
-"                        <observation classCode=\"OBS\" moodCode=\"EVN\">\n" +
-"                                <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n" +
-//"                                <templateId root=\"2.16.840.1.113883.10.20.27.3.24\"/>\n" +
-"                                <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>\n" +
-"                                <statusCode code=\"completed\"/>\n" +
-"                                <value xsi:type=\"INT\" value=\"400\"/>\n" +
-"                                <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>\n" +
-"                        </observation>\n" +
-"                </entryRelationship>\n" +
-"        </observation>\n" +
-"</entryRelationship>\n"+
-"</observation>\n"+
-"</component>"+
-"</entry>";
+
+    private static final String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+            + "<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
+            + "<component>\n"
+            + "<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
+            + "        <templateId root=\"2.16.840.1.113883.10.20.27.3.5\" extension=\"2016-09-01\"/>\n"
+            + "        <templateId root=\"2.16.840.1.113883.10.20.27.3.16\" extension=\"2016-11-01\"/>\n"
+            + "        <code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"Assertion\"/>\n"
+            + "        <statusCode code=\"completed\"/>\n"
+            + "        <value xsi:type=\"CD\" code=\"DENOM\" codeSystem=\"2.16.840.1.113883.5.1063\" codeSystemName=\"ObservationValue\"/>\n"
+            + "        <!--DENOM Count-->\n"
+            + "       <entryRelationship typeCode=\"COMP\">\n"
+            + "        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
+            + "                <value xsi:type=\"CD\" code=\"M\" codeSystem=\"2.16.840.1.113883.5.1\" codeSystemName=\"AdministrativeGenderCode\" displayName=\"Male\"/>\n"
+            + "                <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
+            + "                        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
+            + "                                <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
+            + "                                <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>\n"
+            + "                                <statusCode code=\"completed\"/>\n"
+            + "                                <value xsi:type=\"INT\" value=\"400\"/>\n"
+            + "                                <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>\n"
+            + "                        </observation>\n"
+            + "                </entryRelationship>\n"
+            + "        </observation>\n"
+            + "</entryRelationship>\n"
+            + "</observation>\n"
+            + "</component>"
+            + "</entry>";
+
     public AggregateCountDecoderTest() {
     }
+
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
+    /**
+     * Test of internalDecode method, of class AggregateCountDecoder.
+     */
+    @Test
+    public void testInternalDecode() throws Exception {
+        Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
+        Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+        Element element = new Element("observation", rootns);
+        element.addContent(new Element("templateId", rootns).setAttribute("root", "2.16.840.1.113883.10.20.27.3.3"));
+        element.addContent(new Element("value", rootns).setAttribute("value", "450").setAttribute("type", "INT", ns));
+        element.addNamespaceDeclaration(ns);
+
+        Node thisnode = new Node();
+
+        AggregateCountDecoder instance = new AggregateCountDecoder();
+        instance.setNamespace(element, instance);
+        
+        instance.internalDecode(element, thisnode);
+        // called directly by above 
+        // instance.setSciNumeratorDenominatorOnNode(element, thisnode);
+        assertThat("Aggregate Count should be 450 ", thisnode.getValue("aggregateCount"), is("450"));
+
     }
 
     /**
-     * Test of internalDecode method, of class AggregateCount.
-     */
-    @Test
-    public void testInternalDecode() throws Exception{
-        System.out.println("internalDecode");
-        Element element = null;
-        Node thisnode = null;
-        AggregateCount instance = new AggregateCount();
-        DecodeResult expResult = null;
-        DecodeResult result = instance.internalDecode(element, thisnode);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setSciNumeratorDenominatorOnNode method, of class AggregateCount.
-     */
-    @Test
-    public void testSetSciNumeratorDenominatorOnNode() throws Exception {
-        System.out.println("setSciNumeratorDenominatorOnNode");
-        Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
-        Element element = new Element("observation","","urn:hl7-org:v3");
-        Node thisnode = root.findNode("2.16.840.1.113883.10.20.27.3.3").get(0);
-        AggregateCount instance = new AggregateCount();
-        instance.setSciNumeratorDenominatorOnNode(element, thisnode);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    /**
-     * testAggregateCount parses xmlFragment and obtains the aggregate count value
-     * @throws Exception 
+     * testAggregateCount parses xmlFragment and obtains the aggregate count
+     * value
+     *
+     * @throws Exception
      */
     @Test
     public void testAggregateCount() throws Exception {
-        
+
         Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
         // remove default nodes (will fail if defaults change)
 //        DefaultDecoder.removeDefaultNode(root.getChildNodes());
@@ -141,5 +117,5 @@ public class AggregateCountDecoderTest {
         }
 
         assertThat("Should have Aggregate Count", testTemplateIds.contains("2.16.840.1.113883.10.20.27.3.3"), is(true));
-    } 
+    }
 }

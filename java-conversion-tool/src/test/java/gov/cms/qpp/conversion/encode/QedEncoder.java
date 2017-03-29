@@ -16,7 +16,7 @@ public class QedEncoder extends QppOutputEncoder {
 	}
 
 	@Override
-	public void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
+	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 
 		// the qed node should have one key/value in it
 		Set<String> keys = node.getKeys();

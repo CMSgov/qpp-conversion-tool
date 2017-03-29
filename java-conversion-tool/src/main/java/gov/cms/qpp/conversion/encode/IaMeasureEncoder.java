@@ -17,7 +17,7 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 	}
 
 	@Override
-	protected void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		wrapper.putObject("measureId", node.getValue("measureId"));
 		
 		List<Node> children = node.getChildNodes();
