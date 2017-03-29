@@ -1,0 +1,6 @@
+* text=auto
+
+*.java text
+*.md text
+*.sh text
+*.bat text
