@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.cms.qpp.conversion.model.Validations;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,6 +37,12 @@ public class AciProportionNumeratorEncoderTest {
 		nodes.add(aciProportionNumeratorNode);
 
 		jsonWrapper = new JsonWrapper();
+		Validations.init();
+	}
+
+	@After
+	public void afterTests() {
+		Validations.clear();
 	}
 
 	@Test
@@ -58,7 +65,6 @@ public class AciProportionNumeratorEncoderTest {
 
 	@Test
 	public void testEncoderWithoutValue() throws EncodeException {
-		Validations.init();
 		numeratorDenominatorValueNode.putValue("aggregateCount", null);
 
 		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder();
