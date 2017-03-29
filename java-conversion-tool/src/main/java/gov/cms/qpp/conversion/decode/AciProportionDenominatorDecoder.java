@@ -12,7 +12,14 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
  */
 @XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.32")
 public class AciProportionDenominatorDecoder extends QppXmlDecoder {
-	@Override
+	/**
+         * internalDecode reads the xml fragment "aciProportionDenominator"
+         * parses into gov.cms.qpp.conversion.model.Node
+         * @param element Element
+         * @param thisnode Node enclosing parent node xml fragment
+         * @return DecodeResult
+         */
+        @Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		thisnode.putValue("name", "aciProportionDenominator");
 		return DecodeResult.TreeContinue;
