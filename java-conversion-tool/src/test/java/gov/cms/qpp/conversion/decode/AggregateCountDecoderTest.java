@@ -37,20 +37,20 @@ public class AggregateCountDecoderTest {
 "        <!--DENOM Count-->\n" +
 "<entryRelationship typeCode=\"COMP\">\n" +
 "        <observation classCode=\"OBS\" moodCode=\"EVN\">\n" +
-"                <templateId root=\"2.16.840.1.113883.10.20.27.3.6\" extension=\"2016-09-01\"/>\n" +
-"                <templateId root=\"2.16.840.1.113883.10.20.27.3.21\" extension=\"2016-11-01\"/>\n" +
-"                <id root=\"95944FD2-241B-11E5-1027-09173F13E4C5\"/>\n" +
-"                <code code=\"76689-9\" codeSystem=\"2.16.840.1.113883.6.1\" codeSystemName=\"LOINC\" displayName=\"Sex assigned at birth\"/>\n" +
-"                <statusCode code=\"completed\"/>\n" +
-"                <effectiveTime>\n" +
-"                        <low value=\"20170101\"/>\n" +
-"                        <high value=\"20171231\"/>\n" +
-"                </effectiveTime>\n" +
+//"                <templateId root=\"2.16.840.1.113883.10.20.27.3.6\" extension=\"2016-09-01\"/>\n" +
+//"                <templateId root=\"2.16.840.1.113883.10.20.27.3.21\" extension=\"2016-11-01\"/>\n" +
+//"                <id root=\"95944FD2-241B-11E5-1027-09173F13E4C5\"/>\n" +
+//"                <code code=\"76689-9\" codeSystem=\"2.16.840.1.113883.6.1\" codeSystemName=\"LOINC\" displayName=\"Sex assigned at birth\"/>\n" +
+//"                <statusCode code=\"completed\"/>\n" +
+//"                <effectiveTime>\n" +
+//"                        <low value=\"20170101\"/>\n" +
+//"                        <high value=\"20171231\"/>\n" +
+//"                </effectiveTime>\n" +
 "                <value xsi:type=\"CD\" code=\"M\" codeSystem=\"2.16.840.1.113883.5.1\" codeSystemName=\"AdministrativeGenderCode\" displayName=\"Male\"/>\n" +
 "                <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n" +
 "                        <observation classCode=\"OBS\" moodCode=\"EVN\">\n" +
 "                                <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n" +
-"                                <templateId root=\"2.16.840.1.113883.10.20.27.3.24\"/>\n" +
+//"                                <templateId root=\"2.16.840.1.113883.10.20.27.3.24\"/>\n" +
 "                                <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>\n" +
 "                                <statusCode code=\"completed\"/>\n" +
 "                                <value xsi:type=\"INT\" value=\"400\"/>\n" +
@@ -103,8 +103,9 @@ public class AggregateCountDecoderTest {
     @Test
     public void testSetSciNumeratorDenominatorOnNode() throws Exception {
         System.out.println("setSciNumeratorDenominatorOnNode");
-        Element element = null;
-        Node thisnode = null;
+        Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+        Element element = new Element("observation","","urn:hl7-org:v3");
+        Node thisnode = root.findNode("2.16.840.1.113883.10.20.27.3.3").get(0);
         AggregateCount instance = new AggregateCount();
         instance.setSciNumeratorDenominatorOnNode(element, thisnode);
         // TODO review the generated test code and remove the default call to fail.
@@ -131,14 +132,14 @@ public class AggregateCountDecoderTest {
         // Should have a aggregate count node 
         assertThat("returned node should have one child decoder nodes", node.getChildNodes().size(), is(1));
 
-        assertThat("measureId should be ACI-PEA-1",
-                (String) node.getValue("measureId"), is("ACI-PEA-1"));
+        assertThat("DefaultDecoderFor should be Measure Data - CMS (V2)",
+                (String) node.getValue("DefaultDecoderFor"), is("Measure Data - CMS (V2)"));
 
         List<String> testTemplateIds = new ArrayList<>();
         for (Node n : node.getChildNodes()) {
             testTemplateIds.add(n.getId());
         }
 
-        assertThat("Should have Numerator", testTemplateIds.contains("2.16.840.1.113883.10.20.27.3.3"), is(true));
+        assertThat("Should have Aggregate Count", testTemplateIds.contains("2.16.840.1.113883.10.20.27.3.3"), is(true));
     } 
 }
