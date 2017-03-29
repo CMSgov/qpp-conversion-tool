@@ -19,7 +19,7 @@ public class JsonOutputEncoderTest {
 	public void before() {
 		joe = new JsonOutputEncoder() {
 			@Override
-			protected void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
+			protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 				EncodeException ee =  new EncodeException("thrown", new RuntimeException("test"));
 				ee.setTemplateId("id");
 				throw ee;

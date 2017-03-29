@@ -21,7 +21,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	}
 
 	@Override
-	public void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
+	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 
 		wrapper.putString("programName", node.getValue("programName"));
 		wrapper.putString("entityType", "individual");

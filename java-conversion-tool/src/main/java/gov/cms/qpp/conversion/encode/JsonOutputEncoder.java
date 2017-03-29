@@ -65,11 +65,11 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 	
 	public final void encode(JsonWrapper wrapper, Node node) {
 		try {
-			internalEcode(wrapper, node);
+			internalEncode(wrapper, node);
 		} catch (EncodeException e) {
 			Validations.addValidation(e.getTemplateId(), e.getMessage());
 		}
 	}
 	
-	protected abstract void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException;
+	protected abstract void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException;
 }

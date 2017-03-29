@@ -17,7 +17,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	}
 
 	@Override
-	protected void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 
 		// write nothing top level specific at this point
 		// check the encoder Registry for

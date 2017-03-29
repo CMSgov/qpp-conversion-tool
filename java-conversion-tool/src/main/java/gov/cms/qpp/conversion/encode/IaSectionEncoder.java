@@ -15,8 +15,8 @@ public class IaSectionEncoder extends AciSectionEncoder {
 	}
 
 	@Override
-	public void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
-		super.internalEcode(wrapper, node);
+	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+		super.internalEncode(wrapper, node);
 	}
 
 }
