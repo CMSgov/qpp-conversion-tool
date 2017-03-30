@@ -20,7 +20,7 @@ public class AciProportionMeasureEncoder extends QppOutputEncoder {
 	}
 
 	@Override
-	protected void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		// simply writes the value in the Node
 
 		// the measure node will have 2 child nodes

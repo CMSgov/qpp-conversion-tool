@@ -26,7 +26,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 	
 
 	@Override
-	protected void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		LOG.debug("Default JSON encoder {} is handling templateId {} and is described as '{}' ",
 				getClass(), node.getId(), description);
 
