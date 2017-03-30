@@ -1,19 +1,22 @@
 package gov.cms.qpp.conversion.encode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import gov.cms.qpp.conversion.model.Node;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.model.Node;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class AciProportionMeasureEncoderTest {
 
@@ -24,9 +27,6 @@ public class AciProportionMeasureEncoderTest {
 	private Node numeratorValueNode;
 	private Node denominatorValueNode;
 	private List<Node> nodes;
-
-	public AciProportionMeasureEncoderTest() {
-	}
 
 	@Before
 	public void createNode() {
@@ -80,4 +80,20 @@ public class AciProportionMeasureEncoderTest {
 		assertThat("expected encoder to return a json representation of a measure node", sw.toString(), is(EXPECTED));
 	}
 
+	@Test
+	public void testInternalEncode() throws EncodeException {
+
+		//set-up
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		AciProportionMeasureEncoder objectUnderTest = new AciProportionMeasureEncoder();
+
+		//execute
+		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
+
+		//assert
+		assertThat("The measureId must be ACI-PEA-1", jsonWrapper.getString("measureId"), is("ACI-PEA-1"));
+		assertThat("The internal object of the jsonWrapper must not be null", jsonWrapper.getObject(), is(not(nullValue())));
+		assertThat("The internal object of the jsonWrapper must be a Map", jsonWrapper.getObject(), is(instanceOf(Map.class)));
+		assertThat("", ((Map<?, ?>)jsonWrapper.getObject()).get("value"), is(not(nullValue())));
+	}
 }
