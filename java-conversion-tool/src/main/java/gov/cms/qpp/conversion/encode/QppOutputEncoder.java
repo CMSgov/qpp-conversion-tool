@@ -5,35 +5,35 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 
 /**
- * Top level Encoder for serializing into QPP format. 
+ * Top level Encoder for serializing into QPP format.
+ *
  * @author Scott Fradkin
- * 
+ *
  */
 public class QppOutputEncoder extends JsonOutputEncoder {
 
-	protected static Registry<String, JsonOutputEncoder> encoders = new Registry<>(Encoder.class);
+    protected static Registry<String, JsonOutputEncoder> encoders = new Registry<>(Encoder.class);
 
-	public QppOutputEncoder() {
-	}
+    public QppOutputEncoder() {
+    }
 
-	@Override
-	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+    @Override
+    protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 
 		// write nothing top level specific at this point
-		// check the encoder Registry for
-		// an Encoder to call for the Node, and then call its children
+        // check the encoder Registry for
+        // an Encoder to call for the Node, and then call its children
+        JsonOutputEncoder encoder = encoders.get(node.getId());
 
-		JsonOutputEncoder encoder = encoders.get(node.getId());
-
-		if (null != encoder) {
-			encoder.encode(wrapper, node);
+        if (null != encoder) {
+            encoder.encode(wrapper, node);
 
 			// each Node understands whether or not it has children and the
-			// corresponding Encoders
-			// also understand this, so we leave it to each Encoder
-			// implementation to call encode() on
-			// the child nodes of the node it's encoding
-		}
-	}
+            // corresponding Encoders
+            // also understand this, so we leave it to each Encoder
+            // implementation to call encode() on
+            // the child nodes of the node it's encoding
+        }
+    }
 
 }

@@ -1,21 +1,18 @@
 package gov.cms.qpp.conversion.decode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.util.ArrayList;
+import java.util.List;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import org.junit.After;
+import static org.junit.Assert.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 
 public class AciProportionMeasureDecoderTest {
 
@@ -30,8 +27,8 @@ public class AciProportionMeasureDecoderTest {
     }
 
     /**
-     * decodeACIProportionMeasureAsNode given a well formed xml fragment
-     * parses out the appropriate aggregateCount This test calls
+     * decodeACIProportionMeasureAsNode given a well formed xml fragment parses
+     * out the appropriate aggregateCount This test calls
      * QppXmlDecoder.()decode() which in turn calls the only method in this
      * class. AciProportionDenominatorDecoder().decode()
      *
@@ -147,5 +144,4 @@ public class AciProportionMeasureDecoderTest {
         assertThat("measureId should be null", (String) aciProportionMeasureNode.getValue("measureId"), is(nullValue()));
 
     }
-
 }

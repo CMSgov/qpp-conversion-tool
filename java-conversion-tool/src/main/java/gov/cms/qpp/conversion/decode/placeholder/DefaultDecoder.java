@@ -1,15 +1,13 @@
 package gov.cms.qpp.conversion.decode.placeholder;
 
-import java.util.List;
-
-import org.jdom2.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gov.cms.qpp.conversion.decode.DecodeResult;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.XmlDecoder;
+import java.util.List;
+import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Decoder used to "fill-in" decoders where none have been implemented.
@@ -23,7 +21,6 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 public class DefaultDecoder extends QppXmlDecoder {
 
     final String description;
-
     final Logger LOG = LoggerFactory.getLogger(getClass());
 
     public DefaultDecoder(String description) {

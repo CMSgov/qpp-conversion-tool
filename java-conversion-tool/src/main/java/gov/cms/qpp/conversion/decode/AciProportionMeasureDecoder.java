@@ -16,7 +16,6 @@ import org.jdom2.filter.Filters;
  */
 @XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.28")
 public class AciProportionMeasureDecoder extends QppXmlDecoder {
-
     /**
      * internalDecode reads the xml fragment "aciProportionDenominator" parses
      * into gov.cms.qpp.conversion.model.Node
