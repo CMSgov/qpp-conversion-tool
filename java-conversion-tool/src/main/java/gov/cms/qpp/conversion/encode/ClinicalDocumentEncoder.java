@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  * @author Scott Fradkin
  *
  */
+
 @Encoder(templateId = "2.16.840.1.113883.10.20.27.1.2")
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 

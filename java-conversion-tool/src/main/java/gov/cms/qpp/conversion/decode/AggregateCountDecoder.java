@@ -15,7 +15,6 @@ import org.jdom2.filter.Filters;
  */
 @XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.3")
 public class AggregateCountDecoder extends QppXmlDecoder {
-
     /**
      * Parses out the aggregateCount value from the xml fragment
      *
