@@ -4,9 +4,10 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 
 /**
- * Encoder to handle placeholder nodes. 
+ * Encoder to handle placeholder nodes.
+ *
  * @author Scott Fradkin
- * 
+ *
  */
 @Encoder(templateId = "placeholder")
 public class PlaceholderEncoder extends QppOutputEncoder {

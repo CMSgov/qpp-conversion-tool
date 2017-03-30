@@ -1,12 +1,12 @@
 package gov.cms.qpp.conversion.encode;
 
-import java.util.List;
-
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import java.util.List;
 
 /**
  * Encoder to serialize Advancing Care Information Section.
+ *
  * @author Scott Fradkin
  *
  */
@@ -40,5 +40,4 @@ public class AciSectionEncoder extends QppOutputEncoder {
 		wrapper.putObject("measurements", measurementsWrapper);
 
 	}
-
 }

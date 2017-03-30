@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 /**
  * Encoder to serialize Improvement Activity Section.
+ *
  * @author David Puglielli
  *
  */

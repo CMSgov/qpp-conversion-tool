@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.encode;
 
-import java.util.List;
-
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import java.util.List;
 
 /**
- * Encoder to serialize Advancing Care Information Numerator Denominator Type Measure Numerator Data.
+ * Encoder to serialize Advancing Care Information Numerator Denominator Type
+ * Measure Numerator Data.
+ *
  * @author Scott Fradkin
  *
  */
@@ -22,16 +23,15 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 
 		// the ACI Proportion Numerator Node should have a single child node
 		// that holds the value
-
 		List<Node> children = node.getChildNodes();
 
 		if (!children.isEmpty()) {
 			Node numeratorValueNode = children.get(0);
 			JsonOutputEncoder numeratorValueEncoder = encoders.get(numeratorValueNode.getId());
-	
+
 			JsonWrapper value = new JsonWrapper();
 			numeratorValueEncoder.encode(value, numeratorValueNode);
-			
+
 			if (null != value.getInteger("value")) {
 				wrapper.putObject("numerator", value.getInteger("value"));
 			}

@@ -1,27 +1,24 @@
 package gov.cms.qpp.conversion.model;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-
-import org.jdom2.Element;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.DecodeException;
 import gov.cms.qpp.conversion.decode.InputDecoder;
 import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
 import gov.cms.qpp.conversion.io.ByteCounterOutputStream;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import org.jdom2.Element;
+import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import org.junit.Before;
+import org.junit.Test;
 
 public class RegistryTest {
 
@@ -130,6 +127,7 @@ public class RegistryTest {
 
 @SuppressWarnings("unused") // this is here for a the annotation tests
 class Placeholder implements InputDecoder {
+
 	private String unused;
 
 	public Placeholder() {
@@ -143,6 +141,7 @@ class Placeholder implements InputDecoder {
 
 @SuppressWarnings("unused") // this is here for a the annotation tests
 class AnotherPlaceholder implements InputDecoder {
+
 	private String unused;
 
 	public AnotherPlaceholder() {
@@ -155,6 +154,7 @@ class AnotherPlaceholder implements InputDecoder {
 };
 
 class PrivateConstructor implements InputDecoder {
+
 	private PrivateConstructor() {
 	}
 
