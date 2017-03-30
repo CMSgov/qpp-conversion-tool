@@ -1,13 +1,11 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.XmlDecoder;
 import java.util.function.Consumer;
-
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
-
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.XmlDecoder;
 
 /**
  * Decoder to parse an Aggregate Count value type.

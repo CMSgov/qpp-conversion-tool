@@ -1,9 +1,8 @@
 package gov.cms.qpp.conversion.decode;
 
-import org.jdom2.Element;
-
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.XmlDecoder;
+import org.jdom2.Element;
 
 /**
  * Decoder to parse Advancing Care Information Numerator Denominator Type Measure Numerator Data.

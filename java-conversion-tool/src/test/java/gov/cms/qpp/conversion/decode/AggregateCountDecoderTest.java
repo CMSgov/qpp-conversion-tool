@@ -13,8 +13,8 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
+import static org.junit.Assert.assertThat;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Provides unit test coverage for the AggregateCountDecoder Decoder
