@@ -15,6 +15,33 @@ public class AciProportionDenominatorDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		thisnode.putValue("name", "aciProportionDenominator");
+		putDenominator(element, thisnode);
 		return DecodeResult.TreeContinue;
+	}
+
+	private void putDenominator(Element element, Node thisnode) {
+		Element entryRelationship = getEntryRelationship(element);
+		if (entryRelationship == null) {
+			return;
+		}
+
+		Element value = getValue(entryRelationship);
+		if (value == null) {
+			return;
+		}
+
+		thisnode.putValue("denominator", value.getAttributeValue("value"));
+	}
+	
+	private Element getEntryRelationship(Element element) {
+		return getChild(element, "entryRelationship");
+	}
+
+	private Element getValue(Element element) {
+		return getChild(element, "value");
+	}
+
+	private Element getChild(Element element, String name) {
+		return element.getChild(name, element.getNamespace());
 	}
 }
