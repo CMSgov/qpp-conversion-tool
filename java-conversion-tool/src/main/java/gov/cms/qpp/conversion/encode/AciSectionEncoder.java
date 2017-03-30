@@ -13,32 +13,31 @@ import java.util.List;
 @Encoder(templateId = "2.16.840.1.113883.10.20.27.2.5")
 public class AciSectionEncoder extends QppOutputEncoder {
 
-    public AciSectionEncoder() {
-    }
+	public AciSectionEncoder() {
+	}
 
-    @Override
-    public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	@Override
+	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 
-        wrapper.putString("category", node.getValue("category"));
+		wrapper.putString("category", node.getValue("category"));
 
-        List<Node> children = node.getChildNodes();
+		List<Node> children = node.getChildNodes();
 
-        JsonWrapper measurementsWrapper = new JsonWrapper();
+		JsonWrapper measurementsWrapper = new JsonWrapper();
 
-        JsonWrapper childWrapper;
-        for (Node child : children) {
-            childWrapper = new JsonWrapper();
-            String templateId = child.getId();
-            JsonOutputEncoder encoder = encoders.get(templateId);
-            if (encoder == null) {
-                addValidation(templateId, "Failed to find an encoder");
-            } else {
-                encoder.encode(childWrapper, child);
-                measurementsWrapper.putObject(childWrapper);
-            }
-        }
-        wrapper.putObject("measurements", measurementsWrapper);
+		JsonWrapper childWrapper;
+		for (Node child : children) {
+			childWrapper = new JsonWrapper();
+			String templateId = child.getId();
+			JsonOutputEncoder encoder = encoders.get(templateId);
+			if (encoder == null) {
+				addValidation(templateId, "Failed to find an encoder");
+			} else {
+				encoder.encode(childWrapper, child);
+				measurementsWrapper.putObject(childWrapper);
+			}
+		}
+		wrapper.putObject("measurements", measurementsWrapper);
 
-    }
-
+	}
 }

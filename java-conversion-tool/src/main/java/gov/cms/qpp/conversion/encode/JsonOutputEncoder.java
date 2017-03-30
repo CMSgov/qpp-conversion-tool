@@ -15,59 +15,59 @@ import java.util.List;
  */
 public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<String, String> {
 
-    List<Node> nodes;
+	List<Node> nodes;
 
-    public JsonOutputEncoder() {
-    }
+	public JsonOutputEncoder() {
+	}
 
-    @Override
-    public void encode(Writer writer) throws EncodeException {
+	@Override
+	public void encode(Writer writer) throws EncodeException {
 
-        Validations.init();
+		Validations.init();
 
-        try {
-            JsonWrapper wrapper = new JsonWrapper();
-            for (Node curNode : nodes) {
-                encode(wrapper, curNode);
-            }
-            writer.write(wrapper.toString());
-            writer.flush();
-        } catch (IOException e) {
-            throw new EncodeException("Failure to encode", e);
-        }
+		try {
+			JsonWrapper wrapper = new JsonWrapper();
+			for (Node curNode : nodes) {
+				encode(wrapper, curNode);
+			}
+			writer.write(wrapper.toString());
+			writer.flush();
+		} catch (IOException e) {
+			throw new EncodeException("Failure to encode", e);
+		}
 
-    }
+	}
 
-    @Override
-    public Iterable<String> validations() {
-        return Validations.values();
-    }
+	@Override
+	public Iterable<String> validations() {
+		return Validations.values();
+	}
 
-    @Override
-    public List<String> getValidationsById(String templateId) {
-        return Validations.getValidationsById(templateId);
-    }
+	@Override
+	public List<String> getValidationsById(String templateId) {
+		return Validations.getValidationsById(templateId);
+	}
 
-    @Override
-    public void addValidation(String templateId, String validation) {
-        Validations.addValidation(templateId, validation);
-    }
+	@Override
+	public void addValidation(String templateId, String validation) {
+		Validations.addValidation(templateId, validation);
+	}
 
-    public void addValidation(String templateId, EncodeException e) {
-        Validations.addValidation(templateId, e.getMessage());
-    }
+	public void addValidation(String templateId, EncodeException e) {
+		Validations.addValidation(templateId, e.getMessage());
+	}
 
-    public void setNodes(List<Node> someNodes) {
-        this.nodes = someNodes;
-    }
+	public void setNodes(List<Node> someNodes) {
+		this.nodes = someNodes;
+	}
 
-    public final void encode(JsonWrapper wrapper, Node node) {
-        try {
-            internalEncode(wrapper, node);
-        } catch (EncodeException e) {
-            Validations.addValidation(e.getTemplateId(), e.getMessage());
-        }
-    }
+	public final void encode(JsonWrapper wrapper, Node node) {
+		try {
+			internalEncode(wrapper, node);
+		} catch (EncodeException e) {
+			Validations.addValidation(e.getTemplateId(), e.getMessage());
+		}
+	}
 
-    protected abstract void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException;
+	protected abstract void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException;
 }
