@@ -28,9 +28,6 @@ public class AciSectionEncoderTest {
 	private Node denominatorValueNode;
 	private List<Node> nodes;
 
-	public AciSectionEncoderTest() {
-	}
-
 	@Before
 	public void createNode() {
 		numeratorValueNode = new Node();
@@ -65,21 +62,12 @@ public class AciSectionEncoderTest {
 	}
 
 	@Test
-	public void testEncoder() {
-		QppOutputEncoder encoder = new QppOutputEncoder();
+	public void testInternalEncode() throws EncodeException {
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder();
+		aciSectionEncoder.internalEncode(jsonWrapper, aciSectionNode);
 
-		encoder.setNodes(nodes);
-
-		StringWriter sw = new StringWriter();
-
-		try {
-			encoder.encode(new BufferedWriter(sw));
-		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
-		}
-
-		assertThat("expected encoder to return a json representation of an ACI Section node", sw.toString(),
-				is(EXPECTED));
+		assertThat("Must return correct json format with correct values", jsonWrapper.toString(), is(EXPECTED));
 	}
 
 }
