@@ -37,8 +37,9 @@ public class AciProportionMeasureDecoder extends QppXmlDecoder {
 
     /**
      * setMeasureIdOnNode parses the xml fragment and sets the @extension
+     *
      * @param element Element
-     * @param thisnode Node gov.cms.qpp.conversion.model.Node; 
+     * @param thisnode Node gov.cms.qpp.conversion.model.Node;
      */
     protected void setMeasureIdOnNode(Element element, Node thisnode) {
         String expressionStr = "./ns:reference/ns:externalDocument/ns:id/@extension";

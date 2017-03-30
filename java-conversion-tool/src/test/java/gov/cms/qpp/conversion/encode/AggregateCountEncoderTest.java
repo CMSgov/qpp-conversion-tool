@@ -1,4 +1,5 @@
 package gov.cms.qpp.conversion.encode;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -55,8 +56,8 @@ public class AggregateCountEncoderTest {
         String EXPECTED = "{\n  \"value\" : 600\n}";
         assertThat("expected encoder to return a single number numerator/denominator", sw.toString(), is(EXPECTED));
     }
-    
-     /**
+
+    /**
      * Test Function for the AggregateCountEncode
      */
     @Test
@@ -69,7 +70,7 @@ public class AggregateCountEncoderTest {
         } catch (EncodeException e) {
             fail("Failure to encode: " + e.getMessage());
         }
-          assertThat("expected encoder to return a single number numerator/denominator", json.getInteger("value"), is(600));
+        assertThat("expected encoder to return a single number numerator/denominator", json.getInteger("value"), is(600));
     }
 
 }

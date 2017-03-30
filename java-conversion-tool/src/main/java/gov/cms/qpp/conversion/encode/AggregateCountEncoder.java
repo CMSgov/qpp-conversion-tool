@@ -14,6 +14,7 @@ public class AggregateCountEncoder extends QppOutputEncoder {
 
     /**
      * Copies the aggregate count to the output
+     *
      * @param wrapper JsonWrapper
      * @param node Node
      * @throws EncodeException

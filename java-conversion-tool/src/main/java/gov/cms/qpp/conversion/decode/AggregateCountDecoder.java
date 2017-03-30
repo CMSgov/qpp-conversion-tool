@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
 
 /**
  * Decoder to parse an Aggregate Count value type.
+ *
  * @author Scott Fradkin
  *
  */
@@ -19,25 +20,27 @@ public class AggregateCountDecoder extends QppXmlDecoder {
 
     /**
      * Parses out the aggregateCount value from the xml fragment
+     *
      * @param element Element
      * @param thisnode Node
      * @return DecodeResult.TreeFinished;
      */
-	@Override
-	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		setSciNumeratorDenominatorOnNode(element, thisnode);
-		return DecodeResult.TreeFinished;
-	}
-	
-        /**
-         * Sets the aggregateCount value into the element
-         * @param element Element
-         * @param thisnode Node
-         */
-	protected void setSciNumeratorDenominatorOnNode(Element element, Node thisnode) {
-		String expressionStr = "./ns:value/@value";
-		Consumer<? super Attribute> consumer = p -> thisnode.putValue("aggregateCount", p.getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
-	}
+    @Override
+    protected DecodeResult internalDecode(Element element, Node thisnode) {
+        setSciNumeratorDenominatorOnNode(element, thisnode);
+        return DecodeResult.TreeFinished;
+    }
+
+    /**
+     * Sets the aggregateCount value into the element
+     *
+     * @param element Element
+     * @param thisnode Node
+     */
+    protected void setSciNumeratorDenominatorOnNode(Element element, Node thisnode) {
+        String expressionStr = "./ns:value/@value";
+        Consumer<? super Attribute> consumer = p -> thisnode.putValue("aggregateCount", p.getValue());
+        setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+    }
 
 }

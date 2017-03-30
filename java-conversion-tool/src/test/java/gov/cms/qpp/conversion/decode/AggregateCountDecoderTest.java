@@ -4,7 +4,6 @@
  */
 package gov.cms.qpp.conversion.decode;
 
-import com.sun.org.apache.xml.internal.utils.NameSpace;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.util.ArrayList;
@@ -14,10 +13,6 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -59,7 +54,6 @@ public class AggregateCountDecoderTest {
     public AggregateCountDecoderTest() {
     }
 
-    
     /**
      * Test of internalDecode method, of class AggregateCountDecoder.
      */
@@ -77,7 +71,7 @@ public class AggregateCountDecoderTest {
 
         AggregateCountDecoder instance = new AggregateCountDecoder();
         instance.setNamespace(element, instance);
-        
+
         instance.internalDecode(element, thisnode);
         // called directly by above 
         // instance.setSciNumeratorDenominatorOnNode(element, thisnode);
