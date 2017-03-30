@@ -1,5 +1,19 @@
 package gov.cms.qpp.conversion.model;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.decode.DecodeException;
+import gov.cms.qpp.conversion.decode.InputDecoder;
+import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
+import gov.cms.qpp.conversion.io.ByteCounterOutputStream;
+import org.jdom2.Element;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
@@ -7,21 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-
-import org.jdom2.Element;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.decode.AggregateCount;
-import gov.cms.qpp.conversion.decode.DecodeException;
-import gov.cms.qpp.conversion.decode.InputDecoder;
-import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
-import gov.cms.qpp.conversion.io.ByteCounterOutputStream;
 
 public class RegistryTest {
 
@@ -66,17 +65,17 @@ public class RegistryTest {
 	// registry
 	@Test
 	public void testRegistry_placeAndFetch() throws Exception {
-		String templateId = registry.getAnnotationParam(AggregateCount.class);
+		String templateId = registry.getAnnotationParam(AggregateCountDecoder.class);
 		InputDecoder decoder = (InputDecoder) registry.get(templateId);
 
 		assertNotNull("A handler is expected", decoder);
-		assertEquals("Handler should be an instance of the handler for the given XPATH", AggregateCount.class,
+		assertEquals("Handler should be an instance of the handler for the given XPATH", AggregateCountDecoder.class,
 				decoder.getClass());
 	}
 
 	@Test
 	public void testRegistry_getAnnotationParam() throws Exception {
-		String templateId = registry.getAnnotationParam(AggregateCount.class);
+		String templateId = registry.getAnnotationParam(AggregateCountDecoder.class);
 		assertNotNull("A templateId is expected", templateId);
 		assertEquals("The templateId should be", "2.16.840.1.113883.10.20.27.3.3", templateId);
 
@@ -107,15 +106,14 @@ public class RegistryTest {
 		Registry<String, XmlDecoder> registryB = new Registry<String, XmlDecoder>(XmlDecoder.class) {
 			@Override
 			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
-				if ("gov.cms.qpp.conversion.decode.AggregateCount".equals(className)) {
+				if ("gov.cms.qpp.conversion.decode.AggregateCountDecoder".equals(className)) {
 					System.setErr(new PrintStream(new ByteCounterOutputStream()));
 					throw new ClassNotFoundException();
 				}
 				return Class.forName(className);
 			}
 		};
-
-		assertEquals("The class not found should cause B to be missing a decoder", registryA.registry.size(),
+		assertEquals("The class was not found in the Decoder registry", registryA.registry.size(),
 				registryB.registry.size() + 1);
 	}
 
@@ -130,6 +128,7 @@ public class RegistryTest {
 
 @SuppressWarnings("unused") // this is here for a the annotation tests
 class Placeholder implements InputDecoder {
+
 	private String unused;
 
 	public Placeholder() {
@@ -143,6 +142,7 @@ class Placeholder implements InputDecoder {
 
 @SuppressWarnings("unused") // this is here for a the annotation tests
 class AnotherPlaceholder implements InputDecoder {
+
 	private String unused;
 
 	public AnotherPlaceholder() {
@@ -155,6 +155,7 @@ class AnotherPlaceholder implements InputDecoder {
 };
 
 class PrivateConstructor implements InputDecoder {
+
 	private PrivateConstructor() {
 	}
 

@@ -1,13 +1,12 @@
 package gov.cms.qpp.conversion.encode;
 
-import java.util.Set;
-
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import java.util.Set;
 
 /**
  * Encodes the "resultName" of the Q.E.D. node as a placeholder for testing
- * 
+ *
  */
 @Encoder(templateId = "Q.E.D")
 public class QedEncoder extends QppOutputEncoder {
