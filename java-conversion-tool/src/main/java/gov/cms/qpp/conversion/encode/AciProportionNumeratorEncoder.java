@@ -16,7 +16,6 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 
 	public AciProportionNumeratorEncoder() {
 	}
-
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		// simply writes the value in the Node

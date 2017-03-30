@@ -11,19 +11,19 @@ import java.util.Set;
 @Encoder(templateId = "Q.E.D")
 public class QedEncoder extends QppOutputEncoder {
 
-	public QedEncoder() {
-	}
+    public QedEncoder() {
+    }
 
-	@Override
-	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+    @Override
+    public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 
-		// the qed node should have one key/value in it
-		Set<String> keys = node.getKeys();
+        // the qed node should have one key/value in it
+        Set<String> keys = node.getKeys();
 
-		for (String key : keys) {
-			wrapper.putString(key, node.getValue(key));
-		}
+        for (String key : keys) {
+            wrapper.putString(key, node.getValue(key));
+        }
 
-	}
+    }
 
 }
