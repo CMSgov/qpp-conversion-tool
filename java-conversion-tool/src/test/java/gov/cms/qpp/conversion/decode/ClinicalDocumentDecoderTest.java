@@ -85,7 +85,7 @@ public class ClinicalDocumentDecoderTest {
 		Element clinicalDocument = new Element("ClinicalDocument", rootns);
 		clinicalDocument.addNamespaceDeclaration(ns);
 
-		Element informationRecipient = informationRecipientWithProgramNamePath(rootns);
+		Element informationRecipient = prepareInfoRecipient(rootns);
 
 		Element documentationOf = prepareDocumentationElement(rootns);
 
@@ -109,7 +109,7 @@ public class ClinicalDocumentDecoderTest {
 
 	}
 
-	private Element informationRecipientWithProgramNamePath(Namespace rootns) {
+	private Element prepareInfoRecipient(Namespace rootns) {
 		Element informationRecipient = new Element("informationRecipient", rootns);
 		Element intendedRecipient = new Element("intendedRecipient", rootns);
 		Element programName = new Element("id", rootns)
@@ -129,7 +129,7 @@ public class ClinicalDocumentDecoderTest {
 				.setAttribute("root", "2.16.840.1.113883.4.6")
 				.setAttribute("extension", "2567891421");
 
-		Element representedOrganization = prepareRepresentationOrgElementWithTaxId(rootns);
+		Element representedOrganization = prepareRepOrgWithTaxPayerId(rootns);
 		assignedEntity.addContent(representedOrganization);
 		assignedEntity.addContent(nationalProviderIdentifier);
 		performer.addContent(assignedEntity);
@@ -138,7 +138,7 @@ public class ClinicalDocumentDecoderTest {
 		return documentationOf;
 	}
 
-	private Element prepareRepresentationOrgElementWithTaxId(Namespace rootns) {
+	private Element prepareRepOrgWithTaxPayerId(Namespace rootns) {
 		Element representedOrganization = new Element("representedOrganization", rootns);
 		Element taxpayerIdentificationNumber = new Element("id", rootns)
 				.setAttribute("root", "2.16.840.1.113883.4.2")
