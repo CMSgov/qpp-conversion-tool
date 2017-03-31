@@ -137,6 +137,11 @@ public class Node implements Serializable {
 		return foundNodes;
 	}
 
+	public Node findFirstNode( String id ){
+		List<Node> nodes = this.findNode( id );
+		return ( nodes.size() > 0 ) ? nodes.get(0) : null;
+	}
+
 	public Node getParent() {
 		return parent;
 	}
