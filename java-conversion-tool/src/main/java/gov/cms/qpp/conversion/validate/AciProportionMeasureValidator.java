@@ -17,7 +17,7 @@ import java.util.List;
  * Validate all ACI Proportion Type Measures
  */
 @Validator(templateId = "2.16.840.1.113883.10.20.27.3.28", required = true)
-public class AciProportionMeasureValidator extends QrdaValidator {
+public class AciProportionMeasureValidator extends NodeValidator {
 
 	private MeasureConfigs measureConfigs;
 
@@ -54,7 +54,7 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 	 * @return A list of errors in converting ACI Proportion Type Measure.
 	 */
 	@Override
-	protected List<ValidationError> internalValidate(Node node) {
+	public void validateNode(Node node) {
 
 		Validator thisAnnotation = this.getClass().getAnnotation(Validator.class);
 
@@ -63,11 +63,11 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 		//Most likely, this "required" validation can be moved into the
 		//QrdaValidator superclass
 		if (!validateOneAciProportionExists(thisAnnotation, aciProportionNodes)) {
-			return this.getValidationErrors();
+			return;
 		}
 
 		for (Node currentNode : aciProportionNodes) {
-			validateNode(currentNode);
+			validateSubNode(currentNode);
 		}
 
 		List<MeasureConfig> configs = measureConfigs.getMeasureConfigs();
@@ -75,8 +75,10 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 		for (MeasureConfig config : configs) {
 			validateMeasureConfig(config, aciProportionNodes);
 		}
+	}
 
-		return this.getValidationErrors();
+	@Override
+	public void validateNodes(final List<Node> nodes) {
 	}
 
 	private boolean validateOneAciProportionExists(final Validator thisAnnotation, final List<Node> aciProportionNodes) {
@@ -107,7 +109,7 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 		}
 	}
 
-	private void validateNode(final Node node) {
+	private void validateSubNode(final Node node) {
 
 		//the aci measure node should have an aci section node as parent
 		//it can have a numerator node and a denominator node as children

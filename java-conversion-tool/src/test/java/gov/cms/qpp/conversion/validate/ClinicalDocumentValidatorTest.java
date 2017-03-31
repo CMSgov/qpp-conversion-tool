@@ -1,16 +1,15 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.ValidationError;
+import org.junit.Test;
+
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.junit.Assert.assertThat;
-
-import java.util.List;
-
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.ValidationError;
 
 public class ClinicalDocumentValidatorTest {
 
@@ -34,7 +33,8 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);
+		cdval.validateNode(clinicalDocumentNode);
+		List<ValidationError> errors = cdval.getValidationErrors();
 
 		assertThat("no errors should be present", errors, empty());
 
@@ -56,7 +56,8 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(iaSectionNode);
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);
+		cdval.validateNode(clinicalDocumentNode);
+		List<ValidationError> errors = cdval.getValidationErrors();
 
 		assertThat("no errors should be present", errors, empty());
 
@@ -70,7 +71,8 @@ public class ClinicalDocumentValidatorTest {
 		aciSectionNode.putValue("category", "aci");
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.internalValidate(aciSectionNode);
+		cdval.validateNode(aciSectionNode);
+		List<ValidationError> errors = cdval.getValidationErrors();
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing Clinical Document node", errors.get(0).getErrorText(),
@@ -89,7 +91,8 @@ public class ClinicalDocumentValidatorTest {
 		placeholder.addChildNode(clinicalDocumentNode);
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.internalValidate(placeholder);
+		cdval.validateNode(placeholder);
+		List<ValidationError> errors = cdval.getValidationErrors();
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about too many Clinical Document nodes", errors.get(0).getErrorText(),
@@ -108,7 +111,8 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);
+		cdval.validateNode(clinicalDocumentNode);
+		List<ValidationError> errors = cdval.getValidationErrors();
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(EXPECTED_NO_SECTION));
@@ -130,7 +134,8 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(placeholderNode);
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);
+		cdval.validateNode(clinicalDocumentNode);
+		List<ValidationError> errors = cdval.getValidationErrors();
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(EXPECTED_NO_SECTION));

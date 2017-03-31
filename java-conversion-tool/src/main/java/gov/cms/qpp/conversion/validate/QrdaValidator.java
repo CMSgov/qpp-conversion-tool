@@ -10,30 +10,20 @@ import java.util.List;
 
 public class QrdaValidator {
 
-	protected static Registry<String, QrdaValidator> validators = new Registry<>(Validator.class);
-	protected List<ValidationError> validationErrors = new ArrayList<>();
-
-	public QrdaValidator() {
-
-	}
-
-	public List<ValidationError> getValidationErrors() {
-		return validationErrors;
-	}
-
-	protected void addValidationError(ValidationError newError) {
-		validationErrors.add(newError);
-	}
+	private static Registry<String, NodeValidator> validators = new Registry<>(Validator.class);
 
 	public List<ValidationError> validate(Node node) {
+
+		List<ValidationError> validationErrors = new ArrayList<>();
 
 		// iterate through all of the known validators
 		// each validator understands if the node it's for is required
 		// it also can do other validations
 		for (String key : validators.getKeys()) {
-			QrdaValidator aValidator = validators.get(key);
 
-			validationErrors.addAll(aValidator.internalValidate(node));
+			NodeValidator aValidator = validators.get(key);
+			aValidator.validateNode(node);
+			validationErrors.addAll(aValidator.getValidationErrors());
 		}
 
 		// do we need to do anything with any Nodes that weren't validated?
@@ -42,13 +32,4 @@ public class QrdaValidator {
 
 		return validationErrors;
 	}
-
-	/**
-	 * the internalValidate method of QppValidator does nothing
-	 */
-	protected List<ValidationError> internalValidate(Node node) {
-
-		return validationErrors;
-	}
-
 }
