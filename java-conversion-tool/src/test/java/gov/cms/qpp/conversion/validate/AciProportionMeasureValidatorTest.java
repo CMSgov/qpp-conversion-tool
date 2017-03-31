@@ -1,29 +1,18 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.ValidationError;
+import org.junit.Test;
+
+import java.text.MessageFormat;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.junit.Assert.assertThat;
 
-import java.util.List;
-
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.ValidationError;
-
 public class AciProportionMeasureValidatorTest {
-
-	private static final String EXPECTED_TEXT = "At least one Aci Proportion Measure Node is required";
-	private static final String EXPECTED_WRONG_PARENT = "This ACI Measure Node should have an ACI Section Node as a parent";
-	private static final String EXPECTED_NO_CHILD_NODES = "This ACI Measure Node does not have any child Nodes";
-	private static final String EXPECTED_NO_NUMERATOR = "This ACI Measure Node does not contain a Numerator Node child";
-	private static final String EXPECTED_NO_DENOMINATOR = "This ACI Measure Node does not contain a Denominator Node child";
-	private static final String EXPECTED_TOO_MANY_NUMERATORS = "This ACI Measure Node contains too many Numerator Node children";
-	private static final String EXPECTED_TOO_MANY_DENOMINATORS = "This ACI Measure Node contains too many Denominator Node children";
-	private static final String EXPECTED_MEASURE_NOT_PRESENT = "The required measure 'ACI_EP_1' is not present in the source file. Please add the ACI measure and try again.";
-
-	// required measures: ACI_EP_1
 
 	@Test
 	public void testMeasurePresent() {
@@ -75,7 +64,7 @@ public class AciProportionMeasureValidatorTest {
 		List<ValidationError> errors = measureval.internalValidate(clinicalDocumentNode);
 
 		assertThat("there should be 1 error", errors, iterableWithSize(1));
-		assertThat("error should be about missing Measure node", errors.get(0).getErrorText(), is(EXPECTED_TEXT));
+		assertThat("error should be about missing Measure node", errors.get(0).getErrorText(), is(AciProportionMeasureValidator.ACI_PROPORTION_NODE_REQUIRED));
 	}
 
 	@Test
@@ -104,7 +93,7 @@ public class AciProportionMeasureValidatorTest {
 
 		assertThat("there should be 1 error", errors, iterableWithSize(1));
 		assertThat("error should be about invalid parent node", errors.get(0).getErrorText(),
-				is(EXPECTED_WRONG_PARENT));
+				is(AciProportionMeasureValidator.NO_PARENT_SECTION));
 	}
 
 	@Test
@@ -130,7 +119,7 @@ public class AciProportionMeasureValidatorTest {
 		List<ValidationError> errors = measureval.internalValidate(clinicalDocumentNode);
 
 		assertThat("there should be 1 error", errors, iterableWithSize(1));
-		assertThat("error should be about no child nodes", errors.get(0).getErrorText(), is(EXPECTED_NO_CHILD_NODES));
+		assertThat("error should be about no child nodes", errors.get(0).getErrorText(), is(AciProportionMeasureValidator.NO_CHILDREN));
 	}
 
 	@Test
@@ -163,7 +152,7 @@ public class AciProportionMeasureValidatorTest {
 
 		assertThat("there should be 1 error", errors, iterableWithSize(1));
 		assertThat("error should be about missing Numerator node", errors.get(0).getErrorText(),
-				is(EXPECTED_NO_NUMERATOR));
+				is(AciProportionMeasureValidator.NO_NUMERATOR));
 	}
 
 	@Test
@@ -196,7 +185,7 @@ public class AciProportionMeasureValidatorTest {
 
 		assertThat("there should be 1 error", errors, iterableWithSize(1));
 		assertThat("error should be about missing Denominator node", errors.get(0).getErrorText(),
-				is(EXPECTED_NO_DENOMINATOR));
+				is(AciProportionMeasureValidator.NO_DENOMINATOR));
 	}
 
 	@Test
@@ -231,7 +220,7 @@ public class AciProportionMeasureValidatorTest {
 
 		assertThat("there should be 1 error", errors, iterableWithSize(1));
 		assertThat("error should be about too many Numerator nodes", errors.get(0).getErrorText(),
-				is(EXPECTED_TOO_MANY_NUMERATORS));
+				is(AciProportionMeasureValidator.TOO_MANY_NUMERATORS));
 	}
 
 	@Test
@@ -266,7 +255,7 @@ public class AciProportionMeasureValidatorTest {
 
 		assertThat("there should be 1 error", errors, iterableWithSize(1));
 		assertThat("error should be about too many Denominator nodes", errors.get(0).getErrorText(),
-				is(EXPECTED_TOO_MANY_DENOMINATORS));
+				is(AciProportionMeasureValidator.TOO_MANY_DENOMINATORS));
 	}
 
 	@Test
@@ -300,6 +289,6 @@ public class AciProportionMeasureValidatorTest {
 
 		assertThat("there should be 1 error", errors, iterableWithSize(1));
 		assertThat("error should be about the required measure not present", errors.get(0).getErrorText(),
-				is(EXPECTED_MEASURE_NOT_PRESENT));
+				is(MessageFormat.format(AciProportionMeasureValidator.NO_REQUIRED_MEASURE, "ACI_EP_1")));
 	}
 }

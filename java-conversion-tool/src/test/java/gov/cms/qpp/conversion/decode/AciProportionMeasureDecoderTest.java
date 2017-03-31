@@ -1,23 +1,26 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Validations;
-import gov.cms.qpp.conversion.xml.XmlUtils;
-
 public class AciProportionMeasureDecoderTest {
+
+	private static final String MEASURE_ID = "ACI-PEA-1";
 
 	@Before
 	public void before() {
@@ -104,8 +107,8 @@ public class AciProportionMeasureDecoderTest {
 		// Should have a aggregate count node 
 		assertThat("returned node should have two child decoder nodes", aciProportionMeasureNode.getChildNodes().size(), is(2));
 
-		assertThat("measureId should be ACI-PEA-1",
-				aciProportionMeasureNode.getValue("measureId"), is("ACI-PEA-1"));
+		assertThat("measureId should be " + MEASURE_ID,
+				aciProportionMeasureNode.getValue("measureId"), is(MEASURE_ID));
 
 		List<String> testTemplateIds = new ArrayList<>();
 		for (Node node : aciProportionMeasureNode.getChildNodes()) {
@@ -145,5 +148,36 @@ public class AciProportionMeasureDecoderTest {
 		assertThat("returned node should have no child decoder nodes", aciProportionMeasureNode.getChildNodes().size(), is(0));
 		// The measureId in not reachable
 		assertThat("measureId should be null", aciProportionMeasureNode.getValue("measureId"), is(nullValue()));
+	}
+
+	@Test
+	public void testInternalDecode() throws Exception {
+		//set-up
+		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
+		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+		Element element = new Element("organizer", rootns);
+		Element templateIdElement = new Element("templateId", rootns)
+			                            .setAttribute("root","2.16.840.1.113883.10.20.27.3.28");
+		Element referenceElement = new Element("reference", rootns);
+		Element externalDocumentElement = new Element("externalDocument", rootns);
+		Element idElement = new Element("id", rootns).setAttribute("extension", MEASURE_ID);
+
+		externalDocumentElement.addContent(idElement);
+		referenceElement.addContent(externalDocumentElement);
+		element.addContent(templateIdElement);
+		element.addContent(referenceElement);
+		element.addNamespaceDeclaration(ns);
+
+		Node thisNode = new Node();
+
+		AciProportionMeasureDecoder objectUnderTest = new AciProportionMeasureDecoder();
+		objectUnderTest.setNamespace(element, objectUnderTest);
+
+		//execute
+		objectUnderTest.internalDecode(element, thisNode);
+
+		//assert
+		assertThat("measureId should be " + MEASURE_ID, thisNode.getValue("measureId"), is(MEASURE_ID));
 	}
 }
