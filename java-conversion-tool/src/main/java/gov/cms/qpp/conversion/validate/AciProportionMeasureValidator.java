@@ -69,16 +69,16 @@ public class AciProportionMeasureValidator extends NodeValidator {
 		for (Node currentNode : aciProportionNodes) {
 			validateSubNode(currentNode);
 		}
-
-		List<MeasureConfig> configs = measureConfigs.getMeasureConfigs();
-
-		for (MeasureConfig config : configs) {
-			validateMeasureConfig(config, aciProportionNodes);
-		}
 	}
 
 	@Override
 	public void validateNodes(final List<Node> nodes) {
+
+		List<MeasureConfig> configs = measureConfigs.getMeasureConfigs();
+
+		for (MeasureConfig config : configs) {
+			validateMeasureConfig(config, nodes);
+		}
 	}
 
 	private boolean validateOneAciProportionExists(final Validator thisAnnotation, final List<Node> aciProportionNodes) {

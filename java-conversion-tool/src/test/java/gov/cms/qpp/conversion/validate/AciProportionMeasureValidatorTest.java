@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.model.ValidationError;
 import org.junit.Test;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -302,7 +303,7 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
-		measureval.validateNode(clinicalDocumentNode);
+		measureval.validateNodes(Arrays.asList(aciProportionMeasureNode));
 		List<ValidationError> errors = measureval.getValidationErrors();
 
 		assertThat("there should be 1 error", errors, iterableWithSize(1));
