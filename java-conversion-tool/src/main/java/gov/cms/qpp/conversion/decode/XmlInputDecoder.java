@@ -51,6 +51,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	/**
 	 * Decode a document into a Node
 	 */
+	@Override
 	public Node decode(Element xmlDoc) {
 		return decodeRoot(xmlDoc);
 	}
@@ -66,7 +67,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 		for (Element element : elements) {
 			decode(element, parent);
 		}
-	};
+	}
 	
 	
 	protected void setNamespace(Element el, XmlInputDecoder decoder) {
