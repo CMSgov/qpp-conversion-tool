@@ -98,6 +98,6 @@ public class AciSectionEncoderTest {
 
 		assertThat("Must have validation error.", aciSectionEncoder.getValidationsById(invalidMeasureNode), is(not(nullValue())));
 		assertThat("Must be correct validation error", aciSectionEncoder.getValidationsById(invalidMeasureNode).get(0),
-				is("Failed to find an encoder") );
+				is("Failed to find an AciSectionEncoder"));
 	}
 }
