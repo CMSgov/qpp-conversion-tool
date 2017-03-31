@@ -1,18 +1,24 @@
 package gov.cms.qpp.conversion.validate;
 
-import java.util.List;
-
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class NodeValidator {
 
-	public NodeValidator() {
+	private List<ValidationError> validationErrors = new ArrayList<>();
 
+	public List<ValidationError> getValidationErrors() {
+		return validationErrors;
 	}
 
-	public abstract List<ValidationError> validate(Node node);
+	protected void addValidationError(ValidationError newError) {
+		validationErrors.add(newError);
+	}
 
-	protected abstract List<ValidationError> internalValidate(Node node);
+	public abstract void validateNode(Node node);
 
+	public abstract void validateNodes(List<Node> nodes);
 }

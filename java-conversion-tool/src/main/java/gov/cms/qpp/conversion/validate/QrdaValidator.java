@@ -1,14 +1,14 @@
 package gov.cms.qpp.conversion.validate;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 
-public class QrdaValidator extends NodeValidator {
+import java.util.ArrayList;
+import java.util.List;
+
+public class QrdaValidator {
 
 	protected static Registry<String, QrdaValidator> validators = new Registry<>(Validator.class);
 	protected List<ValidationError> validationErrors = new ArrayList<>();
@@ -25,7 +25,6 @@ public class QrdaValidator extends NodeValidator {
 		validationErrors.add(newError);
 	}
 
-	@Override
 	public List<ValidationError> validate(Node node) {
 
 		// iterate through all of the known validators
@@ -47,7 +46,6 @@ public class QrdaValidator extends NodeValidator {
 	/**
 	 * the internalValidate method of QppValidator does nothing
 	 */
-	@Override
 	protected List<ValidationError> internalValidate(Node node) {
 
 		return validationErrors;
