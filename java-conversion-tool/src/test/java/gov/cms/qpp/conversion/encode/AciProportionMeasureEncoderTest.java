@@ -31,6 +31,8 @@ public class AciProportionMeasureEncoderTest {
 	private Node denominatorValueNode;
 	private List<Node> nodes;
 
+	private static final String MEASURE_ID = "ACI-PEA-1";
+
 	@Before
 	public void createNode() {
 		numeratorValueNode = new Node();
@@ -58,7 +60,7 @@ public class AciProportionMeasureEncoderTest {
 		aciProportionMeasureNode.addChildNode(aciPerformanceRate);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
-		aciProportionMeasureNode.putValue("measureId", "ACI-PEA-1");
+		aciProportionMeasureNode.putValue("measureId", MEASURE_ID);
 
 		nodes = new ArrayList<>();
 		nodes.add(aciProportionMeasureNode);
@@ -85,7 +87,7 @@ public class AciProportionMeasureEncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
-		String EXPECTED = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : 400,\n    \"denominator\" : 600\n  }\n}";
+		String EXPECTED = "{\n  \"measureId\" : \"" + MEASURE_ID + "\",\n  \"value\" : {\n    \"numerator\" : 400,\n    \"denominator\" : 600\n  }\n}";
 		Assert.assertEquals(EXPECTED, sw.toString());
 		assertThat("expected encoder to return a json representation of a measure node", sw.toString(), is(EXPECTED));
 	}
@@ -101,7 +103,7 @@ public class AciProportionMeasureEncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
 
 		//assert
-		assertThat("The measureId must be ACI-PEA-1", jsonWrapper.getString("measureId"), is("ACI-PEA-1"));
+		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
 		assertThat("The internal object of the jsonWrapper must not be null", jsonWrapper.getObject(), is(not(nullValue())));
 		assertThat("The internal object of the jsonWrapper must be a Map", jsonWrapper.getObject(), is(instanceOf(Map.class)));
 		assertThat("The internal object must have an attribute named value", ((Map<?, ?>)jsonWrapper.getObject()).get("value"), is(not(nullValue())));
