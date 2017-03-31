@@ -145,9 +145,7 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 		if (denominatorCount == 0) {
 			this.addValidationError(
 					new ValidationError(NO_DENOMINATOR));
-		}
-
-		if (denominatorCount > 1) {
+		} else if (denominatorCount > 1) {
 			this.addValidationError(
 					new ValidationError(TOO_MANY_DENOMINATORS));
 		}
@@ -158,9 +156,7 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 		if (numeratorCount == 0) {
 			this.addValidationError(
 					new ValidationError(NO_NUMERATOR));
-		}
-
-		if (numeratorCount > 1) {
+		} else if (numeratorCount > 1) {
 			this.addValidationError(
 					new ValidationError(TOO_MANY_NUMERATORS));
 		}
