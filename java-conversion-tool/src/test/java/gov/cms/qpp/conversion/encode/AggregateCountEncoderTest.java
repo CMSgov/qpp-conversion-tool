@@ -1,27 +1,27 @@
 package gov.cms.qpp.conversion.encode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-
+import gov.cms.qpp.conversion.model.Node;
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.model.Node;
-
-public class AciNumeratorDenominatorValueEncoderTest {
+public class AggregateCountEncoderTest {
 
 	private Node numeratorDenominatorNode;
 	private List<Node> nodes;
 
-	public AciNumeratorDenominatorValueEncoderTest() {
+	public AggregateCountEncoderTest() {
 	}
 
+	/**
+	 * Set up a default node to be pass to an encoder
+	 */
 	@Before
 	public void createNode() {
 		numeratorDenominatorNode = new Node();
@@ -32,8 +32,11 @@ public class AciNumeratorDenominatorValueEncoderTest {
 		nodes.add(numeratorDenominatorNode);
 	}
 
+	/**
+	 * Test Function for the QppOutputEncoder
+	 */
 	@Test
-	public void testEncoder() {
+	public void testEncoderWithFramework() {
 		QppOutputEncoder encoder = new QppOutputEncoder();
 
 		encoder.setNodes(nodes);
@@ -49,6 +52,22 @@ public class AciNumeratorDenominatorValueEncoderTest {
 		// NOTE: This test is only relevant in that it finds the deep value but it is not actually a result
 		String EXPECTED = "{\n  \"value\" : 600\n}";
 		assertThat("expected encoder to return a single number numerator/denominator", sw.toString(), is(EXPECTED));
+	}
+
+	/**
+	 * Test Function for the AggregateCountEncode
+	 */
+	@Test
+	public void testEncoder() {
+		AggregateCountEncoder encoder = new AggregateCountEncoder();
+		encoder.setNodes(nodes);
+		JsonWrapper json = new JsonWrapper();
+		try {
+			encoder.internalEncode(json, numeratorDenominatorNode);
+		} catch (EncodeException e) {
+			fail("Failure to encode: " + e.getMessage());
+		}
+		assertThat("expected encoder to return a single number numerator/denominator", json.getInteger("value"), is(600));
 	}
 
 }

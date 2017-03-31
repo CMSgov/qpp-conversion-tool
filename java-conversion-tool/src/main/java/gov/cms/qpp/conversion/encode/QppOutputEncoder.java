@@ -5,9 +5,10 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 
 /**
- * Top level Encoder for serializing into QPP format. 
+ * Top level Encoder for serializing into QPP format.
+ *
  * @author Scott Fradkin
- * 
+ *
  */
 public class QppOutputEncoder extends JsonOutputEncoder {
 
@@ -17,12 +18,11 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	}
 
 	@Override
-	protected void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 
 		// write nothing top level specific at this point
 		// check the encoder Registry for
 		// an Encoder to call for the Node, and then call its children
-
 		JsonOutputEncoder encoder = encoders.get(node.getId());
 
 		if (null != encoder) {

@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.model.Node;
 
 /**
  * Encoder to serialize Improvement Activity Section.
+ *
  * @author David Puglielli
  *
  */
@@ -15,8 +16,8 @@ public class MeasurePerformedEncoder extends QppOutputEncoder {
 	}
 
 	@Override
-	protected void internalEcode(JsonWrapper wrapper, Node node) throws EncodeException {
-		wrapper.putBoolean("value",node.getValue("measurePerformed"));
+	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+		wrapper.putBoolean("value", node.getValue("measurePerformed"));
 	}
 
 }
