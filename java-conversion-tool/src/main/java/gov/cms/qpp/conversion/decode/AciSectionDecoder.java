@@ -15,7 +15,7 @@ public class AciSectionDecoder extends QppXmlDecoder {
 	/**
 	 * Decodes an ACI Section into the QPP format
 	 *
-	 * @param element Element XML element that represents the ACI Section
+	 * @param element XML element that represents the ACI Section
 	 * @param thisNode Node represents the aci section
 	 * @return DecodeResult.TreeContinue thisNode gets the newly parsed XML Fragments
 	 */

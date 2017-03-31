@@ -23,7 +23,7 @@ public class AciSectionDecoderTest {
 		AciSectionDecoder aciSectionDecoder = new AciSectionDecoder();
 		aciSectionDecoder.internalDecode(element, node);
 
-		assertThat("Node Category must be aci",node.getValue("category"),is("aci"));
+		assertThat("Node Category must be aci", node.getValue("category"), is("aci"));
 	}
 
 }

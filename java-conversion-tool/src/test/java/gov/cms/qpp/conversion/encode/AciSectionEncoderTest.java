@@ -90,7 +90,7 @@ public class AciSectionEncoderTest {
 		Node invalidAciProportionMeasureNode = new Node(invalidMeasureNode);
 
 		aciSectionNode = new Node(ACI_SECTION_ID);
-		aciSectionNode.putValue("category", ACI);
+		aciSectionNode.putValue(CATEGORY, ACI);
 		aciSectionNode.addChildNode(invalidAciProportionMeasureNode);
 
 		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder();
