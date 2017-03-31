@@ -1,18 +1,21 @@
 package gov.cms.qpp.conversion.decode;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import java.util.ArrayList;
-import java.util.List;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import org.junit.After;
-import static org.junit.Assert.assertThat;
-import org.junit.Before;
-import org.junit.Test;
 
 public class AciProportionMeasureDecoderTest {
 
@@ -102,7 +105,7 @@ public class AciProportionMeasureDecoderTest {
         assertThat("returned node should have two child decoder nodes", aciProportionMeasureNode.getChildNodes().size(), is(2));
 
         assertThat("measureId should be ACI-PEA-1",
-                (String) aciProportionMeasureNode.getValue("measureId"), is("ACI-PEA-1"));
+                aciProportionMeasureNode.getValue("measureId"), is("ACI-PEA-1"));
 
         List<String> testTemplateIds = new ArrayList<>();
         for (Node node : aciProportionMeasureNode.getChildNodes()) {
@@ -141,7 +144,7 @@ public class AciProportionMeasureDecoderTest {
         // We have no component nodes
         assertThat("returned node should have no child decoder nodes", aciProportionMeasureNode.getChildNodes().size(), is(0));
         // The measureId in not reachable
-        assertThat("measureId should be null", (String) aciProportionMeasureNode.getValue("measureId"), is(nullValue()));
+        assertThat("measureId should be null", aciProportionMeasureNode.getValue("measureId"), is(nullValue()));
 
     }
 }
