@@ -26,5 +26,4 @@ public class AciProportionDenominatorDecoder extends QppXmlDecoder {
 		thisnode.putValue("name", "aciProportionDenominator");
 		return DecodeResult.TreeContinue;
 	}
-
 }

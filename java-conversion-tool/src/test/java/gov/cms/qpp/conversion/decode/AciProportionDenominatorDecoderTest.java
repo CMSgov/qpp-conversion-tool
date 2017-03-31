@@ -58,27 +58,4 @@ public class AciProportionDenominatorDecoderTest {
         assertThat("test value should be mytestvalue", target.getValue("aggregateCount"), is("800"));
 
     }
-
-	@Test
-	public void decodeAciNumeratorDenominatorTypeMeasureAsNode() throws Exception {
-		String xmlFragment = XmlUtils.buildString(
-				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
-				"    <observation classCode=\"OBS\" moodCode=\"EVN\">",
-				"        <!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->",
-				"        <templateId root=\"2.16.840.1.113883.10.20.27.3.32\" extension=\"2016-09-01\"/>",
-				"        <code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"Assertion\"/>",
-				"        <statusCode code=\"completed\"/>",
-				"        <value xsi:type=\"CD\" code=\"DENOM\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\"/>",
-				"        <!-- Denominator Count-->",
-				"        <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">",
-				"            <value xsi:type=\"INT\" value=\"400\"/>",
-				"        </entryRelationship>",
-				"    </observation>",
-				"</root>");
-
-		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
-
-		assertThat("aci numerator/denominator value should be 400",
-				(String) numDenomNode.getChildNodes().get(0).getValue("denominator"), is("400"));
-	}
 }

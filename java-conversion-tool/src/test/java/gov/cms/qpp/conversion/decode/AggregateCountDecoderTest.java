@@ -23,7 +23,7 @@ import org.junit.Test;
  */
 public class AggregateCountDecoderTest {
 
-    private static final String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+    private static final String XML_FRAGMENT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
             + "<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
             + "<component>\n"
             + "<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
@@ -88,7 +88,7 @@ public class AggregateCountDecoderTest {
     @Test
     public void testAggregateCount() throws Exception {
 
-        Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+        Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(XML_FRAGMENT));
         // remove default nodes (will fail if defaults change)
 //        DefaultDecoder.removeDefaultNode(root.getChildNodes());
 
