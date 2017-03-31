@@ -11,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.slf4j.Logger;
@@ -91,9 +90,7 @@ public class Converter {
 				File outFile = new File(outName);
 				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
 
-				Writer writer = null;
-				try {
-					writer = new FileWriter(outFile);
+				try (Writer writer = new FileWriter(outFile)) {
 					encoder.setNodes(Arrays.asList(decoded));
 					encoder.encode(writer);
 					// do something with encode validations
@@ -101,7 +98,6 @@ public class Converter {
 					throw new XmlInputFileException("Issues decoding/encoding.", e);
 				} finally {
 					Validations.clear();
-					IOUtils.closeQuietly(writer);
 				}
 			} else {
 				hasValidations = true;
@@ -111,9 +107,7 @@ public class Converter {
 				File outFile = new File(errName);
 				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
 
-				Writer errWriter = null;
-				try {
-					errWriter = new FileWriter(outFile);
+				try (Writer errWriter = new FileWriter(outFile)) {
 					for (ValidationError error : validationErrors) {
 						errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
 					}
@@ -121,7 +115,6 @@ public class Converter {
 					LOG.error("Could not write to file: {}", errName);
 				} finally {
 					Validations.clear();
-					IOUtils.closeQuietly(errWriter);
 				}
 			}
 		} catch (XmlInputFileException | XmlException xe) {
