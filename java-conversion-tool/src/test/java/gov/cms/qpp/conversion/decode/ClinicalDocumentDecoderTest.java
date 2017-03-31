@@ -1,8 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 import java.nio.charset.Charset;
@@ -80,15 +78,38 @@ public class ClinicalDocumentDecoderTest {
 
 	@Test
 	public void decodeClinicalDocumentInternalDecode() throws Exception {
-		//set-up
+
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
 		Element clinicalDocument = new Element("ClinicalDocument", rootns);
 		clinicalDocument.addNamespaceDeclaration(ns);
 
-		// Program name
-		//"./ns:informationRecipient/ns:intendedRecipient/ns:id[@root='2.16.840.1.113883.3.249.7']/@extension"
+		Element informationRecipient = informationRecipientWithProgramNamePath(rootns);
+
+		Element documentationOf = prepareDocumentationElement(rootns);
+
+		Element component = prepareComponentElement(rootns);
+
+		clinicalDocument.addContent(informationRecipient);
+		clinicalDocument.addContent(documentationOf);
+		clinicalDocument.addContent(component);
+
+		Node testParentNode = new Node();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
+		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		Node testChildNode = testParentNode.getChildNodes().get(0);
+
+		assertThat("Clinical Document doesn't contain program name", testParentNode.getValue("programName"), is("mips"));
+		assertThat("Clinical Document doesn't contain national provider", testParentNode.getValue("nationalProviderIdentifier"), is("2567891421"));
+		assertThat("Clinical Document doesn't contain taxpayer id number", testParentNode.getValue("taxpayerIdentificationNumber"), is("123456789"));
+		assertThat("Clinical Document doesn't contain the ACI Section child node", testChildNode, is(notNullValue()));
+		assertThat("Clinical Document doesn't contain ACI Section category", testChildNode.getValue("category"), is("aci"));
+
+	}
+
+	private Element informationRecipientWithProgramNamePath(Namespace rootns) {
 		Element informationRecipient = new Element("informationRecipient", rootns);
 		Element intendedRecipient = new Element("intendedRecipient", rootns);
 		Element programName = new Element("id", rootns)
@@ -96,15 +117,10 @@ public class ClinicalDocumentDecoderTest {
 				.setAttribute("extension", "MIPS");
 		intendedRecipient.addContent(programName);
 		informationRecipient.addContent(intendedRecipient);
-		clinicalDocument.addContent(informationRecipient);
+		return informationRecipient;
+	}
 
-//			Element taxProviderElement = new Element("performer", rootns);
-//			//"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/ns:representedOrganization/ns:id[@root='2.16.840.1.113883.4.2']/@extension"; //setTaxProviderTaxIdOnNode
-//			Element processComponentElement = new Element("component", rootns);
-//			//"./ns:component/ns:structuredBody/ns:component"; // processComponentElement
-
-		//NationalProviderId
-		//"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/ns:id[@root='2.16.840.1.113883.4.6']/@extension"; //setNationalProviderIdOnNode
+	private Element prepareDocumentationElement(Namespace rootns) {
 		Element documentationOf = new Element("documentationOf", rootns);
 		Element serviceEvent = new Element("serviceEvent", rootns);
 		Element performer = new Element("performer", rootns);
@@ -112,57 +128,36 @@ public class ClinicalDocumentDecoderTest {
 		Element nationalProviderIdentifier = new Element("id", rootns)
 				.setAttribute("root", "2.16.840.1.113883.4.6")
 				.setAttribute("extension", "2567891421");
+
+		Element representedOrganization = prepareRepresentationOrgElementWithTaxId(rootns);
+		assignedEntity.addContent(representedOrganization);
 		assignedEntity.addContent(nationalProviderIdentifier);
 		performer.addContent(assignedEntity);
 		serviceEvent.addContent(performer);
 		documentationOf.addContent(serviceEvent);
-		clinicalDocument.addContent(documentationOf);
+		return documentationOf;
+	}
 
-		//TaxProvider
-		//"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/ns:representedOrganization/ns:id[@root='2.16.840.1.113883.4.2']/@extension";
-
+	private Element prepareRepresentationOrgElementWithTaxId(Namespace rootns) {
 		Element representedOrganization = new Element("representedOrganization", rootns);
 		Element taxpayerIdentificationNumber = new Element("id", rootns)
 				.setAttribute("root", "2.16.840.1.113883.4.2")
 				.setAttribute("extension", "123456789");
 
 		representedOrganization.addContent(taxpayerIdentificationNumber);
-		clinicalDocument.addContent(representedOrganization);
+		return representedOrganization;
+	}
 
-		// Test
-		Node thisNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
-		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
-		objectUnderTest.internalDecode(clinicalDocument, thisNode);
-		assertThat("Clinical Document doesn't contains program name", thisNode.getValue("programName"), is("mips"));
+	private Element prepareComponentElement(Namespace rootns) {
+		Element component = new Element("component", rootns);
+		Element structuredBody = new Element("structuredBody", rootns);
+		Element componentTwo = new Element("component", rootns);
+		Element aciSectionElement = new Element("templateId", rootns);
+		aciSectionElement.setAttribute("root", "2.16.840.1.113883.10.20.27.2.5");
 
-		assertThat("Clinical Document doesn't contains national provider", thisNode.getValue("nationalProviderIdentifier"), is("2567891421"));
-
-
-		/**            Element templateIdElement = new Element("templateId", rootns)
-		 .setAttribute("root", "2.16.840.1.113883.10.20.27.3.28");
-		 Element referenceElement = new Element("reference", rootns);
-		 Element externalDocumentElement = new Element("externalDocument", rootns);
-		 Element idElement = new Element("id", rootns).setAttribute("extension", MEASURE_ID);
-
-		 externalDocumentElement.addContent(idElement);
-		 referenceElement.addContent(externalDocumentElement);
-		 element.addContent(templateIdElement);
-		 element.addContent(referenceElement);
-		 element.addNamespaceDeclaration(ns);
-
-		 Node thisNode = new Node();
-
-		 AciProportionMeasureDecoder objectUnderTest = new AciProportionMeasureDecoder();
-		 objectUnderTest.setNamespace(element, objectUnderTest);
-
-		 //execute
-		 objectUnderTest.internalDecode(element, thisNode);
-
-		 //assert
-		 assertThat("measureId should be " + MEASURE_ID, thisNode.getValue("measureId"), is(MEASURE_ID));
-		 */
-
-
+		componentTwo.addContent(aciSectionElement);
+		structuredBody.addContent(componentTwo);
+		component.addContent(structuredBody);
+		return component;
 	}
 }
