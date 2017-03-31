@@ -81,13 +81,11 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 
 	private boolean validateOneAciProportionExists(final Validator thisAnnotation, final List<Node> aciProportionNodes) {
 
-		if (thisAnnotation.required()) {
-			if (aciProportionNodes.isEmpty()) {
-				this.addValidationError(new ValidationError(ACI_PROPORTION_NODE_REQUIRED));
-				// if we did not find any measure nodes, just return right now because
-				// there's nothing else to verify
-				return false;
-			}
+		if (thisAnnotation.required() && aciProportionNodes.isEmpty()) {
+			this.addValidationError(new ValidationError(ACI_PROPORTION_NODE_REQUIRED));
+			// if we did not find any measure nodes, just return right now because
+			// there's nothing else to verify
+			return false;
 		}
 		return true;
 	}
@@ -135,28 +133,36 @@ public class AciProportionMeasureValidator extends QrdaValidator {
 				}
 			}
 
-			if (numeratorCount == 0) {
-				this.addValidationError(
-						new ValidationError(NO_NUMERATOR));
-			}
-
-			if (numeratorCount > 1) {
-				this.addValidationError(
-						new ValidationError(TOO_MANY_NUMERATORS));
-			}
-
-			if (denominatorCount == 0) {
-				this.addValidationError(
-						new ValidationError(NO_DENOMINATOR));
-			}
-
-			if (denominatorCount > 1) {
-				this.addValidationError(
-						new ValidationError(TOO_MANY_DENOMINATORS));
-			}
-
+			validateNumeratorCount(numeratorCount);
+			validateDenominatorCount(denominatorCount);
 		} else {
 			this.addValidationError(new ValidationError(NO_CHILDREN));
+		}
+	}
+
+	private void validateDenominatorCount(final int denominatorCount) {
+
+		if (denominatorCount == 0) {
+			this.addValidationError(
+					new ValidationError(NO_DENOMINATOR));
+		}
+
+		if (denominatorCount > 1) {
+			this.addValidationError(
+					new ValidationError(TOO_MANY_DENOMINATORS));
+		}
+	}
+
+	private void validateNumeratorCount(final int numeratorCount) {
+
+		if (numeratorCount == 0) {
+			this.addValidationError(
+					new ValidationError(NO_NUMERATOR));
+		}
+
+		if (numeratorCount > 1) {
+			this.addValidationError(
+					new ValidationError(TOO_MANY_NUMERATORS));
 		}
 	}
 
