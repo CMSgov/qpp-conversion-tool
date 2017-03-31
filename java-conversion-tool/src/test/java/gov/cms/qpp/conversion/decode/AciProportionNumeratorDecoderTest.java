@@ -19,6 +19,7 @@ public class AciProportionNumeratorDecoderTest {
 	public void before() {
 		Validations.init();
 	}
+
 	@After
 	public void after() {
 		Validations.clear();
@@ -56,9 +57,8 @@ public class AciProportionNumeratorDecoderTest {
 		// Get the actual value
 		String actual = numDenomNode.getValue("aggregateCount");
 		assertThat("aci numerator should be 600", actual, is("600"));
-
 	}
-	
+
 	@Test
 	public void decodeACIProportionNumeratorWithNoChildAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -79,7 +79,6 @@ public class AciProportionNumeratorDecoderTest {
 		Node aciProportionNumeratorNode = root.getChildNodes().get(0);
 		// We are missing the child node with the numerator count
 		assertThat("returned node should have one child decoder node", aciProportionNumeratorNode.getChildNodes().size(),is(0));
-
 	}
 
 }

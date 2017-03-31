@@ -19,9 +19,6 @@ import java.util.stream.Collectors;
 @Encoder(templateId = "2.16.840.1.113883.10.20.27.1.2")
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
-	public ClinicalDocumentEncoder() {
-	}
-
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 
@@ -49,7 +46,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonWrapper childWrapper;
 		for (Node child : childMapByTemplateId.values()) {
 			childWrapper = new JsonWrapper();
-			JsonOutputEncoder sectionEncoder = encoders.get(child.getId());
+			JsonOutputEncoder sectionEncoder = ENCODERS.get(child.getId());
 
 			if (null != sectionEncoder) { // currently don't have a set of IA
 				// Encoders, but this will protect
@@ -69,7 +66,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			}
 		}
 		wrapper.putObject("measurementSets", measurementSetsWrapper);
-
 	}
 
 }

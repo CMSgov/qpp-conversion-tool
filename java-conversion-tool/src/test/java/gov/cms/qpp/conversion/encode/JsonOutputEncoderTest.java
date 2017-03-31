@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class JsonOutputEncoderTest {
 
-	JsonOutputEncoder joe;
+	private JsonOutputEncoder joe;
 
 	@Before
 	public void before() {

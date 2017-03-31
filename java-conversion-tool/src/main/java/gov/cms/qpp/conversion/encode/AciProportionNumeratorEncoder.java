@@ -14,8 +14,6 @@ import java.util.List;
 @Encoder(templateId = "2.16.840.1.113883.10.20.27.3.31")
 public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 
-	public AciProportionNumeratorEncoder() {
-	}
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		// simply writes the value in the Node
@@ -26,7 +24,7 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 
 		if (!children.isEmpty()) {
 			Node numeratorValueNode = children.get(0);
-			JsonOutputEncoder numeratorValueEncoder = encoders.get(numeratorValueNode.getId());
+			JsonOutputEncoder numeratorValueEncoder = ENCODERS.get(numeratorValueNode.getId());
 
 			JsonWrapper value = new JsonWrapper();
 			numeratorValueEncoder.encode(value, numeratorValueNode);

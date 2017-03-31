@@ -20,9 +20,6 @@ public class AciProportionNumeratorEncoderTest {
 	private Node numeratorDenominatorValueNode;
 	private List<Node> nodes;
 
-	public AciProportionNumeratorEncoderTest() {
-	}
-
 	@Before
 	public void createNode() {
 		numeratorDenominatorValueNode = new Node();
@@ -51,11 +48,11 @@ public class AciProportionNumeratorEncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
-		String EXPECTED = "{\n  \"numerator\" : 600\n}";
+		String expected = "{\n  \"numerator\" : 600\n}";
 		assertThat("expected encoder to return a json representation of a numerator with a value", sw.toString(),
-				is(EXPECTED));
+				is(expected));
 	}
-	
+
 	@Test
 	public void testEncoderWithoutChild() {
 		aciProportionNumeratorNode.getChildNodes().remove(numeratorDenominatorValueNode);
@@ -73,7 +70,7 @@ public class AciProportionNumeratorEncoderTest {
 
 		assertThat("expected encoder to return null", sw.toString(), is("null"));
 	}
-	
+
 	@Test
 	public void testEncoderWithoutValue() {
 		numeratorDenominatorValueNode.putValue("aggregateCount", null);
@@ -91,6 +88,5 @@ public class AciProportionNumeratorEncoderTest {
 
 		assertThat("expected encoder to return null", sw.toString(), is("null"));
 	}
-
 
 }

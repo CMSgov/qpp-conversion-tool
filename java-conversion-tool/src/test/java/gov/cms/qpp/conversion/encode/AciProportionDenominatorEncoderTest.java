@@ -20,9 +20,6 @@ public class AciProportionDenominatorEncoderTest {
 	private Node numeratorDenominatorValueNode;
 	private List<Node> nodes;
 
-	public AciProportionDenominatorEncoderTest() {
-	}
-
 	@Before
 	public void createNode() {
 		numeratorDenominatorValueNode = new Node();

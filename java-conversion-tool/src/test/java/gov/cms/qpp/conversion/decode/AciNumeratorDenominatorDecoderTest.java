@@ -36,7 +36,6 @@ public class AciNumeratorDenominatorDecoderTest {
 
 		assertThat("aci numerator/denominator value should be 600",
 				numDenomNode.getChildNodes().get(0).getValue("aggregateCount"), is("600"));
-
 	}
 	
 	@Test
@@ -60,7 +59,6 @@ public class AciNumeratorDenominatorDecoderTest {
 		assertThat("returned node should have one child node", numDenomNode.getChildNodes().size(), is(1));
 
 		assertThat("aci numerator/denominator value should be null", numDenomNode.getChildNodes().get(0).getValue("aggregateCount"), is(nullValue()));
-
 	}
 
 	@Test
@@ -71,7 +69,6 @@ public class AciNumeratorDenominatorDecoderTest {
 				"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
 				"  </observation>",
 				"</root>");
-
 
 		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 
@@ -84,7 +81,6 @@ public class AciNumeratorDenominatorDecoderTest {
 		assertThat("returned node should have one child node", numDenomNode.getChildNodes().size(), is(1));
 
 		assertThat("aci numerator/denominator value should be null", numDenomNode.getChildNodes().get(0).getValue("aggregateCount"), is(nullValue()));
-
 	}
 
 }

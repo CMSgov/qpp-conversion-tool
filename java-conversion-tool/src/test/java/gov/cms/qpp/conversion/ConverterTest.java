@@ -169,13 +169,13 @@ public class ConverterTest {
 
 		// a.qpp.json and d.qpp.json will not exist because the a.xml and d.xml
 		// file will get validation
-		 assertTrue( aJson.exists() );
-		 assertTrue( dJson.exists() );
+		assertTrue( aJson.exists() );
+		assertTrue( dJson.exists() );
 
 		aJson.deleteOnExit();
 		dJson.deleteOnExit();
 
 		System.out.println("Time to run two thread transform " + (finish - start));
 	}
-	
+
 }

@@ -13,9 +13,6 @@ import java.util.List;
 @Encoder(templateId = "2.16.840.1.113883.10.20.27.2.5")
 public class AciSectionEncoder extends QppOutputEncoder {
 
-	public AciSectionEncoder() {
-	}
-
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 
@@ -29,7 +26,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 		for (Node child : children) {
 			childWrapper = new JsonWrapper();
 			String templateId = child.getId();
-			JsonOutputEncoder encoder = encoders.get(templateId);
+			JsonOutputEncoder encoder = ENCODERS.get(templateId);
 			if (encoder == null) {
 				addValidation(templateId, "Failed to find an encoder");
 			} else {
@@ -38,6 +35,5 @@ public class AciSectionEncoder extends QppOutputEncoder {
 			}
 		}
 		wrapper.putObject("measurements", measurementsWrapper);
-
 	}
 }

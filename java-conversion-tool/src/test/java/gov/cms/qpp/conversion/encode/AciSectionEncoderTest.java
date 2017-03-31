@@ -28,9 +28,6 @@ public class AciSectionEncoderTest {
 	private Node denominatorValueNode;
 	private List<Node> nodes;
 
-	public AciSectionEncoderTest() {
-	}
-
 	@Before
 	public void createNode() {
 		numeratorValueNode = new Node();

@@ -47,7 +47,7 @@ public class ReportingParametersSectionDecoderTest {
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));
-		
+
 		// Should have a section node 
 		assertThat("returned node should not be null", root.getChildNodes(), is(not(nullValue())));
 		assertThat("returned node should have one child decoder node", root.getChildNodes().size(), is(1));

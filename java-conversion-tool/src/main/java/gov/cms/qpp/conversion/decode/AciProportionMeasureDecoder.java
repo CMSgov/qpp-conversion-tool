@@ -31,7 +31,7 @@ public class AciProportionMeasureDecoder extends QppXmlDecoder {
 
 		setMeasureIdOnNode(element, thisnode);
 
-		return DecodeResult.TreeContinue;
+		return DecodeResult.TREE_CONTINUE;
 	}
 
 	/**
