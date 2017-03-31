@@ -25,7 +25,7 @@ import gov.cms.qpp.conversion.model.Node;
  */
 public abstract class XmlInputDecoder implements InputDecoder, Validatable<String, String> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(XmlInputDecoder.class);
+	private static final Logger LOG = LoggerFactory.getLogger(XmlInputDecoder.class);
 	protected Namespace defaultNs; 
 	protected Namespace xpathNs;
 
