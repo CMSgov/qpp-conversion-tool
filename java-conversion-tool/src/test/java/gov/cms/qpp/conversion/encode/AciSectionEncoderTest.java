@@ -1,35 +1,30 @@
 package gov.cms.qpp.conversion.encode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-
-import java.util.Map;
-
+import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.model.Node;
+import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 public class AciSectionEncoderTest {
 
-	public static final String ACI_SECTION_ID = "2.16.840.1.113883.10.20.27.2.5";
-	public static final String ACI_PROPORTION_MEASURE_ID = "2.16.840.1.113883.10.20.27.3.28";
-	public static final String ACI_PROPORTION_NUMERATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.31";
-	public static final String ACI_PROPORTION_DENOMINATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.32";
-	public static final String NUMERATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.3";
-	public static final String DENOMINATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.3";
-	public static final String CATEGORY= "category";
-	public static final String ACI= "aci";
-	public static final String MEASUREMENTS = "measurements";
-	public static final String MEASUREMENT_ID = "measureId";
-	public static final String MEASUREMENT_ID_VALUE = "ACI-PEA-1";
-	public static final String AGGREGATE_COUNT_ID = "aggregateCount";
+	private static final String ACI_SECTION_ID = "2.16.840.1.113883.10.20.27.2.5";
+	private static final String ACI_PROPORTION_MEASURE_ID = "2.16.840.1.113883.10.20.27.3.28";
+	private static final String ACI_PROPORTION_NUMERATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.31";
+	private static final String ACI_PROPORTION_DENOMINATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.32";
+	private static final String NUMERATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.3";
+	private static final String DENOMINATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.3";
+	private static final String CATEGORY = "category";
+	private static final String ACI = "aci";
+	private static final String MEASUREMENTS = "measurements";
+	private static final String MEASUREMENT_ID = "measureId";
+	private static final String MEASUREMENT_ID_VALUE = "ACI-PEA-1";
+	private static final String AGGREGATE_COUNT_ID = "aggregateCount";
 
 	private static final String JSON_FORMAT_EXPECT = "{\n  \""+ CATEGORY +"\" : \"" + ACI + "\",\n  \"" + MEASUREMENTS + "\" : [ "
 			+ "{\n    \"" + MEASUREMENT_ID + "\" : \"" + MEASUREMENT_ID_VALUE + "\",\n    \"value\" : {\n"
@@ -95,7 +90,7 @@ public class AciSectionEncoderTest {
 		Node invalidAciProportionMeasureNode = new Node(invalidMeasureNode);
 
 		aciSectionNode = new Node(ACI_SECTION_ID);
-		aciSectionNode.putValue("category", "aci");
+		aciSectionNode.putValue("category", ACI);
 		aciSectionNode.addChildNode(invalidAciProportionMeasureNode);
 
 		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder();

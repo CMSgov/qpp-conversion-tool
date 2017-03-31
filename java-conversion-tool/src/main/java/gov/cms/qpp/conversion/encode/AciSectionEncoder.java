@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	/**
 	 *  Encodes an ACI Section into the QPP format
 	 *
-	 * @param wrapper Wrapper that will represent the ACI Section
+	 * @param wrapper JsonWrapper that will represent the ACI Section
 	 * @param node Node that represents the ACI Section
 	 * @throws EncodeException If an error occurs during encoding
 	 */
@@ -29,18 +30,18 @@ public class AciSectionEncoder extends QppOutputEncoder {
 
 	}
 
-	private void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) {
+	private void encodeChildren(List<Node> children, JsonWrapper aciSectionsWrapper) {
 		JsonWrapper childWrapper;
-		for (Node child : children) {
+		for (Node currentChild : children) {
 			childWrapper = new JsonWrapper();
-			String templateId = child.getId();
+			String templateId = currentChild.getId();
 			JsonOutputEncoder childEncoder = encoders.get(templateId);
 
 			if (childEncoder == null) {
-				addValidation(templateId, "Failed to find an encoder");
+				addValidation(templateId, "Failed to find an AciSectionEncoder");
 			} else {
-				childEncoder.encode(childWrapper, child);
-				measurementsWrapper.putObject(childWrapper);
+				childEncoder.encode(childWrapper, currentChild);
+				aciSectionsWrapper.putObject(childWrapper);
 			}
 		}
 	}
