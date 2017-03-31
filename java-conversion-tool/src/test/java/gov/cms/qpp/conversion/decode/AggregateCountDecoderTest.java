@@ -103,7 +103,7 @@ public class AggregateCountDecoderTest {
         assertThat("returned node should have one child decoder nodes", node.getChildNodes().size(), is(1));
 
         assertThat("DefaultDecoderFor should be Measure Data - CMS (V2)",
-                (String) node.getValue("DefaultDecoderFor"), is("Measure Data - CMS (V2)"));
+                node.getValue("DefaultDecoderFor"), is("Measure Data - CMS (V2)"));
 
         List<String> testTemplateIds = new ArrayList<>();
         for (Node n : node.getChildNodes()) {
