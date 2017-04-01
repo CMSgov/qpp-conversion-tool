@@ -50,11 +50,13 @@ public class QrdaValidatorTest {
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateNode, 1, TEST_TEMPLATE_ID, testKey, testValue);
+		assertThat("The list of validation errors is incorrect", validationErrors, hasSize(2));
 		assertValidationError(validationErrors.get(0), TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
+		assertValidationError(validationErrors.get(1), TEST_VALIDATION_ERROR_FOR_LIST_OF_NODE);
 	}
 
 	@Test
-	public void testValidateListOfNodes() {
+	public void testValidateMultipleNodes() {
 
 		//set-up
 		Node testChildNode1 = new Node();
@@ -73,11 +75,30 @@ public class QrdaValidatorTest {
 		testRootNode.addChildNode(testChildNode2);
 
 		//execute
-		objectUnderTest.validate(testRootNode);
+		List<ValidationError> validationErrors = objectUnderTest.validate(testRootNode);
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateNode, 2, TEST_TEMPLATE_ID, testKey, testValue);
 		assertNodeList(nodesPassedIntoValidateNodes, 2, TEST_TEMPLATE_ID, testKey, testValue);
+		assertThat("The list of validation errors is incorrect", validationErrors, hasSize(3));
+		assertValidationError(validationErrors.get(0), TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
+		assertValidationError(validationErrors.get(1), TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
+		assertValidationError(validationErrors.get(2), TEST_VALIDATION_ERROR_FOR_LIST_OF_NODE);
+	}
+
+	@Test
+	public void testNoNodes() {
+
+		//set-up
+		Node testRootNode = new Node();
+		testRootNode.setId("anotherTemplateId");
+
+		//execute
+		List<ValidationError> validationErrors = objectUnderTest.validate(testRootNode);
+
+		//assert
+		assertNodeList(nodesPassedIntoValidateNode, 0, null, null, null);
+		assertThat("The list of nodes must be null", nodesPassedIntoValidateNodes, is(nullValue()));
 	}
 
 	private void assertNodeList(final List<Node> nodeList, final int expectedSize, final String expectedTemplateId,
@@ -105,7 +126,7 @@ public class QrdaValidatorTest {
 	private void assertValidationError(final ValidationError validationError, final String expectedValidationErrorString) {
 
 		assertThat("The validation error must not be null", validationError, is(not(nullValue())));
-		assertThat("The validation error must not be null", validationError.getErrorText(),
+		assertThat("The validation error is incorrect", validationError.getErrorText(),
 		           is(expectedValidationErrorString));
 	}
 
@@ -113,13 +134,13 @@ public class QrdaValidatorTest {
 	public static class TestValidator extends NodeValidator {
 
 		@Override
-		public void validateNode(final Node node) {
+		public void internalValidateNode(final Node node) {
 			nodesPassedIntoValidateNode.add(node);
 			addValidationError(new ValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE));
 		}
 
 		@Override
-		public void validateNodes(final List<Node> nodes) {
+		public void internalValidateNodes(final List<Node> nodes) {
 			nodesPassedIntoValidateNodes = nodes;
 			addValidationError(new ValidationError(TEST_VALIDATION_ERROR_FOR_LIST_OF_NODE));
 		}

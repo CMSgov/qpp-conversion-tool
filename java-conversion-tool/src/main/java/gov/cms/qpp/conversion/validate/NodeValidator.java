@@ -8,13 +8,9 @@ import java.util.List;
 
 public abstract class NodeValidator {
 
-	private List<ValidationError> validationErrors;
+	private List<ValidationError> validationErrors = new ArrayList<>();
 
-	public NodeValidator() {
-		validationErrors = new ArrayList<>();
-	}
-
-	public List<ValidationError> getValidationErrors() {
+	protected List<ValidationError> getValidationErrors() {
 		return validationErrors;
 	}
 
@@ -22,7 +18,19 @@ public abstract class NodeValidator {
 		validationErrors.add(newError);
 	}
 
-	public abstract void validateNode(final Node node);
+	public List<ValidationError> validateNode(final Node node) {
 
-	public abstract void validateNodes(final List<Node> nodes);
+		internalValidateNode(node);
+		return getValidationErrors();
+	}
+
+	public List<ValidationError> validateNodes(final List<Node> nodes) {
+
+		internalValidateNodes(nodes);
+		return getValidationErrors();
+	}
+
+	protected abstract void internalValidateNode(final Node node);
+
+	protected abstract void internalValidateNodes(final List<Node> nodes);
 }

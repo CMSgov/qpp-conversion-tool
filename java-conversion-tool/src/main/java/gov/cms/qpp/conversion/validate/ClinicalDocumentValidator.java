@@ -11,7 +11,7 @@ import java.util.List;
 public class ClinicalDocumentValidator extends NodeValidator {
 
 	@Override
-	public void validateNode(Node node) {
+	protected void internalValidateNode(Node node) {
 
 		Validator thisAnnotation = this.getClass().getAnnotation(Validator.class);
 
@@ -56,6 +56,6 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	}
 
 	@Override
-	public void validateNodes(final List<Node> nodes) {
+	protected void internalValidateNodes(final List<Node> nodes) {
 	}
 }

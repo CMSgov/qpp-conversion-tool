@@ -45,8 +45,10 @@ public class QrdaValidator {
 		NodeValidator validatorForNode = validators.get(templateId);
 
 		if (null != validatorForNode) {
+
 			addNodeToTemplateMap(node);
-			validatorForNode.validateNode(node);
+			List<ValidationError> nodeErrors = validatorForNode.validateNode(node);
+			validationErrors.addAll(nodeErrors);
 		}
 	}
 
@@ -60,6 +62,7 @@ public class QrdaValidator {
 	private void validateChildren(final Node parentNode) {
 
 		for (Node childNode: parentNode.getChildNodes()) {
+
 			validateTree(childNode);
 		}
 	}
@@ -79,7 +82,9 @@ public class QrdaValidator {
 		final NodeValidator validatorForNodes = validators.get(templateId);
 
 		if (null != validatorForNodes) {
-			validatorForNodes.validateNodes(entryForTemplate.getValue());
+
+			List<ValidationError> nodesErrors = validatorForNodes.validateNodes(entryForTemplate.getValue());
+			validationErrors.addAll(nodesErrors);
 		}
 	}
 

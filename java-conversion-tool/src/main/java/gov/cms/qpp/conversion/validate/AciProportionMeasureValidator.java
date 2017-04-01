@@ -54,7 +54,7 @@ public class AciProportionMeasureValidator extends NodeValidator {
 	 * @return A list of errors in converting ACI Proportion Type Measure.
 	 */
 	@Override
-	public void validateNode(Node node) {
+	protected void internalValidateNode(Node node) {
 
 		Validator thisAnnotation = this.getClass().getAnnotation(Validator.class);
 
@@ -69,16 +69,20 @@ public class AciProportionMeasureValidator extends NodeValidator {
 		for (Node currentNode : aciProportionNodes) {
 			validateSubNode(currentNode);
 		}
+
+		return;
 	}
 
 	@Override
-	public void validateNodes(final List<Node> nodes) {
+	public void internalValidateNodes(final List<Node> nodes) {
 
 		List<MeasureConfig> configs = measureConfigs.getMeasureConfigs();
 
 		for (MeasureConfig config : configs) {
 			validateMeasureConfig(config, nodes);
 		}
+
+		return;
 	}
 
 	private boolean validateOneAciProportionExists(final Validator thisAnnotation, final List<Node> aciProportionNodes) {
