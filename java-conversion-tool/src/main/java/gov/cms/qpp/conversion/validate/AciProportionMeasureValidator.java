@@ -51,7 +51,7 @@ public class AciProportionMeasureValidator extends NodeValidator {
 	 * @return A list of errors in converting ACI Proportion Type Measure.
 	 */
 	@Override
-	protected void internalValidateNode(Node node) {
+	protected void internalValidateSingleNode(Node node) {
 
 		//the aci proportion measure node must have an aci section node as parent
 		validateParentIsAciSection(node);
@@ -72,7 +72,7 @@ public class AciProportionMeasureValidator extends NodeValidator {
 	 * @return A list of errors in converting ACI Proportion Type Measure.
 	 */
 	@Override
-	protected void internalValidateNodes(final List<Node> nodes) {
+	protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
 
 		validateOneAciProportionExists(nodes);
 

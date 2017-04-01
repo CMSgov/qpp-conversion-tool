@@ -18,19 +18,19 @@ public abstract class NodeValidator {
 		validationErrors.add(newError);
 	}
 
-	public List<ValidationError> validateNode(final Node node) {
+	public List<ValidationError> validateSingleNode(final Node node) {
 
-		internalValidateNode(node);
+		internalValidateSingleNode(node);
 		return getValidationErrors();
 	}
 
-	public List<ValidationError> validateNodes(final List<Node> nodes) {
+	public List<ValidationError> validateSameTemplateIdNodes(final List<Node> nodes) {
 
-		internalValidateNodes(nodes);
+		internalValidateSameTemplateIdNodes(nodes);
 		return getValidationErrors();
 	}
 
-	protected abstract void internalValidateNode(final Node node);
+	protected abstract void internalValidateSingleNode(final Node node);
 
-	protected abstract void internalValidateNodes(final List<Node> nodes);
+	protected abstract void internalValidateSameTemplateIdNodes(final List<Node> nodes);
 }

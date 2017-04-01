@@ -11,7 +11,7 @@ import java.util.List;
 public class ClinicalDocumentValidator extends NodeValidator {
 
 	@Override
-	protected void internalValidateNode(Node node) {
+	protected void internalValidateSingleNode(Node node) {
 
 		// it should not have a parent node
 		// it can have one or more ACI or IA Section Nodes
@@ -36,7 +36,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	}
 
 	@Override
-	protected void internalValidateNodes(final List<Node> nodes) {
+	protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
 
 		// there should only be one
 

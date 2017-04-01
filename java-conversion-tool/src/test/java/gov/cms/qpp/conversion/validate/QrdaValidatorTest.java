@@ -134,12 +134,10 @@ public class QrdaValidatorTest {
 	private void assertNode(final Node node, final String expectedTemplateId, final String keyToQuery,
 	                        final String expectedValue) {
 
-		assertThat("The node that was passed into the validateNode method must not be null",
+		assertThat("The node must not be null",
 		           node, is(not(nullValue())));
-		assertThat("The node that was passed into the validateNode method must have an Id of " +
-		           expectedTemplateId, node.getId(), is(expectedTemplateId));
-		assertThat("The node that was passed into the validateNode method must not be null",
-		           node.getValue(keyToQuery), is(expectedValue));
+		assertThat("The node's Id is incorrect", node.getId(), is(expectedTemplateId));
+		assertThat("The node's key/value is incorrect", node.getValue(keyToQuery), is(expectedValue));
 	}
 
 	private void assertValidationError(final ValidationError validationError, final String expectedValidationErrorString) {
@@ -153,13 +151,13 @@ public class QrdaValidatorTest {
 	public static class RequiredTestValidator extends NodeValidator {
 
 		@Override
-		public void internalValidateNode(final Node node) {
+		public void internalValidateSingleNode(final Node node) {
 			nodesPassedIntoValidateNode.add(node);
 			addValidationError(new ValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE));
 		}
 
 		@Override
-		public void internalValidateNodes(final List<Node> nodes) {
+		public void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
 			nodesPassedIntoValidateNodes = nodes;
 			addValidationError(new ValidationError(TEST_VALIDATION_ERROR_FOR_LIST_OF_NODE));
 		}
@@ -169,13 +167,13 @@ public class QrdaValidatorTest {
 	public static class OptionalTestValidator extends NodeValidator {
 
 		@Override
-		public void internalValidateNode(final Node node) {
+		public void internalValidateSingleNode(final Node node) {
 			nodesPassedIntoValidateNode.add(node);
 			addValidationError(new ValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE));
 		}
 
 		@Override
-		public void internalValidateNodes(final List<Node> nodes) {
+		public void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
 			nodesPassedIntoValidateNodes = nodes;
 			addValidationError(new ValidationError(TEST_VALIDATION_ERROR_FOR_LIST_OF_NODE));
 		}

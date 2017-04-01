@@ -34,7 +34,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.validateNode(clinicalDocumentNode);
+		List<ValidationError> errors = cdval.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("no errors should be present", errors, empty());
 
@@ -56,7 +56,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(iaSectionNode);
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.validateNode(clinicalDocumentNode);
+		List<ValidationError> errors = cdval.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("no errors should be present", errors, empty());
 
@@ -66,7 +66,7 @@ public class ClinicalDocumentValidatorTest {
 	public void testClinicalDocumentNotPresent() {
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.validateNodes(Arrays.asList());
+		List<ValidationError> errors = cdval.validateSameTemplateIdNodes(Arrays.asList());
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing Clinical Document node", errors.get(0).getErrorText(),
@@ -81,7 +81,7 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode2 = new Node("2.16.840.1.113883.10.20.27.1.2");
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.validateNodes(Arrays.asList(clinicalDocumentNode, clinicalDocumentNode2));
+		List<ValidationError> errors = cdval.validateSameTemplateIdNodes(Arrays.asList(clinicalDocumentNode, clinicalDocumentNode2));
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about too many Clinical Document nodes", errors.get(0).getErrorText(),
@@ -100,7 +100,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.validateNode(clinicalDocumentNode);
+		List<ValidationError> errors = cdval.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(EXPECTED_NO_SECTION));
@@ -122,7 +122,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(placeholderNode);
 
 		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.validateNode(clinicalDocumentNode);
+		List<ValidationError> errors = cdval.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(EXPECTED_NO_SECTION));

@@ -42,8 +42,8 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
-		List<ValidationError> errors = measureval.validateNode(aciProportionMeasureNode);
-		errors.addAll(measureval.validateNodes(Arrays.asList(aciProportionMeasureNode)));
+		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
+		errors.addAll(measureval.validateSameTemplateIdNodes(Arrays.asList(aciProportionMeasureNode)));
 
 		assertThat("no errors should be present", errors, empty());
 	}
@@ -66,7 +66,7 @@ public class AciProportionMeasureValidatorTest {
 
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
 
-		List<ValidationError> errors = measureval.validateNodes(Arrays.asList());
+		List<ValidationError> errors = measureval.validateSameTemplateIdNodes(Arrays.asList());
 
 		assertThat("there should be 2 error", errors, hasSize(2));
 		assertThat("error should be about missing proportion node", errors.get(0).getErrorText(),
@@ -98,7 +98,7 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
-		List<ValidationError> errors = measureval.validateNode(aciProportionMeasureNode);
+		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about invalid parent node", errors.get(0).getErrorText(),
@@ -117,7 +117,7 @@ public class AciProportionMeasureValidatorTest {
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
-		List<ValidationError> errors = measureval.validateNode(aciProportionMeasureNode);
+		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about no child nodes", errors.get(0).getErrorText(), is(AciProportionMeasureValidator.NO_CHILDREN));
@@ -141,7 +141,7 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciNumeratorPlaceholder);
 
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
-		List<ValidationError> errors = measureval.validateNode(aciProportionMeasureNode);
+		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about missing Numerator node", errors.get(0).getErrorText(),
@@ -166,7 +166,7 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
 
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
-		List<ValidationError> errors = measureval.validateNode(aciProportionMeasureNode);
+		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about missing Denominator node", errors.get(0).getErrorText(),
@@ -193,7 +193,7 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode2);
 
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
-		List<ValidationError> errors = measureval.validateNode(aciProportionMeasureNode);
+		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about too many Numerator nodes", errors.get(0).getErrorText(),
@@ -220,7 +220,7 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
 
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
-		List<ValidationError> errors = measureval.validateNode(aciProportionMeasureNode);
+		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about too many Denominator nodes", errors.get(0).getErrorText(),
@@ -255,7 +255,7 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 
 		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
-		measureval.validateNodes(Arrays.asList(aciProportionMeasureNode));
+		measureval.validateSameTemplateIdNodes(Arrays.asList(aciProportionMeasureNode));
 		List<ValidationError> errors = measureval.getValidationErrors();
 
 		assertThat("there should be 1 error", errors, hasSize(1));

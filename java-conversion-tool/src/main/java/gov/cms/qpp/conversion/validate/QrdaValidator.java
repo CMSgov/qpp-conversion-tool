@@ -51,7 +51,7 @@ public class QrdaValidator {
 		}
 
 		addNodeToTemplateMap(node);
-		List<ValidationError> nodeErrors = validatorForNode.validateNode(node);
+		List<ValidationError> nodeErrors = validatorForNode.validateSingleNode(node);
 		validationErrors.addAll(nodeErrors);
 	}
 
@@ -84,7 +84,7 @@ public class QrdaValidator {
 		final String templateId = entryForTemplate.getKey();
 		final NodeValidator validatorForNodes = validators.get(templateId);
 
-		List<ValidationError> nodesErrors = validatorForNodes.validateNodes(entryForTemplate.getValue());
+		List<ValidationError> nodesErrors = validatorForNodes.validateSameTemplateIdNodes(entryForTemplate.getValue());
 		validationErrors.addAll(nodesErrors);
 	}
 }
