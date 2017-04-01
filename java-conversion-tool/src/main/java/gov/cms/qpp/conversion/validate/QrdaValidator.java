@@ -26,9 +26,6 @@ public class QrdaValidator {
 		//validate lists of nodes grouped by templateId
 		validateNodesByTemplateId();
 
-		//collect the errors from the validators
-		collectValidationErrors();
-
 		return validationErrors;
 	}
 
@@ -44,12 +41,18 @@ public class QrdaValidator {
 		final String templateId = node.getId();
 		NodeValidator validatorForNode = validators.get(templateId);
 
-		if (null != validatorForNode) {
-
-			addNodeToTemplateMap(node);
-			List<ValidationError> nodeErrors = validatorForNode.validateNode(node);
-			validationErrors.addAll(nodeErrors);
+		if (null == validatorForNode) {
+			return;
 		}
+
+		boolean isRequired = validatorForNode.getClass().getAnnotation(Validator.class).required();
+		if(!isRequired) {
+			return;
+		}
+
+		addNodeToTemplateMap(node);
+		List<ValidationError> nodeErrors = validatorForNode.validateNode(node);
+		validationErrors.addAll(nodeErrors);
 	}
 
 	private void addNodeToTemplateMap(final Node node) {
@@ -81,19 +84,7 @@ public class QrdaValidator {
 		final String templateId = entryForTemplate.getKey();
 		final NodeValidator validatorForNodes = validators.get(templateId);
 
-		if (null != validatorForNodes) {
-
-			List<ValidationError> nodesErrors = validatorForNodes.validateNodes(entryForTemplate.getValue());
-			validationErrors.addAll(nodesErrors);
-		}
-	}
-
-	private void collectValidationErrors() {
-
-		for (String key : validators.getKeys()) {
-
-			NodeValidator validator = validators.get(key);
-			validationErrors.addAll(validator.getValidationErrors());
-		}
+		List<ValidationError> nodesErrors = validatorForNodes.validateNodes(entryForTemplate.getValue());
+		validationErrors.addAll(nodesErrors);
 	}
 }

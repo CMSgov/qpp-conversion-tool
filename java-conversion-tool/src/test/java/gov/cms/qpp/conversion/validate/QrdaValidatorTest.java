@@ -23,7 +23,8 @@ public class QrdaValidatorTest {
 
 	private static List<Node> nodesPassedIntoValidateNodes;
 
-	private static final String TEST_TEMPLATE_ID = "testTemplateId";
+	private static final String TEST_REQUIRED_TEMPLATE_ID = "testRequiredTemplateId";
+	private static final String TEST_OPTIONAL_TEMPLATE_ID = "testOptionalTemplateId";
 
 	private static final String TEST_VALIDATION_ERROR_FOR_SINGLE_NODE = "single node validation error";
 	private static final String TEST_VALIDATION_ERROR_FOR_LIST_OF_NODE = "list of nodes validation error";
@@ -40,7 +41,7 @@ public class QrdaValidatorTest {
 
 		//set-up
 		Node testRootNode = new Node();
-		testRootNode.setId(TEST_TEMPLATE_ID);
+		testRootNode.setId(TEST_REQUIRED_TEMPLATE_ID);
 		final String testKey = "testKey";
 		final String testValue = "testValue";
 		testRootNode.putValue(testKey, testValue);
@@ -49,7 +50,7 @@ public class QrdaValidatorTest {
 		List<ValidationError> validationErrors = objectUnderTest.validate(testRootNode);
 
 		//assert
-		assertNodeList(nodesPassedIntoValidateNode, 1, TEST_TEMPLATE_ID, testKey, testValue);
+		assertNodeList(nodesPassedIntoValidateNode, 1, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
 		assertThat("The list of validation errors is incorrect", validationErrors, hasSize(2));
 		assertValidationError(validationErrors.get(0), TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 		assertValidationError(validationErrors.get(1), TEST_VALIDATION_ERROR_FOR_LIST_OF_NODE);
@@ -60,13 +61,13 @@ public class QrdaValidatorTest {
 
 		//set-up
 		Node testChildNode1 = new Node();
-		testChildNode1.setId(TEST_TEMPLATE_ID);
+		testChildNode1.setId(TEST_REQUIRED_TEMPLATE_ID);
 		final String testKey = "testKey";
 		final String testValue = "testValue";
 		testChildNode1.putValue(testKey, testValue);
 
 		Node testChildNode2 = new Node();
-		testChildNode2.setId(TEST_TEMPLATE_ID);
+		testChildNode2.setId(TEST_REQUIRED_TEMPLATE_ID);
 		testChildNode2.putValue(testKey, testValue);
 
 		Node testRootNode = new Node();
@@ -78,8 +79,8 @@ public class QrdaValidatorTest {
 		List<ValidationError> validationErrors = objectUnderTest.validate(testRootNode);
 
 		//assert
-		assertNodeList(nodesPassedIntoValidateNode, 2, TEST_TEMPLATE_ID, testKey, testValue);
-		assertNodeList(nodesPassedIntoValidateNodes, 2, TEST_TEMPLATE_ID, testKey, testValue);
+		assertNodeList(nodesPassedIntoValidateNode, 2, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
+		assertNodeList(nodesPassedIntoValidateNodes, 2, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
 		assertThat("The list of validation errors is incorrect", validationErrors, hasSize(3));
 		assertValidationError(validationErrors.get(0), TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 		assertValidationError(validationErrors.get(1), TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
@@ -92,6 +93,24 @@ public class QrdaValidatorTest {
 		//set-up
 		Node testRootNode = new Node();
 		testRootNode.setId("anotherTemplateId");
+
+		//execute
+		List<ValidationError> validationErrors = objectUnderTest.validate(testRootNode);
+
+		//assert
+		assertNodeList(nodesPassedIntoValidateNode, 0, null, null, null);
+		assertThat("The list of nodes must be null", nodesPassedIntoValidateNodes, is(nullValue()));
+	}
+
+	@Test
+	public void testOptionalValidation() {
+
+		//set-up
+		Node testRootNode = new Node();
+		testRootNode.setId(TEST_OPTIONAL_TEMPLATE_ID);
+		final String testKey = "testKey";
+		final String testValue = "testValue";
+		testRootNode.putValue(testKey, testValue);
 
 		//execute
 		List<ValidationError> validationErrors = objectUnderTest.validate(testRootNode);
@@ -130,8 +149,24 @@ public class QrdaValidatorTest {
 		           is(expectedValidationErrorString));
 	}
 
-	@Validator(templateId = TEST_TEMPLATE_ID, required = true)
-	public static class TestValidator extends NodeValidator {
+	@Validator(templateId = TEST_REQUIRED_TEMPLATE_ID, required = true)
+	public static class RequiredTestValidator extends NodeValidator {
+
+		@Override
+		public void internalValidateNode(final Node node) {
+			nodesPassedIntoValidateNode.add(node);
+			addValidationError(new ValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE));
+		}
+
+		@Override
+		public void internalValidateNodes(final List<Node> nodes) {
+			nodesPassedIntoValidateNodes = nodes;
+			addValidationError(new ValidationError(TEST_VALIDATION_ERROR_FOR_LIST_OF_NODE));
+		}
+	}
+
+	@Validator(templateId = TEST_OPTIONAL_TEMPLATE_ID, required = false)
+	public static class OptionalTestValidator extends NodeValidator {
 
 		@Override
 		public void internalValidateNode(final Node node) {

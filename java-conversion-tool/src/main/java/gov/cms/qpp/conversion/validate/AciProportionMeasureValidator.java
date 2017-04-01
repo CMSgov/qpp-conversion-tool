@@ -38,88 +38,57 @@ public class AciProportionMeasureValidator extends NodeValidator {
 	}
 
 	/**
-	 * Validates all the ACI Proportion Type Measures that may be in the hierarchy of
-	 * {@link gov.cms.qpp.conversion.model.Node}.
+	 * Validates a single ACI Proportion Type Measure.
 	 *
 	 * Validates the following.
 	 * <ul>
-	 *     <li>One ACI Proportion Type Measure node exists</li>
 	 *     <li>ACI Proportion Type Measure nodes have an ACI section as a parent</li>
 	 *     <li>ACI Proportion Type Measure nodes have one and only one numerator node</li>
 	 *     <li>ACI Proportion Type Measure nodes have one and only one denominator node</li>
-	 *     <li>All the required measures are represented in at least one ACI Proportion Type Measure</li>
 	 * </ul>
 	 *
-	 * @param node The top level node.
+	 * @param node The node that represents an ACI Proportion Type Measure.
 	 * @return A list of errors in converting ACI Proportion Type Measure.
 	 */
 	@Override
 	protected void internalValidateNode(Node node) {
 
-		Validator thisAnnotation = this.getClass().getAnnotation(Validator.class);
-
-		List<Node> aciProportionNodes = node.findNode(thisAnnotation.templateId());
-
-		//Most likely, this "required" validation can be moved into the
-		//QrdaValidator superclass
-		if (!validateOneAciProportionExists(thisAnnotation, aciProportionNodes)) {
-			return;
-		}
-
-		for (Node currentNode : aciProportionNodes) {
-			validateSubNode(currentNode);
-		}
-
-		return;
+		//the aci proportion measure node must have an aci section node as parent
+		validateParentIsAciSection(node);
+		//the aci proportion measure node must have a numerator node and a denominator node as children
+		validateChildren(node);
 	}
 
+	/**
+	 * Validates all the ACI Proportion Type Measures.
+	 *
+	 * Validates the following.
+	 * <ul>
+	 *     <li>One ACI Proportion Type Measure node exists</li>
+	 *     <li>All the required measures are represented in at least one ACI Proportion Type Measure</li>
+	 * </ul>
+	 *
+	 * @param nodes A list of all the ACI Proportion Type Measure nodes.
+	 * @return A list of errors in converting ACI Proportion Type Measure.
+	 */
 	@Override
-	public void internalValidateNodes(final List<Node> nodes) {
+	protected void internalValidateNodes(final List<Node> nodes) {
+
+		validateOneAciProportionExists(nodes);
 
 		List<MeasureConfig> configs = measureConfigs.getMeasureConfigs();
 
 		for (MeasureConfig config : configs) {
 			validateMeasureConfig(config, nodes);
 		}
-
-		return;
 	}
 
-	private boolean validateOneAciProportionExists(final Validator thisAnnotation, final List<Node> aciProportionNodes) {
+	private void validateParentIsAciSection(final Node node) {
 
-		if (thisAnnotation.required() && aciProportionNodes.isEmpty()) {
-			this.addValidationError(new ValidationError(ACI_PROPORTION_NODE_REQUIRED));
-			// if we did not find any measure nodes, just return right now because
-			// there's nothing else to verify
-			return false;
+		if (NodeType.ACI_SECTION != node.getParent().getType()) {
+			this.addValidationError(
+				new ValidationError(NO_PARENT_SECTION));
 		}
-		return true;
-	}
-
-	private void validateMeasureConfig(final MeasureConfig measureConfig, final List<Node> aciProportionNodes) {
-
-		if (measureConfig.isRequired()) {
-			boolean foundMeasure = false;
-			for (Node aNode : aciProportionNodes) {
-				if (aNode.getValue("measureId").equals(measureConfig.getMeasureId())) {
-					foundMeasure = true;
-					break;
-				}
-			}
-
-			if (!foundMeasure) {
-				this.addValidationError(new ValidationError(MessageFormat.format(NO_REQUIRED_MEASURE, measureConfig.getMeasureId())));
-			}
-		}
-	}
-
-	private void validateSubNode(final Node node) {
-
-		//the aci measure node should have an aci section node as parent
-		//it can have a numerator node and a denominator node as children
-
-		validateParentIsAciSection(node);
-		validateChildren(node);
 	}
 
 	private void validateChildren(final Node node) {
@@ -168,11 +137,27 @@ public class AciProportionMeasureValidator extends NodeValidator {
 		}
 	}
 
-	private void validateParentIsAciSection(final Node node) {
+	private void validateOneAciProportionExists(final List<Node> aciProportionNodes) {
 
-		if (NodeType.ACI_SECTION != node.getParent().getType()) {
-			this.addValidationError(
-					new ValidationError(NO_PARENT_SECTION));
+		if (aciProportionNodes.isEmpty()) {
+			this.addValidationError(new ValidationError(ACI_PROPORTION_NODE_REQUIRED));
+		}
+	}
+
+	private void validateMeasureConfig(final MeasureConfig measureConfig, final List<Node> aciProportionNodes) {
+
+		if (measureConfig.isRequired()) {
+			boolean foundMeasure = false;
+			for (Node aNode : aciProportionNodes) {
+				if (aNode.getValue("measureId").equals(measureConfig.getMeasureId())) {
+					foundMeasure = true;
+					break;
+				}
+			}
+
+			if (!foundMeasure) {
+				this.addValidationError(new ValidationError(MessageFormat.format(NO_REQUIRED_MEASURE, measureConfig.getMeasureId())));
+			}
 		}
 	}
 
@@ -184,7 +169,7 @@ public class AciProportionMeasureValidator extends NodeValidator {
 
 		try {
 			measureConfigs = mapper.treeToValue(mapper.readTree(measuresConfigResource.getInputStream()),
-					MeasureConfigs.class);
+			                                    MeasureConfigs.class);
 		} catch (IOException e) {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}
