@@ -1,10 +1,15 @@
 package gov.cms.qpp.conversion.model;
 
+import org.junit.Test;
+
+import java.util.List;
+
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
 
 public class NodeTest {
 
@@ -99,5 +104,26 @@ public class NodeTest {
 		node.addChildNode(node);
 
 		assertTrue(node.getChildNodes().isEmpty());
+	}
+
+	@Test
+	public void testFindNode() {
+
+		//set-up
+		final String childNodeId = "childNode";
+
+		Node rootNode = new Node("rootNode");
+		Node childNode1 = new Node(childNodeId);
+		Node childNode2 = new Node(childNodeId);
+		rootNode.addChildNode(childNode1);
+		rootNode.addChildNode(childNode2);
+
+		//execute
+		List<Node> foundNodes = rootNode.findNode(childNodeId);
+
+		//assert
+		assertThat("The found nodes size is incorrect", foundNodes, hasSize(2));
+		assertThat("The first found node's Id is incorrect", foundNodes.get(0).getId(), is(childNodeId));
+		assertThat("The second found node's Id is incorrect", foundNodes.get(1).getId(), is(childNodeId));
 	}
 }
