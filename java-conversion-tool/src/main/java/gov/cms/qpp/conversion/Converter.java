@@ -134,15 +134,7 @@ public class Converter {
 		Collection<File> validFiles = new LinkedList<>();
 
 		for (String arg : args) {
-			if ( SKIP_VALIDATION.equals(arg) ) {
-				doValidation = false;
-			}
-
-			if ( SKIP_DEFAULTS.equals(arg) ) {
-				doDefaults = false;
-			}
-
-			if ( !doDefaults || !doValidation ) {
+			if (checkFlags(arg)) {
 				continue;
 			}
 			
@@ -150,6 +142,19 @@ public class Converter {
 		}
 
 		return validFiles;
+	}
+
+	private static boolean checkFlags(String arg) {
+		if ( SKIP_VALIDATION.equals(arg) ) {
+            doValidation = false;
+			return true;
+        }
+
+		if ( SKIP_DEFAULTS.equals(arg) ) {
+            doDefaults = false;
+			return true;
+        }
+		return false;
 	}
 
 	public static Collection<File> checkPath(String path) {
