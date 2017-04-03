@@ -442,6 +442,19 @@ public class JsonWrapperTest {
 		assertEquals("expect no comma expected after the child and order as inserted",
 				expect, json);
 	}
+
+	@Test
+	public void testValueRetrieval() throws Exception {
+		objectStrWrapper.putString("obj1", "A");
+		objectStrWrapper.putInteger("obj2", "1");
+		objectStrWrapper.putFloat("obj3", "1.1");
+		objectStrWrapper.putBoolean("obj4", "false");
+
+		assertEquals("expect String", objectStrWrapper.getString("obj1"), "A" );
+		assertEquals("expect Integer", objectStrWrapper.getInteger("obj2"), Integer.valueOf(1) );
+		assertEquals("expect Float", objectStrWrapper.getFloat("obj3"), Float.valueOf(1.1F) );
+		assertEquals("expect Boolean", objectStrWrapper.getBoolean("obj4"), Boolean.FALSE );
+	}
 	
 }
 
