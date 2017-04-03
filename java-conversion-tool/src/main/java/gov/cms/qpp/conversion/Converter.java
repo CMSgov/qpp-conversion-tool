@@ -53,10 +53,6 @@ public class Converter {
 	public Integer transform() {
 
 		boolean hasValidations = false;
-		
-		if (!inFile.exists()) {
-			return 0; // it should if check prior to instantiation.
-		}
 
 		try {
 			Node decoded = XmlInputDecoder.decodeXml(XmlUtils.fileToDOM(inFile));
@@ -86,7 +82,7 @@ public class Converter {
 		} catch (Exception allE) {
 			LOG.error("Unexpected exception occurred during conversion", allE);
 		}
-		return hasValidations ?0 :1;
+		return hasValidations ? 0 : 1;
 	}
 
 	private void writeConvertedFile(Node decoded, String name) {
@@ -133,15 +129,21 @@ public class Converter {
 
 		Collection<File> validFiles = new LinkedList<>();
 
+		resetFlags();
 		for (String arg : args) {
 			if (checkFlags(arg)) {
 				continue;
 			}
-			
+
 			validFiles.addAll(checkPath(arg));
 		}
 
 		return validFiles;
+	}
+
+	private static void resetFlags(){
+		doValidation = true;
+		doDefaults = true;
 	}
 
 	private static boolean checkFlags(String arg) {
