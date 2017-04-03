@@ -222,7 +222,7 @@ public class ClinicalDocumentEncoderTest {
 	}
 
 	@Test
-	public void testInvalidEncoder() throws EncodeException, NoSuchFieldException {
+	public void testInvalidEncoder() {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
