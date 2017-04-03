@@ -6,14 +6,14 @@ import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class QrdaValidator {
 
-	private final Registry<String, NodeValidator> validators = new Registry<>(Validator.class);
+	private static final Registry<String, NodeValidator> VALIDATORS = new Registry<>(Validator.class);
 
 	private final Map<String, List<Node>> nodesForTemplateIds = new HashMap<>();
 	private final List<ValidationError> validationErrors = new ArrayList<>();
@@ -24,7 +24,7 @@ public class QrdaValidator {
 		validateTree(rootNode);
 
 		//validate lists of nodes grouped by templateId
-		validateNodesByTemplateId();
+		validateTemplateIds();
 
 		return validationErrors;
 	}
@@ -39,7 +39,7 @@ public class QrdaValidator {
 	private void validateSingleNode(final Node node) {
 
 		final String templateId = node.getId();
-		NodeValidator validatorForNode = validators.get(templateId);
+		NodeValidator validatorForNode = VALIDATORS.get(templateId);
 
 		if (null == validatorForNode) {
 			return;
@@ -70,21 +70,26 @@ public class QrdaValidator {
 		}
 	}
 
-	private void validateNodesByTemplateId() {
+	private void validateTemplateIds() {
 
-		final Set<Map.Entry<String, List<Node>>> entriesPerTemplate = nodesForTemplateIds.entrySet();
-		for (Map.Entry<String, List<Node>> entryForTemplate : entriesPerTemplate) {
-
-			validateSimilarTemplateIdNodes(entryForTemplate);
+		for (String validatorKey : VALIDATORS.getKeys()) {
+			validateSingleTemplateId(VALIDATORS.get(validatorKey));
 		}
 	}
 
-	private void validateSimilarTemplateIdNodes(final Map.Entry<String, List<Node>> entryForTemplate) {
+	private void validateSingleTemplateId(final NodeValidator validator) {
 
-		final String templateId = entryForTemplate.getKey();
-		final NodeValidator validatorForNodes = validators.get(templateId);
+		Validator validatorAnnotation = validator.getClass().getAnnotation(Validator.class);
 
-		List<ValidationError> nodesErrors = validatorForNodes.validateSameTemplateIdNodes(entryForTemplate.getValue());
+		boolean isRequired = validatorAnnotation.required();
+		if(!isRequired) {
+			return;
+		}
+
+		final String templateId = validatorAnnotation.templateId();
+		List<Node> nodesForTemplateId = nodesForTemplateIds.getOrDefault(templateId, Arrays.asList());
+
+		List<ValidationError> nodesErrors = validator.validateSameTemplateIdNodes(nodesForTemplateId);
 		validationErrors.addAll(nodesErrors);
 	}
 }
