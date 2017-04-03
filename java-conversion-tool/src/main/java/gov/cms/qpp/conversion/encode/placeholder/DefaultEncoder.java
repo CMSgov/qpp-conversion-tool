@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultEncoder extends JsonOutputEncoder {
 
-	final String description;
+	private static final Logger LOG = LoggerFactory.getLogger(DefaultEncoder.class);
 
-	final Logger LOG = LoggerFactory.getLogger(getClass());
+	private final String description;
 
 	public DefaultEncoder(String description) {
 		this.description = description;
@@ -43,7 +43,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 
 		for (Node child : node.getChildNodes()) {
 			childWrapper.putObject(child.getId(), childWrapper);
-			encode(childWrapper, child);;
+			encode(childWrapper, child);
 		}
 	}
 
@@ -84,13 +84,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 			super("QRDA Category III Measure Section - CMS (V2)");
 		}
 	}
-	// this one looks like a root node that is not necessary
-//	@Encoder(templateId="2.16.840.1.113883.10.20.24.3.98")
-//	public static class G_Encoder extends DefaultEncoder {
-//		public G_Encoder() {
-//			super("Measure Reference");
-//		}
-//	}
 
 	@Encoder(templateId = "2.16.840.1.113883.10.20.27.3.29")
 	public static class I_Encoder extends DefaultEncoder {
@@ -171,12 +164,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 			super("Payer Supplemental Data Element - CMS (V2)");
 		}
 	}
-//	@Encoder(templateId="2.16.840.1.113883.10.20.27.3.1")
-//	public static class Z_Encoder extends DefaultEncoder {
-//		public Z_Encoder() {
-//			super("Measure Reference and Results- CMS (V2)");
-//		}
-//	}
 
 	@Encoder(templateId = "2.16.840.1.113883.10.20.27.3.25")
 	public static class ZZ_Encoder extends DefaultEncoder {

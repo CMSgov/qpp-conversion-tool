@@ -20,14 +20,12 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
-
 		wrapper.putString("category", node.getValue("category"));
 		List<Node> children = node.getChildNodes();
 		JsonWrapper measurementsWrapper = new JsonWrapper();
 
 		encodeChildren(children, measurementsWrapper);
 		wrapper.putObject("measurements", measurementsWrapper);
-
 	}
 
 	private void encodeChildren(List<Node> children, JsonWrapper aciSectionsWrapper) {
@@ -35,7 +33,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 		for (Node currentChild : children) {
 			childWrapper = new JsonWrapper();
 			String templateId = currentChild.getId();
-			JsonOutputEncoder childEncoder = encoders.get(templateId);
+			JsonOutputEncoder childEncoder = ENCODERS.get(templateId);
 
 			if (childEncoder == null) {
 				addValidation(templateId, "Failed to find an AciSectionEncoder");

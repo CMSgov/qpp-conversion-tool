@@ -20,7 +20,6 @@ public class NullReturnDecoderTest {
 				+ "		<templateId root=\"null.return\"/>\n"
 				+ "	</null>"
 				+ "</root>";
-				
 
 		// Get the root wrapper node
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));

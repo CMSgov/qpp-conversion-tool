@@ -42,9 +42,6 @@ public class AciSectionEncoderMultiMeasureTest {
 	private Node denominatorValueNode3;
 	private List<Node> nodes;
 
-	public AciSectionEncoderMultiMeasureTest() {
-	}
-
 	@Before
 	public void createNode() {
 		numeratorValueNode = new Node();

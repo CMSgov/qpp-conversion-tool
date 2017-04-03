@@ -22,7 +22,6 @@ public class AciSectionDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		thisNode.putValue("category", "aci");
-		return DecodeResult.TreeContinue;
+		return DecodeResult.TREE_CONTINUE;
 	}
-		
 }

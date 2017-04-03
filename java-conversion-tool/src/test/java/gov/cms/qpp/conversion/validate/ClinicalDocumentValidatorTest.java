@@ -20,7 +20,6 @@ public class ClinicalDocumentValidatorTest {
 
 	@Test
 	public void testClinicalDocumentPresent() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -37,12 +36,10 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);
 
 		assertThat("no errors should be present", errors, empty());
-
 	}
 
 	@Test
 	public void testClinicalDocumentPresentIa() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -59,12 +56,10 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);
 
 		assertThat("no errors should be present", errors, empty());
-
 	}
 
 	@Test
 	public void testClinicalDocumentNotPresent() {
-
 		Node aciSectionNode = new Node();
 		aciSectionNode.setId("2.16.840.1.113883.10.20.27.2.5");
 		aciSectionNode.putValue("category", "aci");
@@ -75,12 +70,10 @@ public class ClinicalDocumentValidatorTest {
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing Clinical Document node", errors.get(0).getErrorText(),
 				is(EXPECTED_TEXT));
-
 	}
 
 	@Test
 	public void testTooManyClinicalDocumentNodes() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		Node clinicalDocumentNode2 = new Node("2.16.840.1.113883.10.20.27.1.2");
 
@@ -94,12 +87,10 @@ public class ClinicalDocumentValidatorTest {
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about too many Clinical Document nodes", errors.get(0).getErrorText(),
 				is(EXPECTED_ONE_ALLOWED));
-
 	}
 
 	@Test
 	public void testNoSections() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -112,12 +103,10 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(EXPECTED_NO_SECTION));
-
 	}
 
 	@Test
 	public void testNoSectionsOtherChildren() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -134,7 +123,5 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(EXPECTED_NO_SECTION));
-
 	}
-
 }
