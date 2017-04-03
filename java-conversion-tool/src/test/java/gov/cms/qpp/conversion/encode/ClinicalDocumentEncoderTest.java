@@ -5,19 +5,20 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedWriter;
+import java.io.PrintStream;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import gov.cms.qpp.conversion.io.ByteCounterOutputStream;
+import gov.cms.qpp.conversion.model.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Validations;
 
 public class ClinicalDocumentEncoderTest {
 
@@ -218,6 +219,34 @@ public class ClinicalDocumentEncoderTest {
 
 		assertThat("Must return a Clinical Document without measurement section", testJsonWrapper.toString(),
 				is(EXPECTED_NO_ACI));
+	}
+
+	@Test
+	public void testInvalidEncoder() throws EncodeException, NoSuchFieldException {
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
+
+		Registry<String, JsonOutputEncoder> invalidRegistry = new Registry<String, JsonOutputEncoder>(Encoder.class) {
+			@Override
+			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
+				if ("gov.cms.qpp.conversion.encode.AciSectionEncoder".equals(className)) {
+					System.setErr(new PrintStream(new ByteCounterOutputStream()));
+					throw new ClassNotFoundException();
+				}
+				return Class.forName(className);
+			}
+		};
+		boolean exception = false;
+		QppOutputEncoder.encoders = invalidRegistry;
+
+		try {
+			clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+		} catch (EncodeException e) {
+			exception = true;
+		}
+
+		assertThat("Expecting Encode Exception", exception, is(true));
 	}
 
 }

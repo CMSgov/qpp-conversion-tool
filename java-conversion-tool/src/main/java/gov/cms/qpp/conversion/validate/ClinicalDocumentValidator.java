@@ -49,9 +49,7 @@ public class ClinicalDocumentValidator extends QrdaValidator {
 			} else {
 				int aciOrIaCount = 0;
 				for (Node child : childNodes) {
-					if (NodeType.ACI_SECTION == child.getType() || NodeType.IA_SECTION == child.getType()) {
-						aciOrIaCount++;
-					}
+					aciOrIaCount += (NodeType.ACI_SECTION == child.getType() || NodeType.IA_SECTION == child.getType()) ? 1:0 ;
 				}
 				if (aciOrIaCount == 0) {
 					this.addValidationError(new ValidationError(
