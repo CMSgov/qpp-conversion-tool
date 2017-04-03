@@ -1,21 +1,29 @@
 package gov.cms.qpp.conversion.encode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.model.Node;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class AciProportionMeasureEncoderTest {
+
+	private static final String MEASURE_ID = "ACI-PEA-1";
 
 	private Node aciPerformanceRate;
 	private Node aciProportionMeasureNode;
@@ -24,9 +32,6 @@ public class AciProportionMeasureEncoderTest {
 	private Node numeratorValueNode;
 	private Node denominatorValueNode;
 	private List<Node> nodes;
-
-	public AciProportionMeasureEncoderTest() {
-	}
 
 	@Before
 	public void createNode() {
@@ -45,7 +50,7 @@ public class AciProportionMeasureEncoderTest {
 		aciProportionNumeratorNode = new Node();
 		aciProportionNumeratorNode.setId("2.16.840.1.113883.10.20.27.3.31");
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
-		
+
 		aciPerformanceRate = new Node();
 		aciPerformanceRate.setId("2.16.840.1.113883.10.20.27.3.30");
 		aciPerformanceRate.putValue("DefaultDecoderFor", "Performance Rate");
@@ -55,10 +60,17 @@ public class AciProportionMeasureEncoderTest {
 		aciProportionMeasureNode.addChildNode(aciPerformanceRate);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
-		aciProportionMeasureNode.putValue("measureId", "ACI-PEA-1");
+		aciProportionMeasureNode.putValue("measureId", MEASURE_ID);
 
 		nodes = new ArrayList<>();
 		nodes.add(aciProportionMeasureNode);
+
+		Validations.init();
+	}
+
+	@After
+	public void tearDown() {
+		Validations.clear();
 	}
 
 	@Test
@@ -75,9 +87,45 @@ public class AciProportionMeasureEncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
-		String EXPECTED = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : 400,\n    \"denominator\" : 600\n  }\n}";
+		String EXPECTED = "{\n  \"measureId\" : \"" + MEASURE_ID + "\",\n  \"value\" : {\n    \"numerator\" : 400,\n    \"denominator\" : 600\n  }\n}";
 		Assert.assertEquals(EXPECTED, sw.toString());
 		assertThat("expected encoder to return a json representation of a measure node", sw.toString(), is(EXPECTED));
 	}
 
+	@Test
+	public void testInternalEncode() throws EncodeException {
+
+		//set-up
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		AciProportionMeasureEncoder objectUnderTest = new AciProportionMeasureEncoder();
+
+		//execute
+		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
+
+		//assert
+		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
+		assertThat("The internal object of the jsonWrapper must not be null", jsonWrapper.getObject(), is(not(nullValue())));
+		assertThat("The internal object of the jsonWrapper must be a Map", jsonWrapper.getObject(), is(instanceOf(Map.class)));
+		assertThat("The internal object must have an attribute named value", ((Map<?, ?>)jsonWrapper.getObject()).get("value"), is(not(nullValue())));
+	}
+
+	@Test
+	public void testNoChildEncoder() throws EncodeException {
+
+		//set-up
+		final String unknownNodeId = "unknownNodeId";
+
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		AciProportionMeasureEncoder objectUnderTest = new AciProportionMeasureEncoder();
+		Node unknownNode = new Node();
+		unknownNode.setId(unknownNodeId);
+		aciProportionMeasureNode.addChildNode(unknownNode);
+
+		//execute
+		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
+
+		//assert
+		assertThat("There must be a single validation error", objectUnderTest.getValidationsById(unknownNodeId), hasSize(1));
+		assertThat("The validation error must be the inability to find an encoder", objectUnderTest.getValidationsById(unknownNodeId).get(0), is("Failed to find an encoder"));
+	}
 }

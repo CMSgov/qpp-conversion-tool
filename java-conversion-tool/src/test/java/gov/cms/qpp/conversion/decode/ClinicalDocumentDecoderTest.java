@@ -2,13 +2,17 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -16,62 +20,103 @@ import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentDecoderTest {
 
-	@Test
-	public void decodeClinicalDocumentDecoderAsNode() throws Exception {
-		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
-		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+	private static String xmlFragment;
+	private Node root;
 
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+	@BeforeClass
+	public static void init() throws IOException {
+		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
+		xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+	}
+
+	@Before
+	public void setupTest() throws XmlException {
+		root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(root.getChildNodes());
+	}
 
-		assertThat("returned node should not be null", root, is(not(nullValue())));
-
+	@Test
+	public void testRootId() {
 		assertThat("template ID is correct", root.getId(), is("2.16.840.1.113883.10.20.27.1.2"));
+	}
+
+	@Test
+	public void testRootProgramName() {
 		assertThat("programName is correct", root.getValue("programName"), is("mips"));
+	}
+
+	@Test
+	public void testRootNationalProviderIdentifier() {
 		assertThat("nationalProviderIdentifier correct", root.getValue("nationalProviderIdentifier"), is("2567891421"));
+	}
+
+	@Test
+	public void testRootTaxpayerIdentificationNumber() {
 		assertThat("taxpayerIdentificationNumber correct", root.getValue("taxpayerIdentificationNumber"), is("123456789"));
+	}
 
-		assertThat("returned node should not be null", root, is(not(nullValue())));
-
-		// System.out.println(root.toString());
-		assertThat("returned node should child decoder nodes", root.getChildNodes().size(), is(3));
-
+	@Test
+	public void testReportParameterSource() {
 		Node reportParameterSectionNode = root.getChildNodes().get(0);
-
 		assertThat("returned category", reportParameterSectionNode.getValue("source"), is("provider"));
+	}
 
-		// Should have a Measure node 
-		assertThat("returned node should not be null", reportParameterSectionNode.getChildNodes(), is(not(nullValue())));
-		assertThat("returned node should have one child decoder node", reportParameterSectionNode.getChildNodes().size(), is(1));
+	@Test
+	public void testReportActPerformanceStart() {
+		Node reportParameterSectionNode = root.getChildNodes().get(0);
 		Node reportingActSectionNodeMeasureNode = reportParameterSectionNode.getChildNodes().get(0);
 		assertThat("returned should value", reportingActSectionNodeMeasureNode.getValue("performanceStart"), is("20170101"));
+	}
+
+	@Test
+	public void testReportActPerformanceEnd() {
+		Node reportParameterSectionNode = root.getChildNodes().get(0);
+		Node reportingActSectionNodeMeasureNode = reportParameterSectionNode.getChildNodes().get(0);
 		assertThat("returned should value", reportingActSectionNodeMeasureNode.getValue("performanceEnd"), is("20171231"));
+	}
 
-
+	@Test
+	public void testAciCategory() {
 		Node aciSectionNode = root.getChildNodes().get(1);
-
-		// Should have an ACI section node 
 		assertThat("returned category should be aci", aciSectionNode.getValue("category"), is("aci"));
-		assertThat("returned node should have child decoder nodes", aciSectionNode.getChildNodes().size(), is(3));
+	}
+
+	@Test
+	public void testAciPea1MeasureId() {
+		Node aciSectionNode = root.getChildNodes().get(1);
 		assertThat("returned measureId ACI-PEA-1", aciSectionNode.getChildNodes().get(0).getValue("measureId"), is("ACI-PEA-1"));
+	}
+
+	@Test
+	public void testAciEp1MeasureId() {
+		Node aciSectionNode = root.getChildNodes().get(1);
 		assertThat("returned measureId ACI_EP_1", aciSectionNode.getChildNodes().get(1).getValue("measureId"), is("ACI_EP_1"));
+	}
+
+	@Test
+	public void testAciCctpe3MeasureId() {
+		Node aciSectionNode = root.getChildNodes().get(1);
 		assertThat("returned measureId ACI_CCTPE_3", aciSectionNode.getChildNodes().get(2).getValue("measureId"), is("ACI_CCTPE_3"));
+	}
 
-
-		// Should have an IA section node 
+	@Test
+	public void testIaCategory() {
 		Node iaSectionNode = root.getChildNodes().get(2);
 		assertThat("returned category", iaSectionNode.getValue("category"), is("ia"));
+	}
 
-		// Should have a Measure node 
-		assertThat("returned node should not be null", iaSectionNode.getChildNodes(), is(not(nullValue())));
-		assertThat("returned node should have one child decoder node", iaSectionNode.getChildNodes().size(), is(1));
+	@Test
+	public void testIaMeasureId() {
+		Node iaSectionNode = root.getChildNodes().get(2);
 		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
 		assertThat("returned should have measureId", iaMeasureNode.getValue("measureId"), is("IA_EPA_1"));
+	}
 
-		// Should have a measure performed node 
-		assertThat("returned node should not be null", iaMeasureNode.getChildNodes(), is(not(nullValue())));
-		assertThat("returned node should have one child decoder node", iaMeasureNode.getChildNodes().size(), is(1));
+	@Test
+	public void testIaMeasurePerformed() {
+		Node iaSectionNode = root.getChildNodes().get(2);
+		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
 		Node iaMeasurePerformedNode = iaMeasureNode.getChildNodes().get(0);
 		assertThat("returned measurePerformed", iaMeasurePerformedNode.getValue("measurePerformed"), is("Y"));
 	}

@@ -15,9 +15,6 @@ import gov.cms.qpp.conversion.model.Node;
 
 public class EncoderNegativeConditionsTest {
 
-	public EncoderNegativeConditionsTest() {
-	}
-
 	@Test
 	public void testNullEncoder() {
 		QppOutputEncoder encoder = new QppOutputEncoder();
@@ -64,7 +61,6 @@ public class EncoderNegativeConditionsTest {
 		FailingWriter failWrite = new FailingWriter();
 
 		encoder.encode(new BufferedWriter(failWrite));
-
 	}
 
 }

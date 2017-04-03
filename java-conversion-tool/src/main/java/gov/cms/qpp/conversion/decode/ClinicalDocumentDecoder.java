@@ -33,7 +33,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 
 		processComponentElement(element, thisNode);
 
-		return DecodeResult.TreeFinished;
+		return DecodeResult.TREE_FINISHED;
 	}
 
 	private void setProgramNameOnNode(Element element, Node thisNode) {

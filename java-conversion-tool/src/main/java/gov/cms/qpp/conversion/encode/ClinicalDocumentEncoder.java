@@ -58,7 +58,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 		for (Node child : childMapByTemplateId.values()) {
 			childWrapper = new JsonWrapper();
-			sectionEncoder = encoders.get(child.getId());
+			sectionEncoder = ENCODERS.get(child.getId());
 
 			// Section encoder is null when a decoder exists without a corresponding encoder
 			// currently don't have a set of IA Encoders, but this will protect against others
@@ -79,6 +79,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				throw new EncodeException(message, exc);
 			}
 		}
+
 		return measurementSetsWrapper;
 	}
 

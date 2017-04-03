@@ -18,7 +18,6 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class AciProportionMeasureRoundTripTest {
 
-
 	@Test
 	public void parseAciNumeratorDenominatorAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"

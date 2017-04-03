@@ -44,7 +44,7 @@ public class ClinicalDocumentRoundTripTest {
 	public void setup() throws Exception {
 		Validations.init();
 	}
-	
+
 	@After
 	public void teardown() throws Exception {
 		Validations.clear();
@@ -56,7 +56,7 @@ public class ClinicalDocumentRoundTripTest {
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
 		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(XmlUtils.stringToDOM(xmlFragment));
-		
+
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(clinicalDocumentNode.getChildNodes());
 
@@ -69,7 +69,6 @@ public class ClinicalDocumentRoundTripTest {
 		encoder.encode(new BufferedWriter(sw));
 
 		assertThat("expected encoder to return a representation of a clinical document", sw.toString(), is(EXPECTED));
-
 	}
 
 }

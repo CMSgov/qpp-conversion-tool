@@ -5,7 +5,7 @@ package gov.cms.qpp.conversion.decode;
  * @author David Uselmann
  *
  */
-public class DecodeException extends Exception {
+public class DecodeException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public DecodeException(String message, Exception cause) {

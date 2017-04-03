@@ -6,5 +6,5 @@ package gov.cms.qpp.conversion.decode;
  *
  */
 public enum DecodeResult {
-	TreeFinished, TreeContinue, NoAction, Error;
+	TREE_FINISHED, TREE_CONTINUE, NO_ACTION, ERROR;
 }
