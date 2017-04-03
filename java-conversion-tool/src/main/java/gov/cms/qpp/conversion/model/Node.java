@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringJoiner;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -96,16 +97,13 @@ public class Node implements Serializable {
 	}
 
 	protected String childrenToString(String tabs) {
-		StringBuilder children = new StringBuilder();
+		StringJoiner children = new StringJoiner("\n");
 		if (childNodes.isEmpty()) {
-			children.append(" -> (none)");
+			children.add(" -> (none)");
 		} else {
-			children.append(": \n");
-			String sep = "";
-			String toBeSep = "\n";
+			children.add(": ");
 			for (Node child : childNodes) {
-				children.append(sep).append(child.toString(tabs));
-				sep = toBeSep;
+				children.add(child.toString(tabs));
 			}
 		}
 		return tabs + "childNodes of " + internalId + children;
