@@ -121,11 +121,26 @@ public class Node implements Serializable {
 		this.validated = validated;
 	}
 
+	/**
+	 * Search this and child nodes for first node with matching id
+	 *
+	 * @param id templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
+	 * @return the first {@link gov.cms.qpp.conversion.model.Node} in this
+	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id or null
+	 * if no matches are found
+	 */
 	public Node findFirstNode(String id) {
 		List<Node> nodes = this.findNode(id);
 		return nodes.isEmpty() ? null : nodes.get(0);
 	}
 
+	/**
+	 * Search of this and child nodes for matching ids
+	 *
+	 * @param id templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
+	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
+	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
+	 */
 	public List<Node> findNode(String id) {
 		List<Node> foundNodes = new ArrayList<>();
 
