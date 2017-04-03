@@ -43,7 +43,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 
 		for (Node child : node.getChildNodes()) {
 			childWrapper.putObject(child.getId(), childWrapper);
-			encode(childWrapper, child);;
+			encode(childWrapper, child);
 		}
 	}
 

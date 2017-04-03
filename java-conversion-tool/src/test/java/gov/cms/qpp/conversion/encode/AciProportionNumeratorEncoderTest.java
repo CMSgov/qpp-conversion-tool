@@ -2,10 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
-import java.io.BufferedWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
