@@ -20,5 +20,4 @@ public class QedEncoder extends QppOutputEncoder {
             wrapper.putString(key, node.getValue(key));
         }
     }
-
 }
