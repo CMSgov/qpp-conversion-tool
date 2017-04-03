@@ -147,17 +147,13 @@ public class AciProportionMeasureValidator extends NodeValidator {
 	private void validateMeasureConfig(final MeasureConfig measureConfig, final List<Node> aciProportionNodes) {
 
 		if (measureConfig.isRequired()) {
-			boolean foundMeasure = false;
 			for (Node aNode : aciProportionNodes) {
 				if (aNode.getValue("measureId").equals(measureConfig.getMeasureId())) {
-					foundMeasure = true;
-					break;
+					return;
 				}
 			}
 
-			if (!foundMeasure) {
-				this.addValidationError(new ValidationError(MessageFormat.format(NO_REQUIRED_MEASURE, measureConfig.getMeasureId())));
-			}
+			this.addValidationError(new ValidationError(MessageFormat.format(NO_REQUIRED_MEASURE, measureConfig.getMeasureId())));
 		}
 	}
 
