@@ -45,7 +45,14 @@ public class ClinicalDocumentEncoderTest {
 			+ "{\n      \"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n"
 			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
 			+ "\n    \"source\" : \"provider\"\n  } ]\n}";
-	
+
+	private static final String EXPECTED_NO_ACI_SECTION = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
+			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
+			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\"," + "\n  \"performanceYear\" : 2017,"
+			+ "\n  \"measurementSets\" : [ " + "{\n    \"category\" : \"aci\""
+			+ "\n    \"source\" : \"provider\"," + "\n    \"performanceStart\" : \"2017-01-01\","
+			+ "\n    \"performanceEnd\" : \"2017-12-31\"" + "\n  } ]\n}";
+
 	private static final String EXPECTED_NO_ACI = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
 			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
 			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\"," + "\n  \"performanceYear\" : 2017\n}";
@@ -216,9 +223,8 @@ public class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		assertThat("Must return a Clinical Document without reporting aci section", testJsonWrapper.toString(),
+		assertThat("Must return a Clinical Document without measurement section", testJsonWrapper.toString(),
 				is(EXPECTED_NO_ACI));
 	}
-
 
 }

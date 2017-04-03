@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -16,7 +18,7 @@ import java.util.stream.Collectors;
 @Encoder(templateId = "2.16.840.1.113883.10.20.27.1.2")
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
-
+	final Logger log = LoggerFactory.getLogger(getClass());
 	/**
 	 * internalEncode encodes nodes into Json Wrapper.
 	 *
@@ -55,11 +57,13 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 											  Optional<String> performanceEnd) throws EncodeException {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
+		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
 			childWrapper = new JsonWrapper();
-			JsonOutputEncoder sectionEncoder = encoders.get(child.getId());
+			sectionEncoder = encoders.get(child.getId());
 
+			// Section encoder is null when a decoder exists without a corresponding encoder
 			if (null != sectionEncoder) { // currently don't have a set of IA Encoders, but this will protect against others
 
 				sectionEncoder.encode(childWrapper, child);
@@ -73,6 +77,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				}
 
 				measurementSetsWrapper.putObject(childWrapper);
+			} else {
+				log.warn("No encoder for decoder : " + child.getId());
 			}
 		}
 		return measurementSetsWrapper;
