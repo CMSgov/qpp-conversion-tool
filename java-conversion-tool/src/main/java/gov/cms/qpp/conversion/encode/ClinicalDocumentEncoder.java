@@ -74,7 +74,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				}
 
 				measurementSetsWrapper.putObject(childWrapper);
-			} catch (EncodeException exc) {
+			} catch (Exception exc) {
 				String message = "No encoder for decoder : " + child.getId();
 				throw new EncodeException(message, exc);
 			}
