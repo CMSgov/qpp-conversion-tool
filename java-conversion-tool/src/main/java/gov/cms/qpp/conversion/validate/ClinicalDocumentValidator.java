@@ -27,10 +27,8 @@ public class ClinicalDocumentValidator extends QrdaValidator {
 
 		List<Node> nodes = node.findNode(thisAnnotation.templateId());
 
-		if (thisAnnotation.required()) {
-			if (nodes.isEmpty()) {
-				this.addValidationError(new ValidationError(CLINICAL_DOCUMENT_REQUIRED));
-			}
+		if (thisAnnotation.required() && nodes.isEmpty()) {
+			this.addValidationError(new ValidationError(CLINICAL_DOCUMENT_REQUIRED));
 		}
 
 		validateChildren(nodes);

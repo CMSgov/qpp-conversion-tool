@@ -2,8 +2,6 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,7 +16,6 @@ import java.util.stream.Collectors;
 @Encoder(templateId = "2.16.840.1.113883.10.20.27.1.2")
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
-	final Logger log = LoggerFactory.getLogger(getClass());
 	/**
 	 * internalEncode encodes nodes into Json Wrapper.
 	 *
@@ -64,8 +61,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			sectionEncoder = encoders.get(child.getId());
 
 			// Section encoder is null when a decoder exists without a corresponding encoder
-			if (null != sectionEncoder) { // currently don't have a set of IA Encoders, but this will protect against others
-
+			// currently don't have a set of IA Encoders, but this will protect against others
+			try {
 				sectionEncoder.encode(childWrapper, child);
 
 				childWrapper.putString("source", "provider");
@@ -77,8 +74,9 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				}
 
 				measurementSetsWrapper.putObject(childWrapper);
-			} else {
-				log.warn("No encoder for decoder : " + child.getId());
+			} catch (EncodeException exc) {
+				String message = "No encoder for decoder : " + child.getId();
+				throw new EncodeException(message, exc);
 			}
 		}
 		return measurementSetsWrapper;
