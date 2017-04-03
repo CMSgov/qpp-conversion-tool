@@ -223,7 +223,6 @@ public class ClinicalDocumentEncoderTest {
 	}
 
 	@Test
-	@Ignore
 	public void testInvalidEncoder() {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
@@ -240,6 +239,7 @@ public class ClinicalDocumentEncoderTest {
 			}
 		};
 		boolean exception = false;
+		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.encoders;
 		QppOutputEncoder.encoders = invalidRegistry;
 
 		try {
@@ -248,7 +248,9 @@ public class ClinicalDocumentEncoderTest {
 			exception = true;
 		}
 
+		QppOutputEncoder.encoders = validRegistry;
 		assertThat("Expecting Encode Exception", exception, is(true));
+
 	}
 
 }
