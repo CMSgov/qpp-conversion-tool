@@ -1,12 +1,8 @@
 package gov.cms.qpp.conversion.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringJoiner;
+import java.util.*;
+import java.util.function.Function;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -76,6 +72,15 @@ public class Node implements Serializable {
 		this.childNodes = childNodes;
 	}
 
+	/**
+	 * convenience for adding multiple child nodes
+	 *
+	 * @param childNodes
+	 */
+	public void addChildNodes(Node... childNodes) {
+		this.setChildNodes( Arrays.asList( childNodes ) );
+	}
+
 	public void addChildNode(Node childNode) {
 		if (childNode == null || childNode == this) {
 			return;
@@ -130,8 +135,13 @@ public class Node implements Serializable {
 	 * if no matches are found
 	 */
 	public Node findFirstNode(String id) {
-		List<Node> nodes = this.findNode(id);
+		Function<List, Boolean> proceed = Node::foundNode;
+		List<Node> nodes = this.findNode(id, proceed);
 		return nodes.isEmpty() ? null : nodes.get(0);
+	}
+
+	private static Boolean foundNode( List nodes ){
+		return !nodes.isEmpty();
 	}
 
 	/**
@@ -142,6 +152,18 @@ public class Node implements Serializable {
 	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
 	 */
 	public List<Node> findNode(String id) {
+		return findNode( id, null );
+	}
+
+	/**
+	 * Search of this and child nodes for matching ids
+	 *
+	 * @param id templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
+	 * @param bail lambda that consumes a list and returns a boolean that governs early exit
+	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
+	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
+	 */
+	public List<Node> findNode(String id, Function<List, Boolean> bail) {
 		List<Node> foundNodes = new ArrayList<>();
 
 		if (id.equals(this.internalId)) {
@@ -149,7 +171,11 @@ public class Node implements Serializable {
 		}
 
 		for (Node childNode : childNodes) {
-			foundNodes.addAll(childNode.findNode(id));
+			if ( bail != null && bail.apply(foundNodes) ) {
+				break;
+			}
+			List<Node> matches = childNode.findNode(id, bail);
+			foundNodes.addAll( matches );
 		}
 
 		return foundNodes;
