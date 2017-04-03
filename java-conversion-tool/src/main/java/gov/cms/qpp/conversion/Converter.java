@@ -26,7 +26,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
-// import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
@@ -77,53 +76,53 @@ public class Converter {
 			String name = inFile.getName().trim();
 			
 			if (validationErrors.isEmpty()) {
-
-				JsonOutputEncoder encoder = new QppOutputEncoder();
-
-				LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
-				// do something with decode validations
-				// Validations.clear();
-				// Validations.init();
-
-				String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
-
-				File outFile = new File(outName);
-				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
-
-				try (Writer writer = new FileWriter(outFile)) {
-					encoder.setNodes(Arrays.asList(decoded));
-					encoder.encode(writer);
-					// do something with encode validations
-				} catch (IOException | EncodeException e) {
-					throw new XmlInputFileException("Issues decoding/encoding.", e);
-				} finally {
-					Validations.clear();
-				}
+				writeConvertedFile(decoded, name);
 			} else {
 				hasValidations = true;
-				
-				String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
-
-				File outFile = new File(errName);
-				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
-
-				try (Writer errWriter = new FileWriter(outFile)) {
-					for (ValidationError error : validationErrors) {
-						errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
-					}
-				} catch (IOException e) {
-					LOG.error("Could not write to file: {}", errName);
-				} finally {
-					Validations.clear();
-				}
+				writeValidationErrors(name, validationErrors);
 			}
 		} catch (XmlInputFileException | XmlException xe) {
-			LOG.error("The file is not a valid XML document");
+			LOG.error("The file is not a valid XML document", xe);
 		} catch (Exception allE) {
-			// Eat all exceptions in the call
-			LOG.error(allE.getMessage());
+			LOG.error("Unexpected exception occurred during conversion", allE);
 		}
 		return hasValidations ?0 :1;
+	}
+
+	private void writeConvertedFile(Node decoded, String name) {
+		JsonOutputEncoder encoder = new QppOutputEncoder();
+
+		LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
+		String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
+
+		File outFile = new File(outName);
+		LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
+
+		try (Writer writer = new FileWriter(outFile)) {
+            encoder.setNodes(Arrays.asList(decoded));
+            encoder.encode(writer);
+            // do something with encode validations
+        } catch (IOException | EncodeException e) {
+            throw new XmlInputFileException("Issues decoding/encoding.", e);
+        } finally {
+            Validations.clear();
+        }
+	}
+
+	private void writeValidationErrors(String name, List<ValidationError> validationErrors){
+		String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
+		File outFile = new File(errName);
+		LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
+
+		try (Writer errWriter = new FileWriter(outFile)) {
+			for (ValidationError error : validationErrors) {
+				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
+			}
+		} catch (IOException e) {
+			LOG.error("Could not write to file: {} {}", errName, e);
+		} finally {
+			Validations.clear();
+		}
 	}
 
 	public static Collection<File> validArgs(String[] args) {
@@ -135,12 +134,15 @@ public class Converter {
 		Collection<File> validFiles = new LinkedList<>();
 
 		for (String arg : args) {
-			if (SKIP_VALIDATION.equals(arg)) {
+			if ( SKIP_VALIDATION.equals(arg) ) {
 				doValidation = false;
-				continue;
 			}
-			if (SKIP_DEFAULTS.equals(arg)) {
+
+			if ( SKIP_DEFAULTS.equals(arg) ) {
 				doDefaults = false;
+			}
+
+			if ( !doDefaults || !doValidation ) {
 				continue;
 			}
 			
@@ -176,11 +178,11 @@ public class Converter {
 		File inDir = new File(extractDir(path));
 		String fileRegex = wildCardToRegex(path);
 		try {
-			Collection<File> existingFiles = FileUtils.listFiles(inDir, new RegexFileFilter(fileRegex),
+			return FileUtils.listFiles(inDir, new RegexFileFilter(fileRegex),
 					DirectoryFileFilter.DIRECTORY);
-			return existingFiles;
 		} catch (Exception e) {
-			LOG.error("Cannot file path {}{}", inDir, fileRegex);
+			LOG.error("No matching files found {} {} {}", path, inDir, fileRegex);
+			LOG.error("bad glob", e);
 			return new LinkedList<>();
 		}
 	}
@@ -206,7 +208,7 @@ public class Converter {
 	}
 
 	public static String wildCardToRegex(String path) {
-		String regex = "";
+		String regex;
 
 		// this replace should work if the user does not give conflicting OS
 		// path separators
@@ -239,7 +241,7 @@ public class Converter {
 	public static void main(String[] args) {
 		Collection<File> filenames = validArgs(args);
 		filenames.parallelStream().forEach(
-				(filename) -> new Converter(filename).transform());
+				filename -> new Converter(filename).transform());
 	}
 
 }
