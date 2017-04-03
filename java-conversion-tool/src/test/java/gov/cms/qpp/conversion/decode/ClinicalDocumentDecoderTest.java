@@ -1,18 +1,18 @@
 package gov.cms.qpp.conversion.decode;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-
-import java.nio.charset.Charset;
-
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.xml.XmlUtils;
+
+import java.nio.charset.Charset;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentDecoderTest {
 
