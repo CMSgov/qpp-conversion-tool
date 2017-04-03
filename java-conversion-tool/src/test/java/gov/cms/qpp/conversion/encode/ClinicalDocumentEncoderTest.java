@@ -73,7 +73,6 @@ public class ClinicalDocumentEncoderTest {
 
 	@Before
 	public void createNode() {
-		Validations.init();
 
 		numeratorValueNode = new Node();
 		numeratorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
@@ -170,51 +169,6 @@ public class ClinicalDocumentEncoderTest {
 		nodes.add(clinicalDocumentNode);
 	}
 	
-	@After
-	public void teardown() throws Exception {
-		Validations.clear();
-	}
-	
-	@Test
-	public void testEncoderWithoutReporting() {
-		clinicalDocumentNode.getChildNodes().remove(reportingParametersSectionNode);
-		
-		QppOutputEncoder encoder = new QppOutputEncoder();
-
-		encoder.setNodes(nodes);
-
-		StringWriter sw = new StringWriter();
-
-		try {
-			encoder.encode(new BufferedWriter(sw));
-		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
-		}
-
-		assertThat("expected encoder to return a json representation of a clinical document node", sw.toString(),
-				is(EXPECTED_NO_REPORTING));
-	}
-	
-	@Test
-	public void testEncoderWithoutMeasures() {
-		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
-		
-		QppOutputEncoder encoder = new QppOutputEncoder();
-
-		encoder.setNodes(nodes);
-
-		StringWriter sw = new StringWriter();
-
-		try {
-			encoder.encode(new BufferedWriter(sw));
-		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
-		}
-
-		assertThat("expected encoder to return a json representation of a clinical document node", sw.toString(),
-				is(EXPECTED_NO_ACI));
-	}
-
 	@Test
 	public void testInternalEncode() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
@@ -222,25 +176,49 @@ public class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		Map clinicalDocMap = (Map) testJsonWrapper.getObject();
-		LinkedList testMeasurementSets = (LinkedList) clinicalDocMap.get("measurementSets");
-		Map measurementMap = (Map)testMeasurementSets.get(0);
-		System.out.print(measurementMap.get("measurements"));
-
+		Map clinicalDocMap = ((Map)testJsonWrapper.getObject());
 
 		assertThat("Must have a correct program name", clinicalDocMap.get("programName"), is("mips"));
+
 		assertThat("Must have a correct entityType", clinicalDocMap.get("entityType"), is("individual"));
+
 		assertThat("Must have a correct taxpayerIdentificationNumber",
 				clinicalDocMap.get("taxpayerIdentificationNumber"), is("123456789"));
+
 		assertThat("Must have a correct nationalProviderIdentifier",
 				clinicalDocMap.get("nationalProviderIdentifier"), is("2567891421"));
+
 		assertThat("Must have a correct performanceYear", clinicalDocMap.get("performanceYear"), is(2017));
 
-
-
-		assertThat("Must have correct json formatting", testJsonWrapper.toString(), is(EXPECTED_CLINICAL_DOC_FORMAT));
+		assertThat("Must have correct json formatting", testJsonWrapper.toString(),
+				is(EXPECTED_CLINICAL_DOC_FORMAT));
 	}
 
+	@Test
+	public void testInternalEncoderWithoutReporting() throws EncodeException {
+		clinicalDocumentNode.getChildNodes().remove(reportingParametersSectionNode);
+
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		assertThat("Must return a Clinical Document without reporting parameter section", testJsonWrapper.toString(),
+				is(EXPECTED_NO_REPORTING));
+	}
+
+	@Test
+	public void testInternalEncodeWithoutMeasures() throws EncodeException {
+		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
+
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		assertThat("Must return a Clinical Document without reporting aci section", testJsonWrapper.toString(),
+				is(EXPECTED_NO_ACI));
+	}
 
 
 }

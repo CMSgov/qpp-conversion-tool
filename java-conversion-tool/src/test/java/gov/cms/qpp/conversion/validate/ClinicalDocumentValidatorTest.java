@@ -33,8 +33,8 @@ public class ClinicalDocumentValidatorTest {
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		ClinicalDocumentValidator cdval = new ClinicalDocumentValidator();
-		List<ValidationError> errors = cdval.internalValidate(clinicalDocumentNode);
+		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
+		List<ValidationError> errors = validator.internalValidate(clinicalDocumentNode);
 
 		assertThat("no errors should be present", errors, empty());
 
