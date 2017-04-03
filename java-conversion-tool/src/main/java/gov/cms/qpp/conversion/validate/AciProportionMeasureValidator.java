@@ -12,6 +12,7 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Validate all ACI Proportion Type Measures
@@ -148,7 +149,7 @@ public class AciProportionMeasureValidator extends NodeValidator {
 
 		if (measureConfig.isRequired()) {
 			for (Node aNode : aciProportionNodes) {
-				if (aNode.getValue("measureId").equals(measureConfig.getMeasureId())) {
+				if (Objects.equals(aNode.getValue("measureId"), measureConfig.getMeasureId())) {
 					return;
 				}
 			}
