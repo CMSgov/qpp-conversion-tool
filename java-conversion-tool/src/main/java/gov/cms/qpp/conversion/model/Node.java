@@ -123,6 +123,11 @@ public class Node implements Serializable {
 		this.validated = validated;
 	}
 
+	public Node findFirstNode(String id) {
+		List<Node> nodes = this.findNode(id);
+		return nodes.isEmpty() ? null : nodes.get(0);
+	}
+
 	public List<Node> findNode(String id) {
 		List<Node> foundNodes = new ArrayList<>();
 
@@ -135,11 +140,6 @@ public class Node implements Serializable {
 		}
 
 		return foundNodes;
-	}
-
-	public Node findFirstNode( String id ){
-		List<Node> nodes = this.findNode( id );
-		return ( nodes.size() > 0 ) ? nodes.get(0) : null;
 	}
 
 	public Node getParent() {
