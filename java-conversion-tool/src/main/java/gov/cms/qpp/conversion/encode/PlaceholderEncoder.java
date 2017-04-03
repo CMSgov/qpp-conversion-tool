@@ -12,21 +12,20 @@ import gov.cms.qpp.conversion.model.Node;
 @Encoder(templateId = "placeholder")
 public class PlaceholderEncoder extends QppOutputEncoder {
 
-    public PlaceholderEncoder() {
-    }
-
-    @Override
-    protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
-        // does not do anything except call write on any children
-
-        for (Node child : node.getChildNodes()) {
-            String templateId = child.getId();
-            JsonOutputEncoder encoder = encoders.get(templateId);
-            if (encoder == null) {
-                addValidation(templateId, "Failed to find an encoder");
-            } else {
-                encoder.encode(wrapper, child);
-            }
-        }
-    }
+	public PlaceholderEncoder() {
+	}
+	
+	@Override
+	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+		// does not do anything except call write on any children
+		for (Node child : node.getChildNodes()) {
+			String templateId = child.getId();
+			JsonOutputEncoder encoder = encoders.get(templateId);
+			if (encoder == null) {
+				addValidation(templateId, "Failed to find an encoder");
+			} else {
+				encoder.encode(wrapper, child);
+			}
+		}
+	}
 }
