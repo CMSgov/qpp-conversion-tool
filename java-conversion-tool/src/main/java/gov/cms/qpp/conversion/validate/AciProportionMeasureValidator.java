@@ -101,10 +101,9 @@ public class AciProportionMeasureValidator extends NodeValidator {
 			int denominatorCount = 0;
 
 			for (Node child : children) {
-				if (NodeType.ACI_DENOMINATOR.equals(child.getType())) {
+				if (NodeType.ACI_DENOMINATOR == child.getType()) {
 					denominatorCount++;
-				}
-				if (NodeType.ACI_NUMERATOR.equals(child.getType())) {
+				} else if (NodeType.ACI_NUMERATOR == child.getType()) {
 					numeratorCount++;
 				}
 			}
