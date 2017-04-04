@@ -148,14 +148,14 @@ public class Converter {
 
 	private static boolean checkFlags(String arg) {
 		if ( SKIP_VALIDATION.equals(arg) ) {
-            doValidation = false;
+			doValidation = false;
 			return true;
-        }
+		}
 
 		if ( SKIP_DEFAULTS.equals(arg) ) {
-            doDefaults = false;
+			doDefaults = false;
 			return true;
-        }
+		}
 		return false;
 	}
 
