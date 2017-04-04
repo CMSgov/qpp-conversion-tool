@@ -1,19 +1,27 @@
 package gov.cms.qpp.conversion.validate;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.assertThat;
 
 public class AciProportionMeasureValidatorTest {
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void testMeasurePresent() {
@@ -257,5 +265,35 @@ public class AciProportionMeasureValidatorTest {
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about the required measure not present", errors.get(0).getErrorText(),
 				is(MessageFormat.format(AciProportionMeasureValidator.NO_REQUIRED_MEASURE, "ACI_EP_1")));
+	}
+
+	@Test
+	public void testGoodMeasureDataFile() {
+
+		AciProportionMeasureValidator validator = new AciProportionMeasureValidator();
+		validator.setMeasureDataFile("measures-data-aci-short.json");
+		//no exception thrown
+	}
+
+	@Test
+	public void testNonExistingMeasureDataFile() {
+
+		//set-up
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectCause(isA(IOException.class));
+
+		AciProportionMeasureValidator validator = new AciProportionMeasureValidator();
+		validator.setMeasureDataFile("Bogus file name");
+	}
+
+	@Test
+	public void testBadFormattedMeasureDataFile() {
+
+		//set-up
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectCause(isA(JsonParseException.class));
+
+		AciProportionMeasureValidator validator = new AciProportionMeasureValidator();
+		validator.setMeasureDataFile("bad_formatted_measures_data.json");
 	}
 }
