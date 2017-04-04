@@ -57,5 +57,4 @@ public class AciProportionDenominatorDecoderTest {
         // Get the test value
         assertThat("test value should be mytestvalue", target.getValue("aggregateCount"), is("800"));
     }
-
 }

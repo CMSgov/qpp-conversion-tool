@@ -98,4 +98,24 @@ public class NodeTest {
 
 		assertTrue(node.getChildNodes().isEmpty());
 	}
+
+	@Test
+	public void testFindFirstNodeSelf() {
+		Node parent = new Node( "findMe" );
+		Node childOne = new Node( "findMe" );
+		parent.addChildNode( childOne );
+
+		assertEquals("should find itself if it has the searched id", parent.findFirstNode("findMe"), parent);
+	}
+
+	@Test
+	public void testFindFirstNodeChildNode() {
+		Node parent = new Node();
+		Node childOne = new Node( "don'tFindMe" );
+		Node childTwo = new Node( "findMe" );
+		Node childThree = new Node( "findMe" );
+		parent.addChildNodes( childOne, childTwo, childThree );
+
+		assertEquals("should find first child that has the searched id", parent.findFirstNode("findMe"), childTwo);
+	}
 }
