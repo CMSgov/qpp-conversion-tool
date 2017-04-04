@@ -222,7 +222,7 @@ public class ClinicalDocumentEncoderTest {
 	}
 
 	@Test
-	public void testInvalidEncoder() {
+	public void testInvalidEncoder()throws Exception {
 		boolean exception = false;
 		Registry<String, JsonOutputEncoder> invalidRegistry = makeInvalidRegistry();
 		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
@@ -241,17 +241,14 @@ public class ClinicalDocumentEncoderTest {
 		setEncoderRegistry(validRegistry); //Restore Registry
 	}
 
-	private void setEncoderRegistry(Registry<String, JsonOutputEncoder> invalidRegistry) {
-		try {
-			final Field field = QppOutputEncoder.class.getDeclaredField("ENCODERS");
-			field.setAccessible(true);
-			Field modifiersField = Field.class.getDeclaredField("modifiers");
-			modifiersField.setAccessible(true);
-			modifiersField.setInt(field, field.getModifiers()& ~Modifier.FINAL );
-			field.set(null, invalidRegistry);
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
+	private void setEncoderRegistry(Registry<String, JsonOutputEncoder> newRegistry)throws Exception  {
+		final Field field = QppOutputEncoder.class.getDeclaredField("ENCODERS");
+		field.setAccessible(true);
+		Field modifiersField = Field.class.getDeclaredField("modifiers");
+		modifiersField.setAccessible(true);
+		modifiersField.setInt(field, field.getModifiers()& ~Modifier.FINAL );
+		field.set(null, newRegistry);
+
 	}
 
 	private Registry<String, JsonOutputEncoder> makeInvalidRegistry() {
