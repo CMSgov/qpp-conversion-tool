@@ -4,7 +4,8 @@ import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.DecodeException;
 import gov.cms.qpp.conversion.decode.InputDecoder;
 import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
-import gov.cms.qpp.conversion.io.ByteCounterOutputStream;
+
+import org.apache.commons.io.output.NullOutputStream;
 import org.jdom2.Element;
 import org.junit.After;
 import org.junit.Before;
@@ -107,7 +108,7 @@ public class RegistryTest {
 			@Override
 			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
 				if ("gov.cms.qpp.conversion.decode.AggregateCountDecoder".equals(className)) {
-					System.setErr(new PrintStream(new ByteCounterOutputStream()));
+					System.setErr(new PrintStream(NullOutputStream.NULL_OUTPUT_STREAM));
 					throw new ClassNotFoundException();
 				}
 				return Class.forName(className);

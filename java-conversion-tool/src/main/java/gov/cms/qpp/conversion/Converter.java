@@ -1,9 +1,8 @@
 package gov.cms.qpp.conversion;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +11,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -89,10 +89,10 @@ public class Converter {
 
 				String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
 
-				File outFile = new File(outName);
-				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
+				Path outFile = Paths.get(outName);
+				LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
 
-				try (Writer writer = new FileWriter(outFile)) {
+				try (Writer writer = Files.newBufferedWriter(outFile)) {
 					encoder.setNodes(Arrays.asList(decoded));
 					encoder.encode(writer);
 					// do something with encode validations
@@ -106,10 +106,10 @@ public class Converter {
 				
 				String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
 
-				File outFile = new File(errName);
-				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
+				Path outFile = Paths.get(errName);
+				LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
 
-				try (Writer errWriter = new FileWriter(outFile)) {
+				try (Writer errWriter = Files.newBufferedWriter(outFile)) {
 					for (ValidationError error : validationErrors) {
 						errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
 					}
@@ -190,20 +190,20 @@ public class Converter {
 	public static String extractDir(String path) {
 		String[] parts = path.split("[\\/\\\\]");
 
-		StringBuilder dirPath = new StringBuilder();
+		StringJoiner dirPath = new StringJoiner(FileSystems.getDefault().getSeparator());
 		for (String part : parts) {
 			// append until a wild card
 			if (part.contains("*")) {
 				break;
 			}
-			dirPath.append(part).append(File.separator);
+			dirPath.add(part);
 		}
 		// if no path then use the current dir
 		if (dirPath.length() == 0) {
-			dirPath.append('.');
+			return ".";
 		}
 
-		return dirPath.toString();
+		return dirPath.add("").toString();
 	}
 
 	public static Pattern wildCardToRegex(String path) {
