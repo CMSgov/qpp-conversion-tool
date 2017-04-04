@@ -19,7 +19,7 @@ public class AciProportionNumeratorDecoderTest {
 		AciProportionNumeratorDecoder aciProportionNumeratorDecoder = new AciProportionNumeratorDecoder();
 		DecodeResult decodeResult = aciProportionNumeratorDecoder.internalDecode(element, node);
 
-		assertThat("Must continue on tree", decodeResult, is(DecodeResult.TreeContinue));
+		assertThat("Must continue on tree", decodeResult, is(DecodeResult.TREE_CONTINUE));
 		assertThat("The node name must be " + NUMERATOR_NODE_NAME, node.getValue("name"), is(NUMERATOR_NODE_NAME));
 	}
 }

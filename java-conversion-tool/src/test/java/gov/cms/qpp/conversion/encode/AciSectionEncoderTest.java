@@ -1,15 +1,18 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Validations;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Map;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
 
 public class AciSectionEncoderTest {
 
@@ -74,7 +77,7 @@ public class AciSectionEncoderTest {
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder();
 		aciSectionEncoder.internalEncode(jsonWrapper, aciSectionNode);
-		Map testMapObject = (Map) jsonWrapper.getObject();
+		Map<?, ?> testMapObject = (Map<?, ?>) jsonWrapper.getObject();
 
 		assertThat("Must have a child node", testMapObject, is(not(nullValue())));
 		assertThat("Must be category ACI", testMapObject.get(CATEGORY), is(ACI));

@@ -17,13 +17,9 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
  * @author David Uselmann
  */
 public class QppXmlDecoder extends XmlInputDecoder {
-	final Logger LOG = LoggerFactory.getLogger(getClass());
+	private static final Logger LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
 
-	protected static Registry<String, QppXmlDecoder> decoders = new Registry<>(XmlDecoder.class);
-
-	public QppXmlDecoder() {
-	}
-	
+	private static Registry<String, QppXmlDecoder> decoders = new Registry<>(XmlDecoder.class);
 
 	/**
 	 * Iterates over the element to find all child elements. Finds any elements
@@ -38,7 +34,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		Node currentNode = parentNode;
 
 		if (null == element) {
-			return DecodeResult.Error;
+			return DecodeResult.ERROR;
 		}
 
 		setNamespace(element, this);
@@ -75,13 +71,13 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					return decode(childeEl, placeholderNode);
 				}
 				switch (result) {
-					case TreeFinished:
+					case TREE_FINISHED:
 						// this child is done
-						return DecodeResult.TreeFinished;
-					case TreeContinue:
+						return DecodeResult.TREE_FINISHED;
+					case TREE_CONTINUE:
 						decode(childeEl, childNode);
 						break;
-					case Error:
+					case ERROR:
 						// TODO Validation Error, include element data ????
 						addValidation(templateId, "Failed to decode.");
 						LOG.error("Failed to decode temlateId {} ", templateId);
@@ -95,7 +91,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			}
 		}
 
-		return DecodeResult.TreeContinue;
+		return DecodeResult.TREE_CONTINUE;
 	}
 
 	/**
@@ -154,11 +150,11 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		
 		return result;
 	}
-	
+
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		// this is the top level, so just return null
-		return DecodeResult.NoAction;
+		return DecodeResult.NO_ACTION;
 	}
 
 	@Override
@@ -175,6 +171,4 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	public void addValidation(String templateId, String validation) {
 		Validations.addValidation(templateId, validation);
 	}
-
-
 }

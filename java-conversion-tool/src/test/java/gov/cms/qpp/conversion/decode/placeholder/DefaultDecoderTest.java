@@ -21,21 +21,21 @@ public class DefaultDecoderTest {
 	public void setup() throws Exception {
 		Validations.init();
 	}
-	
+
 	@After
 	public void teardown() throws Exception {
 		Validations.clear();
 	}
-	
+
 	@Test
 	public void parseAllNodes() throws Exception {
 		System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "INFO"); // DEBUG for tracking the decode
-		
+
 		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III.xml");
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
 		Node node = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
-		
+
 		Assert.assertNotNull(node);
 	}
 }

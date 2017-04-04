@@ -52,9 +52,6 @@ public class ClinicalDocumentEncoderMultiMeasureTest {
 	private Node clinicalDocumentNode;
 	private List<Node> nodes;
 
-	public ClinicalDocumentEncoderMultiMeasureTest() {
-	}
-
 	@Before
 	public void createNode() {
 		Validations.init();
@@ -153,7 +150,7 @@ public class ClinicalDocumentEncoderMultiMeasureTest {
 		nodes = new ArrayList<>();
 		nodes.add(clinicalDocumentNode);
 	}
-	
+
 	@After
 	public void teardown() throws Exception {
 		Validations.clear();

@@ -20,7 +20,7 @@ public class QedDecoderTest {
 				+ "		<templateId root=\"Q.E.D\"/>\n"
 				+ "	</qed>"
 				+ "</root>";
-				
+	
 		// Get the root wrapper node
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 		assertThat("root node should not be null", root, is(not(nullValue())));
@@ -30,7 +30,6 @@ public class QedDecoderTest {
 		Node target = root.getChildNodes().get(0);
 
 		assertThat("test value should be mytestvalue", target.getValue("result"), is("mytestvalue"));
-
 	}
 
 }

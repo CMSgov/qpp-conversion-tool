@@ -6,12 +6,12 @@ import static org.junit.Assert.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.cms.qpp.conversion.model.Validations;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
 
 public class AciProportionNumeratorEncoderTest {
 

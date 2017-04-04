@@ -28,18 +28,17 @@ public class XmlUtilsTest {
 		Element dom = XmlUtils.stringToDOM(xmlFragment);
 
 		assertThat("returned dom should not be null", dom, is(not(nullValue())));
-		
+
 		List<Element> childElement = dom.getChildren();
 		assertThat("test root has one child",dom.getChildren().size(), is(1));
-		
+
 		List<Element> leafElements = childElement.get(0).getChildren();
-		
+
 		assertThat("test observation has five children", leafElements.size(), is(5));
 	}
 
 	@Test
 	public void stringToDom_null() throws Exception {
-
 		Element dom = XmlUtils.stringToDOM(null);
 
 		assertThat("returned dom should not be null", dom, is(nullValue()));
@@ -47,7 +46,6 @@ public class XmlUtilsTest {
 	
 	@Test(expected=XmlException.class)
 	public void stringToDom_emptyString() throws Exception {
-
 		Element dom = XmlUtils.stringToDOM("");
 
 		assertThat("returned dom should not be null", dom, is(nullValue()));
@@ -56,7 +54,6 @@ public class XmlUtilsTest {
 
 	@Test(expected=XmlException.class)
 	public void stringToDom_invalidXML() throws Exception {
-
 		Element dom = XmlUtils.stringToDOM("invalid XML");
 
 		assertThat("returned dom should not be null", dom, is(nullValue()));
@@ -67,21 +64,21 @@ public class XmlUtilsTest {
 		Element dom = XmlUtils.fileToDOM("target/test-classes/test.xml");
 
 		assertThat("returned dom should not be null", dom, is(not(nullValue())));
-		
+
 		List<Element> childElement = dom.getChildren();
 		assertThat("test root has one child",dom.getChildren().size(), is(1));
-		
+
 		List<Element> leafElements = childElement.get(0).getChildren();
-		
+
 		assertThat("test observation has five children", leafElements.size(), is(5));
 	}
-	
+
 	@Test
 	public void fileToDom_null() throws Exception {
 		String nullfilename = null;
 		XmlUtils.fileToDOM(nullfilename);
 	}
-	
+
 	@Test(expected=XmlException.class)
 	public void fileToDom_fileNotFound() throws Exception {
 		XmlUtils.fileToDOM("file/does/not/exist");

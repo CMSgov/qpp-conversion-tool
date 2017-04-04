@@ -27,9 +27,6 @@ public class IaSectionEncoderTest {
 	private Node iaMeasurePerformedNode;
 	private List<Node> nodes;
 
-	public IaSectionEncoderTest() {
-	}
-
 	@Before
 	public void createNode() {
 		iaMeasurePerformedNode = new Node();
@@ -67,10 +64,9 @@ public class IaSectionEncoderTest {
 		assertThat("expected encoder to return a json representation of an IA Section node", sw.toString(),
 				is(EXPECTED));
 	}
-	
+
 	@Test
 	public void testEncoderWithoutMeasure() {
-		
 		iaSectionNode.getChildNodes().remove(iaMeasureNode);
 		QppOutputEncoder encoder = new QppOutputEncoder();
 
@@ -90,7 +86,6 @@ public class IaSectionEncoderTest {
 	
 	@Test
 	public void testEncoderWithoutMeasureValue1() {
-		
 		iaMeasureNode.getChildNodes().remove(iaMeasurePerformedNode);
 		QppOutputEncoder encoder = new QppOutputEncoder();
 
@@ -110,7 +105,6 @@ public class IaSectionEncoderTest {
 	
 	@Test
 	public void testEncoderWithoutMeasureValue2() {
-		
 		iaMeasurePerformedNode.putValue("measurePerformed", null);
 		QppOutputEncoder encoder = new QppOutputEncoder();
 
@@ -127,6 +121,5 @@ public class IaSectionEncoderTest {
 		assertThat("expected encoder to return a json representation of an IA Section node", sw.toString(),
 				is(EXPECTED_NO_MEASURE_VALUE_1));
 	}
-
 
 }
