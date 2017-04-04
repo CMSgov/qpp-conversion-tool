@@ -1,11 +1,11 @@
 package gov.cms.qpp.conversion.xml;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -33,14 +33,14 @@ public class XmlUtils {
 			return null;
 		}
 		
-		return fileToDOM(new File(filename));
+		return fileToDOM(Paths.get(filename));
 	}
 	
-	public static Element fileToDOM(File file) throws XmlException {
-		try {
-			return parseXmlStream(new FileInputStream(file));
-		} catch (FileNotFoundException e) {
-			throw new XmlException("File '" + file.getName() + "' Cannot be found", e);
+	public static Element fileToDOM(Path file) throws XmlException {
+		try (InputStream xmlStream = Files.newInputStream(file)) {
+			return parseXmlStream(xmlStream);
+		} catch (IOException e) {
+			throw new XmlException("File '" + file + "' Cannot be parsed", e);
 		}
 	}
 	

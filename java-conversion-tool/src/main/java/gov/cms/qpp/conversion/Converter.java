@@ -4,15 +4,18 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,16 +49,16 @@ public class Converter {
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
 
-	final File inFile;
+	final Path inFile;
 
-	public Converter(File inFile) {
+	public Converter(Path inFile) {
 		this.inFile = inFile;
 	}
 
 	public Integer transform() {
 		boolean hasValidations = false;
 		
-		if (!inFile.exists()) {
+		if (Files.notExists(inFile)) {
 			return 0; // it should if check prior to instantiation.
 		}
 
@@ -74,7 +77,7 @@ public class Converter {
 				validationErrors = validator.validate(decoded);
 			} 
 			
-			String name = inFile.getName().trim();
+			String name = inFile.getFileName().toString().trim();
 			
 			if (validationErrors.isEmpty()) {
 
@@ -126,13 +129,13 @@ public class Converter {
 		return hasValidations ?0 :1;
 	}
 
-	public static Collection<File> validArgs(String[] args) {
+	public static Collection<Path> validArgs(String[] args) {
 		if (args.length < 1) {
 			LOG.error("No filename found...");
 			return new LinkedList<>();
 		}
 
-		Collection<File> validFiles = new LinkedList<>();
+		Collection<Path> validFiles = new LinkedList<>();
 
 		for (String arg : args) {
 			if (SKIP_VALIDATION.equals(arg)) {
@@ -150,10 +153,10 @@ public class Converter {
 		return validFiles;
 	}
 
-	public static Collection<File> checkPath(String path) {
-		Collection<File> existingFiles = new LinkedList<>();
+	public static Collection<Path> checkPath(String path) {
+		Collection<Path> existingFiles = new LinkedList<>();
 
-		if (path == null || path.trim().length() == 0) {
+		if (path == null || path.trim().isEmpty()) {
 			return existingFiles;
 		}
 
@@ -161,8 +164,8 @@ public class Converter {
 			return manyPath(path);
 		}
 
-		File file = new File(path);
-		if (file.exists()) {
+		Path file = Paths.get(path);
+		if (Files.exists(file)) {
 			existingFiles.add(file);
 		} else {
 			LOG.error(path + " does not exist.");
@@ -171,13 +174,14 @@ public class Converter {
 		return existingFiles;
 	}
 
-	public static Collection<File> manyPath(String path) {
-		File inDir = new File(extractDir(path));
-		String fileRegex = wildCardToRegex(path);
+	public static Collection<Path> manyPath(String path) {
+		Path inDir = Paths.get(extractDir(path));
+		Predicate<String> fileRegex = wildCardToRegex(path).asPredicate();
 		try {
-			Collection<File> existingFiles = FileUtils.listFiles(inDir, new RegexFileFilter(fileRegex),
-					DirectoryFileFilter.DIRECTORY);
-			return existingFiles;
+			return Files.list(inDir)
+					.filter(file -> fileRegex.test(file.getFileName().toString()))
+					.filter(file -> !Files.isDirectory(file))
+					.collect(Collectors.toList());
 		} catch (Exception e) {
 			LOG.error("Cannot file path {}{}", inDir, fileRegex);
 			return new LinkedList<>();
@@ -203,7 +207,7 @@ public class Converter {
 		return dirPath.toString();
 	}
 
-	public static String wildCardToRegex(String path) {
+	public static Pattern wildCardToRegex(String path) {
 		String regex = "";
 
 		// this replace should work if the user does not give conflicting OS
@@ -218,7 +222,7 @@ public class Converter {
 
 		if (parts.length > 2) {
 			LOG.error("Too many wild cards in {}", path);
-			return "";
+			return Pattern.compile("");
 		}
 		String lastPart = parts[parts.length - 1];
 
@@ -230,11 +234,11 @@ public class Converter {
 			regex = regex.replaceAll("\\*", ".*");
 		}
 
-		return regex;
+		return Pattern.compile(regex);
 	}
 
 	public static void main(String[] args) {
-		Collection<File> filenames = validArgs(args);
+		Collection<Path> filenames = validArgs(args);
 		filenames.parallelStream().forEach(
 				(filename) -> new Converter(filename).transform());
 	}
