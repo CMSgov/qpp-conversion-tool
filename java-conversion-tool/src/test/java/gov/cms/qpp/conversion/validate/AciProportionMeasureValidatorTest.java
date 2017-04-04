@@ -282,6 +282,7 @@ public class AciProportionMeasureValidatorTest {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectCause(isA(IOException.class));
 
+		//execute
 		AciProportionMeasureValidator validator = new AciProportionMeasureValidator();
 		validator.setMeasureDataFile("Bogus file name");
 	}
@@ -293,6 +294,7 @@ public class AciProportionMeasureValidatorTest {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectCause(isA(JsonParseException.class));
 
+		//execute
 		AciProportionMeasureValidator validator = new AciProportionMeasureValidator();
 		validator.setMeasureDataFile("bad_formatted_measures_data.json");
 	}
