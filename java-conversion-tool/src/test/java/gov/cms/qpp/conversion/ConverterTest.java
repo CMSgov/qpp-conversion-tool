@@ -1,20 +1,33 @@
 package gov.cms.qpp.conversion;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Collection;
-
 import gov.cms.qpp.conversion.decode.DecodeResult;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.ValidationError;
+import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.XmlDecoder;
+import gov.cms.qpp.conversion.validate.QrdaValidator;
 import org.jdom2.Element;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import gov.cms.qpp.conversion.decode.DecodeResult;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class ConverterTest {
 
@@ -217,6 +230,32 @@ public class ConverterTest {
 		jennyJson.deleteOnExit();
 	}
 
+	@Test
+	public void testValidationErrors() throws IOException {
+
+		//set-up
+		final String errorFileName = "defaultedNode.err.txt";
+
+		File defaultJson = new File("defaultedNode.qpp.json");
+		File defaultError = new File(errorFileName);
+
+		defaultJson.delete();
+		defaultError.delete();
+
+		//execute
+		Converter.main(new String[]{"src/test/resources/converter/defaultedNode.xml"});
+
+		//assert
+		assertThat("The JSON file must not exist", defaultJson.exists(), is(false));
+		assertThat("The error file must exist", defaultError.exists(), is(true));
+
+		String errorContent = new String(Files.readAllBytes(Paths.get(errorFileName)));
+		assertThat("The error file is missing the specified content", errorContent, containsString("Jenny"));
+
+		//clean-up
+		defaultError.deleteOnExit();
+	}
+
 	@XmlDecoder(templateId = "867.5309")
 	public static class JennyDecoder extends DefaultDecoder {
 		public JennyDecoder() {
@@ -227,7 +266,7 @@ public class ConverterTest {
 		protected DecodeResult internalDecode(Element element, Node thisnode) {
 			thisnode.putValue("DefaultDecoderFor", "Jenny");
 			thisnode.setId("867.5309");
-			return DecodeResult.TreeFinished;
+			return DecodeResult.TREE_CONTINUE;
 		}
 	}
 
@@ -235,6 +274,14 @@ public class ConverterTest {
 	public static class Jenncoder extends DefaultEncoder {
 		public Jenncoder() {
 			super("default encoder for Jenny");
+		}
+	}
+
+	@Validator(templateId = "867.5309", required = true)
+	public static class TestDefaultValidator extends QrdaValidator {
+		@Override
+		protected List<ValidationError> internalValidate(Node node) {
+			return Arrays.asList(new ValidationError("Test validation error for Jenny"));
 		}
 	}
 }
