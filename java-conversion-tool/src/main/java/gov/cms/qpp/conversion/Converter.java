@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -176,14 +175,14 @@ public class Converter {
 
 	public static Collection<Path> manyPath(String path) {
 		Path inDir = Paths.get(extractDir(path));
-		Predicate<String> fileRegex = wildCardToRegex(path).asPredicate();
+		Pattern fileRegex = wildCardToRegex(path);
 		try {
 			return Files.list(inDir)
-					.filter(file -> fileRegex.test(file.getFileName().toString()))
+					.filter(file -> fileRegex.matcher(file.toString()).matches())
 					.filter(file -> !Files.isDirectory(file))
 					.collect(Collectors.toList());
 		} catch (Exception e) {
-			LOG.error("Cannot file path {}{}", inDir, fileRegex);
+			LOG.error("Cannot file path {}{}", inDir, fileRegex.pattern());
 			return new LinkedList<>();
 		}
 	}

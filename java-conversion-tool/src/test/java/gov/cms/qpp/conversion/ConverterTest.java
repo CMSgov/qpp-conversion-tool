@@ -109,6 +109,8 @@ public class ConverterTest {
 	public void testCheckPath_xml() {
 		Collection<Path> files = Converter.checkPath("src/test/resources/pathTest/*.xml");
 		assertNotNull(files);
+		//[src\test\resources\pathTest\a.xml, src\test\resources\pathTest\b.xml, src\test\resources\pathTest\subdir\d.xml]
+		System.out.println(files);
 		assertEquals(3, files.size());
 
 		Collection<Path> file = Converter.checkPath("src/test/resources/pathTest/a.xml");
