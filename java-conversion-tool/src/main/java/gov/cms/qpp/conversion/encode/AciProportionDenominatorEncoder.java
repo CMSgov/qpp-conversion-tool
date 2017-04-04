@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.NodeType;
 
 import java.util.List;
 

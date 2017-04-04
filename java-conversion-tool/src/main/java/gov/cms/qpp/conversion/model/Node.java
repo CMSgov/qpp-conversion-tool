@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.model;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -134,12 +134,11 @@ public class Node implements Serializable {
 	 * if no matches are found
 	 */
 	public Node findFirstNode(String id) {
-		Function<List, Boolean> proceed = Node::foundNode;
-		List<Node> nodes = this.findNode(id, proceed);
+		List<Node> nodes = this.findNode(id, Node::foundNode);
 		return nodes.isEmpty() ? null : nodes.get(0);
 	}
 
-	private static Boolean foundNode( List nodes ){
+	private static Boolean foundNode(List<?> nodes) {
 		return !nodes.isEmpty();
 	}
 
@@ -162,7 +161,7 @@ public class Node implements Serializable {
 	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
 	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
 	 */
-	public List<Node> findNode(String id, Function<List, Boolean> bail) {
+	public List<Node> findNode(String id, Predicate<List<?>> bail) {
 		List<Node> foundNodes = new ArrayList<>();
 
 		if (id.equals(this.internalId)) {
@@ -170,7 +169,7 @@ public class Node implements Serializable {
 		}
 
 		for (Node childNode : childNodes) {
-			if ( bail != null && bail.apply(foundNodes) ) {
+			if (bail != null && bail.test(foundNodes)) {
 				break;
 			}
 			List<Node> matches = childNode.findNode(id, bail);
