@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.PrintStream;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -178,7 +179,7 @@ public class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		Map clinicalDocMap = ((Map)testJsonWrapper.getObject());
+		Map clinicalDocMap = ((Map) testJsonWrapper.getObject());
 
 		assertThat("Must have a correct program name", clinicalDocMap.get("programName"), is("mips"));
 
@@ -221,13 +222,40 @@ public class ClinicalDocumentEncoderTest {
 	}
 
 	@Test
-	@Ignore
 	public void testInvalidEncoder() {
-		JsonWrapper testJsonWrapper = new JsonWrapper();
+		boolean exception = false;
+		Registry<String, JsonOutputEncoder> invalidRegistry = makeInvalidRegistry();
+		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
 
+		JsonWrapper testJsonWrapper = new JsonWrapper();
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 
-		Registry<String, JsonOutputEncoder> invalidRegistry = new Registry<String, JsonOutputEncoder>(Encoder.class) {
+		setEncoderRegistry(invalidRegistry); //Set Registry with missing class
+		try {
+			clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+		} catch (EncodeException e) {
+			exception = true;
+		}
+		assertThat("Expecting Encode Exception", exception, is(true));
+
+		setEncoderRegistry(validRegistry); //Restore Registry
+	}
+
+	private void setEncoderRegistry(Registry<String, JsonOutputEncoder> invalidRegistry) {
+		try {
+			final Field field = QppOutputEncoder.class.getDeclaredField("ENCODERS");
+			field.setAccessible(true);
+			Field modifiersField = Field.class.getDeclaredField("modifiers");
+			modifiersField.setAccessible(true);
+			modifiersField.setInt(field, field.getModifiers()& ~Modifier.FINAL );
+			field.set(null, invalidRegistry);
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+	}
+
+	private Registry<String, JsonOutputEncoder> makeInvalidRegistry() {
+		return new Registry<String, JsonOutputEncoder>(Encoder.class) {
 			@Override
 			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
 				if ("gov.cms.qpp.conversion.encode.AciSectionEncoder".equals(className)) {
@@ -237,34 +265,6 @@ public class ClinicalDocumentEncoderTest {
 				return Class.forName(className);
 			}
 		};
-
-		boolean exception = false;
-		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
-
-		try {
-			final Field field = clinicalDocumentEncoder.getClass().getDeclaredField("ENCODERS");
-			field.setAccessible(true);
-			field.set(clinicalDocumentEncoder.getClass(), invalidRegistry);
-			clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
-		} catch (NoSuchFieldException exc) {
-
-		} catch (IllegalAccessException ex) {
-
-		} catch (EncodeException e) {
-			exception = true;
-		}
-
-		assertThat("Expecting Encode Exception", exception, is(true));
-
-		try {
-			final Field field = clinicalDocumentEncoder.getClass().getDeclaredField("ENCODERS");
-			field.setAccessible(true);
-			field.set(clinicalDocumentEncoder.getClass(), validRegistry);
-		} catch (NoSuchFieldException exc) {
-
-		} catch (IllegalAccessException ex) {
-
-		}
 	}
-
 }
+
