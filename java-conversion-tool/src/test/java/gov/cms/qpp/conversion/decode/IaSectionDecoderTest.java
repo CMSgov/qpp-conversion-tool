@@ -80,7 +80,6 @@ public class IaSectionDecoderTest {
 		assertThat("returned node should have one child decoder node", iaMeasureNode.getChildNodes().size(), is(1));
 		Node iaMeasurePerformedNode = iaMeasureNode.getChildNodes().get(0);
 		assertThat("returned measurePerformed", iaMeasurePerformedNode.getValue("measurePerformed"), is("Y"));
-
 	}
 
 }

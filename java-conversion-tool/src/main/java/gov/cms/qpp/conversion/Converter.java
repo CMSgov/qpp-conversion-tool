@@ -36,14 +36,15 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
  *
  */
 public class Converter {
-	static final Logger LOG = LoggerFactory.getLogger(Converter.class);
 
-	static final String SKIP_VALIDATION = "--skip-validation";
-	static boolean doValidation = true;
-	
-	static final String SKIP_DEFAULTS = "--skip-defaults";
-	static boolean doDefaults = true;
-	
+	public static final String SKIP_VALIDATION = "--skip-validation";
+	public static final String SKIP_DEFAULTS = "--skip-defaults";
+
+	private static final Logger LOG = LoggerFactory.getLogger(Converter.class);
+
+	private static boolean doDefaults = true;
+	private static boolean doValidation = true;
+
 	final File inFile;
 
 	public Converter(File inFile) {
@@ -51,7 +52,6 @@ public class Converter {
 	}
 
 	public Integer transform() {
-
 		boolean hasValidations = false;
 
 		try {
@@ -181,7 +181,6 @@ public class Converter {
 	}
 
 	public static Collection<File> manyPath(String path) {
-
 		File inDir = new File(extractDir(path));
 		String fileRegex = wildCardToRegex(path);
 		try {
@@ -195,7 +194,6 @@ public class Converter {
 	}
 
 	public static String extractDir(String path) {
-
 		String[] parts = path.split("[\\/\\\\]");
 
 		StringBuilder dirPath = new StringBuilder();
@@ -236,7 +234,6 @@ public class Converter {
 		if ("**".equals(lastPart)) {
 			regex = "."; // any and all files
 		} else {
-
 			// turn the last part into REGEX from file wild cards
 			regex = lastPart.replaceAll("\\.", "\\\\.");
 			regex = regex.replaceAll("\\*", ".*");

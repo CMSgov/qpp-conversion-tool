@@ -20,10 +20,10 @@ public class ReportingParametersActDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		setPerformanceTimeRangeOnNode(element, thisnode);
-		return DecodeResult.TreeFinished;
+		return DecodeResult.TREE_FINISHED;
 	}
 	
-	protected void setPerformanceTimeRangeOnNode(Element element, Node thisnode) {
+	private void setPerformanceTimeRangeOnNode(Element element, Node thisnode) {
 		String performanceStartExprStr = "./ns:effectiveTime/ns:low/@value";
 		String performanceEndExprStr = "./ns:effectiveTime/ns:high/@value";
 
@@ -33,5 +33,4 @@ public class ReportingParametersActDecoder extends QppXmlDecoder {
 		setOnNode(element, performanceStartExprStr, performanceStartConsumer, Filters.attribute(), true);
 		setOnNode(element, performanceEndExprStr, performanceEndConsumer, Filters.attribute(), true);
 	}
-
 }

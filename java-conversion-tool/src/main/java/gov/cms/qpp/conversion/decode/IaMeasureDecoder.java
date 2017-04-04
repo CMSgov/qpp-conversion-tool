@@ -16,22 +16,19 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
  */
 @XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.33")
 public class IaMeasureDecoder extends QppXmlDecoder {
+
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		
 		setMeasureIdOnNode(element, thisnode);
-		
+
 		decode(element.getChild("component", defaultNs), thisnode);
 
-		return DecodeResult.TreeFinished;
-
+		return DecodeResult.TREE_FINISHED;
 	}
 
-	protected void setMeasureIdOnNode(Element element, Node thisnode) {
+	private void setMeasureIdOnNode(Element element, Node thisnode) {
 		String expressionStr = "./ns:reference/ns:externalDocument/ns:id/@extension";
 		Consumer<? super Attribute> consumer = p -> thisnode.putValue("measureId", p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
-	
-	
 }

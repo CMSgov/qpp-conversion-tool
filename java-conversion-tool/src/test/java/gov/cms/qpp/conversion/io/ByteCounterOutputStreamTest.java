@@ -6,7 +6,6 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-
 public class ByteCounterOutputStreamTest {
 
 	@Test

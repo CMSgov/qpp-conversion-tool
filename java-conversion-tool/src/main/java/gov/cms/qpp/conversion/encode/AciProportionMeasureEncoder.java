@@ -41,11 +41,10 @@ public class AciProportionMeasureEncoder extends QppOutputEncoder {
 
 	private JsonWrapper encodeChildren(Map<String, Node> childMapByTemplateId) {
 		JsonWrapper childWrapper = new JsonWrapper();
-
 		for (Node currentChild : childMapByTemplateId.values()) {
 
 			String templateId = currentChild.getId();
-			JsonOutputEncoder childEncoder = encoders.get(currentChild.getId());
+			JsonOutputEncoder childEncoder = ENCODERS.get(currentChild.getId());
 
 			if (childEncoder == null) {
 				addValidation(templateId, "Failed to find an encoder");

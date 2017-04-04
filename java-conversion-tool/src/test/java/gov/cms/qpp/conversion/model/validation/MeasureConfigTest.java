@@ -17,7 +17,6 @@ public class MeasureConfigTest {
 
 	@Test
 	public void testMeasureConfig() {
-
 		ObjectMapper mapper = new ObjectMapper();
 
 		ClassPathResource measuresConfigResource = new ClassPathResource("measures-data-aci-test.json");
@@ -48,7 +47,5 @@ public class MeasureConfigTest {
 		assertThat("measureSet should be null", theConfig.getMeasureSet(), is(nullValue()));
 		assertThat("isBonus should be false", theConfig.isBonus(), is(false));
 		assertThat("objective should be electronicPrescribing", theConfig.getObjective(), is("electronicPrescribing"));
-
 	}
-
 }

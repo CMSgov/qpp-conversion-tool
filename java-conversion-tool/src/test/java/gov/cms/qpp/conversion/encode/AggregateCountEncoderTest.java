@@ -16,9 +16,6 @@ public class AggregateCountEncoderTest {
 	private Node numeratorDenominatorNode;
 	private List<Node> nodes;
 
-	public AggregateCountEncoderTest() {
-	}
-
 	/**
 	 * Set up a default node to be pass to an encoder
 	 */

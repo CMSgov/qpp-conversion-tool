@@ -24,7 +24,7 @@ import static org.junit.Assert.fail;
 
 public class RegistryTest {
 
-	Registry<String, InputDecoder> registry;
+	private Registry<String, InputDecoder> registry;
 
 	@Before
 	public void before() {

@@ -20,13 +20,12 @@ public class MeasurePerformedDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		setMeasurePerformedOnNode(element, thisnode);
-		return DecodeResult.TreeFinished;
+		return DecodeResult.TREE_FINISHED;
 	}
-	
-	protected void setMeasurePerformedOnNode(Element element, Node thisnode) {
+
+	private void setMeasurePerformedOnNode(Element element, Node thisnode) {
 		String expressionStr = "./ns:value/@code";
 		Consumer<? super Attribute> consumer = p -> thisnode.putValue("measurePerformed", p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
-
 }

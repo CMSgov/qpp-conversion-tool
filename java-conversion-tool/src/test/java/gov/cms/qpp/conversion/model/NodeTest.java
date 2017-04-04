@@ -10,7 +10,6 @@ public class NodeTest {
 
 	@Test
 	public void testMembers() {
-
 		Node node = new Node();
 
 		node.setId("ABC");
@@ -34,7 +33,6 @@ public class NodeTest {
 
 	@Test
 	public void testToString() {
-
 		Node node = new Node();
 
 		node.setId("ABC");
