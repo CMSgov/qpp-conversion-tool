@@ -10,27 +10,30 @@ import java.util.List;
 @Validator(templateId = "2.16.840.1.113883.10.20.27.1.2", required = true)
 public class ClinicalDocumentValidator extends NodeValidator {
 
+	public static final String CLINICAL_DOCUMENT_REQUIRED = "Clinical Document Node is required";
+	public static final String EXACTLY_ONE_DOCUMENT_ALLOWED = "Only one Clinical Document Node is allowed";
+	public static final String ONE_CHILD_REQUIRED = "Clinical Document Node must have at least one Aci or Ia Section Node as a child";
+
+	/**
+	 * ClinicalDocumentValidator validates the list of Nodes that were decoded
+	 *
+	 * @param node Node the decodes list of nodes
+	 * @return List<ValidationError>
+	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-
-		// it should not have a parent node
-		// it can have one or more ACI or IA Section Nodes
 
 		List<Node> childNodes = node.getChildNodes();
 
 		if (childNodes.isEmpty()) {
-			this.addValidationError(new ValidationError(
-					"Clinical Document Node must have at least one Aci or Ia Section Node as a child"));
+			this.addValidationError(new ValidationError(ONE_CHILD_REQUIRED));
 		} else {
 			int aciOrIaCount = 0;
 			for (Node child : childNodes) {
-				if (NodeType.ACI_SECTION == child.getType() || NodeType.IA_SECTION == child.getType()) {
-					aciOrIaCount++;
-				}
+				aciOrIaCount += (NodeType.ACI_SECTION == child.getType() || NodeType.IA_SECTION == child.getType()) ? 1:0 ;
 			}
 			if (aciOrIaCount == 0) {
-				this.addValidationError(new ValidationError(
-						"Clinical Document Node must have at least one Aci or Ia Section Node as a child"));
+				this.addValidationError(new ValidationError(ONE_CHILD_REQUIRED));
 			}
 		}
 	}
@@ -41,10 +44,10 @@ public class ClinicalDocumentValidator extends NodeValidator {
 		// there should only be one
 
 		if (nodes.isEmpty()) {
-			this.addValidationError(new ValidationError("Clinical Document Node is required"));
+			this.addValidationError(new ValidationError(CLINICAL_DOCUMENT_REQUIRED));
 		}
 		else if (nodes.size() > 1) {
-			this.addValidationError(new ValidationError("Only one Clinical Document Node is allowed"));
+			this.addValidationError(new ValidationError(EXACTLY_ONE_DOCUMENT_ALLOWED));
 		}
 	}
 }
