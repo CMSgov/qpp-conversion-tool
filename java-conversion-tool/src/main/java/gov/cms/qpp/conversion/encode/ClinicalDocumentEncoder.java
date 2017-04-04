@@ -19,7 +19,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	/**
 	 * internalEncode encodes nodes into Json Wrapper.
 	 *
-	 * @param wrapper will hold the json format of nodes
+	 * @param wrapper  will hold the json format of nodes
 	 * @param thisNode holds the decoded node sections of clinical document
 	 * @throws EncodeException
 	 */
@@ -50,8 +50,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	}
 
 	private JsonWrapper encodeMeasurementSets(Map<String, Node> childMapByTemplateId,
-											  Optional<String> performanceStart,
-											  Optional<String> performanceEnd) throws EncodeException {
+	                                          Optional<String> performanceStart,
+	                                          Optional<String> performanceEnd) throws EncodeException {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
 		JsonOutputEncoder sectionEncoder;
