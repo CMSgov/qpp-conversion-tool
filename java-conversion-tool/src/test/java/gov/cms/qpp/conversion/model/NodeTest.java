@@ -105,23 +105,22 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindNode() {
+	public void testFindFirstNodeSelf() {
+		Node parent = new Node( "findMe" );
+		Node childOne = new Node( "findMe" );
+		parent.addChildNode( childOne );
 
-		//set-up
-		final String childNodeId = "childNode";
+		assertEquals("should find itself if it has the searched id", parent.findFirstNode("findMe"), parent);
+	}
 
-		Node rootNode = new Node("rootNode");
-		Node childNode1 = new Node(childNodeId);
-		Node childNode2 = new Node(childNodeId);
-		rootNode.addChildNode(childNode1);
-		rootNode.addChildNode(childNode2);
+	@Test
+	public void testFindFirstNodeChildNode() {
+		Node parent = new Node();
+		Node childOne = new Node( "don'tFindMe" );
+		Node childTwo = new Node( "findMe" );
+		Node childThree = new Node( "findMe" );
+		parent.addChildNodes( childOne, childTwo, childThree );
 
-		//execute
-		List<Node> foundNodes = rootNode.findNode(childNodeId);
-
-		//assert
-		assertThat("The found nodes size is incorrect", foundNodes, hasSize(2));
-		assertThat("The first found node's Id is incorrect", foundNodes.get(0).getId(), is(childNodeId));
-		assertThat("The second found node's Id is incorrect", foundNodes.get(1).getId(), is(childNodeId));
+		assertEquals("should find first child that has the searched id", parent.findFirstNode("findMe"), childTwo);
 	}
 }
