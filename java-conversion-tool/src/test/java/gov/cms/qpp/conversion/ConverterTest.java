@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,6 +14,8 @@ import java.util.Collection;
 import org.junit.Test;
 
 public class ConverterTest {
+
+	private static final String SEPERATOR = FileSystems.getDefault().getSeparator();
 
 	@Test
 	public void testWildCardToRegex_simpleFileWild() {
@@ -67,7 +69,7 @@ public class ConverterTest {
 	@Test
 	public void testExtractDir_unix() {
 		String regex = Converter.extractDir("path/to/dir/*.xml");
-		String expect = "path" + File.separator + "to" + File.separator + "dir" + File.separator;
+		String expect = "path" + SEPERATOR + "to" + SEPERATOR + "dir" + SEPERATOR;
 		assertEquals(expect, regex);
 	}
 
@@ -76,7 +78,7 @@ public class ConverterTest {
 		// testing the extraction not the building on windows
 		String regex = Converter.extractDir("path\\to\\dir\\*.xml");
 		// this test is running on *nix so expect this path while testing
-		String expect = "path" + File.separator + "to" + File.separator + "dir" + File.separator;
+		String expect = "path" + SEPERATOR + "to" + SEPERATOR + "dir" + SEPERATOR;
 
 		assertEquals(expect, regex);
 	}

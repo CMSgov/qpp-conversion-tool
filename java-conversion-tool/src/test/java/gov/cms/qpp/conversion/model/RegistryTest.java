@@ -11,8 +11,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -26,15 +24,17 @@ import static org.junit.Assert.fail;
 public class RegistryTest {
 
 	private Registry<String, InputDecoder> registry;
+	private PrintStream err;
 
 	@Before
 	public void before() {
 		registry = new Registry<>(XmlDecoder.class);
+		err = System.err;
 	}
 
 	@After
 	public void tearDown() {
-		System.setErr(new PrintStream(new FileOutputStream(FileDescriptor.err)));
+		System.setErr(err);
 	}
 
 	@Test

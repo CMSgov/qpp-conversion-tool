@@ -2,25 +2,28 @@ package gov.cms.qpp.conversion;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.Test;
 
 public class ConverterTestWithAbridged {
 
 	@Test
-	public void testWithAbridgedXml() {
+	public void testWithAbridgedXml() throws IOException {
 		long start = System.currentTimeMillis();
 
 		Converter.main(new String[] { "src/test/resources/valid-QRDA-III-abridged.xml" });
 
 		long finish = System.currentTimeMillis();
 
-		File aJson = new File("valid-QRDA-III-abridged.qpp.json");
+		Path aJson = Paths.get("valid-QRDA-III-abridged.qpp.json");
 
-		assertTrue(aJson.exists());
+		assertTrue(Files.exists(aJson));
 
-		aJson.deleteOnExit();
+		Files.delete(aJson);
 
 		System.out.println("Time to run transform " + (finish - start));
 	}
