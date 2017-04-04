@@ -15,14 +15,10 @@ import java.util.List;
  */
 public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<String, String> {
 
-	List<Node> nodes;
-
-	public JsonOutputEncoder() {
-	}
+	private List<Node> nodes;
 
 	@Override
 	public void encode(Writer writer) throws EncodeException {
-
 		Validations.init();
 
 		try {
@@ -35,7 +31,6 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 		} catch (IOException e) {
 			throw new EncodeException("Failure to encode", e);
 		}
-
 	}
 
 	@Override

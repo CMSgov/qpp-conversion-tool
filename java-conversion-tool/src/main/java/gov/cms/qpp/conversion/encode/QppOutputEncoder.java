@@ -12,10 +12,7 @@ import gov.cms.qpp.conversion.model.Registry;
  */
 public class QppOutputEncoder extends JsonOutputEncoder {
 
-	protected static Registry<String, JsonOutputEncoder> encoders = new Registry<>(Encoder.class);
-
-	public QppOutputEncoder() {
-	}
+	protected static final Registry<String, JsonOutputEncoder> ENCODERS = new Registry<>(Encoder.class);
 
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
@@ -23,7 +20,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 		// write nothing top level specific at this point
 		// check the encoder Registry for
 		// an Encoder to call for the Node, and then call its children
-		JsonOutputEncoder encoder = encoders.get(node.getId());
+		JsonOutputEncoder encoder = ENCODERS.get(node.getId());
 
 		if (null != encoder) {
 			encoder.encode(wrapper, node);

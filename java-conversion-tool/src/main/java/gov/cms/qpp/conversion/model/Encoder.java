@@ -16,6 +16,7 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 @Retention(RUNTIME)
 public @interface Encoder {
+
 	/**
 	 * The param(s) is/are the string pattern(s) that the defined handler will
 	 * act.
@@ -23,13 +24,5 @@ public @interface Encoder {
 	 * @return
 	 */
 	String templateId();
-
-	/**
-	 * An output type. This may be a mime type, but for now we'll just use
-	 * "json". Actual implementation in the future.
-	 * 
-	 * @return
-	 */
-	String type() default "json";
 
 }

@@ -26,7 +26,7 @@ public class AggregateCountDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		setSciNumeratorDenominatorOnNode(element, thisnode);
-		return DecodeResult.TreeFinished;
+		return DecodeResult.TREE_FINISHED;
 	}
 
 	/**

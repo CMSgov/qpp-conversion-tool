@@ -27,8 +27,7 @@ public class Node implements Serializable {
 	private boolean validated;
 
 	public Node() {
-		this.data = new HashMap<>();
-		this.setChildNodes(new ArrayList<>());
+		this.childNodes = new ArrayList<>();
 	}
 
 	public Node(String id) {
@@ -192,5 +191,4 @@ public class Node implements Serializable {
 	public NodeType getType() {
 		return type;
 	}
-
 }

@@ -56,6 +56,5 @@ public class AciProportionDenominatorDecoderTest {
         Node target = aciProportionDenominatorNode.getChildNodes().get(0);
         // Get the test value
         assertThat("test value should be mytestvalue", target.getValue("aggregateCount"), is("800"));
-
     }
 }

@@ -5,6 +5,9 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +18,7 @@ import gov.cms.qpp.conversion.model.Validations;
 
 public class EncoderTest {
 
-	String[] templateIDs = new String[] {
+	private final List<String> templateIDs = Arrays.asList(
 			"2.16.840.1.113883.10.20.24.2.2",
 			
 			"2.16.840.1.113883.10.20.27.1.2",
@@ -43,8 +46,8 @@ public class EncoderTest {
 			"2.16.840.1.113883.10.20.27.3.30",
 			"2.16.840.1.113883.10.20.27.3.31",
 			"2.16.840.1.113883.10.20.27.3.32",
-			"2.16.840.1.113883.10.20.27.3.33",
-	};
+			"2.16.840.1.113883.10.20.27.3.33"
+	);
 	
 	
 	@Before

@@ -152,7 +152,6 @@ public class AciProportionMeasureDecoderTest {
 
 	@Test
 	public void testInternalDecode() throws Exception {
-
 		//set-up
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");

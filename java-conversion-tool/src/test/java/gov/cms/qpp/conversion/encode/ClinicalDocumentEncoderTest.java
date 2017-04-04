@@ -26,7 +26,7 @@ public class ClinicalDocumentEncoderTest {
 			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
 			+ "\n    \"source\" : \"provider\"," + "\n    \"performanceStart\" : \"2017-01-01\","
 			+ "\n    \"performanceEnd\" : \"2017-12-31\"" + "\n  } ]\n}";
-	
+
 	private static final String EXPECTED_NO_REPORTING = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
 			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
 			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\","
@@ -34,7 +34,7 @@ public class ClinicalDocumentEncoderTest {
 			+ "{\n      \"measureId\" : \"ACI-PEA-1\",\n      \"value\" : {\n"
 			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
 			+ "\n    \"source\" : \"provider\"\n  } ]\n}";
-	
+
 	private static final String EXPECTED_NO_ACI = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
 			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
 			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\"," + "\n  \"performanceYear\" : 2017\n}";
@@ -49,9 +49,6 @@ public class ClinicalDocumentEncoderTest {
 	private Node reportingParametersSectionNode;
 	private Node clinicalDocumentNode;
 	private List<Node> nodes;
-
-	public ClinicalDocumentEncoderTest() {
-	}
 
 	@Before
 	public void createNode() {
@@ -88,7 +85,7 @@ public class ClinicalDocumentEncoderTest {
 		reportingParametersActNode.setId("2.16.840.1.113883.10.20.27.3.23");
 		reportingParametersActNode.putValue("performanceStart", "20170101");
 		reportingParametersActNode.putValue("performanceEnd", "20171231");
-		
+
 		reportingParametersSectionNode = new Node();
 		reportingParametersSectionNode.setId("2.16.840.1.113883.10.20.27.2.6");
 		reportingParametersSectionNode.addChildNode(reportingParametersActNode);
@@ -104,7 +101,7 @@ public class ClinicalDocumentEncoderTest {
 		nodes = new ArrayList<>();
 		nodes.add(clinicalDocumentNode);
 	}
-	
+
 	@After
 	public void teardown() throws Exception {
 		Validations.clear();
@@ -127,12 +124,11 @@ public class ClinicalDocumentEncoderTest {
 		assertThat("expected encoder to return a json representation of a clinical document node", sw.toString(),
 				is(EXPECTED));
 	}
-	
-	
+
 	@Test
 	public void testEncoderWithoutReporting() {
 		clinicalDocumentNode.getChildNodes().remove(reportingParametersSectionNode);
-		
+
 		QppOutputEncoder encoder = new QppOutputEncoder();
 
 		encoder.setNodes(nodes);
@@ -148,11 +144,11 @@ public class ClinicalDocumentEncoderTest {
 		assertThat("expected encoder to return a json representation of a clinical document node", sw.toString(),
 				is(EXPECTED_NO_REPORTING));
 	}
-	
+
 	@Test
 	public void testEncoderWithoutMeasures() {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
-		
+
 		QppOutputEncoder encoder = new QppOutputEncoder();
 
 		encoder.setNodes(nodes);
@@ -168,7 +164,5 @@ public class ClinicalDocumentEncoderTest {
 		assertThat("expected encoder to return a json representation of a clinical document node", sw.toString(),
 				is(EXPECTED_NO_ACI));
 	}
-
-
 
 }

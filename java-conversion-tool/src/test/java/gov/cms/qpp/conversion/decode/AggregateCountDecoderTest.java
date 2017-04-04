@@ -51,9 +51,6 @@ public class AggregateCountDecoderTest {
             + "</component>"
             + "</entry>";
 
-    public AggregateCountDecoderTest() {
-    }
-
     /**
      * Test of internalDecode method, of class AggregateCountDecoder.
      */

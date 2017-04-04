@@ -16,7 +16,6 @@ public class AciProportionMeasureValidatorTest {
 
 	@Test
 	public void testMeasurePresent() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -48,7 +47,6 @@ public class AciProportionMeasureValidatorTest {
 
 	@Test
 	public void testMeasureNotPresent() {
-
 		Node aciSectionNode = new Node();
 		aciSectionNode.setId("2.16.840.1.113883.10.20.27.2.5");
 		aciSectionNode.putValue("category", "aci");
@@ -71,7 +69,6 @@ public class AciProportionMeasureValidatorTest {
 
 	@Test
 	public void testMeasureNodeInvalidParent() {
-
 		Node clinicalDocumentNode = new Node();
 		clinicalDocumentNode.setId("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
@@ -101,7 +98,6 @@ public class AciProportionMeasureValidatorTest {
 
 	@Test
 	public void testNoChildNodes() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -128,7 +124,6 @@ public class AciProportionMeasureValidatorTest {
 
 	@Test
 	public void testNoNumerator() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -162,7 +157,6 @@ public class AciProportionMeasureValidatorTest {
 
 	@Test
 	public void testNoDenominator() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -196,7 +190,6 @@ public class AciProportionMeasureValidatorTest {
 
 	@Test
 	public void testTooManyNumerators() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -232,7 +225,6 @@ public class AciProportionMeasureValidatorTest {
 
 	@Test
 	public void testTooManyDenominators() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -268,7 +260,6 @@ public class AciProportionMeasureValidatorTest {
 
 	@Test
 	public void testWrongMeasurePresent() {
-
 		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
