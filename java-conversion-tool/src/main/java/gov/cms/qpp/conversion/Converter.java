@@ -1,21 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.RegexFileFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
@@ -28,6 +12,21 @@ import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
@@ -52,7 +51,7 @@ public class Converter {
 
 	public Integer transform() {
 
-		boolean hasValidations = false;
+		boolean hasValidationErrors = false;
 
 		try {
 			Node decoded = XmlInputDecoder.decodeXml(XmlUtils.fileToDOM(inFile));
@@ -74,7 +73,7 @@ public class Converter {
 			if (validationErrors.isEmpty()) {
 				writeConvertedFile(decoded, name);
 			} else {
-				hasValidations = true;
+				hasValidationErrors = true;
 				writeValidationErrors(name, validationErrors);
 			}
 		} catch (XmlInputFileException | XmlException xe) {
@@ -82,7 +81,7 @@ public class Converter {
 		} catch (Exception allE) {
 			LOG.error("Unexpected exception occurred during conversion", allE);
 		}
-		return hasValidations ? 0 : 1;
+		return hasValidationErrors ? 0 : 1;
 	}
 
 	private void writeConvertedFile(Node decoded, String name) {
