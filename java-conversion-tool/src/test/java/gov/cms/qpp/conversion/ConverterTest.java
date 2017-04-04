@@ -9,6 +9,7 @@ import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.XmlDecoder;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
+import gov.cms.qpp.conversion.xml.XmlException;
 import org.jdom2.Element;
 import org.junit.Test;
 
@@ -20,7 +21,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import gov.cms.qpp.conversion.decode.DecodeResult;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
@@ -28,7 +34,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
 
+@RunWith(PowerMockRunner.class)
 public class ConverterTest {
 
 	@Test
@@ -254,6 +268,22 @@ public class ConverterTest {
 
 		//clean-up
 		defaultError.deleteOnExit();
+	}
+
+	@Test
+	@PrepareForTest({LoggerFactory.class})
+	public void testInvalidXml() throws IOException {
+
+		//set-up
+		mockStatic(LoggerFactory.class);
+		Logger logger = mock(Logger.class);
+		when(LoggerFactory.getLogger(any(Class.class))).thenReturn(logger);
+
+		//execute
+		Converter.main(new String[]{"src/test/resources/converter/illFormed.xml"});
+
+		//assert
+		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
 	}
 
 	@XmlDecoder(templateId = "867.5309")
