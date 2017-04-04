@@ -177,12 +177,12 @@ public class Converter {
 		Path inDir = Paths.get(extractDir(path));
 		Pattern fileRegex = wildCardToRegex(path);
 		try {
-			return Files.list(inDir)
+			return Files.walk(inDir)
 					.filter(file -> fileRegex.matcher(file.toString()).matches())
 					.filter(file -> !Files.isDirectory(file))
 					.collect(Collectors.toList());
 		} catch (Exception e) {
-			LOG.error("Cannot file path {}{}", inDir, fileRegex.pattern());
+			LOG.error("Cannot file path {} {}", inDir, fileRegex.pattern());
 			return new LinkedList<>();
 		}
 	}
