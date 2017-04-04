@@ -2,24 +2,17 @@ package gov.cms.qpp.conversion.encode;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
-import java.io.BufferedWriter;
 import java.io.PrintStream;
-import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import gov.cms.qpp.conversion.io.ByteCounterOutputStream;
 import gov.cms.qpp.conversion.model.*;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ClinicalDocumentEncoderTest {
@@ -179,7 +172,7 @@ public class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		Map clinicalDocMap = ((Map) testJsonWrapper.getObject());
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
 		assertThat("Must have a correct program name", clinicalDocMap.get("programName"), is("mips"));
 
