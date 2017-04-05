@@ -86,6 +86,13 @@ public class ConverterTest {
 	}
 
 	@Test
+	public void testExtractDir_wildcard() {
+		String regex = Converter.extractDir("path/*/*.xml");
+		String expect = "path" + File.separator;
+		assertEquals(expect, regex);
+	}
+
+	@Test
 	public void testExtractDir_none() {
 		String regex = Converter.extractDir("*.xml");
 		String expect = ".";

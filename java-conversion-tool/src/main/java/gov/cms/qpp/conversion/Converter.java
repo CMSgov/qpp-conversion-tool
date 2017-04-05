@@ -50,6 +50,11 @@ public class Converter {
 		this.inFile = inFile;
 	}
 
+	/**
+	 * Perform transformation on {@link Converter#inFile}
+	 *
+	 * @return
+	 */
 	public Integer transform() {
 
 		boolean hasValidationErrors = false;
@@ -121,6 +126,12 @@ public class Converter {
 		}
 	}
 
+	/**
+	 * Validate filename arguments
+	 *
+	 * @param args filenames
+	 * @return
+	 */
 	public static Collection<File> validArgs(String[] args) {
 		if (args.length < 1) {
 			LOG.error("No filename found...");
@@ -159,6 +170,12 @@ public class Converter {
 		return false;
 	}
 
+	/**
+	 * Produce collection of files found within the given path
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static Collection<File> checkPath(String path) {
 		Collection<File> existingFiles = new LinkedList<>();
 
@@ -180,6 +197,12 @@ public class Converter {
 		return existingFiles;
 	}
 
+	/**
+	 * Accumulates collection of files that match the given path
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static Collection<File> manyPath(String path) {
 		File inDir = new File(extractDir(path));
 		String fileRegex = wildCardToRegex(path);
@@ -193,6 +216,12 @@ public class Converter {
 		}
 	}
 
+	/**
+	 * Extract base directory of given path
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static String extractDir(String path) {
 		String[] parts = path.split("[\\/\\\\]");
 
@@ -212,6 +241,12 @@ public class Converter {
 		return dirPath.toString();
 	}
 
+	/**
+	 * Creates file finding regex from given wildcard containing path
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static String wildCardToRegex(String path) {
 		String regex;
 
@@ -242,6 +277,11 @@ public class Converter {
 		return regex;
 	}
 
+	/**
+	 * Entry point for the conversion process
+	 *
+	 * @param args file path(s) of resources subject to conversion
+	 */
 	public static void main(String[] args) {
 		Collection<File> filenames = validArgs(args);
 		filenames.parallelStream().forEach(
