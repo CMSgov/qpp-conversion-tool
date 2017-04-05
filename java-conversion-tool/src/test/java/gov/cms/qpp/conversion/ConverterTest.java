@@ -381,7 +381,7 @@ public class ConverterTest {
 		});
 
 		//assert
-		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(Exception.class) );
+		verify(logger).error( eq("The file is not a valid XML document"), any(Exception.class) );
 	}
 
 	@XmlDecoder(templateId = "867.5309")
