@@ -4,8 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 
@@ -22,15 +20,18 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class AutoDetectQrdaTest {
 
+	private PrintStream err;
+
 	@Before
 	public void setup() throws Exception {
 		Validations.init();
 		System.setProperty("line.separator", "\n");
+		err = System.err;
 	}
 
 	@After
 	public void teardown() throws Exception {
-		System.setErr(new PrintStream(new FileOutputStream(FileDescriptor.err)));
+		System.setErr(err);
 		System.setProperty("line.separator", System.lineSeparator());
 		Validations.clear();
 	}
