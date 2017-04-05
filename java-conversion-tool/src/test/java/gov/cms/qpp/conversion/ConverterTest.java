@@ -21,9 +21,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
@@ -246,16 +248,16 @@ public class ConverterTest {
 	public void testValidationErrors() throws IOException {
 
 		//set-up
-		final String errorFileName = "defaultedNode.err.txt";
+		final String errorFileName = "errantDefaultedNode.err.txt";
 
-		File defaultJson = new File("defaultedNode.qpp.json");
+		File defaultJson = new File("errantDefaultedNode.qpp.json");
 		File defaultError = new File(errorFileName);
 
 		defaultJson.delete();
 		defaultError.delete();
 
 		//execute
-		Converter.main(new String[]{"src/test/resources/converter/defaultedNode.xml"});
+		Converter.main(new String[]{"src/test/resources/converter/errantDefaultedNode.xml"});
 
 		//assert
 		assertThat("The JSON file must not exist", defaultJson.exists(), is(false));
@@ -286,7 +288,7 @@ public class ConverterTest {
 
 	@Test
 	@PrepareForTest({LoggerFactory.class, Converter.class, QppOutputEncoder.class})
-	public void test() throws Exception {
+	public void testEncodingExceptions() throws Exception {
 
 		//set-up
 		mockStatic( LoggerFactory.class );
@@ -308,6 +310,54 @@ public class ConverterTest {
 		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
 	}
 
+	@Test
+	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
+	public void testIOEncodingError() throws Exception {
+
+		//set-up
+		mockStatic( LoggerFactory.class );
+		Logger logger = mock( Logger.class );
+		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+
+		whenNew( FileWriter.class )
+				.withParameterTypes( File.class )
+				.withArguments( any( File.class ) )
+				.thenThrow( new IOException() );
+
+		//execute
+		Converter.main(new String[]{Converter.SKIP_VALIDATION,
+				Converter.SKIP_DEFAULTS,
+				"src/test/resources/converter/defaultedNode.xml"
+		});
+
+		//assert
+		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+	}
+
+	@Test
+	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
+	public void testUnexpectedEncodingError() throws Exception {
+
+		//set-up
+		mockStatic( LoggerFactory.class );
+		Logger logger = mock( Logger.class );
+		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+
+		whenNew( FileWriter.class )
+				.withParameterTypes( File.class )
+				.withArguments( any( File.class ) )
+				.thenReturn( null );
+
+		//execute
+		Converter.main(new String[]{Converter.SKIP_VALIDATION,
+				Converter.SKIP_DEFAULTS,
+				"src/test/resources/converter/defaultedNode.xml"
+		});
+
+		//assert
+		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(Exception.class) );
+	}
+
 
 
 	@XmlDecoder(templateId = "867.5309")
@@ -320,6 +370,9 @@ public class ConverterTest {
 		protected DecodeResult internalDecode(Element element, Node thisnode) {
 			thisnode.putValue("DefaultDecoderFor", "Jenny");
 			thisnode.setId("867.5309");
+			if (element.getChildren().size() > 1) {
+				thisnode.putValue( "problem", "too many children" );
+			}
 			return DecodeResult.TREE_CONTINUE;
 		}
 	}
@@ -335,7 +388,14 @@ public class ConverterTest {
 	public static class TestDefaultValidator extends QrdaValidator {
 		@Override
 		protected List<ValidationError> internalValidate(Node node) {
-			return Arrays.asList(new ValidationError("Test validation error for Jenny"));
+			List<ValidationError> errors = new ArrayList<>();
+			Consumer<Node> aggError = n -> {
+				if ( n.getValue( "problem" ) != null ){
+					errors.add( new ValidationError("Test validation error for Jenny"));
+				}
+			};
+			node.getChildNodes().forEach( aggError );
+			return errors;
 		}
 	}
 }
