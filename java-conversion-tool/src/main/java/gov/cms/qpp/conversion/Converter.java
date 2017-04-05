@@ -35,12 +35,12 @@ public class Converter {
 	protected static final String SKIP_DEFAULTS = "--skip-defaults";
 	private static final Logger LOG = LoggerFactory.getLogger(Converter.class);
 
-	final private static String NO_INPUT_FILE_SPECIFIED = "No input filename was specified.";
-	final private static String CANNOT_LOCATE_FILE_PATH = "Cannot locate file path {}{}";
-	final private static String FILE_DOES_NOT_EXIST = "() does not exist.";
-	final private static String TOO_MANY_WILD_CARDS = "Too many wild cards in {}";
-	final private static String MISSING_INPUT_FILE = "The input file {} doesn't exist ";
-	final private static String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
+	private static final String NO_INPUT_FILE_SPECIFIED = "No input filename was specified.";
+	private static final  String CANNOT_LOCATE_FILE_PATH = "Cannot locate file path {}{}";
+	private static final String FILE_DOES_NOT_EXIST = "() does not exist.";
+	private static final String TOO_MANY_WILD_CARDS = "Too many wild cards in {}";
+	private static final String MISSING_INPUT_FILE = "The input file {} doesn't exist ";
+	final private static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
@@ -216,8 +216,7 @@ public class Converter {
 				validationErrors = validator.validate(decoded);
 			}
 			if (validationErrors.isEmpty()) {
-				try {
-					Writer writer = new FileWriter(getOutputFile(inputFileName));
+				try (Writer writer = new FileWriter(getOutputFile(inputFileName));){
 					encoder.setNodes(Arrays.asList(decoded));
 					encoder.encode(writer);
 				} catch (IOException | EncodeException e) {
