@@ -99,7 +99,8 @@ public class Converter {
 		File outFile = new File(outName);
 		LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
 
-		try (Writer writer = new FileWriter(outFile)) {
+		try {
+			Writer writer = new FileWriter(outFile);
             encoder.setNodes(Arrays.asList(decoded));
             encoder.encode(writer);
             writer.close();
