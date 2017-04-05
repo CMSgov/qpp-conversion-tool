@@ -9,6 +9,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jacoco.skip.instrument>true</jacoco.skip.instrument>
 	</properties>
 
 	<modules>
@@ -31,17 +32,27 @@
 					</configuration>
 					<executions>
 						<execution>
+							<id>jacoco-instrument</id>
+							<phase>test</phase>
+							<goals>
+								<goal>instrument</goal>
+							</goals>
+							<configuration>
+								<skip>${jacoco.skip.instrument}</skip>
+							</configuration>
+						</execution>
+						<execution>
 							<id>jacoco-initialize</id>
 							<goals>
 								<goal>prepare-agent</goal>
 							</goals>
 						</execution>
-					<execution>
-					<id>jacoco-site</id>
-					<phase>verify</phase>
-					<goals>
-						<goal>report</goal>
-					</goals>
+						<execution>
+							<id>jacoco-site</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>report</goal>
+							</goals>
 						</execution>
 					</executions>
 				</plugin>
