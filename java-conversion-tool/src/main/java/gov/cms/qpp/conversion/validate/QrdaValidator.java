@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The engine that executes the validators on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
+ */
 public class QrdaValidator {
 
 	private static final Registry<String, NodeValidator> VALIDATORS = new Registry<>(Validator.class);
@@ -18,6 +21,12 @@ public class QrdaValidator {
 	private final Map<String, List<Node>> nodesForTemplateIds = new HashMap<>();
 	private final List<ValidationError> validationErrors = new ArrayList<>();
 
+	/**
+	 * Validate all the {@link gov.cms.qpp.conversion.model.Node}s from the passed in Node and on down.
+	 *
+	 * @param rootNode The root node that all other nodes descend from.
+	 * @return The list of validation errors for the entire tree of nodes.
+	 */
 	public List<ValidationError> validate(Node rootNode) {
 
 		//validate each node while traversing the tree

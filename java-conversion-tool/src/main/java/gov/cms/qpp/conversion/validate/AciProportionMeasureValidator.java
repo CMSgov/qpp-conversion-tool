@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Validate all ACI Proportion Type Measures
+ * Validate all ACI Proportion Type Measures.
  */
 @Validator(templateId = "2.16.840.1.113883.10.20.27.3.28", required = true)
 public class AciProportionMeasureValidator extends NodeValidator {
@@ -43,13 +43,12 @@ public class AciProportionMeasureValidator extends NodeValidator {
 	 *
 	 * Validates the following.
 	 * <ul>
-	 *     <li>ACI Proportion Type Measure nodes have an ACI section as a parent</li>
-	 *     <li>ACI Proportion Type Measure nodes have one and only one numerator node</li>
-	 *     <li>ACI Proportion Type Measure nodes have one and only one denominator node</li>
+	 *     <li>ACI Proportion Type Measure nodes have an ACI section as a parent.</li>
+	 *     <li>ACI Proportion Type Measure nodes have one and only one numerator node.</li>
+	 *     <li>ACI Proportion Type Measure nodes have one and only one denominator node.</li>
 	 * </ul>
 	 *
 	 * @param node The node that represents an ACI Proportion Type Measure.
-	 * @return A list of errors in converting ACI Proportion Type Measure.
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
@@ -70,7 +69,6 @@ public class AciProportionMeasureValidator extends NodeValidator {
 	 * </ul>
 	 *
 	 * @param nodes A list of all the ACI Proportion Type Measure nodes.
-	 * @return A list of errors in converting ACI Proportion Type Measure.
 	 */
 	@Override
 	protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
