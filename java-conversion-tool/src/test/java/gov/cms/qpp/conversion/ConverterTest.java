@@ -280,7 +280,7 @@ public class ConverterTest {
 		when(LoggerFactory.getLogger(any(Class.class))).thenReturn(logger);
 
 		//execute
-		Converter.main(new String[]{"src/test/resources/converter/illFormed.xml"});
+		Converter.main(new String[]{"src/test/resources/non-xml-file.xml"});
 
 		//assert
 		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
