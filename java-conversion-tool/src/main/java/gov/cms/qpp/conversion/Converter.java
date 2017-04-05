@@ -82,7 +82,7 @@ public class Converter {
 				hasValidationErrors = true;
 				writeValidationErrors(name, validationErrors);
 			}
-		} catch (XmlInputFileException | XmlException xe) {
+		} catch (IOException | EncodeException | XmlException xe) {
 			LOG.error("The file is not a valid XML document", xe);
 		} catch (Exception allE) {
 			LOG.error("Unexpected exception occurred during conversion", allE);
@@ -90,7 +90,7 @@ public class Converter {
 		return hasValidationErrors ? 0 : 1;
 	}
 
-	private void writeConvertedFile(Node decoded, String name) {
+	private void writeConvertedFile(Node decoded, String name) throws IOException, EncodeException {
 		JsonOutputEncoder encoder = new QppOutputEncoder();
 
 		LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
@@ -99,31 +99,38 @@ public class Converter {
 		File outFile = new File(outName);
 		LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
 
+		Writer writer = null;
+
 		try {
-			Writer writer = new FileWriter(outFile);
+			writer = new FileWriter(outFile);
             encoder.setNodes(Arrays.asList(decoded));
             encoder.encode(writer);
-            writer.close();
             // do something with encode validations
-        } catch (IOException | EncodeException e) {
-            throw new XmlInputFileException("Issues decoding/encoding.", e);
         } finally {
-            Validations.clear();
+			if (writer != null) {
+				writer.close();
+			}
+			Validations.clear();
         }
 	}
 
-	private void writeValidationErrors(String name, List<ValidationError> validationErrors){
+	private void writeValidationErrors(String name, List<ValidationError> validationErrors) throws IOException {
 		String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
 		File outFile = new File(errName);
 		LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
 
-		try (Writer errWriter = new FileWriter(outFile)) {
+		Writer errWriter = null;
+		try {
+			errWriter = new FileWriter(outFile);
 			for (ValidationError error : validationErrors) {
 				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
 			}
 		} catch (IOException e) {
 			LOG.error("Could not write to file: {} {}", errName, e);
 		} finally {
+			if (errWriter != null){
+				errWriter.close();
+			}
 			Validations.clear();
 		}
 	}

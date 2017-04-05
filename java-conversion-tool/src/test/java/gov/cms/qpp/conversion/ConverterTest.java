@@ -30,6 +30,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
@@ -96,6 +97,13 @@ public class ConverterTest {
 	@Test
 	public void testExtractDir_none() {
 		String regex = Converter.extractDir("*.xml");
+		String expect = ".";
+		assertEquals(expect, regex);
+	}
+
+	@Test
+	public void testExtractDir_root() {
+		String regex = Converter.extractDir( File.separator );
 		String expect = ".";
 		assertEquals(expect, regex);
 	}
@@ -381,6 +389,54 @@ public class ConverterTest {
 
 		//assert
 		verify(logger).error( eq("The file is not a valid XML document"), any(Exception.class) );
+	}
+
+	@Test
+	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
+	public void testValidationErrorWriterInstantiation() throws Exception {
+
+		//set-up
+		mockStatic( LoggerFactory.class );
+		Logger logger = mock( Logger.class );
+		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+
+		whenNew( FileWriter.class )
+				.withParameterTypes( File.class )
+				.withArguments( any( File.class ) )
+				.thenThrow( new IOException() );
+
+		//execute
+		Converter.main(new String[]{"src/test/resources/converter/defaultedNode.xml"});
+
+		//assert
+		verify(logger).error( eq("Could not write to file: {} {}" ),
+				eq( "defaultedNode.err.txt" ),
+				any(Exception.class) );
+	}
+
+	@Test
+	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
+	public void testExceptionOnWriteValidationErrors() throws Exception {
+
+		//set-up
+		mockStatic( LoggerFactory.class );
+		Logger logger = mock( Logger.class );
+		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+
+		FileWriter writer = mock( FileWriter.class );
+		doThrow( new IOException() ).when( writer ).write( anyString() );
+		whenNew( FileWriter.class )
+				.withParameterTypes( File.class )
+				.withArguments( any( File.class ) )
+				.thenReturn( writer );
+
+		//execute
+		Converter.main(new String[] {"src/test/resources/converter/defaultedNode.xml"});
+
+		//assert
+		verify(logger).error( eq("Could not write to file: {} {}" ),
+				eq( "defaultedNode.err.txt" ),
+				any(Exception.class) );
 	}
 
 	@XmlDecoder(templateId = "867.5309")
