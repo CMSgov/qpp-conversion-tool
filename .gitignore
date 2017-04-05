@@ -1,3 +1,5 @@
+.DS_Store
+java-conversion-tool/jacoco.exec
 *.orig
 target/
 .settings/

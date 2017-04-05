@@ -32,6 +32,27 @@
 					</configuration>
 					<executions>
 						<execution>
+							<id>default-instrument</id>
+							<goals>
+								<goal>instrument</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>default-restore-instrumented-classes</id>
+							<goals>
+								<goal>restore-instrumented-classes</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>report</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>report</goal>
+							</goals>
+						</execution>
+
+						<!--
+						<execution>
 							<id>jacoco-instrument</id>
 							<phase>test</phase>
 							<goals>
@@ -47,6 +68,7 @@
 								<goal>prepare-agent</goal>
 							</goals>
 						</execution>
+						-->
 						<execution>
 							<id>jacoco-site</id>
 							<phase>verify</phase>
@@ -72,6 +94,12 @@
 			<artifactId>hamcrest-integration</artifactId>
 			<version>1.3</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>org.jacoco.agent</artifactId>
+			<version>0.7.9</version>
+			<classifier>runtime</classifier>
 		</dependency>
 	</dependencies>
 
