@@ -40,7 +40,7 @@ public class Converter {
 	private static final String FILE_DOES_NOT_EXIST = "() does not exist.";
 	private static final String TOO_MANY_WILD_CARDS = "Too many wild cards in {}";
 	private static final String MISSING_INPUT_FILE = "The input file {} doesn't exist ";
-	final private static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
+	private static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
