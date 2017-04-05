@@ -358,7 +358,31 @@ public class ConverterTest {
 		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(Exception.class) );
 	}
 
+	@Test
+	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
+	public void testExceptionOnWriterClose() throws Exception {
 
+		//set-up
+		mockStatic( LoggerFactory.class );
+		Logger logger = mock( Logger.class );
+		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+
+		FileWriter writer = mock( FileWriter.class );
+		doThrow( new IOException() ).when( writer ).close();
+		whenNew( FileWriter.class )
+				.withParameterTypes( File.class )
+				.withArguments( any( File.class ) )
+				.thenReturn( writer );
+
+		//execute
+		Converter.main(new String[]{Converter.SKIP_VALIDATION,
+				Converter.SKIP_DEFAULTS,
+				"src/test/resources/converter/defaultedNode.xml"
+		});
+
+		//assert
+		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(Exception.class) );
+	}
 
 	@XmlDecoder(templateId = "867.5309")
 	public static class JennyDecoder extends DefaultDecoder {

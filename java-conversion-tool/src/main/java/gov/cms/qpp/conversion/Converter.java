@@ -102,6 +102,7 @@ public class Converter {
 		try (Writer writer = new FileWriter(outFile)) {
             encoder.setNodes(Arrays.asList(decoded));
             encoder.encode(writer);
+            writer.close();
             // do something with encode validations
         } catch (IOException | EncodeException e) {
             throw new XmlInputFileException("Issues decoding/encoding.", e);
