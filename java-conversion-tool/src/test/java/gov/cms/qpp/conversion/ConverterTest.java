@@ -2,18 +2,22 @@ package gov.cms.qpp.conversion;
 
 import gov.cms.qpp.conversion.decode.DecodeResult;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.encode.EncodeException;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
-import gov.cms.qpp.conversion.model.Encoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.ValidationError;
-import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.XmlDecoder;
+import gov.cms.qpp.conversion.model.*;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import org.jdom2.Element;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -21,26 +25,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith(PowerMockRunner.class)
 public class ConverterTest {
@@ -285,6 +276,32 @@ public class ConverterTest {
 		//assert
 		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
 	}
+
+	@Test
+	@PrepareForTest({LoggerFactory.class, Converter.class, QppOutputEncoder.class})
+	public void test() throws Exception {
+
+		//set-up
+		mockStatic( LoggerFactory.class );
+		Logger logger = mock( Logger.class );
+		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+
+		QppOutputEncoder encoder = mock( QppOutputEncoder.class );
+		whenNew( QppOutputEncoder.class ).withNoArguments().thenReturn( encoder );
+		EncodeException ex = new EncodeException( "mocked", new RuntimeException() );
+		doThrow( ex ).when( encoder ).encode( any( FileWriter.class ) );
+
+		//execute
+		Converter.main(new String[]{Converter.SKIP_VALIDATION,
+				Converter.SKIP_DEFAULTS,
+				"src/test/resources/converter/defaultedNode.xml"
+		});
+
+		//assert
+		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+	}
+
+
 
 	@XmlDecoder(templateId = "867.5309")
 	public static class JennyDecoder extends DefaultDecoder {
