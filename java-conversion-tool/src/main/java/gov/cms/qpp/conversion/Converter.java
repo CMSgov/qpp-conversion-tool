@@ -80,7 +80,7 @@ public class Converter {
 	 * @param args String[] Command line parameters
 	 * @return Collection<File> list of file(s) that are to be transformed
 	 */
-	public static Collection<Path> validArgs(String[] args) {
+	protected static Collection<Path> validArgs(String[] args) {
 		if (args.length < 1) {
 			LOG.error(NO_INPUT_FILE_SPECIFIED);
 			return new LinkedList<>();
