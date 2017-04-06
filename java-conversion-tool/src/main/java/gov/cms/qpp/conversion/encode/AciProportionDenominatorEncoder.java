@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+
 import java.util.List;
 
 /**
@@ -27,9 +28,10 @@ public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 
 			JsonWrapper value = new JsonWrapper();
 			denominatorValueEncoder.encode(value, denominatorValueNode);
+			Integer denominator = value.getInteger("value");
 
-			if (null != value.getInteger("value")) {
-				wrapper.putObject("denominator", value.getInteger("value"));
+			if (null != denominator) {
+				wrapper.putObject("denominator", denominator);
 			}
 		}
 	}

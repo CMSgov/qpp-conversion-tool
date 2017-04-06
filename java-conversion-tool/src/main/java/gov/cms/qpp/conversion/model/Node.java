@@ -1,11 +1,8 @@
 package gov.cms.qpp.conversion.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -74,6 +71,15 @@ public class Node implements Serializable {
 		this.childNodes = childNodes;
 	}
 
+	/**
+	 * convenience for adding multiple child nodes
+	 *
+	 * @param childNodes
+	 */
+	public void addChildNodes(Node... childNodes) {
+		this.setChildNodes( Arrays.asList( childNodes ) );
+	}
+
 	public void addChildNode(Node childNode) {
 		if (childNode == null || childNode == this) {
 			return;
@@ -95,16 +101,13 @@ public class Node implements Serializable {
 	}
 
 	protected String childrenToString(String tabs) {
-		StringBuilder children = new StringBuilder();
+		StringJoiner children = new StringJoiner("\n");
 		if (childNodes.isEmpty()) {
-			children.append(" -> (none)");
+			children.add(" -> (none)");
 		} else {
-			children.append(": \n");
-			String sep = "";
-			String toBeSep = "\n";
+			children.add(": ");
 			for (Node child : childNodes) {
-				children.append(sep).append(child.toString(tabs));
-				sep = toBeSep;
+				children.add(child.toString(tabs));
 			}
 		}
 		return tabs + "childNodes of " + internalId + children;
@@ -122,7 +125,43 @@ public class Node implements Serializable {
 		this.validated = validated;
 	}
 
+	/**
+	 * Search this and child nodes for first node with matching id
+	 *
+	 * @param id templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
+	 * @return the first {@link gov.cms.qpp.conversion.model.Node} in this
+	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id or null
+	 * if no matches are found
+	 */
+	public Node findFirstNode(String id) {
+		List<Node> nodes = this.findNode(id, Node::foundNode);
+		return nodes.isEmpty() ? null : nodes.get(0);
+	}
+
+	private static Boolean foundNode(List<?> nodes) {
+		return !nodes.isEmpty();
+	}
+
+	/**
+	 * Search of this and child nodes for matching ids
+	 *
+	 * @param id templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
+	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
+	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
+	 */
 	public List<Node> findNode(String id) {
+		return findNode( id, null );
+	}
+
+	/**
+	 * Search of this and child nodes for matching ids
+	 *
+	 * @param id templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
+	 * @param bail lambda that consumes a list and returns a boolean that governs early exit
+	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
+	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
+	 */
+	public List<Node> findNode(String id, Predicate<List<?>> bail) {
 		List<Node> foundNodes = new ArrayList<>();
 
 		if (id.equals(this.internalId)) {
@@ -130,7 +169,11 @@ public class Node implements Serializable {
 		}
 
 		for (Node childNode : childNodes) {
-			foundNodes.addAll(childNode.findNode(id));
+			if (bail != null && bail.test(foundNodes)) {
+				break;
+			}
+			List<Node> matches = childNode.findNode(id, bail);
+			foundNodes.addAll( matches );
 		}
 
 		return foundNodes;

@@ -6,6 +6,7 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
 import gov.cms.qpp.conversion.model.*;
+import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import org.jdom2.Element;
@@ -16,15 +17,17 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
@@ -38,51 +41,53 @@ import static org.powermock.api.mockito.PowerMockito.*;
 @RunWith(PowerMockRunner.class)
 public class ConverterTest {
 
+	private static final String SEPERATOR = FileSystems.getDefault().getSeparator();
+
 	@Test
 	public void testNonexistantFile() {
-		String regex = Converter.wildCardToRegex("*.xml");
+		String regex = Converter.wildCardToRegex("*.xml").pattern();
 		String expect = ".*\\.xml";
 		assertEquals(expect, regex);
 	}
 
 	@Test
 	public void testWildCardToRegex_simpleFileWild() {
-		String regex = Converter.wildCardToRegex("*.xml");
+		String regex = Converter.wildCardToRegex("*.xml").pattern();
 		String expect = ".*\\.xml";
 		assertEquals(expect, regex);
 	}
 
 	@Test
 	public void testWildCardToRegex_pathFileWild() {
-		String regex = Converter.wildCardToRegex("path/to/dir/*.xml");
+		String regex = Converter.wildCardToRegex("path/to/dir/*.xml").pattern();
 		String expect = ".*\\.xml";
 		assertEquals(expect, regex);
 	}
 
 	@Test
 	public void testWildCardToRegex_pathAllWild() {
-		String regex = Converter.wildCardToRegex("path/to/dir/*");
+		String regex = Converter.wildCardToRegex("path/to/dir/*").pattern();
 		String expect = ".*";
 		assertEquals(expect, regex);
 	}
 
 	@Test
 	public void testWildCardToRegex_pathExtraWild() {
-		String regex = Converter.wildCardToRegex("path/to/dir/*.xm*");
+		String regex = Converter.wildCardToRegex("path/to/dir/*.xm*").pattern();
 		String expect = ".*\\.xm.*";
 		assertEquals(expect, regex);
 	}
 
 	@Test
 	public void testWildCardToRegex_doubleStar() {
-		String regex = Converter.wildCardToRegex("path/to/dir/**");
+		String regex = Converter.wildCardToRegex("path/to/dir/**").pattern();
 		String expect = ".";
 		assertEquals(expect, regex);
 	}
 
 	@Test
 	public void testWildCardToRegex_tooManyWild() {
-		String regex = Converter.wildCardToRegex("path/*/*/*.xml");
+		String regex = Converter.wildCardToRegex("path/*/*/*.xml").pattern();
 		String expect = "";
 		assertEquals(expect, regex);
 	}
@@ -111,7 +116,7 @@ public class ConverterTest {
 	@Test
 	public void testExtractDir_unix() {
 		String regex = Converter.extractDir("path/to/dir/*.xml");
-		String expect = "path" + File.separator + "to" + File.separator + "dir" + File.separator;
+		String expect = "path" + SEPERATOR + "to" + SEPERATOR + "dir" + SEPERATOR;
 		assertEquals(expect, regex);
 	}
 
@@ -120,61 +125,72 @@ public class ConverterTest {
 		// testing the extraction not the building on windows
 		String regex = Converter.extractDir("path\\to\\dir\\*.xml");
 		// this test is running on *nix so expect this path while testing
-		String expect = "path" + File.separator + "to" + File.separator + "dir" + File.separator;
+		String expect = "path" + SEPERATOR + "to" + SEPERATOR + "dir" + SEPERATOR;
 
 		assertEquals(expect, regex);
 	}
 
 	@Test
 	public void testManyPath_xml() {
-		Collection<File> files = Converter.manyPath("src/test/resources/pathTest/*.xml");
+		Collection<Path> files = Converter.manyPath("src/test/resources/pathTest/*.xml");
 		assertNotNull(files);
 		assertEquals(3, files.size());
 
-		File aFile = new File("src/test/resources/pathTest/a.xml");
+		Path aFile = Paths.get("src/test/resources/pathTest/a.xml");
 		assertTrue(files.contains(aFile));
-		File bFile = new File("src/test/resources/pathTest/a.xml");
+		Path bFile = Paths.get("src/test/resources/pathTest/a.xml");
 		assertTrue(files.contains(bFile));
-		File dFile = new File("src/test/resources/pathTest/subdir/d.xml");
+		Path dFile = Paths.get("src/test/resources/pathTest/subdir/d.xml");
 		assertTrue(files.contains(dFile));
 	}
 
 	@Test
+	@PrepareForTest({Converter.class})
+	public void testManyPath_dir() {
+		// ensure a directory
+		stub(method(Converter.class, "wildCardToRegex", String.class)).toReturn( Pattern.compile("src/test/resources/pathTest") );
+
+		Collection<Path> files = Converter.manyPath("src/test/resources/pathTest");
+		assertNotNull(files);
+		assertEquals(0, files.size());
+	}
+
+	@Test
 	public void testManyPath_doubleWild() {
-		Collection<File> files = Converter.manyPath("src/test/resources/pathTest/*.xm*");
+		Collection<Path> files = Converter.manyPath("src/test/resources/pathTest/*.xm*");
 		assertNotNull(files);
 		assertEquals(4, files.size());
 
-		File cFile = new File("src/test/resources/pathTest/c.xmm");
+		Path cFile = Paths.get("src/test/resources/pathTest/c.xmm");
 		assertTrue(files.contains(cFile));
 	}
 
 	@Test
 	public void testCheckPath_xml() {
-		Collection<File> files = Converter.checkPath("src/test/resources/pathTest/*.xml");
+		Collection<Path> files = Converter.checkPath("src/test/resources/pathTest/*.xml");
 		assertNotNull(files);
 		assertEquals(3, files.size());
 
-		Collection<File> file = Converter.checkPath("src/test/resources/pathTest/a.xml");
+		Collection<Path> file = Converter.checkPath("src/test/resources/pathTest/a.xml");
 		assertNotNull(file);
 		assertEquals(1, file.size());
 
-		Collection<File> none = Converter.checkPath("notExist/a.xml");
+		Collection<Path> none = Converter.checkPath("notExist/a.xml");
 		assertNotNull(none);
 		assertEquals(0, none.size());
 
-		Collection<File> nill = Converter.checkPath(null);
+		Collection<Path> nill = Converter.checkPath(null);
 		assertNotNull(nill);
 		assertEquals(0, nill.size());
 
-		Collection<File> blank = Converter.checkPath("   ");
+		Collection<Path> blank = Converter.checkPath("   ");
 		assertNotNull(blank);
 		assertEquals(0, blank.size());
 	}
 
 	@Test
 	public void testManyPath_pathNotFound() {
-		Collection<File> files = Converter.manyPath("notExist/*.xml");
+		Collection<Path> files = Converter.manyPath("notExist/*.xml");
 
 		assertNotNull(files);
 		assertEquals(0, files.size());
@@ -182,28 +198,28 @@ public class ConverterTest {
 
 	@Test
 	public void testValidArgs() {
-		Collection<File> files = Converter.validArgs(
-				new String[]{"src/test/resources/pathTest/a.xml", "src/test/resources/pathTest/subdir/*.xml"});
+		Collection<Path> files = Converter.validArgs(
+				new String[] { "src/test/resources/pathTest/a.xml", "src/test/resources/pathTest/subdir/*.xml" });
 
 		assertNotNull(files);
 		assertEquals(2, files.size());
 
-		File aFile = new File("src/test/resources/pathTest/a.xml");
+		Path aFile = Paths.get("src/test/resources/pathTest/a.xml");
 		assertTrue(files.contains(aFile));
-		File dFile = new File("src/test/resources/pathTest/subdir/d.xml");
+		Path dFile = Paths.get("src/test/resources/pathTest/subdir/d.xml");
 		assertTrue(files.contains(dFile));
 	}
 
 	@Test
 	public void testValidArgs_noFiles() {
-		Collection<File> files = Converter.validArgs(new String[]{});
+		Collection<Path> files = Converter.validArgs(new String[] {});
 
 		assertNotNull(files);
 		assertEquals(0, files.size());
 	}
 
 	@Test
-	public void testMultiThreadRun_testSkipValidationToo() {
+	public void testMultiThreadRun_testSkipValidationToo() throws IOException {
 		long start = System.currentTimeMillis();
 
 		Converter.main(new String[]{Converter.SKIP_VALIDATION,
@@ -212,16 +228,16 @@ public class ConverterTest {
 
 		long finish = System.currentTimeMillis();
 
-		File aJson = new File("a.qpp.json");
-		File dJson = new File("d.qpp.json");
+		Path aJson = Paths.get("a.qpp.json");
+		Path dJson = Paths.get("d.qpp.json");
 
 		// a.qpp.json and d.qpp.json will not exist because the a.xml and d.xml
 		// file will get validation
-		assertTrue( aJson.exists() );
-		assertTrue( dJson.exists() );
+		assertTrue( Files.exists(aJson) );
+		assertTrue( Files.exists(dJson) );
 
-		aJson.deleteOnExit();
-		dJson.deleteOnExit();
+		Files.delete(aJson);
+		Files.delete(dJson);
 
 		System.out.println("Time to run two thread transform " + (finish - start));
 	}
@@ -318,18 +334,15 @@ public class ConverterTest {
 	}
 
 	@Test
-	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
+	@PrepareForTest({LoggerFactory.class, Converter.class, Files.class})
 	public void testIOEncodingError() throws Exception {
 
 		//set-up
+		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toThrow( new IOException() );
+
 		mockStatic( LoggerFactory.class );
 		Logger logger = mock( Logger.class );
 		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
-
-		whenNew( FileWriter.class )
-				.withParameterTypes( File.class )
-				.withArguments( any( File.class ) )
-				.thenThrow( new IOException() );
 
 		//execute
 		Converter.main(new String[]{Converter.SKIP_VALIDATION,
@@ -346,14 +359,11 @@ public class ConverterTest {
 	public void testUnexpectedEncodingError() throws Exception {
 
 		//set-up
+		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn( null );
+
 		mockStatic( LoggerFactory.class );
 		Logger logger = mock( Logger.class );
 		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
-
-		whenNew( FileWriter.class )
-				.withParameterTypes( File.class )
-				.withArguments( any( File.class ) )
-				.thenReturn( null );
 
 		//execute
 		Converter.main(new String[]{Converter.SKIP_VALIDATION,
@@ -370,16 +380,13 @@ public class ConverterTest {
 	public void testExceptionOnWriterClose() throws Exception {
 
 		//set-up
+		BufferedWriter writer = mock( BufferedWriter.class );
+		doThrow( new IOException() ).when( writer ).close();
+		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn( writer );
+
 		mockStatic( LoggerFactory.class );
 		Logger logger = mock( Logger.class );
 		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
-
-		FileWriter writer = mock( FileWriter.class );
-		doThrow( new IOException() ).when( writer ).close();
-		whenNew( FileWriter.class )
-				.withParameterTypes( File.class )
-				.withArguments( any( File.class ) )
-				.thenReturn( writer );
 
 		//execute
 		Converter.main(new String[]{Converter.SKIP_VALIDATION,
@@ -396,14 +403,11 @@ public class ConverterTest {
 	public void testValidationErrorWriterInstantiation() throws Exception {
 
 		//set-up
+		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toThrow( new IOException() );
+
 		mockStatic( LoggerFactory.class );
 		Logger logger = mock( Logger.class );
 		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
-
-		whenNew( FileWriter.class )
-				.withParameterTypes( File.class )
-				.withArguments( any( File.class ) )
-				.thenThrow( new IOException() );
 
 		//execute
 		Converter.main(new String[]{"src/test/resources/converter/defaultedNode.xml"});
@@ -416,19 +420,35 @@ public class ConverterTest {
 
 	@Test
 	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
-	public void testExceptionOnWriteValidationErrors() throws Exception {
+	public void testValidationErrorWriterInstantiationNull() throws Exception {
 
 		//set-up
+		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toThrow( null );
+
 		mockStatic( LoggerFactory.class );
 		Logger logger = mock( Logger.class );
 		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
 
-		FileWriter writer = mock( FileWriter.class );
+		//execute
+		Converter.main(new String[]{"src/test/resources/converter/defaultedNode.xml"});
+
+		//assert
+		verify(logger).error( eq("Unexpected exception occurred during conversion" ),
+				any(Exception.class) );
+	}
+
+	@Test
+	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
+	public void testExceptionOnWriteValidationErrors() throws Exception {
+
+		//set-up
+		BufferedWriter writer = mock( BufferedWriter.class );
 		doThrow( new IOException() ).when( writer ).write( anyString() );
-		whenNew( FileWriter.class )
-				.withParameterTypes( File.class )
-				.withArguments( any( File.class ) )
-				.thenReturn( writer );
+		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn( writer );
+
+		mockStatic( LoggerFactory.class );
+		Logger logger = mock( Logger.class );
+		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
 
 		//execute
 		Converter.main(new String[] {"src/test/resources/converter/defaultedNode.xml"});
@@ -464,17 +484,15 @@ public class ConverterTest {
 	}
 
 	@Validator(templateId = "867.5309", required = true)
-	public static class TestDefaultValidator extends QrdaValidator {
+	public static class TestDefaultValidator extends NodeValidator {
 		@Override
-		protected List<ValidationError> internalValidate(Node node) {
-			List<ValidationError> errors = new ArrayList<>();
-			Consumer<Node> aggError = n -> {
-				if ( n.getValue( "problem" ) != null ){
-					errors.add( new ValidationError("Test validation error for Jenny"));
-				}
-			};
-			node.getChildNodes().forEach( aggError );
-			return errors;
+		protected void internalValidateSingleNode(final Node node) {
+			if ( node.getValue( "problem" ) != null ){
+				this.addValidationError( new ValidationError("Test validation error for Jenny"));
+			}
 		}
+
+		@Override
+		protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {}
 	}
 }
