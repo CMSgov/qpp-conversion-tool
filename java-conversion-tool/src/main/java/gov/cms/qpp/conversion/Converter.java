@@ -101,18 +101,18 @@ public class Converter {
 		Path outFile = Paths.get(outName);
 		LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
 
-		try ( Writer writer = Files.newBufferedWriter(outFile) ) {
-            encoder.setNodes(Arrays.asList(decoded));
-            encoder.encode(writer);
-            // do something with encode validations
-        } catch (IOException | EncodeException e) { // coverage ignore candidate
+		try ( Writer writer = Files.newBufferedWriter(outFile) ){
+			encoder.setNodes(Arrays.asList(decoded));
+			encoder.encode(writer);
+			// do something with encode validations
+		} catch (IOException | EncodeException e) { // coverage ignore candidate
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
 		} finally {
 			Validations.clear();
 		}
 	}
 
-	private void writeValidationErrors(String name, List<ValidationError> validationErrors) throws IOException {
+	private void writeValidationErrors(String name, List<ValidationError> validationErrors) {
 		String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
 		Path outFile = Paths.get(errName);
 		LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
