@@ -1,5 +1,10 @@
 package gov.cms.qpp.conversion.xml;
 
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,18 +14,14 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
-
 /**
- * Utility for parsing varios input types into a JDom Element.
- * 
- * @author David Uselmann
- *
+ * Utility for parsing various input types into a JDom Element.
  */
 public class XmlUtils {
+
+	private XmlUtils() {
+		//private constructor so utility class cannot be instantiated
+	}
 	
 	public static Element stringToDOM(String xml) throws XmlException {
 		if (xml == null) {

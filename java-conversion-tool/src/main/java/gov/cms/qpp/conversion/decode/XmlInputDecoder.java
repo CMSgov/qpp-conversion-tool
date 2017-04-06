@@ -114,7 +114,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @param parent Node to be decoded into
  	 * @return Action to take after decode
 	 */
-	abstract protected DecodeResult decode(Element element, Node parent);
+	protected abstract DecodeResult decode(Element element, Node parent);
 
 	/**
 	 * Top level element to decode
@@ -122,7 +122,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @param xmlDoc Element to be decoded
 	 * @return Root node
 	 */
-	abstract protected Node decodeRoot(Element xmlDoc);
+	protected abstract Node decodeRoot(Element xmlDoc);
 
 	/**
 	 * Represents an internal parsing of an element
@@ -131,7 +131,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @param thisNode Node to be decoded into
 	 * @return Action to take after decode
 	 */
-	abstract protected DecodeResult internalDecode(Element element, Node thisNode);
+	protected abstract DecodeResult internalDecode(Element element, Node thisNode);
 
 	/**
 	 * Determines if the Decoder can handle the input
