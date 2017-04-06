@@ -50,7 +50,6 @@
 					<groupId>org.pitest</groupId>
 					<artifactId>pitest-maven</artifactId>
 					<version>1.2.0</version>
-
 					<executions>
 						<execution>
 							<id>mutationCoverage</id>
@@ -65,16 +64,18 @@
 						<maxDependencyDistance>1</maxDependencyDistance>
 						<timeoutFactor>1.0</timeoutFactor>
 						<timeoutConstant>2500</timeoutConstant>
-						<!--
-						<mutationThreshold>90</mutationThreshold>
-						<coverageThreshold>90</coverageThreshold>
-						-->
+						<threads>4</threads>
+						<mutationThreshold>85</mutationThreshold>
+						<coverageThreshold>85</coverageThreshold>
 						<targetClasses>
-							<param>gov.cms.qpp.*</param>
+							<param>gov.cms.qpp.conversion.*</param>
 						</targetClasses>
 						<targetTests>
-							<param>gov.cms.qpp.*</param>
+							<param>gov.cms.qpp.conversion.*</param>
 						</targetTests>
+						<excludedMethods>
+							<param>transform</param>
+						</excludedMethods>
 					</configuration>
 				</plugin>
 			</plugins>

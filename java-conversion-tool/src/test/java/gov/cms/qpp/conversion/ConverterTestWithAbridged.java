@@ -15,7 +15,8 @@ public class ConverterTestWithAbridged {
 	public void testWithAbridgedXml() throws IOException {
 		long start = System.currentTimeMillis();
 
-		Converter.main(new String[] { "src/test/resources/valid-QRDA-III-abridged.xml" });
+		Converter.main(new String[] { Converter.SKIP_VALIDATION,
+				"src/test/resources/valid-QRDA-III-abridged.xml" });
 
 		long finish = System.currentTimeMillis();
 
