@@ -82,7 +82,7 @@ public class Converter {
 	 */
 	public static Collection<Path> validArgs(String[] args) {
 		if (args.length < 1) {
-			LOG.error("No filename found...");
+			LOG.error(NO_INPUT_FILE_SPECIFIED);
 			return new LinkedList<>();
 		}
 
@@ -138,7 +138,7 @@ public class Converter {
 		if (Files.exists(file)) {
 			existingFiles.add(file);
 		} else {
-			LOG.error(FILE_DOES_NOT_EXIST, path);
+			LOG.error(String.format(FILE_DOES_NOT_EXIST, path));
 		}
 		return existingFiles;
 	}
@@ -158,7 +158,7 @@ public class Converter {
 					.filter(file -> !Files.isDirectory(file))
 					.collect(Collectors.toList());
 		} catch (Exception e) {
-			LOG.error(CANNOT_LOCATE_FILE_PATH, path, inDir, fileRegex);
+			LOG.error(String.format(CANNOT_LOCATE_FILE_PATH, path, inDir), e);
 			return new LinkedList<>();
 		}
 	}
@@ -205,7 +205,7 @@ public class Converter {
 		String[] parts = wild.split("[\\/\\\\]");
 
 		if (parts.length > 2) {
-			LOG.error(TOO_MANY_WILD_CARDS, path);
+			LOG.error(String.format(TOO_MANY_WILD_CARDS, path));
 			return Pattern.compile("");
 		}
 		String lastPart = parts[parts.length - 1];
@@ -242,9 +242,9 @@ public class Converter {
 				writeValidationErrors(inputFileName, validationErrors);
 			}
 		} catch (XmlInputFileException | XmlException xe) {
-			LOG.error(NOT_VALID_XML_DOCUMENT);
+			LOG.error(NOT_VALID_XML_DOCUMENT, xe);
 		} catch (Exception allE) {
-			LOG.error("Unexpected exception occurred during conversion");// Eat all exceptions in the call
+			LOG.error("Unexpected exception occurred during conversion",allE);// Eat all exceptions in the call
 		}
 		return validationErrors.isEmpty() ? 1 : 0;
 	}
@@ -252,7 +252,7 @@ public class Converter {
 	private void writeConvertedFile(Node decoded, String name) {
 		JsonOutputEncoder encoder = new QppOutputEncoder();
 
-		LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
+		LOG.info(String.format("Decoded template ID {} from file '{}'", decoded.getId(), name));
 		Path outFile = getOutputFile( name, ".qpp.json");
 
 		try ( Writer writer = Files.newBufferedWriter(outFile) ){
@@ -274,7 +274,7 @@ public class Converter {
 				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
 			}
 		} catch (IOException e) { // coverage ignore candidate
-			LOG.error("Could not write to file: {}", outFile.toString());
+			LOG.error("Could not write to file: {}", outFile.toString(), e);
 		} finally {
 			Validations.clear();
 		}
@@ -283,7 +283,7 @@ public class Converter {
 	private Path getOutputFile(String name, String extension) {
 		String outName = name.replaceFirst("(?i)(\\.xml)?$", extension);
 		Path outFile = Paths.get(outName);
-		LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
+		LOG.info(String.format("Writing to file '{}'", outFile.toAbsolutePath()));
 		return outFile;
 	}
 }
