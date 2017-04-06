@@ -19,6 +19,9 @@ dependencies:
 test:
   pre:
     - cd frontend; npm install -g protractor
+    - webdriver-manager update
+    - webdriver-manager start:
+        background: true
   override:
     - mvn integration-test
     - mvn jacoco:report

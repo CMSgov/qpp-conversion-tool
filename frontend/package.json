@@ -9,7 +9,8 @@
         "test": "ng test",
         "test:ci": "ng test --single-run=true --watch=false --progress=false --code-coverage",
         "lint": "ng lint",
-        "e2e": "ng e2e"
+        "e2e": "ng e2e",
+        "e2e:ci": "ng e2e --watch=false --progress=false"
     },
     "private": true,
     "dependencies": {
