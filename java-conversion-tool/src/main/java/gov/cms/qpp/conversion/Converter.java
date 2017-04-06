@@ -44,7 +44,6 @@ public class Converter {
 	public static final String SKIP_DEFAULTS = "--skip-defaults";
 
 	private static final Logger LOG = LoggerFactory.getLogger(Converter.class);
-	private static final String ERROR_FILE_EXTENSION = ".err.txt";
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
@@ -105,7 +104,7 @@ public class Converter {
 			} else {
 				hasValidations = true;
 				
-				String errName = name.replaceFirst("(?i)(\\.xml)?$", ERROR_FILE_EXTENSION);
+				String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
 
 				Path outFile = Paths.get(errName);
 				LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
