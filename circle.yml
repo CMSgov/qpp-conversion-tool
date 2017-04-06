@@ -3,9 +3,6 @@ machine:
     version: openjdk8
   node:
     version: 7
-  environment:
-    FRONTEND: frontend
-
 
 dependencies:
   override:
@@ -24,11 +21,8 @@ test:
     - mvn jacoco:report
     - cd java-conversion-tool/src/main; ../../../sonarlint-cli-2.1.0.566/bin/sonarlint
     - cd frontend; npm run lint:
-        pwd: $FRONTEND
     - cd frontend; npm run test:
-        pwd: $FRONTEND
     - cd frontend; npm run e2e:
-        pwd: $FRONTEND
   post:
     - cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS
     - mkdir $CIRCLE_ARTIFACTS/sonarlint
