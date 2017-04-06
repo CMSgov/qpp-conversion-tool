@@ -82,7 +82,7 @@ public class Converter {
 				hasValidationErrors = true;
 				writeValidationErrors(name, validationErrors);
 			}
-		} catch (IOException | EncodeException | XmlException xe) {
+		} catch (XmlInputFileException | XmlException xe) {
 			LOG.error("The file is not a valid XML document", xe);
 		} catch (Exception allE) {
 			LOG.error("Unexpected exception occurred during conversion", allE);
@@ -99,19 +99,15 @@ public class Converter {
 		File outFile = new File(outName);
 		LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
 
-		Writer writer = null;
-
-		try {
-			writer = new FileWriter(outFile);
+		try ( Writer writer = new FileWriter(outFile) ) { //ignore coverage?
             encoder.setNodes(Arrays.asList(decoded));
             encoder.encode(writer);
             // do something with encode validations
-        } finally {
-			if (writer != null) {
-				writer.close();
-			}
+        } catch (IOException | EncodeException e) {
+			throw new XmlInputFileException("Issues decoding/encoding.", e);
+		} finally {
 			Validations.clear();
-        }
+		}
 	}
 
 	private void writeValidationErrors(String name, List<ValidationError> validationErrors) throws IOException {
@@ -119,18 +115,13 @@ public class Converter {
 		File outFile = new File(errName);
 		LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
 
-		Writer errWriter = null;
-		try {
-			errWriter = new FileWriter(outFile);
+		try ( Writer errWriter = new FileWriter(outFile) ) { //ignore coverage?
 			for (ValidationError error : validationErrors) {
 				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
 			}
 		} catch (IOException e) {
 			LOG.error("Could not write to file: {} {}", errName, e);
 		} finally {
-			if (errWriter != null){
-				errWriter.close();
-			}
 			Validations.clear();
 		}
 	}
