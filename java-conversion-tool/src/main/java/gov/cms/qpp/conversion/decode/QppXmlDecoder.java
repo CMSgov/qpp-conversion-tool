@@ -11,8 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * Top level Decoder for parsing into QPP format. Contains a map of child
- * Decoders that can Decode an element.
+ * Top level Decoder for parsing into QPP format.
  */
 public class QppXmlDecoder extends XmlInputDecoder {
 	private static final Logger LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
@@ -21,11 +20,12 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	private static final String TEMPLATE_ID = "templateId";
 
 	/**
-	 * Iterates over the element to find all child elements. Finds any elements
-	 * that match a templateId in the Decoder registry. If there are any
-	 * matches, calls internalDecode with that Element on the Decoder class.
-	 * Aggregates Nodes that are returned.
-	 * 
+	 * Decode iterates over the elements to find all child elements
+	 * to decode any matching elements found in the Decoder Registry
+	 *
+	 * @param element Current highest level XML element
+	 * @param parentNode Parent of the current nodes to be parsed
+	 * @return Status of the child element
 	 */
 	@Override
 	public DecodeResult decode(Element element, Node parentNode) {
@@ -91,7 +91,10 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	}
 
 	/**
-	 * Starting at the top of the XML or XML fragment.
+	 * Decodes the top of the XML document
+	 *
+	 * @param xmlDoc XML Document to be parsed
+	 * @return Root node
 	 */
 	@Override
 	protected Node decodeRoot(Element xmlDoc) {
@@ -118,7 +121,13 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		
 		return rootNode;
 	}
-	
+
+	/**
+	 * Determines whether the XML Document provided is a valid QRDA-III formatted file
+	 *
+	 * @param xmlDoc XML Document to be tested
+	 * @return If the XML document is a correctly QRDA-III formatted file
+	 */
 	@Override
 	protected boolean accepts(Element xmlDoc) {
 
@@ -156,26 +165,47 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return containsTemplateId;
 	}
 
+	/**
+	 * Top level decode
+	 *
+	 * @param element Top element in the XML document
+	 * @param thisnode Top node created in the XML document
+	 * @return No action is returned for the top level internalDecode.
+	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		// this is the top level, so just return null
 		return DecodeResult.NO_ACTION;
 	}
 
+	/**
+	 * Retrieves all validations
+	 *
+	 * @return validations
+	 */
 	@Override
 	public Iterable<String> validations() {
 		return Validations.values();
 	}
 
+	/**
+	 * Retrieves all validations for a specific template id
+	 *
+	 * @param templateId Identification of Element
+	 * @return validations
+	 */
 	@Override
 	public List<String> getValidationsById(String templateId) {
 		return Validations.getValidationsById(templateId);
 	}
 
+	/**
+	 * Adds a validation to the current list of validation errors
+	 *
+	 * @param templateId Identification of the validation error
+	 * @param validation Validation error to be added
+	 */
 	@Override
 	public void addValidation(String templateId, String validation) {
 		Validations.addValidation(templateId, validation);
 	}
-
-
 }
