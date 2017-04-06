@@ -93,14 +93,14 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @param element
 	 * @return
 	 */
-	abstract protected DecodeResult decode(Element element, Node parent);
+	protected abstract DecodeResult decode(Element element, Node parent);
 
 	/**
 	 * When you have no parent
 	 * @param xmlDoc
 	 * @return
 	 */
-	abstract protected Node decodeRoot(Element xmlDoc);
+	protected abstract Node decodeRoot(Element xmlDoc);
 
 	/**
 	 * Represents an internal parsing of an element
@@ -109,7 +109,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @param thisNode created for this decode
 	 * @return
 	 */
-	abstract protected DecodeResult internalDecode(Element element, Node thisnode);
+	protected abstract DecodeResult internalDecode(Element element, Node thisNode);
 
 	/**
 	 * See if the Decoder can handle the input

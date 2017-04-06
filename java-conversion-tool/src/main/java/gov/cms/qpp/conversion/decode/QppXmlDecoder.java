@@ -40,6 +40,17 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 		List<Element> childElements = element.getChildren();
 
+		DecodeResult decodeResult = decodeChildren(element, parentNode, currentNode, childElements);
+		if (decodeResult != null) {
+			return decodeResult;
+		}
+
+		return DecodeResult.TREE_CONTINUE;
+	}
+
+	private DecodeResult decodeChildren(final Element element, final Node parentNode, Node currentNode,
+	                                    final List<Element> childElements) {
+
 		for (Element childEl : childElements) {
 
 			if (TEMPLATE_ID.equals(childEl.getName())) {
@@ -52,42 +63,51 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					continue;
 				}
 				LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
-				
-					Node childNode = new Node(parentNode, templateId);
-				
+
+				Node childNode = new Node(parentNode, templateId);
+
 				setNamespace(childEl, childDecoder);
-				
+
 				// the child decoder might require the entire its siblings
 				DecodeResult result = childDecoder.internalDecode(element, childNode);
-				
+
 				parentNode.addChildNode(childNode); // TODO ensure we need to always add
 				currentNode = childNode; // TODO this works for AciSectionDecoder
-				
-				if (result == null) {
-					// TODO this looks like a continue ????
-					// the only time we get here is NullReturnDecoderTest
-						Node placeholderNode = new Node(parentNode, "placeholder");
-					return decode(childEl, placeholderNode);
-				}
 
-				if (result == DecodeResult.TREE_FINISHED) {// this child is done
-					return DecodeResult.TREE_FINISHED;
-				} else if (result == DecodeResult.TREE_CONTINUE) {
-					decode(childEl, childNode);
-				} else if (result == DecodeResult.ERROR) {
-					addValidation(templateId, "Failed to decode.");
-					LOG.error("Failed to decode templateId {} ", templateId);
-				} else {
-					LOG.error("We need to define a default case. Could be TreeContinue?");
+				DecodeResult placeholderNode = testChildDecodeResult(parentNode, childEl, templateId, childNode, result);
+				if (placeholderNode != null) {
+					return placeholderNode;
 				}
-
 			} else {
 				// TODO might need a child node -- not sure
 				decode(childEl, currentNode);
 			}
 		}
 
-		return DecodeResult.TREE_CONTINUE;
+		return null;
+	}
+
+	private DecodeResult testChildDecodeResult(final Node parentNode, final Element childEl, final String templateId,
+	                                           final Node childNode, final DecodeResult result) {
+		if (result == null) {
+			// TODO this looks like a continue ????
+			// the only time we get here is NullReturnDecoderTest
+				Node placeholderNode = new Node(parentNode, "placeholder");
+			return decode(childEl, placeholderNode);
+		}
+
+		if (result == DecodeResult.TREE_FINISHED) {
+			// this child is done
+			return DecodeResult.TREE_FINISHED;
+		} else if (result == DecodeResult.TREE_CONTINUE) {
+			decode(childEl, childNode);
+		} else if (result == DecodeResult.ERROR) {
+			addValidation(templateId, "Failed to decode.");
+			LOG.error("Failed to decode templateId {} ", templateId);
+		} else {
+			LOG.error("We need to define a default case. Could be TreeContinue?");
+		}
+		return null;
 	}
 
 	/**
