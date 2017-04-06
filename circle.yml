@@ -19,8 +19,8 @@ dependencies:
 test:
   pre:
     - cd frontend; npm install -g protractor
-    - webdriver-manager update
-    - webdriver-manager start:
+    - webdriver-manager update --chrome --versions.chrome=2.25
+    - webdriver-manager start --versions.chrome=2.25:
         background: true
   override:
     - mvn integration-test
@@ -28,7 +28,7 @@ test:
     - cd java-conversion-tool/src/main; ../../../sonarlint-cli-2.1.0.566/bin/sonarlint
     - cd frontend; yarn run lint
     - cd frontend; yarn run test:ci
-    - cd frontend; yarn run e2e
+    - cd frontend; yarn run e2e:ci
   post:
     - cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS
     - mkdir $CIRCLE_ARTIFACTS/sonarlint
