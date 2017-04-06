@@ -20,8 +20,6 @@ import gov.cms.qpp.conversion.model.Node;
 
 /**
  * Abstraction to parse XML files within the decoder structure.
- * @author Scott Fradkin
- *
  */
 public abstract class XmlInputDecoder implements InputDecoder, Validatable<String, String> {
 

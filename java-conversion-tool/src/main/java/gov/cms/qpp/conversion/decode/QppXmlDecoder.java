@@ -13,12 +13,12 @@ import java.util.List;
 /**
  * Top level Decoder for parsing into QPP format. Contains a map of child
  * Decoders that can Decode an element.
- * @author David Uselmann
  */
 public class QppXmlDecoder extends XmlInputDecoder {
 	private static final Logger LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
 
 	private static Registry<String, QppXmlDecoder> decoders = new Registry<>(XmlDecoder.class);
+	private static final String TEMPLATE_ID = "templateId";
 
 	/**
 	 * Iterates over the element to find all child elements. Finds any elements
@@ -40,10 +40,10 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 		List<Element> childElements = element.getChildren();
 
-		for (Element childeEl : childElements) {
+		for (Element childEl : childElements) {
 
-			if ("templateId".equals(childeEl.getName())) {
-				String templateId = childeEl.getAttributeValue("root");
+			if (TEMPLATE_ID.equals(childEl.getName())) {
+				String templateId = childEl.getAttributeValue("root");
 				LOG.debug("templateIdFound:{}", templateId);
 
 				QppXmlDecoder childDecoder = decoders.get(templateId);
@@ -55,7 +55,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				
 					Node childNode = new Node(parentNode, templateId);
 				
-				setNamespace(childeEl, childDecoder);
+				setNamespace(childEl, childDecoder);
 				
 				// the child decoder might require the entire its siblings
 				DecodeResult result = childDecoder.internalDecode(element, childNode);
@@ -67,26 +67,23 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					// TODO this looks like a continue ????
 					// the only time we get here is NullReturnDecoderTest
 						Node placeholderNode = new Node(parentNode, "placeholder");
-					return decode(childeEl, placeholderNode);
+					return decode(childEl, placeholderNode);
 				}
-				switch (result) {
-					case TREE_FINISHED:
-						// this child is done
-						return DecodeResult.TREE_FINISHED;
-					case TREE_CONTINUE:
-						decode(childeEl, childNode);
-						break;
-					case ERROR:
-						// TODO Validation Error, include element data ????
-						addValidation(templateId, "Failed to decode.");
-						LOG.error("Failed to decode temlateId {} ", templateId);
-						break;
-					default:
-						LOG.error("We need to define a default case. Could be TreeContiue?");
+
+				if (result == DecodeResult.TREE_FINISHED) {// this child is done
+					return DecodeResult.TREE_FINISHED;
+				} else if (result == DecodeResult.TREE_CONTINUE) {
+					decode(childEl, childNode);
+				} else if (result == DecodeResult.ERROR) {
+					addValidation(templateId, "Failed to decode.");
+					LOG.error("Failed to decode templateId {} ", templateId);
+				} else {
+					LOG.error("We need to define a default case. Could be TreeContinue?");
 				}
+
 			} else {
 				// TODO might need a child node -- not sure
-				decode(childeEl, currentNode);
+				decode(childEl, currentNode);
 			}
 		}
 
@@ -102,7 +99,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		Element rootElement = xmlDoc.getDocument().getRootElement();
 		
 		QppXmlDecoder rootDecoder = null;
-		for (Element e : rootElement.getChildren("templateId", rootElement.getNamespace())) {
+		for (Element e : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
 			String templateId = e.getAttributeValue("root");
 			rootDecoder = decoders.get(templateId);
 			if (null != rootDecoder) {
@@ -144,7 +141,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	private boolean containsClinicalDocumentTemplateId(final Element rootElement) {
 		boolean containsTemplateId = false;
 
-		final List<Element> clinicalDocumentChildren = rootElement.getChildren("templateId",
+		final List<Element> clinicalDocumentChildren = rootElement.getChildren(TEMPLATE_ID,
 		                                                                       rootElement.getNamespace());
 
 		for (Element currentChild : clinicalDocumentChildren) {
@@ -179,4 +176,6 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	public void addValidation(String templateId, String validation) {
 		Validations.addValidation(templateId, validation);
 	}
+
+
 }
