@@ -23,19 +23,18 @@ import com.fasterxml.jackson.databind.ObjectWriter;
  * @param <T> Shole be String or Object for maps of children
  */
 public class JsonWrapper {
-	
-	// package access allows for simpler testing
-	/*package*/ ObjectWriter ow;
-	
-	public JsonWrapper() {
-		ow = getObjectWriter();
-	}
 
 	public static ObjectWriter getObjectWriter() {
 		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
-		DefaultPrettyPrinter pp = new DefaultPrettyPrinter();
-		pp.indentObjectsWith(withLinefeed);
-		return new ObjectMapper().writer().with(pp);
+		DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
+		printer.indentObjectsWith(withLinefeed);
+		return new ObjectMapper().writer().with(printer);
+	}
+
+	private ObjectWriter ow;
+
+	public JsonWrapper() {
+		ow = getObjectWriter();
 	}
 
 	private Map<String, Object> object;
@@ -51,7 +50,7 @@ public class JsonWrapper {
 		this.object.put(name,value);
 		return this;
 	}
-	
+
 	public Object stripWrapper(Object value) {
 		if (value instanceof JsonWrapper) {
 			JsonWrapper wrapper = (JsonWrapper) value;
@@ -59,11 +58,11 @@ public class JsonWrapper {
 		}
 		return value;
 	}
-	
+
 	public JsonWrapper putString(String name, String value) {
 		return putObject(name, value);
 	}
-	
+
 	public JsonWrapper putDate(String name, String value) throws EncodeException {
 		try {
 			return putObject(name, validDate(value) );
@@ -72,7 +71,7 @@ public class JsonWrapper {
 			throw e;
 		}
 	}
-	
+
 	public JsonWrapper putInteger(String name, String value) throws EncodeException {
 		try {
 			return putObject(name, validInteger(value) );
@@ -81,7 +80,7 @@ public class JsonWrapper {
 			throw e;
 		}
 	}
-	
+
 	public JsonWrapper putFloat(String name, String value) throws EncodeException {
 		try {
 			return putObject(name, validFloat(value) );
@@ -90,7 +89,7 @@ public class JsonWrapper {
 			throw e;
 		}
 	}
-	
+
 	public JsonWrapper putBoolean(String name, String value) throws EncodeException {
 		try {
 			return putObject(name, validBoolean(value) );
@@ -99,7 +98,7 @@ public class JsonWrapper {
 			throw e;
 		}
 	}
-	
+
 	public JsonWrapper putObject(Object value) {
 		checkState(object);
 		initAsList();
@@ -110,11 +109,11 @@ public class JsonWrapper {
 		this.list.add(value);
 		return this;
 	}
-	
+
 	public JsonWrapper putString(String value) {
 		return putObject(value);
 	}
-	
+
 	public JsonWrapper putInteger(String value) throws EncodeException {
 		try {
 			return putObject( validInteger(value) );
@@ -123,7 +122,7 @@ public class JsonWrapper {
 			throw e;
 		}
 	}
-	
+
 	public JsonWrapper putDate(String value) throws EncodeException {
 		try {
 			return putObject( validDate(value) );
@@ -132,7 +131,7 @@ public class JsonWrapper {
 			throw e;
 		}
 	}
-	
+
 	public JsonWrapper putFloat(String value) throws EncodeException {
 		try {
 			return putObject( validFloat(value) );
@@ -141,7 +140,7 @@ public class JsonWrapper {
 			throw e;
 		}
 	}
-	
+
 	public JsonWrapper putBoolean(String value) throws EncodeException {
 		try {
 			return putObject( validBoolean(value) );
@@ -173,14 +172,14 @@ public class JsonWrapper {
 		}
 		return null;
 	}
-	
+
 	protected String cleanString(String value) {
 		if (value == null) {
 			return "";
 		}
 		return value.trim().toLowerCase();
 	}
-	
+
 	protected Integer validInteger(String value) throws EncodeException {
 		try {
 			return Integer.parseInt( cleanString(value) );
@@ -188,6 +187,7 @@ public class JsonWrapper {
 			throw new EncodeException(value + " is not an integer.", e);
 		}
 	}
+
 	protected String validDate(String value) throws EncodeException {
 		try {
 			LocalDate thisDate = LocalDate.parse(cleanString(value),  DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -204,6 +204,7 @@ public class JsonWrapper {
 			throw new EncodeException(value + " is not a number.", e);
 		}
 	}
+
 	protected Boolean validBoolean(String value) throws EncodeException {
 		value = cleanString(value);
 		
@@ -223,27 +224,27 @@ public class JsonWrapper {
 			object = new LinkedHashMap<>();
 		}
 	}
-	
+
 	protected void initAsList() {
 		if (list == null) {
 			list = new LinkedList<>();
 		}
 	}
-	
+
 	protected void checkState(Object check) {
 		if (check != null) {
 			throw new IllegalStateException("Current state may not change (from list to object or reverse).");
 		}
 	}
-	
+
 	public boolean isObject() {
 		return object != null;
 	}
-	
+
 	public Object getObject() {
 		return isObject()? object :list;
 	}
-	
+
 	@Override
 	public String toString() {
 		try {

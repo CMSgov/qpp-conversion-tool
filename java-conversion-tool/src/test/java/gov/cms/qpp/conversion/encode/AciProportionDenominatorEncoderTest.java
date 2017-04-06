@@ -1,11 +1,9 @@
 package gov.cms.qpp.conversion.encode;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
-import java.io.BufferedWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,15 +11,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
 
 public class AciProportionDenominatorEncoderTest {
 
 	private Node aciProportionDenominatorNode;
 	private Node numeratorDenominatorValueNode;
 	private List<Node> nodes;
-
-	public AciProportionDenominatorEncoderTest() {
-	}
+	private JsonWrapper json;
 
 	@Before
 	public void createNode() {
@@ -35,60 +32,41 @@ public class AciProportionDenominatorEncoderTest {
 
 		nodes = new ArrayList<>();
 		nodes.add(aciProportionDenominatorNode);
+
+		json = new JsonWrapper();
+		Validations.init();
 	}
 
 	@Test
 	public void testEncoder() {
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		runEncoder();
 
-		encoder.setNodes(nodes);
-
-		StringWriter sw = new StringWriter();
-
-		try {
-			encoder.encode(new BufferedWriter(sw));
-		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
-		}
-
-		String EXPECTED = "{\n  \"denominator\" : 600\n}";
-		assertThat("expected encoder to return a json representation of a denominator with a value", sw.toString(),
-				is(EXPECTED));
+		assertThat("denominator value must be 600", json.getInteger("denominator"), is(600));
 	}
 
 	@Test
 	public void testEncoderWithoutChild() {
 		aciProportionDenominatorNode.getChildNodes().remove(numeratorDenominatorValueNode);
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		runEncoder();
 
-		encoder.setNodes(nodes);
-
-		StringWriter sw = new StringWriter();
-
-		try {
-			encoder.encode(new BufferedWriter(sw));
-		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
-		}
-
-		assertThat("expected encoder to return null", sw.toString(), is("null"));
+		assertNull("denominator value must be null", json.getInteger("denominator"));
 	}
-	
+
 	@Test
 	public void testEncoderWithoutValue() {
 		numeratorDenominatorValueNode.putValue("aggregateCount", null);
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		runEncoder();
 
-		encoder.setNodes(nodes);
+		assertThat("expected encoder to return null", json.toString(), is("null"));
+	}
 
-		StringWriter sw = new StringWriter();
-
+	private void runEncoder() {
+		AciProportionDenominatorEncoder encoder = new AciProportionDenominatorEncoder();
 		try {
-			encoder.encode(new BufferedWriter(sw));
+			encoder.internalEncode(json, aciProportionDenominatorNode);
 		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
+			throw new RuntimeException(e);
 		}
-
-		assertThat("expected encoder to return null", sw.toString(), is("null"));
+		encoder.setNodes(nodes);
 	}
 }

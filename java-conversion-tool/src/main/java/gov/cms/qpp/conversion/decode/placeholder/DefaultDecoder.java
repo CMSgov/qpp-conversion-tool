@@ -36,7 +36,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 		LOG.debug("Default decoder {} is handling templateId {} and is described as '{}' ",
 				getClass(), thisnode.getId(), description);
 		thisnode.putValue("DefaultDecoderFor", description);
-		return DecodeResult.TreeContinue;
+		return DecodeResult.TREE_CONTINUE;
 	}
 
 	public static void removeDefaultNode(List<Node> nodes) {

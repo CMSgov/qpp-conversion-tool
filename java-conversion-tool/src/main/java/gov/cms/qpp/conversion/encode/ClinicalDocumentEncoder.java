@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -9,28 +10,28 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Encoder to serialize the root node of the Document-Level Template: QRDA
- * Category III Report (ClinicalDocument).
- *
- * @author Scott Fradkin
- *
+ * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
 
 @Encoder(templateId = "2.16.840.1.113883.10.20.27.1.2")
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
-	public ClinicalDocumentEncoder() {
-	}
-
+	/**
+	 * internalEncode encodes nodes into Json Wrapper.
+	 *
+	 * @param wrapper  will hold the json format of nodes
+	 * @param thisNode holds the decoded node sections of clinical document
+	 * @throws EncodeException
+	 */
 	@Override
-	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	public void internalEncode(JsonWrapper wrapper, Node thisNode) throws EncodeException {
 
-		wrapper.putString("programName", node.getValue("programName"));
+		wrapper.putString("programName", thisNode.getValue("programName"));
 		wrapper.putString("entityType", "individual");
-		wrapper.putString("taxpayerIdentificationNumber", node.getValue("taxpayerIdentificationNumber"));
-		wrapper.putString("nationalProviderIdentifier", node.getValue("nationalProviderIdentifier"));
+		wrapper.putString("taxpayerIdentificationNumber", thisNode.getValue("taxpayerIdentificationNumber"));
+		wrapper.putString("nationalProviderIdentifier", thisNode.getValue("nationalProviderIdentifier"));
 
-		Map<String, Node> childMapByTemplateId = node.getChildNodes().stream().collect(
+		Map<String, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 				Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
 		Optional<Node> reportingNode
@@ -44,17 +45,24 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			wrapper.putInteger("performanceYear", performanceStart.get().substring(0, 4));
 		}
 
-		JsonWrapper measurementSetsWrapper = new JsonWrapper();
+		wrapper.putObject("measurementSets", encodeMeasurementSets(childMapByTemplateId, performanceStart, performanceEnd));
 
+	}
+
+	private JsonWrapper encodeMeasurementSets(Map<String, Node> childMapByTemplateId,
+	                                          Optional<String> performanceStart,
+	                                          Optional<String> performanceEnd) throws EncodeException {
+		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
+		JsonOutputEncoder sectionEncoder;
+
 		for (Node child : childMapByTemplateId.values()) {
 			childWrapper = new JsonWrapper();
-			JsonOutputEncoder sectionEncoder = encoders.get(child.getId());
+			sectionEncoder = ENCODERS.get(child.getId());
 
-			if (null != sectionEncoder) { // currently don't have a set of IA
-				// Encoders, but this will protect
-				// against others
-
+			// Section encoder is null when a decoder exists without a corresponding encoder
+			// currently don't have a set of IA Encoders, but this will protect against others
+			try {
 				sectionEncoder.encode(childWrapper, child);
 
 				childWrapper.putString("source", "provider");
@@ -66,10 +74,13 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				}
 
 				measurementSetsWrapper.putObject(childWrapper);
+			} catch (NullPointerException exc) {
+				String message = "No encoder for decoder : " + child.getId();
+				throw new EncodeException(message, exc);
 			}
 		}
-		wrapper.putObject("measurementSets", measurementSetsWrapper);
 
+		return measurementSetsWrapper;
 	}
 
 }

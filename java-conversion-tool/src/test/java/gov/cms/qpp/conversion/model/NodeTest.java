@@ -1,16 +1,20 @@
 package gov.cms.qpp.conversion.model;
 
+import org.junit.Test;
+
+import java.util.List;
+
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
 
 public class NodeTest {
 
 	@Test
 	public void testMembers() {
-
 		Node node = new Node();
 
 		node.setId("ABC");
@@ -34,7 +38,6 @@ public class NodeTest {
 
 	@Test
 	public void testToString() {
-
 		Node node = new Node();
 
 		node.setId("ABC");
@@ -99,5 +102,25 @@ public class NodeTest {
 		node.addChildNode(node);
 
 		assertTrue(node.getChildNodes().isEmpty());
+	}
+
+	@Test
+	public void testFindFirstNodeSelf() {
+		Node parent = new Node( "findMe" );
+		Node childOne = new Node( "findMe" );
+		parent.addChildNode( childOne );
+
+		assertEquals("should find itself if it has the searched id", parent.findFirstNode("findMe"), parent);
+	}
+
+	@Test
+	public void testFindFirstNodeChildNode() {
+		Node parent = new Node();
+		Node childOne = new Node( "don'tFindMe" );
+		Node childTwo = new Node( "findMe" );
+		Node childThree = new Node( "findMe" );
+		parent.addChildNodes( childOne, childTwo, childThree );
+
+		assertEquals("should find first child that has the searched id", parent.findFirstNode("findMe"), childTwo);
 	}
 }

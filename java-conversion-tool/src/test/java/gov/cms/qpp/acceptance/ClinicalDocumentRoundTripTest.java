@@ -1,7 +1,16 @@
 package gov.cms.qpp.acceptance;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import gov.cms.qpp.conversion.decode.XmlInputDecoder;
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.apache.commons.io.IOUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
@@ -9,18 +18,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
-
-import gov.cms.qpp.conversion.decode.XmlInputDecoder;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
-import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Validations;
-import gov.cms.qpp.conversion.xml.XmlUtils;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentRoundTripTest {
 
@@ -45,7 +44,7 @@ public class ClinicalDocumentRoundTripTest {
 	public void setup() throws Exception {
 		Validations.init();
 	}
-	
+
 	@After
 	public void teardown() throws Exception {
 		Validations.clear();
@@ -57,7 +56,7 @@ public class ClinicalDocumentRoundTripTest {
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
 		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(XmlUtils.stringToDOM(xmlFragment));
-		
+
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(clinicalDocumentNode.getChildNodes());
 
@@ -70,7 +69,6 @@ public class ClinicalDocumentRoundTripTest {
 		encoder.encode(new BufferedWriter(sw));
 
 		assertThat("expected encoder to return a representation of a clinical document", sw.toString(), is(EXPECTED));
-
 	}
 
 }

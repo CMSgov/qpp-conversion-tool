@@ -1,18 +1,20 @@
 package gov.cms.qpp.conversion;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringJoiner;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,25 +39,25 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
  *
  */
 public class Converter {
-	static final Logger LOG = LoggerFactory.getLogger(Converter.class);
 
-	static final String SKIP_VALIDATION = "--skip-validation";
-	static boolean doValidation = true;
-	
-	static final String SKIP_DEFAULTS = "--skip-defaults";
-	static boolean doDefaults = true;
-	
-	final File inFile;
+	public static final String SKIP_VALIDATION = "--skip-validation";
+	public static final String SKIP_DEFAULTS = "--skip-defaults";
 
-	public Converter(File inFile) {
+	private static final Logger LOG = LoggerFactory.getLogger(Converter.class);
+
+	private static boolean doDefaults = true;
+	private static boolean doValidation = true;
+
+	final Path inFile;
+
+	public Converter(Path inFile) {
 		this.inFile = inFile;
 	}
 
 	public Integer transform() {
-
 		boolean hasValidations = false;
 		
-		if (!inFile.exists()) {
+		if (Files.notExists(inFile)) {
 			return 0; // it should if check prior to instantiation.
 		}
 
@@ -74,7 +76,7 @@ public class Converter {
 				validationErrors = validator.validate(decoded);
 			} 
 			
-			String name = inFile.getName().trim();
+			String name = inFile.getFileName().toString().trim();
 			
 			if (validationErrors.isEmpty()) {
 
@@ -87,10 +89,10 @@ public class Converter {
 
 				String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
 
-				File outFile = new File(outName);
-				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
+				Path outFile = Paths.get(outName);
+				LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
 
-				try (Writer writer = new FileWriter(outFile)) {
+				try (Writer writer = Files.newBufferedWriter(outFile)) {
 					encoder.setNodes(Arrays.asList(decoded));
 					encoder.encode(writer);
 					// do something with encode validations
@@ -104,10 +106,10 @@ public class Converter {
 				
 				String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
 
-				File outFile = new File(errName);
-				LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
+				Path outFile = Paths.get(errName);
+				LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
 
-				try (Writer errWriter = new FileWriter(outFile)) {
+				try (Writer errWriter = Files.newBufferedWriter(outFile)) {
 					for (ValidationError error : validationErrors) {
 						errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
 					}
@@ -126,13 +128,13 @@ public class Converter {
 		return hasValidations ?0 :1;
 	}
 
-	public static Collection<File> validArgs(String[] args) {
+	public static Collection<Path> validArgs(String[] args) {
 		if (args.length < 1) {
 			LOG.error("No filename found...");
 			return new LinkedList<>();
 		}
 
-		Collection<File> validFiles = new LinkedList<>();
+		Collection<Path> validFiles = new LinkedList<>();
 
 		for (String arg : args) {
 			if (SKIP_VALIDATION.equals(arg)) {
@@ -143,17 +145,17 @@ public class Converter {
 				doDefaults = false;
 				continue;
 			}
-			
+
 			validFiles.addAll(checkPath(arg));
 		}
 
 		return validFiles;
 	}
 
-	public static Collection<File> checkPath(String path) {
-		Collection<File> existingFiles = new LinkedList<>();
+	public static Collection<Path> checkPath(String path) {
+		Collection<Path> existingFiles = new LinkedList<>();
 
-		if (path == null || path.trim().length() == 0) {
+		if (path == null || path.trim().isEmpty()) {
 			return existingFiles;
 		}
 
@@ -161,8 +163,8 @@ public class Converter {
 			return manyPath(path);
 		}
 
-		File file = new File(path);
-		if (file.exists()) {
+		Path file = Paths.get(path);
+		if (Files.exists(file)) {
 			existingFiles.add(file);
 		} else {
 			LOG.error(path + " does not exist.");
@@ -171,41 +173,40 @@ public class Converter {
 		return existingFiles;
 	}
 
-	public static Collection<File> manyPath(String path) {
-
-		File inDir = new File(extractDir(path));
-		String fileRegex = wildCardToRegex(path);
+	public static Collection<Path> manyPath(String path) {
+		Path inDir = Paths.get(extractDir(path));
+		Pattern fileRegex = wildCardToRegex(path);
 		try {
-			Collection<File> existingFiles = FileUtils.listFiles(inDir, new RegexFileFilter(fileRegex),
-					DirectoryFileFilter.DIRECTORY);
-			return existingFiles;
+			return Files.walk(inDir)
+					.filter(file -> fileRegex.matcher(file.toString()).matches())
+					.filter(file -> !Files.isDirectory(file))
+					.collect(Collectors.toList());
 		} catch (Exception e) {
-			LOG.error("Cannot file path {}{}", inDir, fileRegex);
+			LOG.error("Cannot file path {} {}", inDir, fileRegex.pattern());
 			return new LinkedList<>();
 		}
 	}
 
 	public static String extractDir(String path) {
-
 		String[] parts = path.split("[\\/\\\\]");
 
-		StringBuilder dirPath = new StringBuilder();
+		StringJoiner dirPath = new StringJoiner(FileSystems.getDefault().getSeparator());
 		for (String part : parts) {
 			// append until a wild card
 			if (part.contains("*")) {
 				break;
 			}
-			dirPath.append(part).append(File.separator);
+			dirPath.add(part);
 		}
 		// if no path then use the current dir
 		if (dirPath.length() == 0) {
-			dirPath.append('.');
+			return ".";
 		}
 
-		return dirPath.toString();
+		return dirPath.add("").toString();
 	}
 
-	public static String wildCardToRegex(String path) {
+	public static Pattern wildCardToRegex(String path) {
 		String regex = "";
 
 		// this replace should work if the user does not give conflicting OS
@@ -220,24 +221,23 @@ public class Converter {
 
 		if (parts.length > 2) {
 			LOG.error("Too many wild cards in {}", path);
-			return "";
+			return Pattern.compile("");
 		}
 		String lastPart = parts[parts.length - 1];
 
 		if ("**".equals(lastPart)) {
 			regex = "."; // any and all files
 		} else {
-
 			// turn the last part into REGEX from file wild cards
 			regex = lastPart.replaceAll("\\.", "\\\\.");
 			regex = regex.replaceAll("\\*", ".*");
 		}
 
-		return regex;
+		return Pattern.compile(regex);
 	}
 
 	public static void main(String[] args) {
-		Collection<File> filenames = validArgs(args);
+		Collection<Path> filenames = validArgs(args);
 		filenames.parallelStream().forEach(
 				(filename) -> new Converter(filename).transform());
 	}
