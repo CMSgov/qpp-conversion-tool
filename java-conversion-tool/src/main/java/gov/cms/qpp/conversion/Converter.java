@@ -253,10 +253,7 @@ public class Converter {
 		JsonOutputEncoder encoder = new QppOutputEncoder();
 
 		LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
-		String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
-
-		Path outFile = Paths.get(outName);
-		LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
+		Path outFile = getOutputFile( name, ".qpp.json");
 
 		try ( Writer writer = Files.newBufferedWriter(outFile) ){
 			encoder.setNodes(Arrays.asList(decoded));
@@ -270,33 +267,23 @@ public class Converter {
 	}
 
 	private void writeValidationErrors(String name, List<ValidationError> validationErrors) {
-		String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
-		Path outFile = Paths.get(errName);
-		LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
+		Path outFile = getOutputFile( name, ".err.txt" );
 
 		try (Writer errWriter = Files.newBufferedWriter(outFile)) {
 			for (ValidationError error : validationErrors) {
 				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
 			}
 		} catch (IOException e) { // coverage ignore candidate
-			LOG.error("Could not write to file: {}", errName);
+			LOG.error("Could not write to file: {}", outFile.toString());
 		} finally {
 			Validations.clear();
 		}
 	}
 
-
-	private File getErrorFile(String name) {
-		String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
-		File outFile = new File(errName);
-		LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
-		return outFile;
-	}
-
-	private File getOutputFile(String name) throws IOException{
-		String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
-		File outFile = new File(outName);
-		LOG.info("Writing to file '{}'", outFile.getAbsolutePath());
+	private Path getOutputFile(String name, String extension) {
+		String outName = name.replaceFirst("(?i)(\\.xml)?$", extension);
+		Path outFile = Paths.get(outName);
+		LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
 		return outFile;
 	}
 }
