@@ -28,7 +28,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
-// import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
@@ -54,12 +53,13 @@ public class Converter {
 		this.inFile = inFile;
 	}
 
+	/**
+	 * Perform transformation on {@link Converter#inFile}
+	 *
+	 * @return
+	 */
 	public Integer transform() {
-		boolean hasValidations = false;
-		
-		if (Files.notExists(inFile)) {
-			return 0; // it should if check prior to instantiation.
-		}
+		boolean hasValidationErrors = false;
 
 		try {
 			Node decoded = XmlInputDecoder.decodeXml(XmlUtils.fileToDOM(inFile));
@@ -79,55 +79,61 @@ public class Converter {
 			String name = inFile.getFileName().toString().trim();
 			
 			if (validationErrors.isEmpty()) {
-
-				JsonOutputEncoder encoder = new QppOutputEncoder();
-
-				LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
-				// do something with decode validations
-				// Validations.clear();
-				// Validations.init();
-
-				String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
-
-				Path outFile = Paths.get(outName);
-				LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
-
-				try (Writer writer = Files.newBufferedWriter(outFile)) {
-					encoder.setNodes(Arrays.asList(decoded));
-					encoder.encode(writer);
-					// do something with encode validations
-				} catch (IOException | EncodeException e) {
-					throw new XmlInputFileException("Issues decoding/encoding.", e);
-				} finally {
-					Validations.clear();
-				}
+				writeConvertedFile(decoded, name);
 			} else {
-				hasValidations = true;
-				
-				String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
-
-				Path outFile = Paths.get(errName);
-				LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
-
-				try (Writer errWriter = Files.newBufferedWriter(outFile)) {
-					for (ValidationError error : validationErrors) {
-						errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
-					}
-				} catch (IOException e) {
-					LOG.error("Could not write to file: {}", errName);
-				} finally {
-					Validations.clear();
-				}
+				hasValidationErrors = true;
+				writeValidationErrors(name, validationErrors);
 			}
 		} catch (XmlInputFileException | XmlException xe) {
-			LOG.error("The file is not a valid XML document");
+			LOG.error("The file is not a valid XML document", xe);
 		} catch (Exception allE) {
-			// Eat all exceptions in the call
-			LOG.error(allE.getMessage());
+			LOG.error("Unexpected exception occurred during conversion", allE);
 		}
-		return hasValidations ?0 :1;
+		return hasValidationErrors ? 0 : 1;
 	}
 
+	private void writeConvertedFile(Node decoded, String name) {
+		JsonOutputEncoder encoder = new QppOutputEncoder();
+
+		LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
+		String outName = name.replaceFirst("(?i)(\\.xml)?$", ".qpp.json");
+
+		Path outFile = Paths.get(outName);
+		LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
+
+		try ( Writer writer = Files.newBufferedWriter(outFile) ){
+			encoder.setNodes(Arrays.asList(decoded));
+			encoder.encode(writer);
+			// do something with encode validations
+		} catch (IOException | EncodeException e) { // coverage ignore candidate
+			throw new XmlInputFileException("Issues decoding/encoding.", e);
+		} finally {
+			Validations.clear();
+		}
+	}
+
+	private void writeValidationErrors(String name, List<ValidationError> validationErrors) {
+		String errName = name.replaceFirst("(?i)(\\.xml)?$", ".err.txt");
+		Path outFile = Paths.get(errName);
+		LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
+
+		try (Writer errWriter = Files.newBufferedWriter(outFile)) {
+			for (ValidationError error : validationErrors) {
+				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
+			}
+		} catch (IOException e) { // coverage ignore candidate
+			LOG.error("Could not write to file: {} {}", errName, e);
+		} finally {
+			Validations.clear();
+		}
+	}
+
+	/**
+	 * Validate filename arguments
+	 *
+	 * @param args filenames
+	 * @return
+	 */
 	public static Collection<Path> validArgs(String[] args) {
 		if (args.length < 1) {
 			LOG.error("No filename found...");
@@ -136,13 +142,9 @@ public class Converter {
 
 		Collection<Path> validFiles = new LinkedList<>();
 
+		resetFlags();
 		for (String arg : args) {
-			if (SKIP_VALIDATION.equals(arg)) {
-				doValidation = false;
-				continue;
-			}
-			if (SKIP_DEFAULTS.equals(arg)) {
-				doDefaults = false;
+			if (checkFlags(arg)) {
 				continue;
 			}
 
@@ -152,6 +154,30 @@ public class Converter {
 		return validFiles;
 	}
 
+	private static void resetFlags(){
+		doValidation = true;
+		doDefaults = true;
+	}
+
+	private static boolean checkFlags(String arg) {
+		if ( SKIP_VALIDATION.equals(arg) ) {
+			doValidation = false;
+			return true;
+		}
+
+		if ( SKIP_DEFAULTS.equals(arg) ) {
+			doDefaults = false;
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Produce collection of files found within the given path
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static Collection<Path> checkPath(String path) {
 		Collection<Path> existingFiles = new LinkedList<>();
 
@@ -173,6 +199,12 @@ public class Converter {
 		return existingFiles;
 	}
 
+	/**
+	 * Accumulates collection of files that match the given path
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static Collection<Path> manyPath(String path) {
 		Path inDir = Paths.get(extractDir(path));
 		Pattern fileRegex = wildCardToRegex(path);
@@ -182,11 +214,18 @@ public class Converter {
 					.filter(file -> !Files.isDirectory(file))
 					.collect(Collectors.toList());
 		} catch (Exception e) {
-			LOG.error("Cannot file path {} {}", inDir, fileRegex.pattern());
+			LOG.error("No matching files found {} {} {}", path, inDir, fileRegex);
+			LOG.error("bad glob", e);
 			return new LinkedList<>();
 		}
 	}
 
+	/**
+	 * Extract base directory of given path
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static String extractDir(String path) {
 		String[] parts = path.split("[\\/\\\\]");
 
@@ -206,6 +245,12 @@ public class Converter {
 		return dirPath.add("").toString();
 	}
 
+	/**
+	 * Creates file finding regex from given wildcard containing path
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static Pattern wildCardToRegex(String path) {
 		String regex = "";
 
@@ -236,10 +281,15 @@ public class Converter {
 		return Pattern.compile(regex);
 	}
 
+	/**
+	 * Entry point for the conversion process
+	 *
+	 * @param args file path(s) of resources subject to conversion
+	 */
 	public static void main(String[] args) {
 		Collection<Path> filenames = validArgs(args);
 		filenames.parallelStream().forEach(
-				(filename) -> new Converter(filename).transform());
+				filename -> new Converter(filename).transform());
 	}
 
 }
