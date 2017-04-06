@@ -8,24 +8,26 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.mockpolicies.Slf4jMockPolicy;
+import org.powermock.core.classloader.annotations.MockPolicy;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
+@MockPolicy(Slf4jMockPolicy.class)
 public class QppXmlDecoderTest extends QppXmlDecoder {
 
 	@Before
@@ -95,24 +97,25 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 	}
 
 	@Test
-	@PrepareForTest({LoggerFactory.class, QppXmlDecoder.class})
+	@PrepareForTest(QppXmlDecoder.class)
 	public void testThatDefaultCase_returnsNoAction() {
 		Element testElement = new Element("testElement");
 		Element testChildElement = new Element("templateId");
 		testChildElement.setAttribute("root", "noActionDecoder");
 
-		mockStatic(LoggerFactory.class);
 		Logger logger = mock(Logger.class);
-		when(LoggerFactory.getLogger(any(Class.class))).thenReturn(logger);
 
 		testElement.getChildren().add(testChildElement);
 		Node testNode = new Node();
 
+		Whitebox.setInternalState(QppXmlDecoder.class, "LOG", logger);
+
 		QppXmlDecoder objectUnderTest = new QppXmlDecoderTest();
 		objectUnderTest.decode(testElement, testNode);
 
-		verify(logger).error("We need to define a default case. Could be TreeContinue?");
+		verify(logger).error(eq("We need to define a default case. Could be TreeContinue?"));
 	}
+
 
 	@XmlDecoder(templateId = "errorDecoder")
 	public static class TestChildDecodeError extends QppXmlDecoder{
@@ -128,7 +131,6 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 		@Override
 		public DecodeResult internalDecode(Element element, Node childNode) {
-			System.out.println("PAK::hit spot");
 			return DecodeResult.NO_ACTION;
 		}
 	}
