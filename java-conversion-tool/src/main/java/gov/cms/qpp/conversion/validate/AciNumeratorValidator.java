@@ -17,6 +17,7 @@ public class AciNumeratorValidator extends NodeValidator {
 	protected static final String NO_CHILDREN = "This ACI Numerator Node does not have any child Nodes";
 	protected static final String INCORRECT_CHILD = "This Numerator Node does not have an Aggregate Count Node";
 	protected static final String TOO_MANY_CHILDREN = "This ACI Numerator Node has too many child Nodes";
+	protected static final String INVALID_VALUE = "This ACI Numerator Node Aggregate Value has an invalid value ";
 
 	@Override
 	protected void internalValidateSingleNode(Node node) {
@@ -38,6 +39,14 @@ public class AciNumeratorValidator extends NodeValidator {
 				Node child = children.get(0);
 				if (NodeType.ACI_AGGREGATE_COUNT != child.getType()) {
 					this.addValidationError(new ValidationError(INCORRECT_CHILD));
+				}else {
+					String value = child.getValue("value");
+					try {
+						int val = Integer.parseInt(value);
+					}catch(NullPointerException | IllegalArgumentException  nfe){
+						this.addValidationError(
+								new ValidationError(INVALID_VALUE +  value));
+					}
 				}
 			} else {
 				this.addValidationError(new ValidationError(TOO_MANY_CHILDREN));
