@@ -1,15 +1,14 @@
 package gov.cms.qpp.conversion.decode;
 
-import java.util.List;
-
-import org.jdom2.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.model.XmlDecoder;
+import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Top level Decoder for parsing into QPP format. Contains a map of child
@@ -125,30 +124,39 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	
 	@Override
 	protected boolean accepts(Element xmlDoc) {
-		
-		boolean result;
-		Element rootElement = xmlDoc.getDocument().getRootElement();
-		
-		if ("ClinicalDocument".equals(rootElement.getName())) {
-			result = true;
-			String templateId = null;
-			List<Element> children = rootElement.getChildren("templateId", rootElement.getNamespace());
-			for (Element e : children) {
-				String tid = e.getAttributeValue("root");
-				if (ClinicalDocumentDecoder.ROOT_TEMPLATEID.equals(tid)) {
-					templateId = tid;
-					break;
-				}
-			}
-			
-			if (null == templateId) {
-				LOG.error("The file is not a QDRA-III xml document");
-			}
-		} else {
-			result = false;
+
+		final Element rootElement = xmlDoc.getDocument().getRootElement();
+
+		boolean isValidQrdaFile = containsClinicalDocumentElement(rootElement) &&
+		                          containsClinicalDocumentTemplateId(rootElement);
+
+		if (!isValidQrdaFile) {
+			LOG.error("The file is not a QRDA-III XML document");
 		}
 		
-		return result;
+		return isValidQrdaFile;
+	}
+
+	private boolean containsClinicalDocumentElement(final Element rootElement) {
+		return "ClinicalDocument".equals(rootElement.getName());
+	}
+
+	private boolean containsClinicalDocumentTemplateId(final Element rootElement) {
+		boolean containsTemplateId = false;
+
+		final List<Element> clinicalDocumentChildren = rootElement.getChildren("templateId",
+		                                                                       rootElement.getNamespace());
+
+		for (Element currentChild : clinicalDocumentChildren) {
+			final String templateId = currentChild.getAttributeValue("root");
+
+			if (ClinicalDocumentDecoder.ROOT_TEMPLATEID.equals(templateId)) {
+
+				containsTemplateId = true;
+				break;
+			}
+		}
+		return containsTemplateId;
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 			}
 		}
 
-		LOG.error("The file is an unknown XML document");
+		LOG.error("The XML file is an unknown document");
 
 		return null;
 	}
