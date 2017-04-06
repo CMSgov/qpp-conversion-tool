@@ -36,14 +36,46 @@
 								<goal>prepare-agent</goal>
 							</goals>
 						</execution>
-					<execution>
-					<id>jacoco-site</id>
-					<phase>verify</phase>
-					<goals>
-						<goal>report</goal>
-					</goals>
+						<execution>
+							<id>jacoco-site</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>report</goal>
+							</goals>
 						</execution>
 					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.pitest</groupId>
+					<artifactId>pitest-maven</artifactId>
+					<version>1.2.0</version>
+
+					<executions>
+						<execution>
+							<id>mutationCoverage</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>mutationCoverage</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<skip>${maven.test.skip}</skip>
+						<maxDependencyDistance>1</maxDependencyDistance>
+						<timeoutFactor>1.0</timeoutFactor>
+						<timeoutConstant>2500</timeoutConstant>
+						<!--
+						<mutationThreshold>90</mutationThreshold>
+						<coverageThreshold>90</coverageThreshold>
+						-->
+						<targetClasses>
+							<param>gov.cms.qpp.*</param>
+						</targetClasses>
+						<targetTests>
+							<param>gov.cms.qpp.*</param>
+						</targetTests>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
