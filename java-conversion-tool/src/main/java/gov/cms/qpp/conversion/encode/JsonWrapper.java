@@ -151,29 +151,24 @@ public class JsonWrapper {
 	}
 
 	public String getString(String name) {
-		if (isObject()) {
-			return (String)object.get(name);
-		}
-		return null;
+		return getValue(name);
 	}
 
 	public Integer getInteger(String name) {
-		if (isObject()) {
-			return (Integer)object.get(name);
-		}
-		return null;
+		return getValue(name);
 	}
 
-	public Integer getFloat(String name) {
-		if (isObject()) {
-			return (Integer)object.get(name);
-		}
-		return null;
+	public Float getFloat(String name) {
+		return getValue(name);
 	}
 
 	public Boolean getBoolean(String name) {
+		return getValue(name);
+	}
+
+	private <T> T getValue(String name) {
 		if (isObject()) {
-			return (Boolean)object.get(name);
+			return (T)object.get(name);
 		}
 		return null;
 	}
