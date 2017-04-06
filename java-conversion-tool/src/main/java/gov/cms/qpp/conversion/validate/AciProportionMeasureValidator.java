@@ -21,6 +21,7 @@ import java.util.Objects;
 public class AciProportionMeasureValidator extends NodeValidator {
 
 	private MeasureConfigs measureConfigs;
+	private String measureDataFileName = "measures-data-aci-short.json";
 
 	protected static final String ACI_PROPORTION_NODE_REQUIRED = "At least one Aci Proportion Measure Node is required";
 	protected static final String NO_PARENT_SECTION = "This ACI Measure Node should have an ACI Section Node as a parent";
@@ -82,6 +83,16 @@ public class AciProportionMeasureValidator extends NodeValidator {
 		for (MeasureConfig config : configs) {
 			validateMeasureConfig(config, nodes);
 		}
+	}
+
+	/**
+	 * Changes the measure data file used to validate the measures.
+	 *
+	 * @param fileName The file name found in the classpath to parse.
+	 */
+	public void setMeasureDataFile(String fileName) {
+		measureDataFileName = fileName;
+		initMeasureConfigs();
 	}
 
 	private void validateParentIsAciSection(final Node node) {
@@ -161,7 +172,7 @@ public class AciProportionMeasureValidator extends NodeValidator {
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		ClassPathResource measuresConfigResource = new ClassPathResource("measures-data-aci-short.json");
+		ClassPathResource measuresConfigResource = new ClassPathResource(measureDataFileName);
 
 		try {
 			measureConfigs = mapper.treeToValue(mapper.readTree(measuresConfigResource.getInputStream()),

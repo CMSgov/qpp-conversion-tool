@@ -11,6 +11,7 @@ dependencies:
 
 test:
   override:
+    - mvn clean package -Djacoco.skip.instrument=false
     - mvn integration-test
     - mvn jacoco:report
     - cd java-conversion-tool/src/main; ../../../sonarlint-cli-2.1.0.566/bin/sonarlint
