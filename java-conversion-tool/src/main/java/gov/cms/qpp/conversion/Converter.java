@@ -1,23 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
@@ -30,7 +12,24 @@ import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
@@ -44,10 +43,9 @@ public class Converter {
 	private static final Logger LOG = LoggerFactory.getLogger(Converter.class);
 
 	private static final String NO_INPUT_FILE_SPECIFIED = "No input filename was specified.";
-	private static final String CANNOT_LOCATE_FILE_PATH = "Cannot locate file path {} {} {}";
-	private static final String FILE_DOES_NOT_EXIST = "() does not exist.";
+	private static final String CANNOT_LOCATE_FILE_PATH = "Cannot locate file path {0} {1}";
+	private static final String FILE_DOES_NOT_EXIST = "{} does not exist.";
 	private static final String TOO_MANY_WILD_CARDS = "Too many wild cards in {}";
-	private static final String MISSING_INPUT_FILE = "The input file {} doesn't exist ";
 	private static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
 
 	private static boolean doDefaults = true;
@@ -138,7 +136,7 @@ public class Converter {
 		if (Files.exists(file)) {
 			existingFiles.add(file);
 		} else {
-			LOG.error(String.format(FILE_DOES_NOT_EXIST, path));
+			LOG.error(FILE_DOES_NOT_EXIST, path);
 		}
 		return existingFiles;
 	}
@@ -158,7 +156,7 @@ public class Converter {
 					.filter(file -> !Files.isDirectory(file))
 					.collect(Collectors.toList());
 		} catch (Exception e) {
-			LOG.error(String.format(CANNOT_LOCATE_FILE_PATH, path, inDir), e);
+			LOG.error(MessageFormat.format(CANNOT_LOCATE_FILE_PATH, path, inDir), e);
 			return new LinkedList<>();
 		}
 	}
@@ -205,7 +203,7 @@ public class Converter {
 		String[] parts = wild.split("[\\/\\\\]");
 
 		if (parts.length > 2) {
-			LOG.error(String.format(TOO_MANY_WILD_CARDS, path));
+			LOG.error(TOO_MANY_WILD_CARDS, path);
 			return Pattern.compile("");
 		}
 		String lastPart = parts[parts.length - 1];
@@ -252,7 +250,7 @@ public class Converter {
 	private void writeConvertedFile(Node decoded, String name) {
 		JsonOutputEncoder encoder = new QppOutputEncoder();
 
-		LOG.info(String.format("Decoded template ID {} from file '{}'", decoded.getId(), name));
+		LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
 		Path outFile = getOutputFile( name, ".qpp.json");
 
 		try ( Writer writer = Files.newBufferedWriter(outFile) ){
@@ -283,7 +281,7 @@ public class Converter {
 	private Path getOutputFile(String name, String extension) {
 		String outName = name.replaceFirst("(?i)(\\.xml)?$", extension);
 		Path outFile = Paths.get(outName);
-		LOG.info(String.format("Writing to file '{}'", outFile.toAbsolutePath()));
+		LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
 		return outFile;
 	}
 }
