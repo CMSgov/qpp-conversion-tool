@@ -20,9 +20,9 @@ test:
     - mvn integration-test
     - mvn jacoco:report
     - cd java-conversion-tool/src/main; ../../../sonarlint-cli-2.1.0.566/bin/sonarlint
-    - cd frontend; npm run lint:
-    - cd frontend; npm run test:
-    - cd frontend; npm run e2e:
+    - cd frontend; npm run lint
+    - cd frontend; npm run test
+    - cd frontend; npm run e2e
   post:
     - cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS
     - mkdir $CIRCLE_ARTIFACTS/sonarlint
