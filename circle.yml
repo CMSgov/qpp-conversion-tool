@@ -3,6 +3,8 @@ machine:
     version: openjdk8
   node:
     version: 7
+  environment:
+    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/frontend/node_modules/.bin" # yarn
 
 dependencies:
   override:
@@ -10,8 +12,9 @@ dependencies:
     # download and extract the sonarlint code quality tool
     - wget -O sonarlint.zip https://bintray.com/sonarsource/Distribution/download_file?file_path=sonarlint-cli%2Fsonarlint-cli-2.1.0.566.zip
     - unzip -d . sonarlint.zip
-    # install frontend modules
     - cd frontend; yarn
+  cache_directories:
+    - ~/.cache/yarn
 
 test:
   pre:
@@ -20,9 +23,9 @@ test:
     - mvn integration-test
     - mvn jacoco:report
     - cd java-conversion-tool/src/main; ../../../sonarlint-cli-2.1.0.566/bin/sonarlint
-    - cd frontend; npm run lint
-    - cd frontend; npm run test
-    - cd frontend; npm run e2e
+    - cd frontend; yarn run lint
+    - cd frontend; yarn run test
+    - cd frontend; yarn run e2e
   post:
     - cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS
     - mkdir $CIRCLE_ARTIFACTS/sonarlint
