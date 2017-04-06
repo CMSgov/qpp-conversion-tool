@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +22,7 @@ import static org.hamcrest.core.IsNull.nullValue;
 public class QrdaValidatorTest {
 
 	private QrdaValidator objectUnderTest;
-
+	private static boolean activated = false;
 	private static List<Node> nodesPassedIntoValidateSingleNode;
 
 	private static List<Node> nodesPassedIntoRequiredValidateTemplateIdNodes;
@@ -43,6 +44,12 @@ public class QrdaValidatorTest {
 		nodesPassedIntoValidateSingleNode = new ArrayList<>();
 		nodesPassedIntoRequiredValidateTemplateIdNodes = null;
 		nodesPassedIntoOptionalValidateTemplateIdNodes = null;
+		activated = true;
+	}
+
+	@After
+	public void afterEachTest() {
+		activated = false;
 	}
 
 	@Test
@@ -183,7 +190,9 @@ public class QrdaValidatorTest {
 		@Override
 		public void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
 			nodesPassedIntoRequiredValidateTemplateIdNodes = nodes;
-			addValidationError(TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES);
+			if ( activated ) {
+				addValidationError(TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES);
+			}
 		}
 	}
 
