@@ -41,6 +41,15 @@ public class AciNumeratorValidatorTest {
 		assertThat("No Children Validation Error not issued", errors.get(0).getErrorText(), is(AciNumeratorValidator.NO_CHILDREN));
 
 	}
+	@Test
+	public void missingXML() throws Exception {
+		AciNumeratorValidator validator = new AciNumeratorValidator();
+		List<ValidationError> errors = validator.validateSingleNode(null);
+
+		assertThat("Validation error size should be 1", errors.size(), is(1));
+		assertThat("Missing XML Validation Error not issued", errors.get(0).getErrorText(), is(AciNumeratorValidator.EMPTY_MISSING_XML));
+
+	}
 
 	@Test
 	public void incorrectChildrenTest() throws Exception {

@@ -14,10 +14,11 @@ import java.util.List;
 @Validator(templateId = "2.16.840.1.113883.10.20.27.3.3", required = true)
 public class AciNumeratorValidator extends NodeValidator {
 
-	protected static final String NO_CHILDREN = "This ACI Numerator Node does not have any child Nodes";
+	protected static final String EMPTY_MISSING_XML = "ACI Numerator Node Aggregate is empty or missing";
 	protected static final String INCORRECT_CHILD = "This Numerator Node does not have an Aggregate Count Node";
-	protected static final String TOO_MANY_CHILDREN = "This ACI Numerator Node has too many child Nodes";
 	protected static final String INVALID_VALUE = "This ACI Numerator Node Aggregate Value has an invalid value %1$s ";
+	protected static final String NO_CHILDREN = "This ACI Numerator Node does not have any child Nodes";
+	protected static final String TOO_MANY_CHILDREN = "This ACI Numerator Node has too many child Nodes";
 
 	@Override
 	protected void internalValidateSingleNode(Node node) {
@@ -27,36 +28,48 @@ public class AciNumeratorValidator extends NodeValidator {
 
 	@Override
 	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
+		//Need clarification for what this method's purpose is
+		if (nodes.isEmpty()) {
+			this.addValidationError(new ValidationError(NO_CHILDREN));
+		}
+		else if (nodes.size() > 1) {
+			this.addValidationError(new ValidationError(TOO_MANY_CHILDREN));
+		}
 
 	}
 
 	private void validateChildren(final Node node) {
 
+		if ( node == null ){
+			this.addValidationError(new ValidationError(EMPTY_MISSING_XML));
+			return;
+		}
 		List<Node> children = node.getChildNodes();
 
-		if (!children.isEmpty()) {
-			if (children.size() == 1) {
-				Node child = children.get(0);
-				if (NodeType.ACI_AGGREGATE_COUNT != child.getType()) {
-					this.addValidationError(new ValidationError(INCORRECT_CHILD));
-				} else {
-					String value = child.getValue("value");
-					try {
-						int val = Integer.parseInt(value);
-						if ( val <= 0 ){
-							this.addValidationError(
-									new ValidationError(String.format(INVALID_VALUE ,value)));
-						}
-					} catch (NumberFormatException nfe) {
-						this.addValidationError(
-								new ValidationError(String.format(INVALID_VALUE ,value)));
-					}
-				}
-			} else {
-				this.addValidationError(new ValidationError(TOO_MANY_CHILDREN));
-			}
-		} else {
+		if (children.isEmpty()) {
 			this.addValidationError(new ValidationError(NO_CHILDREN));
+			return;
+		}
+		if (children.size() > 1) {
+			this.addValidationError(new ValidationError(TOO_MANY_CHILDREN));
+			return;
+		}
+		Node child = children.get(0);
+		if (NodeType.ACI_AGGREGATE_COUNT != child.getType()) {
+			this.addValidationError(new ValidationError(INCORRECT_CHILD));
+			return;
+		}
+
+		String value = child.getValue("value");
+		try {
+			int val = Integer.parseInt(value);
+			if ( val <= 0 ){
+				this.addValidationError(
+						new ValidationError(String.format(INVALID_VALUE ,value)));
+			}
+		} catch (NumberFormatException nfe) {
+			this.addValidationError(
+					new ValidationError(String.format(INVALID_VALUE ,value)));
 		}
 	}
 }
