@@ -33,5 +33,7 @@ public class AggregateCountValidator extends NodeValidator {
 	}
 
 	@Override
-	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {}
+	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
+		// No current cross node Aggregate Count validations
+	}
 }
