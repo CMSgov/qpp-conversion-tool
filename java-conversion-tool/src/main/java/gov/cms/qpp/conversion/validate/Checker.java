@@ -13,11 +13,6 @@ import java.util.stream.Collectors;
  * Node checker DSL to help abbreviate / simplify single node validations
  */
 class Checker {
-	private Node node;
-	private List<ValidationError> validationErrors;
-	private boolean anded;
-	private Map<NodeType, Long> nodeCount;
-
 	/**
 	 * static factory that returns a shortcut validator
 	 *
@@ -39,6 +34,11 @@ class Checker {
 	static Checker thoroughlyCheck( Node node, List<ValidationError> validationErrors ){
 		return new Checker( node, validationErrors, false);
 	}
+	
+	private Node node;
+	private List<ValidationError> validationErrors;
+	private boolean anded;
+	private Map<NodeType, Long> nodeCount;
 
 	private Checker( Node node, List<ValidationError> validationErrors, boolean anded ){
 		this.node = node;
@@ -61,10 +61,8 @@ class Checker {
 	 * @return
 	 */
 	Checker value( String message, String name ) {
-		if ( !shouldShortcut() ) {
-			if (node.getValue(name) == null) {
-				validationErrors.add(new ValidationError(message));
-			}
+		if ( !shouldShortcut() && node.getValue(name) == null ) {
+			validationErrors.add(new ValidationError(message));
 		}
 		return this;
 	}
@@ -94,10 +92,8 @@ class Checker {
 	 * @return
 	 */
 	Checker hasChildren(String message ) {
-		if ( !shouldShortcut() ) {
-			if (node.getChildNodes().isEmpty()) {
-				validationErrors.add(new ValidationError(message));
-			}
+		if ( !shouldShortcut() && node.getChildNodes().isEmpty() ) {
+			validationErrors.add(new ValidationError(message));
 		}
 		return this;
 	}
