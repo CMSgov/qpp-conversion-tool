@@ -12,10 +12,9 @@ import gov.cms.qpp.conversion.model.Validator;
 
 import java.util.List;
 
-@Validator(templateId = "2.16.840.1.113883.10.20.27.3.31", required = true)
-public class AciNumeratorValidator extends AciNumeratorDenominatorValidator {
-
-	public AciNumeratorValidator() {
-		nodeName = "Numerator";
+@Validator(templateId = "2.16.840.1.113883.10.20.27.3.32", required = true)
+public class AciDenominatorValidator extends AciNumeratorDenominatorValidator {
+	public AciDenominatorValidator() {
+		nodeName = "Denominator";
 	}
 }
