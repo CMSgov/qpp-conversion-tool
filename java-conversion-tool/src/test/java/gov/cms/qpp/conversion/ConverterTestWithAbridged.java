@@ -27,4 +27,29 @@ public class ConverterTestWithAbridged {
 
 		System.out.println("Time to run transform " + (finish - start));
 	}
+
+	@Test
+	public void testMultiThreadRun_testSkipValidationToo() throws IOException {
+		long start = System.currentTimeMillis();
+
+		Converter.main(new String[]{Converter.SKIP_VALIDATION,
+				"src/test/resources/pathTest/a.xml",
+				"src/test/resources/pathTest/subdir/*.xml"});
+
+		long finish = System.currentTimeMillis();
+
+		Path aJson = Paths.get("a.qpp.json");
+		Path dJson = Paths.get("d.qpp.json");
+
+		// a.qpp.json and d.qpp.json will not exist because the a.xml and d.xml
+		// file will get validation
+		assertTrue( Files.exists(aJson) );
+		assertTrue( Files.exists(dJson) );
+
+		Files.delete(aJson);
+		Files.delete(dJson);
+
+		System.out.println("Time to run two thread transform " + (finish - start));
+	}
+
 }

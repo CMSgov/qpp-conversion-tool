@@ -15,6 +15,9 @@ import java.util.List;
 @Validator(templateId = "2.16.840.1.113883.10.20.27.3.31", required = true)
 public class AciNumeratorValidator extends AciNumeratorDenominatorValidator {
 
+  /**
+  Class that validates ACI Numerator Nodes
+  */
 	public AciNumeratorValidator() {
 		nodeName = "Numerator";
 	}

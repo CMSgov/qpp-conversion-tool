@@ -95,7 +95,7 @@ public class ConverterTest {
 	@Test
 	public void testExtractDir_wildcard() {
 		String regex = Converter.extractDir("path/*/*.xml");
-		String expect = "path" + File.separator;
+		String expect = "path";
 		assertEquals(expect, regex);
 	}
 
@@ -116,7 +116,7 @@ public class ConverterTest {
 	@Test
 	public void testExtractDir_unix() {
 		String regex = Converter.extractDir("path/to/dir/*.xml");
-		String expect = "path" + SEPERATOR + "to" + SEPERATOR + "dir" + SEPERATOR;
+		String expect = "path" + SEPERATOR + "to" + SEPERATOR + "dir";
 		assertEquals(expect, regex);
 	}
 
@@ -125,7 +125,7 @@ public class ConverterTest {
 		// testing the extraction not the building on windows
 		String regex = Converter.extractDir("path\\to\\dir\\*.xml");
 		// this test is running on *nix so expect this path while testing
-		String expect = "path" + SEPERATOR + "to" + SEPERATOR + "dir" + SEPERATOR;
+		String expect = "path" + SEPERATOR + "to" + SEPERATOR + "dir";
 
 		assertEquals(expect, regex);
 	}
@@ -218,29 +218,6 @@ public class ConverterTest {
 		assertEquals(0, files.size());
 	}
 
-	@Test
-	public void testMultiThreadRun_testSkipValidationToo() throws IOException {
-		long start = System.currentTimeMillis();
-
-		Converter.main(new String[]{Converter.SKIP_VALIDATION,
-				"src/test/resources/pathTest/a.xml",
-				"src/test/resources/pathTest/subdir/*.xml"});
-
-		long finish = System.currentTimeMillis();
-
-		Path aJson = Paths.get("a.qpp.json");
-		Path dJson = Paths.get("d.qpp.json");
-
-		// a.qpp.json and d.qpp.json will not exist because the a.xml and d.xml
-		// file will get validation
-		assertTrue( Files.exists(aJson) );
-		assertTrue( Files.exists(dJson) );
-
-		Files.delete(aJson);
-		Files.delete(dJson);
-
-		System.out.println("Time to run two thread transform " + (finish - start));
-	}
 
 	@Test
 	public void testDefaults() throws Exception {
@@ -330,7 +307,7 @@ public class ConverterTest {
 		});
 
 		//assert
-		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class));
 	}
 
 	@Test
@@ -372,7 +349,7 @@ public class ConverterTest {
 		});
 
 		//assert
-		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(Exception.class) );
+		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(NullPointerException.class) );
 	}
 
 	@Test
@@ -395,7 +372,7 @@ public class ConverterTest {
 		});
 
 		//assert
-		verify(logger).error( eq("The file is not a valid XML document"), any(Exception.class) );
+		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
 	}
 
 	@Test
@@ -413,9 +390,8 @@ public class ConverterTest {
 		Converter.main(new String[]{"src/test/resources/converter/defaultedNode.xml"});
 
 		//assert
-		verify(logger).error( eq("Could not write to file: {} {}" ),
-				eq( "defaultedNode.err.txt" ),
-				any(Exception.class) );
+		verify(logger).error( eq("Could not write to file: {}" ),
+				eq( "defaultedNode.err.txt" ), any(String.class) );
 	}
 
 	@Test
@@ -433,8 +409,7 @@ public class ConverterTest {
 		Converter.main(new String[]{"src/test/resources/converter/defaultedNode.xml"});
 
 		//assert
-		verify(logger).error( eq("Unexpected exception occurred during conversion" ),
-				any(Exception.class) );
+		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(NullPointerException.class) );
 	}
 
 	@Test
@@ -454,9 +429,9 @@ public class ConverterTest {
 		Converter.main(new String[] {"src/test/resources/converter/defaultedNode.xml"});
 
 		//assert
-		verify(logger).error( eq("Could not write to file: {} {}" ),
-				eq( "defaultedNode.err.txt" ),
-				any(Exception.class) );
+		verify(logger).error( eq("Could not write to file: {}" ),
+				eq("defaultedNode.err.txt"),
+				any(IOException.class) );
 	}
 
 	@XmlDecoder(templateId = "867.5309")

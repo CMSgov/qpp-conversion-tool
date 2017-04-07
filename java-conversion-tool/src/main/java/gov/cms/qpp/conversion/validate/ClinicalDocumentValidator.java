@@ -7,6 +7,9 @@ import gov.cms.qpp.conversion.model.Validator;
 
 import java.util.List;
 
+/**
+ * Validates the Clinical Document.
+ */
 @Validator(templateId = "2.16.840.1.113883.10.20.27.1.2", required = true)
 public class ClinicalDocumentValidator extends NodeValidator {
 
@@ -15,29 +18,33 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	public static final String ONE_CHILD_REQUIRED = "Clinical Document Node must have at least one Aci or Ia Section Node as a child";
 
 	/**
-	 * ClinicalDocumentValidator validates the list of Nodes that were decoded
+	 * Validates a single Clinical Document {@link gov.cms.qpp.conversion.model.Node}.
 	 *
-	 * @param node Node the decodes list of nodes
-	 * @return List<ValidationError>
+	 * Validates the following.
+	 * <ul>
+	 *     <li>At least one child exists.</li>
+	 *     <li>At least one ACI or IA section exists.</li>
+	 * </ul>
+	 *
+	 * @param node Node that represents a Clinical Document.
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 
 		List<Node> childNodes = node.getChildNodes();
 
-		if (childNodes.isEmpty()) {
-			this.addValidationError(new ValidationError(ONE_CHILD_REQUIRED));
-		} else {
-			int aciOrIaCount = 0;
-			for (Node child : childNodes) {
-				aciOrIaCount += (NodeType.ACI_SECTION == child.getType() || NodeType.IA_SECTION == child.getType()) ? 1:0 ;
-			}
-			if (aciOrIaCount == 0) {
-				this.addValidationError(new ValidationError(ONE_CHILD_REQUIRED));
-			}
-		}
+		check( node )
+			.hasChildren( ONE_CHILD_REQUIRED )
+			.childMinimum( ONE_CHILD_REQUIRED, 1, NodeType.ACI_SECTION, NodeType.IA_SECTION );
 	}
 
+	/**
+	 * Validates all the Clinical Documents together.
+	 *
+	 * Validates that one and only one Clinical Document {@link gov.cms.qpp.conversion.model.Node} exists.
+	 *
+	 * @param nodes The list of all the Clinical Documents nodes.
+	 */
 	@Override
 	protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
 

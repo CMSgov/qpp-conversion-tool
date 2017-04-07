@@ -15,6 +15,7 @@ import org.jdom2.filter.Filters;
  */
 @XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.3")
 public class AggregateCountDecoder extends QppXmlDecoder {
+	public static final String AGGREGATE_COUNT = "aggregateCount";
 
 	/**
 	 * Parses out the aggregateCount value from the xml fragment
@@ -37,7 +38,7 @@ public class AggregateCountDecoder extends QppXmlDecoder {
 	 */
 	protected void setSciNumeratorDenominatorOnNode(Element element, Node thisnode) {
 		String expressionStr = "./ns:value/@value";
-		Consumer<? super Attribute> consumer = p -> thisnode.putValue("aggregateCount", p.getValue());
+		Consumer<? super Attribute> consumer = p -> thisnode.putValue( AGGREGATE_COUNT, p.getValue() );
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 
