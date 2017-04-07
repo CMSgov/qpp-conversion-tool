@@ -188,6 +188,36 @@ public class CheckerTest {
 	}
 
 	@Test
+	public void testMaxFindMultipleNodeTypesFailure() {
+		Node meepNode = new Node( PARENT );
+		meepNode.addChildNodes(
+				new Node( NodeType.PLACEHOLDER.getTemplateId() ),
+				new Node( NodeType.PLACEHOLDER.getTemplateId() ),
+				new Node( NodeType.DEFAULT.getTemplateId() ));
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.childMaximum( "too many children", 2, NodeType.PLACEHOLDER, NodeType.DEFAULT );
+
+		assertFalse("There's an error", validationErrors.isEmpty() );
+		assertEquals( "message applied is other error message", validationErrors.get( 0 ).getErrorText(), "too many children" );
+	}
+
+	@Test
+	public void testMaxFindMultipleNodeTypesSuccess() {
+		Node meepNode = new Node( PARENT );
+		meepNode.addChildNodes(
+				new Node( NodeType.PLACEHOLDER.getTemplateId() ),
+				new Node( NodeType.PLACEHOLDER.getTemplateId() ),
+				new Node( NodeType.DEFAULT.getTemplateId() ),
+				new Node( NodeType.ACI_NUM_DENOM_VALUE.getTemplateId() ));
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.childMaximum( "too many children", 3, NodeType.PLACEHOLDER, NodeType.DEFAULT );
+
+		assertTrue("There's no error", validationErrors.isEmpty() );
+	}
+
+	@Test
 	public void testValueChildrenChildMinChildMaxFindSuccess() {
 		Node meepNode = new Node( PARENT );
 		meepNode.putValue( VALUE, "123" );
