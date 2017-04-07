@@ -28,10 +28,7 @@ public class AciNumeratorValidator extends NodeValidator {
 
 	@Override
 	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
-		//Need clarification for what this method's purpose is
-		if (nodes.isEmpty()) {
-			this.addValidationError(new ValidationError(String.format(NO_CHILDREN, nodes.toString())));
-		}
+		//no cross-node ACI Numerator validations required
 	}
 
 	private void validateChildren(final Node node) {
@@ -51,11 +48,14 @@ public class AciNumeratorValidator extends NodeValidator {
 			this.addValidationError(new ValidationError(String.format(INCORRECT_CHILD, node.toString())));
 			return;
 		}
-
+		if (children.size() > 1) {
+			this.addValidationError(new ValidationError( String.format(TOO_MANY_CHILDREN, node.toString())));
+			return;
+		}
 		String value = child.getValue("aggregateCount");
 		try {
 			int val = Integer.parseInt(value);
-			if (val <= 0) {
+			if (val < 0) {
 				this.addValidationError(
 						new ValidationError(String.format(INVALID_VALUE, value, node.toString())));
 			}
@@ -64,10 +64,7 @@ public class AciNumeratorValidator extends NodeValidator {
 					new ValidationError(String.format(INVALID_VALUE, value, node.toString())));
 		}
 
-		if (children.size() > 1) {
-			this.addValidationError(new ValidationError( String.format(TOO_MANY_CHILDREN, node.toString())));
-			return;
-		}
+
 
 	}
 }
