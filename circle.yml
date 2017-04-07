@@ -19,9 +19,7 @@ dependencies:
 test:
   pre:
     - cd frontend; npm install -g protractor
-    - webdriver-manager update --chrome --versions.chrome=2.25
-    - webdriver-manager start --versions.chrome=2.25:
-        background: true
+    - sudo apt-get update && sudo apt-get install --only-upgrade google-chrome-stable
   override:
     - mvn integration-test
     - mvn jacoco:report
