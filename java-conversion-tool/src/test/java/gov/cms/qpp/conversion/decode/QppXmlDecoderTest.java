@@ -67,20 +67,20 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 	}
 
 	@Test
-	public void decodeResult_NoAction() throws Exception {
+	public void decodeResultNoAction() throws Exception {
 		assertThat("DecodeResult is incorrect", new QppXmlDecoder().internalDecode(null, null),
 				is(DecodeResult.NO_ACTION));
 	}
 
 	@Test
-	public void nullElementDecode_returnsError() {
+	public void nullElementDecodeReturnsError() {
 		//Element nullElement = null;
 		assertThat("DecodeResult is incorrect", new QppXmlDecoder().decode((Element)null, null),
 				is(DecodeResult.ERROR));
 	}
 
 	@Test
-	public void decodeInvalidChild_returnsError() {
+	public void decodeInvalidChildReturnsError() {
 		Element testElement = new Element("testElement");
 		Element testChildElement = new Element("templateId");
 		testChildElement.setAttribute("root", "errorDecoder");
@@ -98,7 +98,7 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 	@Test
 	@PrepareForTest(QppXmlDecoder.class)
-	public void testThatDefaultCase_returnsNoAction() {
+	public void testThatDefaultCaseReturnsNoAction() {
 		Element testElement = new Element("testElement");
 		Element testChildElement = new Element("templateId");
 		testChildElement.setAttribute("root", "noActionDecoder");
