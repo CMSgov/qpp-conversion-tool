@@ -27,20 +27,9 @@ public class AggregateCountValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		String aggregateCount = node.getValue( "aggregateCount" );
-		if ( aggregateCount == null ) {
-			this.addValidationError( new ValidationError( VALUE_ERROR ) );
-		} else {
-			checkIntValue( aggregateCount );
-		}
-	}
-
-	private void checkIntValue( String value) {
-		try {
-			Integer.parseInt( value );
-		} catch (NumberFormatException ex) {
-			this.addValidationError( new ValidationError( TYPE_ERROR ) );
-		}
+		check( node )
+				.value( VALUE_ERROR, "aggregateCount" )
+				.intValue( TYPE_ERROR, "aggregateCount" );
 	}
 
 	@Override
