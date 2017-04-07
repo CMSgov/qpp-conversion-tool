@@ -32,10 +32,6 @@ public class AciNumeratorValidatorTest {
 	}
 
 	@Test
-	public void internalValidateSameTemplateIdNodes() throws Exception {
-	}
-
-	@Test
 	public void noChildrenTest() throws Exception {
 		Node aciNumeratorNode = new Node(NodeType.ACI_NUMERATOR.getTemplateId());
 
@@ -84,6 +80,7 @@ public class AciNumeratorValidatorTest {
 
 	@Test
 	public void invalidValueTest() throws Exception {
+		//Not a number check
 		Node aciNumeratorNode = new Node(NodeType.ACI_NUMERATOR.getTemplateId());
 		Node aggregateCountNode = new Node(NodeType.ACI_AGGREGATE_COUNT.getTemplateId());
 		String value = "not a number";
@@ -93,8 +90,21 @@ public class AciNumeratorValidatorTest {
 		AciNumeratorValidator validator = new AciNumeratorValidator();
 		List<ValidationError> errors = validator.validateSingleNode(aciNumeratorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
-		assertThat("NO CHILDREN Validation Error not issued", errors.get(0).getErrorText(),
-				is(AciNumeratorValidator.INVALID_VALUE + value));
+		assertThat("Invalid Value Validation Error not issued", errors.get(0).getErrorText(),
+				is(String.format(AciNumeratorValidator.INVALID_VALUE, value)));
+
+		// Less than 0 check
+		aciNumeratorNode = new Node(NodeType.ACI_NUMERATOR.getTemplateId());
+		aggregateCountNode = new Node(NodeType.ACI_AGGREGATE_COUNT.getTemplateId());
+		value = "-50";
+		aggregateCountNode.putValue("value", value);
+		aciNumeratorNode.addChildNode(aggregateCountNode);
+
+		validator = new AciNumeratorValidator();
+		errors = validator.validateSingleNode(aciNumeratorNode);
+		assertThat("Validation error size should be 1", errors.size(), is(1));
+		assertThat("Invalid Value Validation Error not issued", errors.get(0).getErrorText(),
+				is(String.format(AciNumeratorValidator.INVALID_VALUE , value)));
 	}
 
 }
