@@ -49,15 +49,17 @@ public class AciNumeratorValidator extends NodeValidator {
 			this.addValidationError(new ValidationError(String.format(NO_CHILDREN, node.toString())));
 			return;
 		}
+		if (children.size() > 1) {
+			this.addValidationError(new ValidationError( String.format(TOO_MANY_CHILDREN, node.toString())));
+			return;
+		}
+		
 		Node child = children.get(0);
 		if (NodeType.ACI_AGGREGATE_COUNT != child.getType()) {
 			this.addValidationError(new ValidationError(String.format(INCORRECT_CHILD, node.toString())));
 			return;
 		}
-		if (children.size() > 1) {
-			this.addValidationError(new ValidationError( String.format(TOO_MANY_CHILDREN, node.toString())));
-			return;
-		}
+
 		String value = child.getValue("aggregateCount");
 		try {
 			int val = Integer.parseInt(value);
