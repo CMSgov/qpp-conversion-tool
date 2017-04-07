@@ -1,7 +1,8 @@
 package gov.cms.qpp.conversion.validate;
 
 /**
- * This Validator checks that exactly one Aggregate Count Child exists.
+ * This Validator checks that exactly one Aggregate Count Child exists,
+ * and that its aggregate count value is a positive integer value.
  */
 
 import gov.cms.qpp.conversion.model.Node;
@@ -20,19 +21,24 @@ public class AciNumeratorValidator extends NodeValidator {
 	protected static final String NO_CHILDREN = "This ACI Numerator Node does not have any child Nodes  \n\t%s";
 	protected static final String TOO_MANY_CHILDREN = "This ACI Numerator Node has too many child Nodes  \n\t%s";
 
-	@Override
-	protected void internalValidateSingleNode(Node node) {
-		//the aci proportion measure node must have a numerator node and a denominator node as children
-		validateChildren(node);
-	}
-
+	/**
+	 * internalValidateSameTemplateIdNodes allows for any cross node dependencies
+	 * to be validated. AciNumerator does not have any cross node dependencies
+	 * @param nodes List of Node
+	 */
 	@Override
 	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
 		//no cross-node ACI Numerator validations required
 	}
 
-	private void validateChildren(final Node node) {
-
+	/**
+	 * internalValidateSingleNode inspects the node for certain validations.
+	 * Will add validation errors if any exist
+	 *
+	 * @param node Node parsed xml fragment under consideration
+	 */
+	@Override
+	protected void internalValidateSingleNode(Node node) {
 		if (node == null) {
 			this.addValidationError(new ValidationError(EMPTY_MISSING_XML));
 			return;
@@ -63,8 +69,5 @@ public class AciNumeratorValidator extends NodeValidator {
 			this.addValidationError(
 					new ValidationError(String.format(INVALID_VALUE, value, node.toString())));
 		}
-
-
-
 	}
 }
