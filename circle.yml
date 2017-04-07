@@ -7,6 +7,11 @@ machine:
     PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/frontend/node_modules/.bin" # yarn
 
 dependencies:
+  pre: 
+    - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - sudo dpkg -i google-chrome.deb
+    - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
+    - rm google-chrome.deb
   override:
     - cd java-conversion-tool; mvn dependency:resolve
     # download and extract the sonarlint code quality tool
@@ -19,7 +24,6 @@ dependencies:
 test:
   pre:
     - cd frontend; npm install -g protractor
-    - sudo apt-get update && sudo apt-get install --only-upgrade google-chrome-stable
   override:
     - mvn integration-test
     - mvn jacoco:report
