@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Created by clydetedrick on 4/7/17.
+ * Node checker DSL to help abbreviate / simplify single node validations
  */
 class Checker {
 	private Node node;
@@ -18,10 +18,24 @@ class Checker {
 	private boolean anded;
 	private Map<NodeType, Long> nodeCount;
 
+	/**
+	 * static factory that returns a shortcut validator
+	 *
+	 * @param node
+	 * @param validationErrors
+	 * @return
+	 */
 	static Checker check( Node node, List<ValidationError> validationErrors ){
 		return new Checker( node, validationErrors, true);
 	}
 
+	/**
+	 * static factory that returns a non-shortcut validator
+	 *
+	 * @param node
+	 * @param validationErrors
+	 * @return
+	 */
 	static Checker thoroughlyCheck( Node node, List<ValidationError> validationErrors ){
 		return new Checker( node, validationErrors, false);
 	}
@@ -39,57 +53,87 @@ class Checker {
 		return anded && !validationErrors.isEmpty();
 	}
 
+	/**
+	 * checks target node for the existence of a value with the given name key
+	 *
+	 * @param message error message if searched value is not found
+	 * @param name
+	 * @return
+	 */
 	Checker value( String message, String name ) {
-		if ( shouldShortcut() ) {
-			return this;
-		}
-		if ( node.getValue( name ) == null ) {
-			validationErrors.add( new ValidationError( message ));
+		if ( !shouldShortcut() ) {
+			if (node.getValue(name) == null) {
+				validationErrors.add(new ValidationError(message));
+			}
 		}
 		return this;
 	}
 
+	/**
+	 * checks target node for the existence of an integer value with the given name key
+	 *
+	 * @param message error message if searched value is not found or is not appropriately typed
+	 * @param name
+	 * @return
+	 */
 	Checker intValue( String message, String name ) {
-		if ( shouldShortcut() ) {
-			return this;
-		}
-		try{
-			Integer.parseInt( node.getValue( name ) );
-		} catch (NumberFormatException ex) {
-			validationErrors.add( new ValidationError( message ));
+		if ( !shouldShortcut() ) {
+			try {
+				Integer.parseInt(node.getValue(name));
+			} catch (NumberFormatException ex) {
+				validationErrors.add(new ValidationError(message));
+			}
 		}
 		return this;
 	}
 
+	/**
+	 * checks target node for the existence of any child nodes
+	 *
+	 * @param message
+	 * @return
+	 */
 	Checker children( String message ) {
-		if ( shouldShortcut() ) {
-			return this;
-		}
-		if ( node.getChildNodes().isEmpty() ) {
-			validationErrors.add( new ValidationError( message ));
+		if ( !shouldShortcut() ) {
+			if (node.getChildNodes().isEmpty()) {
+				validationErrors.add(new ValidationError(message));
+			}
 		}
 		return this;
 	}
 
+	/**
+	 * verifies that the target node has more than the given minimum of the given {@link NodeType}s
+	 *
+	 * @param message
+	 * @param minimum
+	 * @param types
+	 * @return
+	 */
 	Checker childMinimum( String message, int minimum, NodeType... types  ) {
-		if ( shouldShortcut() ) {
-			return this;
-		}
-
-		long count = tallyNodes( types );
-		if ( count < minimum ) {
-			validationErrors.add( new ValidationError( message ));
+		if ( !shouldShortcut() ) {
+			long count = tallyNodes(types);
+			if (count < minimum) {
+				validationErrors.add(new ValidationError(message));
+			}
 		}
 		return this;
 	}
 
+	/**
+	 * verifies that the target node has less than the given maximum of the given {@link NodeType}s
+	 *
+	 * @param message
+	 * @param maximum
+	 * @param types
+	 * @return
+	 */
 	Checker childMaximum( String message, int maximum, NodeType... types ) {
-		if ( shouldShortcut() ) {
-			return this;
-		}
-		long count = tallyNodes( types );
-		if ( count > maximum ) {
-			validationErrors.add( new ValidationError( message ));
+		if ( !shouldShortcut() ) {
+			long count = tallyNodes(types);
+			if (count > maximum) {
+				validationErrors.add(new ValidationError(message));
+			}
 		}
 		return this;
 	}

@@ -170,6 +170,18 @@ public class CheckerTest {
 	}
 
 	@Test
+	public void testChildValueChildrenFindFailure() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+		meepNode.addChildNode( new Node( NodeType.PLACEHOLDER.getTemplateId() ) );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.value( ERROR_MESSAGE, VALUE ).children( OTHER_ERROR_MESSAGE );
+
+		assertTrue("There's no error", validationErrors.isEmpty() );
+	}
+
+	@Test
 	public void testValueChildrenChildMinChildMaxFindFailure() {
 		Node meepNode = new Node( PARENT );
 		meepNode.putValue( VALUE, "123" );
