@@ -17,7 +17,7 @@ public class AggregateCountValidatorTest {
 
     @Test
     public void testIsAggregateCount() {
-        Node aggregateCountNode = new Node( NodeType.ACI_NUM_DENOM_VALUE.getTemplateId() );
+        Node aggregateCountNode = new Node( NodeType.ACI_AGGREGATE_COUNT.getTemplateId() );
 
         AggregateCountValidator validator = new AggregateCountValidator();
 
@@ -26,7 +26,7 @@ public class AggregateCountValidatorTest {
 
     @Test
     public void testValueAbsenceFailure() {
-        Node aggregateCountNode = new Node( NodeType.ACI_NUM_DENOM_VALUE.getTemplateId() );
+        Node aggregateCountNode = new Node( NodeType.ACI_AGGREGATE_COUNT.getTemplateId() );
 
         AggregateCountValidator validator = new AggregateCountValidator();
         validator.internalValidateSingleNode( aggregateCountNode );
@@ -38,7 +38,7 @@ public class AggregateCountValidatorTest {
 
     @Test
     public void testValueTypeFailure() {
-        Node aggregateCountNode = new Node( NodeType.ACI_NUM_DENOM_VALUE.getTemplateId() );
+        Node aggregateCountNode = new Node( NodeType.ACI_AGGREGATE_COUNT.getTemplateId() );
         aggregateCountNode.putValue( AggregateCountDecoder.AGGREGATE_COUNT, "meep" );
 
         AggregateCountValidator validator = new AggregateCountValidator();
@@ -51,7 +51,7 @@ public class AggregateCountValidatorTest {
 
     @Test
     public void testValueTypeSuccess() {
-        Node aggregateCountNode = new Node( NodeType.ACI_NUM_DENOM_VALUE.getTemplateId() );
+        Node aggregateCountNode = new Node( NodeType.ACI_AGGREGATE_COUNT.getTemplateId() );
         aggregateCountNode.putValue( AggregateCountDecoder.AGGREGATE_COUNT, "7" );
 
         AggregateCountValidator validator = new AggregateCountValidator();
