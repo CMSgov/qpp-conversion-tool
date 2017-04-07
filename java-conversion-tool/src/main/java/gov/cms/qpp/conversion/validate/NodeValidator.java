@@ -94,10 +94,16 @@ public abstract class NodeValidator {
 	protected abstract void internalValidateSameTemplateIdNodes(final List<Node> nodes);
 
 	private void logValidationError(final ValidationError newError) {
+		LOG.debug("Error '{}' added for templateId {}", newError, getTemplateId() );
+	}
 
+	/**
+	 * Get the node validator's corresponding template id
+	 *
+	 * @return templateId
+	 */
+	protected String getTemplateId(){
 		final Validator validator = this.getClass().getAnnotation(Validator.class);
-		final String templateId = ((null != validator) ? validator.templateId() : "");
-
-		LOG.debug("Error '{}' added for templateId {}", newError, templateId);
+		return (null != validator) ? validator.templateId() : "";
 	}
 }
