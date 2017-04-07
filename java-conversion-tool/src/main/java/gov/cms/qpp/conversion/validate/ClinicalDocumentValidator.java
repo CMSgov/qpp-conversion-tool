@@ -34,8 +34,8 @@ public class ClinicalDocumentValidator extends NodeValidator {
 		List<Node> childNodes = node.getChildNodes();
 
 		check( node )
-				.children( ONE_CHILD_REQUIRED )
-				.childMinimum( ONE_CHILD_REQUIRED, 1, NodeType.ACI_SECTION, NodeType.IA_SECTION );
+			.children( ONE_CHILD_REQUIRED )
+			.childMinimum( ONE_CHILD_REQUIRED, 1, NodeType.ACI_SECTION, NodeType.IA_SECTION );
 	}
 
 	/**

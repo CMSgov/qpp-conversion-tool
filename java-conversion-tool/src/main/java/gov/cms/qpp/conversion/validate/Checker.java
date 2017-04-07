@@ -76,10 +76,7 @@ class Checker {
 			return this;
 		}
 
-		long count = Arrays
-				.stream( types )
-				.mapToLong( type -> ( nodeCount.get( type ) == null ) ? 0 : nodeCount.get( type ) )
-				.sum();
+		long count = tallyNodes( types );
 		if ( count < minimum ) {
 			validationErrors.add( new ValidationError( message ));
 		}
@@ -90,13 +87,16 @@ class Checker {
 		if ( shouldShortcut() ) {
 			return this;
 		}
-		long count = Arrays
-				.stream( types )
-				.mapToLong( type -> ( nodeCount.get( type ) == null ) ? 0 : nodeCount.get( type ) )
-				.sum();
+		long count = tallyNodes( types );
 		if ( count > maximum ) {
 			validationErrors.add( new ValidationError( message ));
 		}
 		return this;
+	}
+
+	private long tallyNodes( NodeType... types ) {
+		return Arrays.stream( types )
+			.mapToLong( type -> ( nodeCount.get( type ) == null ) ? 0 : nodeCount.get( type ) )
+			.sum();
 	}
 }
