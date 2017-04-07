@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.model.NodeType;
 import gov.cms.qpp.conversion.model.ValidationError;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -81,6 +82,17 @@ public class AciNumeratorValidatorTest {
 		AciNumeratorValidator validator = new AciNumeratorValidator();
 
 		List<ValidationError> errors = validator.validateSingleNode(aciNumeratorNode);
+		assertThat("Validation error size should be 1", errors.size(), is(1));
+		assertThat("Too many children Validation Error not issued", errors.get(0).getErrorText(),
+				is(AciNumeratorValidator.TOO_MANY_CHILDREN));
+
+		validator = new AciNumeratorValidator();
+
+		List<Node> nodeList = new ArrayList();
+		nodeList.add(aciNumeratorNode);
+		nodeList.add(aciNumeratorNode);
+		validator.internalValidateSameTemplateIdNodes(nodeList);
+		errors = validator.getValidationErrors();
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("Too many children Validation Error not issued", errors.get(0).getErrorText(),
 				is(AciNumeratorValidator.TOO_MANY_CHILDREN));
