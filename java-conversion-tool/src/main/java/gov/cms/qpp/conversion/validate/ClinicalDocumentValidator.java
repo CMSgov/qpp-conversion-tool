@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.NodeType;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 
@@ -38,7 +38,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 		} else {
 			int aciOrIaCount = 0;
 			for (Node child : childNodes) {
-				aciOrIaCount += (NodeType.ACI_SECTION == child.getType() || NodeType.IA_SECTION == child.getType()) ? 1:0 ;
+				aciOrIaCount += (TemplateId.ACI_SECTION == child.getType() || TemplateId.IA_SECTION == child.getType()) ? 1 : 0 ;
 			}
 			if (aciOrIaCount == 0) {
 				this.addValidationError(new ValidationError(ONE_CHILD_REQUIRED));

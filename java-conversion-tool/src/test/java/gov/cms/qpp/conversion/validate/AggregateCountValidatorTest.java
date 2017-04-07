@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.NodeType;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class AggregateCountValidatorTest {
 
     @Test
     public void testIsAggregateCount() {
-        Node aggregateCountNode = new Node( NodeType.ACI_NUM_DENOM_VALUE.getTemplateId() );
+        Node aggregateCountNode = new Node(TemplateId.ACI_NUM_DENOM_VALUE.getTemplateId() );
 
         AggregateCountValidator validator = new AggregateCountValidator();
 
@@ -26,7 +26,7 @@ public class AggregateCountValidatorTest {
 
     @Test
     public void testValueAbsenceFailure() {
-        Node aggregateCountNode = new Node( NodeType.ACI_NUM_DENOM_VALUE.getTemplateId() );
+        Node aggregateCountNode = new Node(TemplateId.ACI_NUM_DENOM_VALUE.getTemplateId() );
 
         AggregateCountValidator validator = new AggregateCountValidator();
         validator.internalValidateSingleNode( aggregateCountNode );
@@ -38,7 +38,7 @@ public class AggregateCountValidatorTest {
 
     @Test
     public void testValueTypeFailure() {
-        Node aggregateCountNode = new Node( NodeType.ACI_NUM_DENOM_VALUE.getTemplateId() );
+        Node aggregateCountNode = new Node(TemplateId.ACI_NUM_DENOM_VALUE.getTemplateId() );
         aggregateCountNode.putValue( AggregateCountDecoder.AGGREGATE_COUNT, "meep" );
 
         AggregateCountValidator validator = new AggregateCountValidator();
@@ -51,7 +51,7 @@ public class AggregateCountValidatorTest {
 
     @Test
     public void testValueTypeSuccess() {
-        Node aggregateCountNode = new Node( NodeType.ACI_NUM_DENOM_VALUE.getTemplateId() );
+        Node aggregateCountNode = new Node(TemplateId.ACI_NUM_DENOM_VALUE.getTemplateId() );
         aggregateCountNode.putValue( AggregateCountDecoder.AGGREGATE_COUNT, "7" );
 
         AggregateCountValidator validator = new AggregateCountValidator();
