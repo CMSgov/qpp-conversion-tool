@@ -30,26 +30,22 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	@Override
 	public DecodeResult decode(Element element, Node parentNode) {
 
-		Node currentNode = parentNode;
-
 		if (null == element) {
 			return DecodeResult.ERROR;
 		}
 
 		setNamespace(element, this);
 
-		List<Element> childElements = element.getChildren();
+		DecodeResult decodeResult = decodeChildren(element, parentNode);
 
-		DecodeResult decodeResult = decodeChildren(element, parentNode, currentNode, childElements);
-		if (decodeResult != null) {
-			return decodeResult;
-		}
-
-		return DecodeResult.TREE_CONTINUE;
+		return (decodeResult != null) ? decodeResult : DecodeResult.TREE_CONTINUE;
 	}
 
-	private DecodeResult decodeChildren(final Element element, final Node parentNode, Node currentNode,
-	                                    final List<Element> childElements) {
+	private DecodeResult decodeChildren(final Element element, final Node parentNode) {
+
+		Node currentNode = parentNode;
+
+		List<Element> childElements = element.getChildren();
 
 		for (Element childEl : childElements) {
 
@@ -74,7 +70,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				parentNode.addChildNode(childNode); // TODO ensure we need to always add
 				currentNode = childNode; // TODO this works for AciSectionDecoder
 
-				DecodeResult placeholderNode = testChildDecodeResult(parentNode, childEl, templateId, childNode, result);
+				DecodeResult placeholderNode = testChildDecodeResult(result, childEl, templateId, parentNode, childNode);
 				if (placeholderNode != null) {
 					return placeholderNode;
 				}
@@ -87,20 +83,20 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return null;
 	}
 
-	private DecodeResult testChildDecodeResult(final Node parentNode, final Element childEl, final String templateId,
-	                                           final Node childNode, final DecodeResult result) {
+	private DecodeResult testChildDecodeResult(final DecodeResult result, final Element childElement, final String templateId, final Node parentNode,
+	                                           final Node childNode) {
 		if (result == null) {
 			// TODO this looks like a continue ????
 			// the only time we get here is NullReturnDecoderTest
 				Node placeholderNode = new Node(parentNode, "placeholder");
-			return decode(childEl, placeholderNode);
+			return decode(childElement, placeholderNode);
 		}
 
 		if (result == DecodeResult.TREE_FINISHED) {
 			// this child is done
 			return DecodeResult.TREE_FINISHED;
 		} else if (result == DecodeResult.TREE_CONTINUE) {
-			decode(childEl, childNode);
+			decode(childElement, childNode);
 		} else if (result == DecodeResult.ERROR) {
 			addValidation(templateId, "Failed to decode.");
 			LOG.error("Failed to decode templateId {} ", templateId);
