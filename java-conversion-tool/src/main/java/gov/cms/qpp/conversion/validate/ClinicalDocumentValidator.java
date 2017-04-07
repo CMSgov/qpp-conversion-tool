@@ -33,17 +33,9 @@ public class ClinicalDocumentValidator extends NodeValidator {
 
 		List<Node> childNodes = node.getChildNodes();
 
-		if (childNodes.isEmpty()) {
-			this.addValidationError(new ValidationError(ONE_CHILD_REQUIRED));
-		} else {
-			int aciOrIaCount = 0;
-			for (Node child : childNodes) {
-				aciOrIaCount += (TemplateId.ACI_SECTION == child.getType() || TemplateId.IA_SECTION == child.getType()) ? 1 : 0 ;
-			}
-			if (aciOrIaCount == 0) {
-				this.addValidationError(new ValidationError(ONE_CHILD_REQUIRED));
-			}
-		}
+		check( node )
+			.hasChildren( ONE_CHILD_REQUIRED )
+			.childMinimum( ONE_CHILD_REQUIRED, 1, TemplateId.ACI_SECTION, TemplateId.IA_SECTION );
 	}
 
 	/**

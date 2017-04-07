@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 
 import java.util.List;
@@ -27,22 +26,9 @@ public class AggregateCountValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		String aggregateCount = node.getValue( "aggregateCount" );
-		if ( aggregateCount == null ) {
-			this.addValidationError( new ValidationError( VALUE_ERROR ) );
-		} else {
-			checkIntValue( aggregateCount );
-		}
-	}
-
-	private Integer checkIntValue( String value) {
-		Integer returnValue = null;
-		try {
-			returnValue =  Integer.parseInt( value );
-		} catch (NumberFormatException ex) {
-			this.addValidationError( new ValidationError( TYPE_ERROR ) );
-		}
-		return returnValue;
+		check( node )
+			.value( VALUE_ERROR, "aggregateCount" )
+			.intValue( TYPE_ERROR, "aggregateCount" );
 	}
 
 	@Override
