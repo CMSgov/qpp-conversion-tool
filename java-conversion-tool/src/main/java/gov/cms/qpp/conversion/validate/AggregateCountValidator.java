@@ -12,8 +12,8 @@ import java.util.List;
 @Validator(templateId = "2.16.840.1.113883.10.20.27.3.3", required = true)
 public class AggregateCountValidator extends NodeValidator {
 
-	static final String VALUE_ERROR = "Aggregate count value is required.";
-	static final String TYPE_ERROR = "Aggregate count value must be an integer.";
+	public static final String VALUE_ERROR = "Aggregate count value is required.";
+	public static final String TYPE_ERROR = "Aggregate count value must be an integer.";
 
 	/**
 	 * Validates a single Aggregate Count {@link gov.cms.qpp.conversion.model.Node}.
