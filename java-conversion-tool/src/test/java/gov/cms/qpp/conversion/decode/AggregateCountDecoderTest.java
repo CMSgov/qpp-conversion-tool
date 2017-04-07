@@ -71,56 +71,24 @@ public class AggregateCountDecoderTest {
     }
 
     @Test
-    public void testAggregateCount() throws Exception {
+    public void testAggregateCountDecoderIgnoresInvalidElements() throws Exception {
 
         Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(XML_FRAGMENT));
         Node node = root.getChildNodes().get(0);
 
-        assertThat("returned node should not be null", root, is(not(nullValue())));
+        assertThat("Parent exists", root, is(not(nullValue())));
 
-        assertThat("returned node should have one child node", root.getChildNodes().size(), is(1));
+        assertThat("Parent node has one child node", root.getChildNodes(), is(hasSize(1)));
 
-        assertThat("returned node should have one child decoder nodes", node.getChildNodes().size(), is(1));
+        assertThat("Node has one element", node.getChildNodes(), is(hasSize(1)));
 
-        assertThat("DefaultDecoderFor should be Measure Data - CMS (V2)",
+        assertThat("DefaultDecoderFor has measure data",
                 node.getValue("DefaultDecoderFor"), is("Measure Data - CMS (V2)"));
 
-        assertThat("Should have template id", node.getChildNodes().get(0).getId(), is("2.16.840.1.113883.10.20.27.3.3"));
-    }
+        assertThat("Node has aggregate count", node.getChildNodes().get(0).getValue("aggregateCount"),
+                is("400"));
 
-    @Test
-    public void testAggregateCountDecoderIgnoresInvalidElements() throws XmlException {
-        String garbageXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                + "<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
-                + "<component>\n"
-                + "<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-                + "        <templateId root=\"2.16.840.1.113883.10.20.27.3.5\" extension=\"2016-09-01\"/>\n"
-                + "        <templateId root=\"2.16.840.1.113883.10.20.27.3.16\" extension=\"2016-11-01\"/>\n"
-                + "        <code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"Assertion\"/>\n"
-                + "        <statusCode code=\"completed\"/>\n"
-                + "        <value xsi:type=\"CD\" code=\"DENOM\" codeSystem=\"2.16.840.1.113883.5.1063\" codeSystemName=\"ObservationValue\"/>\n"
-                + "        <!--DENOM Count-->\n"
-                + "       <entryRelationship typeCode=\"COMP\">\n"
-                + "        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-                + "                <value xsi:type=\"CD\" code=\"M\" codeSystem=\"2.16.840.1.113883.5.1\" codeSystemName=\"AdministrativeGenderCode\" displayName=\"Male\"/>\n"
-                + "                <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
-                + "                        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-                + "                                <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
-                + "                                <whatsThis code=\"completed\"/>\n"
-                + "                                <notCorrect xsi:type=\"STRING\" value=\"FALSE\"/>\n"
-                + "                                <methodCode code=\"1234213131\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"test\" displayName=\"Count\"/>\n"
-                + "                                <abc xsi:type=\"INT\" value=\"123\"/>\n"
-                + "                                <testingNoValue />"
-                + "                        </observation>\n"
-                + "                </entryRelationship>\n"
-                + "        </observation>\n"
-                + "</entryRelationship>\n"
-                + "</observation>\n"
-                + "</component>"
-                + "</entry>";
-
-        Node nodeUnderTest = new QppXmlDecoder().decode(XmlUtils.stringToDOM(garbageXml));
-
-        assertThat("Parse no value from garbage", nodeUnderTest.getChildNodes().get(0).getValue("aggregateCount"), is(nullValue()));
+        assertThat("Should have template id", node.getChildNodes().get(0).getId(),
+                is("2.16.840.1.113883.10.20.27.3.3"));
     }
 }
