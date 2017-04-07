@@ -93,7 +93,7 @@ class Checker {
 	 * @param message
 	 * @return
 	 */
-	Checker children( String message ) {
+	Checker hasChildren(String message ) {
 		if ( !shouldShortcut() ) {
 			if (node.getChildNodes().isEmpty()) {
 				validationErrors.add(new ValidationError(message));
