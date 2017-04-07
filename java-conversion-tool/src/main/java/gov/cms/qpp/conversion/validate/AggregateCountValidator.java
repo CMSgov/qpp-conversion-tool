@@ -35,14 +35,18 @@ public class AggregateCountValidator extends NodeValidator {
 		}
 	}
 
-	private void checkIntValue( String value) {
+	private Integer checkIntValue( String value) {
+		Integer returnValue = null;
 		try {
-			Integer.parseInt( value );
+			returnValue =  Integer.parseInt( value );
 		} catch (NumberFormatException ex) {
 			this.addValidationError( new ValidationError( TYPE_ERROR ) );
 		}
+		return returnValue;
 	}
 
 	@Override
-	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {}
+	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
+		// No current cross node Aggregate Count validations
+	}
 }
