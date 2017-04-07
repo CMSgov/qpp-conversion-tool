@@ -40,7 +40,13 @@ public enum TemplateId {
 	}
 
 	public String getTemplateId() {
-		return root + extension;
+		String templateId = getRoot();
+		String extension = getExtension();
+
+		if (!extension.isEmpty()) {
+			templateId = ":" + extension;
+		}
+		return templateId;
 	}
 
 	public static TemplateId getTypeById(String id) {
