@@ -26,9 +26,9 @@ public class AciProportionMeasureValidator extends NodeValidator {
 	protected static final String ACI_PROPORTION_NODE_REQUIRED = "At least one Aci Proportion Measure Node is required";
 	protected static final String NO_PARENT_SECTION = "This ACI Measure Node should have an ACI Section Node as a parent";
 	protected static final String NO_NUMERATOR = "This ACI Measure Node does not contain a Numerator Node child";
-	protected static final String TOO_MANY_NUMERATORS = "This ACI Measure Node contains too many Numerator Node hasChildren";
+	protected static final String TOO_MANY_NUMERATORS = "This ACI Measure Node contains too many Numerator Node children";
 	protected static final String NO_DENOMINATOR = "This ACI Measure Node does not contain a Denominator Node child";
-	protected static final String TOO_MANY_DENOMINATORS = "This ACI Measure Node contains too many Denominator Node hasChildren";
+	protected static final String TOO_MANY_DENOMINATORS = "This ACI Measure Node contains too many Denominator Node children";
 	protected static final String NO_CHILDREN = "This ACI Measure Node does not have any child Nodes";
 	protected static final String NO_REQUIRED_MEASURE = "The required measure ''{0}'' is not present in the source file. Please add the ACI measure and try again.";
 
@@ -56,7 +56,7 @@ public class AciProportionMeasureValidator extends NodeValidator {
 
 		//the aci proportion measure node must have an aci section node as parent
 		validateParentIsAciSection(node);
-		//the aci proportion measure node must have a numerator node and a denominator node as hasChildren
+		//the aci proportion measure node must have a numerator node and a denominator node as children
 		validateChildren(node);
 	}
 

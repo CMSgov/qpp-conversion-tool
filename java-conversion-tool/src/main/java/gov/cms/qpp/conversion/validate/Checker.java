@@ -13,6 +13,20 @@ import java.util.stream.Collectors;
  * Node checker DSL to help abbreviate / simplify single node validations
  */
 class Checker {
+	private Node node;
+	private List<ValidationError> validationErrors;
+	private boolean anded;
+	private Map<NodeType, Long> nodeCount;
+
+	private Checker( Node node, List<ValidationError> validationErrors, boolean anded ){
+		this.node = node;
+		this.validationErrors = validationErrors;
+		this.anded = anded;
+		this.nodeCount = node.getChildNodes().stream().collect(
+				Collectors.groupingBy( Node::getType, Collectors.counting() )
+		);
+	}
+
 	/**
 	 * static factory that returns a shortcut validator
 	 *
@@ -33,20 +47,6 @@ class Checker {
 	 */
 	static Checker thoroughlyCheck( Node node, List<ValidationError> validationErrors ){
 		return new Checker( node, validationErrors, false);
-	}
-	
-	private Node node;
-	private List<ValidationError> validationErrors;
-	private boolean anded;
-	private Map<NodeType, Long> nodeCount;
-
-	private Checker( Node node, List<ValidationError> validationErrors, boolean anded ){
-		this.node = node;
-		this.validationErrors = validationErrors;
-		this.anded = anded;
-		this.nodeCount = node.getChildNodes().stream().collect(
-				Collectors.groupingBy( Node::getType, Collectors.counting() )
-		);
 	}
 
 	private boolean shouldShortcut() {
@@ -74,7 +74,7 @@ class Checker {
 	 * @param name
 	 * @return
 	 */
-	Checker intValue( String message, String name ) {
+	public Checker intValue( String message, String name ) {
 		if ( !shouldShortcut() ) {
 			try {
 				Integer.parseInt(node.getValue(name));
@@ -91,7 +91,7 @@ class Checker {
 	 * @param message
 	 * @return
 	 */
-	Checker hasChildren(String message ) {
+	public Checker hasChildren(String message ) {
 		if ( !shouldShortcut() && node.getChildNodes().isEmpty() ) {
 			validationErrors.add(new ValidationError(message));
 		}
@@ -106,7 +106,7 @@ class Checker {
 	 * @param types
 	 * @return
 	 */
-	Checker childMinimum( String message, int minimum, NodeType... types  ) {
+	public Checker childMinimum( String message, int minimum, NodeType... types  ) {
 		if ( !shouldShortcut() ) {
 			long count = tallyNodes(types);
 			if (count < minimum) {
@@ -124,7 +124,7 @@ class Checker {
 	 * @param types
 	 * @return
 	 */
-	Checker childMaximum( String message, int maximum, NodeType... types ) {
+	public Checker childMaximum( String message, int maximum, NodeType... types ) {
 		if ( !shouldShortcut() ) {
 			long count = tallyNodes(types);
 			if (count > maximum) {
