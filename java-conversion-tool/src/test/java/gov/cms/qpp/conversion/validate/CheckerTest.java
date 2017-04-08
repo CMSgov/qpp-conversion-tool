@@ -222,7 +222,7 @@ public class CheckerTest {
 				new Node( TemplateId.PLACEHOLDER.getTemplateId() ),
 				new Node( TemplateId.PLACEHOLDER.getTemplateId() ),
 				new Node( TemplateId.DEFAULT.getTemplateId() ),
-				new Node( TemplateId.ACI_PROPORTION.getTemplateId() ));
+				new Node( TemplateId.ACI_AGGREGATE_COUNT.getTemplateId() ));
 
 		Checker checker = Checker.check( meepNode, validationErrors );
 		checker.childMaximum( "too many children", 3, TemplateId.PLACEHOLDER, TemplateId.DEFAULT );
