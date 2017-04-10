@@ -85,19 +85,6 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 		assertThat("Child Node did not return " + DecodeResult.ERROR , validations, hasItem("Failed to decode."));
 	}
 
-	@Test
-	public void testThatDefaultCaseReturnsNoAction() {
-		Element testElement = new Element("testElement");
-		Element testChildElement = new Element("templateId");
-		testChildElement.setAttribute("root", "noActionDecoder");
-
-		testElement.getChildren().add(testChildElement);
-		Node testNode = new Node();
-
-		QppXmlDecoder objectUnderTest = new QppXmlDecoderTest();
-		objectUnderTest.decode(testElement, testNode);
-	}
-
 	@XmlDecoder(templateId = "errorDecoder")
 	public static class TestChildDecodeError extends QppXmlDecoder{
 
