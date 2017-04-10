@@ -23,6 +23,7 @@ public class Node implements Serializable {
 	private Node parent;
 
 	private boolean validated;
+	private String internalId;
 
 	public Node() {
 		this.childNodes = new ArrayList<>();
@@ -54,10 +55,11 @@ public class Node implements Serializable {
 
 	public void setId(String templateId) {
 		this.type = NodeType.getTypeById( templateId );
+		this.internalId = templateId;
 	}
 
 	public String getId() {
-		return this.type.getTemplateId();
+		return internalId;
 	}
 
 	public List<Node> getChildNodes() {
