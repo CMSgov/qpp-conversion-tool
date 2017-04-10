@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.model.Validator;
 
 import java.util.List;
 
-@Validator(templateId = "2.16.840.1.113883.10.20.27.3.31", required = true)
+@Validator(templateId = TemplateId.ACI_NUMERATOR, required = true)
 public class AciNumeratorValidator extends NodeValidator {
 
 	protected static final String EMPTY_MISSING_XML = "ACI Numerator Node Aggregate is empty or missing";
