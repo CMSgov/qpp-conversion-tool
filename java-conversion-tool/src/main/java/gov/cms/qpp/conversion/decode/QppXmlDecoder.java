@@ -4,7 +4,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validations;
-import gov.cms.qpp.conversion.model.XmlDecoderNew;
+import gov.cms.qpp.conversion.model.Decoder;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import java.util.List;
 public class QppXmlDecoder extends XmlInputDecoder {
 	private static final Logger LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
 
-	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(XmlDecoderNew.class);
+	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 
 	/**

@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.XmlDecoderNew;
+import gov.cms.qpp.conversion.model.Decoder;
 import org.jdom2.Element;
 /**
  * Decoder to parse Advancing Care Information Numerator Denominator Type
@@ -11,7 +11,7 @@ import org.jdom2.Element;
  * @author David Uselmann
  *
  */
-@XmlDecoderNew(TemplateId.ACI_DENOMINATOR)
+@Decoder(TemplateId.ACI_DENOMINATOR)
 public class AciProportionDenominatorDecoder extends QppXmlDecoder {
 
 	/**

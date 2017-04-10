@@ -2,10 +2,10 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.XmlDecoderNew;
+import gov.cms.qpp.conversion.model.Decoder;
 import org.jdom2.Element;
 
-@XmlDecoderNew(TemplateId.QED)
+@Decoder(TemplateId.QED)
 public class QedDecoder extends QppXmlDecoder {
 
 	@Override

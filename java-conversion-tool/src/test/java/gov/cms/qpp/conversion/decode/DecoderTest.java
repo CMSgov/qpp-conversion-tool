@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.Validations;
-import gov.cms.qpp.conversion.model.XmlDecoderNew;
+import gov.cms.qpp.conversion.model.Decoder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +61,7 @@ public class DecoderTest {
 	@Test
 	public void decodeTemplateIds() throws Exception {
 		Registry<String, InputDecoder> registry;
-		registry = new Registry<>(XmlDecoderNew.class);
+		registry = new Registry<>(Decoder.class);
 		
 		for (String templateId : templateIDs) {
 			InputDecoder decoder = registry.get(templateId);
