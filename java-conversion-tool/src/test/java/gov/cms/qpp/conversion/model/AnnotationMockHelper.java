@@ -93,12 +93,15 @@ public class AnnotationMockHelper {
 		PowerMockito.doReturn(templateId).when(spy, METHOD_GET_TEMPLATE_ID, Matchers.isA(validator));
 	}
 
+	/**
+	 * Registers the specified {@link gov.cms.qpp.conversion.decode.QppXmlDecoder} in the Registry for the specified
+	 * templateId.
+	 *
+	 * @param templateId The templateId string that you want the decoder to decode.
+	 * @param decoder The decoder to be stored in the registry.
+	 */
 	public static void mockDecoder(final String templateId, final Class<? extends QppXmlDecoder> decoder) {
 		final Registry<String, QppXmlDecoder> registry = Whitebox.getInternalState(QppXmlDecoder.class, Registry.class);
 		registry.register(templateId, decoder);
 	}
-
-//	private static void mock(final QrdaValidator spy, final String templateId, final Class<? extends QppXmlDecoder> decoder) {
-//
-//	}
 }

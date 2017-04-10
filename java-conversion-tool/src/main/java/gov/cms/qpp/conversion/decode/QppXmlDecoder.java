@@ -17,7 +17,7 @@ import java.util.List;
 public class QppXmlDecoder extends XmlInputDecoder {
 	private static final Logger LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
 
-	private static Registry<String, QppXmlDecoder> DECODERS = new Registry<>(XmlDecoderNew.class);
+	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(XmlDecoderNew.class);
 	private static final String TEMPLATE_ID = "templateId";
 
 	/**

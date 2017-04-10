@@ -24,7 +24,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 
 	final String description;
 
-	final Logger LOG = LoggerFactory.getLogger(getClass());
+	private static final Logger LOG = LoggerFactory.getLogger(DefaultDecoder.class);
 
 	public DefaultDecoder(String description) {
 		this.description = description;
