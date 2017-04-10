@@ -15,12 +15,15 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface XmlDecoder {
+public @interface XmlDecoderNew {
 	/**
 	 * The param(s) is/are the string pattern(s) that the defined handler will act.
 	 *
 	 * @return
 	 */
-	String templateId();
+	TemplateId templateId();
+
+	boolean required() default false;
+
 
 }
