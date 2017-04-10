@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.NodeType;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import org.junit.Test;
 
@@ -18,8 +18,8 @@ import static org.junit.Assert.assertThat;
 public class AciNumeratorValidatorTest {
 	@Test
 	public void internalValidateSingleNode() throws Exception {
-		Node aciNumeratorNode = new Node(NodeType.ACI_NUMERATOR.getTemplateId());
-		Node aggregateCountNode = new Node(NodeType.ACI_AGGREGATE_COUNT.getTemplateId());
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		aggregateCountNode.putValue("aggregateCount", "100");
 		aciNumeratorNode.addChildNode(aggregateCountNode);
 
@@ -33,7 +33,7 @@ public class AciNumeratorValidatorTest {
 
 	@Test
 	public void noChildrenTest() throws Exception {
-		Node aciNumeratorNode = new Node(NodeType.ACI_NUMERATOR.getTemplateId());
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR.getTemplateId());
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
 		List<ValidationError> errors = validator.validateSingleNode(aciNumeratorNode);
@@ -56,8 +56,8 @@ public class AciNumeratorValidatorTest {
 
 	@Test
 	public void incorrectChildrenTest() throws Exception {
-		Node aciNumeratorNode = new Node(NodeType.ACI_NUMERATOR.getTemplateId());
-		Node aggregateCountNode = new Node(NodeType.ACI_SECTION.getTemplateId());
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aggregateCountNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aggregateCountNode.putValue("aggregateCount", "100");
 
 		aciNumeratorNode.addChildNode(aggregateCountNode);
@@ -72,9 +72,9 @@ public class AciNumeratorValidatorTest {
 
 	@Test
 	public void tooManyChildrenTest() throws Exception {
-		Node aciNumeratorNode = new Node(NodeType.ACI_NUMERATOR.getTemplateId());
-		Node aggregateCountNode1 = new Node(NodeType.ACI_AGGREGATE_COUNT.getTemplateId());
-		Node aggregateCountNode2 = new Node(NodeType.ACI_AGGREGATE_COUNT.getTemplateId());
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aggregateCountNode1 = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		Node aggregateCountNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 
 		aggregateCountNode1.putValue("aggregateCount", "100");
 		aggregateCountNode2.putValue("aggregateCount", "200");
@@ -93,8 +93,8 @@ public class AciNumeratorValidatorTest {
 	@Test
 	public void invalidValueNaNTest() throws Exception {
 		//Not a number check
-		Node aciNumeratorNode = new Node(NodeType.ACI_NUMERATOR.getTemplateId());
-		Node aggregateCountNode = new Node(NodeType.ACI_AGGREGATE_COUNT.getTemplateId());
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		String value = "not a number";
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciNumeratorNode.addChildNode(aggregateCountNode);
@@ -110,8 +110,8 @@ public class AciNumeratorValidatorTest {
 	@Test
 	public void invalidValueNegativeNumberTest() throws Exception {
 		//Not a number check
-		Node aciNumeratorNode = new Node(NodeType.ACI_NUMERATOR.getTemplateId());
-		Node aggregateCountNode = new Node(NodeType.ACI_AGGREGATE_COUNT.getTemplateId());
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		String value = "-500";
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciNumeratorNode.addChildNode(aggregateCountNode);

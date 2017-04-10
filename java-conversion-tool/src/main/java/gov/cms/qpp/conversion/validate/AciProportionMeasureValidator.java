@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.NodeType;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
@@ -95,7 +95,7 @@ public class AciProportionMeasureValidator extends NodeValidator {
 
 	private void validateParentIsAciSection(final Node node) {
 
-		if (NodeType.ACI_SECTION != node.getParent().getType()) {
+		if (TemplateId.ACI_SECTION != node.getParent().getType()) {
 			this.addValidationError(
 				new ValidationError(NO_PARENT_SECTION));
 		}
@@ -110,9 +110,9 @@ public class AciProportionMeasureValidator extends NodeValidator {
 			int denominatorCount = 0;
 
 			for (Node child : children) {
-				if (NodeType.ACI_DENOMINATOR == child.getType()) {
+				if (TemplateId.ACI_DENOMINATOR == child.getType()) {
 					denominatorCount++;
-				} else if (NodeType.ACI_NUMERATOR == child.getType()) {
+				} else if (TemplateId.ACI_NUMERATOR == child.getType()) {
 					numeratorCount++;
 				}
 			}

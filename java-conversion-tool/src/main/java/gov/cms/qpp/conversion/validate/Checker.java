@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.NodeType;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 
 import java.util.Arrays;
@@ -16,7 +16,7 @@ class Checker {
 	private Node node;
 	private List<ValidationError> validationErrors;
 	private boolean anded;
-	private Map<NodeType, Long> nodeCount;
+	private Map<TemplateId, Long> nodeCount;
 
 	private Checker( Node node, List<ValidationError> validationErrors, boolean anded ){
 		this.node = node;
@@ -99,14 +99,14 @@ class Checker {
 	}
 
 	/**
-	 * verifies that the target node has more than the given minimum of the given {@link NodeType}s
+	 * verifies that the target node has more than the given minimum of the given {@link TemplateId}s
 	 *
 	 * @param message
 	 * @param minimum
 	 * @param types
 	 * @return
 	 */
-	public Checker childMinimum( String message, int minimum, NodeType... types  ) {
+	public Checker childMinimum( String message, int minimum, TemplateId... types  ) {
 		if ( !shouldShortcut() ) {
 			long count = tallyNodes(types);
 			if (count < minimum) {
@@ -117,14 +117,14 @@ class Checker {
 	}
 
 	/**
-	 * verifies that the target node has less than the given maximum of the given {@link NodeType}s
+	 * verifies that the target node has less than the given maximum of the given {@link TemplateId}s
 	 *
 	 * @param message
 	 * @param maximum
 	 * @param types
 	 * @return
 	 */
-	public Checker childMaximum( String message, int maximum, NodeType... types ) {
+	public Checker childMaximum( String message, int maximum, TemplateId... types ) {
 		if ( !shouldShortcut() ) {
 			long count = tallyNodes(types);
 			if (count > maximum) {
@@ -134,7 +134,7 @@ class Checker {
 		return this;
 	}
 
-	private long tallyNodes( NodeType... types ) {
+	private long tallyNodes( TemplateId... types ) {
 		return Arrays.stream( types )
 			.mapToLong( type -> ( nodeCount.get( type ) == null ) ? 0 : nodeCount.get( type ) )
 			.sum();

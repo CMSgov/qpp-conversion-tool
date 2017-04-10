@@ -64,8 +64,8 @@ public class NodeTest {
 		// This is to test the visual nature of the Node.toString();
 
 		// test a few rows of node string
-		assertFalse(nodeStr.contains("\tNode: internalId: ABC, data: {DEF=GHI}"));
-		assertTrue(nodeStr.contains("Node: internalId: ABC, data: {DEF=GHI}"));
+		assertFalse(nodeStr.contains("\tNode: templateId: ABC, data: {DEF=GHI}"));
+		assertTrue(nodeStr.contains("Node: templateId: ABC, data: {DEF=GHI}"));
 		assertTrue(nodeStr.contains("\t\tchildNodes of JKL:"));
 		assertTrue(nodeStr.contains("\t\t\tchildNodes of II -> (none)"));
 	}
