@@ -44,6 +44,11 @@ public class QrdaValidator {
 		return validationErrors;
 	}
 
+	/**
+	 * Validates the {@link gov.cms.qpp.conversion.model.Node} and all of its children.
+	 *
+	 * @param node The root node to start validating from.
+	 */
 	private void validateTree(final Node node) {
 
 		validateSingleNode(node);
@@ -51,6 +56,11 @@ public class QrdaValidator {
 		validateChildren(node);
 	}
 
+	/**
+	 * Validates a single {@link gov.cms.qpp.conversion.model.Node} based on its ID.
+	 *
+	 * @param node The node to validate.
+	 */
 	private void validateSingleNode(final Node node) {
 
 		final String templateId = node.getId();
@@ -60,7 +70,7 @@ public class QrdaValidator {
 			return;
 		}
 
-		boolean isRequired = validatorForNode.getClass().getAnnotation(Validator.class).required();
+		boolean isRequired = isValidationRequired(validatorForNode);
 		if(!isRequired) {
 			return;
 		}
@@ -70,6 +80,36 @@ public class QrdaValidator {
 		validationErrors.addAll(nodeErrors);
 	}
 
+	/**
+	 * Determines whether the validation the {@link gov.cms.qpp.conversion.validate.NodeValidator} does is required.
+	 *
+	 * @param validatorForNode The NodeValidator
+	 * @return Whether the validation the NodeValidator does is required.
+	 */
+	private boolean isValidationRequired(final NodeValidator validatorForNode) {
+		return getAnnotation(validatorForNode).required();
+	}
+
+	/**
+	 * Returns the {@link gov.cms.qpp.conversion.model.Validator} that is used on the
+	 * {@link gov.cms.qpp.conversion.validate.NodeValidator}.
+	 *
+	 * @param validator The NodeValidator that has the @Validator annotation
+	 * @return The @Validator annotation
+	 */
+	private Validator getAnnotation(final NodeValidator validator) {
+		if(validator == null) {
+			return null;
+		}
+		return validator.getClass().getAnnotation(Validator.class);
+	}
+
+	/**
+	 * Adds the node to a map of template IDs -> {@link gov.cms.qpp.conversion.model.Node}s that are of that
+	 * template ID.
+	 *
+	 * @param node The node to add to the map.
+	 */
 	private void addNodeToTemplateMap(final Node node) {
 
 		nodesForTemplateIds.putIfAbsent(node.getId(), new ArrayList<>());
@@ -77,6 +117,11 @@ public class QrdaValidator {
 		nodesForTemplateIds.get(node.getId()).add(node);
 	}
 
+	/**
+	 * Validates all the children of the passed in {@link gov.cms.qpp.conversion.model.Node}.
+	 *
+	 * @param parentNode The children of this node are validated.
+	 */
 	private void validateChildren(final Node parentNode) {
 
 		for (Node childNode: parentNode.getChildNodes()) {
@@ -85,6 +130,9 @@ public class QrdaValidator {
 		}
 	}
 
+	/**
+	 * Iterates over all the validators to have them validate similar nodes.
+	 */
 	private void validateTemplateIds() {
 
 		LOG.info("Validating all nodes by templateId");
@@ -94,16 +142,20 @@ public class QrdaValidator {
 		}
 	}
 
+	/**
+	 * Validates all the disparate nodes of the same template ID given the
+	 * {@link gov.cms.qpp.conversion.validate.NodeValidator}.
+	 *
+	 * @param validator The validator that should be called.
+	 */
 	private void validateSingleTemplateId(final NodeValidator validator) {
 
-		Validator validatorAnnotation = validator.getClass().getAnnotation(Validator.class);
-
-		boolean isRequired = validatorAnnotation.required();
+		boolean isRequired = isValidationRequired(validator);
 		if(!isRequired) {
 			return;
 		}
 
-		final String templateId = validatorAnnotation.templateId();
+		final String templateId = getTemplateId(validator);
 
 		LOG.debug("Validating nodes associated with templateId {}", templateId);
 
@@ -111,5 +163,15 @@ public class QrdaValidator {
 
 		List<ValidationError> nodesErrors = validator.validateSameTemplateIdNodes(nodesForTemplateId);
 		validationErrors.addAll(nodesErrors);
+	}
+
+	/**
+	 * Gets the template ID that the {@link gov.cms.qpp.conversion.validate.NodeValidator} validates.
+	 *
+	 * @param validatorForNode The NodeValidator that has the @Validator annotation
+	 * @return The templateId that the NodeValidator will validate
+	 */
+	private String getTemplateId(final NodeValidator validatorForNode) {
+		return getAnnotation(validatorForNode).templateId().getTemplateId();
 	}
 }

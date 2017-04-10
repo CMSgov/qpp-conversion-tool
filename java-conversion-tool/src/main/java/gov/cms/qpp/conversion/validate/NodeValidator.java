@@ -104,7 +104,7 @@ public abstract class NodeValidator {
 	 */
 	protected String getTemplateId(){
 		final Validator validator = this.getClass().getAnnotation(Validator.class);
-		return (null != validator) ? validator.templateId() : "";
+		return (null != validator) ? validator.templateId().getTemplateId() : "";
 	}
 
 	protected Checker check( Node node ){

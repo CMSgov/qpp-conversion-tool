@@ -5,13 +5,18 @@ import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
-import gov.cms.qpp.conversion.model.*;
+import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.ValidationError;
+import gov.cms.qpp.conversion.model.XmlDecoder;
 import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import org.jdom2.Element;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
@@ -21,22 +26,33 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.*;
-import java.util.ArrayList;
-
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.*;
+import static org.powermock.api.mockito.PowerMockito.doThrow;
+import static org.powermock.api.mockito.PowerMockito.method;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.stub;
+import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
 public class ConverterTest {
@@ -245,7 +261,12 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testValidationErrors() throws IOException {
+	@PrepareForTest({Converter.class, QrdaValidator.class})
+	public void testValidationErrors() throws Exception {
+
+		//mocking
+		QrdaValidator mockQrdaValidator = AnnotationMockHelper.mockValidator("867.5309", TestDefaultValidator.class, true);
+		PowerMockito.whenNew(QrdaValidator.class).withNoArguments().thenReturn(mockQrdaValidator);
 
 		//set-up
 		final String errorFileName = "errantDefaultedNode.err.txt";
@@ -458,7 +479,6 @@ public class ConverterTest {
 		}
 	}
 
-	@Validator(templateId = "867.5309", required = true)
 	public static class TestDefaultValidator extends NodeValidator {
 		@Override
 		protected void internalValidateSingleNode(final Node node) {
