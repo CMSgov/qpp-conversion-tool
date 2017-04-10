@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import org.mockito.Matchers;
@@ -91,4 +92,13 @@ public class AnnotationMockHelper {
 		PowerMockito.doReturn(required).when(spy, METHOD_IS_VALIDATION_REQUIRED, Matchers.isA(validator));
 		PowerMockito.doReturn(templateId).when(spy, METHOD_GET_TEMPLATE_ID, Matchers.isA(validator));
 	}
+
+	public static void mockDecoder(final String templateId, final Class<? extends QppXmlDecoder> decoder) {
+		final Registry<String, QppXmlDecoder> registry = Whitebox.getInternalState(QppXmlDecoder.class, Registry.class);
+		registry.register(templateId, decoder);
+	}
+
+//	private static void mock(final QrdaValidator spy, final String templateId, final Class<? extends QppXmlDecoder> decoder) {
+//
+//	}
 }

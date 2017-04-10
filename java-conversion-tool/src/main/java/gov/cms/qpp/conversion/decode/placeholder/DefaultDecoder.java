@@ -4,11 +4,12 @@ import gov.cms.qpp.conversion.decode.DecodeResult;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.XmlDecoder;
-import java.util.List;
+import gov.cms.qpp.conversion.model.XmlDecoderNew;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Decoder used to "fill-in" decoders where none have been implemented.
@@ -54,7 +55,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 // The names of the default decoder classes does not matter.
 // TODO must comment out these defaults as real implementations are written.
 	// this one looks like a node that is not necessary
-	@XmlDecoder(templateId = TemplateId.PERFORMANCE_RATE)
+	@XmlDecoderNew(TemplateId.PERFORMANCE_RATE)
 	public static class N_Decoder extends DefaultDecoder {
 
 		public N_Decoder() {
@@ -63,37 +64,31 @@ public class DefaultDecoder extends QppXmlDecoder {
 	}
 
     // this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
-	/*
-	@XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.24")
+	@XmlDecoderNew(TemplateId.CMS_AGGREGATE_COUNT)
 	public static class R_Decoder extends DefaultDecoder {
 
 		public R_Decoder() {
 			super("Aggregate Count - CMS");
 		}
 	}
-	*/
 
 	//	 this one looks like a node that is not necessary
-	/*
-	@XmlDecoder(templateId = "2.16.840.1.113883.10.20.24.2.2")
+	@XmlDecoderNew(TemplateId.MEASURE_SECTION)
 	public static class B_Decoder extends DefaultDecoder {
 
 		public B_Decoder() {
 			super("Measure Section");
 		}
 	}
-	*/
 
     // this one looks like a node that is not necessary
-	/*
-	@XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.2.3")
+	@XmlDecoderNew(TemplateId.MEASURE_SECTION_V2)
 	public static class D_Decoder extends DefaultDecoder {
 
 		public D_Decoder() {
 			super("QRDA Category III Measure Section - CMS (V2)");
 		}
 	}
-	*/
 
 	// this one looks like a root node that is not necessary
 //	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.3.98")
@@ -134,7 +129,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 //			super("Advancing Care Information Numerator Denominator Type Measure Reference and Results");
 //		}
 //	}
-	@XmlDecoder(templateId = TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
+	@XmlDecoderNew(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 	public static class I_Decoder extends DefaultDecoder {
 
 		public I_Decoder() {
@@ -148,7 +143,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 //		}
 //	}
 
-	@XmlDecoder(templateId = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
+	@XmlDecoderNew(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 	public static class K_Decoder extends DefaultDecoder {
 
 		public K_Decoder() {
@@ -186,7 +181,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 //		}
 //	}
 
-	@XmlDecoder(templateId = TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
+	@XmlDecoderNew(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
 	public static class S_Decoder extends DefaultDecoder {
 
 		public S_Decoder() {
@@ -194,7 +189,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@XmlDecoder(templateId = TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
+	@XmlDecoderNew(TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 	public static class T_Decoder extends DefaultDecoder {
 
 		public T_Decoder() {
@@ -202,7 +197,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@XmlDecoder(templateId = TemplateId.MEASURE_DATA_CMS_V2)
+	@XmlDecoderNew(TemplateId.MEASURE_DATA_CMS_V2)
 	public static class U_Decoder extends DefaultDecoder {
 
 		public U_Decoder() {
@@ -210,7 +205,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@XmlDecoder(templateId = TemplateId.REPORTING_STRATUM_CMS)
+	@XmlDecoderNew(TemplateId.REPORTING_STRATUM_CMS)
 	public static class V_Decoder extends DefaultDecoder {
 
 		public V_Decoder() {
@@ -218,7 +213,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@XmlDecoder(templateId = TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENTAL_CMS_V2)
+	@XmlDecoderNew(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENTAL_CMS_V2)
 	public static class W_Decoder extends DefaultDecoder {
 
 		public W_Decoder() {
@@ -226,7 +221,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@XmlDecoder(templateId = TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
+	@XmlDecoderNew(TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 	public static class X_Decoder extends DefaultDecoder {
 
 		public X_Decoder() {
@@ -234,7 +229,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@XmlDecoder(templateId = TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
+	@XmlDecoderNew(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 	public static class Y_Decoder extends DefaultDecoder {
 
 		public Y_Decoder() {
@@ -248,7 +243,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 //		}
 //	}
 
-	@XmlDecoder(templateId = TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
+	@XmlDecoderNew(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
 	public static class ZZ_Decoder extends DefaultDecoder {
 
 		public ZZ_Decoder() {

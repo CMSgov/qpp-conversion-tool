@@ -1,17 +1,16 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Element;
-
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.XmlDecoder;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.XmlDecoderNew;
+import org.jdom2.Element;
 
 /**
  * Decoder to parse QRDA Category III Reporting Parameters Section.
  * @author David Puglielli
  *
  */
-@XmlDecoder(templateId = TemplateId.REPORTING_PARAMETERS_SECTION)
+@XmlDecoderNew(TemplateId.REPORTING_PARAMETERS_SECTION)
 public class ReportingParametersSectionDecoder extends QppXmlDecoder {
 
 	@Override

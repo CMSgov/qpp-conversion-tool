@@ -1,17 +1,16 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Element;
-
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.XmlDecoder;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.XmlDecoderNew;
+import org.jdom2.Element;
 
 /**
  * Decoder to parse Improvement Activity Section.
  * @author David Puglielli
  *
  */
-@XmlDecoder(templateId = TemplateId.IA_SECTION)
+@XmlDecoderNew(TemplateId.IA_SECTION)
 public class IaSectionDecoder extends QppXmlDecoder {
 
 	@Override

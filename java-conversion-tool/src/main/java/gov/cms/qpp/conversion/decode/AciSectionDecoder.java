@@ -3,14 +3,14 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.XmlDecoder;
+import gov.cms.qpp.conversion.model.XmlDecoderNew;
 import org.jdom2.Element;
 
 /**
  * Decoder to read XML Data for an ACI Section.
  *
  */
-@XmlDecoder(templateId = TemplateId.ACI_SECTION)
+@XmlDecoderNew(TemplateId.ACI_SECTION)
 public class AciSectionDecoder extends QppXmlDecoder {
 
 	/**

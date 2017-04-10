@@ -28,7 +28,7 @@ public class RegistryTest {
 
 	@Before
 	public void before() {
-		registry = new Registry<>(XmlDecoder.class);
+		registry = new Registry<>(XmlDecoderNew.class);
 		err = System.err;
 	}
 
@@ -100,11 +100,11 @@ public class RegistryTest {
 
 	@Test
 	public void testClassNotFoundCausesMissingEntriesInRegistry_throwsNoException() {
-		Registry<String, XmlDecoder> registryA = new Registry<>(XmlDecoder.class);
+		Registry<String, XmlDecoder> registryA = new Registry<>(XmlDecoderNew.class);
 
 		// Mock the condition where a class is not found during registry
 		// building
-		Registry<String, XmlDecoder> registryB = new Registry<String, XmlDecoder>(XmlDecoder.class) {
+		Registry<String, XmlDecoder> registryB = new Registry<String, XmlDecoder>(XmlDecoderNew.class) {
 			@Override
 			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
 				if ("gov.cms.qpp.conversion.decode.AggregateCountDecoder".equals(className)) {

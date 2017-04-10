@@ -2,13 +2,13 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.XmlDecoder;
+import gov.cms.qpp.conversion.model.XmlDecoderNew;
 import org.jdom2.Element;
 
 /**
  * Decoder to read XML data for a Numerator Type Measure
  */
-@XmlDecoder(templateId = TemplateId.ACI_NUMERATOR)
+@XmlDecoderNew(TemplateId.ACI_NUMERATOR)
 public class AciProportionNumeratorDecoder extends QppXmlDecoder {
 
 	/**

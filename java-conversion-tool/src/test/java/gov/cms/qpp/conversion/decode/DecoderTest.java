@@ -1,26 +1,25 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.model.XmlDecoderNew;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.model.Validations;
-import gov.cms.qpp.conversion.model.XmlDecoder;
-
 public class DecoderTest {
 
 	private final List<String> templateIDs = Arrays.asList(
 			"2.16.840.1.113883.10.20.24.2.2",
-			
+
 			"2.16.840.1.113883.10.20.27.1.2",
 			"2.16.840.1.113883.10.20.27.2.3",
 			"2.16.840.1.113883.10.20.27.2.4",
@@ -62,7 +61,7 @@ public class DecoderTest {
 	@Test
 	public void decodeTemplateIds() throws Exception {
 		Registry<String, InputDecoder> registry;
-		registry = new Registry<>(XmlDecoder.class);
+		registry = new Registry<>(XmlDecoderNew.class);
 		
 		for (String templateId : templateIDs) {
 			InputDecoder decoder = registry.get(templateId);

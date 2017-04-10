@@ -1,21 +1,20 @@
 package gov.cms.qpp.conversion.decode;
 
-import java.util.function.Consumer;
-
+import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.XmlDecoderNew;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.XmlDecoder;
+import java.util.function.Consumer;
 
 /**
  * Decoder to parse Improvement Activity Performed Measure Reference and Results.
  * @author David Puglielli
  *
  */
-@XmlDecoder(templateId = TemplateId.IA_MEASURE)
+@XmlDecoderNew(TemplateId.IA_MEASURE)
 public class IaMeasureDecoder extends QppXmlDecoder {
 
 	@Override

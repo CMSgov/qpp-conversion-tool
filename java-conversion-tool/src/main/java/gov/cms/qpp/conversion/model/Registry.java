@@ -79,9 +79,9 @@ public class Registry<V extends Object, R extends Object> {
 	public V getAnnotationParam(Class<?> annotatedClass) {
 		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
 
-		if (annotation instanceof XmlDecoder) {
-			XmlDecoder decoder = (XmlDecoder) annotation;
-			return (V) decoder.templateId();
+		if (annotation instanceof XmlDecoderNew) {
+			XmlDecoderNew decoder = (XmlDecoderNew) annotation;
+			return (V) decoder.value().getTemplateId();
 		}
 		if (annotation instanceof Encoder) {
 			Encoder encoder = (Encoder) annotation;

@@ -1,8 +1,5 @@
 package gov.cms.qpp.conversion.model;
 
-import com.sun.javafx.tools.ant.DeployFXTask;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
-
 /**
  * An enumeration of known templates IDs.
  */
@@ -33,6 +30,9 @@ public enum TemplateId {
 	RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2 ("2.16.840.1.113883.10.20.27.3.19"),
 	PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2 ("2.16.840.1.113883.10.20.27.3.18"),
 	PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2 ("2.16.840.1.113883.10.20.27.3.25"),
+	MEASURE_SECTION ("2.16.840.1.113883.10.20.24.2.2"),
+	MEASURE_SECTION_V2 ("2.16.840.1.113883.10.20.27.2.3"),
+	CMS_AGGREGATE_COUNT ("2.16.840.1.113883.10.20.27.3.24"),
 	//end unimplemented
 
 
@@ -42,8 +42,8 @@ public enum TemplateId {
 
 
 
-
-
+	NULL_RETURN ("null.return"),
+	QED ("Q.E.D"),
 	DEFAULT                      ("default");
 
 	private final String root;
