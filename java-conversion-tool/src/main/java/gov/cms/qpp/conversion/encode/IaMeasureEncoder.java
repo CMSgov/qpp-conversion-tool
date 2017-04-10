@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+
 import java.util.List;
 
 /**
@@ -11,7 +13,7 @@ import java.util.List;
  * @author David Puglielli
  *
  */
-@Encoder(templateId = "2.16.840.1.113883.10.20.27.3.33")
+@Encoder(templateId = TemplateId.IA_MEASURE)
 public class IaMeasureEncoder extends QppOutputEncoder {
 
 	@Override

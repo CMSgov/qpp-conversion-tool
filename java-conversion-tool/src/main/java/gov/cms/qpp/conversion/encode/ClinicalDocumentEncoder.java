@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
  * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
 
-@Encoder(templateId = "2.16.840.1.113883.10.20.27.1.2")
+@Encoder(templateId = TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 	/**

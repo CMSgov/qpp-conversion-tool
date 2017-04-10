@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import gov.cms.qpp.conversion.model.TemplateId;
 import org.apache.commons.io.output.NullOutputStream;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,31 +75,31 @@ public class ClinicalDocumentEncoderTest {
 	public void createNode() {
 
 		numeratorValueNode = new Node();
-		numeratorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
+		numeratorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		numeratorValueNode.putValue("aggregateCount", "400");
 
 		numeratorValueNode2 = new Node();
-		numeratorValueNode2.setId("2.16.840.1.113883.10.20.27.3.3");
+		numeratorValueNode2.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		numeratorValueNode2.putValue("aggregateCount", "500");
 
 		numeratorValueNode3 = new Node();
-		numeratorValueNode3.setId("2.16.840.1.113883.10.20.27.3.3");
+		numeratorValueNode3.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		numeratorValueNode3.putValue("aggregateCount", "400");
 
 		denominatorValueNode = new Node();
-		denominatorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
+		denominatorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		denominatorValueNode.putValue("aggregateCount", "600");
 
 		denominatorValueNode2 = new Node();
-		denominatorValueNode2.setId("2.16.840.1.113883.10.20.27.3.3");
+		denominatorValueNode2.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		denominatorValueNode2.putValue("aggregateCount", "700");
 
 		denominatorValueNode3 = new Node();
-		denominatorValueNode3.setId("2.16.840.1.113883.10.20.27.3.3");
+		denominatorValueNode3.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		denominatorValueNode3.putValue("aggregateCount", "600");
 
 		aciProportionDenominatorNode = new Node();
-		aciProportionDenominatorNode.setId("2.16.840.1.113883.10.20.27.3.32");
+		aciProportionDenominatorNode.setId(TemplateId.ACI_DENOMINATOR.getTemplateId());
 		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
 
 		aciProportionDenominatorNode2 = new Node();

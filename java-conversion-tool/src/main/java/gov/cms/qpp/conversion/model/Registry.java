@@ -85,7 +85,7 @@ public class Registry<V extends Object, R extends Object> {
 		}
 		if (annotation instanceof Encoder) {
 			Encoder encoder = (Encoder) annotation;
-			return (V) encoder.templateId();
+			return (V) encoder.templateId().getTemplateId();
 		}
 		if (annotation instanceof Validator) {
 			Validator validator = (Validator) annotation;

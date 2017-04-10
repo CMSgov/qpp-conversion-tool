@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
  * Encoder to handle placeholder nodes.
@@ -9,7 +10,7 @@ import gov.cms.qpp.conversion.model.Node;
  * @author Scott Fradkin
  *
  */
-@Encoder(templateId = "placeholder")
+@Encoder(templateId = TemplateId.PLACEHOLDER)
 public class PlaceholderEncoder extends QppOutputEncoder {
 
 	@Override

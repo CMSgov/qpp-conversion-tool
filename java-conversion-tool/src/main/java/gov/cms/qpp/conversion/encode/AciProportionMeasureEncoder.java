@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -10,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Encoder to serialize ACI Numerator Denominator Type Measure.
  */
-@Encoder(templateId = "2.16.840.1.113883.10.20.27.3.28")
+@Encoder(templateId = TemplateId.ACI_PROPORTION)
 public class AciProportionMeasureEncoder extends QppOutputEncoder {
 
 	/**
