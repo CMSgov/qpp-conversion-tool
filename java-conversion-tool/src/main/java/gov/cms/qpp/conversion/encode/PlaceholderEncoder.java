@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * @author Scott Fradkin
  *
  */
-@Encoder(templateId = TemplateId.PLACEHOLDER)
+@Encoder(templateId = "placeholder")
 public class PlaceholderEncoder extends QppOutputEncoder {
 
 	@Override

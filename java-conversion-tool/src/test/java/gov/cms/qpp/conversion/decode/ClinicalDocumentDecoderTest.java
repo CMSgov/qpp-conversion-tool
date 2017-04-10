@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
@@ -38,7 +39,7 @@ public class ClinicalDocumentDecoderTest {
 
 	@Test
 	public void testRootId() {
-		assertThat("template ID is correct", root.getId(), is("2.16.840.1.113883.10.20.27.1.2"));
+		assertThat("template ID is correct", root.getId(), is(TemplateId.CLINICAL_DOCUMENT.getTemplateId()));
 	}
 
 	@Test
@@ -171,7 +172,7 @@ public class ClinicalDocumentDecoderTest {
 		Element performer = new Element("performer", rootns);
 		Element assignedEntity = new Element("assignedEntity", rootns);
 		Element nationalProviderIdentifier = new Element("id", rootns)
-				.setAttribute("root", "2.16.840.1.113883.4.6")
+				.setAttribute("root", TemplateId.NATIONAL_PROVIDER.getTemplateId())
 				.setAttribute("extension", "2567891421");
 
 		Element representedOrganization = prepareRepOrgWithTaxPayerId(rootns);
@@ -186,7 +187,7 @@ public class ClinicalDocumentDecoderTest {
 	private Element prepareRepOrgWithTaxPayerId(Namespace rootns) {
 		Element representedOrganization = new Element("representedOrganization", rootns);
 		Element taxpayerIdentificationNumber = new Element("id", rootns)
-				.setAttribute("root", "2.16.840.1.113883.4.2")
+				.setAttribute("root", TemplateId.REPRESENTED_ORG.getTemplateId())
 				.setAttribute("extension", "123456789");
 
 		representedOrganization.addContent(taxpayerIdentificationNumber);
@@ -198,7 +199,7 @@ public class ClinicalDocumentDecoderTest {
 		Element structuredBody = new Element("structuredBody", rootns);
 		Element componentTwo = new Element("component", rootns);
 		Element aciSectionElement = new Element("templateId", rootns);
-		aciSectionElement.setAttribute("root", "2.16.840.1.113883.10.20.27.2.5");
+		aciSectionElement.setAttribute("root", TemplateId.STRUCTURED_BODY.getTemplateId());
 
 		componentTwo.addContent(aciSectionElement);
 		structuredBody.addContent(componentTwo);

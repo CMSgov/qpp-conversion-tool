@@ -15,6 +15,9 @@ public enum TemplateId {
 	ACI_NUMERATOR           ("2.16.840.1.113883.10.20.27.3.31"),
 	ACI_DENOMINATOR         ("2.16.840.1.113883.10.20.27.3.32"),
 	IA_MEASURE              ("2.16.840.1.113883.10.20.27.3.33"),
+	NATIONAL_PROVIDER 		("2.16.840.1.113883.4.6"),
+	REPRESENTED_ORG			("2.16.840.1.113883.4.2"),
+	STRUCTURED_BODY			("2.16.840.1.113883.10.20.27.2.5"),
 	DEFAULT                 ("default");
 
 	private final String root;
