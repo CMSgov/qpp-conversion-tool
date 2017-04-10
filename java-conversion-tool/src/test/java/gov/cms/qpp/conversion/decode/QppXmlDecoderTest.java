@@ -1,16 +1,21 @@
 package gov.cms.qpp.conversion.decode;
 
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.jdom2.Element;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.model.XmlDecoder;
 
 public class QppXmlDecoderTest extends QppXmlDecoder {
 
@@ -26,35 +31,88 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 	@Test
 	public void validationFormatTest() throws Exception {
-		XmlInputDecoder target = new QppXmlDecoder();
-		
-		target.addValidation("templateid.1", "validation.1");
-		target.addValidation("templateid.1", "validation.2");
-		target.addValidation("templateid.3", "validation.3");
+		XmlInputDecoder objectUnderTest = new QppXmlDecoder();
 
-		List<String> checkList = Arrays.asList("templateid.1 - validation.1",
-												"templateid.1 - validation.2",
-												"templateid.3 - validation.3");
-		int count = 0;
-		for (String validation : target.validations()) {
-			assertThat("Expected validation", checkList.contains(validation), is(true));
-			count++;
-		}
+		objectUnderTest.addValidation("templateid.1", "validation.1");
+		objectUnderTest.addValidation("templateid.1", "validation.2");
+		objectUnderTest.addValidation("templateid.3", "validation.3");
 
-		assertThat("Expected count", count, is(3));
-
-		checkList = Arrays.asList("validation.1", "validation.2");
-		count = 0;
-		for (String validation : target.getValidationsById("templateid.1")) {
-			assertThat("Expected validation", checkList.contains(validation), is(true));
-			count++;
-		}
-
-		assertThat("Expected count", count, is(2));
+		List<String> validations = (List<String>) objectUnderTest.validations();
+		assertThat("Expected count", validations, hasSize(3));
+		assertThat("Expected validation", validations, hasItems("templateid.1 - validation.1",
+				"templateid.1 - validation.2",
+				"templateid.3 - validation.3"));
 	}
 
 	@Test
-	public void decodeResult_NoAction() throws Exception {
-		assertThat("Should be bengin", new QppXmlDecoder().internalDecode(null, null), is(DecodeResult.NO_ACTION));
+	public void validationFormatTestById() {
+		QppXmlDecoder objectUnderTest = new QppXmlDecoder();
+		objectUnderTest.addValidation("templateid.1", "validation.1");
+		objectUnderTest.addValidation("templateid.1", "validation.2");
+
+		List<String> validations = objectUnderTest.getValidationsById("templateid.1");
+		assertThat("Expected count", validations, hasSize(2));
+		assertThat("Expected validation", validations, hasItems("validation.1", "validation.2"));
+	}
+
+	@Test
+	public void decodeResultNoAction() throws Exception {
+		assertThat("DecodeResult is incorrect", new QppXmlDecoder().internalDecode(null, null),
+				is(DecodeResult.NO_ACTION));
+	}
+
+	@Test
+	public void nullElementDecodeReturnsError() {
+		//Element nullElement = null;
+		assertThat("DecodeResult is incorrect", new QppXmlDecoder().decode((Element)null, null),
+				is(DecodeResult.ERROR));
+	}
+
+	@Test
+	public void decodeInvalidChildReturnsError() {
+		Element testElement = new Element("testElement");
+		Element testChildElement = new Element("templateId");
+		testChildElement.setAttribute("root", "errorDecoder");
+
+		testElement.getChildren().add(testChildElement);
+		Node testNode = new Node();
+
+		QppXmlDecoder objectUnderTest = new QppXmlDecoderTest();
+		objectUnderTest.decode(testElement, testNode);
+
+		List<String> validations = objectUnderTest.getValidationsById("errorDecoder");
+
+		assertThat("Child Node did not return " + DecodeResult.ERROR , validations, hasItem("Failed to decode."));
+	}
+
+	@Test
+	public void testThatDefaultCaseReturnsNoAction() {
+		Element testElement = new Element("testElement");
+		Element testChildElement = new Element("templateId");
+		testChildElement.setAttribute("root", "noActionDecoder");
+
+		testElement.getChildren().add(testChildElement);
+		Node testNode = new Node();
+
+		QppXmlDecoder objectUnderTest = new QppXmlDecoderTest();
+		objectUnderTest.decode(testElement, testNode);
+	}
+
+	@XmlDecoder(templateId = "errorDecoder")
+	public static class TestChildDecodeError extends QppXmlDecoder{
+
+		@Override
+		public DecodeResult internalDecode(Element element, Node childNode) {
+			return DecodeResult.ERROR;
+		}
+	}
+
+	@XmlDecoder(templateId = "noActionDecoder")
+	public static class TestChildNoAction extends QppXmlDecoder{
+
+		@Override
+		public DecodeResult internalDecode(Element element, Node childNode) {
+			return DecodeResult.NO_ACTION;
+		}
 	}
 }

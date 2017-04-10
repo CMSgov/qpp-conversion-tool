@@ -1,0 +1,6 @@
+{
+  "entityType" : "individual",
+  "measurementSets" : [ {
+    "source" : "provider"
+  } ]
+}
