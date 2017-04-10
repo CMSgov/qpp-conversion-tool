@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.NodeType;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 
 import java.util.List;
@@ -50,7 +50,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 			return;
 		}
 		Node child = children.get(0);
-		if (NodeType.ACI_AGGREGATE_COUNT != child.getType()) {
+		if (TemplateId.ACI_AGGREGATE_COUNT != child.getType()) {
 			this.addValidationError(new ValidationError(String.format(INCORRECT_CHILD, node.toString())));
 			return;
 		}

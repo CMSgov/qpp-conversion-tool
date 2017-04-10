@@ -5,19 +5,18 @@
 package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.NodeType;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import org.jdom2.Element;
-import org.jdom2.Namespace;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
-import org.junit.Test;
 
 public class AggregateCountDecoderTest {
 
@@ -68,7 +67,7 @@ public class AggregateCountDecoderTest {
         Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
         Element element = new Element("observation", rootNs);
-        element.addContent(new Element("templateId", rootNs).setAttribute("root", NodeType.ACI_AGGREGATE_COUNT.getTemplateId()));
+        element.addContent(new Element("templateId", rootNs).setAttribute("root", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId()));
         element.addContent(new Element("value", rootNs).setAttribute("value", "450").setAttribute("type", "INT", ns));
         element.addNamespaceDeclaration(ns);
 
@@ -104,7 +103,7 @@ public class AggregateCountDecoderTest {
 
         assertEquals("Should have template id",
                 node.getChildNodes().get(0).getType(),
-                NodeType.ACI_AGGREGATE_COUNT);
+                TemplateId.ACI_AGGREGATE_COUNT);
     }
 
     @Test
@@ -120,6 +119,6 @@ public class AggregateCountDecoderTest {
 
         assertEquals("Should have template id",
                 root.getType(),
-                NodeType.ACI_AGGREGATE_COUNT);
+                TemplateId.ACI_AGGREGATE_COUNT);
     }
 }

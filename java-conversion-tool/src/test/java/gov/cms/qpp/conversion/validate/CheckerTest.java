@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.NodeType;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,7 +85,7 @@ public class CheckerTest {
 	@Test
 	public void testChildrenFindSuccess() {
 		Node meepNode = new Node( PARENT );
-		meepNode.addChildNode( new Node( NodeType.PLACEHOLDER.getTemplateId() ) );
+		meepNode.addChildNode( new Node(TemplateId.PLACEHOLDER.getTemplateId() ) );
 
 		Checker checker = Checker.check( meepNode, validationErrors );
 		checker.hasChildren( ERROR_MESSAGE );
@@ -95,51 +95,51 @@ public class CheckerTest {
 
 	@Test
 	public void testChildrenMinimumFailure() {
-		String templateId = NodeType.PLACEHOLDER.getTemplateId();
+		String templateId = TemplateId.PLACEHOLDER.getTemplateId();
 		Node meepNode = new Node( PARENT );
 		meepNode.addChildNode( new Node( templateId ) );
 
 		Checker checker = Checker.check( meepNode, validationErrors );
-		checker.childMinimum( ERROR_MESSAGE, 2, NodeType.PLACEHOLDER );
+		checker.childMinimum( ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER );
 
 		assertFalse("There's an error", validationErrors.isEmpty() );
 	}
 
 	@Test
 	public void testChildrenMinimumSuccess() {
-		String templateId = NodeType.PLACEHOLDER.getTemplateId();
+		String templateId = TemplateId.PLACEHOLDER.getTemplateId();
 		Node meepNode = new Node( PARENT );
 		meepNode.addChildNodes( new Node( templateId ), new Node( templateId ) );
 
 		Checker checker = Checker.check( meepNode, validationErrors );
-		checker.childMinimum( ERROR_MESSAGE, 2, NodeType.PLACEHOLDER );
+		checker.childMinimum( ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER );
 
 		assertTrue("There's no error", validationErrors.isEmpty() );
 	}
 
 	@Test
 	public void testChildrenMaximumFailure() {
-		String templateId = NodeType.PLACEHOLDER.getTemplateId();
+		String templateId = TemplateId.PLACEHOLDER.getTemplateId();
 		Node meepNode = new Node( PARENT );
 		meepNode.addChildNodes( new Node( templateId ),
 				new Node( templateId ),
 				new Node( templateId ));
 
 		Checker checker = Checker.check( meepNode, validationErrors );
-		checker.childMaximum( ERROR_MESSAGE, 2, NodeType.PLACEHOLDER );
+		checker.childMaximum( ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER );
 
 		assertFalse("There's an error", validationErrors.isEmpty() );
 	}
 
 	@Test
 	public void testChildrenMaximumSuccess() {
-		String templateId = NodeType.PLACEHOLDER.getTemplateId();
+		String templateId = TemplateId.PLACEHOLDER.getTemplateId();
 		Node meepNode = new Node( PARENT );
 		meepNode.addChildNodes( new Node( templateId ),
 				new Node( templateId ) );
 
 		Checker checker = Checker.check( meepNode, validationErrors );
-		checker.childMaximum( ERROR_MESSAGE, 2, NodeType.PLACEHOLDER );
+		checker.childMaximum( ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER );
 
 		assertTrue("There's no error", validationErrors.isEmpty() );
 	}
@@ -161,7 +161,7 @@ public class CheckerTest {
 	public void testValueChildrenFindSuccess() {
 		Node meepNode = new Node( PARENT );
 		meepNode.putValue( VALUE, "123" );
-		meepNode.addChildNode( new Node( NodeType.PLACEHOLDER.getTemplateId() ) );
+		meepNode.addChildNode( new Node( TemplateId.PLACEHOLDER.getTemplateId() ) );
 
 		Checker checker = Checker.check( meepNode, validationErrors );
 		checker.value( ERROR_MESSAGE, VALUE ).hasChildren( OTHER_ERROR_MESSAGE );
@@ -176,7 +176,7 @@ public class CheckerTest {
 		Checker checker = Checker.check( meepNode, validationErrors );
 		checker.intValue( ERROR_MESSAGE, VALUE )
 				.value( ERROR_MESSAGE, VALUE )
-				.childMaximum( ERROR_MESSAGE, 1, NodeType.PLACEHOLDER )
+				.childMaximum( ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER )
 				.hasChildren( OTHER_ERROR_MESSAGE );
 
 		assertFalse("There's an error", validationErrors.isEmpty() );
@@ -187,45 +187,45 @@ public class CheckerTest {
 		Node meepNode = new Node( PARENT );
 		meepNode.putValue( VALUE, "123" );
 		meepNode.addChildNodes(
-				new Node( NodeType.PLACEHOLDER.getTemplateId() ),
-				new Node( NodeType.PLACEHOLDER.getTemplateId() ));
+				new Node( TemplateId.PLACEHOLDER.getTemplateId() ),
+				new Node( TemplateId.PLACEHOLDER.getTemplateId() ));
 
 		Checker checker = Checker.check( meepNode, validationErrors );
 		checker.value( ERROR_MESSAGE, VALUE )
 				.hasChildren( ERROR_MESSAGE )
-				.childMinimum( ERROR_MESSAGE, 1, NodeType.PLACEHOLDER )
-				.childMaximum( OTHER_ERROR_MESSAGE, 1, NodeType.PLACEHOLDER );
+				.childMinimum( ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER )
+				.childMaximum( OTHER_ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER );
 
 		assertFalse("There's an error", validationErrors.isEmpty() );
 		assertEquals( "message applied is other error message", validationErrors.get( 0 ).getErrorText(), OTHER_ERROR_MESSAGE );
 	}
 
 	@Test
-	public void testMaxFindMultipleNodeTypesFailure() {
+	public void testMaxFindMultipleTemplateIdsFailure() {
 		Node meepNode = new Node( PARENT );
 		meepNode.addChildNodes(
-				new Node( NodeType.PLACEHOLDER.getTemplateId() ),
-				new Node( NodeType.PLACEHOLDER.getTemplateId() ),
-				new Node( NodeType.DEFAULT.getTemplateId() ));
+				new Node( TemplateId.PLACEHOLDER.getTemplateId() ),
+				new Node( TemplateId.PLACEHOLDER.getTemplateId() ),
+				new Node( TemplateId.DEFAULT.getTemplateId() ));
 
 		Checker checker = Checker.check( meepNode, validationErrors );
-		checker.childMaximum( "too many children", 2, NodeType.PLACEHOLDER, NodeType.DEFAULT );
+		checker.childMaximum( "too many children", 2, TemplateId.PLACEHOLDER, TemplateId.DEFAULT );
 
 		assertFalse("There's an error", validationErrors.isEmpty() );
 		assertEquals( "message applied is other error message", validationErrors.get( 0 ).getErrorText(), "too many children" );
 	}
 
 	@Test
-	public void testMaxFindMultipleNodeTypesSuccess() {
+	public void testMaxFindMultipleTemplateIdsSuccess() {
 		Node meepNode = new Node( PARENT );
 		meepNode.addChildNodes(
-				new Node( NodeType.PLACEHOLDER.getTemplateId() ),
-				new Node( NodeType.PLACEHOLDER.getTemplateId() ),
-				new Node( NodeType.DEFAULT.getTemplateId() ),
-				new Node( NodeType.ACI_AGGREGATE_COUNT.getTemplateId() ));
+				new Node( TemplateId.PLACEHOLDER.getTemplateId() ),
+				new Node( TemplateId.PLACEHOLDER.getTemplateId() ),
+				new Node( TemplateId.DEFAULT.getTemplateId() ),
+				new Node( TemplateId.ACI_AGGREGATE_COUNT.getTemplateId() ));
 
 		Checker checker = Checker.check( meepNode, validationErrors );
-		checker.childMaximum( "too many children", 3, NodeType.PLACEHOLDER, NodeType.DEFAULT );
+		checker.childMaximum( "too many children", 3, TemplateId.PLACEHOLDER, TemplateId.DEFAULT );
 
 		assertTrue("There's no error", validationErrors.isEmpty() );
 	}
@@ -234,13 +234,13 @@ public class CheckerTest {
 	public void testValueChildrenChildMinChildMaxFindSuccess() {
 		Node meepNode = new Node( PARENT );
 		meepNode.putValue( VALUE, "123" );
-		meepNode.addChildNode( new Node( NodeType.PLACEHOLDER.getTemplateId() ) );
+		meepNode.addChildNode( new Node( TemplateId.PLACEHOLDER.getTemplateId() ) );
 
 		Checker checker = Checker.check( meepNode, validationErrors );
 		checker.value( ERROR_MESSAGE, VALUE )
 				.hasChildren( ERROR_MESSAGE )
-				.childMinimum( ERROR_MESSAGE, 1, NodeType.PLACEHOLDER )
-				.childMaximum( OTHER_ERROR_MESSAGE, 1, NodeType.PLACEHOLDER );
+				.childMinimum( ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER )
+				.childMaximum( OTHER_ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER );
 
 		assertTrue("There's no error", validationErrors.isEmpty() );
 	}
@@ -251,14 +251,14 @@ public class CheckerTest {
 		Node meepNode = new Node( PARENT );
 		meepNode.putValue( VALUE, "Bob" );
 		meepNode.addChildNodes(
-				new Node( NodeType.PLACEHOLDER.getTemplateId() ),
-				new Node( NodeType.PLACEHOLDER.getTemplateId() ));
+				new Node( TemplateId.PLACEHOLDER.getTemplateId() ),
+				new Node( TemplateId.PLACEHOLDER.getTemplateId() ));
 
 		Checker checker = Checker.thoroughlyCheck( meepNode, validationErrors );
 		checker.intValue( "int failure", VALUE )
 				.hasChildren( ERROR_MESSAGE )
-				.childMinimum( ERROR_MESSAGE, 1, NodeType.PLACEHOLDER )
-				.childMaximum( "maximum failure", 1, NodeType.PLACEHOLDER );
+				.childMinimum( ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER )
+				.childMaximum( "maximum failure", 1, TemplateId.PLACEHOLDER );
 
 		assertEquals("There are errors", validationErrors.size(), 2 );
 		assertEquals( "int validation error", validationErrors.get( 0 ).getErrorText(), "int failure" );
@@ -270,14 +270,14 @@ public class CheckerTest {
 		Node meepNode = new Node( PARENT );
 		meepNode.putValue( VALUE, "123" );
 		meepNode.addChildNodes(
-				new Node( NodeType.PLACEHOLDER.getTemplateId() ),
-				new Node( NodeType.PLACEHOLDER.getTemplateId() ));
+				new Node( TemplateId.PLACEHOLDER.getTemplateId() ),
+				new Node( TemplateId.PLACEHOLDER.getTemplateId() ));
 
 		Checker checker = Checker.thoroughlyCheck( meepNode, validationErrors );
 		checker.intValue( "int failure", VALUE )
 				.hasChildren( ERROR_MESSAGE )
-				.childMinimum( ERROR_MESSAGE, 1, NodeType.PLACEHOLDER )
-				.childMaximum( "maximum failure", 2, NodeType.PLACEHOLDER );
+				.childMinimum( ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER )
+				.childMaximum( "maximum failure", 2, TemplateId.PLACEHOLDER );
 
 		assertTrue("There are no errors", validationErrors.isEmpty() );
 	}
