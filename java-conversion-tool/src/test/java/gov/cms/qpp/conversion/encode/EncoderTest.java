@@ -74,7 +74,7 @@ public class EncoderTest {
 	@Test
 	public void decodeTemplateIds() throws Exception {
 		Registry<String, OutputEncoder> registry;
-		registry = new Registry<>(EncoderNew.class);
+		registry = new Registry<>(EncoderNew.class, EncoderNew.class);
 		
 		for (String templateId : templateIDs) {
 			OutputEncoder encoder = registry.get(templateId);

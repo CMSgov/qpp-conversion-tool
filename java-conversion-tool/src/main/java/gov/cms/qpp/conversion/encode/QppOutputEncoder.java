@@ -13,7 +13,7 @@ import gov.cms.qpp.conversion.model.Registry;
  */
 public class QppOutputEncoder extends JsonOutputEncoder {
 
-	protected static final Registry<String, JsonOutputEncoder> ENCODERS = new Registry<>(EncoderNew.class);
+	protected static final Registry<String, JsonOutputEncoder> ENCODERS = new Registry<>(Encoder.class, EncoderNew.class);
 
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
