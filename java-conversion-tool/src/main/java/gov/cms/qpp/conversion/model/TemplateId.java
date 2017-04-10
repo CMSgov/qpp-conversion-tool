@@ -5,16 +5,19 @@ package gov.cms.qpp.conversion.model;
  */
 public enum TemplateId {
 
-	PLACEHOLDER             ("placeholder"),
-	CLINICAL_DOCUMENT       ("2.16.840.1.113883.10.20.27.1.2"),
-	ACI_AGGREGATE_COUNT     ("2.16.840.1.113883.10.20.27.3.3"),
-	IA_SECTION              ("2.16.840.1.113883.10.20.27.2.4"),
-	ACI_SECTION             ("2.16.840.1.113883.10.20.27.2.5"),
-	ACI_PROPORTION          ("2.16.840.1.113883.10.20.27.3.28"),
-	ACI_NUMERATOR           ("2.16.840.1.113883.10.20.27.3.31"),
-	ACI_DENOMINATOR         ("2.16.840.1.113883.10.20.27.3.32"),
-	IA_MEASURE              ("2.16.840.1.113883.10.20.27.3.33"),
-	DEFAULT                 ("default");
+	PLACEHOLDER                  ("placeholder"),
+	CLINICAL_DOCUMENT            ("2.16.840.1.113883.10.20.27.1.2"),
+	ACI_AGGREGATE_COUNT          ("2.16.840.1.113883.10.20.27.3.3"),
+	IA_SECTION                   ("2.16.840.1.113883.10.20.27.2.4"),
+	ACI_SECTION                  ("2.16.840.1.113883.10.20.27.2.5"),
+	ACI_MEASURE_PERFORMED        ("2.16.840.1.113883.10.20.27.3.27"),
+	ACI_PROPORTION               ("2.16.840.1.113883.10.20.27.3.28"),
+	ACI_NUMERATOR                ("2.16.840.1.113883.10.20.27.3.31"),
+	ACI_DENOMINATOR              ("2.16.840.1.113883.10.20.27.3.32"),
+	IA_MEASURE                   ("2.16.840.1.113883.10.20.27.3.33"),
+	REPORTING_PARAMETERS_ACT     ("2.16.840.1.113883.10.20.27.3.23"),
+	REPORTING_PARAMETERS_SECTION ("2.16.840.1.113883.10.20.27.2.6"),
+	DEFAULT                      ("default");
 
 	private final String root;
 	private final String extension;

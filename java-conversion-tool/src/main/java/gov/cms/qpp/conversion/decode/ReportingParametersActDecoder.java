@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.decode;
 
 import java.util.function.Consumer;
 
+import gov.cms.qpp.conversion.model.TemplateId;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
@@ -14,7 +15,7 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
  * @author David Puglielli
  *
  */
-@XmlDecoder(templateId = "2.16.840.1.113883.10.20.27.3.23")
+@XmlDecoder(templateId = TemplateId.REPORTING_PARAMETERS_ACT)
 public class ReportingParametersActDecoder extends QppXmlDecoder {
 
 	@Override

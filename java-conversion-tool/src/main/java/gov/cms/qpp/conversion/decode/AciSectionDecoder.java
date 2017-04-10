@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.decode;
 
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.XmlDecoder;
 import org.jdom2.Element;
 
@@ -9,7 +10,7 @@ import org.jdom2.Element;
  * Decoder to read XML Data for an ACI Section.
  *
  */
-@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.5")
+@XmlDecoder(templateId = TemplateId.ACI_SECTION)
 public class AciSectionDecoder extends QppXmlDecoder {
 
 	/**

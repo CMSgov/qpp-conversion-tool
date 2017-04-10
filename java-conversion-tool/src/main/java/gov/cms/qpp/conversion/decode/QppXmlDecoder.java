@@ -1,9 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.model.Validations;
-import gov.cms.qpp.conversion.model.XmlDecoder;
+import gov.cms.qpp.conversion.model.*;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -171,8 +168,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		for (Element currentChild : clinicalDocumentChildren) {
 			final String templateId = currentChild.getAttributeValue("root");
 
-			if (ClinicalDocumentDecoder.ROOT_TEMPLATEID.equals(templateId)) {
-
+			if ( TemplateId.getTypeById( templateId ).equals( TemplateId.CLINICAL_DOCUMENT ) ) {
 				containsTemplateId = true;
 				break;
 			}

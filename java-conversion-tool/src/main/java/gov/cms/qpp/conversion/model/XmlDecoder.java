@@ -17,10 +17,9 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 @Retention(RUNTIME)
 public @interface XmlDecoder {
-	/**
-	 * The param(s) is/are the string pattern(s) that the defined handler will act.
-	 * @return
-	 */
-	String templateId();
+
+	TemplateId templateId();
+
+	boolean required() default false;
 	
 }

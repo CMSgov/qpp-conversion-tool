@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.decode;
 
 import java.util.List;
 import java.util.function.Consumer;
+
+import gov.cms.qpp.conversion.model.TemplateId;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
@@ -12,10 +14,8 @@ import gov.cms.qpp.conversion.model.XmlDecoder;
  * Decoder to parse the root element of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
 
  */
-@XmlDecoder(templateId = ClinicalDocumentDecoder.ROOT_TEMPLATEID)
+@XmlDecoder(templateId = TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentDecoder extends QppXmlDecoder {
-
-	static final String ROOT_TEMPLATEID = "2.16.840.1.113883.10.20.27.1.2";
 
 	/**
 	 * internalDecode parses the xml fragment into thisNode
