@@ -1,10 +1,8 @@
 package gov.cms.qpp.conversion.model;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.decode.DecodeException;
 import gov.cms.qpp.conversion.decode.InputDecoder;
 import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
-
 import org.apache.commons.io.output.NullOutputStream;
 import org.jdom2.Element;
 import org.junit.After;
@@ -136,7 +134,7 @@ class Placeholder implements InputDecoder {
 	}
 
 	@Override
-	public Node decode(Element xmlDoc) throws DecodeException {
+	public Node decode(Element xmlDoc) {
 		return null;
 	}
 }
@@ -150,7 +148,7 @@ class AnotherPlaceholder implements InputDecoder {
 	}
 
 	@Override
-	public Node decode(Element xmlDoc) throws DecodeException {
+	public Node decode(Element xmlDoc) {
 		return null;
 	}
 }
@@ -161,7 +159,7 @@ class PrivateConstructor implements InputDecoder {
 	}
 
 	@Override
-	public Node decode(Element xmlDoc) throws DecodeException {
+	public Node decode(Element xmlDoc) {
 		return null;
 	}
 }
