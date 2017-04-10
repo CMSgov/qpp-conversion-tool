@@ -1,14 +1,15 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.EncoderNew;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.List;
 
 /**
  * Encoder to serialize ACI Section and it's measures
  */
-@Encoder(templateId = "2.16.840.1.113883.10.20.27.2.5")
+@EncoderNew(TemplateId.ACI_SECTION)
 public class AciSectionEncoder extends QppOutputEncoder {
 
 	/**

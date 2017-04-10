@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
-
-import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.EncoderNew;
 import gov.cms.qpp.conversion.model.Node;
 
 import java.util.List;
@@ -8,11 +8,9 @@ import java.util.List;
 /**
  * Encoder to serialize Advancing Care Information Numerator Denominator Type
  * Measure Denominator Data.
- *
- * @author Scott Fradkin
- *
  */
-@Encoder(templateId = "2.16.840.1.113883.10.20.27.3.32")
+
+@EncoderNew(TemplateId.ACI_DENOMINATOR)
 public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 
 	@Override
