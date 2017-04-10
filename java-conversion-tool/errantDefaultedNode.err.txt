@@ -1,5 +1,0 @@
-Validation Error: Clinical Document Node must have at least one Aci or Ia Section Node as a child
-Validation Error: Test validation error for Jenny
-Validation Error: At least one Aci Proportion Measure Node is required
-Validation Error: The required measure 'ACI_EP_1' is not present in the source file. Please add the ACI measure and try again.
-Validation Error: Only one Clinical Document Node is allowed
