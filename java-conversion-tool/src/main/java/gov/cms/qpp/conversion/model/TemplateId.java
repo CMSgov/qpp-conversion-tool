@@ -19,24 +19,45 @@ public enum TemplateId {
 	private final String root;
 	private final String extension;
 
+	/**
+	 * Constructs a TemplateId with just a root.
+	 *
+	 * @param root The root of the template ID.  Normally numbers with decimal points in between.
+	 */
 	TemplateId(final String root) {
 		this.root = root;
 		extension = "";
 	}
 
+	/**
+	 * Constructs a TemplateId with a root and an extension.
+	 *
+	 * @param root The root of the template ID.  Normally numbers with decimal points in between.
+	 * @param extension The extension of the template ID.  Normally a date.
+	 */
 	TemplateId(final String root, final String extension) {
 		this.root = root;
 		this.extension = extension;
 	}
 
+	/**
+	 * @return The root of the template ID.
+	 */
 	public String getRoot() {
 		return root;
 	}
 
+	/**
+	 * @return The extension of the template ID.
+	 */
 	public String getExtension() {
 		return extension;
 	}
 
+	/**
+	 * @return The complete template ID which includes a concatenation of the root followed by a colon followed by the
+	 * extension.
+	 */
 	public String getTemplateId() {
 		String templateId = getRoot();
 		String extension = getExtension();
@@ -47,6 +68,12 @@ public enum TemplateId {
 		return templateId;
 	}
 
+	/**
+	 * Returns the enumeration for the specified ID.
+	 *
+	 * @param id The complete template ID (root + ":" + extension).
+	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
+	 */
 	public static TemplateId getTypeById(String id) {
 		for (TemplateId type : TemplateId.values()) {
 			if (type.getTemplateId().equals(id)) {
@@ -56,5 +83,4 @@ public enum TemplateId {
 
 		return TemplateId.DEFAULT;
 	}
-
 }
