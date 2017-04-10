@@ -459,7 +459,6 @@ public class ConverterTest {
 				any(IOException.class) );
 	}
 
-	//@XmlDecoder(templateId = "867.5309")
 	public static class JennyDecoder extends DefaultDecoder {
 		public JennyDecoder() {
 			super("default decoder for Jenny");
