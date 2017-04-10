@@ -11,26 +11,24 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * Top level Decoder for parsing into QPP format. Contains a map of child
- * Decoders that can Decode an element.
- * @author David Uselmann
+ * Top level Decoder for parsing into QPP format.
  */
 public class QppXmlDecoder extends XmlInputDecoder {
 	private static final Logger LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
 
 	private static Registry<String, QppXmlDecoder> decoders = new Registry<>(XmlDecoder.class);
+	private static final String TEMPLATE_ID = "templateId";
 
 	/**
-	 * Iterates over the element to find all child elements. Finds any elements
-	 * that match a templateId in the Decoder registry. If there are any
-	 * matches, calls internalDecode with that Element on the Decoder class.
-	 * Aggregates Nodes that are returned.
-	 * 
+	 * Decode iterates over the elements to find all child elements
+	 * to decode any matching elements found in the Decoder Registry
+	 *
+	 * @param element Current highest level XML element
+	 * @param parentNode Parent of the current nodes to be parsed
+	 * @return Status of the child element
 	 */
 	@Override
 	public DecodeResult decode(Element element, Node parentNode) {
-
-		Node currentNode = parentNode;
 
 		if (null == element) {
 			return DecodeResult.ERROR;
@@ -38,12 +36,21 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 		setNamespace(element, this);
 
+		DecodeResult decodeResult = decodeChildren(element, parentNode);
+
+		return (decodeResult != null) ? decodeResult : DecodeResult.TREE_CONTINUE;
+	}
+
+	private DecodeResult decodeChildren(final Element element, final Node parentNode) {
+
+		Node currentNode = parentNode;
+
 		List<Element> childElements = element.getChildren();
 
-		for (Element childeEl : childElements) {
+		for (Element childEl : childElements) {
 
-			if ("templateId".equals(childeEl.getName())) {
-				String templateId = childeEl.getAttributeValue("root");
+			if (TEMPLATE_ID.equals(childEl.getName())) {
+				String templateId = childEl.getAttributeValue("root");
 				LOG.debug("templateIdFound:{}", templateId);
 
 				QppXmlDecoder childDecoder = decoders.get(templateId);
@@ -52,49 +59,58 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					continue;
 				}
 				LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
-				
-					Node childNode = new Node(parentNode, templateId);
-				
-				setNamespace(childeEl, childDecoder);
-				
+
+				Node childNode = new Node(parentNode, templateId);
+
+				setNamespace(childEl, childDecoder);
+
 				// the child decoder might require the entire its siblings
 				DecodeResult result = childDecoder.internalDecode(element, childNode);
-				
+
 				parentNode.addChildNode(childNode); // TODO ensure we need to always add
 				currentNode = childNode; // TODO this works for AciSectionDecoder
-				
-				if (result == null) {
-					// TODO this looks like a continue ????
-					// the only time we get here is NullReturnDecoderTest
-						Node placeholderNode = new Node(parentNode, "placeholder");
-					return decode(childeEl, placeholderNode);
-				}
-				switch (result) {
-					case TREE_FINISHED:
-						// this child is done
-						return DecodeResult.TREE_FINISHED;
-					case TREE_CONTINUE:
-						decode(childeEl, childNode);
-						break;
-					case ERROR:
-						// TODO Validation Error, include element data ????
-						addValidation(templateId, "Failed to decode.");
-						LOG.error("Failed to decode temlateId {} ", templateId);
-						break;
-					default:
-						LOG.error("We need to define a default case. Could be TreeContiue?");
+
+				DecodeResult placeholderNode = testChildDecodeResult(result, childEl, childNode);
+				if (placeholderNode != null) {
+					return placeholderNode;
 				}
 			} else {
 				// TODO might need a child node -- not sure
-				decode(childeEl, currentNode);
+				decode(childEl, currentNode);
 			}
 		}
 
-		return DecodeResult.TREE_CONTINUE;
+		return null;
+	}
+
+	private DecodeResult testChildDecodeResult(final DecodeResult result, final Element childElement,
+	                                           final Node childNode) {
+		if (result == null) {
+			// TODO this looks like a continue ????
+			// the only time we get here is NullReturnDecoderTest
+				Node placeholderNode = new Node(childNode.getParent(), "placeholder");
+			return decode(childElement, placeholderNode);
+		}
+
+		if (result == DecodeResult.TREE_FINISHED) {
+			// this child is done
+			return DecodeResult.TREE_FINISHED;
+		} else if (result == DecodeResult.TREE_CONTINUE) {
+			decode(childElement, childNode);
+		} else if (result == DecodeResult.ERROR) {
+			addValidation(childNode.getId(), "Failed to decode.");
+			LOG.error("Failed to decode templateId {} ", childNode.getId());
+		} else {
+			LOG.error("We need to define a default case. Could be TreeContinue?");
+		}
+		return null;
 	}
 
 	/**
-	 * Starting at the top of the XML or XML fragment.
+	 * Decodes the top of the XML document
+	 *
+	 * @param xmlDoc XML Document to be parsed
+	 * @return Root node
 	 */
 	@Override
 	protected Node decodeRoot(Element xmlDoc) {
@@ -102,7 +118,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		Element rootElement = xmlDoc.getDocument().getRootElement();
 		
 		QppXmlDecoder rootDecoder = null;
-		for (Element e : rootElement.getChildren("templateId", rootElement.getNamespace())) {
+		for (Element e : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
 			String templateId = e.getAttributeValue("root");
 			rootDecoder = decoders.get(templateId);
 			if (null != rootDecoder) {
@@ -121,7 +137,13 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		
 		return rootNode;
 	}
-	
+
+	/**
+	 * Determines whether the XML Document provided is a valid QRDA-III formatted file
+	 *
+	 * @param xmlDoc XML Document to be tested
+	 * @return If the XML document is a correctly QRDA-III formatted file
+	 */
 	@Override
 	protected boolean accepts(Element xmlDoc) {
 
@@ -144,7 +166,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	private boolean containsClinicalDocumentTemplateId(final Element rootElement) {
 		boolean containsTemplateId = false;
 
-		final List<Element> clinicalDocumentChildren = rootElement.getChildren("templateId",
+		final List<Element> clinicalDocumentChildren = rootElement.getChildren(TEMPLATE_ID,
 		                                                                       rootElement.getNamespace());
 
 		for (Element currentChild : clinicalDocumentChildren) {
@@ -159,22 +181,45 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return containsTemplateId;
 	}
 
+	/**
+	 * Top level decode
+	 *
+	 * @param element Top element in the XML document
+	 * @param thisnode Top node created in the XML document
+	 * @return No action is returned for the top level internalDecode.
+	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		// this is the top level, so just return null
 		return DecodeResult.NO_ACTION;
 	}
 
+	/**
+	 * Retrieves all validations
+	 *
+	 * @return validations
+	 */
 	@Override
 	public Iterable<String> validations() {
 		return Validations.values();
 	}
 
+	/**
+	 * Retrieves all validations for a specific template id
+	 *
+	 * @param templateId Identification of Element
+	 * @return validations
+	 */
 	@Override
 	public List<String> getValidationsById(String templateId) {
 		return Validations.getValidationsById(templateId);
 	}
 
+	/**
+	 * Adds a validation to the current list of validation errors
+	 *
+	 * @param templateId Identification of the validation error
+	 * @param validation Validation error to be added
+	 */
 	@Override
 	public void addValidation(String templateId, String validation) {
 		Validations.addValidation(templateId, validation);
