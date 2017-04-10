@@ -42,7 +42,7 @@ public enum TemplateId {
 		String extension = getExtension();
 
 		if (!extension.isEmpty()) {
-			templateId = ":" + extension;
+			templateId += templateId + ":" + extension;
 		}
 		return templateId;
 	}
