@@ -6,10 +6,7 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.NodeType;
-import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import java.util.ArrayList;
-import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
