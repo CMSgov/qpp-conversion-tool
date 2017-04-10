@@ -123,4 +123,22 @@ public class AciDenominatorValidatorTest {
 				is(String.format(AciDenominatorValidator.INVALID_VALUE, value, aciDenominatorNode)));
 
 
-	}}
+	}
+	@Test
+	public void invalidValueDenominatorNumberTest() throws Exception {
+		//Not a number check
+		Node aciDenominatorNode = new Node(NodeType.ACI_DENOMINATOR.getTemplateId());
+		Node aggregateCountNode = new Node(NodeType.ACI_AGGREGATE_COUNT.getTemplateId());
+		String value = "0";
+		aggregateCountNode.putValue("aggregateCount", value);
+		aciDenominatorNode.addChildNode(aggregateCountNode);
+
+		AciDenominatorValidator validator = new AciDenominatorValidator();
+		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
+		assertThat("Validation error size should be 1", errors.size(), is(1));
+		assertThat("Invalid Value Validation Error not issued", errors.get(0).getErrorText(),
+				is(String.format(AciNumeratorDenominatorValidator.DENOMINATOR_CANNOT_BE_ZERO, value, aciDenominatorNode)));
+
+
+	}
+}
