@@ -85,11 +85,16 @@ public class Registry<V extends Object, R extends Object> {
 		}
 		if (annotation instanceof Encoder) {
 			Encoder encoder = (Encoder) annotation;
-			return (V) encoder.templateId().getTemplateId();
+			return (V) encoder.templateId();
 		}
 		if (annotation instanceof Validator) {
 			Validator validator = (Validator) annotation;
 			return (V) validator.templateId().getTemplateId();
+		}
+
+		if (annotation instanceof EncoderNew) {
+			EncoderNew encoderNew = (EncoderNew) annotation;
+			return (V) encoderNew.templateId().getTemplateId();
 		}
 		return null;
 	}
@@ -99,7 +104,7 @@ public class Registry<V extends Object, R extends Object> {
 	 * Later iteration will examine the XPATH startsWith and return a most
 	 * appropriate handler
 	 * 
-	 * @param xpath
+	 * @param registryKey
 	 */
 	public R get(String registryKey) {
 		try {
@@ -116,7 +121,7 @@ public class Registry<V extends Object, R extends Object> {
 	/**
 	 * Means ot register a new transformation handler
 	 * 
-	 * @param xpath
+	 * @param registryKey
 	 * @param handler
 	 */
 	public void register(V registryKey, Class<? extends R> handler) {

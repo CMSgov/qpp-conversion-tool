@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Encoder to serialize ACI Section and it's measures
  */
-@Encoder(templateId = TemplateId.ACI_SECTION)
+@Encoder(templateId = "2.16.840.1.113883.10.20.27.2.5")
 public class AciSectionEncoder extends QppOutputEncoder {
 
 	/**

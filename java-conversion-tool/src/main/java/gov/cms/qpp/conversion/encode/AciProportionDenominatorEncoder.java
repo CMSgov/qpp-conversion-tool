@@ -13,7 +13,7 @@ import java.util.List;
  * @author Scott Fradkin
  *
  */
-@Encoder(templateId = TemplateId.ACI_DENOMINATOR)
+@Encoder(templateId = "2.16.840.1.113883.10.20.27.3.32")
 public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 
 	@Override

@@ -23,6 +23,6 @@ public @interface Encoder {
 	 * 
 	 * @return
 	 */
-	TemplateId templateId();
+	String templateId();
 
 }

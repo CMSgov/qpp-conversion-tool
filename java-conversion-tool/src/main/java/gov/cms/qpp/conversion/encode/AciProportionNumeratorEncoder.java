@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Encoder to serialize numerator data from a Numerator/Denominator Type Measure.
  */
-@Encoder(templateId = TemplateId.ACI_NUMERATOR)
+@Encoder(templateId = "2.16.840.1.113883.10.20.27.3.31")
 public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 
 	/**

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Encoder to serialize ACI Numerator Denominator Type Measure.
  */
-@Encoder(templateId = TemplateId.ACI_PROPORTION)
+@Encoder(templateId = "2.16.840.1.113883.10.20.27.3.28")
 public class AciProportionMeasureEncoder extends QppOutputEncoder {
 
 	/**

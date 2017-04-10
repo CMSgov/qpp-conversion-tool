@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * @author Scott Fradkin
  *
  */
-@Encoder(templateId = TemplateId.ACI_AGGREGATE_COUNT)
+@Encoder(templateId = "2.16.840.1.113883.10.20.27.3.3")
 public class AggregateCountEncoder extends QppOutputEncoder {
 
 	/**
