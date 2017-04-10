@@ -18,7 +18,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	protected static final String INVALID_VALUE = "This ACI "+ nodeName +" Node Aggregate Value has an invalid value %s  \n\t%s";
 	protected static final String NO_CHILDREN = "This ACI "+ nodeName +" Node does not have any child Nodes  \n\t%s";
 	protected static final String TOO_MANY_CHILDREN = "This ACI "+ nodeName +" Node has too many child Nodes  \n\t%s";
-
+	protected static final String DENOMINATOR_CANNOT_BE_ZERO = "The ACI Denominator Aggregate Value can not be zero \n\t%s";
 
 	/**
 	 * internalValidateSameTemplateIdNodes allows for any cross node dependencies
@@ -63,6 +63,11 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 			if (val < 0) {
 				this.addValidationError(
 						new ValidationError(String.format(INVALID_VALUE, value, node.toString())));
+			}
+			if ( AciDenominatorValidator.DENOMINATOR_NAME.equals(nodeName) && val == 0 ){
+				this.addValidationError(
+						new ValidationError(String.format(DENOMINATOR_CANNOT_BE_ZERO, value, node.toString())));
+
 			}
 		} catch (NumberFormatException nfe) {
 			this.addValidationError(
