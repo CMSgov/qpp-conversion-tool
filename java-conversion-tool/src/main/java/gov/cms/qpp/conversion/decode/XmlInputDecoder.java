@@ -20,8 +20,6 @@ import gov.cms.qpp.conversion.model.Node;
 
 /**
  * Abstraction to parse XML files within the decoder structure.
- * @author Scott Fradkin
- *
  */
 public abstract class XmlInputDecoder implements InputDecoder, Validatable<String, String> {
 
@@ -30,7 +28,10 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	protected Namespace xpathNs;
 
 	/**
-	 * Decode a document into a Node
+	 * decodeXml Determines what formats of xml we accept and decode to
+	 *
+	 * @param xmlDoc XML document whose format is to be determined
+	 * @return Root intermediate format node
 	 */
 	public static Node decodeXml(Element xmlDoc) {
 		List<XmlInputDecoder> xmlDecoders = Arrays.asList(new QppXmlDecoder());
@@ -47,6 +48,9 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 
 	/**
 	 * Decode a document into a Node
+	 *
+	 * @param xmlDoc XML Document to be decoded
+	 * @return Decoded root node
 	 */
 	@Override
 	public Node decode(Element xmlDoc) {
@@ -56,8 +60,8 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	/**
 	 * Convenient way to pass a list into sub decoders.
 	 * 
-	 * @param element
-	 * @return
+	 * @param elements List of elements to be decoded
+	 * @param parent Parent node that all child elements will be decoded into
 	 */
 	protected void decode(List<Element> elements, Node parent) {
 		for (Element element : elements) {
@@ -65,8 +69,14 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 		}
 	}
 
-	protected void setNamespace(Element el, XmlInputDecoder decoder) {
-		decoder.defaultNs = el.getNamespace();
+	/**
+	 * Sets xml namespace
+	 *
+	 * @param element Element that hold the namespace
+	 * @param decoder Decoder to configure
+	 */
+	protected void setNamespace(Element element, XmlInputDecoder decoder) {
+		decoder.defaultNs = element.getNamespace();
 
 		// this handle the case where there is no URI for a default namespace (test)
 		try {
@@ -78,7 +88,15 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	/**
+	 * Executes an Xpath for an element and executes the consumer
+	 *
+	 * @param element Element the xpath is executed against
+	 * @param expressionStr Xpath
+	 * @param consumer Consumer to execute if the xpath matches
+	 * @param filter Filter to apply for the xpath
+	 * @param selectOne Whether to execute for the first match or multiple matches
+	 */
 	protected void setOnNode(Element element, String expressionStr, Consumer consumer, Filter<?> filter, boolean selectOne) {
 		XPathExpression<?> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
 		
@@ -90,34 +108,36 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	}
 
 	/**
-	 * Represents some sort of higher level decode of an element
+	 * Abstraction of decode for an element to a node
 	 * 
-	 * @param element
-	 * @return
+	 * @param element Element to be decoded
+	 * @param parent Node to be decoded into
+ 	 * @return Action to take after decode
 	 */
-	abstract protected DecodeResult decode(Element element, Node parent);
+	protected abstract DecodeResult decode(Element element, Node parent);
 
 	/**
-	 * When you have no parent
-	 * @param xmlDoc
-	 * @return
+	 * Top level element to decode
+	 *
+	 * @param xmlDoc Element to be decoded
+	 * @return Root node
 	 */
-	abstract protected Node decodeRoot(Element xmlDoc);
+	protected abstract Node decodeRoot(Element xmlDoc);
 
 	/**
 	 * Represents an internal parsing of an element
 	 * 
-	 * @param element
-	 * @param thisNode created for this decode
-	 * @return
+	 * @param element Element to be decoded
+	 * @param thisNode Node to be decoded into
+	 * @return Action to take after decode
 	 */
-	abstract protected DecodeResult internalDecode(Element element, Node thisnode);
+	protected abstract DecodeResult internalDecode(Element element, Node thisNode);
 
 	/**
-	 * See if the Decoder can handle the input
-	 * @param xmlDoc
-	 * @return true/false
+	 * Determines if the Decoder can handle the input
+	 *
+	 * @param xmlDoc XML document
+	 * @return Whether or not the decoder can handle the element
 	 */
 	protected abstract boolean accepts(Element xmlDoc);
-
 }
