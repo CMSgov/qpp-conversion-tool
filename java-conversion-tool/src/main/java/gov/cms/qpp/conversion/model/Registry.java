@@ -89,7 +89,7 @@ public class Registry<V extends Object, R extends Object> {
 		}
 		if (annotation instanceof Validator) {
 			Validator validator = (Validator) annotation;
-			return (V) validator.templateId();
+			return (V) validator.templateId().getTemplateId();
 		}
 		return null;
 	}
