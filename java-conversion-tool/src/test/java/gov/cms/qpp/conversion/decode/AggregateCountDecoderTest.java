@@ -5,10 +5,13 @@
 package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.NodeType;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.util.ArrayList;
 import java.util.List;
+
+import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -31,7 +34,7 @@ public class AggregateCountDecoderTest {
             + "        <statusCode code=\"completed\"/>\n"
             + "        <value xsi:type=\"CD\" code=\"DENOM\" codeSystem=\"2.16.840.1.113883.5.1063\" codeSystemName=\"ObservationValue\"/>\n"
             + "        <!--DENOM Count-->\n"
-            + "       <entryRelationship typeCode=\"COMP\">\n"
+            + "        <entryRelationship typeCode=\"COMP\">\n"
             + "        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
             + "                <value xsi:type=\"CD\" code=\"M\" codeSystem=\"2.16.840.1.113883.5.1\" codeSystemName=\"AdministrativeGenderCode\" displayName=\"Male\"/>\n"
             + "                <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
@@ -49,13 +52,26 @@ public class AggregateCountDecoderTest {
             + "</component>"
             + "</entry>";
 
+    private static final String ANOTHER_XML_FRAGMENT = "<observation classCode=\"OBS\" moodCode=\"EVN\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
+            + " Some extraneous text \n" // extraneous text element
+            + "    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
+            + "    <templateId root=\"R2.D2\"/>\n" // Funky templateId
+            + "    <schmemplateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n" // Element that does not belong to the default namespace
+            + "    <observation classCode=\"OBS\" moodCode=\"EVN\"> Empty observation </observation>\n" // Empty observation
+            + "    <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>\n"
+            + "    <statusCode code=\"completed\"/>\n"
+            + " More extraneous text \n" // extraneous text element
+            + "    <value xsi:type=\"INT\" value=\"400\"/>\n"
+            + "    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>\n"
+            + "</observation>";
+
     @Test
     public void testInternalDecode() throws Exception {
         Namespace rootNs = Namespace.getNamespace("urn:hl7-org:v3");
         Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
         Element element = new Element("observation", rootNs);
-        element.addContent(new Element("templateId", rootNs).setAttribute("root", "2.16.840.1.113883.10.20.27.3.3"));
+        element.addContent(new Element("templateId", rootNs).setAttribute("root", NodeType.ACI_NUM_DENOM_VALUE.getTemplateId()));
         element.addContent(new Element("value", rootNs).setAttribute("value", "450").setAttribute("type", "INT", ns));
         element.addNamespaceDeclaration(ns);
 
@@ -85,10 +101,28 @@ public class AggregateCountDecoderTest {
         assertThat("DefaultDecoderFor has measure data",
                 node.getValue("DefaultDecoderFor"), is("Measure Data - CMS (V2)"));
 
-        assertThat("Node has aggregate count", node.getChildNodes().get(0).getValue("aggregateCount"),
+        assertThat("Node has aggregate count",
+                node.getChildNodes().get(0).getValue("aggregateCount"),
                 is("400"));
 
-        assertThat("Should have template id", node.getChildNodes().get(0).getId(),
-                is("2.16.840.1.113883.10.20.27.3.3"));
+        assertEquals("Should have template id",
+                node.getChildNodes().get(0).getType(),
+                NodeType.ACI_NUM_DENOM_VALUE);
+    }
+
+    @Test
+    public void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws Exception {
+
+        Node root = new QppXmlDecoder().decode( XmlUtils.stringToDOM( ANOTHER_XML_FRAGMENT ) );
+
+        assertThat("Parent exists", root, is(not(nullValue())));
+
+        assertThat("Node has aggregate count",
+                root.getValue("aggregateCount"),
+                is("400"));
+
+        assertEquals("Should have template id",
+                root.getType(),
+                NodeType.ACI_NUM_DENOM_VALUE);
     }
 }

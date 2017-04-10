@@ -15,8 +15,6 @@ import java.util.function.Predicate;
 public class Node implements Serializable {
 
 	private static final long serialVersionUID = 4602134063479322076L;
-
-	private String internalId;
 	private NodeType type;
 	private Map<String, String> data = new HashMap<>();
 
@@ -43,8 +41,7 @@ public class Node implements Serializable {
 
 	public Node(Node parentNode, String id) {
 		this(parentNode);
-		setId(id);
-		this.type = NodeType.getTypeById(id);
+		setId( id );
 	}
 
 	public String getValue(String name) {
@@ -56,11 +53,11 @@ public class Node implements Serializable {
 	}
 
 	public void setId(String templateId) {
-		this.internalId = templateId;
+		this.type = NodeType.getTypeById( templateId );
 	}
 
 	public String getId() {
-		return internalId;
+		return this.type.getTemplateId();
 	}
 
 	public List<Node> getChildNodes() {
@@ -97,7 +94,7 @@ public class Node implements Serializable {
 	}
 
 	protected String selfToString() {
-		return "Node: internalId: " + internalId + ", data: " + data;
+		return "Node: templateId: " + getId() + ", data: " + data;
 	}
 
 	protected String childrenToString(String tabs) {
@@ -110,7 +107,7 @@ public class Node implements Serializable {
 				children.add(child.toString(tabs));
 			}
 		}
-		return tabs + "childNodes of " + internalId + children;
+		return tabs + "childNodes of " + getId() + children;
 	}
 
 	public Set<String> getKeys() {
@@ -164,7 +161,7 @@ public class Node implements Serializable {
 	public List<Node> findNode(String id, Predicate<List<?>> bail) {
 		List<Node> foundNodes = new ArrayList<>();
 
-		if (id.equals(this.internalId)) {
+		if (id.equals( getId() )) {
 			foundNodes.add(this);
 		}
 
