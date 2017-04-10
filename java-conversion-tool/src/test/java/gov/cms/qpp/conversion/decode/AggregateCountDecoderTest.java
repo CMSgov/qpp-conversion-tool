@@ -68,7 +68,7 @@ public class AggregateCountDecoderTest {
         Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
         Element element = new Element("observation", rootNs);
-        element.addContent(new Element("templateId", rootNs).setAttribute("root", NodeType.ACI_NUM_DENOM_VALUE.getTemplateId()));
+        element.addContent(new Element("templateId", rootNs).setAttribute("root", NodeType.ACI_AGGREGATE_COUNT.getTemplateId()));
         element.addContent(new Element("value", rootNs).setAttribute("value", "450").setAttribute("type", "INT", ns));
         element.addNamespaceDeclaration(ns);
 
@@ -104,7 +104,7 @@ public class AggregateCountDecoderTest {
 
         assertEquals("Should have template id",
                 node.getChildNodes().get(0).getType(),
-                NodeType.ACI_NUM_DENOM_VALUE);
+                NodeType.ACI_AGGREGATE_COUNT);
     }
 
     @Test
@@ -120,6 +120,6 @@ public class AggregateCountDecoderTest {
 
         assertEquals("Should have template id",
                 root.getType(),
-                NodeType.ACI_NUM_DENOM_VALUE);
+                NodeType.ACI_AGGREGATE_COUNT);
     }
 }

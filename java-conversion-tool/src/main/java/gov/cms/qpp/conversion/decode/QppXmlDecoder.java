@@ -61,7 +61,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
 				Node childNode = new Node(parentNode, templateId);
 				
-				setNamespace(childeEl, childDecoder);
+				setNamespace(childEl, childDecoder);
 				
 				// the child decoder might require the entire its siblings
 				DecodeResult result = childDecoder.internalDecode(element, childNode);
