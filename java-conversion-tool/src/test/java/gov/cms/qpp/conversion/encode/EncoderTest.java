@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
+import gov.cms.qpp.conversion.model.EncoderNew;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,7 +74,7 @@ public class EncoderTest {
 	@Test
 	public void decodeTemplateIds() throws Exception {
 		Registry<String, OutputEncoder> registry;
-		registry = new Registry<>(Encoder.class);
+		registry = new Registry<>(EncoderNew.class);
 		
 		for (String templateId : templateIDs) {
 			OutputEncoder encoder = registry.get(templateId);

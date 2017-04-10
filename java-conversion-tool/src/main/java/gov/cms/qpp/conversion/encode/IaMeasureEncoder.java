@@ -14,7 +14,7 @@ import java.util.List;
  * @author David Puglielli
  *
  */
-@EncoderNew(templateId = TemplateId.IA_MEASURE)
+@EncoderNew(TemplateId.IA_MEASURE)
 public class IaMeasureEncoder extends QppOutputEncoder {
 
 	@Override

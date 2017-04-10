@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
 
-@EncoderNew(templateId = TemplateId.CLINICAL_DOCUMENT)
+@EncoderNew(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 	/**

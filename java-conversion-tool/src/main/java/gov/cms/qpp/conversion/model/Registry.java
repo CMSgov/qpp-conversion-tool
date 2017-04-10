@@ -94,7 +94,7 @@ public class Registry<V extends Object, R extends Object> {
 
 		if (annotation instanceof EncoderNew) {
 			EncoderNew encoderNew = (EncoderNew) annotation;
-			return (V) encoderNew.templateId().getTemplateId();
+			return (V) encoderNew.value().getTemplateId();
 		}
 		return null;
 	}

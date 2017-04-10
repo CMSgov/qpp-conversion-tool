@@ -9,6 +9,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,16 +31,16 @@ public class IaSectionEncoderTest {
 	@Before
 	public void createNode() {
 		iaMeasurePerformedNode = new Node();
-		iaMeasurePerformedNode.setId("2.16.840.1.113883.10.20.27.3.27");
+		iaMeasurePerformedNode.setId(TemplateId.MEASURE_PERFORMED.getTemplateId());
 		iaMeasurePerformedNode.putValue("measurePerformed", "Y");
 
 		iaMeasureNode = new Node();
-		iaMeasureNode.setId("2.16.840.1.113883.10.20.27.3.33");
+		iaMeasureNode.setId(TemplateId.IA_MEASURE.getTemplateId());
 		iaMeasureNode.putValue("measureId", "IA_EPA_1");
 		iaMeasureNode.addChildNode(iaMeasurePerformedNode);
 
 		iaSectionNode = new Node();
-		iaSectionNode.setId("2.16.840.1.113883.10.20.27.2.4");
+		iaSectionNode.setId(TemplateId.IA_SECTION.getTemplateId());
 		iaSectionNode.putValue("category", "ia");
 		iaSectionNode.addChildNode(iaMeasureNode);
 

@@ -11,7 +11,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * @author David Puglielli
  *
  */
-@EncoderNew(templateId = TemplateId.MEASURE_PERFORMED)
+@EncoderNew(TemplateId.MEASURE_PERFORMED)
 public class MeasurePerformedEncoder extends QppOutputEncoder {
 
 	@Override
