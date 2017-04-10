@@ -106,4 +106,12 @@ public abstract class NodeValidator {
 		final Validator validator = this.getClass().getAnnotation(Validator.class);
 		return (null != validator) ? validator.templateId().getTemplateId() : "";
 	}
+
+	protected Checker check( Node node ){
+		return Checker.check( node, this.getValidationErrors() );
+	}
+
+	protected Checker thoroughlyCheck( Node node ){
+		return Checker.check( node, this.getValidationErrors() );
+	}
 }
