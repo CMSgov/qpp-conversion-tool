@@ -6,7 +6,6 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-
 /**
  * This is the annotation to mark class implementations that should be
  * registered for transforming a section for the XML document.
@@ -21,9 +20,5 @@ public @interface XmlDecoderNew {
 	 *
 	 * @return
 	 */
-	TemplateId templateId();
-
-	boolean required() default false;
-
-
+	TemplateId value();
 }

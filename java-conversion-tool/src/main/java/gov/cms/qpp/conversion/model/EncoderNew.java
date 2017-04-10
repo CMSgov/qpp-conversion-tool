@@ -22,8 +22,6 @@ public @interface EncoderNew {
 	 *
 	 * @return
 	 */
-	TemplateId templateId();
-
-	boolean required() default false;
+	TemplateId value();
 
 }
