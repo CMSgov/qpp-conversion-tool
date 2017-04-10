@@ -6,21 +6,24 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-
 /**
  * This is the annotation to mark class implementations that should be
- * registered for transforming a section for the XML document.
+ * registered for encoding nodes into some output like JSON.
  *
  * @author David Uselmann
  */
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface XmlDecoder {
+public @interface EncoderNew {
+
 	/**
-	 * The param(s) is/are the string pattern(s) that the defined handler will act.
+	 * The param(s) is/are the string pattern(s) that the defined handler will
+	 * act.
 	 *
 	 * @return
 	 */
-	String templateId();
+	TemplateId templateId();
+
+	boolean required() default false;
 
 }
