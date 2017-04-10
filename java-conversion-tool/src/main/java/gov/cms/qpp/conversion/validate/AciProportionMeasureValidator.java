@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * Validate all ACI Proportion Type Measures.
  */
-@Validator(templateId = "2.16.840.1.113883.10.20.27.3.28", required = true)
+@Validator(templateId = TemplateId.ACI_PROPORTION, required = true)
 public class AciProportionMeasureValidator extends NodeValidator {
 
 	private MeasureConfigs measureConfigs;

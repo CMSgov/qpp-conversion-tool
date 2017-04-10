@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Validates the Clinical Document.
  */
-@Validator(templateId = "2.16.840.1.113883.10.20.27.1.2", required = true)
+@Validator(templateId = TemplateId.CLINICAL_DOCUMENT, required = true)
 public class ClinicalDocumentValidator extends NodeValidator {
 
 	public static final String CLINICAL_DOCUMENT_REQUIRED = "Clinical Document Node is required";

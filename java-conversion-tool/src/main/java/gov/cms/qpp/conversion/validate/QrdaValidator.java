@@ -60,7 +60,7 @@ public class QrdaValidator {
 			return;
 		}
 
-		boolean isRequired = validatorForNode.getClass().getAnnotation(Validator.class).required();
+		boolean isRequired = isValidationRequired(validatorForNode);
 		if(!isRequired) {
 			return;
 		}
@@ -68,6 +68,17 @@ public class QrdaValidator {
 		addNodeToTemplateMap(node);
 		List<ValidationError> nodeErrors = validatorForNode.validateSingleNode(node);
 		validationErrors.addAll(nodeErrors);
+	}
+
+	private boolean isValidationRequired(final NodeValidator validatorForNode) {
+		return getAnnotation(validatorForNode).required();
+	}
+
+	private Validator getAnnotation(final NodeValidator validator) {
+		if(validator == null) {
+			return null;
+		}
+		return validator.getClass().getAnnotation(Validator.class);
 	}
 
 	private void addNodeToTemplateMap(final Node node) {
@@ -96,14 +107,12 @@ public class QrdaValidator {
 
 	private void validateSingleTemplateId(final NodeValidator validator) {
 
-		Validator validatorAnnotation = validator.getClass().getAnnotation(Validator.class);
-
-		boolean isRequired = validatorAnnotation.required();
+		boolean isRequired = isValidationRequired(validator);
 		if(!isRequired) {
 			return;
 		}
 
-		final String templateId = validatorAnnotation.templateId();
+		final String templateId = getTemplateId(validator);
 
 		LOG.debug("Validating nodes associated with templateId {}", templateId);
 
@@ -111,5 +120,9 @@ public class QrdaValidator {
 
 		List<ValidationError> nodesErrors = validator.validateSameTemplateIdNodes(nodesForTemplateId);
 		validationErrors.addAll(nodesErrors);
+	}
+
+	private String getTemplateId(final NodeValidator validatorForNode) {
+		return getAnnotation(validatorForNode).templateId().getTemplateId();
 	}
 }
