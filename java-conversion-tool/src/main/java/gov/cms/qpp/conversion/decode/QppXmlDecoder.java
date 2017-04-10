@@ -70,7 +70,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				parentNode.addChildNode(childNode); // TODO ensure we need to always add
 				currentNode = childNode; // TODO this works for AciSectionDecoder
 
-				DecodeResult placeholderNode = testChildDecodeResult(result, childEl, templateId, parentNode, childNode);
+				DecodeResult placeholderNode = testChildDecodeResult(result, childEl, childNode);
 				if (placeholderNode != null) {
 					return placeholderNode;
 				}
@@ -83,12 +83,12 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return null;
 	}
 
-	private DecodeResult testChildDecodeResult(final DecodeResult result, final Element childElement, final String templateId, final Node parentNode,
+	private DecodeResult testChildDecodeResult(final DecodeResult result, final Element childElement,
 	                                           final Node childNode) {
 		if (result == null) {
 			// TODO this looks like a continue ????
 			// the only time we get here is NullReturnDecoderTest
-				Node placeholderNode = new Node(parentNode, "placeholder");
+				Node placeholderNode = new Node(childNode.getParent(), "placeholder");
 			return decode(childElement, placeholderNode);
 		}
 
@@ -98,8 +98,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		} else if (result == DecodeResult.TREE_CONTINUE) {
 			decode(childElement, childNode);
 		} else if (result == DecodeResult.ERROR) {
-			addValidation(templateId, "Failed to decode.");
-			LOG.error("Failed to decode templateId {} ", templateId);
+			addValidation(childNode.getId(), "Failed to decode.");
+			LOG.error("Failed to decode templateId {} ", childNode.getId());
 		} else {
 			LOG.error("We need to define a default case. Could be TreeContinue?");
 		}
