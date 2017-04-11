@@ -22,7 +22,7 @@ import java.util.Set;
  * @author David Uselmann
  */
 public class Registry<V extends Object, R extends Object> {
-	static final Logger LOG = LoggerFactory.getLogger(Registry.class);
+	private static final Logger LOG = LoggerFactory.getLogger(Registry.class);
 
 	// For now this is static and can be refactored into an instance
 	// variable when/if we have an orchestrator that instantiates an registry
@@ -30,7 +30,7 @@ public class Registry<V extends Object, R extends Object> {
 	 * This will be an XPATH string to converter handler registration Since
 	 * Converter was taken for the main stub, I chose Handler for now.
 	 */
-	Map<V, Class<? extends R>> registry;
+	private Map<V, Class<? extends R>> registry;
 
 	private Class<? extends Annotation> annotationClass;
 	private Class<? extends Annotation> annotationClassNew = null;
@@ -164,5 +164,9 @@ public class Registry<V extends Object, R extends Object> {
 
 	public Set<V> getKeys() {
 		return registry.keySet();
+	}
+
+	public int size() {
+		return registry.size();
 	}
 }
