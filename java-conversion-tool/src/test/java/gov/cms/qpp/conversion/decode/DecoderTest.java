@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.model.Decoder;
 import org.junit.After;
@@ -16,36 +17,35 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class DecoderTest {
-
+//TemplateId.MEASURE_SECTION.getTemplateId()
 	private final List<String> templateIDs = Arrays.asList(
-			"2.16.840.1.113883.10.20.24.2.2",
+		TemplateId.MEASURE_SECTION.getTemplateId(),
 
-			"2.16.840.1.113883.10.20.27.1.2",
-			"2.16.840.1.113883.10.20.27.2.3",
-			"2.16.840.1.113883.10.20.27.2.4",
-			"2.16.840.1.113883.10.20.27.2.5",
-			"2.16.840.1.113883.10.20.27.2.6",
-			"2.16.840.1.113883.10.20.27.3.3",
-			
-			"2.16.840.1.113883.10.20.27.3.16",
-			"2.16.840.1.113883.10.20.27.3.17",
-			"2.16.840.1.113883.10.20.27.3.18",
-			"2.16.840.1.113883.10.20.27.3.19",
-			"2.16.840.1.113883.10.20.27.3.20",
-			"2.16.840.1.113883.10.20.27.3.21",
-			"2.16.840.1.113883.10.20.27.3.22",
-			"2.16.840.1.113883.10.20.27.3.23",
-			// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
-			"2.16.840.1.113883.10.20.27.3.24",
-			"2.16.840.1.113883.10.20.27.3.25",
-			"2.16.840.1.113883.10.20.27.3.26",
-			"2.16.840.1.113883.10.20.27.3.27",
-			"2.16.840.1.113883.10.20.27.3.28",
-			"2.16.840.1.113883.10.20.27.3.29",
-			"2.16.840.1.113883.10.20.27.3.30",
-			"2.16.840.1.113883.10.20.27.3.31",
-			"2.16.840.1.113883.10.20.27.3.32",
-			"2.16.840.1.113883.10.20.27.3.33"
+		TemplateId.CLINICAL_DOCUMENT.getTemplateId(),
+		TemplateId.MEASURE_SECTION_V2.getTemplateId(),
+		TemplateId.IA_SECTION.getTemplateId(),
+		TemplateId.ACI_SECTION.getTemplateId(),
+		TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId(),
+		TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(),
+
+		TemplateId.MEASURE_DATA_CMS_V2.getTemplateId(),
+		TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId(),
+		TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
+		TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
+		TemplateId.REPORTING_STRATUM_CMS.getTemplateId(),
+		TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENTAL_CMS_V2.getTemplateId(),
+		TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
+		TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId(),
+		TemplateId.CMS_AGGREGATE_COUNT.getTemplateId(),
+		TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2.getTemplateId(),
+		TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS.getTemplateId(),
+		TemplateId.ACI_MEASURE_PERFORMED.getTemplateId(),
+		TemplateId.ACI_PROPORTION.getTemplateId(),
+		TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS.getTemplateId(),
+		TemplateId.PERFORMANCE_RATE.getTemplateId(),
+		TemplateId.ACI_NUMERATOR.getTemplateId(),
+		TemplateId.ACI_DENOMINATOR.getTemplateId(),
+		TemplateId.IA_MEASURE.getTemplateId()
 	);
 	
 	
@@ -60,14 +60,11 @@ public class DecoderTest {
 
 	@Test
 	public void decodeTemplateIds() throws Exception {
-		Registry<String, InputDecoder> registry;
-		registry = new Registry<>(Decoder.class);
+		Registry<String, InputDecoder> registry = new Registry<>(Decoder.class);
 		
 		for (String templateId : templateIDs) {
 			InputDecoder decoder = registry.get(templateId);
 			assertThat(templateId + " returned node should not be null", decoder, is(not(nullValue())));
 		}
 	}
-
-
 }

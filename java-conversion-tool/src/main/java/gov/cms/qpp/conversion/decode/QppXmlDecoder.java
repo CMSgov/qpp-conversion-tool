@@ -61,8 +61,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				if (null == childDecoder) {
 					continue;
 				}
-				LOG.debug("Using decoder for {} as {}", root, childDecoder.getClass());
-				Node childNode = new Node(parentNode, root);
+				LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
+				Node childNode = new Node(parentNode, templateId);
 				
 				setNamespace(childEl, childDecoder);
 				
@@ -122,7 +122,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		QppXmlDecoder rootDecoder = null;
 		for (Element e : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
 			String root = e.getAttributeValue("root");
-			String extension = e.getAttributeValue("root");
+			String extension = e.getAttributeValue("extension");
 			String templateId = TemplateId.generateTemplateIdString(root, extension);
 			rootDecoder = DECODERS.get(templateId);
 			if (null != rootDecoder) {
@@ -174,9 +174,10 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		                                                                       rootElement.getNamespace());
 
 		for (Element currentChild : clinicalDocumentChildren) {
-			final String templateId = currentChild.getAttributeValue("root");
+			final String root = currentChild.getAttributeValue("root");
+			final String extension = currentChild.getAttributeValue("extension");
 
-			if ( TemplateId.getTypeById( templateId ) == TemplateId.CLINICAL_DOCUMENT ) {
+			if ( TemplateId.getTypeById(root, extension) == TemplateId.CLINICAL_DOCUMENT ) {
 				containsTemplateId = true;
 				break;
 			}
