@@ -12,7 +12,9 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -45,6 +47,7 @@ public class EncoderTest {
 			TemplateId.ACI_NUMERATOR.getTemplateId(),
 			TemplateId.ACI_DENOMINATOR.getTemplateId(),
 			TemplateId.IA_MEASURE.getTemplateId()
+
 	);
 
 
@@ -67,7 +70,6 @@ public class EncoderTest {
 	public void decodeTemplateIds() throws Exception {
 		Registry<String, OutputEncoder> registry;
 		registry = new Registry<>(Encoder.class, EncoderNew.class);
-
 		for (String templateId : templateIDs) {
 			OutputEncoder encoder = registry.get(templateId);
 			assertThat(templateId + " returned node should not be null", encoder, is(not(nullValue())));

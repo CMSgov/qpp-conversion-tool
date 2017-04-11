@@ -4,8 +4,6 @@ import java.io.Writer;
 
 /**
  * Interface for encoding output.
- * @author Scott Fradkin
- * 
  */
 public interface OutputEncoder {
 

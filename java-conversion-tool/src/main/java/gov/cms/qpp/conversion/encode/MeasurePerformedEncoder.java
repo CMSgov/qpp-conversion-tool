@@ -1,17 +1,23 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.EncoderNew;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
- * Encoder to serialize Improvement Activity Section.
- *
- * @author David Puglielli
- *
+ * Encoder to serialize IA Section measures performed.
  */
-@Encoder(templateId = "2.16.840.1.113883.10.20.27.3.27")
+@EncoderNew(TemplateId.ACI_MEASURE_PERFORMED)
 public class MeasurePerformedEncoder extends QppOutputEncoder {
 
+	/**
+	 * internalEncode for measures performed
+	 *
+	 * @param wrapper object that will represent the measure performed
+	 * @param node object that represents the measure performed
+	 * @throws EncodeException If error occurs during encoding
+	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		wrapper.putBoolean("value", node.getValue("measurePerformed"));
