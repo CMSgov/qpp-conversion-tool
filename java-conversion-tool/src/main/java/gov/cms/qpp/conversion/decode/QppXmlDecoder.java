@@ -58,7 +58,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		for (Element childEl : childElements) {
 
 			if (TEMPLATE_ID.equals(childEl.getName())) {
-				String templateId = childEl.getAttributeValue("root");
+				String root = childEl.getAttributeValue("root");
+				String extension = childEl.getAttributeValue("extension");
+				String templateId = TemplateId.generateTemplateIdString(root, extension);
 				LOG.debug("templateIdFound:{}", templateId);
 
 				QppXmlDecoder childDecoder = DECODERS.get(templateId);
@@ -131,7 +133,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		
 		QppXmlDecoder rootDecoder = null;
 		for (Element e : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
-			String templateId = e.getAttributeValue("root");
+			String root = e.getAttributeValue("root");
+			String extension = e.getAttributeValue("extension");
+			String templateId = TemplateId.generateTemplateIdString(root, extension);
 			rootDecoder = DECODERS.get(templateId);
 			if (null != rootDecoder) {
 				rootNode.setId(templateId);
@@ -182,9 +186,10 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		                                                                       rootElement.getNamespace());
 
 		for (Element currentChild : clinicalDocumentChildren) {
-			final String templateId = currentChild.getAttributeValue("root");
+			final String root = currentChild.getAttributeValue("root");
+			final String extension = currentChild.getAttributeValue("extension");
 
-			if ( TemplateId.getTypeById( templateId ) == TemplateId.CLINICAL_DOCUMENT ) {
+			if ( TemplateId.getTypeById(root, extension) == TemplateId.CLINICAL_DOCUMENT ) {
 				containsTemplateId = true;
 				break;
 			}

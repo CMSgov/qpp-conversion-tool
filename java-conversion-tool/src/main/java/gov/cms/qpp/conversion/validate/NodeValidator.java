@@ -64,6 +64,7 @@ public abstract class NodeValidator {
 	 * @param newError The error to add to the list.
 	 */
 	protected void addValidationError(final ValidationError newError) {
+		logValidationError(newError);
 		validationErrors.add(newError);
 	}
 

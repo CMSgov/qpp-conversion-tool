@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import org.junit.Test;
 
@@ -20,14 +21,14 @@ public class ClinicalDocumentValidatorTest {
 
 	@Test
 	public void testClinicalDocumentPresent() {
-		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node aciSectionNode = new Node(clinicalDocumentNode, "2.16.840.1.113883.10.20.27.2.5");
+		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
@@ -40,14 +41,14 @@ public class ClinicalDocumentValidatorTest {
 
 	@Test
 	public void testClinicalDocumentPresentIa() {
-		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node iaSectionNode = new Node(clinicalDocumentNode, "2.16.840.1.113883.10.20.27.2.4");
+		Node iaSectionNode = new Node(clinicalDocumentNode, TemplateId.IA_SECTION.getTemplateId());
 		iaSectionNode.putValue("category", "ia");
 
 		clinicalDocumentNode.addChildNode(iaSectionNode);
@@ -71,8 +72,8 @@ public class ClinicalDocumentValidatorTest {
 
 	@Test
 	public void testTooManyClinicalDocumentNodes() {
-		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
-		Node clinicalDocumentNode2 = new Node("2.16.840.1.113883.10.20.27.1.2");
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		Node clinicalDocumentNode2 = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<ValidationError> errors = validator.validateSameTemplateIdNodes(Arrays.asList(clinicalDocumentNode, clinicalDocumentNode2));
@@ -84,7 +85,7 @@ public class ClinicalDocumentValidatorTest {
 
 	@Test
 	public void testNoSections() {
-		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
@@ -100,7 +101,7 @@ public class ClinicalDocumentValidatorTest {
 
 	@Test
 	public void testNoSectionsOtherChildren() {
-		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");

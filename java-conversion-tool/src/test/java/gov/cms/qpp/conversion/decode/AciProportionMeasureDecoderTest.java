@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Element;
@@ -115,8 +116,8 @@ public class AciProportionMeasureDecoderTest {
 			testTemplateIds.add(node.getId());
 		}
 
-		assertThat("Should have Numerator", testTemplateIds.contains("2.16.840.1.113883.10.20.27.3.31"), is(true));
-		assertThat("Should have Denominator", testTemplateIds.contains("2.16.840.1.113883.10.20.27.3.32"), is(true));
+		assertThat("Should have Numerator", testTemplateIds.contains(TemplateId.ACI_NUMERATOR.getTemplateId()), is(true));
+		assertThat("Should have Denominator", testTemplateIds.contains(TemplateId.ACI_DENOMINATOR.getTemplateId()), is(true));
 	}
 
 	@Test

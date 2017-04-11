@@ -30,9 +30,6 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-
-		List<Node> childNodes = node.getChildNodes();
-
 		check( node )
 			.hasChildren( ONE_CHILD_REQUIRED )
 			.childMinimum( ONE_CHILD_REQUIRED, 1, TemplateId.ACI_SECTION, TemplateId.IA_SECTION );
