@@ -112,8 +112,9 @@ public class RegistryTest {
 				return Class.forName(className);
 			}
 		};
-		assertEquals("The class was not found in the Decoder registryMap", registryA.registryMap.size(),
-		             registryB.registryMap.size() + 1);
+
+		assertEquals("The class was not found in the Decoder registry", registryA.size(),
+				registryB.size() + 1);
 	}
 
 	@Test
