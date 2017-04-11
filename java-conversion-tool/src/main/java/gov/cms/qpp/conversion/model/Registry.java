@@ -99,6 +99,10 @@ public class Registry<V extends Object, R extends Object> {
 	public V getAnnotationParam(Class<?> annotatedClass) {
 		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
 
+		if ( annotation == null ){
+			annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClassNew);
+		}
+
 		if (annotation instanceof Decoder) {
 			Decoder decoder = (Decoder) annotation;
 			return (V) decoder.value().getTemplateId();
