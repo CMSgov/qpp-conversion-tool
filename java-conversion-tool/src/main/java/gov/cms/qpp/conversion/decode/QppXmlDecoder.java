@@ -172,7 +172,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		for (Element currentChild : clinicalDocumentChildren) {
 			final String templateId = currentChild.getAttributeValue("root");
 
-			if ( TemplateId.getTypeById( templateId ).equals( TemplateId.CLINICAL_DOCUMENT ) ) {
+			if ( TemplateId.getTypeById( templateId ) == TemplateId.CLINICAL_DOCUMENT ) {
 				containsTemplateId = true;
 				break;
 			}
