@@ -63,7 +63,7 @@ public class EncoderTest {
 //		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 //				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 //				+ "	<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-//				+ " 	<templateId root=\"2.16.840.1.113883.10.20.24.3.98\"/>\n" 
+//				+ " 	<templateId root=\"2.16.840.1.113883.10.20.24.3.98\"/>\n"
 //				+ "		<templateId root=\""+templateId+"\" extension=\"2016-09-01\" />\n"
 //				+ "	</observation>\n"
 //				+ "</component>";
@@ -73,8 +73,8 @@ public class EncoderTest {
 	@Test
 	public void decodeTemplateIds() throws Exception {
 		Registry<String, OutputEncoder> registry;
-		registry = new Registry<>(EncoderNew.class, EncoderNew.class);
-		
+		registry = new Registry<>(Encoder.class, EncoderNew.class);
+
 		for (String templateId : templateIDs) {
 			OutputEncoder encoder = registry.get(templateId);
 			assertThat(templateId + " returned node should not be null", encoder, is(not(nullValue())));
