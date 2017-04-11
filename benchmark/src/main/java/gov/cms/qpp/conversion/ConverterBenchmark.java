@@ -33,16 +33,29 @@ package gov.cms.qpp.conversion;
 
 import org.openjdk.jmh.annotations.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.MILLISECONDS)
 @Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.MILLISECONDS)
 @Fork(3)
-@State(Scope.Thread)
 public class ConverterBenchmark {
 
+	@State(Scope.Thread)
+	public static class Cleaner {
+		@TearDown(Level.Trial)
+		public void doTearDown() throws IOException {
+			Path fileToDeletePath = Paths.get("valid-QRDA-III.qpp.json");
+			Files.delete(fileToDeletePath);
+		}
+	}
+
+
 	@Benchmark
-	public void testMethod() {
+	public void testMethod( Cleaner cleaner) {
 		Converter.main(new String[] {"src/main/resources/qrda-files/valid-QRDA-III.xml"});
 	}
 
