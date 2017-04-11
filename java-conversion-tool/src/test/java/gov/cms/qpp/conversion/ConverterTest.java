@@ -239,6 +239,7 @@ public class ConverterTest {
 	@PrepareForTest(QppXmlDecoder.class)
 	public void testDefaults() throws Exception {
 		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
+		AnnotationMockHelper.mockEncoder("867.5309", Jenncoder.class);
 
 		Converter.main(new String[]{Converter.SKIP_VALIDATION,
 				"src/test/resources/converter/defaultedNode.xml"});
@@ -475,7 +476,6 @@ public class ConverterTest {
 		}
 	}
 
-	@Encoder(templateId = "867.5309")
 	public static class Jenncoder extends DefaultEncoder {
 		public Jenncoder() {
 			super("default encoder for Jenny");
