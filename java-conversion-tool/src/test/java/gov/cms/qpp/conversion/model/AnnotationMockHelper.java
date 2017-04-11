@@ -108,7 +108,7 @@ public class AnnotationMockHelper {
 	}
 
 	/**
-	 * Registers the specified {@link gov.cms.qpp.conversion.encode.QppOutputEncoder} in the Registry for the specified
+	 * Registers the specified {@link gov.cms.qpp.conversion.encode.JsonOutputEncoder} in the Registry for the specified
 	 * templateId.
 	 *
 	 * @param templateId The templateId string that you want the decoder to decode.
