@@ -91,20 +91,13 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			return decode(childElement, placeholderNode);
 		}
 
-		switch (result)
-		{
-			case ERROR:
-				addValidation(childNode.getId(), "Failed to decode.");
-				LOG.error("Failed to decode templateId {} ", childNode.getId());
-				break;
-			case TREE_CONTINUE:
-				decode(childElement, childNode);
-				break;
-			case TREE_FINISHED:
-				return DecodeResult.TREE_FINISHED;
-			default:
-				LOG.error("We need to define a default case. Could be TreeContinue?");
-				break;
+		if (result == DecodeResult.ERROR) {
+			addValidation(childNode.getId(), "Failed to decode.");
+			LOG.error("Failed to decode templateId {} ", childNode.getId());
+		} else if (result == DecodeResult.TREE_CONTINUE) {
+			decode(childElement, childNode);
+		} else if (result == DecodeResult.TREE_FINISHED) {
+			return DecodeResult.TREE_FINISHED;
 		}
 
 		return null;
