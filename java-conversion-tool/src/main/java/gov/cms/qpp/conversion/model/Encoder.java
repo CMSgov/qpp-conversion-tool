@@ -14,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface EncoderNew {
+public @interface Encoder {
 
 	/**
 	 * The param(s) is/are the string pattern(s) that the defined handler will

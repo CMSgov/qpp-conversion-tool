@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.model.EncoderNew;
+import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * @author Scott Fradkin
  *
  */
-@EncoderNew(TemplateId.PLACEHOLDER)
+@Encoder(TemplateId.PLACEHOLDER)
 public class PlaceholderEncoder extends QppOutputEncoder {
 
 	/**

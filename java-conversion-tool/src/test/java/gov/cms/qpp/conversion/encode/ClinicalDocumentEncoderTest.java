@@ -245,7 +245,7 @@ public class ClinicalDocumentEncoderTest {
 	}
 
 	private Registry<String, JsonOutputEncoder> makeInvalidRegistry() {
-		return new Registry<String, JsonOutputEncoder>(EncoderNew.class) {
+		return new Registry<String, JsonOutputEncoder>(Encoder.class) {
 			@Override
 			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
 				if ("gov.cms.qpp.conversion.encode.AciSectionEncoder".equals(className)) {

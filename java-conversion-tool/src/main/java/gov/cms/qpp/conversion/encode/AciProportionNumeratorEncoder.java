@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.model.EncoderNew;
+import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Encoder to serialize numerator data from a Numerator/Denominator Type Measure.
  */
-@EncoderNew(TemplateId.ACI_NUMERATOR)
+@Encoder(TemplateId.ACI_NUMERATOR)
 public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 
 	/**
