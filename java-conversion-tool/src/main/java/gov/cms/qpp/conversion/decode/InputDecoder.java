@@ -10,5 +10,5 @@ import gov.cms.qpp.conversion.model.Node;
  *
  */
 public interface InputDecoder {
-	Node decode(Element xmlDoc) throws DecodeException;
+	Node decode(Element xmlDoc);
 }

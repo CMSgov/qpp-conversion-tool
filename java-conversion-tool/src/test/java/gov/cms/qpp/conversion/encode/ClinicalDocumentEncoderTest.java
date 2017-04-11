@@ -148,12 +148,12 @@ public class ClinicalDocumentEncoderTest {
 		aciSectionNode.addChildNode(aciProportionMeasureNode3);
 
 		reportingParametersActNode = new Node();
-		reportingParametersActNode.setId(TemplateId.PERFORMANCE_YEAR.getTemplateId());
+		reportingParametersActNode.setId(TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
 		reportingParametersActNode.putValue("performanceStart", "20170101");
 		reportingParametersActNode.putValue("performanceEnd", "20171231");
 
 		reportingParametersSectionNode = new Node();
-		reportingParametersSectionNode.setId(TemplateId.PERFORMANCE_SECTION.getTemplateId());
+		reportingParametersSectionNode.setId(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
 		reportingParametersSectionNode.addChildNode(reportingParametersActNode);
 
 

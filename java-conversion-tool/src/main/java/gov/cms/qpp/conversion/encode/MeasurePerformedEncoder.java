@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 /**
  * Encoder to serialize IA Section measures performed.
  */
-@EncoderNew(TemplateId.MEASURE_PERFORMED)
+@EncoderNew(TemplateId.ACI_MEASURE_PERFORMED)
 public class MeasurePerformedEncoder extends QppOutputEncoder {
 
 	/**

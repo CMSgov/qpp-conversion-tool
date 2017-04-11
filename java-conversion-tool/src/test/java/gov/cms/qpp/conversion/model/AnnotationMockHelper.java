@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import org.mockito.Matchers;
@@ -90,5 +91,17 @@ public class AnnotationMockHelper {
 		throws Exception {
 		PowerMockito.doReturn(required).when(spy, METHOD_IS_VALIDATION_REQUIRED, Matchers.isA(validator));
 		PowerMockito.doReturn(templateId).when(spy, METHOD_GET_TEMPLATE_ID, Matchers.isA(validator));
+	}
+
+	/**
+	 * Registers the specified {@link gov.cms.qpp.conversion.decode.QppXmlDecoder} in the Registry for the specified
+	 * templateId.
+	 *
+	 * @param templateId The templateId string that you want the decoder to decode.
+	 * @param decoder The decoder to be stored in the registry.
+	 */
+	public static void mockDecoder(final String templateId, final Class<? extends QppXmlDecoder> decoder) {
+		final Registry<String, QppXmlDecoder> registry = Whitebox.getInternalState(QppXmlDecoder.class, Registry.class);
+		registry.register(templateId, decoder);
 	}
 }
