@@ -30,7 +30,7 @@ public class Registry<V extends Object, R extends Object> {
 	 * This will be an XPATH string to converter handler registration Since
 	 * Converter was taken for the main stub, I chose Handler for now.
 	 */
-	Map<V, Class<? extends R>> registry;
+	Map<V, Class<? extends R>> registryMap;
 
 	private Class<? extends Annotation> annotationClass;
 	private Class<? extends Annotation> annotationClassNew = null;
@@ -57,7 +57,7 @@ public class Registry<V extends Object, R extends Object> {
 	 * classes in the same package, like tests, have access.
 	 */
 	void init() {
-		registry = new HashMap<>();
+		registryMap = new HashMap<>();
 	}
 
 	/**
@@ -98,20 +98,14 @@ public class Registry<V extends Object, R extends Object> {
 	@SuppressWarnings("unchecked")
 	public V getAnnotationParam(Class<?> annotatedClass) {
 		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
-		if ( annotation == null ){
-			annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClassNew);
-		}
-		if (annotation instanceof XmlDecoder) {
-			XmlDecoder decoder = (XmlDecoder) annotation;
-			return (V) decoder.templateId();
+
+		if (annotation instanceof Decoder) {
+			Decoder decoder = (Decoder) annotation;
+			return (V) decoder.value().getTemplateId();
 		}
 		if (annotation instanceof Encoder) {
 			Encoder encoder = (Encoder) annotation;
 			return (V) encoder.templateId();
-		}
-		if (annotation instanceof XmlDecoderNew) {
-			XmlDecoderNew decoder = (XmlDecoderNew) annotation;
-			return (V) decoder.value().getTemplateId();
 		}
 		if (annotation instanceof EncoderNew) {
 			EncoderNew encoder = (EncoderNew) annotation;
@@ -133,12 +127,13 @@ public class Registry<V extends Object, R extends Object> {
 	 */
 	public R get(String registryKey) {
 		try {
-			Class<? extends R> handlerClass = registry.get(registryKey);
+			Class<? extends R> handlerClass = registryMap.get(registryKey);
 			if (handlerClass == null) {
 				return null;
 			}
 			return handlerClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
+			LOG.warn("Unable to instantiate the class", e);
 			return null;
 		}
 	}
@@ -153,16 +148,16 @@ public class Registry<V extends Object, R extends Object> {
 		LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
 				+ annotationClass.getSimpleName() + ".");
 		// This could be a class or class name and instantiated on lookup
-		if (registry.containsKey(registryKey)) {
+		if (registryMap.containsKey(registryKey)) {
 			LOG.error("Duplicate registered handler for " + registryKey
-					+ " both " + registry.get(registryKey).getName()
-					+ " and " + handler.getName());
+			          + " both " + registryMap.get(registryKey).getName()
+			          + " and " + handler.getName());
 		}
-
-		registry.put(registryKey, handler);
+		
+		registryMap.put(registryKey, handler);
 	}
 
 	public Set<V> getKeys() {
-		return registry.keySet();
+		return registryMap.keySet();
 	}
 }
