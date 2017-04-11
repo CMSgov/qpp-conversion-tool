@@ -82,9 +82,6 @@ public enum TemplateId {
 	 * extension.
 	 */
 	public String getTemplateId() {
-		String root = getRoot();
-		String extension = getExtension();
-
 		return generateTemplateIdString(root, extension);
 	}
 
