@@ -1,21 +1,18 @@
 package gov.cms.qpp.conversion.encode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
-import java.util.Arrays;
-import java.util.List;
-
+import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.EncoderNew;
+import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.Validations;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.model.Encoder;
-import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.model.Validations;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 public class EncoderTest {
 
