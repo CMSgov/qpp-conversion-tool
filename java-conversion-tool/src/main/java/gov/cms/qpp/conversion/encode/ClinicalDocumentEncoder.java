@@ -1,7 +1,9 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.EncoderNew;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,7 +15,7 @@ import java.util.stream.Collectors;
  * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
 
-@Encoder(templateId = "2.16.840.1.113883.10.20.27.1.2")
+@EncoderNew(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 	/**
@@ -21,7 +23,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 *
 	 * @param wrapper  will hold the json format of nodes
 	 * @param thisNode holds the decoded node sections of clinical document
-	 * @throws EncodeException
+	 * @throws EncodeException If error occurs during encoding
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) throws EncodeException {
@@ -49,6 +51,15 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 	}
 
+	/**
+	 * Method for encoding each child measurement set
+	 *
+	 * @param childMapByTemplateId object that represents the document's children
+	 * @param performanceStart object that represents the measurement performance start
+	 * @param performanceEnd object that represents the measurement performance end
+	 * @return
+	 * @throws EncodeException If error occurs during encoding
+	 */
 	private JsonWrapper encodeMeasurementSets(Map<String, Node> childMapByTemplateId,
 	                                          Optional<String> performanceStart,
 	                                          Optional<String> performanceEnd) throws EncodeException {

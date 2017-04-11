@@ -12,8 +12,4 @@ public class XmlInputFileException extends RuntimeException {
 	public XmlInputFileException(String message, Exception cause) {
 		super(message, cause);
 	}
-
-	public XmlInputFileException(String message) {
-		super(message);
-	}
 }

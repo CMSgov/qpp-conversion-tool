@@ -13,9 +13,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
-import gov.cms.qpp.conversion.model.XmlDecoder;
 
 public class QppXmlDecoderTest extends QppXmlDecoder {
 
@@ -70,6 +70,9 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 	@Test
 	public void decodeInvalidChildReturnsError() {
+		AnnotationMockHelper.mockDecoder("errorDecoder", TestChildDecodeError.class);
+		AnnotationMockHelper.mockDecoder("noActionDecoder", TestChildNoAction.class);
+
 		Element testElement = new Element("testElement");
 		Element testChildElement = new Element("templateId");
 		testChildElement.setAttribute("root", "errorDecoder");
@@ -85,7 +88,6 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 		assertThat("Child Node did not return " + DecodeResult.ERROR , validations, hasItem("Failed to decode."));
 	}
 
-	@XmlDecoder(templateId = "errorDecoder")
 	public static class TestChildDecodeError extends QppXmlDecoder{
 
 		@Override
@@ -94,7 +96,6 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 		}
 	}
 
-	@XmlDecoder(templateId = "noActionDecoder")
 	public static class TestChildNoAction extends QppXmlDecoder{
 
 		@Override
