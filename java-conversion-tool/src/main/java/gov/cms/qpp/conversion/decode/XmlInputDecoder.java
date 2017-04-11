@@ -1,12 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
-
+import gov.cms.qpp.conversion.Validatable;
+import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filter;
@@ -15,8 +10,12 @@ import org.jdom2.xpath.XPathFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gov.cms.qpp.conversion.Validatable;
-import gov.cms.qpp.conversion.model.Node;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Abstraction to parse XML files within the decoder structure.
