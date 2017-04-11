@@ -7,7 +7,6 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
-import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.validate.NodeValidator;
@@ -239,6 +238,7 @@ public class ConverterTest {
 	@PrepareForTest(QppXmlDecoder.class)
 	public void testDefaults() throws Exception {
 		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
+		AnnotationMockHelper.mockEncoder("867.5309", Jenncoder.class);
 
 		Converter.main(new String[]{Converter.SKIP_VALIDATION,
 				"src/test/resources/converter/defaultedNode.xml"});
@@ -475,7 +475,6 @@ public class ConverterTest {
 		}
 	}
 
-	@Encoder(templateId = "867.5309")
 	public static class Jenncoder extends DefaultEncoder {
 		public Jenncoder() {
 			super("default encoder for Jenny");

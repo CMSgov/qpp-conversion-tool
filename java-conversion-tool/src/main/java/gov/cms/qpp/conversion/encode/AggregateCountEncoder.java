@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.model.EncoderNew;
+import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * Encoder to serialize an Aggregate Count value type.
  *
  */
-@EncoderNew(TemplateId.ACI_AGGREGATE_COUNT)
+@Encoder(TemplateId.ACI_AGGREGATE_COUNT)
 public class AggregateCountEncoder extends QppOutputEncoder {
 
 	/**
