@@ -17,7 +17,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class DecoderTest {
-//TemplateId.MEASURE_SECTION.getTemplateId()
+
 	private final List<String> templateIDs = Arrays.asList(
 		TemplateId.MEASURE_SECTION.getTemplateId(),
 
