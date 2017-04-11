@@ -51,7 +51,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		for (Element childEl : childElements) {
 
 			if (TEMPLATE_ID.equals(childEl.getName())) {
-				String templateId = childEl.getAttributeValue("root");
+				String root = childEl.getAttributeValue("root");
+				String extension = childEl.getAttributeValue("extension");
+				String templateId = TemplateId.generateTemplateIdString(root, extension);
 				LOG.debug("templateIdFound:{}", templateId);
 
 				QppXmlDecoder childDecoder = DECODERS.get(templateId);
@@ -59,8 +61,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				if (null == childDecoder) {
 					continue;
 				}
-				LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
-				Node childNode = new Node(parentNode, templateId);
+				LOG.debug("Using decoder for {} as {}", root, childDecoder.getClass());
+				Node childNode = new Node(parentNode, root);
 				
 				setNamespace(childEl, childDecoder);
 				
@@ -119,7 +121,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		
 		QppXmlDecoder rootDecoder = null;
 		for (Element e : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
-			String templateId = e.getAttributeValue("root");
+			String root = e.getAttributeValue("root");
+			String extension = e.getAttributeValue("root");
+			String templateId = TemplateId.generateTemplateIdString(root, extension);
 			rootDecoder = DECODERS.get(templateId);
 			if (null != rootDecoder) {
 				rootNode.setId(templateId);

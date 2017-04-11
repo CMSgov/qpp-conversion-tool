@@ -82,13 +82,10 @@ public enum TemplateId {
 	 * extension.
 	 */
 	public String getTemplateId() {
-		String templateId = getRoot();
+		String root = getRoot();
 		String extension = getExtension();
 
-		if (!extension.isEmpty()) {
-			templateId += ":" + extension;
-		}
-		return templateId;
+		return generateTemplateIdString(root, extension);
 	}
 
 	/**
@@ -105,5 +102,15 @@ public enum TemplateId {
 		}
 
 		return TemplateId.DEFAULT;
+	}
+
+	public static String generateTemplateIdString(final String root, final String extension) {
+		String templateId = root;
+
+		if (extension != null && !extension.isEmpty()) {
+			templateId += ":" + extension;
+		}
+
+		return templateId;
 	}
 }
