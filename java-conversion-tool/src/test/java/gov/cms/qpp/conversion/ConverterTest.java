@@ -36,6 +36,7 @@ import org.jdom2.Element;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
@@ -46,12 +47,13 @@ import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
+import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
-import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.XmlDecoder;
 import gov.cms.qpp.conversion.validate.NodeValidator;
+import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 
 @RunWith(PowerMockRunner.class)
@@ -264,7 +266,12 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testValidationErrors() throws IOException {
+	@PrepareForTest({Converter.class, QrdaValidator.class})
+	public void testValidationErrors() throws Exception {
+
+		//mocking
+		QrdaValidator mockQrdaValidator = AnnotationMockHelper.mockValidator("867.5309", TestDefaultValidator.class, true);
+		PowerMockito.whenNew(QrdaValidator.class).withNoArguments().thenReturn(mockQrdaValidator);
 
 		//set-up
 		Path defaultJson = Paths.get("errantDefaultedNode.qpp.json");
@@ -475,7 +482,6 @@ public class ConverterTest {
 		}
 	}
 
-	@Validator(templateId = "867.5309", required = true)
 	public static class TestDefaultValidator extends NodeValidator {
 		@Override
 		protected void internalValidateSingleNode(final Node node) {

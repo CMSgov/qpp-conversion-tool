@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validations;
 import org.junit.After;
 import org.junit.Assert;
@@ -36,27 +37,27 @@ public class AciProportionMeasureEncoderTest {
 	@Before
 	public void createNode() {
 		numeratorValueNode = new Node();
-		numeratorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
+		numeratorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		numeratorValueNode.putValue("aggregateCount", "400");
 
 		denominatorValueNode = new Node();
-		denominatorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
+		denominatorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		denominatorValueNode.putValue("aggregateCount", "600");
 
 		aciProportionDenominatorNode = new Node();
-		aciProportionDenominatorNode.setId("2.16.840.1.113883.10.20.27.3.32");
+		aciProportionDenominatorNode.setId(TemplateId.ACI_DENOMINATOR.getTemplateId());
 		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
 
 		aciProportionNumeratorNode = new Node();
-		aciProportionNumeratorNode.setId("2.16.840.1.113883.10.20.27.3.31");
+		aciProportionNumeratorNode.setId(TemplateId.ACI_NUMERATOR.getTemplateId());
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
 
 		aciPerformanceRate = new Node();
-		aciPerformanceRate.setId("2.16.840.1.113883.10.20.27.3.30");
+		aciPerformanceRate.setId(TemplateId.PERFORMANCE_RATE.getTemplateId());
 		aciPerformanceRate.putValue("DefaultDecoderFor", "Performance Rate");
 
 		aciProportionMeasureNode = new Node();
-		aciProportionMeasureNode.setId("2.16.840.1.113883.10.20.27.3.28");
+		aciProportionMeasureNode.setId(TemplateId.ACI_PROPORTION.getTemplateId());
 		aciProportionMeasureNode.addChildNode(aciPerformanceRate);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);

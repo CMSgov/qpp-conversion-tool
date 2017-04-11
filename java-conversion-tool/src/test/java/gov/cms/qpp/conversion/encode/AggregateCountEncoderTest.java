@@ -1,15 +1,18 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import org.junit.Before;
-import org.junit.Test;
 
 public class AggregateCountEncoderTest {
 
@@ -22,7 +25,7 @@ public class AggregateCountEncoderTest {
 	@Before
 	public void createNode() {
 		numeratorDenominatorNode = new Node();
-		numeratorDenominatorNode.setId("2.16.840.1.113883.10.20.27.3.3");
+		numeratorDenominatorNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		numeratorDenominatorNode.putValue("aggregateCount", "600");
 
 		nodes = new ArrayList<>();

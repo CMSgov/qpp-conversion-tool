@@ -78,11 +78,11 @@ public class RegistryTest {
 	public void testRegistry_getAnnotationParam() throws Exception {
 		String templateId = registry.getAnnotationParam(AggregateCountDecoder.class);
 		assertNotNull("A templateId is expected", templateId);
-		assertEquals("The templateId should be", "2.16.840.1.113883.10.20.27.3.3", templateId);
+		assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(), templateId);
 
-		templateId = new Registry<String, Encoder>(Encoder.class).getAnnotationParam(AggregateCountEncoder.class);
+		templateId = new Registry<String, Encoder>(Encoder.class, EncoderNew.class).getAnnotationParam(AggregateCountEncoder.class);
 		assertNotNull("A templateId is expected", templateId);
-		assertEquals("The templateId should be", "2.16.840.1.113883.10.20.27.3.3", templateId);
+		assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(), templateId);
 	}
 
 	@Test
@@ -114,8 +114,8 @@ public class RegistryTest {
 				return Class.forName(className);
 			}
 		};
-		assertEquals("The class was not found in the Decoder registry", registryA.registry.size(),
-				registryB.registry.size() + 1);
+		assertEquals("The class was not found in the Decoder registry", registryA.size(),
+				registryB.size() + 1);
 	}
 
 	@Test

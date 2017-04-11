@@ -1,27 +1,25 @@
 package gov.cms.qpp.conversion.encode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
-import java.util.Map;
-
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.Validations;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Validations;
+import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 public class AciSectionEncoderTest {
 
-	private static final String ACI_SECTION_ID = "2.16.840.1.113883.10.20.27.2.5";
-	private static final String ACI_PROPORTION_MEASURE_ID = "2.16.840.1.113883.10.20.27.3.28";
-	private static final String ACI_PROPORTION_NUMERATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.31";
-	private static final String ACI_PROPORTION_DENOMINATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.32";
-	private static final String NUMERATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.3";
-	private static final String DENOMINATOR_NODE_ID = "2.16.840.1.113883.10.20.27.3.3";
+	private static final String ACI_SECTION_ID = TemplateId.ACI_SECTION.getTemplateId();
+	private static final String ACI_PROPORTION_MEASURE_ID = TemplateId.ACI_PROPORTION.getTemplateId();
+	private static final String ACI_PROPORTION_NUMERATOR_NODE_ID = TemplateId.ACI_NUMERATOR.getTemplateId();
+	private static final String ACI_PROPORTION_DENOMINATOR_NODE_ID = TemplateId.ACI_DENOMINATOR.getTemplateId();
+	private static final String NUMERATOR_NODE_ID = TemplateId.ACI_AGGREGATE_COUNT.getTemplateId();
+	private static final String DENOMINATOR_NODE_ID = TemplateId.ACI_AGGREGATE_COUNT.getTemplateId();
 	private static final String CATEGORY = "category";
 	private static final String ACI = "aci";
 	private static final String MEASUREMENTS = "measurements";

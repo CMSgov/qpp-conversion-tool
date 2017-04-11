@@ -1,10 +1,5 @@
 package gov.cms.qpp.conversion.model;
 
-import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -12,17 +7,22 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * This class manages the available transformation handlers. Currently it takes
  * the XPATH that the handler will transform.
- * 
+ * <p>
  * R is the stored and return interface type.
  * V is the key type to access the registered values.
- * 
+ *
  * @author David Uselmann
  */
 public class Registry<V extends Object, R extends Object> {
-	static final Logger LOG = LoggerFactory.getLogger(Registry.class);
+	private static final Logger LOG = LoggerFactory.getLogger(Registry.class);
 
 	// For now this is static and can be refactored into an instance
 	// variable when/if we have an orchestrator that instantiates an registry
@@ -30,15 +30,23 @@ public class Registry<V extends Object, R extends Object> {
 	 * This will be an XPATH string to converter handler registration Since
 	 * Converter was taken for the main stub, I chose Handler for now.
 	 */
-	Map<V, Class<? extends R>> registry;
+	private Map<V, Class<? extends R>> registry;
 
 	private Class<? extends Annotation> annotationClass;
+	private Class<? extends Annotation> annotationClassNew = null;
 
 	/**
 	 * initialize and configure the registry
 	 */
 	public Registry(Class<? extends Annotation> annotationClass) {
 		this.annotationClass = annotationClass;
+		init();
+		registerAnnotatedHandlers();
+	}
+
+	public Registry(Class<? extends Annotation> annotationClass, Class<? extends Annotation> annotationClassNew) {
+		this.annotationClass = annotationClass;
+		this.annotationClassNew = annotationClassNew;
 		init();
 		registerAnnotatedHandlers();
 	}
@@ -68,6 +76,18 @@ public class Registry<V extends Object, R extends Object> {
 				LOG.error("Failed to register new transformation handler because: ", e);
 			}
 		}
+		if (annotationClassNew != null) {
+			scanner = new ClassPathScanningCandidateComponentProvider(false);
+			scanner.addIncludeFilter(new AnnotationTypeFilter(annotationClassNew));
+			for (BeanDefinition bd : scanner.findCandidateComponents("gov.cms")) {
+				try {
+					Class<?> annotatedClass = getAnnotatedClass(bd.getBeanClassName());
+					register(getAnnotationParam(annotatedClass), (Class<R>) annotatedClass);
+				} catch (ClassNotFoundException e) {
+					LOG.error("Failed to register new transformation handler because: ", e);
+				}
+			}
+		}
 	}
 
 	// This allows for testing the ClassNotFoundException
@@ -78,7 +98,9 @@ public class Registry<V extends Object, R extends Object> {
 	@SuppressWarnings("unchecked")
 	public V getAnnotationParam(Class<?> annotatedClass) {
 		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
-
+		if ( annotation == null ){
+			annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClassNew);
+		}
 		if (annotation instanceof XmlDecoder) {
 			XmlDecoder decoder = (XmlDecoder) annotation;
 			return (V) decoder.templateId();
@@ -87,9 +109,17 @@ public class Registry<V extends Object, R extends Object> {
 			Encoder encoder = (Encoder) annotation;
 			return (V) encoder.templateId();
 		}
+		if (annotation instanceof XmlDecoderNew) {
+			XmlDecoderNew decoder = (XmlDecoderNew) annotation;
+			return (V) decoder.value().getTemplateId();
+		}
+		if (annotation instanceof EncoderNew) {
+			EncoderNew encoder = (EncoderNew) annotation;
+			return (V) encoder.value().getTemplateId();
+		}
 		if (annotation instanceof Validator) {
 			Validator validator = (Validator) annotation;
-			return (V) validator.templateId();
+			return (V) validator.templateId().getTemplateId();
 		}
 		return null;
 	}
@@ -98,8 +128,8 @@ public class Registry<V extends Object, R extends Object> {
 	 * This method will return a proper top level handler for the given XPATH
 	 * Later iteration will examine the XPATH startsWith and return a most
 	 * appropriate handler
-	 * 
-	 * @param xpath
+	 *
+	 * @param registryKey String
 	 */
 	public R get(String registryKey) {
 		try {
@@ -115,8 +145,8 @@ public class Registry<V extends Object, R extends Object> {
 
 	/**
 	 * Means ot register a new transformation handler
-	 * 
-	 * @param xpath
+	 *
+	 * @param registryKey String
 	 * @param handler
 	 */
 	public void register(V registryKey, Class<? extends R> handler) {
@@ -125,14 +155,18 @@ public class Registry<V extends Object, R extends Object> {
 		// This could be a class or class name and instantiated on lookup
 		if (registry.containsKey(registryKey)) {
 			LOG.error("Duplicate registered handler for " + registryKey
-					+ " both " + registry.get(registryKey).getName() 
+					+ " both " + registry.get(registryKey).getName()
 					+ " and " + handler.getName());
 		}
-		
+
 		registry.put(registryKey, handler);
 	}
 
 	public Set<V> getKeys() {
 		return registry.keySet();
+	}
+
+	public int size() {
+		return registry.size();
 	}
 }

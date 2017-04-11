@@ -1,11 +1,14 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
-import gov.cms.qpp.conversion.model.Validator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +22,8 @@ import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(QrdaValidator.class)
 public class QrdaValidatorTest {
 
 	private QrdaValidator objectUnderTest;
@@ -39,11 +44,14 @@ public class QrdaValidatorTest {
 		new ValidationError("list of nodes optional validation error");
 
 	@Before
-	public void beforeEachTest() {
-		objectUnderTest = new QrdaValidator();
+	public void beforeEachTest() throws Exception {
 		nodesPassedIntoValidateSingleNode = new ArrayList<>();
 		nodesPassedIntoRequiredValidateTemplateIdNodes = null;
 		nodesPassedIntoOptionalValidateTemplateIdNodes = null;
+
+		objectUnderTest = AnnotationMockHelper.mockValidator(TEST_REQUIRED_TEMPLATE_ID, RequiredTestValidator.class, true);
+		objectUnderTest = AnnotationMockHelper.mockValidator(TEST_OPTIONAL_TEMPLATE_ID, OptionalTestValidator.class, false, objectUnderTest);
+
 		activated = true;
 	}
 
@@ -178,7 +186,6 @@ public class QrdaValidatorTest {
 		           is(expectedValidationError));
 	}
 
-	@Validator(templateId = TEST_REQUIRED_TEMPLATE_ID, required = true)
 	public static class RequiredTestValidator extends NodeValidator {
 
 		@Override
@@ -196,7 +203,6 @@ public class QrdaValidatorTest {
 		}
 	}
 
-	@Validator(templateId = TEST_OPTIONAL_TEMPLATE_ID, required = false)
 	public static class OptionalTestValidator extends NodeValidator {
 
 		@Override
