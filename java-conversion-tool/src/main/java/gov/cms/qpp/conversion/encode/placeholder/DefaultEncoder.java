@@ -57,7 +57,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 
 	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
 
-	@EncoderNew(TemplateId.IPP_POPULATION_1)
+	@EncoderNew(TemplateId.CMS_AGGREGATE_COUNT)
 	public static class R_Encoder extends DefaultEncoder {
 		public R_Encoder() {
 			super("Aggregate Count - CMS");
@@ -74,28 +74,28 @@ public class DefaultEncoder extends JsonOutputEncoder {
 	}
 
 	// this one looks like a node that is not necessary
-	@EncoderNew(TemplateId.MEASURE_SECTION1)
+	@EncoderNew(TemplateId.MEASURE_SECTION_V2)
 	public static class D_Encoder extends DefaultEncoder {
 		public D_Encoder() {
 			super("QRDA Category III Measure Section - CMS (V2)");
 		}
 	}
 
-	@EncoderNew(TemplateId.UNKNOWN_2)
+	@EncoderNew(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 	public static class I_Encoder extends DefaultEncoder {
 		public I_Encoder() {
 			super("Advancing Care Information Measure Performed Measure Reference and Results");
 		}
 	}
 
-	@EncoderNew(TemplateId.MEASURE_ENTRY_NQF)
+	@EncoderNew(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 	public static class K_Encoder extends DefaultEncoder {
 		public K_Encoder() {
 			super("Measure Reference and Results - CMS (V2)");
 		}
 	}
 
-	@EncoderNew(TemplateId.REPORTING_NODE_DRIV)
+	@EncoderNew(TemplateId.REPORTING_PARAMETERS_ACT)
 	public static class L_Encoder extends DefaultEncoder {
 
 		public L_Encoder() {
@@ -103,7 +103,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	@EncoderNew(TemplateId.UNKNOWN_1)
+	@EncoderNew(TemplateId.REPORTING_PARAMETERS_ACT)
 	public static class S_Encoder extends DefaultEncoder {
 
 		public S_Encoder() {
@@ -111,7 +111,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	@EncoderNew(TemplateId.ETHNICITY_SUPPLEMENT)
+	@EncoderNew(TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 	public static class T_Encoder extends DefaultEncoder {
 
 		public T_Encoder() {
@@ -120,7 +120,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 	}
 
 
-	@EncoderNew(TemplateId.IPP_POPULATION)
+	@EncoderNew(TemplateId.MEASURE_DATA_CMS_V2)
 	public static class U_Encoder extends DefaultEncoder {
 
 		public U_Encoder() {
@@ -128,14 +128,14 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	@EncoderNew(TemplateId.UNKNOWN)
+	@EncoderNew(TemplateId.REPORTING_STRATUM_CMS )
 	public static class V_Encoder extends DefaultEncoder {
 		public V_Encoder() {
 			super("Reporting Stratum - CMS");
 		}
 	}
 
-	@EncoderNew(TemplateId.GENDER_MALE)
+	@EncoderNew(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENTAL_CMS_V2)
 	public static class W_Encoder extends DefaultEncoder {
 
 		public W_Encoder() {
@@ -143,7 +143,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	@EncoderNew(TemplateId.RACE_SUPPLEMENT)
+	@EncoderNew(TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 	public static class X_Encoder extends DefaultEncoder {
 
 		public X_Encoder() {
@@ -152,7 +152,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 	}
 
 
-	@EncoderNew(TemplateId.PAYER_SUPPLEMENT)
+	@EncoderNew(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 	public static class Y_Encoder extends DefaultEncoder {
 
 		public Y_Encoder() {
@@ -160,11 +160,18 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	@EncoderNew(TemplateId.PERFORMANCE_RATE_1)
+	@EncoderNew(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
 	public static class ZZ_Encoder extends DefaultEncoder {
 
 		public ZZ_Encoder() {
 			super("Performance Rate for Proportion Measure - CMS (V2)");
+		}
+	}
+	@EncoderNew(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
+	public static class ZZZ_Encoder extends DefaultEncoder {
+
+		public ZZZ_Encoder() {
+			super("Performance Rate for CONTINUOUS VARIABLE MEASURE VALUE CMS");
 		}
 	}
 
