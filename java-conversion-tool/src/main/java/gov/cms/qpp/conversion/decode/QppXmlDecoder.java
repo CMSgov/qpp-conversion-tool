@@ -2,8 +2,9 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validations;
-import gov.cms.qpp.conversion.model.XmlDecoder;
+import gov.cms.qpp.conversion.model.Decoder;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ import java.util.List;
 public class QppXmlDecoder extends XmlInputDecoder {
 	private static final Logger LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
 
-	private static Registry<String, QppXmlDecoder> decoders = new Registry<>(XmlDecoder.class);
+	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 
 	/**
@@ -53,7 +54,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				String templateId = childEl.getAttributeValue("root");
 				LOG.debug("templateIdFound:{}", templateId);
 
-				QppXmlDecoder childDecoder = decoders.get(templateId);
+				QppXmlDecoder childDecoder = DECODERS.get(templateId);
 
 				if (null == childDecoder) {
 					continue;
@@ -119,7 +120,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		QppXmlDecoder rootDecoder = null;
 		for (Element e : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
 			String templateId = e.getAttributeValue("root");
-			rootDecoder = decoders.get(templateId);
+			rootDecoder = DECODERS.get(templateId);
 			if (null != rootDecoder) {
 				rootNode.setId(templateId);
 				break;
@@ -171,8 +172,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		for (Element currentChild : clinicalDocumentChildren) {
 			final String templateId = currentChild.getAttributeValue("root");
 
-			if (ClinicalDocumentDecoder.ROOT_TEMPLATEID.equals(templateId)) {
-
+			if ( TemplateId.getTypeById( templateId ) == TemplateId.CLINICAL_DOCUMENT ) {
 				containsTemplateId = true;
 				break;
 			}

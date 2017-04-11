@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion;
 
 import gov.cms.qpp.conversion.decode.DecodeResult;
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -9,7 +10,6 @@ import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
-import gov.cms.qpp.conversion.model.XmlDecoder;
 import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
@@ -236,7 +236,10 @@ public class ConverterTest {
 
 
 	@Test
+	@PrepareForTest(QppXmlDecoder.class)
 	public void testDefaults() throws Exception {
+		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
+
 		Converter.main(new String[]{Converter.SKIP_VALIDATION,
 				"src/test/resources/converter/defaultedNode.xml"});
 
@@ -265,6 +268,7 @@ public class ConverterTest {
 	public void testValidationErrors() throws Exception {
 
 		//mocking
+		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
 		QrdaValidator mockQrdaValidator = AnnotationMockHelper.mockValidator("867.5309", TestDefaultValidator.class, true);
 		PowerMockito.whenNew(QrdaValidator.class).withNoArguments().thenReturn(mockQrdaValidator);
 
@@ -455,7 +459,6 @@ public class ConverterTest {
 				any(IOException.class) );
 	}
 
-	@XmlDecoder(templateId = "867.5309")
 	public static class JennyDecoder extends DefaultDecoder {
 		public JennyDecoder() {
 			super("default decoder for Jenny");
