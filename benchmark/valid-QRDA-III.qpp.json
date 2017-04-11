@@ -1,0 +1,94 @@
+{
+  "programName" : "mips",
+  "entityType" : "individual",
+  "taxpayerIdentificationNumber" : "123456789",
+  "nationalProviderIdentifier" : "2567891421",
+  "performanceYear" : 2017,
+  "measurementSets" : [ {
+    "2.16.840.1.113883.10.20.24.2.2" : {
+      "DefaultEncoderFor" : "Measure Section"
+    },
+    "source" : "provider",
+    "performanceStart" : "2017-01-01",
+    "performanceEnd" : "2017-12-31"
+  }, {
+    "2.16.840.1.113883.10.20.27.2.3" : {
+      "DefaultEncoderFor" : "QRDA Category III Measure Section - CMS (V2)",
+      "2.16.840.1.113883.10.20.27.3.17" : {
+        "DefaultEncoderFor" : "Measure Reference and Results - CMS (V2)",
+        "2.16.840.1.113883.10.20.27.3.25" : {
+          "DefaultEncoderFor" : "Performance Rate for Proportion Measure - CMS (V2)"
+        },
+        "2.16.840.1.113883.10.20.27.3.30" : {
+          "DefaultEncoderFor" : "Performance Rate"
+        },
+        "2.16.840.1.113883.10.20.27.3.16" : {
+          "DefaultEncoderFor" : "Measure Data - CMS (V2)",
+          "2.16.840.1.113883.10.20.27.3.3" : {
+            "aggregateCount" : "800"
+          },
+          "2.16.840.1.113883.10.20.27.3.21" : {
+            "DefaultEncoderFor" : "Sex Supplemental Data Element - CMS (V2)",
+            "2.16.840.1.113883.10.20.27.3.3" : {
+              "aggregateCount" : "500"
+            }
+          },
+          "2.16.840.1.113883.10.20.27.3.22" : {
+            "DefaultEncoderFor" : "Ethnicity Supplemental Data Element – CMS (V2)",
+            "2.16.840.1.113883.10.20.27.3.3" : {
+              "aggregateCount" : "550"
+            }
+          },
+          "2.16.840.1.113883.10.20.27.3.19" : {
+            "DefaultEncoderFor" : "Race Supplemental Data Element - CMS (V2)",
+            "2.16.840.1.113883.10.20.27.3.3" : {
+              "aggregateCount" : "0"
+            }
+          },
+          "2.16.840.1.113883.10.20.27.3.18" : {
+            "DefaultEncoderFor" : "Payer Supplemental Data Element - CMS (V2)",
+            "2.16.840.1.113883.10.20.27.3.3" : {
+              "aggregateCount" : "50"
+            }
+          }
+        }
+      }
+    },
+    "source" : "provider",
+    "performanceStart" : "2017-01-01",
+    "performanceEnd" : "2017-12-31"
+  }, {
+    "category" : "aci",
+    "measurements" : [ {
+      "measureId" : "ACI-PEA-1",
+      "value" : {
+        "numerator" : 600,
+        "denominator" : 800
+      }
+    }, {
+      "measureId" : "ACI_EP_1",
+      "value" : {
+        "numerator" : 500,
+        "denominator" : 700
+      }
+    }, {
+      "measureId" : "ACI_CCTPE_3",
+      "value" : {
+        "numerator" : 400,
+        "denominator" : 600
+      }
+    } ],
+    "source" : "provider",
+    "performanceStart" : "2017-01-01",
+    "performanceEnd" : "2017-12-31"
+  }, {
+    "category" : "ia",
+    "measurements" : [ {
+      "measureId" : "IA_EPA_1",
+      "value" : true
+    } ],
+    "source" : "provider",
+    "performanceStart" : "2017-01-01",
+    "performanceEnd" : "2017-12-31"
+  } ]
+}
