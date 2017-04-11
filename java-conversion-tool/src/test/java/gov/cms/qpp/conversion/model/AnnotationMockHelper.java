@@ -1,6 +1,8 @@
 package gov.cms.qpp.conversion.model;
 
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import org.mockito.Matchers;
@@ -103,5 +105,17 @@ public class AnnotationMockHelper {
 	public static void mockDecoder(final String templateId, final Class<? extends QppXmlDecoder> decoder) {
 		final Registry<String, QppXmlDecoder> registry = Whitebox.getInternalState(QppXmlDecoder.class, Registry.class);
 		registry.register(templateId, decoder);
+	}
+
+	/**
+	 * Registers the specified {@link gov.cms.qpp.conversion.encode.JsonOutputEncoder} in the Registry for the specified
+	 * templateId.
+	 *
+	 * @param templateId The templateId string that you want the decoder to decode.
+	 * @param encoder The decoder to be stored in the registry.
+	 */
+	public static void mockEncoder(final String templateId, final Class<? extends JsonOutputEncoder> encoder) {
+		final Registry<String, JsonOutputEncoder> registry = Whitebox.getInternalState(QppOutputEncoder.class, Registry.class);
+		registry.register(templateId, encoder);
 	}
 }

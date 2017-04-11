@@ -78,7 +78,7 @@ public class RegistryTest {
 		assertNotNull("A templateId is expected", templateId);
 		assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(), templateId);
 
-		templateId = new Registry<String, Encoder>(Encoder.class, EncoderNew.class).getAnnotationParam(AggregateCountEncoder.class);
+		templateId = new Registry<String, Encoder>(Encoder.class).getAnnotationParam(AggregateCountEncoder.class);
 		assertNotNull("A templateId is expected", templateId);
 		assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(), templateId);
 	}
