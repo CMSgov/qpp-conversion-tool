@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
-import gov.cms.qpp.conversion.model.EncoderNew;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 
@@ -10,7 +9,7 @@ import gov.cms.qpp.conversion.model.Registry;
  */
 public class QppOutputEncoder extends JsonOutputEncoder {
 
-	protected static final Registry<String, JsonOutputEncoder> ENCODERS = new Registry<>(Encoder.class, EncoderNew.class);
+	protected static final Registry<String, JsonOutputEncoder> ENCODERS = new Registry<>(Encoder.class);
 
 	/**
 	 * Top level internalEncode that calls it's children from the registry.

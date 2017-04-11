@@ -33,20 +33,12 @@ public class Registry<V extends Object, R extends Object> {
 	private Map<V, Class<? extends R>> registryMap;
 
 	private Class<? extends Annotation> annotationClass;
-	private Class<? extends Annotation> annotationClassNew = null;
 
 	/**
 	 * initialize and configure the registry
 	 */
 	public Registry(Class<? extends Annotation> annotationClass) {
 		this.annotationClass = annotationClass;
-		init();
-		registerAnnotatedHandlers();
-	}
-
-	public Registry(Class<? extends Annotation> annotationClass, Class<? extends Annotation> annotationClassNew) {
-		this.annotationClass = annotationClass;
-		this.annotationClassNew = annotationClassNew;
 		init();
 		registerAnnotatedHandlers();
 	}
@@ -76,18 +68,6 @@ public class Registry<V extends Object, R extends Object> {
 				LOG.error("Failed to register new transformation handler because: ", e);
 			}
 		}
-		if (annotationClassNew != null) {
-			scanner = new ClassPathScanningCandidateComponentProvider(false);
-			scanner.addIncludeFilter(new AnnotationTypeFilter(annotationClassNew));
-			for (BeanDefinition bd : scanner.findCandidateComponents("gov.cms")) {
-				try {
-					Class<?> annotatedClass = getAnnotatedClass(bd.getBeanClassName());
-					register(getAnnotationParam(annotatedClass), (Class<R>) annotatedClass);
-				} catch (ClassNotFoundException e) {
-					LOG.error("Failed to register new transformation handler because: ", e);
-				}
-			}
-		}
 	}
 
 	// This allows for testing the ClassNotFoundException
@@ -99,20 +79,12 @@ public class Registry<V extends Object, R extends Object> {
 	public V getAnnotationParam(Class<?> annotatedClass) {
 		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
 
-		if ( annotation == null ){
-			annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClassNew);
-		}
-
 		if (annotation instanceof Decoder) {
 			Decoder decoder = (Decoder) annotation;
 			return (V) decoder.value().getTemplateId();
 		}
 		if (annotation instanceof Encoder) {
 			Encoder encoder = (Encoder) annotation;
-			return (V) encoder.templateId();
-		}
-		if (annotation instanceof EncoderNew) {
-			EncoderNew encoder = (EncoderNew) annotation;
 			return (V) encoder.value().getTemplateId();
 		}
 		if (annotation instanceof Validator) {

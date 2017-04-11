@@ -1,8 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.EncoderNew;
+import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ import java.util.List;
  * Measure Denominator Data.
  */
 
-@EncoderNew(TemplateId.ACI_DENOMINATOR)
+@Encoder(TemplateId.ACI_DENOMINATOR)
 public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 
 	@Override
