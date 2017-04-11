@@ -8,15 +8,18 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.List;
 
 /**
- * Encoder to serialize Improvement Activity Performed Measure Reference and
- * Results.
- *
- * @author David Puglielli
- *
+ * Encoder to serialize Improvement Activity Performed Measure Reference and Results
  */
 @EncoderNew(TemplateId.IA_MEASURE)
 public class IaMeasureEncoder extends QppOutputEncoder {
 
+	/**
+	 * internalEncode to encode the IA Performed Measure
+	 *
+	 * @param wrapper object that will represent a IA Performed Measure
+	 * @param node object that represents a IA Performed Measure
+	 * @throws EncodeException If error occurs during encoding
+	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		wrapper.putObject("measureId", node.getValue("measureId"));

@@ -14,9 +14,16 @@ import gov.cms.qpp.conversion.model.TemplateId;
 @EncoderNew(TemplateId.PLACEHOLDER)
 public class PlaceholderEncoder extends QppOutputEncoder {
 
+	/**
+	 * Encodes placeholder nodes into the wrapper
+	 *
+	 * @param wrapper object that will represent a placeholder
+	 * @param node object that represents a placeholder
+	 * @throws EncodeException If error occurs during encoding
+	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
-		// does not do anything except call write on any children
+
 		for (Node child : node.getChildNodes()) {
 			String templateId = child.getId();
 			JsonOutputEncoder encoder = ENCODERS.get(templateId);

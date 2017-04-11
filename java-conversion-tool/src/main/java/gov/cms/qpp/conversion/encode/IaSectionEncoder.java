@@ -12,6 +12,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 @EncoderNew(TemplateId.IA_SECTION)
 public class IaSectionEncoder extends AciSectionEncoder {
 
+    /**
+     * internalEncode for IA Section.
+     *
+     * @param wrapper JsonWrapper that will represent the ACI Section
+     * @param node Node that represents the ACI Section
+     * @throws EncodeException If error occurs during encoding
+     */
     @Override
     public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
         super.internalEncode(wrapper, node);
