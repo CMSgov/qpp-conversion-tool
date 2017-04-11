@@ -1,17 +1,17 @@
 package gov.cms.qpp.conversion.encode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.Validations;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Validations;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class AciProportionNumeratorEncoderTest {
 
@@ -23,11 +23,11 @@ public class AciProportionNumeratorEncoderTest {
 	@Before
 	public void createNode() {
 		numeratorDenominatorValueNode = new Node();
-		numeratorDenominatorValueNode.setId("2.16.840.1.113883.10.20.27.3.3");
+		numeratorDenominatorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		numeratorDenominatorValueNode.putValue("aggregateCount", "600");
 
 		aciProportionNumeratorNode = new Node();
-		aciProportionNumeratorNode.setId("2.16.840.1.113883.10.20.27.3.31");
+		aciProportionNumeratorNode.setId(TemplateId.ACI_NUMERATOR.getTemplateId());
 		aciProportionNumeratorNode.addChildNode(numeratorDenominatorValueNode);
 
 		nodes = new ArrayList<>();
