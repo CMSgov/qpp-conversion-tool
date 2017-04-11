@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.EncoderNew;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -69,7 +68,7 @@ public class EncoderTest {
 	@Test
 	public void decodeTemplateIds() throws Exception {
 		Registry<String, OutputEncoder> registry;
-		registry = new Registry<>(Encoder.class, EncoderNew.class);
+		registry = new Registry<>(EncoderNew.class);
 		for (String templateId : templateIDs) {
 			OutputEncoder encoder = registry.get(templateId);
 			assertThat(templateId + " returned node should not be null", encoder, is(not(nullValue())));

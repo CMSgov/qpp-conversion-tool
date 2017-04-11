@@ -10,14 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.*;
 import org.apache.commons.io.output.NullOutputStream;
 import org.junit.Before;
 import org.junit.Test;
-
-import gov.cms.qpp.conversion.model.Encoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Registry;
 
 public class ClinicalDocumentEncoderTest {
 
@@ -249,7 +245,7 @@ public class ClinicalDocumentEncoderTest {
 	}
 
 	private Registry<String, JsonOutputEncoder> makeInvalidRegistry() {
-		return new Registry<String, JsonOutputEncoder>(Encoder.class) {
+		return new Registry<String, JsonOutputEncoder>(EncoderNew.class) {
 			@Override
 			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
 				if ("gov.cms.qpp.conversion.encode.AciSectionEncoder".equals(className)) {

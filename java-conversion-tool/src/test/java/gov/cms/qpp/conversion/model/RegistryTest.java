@@ -78,14 +78,14 @@ public class RegistryTest {
 		assertNotNull("A templateId is expected", templateId);
 		assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(), templateId);
 
-		templateId = new Registry<String, Encoder>(Encoder.class, EncoderNew.class).getAnnotationParam(AggregateCountEncoder.class);
+		templateId = new Registry<String, EncoderNew>(EncoderNew.class).getAnnotationParam(AggregateCountEncoder.class);
 		assertNotNull("A templateId is expected", templateId);
 		assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(), templateId);
 	}
 
 	@Test
 	public void testRegistry_getAnnotationParam_NullReturn() throws Exception {
-		String templateId = new Registry<String, Encoder>(SuppressWarnings.class).getAnnotationParam(Placeholder.class);
+		String templateId = new Registry<String, EncoderNew>(SuppressWarnings.class).getAnnotationParam(Placeholder.class);
 		assertTrue("A templateId is expected", templateId == null);
 	}
 

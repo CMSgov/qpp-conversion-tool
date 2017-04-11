@@ -107,10 +107,6 @@ public class Registry<V extends Object, R extends Object> {
 			Decoder decoder = (Decoder) annotation;
 			return (V) decoder.value().getTemplateId();
 		}
-		if (annotation instanceof Encoder) {
-			Encoder encoder = (Encoder) annotation;
-			return (V) encoder.templateId();
-		}
 		if (annotation instanceof EncoderNew) {
 			EncoderNew encoder = (EncoderNew) annotation;
 			return (V) encoder.value().getTemplateId();

@@ -7,7 +7,6 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
-import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.validate.NodeValidator;
