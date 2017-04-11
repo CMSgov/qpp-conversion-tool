@@ -11,7 +11,9 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class EncoderTest {
@@ -23,7 +25,6 @@ public class EncoderTest {
 			"2.16.840.1.113883.10.20.27.2.3",
 			"2.16.840.1.113883.10.20.27.2.4",
 			"2.16.840.1.113883.10.20.27.2.5",
-//			"2.16.840.1.113883.10.20.27.2.6", // this one is handled internally
 			"2.16.840.1.113883.10.20.27.3.3",
 			
 			"2.16.840.1.113883.10.20.27.3.16",
@@ -61,7 +62,7 @@ public class EncoderTest {
 //		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 //				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 //				+ "	<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-//				+ " 	<templateId root=\"2.16.840.1.113883.10.20.24.3.98\"/>\n" 
+//				+ " 	<templateId root=\"2.16.840.1.113883.10.20.24.3.98\"/>\n"
 //				+ "		<templateId root=\""+templateId+"\" extension=\"2016-09-01\" />\n"
 //				+ "	</observation>\n"
 //				+ "</component>";
@@ -72,7 +73,6 @@ public class EncoderTest {
 	public void decodeTemplateIds() throws Exception {
 		Registry<String, OutputEncoder> registry;
 		registry = new Registry<>(Encoder.class, EncoderNew.class);
-		
 		for (String templateId : templateIDs) {
 			OutputEncoder encoder = registry.get(templateId);
 			assertThat(templateId + " returned node should not be null", encoder, is(not(nullValue())));

@@ -9,6 +9,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
@@ -48,7 +49,7 @@ public class EncoderNegativeConditionsTest {
 		List<Node> nodes;
 
 		numeratorDenominatorNode = new Node();
-		numeratorDenominatorNode.setId("2.16.840.1.113883.10.20.27.3.3");
+		numeratorDenominatorNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		numeratorDenominatorNode.putValue("aggregateCount", "600");
 
 		nodes = new ArrayList<>();

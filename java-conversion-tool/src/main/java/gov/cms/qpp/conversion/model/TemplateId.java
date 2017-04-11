@@ -4,7 +4,6 @@ package gov.cms.qpp.conversion.model;
  * An enumeration of known templates IDs.
  */
 public enum TemplateId {
-
 	CLINICAL_DOCUMENT                           ("2.16.840.1.113883.10.20.27.1.2"),
 	ACI_AGGREGATE_COUNT                         ("2.16.840.1.113883.10.20.27.3.3"),
 	IA_SECTION                                  ("2.16.840.1.113883.10.20.27.2.4"),
@@ -31,6 +30,7 @@ public enum TemplateId {
 	PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2  ("2.16.840.1.113883.10.20.27.3.25"),
 	MEASURE_SECTION                             ("2.16.840.1.113883.10.20.24.2.2"),
 	MEASURE_SECTION_V2                          ("2.16.840.1.113883.10.20.27.2.3"),
+	NATIONAL_PROVIDER 							("2.16.840.1.113883.4.6"),
 	CMS_AGGREGATE_COUNT                         ("2.16.840.1.113883.10.20.27.3.24"),
 
 	//miscellaneous

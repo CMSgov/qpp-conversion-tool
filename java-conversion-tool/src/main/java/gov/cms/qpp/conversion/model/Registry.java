@@ -165,6 +165,7 @@ public class Registry<V extends Object, R extends Object> {
 		return registryMap.keySet();
 	}
 
+
 	public int size() {
 		return registryMap.size();
 	}
