@@ -121,6 +121,13 @@ public enum TemplateId {
 		return TemplateId.DEFAULT;
 	}
 
+	/**
+	 * Creates the templateId string in the same fashion that this enumeration does.
+	 *
+	 * @param root The root part of the templateId.
+	 * @param extension The extension part of the templateId.
+	 * @return A string that concatenates the arguments the same way the enumeration does.
+	 */
 	public static String generateTemplateIdString(final String root, final String extension) {
 		String templateId = root;
 
