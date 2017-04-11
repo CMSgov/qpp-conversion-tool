@@ -42,6 +42,13 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return (decodeResult != null) ? decodeResult : DecodeResult.TREE_CONTINUE;
 	}
 
+	/**
+	 * Decodes Parent element children using recursion.
+	 *
+	 * @param element parent element to be decoded
+	 * @param parentNode parent node to decode into
+	 * @return status of current decode
+	 */
 	private DecodeResult decodeChildren(final Element element, final Node parentNode) {
 
 		Node currentNode = parentNode;
@@ -83,17 +90,22 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return null;
 	}
 
+	/**
+	 * Checks children internal decode result for DecodeResult action
+	 *
+	 * @param result object that holds the value to be analyzed
+	 * @param childElement next child to decode if continued
+	 * @param childNode object to decode into
+	 * @return status of current decode
+	 */
 	private DecodeResult testChildDecodeResult(final DecodeResult result, final Element childElement,
 	                                           final Node childNode) {
 		if (result == null) {
-			// TODO this looks like a continue ????
-			// the only time we get here is NullReturnDecoderTest
-				Node placeholderNode = new Node(childNode.getParent(), "placeholder");
+			Node placeholderNode = new Node(childNode.getParent(), "placeholder");
 			return decode(childElement, placeholderNode);
 		}
 
 		if (result == DecodeResult.TREE_FINISHED) {
-			// this child is done
 			return DecodeResult.TREE_FINISHED;
 		} else if (result == DecodeResult.TREE_CONTINUE) {
 			decode(childElement, childNode);
@@ -184,11 +196,11 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * Top level decode
 	 *
 	 * @param element Top element in the XML document
-	 * @param thisnode Top node created in the XML document
+	 * @param thisNode Top node created in the XML document
 	 * @return No action is returned for the top level internalDecode.
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisnode) {
+	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		return DecodeResult.NO_ACTION;
 	}
 
