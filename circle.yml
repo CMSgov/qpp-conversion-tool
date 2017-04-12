@@ -33,6 +33,7 @@ test:
     - cd frontend; yarn run test:ci
     - cd frontend; yarn run e2e:ci
   post:
+    - cp java-conversion-tool/target/java-conversion-tool.jar $CIRCLE_ARTIFACTS
     - cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS
     - mkdir $CIRCLE_ARTIFACTS/sonarlint
     - cp -R java-conversion-tool/src/main/.sonarlint/* $CIRCLE_ARTIFACTS/sonarlint
