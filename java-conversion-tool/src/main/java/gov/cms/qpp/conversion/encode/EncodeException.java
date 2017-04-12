@@ -5,7 +5,7 @@ package gov.cms.qpp.conversion.encode;
  * @author Scott Fradkin
  *
  */
-public class EncodeException extends RuntimeException {
+public class EncodeException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 

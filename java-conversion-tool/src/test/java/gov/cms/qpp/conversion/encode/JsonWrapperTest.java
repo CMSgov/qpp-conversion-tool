@@ -108,6 +108,12 @@ public class JsonWrapperTest {
 	}
 
 	@Test
+	public void testValidDate() throws Exception {
+		objectObjWrapper.putDate("19690720");
+		assertFalse("should be an object container", ((List) objectObjWrapper.getObject()).isEmpty());
+	}
+
+	@Test
 	public void testNullObjectPut() {
 		listStrWrapper.putObject( null );
 		assertFalse("should not be an object container", listStrWrapper.isObject());
@@ -238,13 +244,13 @@ public class JsonWrapperTest {
 	}
 
 	@Test(expected=EncodeException.class)
-	public void testBadKeyedPutDate_exception() {
+	public void testBadKeyedPutDate_exception() throws Exception {
 		objectObjWrapper.putDate("A date which will live in infamy", "December 7, 1941");
 		fail("should not get here, expecting runtime encode exception");
 	}
 
 	@Test(expected=EncodeException.class)
-	public void testBadPutDate_exception() {
+	public void testBadPutDate_exception() throws Exception {
 		objectObjWrapper.putDate("December 7, 1941");
 		fail("should not get here, expecting runtime encode exception");
 	}
