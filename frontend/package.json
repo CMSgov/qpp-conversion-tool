@@ -7,6 +7,7 @@
         "start": "ng serve",
         "build": "ng build",
         "test": "ng test",
+        "watch:testd": "karma start --auto-watch --single-run=false --browsers=Chrome",
         "test:ci": "ng test --single-run=true --watch=false --progress=false --code-coverage",
         "lint": "ng lint",
         "e2e": "ng e2e",
