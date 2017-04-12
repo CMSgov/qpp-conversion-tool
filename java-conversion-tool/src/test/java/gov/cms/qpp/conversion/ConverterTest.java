@@ -20,11 +20,14 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ReflectionUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
@@ -457,6 +460,19 @@ public class ConverterTest {
 		verify(logger).error( eq("Could not write to file: {}" ),
 				eq("defaultedNode.err.txt"),
 				any(IOException.class) );
+	}
+
+	@Test
+	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException {
+
+		Converter converter = new Converter(Paths.get("src/test/resources/not-a-QRDA-III-file.xml"));
+
+		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");
+		transformMethod.setAccessible(true);
+
+		Integer returnValue = (Integer)transformMethod.invoke(converter);
+
+		assertThat("Should not have a valid clinical document template id", returnValue, is(2));
 	}
 
 	public static class JennyDecoder extends DefaultDecoder {
