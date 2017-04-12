@@ -1,12 +1,16 @@
 package gov.cms.qpp.conversion.decode;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
 import org.jdom2.Element;
+import org.jdom2.Namespace;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.mockpolicies.Slf4jMockPolicy;
 import org.powermock.core.classloader.annotations.MockPolicy;
@@ -21,6 +25,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -29,6 +34,9 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 @RunWith(PowerMockRunner.class)
 @MockPolicy(Slf4jMockPolicy.class)
 public class QppXmlDecoderTest extends QppXmlDecoder {
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	@Before
 	public void setup() throws Exception {
@@ -137,5 +145,18 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 		public DecodeResult internalDecode(Element element, Node childNode) {
 			return DecodeResult.NO_ACTION;
 		}
+	}
+
+	@Test
+	public void testIllegalNamespace() {
+		thrown.expect(IllegalArgumentException.class);
+
+		Element testElement = new Element("testElement");
+		XmlInputDecoder xmlInputDecoder = new QppXmlDecoder();
+		xmlInputDecoder.defaultNs.equals(Namespace.getNamespace("xml","xml"));
+		xmlInputDecoder.setNamespace(testElement, xmlInputDecoder);
+
+		System.out.println(xmlInputDecoder.defaultNs);
+
 	}
 }
