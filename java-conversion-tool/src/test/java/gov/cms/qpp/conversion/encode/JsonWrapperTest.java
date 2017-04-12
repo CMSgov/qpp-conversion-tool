@@ -108,6 +108,12 @@ public class JsonWrapperTest {
 	}
 
 	@Test
+	public void testNullObjectPut() {
+		listStrWrapper.putObject( null );
+		assertFalse("should not be an object container", listStrWrapper.isObject());
+	}
+
+	@Test
 	public void testJackson_simpleObject() throws Exception {
 		Map<String, String> map = new LinkedHashMap<>();
 		map.put("name1", "value1");
@@ -229,6 +235,18 @@ public class JsonWrapperTest {
 		String expect = "[ \"value1\", 1.01 ]";
 		assertEquals("expect a float value array of JSON",
 				expect, json);
+	}
+
+	@Test(expected=EncodeException.class)
+	public void testBadKeyedPutDate_exception() {
+		objectObjWrapper.putDate("A date which will live in infamy", "December 7, 1941");
+		fail("should not get here, expecting runtime encode exception");
+	}
+
+	@Test(expected=EncodeException.class)
+	public void testBadPutDate_exception() {
+		objectObjWrapper.putDate("December 7, 1941");
+		fail("should not get here, expecting runtime encode exception");
 	}
 
 	@Test(expected=RuntimeException.class)
