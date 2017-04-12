@@ -33,7 +33,7 @@ public class JsonWrapper {
 	/**
 	 * Static factory that creates {@link com.fasterxml.jackson.databind.ObjectWriter}s.
 	 *
-	 * @return {@link com.fasterxml.jackson.databind.ObjectWriter}
+	 * @return utility that will allow client to serialize wrapper contents as json
 	 */
 	public static ObjectWriter getObjectWriter() {
 		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
@@ -49,9 +49,9 @@ public class JsonWrapper {
 	 *
 	 * Think of this as adding an attribute to a JSON hash.
 	 *
-	 * @param name {@link String}
-	 * @param value {@link String}
-	 * @return {@link JsonWrapper}
+	 * @param name key for value
+	 * @param value keyed value
+	 * @return <i><b>this</b></i> reference for chaining
 	 */
 	public JsonWrapper putObject(String name, Object value) {
 		checkState(list);
@@ -67,8 +67,8 @@ public class JsonWrapper {
 	/**
 	 * Extract wrapped content from a {@link gov.cms.qpp.conversion.encode.JsonWrapper}.
 	 *
-	 * @param value {@link Object}
-	 * @return {@link Object}
+	 * @param value {@link Object} which may be wrapped
+	 * @return wrapped content
 	 */
 	public Object stripWrapper(Object value) {
 		if (value instanceof JsonWrapper) {
@@ -81,9 +81,9 @@ public class JsonWrapper {
 	/**
 	 * Places a named String within the wrapper. See {@link #putObject(String, Object)}
 	 *
-	 * @param name {@link String}
-	 * @param value {@link String}
-	 * @return {@link JsonWrapper}
+	 * @param name key for value
+	 * @param value keyed value
+	 * @return <i><b>this</b></i> reference for chaining
 	 */
 	public JsonWrapper putString(String name, String value) {
 		return putObject(name, value);
@@ -92,9 +92,9 @@ public class JsonWrapper {
 	/**
 	 * Places a named String that represents a date within the wrapper. See {@link #putObject(String, Object)}
 	 *
-	 * @param name {@link String}
-	 * @param value {@link String} must conform with {@link #validDate(String)} validation
-	 * @return {@link JsonWrapper}
+	 * @param name key for value
+	 * @param value keyed value which must conform with {@link #validDate(String)} validation
+	 * @return <i><b>this</b></i> reference for chaining
 	 * @throws EncodeException
 	 */
 	public JsonWrapper putDate(String name, String value) throws EncodeException {
@@ -108,11 +108,11 @@ public class JsonWrapper {
 
 	/**
 	 * Places a named String that represents an {@link java.lang.Integer} within the wrapper.
-	 * See {@link #putObject(String, Object)}
 	 *
-	 * @param name {@link String}
-	 * @param value {@link String} must conform with {@link #validInteger(String)} validation
-	 * @return {@link JsonWrapper}
+	 * @see #putObject(String, Object)
+	 * @param name key for value
+	 * @param value keyed value which must conform with {@link #validInteger(String)} validation
+	 * @return <i><b>this</b></i> reference for chaining
 	 * @throws EncodeException
 	 */
 	public JsonWrapper putInteger(String name, String value) throws EncodeException {
@@ -125,10 +125,11 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Places an unnamed String that represents a date within the wrapper. See {@link #putObject(Object)}
+	 * Places an unnamed String that represents a date within the wrapper.
 	 *
-	 * @param value {@link String} must conform with {@link #validDate(String)} validation
-	 * @return {@link JsonWrapper}
+	 * @see #putObject(Object)
+	 * @param value that must conform with {@link #validDate(String)} validation
+	 * @return <i><b>this</b></i> reference for chaining
 	 * @throws EncodeException
 	 */
 	public JsonWrapper putDate(String value) throws EncodeException {
@@ -142,11 +143,11 @@ public class JsonWrapper {
 
 	/**
 	 * Places an named String that represents a {@link java.lang.Float} within the wrapper.
-	 * See {@link #putObject(String, Object)}
 	 *
-	 * @param name {@link String}
-	 * @param value {@link String} must conform with {@link #validFloat(String)} validation
-	 * @return {@link JsonWrapper}
+	 * @see #putObject(String, Object)
+	 * @param name key for value
+	 * @param value keyed value that must conform with {@link #validFloat(String)} validation
+	 * @return <i><b>this</b></i> reference for chaining
 	 * @throws EncodeException
 	 */
 	public JsonWrapper putFloat(String name, String value) throws EncodeException {
@@ -160,11 +161,11 @@ public class JsonWrapper {
 
 	/**
 	 * Places a named String that represents a {@link java.lang.Boolean} within the wrapper.
-	 * See {@link #putObject(String, Object)}
 	 *
-	 * @param name {@link String}
-	 * @param value {@link String} must conform with {@link #validBoolean(String)} validation
-	 * @return {@link JsonWrapper}
+	 * @see #putObject(String, Object)
+	 * @param name key for value
+	 * @param value keyed value that must conform with {@link #validBoolean(String)} validation
+	 * @return <i><b>this</b></i> reference for chaining
 	 * @throws EncodeException
 	 */
 	public JsonWrapper putBoolean(String name, String value) throws EncodeException {
@@ -182,8 +183,8 @@ public class JsonWrapper {
 	 *
 	 * Think of this as adding a JSON array entry.
 	 *
-	 * @param value {@link String}
-	 * @return {@link JsonWrapper}
+	 * @param value object to place in wrapper
+	 * @return <i><b>this</b></i> reference for chaining
 	 */
 	public JsonWrapper putObject(Object value) {
 		checkState(object);
@@ -198,10 +199,10 @@ public class JsonWrapper {
 
 	/**
 	 * Places an unnamed String within the wrapper.
-	 * See {@link #putObject(Object)}
 	 *
-	 * @param value {@link String}
-	 * @return {@link JsonWrapper}
+	 * @see #putObject(Object)
+	 * @param value to place in wrapper
+	 * @return <i><b>this</b></i> reference for chaining
 	 * @throws EncodeException
 	 */
 	public JsonWrapper putString(String value) {
@@ -210,8 +211,8 @@ public class JsonWrapper {
 
 	/**
 	 * Places an unnamed String that represents a {@link java.lang.Integer} within the wrapper.
-	 * See {@link #putObject(Object)}
 	 *
+	 * @see #putObject(Object)
 	 * @param value {@link String} must conform with {@link #validInteger(String)} validation
 	 * @return {@link JsonWrapper}
 	 * @throws EncodeException
@@ -227,10 +228,10 @@ public class JsonWrapper {
 
 	/**
 	 * Places an unnamed String that represents a {@link java.lang.Float} within the wrapper.
-	 * See {@link #putObject(Object)}
 	 *
-	 * @param value {@link String} must conform with {@link #validFloat(String)} validation
-	 * @return {@link JsonWrapper}
+	 * @see #putObject(Object)
+	 * @param value that must conform with {@link #validFloat(String)} validation
+	 * @return <i><b>this</b></i> reference for chaining
 	 * @throws EncodeException
 	 */
 	public JsonWrapper putFloat(String value) throws EncodeException {
@@ -244,10 +245,10 @@ public class JsonWrapper {
 
 	/**
 	 * Places an unnamed String that represents a {@link java.lang.Boolean} within the wrapper.
-	 * See {@link #putObject(Object)}
 	 *
-	 * @param value {@link String} must conform with {@link #validBoolean(String)} validation
-	 * @return {@link JsonWrapper}
+	 * @see #putObject(Object)
+	 * @param value that must conform with {@link #validBoolean(String)} validation
+	 * @return <i><b>this</b></i> reference for chaining
 	 * @throws EncodeException
 	 */
 	public JsonWrapper putBoolean(String value) throws EncodeException {
@@ -261,10 +262,10 @@ public class JsonWrapper {
 
 	/**
 	 * Retrieve a named {@link String} from the {@link JsonWrapper}.
-	 * See {@link #getValue(String)}
 	 *
-	 * @param name {@link String} name of the wrapped value
-	 * @return {@link String}
+	 * @see #getValue(String)
+	 * @param name key for value
+	 * @return retrieved keyed value
 	 */
 	public String getString(String name) {
 		return getValue(name);
@@ -272,10 +273,10 @@ public class JsonWrapper {
 
 	/**
 	 * Retrieve a named {@link Integer} from the {@link JsonWrapper}.
-	 * See {@link #getValue(String)}
 	 *
-	 * @param name {@link String} name of the wrapped value
-	 * @return {@link Integer}
+	 * @see #getValue(String)
+	 * @param name key for value
+	 * @return retrieved keyed value
 	 */
 	public Integer getInteger(String name) {
 		return getValue(name);
@@ -283,10 +284,10 @@ public class JsonWrapper {
 
 	/**
 	 * Retrieve a named {@link Float} from the {@link JsonWrapper}.
-	 * See {@link #getValue(String)}
 	 *
-	 * @param name {@link String} name of the wrapped value
-	 * @return {@link Float}
+	 * @see #getValue(String)
+	 * @param name key for value
+	 * @return retrieved keyed value
 	 */
 	public Float getFloat(String name) {
 		return getValue(name);
@@ -294,10 +295,10 @@ public class JsonWrapper {
 
 	/**
 	 * Retrieve a named {@link Boolean} from the {@link JsonWrapper}.
-	 * See {@link #getValue(String)}
 	 *
-	 * @param name {@link String} name of the wrapped value
-	 * @return {@link Boolean}
+	 * @see #getValue(String)
+	 * @param name key for value
+	 * @return retrieved keyed value
 	 */
 	public Boolean getBoolean(String name) {
 		return getValue(name);
@@ -308,9 +309,9 @@ public class JsonWrapper {
 	 *
 	 * Think of this as retrieval of a JSON hash attribute
 	 *
-	 * @param name {@link String}
+	 * @param name key for value
 	 * @param <T>
-	 * @return T
+	 * @return T retrieved keyed value
 	 */
 	private <T> T getValue(String name) {
 		if (isObject()) {
@@ -322,8 +323,8 @@ public class JsonWrapper {
 	/**
 	 * Enforces uniform {@link String} presentation.
 	 *
-	 * @param value {@link String}
-	 * @return {@link String}
+	 * @param value potentially dirty value
+	 * @return cleaned
 	 */
 	protected String cleanString(String value) {
 		if (value == null) {
@@ -335,8 +336,8 @@ public class JsonWrapper {
 	/**
 	 * Validates that the given value is an parsable integer.
 	 *
-	 * @param value {@link String}
-	 * @return {@link Integer}
+	 * @param value to validate
+	 * @return valid Integer
 	 * @throws EncodeException
 	 */
 	protected Integer validInteger(String value) throws EncodeException {
@@ -350,8 +351,8 @@ public class JsonWrapper {
 	/**
 	 * Validates that the given value conforms to expected date formatting (i.e. yyyyMMdd).
 	 *
-	 * @param value {@link String}
-	 * @return {@link String}
+	 * @param value to validate
+	 * @return valid date String
 	 * @throws EncodeException
 	 */
 	protected String validDate(String value) throws EncodeException {
@@ -366,8 +367,8 @@ public class JsonWrapper {
 	/**
 	 * Validates that the given value is an parsable numeric value.
 	 *
-	 * @param value {@link String}
-	 * @return {@link Float}
+	 * @param value to validate
+	 * @return valid Float value
 	 * @throws EncodeException
 	 */
 	protected Float validFloat(String value) throws EncodeException {
@@ -381,8 +382,8 @@ public class JsonWrapper {
 	/**
 	 * Validates that the given value is passable as a {@link Boolean}.
 	 *
-	 * @param value {@link String}
-	 * @return {@link Boolean}
+	 * @param value to validate
+	 * @return valid Boolean
 	 * @throws EncodeException
 	 */
 	protected Boolean validBoolean(String value) throws EncodeException {
@@ -420,7 +421,7 @@ public class JsonWrapper {
 	/**
 	 * Helps enforce the initialized representation of the {@link JsonWrapper} as a hash or an array.
 	 *
-	 * @param check {@link Object}
+	 * @param check should be null
 	 */
 	protected void checkState(Object check) {
 		if (check != null) {
@@ -431,7 +432,7 @@ public class JsonWrapper {
 	/**
 	 * Identifies whether or not the {@link JsonWrapper}'s content is a hash or array.
 	 *
-	 * @return boolean
+	 * @return boolean is this a JSON object
 	 */
 	public boolean isObject() {
 		return object != null;
@@ -440,7 +441,7 @@ public class JsonWrapper {
 	/**
 	 * Accessor for the content wrapped by the {@link JsonWrapper}.
 	 *
-	 * @return {@link Object}
+	 * @return wrapped content
 	 */
 	public Object getObject() {
 		return isObject()? object : list;
@@ -449,7 +450,7 @@ public class JsonWrapper {
 	/**
 	 * String representation of the {@link JsonWrapper}.
 	 *
-	 * @return {@link String}
+	 * @return
 	 */
 	@Override
 	public String toString() {
