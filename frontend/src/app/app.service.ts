@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AppService {
 
-	private endpoint = 'https://wb9r5mrtvc.execute-api.us-east-1.amazonaws.com/dev/ping';
+	private endpoint = 'https://3u24bs28df.execute-api.us-east-1.amazonaws.com/dev/ping';
 
 	constructor (private http: Http) {}
 
