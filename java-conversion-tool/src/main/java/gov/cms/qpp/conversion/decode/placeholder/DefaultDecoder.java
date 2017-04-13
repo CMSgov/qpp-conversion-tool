@@ -90,45 +90,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	// this one looks like a root node that is not necessary
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.24.3.98")
-//	public static class G_Decoder extends DefaultDecoder {
-//		public G_Decoder() {
-//			super("Measure Reference");
-//		}
-//	}
-
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.1.2")
-//	public static class A_Decoder extends DefaultDecoder {
-//		public A_Decoder() {
-//			super("Document-Level Template: QRDA Category III Report - CMS (V2)");
-//		}
-//	}
-	// this one looks like a node that is not necessary
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.6")
-//	public static class C_Decoder extends DefaultDecoder {
-//		public C_Decoder() {
-//			super("QRDA Category III Reporting Parameters Section - CMS (V2)*");
-//		}
-//	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.4")
-//	public static class E_Decoder extends DefaultDecoder {
-//		public E_Decoder() {
-//			super("Improvement Activity Section");
-//		}
-//	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.2.5")
-//	public static class F_Decoder extends DefaultDecoder {
-//		public F_Decoder() {
-//			super("Advancing Care Information Section");
-//		}
-//	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.28")
-//	public static class H_Decoder extends DefaultDecoder {
-//		public H_Decoder() {
-//			super("Advancing Care Information Numerator Denominator Type Measure Reference and Results");
-//		}
-//	}
 	@Decoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 	public static class I_Decoder extends DefaultDecoder {
 
@@ -136,12 +97,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 			super("Advancing Care Information Measure Performed Measure Reference and Results");
 		}
 	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.33")
-//	public static class J_Decoder extends DefaultDecoder {
-//		public J_Decoder() {
-//			super("Improvement Activity Performed Measure Reference and Results");
-//		}
-//	}
 
 	@Decoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 	public static class K_Decoder extends DefaultDecoder {
@@ -150,36 +105,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 			super("Measure Reference and Results - CMS (V2)");
 		}
 	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.23")
-//	public static class L_Decoder extends DefaultDecoder {
-//		public L_Decoder() {
-//			super("Reporting Parameters Act - CMS (V2)*");
-//		}
-//	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.27")
-//	public static class M_Decoder extends DefaultDecoder {
-//		public M_Decoder() {
-//			super("Measure Performed");
-//		}
-//	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.31")
-//	public static class O_Decoder extends DefaultDecoder {
-//		public O_Decoder() {
-//			super("Advancing Care Information Numerator Denominator Type Measure Numerator Data");
-//		}
-//	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.32")
-//	public static class P_Decoder extends DefaultDecoder {
-//		public P_Decoder() {
-//			super("Advancing Care Information Numerator Denominator Type Measure Denominator Data");
-//		}
-//	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.3")
-//	public static class Q_Decoder extends DefaultDecoder {
-//		public Q_Decoder() {
-//			super("Aggregate Count");
-//		}
-//	}
 
 	@Decoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
 	public static class S_Decoder extends DefaultDecoder {
@@ -236,12 +161,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 			super("Payer Supplemental Data Element - CMS (V2)");
 		}
 	}
-//	@XmlDecoder(templateId="2.16.840.1.113883.10.20.27.3.1")
-//	public static class Z_Decoder extends DefaultDecoder {
-//		public Z_Decoder() {
-//			super("Measure Reference and Results- CMS (V2)");
-//		}
-//	}
 
 	@Decoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
 	public static class ZZ_Decoder extends DefaultDecoder {

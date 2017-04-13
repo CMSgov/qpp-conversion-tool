@@ -1,33 +1,22 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.model.AnnotationMockHelper;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Validations;
-import org.jdom2.Element;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.mockpolicies.Slf4jMockPolicy;
-import org.powermock.core.classloader.annotations.MockPolicy;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
-import org.slf4j.Logger;
-
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mock;
 
-@RunWith(PowerMockRunner.class)
-@MockPolicy(Slf4jMockPolicy.class)
+import java.util.List;
+
+import org.jdom2.Element;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Validations;
+
 public class QppXmlDecoderTest extends QppXmlDecoder {
 
 	@Before
@@ -98,30 +87,6 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 		assertThat("Child Node did not return " + DecodeResult.ERROR , validations, hasItem("Failed to decode."));
 	}
-
-	@Test
-	@PrepareForTest(QppXmlDecoder.class)
-	public void testThatDefaultCaseReturnsNoAction() {
-		AnnotationMockHelper.mockDecoder("errorDecoder", TestChildDecodeError.class);
-		AnnotationMockHelper.mockDecoder("noActionDecoder", TestChildNoAction.class);
-
-		Element testElement = new Element("testElement");
-		Element testChildElement = new Element("templateId");
-		testChildElement.setAttribute("root", "noActionDecoder");
-
-		Logger logger = mock(Logger.class);
-
-		testElement.getChildren().add(testChildElement);
-		Node testNode = new Node();
-
-		Whitebox.setInternalState(QppXmlDecoder.class, "LOG", logger);
-
-		QppXmlDecoder objectUnderTest = new QppXmlDecoderTest();
-		objectUnderTest.decode(testElement, testNode);
-
-		verify(logger).error(eq("We need to define a default case. Could be TreeContinue?"));
-	}
-
 
 	public static class TestChildDecodeError extends QppXmlDecoder{
 

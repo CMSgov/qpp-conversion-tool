@@ -114,9 +114,10 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		} else if (result == DecodeResult.ERROR) {
 			addValidation(childNode.getId(), "Failed to decode.");
 			LOG.error("Failed to decode templateId {} ", childNode.getId());
-		} else {
-			LOG.error("We need to define a default case. Could be TreeContinue?");
+		} else if (result == DecodeResult.TREE_CONTINUE) {
+			decode(childElement, childNode);
 		}
+
 		return null;
 	}
 

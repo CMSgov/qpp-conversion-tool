@@ -12,10 +12,6 @@
 	<name>java-conversion-tool</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.testSource>1.8</maven.compiler.testSource>
-		<maven.compiler.testTarget>1.8</maven.compiler.testTarget>
 	</properties>
 	<build>
 		<finalName>${project.artifactId}</finalName>
@@ -46,6 +42,10 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
 			</plugin>
 		</plugins>
 	</build>

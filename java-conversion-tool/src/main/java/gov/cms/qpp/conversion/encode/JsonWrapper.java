@@ -168,7 +168,7 @@ public class JsonWrapper {
 
 	private <T> T getValue(String name) {
 		if (isObject()) {
-			return (T)object.get(name);
+			return (T) object.get(name);
 		}
 		return null;
 	}
