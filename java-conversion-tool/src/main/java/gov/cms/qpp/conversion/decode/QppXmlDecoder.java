@@ -42,6 +42,13 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return (decodeResult != null) ? decodeResult : DecodeResult.TREE_CONTINUE;
 	}
 
+	/**
+	 * Decodes Parent element children using recursion.
+	 *
+	 * @param element parent element to be decoded
+	 * @param parentNode parent node to decode into
+	 * @return status of current decode
+	 */
 	private DecodeResult decodeChildren(final Element element, final Node parentNode) {
 
 		Node currentNode = parentNode;
@@ -51,7 +58,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		for (Element childEl : childElements) {
 
 			if (TEMPLATE_ID.equals(childEl.getName())) {
-				String templateId = childEl.getAttributeValue("root");
+				String root = childEl.getAttributeValue("root");
+				String extension = childEl.getAttributeValue("extension");
+				String templateId = TemplateId.generateTemplateIdString(root, extension);
 				LOG.debug("templateIdFound:{}", templateId);
 
 				QppXmlDecoder childDecoder = DECODERS.get(templateId);
@@ -83,22 +92,30 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return null;
 	}
 
+	/**
+	 * Checks children internal decode result for DecodeResult action
+	 *
+	 * @param result object that holds the value to be analyzed
+	 * @param childElement next child to decode if continued
+	 * @param childNode object to decode into
+	 * @return status of current decode
+	 */
 	private DecodeResult testChildDecodeResult(final DecodeResult result, final Element childElement,
 	                                           final Node childNode) {
 		if (result == null) {
-			// TODO this looks like a continue ????
-			// the only time we get here is NullReturnDecoderTest
-				Node placeholderNode = new Node(childNode.getParent(), "placeholder");
+			Node placeholderNode = new Node(childNode.getParent(), "placeholder");
 			return decode(childElement, placeholderNode);
 		}
 
-		if (result == DecodeResult.ERROR) {
+		if (result == DecodeResult.TREE_FINISHED) {
+			return DecodeResult.TREE_FINISHED;
+		} else if (result == DecodeResult.TREE_CONTINUE) {
+			decode(childElement, childNode);
+		} else if (result == DecodeResult.ERROR) {
 			addValidation(childNode.getId(), "Failed to decode.");
 			LOG.error("Failed to decode templateId {} ", childNode.getId());
 		} else if (result == DecodeResult.TREE_CONTINUE) {
 			decode(childElement, childNode);
-		} else if (result == DecodeResult.TREE_FINISHED) {
-			return DecodeResult.TREE_FINISHED;
 		}
 
 		return null;
@@ -117,7 +134,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		
 		QppXmlDecoder rootDecoder = null;
 		for (Element e : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
-			String templateId = e.getAttributeValue("root");
+			String root = e.getAttributeValue("root");
+			String extension = e.getAttributeValue("extension");
+			String templateId = TemplateId.generateTemplateIdString(root, extension);
 			rootDecoder = DECODERS.get(templateId);
 			if (null != rootDecoder) {
 				rootNode.setId(templateId);
@@ -168,9 +187,10 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		                                                                       rootElement.getNamespace());
 
 		for (Element currentChild : clinicalDocumentChildren) {
-			final String templateId = currentChild.getAttributeValue("root");
+			final String root = currentChild.getAttributeValue("root");
+			final String extension = currentChild.getAttributeValue("extension");
 
-			if ( TemplateId.getTypeById( templateId ) == TemplateId.CLINICAL_DOCUMENT ) {
+			if ( TemplateId.getTypeById(root, extension) == TemplateId.CLINICAL_DOCUMENT ) {
 				containsTemplateId = true;
 				break;
 			}
@@ -182,11 +202,11 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * Top level decode
 	 *
 	 * @param element Top element in the XML document
-	 * @param thisnode Top node created in the XML document
+	 * @param thisNode Top node created in the XML document
 	 * @return No action is returned for the top level internalDecode.
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisnode) {
+	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		return DecodeResult.NO_ACTION;
 	}
 

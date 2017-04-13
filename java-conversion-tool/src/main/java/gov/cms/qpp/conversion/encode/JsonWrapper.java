@@ -81,6 +81,15 @@ public class JsonWrapper {
 		}
 	}
 
+	public JsonWrapper putDate(String value) throws EncodeException {
+		try {
+			return putObject( validDate(value) );
+		} catch (EncodeException e) {
+			putObject(value);
+			throw e;
+		}
+	}
+
 	public JsonWrapper putFloat(String name, String value) throws EncodeException {
 		try {
 			return putObject(name, validFloat(value) );
@@ -117,15 +126,6 @@ public class JsonWrapper {
 	public JsonWrapper putInteger(String value) throws EncodeException {
 		try {
 			return putObject( validInteger(value) );
-		} catch (EncodeException e) {
-			putObject(value);
-			throw e;
-		}
-	}
-
-	public JsonWrapper putDate(String value) throws EncodeException {
-		try {
-			return putObject( validDate(value) );
 		} catch (EncodeException e) {
 			putObject(value);
 			throw e;

@@ -36,7 +36,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
 		Optional<Node> reportingNode
-				= Optional.ofNullable(childMapByTemplateId.remove("2.16.840.1.113883.10.20.27.2.6"))
+				= Optional.ofNullable(childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId()))
 				.flatMap(rp -> rp.getChildNodes().stream().findFirst());
 
 		Optional<String> performanceStart = reportingNode.flatMap(p -> Optional.of(p.getValue("performanceStart")));

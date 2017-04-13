@@ -103,7 +103,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	@Encoder(TemplateId.REPORTING_PARAMETERS_ACT)
+	@Encoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
 	public static class S_Encoder extends DefaultEncoder {
 
 		public S_Encoder() {
@@ -167,12 +167,4 @@ public class DefaultEncoder extends JsonOutputEncoder {
 			super("Performance Rate for Proportion Measure - CMS (V2)");
 		}
 	}
-	@Encoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
-	public static class ZZZ_Encoder extends DefaultEncoder {
-
-		public ZZZ_Encoder() {
-			super("Performance Rate for CONTINUOUS VARIABLE MEASURE VALUE CMS");
-		}
-	}
-
 }

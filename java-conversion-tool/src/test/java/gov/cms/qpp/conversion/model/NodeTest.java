@@ -105,6 +105,42 @@ public class NodeTest {
 	}
 
 	@Test
+	public void testFindNode() {
+		Node parent = new Node();
+		Node childOne = new Node( "don't.find.me" );
+		Node childTwo = new Node( "don't.find.me.either" );
+		Node childThree = new Node( "find.me.please" );
+		parent.addChildNodes( childOne, childTwo, childThree );
+
+		List<Node> results = parent.findNode("find.me.please");
+
+		assertEquals("should find first child that has the searched id", results.size(), 1);
+	}
+
+	@Test
+	public void testFindNoNode() {
+		Node parent = new Node();
+		Node childOne = new Node( "don't.find.me" );
+		Node childTwo = new Node( "don't.find.me.either" );
+		parent.addChildNodes( childOne, childTwo);
+
+		List<Node> results = parent.findNode("find.me.please");
+
+		assertTrue("should find first child that has the searched id", results.isEmpty());
+	}
+
+	@Test
+	public void testFindNodeSelfIncluded() {
+		Node parent = new Node( "findMe" );
+		Node childOne = new Node( "findMe" );
+		parent.addChildNode( childOne );
+
+		List<Node> results = parent.findNode("findMe");
+
+		assertEquals("should find itself if it has the searched id", results.size(), 2);
+	}
+
+	@Test
 	public void testFindFirstNodeSelf() {
 		Node parent = new Node( "findMe" );
 		Node childOne = new Node( "findMe" );
@@ -122,5 +158,16 @@ public class NodeTest {
 		parent.addChildNodes( childOne, childTwo, childThree );
 
 		assertEquals("should find first child that has the searched id", parent.findFirstNode("findMe"), childTwo);
+	}
+
+	@Test
+	public void testFindFirstNoNode() {
+		Node parent = new Node();
+		Node childOne = new Node( "don't.find.me" );
+		Node childTwo = new Node( "don't.find.me" );
+		Node childThree = new Node( "don't.find.me" );
+		parent.addChildNodes( childOne, childTwo, childThree );
+
+		assertEquals("should not find a node that has the searched id", parent.findFirstNode("findMe"), null);
 	}
 }
