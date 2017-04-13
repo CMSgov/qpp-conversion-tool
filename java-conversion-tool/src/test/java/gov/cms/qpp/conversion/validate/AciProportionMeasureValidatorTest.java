@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,25 +26,25 @@ public class AciProportionMeasureValidatorTest {
 
 	@Test
 	public void testMeasurePresent() {
-		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node aciSectionNode = new Node(clinicalDocumentNode, "2.16.840.1.113883.10.20.27.2.5");
+		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, "2.16.840.1.113883.10.20.27.3.28");
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 
-		Node aciDenominatorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.32");
-		Node aciNumeratorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.31");
+		Node aciDenominatorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
+		Node aciNumeratorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_NUMERATOR.getTemplateId());
 
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
@@ -58,11 +59,11 @@ public class AciProportionMeasureValidatorTest {
 	@Test
 	public void testMeasureNotPresent() {
 		Node aciSectionNode = new Node();
-		aciSectionNode.setId("2.16.840.1.113883.10.20.27.2.5");
+		aciSectionNode.setId(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
 		Node clinicalDocumentNode = new Node();
-		clinicalDocumentNode.setId("2.16.840.1.113883.10.20.27.1.2");
+		clinicalDocumentNode.setId(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
@@ -84,20 +85,20 @@ public class AciProportionMeasureValidatorTest {
 	@Test
 	public void testMeasureNodeInvalidParent() {
 		Node clinicalDocumentNode = new Node();
-		clinicalDocumentNode.setId("2.16.840.1.113883.10.20.27.1.2");
+		clinicalDocumentNode.setId(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node aciProportionMeasureNode = new Node(clinicalDocumentNode, "2.16.840.1.113883.10.20.27.3.28");
+		Node aciProportionMeasureNode = new Node(clinicalDocumentNode, TemplateId.ACI_PROPORTION.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		clinicalDocumentNode.addChildNode(aciProportionMeasureNode);
 
-		Node aciDenominatorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.32");
-		Node aciNumeratorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.31");
+		Node aciDenominatorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
+		Node aciNumeratorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_NUMERATOR.getTemplateId());
 
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
@@ -113,10 +114,10 @@ public class AciProportionMeasureValidatorTest {
 	@Test
 	public void testNoChildNodes() {
 
-		Node aciSectionNode = new Node("2.16.840.1.113883.10.20.27.2.5");
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, "2.16.840.1.113883.10.20.27.3.28");
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -131,16 +132,16 @@ public class AciProportionMeasureValidatorTest {
 	@Test
 	public void testNoNumerator() {
 
-		Node aciSectionNode = new Node("2.16.840.1.113883.10.20.27.2.5");
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, "2.16.840.1.113883.10.20.27.3.28");
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 
-		Node aciDenominatorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.32");
-		Node aciNumeratorPlaceholder = new Node(aciProportionMeasureNode, "placeholder");
+		Node aciDenominatorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
+		Node aciNumeratorPlaceholder = new Node(aciProportionMeasureNode, TemplateId.PLACEHOLDER.getTemplateId());
 
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 		aciProportionMeasureNode.addChildNode(aciNumeratorPlaceholder);
@@ -156,16 +157,16 @@ public class AciProportionMeasureValidatorTest {
 	@Test
 	public void testNoDenominator() {
 
-		Node aciSectionNode = new Node("2.16.840.1.113883.10.20.27.2.5");
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, "2.16.840.1.113883.10.20.27.3.28");
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 
-		Node aciDenominatorPlaceholder = new Node(aciProportionMeasureNode, "placeholder");
-		Node aciNumeratorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.31");
+		Node aciDenominatorPlaceholder = new Node(aciProportionMeasureNode, TemplateId.PLACEHOLDER.getTemplateId());
+		Node aciNumeratorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_NUMERATOR.getTemplateId());
 
 		aciProportionMeasureNode.addChildNode(aciDenominatorPlaceholder);
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
@@ -181,17 +182,17 @@ public class AciProportionMeasureValidatorTest {
 	@Test
 	public void testTooManyNumerators() {
 
-		Node aciSectionNode = new Node("2.16.840.1.113883.10.20.27.2.5");
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, "2.16.840.1.113883.10.20.27.3.28");
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 
-		Node aciDenominatorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.32");
-		Node aciNumeratorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.31");
-		Node aciNumeratorNode2 = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.31");
+		Node aciDenominatorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
+		Node aciNumeratorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aciNumeratorNode2 = new Node(aciProportionMeasureNode, TemplateId.ACI_NUMERATOR.getTemplateId());
 
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
@@ -208,17 +209,17 @@ public class AciProportionMeasureValidatorTest {
 	@Test
 	public void testTooManyDenominators() {
 
-		Node aciSectionNode = new Node("2.16.840.1.113883.10.20.27.2.5");
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, "2.16.840.1.113883.10.20.27.3.28");
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 
-		Node aciDenominatorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.32");
-		Node aciDenominatorNode2 = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.32");
-		Node aciNumeratorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.31");
+		Node aciDenominatorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
+		Node aciDenominatorNode2 = new Node(aciProportionMeasureNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
+		Node aciNumeratorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_NUMERATOR.getTemplateId());
 
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode2);
@@ -234,26 +235,26 @@ public class AciProportionMeasureValidatorTest {
 
 	@Test
 	public void testWrongMeasurePresent() {
-		Node clinicalDocumentNode = new Node("2.16.840.1.113883.10.20.27.1.2");
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node aciSectionNode = new Node(clinicalDocumentNode, "2.16.840.1.113883.10.20.27.2.5");
+		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, "2.16.840.1.113883.10.20.27.3.28");
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "TEST_MEASURE"); // ACI_EP_1
 																		// required
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 
-		Node aciDenominatorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.32");
-		Node aciNumeratorNode = new Node(aciProportionMeasureNode, "2.16.840.1.113883.10.20.27.3.31");
+		Node aciDenominatorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
+		Node aciNumeratorNode = new Node(aciProportionMeasureNode, TemplateId.ACI_NUMERATOR.getTemplateId());
 
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);

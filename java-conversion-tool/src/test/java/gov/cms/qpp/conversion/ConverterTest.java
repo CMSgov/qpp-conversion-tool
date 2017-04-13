@@ -1,39 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.conversion.decode.DecodeResult;
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
-import gov.cms.qpp.conversion.encode.EncodeException;
-import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
-import gov.cms.qpp.conversion.model.AnnotationMockHelper;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.ValidationError;
-import gov.cms.qpp.conversion.validate.NodeValidator;
-import gov.cms.qpp.conversion.validate.QrdaValidator;
-import gov.cms.qpp.conversion.xml.XmlException;
-import org.jdom2.Element;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
@@ -46,17 +12,61 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
-import static org.powermock.api.mockito.PowerMockito.method;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.stub;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
+import static org.powermock.api.support.membermodification.MemberMatcher.method;
+import static org.powermock.api.support.membermodification.MemberModifier.stub;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import org.jdom2.Element;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.ReflectionUtils;
+
+import gov.cms.qpp.conversion.decode.DecodeResult;
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.encode.EncodeException;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
+import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.ValidationError;
+import gov.cms.qpp.conversion.validate.NodeValidator;
+import gov.cms.qpp.conversion.validate.QrdaValidator;
+import gov.cms.qpp.conversion.xml.XmlException;
 
 @RunWith(PowerMockRunner.class)
 public class ConverterTest {
 
 	private static final String SEPERATOR = FileSystems.getDefault().getSeparator();
+
+	@After
+	public void cleanup() throws IOException {
+		Files.deleteIfExists(Paths.get("defaultedNode.qpp.json"));
+	}
 
 	@Test
 	public void testNonexistantFile() {
@@ -243,11 +253,10 @@ public class ConverterTest {
 		Converter.main(new String[]{Converter.SKIP_VALIDATION,
 				"src/test/resources/converter/defaultedNode.xml"});
 
-		File jennyJson = new File("defaultedNode.qpp.json");
-		String content = new String( Files.readAllBytes( Paths.get( "defaultedNode.qpp.json" ) ) );
+		Path jennyJson = Paths.get("defaultedNode.qpp.json");
+		String content = new String(Files.readAllBytes(jennyJson));
 
-		assertTrue( content.contains("Jenny") );
-		jennyJson.deleteOnExit();
+		assertTrue(content.contains("Jenny"));
 	}
 
 	@Test
@@ -256,11 +265,10 @@ public class ConverterTest {
 				Converter.SKIP_DEFAULTS,
 				"src/test/resources/converter/defaultedNode.xml"});
 
-		File jennyJson = new File("defaultedNode.qpp.json");
-		String content = new String( Files.readAllBytes( Paths.get( "defaultedNode.qpp.json" ) ) );
+		Path jennyJson = Paths.get("defaultedNode.qpp.json");
+		String content = new String(Files.readAllBytes(jennyJson));
 
-		assertFalse( content.contains("Jenny") );
-		jennyJson.deleteOnExit();
+		assertFalse(content.contains("Jenny"));
 	}
 
 	@Test
@@ -273,31 +281,29 @@ public class ConverterTest {
 		PowerMockito.whenNew(QrdaValidator.class).withNoArguments().thenReturn(mockQrdaValidator);
 
 		//set-up
-		final String errorFileName = "errantDefaultedNode.err.txt";
+		Path defaultJson = Paths.get("errantDefaultedNode.qpp.json");
+		Path defaultError = Paths.get("errantDefaultedNode.err.txt");
 
-		File defaultJson = new File("errantDefaultedNode.qpp.json");
-		File defaultError = new File(errorFileName);
-
-		defaultJson.delete();
-		defaultError.delete();
+		Files.deleteIfExists(defaultJson);
+		Files.deleteIfExists(defaultError);
 
 		//execute
 		Converter.main(new String[]{"src/test/resources/converter/errantDefaultedNode.xml"});
 
 		//assert
-		assertThat("The JSON file must not exist", defaultJson.exists(), is(false));
-		assertThat("The error file must exist", defaultError.exists(), is(true));
+		assertThat("The JSON file must not exist", Files.exists(defaultJson), is(false));
+		assertThat("The error file must exist", Files.exists(defaultError), is(true));
 
-		String errorContent = new String(Files.readAllBytes(Paths.get(errorFileName)));
+		String errorContent = new String(Files.readAllBytes(defaultError));
 		assertThat("The error file is missing the specified content", errorContent, containsString("Jenny"));
 
 		//clean-up
-		defaultError.deleteOnExit();
+		Files.delete(defaultError);
 	}
 
 	@Test
 	@PrepareForTest({LoggerFactory.class})
-	public void testInvalidXml() throws IOException {
+	public void testInvalidXml() {
 
 		//set-up
 		mockStatic(LoggerFactory.class);
@@ -457,6 +463,19 @@ public class ConverterTest {
 		verify(logger).error( eq("Could not write to file: {}" ),
 				eq("defaultedNode.err.txt"),
 				any(IOException.class) );
+	}
+
+	@Test
+	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException {
+
+		Converter converter = new Converter(Paths.get("src/test/resources/not-a-QRDA-III-file.xml"));
+
+		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");
+		transformMethod.setAccessible(true);
+
+		Integer returnValue = (Integer)transformMethod.invoke(converter);
+
+		assertThat("Should not have a valid clinical document template id", returnValue, is(2));
 	}
 
 	public static class JennyDecoder extends DefaultDecoder {

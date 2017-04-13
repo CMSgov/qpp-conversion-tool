@@ -36,6 +36,7 @@ public class AggregateCountDecoderTest {
             + "                <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
             + "                        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
             + "                                <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
+            + "                                <templateId root=\"2.16.840.1.113883.10.20.27.3.16\" extension=\"2016-11-01\"/>\n" //Template Id should be ignored
             + "                                <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>\n"
             + "                                <statusCode code=\"completed\"/>\n"
             + "                                <value xsi:type=\"INT\" value=\"400\"/>\n"

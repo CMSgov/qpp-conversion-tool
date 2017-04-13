@@ -98,9 +98,6 @@ public class QrdaValidator {
 	 * @return The @Validator annotation
 	 */
 	private Validator getAnnotation(final NodeValidator validator) {
-		if(validator == null) {
-			return null;
-		}
 		return validator.getClass().getAnnotation(Validator.class);
 	}
 

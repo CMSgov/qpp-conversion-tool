@@ -226,6 +226,10 @@ public class Converter {
 		try {
 			String inputFileName = inFile.getFileName().toString().trim();
 			Node decoded = XmlInputDecoder.decodeXml(XmlUtils.fileToDOM(inFile));
+			if (null == decoded) {
+				return 2;
+			}
+
 			LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), inputFileName);
 
 			if (!doDefaults) {
