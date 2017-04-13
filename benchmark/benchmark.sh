@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 BM_OUTPUT=target/benchmark_output
 CSV=${BM_OUTPUT}.cvs
 TXT=${BM_OUTPUT}.txt
