@@ -16,6 +16,8 @@ import org.jdom2.Element;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.api.mockito.mockpolicies.Slf4jMockPolicy;
+import org.powermock.core.classloader.annotations.MockPolicy;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
@@ -57,6 +59,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
+@MockPolicy({Slf4jMockPolicy.class, Log4jMockPolicy.class})
 public class ConverterTest {
 
 	private static final String SEPERATOR = FileSystems.getDefault().getSeparator();

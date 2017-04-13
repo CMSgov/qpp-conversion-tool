@@ -7,7 +7,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.impl.SimpleLogger;
+//import org.slf4j.impl.SimpleLogger;
 import org.springframework.core.io.ClassPathResource;
 
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
@@ -29,7 +29,7 @@ public class DefaultDecoderTest {
 
 	@Test
 	public void parseAllNodes() throws Exception {
-		System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "INFO"); // DEBUG for tracking the decode
+//		System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "INFO"); // DEBUG for tracking the decode
 
 		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III.xml");
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
