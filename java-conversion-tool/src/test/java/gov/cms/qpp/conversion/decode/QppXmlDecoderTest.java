@@ -114,7 +114,7 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 		testElement.getChildren().add(testChildElement);
 		Node testNode = new Node();
 
-		Whitebox.setInternalState(QppXmlDecoder.class, "LOG", logger);
+		Whitebox.setInternalState(QppXmlDecoder.class, "CLIENT_LOG", logger);
 
 		QppXmlDecoder objectUnderTest = new QppXmlDecoderTest();
 		objectUnderTest.decode(testElement, testNode);

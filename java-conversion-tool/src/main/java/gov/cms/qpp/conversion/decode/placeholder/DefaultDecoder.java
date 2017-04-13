@@ -24,7 +24,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 
 	final String description;
 
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultDecoder.class);
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(DefaultDecoder.class);
 
 	public DefaultDecoder(String description) {
 		this.description = description;
@@ -35,7 +35,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		LOG.debug("Default decoder {} is handling templateId {} and is described as '{}' ",
+		DEV_LOG.debug("Default decoder {} is handling templateId {} and is described as '{}' ",
 				getClass(), thisnode.getId(), description);
 		thisnode.putValue("DefaultDecoderFor", description);
 		return DecodeResult.TREE_CONTINUE;

@@ -40,8 +40,7 @@ public class Converter {
 
 	protected static final String SKIP_VALIDATION = "--skip-validation";
 	protected static final String SKIP_DEFAULTS = "--skip-defaults";
-	private static final Logger LOG = LoggerFactory.getLogger(Converter.class);
-	private static final Logger DEV_LOG = LoggerFactory.getLogger("DEV-LOG");
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
 	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 
 	private static final String NO_INPUT_FILE_SPECIFIED = "No input filename was specified.";
@@ -82,7 +81,7 @@ public class Converter {
 	 */
 	protected static Collection<Path> validArgs(String[] args) {
 		if (args.length < 1) {
-			LOG.error(NO_INPUT_FILE_SPECIFIED);
+			CLIENT_LOG.error(NO_INPUT_FILE_SPECIFIED);
 			return new LinkedList<>();
 		}
 
@@ -138,7 +137,7 @@ public class Converter {
 		if (Files.exists(file)) {
 			existingFiles.add(file);
 		} else {
-			LOG.error(FILE_DOES_NOT_EXIST, path);
+			CLIENT_LOG.error(FILE_DOES_NOT_EXIST, path);
 		}
 		return existingFiles;
 	}
@@ -246,6 +245,7 @@ public class Converter {
 				writeValidationErrors(inputFileName, validationErrors);
 			}
 		} catch (XmlInputFileException | XmlException xe) {
+			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
 		} catch (Exception allE) {
 			DEV_LOG.error("Unexpected exception occurred during conversion", allE);// Eat all exceptions in the call

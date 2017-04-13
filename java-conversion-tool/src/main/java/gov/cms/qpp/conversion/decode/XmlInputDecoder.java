@@ -22,7 +22,7 @@ import java.util.function.Consumer;
  */
 public abstract class XmlInputDecoder implements InputDecoder, Validatable<String, String> {
 
-	private static final Logger LOG = LoggerFactory.getLogger("DEV-LOG");
+	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 	protected Namespace defaultNs; 
 	protected Namespace xpathNs;
 
@@ -40,7 +40,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 			}
 		}
 
-		LOG.error("The XML file is an unknown document");
+		CLIENT_LOG.error("The XML file is an unknown document");
 
 		return null;
 	}

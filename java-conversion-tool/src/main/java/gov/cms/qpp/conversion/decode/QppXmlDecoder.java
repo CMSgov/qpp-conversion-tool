@@ -15,7 +15,7 @@ import java.util.List;
  * Top level Decoder for parsing into QPP format.
  */
 public class QppXmlDecoder extends XmlInputDecoder {
-	private static final Logger LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
+	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 
 	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
@@ -61,14 +61,14 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				String root = childEl.getAttributeValue("root");
 				String extension = childEl.getAttributeValue("extension");
 				String templateId = TemplateId.generateTemplateIdString(root, extension);
-				LOG.debug("templateIdFound:{}", templateId);
+				CLIENT_LOG.debug("templateIdFound:{}", templateId);
 
 				QppXmlDecoder childDecoder = DECODERS.get(templateId);
 
 				if (null == childDecoder) {
 					continue;
 				}
-				LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
+				CLIENT_LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
 				Node childNode = new Node(parentNode, templateId);
 				
 				setNamespace(childEl, childDecoder);
@@ -113,9 +113,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			decode(childElement, childNode);
 		} else if (result == DecodeResult.ERROR) {
 			addValidation(childNode.getId(), "Failed to decode.");
-			LOG.error("Failed to decode templateId {} ", childNode.getId());
+			CLIENT_LOG.error("Failed to decode templateId {} ", childNode.getId());
 		} else {
-			LOG.error("We need to define a default case. Could be TreeContinue?");
+			CLIENT_LOG.error("We need to define a default case. Could be TreeContinue?");
 		}
 		return null;
 	}
@@ -169,7 +169,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		                          containsClinicalDocumentTemplateId(rootElement);
 
 		if (!isValidQrdaFile) {
-			LOG.error("The file is not a QRDA-III XML document");
+			CLIENT_LOG.error("The file is not a QRDA-III XML document");
 		}
 		
 		return isValidQrdaFile;

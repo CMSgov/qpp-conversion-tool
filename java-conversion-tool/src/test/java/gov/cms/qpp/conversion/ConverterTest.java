@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.api.mockito.mockpolicies.Slf4jMockPolicy;
 import org.powermock.core.classloader.annotations.MockPolicy;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
@@ -59,7 +60,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@MockPolicy({Slf4jMockPolicy.class, Log4jMockPolicy.class})
+@PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
 public class ConverterTest {
 
 	private static final String SEPERATOR = FileSystems.getDefault().getSeparator();
@@ -241,7 +242,6 @@ public class ConverterTest {
 
 
 	@Test
-	@PrepareForTest(QppXmlDecoder.class)
 	public void testDefaults() throws Exception {
 		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
 		AnnotationMockHelper.mockEncoder("867.5309", Jenncoder.class);
@@ -306,15 +306,17 @@ public class ConverterTest {
 	public void testInvalidXml() throws IOException {
 
 		//set-up
-		mockStatic(LoggerFactory.class);
-		Logger logger = mock(Logger.class);
-		when(LoggerFactory.getLogger(any(Class.class))).thenReturn(logger);
+		mockStatic( LoggerFactory.class );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		//execute
 		Converter.main(new String[]{"src/test/resources/non-xml-file.xml"});
 
 		//assert
-		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
 	}
 
 	@Test
@@ -323,8 +325,10 @@ public class ConverterTest {
 
 		//set-up
 		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		QppOutputEncoder encoder = mock( QppOutputEncoder.class );
 		whenNew( QppOutputEncoder.class ).withNoArguments().thenReturn( encoder );
@@ -338,7 +342,7 @@ public class ConverterTest {
 		});
 
 		//assert
-		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class));
+		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class));
 	}
 
 	@Test
@@ -349,8 +353,10 @@ public class ConverterTest {
 		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toThrow( new IOException() );
 
 		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		//execute
 		Converter.main(new String[]{Converter.SKIP_VALIDATION,
@@ -359,7 +365,7 @@ public class ConverterTest {
 		});
 
 		//assert
-		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
 	}
 
 	@Test
@@ -371,7 +377,7 @@ public class ConverterTest {
 
 		mockStatic( LoggerFactory.class );
 		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( logger );
 
 		//execute
 		Converter.main(new String[]{Converter.SKIP_VALIDATION,
@@ -393,8 +399,10 @@ public class ConverterTest {
 		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn( writer );
 
 		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		//execute
 		Converter.main(new String[]{Converter.SKIP_VALIDATION,
@@ -403,7 +411,7 @@ public class ConverterTest {
 		});
 
 		//assert
-		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
 	}
 
 	@Test
@@ -414,14 +422,16 @@ public class ConverterTest {
 		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toThrow( new IOException() );
 
 		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		//execute
 		Converter.main(new String[]{"src/test/resources/converter/defaultedNode.xml"});
 
 		//assert
-		verify(logger).error( eq("Could not write to file: {}" ),
+		verify(devLogger).error( eq("Could not write to file: {}" ),
 				eq( "defaultedNode.err.txt" ), any(String.class) );
 	}
 
@@ -434,7 +444,7 @@ public class ConverterTest {
 
 		mockStatic( LoggerFactory.class );
 		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( logger );
 
 		//execute
 		Converter.main(new String[]{"src/test/resources/converter/defaultedNode.xml"});
@@ -453,14 +463,16 @@ public class ConverterTest {
 		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn( writer );
 
 		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		//execute
 		Converter.main(new String[] {"src/test/resources/converter/defaultedNode.xml"});
 
 		//assert
-		verify(logger).error( eq("Could not write to file: {}" ),
+		verify(devLogger).error( eq("Could not write to file: {}" ),
 				eq("defaultedNode.err.txt"),
 				any(IOException.class) );
 	}

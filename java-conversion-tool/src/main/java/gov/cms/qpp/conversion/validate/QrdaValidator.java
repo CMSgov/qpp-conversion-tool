@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class QrdaValidator {
 
-	private static final Logger LOG = LoggerFactory.getLogger(QrdaValidator.class);
+	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 
 	private static final Registry<String, NodeValidator> VALIDATORS = new Registry<>(Validator.class);
 
@@ -33,7 +33,7 @@ public class QrdaValidator {
 	 */
 	public List<ValidationError> validate(Node rootNode) {
 
-		LOG.info("Validating all nodes in the tree");
+		CLIENT_LOG.info("Validating all nodes in the tree");
 
 		//validate each node while traversing the tree
 		validateTree(rootNode);
@@ -132,7 +132,7 @@ public class QrdaValidator {
 	 */
 	private void validateTemplateIds() {
 
-		LOG.info("Validating all nodes by templateId");
+		CLIENT_LOG.info("Validating all nodes by templateId");
 
 		for (String validatorKey : VALIDATORS.getKeys()) {
 			validateSingleTemplateId(VALIDATORS.get(validatorKey));
@@ -154,7 +154,7 @@ public class QrdaValidator {
 
 		final String templateId = getTemplateId(validator);
 
-		LOG.debug("Validating nodes associated with templateId {}", templateId);
+		CLIENT_LOG.debug("Validating nodes associated with templateId {}", templateId);
 
 		List<Node> nodesForTemplateId = nodesForTemplateIds.getOrDefault(templateId, Arrays.asList());
 

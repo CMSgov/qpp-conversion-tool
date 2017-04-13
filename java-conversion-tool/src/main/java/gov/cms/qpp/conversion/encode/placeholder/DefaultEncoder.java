@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultEncoder extends JsonOutputEncoder {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultEncoder.class);
+	private static final Logger LOG = LoggerFactory.getLogger("DEV_LOG");
 
 	private final String description;
 
