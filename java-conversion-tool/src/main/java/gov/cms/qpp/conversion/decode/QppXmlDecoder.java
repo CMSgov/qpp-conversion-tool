@@ -117,6 +117,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		} else {
 			CLIENT_LOG.error("We need to define a default case. Could be TreeContinue?");
 		}
+
 		return null;
 	}
 
