@@ -34,6 +34,7 @@ public class ConverterBenchmark {
 	 * @param cleaner State management for conversion runs, ensures that output files are deleted.
 	 */
 	@Benchmark
+	@BenchmarkMode({Mode.Throughput, Mode.AverageTime})
 	public void benchmarkMain( Cleaner cleaner) {
 		Converter.main(new String[] {"src/main/resources/qrda-files/valid-QRDA-III.xml"});
 	}
