@@ -40,7 +40,6 @@ public class AutoDetectQrdaTest {
 	@After
 	public void teardown() throws Exception {
 		System.setOut(stdout);
-		System.setProperty("line.separator", System.lineSeparator());
 		Validations.clear();
 	}
 
