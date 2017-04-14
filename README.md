@@ -119,4 +119,4 @@ Want to file a bug or contribute some code? Read up on our
 guidelines for [contributing][contributing], and [developer instructions][developer].
 
 [contributing]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/CONTRIBUTING.md
-[developer]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/DEVELOPER.md
+[developer]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/DEVELOPER.md 
