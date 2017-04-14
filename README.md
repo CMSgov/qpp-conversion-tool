@@ -47,7 +47,7 @@ If you are using a Unix-like OS like Linux or OSX, open a terminal and go to the
 
 ```shell
 # Clone the GitHub repository:
-git clone https://github.com/flexion/adele-bpa-qpp-conversion-tool.git qpp-conversion-tool
+git clone https://github.com/CMSgov/qpp-conversion-tool.git
 
 # Go to the qpp-conversion-tool directory:
 cd qpp-conversion-tool
@@ -63,7 +63,7 @@ If you are using Windows, open a command prompt (not PowerShell) and go to the d
 
 ```shell
 # Clone the GitHub repository:
-git clone https://github.com/flexion/adele-bpa-qpp-conversion-tool.git qpp-conversion-tool
+git clone https://github.com/CMSgov/qpp-conversion-tool.git
 
 # Go to the qpp-conversion-tool directory:
 cd qpp-conversion-tool
@@ -118,5 +118,5 @@ Note: If you are using Windows, replace `./convert.sh` in the examples below wit
 Want to file a bug or contribute some code? Read up on our
 guidelines for [contributing][contributing], and [developer instructions][developer].
 
-[contributing]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/CONTRIBUTING.md
-[developer]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/DEVELOPER.md
+[contributing]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md
+[developer]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
