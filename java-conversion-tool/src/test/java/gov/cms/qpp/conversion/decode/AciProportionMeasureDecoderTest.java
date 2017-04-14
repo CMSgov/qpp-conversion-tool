@@ -32,7 +32,7 @@ public class AciProportionMeasureDecoderTest {
 	public void after() {
 		Validations.clear();
 	}
-	
+
 	@Test
 	public void decodeACIProportionMeasureAsNode() throws Exception {
 		String xmlFragment
