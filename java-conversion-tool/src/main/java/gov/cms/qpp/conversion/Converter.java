@@ -38,10 +38,12 @@ import java.util.stream.Collectors;
  */
 public class Converter {
 
+	public static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
+
 	protected static final String SKIP_VALIDATION = "--skip-validation";
 	protected static final String SKIP_DEFAULTS = "--skip-defaults";
+
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
-	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 
 	private static final String NO_INPUT_FILE_SPECIFIED = "No input filename was specified.";
 	private static final String CANNOT_LOCATE_FILE_PATH = "Cannot locate file path {0} {1}";

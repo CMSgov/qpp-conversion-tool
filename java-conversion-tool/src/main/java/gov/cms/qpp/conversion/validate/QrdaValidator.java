@@ -1,11 +1,10 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,8 +16,6 @@ import java.util.Map;
  * The engine that executes the validators on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
  */
 public class QrdaValidator {
-
-	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 
 	private static final Registry<String, NodeValidator> VALIDATORS = new Registry<>(Validator.class);
 
@@ -33,7 +30,7 @@ public class QrdaValidator {
 	 */
 	public List<ValidationError> validate(Node rootNode) {
 
-		CLIENT_LOG.info("Validating all nodes in the tree");
+		Converter.CLIENT_LOG.info("Validating all nodes in the tree");
 
 		//validate each node while traversing the tree
 		validateTree(rootNode);
@@ -132,7 +129,7 @@ public class QrdaValidator {
 	 */
 	private void validateTemplateIds() {
 
-		CLIENT_LOG.info("Validating all nodes by templateId");
+		Converter.CLIENT_LOG.info("Validating all nodes by templateId");
 
 		for (String validatorKey : VALIDATORS.getKeys()) {
 			validateSingleTemplateId(VALIDATORS.get(validatorKey));
@@ -154,7 +151,7 @@ public class QrdaValidator {
 
 		final String templateId = getTemplateId(validator);
 
-		CLIENT_LOG.debug("Validating nodes associated with templateId {}", templateId);
+		Converter.CLIENT_LOG.debug("Validating nodes associated with templateId {}", templateId);
 
 		List<Node> nodesForTemplateId = nodesForTemplateIds.getOrDefault(templateId, Arrays.asList());
 
