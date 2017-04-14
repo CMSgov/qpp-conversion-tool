@@ -142,8 +142,6 @@ public class AciNumeratorDenominatorDecoderTest {
 		int numberNodes = countNodes(aciMeasureNode);
 		assertThat("Decoded xml fragment " + aciMeasureNode.getType().name() +
 				" should contain 8 nodes", numberNodes, is(8));
-		System.out.println(aciMeasureNode.toString() + "\n");
-		System.out.println(xmlFragment);
 	}
 
 	private int countNodes(Node parent) {
