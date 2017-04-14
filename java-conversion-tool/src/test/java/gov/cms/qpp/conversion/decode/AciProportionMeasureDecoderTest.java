@@ -32,15 +32,7 @@ public class AciProportionMeasureDecoderTest {
 	public void after() {
 		Validations.clear();
 	}
-
-	/**
-	 * decodeACIProportionMeasureAsNode given a well formed xml fragment parses
-	 * out the appropriate aggregateCount This test calls
-	 * QppXmlDecoder.()decode() which in turn calls the only method in this
-	 * class. AciProportionDenominatorDecoder().decode()
-	 *
-	 * @throws Exception
-	 */
+	
 	@Test
 	public void decodeACIProportionMeasureAsNode() throws Exception {
 		String xmlFragment
@@ -149,6 +141,72 @@ public class AciProportionMeasureDecoderTest {
 		assertThat("returned node should have no child decoder nodes", aciProportionMeasureNode.getChildNodes().size(), is(0));
 		// The measureId in not reachable
 		assertThat("measureId should be null", aciProportionMeasureNode.getValue("measureId"), is(nullValue()));
+	}
+
+	@Test
+	public void decodeACIProportionMeasureIgnoresGarbage() throws Exception {
+		String xmlFragment
+				= "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+				+ "<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
+				+ "	<organizer classCode=\"CLUSTER\" moodCode=\"EVN\">\n"
+				+ "		<!-- Implied template Measure Reference templateId -->\n"
+				+ "		<templateId root=\"2.16.840.1.113883.10.20.24.3.98\"/>\n"
+				+ "		<!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->\n"
+				+ "		<templateId root=\"2.16.840.1.113883.10.20.27.3.28\" extension=\"2016-09-01\"/>\n"
+				+ "		<reference typeCode=\"REFR\">\n"
+				+ "			<externalDocument classCode=\"DOC\" moodCode=\"EVN\">\n"
+				+ "				<id root=\"2.16.840.1.113883.3.7031\" extension=\"ACI-PEA-1\"/>\n"
+				// Garbage Text
+				+ "				abcEasyAs123\n"
+				+ "			</externalDocument>\n"
+				+ "		</reference>\n"
+				+ "		<component>\n"
+				+ "			<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
+				+ "				<templateId root=\"2.16.840.1.113883.10.20.27.3.31\" extension=\"2016-09-01\"/>\n"
+				//Random Template id
+				+ "   			<templateId root=\"Invalid\"/>\n"
+				+ "				Garbage\n"
+				//Random Element
+				+ "				<testing>DARKNESS INPRISONING ME! ALL THAT I SEE! ABSOLUTE HORROR!</testing>\n"
+				+ "				<entryRelationship resultName=\"aciNumeratorDenominator\" resultValue=\"600\"/>\n"
+				+ "			</observation>\n"
+				+ "		</component>\n"
+				+ "		<component>\n"
+				+ "			<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
+				+ "				<templateId root=\"2.16.840.1.113883.10.20.27.3.32\" extension=\"2016-09-01\"/>\n"
+				//Random Element
+				+ "				<testing>DARKNESS INPRISONING ME! ALL THAT I SEE! ABSOLUTE HORROR!</testing>\n"
+				+ "				MoreGarbage\n"
+				+ "				<entryRelationship resultName=\"aciNumeratorDenominator\" resultValue=\"800\"/>\n"
+				+ "			</observation>\n"
+				+ "		</component>\n"
+				+ "	</organizer>\n"
+				+ "</entry>";
+
+		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		// remove default nodes (will fail if defaults change)
+		DefaultDecoder.removeDefaultNode(root.getChildNodes());
+
+		// This node is the place holder around the root node
+		assertThat("returned node should not be null", root, is(not(nullValue())));
+
+		// For all decoders this should be either a value or child node
+		assertThat("returned node should have one child node", root.getChildNodes().size(), is(1));
+		// This is the child node that is produced by the intended decoder
+		Node aciProportionMeasureNode = root.getChildNodes().get(0);
+		// Should have a aggregate count node
+		assertThat("returned node should have two child decoder nodes", aciProportionMeasureNode.getChildNodes().size(), is(2));
+
+		assertThat("measureId should be " + MEASURE_ID,
+				aciProportionMeasureNode.getValue("measureId"), is(MEASURE_ID));
+
+		List<String> testTemplateIds = new ArrayList<>();
+		for (Node node : aciProportionMeasureNode.getChildNodes()) {
+			testTemplateIds.add(node.getId());
+		}
+
+		assertThat("Should have Numerator", testTemplateIds.contains(TemplateId.ACI_NUMERATOR.getTemplateId()), is(true));
+		assertThat("Should have Denominator", testTemplateIds.contains(TemplateId.ACI_DENOMINATOR.getTemplateId()), is(true));
 	}
 
 	@Test
