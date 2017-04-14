@@ -1,5 +1,11 @@
 package gov.cms.qpp.conversion.encode;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
@@ -7,18 +13,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-
 /**
  * Manages building a "simple" object of JSON conversion.
  * JSON renderers can convert maps and list into JSON Strings.
  * This class is a wrapper around a list/map impl.
- *
- * @param <T> Shall be String or Object for maps of children
  */
 public class JsonWrapper {
 
@@ -203,7 +201,6 @@ public class JsonWrapper {
 	 * @see #putObject(Object)
 	 * @param value to place in wrapper
 	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
 	 */
 	public JsonWrapper putString(String value) {
 		return putObject(value);
