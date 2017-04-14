@@ -13,14 +13,13 @@ import java.util.function.Predicate;
 /**
  * Represents a node of data that should be converted. Consists of a key/value
  * Map that holds the data gleaned from an input file.
- * <p>
  * Nodes can contain other nodes as children to create a hierarchy.
- *
- * @author David Uselmann
  */
 public class Node implements Serializable {
 
 	private static final long serialVersionUID = 4602134063479322076L;
+	private static final String DEFAULT = "DEFAULT";
+	private static final String PLACEHOLDER = "PLACEHOLDER";
 	private TemplateId type;
 	private Map<String, String> data = new HashMap<>();
 
@@ -159,7 +158,6 @@ public class Node implements Serializable {
 	}
 
 
-
 	/**
 	 * Search of this and child nodes for matching ids
 	 *
@@ -220,6 +218,7 @@ public class Node implements Serializable {
 		}
 		return foundNodes;
 	}
+
 	/**
 	 * Search this and child nodes for first node with matching id
 	 *
@@ -252,6 +251,7 @@ public class Node implements Serializable {
 	protected void setValidated(boolean validated) {
 		this.validated = validated;
 	}
+
 	/**
 	 * isValidated returns the internal state of this Node validation
 	 *
@@ -318,7 +318,7 @@ public class Node implements Serializable {
 	 * @return String
 	 */
 	private String getTypeName(TemplateId type) {
-		return ("DEFAULT".equals(type.name()) ||
-				"PLACEHOLDER".equals(type.name()) ? getId() : type.name());
+		return (DEFAULT.equals(type.name()) ||
+				PLACEHOLDER.equals(type.name()) ? getId() : type.name());
 	}
 }
