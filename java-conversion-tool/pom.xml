@@ -47,6 +47,9 @@
 				<groupId>org.pitest</groupId>
 				<artifactId>pitest-maven</artifactId>
 			</plugin>
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
