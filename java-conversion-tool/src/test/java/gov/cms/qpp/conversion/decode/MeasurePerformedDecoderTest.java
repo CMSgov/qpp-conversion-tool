@@ -24,7 +24,8 @@ public class MeasurePerformedDecoderTest {
 				+ "    </observation>"
 				+ "</component>";
 
-		Node measurePerformedNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		MeasurePerformedDecoder measurePerformedDecoder = new MeasurePerformedDecoder();
+		Node measurePerformedNode = measurePerformedDecoder.decode(XmlUtils.stringToDOM(xmlFragment));
 
 		assertThat("Should have a measure perform",
 				measurePerformedNode.getChildNodes().get(0).getValue("measurePerformed"), is("Y"));
