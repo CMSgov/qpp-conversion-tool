@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultEncoder extends JsonOutputEncoder {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultEncoder.class);
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(DefaultEncoder.class);
 
 	private final String description;
 
@@ -26,7 +26,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
-		LOG.debug("Default JSON encoder {} is handling templateId {} and is described as '{}' ",
+		DEV_LOG.debug("Default JSON encoder {} is handling templateId {} and is described as '{}' ",
 				getClass(), node.getId(), description);
 
 		// TODO like the decoder this might be better in the parent
