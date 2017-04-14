@@ -141,35 +141,21 @@ public class AciNumeratorDenominatorDecoderTest {
 				nodeList.size(), is(1));
 		int numberNodes = countNodes(aciMeasureNode);
 		assertThat("Decoded xml fragment " + aciMeasureNode.getType().name() +
-				" should contain 7 nodes", numberNodes, is(8));
+				" should contain 8 nodes", numberNodes, is(8));
 		System.out.println(aciMeasureNode.toString() + "\n");
 		System.out.println(xmlFragment);
 	}
 
 	private int countNodes(Node parent) {
-		int count = 1;
-		if (parent == null) {
-			return count;
-		}
-		List<Node> children = parent.getChildNodes();
-		if (children == null || children.isEmpty()) {
-			return count;
-		}
-		for (Node node : children) {
-			count += countChildren(node);
-		}
-		return count;
-	}
 
-	private int countChildren(Node parent) {
-		int count = 1;
 		if (parent == null) {
-			return count;
+			return 0;
 		}
 		List<Node> children = parent.getChildNodes();
 		if (children == null || children.isEmpty()) {
-			return count;
+			return 1;
 		}
+		int count = 1;
 		for (Node node : children) {
 			count += countNodes(node);
 		}
@@ -177,7 +163,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	private String getValidXmlFragment() {
-		String xmlFragment = XmlUtils.buildString(
+		return XmlUtils.buildString(
 				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
 				"\n<entry>",
 				"\n<organizer classCode=\"CLUSTER\" moodCode=\"EVN\">",
@@ -247,6 +233,5 @@ public class AciNumeratorDenominatorDecoderTest {
 				"\n</organizer>",
 				"\n</entry>",
 				"\n</root>\n");
-		return xmlFragment;
 	}
 }
