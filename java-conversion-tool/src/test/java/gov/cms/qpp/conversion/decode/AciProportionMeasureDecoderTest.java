@@ -167,7 +167,7 @@ public class AciProportionMeasureDecoderTest {
 				+ "   			<templateId root=\"Invalid\"/>\n"
 				+ "				Garbage\n"
 				//Random Element
-				+ "				<testing>DARKNESS INPRISONING ME! ALL THAT I SEE! ABSOLUTE HORROR!</testing>\n"
+				+ "				<random>Sir Williams</random>\n"
 				+ "				<entryRelationship resultName=\"aciNumeratorDenominator\" resultValue=\"600\"/>\n"
 				+ "			</observation>\n"
 				+ "		</component>\n"
@@ -175,7 +175,7 @@ public class AciProportionMeasureDecoderTest {
 				+ "			<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
 				+ "				<templateId root=\"2.16.840.1.113883.10.20.27.3.32\" extension=\"2016-09-01\"/>\n"
 				//Random Element
-				+ "				<testing>DARKNESS INPRISONING ME! ALL THAT I SEE! ABSOLUTE HORROR!</testing>\n"
+				+ "				<random>Evil Oliver</random>\n"
 				+ "				MoreGarbage\n"
 				+ "				<entryRelationship resultName=\"aciNumeratorDenominator\" resultValue=\"800\"/>\n"
 				+ "			</observation>\n"
