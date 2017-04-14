@@ -66,7 +66,7 @@ public class Converter {
 	 *
 	 * @param args Command Line Arguments list of file names and flags
 	 */
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		Collection<Path> filenames = validArgs(args);
 		filenames.parallelStream().forEach(
 				(filename) -> new Converter(filename).transform());
