@@ -15,23 +15,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by saquino on 4/14/17.
  */
 public class MeasurePerformedEncoderTest {
-	private Node measurePerformedNode;
-	private List<Node> nodes;
-
-	@Before
-	public void createNode() {
-		measurePerformedNode = new Node();
-		measurePerformedNode.setId(TemplateId.MEASURE_PERFORMED.getTemplateId());
-		measurePerformedNode.putValue("measurePerformed", "Y");
-
-		nodes = new ArrayList<>();
-		nodes.add(measurePerformedNode);
-	}
 
 	@Test
 	public void testMeasurePerformedEncodesIntoWrapper() throws EncodeException {
-		measurePerformedNode = new Node();
-		measurePerformedNode.setId(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED.getTemplateId());
 		measurePerformedNode.putValue("measurePerformed", "Y");
 
 		JsonWrapper jsonWrapper = new JsonWrapper();
