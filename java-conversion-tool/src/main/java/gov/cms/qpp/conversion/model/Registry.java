@@ -22,7 +22,7 @@ import java.util.Set;
  * @author David Uselmann
  */
 public class Registry<V extends Object, R extends Object> {
-	private static final Logger LOG = LoggerFactory.getLogger(Registry.class);
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(Registry.class);
 
 	// For now this is static and can be refactored into an instance
 	// variable when/if we have an orchestrator that instantiates an registry
@@ -65,7 +65,7 @@ public class Registry<V extends Object, R extends Object> {
 				Class<?> annotatedClass = getAnnotatedClass(bd.getBeanClassName());
 				register(getAnnotationParam(annotatedClass), (Class<R>) annotatedClass);
 			} catch (ClassNotFoundException e) {
-				LOG.error("Failed to register new transformation handler because: ", e);
+				DEV_LOG.error("Failed to register new transformation handler because: ", e);
 			}
 		}
 	}
@@ -109,7 +109,7 @@ public class Registry<V extends Object, R extends Object> {
 			}
 			return handlerClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			LOG.warn("Unable to instantiate the class", e);
+			DEV_LOG.warn("Unable to instantiate the class", e);
 			return null;
 		}
 	}
@@ -121,11 +121,11 @@ public class Registry<V extends Object, R extends Object> {
 	 * @param handler
 	 */
 	public void register(V registryKey, Class<? extends R> handler) {
-		LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
+		DEV_LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
 				+ annotationClass.getSimpleName() + ".");
 		// This could be a class or class name and instantiated on lookup
 		if (registryMap.containsKey(registryKey)) {
-			LOG.error("Duplicate registered handler for " + registryKey
+			DEV_LOG.error("Duplicate registered handler for " + registryKey
 			          + " both " + registryMap.get(registryKey).getName()
 			          + " and " + handler.getName());
 		}

@@ -87,7 +87,7 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 		assertThat("Child Node did not return " + DecodeResult.ERROR , validations, hasItem("Failed to decode."));
 	}
-
+	
 	public static class TestChildDecodeError extends QppXmlDecoder{
 
 		@Override
