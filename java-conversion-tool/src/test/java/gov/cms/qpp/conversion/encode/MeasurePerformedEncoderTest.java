@@ -1,0 +1,44 @@
+package gov.cms.qpp.conversion.encode;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+/**
+ * Created by saquino on 4/14/17.
+ */
+public class MeasurePerformedEncoderTest {
+	private Node measurePerformedNode;
+	private List<Node> nodes;
+
+	@Before
+	public void createNode() {
+		measurePerformedNode = new Node();
+		measurePerformedNode.setId(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		measurePerformedNode.putValue("measurePerformed", "Y");
+
+		nodes = new ArrayList<>();
+		nodes.add(measurePerformedNode);
+	}
+
+	@Test
+	public void testMeasurePerformedEncodesIntoWrapper() throws EncodeException {
+		measurePerformedNode = new Node();
+		measurePerformedNode.setId(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		measurePerformedNode.putValue("measurePerformed", "Y");
+
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		QppOutputEncoder qppOutputEncoder = new QppOutputEncoder();
+
+		qppOutputEncoder.internalEncode(jsonWrapper, measurePerformedNode);
+
+		assertThat("Must return correct encoded result", jsonWrapper.getBoolean("value"), is(true));
+	}
+}
