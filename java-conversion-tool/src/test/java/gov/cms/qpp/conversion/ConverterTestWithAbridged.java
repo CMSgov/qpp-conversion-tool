@@ -15,8 +15,8 @@ public class ConverterTestWithAbridged {
 	public void testWithAbridgedXml() throws IOException {
 		long start = System.currentTimeMillis();
 
-		Converter.main(new String[] { Converter.SKIP_VALIDATION,
-				"src/test/resources/valid-QRDA-III-abridged.xml" });
+		Converter.main(Converter.SKIP_VALIDATION,
+				"src/test/resources/valid-QRDA-III-abridged.xml");
 
 		long finish = System.currentTimeMillis();
 
@@ -33,9 +33,9 @@ public class ConverterTestWithAbridged {
 	public void testMultiThreadRun_testSkipValidationToo() throws IOException {
 		long start = System.currentTimeMillis();
 
-		Converter.main(new String[]{Converter.SKIP_VALIDATION,
+		Converter.main(Converter.SKIP_VALIDATION,
 				"src/test/resources/pathTest/a.xml",
-				"src/test/resources/pathTest/subdir/*.xml"});
+				"src/test/resources/pathTest/subdir/*.xml");
 
 		long finish = System.currentTimeMillis();
 
