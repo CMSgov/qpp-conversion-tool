@@ -24,24 +24,22 @@ public class AutoDetectQrdaTest {
 
 	private PrintStream stdout;
 
-	private static final String EXPECTED_ERROR = "ERROR - The " +
-	                                             "file is not a QRDA-III XML document\n" +
-	                                             "ERROR - The XML file " +
-	                                             "is an unknown document\n";
+	private static final String EXPECTED_ERROR =
+		"ERROR - The file is not a QRDA-III XML document" + System.lineSeparator()+
+		 "ERROR - The XML file is an unknown document" +System.lineSeparator();
+	
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
 	@Before
 	public void setup() throws Exception {
 		Validations.init();
-		System.setProperty("line.separator", "\n");
 		stdout = System.out;
 	}
 
 	@After
 	public void teardown() throws Exception {
 		System.setOut(stdout);
-		System.setProperty("line.separator", System.lineSeparator());
 		Validations.clear();
 	}
 
