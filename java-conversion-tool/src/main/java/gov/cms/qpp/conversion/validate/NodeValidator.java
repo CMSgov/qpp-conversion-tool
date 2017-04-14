@@ -14,7 +14,7 @@ import java.util.List;
  */
 public abstract class NodeValidator {
 
-	private static final Logger LOG = LoggerFactory.getLogger(NodeValidator.class);
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(NodeValidator.class);
 
 	private List<ValidationError> validationErrors = new ArrayList<>();
 
@@ -95,7 +95,7 @@ public abstract class NodeValidator {
 	protected abstract void internalValidateSameTemplateIdNodes(final List<Node> nodes);
 
 	private void logValidationError(final ValidationError newError) {
-		LOG.debug("Error '{}' added for templateId {}", newError, getTemplateId() );
+		DEV_LOG.debug("Error '{}' added for templateId {}", newError, getTemplateId() );
 	}
 
 	/**
