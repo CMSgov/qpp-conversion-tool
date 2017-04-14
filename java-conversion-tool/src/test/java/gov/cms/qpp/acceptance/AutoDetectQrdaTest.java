@@ -22,11 +22,11 @@ import static org.junit.Assert.assertThat;
 
 public class AutoDetectQrdaTest {
 
-	private PrintStream err;
+	private PrintStream stdout;
 
-	private static final String EXPECTED_ERROR = "[main] ERROR gov.cms.qpp.conversion.decode.QppXmlDecoder - The " +
-	                                             "file is not a QRDA-III XML document\n[main] " +
-	                                             "ERROR gov.cms.qpp.conversion.decode.XmlInputDecoder - The XML file " +
+	private static final String EXPECTED_ERROR = "ERROR - The " +
+	                                             "file is not a QRDA-III XML document\n" +
+	                                             "ERROR - The XML file " +
 	                                             "is an unknown document\n";
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -35,12 +35,12 @@ public class AutoDetectQrdaTest {
 	public void setup() throws Exception {
 		Validations.init();
 		System.setProperty("line.separator", "\n");
-		err = System.err;
+		stdout = System.out;
 	}
 
 	@After
 	public void teardown() throws Exception {
-		System.setErr(err);
+		System.setOut(stdout);
 		System.setProperty("line.separator", System.lineSeparator());
 		Validations.clear();
 	}
@@ -53,7 +53,7 @@ public class AutoDetectQrdaTest {
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
 		ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-		System.setErr(new PrintStream(baos1));
+		System.setOut(new PrintStream(baos1));
 
 		//execute
 		XmlInputDecoder.decodeXml(XmlUtils.stringToDOM(xmlFragment));
@@ -70,7 +70,7 @@ public class AutoDetectQrdaTest {
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
 		ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-		System.setErr(new PrintStream(baos2));
+		System.setOut(new PrintStream(baos2));
 
 		//execute
 		XmlInputDecoder.decodeXml(XmlUtils.stringToDOM(xmlFragment));
