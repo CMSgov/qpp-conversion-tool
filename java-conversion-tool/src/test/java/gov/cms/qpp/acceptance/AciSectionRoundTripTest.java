@@ -22,10 +22,6 @@ import static org.junit.Assert.assertThat;
 
 public class AciSectionRoundTripTest {
 
-	private static final String EXPECTED = "{\n  \"category\" : \"aci\",\n  \"measurements\" : [ "
-			+ "{\n    \"measure\" : \"measure1\"\n  } ]\n}";
-
-
 	@Test
 	public void parseSparseAciSectionAsNode() throws XmlException {
 		//set-up
@@ -101,6 +97,9 @@ public class AciSectionRoundTripTest {
 				+ "	</section>\n"
 		        + "</component>";
 
+		String expected = "{\n  \"category\" : \"aci\",\n  \"measurements\" : [ "
+		                                       + "{\n    \"measure\" : \"measure1\"\n  } ]\n}";
+
 		//Decode
 		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
 		// remove default nodes (will fail if defaults change)
@@ -116,7 +115,7 @@ public class AciSectionRoundTripTest {
 		encoder.encode(new BufferedWriter(sw));
 
 		//Test
-		assertThat("expected encoder to return a representation of a measure", sw.toString(), is(EXPECTED));
+		assertThat("expected encoder to return a representation of a measure", sw.toString(), is(expected));
 	}
 
 	private void assertAciSectionHasSingleQedNode(Node aciSectionNode) {
