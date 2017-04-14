@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/flexion/adele-bpa-qpp-conversion-tool.svg?style=shield&circle-token=7747433694389fbec2a45e697b4952ebd0272cea)](https://circleci.com/gh/flexion/adele-bpa-qpp-conversion-tool)
+[![CircleCI](https://circleci.com/gh/CMSgov/qpp-conversion-tool.svg?style=shield&circle-token=138a1805ad2eb5e0a97e740abefd217aea014731)](https://circleci.com/gh/CMSgov/qpp-conversion-tool)
 
 **CMS REVIEWER NOTE: This text below models what an open souce project might look like. The process we used to build the converter is documented in the [Design Process](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/DESIGN_PROCESS.md) page. Links to developer instructions are at [the bottom](#want-to-contribute) of this page**
 
@@ -47,7 +47,7 @@ If you are using a Unix-like OS like Linux or OSX, open a terminal and go to the
 
 ```shell
 # Clone the GitHub repository:
-git clone https://github.com/flexion/adele-bpa-qpp-conversion-tool.git qpp-conversion-tool
+git clone https://github.com/CMSgov/qpp-conversion-tool.git
 
 # Go to the qpp-conversion-tool directory:
 cd qpp-conversion-tool
@@ -63,7 +63,7 @@ If you are using Windows, open a command prompt (not PowerShell) and go to the d
 
 ```shell
 # Clone the GitHub repository:
-git clone https://github.com/flexion/adele-bpa-qpp-conversion-tool.git qpp-conversion-tool
+git clone https://github.com/CMSgov/qpp-conversion-tool.git
 
 # Go to the qpp-conversion-tool directory:
 cd qpp-conversion-tool
@@ -118,5 +118,5 @@ Note: If you are using Windows, replace `./convert.sh` in the examples below wit
 Want to file a bug or contribute some code? Read up on our
 guidelines for [contributing][contributing], and [developer instructions][developer].
 
-[contributing]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/CONTRIBUTING.md
-[developer]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/DEVELOPER.md 
+[contributing]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md
+[developer]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
