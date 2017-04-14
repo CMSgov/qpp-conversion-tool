@@ -22,7 +22,7 @@ public class AggregateCountFailureTest {
 		errorFile.delete();
 
 		//execute
-		Converter.main(new String[]{"src/test/resources/negative/QRDA-III-invalid-aggregate-count.xml"});
+		Converter.main("src/test/resources/negative/QRDA-III-invalid-aggregate-count.xml");
 
 		//assert
 		assertThat("The error file must exist", errorFile.exists(), is(true));
