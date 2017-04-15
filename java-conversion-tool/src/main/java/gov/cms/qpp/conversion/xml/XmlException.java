@@ -11,4 +11,8 @@ public class XmlException extends Exception {
 	public XmlException(String message, Exception cause) {
 		super(message, cause);
 	}
+
+	public XmlException(String message) {
+		super(message);
+	}
 }

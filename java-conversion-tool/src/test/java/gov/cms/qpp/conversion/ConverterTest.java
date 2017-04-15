@@ -19,10 +19,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.FileSystems;
@@ -36,6 +33,7 @@ import java.util.regex.Pattern;
 
 import org.jdom2.Element;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
@@ -302,7 +300,7 @@ public class ConverterTest {
 	}
 
 	@Test
-	@PrepareForTest({LoggerFactory.class})
+	@PrepareForTest({LoggerFactory.class, Converter.class})
 	public void testInvalidXml() {
 
 		//set-up
@@ -316,7 +314,8 @@ public class ConverterTest {
 		Converter.main("src/test/resources/non-xml-file.xml");
 
 		//assert
-		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		//verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(clientLogger).error( eq("The file is not a valid XML document") );
 	}
 
 	@Test
@@ -333,7 +332,7 @@ public class ConverterTest {
 		QppOutputEncoder encoder = mock( QppOutputEncoder.class );
 		whenNew( QppOutputEncoder.class ).withNoArguments().thenReturn( encoder );
 		EncodeException ex = new EncodeException( "mocked", new RuntimeException() );
-		doThrow( ex ).when( encoder ).encode( any( FileWriter.class ) );
+		doThrow( ex ).when( encoder ).encode();
 
 		//execute
 		Converter.main(Converter.SKIP_VALIDATION,
@@ -363,7 +362,8 @@ public class ConverterTest {
 				"src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(devLogger).error( eq("Could not write to file: {}"),
+				eq("defaultedNode.qpp.json"), any(IOException.class) );
 	}
 
 	@Test
@@ -407,7 +407,8 @@ public class ConverterTest {
 				"src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(devLogger).error( eq("Could not write to file: {}"),
+				eq("defaultedNode.qpp.json"), any(IOException.class) );
 	}
 
 	@Test
@@ -474,16 +475,15 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException {
-
+	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException, IOException {
 		Converter converter = new Converter(Paths.get("src/test/resources/not-a-QRDA-III-file.xml"));
 
 		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");
 		transformMethod.setAccessible(true);
 
-		Integer returnValue = (Integer)transformMethod.invoke(converter);
+		InputStream returnValue = (InputStream)transformMethod.invoke(converter);
 
-		assertThat("Should not have a valid clinical document template id", returnValue, is(2));
+		assertEquals("Should not have a valid clinical document template id", returnValue.available(), 0);
 	}
 
 	public static class JennyDecoder extends DefaultDecoder {

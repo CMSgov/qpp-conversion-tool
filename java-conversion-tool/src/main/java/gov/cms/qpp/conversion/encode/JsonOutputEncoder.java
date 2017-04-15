@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.util.List;
 
@@ -31,6 +32,17 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 		} catch (IOException e) {
 			throw new EncodeException("Failure to encode", e);
 		}
+	}
+
+	@Override
+	public String encode() throws EncodeException {
+		Validations.init();
+
+		JsonWrapper wrapper = new JsonWrapper();
+		for (Node curNode : nodes) {
+			encode(wrapper, curNode);
+		}
+		return wrapper.toString();
 	}
 
 	@Override
