@@ -12,13 +12,27 @@
     <artifactId>lambdize</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
-    <name>lambda-ized-conversion-tool</name>
+    <name>AWS Lambda</name>
+
+    <prerequisites>
+        <maven>3.0</maven>
+    </prerequisites>
 
     <dependencies>
+        <dependency>
+            <groupId>gov.cms.qpp.conversion</groupId>
+            <artifactId>java-conversion-tool</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-lambda-java-core</artifactId>
             <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-events</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
