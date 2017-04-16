@@ -26,7 +26,7 @@ dependencies:
 test:
   pre:
     - cd frontend; npm install -g protractor
-    - cp java-conversion-tool/sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
+    - cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
   override:
     - mvn clean package -Djacoco.skip.instrument=false
     - mvn integration-test
