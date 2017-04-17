@@ -14,7 +14,7 @@ import java.util.List;
 public class IaMeasurePerformedValidator extends NodeValidator {
 
 	public static final String TYPE_ERROR = "Measure performed value is required and must be either a Y or an N.\n\t%s";
-	public static final String TOO_MANY_CHILDREN = "Measure performed must have exactly one child.\n\t%s";
+	public static final String INCORRECT_CHILDREN_COUNT  = "Measure performed must have exactly one child.\n\t%s";
     private static final String FIELD = "measurePerformed";
 	/**
 	 * Validates a single IA Measure Performed Value {@link Node}.
@@ -32,7 +32,7 @@ public class IaMeasurePerformedValidator extends NodeValidator {
 	//	check( node ).value( VALUE_ERROR, FIELD );
 		List<Node> children = node.getChildNodes();
 		if ( children == null || children.size() != 1 ){
-			addValidationError(new ValidationError(String.format(TOO_MANY_CHILDREN, node.toString())));
+			addValidationError(new ValidationError(String.format(INCORRECT_CHILDREN_COUNT , node.toString())));
 			return;
 		}
 		String value = children.get(0).getValue(FIELD);
@@ -43,7 +43,7 @@ public class IaMeasurePerformedValidator extends NodeValidator {
 
 	/**
 	 * Checks the interdependancy of nodes in the parsed tree.
-	 * IA Measure Performed has no dependancies on other nodes in the document.
+	 * IA Measure Performed has no dependencies on other nodes in the document.
 	 * @param nodes The list of nodes to validate.
 	 */
 	@Override
