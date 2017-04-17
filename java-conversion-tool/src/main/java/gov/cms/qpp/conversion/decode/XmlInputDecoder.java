@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
@@ -7,8 +8,6 @@ import org.jdom2.Namespace;
 import org.jdom2.filter.Filter;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -22,8 +21,7 @@ import java.util.function.Consumer;
  */
 public abstract class XmlInputDecoder implements InputDecoder, Validatable<String, String> {
 
-	private static final Logger LOG = LoggerFactory.getLogger(XmlInputDecoder.class);
-	protected Namespace defaultNs; 
+	protected Namespace defaultNs;
 	protected Namespace xpathNs;
 
 	/**
@@ -40,7 +38,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 			}
 		}
 
-		LOG.error("The XML file is an unknown document");
+		Converter.CLIENT_LOG.error("The XML file is an unknown document");
 
 		return null;
 	}

@@ -39,6 +39,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
@@ -46,7 +47,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
 import gov.cms.qpp.conversion.decode.DecodeResult;
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -59,6 +59,7 @@ import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 
 @RunWith(PowerMockRunner.class)
+@PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
 public class ConverterTest {
 
 	private static final String SEPERATOR = FileSystems.getDefault().getSeparator();
@@ -245,13 +246,12 @@ public class ConverterTest {
 
 
 	@Test
-	@PrepareForTest(QppXmlDecoder.class)
 	public void testDefaults() throws Exception {
 		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
 		AnnotationMockHelper.mockEncoder("867.5309", Jenncoder.class);
 
-		Converter.main(new String[]{Converter.SKIP_VALIDATION,
-				"src/test/resources/converter/defaultedNode.xml"});
+		Converter.main(Converter.SKIP_VALIDATION,
+				"src/test/resources/converter/defaultedNode.xml");
 
 		Path jennyJson = Paths.get("defaultedNode.qpp.json");
 		String content = new String(Files.readAllBytes(jennyJson));
@@ -261,9 +261,9 @@ public class ConverterTest {
 
 	@Test
 	public void testSkipDefaults() throws Exception {
-		Converter.main(new String[]{Converter.SKIP_VALIDATION,
+		Converter.main(Converter.SKIP_VALIDATION,
 				Converter.SKIP_DEFAULTS,
-				"src/test/resources/converter/defaultedNode.xml"});
+				"src/test/resources/converter/defaultedNode.xml");
 
 		Path jennyJson = Paths.get("defaultedNode.qpp.json");
 		String content = new String(Files.readAllBytes(jennyJson));
@@ -288,7 +288,7 @@ public class ConverterTest {
 		Files.deleteIfExists(defaultError);
 
 		//execute
-		Converter.main(new String[]{"src/test/resources/converter/errantDefaultedNode.xml"});
+		Converter.main("src/test/resources/converter/errantDefaultedNode.xml");
 
 		//assert
 		assertThat("The JSON file must not exist", Files.exists(defaultJson), is(false));
@@ -306,15 +306,17 @@ public class ConverterTest {
 	public void testInvalidXml() {
 
 		//set-up
-		mockStatic(LoggerFactory.class);
-		Logger logger = mock(Logger.class);
-		when(LoggerFactory.getLogger(any(Class.class))).thenReturn(logger);
+		mockStatic( LoggerFactory.class );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		//execute
-		Converter.main(new String[]{"src/test/resources/non-xml-file.xml"});
+		Converter.main("src/test/resources/non-xml-file.xml");
 
 		//assert
-		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
 	}
 
 	@Test
@@ -323,8 +325,10 @@ public class ConverterTest {
 
 		//set-up
 		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		QppOutputEncoder encoder = mock( QppOutputEncoder.class );
 		whenNew( QppOutputEncoder.class ).withNoArguments().thenReturn( encoder );
@@ -332,13 +336,12 @@ public class ConverterTest {
 		doThrow( ex ).when( encoder ).encode( any( FileWriter.class ) );
 
 		//execute
-		Converter.main(new String[]{Converter.SKIP_VALIDATION,
+		Converter.main(Converter.SKIP_VALIDATION,
 				Converter.SKIP_DEFAULTS,
-				"src/test/resources/converter/defaultedNode.xml"
-		});
+				"src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class));
+		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class));
 	}
 
 	@Test
@@ -349,17 +352,18 @@ public class ConverterTest {
 		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toThrow( new IOException() );
 
 		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		//execute
-		Converter.main(new String[]{Converter.SKIP_VALIDATION,
+		Converter.main(Converter.SKIP_VALIDATION,
 				Converter.SKIP_DEFAULTS,
-				"src/test/resources/converter/defaultedNode.xml"
-		});
+				"src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
 	}
 
 	@Test
@@ -371,13 +375,12 @@ public class ConverterTest {
 
 		mockStatic( LoggerFactory.class );
 		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( logger );
 
 		//execute
-		Converter.main(new String[]{Converter.SKIP_VALIDATION,
+		Converter.main(Converter.SKIP_VALIDATION,
 				Converter.SKIP_DEFAULTS,
-				"src/test/resources/converter/defaultedNode.xml"
-		});
+				"src/test/resources/converter/defaultedNode.xml");
 
 		//assert
 		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(NullPointerException.class) );
@@ -393,17 +396,18 @@ public class ConverterTest {
 		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn( writer );
 
 		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		//execute
-		Converter.main(new String[]{Converter.SKIP_VALIDATION,
+		Converter.main(Converter.SKIP_VALIDATION,
 				Converter.SKIP_DEFAULTS,
-				"src/test/resources/converter/defaultedNode.xml"
-		});
+				"src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(logger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
 	}
 
 	@Test
@@ -414,14 +418,16 @@ public class ConverterTest {
 		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toThrow( new IOException() );
 
 		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		//execute
-		Converter.main(new String[]{"src/test/resources/converter/defaultedNode.xml"});
+		Converter.main("src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(logger).error( eq("Could not write to file: {}" ),
+		verify(devLogger).error( eq("Could not write to file: {}" ),
 				eq( "defaultedNode.err.txt" ), any(String.class) );
 	}
 
@@ -434,10 +440,10 @@ public class ConverterTest {
 
 		mockStatic( LoggerFactory.class );
 		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( logger );
 
 		//execute
-		Converter.main(new String[]{"src/test/resources/converter/defaultedNode.xml"});
+		Converter.main("src/test/resources/converter/defaultedNode.xml");
 
 		//assert
 		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(NullPointerException.class) );
@@ -453,14 +459,16 @@ public class ConverterTest {
 		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn( writer );
 
 		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger( any(Class.class) ) ).thenReturn( logger );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
 
 		//execute
-		Converter.main(new String[] {"src/test/resources/converter/defaultedNode.xml"});
+		Converter.main("src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(logger).error( eq("Could not write to file: {}" ),
+		verify(devLogger).error( eq("Could not write to file: {}" ),
 				eq("defaultedNode.err.txt"),
 				any(IOException.class) );
 	}
