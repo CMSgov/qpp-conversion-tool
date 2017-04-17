@@ -137,7 +137,7 @@ public class AciDenominatorValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("Invalid Value Validation Error not issued", errors.get(0).getErrorText(),
-				is(String.format(AciNumeratorDenominatorValidator.DENOMINATOR_CANNOT_BE_ZERO, value, aciDenominatorNode)));
+				is(String.format(CommonNumeratorDenominatorValidator.DENOMINATOR_CANNOT_BE_ZERO, value, aciDenominatorNode)));
 
 
 	}
