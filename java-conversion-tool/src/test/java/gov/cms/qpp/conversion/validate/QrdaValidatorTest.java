@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -24,6 +25,7 @@ import static org.hamcrest.core.IsNull.nullValue;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(QrdaValidator.class)
+@PowerMockIgnore({"org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
 public class QrdaValidatorTest {
 
 	private QrdaValidator objectUnderTest;

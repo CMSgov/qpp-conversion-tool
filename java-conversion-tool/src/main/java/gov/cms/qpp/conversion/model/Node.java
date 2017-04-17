@@ -227,7 +227,7 @@ public class Node implements Serializable {
 	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id or null
 	 * if no matches are found
 	 */
-	protected Node findFirstNode(String id) {
+	public Node findFirstNode(String id) {
 		List<Node> nodes = this.findNode(id, Node::foundNode);
 		return nodes.isEmpty() ? null : nodes.get(0);
 	}
