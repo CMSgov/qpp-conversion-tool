@@ -48,6 +48,14 @@
 				<artifactId>pitest-maven</artifactId>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.4</version>
+				<configuration>
+					<show>private</show>
+				</configuration>
+			</plugin>
+			<plugin>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 			</plugin>
 		</plugins>
