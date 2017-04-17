@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 
@@ -18,5 +19,5 @@ public interface OutputEncoder {
 	/**
 	 * Encode data to a String
 	 */
-	String encode() throws EncodeException;
+	InputStream encode() throws EncodeException;
 }

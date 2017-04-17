@@ -39,7 +39,7 @@ public class XmlUtils {
 		if (xml == null) {
 			return null;
 		}
-		
+
 		return parseXmlStream(new ByteArrayInputStream(xml.getBytes()));
 	}
 
@@ -81,5 +81,5 @@ public class XmlUtils {
 		return Arrays.stream(parts)
 				.collect(Collectors.joining());
 	}
-	
+
 }

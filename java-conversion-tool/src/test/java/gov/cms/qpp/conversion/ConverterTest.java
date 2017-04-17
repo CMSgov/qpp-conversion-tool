@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import org.jdom2.Element;
 import org.junit.After;
 import org.junit.Before;
@@ -332,7 +333,7 @@ public class ConverterTest {
 		QppOutputEncoder encoder = mock( QppOutputEncoder.class );
 		whenNew( QppOutputEncoder.class ).withNoArguments().thenReturn( encoder );
 		EncodeException ex = new EncodeException( "mocked", new RuntimeException() );
-		doThrow( ex ).when( encoder ).encode();
+		doThrow( ex ).when( encoder ).encode( any(Writer.class) );
 
 		//execute
 		Converter.main(Converter.SKIP_VALIDATION,
@@ -362,8 +363,8 @@ public class ConverterTest {
 				"src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(devLogger).error( eq("Could not write to file: {}"),
-				eq("defaultedNode.qpp.json"), any(IOException.class) );
+		verify(devLogger).error( eq("The file is not a valid XML document"),
+				any(XmlInputFileException.class) );
 	}
 
 	@Test
@@ -407,8 +408,8 @@ public class ConverterTest {
 				"src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(devLogger).error( eq("Could not write to file: {}"),
-				eq("defaultedNode.qpp.json"), any(IOException.class) );
+		verify(devLogger).error( eq("The file is not a valid XML document"),
+				any(XmlInputFileException.class) );
 	}
 
 	@Test
@@ -481,9 +482,9 @@ public class ConverterTest {
 		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");
 		transformMethod.setAccessible(true);
 
-		InputStream returnValue = (InputStream)transformMethod.invoke(converter);
+		Integer returnValue = (Integer)transformMethod.invoke(converter);
 
-		assertEquals("Should not have a valid clinical document template id", returnValue.available(), 0);
+		assertEquals("Should not have a valid clinical document template id", returnValue.intValue(),2);
 	}
 
 	public static class JennyDecoder extends DefaultDecoder {

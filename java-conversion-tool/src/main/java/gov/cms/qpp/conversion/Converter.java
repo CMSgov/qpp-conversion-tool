@@ -72,7 +72,7 @@ public class Converter {
 	 *
 	 * @param xmlStream input stream for xml content
 	 */
-	public Converter(InputStream xmlStream, String fileName) {
+	public Converter(InputStream xmlStream) {
 		this.xmlStream = xmlStream;
 		this.inFile = null;
 	}
@@ -236,93 +236,131 @@ public class Converter {
 		return Pattern.compile(regex);
 	}
 
-	public InputStream transform(){
-		String content = "";
+	public Integer transform(){
 		try {
-			content = (inFile != null) ? transform(inFile) : transform(xmlStream);
+			if (inFile != null) {
+				transform(inFile);
+			} else {
+				transform(xmlStream);
+			}
 		} catch (XmlInputFileException | XmlException xe) {
 			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
 		} catch (Exception allE) {
 			DEV_LOG.error("Unexpected exception occurred during conversion", allE);// Eat all exceptions in the call
+		} finally {
+			return getStatus();
 		}
-		return new ByteArrayInputStream( content.getBytes() );
 	}
 
-	private String transform(Path inFile) throws XmlException, IOException{
+	private Integer getStatus(){
+		Integer status = 0;
+		if (null == decoded){
+			status = 2;
+		} else{
+			status = (validationErrors.isEmpty()) ? 0 : 1;
+		}
+		return status;
+	}
+
+	private Node transform(Path inFile) throws XmlException, IOException{
 		String inputFileName = inFile.getFileName().toString().trim();
-		String returnValue = transform(XmlUtils.fileToStream(inFile));
-		Path outFile = getOutputFile(inputFileName, getFileExtension());
+		Node decoded = transform(XmlUtils.fileToStream(inFile));
+		Path outFile = getOutputFile(inputFileName);
+		Integer status = 0;
 
-		try (Writer writer = Files.newBufferedWriter( outFile )) {
-
-			CLIENT_LOG.info("Writing to file '{}'", outFile.toAbsolutePath());
-			writer.write( returnValue );
-			writer.flush();
-		} catch (IOException e) { // coverage ignore candidate
-			DEV_LOG.error("Could not write to file: {}", outFile.toString(), e);
+		if(decoded != null) {
+			if (validationErrors.isEmpty()) {
+				writeConverted(decoded, outFile);
+			} else {
+				writeValidationErrors(validationErrors, outFile);
+			}
 		}
 
-		return returnValue;
+		return decoded;
 	}
 
 	public String getFileExtension() {
 		return (validationErrors != null && !validationErrors.isEmpty()) ? ".err.txt" : ".qpp.json";
 	}
 
-	private String transform(InputStream inStream) throws XmlException {
+	private Node transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
 		validationErrors = Collections.emptyList();
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
-		String returnValue;
+		if (null != decoded) {
+			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), inStream);
 
-		if (null == decoded) {
-			throw new XmlException(NOT_VALID_XML_DOCUMENT);
+			if (!doDefaults) {
+				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
+			}
+			if (doValidation) {
+				validationErrors = validator.validate(decoded);
+			}
 		}
 
-		CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), inStream);
-
-		if (!doDefaults) {
-			DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
-		}
-		if (doValidation) {
-			validationErrors = validator.validate(decoded);
-		}
-		if (validationErrors.isEmpty()) {
-			returnValue = writeConverted(decoded);
-		} else {
-			returnValue = writeValidationErrors(validationErrors);
-		}
-
-		return returnValue;
+		return decoded;
 	}
 
-	private String writeConverted(Node decoded) {
+	private void writeConverted(Node decoded, Path outFile) {
 		JsonOutputEncoder encoder = new QppOutputEncoder();
-		CLIENT_LOG.info("Decoded template ID {}", decoded.getId());
-		String encoded;
-		try {
+
+		CLIENT_LOG.info("Decoded template ID {} to file '{}'", decoded.getId(), outFile);
+
+		try ( Writer writer = Files.newBufferedWriter(outFile) ){
 			encoder.setNodes(Arrays.asList(decoded));
-			encoded = encoder.encode();
-		} catch (EncodeException e) { // coverage ignore candidate
+			encoder.encode(writer);
+			// do something with encode validations
+		} catch (IOException | EncodeException e) { // coverage ignore candidate
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
 		} finally {
 			Validations.clear();
 		}
-
-		return encoded;
 	}
 
-	private String writeValidationErrors(List<ValidationError> validationErrors) {
+	private void writeValidationErrors(List<ValidationError> validationErrors, Path outFile) {
+		try (Writer errWriter = Files.newBufferedWriter(outFile)) {
+			for (ValidationError error : validationErrors) {
+				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
+			}
+		} catch (IOException e) { // coverage ignore candidate
+			DEV_LOG.error("Could not write to file: {}", outFile.toString(), e);
+		} finally {
+			Validations.clear();
+		}
+	}
+
+	public InputStream getConversionResult(){
+		return (validationErrors != null && !validationErrors.isEmpty())
+				? writeValidationErrors()
+				: writeConverted() ;
+	}
+
+	private InputStream writeConverted() {
+
+		JsonOutputEncoder encoder = new QppOutputEncoder();
+		CLIENT_LOG.info("Decoded template ID {}", decoded.getId());
+
+		try {
+			encoder.setNodes(Arrays.asList(decoded));
+			return encoder.encode();
+		} catch (EncodeException e) {
+			throw new XmlInputFileException("Issues decoding/encoding.", e);
+		} finally {
+			Validations.clear();
+		}
+	}
+
+	private InputStream writeValidationErrors() {
 		String errors = validationErrors.stream()
 				.map(error -> "Validation Error: " + error.getErrorText())
 				.collect(Collectors.joining(System.lineSeparator()));
 		Validations.clear();
-		return errors;
+		return new ByteArrayInputStream( errors.getBytes() );
 	}
 
-	private Path getOutputFile(String name, String extension) {
-		String outName = name.replaceFirst("(?i)(\\.xml)?$", extension);
+	public Path getOutputFile(String name) {
+		String outName = name.replaceFirst("(?i)(\\.xml)?$", getFileExtension());
 		Path outFile = Paths.get(outName);
 		return outFile;
 	}

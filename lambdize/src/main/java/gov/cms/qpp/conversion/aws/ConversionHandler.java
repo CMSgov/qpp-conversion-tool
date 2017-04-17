@@ -12,7 +12,6 @@ import com.amazonaws.services.s3.model.S3Object;
 import gov.cms.qpp.conversion.Converter;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -23,15 +22,20 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			S3EventNotificationRecord record = s3event.getRecords().get(0);
 			String srcBucket = record.getS3().getBucket().getName();
 			String srcKey = formatSourceKey(record);
-			String dstBucket = srcBucket + "-destination";
-			String dstKey = "converted-" + srcKey;
+			String filename = srcKey.replaceAll(".*/","");
 
 			AmazonS3 s3Client = AmazonS3ClientBuilder.standard().build();
 			S3Object s3Object = s3Client.getObject( new GetObjectRequest(srcBucket, srcKey));
-			InputStream objectData = convert(s3Object.getObjectContent(), srcKey);
 
-			ObjectMetadata meta = new ObjectMetadata();
-			s3Client.putObject(dstBucket, dstKey, objectData, meta);
+			Converter converter = new Converter(s3Object.getObjectContent());
+			Integer status = converter.transform();
+
+			if (status < 2){
+				String dstKey = "post-conversion/" + converter.getOutputFile(filename);
+				ObjectMetadata meta = new ObjectMetadata();
+				s3Client.putObject(srcBucket, dstKey, converter.getConversionResult(), meta);
+			}
+
 			return "Ok";
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -41,10 +45,5 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 	private String formatSourceKey(S3EventNotificationRecord record) throws UnsupportedEncodingException {
 		String srcKey = record.getS3().getObject().getKey().replace('+', ' ');
 		return URLDecoder.decode(srcKey, "UTF-8");
-	}
-
-	private InputStream convert(InputStream objectData, String name) {
-		Converter converter = new Converter(objectData, name);
-		return converter.transform();
 	}
 }
