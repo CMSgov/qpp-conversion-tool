@@ -35,7 +35,7 @@ public class AciSectionRoundTripTest {
 				+ "	</section>\n" + "</component>";
 
 		//Decode
-		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(measureNode.getChildNodes());
 

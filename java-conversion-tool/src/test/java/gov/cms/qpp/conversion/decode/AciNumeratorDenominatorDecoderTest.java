@@ -25,7 +25,7 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node aggregateCountNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node aggregateCountNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the
@@ -49,7 +49,7 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the
@@ -71,7 +71,7 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the
@@ -86,7 +86,7 @@ public class AciNumeratorDenominatorDecoderTest {
 
 	@Test
 	public void decodeAciNumeratorDenominatorValidTest() throws XmlException {
-		Node aciMeasureNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(getValidXmlFragment()));
+		Node aciMeasureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(getValidXmlFragment()));
 		assertThat("Decoded xml fragment should contain some nodes",
 				aciMeasureNode.getChildNodes().size(), is(2));
 
@@ -118,7 +118,7 @@ public class AciNumeratorDenominatorDecoderTest {
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
 
-		Node aciMeasureNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node aciMeasureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		assertThat("Decoded xml fragment should contain some nodes",
 				aciMeasureNode.getChildNodes().size(), is(2));
 

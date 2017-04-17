@@ -94,7 +94,7 @@ public class AciProportionMeasureDecoderTest {
 				+ "	</organizer>\n"
 				+ "</entry>";
 
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(root.getChildNodes());
 
@@ -136,7 +136,7 @@ public class AciProportionMeasureDecoderTest {
 				+ "	</organizer>\n"
 				+ "</entry>";
 
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));

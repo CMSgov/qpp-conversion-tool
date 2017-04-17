@@ -27,9 +27,9 @@ public class AggregateCountValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		check( node )
-			.value( VALUE_ERROR, "aggregateCount" )
-			.intValue( TYPE_ERROR, "aggregateCount" );
+		check(node)
+			.value(VALUE_ERROR, "aggregateCount")
+			.intValue(TYPE_ERROR, "aggregateCount");
 	}
 
 	@Override

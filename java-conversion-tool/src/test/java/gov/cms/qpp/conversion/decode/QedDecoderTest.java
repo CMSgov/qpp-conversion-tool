@@ -22,7 +22,7 @@ public class QedDecoderTest {
 				+ "</root>";
 	
 		// Get the root wrapper node
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		assertThat("root node should not be null", root, is(not(nullValue())));
 		// Make sure we get have target
 		assertThat("root node should have one child node", root.getChildNodes().size(), is(1));

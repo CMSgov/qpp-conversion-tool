@@ -37,7 +37,7 @@ public class AciProportionDenominatorDecoderTest {
 				+ "     </entryRelationship>\n"
 				+ " </observation>\n"
 				+ "</component>";
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));
@@ -78,7 +78,7 @@ public class AciProportionDenominatorDecoderTest {
 			+ "    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>"
 			+ "  </observation>"
 			+ " </component>";
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
 		// This node is the place holder around the root node
 		assertThat("returned node should not be null", root, is(not(nullValue())));

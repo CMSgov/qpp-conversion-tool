@@ -19,12 +19,12 @@ public class AciProportionMeasureDecoder extends QppXmlDecoder {
 	 * Decodes an ACI Numerator Denominator Type Measure into an intermediate node
 	 *
 	 * @param element Element XML element that represents the ACI Numerator Denominator Type Measure
-	 * @param thisNode Node that represents the ACI Numerator Denominator Type Measure. It is updated in this method.
+	 * @param thisNode Node that represents the ACI Numerator Denominator Type Measure.
+	 *  It is updated in this method.
 	 * @return DecodeResult
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
-
 		setMeasureIdOnNode(element, thisNode);
 
 		return DecodeResult.TREE_CONTINUE;

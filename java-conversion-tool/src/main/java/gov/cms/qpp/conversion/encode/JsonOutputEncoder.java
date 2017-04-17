@@ -33,6 +33,14 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 		}
 	}
 
+	public final void encode(JsonWrapper wrapper, Node node) {
+		try {
+			internalEncode(wrapper, node);
+		} catch (EncodeException e) {
+			Validations.addValidation(e.getTemplateId(), e.getMessage());
+		}
+	}
+
 	@Override
 	public Iterable<String> validations() {
 		return Validations.values();
@@ -54,14 +62,6 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 
 	public void setNodes(List<Node> someNodes) {
 		this.nodes = someNodes;
-	}
-
-	public final void encode(JsonWrapper wrapper, Node node) {
-		try {
-			internalEncode(wrapper, node);
-		} catch (EncodeException e) {
-			Validations.addValidation(e.getTemplateId(), e.getMessage());
-		}
 	}
 
 	protected abstract void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException;

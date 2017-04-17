@@ -67,6 +67,15 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	}
 
 	/**
+	 * Abstraction of decode for an element to a node
+	 * 
+	 * @param element Element to be decoded
+	 * @param parent Node to be decoded into
+ 	 * @return Action to take after decode
+	 */
+	protected abstract DecodeResult decode(Element element, Node parent);
+
+	/**
 	 * Sets xml namespace
 	 *
 	 * @param element Element that hold the namespace
@@ -80,7 +89,8 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 			Constructor<Namespace> constructor = Namespace.class.getDeclaredConstructor(String.class, String.class);
 			constructor.setAccessible(true);
 			decoder.xpathNs = constructor.newInstance("ns", decoder.defaultNs.getURI());
-		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
 			throw new IllegalArgumentException("Cannot construct special Xpath namespace", e);
 		}
 	}
@@ -94,7 +104,8 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @param filter Filter to apply for the xpath
 	 * @param selectOne Whether to execute for the first match or multiple matches
 	 */
-	protected void setOnNode(Element element, String expressionStr, Consumer consumer, Filter<?> filter, boolean selectOne) {
+	protected void setOnNode(Element element, String expressionStr,
+			Consumer consumer, Filter<?> filter, boolean selectOne) {
 		XPathExpression<?> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
 		
 		if (selectOne) {
@@ -103,15 +114,6 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 			Optional.ofNullable(expression.evaluate(element)).ifPresent(consumer);
 		}
 	}
-
-	/**
-	 * Abstraction of decode for an element to a node
-	 * 
-	 * @param element Element to be decoded
-	 * @param parent Node to be decoded into
- 	 * @return Action to take after decode
-	 */
-	protected abstract DecodeResult decode(Element element, Node parent);
 
 	/**
 	 * Top level element to decode
