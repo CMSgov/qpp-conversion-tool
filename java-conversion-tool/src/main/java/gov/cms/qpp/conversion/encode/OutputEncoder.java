@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Writer;
 
 /**

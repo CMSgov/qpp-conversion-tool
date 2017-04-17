@@ -280,7 +280,7 @@ public class Converter {
 		return decoded;
 	}
 
-	public String getFileExtension() {
+	private String getFileExtension() {
 		return (validationErrors != null && !validationErrors.isEmpty()) ? ".err.txt" : ".qpp.json";
 	}
 
