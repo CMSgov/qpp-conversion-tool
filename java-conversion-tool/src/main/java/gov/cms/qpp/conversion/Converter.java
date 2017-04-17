@@ -78,8 +78,8 @@ public class Converter {
 	/**
 	 * validArgs checks the command line parameters and verifies the existence of Files.
 	 *
-	 * @param args String[] Command line parameters
-	 * @return Collection<File> list of file(s) that are to be transformed
+	 * @param args Command line parameters.
+	 * @return  A list of file(s) that are to be transformed.
 	 */
 	protected static Collection<Path> validArgs(String[] args) {
 		if (args.length < 1) {
@@ -122,8 +122,8 @@ public class Converter {
 	/**
 	 * Produce collection of files found within the given path
 	 *
-	 * @param path String file location
-	 * @return Collection<File> list of files at the file location
+	 * @param path A file location.
+	 * @return The list of files at the file location.
 	 */
 	protected static Collection<Path> checkPath(String path) {
 		Collection<Path> existingFiles = new LinkedList<>();
