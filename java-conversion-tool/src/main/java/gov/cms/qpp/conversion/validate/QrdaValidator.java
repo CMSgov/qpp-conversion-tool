@@ -99,7 +99,7 @@ public class QrdaValidator {
 	}
 
 	/**
-	 * Adds the node to a map of template IDs -> {@link gov.cms.qpp.conversion.model.Node}s that are of that
+	 * Adds the node to a map of template IDs to {@link gov.cms.qpp.conversion.model.Node}s that are of that
 	 * template ID.
 	 *
 	 * @param node The node to add to the map.
