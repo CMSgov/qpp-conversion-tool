@@ -2,8 +2,11 @@ package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.Test;
 
@@ -13,15 +16,72 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 
 public class AciSectionRoundTripTest {
 
-	private static final String EXPECTED = "{\n  \"category\" : \"aci\",\n  \"measurements\" : [ "
-			+ "{\n    \"measure\" : \"measure1\"\n  } ]\n}";
+	@Test
+	public void parseSparseAciSectionAsNode() throws XmlException {
+		//set-up
+		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+		                     + "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
+		                     + "	<section>\n" + "		<!-- Measure Section -->\n"
+		                     + "		<templateId root=\"2.16.840.1.113883.10.20.24.2.2\"/>\n"
+		                     + "		<!-- Advancing Care Information Section templateId -->\n"
+		                     + "		<templateId root=\"2.16.840.1.113883.10.20.27.2.5\" extension=\"2016-09-01\"/>\n"
+		                     + "		<code code=\"55186-1\" codeSystem=\"2.16.840.1.113883.6.1\" displayName=\"Measure Section\"/>\n"
+		                     + "		<title>Measure Section</title>\n" + "		<text>\n" + "		</text>\n"
+		                     + "		<entry>\n"
+		                     + "			<qed resultName=\"measure\" resultValue=\"measure1\">\n"
+		                     + "				<templateId root=\"Q.E.D\"/>\n"
+		                     + "			</qed>"
+		                     + "		</entry>\n"
+		                     + "	</section>\n"
+		                     + "</component>";
+
+		//execute
+		Node parentNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
+
+		//assert
+		Node aciSectionNode = parentNode.findFirstNode(TemplateId.ACI_SECTION.getTemplateId());
+		assertAciSectionHasSingleQedNode(aciSectionNode);
+	}
 
 	@Test
-	public void parseAciNumeratorDenominatorAsNode() throws Exception {
+	public void parseGarbageAciSectionAsNode() throws XmlException {
+		//set-up
+		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+		                     + "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
+		                     + "	<section>\n" + "		<!-- Measure Section -->\n"
+		                     + "		<templateId root=\"2.16.840.1.113883.10.20.24.2.2\"/>\n"
+		                     + "		<!-- Advancing Care Information Section templateId -->\n"
+		                     + "		<templateId root=\"2.16.840.1.113883.10.20.27.2.5\" extension=\"2016-09-01\"/>\n"
+		                     + "		<code code=\"55186-1\" codeSystem=\"2.16.840.1.113883.6.1\" displayName=\"Measure Section\"/>\n"
+		                     + "        <statusCode code=\"Death and Destruction!\" />\n"
+		                     + "        Utter garbage!  Buahahahahaha!\n"
+		                     + "		<title>Measure Section</title>\n" + "		<text>\n" + "		</text>\n"
+		                     + "		<entry>\n"
+		                     + "			<qed resultName=\"measure\" resultValue=\"measure1\">\n"
+		                     + "				<templateId root=\"Q.E.D\"/>\n"
+		                     + "			</qed>"
+		                     + "		</entry>\n"
+		                     + "	</section>\n"
+		                     + "</component>";
+
+		//execute
+		Node parentNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
+
+		//assert
+		Node aciSectionNode = parentNode.findFirstNode(TemplateId.ACI_SECTION.getTemplateId());
+		assertAciSectionHasSingleQedNode(aciSectionNode);
+	}
+
+	@Test
+	public void parseAciSectionAsJson() throws EncodeException, XmlException {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 				+ "	<section>\n" + "		<!-- Measure Section -->\n"
@@ -31,8 +91,14 @@ public class AciSectionRoundTripTest {
 				+ "		<code code=\"55186-1\" codeSystem=\"2.16.840.1.113883.6.1\" displayName=\"Measure Section\"/>\n"
 				+ "		<title>Measure Section</title>\n" + "		<text>\n" + "		</text>\n" + "		<entry>\n"
 				+ "			<qed resultName=\"measure\" resultValue=\"measure1\">\n"
-				+ "				<templateId root=\"Q.E.D\"/>\n" + "			</qed>" + "		</entry>\n"
-				+ "	</section>\n" + "</component>";
+				+ "				<templateId root=\"Q.E.D\"/>\n"
+		        + "			</qed>"
+		        + "		</entry>\n"
+				+ "	</section>\n"
+		        + "</component>";
+
+		String expected = "{\n  \"category\" : \"aci\",\n  \"measurements\" : [ "
+		                                       + "{\n    \"measure\" : \"measure1\"\n  } ]\n}";
 
 		//Decode
 		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
@@ -49,8 +115,12 @@ public class AciSectionRoundTripTest {
 		encoder.encode(new BufferedWriter(sw));
 
 		//Test
-		assertThat("expected encoder to return a representation of a measure", sw.toString(), is(EXPECTED));
-
+		assertThat("expected encoder to return a representation of a measure", sw.toString(), is(expected));
 	}
 
+	private void assertAciSectionHasSingleQedNode(Node aciSectionNode) {
+		assertThat(aciSectionNode, is(notNullValue()));
+		assertThat(aciSectionNode.getChildNodes(), hasSize(1));
+		assertThat(aciSectionNode.getChildNodes().get(0).getType(), is(TemplateId.QED));
+	}
 }
