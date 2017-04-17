@@ -109,7 +109,7 @@ public class Node implements Serializable {
 	/**
 	 * getChildNodes returns the list of child Nodes for this Node
 	 *
-	 * @return List<Node>
+	 * @return List of child Nodes.
 	 */
 	public List<Node> getChildNodes() {
 		return childNodes;
@@ -138,8 +138,8 @@ public class Node implements Serializable {
 
 	/**
 	 * toString will create a readable representation of this Node
-	 * Node: templateId: PERFORMANCE_RATE, data: {DefaultDecoderFor=Performance Rate}
-	 * childNodes of PERFORMANCE_RATE -> (none)
+	 * {@code Node: templateId: PERFORMANCE_RATE, data: {DefaultDecoderFor=Performance Rate}
+	 * childNodes of PERFORMANCE_RATE -> (none)}
 	 *
 	 * @return String
 	 */
@@ -151,7 +151,7 @@ public class Node implements Serializable {
 	/**
 	 * getKeys gets the internal keyset for the list of Nodes
 	 *
-	 * @return Set<String>
+	 * @return The keys the value's set on this Node.
 	 */
 	public Set<String> getKeys() {
 		return data.keySet();
@@ -265,7 +265,7 @@ public class Node implements Serializable {
 	 * setChildNodes will associate nested xml components with this parsed xml
 	 * fragment Node
 	 *
-	 * @param childNodes List<Node>
+	 * @param childNodes The list of Nodes to become children.
 	 */
 	private void setChildNodes(List<Node> childNodes) {
 		this.childNodes = childNodes;
@@ -303,8 +303,8 @@ public class Node implements Serializable {
 	/**
 	 * foundNode checks to see if any Node exists in the List
 	 *
-	 * @param nodes List<?> nodes
-	 * @return Boolean
+	 * @param nodes A list
+	 * @return Whether the list has an element or not
 	 */
 	private static Boolean foundNode(List<?> nodes) {
 		return !nodes.isEmpty();
