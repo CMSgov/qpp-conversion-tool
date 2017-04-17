@@ -38,7 +38,7 @@ public class AciProportionMeasureValidatorTest {
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -92,7 +92,7 @@ public class AciProportionMeasureValidatorTest {
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node aciProportionMeasureNode = new Node(clinicalDocumentNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(clinicalDocumentNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		clinicalDocumentNode.addChildNode(aciProportionMeasureNode);
@@ -117,7 +117,7 @@ public class AciProportionMeasureValidatorTest {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -135,7 +135,7 @@ public class AciProportionMeasureValidatorTest {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -160,7 +160,7 @@ public class AciProportionMeasureValidatorTest {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -185,7 +185,7 @@ public class AciProportionMeasureValidatorTest {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -212,7 +212,7 @@ public class AciProportionMeasureValidatorTest {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -247,7 +247,7 @@ public class AciProportionMeasureValidatorTest {
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "TEST_MEASURE"); // ACI_EP_1
 																		// required
 

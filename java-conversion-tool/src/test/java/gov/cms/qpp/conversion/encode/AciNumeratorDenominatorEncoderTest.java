@@ -22,7 +22,7 @@ import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-public class AciProportionMeasureEncoderTest {
+public class AciNumeratorDenominatorEncoderTest {
 
 	private static final String MEASURE_ID = "ACI-PEA-1";
 
@@ -57,7 +57,7 @@ public class AciProportionMeasureEncoderTest {
 		aciPerformanceRate.putValue("DefaultDecoderFor", "Performance Rate");
 
 		aciProportionMeasureNode = new Node();
-		aciProportionMeasureNode.setId(TemplateId.ACI_PROPORTION.getTemplateId());
+		aciProportionMeasureNode.setId(TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.addChildNode(aciPerformanceRate);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
@@ -98,7 +98,7 @@ public class AciProportionMeasureEncoderTest {
 
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciProportionMeasureEncoder objectUnderTest = new AciProportionMeasureEncoder();
+		AciNumeratorDenominatorEncoder objectUnderTest = new AciNumeratorDenominatorEncoder();
 
 		//execute
 		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
@@ -117,7 +117,7 @@ public class AciProportionMeasureEncoderTest {
 		final String unknownNodeId = "unknownNodeId";
 
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciProportionMeasureEncoder objectUnderTest = new AciProportionMeasureEncoder();
+		AciNumeratorDenominatorEncoder objectUnderTest = new AciNumeratorDenominatorEncoder();
 		Node unknownNode = new Node();
 		unknownNode.setId(unknownNodeId);
 		aciProportionMeasureNode.addChildNode(unknownNode);

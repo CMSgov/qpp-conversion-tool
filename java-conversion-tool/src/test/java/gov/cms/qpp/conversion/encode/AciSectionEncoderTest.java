@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 public class AciSectionEncoderTest {
 
 	private static final String ACI_SECTION_ID = TemplateId.ACI_SECTION.getTemplateId();
-	private static final String ACI_PROPORTION_MEASURE_ID = TemplateId.ACI_PROPORTION.getTemplateId();
+	private static final String ACI_PROPORTION_MEASURE_ID = TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId();
 	private static final String ACI_PROPORTION_NUMERATOR_NODE_ID = TemplateId.ACI_NUMERATOR.getTemplateId();
 	private static final String ACI_PROPORTION_DENOMINATOR_NODE_ID = TemplateId.ACI_DENOMINATOR.getTemplateId();
 	private static final String NUMERATOR_NODE_ID = TemplateId.ACI_AGGREGATE_COUNT.getTemplateId();
