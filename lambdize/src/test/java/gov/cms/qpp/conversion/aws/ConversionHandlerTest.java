@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,14 +22,15 @@ import io.findify.s3mock.S3Mock;
  */
 public class ConversionHandlerTest {
 
+	private static S3Mock server;
 	private static S3Event input;
 	private static AmazonS3 client;
 
 	@BeforeClass
 	public static void createInput() throws IOException {
 		input = TestUtils.parse("s3-event.put.json", S3Event.class);
-		S3Mock api = S3Mock.create(8001, "/tmp/s3");
-		api.start();
+		server = S3Mock.create(8001, "/tmp/s3");
+		server.start();
 
 		Path path = Paths.get("src/test/resources/valid-QRDA-III.xml");
 
@@ -39,6 +41,11 @@ public class ConversionHandlerTest {
 		client.createBucket("qrda-conversion");
 		client.putObject("qrda-conversion", "pre-conversion/valid-QRDA-III.xml", path.toFile());
 		client.putObject("qrda-conversion", "post-conversion/meep.txt", "meep");
+	}
+
+	@AfterClass
+	public static void cleanup() {
+		server.stop();
 	}
 
 	private Context createContext() {
