@@ -40,7 +40,6 @@ public class ConversionHandlerTest {
 				.build();
 		client.createBucket("qrda-conversion");
 		client.putObject("qrda-conversion", "pre-conversion/valid-QRDA-III.xml", path.toFile());
-		client.putObject("qrda-conversion", "post-conversion/meep.txt", "meep");
 	}
 
 	@AfterClass
