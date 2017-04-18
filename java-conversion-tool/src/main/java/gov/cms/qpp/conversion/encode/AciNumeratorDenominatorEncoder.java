@@ -34,7 +34,7 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 				Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
 		//Performance Rate node not needed
-		childMapByTemplateId.remove( TemplateId.PERFORMANCE_RATE.getTemplateId());
+		childMapByTemplateId.remove(TemplateId.PERFORMANCE_RATE.getTemplateId());
 
 		JsonWrapper childWrapper = encodeChildren(childMapByTemplateId);
 

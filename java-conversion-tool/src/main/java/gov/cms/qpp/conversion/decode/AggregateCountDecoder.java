@@ -17,6 +17,7 @@ import java.util.function.Consumer;
  */
 @Decoder(TemplateId.ACI_AGGREGATE_COUNT)
 public class AggregateCountDecoder extends QppXmlDecoder {
+
 	public static final String AGGREGATE_COUNT = "aggregateCount";
 
 	/**
@@ -40,7 +41,7 @@ public class AggregateCountDecoder extends QppXmlDecoder {
 	 */
 	protected void setSciNumeratorDenominatorOnNode(Element element, Node thisnode) {
 		String expressionStr = "./ns:value/@value";
-		Consumer<? super Attribute> consumer = p -> thisnode.putValue( AGGREGATE_COUNT, p.getValue() );
+		Consumer<? super Attribute> consumer = p -> thisnode.putValue(AGGREGATE_COUNT, p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 

@@ -42,7 +42,7 @@ public class AciSectionRoundTripTest {
 		                     + "</component>";
 
 		//execute
-		Node parentNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node parentNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
@@ -72,7 +72,7 @@ public class AciSectionRoundTripTest {
 		                     + "</component>";
 
 		//execute
-		Node parentNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node parentNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
@@ -101,7 +101,7 @@ public class AciSectionRoundTripTest {
 		                                       + "{\n    \"measure\" : \"measure1\"\n  } ]\n}";
 
 		//Decode
-		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(measureNode.getChildNodes());
 

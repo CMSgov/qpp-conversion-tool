@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Encoder used as a placeholder when a fully implemented encoder has yet to be
  * developed.
- *
  */
 public class DefaultEncoder extends JsonOutputEncoder {
 
@@ -48,9 +47,9 @@ public class DefaultEncoder extends JsonOutputEncoder {
 
 	// this one looks like a node that is not necessary
 	@Encoder(TemplateId.PERFORMANCE_RATE)
-	public static class N_Encoder extends DefaultEncoder {
+	public static class PerformanceRateEncoder extends DefaultEncoder {
 
-		public N_Encoder() {
+		public PerformanceRateEncoder() {
 			super("Performance Rate");
 		}
 	}
@@ -58,112 +57,111 @@ public class DefaultEncoder extends JsonOutputEncoder {
 	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
 
 	@Encoder(TemplateId.CMS_AGGREGATE_COUNT)
-	public static class R_Encoder extends DefaultEncoder {
-		public R_Encoder() {
+	public static class CmsAggregateCountEncoder extends DefaultEncoder {
+		public CmsAggregateCountEncoder() {
 			super("Aggregate Count - CMS");
 		}
 	}
-//	 this one looks like a node that is not necessary
+	//	 this one looks like a node that is not necessary
 
 	@Encoder(TemplateId.MEASURE_SECTION)
-	public static class B_Encoder extends DefaultEncoder {
+	public static class MeasureSectionEncoder extends DefaultEncoder {
 
-		public B_Encoder() {
+		public MeasureSectionEncoder() {
 			super("Measure Section");
 		}
 	}
 
 	// this one looks like a node that is not necessary
 	@Encoder(TemplateId.MEASURE_SECTION_V2)
-	public static class D_Encoder extends DefaultEncoder {
-		public D_Encoder() {
+	public static class MeasureSectionV2Encoder extends DefaultEncoder {
+		public MeasureSectionV2Encoder() {
 			super("QRDA Category III Measure Section - CMS (V2)");
 		}
 	}
 
 	@Encoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
-	public static class I_Encoder extends DefaultEncoder {
-		public I_Encoder() {
+	public static class AciMeasurePerformedReferenceAndResultsEncoder extends DefaultEncoder {
+		public AciMeasurePerformedReferenceAndResultsEncoder() {
 			super("Advancing Care Information Measure Performed Measure Reference and Results");
 		}
 	}
 
 	@Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
-	public static class K_Encoder extends DefaultEncoder {
-		public K_Encoder() {
+	public static class MeasureReferenceResultsCmsV2Encoder extends DefaultEncoder {
+		public MeasureReferenceResultsCmsV2Encoder() {
 			super("Measure Reference and Results - CMS (V2)");
 		}
 	}
 
 	@Encoder(TemplateId.REPORTING_PARAMETERS_ACT)
-	public static class L_Encoder extends DefaultEncoder {
+	public static class ReportingParametersActEncoder extends DefaultEncoder {
 
-		public L_Encoder() {
+		public ReportingParametersActEncoder() {
 			super("Reporting Parameters Act - CMS (V2)*");
 		}
 	}
 
 	@Encoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
-	public static class S_Encoder extends DefaultEncoder {
+	public static class ContinuousVariableMeasureValueCmsEncoder extends DefaultEncoder {
 
-		public S_Encoder() {
+		public ContinuousVariableMeasureValueCmsEncoder() {
 			super("Continuous Variable Measure Value - CMS");
 		}
 	}
 
 	@Encoder(TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class T_Encoder extends DefaultEncoder {
+	public static class EthnicitySupplementalDataElementCmsV2Encoder extends DefaultEncoder {
 
-		public T_Encoder() {
+		public EthnicitySupplementalDataElementCmsV2Encoder() {
 			super("Ethnicity Supplemental Data Element – CMS (V2)");
 		}
 	}
 
-
 	@Encoder(TemplateId.MEASURE_DATA_CMS_V2)
-	public static class U_Encoder extends DefaultEncoder {
+	public static class MeasureDataCmsV2Encoder extends DefaultEncoder {
 
-		public U_Encoder() {
+		public MeasureDataCmsV2Encoder() {
 			super("Measure Data - CMS (V2)");
 		}
 	}
 
-	@Encoder(TemplateId.REPORTING_STRATUM_CMS )
-	public static class V_Encoder extends DefaultEncoder {
-		public V_Encoder() {
+	@Encoder(TemplateId.REPORTING_STRATUM_CMS)
+	public static class ReportingStratumCmsEncoder extends DefaultEncoder {
+
+		public ReportingStratumCmsEncoder() {
 			super("Reporting Stratum - CMS");
 		}
 	}
 
 	@Encoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENTAL_CMS_V2)
-	public static class W_Encoder extends DefaultEncoder {
+	public static class SexSupplementalDataElementalCmsV2Encoder extends DefaultEncoder {
 
-		public W_Encoder() {
+		public SexSupplementalDataElementalCmsV2Encoder() {
 			super("Sex Supplemental Data Element - CMS (V2)");
 		}
 	}
 
 	@Encoder(TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class X_Encoder extends DefaultEncoder {
+	public static class RaceSupplementalDataElementCmsV2Encoder extends DefaultEncoder {
 
-		public X_Encoder() {
+		public RaceSupplementalDataElementCmsV2Encoder() {
 			super("Race Supplemental Data Element - CMS (V2)");
 		}
 	}
 
-
 	@Encoder(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class Y_Encoder extends DefaultEncoder {
+	public static class PayerSupplementalDataElementCmsV2Encoder extends DefaultEncoder {
 
-		public Y_Encoder() {
+		public PayerSupplementalDataElementCmsV2Encoder() {
 			super("Payer Supplemental Data Element - CMS (V2)");
 		}
 	}
 
 	@Encoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
-	public static class ZZ_Encoder extends DefaultEncoder {
+	public static class PerformanceRateProportionMeasureCmsV2Encoder extends DefaultEncoder {
 
-		public ZZ_Encoder() {
+		public PerformanceRateProportionMeasureCmsV2Encoder() {
 			super("Performance Rate for Proportion Measure - CMS (V2)");
 		}
 	}

@@ -13,92 +13,90 @@ import static org.junit.Assert.assertThat;
  * Test class for the IaMeasureDecoder
  */
 public class IaMeasureDecoderTest {
+
 	@Test
 	public void internalDecode() throws Exception {
-		String xmlFragment = getValidXMLFragment();
+		String xmlFragment = getValidXmlFragment();
 		IaMeasureDecoder decoder = new IaMeasureDecoder();
-		Node root = decoder.decode(XmlUtils.stringToDOM(xmlFragment));
+		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 		assertThat("Root node should be placeholder ", root.getId() , is("placeholder"));
-		assertThat("The child nodes should not be null", root.getChildNodes(), notNullValue() );
-		assertThat("There should be only one child node", root.getChildNodes().size(),is(1));
+		assertThat("The child nodes should not be null", root.getChildNodes(), notNullValue());
+		assertThat("There should be only one child node", root.getChildNodes().size(), is(1));
 
 		Node iaMeasure = root.getChildNodes().get(0);
 		assertThat("IAMeasure node should be IA_MEASURE ", iaMeasure.getId(),
 				is(TemplateId.IA_MEASURE.getTemplateId()));
-		assertThat("The IAMeasure nodes children should not be null", iaMeasure.getChildNodes(), notNullValue() );
-		assertThat("There should be only one child node", iaMeasure.getChildNodes().size(),is(1));
+		assertThat("The IAMeasure nodes children should not be null", iaMeasure.getChildNodes(), notNullValue());
+		assertThat("There should be only one child node", iaMeasure.getChildNodes().size(), is(1));
 
 		Node aciMeasurePerformed = iaMeasure.getChildNodes().get(0);
 		assertThat("ACI Measure Performed node should be ACI_MEASURE_PERFORMED ", aciMeasurePerformed.getId(),
 				is(TemplateId.MEASURE_PERFORMED.getTemplateId()));
 		String value = aciMeasurePerformed.getValue("measurePerformed");
-		assertThat("The ACI_MEASURE_PERFORMED value should be \"Y\"" ,value, is( "Y" ));
-
+		assertThat("The ACI_MEASURE_PERFORMED value should be \"Y\"" , value, is("Y"));
 	}
 
 	@Test
 	public void missingChildTest() throws Exception {
-		String xmlFragment = getValidXMLFragment();
+		String xmlFragment = getValidXmlFragment();
 		xmlFragment = removeChildFragment(xmlFragment);
 		IaMeasureDecoder decoder = new IaMeasureDecoder();
-		Node root = decoder.decode(XmlUtils.stringToDOM(xmlFragment));
+		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 		assertThat("Root node should be placeholder ", root.getId() , is("placeholder"));
-		assertThat("The child nodes should not be null", root.getChildNodes(), notNullValue() );
-		assertThat("There should be only one child node", root.getChildNodes().size(),is(1));
+		assertThat("The child nodes should not be null", root.getChildNodes(), notNullValue());
+		assertThat("There should be only one child node", root.getChildNodes().size(), is(1));
 
 		Node iaMeasure = root.getChildNodes().get(0);
 		assertThat("IAMeasure node should be IA_MEASURE ", iaMeasure.getId(),
 				is(TemplateId.IA_MEASURE.getTemplateId()));
-		assertThat("The IAMeasure nodes children should not be null", iaMeasure.getChildNodes(), notNullValue() );
-		assertThat("There should not be any child node", iaMeasure.getChildNodes().size(),is(0));
-
+		assertThat("The IAMeasure nodes children should not be null", iaMeasure.getChildNodes(), notNullValue());
+		assertThat("There should not be any child node", iaMeasure.getChildNodes().size(), is(0));
 	}
 
 	@Test
 	public void extraXMLTest() throws Exception {
-		String xmlFragment = getValidXMLFragment();
+		String xmlFragment = getValidXmlFragment();
 		IaMeasureDecoder decoder = new IaMeasureDecoder();
-		xmlFragment = addExtraXML(xmlFragment);
-		Node root = decoder.decode(XmlUtils.stringToDOM(xmlFragment));
+		xmlFragment = addExtraXml(xmlFragment);
+		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertThat("Root node should be placeholder ", root.getId() , is("placeholder"));
-		assertThat("The child nodes should not be null", root.getChildNodes(), notNullValue() );
-		assertThat("There should be only one child node", root.getChildNodes().size(),is(1));
+		assertThat("The child nodes should not be null", root.getChildNodes(), notNullValue());
+		assertThat("There should be only one child node", root.getChildNodes().size(), is(1));
 
 		Node iaMeasure = root.getChildNodes().get(0);
 		assertThat("IAMeasure node should be IA_MEASURE ", iaMeasure.getId(),
 				is(TemplateId.IA_MEASURE.getTemplateId()));
-		assertThat("The IAMeasure nodes children should not be null", iaMeasure.getChildNodes(), notNullValue() );
-		assertThat("There should be only one child node", iaMeasure.getChildNodes().size(),is(1));
+		assertThat("The IAMeasure nodes children should not be null", iaMeasure.getChildNodes(), notNullValue());
+		assertThat("There should be only one child node", iaMeasure.getChildNodes().size(), is(1));
 
 		Node aciMeasurePerformed = iaMeasure.getChildNodes().get(0);
 		assertThat("ACI Measure Performed node should be ACI_MEASURE_PERFORMED ", aciMeasurePerformed.getId(),
 				is(TemplateId.MEASURE_PERFORMED.getTemplateId()));
 		String value = aciMeasurePerformed.getValue("measurePerformed");
-		assertThat("The ACI_MEASURE_PERFORMED value should be \"Y\"" ,value, is( "Y" ));
-
+		assertThat("The ACI_MEASURE_PERFORMED value should be \"Y\"" , value, is("Y"));
 	}
 
-	private String addExtraXML(String source){
-
+	private String addExtraXml(String source) {
 		int start = source.indexOf("<observation");
-		int end = source.indexOf( ">",start)+1;
-		StringBuilder sb = new StringBuilder();
-		sb.append(source.substring(0,end));
-		sb.append(" SOME EXTRA STUFF GOES HERE <An unexpected=\"tag\"/> and yet more stuff\n");
-		sb.append(source.substring(end));
-		return sb.toString();
+		int end = source.indexOf(">", start) + 1;
+		StringBuilder extraXml = new StringBuilder();
+		extraXml.append(source.substring(0, end));
+		extraXml.append(" SOME EXTRA STUFF GOES HERE <An unexpected=\"tag\"/> and yet more stuff\n");
+		extraXml.append(source.substring(end));
+		return extraXml.toString();
 	}
 
-	private String removeChildFragment(String source){
+	private String removeChildFragment(String source) {
 		int start = source.indexOf("<component>");
-		int end = source.indexOf("</component>")+12;
-		StringBuilder sb = new StringBuilder();
-		sb.append(source.substring(0,start));
-		sb.append(source.substring(end));
-		return sb.toString();
+		int end = source.indexOf("</component>") + 12;
+		StringBuilder component = new StringBuilder();
+		component.append(source.substring(0, start));
+		component.append(source.substring(end));
+		return component.toString();
 	}
-	private String getValidXMLFragment() {
+
+	private String getValidXmlFragment() {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 		+"<entry  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\" > \n"
 		+ "<organizer classCode=\"CLUSTER\" moodCode=\"EVN\"> \n"
@@ -130,6 +128,7 @@ public class IaMeasureDecoderTest {
 		+ "	</component> \n"
 		+ "</organizer> \n"
 		+ "</entry>";
-		return xmlFragment.toString();
+		return xmlFragment;
 	}
+
 }

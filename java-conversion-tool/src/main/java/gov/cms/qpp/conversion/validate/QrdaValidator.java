@@ -29,7 +29,6 @@ public class QrdaValidator {
 	 * @return The list of validation errors for the entire tree of nodes.
 	 */
 	public List<ValidationError> validate(Node rootNode) {
-
 		Converter.CLIENT_LOG.info("Validating all nodes in the tree");
 
 		//validate each node while traversing the tree
@@ -47,7 +46,6 @@ public class QrdaValidator {
 	 * @param node The root node to start validating from.
 	 */
 	private void validateTree(final Node node) {
-
 		validateSingleNode(node);
 
 		validateChildren(node);
@@ -59,7 +57,6 @@ public class QrdaValidator {
 	 * @param node The node to validate.
 	 */
 	private void validateSingleNode(final Node node) {
-
 		final String templateId = node.getId();
 		NodeValidator validatorForNode = VALIDATORS.get(templateId);
 
@@ -68,7 +65,7 @@ public class QrdaValidator {
 		}
 
 		boolean isRequired = isValidationRequired(validatorForNode);
-		if(!isRequired) {
+		if (!isRequired) {
 			return;
 		}
 
@@ -105,7 +102,6 @@ public class QrdaValidator {
 	 * @param node The node to add to the map.
 	 */
 	private void addNodeToTemplateMap(final Node node) {
-
 		nodesForTemplateIds.putIfAbsent(node.getId(), new ArrayList<>());
 
 		nodesForTemplateIds.get(node.getId()).add(node);
@@ -117,7 +113,6 @@ public class QrdaValidator {
 	 * @param parentNode The children of this node are validated.
 	 */
 	private void validateChildren(final Node parentNode) {
-
 		for (Node childNode: parentNode.getChildNodes()) {
 
 			validateTree(childNode);
@@ -128,7 +123,6 @@ public class QrdaValidator {
 	 * Iterates over all the validators to have them validate similar nodes.
 	 */
 	private void validateTemplateIds() {
-
 		Converter.CLIENT_LOG.info("Validating all nodes by templateId");
 
 		for (String validatorKey : VALIDATORS.getKeys()) {
@@ -143,9 +137,8 @@ public class QrdaValidator {
 	 * @param validator The validator that should be called.
 	 */
 	private void validateSingleTemplateId(final NodeValidator validator) {
-
 		boolean isRequired = isValidationRequired(validator);
-		if(!isRequired) {
+		if (!isRequired) {
 			return;
 		}
 
