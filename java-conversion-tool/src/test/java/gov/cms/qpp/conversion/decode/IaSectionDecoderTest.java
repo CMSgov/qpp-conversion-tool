@@ -56,7 +56,7 @@ public class IaSectionDecoderTest {
 				"	</section>\n" + 
 				"</component>";
 
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(root.getChildNodes());
 

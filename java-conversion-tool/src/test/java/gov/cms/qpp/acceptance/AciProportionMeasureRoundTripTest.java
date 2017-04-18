@@ -91,7 +91,7 @@ public class AciProportionMeasureRoundTripTest {
 				+ "				</entryRelationship>\n" + "			</observation>\n" + "		</component>\n"
 				+ "	</organizer>\n" + "</entry>";
 
-		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(measureNode.getChildNodes());
 

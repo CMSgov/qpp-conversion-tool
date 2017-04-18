@@ -21,6 +21,32 @@ public class AciNumeratorDenominatorDecoderTest {
 	private static final String MEASURE_ID = "ACI-PEA-1";
 
 	@Test
+	public void decodeAggregateCountAsNode() throws Exception {
+		String xmlFragment = XmlUtils.buildString(
+				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
+				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
+				"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
+				"    <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>",
+				"    <statusCode code=\"completed\"/>", "    <value xsi:type=\"INT\" value=\"600\"/>",
+				"    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>",
+				"  </observation>",
+				"</root>");
+
+		Node aggregateCountNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+
+		// the returned Node object from the snippet should be:
+		// a top level placeholder node with a single child node that has the
+		// "rateAggregationDenominator" key in it
+
+		assertThat("returned node should not be null", aggregateCountNode, is(not(nullValue())));
+
+		assertThat("returned node should have one child node", aggregateCountNode.getChildNodes().size(), is(1));
+
+		assertThat("aggregate count value should be 600",
+				aggregateCountNode.getChildNodes().get(0).getValue("aggregateCount"), is("600"));
+	}
+
+	@Test
 	public void decodeAciNumeratorDenominatorNullValueAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString(
 				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\" >",
@@ -30,7 +56,7 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertThat("returned node should not be null", numDenomNode, is(not(nullValue())));
 
@@ -48,7 +74,7 @@ public class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertThat("returned node should not be null", numDenomNode, is(not(nullValue())));
 
@@ -59,7 +85,7 @@ public class AciNumeratorDenominatorDecoderTest {
 
 	@Test
 	public void decodeValidAciNumeratorDenominatorTest() throws XmlException {
-		Node aciMeasureNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(getValidXmlFragment()));
+		Node aciMeasureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(getValidXmlFragment()));
 		Node numeratorDenominatorNode = aciMeasureNode.getChildNodes().get(0);
 		int numberNodes = countNodes(aciMeasureNode);
 		List<Node> nodeList = aciMeasureNode.findNode(TemplateId.ACI_NUMERATOR.getTemplateId());
@@ -106,7 +132,7 @@ public class AciNumeratorDenominatorDecoderTest {
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
 
-		Node aciMeasureNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node aciMeasureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		assertThat("Decoded xml fragment should contain one child node",
 				aciMeasureNode.getChildNodes().size(), is(1));
 

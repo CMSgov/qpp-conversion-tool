@@ -32,7 +32,7 @@ public class ClinicalDocumentDecoderTest {
 
 	@Before
 	public void setupTest() throws XmlException {
-		root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(root.getChildNodes());
 	}
