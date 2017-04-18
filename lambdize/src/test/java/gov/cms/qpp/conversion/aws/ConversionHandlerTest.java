@@ -31,7 +31,6 @@ public class ConversionHandlerTest {
 	private static S3Mock server;
 	private static S3Event input;
 	private static AmazonS3 client;
-	private static S3Mock api;
 
 	@BeforeClass
 	public static void createInput() throws IOException {
