@@ -24,7 +24,7 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			String srcKey = formatSourceKey(record);
 			String filename = srcKey.replaceAll(".*/","");
 
-			AmazonS3 s3Client = AmazonS3ClientBuilder.standard().build();
+			AmazonS3 s3Client = getClient();
 			S3Object s3Object = s3Client.getObject( new GetObjectRequest(srcBucket, srcKey));
 
 			Converter converter = new Converter(s3Object.getObjectContent());
@@ -40,6 +40,10 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	protected AmazonS3 getClient(){
+		return AmazonS3ClientBuilder.standard().build();
 	}
 
 	private String formatSourceKey(S3EventNotificationRecord record) throws UnsupportedEncodingException {
