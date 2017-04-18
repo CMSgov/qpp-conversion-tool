@@ -17,13 +17,13 @@ import java.util.Objects;
 /**
  * Validate all ACI Proportion Type Measures.
  */
-@Validator(templateId = TemplateId.ACI_PROPORTION, required = true)
+@Validator(templateId = TemplateId.ACI_NUMERATOR_DENOMINATOR, required = true)
 public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 	private MeasureConfigs measureConfigs;
 	private String measureDataFileName = "measures-data-aci-short.json";
 
-	protected static final String ACI_PROPORTION_NODE_REQUIRED = "At least one Aci Proportion Measure Node is required";
+	protected static final String ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED = "At least one Aci Numerator Denominator Measure Node is required";
 	protected static final String NO_PARENT_SECTION = "This ACI Measure Node should have an ACI Section Node as a parent";
 	protected static final String NO_NUMERATOR = "This ACI Measure Node does not contain a Numerator Node child";
 	protected static final String TOO_MANY_NUMERATORS = "This ACI Measure Node contains too many Numerator Node children";
@@ -149,7 +149,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	private void validateOneAciProportionExists(final List<Node> aciProportionNodes) {
 
 		if (aciProportionNodes.isEmpty()) {
-			this.addValidationError(new ValidationError(ACI_PROPORTION_NODE_REQUIRED));
+			this.addValidationError(new ValidationError(ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED));
 		}
 	}
 
