@@ -130,7 +130,7 @@ public enum TemplateId {
 		String templateId = root;
 
 		if (extension != null && !extension.isEmpty()) {
-			templateId += ":" + extension;
+			templateId += (":" + extension);
 		}
 
 		return templateId;
