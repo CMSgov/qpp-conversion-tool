@@ -25,7 +25,7 @@ public class MeasurePerformedDecoderTest {
 				+ "</component>";
 
 		MeasurePerformedDecoder measurePerformedDecoder = new MeasurePerformedDecoder();
-		Node measurePerformedNode = measurePerformedDecoder.decode(XmlUtils.stringToDOM(xmlFragment));
+		Node measurePerformedNode = measurePerformedDecoder.decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertThat("Should have a measure perform",
 				measurePerformedNode.getChildNodes().get(0).getValue("measurePerformed"), is("Y"));
