@@ -1,13 +1,19 @@
 package gov.cms.qpp.conversion.aws;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import com.amazonaws.auth.AnonymousAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.google.common.io.Files;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
+import io.findify.s3mock.S3Mock;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
@@ -15,10 +21,21 @@ import com.amazonaws.services.lambda.runtime.events.S3Event;
 public class ConversionHandlerTest {
 
 	private static S3Event input;
+	private static AmazonS3Client client;
 
 	@BeforeClass
 	public static void createInput() throws IOException {
 		input = TestUtils.parse("s3-event.put.json", S3Event.class);
+		S3Mock api = S3Mock.create(8001, "/tmp/s3");
+		api.start();
+
+		Path path = Paths.get("src/test/resources/valid-QRDA-III.xml");
+
+		client = new AmazonS3Client(new AnonymousAWSCredentials());
+		client.setEndpoint("http://127.0.0.1:8001");
+		client.createBucket("qrda-conversion");
+		client.putObject("qrda-conversion", "pre-conversion/valid-QRDA-III.xml", path.toFile());
+		client.putObject("qrda-conversion", "post-conversion/meep.txt", "meep");
 	}
 
 	private Context createContext() {
@@ -32,10 +49,6 @@ public class ConversionHandlerTest {
 
 	@Test
 	public void testConversionHandler() {
-		AmazonS3 client = AmazonS3ClientBuilder.standard()
-				.withRegion("us-east-1")
-				.build();
-
 		ConversionHandler handler = new ConversionHandler();
 		handler.setClient(client);
 

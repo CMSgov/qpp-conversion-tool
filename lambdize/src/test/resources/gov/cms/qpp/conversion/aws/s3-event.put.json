@@ -2,36 +2,37 @@
   "Records": [
     {
       "eventVersion": "2.0",
-      "eventSource": "aws:s3",
-      "awsRegion": "us-east-1",
       "eventTime": "1970-01-01T00:00:00.000Z",
+      "requestParameters": {
+        "sourceIPAddress": "127.0.0.1"
+      },
+      "s3": {
+        "configurationId": "testConfigRule",
+        "object": {
+          "eTag": "0123456789abcdef0123456789abcdef",
+          "sequencer": "0A1B2C3D4E5F678901",
+          "key": "pre-conversion/valid-QRDA-III.xml",
+          "size": 1024
+        },
+        "bucket": {
+          "arn": "arn:aws:s3:::qrda-conversion",
+          "name": "qrda-conversion",
+          "ownerIdentity": {
+            "principalId": "EXAMPLE"
+          }
+        },
+        "s3SchemaVersion": "1.0"
+      },
+      "responseElements": {
+        "x-amz-id-2": "EXAMPLE123/5678abcdefghijklambdaisawesome/mnopqrstuvwxyzABCDEFGH",
+        "x-amz-request-id": "EXAMPLE123456789"
+      },
+      "awsRegion": "us-east-1",
       "eventName": "ObjectCreated:Put",
       "userIdentity": {
         "principalId": "EXAMPLE"
       },
-      "requestParameters": {
-        "sourceIPAddress": "127.0.0.1"
-      },
-      "responseElements": {
-        "x-amz-request-id": "C3D13FE58DE4C810",
-        "x-amz-id-2": "FMyUVURIY8/IgAtTv8xRjskZQpcIZ9KG4V5Wp6S7S/JRWeUWerMUE5JgHvANOjpD"
-      },
-      "s3": {
-        "s3SchemaVersion": "1.0",
-        "configurationId": "testConfigRule",
-        "bucket": {
-          "name": "sourcebucket",
-          "ownerIdentity": {
-            "principalId": "EXAMPLE"
-          },
-          "arn": "arn:aws:s3:::mybucket"
-        },
-        "object": {
-          "key": "HappyFace.jpg",
-          "size": 1024,
-          "eTag": "d41d8cd98f00b204e9800998ecf8427e"
-        }
-      }
+      "eventSource": "aws:s3"
     }
   ]
 }
