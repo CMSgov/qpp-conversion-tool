@@ -24,7 +24,7 @@ public class IaMeasurePerformedValidatorTest {
 	@Test
 	public void internalValidateSingleNode() throws Exception {
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
-		Node iaMeasurePerformedNode = new Node(iaMeasureNode, TemplateId.ACI_MEASURE_PERFORMED.getTemplateId());
+		Node iaMeasurePerformedNode = new Node(iaMeasureNode, TemplateId.MEASURE_PERFORMED.getTemplateId());
 		iaMeasureNode.addChildNode(iaMeasurePerformedNode);
 		iaMeasurePerformedNode.putValue("measurePerformed", "Y");
 
@@ -41,7 +41,7 @@ public class IaMeasurePerformedValidatorTest {
 	@Test
 	public void internalValidateSingleInvalidValueNode() throws Exception {
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
-		Node iaMeasurePerformedNode = new Node(iaMeasureNode, TemplateId.ACI_MEASURE_PERFORMED.getTemplateId());
+		Node iaMeasurePerformedNode = new Node(iaMeasureNode, TemplateId.MEASURE_PERFORMED.getTemplateId());
 		iaMeasureNode.addChildNode(iaMeasurePerformedNode);
 		iaMeasurePerformedNode.putValue("measurePerformed", "abc");
 
@@ -82,8 +82,8 @@ public class IaMeasurePerformedValidatorTest {
 	@Test
 	public void testTooManyChildren() throws Exception {
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
-		Node iaMeasurePerformedNode1 = new Node(iaMeasureNode, TemplateId.ACI_MEASURE_PERFORMED.getTemplateId());
-		Node iaMeasurePerformedNode2 = new Node(iaMeasureNode, TemplateId.ACI_MEASURE_PERFORMED.getTemplateId());
+		Node iaMeasurePerformedNode1 = new Node(iaMeasureNode, TemplateId.MEASURE_PERFORMED.getTemplateId());
+		Node iaMeasurePerformedNode2 = new Node(iaMeasureNode, TemplateId.MEASURE_PERFORMED.getTemplateId());
 		iaMeasureNode.addChildNode(iaMeasurePerformedNode1);
 		iaMeasurePerformedNode1.putValue("measurePerformed", "Y");
 		iaMeasureNode.addChildNode(iaMeasurePerformedNode2);
