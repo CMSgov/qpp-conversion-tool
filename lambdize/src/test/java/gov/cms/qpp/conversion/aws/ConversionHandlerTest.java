@@ -1,6 +1,9 @@
 package gov.cms.qpp.conversion.aws;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -58,8 +61,10 @@ public class ConversionHandlerTest {
 	@Test
 	public void testConversionHandler() {
 		ConversionHandler handler = new ConversionHandler();
-		handler.setClient(client);
-		handler.handleRequest(input, new TestContext());
+		ConversionHandler spyHandler = spy(handler);
+		doReturn(client).when(spyHandler).getClient();
+
+		spyHandler.handleRequest(input, new TestContext());
 
 		S3Object converted = client.getObject("qrda-conversion", "post-conversion/valid-QRDA-III.qpp.json");
 		assertNotNull("there's a converted file", converted);

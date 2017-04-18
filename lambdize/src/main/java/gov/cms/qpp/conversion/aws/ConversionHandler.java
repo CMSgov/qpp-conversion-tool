@@ -18,8 +18,6 @@ import gov.cms.qpp.conversion.Converter;
 
 public class ConversionHandler implements RequestHandler<S3Event, String> {
 
-	private AmazonS3 client;
-
 	@Override
 	public String handleRequest(S3Event s3event, Context context) {
 		try {
@@ -48,27 +46,7 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 	}
 
 	public AmazonS3 getClient() {
-		if (this.client != null) {
-			return this.client;
-		}
-
-		synchronized (this) {
-			if (this.client != null) {
-				return this.client;
-			}
-
-			return this.client = AmazonS3ClientBuilder.defaultClient();
-		}
-	}
-
-	public void setClient(AmazonS3 client) {
-		synchronized (this) {
-			if (this.client != null) {
-				throw new IllegalStateException(this + " already has a client, " + this.client);
-			}
-
-			this.client = client;
-		}
+		return AmazonS3ClientBuilder.defaultClient();
 	}
 
 	private String formatSourceKey(S3EventNotificationRecord record) throws UnsupportedEncodingException {
