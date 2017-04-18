@@ -42,6 +42,12 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 		wrapper.putObject("value", childWrapper);
 	}
 
+	/**
+	 * Encodes ACI Numerator Denominator Children
+	 *
+	 * @param childMapByTemplateId Map of children that will be encoded
+	 * @return JsonWrapper that will represent the encoded children
+	 */
 	private JsonWrapper encodeChildren(Map<String, Node> childMapByTemplateId) {
 		JsonWrapper childWrapper = new JsonWrapper();
 		for (Node currentChild : childMapByTemplateId.values()) {

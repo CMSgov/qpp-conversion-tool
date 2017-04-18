@@ -30,6 +30,12 @@ public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
 		return DecodeResult.TREE_CONTINUE;
 	}
 
+	/**
+	 * Sets the measure name id
+	 *
+	 * @param element Object that holds the XML representation of measure id
+	 * @param thisNode Object that will retrieve the parsed measure id
+	 */
 	private void setMeasureIdOnNode(Element element, Node thisNode) {
 		String expressionStr = "./ns:reference/ns:externalDocument/ns:id/@extension";
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue("measureId", p.getValue());
