@@ -181,13 +181,6 @@ public class QrdaValidatorTest {
 		assertThat("The node's key/value is incorrect", node.getValue(keyToQuery), is(expectedValue));
 	}
 
-	private void assertValidationError(final ValidationError validationError, final ValidationError expectedValidationError) {
-
-		assertThat("The validation error must not be null", validationError, is(not(nullValue())));
-		assertThat("The validation error is incorrect", validationError,
-		           is(expectedValidationError));
-	}
-
 	public static class RequiredTestValidator extends NodeValidator {
 
 		@Override
