@@ -22,6 +22,8 @@ import io.findify.s3mock.S3Mock;
  */
 public class ConversionHandlerTest {
 
+	private static final String BUCKET = "qrda-conversion";
+
 	private static S3Mock server;
 	private static S3Event input;
 	private static AmazonS3 client;
@@ -38,12 +40,13 @@ public class ConversionHandlerTest {
 				.withEndpointConfiguration(new AmazonS3ClientBuilder.EndpointConfiguration("http://127.0.0.1:8001", ""))
 				.withCredentials(new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
 				.build();
-		client.createBucket("qrda-conversion");
+		client.createBucket(BUCKET);
 		client.putObject("qrda-conversion", "pre-conversion/valid-QRDA-III.xml", path.toFile());
 	}
 
 	@AfterClass
 	public static void cleanup() {
+		client.deleteBucket(BUCKET);
 		server.stop();
 	}
 
