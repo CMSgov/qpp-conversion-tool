@@ -144,12 +144,6 @@ public class QrdaValidator {
 
 		final String templateId = getTemplateId(validator);
 
-		try {
-			Integer.parseInt(templateId);
-		} catch(NumberFormatException ex) {
-			
-		}
-
 		Converter.CLIENT_LOG.debug("Validating nodes associated with templateId {}", templateId);
 
 		List<Node> nodesForTemplateId = nodesForTemplateIds.getOrDefault(templateId, Arrays.asList());
