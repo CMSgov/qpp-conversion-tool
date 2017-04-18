@@ -46,9 +46,9 @@ public class ConversionHandlerTest {
 		server = S3Mock.create(8001, S3_PATH.toString());
 		server.start();
 
-		Path good = Paths.get("src/test/resources/valid-QRDA-III.xml");
-		Path bad = Paths.get("src/test/resources/not-a-QDRA-III-file.xml");
-		Path ugly = Paths.get("src/test/resources/QRDA-III-without-required-measure.xml");
+		Path good = Paths.get("../qrda-files/valid-QRDA-III.xml");
+		Path bad = Paths.get("../qrda-files/not-a-QDRA-III-file.xml");
+		Path ugly = Paths.get("../qrda-files/QRDA-III-without-required-measure.xml");
 
 		client = AmazonS3ClientBuilder.standard()
 				.withEndpointConfiguration(new AmazonS3ClientBuilder.EndpointConfiguration("http://127.0.0.1:8001", ""))
