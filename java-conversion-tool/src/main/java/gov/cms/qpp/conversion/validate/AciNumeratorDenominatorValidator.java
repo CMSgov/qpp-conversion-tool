@@ -15,7 +15,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	protected static String nodeName;
 	protected static final String EMPTY_MISSING_XML = "ACI "+ nodeName + " Node Aggregate is empty or missing";
 	protected static final String INCORRECT_CHILD = "This "+ nodeName + " Node does not have an Aggregate Count Node  \n\t%s";
-	protected static final String INVALID_VALUE = "This ACI " + nodeName + " Node Aggregate Value has an Hopefully this causes an error invalid value %s  \n\t%s";
+	protected static final String INVALID_VALUE = "This ACI " + nodeName + " Node Aggregate Value has an invalid value %s  \n\t%s";
 	protected static final String NO_CHILDREN = "This ACI " + nodeName + " Node does not have any child Nodes  \n\t%s";
 	protected static final String TOO_MANY_CHILDREN = "This ACI " + nodeName + " Node has too many child Nodes  \n\t%s";
 	protected static final String DENOMINATOR_CANNOT_BE_ZERO = "The ACI Denominator Aggregate Value can not be zero %s \n\t%s";
