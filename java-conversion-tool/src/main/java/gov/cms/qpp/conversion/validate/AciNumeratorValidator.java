@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.Validator;
  * and that its aggregate count value is a positive integer value.
  */
 @Validator(templateId = TemplateId.ACI_NUMERATOR, required = true)
-public class AciNumeratorValidator extends AciNumeratorDenominatorValidator {
+public class AciNumeratorValidator extends CommonNumeratorDenominatorValidator {
 	protected static final String NUMERATOR_NAME = "Numerator";
 
 	/**
