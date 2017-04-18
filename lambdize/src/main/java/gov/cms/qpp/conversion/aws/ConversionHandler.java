@@ -46,10 +46,10 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 	}
 
 	public AmazonS3 getClient() {
-		return AmazonS3ClientBuilder.defaultClient();
+		return AmazonS3ClientBuilder.defaultClient(); // ignore coverage
 	}
 
-	private String formatSourceKey(S3EventNotificationRecord record) throws UnsupportedEncodingException {
+	protected String formatSourceKey(S3EventNotificationRecord record) throws UnsupportedEncodingException {
 		String srcKey = record.getS3().getObject().getKey().replace('+', ' ');
 		return URLDecoder.decode(srcKey, "UTF-8");
 	}
