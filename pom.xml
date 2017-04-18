@@ -16,9 +16,7 @@
 
 	<modules>
 		<module>java-conversion-tool</module>
-		<!--
 		<module>benchmark</module>
-		-->
 	</modules>
 
 	<build>
