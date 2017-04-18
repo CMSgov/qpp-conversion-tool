@@ -40,7 +40,7 @@ public class EncoderTest {
 			TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2.getTemplateId(),
 			TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS.getTemplateId(),
 			TemplateId.ACI_MEASURE_PERFORMED.getTemplateId(),
-			TemplateId.ACI_PROPORTION.getTemplateId(),
+			TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId(),
 			TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS.getTemplateId(),
 			TemplateId.PERFORMANCE_RATE.getTemplateId(),
 			TemplateId.ACI_NUMERATOR.getTemplateId(),

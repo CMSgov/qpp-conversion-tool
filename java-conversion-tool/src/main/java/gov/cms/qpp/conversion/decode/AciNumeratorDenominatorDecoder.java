@@ -12,8 +12,8 @@ import java.util.function.Consumer;
 /**
  * Decoder to parse ACI Numerator Denominator Type Measure reference and results.
  */
-@Decoder(TemplateId.ACI_PROPORTION)
-public class AciProportionMeasureDecoder extends QppXmlDecoder {
+@Decoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
+public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
 
 	/**
 	 * Decodes an ACI Numerator Denominator Type Measure into an intermediate node

@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
  * Encoder to serialize ACI Numerator Denominator Type Measure.
  */
 
-@Encoder(TemplateId.ACI_PROPORTION)
-public class AciProportionMeasureEncoder extends QppOutputEncoder {
+@Encoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
+public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 
 	/**
 	 *  Encodes an ACI Numerator Denominator Type Measure into the QPP format
