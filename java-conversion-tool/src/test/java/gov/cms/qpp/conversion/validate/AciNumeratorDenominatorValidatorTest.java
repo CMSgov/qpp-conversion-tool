@@ -19,7 +19,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.assertThat;
 
-public class AciProportionMeasureValidatorTest {
+public class AciNumeratorDenominatorValidatorTest {
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -38,7 +38,7 @@ public class AciProportionMeasureValidatorTest {
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -49,7 +49,7 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 
-		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 		errors.addAll(measureval.validateSameTemplateIdNodes(Arrays.asList(aciProportionMeasureNode)));
 
@@ -71,15 +71,15 @@ public class AciProportionMeasureValidatorTest {
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 
 		List<ValidationError> errors = measureval.validateSameTemplateIdNodes(Arrays.asList());
 
 		assertThat("there should be 2 error", errors, hasSize(2));
 		assertThat("error should be about missing proportion node", errors.get(0).getErrorText(),
-		           is(AciProportionMeasureValidator.ACI_PROPORTION_NODE_REQUIRED));
+		           is(AciNumeratorDenominatorValidator.ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED));
 		assertThat("error should be about missing required Measure", errors.get(1).getErrorText(),
-		           is(MessageFormat.format(AciProportionMeasureValidator.NO_REQUIRED_MEASURE, "ACI_EP_1")));
+		           is(MessageFormat.format(AciNumeratorDenominatorValidator.NO_REQUIRED_MEASURE, "ACI_EP_1")));
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class AciProportionMeasureValidatorTest {
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node aciProportionMeasureNode = new Node(clinicalDocumentNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(clinicalDocumentNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		clinicalDocumentNode.addChildNode(aciProportionMeasureNode);
@@ -103,12 +103,12 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 
-		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about invalid parent node", errors.get(0).getErrorText(),
-				is(AciProportionMeasureValidator.NO_PARENT_SECTION));
+				is(AciNumeratorDenominatorValidator.NO_PARENT_SECTION));
 	}
 
 	@Test
@@ -117,16 +117,16 @@ public class AciProportionMeasureValidatorTest {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 
-		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
-		assertThat("error should be about no child nodes", errors.get(0).getErrorText(), is(AciProportionMeasureValidator.NO_CHILDREN));
+		assertThat("error should be about no child nodes", errors.get(0).getErrorText(), is(AciNumeratorDenominatorValidator.NO_CHILDREN));
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class AciProportionMeasureValidatorTest {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -146,12 +146,12 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 		aciProportionMeasureNode.addChildNode(aciNumeratorPlaceholder);
 
-		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about missing Numerator node", errors.get(0).getErrorText(),
-				is(AciProportionMeasureValidator.NO_NUMERATOR));
+				is(AciNumeratorDenominatorValidator.NO_NUMERATOR));
 	}
 
 	@Test
@@ -160,7 +160,7 @@ public class AciProportionMeasureValidatorTest {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -171,12 +171,12 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciDenominatorPlaceholder);
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
 
-		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about missing Denominator node", errors.get(0).getErrorText(),
-				is(AciProportionMeasureValidator.NO_DENOMINATOR));
+				is(AciNumeratorDenominatorValidator.NO_DENOMINATOR));
 	}
 
 	@Test
@@ -185,7 +185,7 @@ public class AciProportionMeasureValidatorTest {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -198,12 +198,12 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode2);
 
-		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about too many Numerator nodes", errors.get(0).getErrorText(),
-				is(AciProportionMeasureValidator.TOO_MANY_NUMERATORS));
+				is(AciNumeratorDenominatorValidator.TOO_MANY_NUMERATORS));
 	}
 
 	@Test
@@ -212,7 +212,7 @@ public class AciProportionMeasureValidatorTest {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
@@ -225,12 +225,12 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode2);
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
 
-		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		List<ValidationError> errors = measureval.validateSingleNode(aciProportionMeasureNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about too many Denominator nodes", errors.get(0).getErrorText(),
-				is(AciProportionMeasureValidator.TOO_MANY_DENOMINATORS));
+				is(AciNumeratorDenominatorValidator.TOO_MANY_DENOMINATORS));
 	}
 
 	@Test
@@ -247,7 +247,7 @@ public class AciProportionMeasureValidatorTest {
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_PROPORTION.getTemplateId());
+		Node aciProportionMeasureNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.putValue("measureId", "TEST_MEASURE"); // ACI_EP_1
 																		// required
 
@@ -259,19 +259,19 @@ public class AciProportionMeasureValidatorTest {
 		aciProportionMeasureNode.addChildNode(aciNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciDenominatorNode);
 
-		AciProportionMeasureValidator measureval = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		measureval.validateSameTemplateIdNodes(Arrays.asList(aciProportionMeasureNode));
 		List<ValidationError> errors = measureval.getValidationErrors();
 
 		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about the required measure not present", errors.get(0).getErrorText(),
-				is(MessageFormat.format(AciProportionMeasureValidator.NO_REQUIRED_MEASURE, "ACI_EP_1")));
+				is(MessageFormat.format(AciNumeratorDenominatorValidator.NO_REQUIRED_MEASURE, "ACI_EP_1")));
 	}
 
 	@Test
 	public void testGoodMeasureDataFile() {
 
-		AciProportionMeasureValidator validator = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator validator = new AciNumeratorDenominatorValidator();
 		validator.setMeasureDataFile("measures-data-aci-short.json");
 		//no exception thrown
 	}
@@ -284,7 +284,7 @@ public class AciProportionMeasureValidatorTest {
 		thrown.expectCause(isA(IOException.class));
 
 		//execute
-		AciProportionMeasureValidator validator = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator validator = new AciNumeratorDenominatorValidator();
 		validator.setMeasureDataFile("Bogus file name");
 	}
 
@@ -296,7 +296,7 @@ public class AciProportionMeasureValidatorTest {
 		thrown.expectCause(isA(JsonParseException.class));
 
 		//execute
-		AciProportionMeasureValidator validator = new AciProportionMeasureValidator();
+		AciNumeratorDenominatorValidator validator = new AciNumeratorDenominatorValidator();
 		validator.setMeasureDataFile("bad_formatted_measures_data.json");
 	}
 }

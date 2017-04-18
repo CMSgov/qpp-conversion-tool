@@ -1,5 +1,11 @@
 package gov.cms.qpp.conversion.encode;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
@@ -7,18 +13,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-
 /**
  * Manages building a "simple" object of JSON conversion.
  * JSON renderers can convert maps and list into JSON Strings.
  * This class is a wrapper around a list/map impl.
- *
- * @param <T> Shall be String or Object for maps of children
  */
 public class JsonWrapper {
 
@@ -40,28 +38,6 @@ public class JsonWrapper {
 		DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
 		printer.indentObjectsWith(withLinefeed);
 		return new ObjectMapper().writer().with(printer);
-	}
-
-	/**
-	 * Places a named object within the wrapper. In the event the named object is
-	 * also a {@link gov.cms.qpp.conversion.encode.JsonWrapper} its wrapped
-	 * content will be extracted.
-	 *
-	 * Think of this as adding an attribute to a JSON hash.
-	 *
-	 * @param name key for value
-	 * @param value keyed value
-	 * @return <i><b>this</b></i> reference for chaining
-	 */
-	public JsonWrapper putObject(String name, Object value) {
-		checkState(list);
-		initAsObject();
-		value = stripWrapper(value);
-		if (value==null) {
-			return this;
-		}
-		this.object.put(name,value);
-		return this;
 	}
 
 	/**
@@ -90,6 +66,17 @@ public class JsonWrapper {
 	}
 
 	/**
+	 * Places an unnamed String within the wrapper.
+	 *
+	 * @see #putObject(Object)
+	 * @param value to place in wrapper
+	 * @return <i><b>this</b></i> reference for chaining
+	 */
+	public JsonWrapper putString(String value) {
+		return putObject(value);
+	}
+
+	/**
 	 * Places a named String that represents a date within the wrapper. See {@link #putObject(String, Object)}
 	 *
 	 * @param name key for value
@@ -99,25 +86,7 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putDate(String name, String value) throws EncodeException {
 		try {
-			return putObject(name, validDate(value) );
-		} catch (EncodeException e) {
-			putObject(name, value);
-			throw e;
-		}
-	}
-
-	/**
-	 * Places a named String that represents an {@link java.lang.Integer} within the wrapper.
-	 *
-	 * @see #putObject(String, Object)
-	 * @param name key for value
-	 * @param value keyed value which must conform with {@link #validInteger(String)} validation
-	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
-	 */
-	public JsonWrapper putInteger(String name, String value) throws EncodeException {
-		try {
-			return putObject(name, validInteger(value) );
+			return putObject(name, validDate(value));
 		} catch (EncodeException e) {
 			putObject(name, value);
 			throw e;
@@ -134,7 +103,42 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putDate(String value) throws EncodeException {
 		try {
-			return putObject( validDate(value) );
+			return putObject(validDate(value));
+		} catch (EncodeException e) {
+			putObject(value);
+			throw e;
+		}
+	}
+
+	/**
+	 * Places a named String that represents an {@link java.lang.Integer} within the wrapper.
+	 *
+	 * @see #putObject(String, Object)
+	 * @param name key for value
+	 * @param value keyed value which must conform with {@link #validInteger(String)} validation
+	 * @return <i><b>this</b></i> reference for chaining
+	 * @throws EncodeException
+	 */
+	public JsonWrapper putInteger(String name, String value) throws EncodeException {
+		try {
+			return putObject(name, validInteger(value));
+		} catch (EncodeException e) {
+			putObject(name, value);
+			throw e;
+		}
+	}
+
+	/**
+	 * Places an unnamed String that represents a {@link java.lang.Integer} within the wrapper.
+	 *
+	 * @see #putObject(Object)
+	 * @param value {@link String} must conform with {@link #validInteger(String)} validation
+	 * @return {@link JsonWrapper}
+	 * @throws EncodeException
+	 */
+	public JsonWrapper putInteger(String value) throws EncodeException {
+		try {
+			return putObject(validInteger(value));
 		} catch (EncodeException e) {
 			putObject(value);
 			throw e;
@@ -152,9 +156,26 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putFloat(String name, String value) throws EncodeException {
 		try {
-			return putObject(name, validFloat(value) );
+			return putObject(name, validFloat(value));
 		} catch (EncodeException e) {
 			putObject(name, value);
+			throw e;
+		}
+	}
+
+	/**
+	 * Places an unnamed String that represents a {@link java.lang.Float} within the wrapper.
+	 *
+	 * @see #putObject(Object)
+	 * @param value that must conform with {@link #validFloat(String)} validation
+	 * @return <i><b>this</b></i> reference for chaining
+	 * @throws EncodeException
+	 */
+	public JsonWrapper putFloat(String value) throws EncodeException {
+		try {
+			return putObject(validFloat(value));
+		} catch (EncodeException e) {
+			putObject(value);
 			throw e;
 		}
 	}
@@ -170,11 +191,50 @@ public class JsonWrapper {
 	 */
 	public JsonWrapper putBoolean(String name, String value) throws EncodeException {
 		try {
-			return putObject(name, validBoolean(value) );
+			return putObject(name, validBoolean(value));
 		} catch (EncodeException e) {
 			putObject(name, value);
 			throw e;
 		}
+	}
+
+	/**
+	 * Places an unnamed String that represents a {@link java.lang.Boolean} within the wrapper.
+	 *
+	 * @see #putObject(Object)
+	 * @param value that must conform with {@link #validBoolean(String)} validation
+	 * @return <i><b>this</b></i> reference for chaining
+	 * @throws EncodeException
+	 */
+	public JsonWrapper putBoolean(String value) throws EncodeException {
+		try {
+			return putObject(validBoolean(value));
+		} catch (EncodeException e) {
+			putObject(value);
+			throw e;
+		}
+	}
+
+	/**
+	 * Places a named object within the wrapper. In the event the named object is
+	 * also a {@link gov.cms.qpp.conversion.encode.JsonWrapper} its wrapped
+	 * content will be extracted.
+	 *
+	 * Think of this as adding an attribute to a JSON hash.
+	 *
+	 * @param name key for value
+	 * @param value keyed value
+	 * @return <i><b>this</b></i> reference for chaining
+	 */
+	public JsonWrapper putObject(String name, Object value) {
+		checkState(list);
+		initAsObject();
+		value = stripWrapper(value);
+		if (value == null) {
+			return this;
+		}
+		this.object.put(name,value);
+		return this;
 	}
 
 	/**
@@ -190,74 +250,11 @@ public class JsonWrapper {
 		checkState(object);
 		initAsList();
 		value = stripWrapper(value);
-		if (value==null) {
+		if (value == null) {
 			return this;
 		}
 		this.list.add(value);
 		return this;
-	}
-
-	/**
-	 * Places an unnamed String within the wrapper.
-	 *
-	 * @see #putObject(Object)
-	 * @param value to place in wrapper
-	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
-	 */
-	public JsonWrapper putString(String value) {
-		return putObject(value);
-	}
-
-	/**
-	 * Places an unnamed String that represents a {@link java.lang.Integer} within the wrapper.
-	 *
-	 * @see #putObject(Object)
-	 * @param value {@link String} must conform with {@link #validInteger(String)} validation
-	 * @return {@link JsonWrapper}
-	 * @throws EncodeException
-	 */
-	public JsonWrapper putInteger(String value) throws EncodeException {
-		try {
-			return putObject( validInteger(value) );
-		} catch (EncodeException e) {
-			putObject(value);
-			throw e;
-		}
-	}
-
-	/**
-	 * Places an unnamed String that represents a {@link java.lang.Float} within the wrapper.
-	 *
-	 * @see #putObject(Object)
-	 * @param value that must conform with {@link #validFloat(String)} validation
-	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
-	 */
-	public JsonWrapper putFloat(String value) throws EncodeException {
-		try {
-			return putObject( validFloat(value) );
-		} catch (EncodeException e) {
-			putObject(value);
-			throw e;
-		}
-	}
-
-	/**
-	 * Places an unnamed String that represents a {@link java.lang.Boolean} within the wrapper.
-	 *
-	 * @see #putObject(Object)
-	 * @param value that must conform with {@link #validBoolean(String)} validation
-	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
-	 */
-	public JsonWrapper putBoolean(String value) throws EncodeException {
-		try {
-			return putObject( validBoolean(value) );
-		} catch (EncodeException e) {
-			putObject(value);
-			throw e;
-		}
 	}
 
 	/**
@@ -313,6 +310,7 @@ public class JsonWrapper {
 	 * @param <T>
 	 * @return T retrieved keyed value
 	 */
+	@SuppressWarnings("unchecked")
 	private <T> T getValue(String name) {
 		if (isObject()) {
 			return (T) object.get(name);
@@ -340,9 +338,9 @@ public class JsonWrapper {
 	 * @return valid Integer
 	 * @throws EncodeException
 	 */
-	protected Integer validInteger(String value) throws EncodeException {
+	protected int validInteger(String value) throws EncodeException {
 		try {
-			return Integer.parseInt( cleanString(value) );
+			return Integer.parseInt(cleanString(value));
 		} catch (Exception e) {
 			throw new EncodeException(value + " is not an integer.", e);
 		}
@@ -371,9 +369,9 @@ public class JsonWrapper {
 	 * @return valid Float value
 	 * @throws EncodeException
 	 */
-	protected Float validFloat(String value) throws EncodeException {
+	protected float validFloat(String value) throws EncodeException {
 		try {
-			return Float.parseFloat( cleanString(value) );
+			return Float.parseFloat(cleanString(value));
 		} catch (Exception e) {
 			throw new EncodeException(value + " is not a number.", e);
 		}
@@ -386,7 +384,7 @@ public class JsonWrapper {
 	 * @return valid Boolean
 	 * @throws EncodeException
 	 */
-	protected Boolean validBoolean(String value) throws EncodeException {
+	protected boolean validBoolean(String value) throws EncodeException {
 		value = cleanString(value);
 		
 		if ("true".equals(value) || "yes".equals(value) || "y".equals(value)) {
@@ -444,7 +442,7 @@ public class JsonWrapper {
 	 * @return wrapped content
 	 */
 	public Object getObject() {
-		return isObject()? object : list;
+		return isObject() ? object : list;
 	}
 
 	/**
@@ -455,7 +453,7 @@ public class JsonWrapper {
 	@Override
 	public String toString() {
 		try {
-			return ow.writeValueAsString(isObject() ?object :list);
+			return ow.writeValueAsString(isObject() ? object : list);
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException("Issue rendering JSON from JsonWrapper Map", e);
 		}

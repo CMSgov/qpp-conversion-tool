@@ -109,7 +109,7 @@ public class Node implements Serializable {
 	/**
 	 * getChildNodes returns the list of child Nodes for this Node
 	 *
-	 * @return List<Node>
+	 * @return List of child Nodes.
 	 */
 	public List<Node> getChildNodes() {
 		return childNodes;
@@ -138,35 +138,23 @@ public class Node implements Serializable {
 
 	/**
 	 * toString will create a readable representation of this Node
-	 * Node: templateId: PERFORMANCE_RATE, data: {DefaultDecoderFor=Performance Rate}
-	 * childNodes of PERFORMANCE_RATE -> (none)
+	 * {@code Node: templateId: PERFORMANCE_RATE, data: {DefaultDecoderFor=Performance Rate}
+	 * childNodes of PERFORMANCE_RATE -> (none)}
 	 *
 	 * @return String
 	 */
 	@Override
 	public String toString() {
-		return toString("");// no tabs to start
+		return toStringWithTabs("");// no tabs to start
 	}
 
 	/**
 	 * getKeys gets the internal keyset for the list of Nodes
 	 *
-	 * @return Set<String>
+	 * @return The keys the value's set on this Node.
 	 */
 	public Set<String> getKeys() {
 		return data.keySet();
-	}
-
-
-	/**
-	 * Search of this and child nodes for matching ids
-	 *
-	 * @param id templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
-	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
-	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
-	 */
-	public List<Node> findNode(String id) {
-		return findNode(id, null);
 	}
 
 	/**
@@ -194,6 +182,17 @@ public class Node implements Serializable {
 	 */
 	public TemplateId getType() {
 		return type;
+	}
+
+	/**
+	 * Search of this and child nodes for matching ids
+	 *
+	 * @param id templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
+	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
+	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
+	 */
+	public List<Node> findNode(String id) {
+		return findNode(id, null);
 	}
 
 	/**
@@ -227,7 +226,7 @@ public class Node implements Serializable {
 	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id or null
 	 * if no matches are found
 	 */
-	protected Node findFirstNode(String id) {
+	public Node findFirstNode(String id) {
 		List<Node> nodes = this.findNode(id, Node::foundNode);
 		return nodes.isEmpty() ? null : nodes.get(0);
 	}
@@ -238,7 +237,7 @@ public class Node implements Serializable {
 	 * @param tabs String used for indentation of multiline strings
 	 * @return String
 	 */
-	protected String toString(String tabs) {
+	protected String toStringWithTabs(String tabs) {
 		return tabs + selfToString() + "\n" + childrenToString(tabs + "\t");
 	}
 
@@ -265,7 +264,7 @@ public class Node implements Serializable {
 	 * setChildNodes will associate nested xml components with this parsed xml
 	 * fragment Node
 	 *
-	 * @param childNodes List<Node>
+	 * @param childNodes The list of Nodes to become children.
 	 */
 	private void setChildNodes(List<Node> childNodes) {
 		this.childNodes = childNodes;
@@ -294,7 +293,7 @@ public class Node implements Serializable {
 		} else {
 			children.add(": ");
 			for (Node child : childNodes) {
-				children.add(child.toString(tabs));
+				children.add(child.toStringWithTabs(tabs));
 			}
 		}
 		return tabs + "childNodes of " + getTypeName(type) + children;
@@ -303,10 +302,10 @@ public class Node implements Serializable {
 	/**
 	 * foundNode checks to see if any Node exists in the List
 	 *
-	 * @param nodes List<?> nodes
-	 * @return Boolean
+	 * @param nodes A list
+	 * @return Whether the list has an element or not
 	 */
-	private static Boolean foundNode(List<?> nodes) {
+	private static boolean foundNode(List<?> nodes) {
 		return !nodes.isEmpty();
 	}
 
@@ -318,7 +317,7 @@ public class Node implements Serializable {
 	 * @return String
 	 */
 	private String getTypeName(TemplateId type) {
-		return (DEFAULT.equals(type.name()) ||
-				PLACEHOLDER.equals(type.name()) ? getId() : type.name());
+		return (DEFAULT.equals(type.name())
+				|| PLACEHOLDER.equals(type.name()) ? getId() : type.name());
 	}
 }

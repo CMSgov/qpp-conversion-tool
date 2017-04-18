@@ -31,7 +31,7 @@ public class IaSectionEncoderTest {
 	@Before
 	public void createNode() {
 		iaMeasurePerformedNode = new Node();
-		iaMeasurePerformedNode.setId(TemplateId.ACI_MEASURE_PERFORMED.getTemplateId());
+		iaMeasurePerformedNode.setId(TemplateId.MEASURE_PERFORMED.getTemplateId());
 		iaMeasurePerformedNode.putValue("measurePerformed", "Y");
 
 		iaMeasureNode = new Node();

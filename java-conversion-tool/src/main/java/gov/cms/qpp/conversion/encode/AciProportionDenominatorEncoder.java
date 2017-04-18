@@ -1,4 +1,5 @@
 package gov.cms.qpp.conversion.encode;
+
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;

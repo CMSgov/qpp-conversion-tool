@@ -1,12 +1,9 @@
 package gov.cms.qpp.conversion.xml;
 
-import gov.cms.qpp.conversion.Converter;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -22,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public class XmlUtils {
 	/**
-	 * Private constructor so utility class cannot be instantiated
+	 * Private constructor so utility class cannot be instantiated.
 	 */
 	private XmlUtils() {
 		//private constructor so utility class cannot be instantiated
@@ -35,7 +32,7 @@ public class XmlUtils {
 	 * @return The root element of the XML tree.
 	 * @throws XmlException When a failure to parse the XML.
 	 */
-	public static Element stringToDOM(String xml) throws XmlException {
+	public static Element stringToDom(String xml) throws XmlException {
 		if (xml == null) {
 			return null;
 		}
@@ -50,12 +47,12 @@ public class XmlUtils {
 	 * @return The root element of the XML tree.
 	 * @throws XmlException When a failure to parse the XML or open and read the file.
 	 */
-	public static Element fileToDOM(String filename) throws XmlException {
+	public static Element fileToDom(String filename) throws XmlException {
 		if (filename == null) {
 			return null;
 		}
 		
-		return fileToDOM(Paths.get(filename));
+		return fileToDom(Paths.get(filename));
 	}
 
 	/**
@@ -65,7 +62,7 @@ public class XmlUtils {
 	 * @return The root element of the XML tree.
 	 * @throws XmlException When a failure to parse the XML or open and read the file.
 	 */
-	public static Element fileToDOM(Path file) throws XmlException {
+	public static Element fileToDom(Path file) throws XmlException {
 		try (InputStream xmlStream = Files.newInputStream(file)) {
 			return parseXmlStream(xmlStream);
 		} catch (IOException e) {

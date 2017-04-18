@@ -25,7 +25,7 @@ public class XmlUtilsTest {
 				"    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>",
 				"  </observation>", "</root>");
 
-		Element dom = XmlUtils.stringToDOM(xmlFragment);
+		Element dom = XmlUtils.stringToDom(xmlFragment);
 
 		assertThat("returned dom should not be null", dom, is(not(nullValue())));
 
@@ -39,14 +39,14 @@ public class XmlUtilsTest {
 
 	@Test
 	public void stringToDom_null() throws Exception {
-		Element dom = XmlUtils.stringToDOM(null);
+		Element dom = XmlUtils.stringToDom(null);
 
 		assertThat("returned dom should not be null", dom, is(nullValue()));
 	}
 	
 	@Test(expected=XmlException.class)
 	public void stringToDom_emptyString() throws Exception {
-		Element dom = XmlUtils.stringToDOM("");
+		Element dom = XmlUtils.stringToDom("");
 
 		assertThat("returned dom should not be null", dom, is(nullValue()));
 	}
@@ -54,14 +54,14 @@ public class XmlUtilsTest {
 
 	@Test(expected=XmlException.class)
 	public void stringToDom_invalidXML() throws Exception {
-		Element dom = XmlUtils.stringToDOM("invalid XML");
+		Element dom = XmlUtils.stringToDom("invalid XML");
 
 		assertThat("returned dom should not be null", dom, is(nullValue()));
 	}
 	
 	@Test
 	public void fileToDom() throws Exception {
-		Element dom = XmlUtils.fileToDOM("target/test-classes/test.xml");
+		Element dom = XmlUtils.fileToDom("target/test-classes/test.xml");
 
 		assertThat("returned dom should not be null", dom, is(not(nullValue())));
 
@@ -76,11 +76,11 @@ public class XmlUtilsTest {
 	@Test
 	public void fileToDom_null() throws Exception {
 		String nullfilename = null;
-		XmlUtils.fileToDOM(nullfilename);
+		XmlUtils.fileToDom(nullfilename);
 	}
 
 	@Test(expected=XmlException.class)
 	public void fileToDom_fileNotFound() throws Exception {
-		XmlUtils.fileToDOM("file/does/not/exist");
+		XmlUtils.fileToDom("file/does/not/exist");
 	}
 }

@@ -78,8 +78,8 @@ public class Converter {
 	/**
 	 * validArgs checks the command line parameters and verifies the existence of Files.
 	 *
-	 * @param args String[] Command line parameters
-	 * @return Collection<File> list of file(s) that are to be transformed
+	 * @param args Command line parameters.
+	 * @return  A list of file(s) that are to be transformed.
 	 */
 	protected static Collection<Path> validArgs(String[] args) {
 		if (args.length < 1) {
@@ -101,29 +101,30 @@ public class Converter {
 		return validFiles;
 	}
 
-	private static void resetFlags(){
+	private static void resetFlags() {
 		doValidation = true;
 		doDefaults = true;
 	}
 
 	private static boolean checkFlags(String arg) {
-		if ( SKIP_VALIDATION.equals(arg) ) {
+		if (SKIP_VALIDATION.equals(arg)) {
 			doValidation = false;
 			return true;
 		}
 
-		if ( SKIP_DEFAULTS.equals(arg) ) {
+		if (SKIP_DEFAULTS.equals(arg)) {
 			doDefaults = false;
 			return true;
 		}
+
 		return false;
 	}
 
 	/**
 	 * Produce collection of files found within the given path
 	 *
-	 * @param path String file location
-	 * @return Collection<File> list of files at the file location
+	 * @param path A file location.
+	 * @return The list of files at the file location.
 	 */
 	protected static Collection<Path> checkPath(String path) {
 		Collection<Path> existingFiles = new LinkedList<>();
@@ -228,7 +229,7 @@ public class Converter {
 
 		try {
 			String inputFileName = inFile.getFileName().toString().trim();
-			Node decoded = XmlInputDecoder.decodeXml(XmlUtils.fileToDOM(inFile));
+			Node decoded = XmlInputDecoder.decodeXml(XmlUtils.fileToDom(inFile));
 			if (null == decoded) {
 				return 2;
 			}
@@ -249,8 +250,8 @@ public class Converter {
 		} catch (XmlInputFileException | XmlException xe) {
 			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
-		} catch (Exception allE) {
-			DEV_LOG.error("Unexpected exception occurred during conversion", allE);// Eat all exceptions in the call
+		} catch (Exception exception) {
+			DEV_LOG.error("Unexpected exception occurred during conversion", exception);
 		}
 		return validationErrors.isEmpty() ? 1 : 0;
 	}
@@ -259,9 +260,9 @@ public class Converter {
 		JsonOutputEncoder encoder = new QppOutputEncoder();
 
 		CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), name);
-		Path outFile = getOutputFile( name, ".qpp.json");
+		Path outFile = getOutputFile(name, ".qpp.json");
 
-		try ( Writer writer = Files.newBufferedWriter(outFile) ){
+		try (Writer writer = Files.newBufferedWriter(outFile)) {
 			encoder.setNodes(Arrays.asList(decoded));
 			encoder.encode(writer);
 			// do something with encode validations
@@ -273,7 +274,7 @@ public class Converter {
 	}
 
 	private void writeValidationErrors(String name, List<ValidationError> validationErrors) {
-		Path outFile = getOutputFile( name, ".err.txt" );
+		Path outFile = getOutputFile(name, ".err.txt");
 
 		try (Writer errWriter = Files.newBufferedWriter(outFile)) {
 			for (ValidationError error : validationErrors) {
