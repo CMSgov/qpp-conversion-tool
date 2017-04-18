@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.aws;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -22,6 +23,7 @@ import io.findify.s3mock.S3Mock;
  */
 public class ConversionHandlerTest {
 
+	private static final Path S3_PATH = Paths.get("s3");
 	private static final String BUCKET = "qrda-conversion";
 
 	private static S3Mock server;
@@ -31,7 +33,7 @@ public class ConversionHandlerTest {
 	@BeforeClass
 	public static void createInput() throws IOException {
 		input = TestUtils.parse("s3-event.put.json", S3Event.class);
-		server = S3Mock.create(8001, "/tmp/s3");
+		server = S3Mock.create(8001, S3_PATH.toString());
 		server.start();
 
 		Path path = Paths.get("src/test/resources/valid-QRDA-III.xml");
@@ -45,9 +47,10 @@ public class ConversionHandlerTest {
 	}
 
 	@AfterClass
-	public static void cleanup() {
+	public static void cleanup() throws IOException {
 		client.deleteBucket(BUCKET);
 		server.stop();
+		Files.delete(S3_PATH);
 	}
 
 	private Context createContext() {
