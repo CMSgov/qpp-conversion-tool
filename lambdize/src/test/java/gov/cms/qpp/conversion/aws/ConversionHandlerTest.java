@@ -4,15 +4,16 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.amazonaws.auth.AnonymousAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.google.common.io.Files;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.AnonymousAWSCredentials;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+
 import io.findify.s3mock.S3Mock;
 
 /**
@@ -21,7 +22,7 @@ import io.findify.s3mock.S3Mock;
 public class ConversionHandlerTest {
 
 	private static S3Event input;
-	private static AmazonS3Client client;
+	private static AmazonS3 client;
 
 	@BeforeClass
 	public static void createInput() throws IOException {
@@ -31,8 +32,10 @@ public class ConversionHandlerTest {
 
 		Path path = Paths.get("src/test/resources/valid-QRDA-III.xml");
 
-		client = new AmazonS3Client(new AnonymousAWSCredentials());
-		client.setEndpoint("http://127.0.0.1:8001");
+		client = AmazonS3ClientBuilder.standard()
+				.withEndpointConfiguration(new AmazonS3ClientBuilder.EndpointConfiguration("http://127.0.0.1:8001", ""))
+				.withCredentials(new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
+				.build();
 		client.createBucket("qrda-conversion");
 		client.putObject("qrda-conversion", "pre-conversion/valid-QRDA-III.xml", path.toFile());
 		client.putObject("qrda-conversion", "post-conversion/meep.txt", "meep");
