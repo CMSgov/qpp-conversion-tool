@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.aws;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -13,7 +14,6 @@ import org.junit.Test;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.AnonymousAWSCredentials;
-import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -25,6 +25,10 @@ import io.findify.s3mock.S3Mock;
  */
 public class ConversionHandlerTest {
 
+	private static final Path S3_PATH = Paths.get("s3");
+	private static final String BUCKET = "qrda-conversion";
+
+	private static S3Mock server;
 	private static S3Event input;
 	private static AmazonS3 client;
 	private static S3Mock api;
@@ -32,8 +36,8 @@ public class ConversionHandlerTest {
 	@BeforeClass
 	public static void createInput() throws IOException {
 		input = TestUtils.parse("s3-event.put.json", S3Event.class);
-		api = S3Mock.create(8001, "/tmp/s3");
-		api.start();
+		server = S3Mock.create(8001, S3_PATH.toString());
+		server.start();
 
 		Path path = Paths.get("src/test/resources/valid-QRDA-III.xml");
 
@@ -41,32 +45,23 @@ public class ConversionHandlerTest {
 				.withEndpointConfiguration(new AmazonS3ClientBuilder.EndpointConfiguration("http://127.0.0.1:8001", ""))
 				.withCredentials(new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
 				.build();
-		client.createBucket("qrda-conversion");
+		client.createBucket(BUCKET);
 		client.putObject("qrda-conversion", "pre-conversion/valid-QRDA-III.xml", path.toFile());
+
 	}
 
 	@AfterClass
-	public static void cleanUp(){
-		// Delete that --> /tmp/s3
-		api.stop();
-	}
-
-
-	private Context createContext() {
-		TestContext ctx = new TestContext();
-
-		// TODO: customize your context here if needed.
-		ctx.setFunctionName("Your Function Name");
-
-		return ctx;
+	public static void cleanup() throws IOException {
+		client.deleteBucket(BUCKET);
+		server.stop();
+		Files.delete(S3_PATH);
 	}
 
 	@Test
 	public void testConversionHandler() {
 		ConversionHandler handler = new ConversionHandler();
 		handler.setClient(client);
-		
-		String output = handler.handleRequest(input, createContext());
+		handler.handleRequest(input, new TestContext());
 
 		S3Object converted = client.getObject("qrda-conversion", "post-conversion/valid-QRDA-III.qpp.json");
 		assertNotNull("there's a converted file", converted);
