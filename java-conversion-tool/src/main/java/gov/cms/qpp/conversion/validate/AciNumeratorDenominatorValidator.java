@@ -94,6 +94,11 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 		initMeasureConfigs();
 	}
 
+	/**
+	 * Validates that the node given has a aci section parent
+	 *
+	 * @param node An object that holds the node to be validated
+	 */
 	private void validateParentIsAciSection(final Node node) {
 
 		if (TemplateId.ACI_SECTION != node.getParent().getType()) {
@@ -102,6 +107,11 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 		}
 	}
 
+	/**
+	 * Validates all of the given nodes children.
+	 *
+	 * @param node An object that represents the ACI Numerator Denominator Measure Section
+	 */
 	private void validateChildren(final Node node) {
 
 		List<Node> children = node.getChildNodes();
@@ -130,6 +140,11 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 		}
 	}
 
+	/**
+	 * Validates that the correct number of denominators was given
+	 *
+	 * @param denominatorCount A count of the total denominators
+	 */
 	private void validateDenominatorCount(final int denominatorCount) {
 
 		if (denominatorCount == 0) {
@@ -141,6 +156,11 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 		}
 	}
 
+	/**
+	 * Validates that the correct number of numerators was given
+	 *
+	 * @param numeratorCount A count of the total numerators
+	 */
 	private void validateNumeratorCount(final int numeratorCount) {
 
 		if (numeratorCount == 0) {
@@ -152,6 +172,11 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 		}
 	}
 
+	/**
+	 * Validates that an Aci Numerator Denominator Section Exists
+	 *
+	 * @param aciNumeratorDenominatorNodes List of nodes to validate
+	 */
 	private void validateOneAciNumeratorDenominatorExists(final List<Node> aciNumeratorDenominatorNodes) {
 
 		if (aciNumeratorDenominatorNodes.isEmpty()) {
@@ -159,6 +184,12 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 		}
 	}
 
+	/**
+	 * Validates all required measure configurations
+	 *
+	 * @param measureConfig Object that holds the measure configuration
+	 * @param aciNumeratorDenominatorNodes List of nodes to validate
+	 */
 	private void validateMeasureConfig(final MeasureConfig measureConfig, final List<Node> aciNumeratorDenominatorNodes) {
 
 		if (measureConfig.isRequired()) {
@@ -174,6 +205,9 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 	}
 
+	/**
+	 * Initialize all measure configurationscle
+	 */
 	private void initMeasureConfigs() {
 
 		ObjectMapper mapper = new ObjectMapper();
