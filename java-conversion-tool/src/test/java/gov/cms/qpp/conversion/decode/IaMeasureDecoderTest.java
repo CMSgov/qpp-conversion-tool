@@ -31,7 +31,7 @@ public class IaMeasureDecoderTest {
 
 		Node aciMeasurePerformed = iaMeasure.getChildNodes().get(0);
 		assertThat("ACI Measure Performed node should be ACI_MEASURE_PERFORMED ", aciMeasurePerformed.getId(),
-				is(TemplateId.ACI_MEASURE_PERFORMED.getTemplateId()));
+				is(TemplateId.MEASURE_PERFORMED.getTemplateId()));
 		String value = aciMeasurePerformed.getValue("measurePerformed");
 		assertThat("The ACI_MEASURE_PERFORMED value should be \"Y\"" , value, is("Y"));
 	}
@@ -72,7 +72,7 @@ public class IaMeasureDecoderTest {
 
 		Node aciMeasurePerformed = iaMeasure.getChildNodes().get(0);
 		assertThat("ACI Measure Performed node should be ACI_MEASURE_PERFORMED ", aciMeasurePerformed.getId(),
-				is(TemplateId.ACI_MEASURE_PERFORMED.getTemplateId()));
+				is(TemplateId.MEASURE_PERFORMED.getTemplateId()));
 		String value = aciMeasurePerformed.getValue("measurePerformed");
 		assertThat("The ACI_MEASURE_PERFORMED value should be \"Y\"" , value, is("Y"));
 	}
