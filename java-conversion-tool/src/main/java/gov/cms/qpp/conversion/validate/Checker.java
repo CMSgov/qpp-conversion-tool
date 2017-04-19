@@ -30,8 +30,8 @@ class Checker {
 	/**
 	 * static factory that returns a shortcut validator
 	 *
-	 * @param node
-	 * @param validationErrors
+	 * @param node node to be validated
+	 * @param validationErrors holder for validation errors
 	 * @return The checker, for chaining method calls.
 	 */
 	static Checker check(Node node, List<ValidationError> validationErrors) {
@@ -41,8 +41,8 @@ class Checker {
 	/**
 	 * static factory that returns a non-shortcut validator
 	 *
-	 * @param node
-	 * @param validationErrors
+	 * @param node node to be validated
+	 * @param validationErrors holder for validation errors
 	 * @return The checker, for chaining method calls.
 	 */
 	static Checker thoroughlyCheck(Node node, List<ValidationError> validationErrors) {
@@ -57,7 +57,7 @@ class Checker {
 	 * checks target node for the existence of a value with the given name key
 	 *
 	 * @param message error message if searched value is not found
-	 * @param name
+	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
 	Checker value(String message, String name) {
@@ -71,7 +71,7 @@ class Checker {
 	 * Checks target node for the existence of an integer value with the given name key.
 	 *
 	 * @param message error message if searched value is not found or is not appropriately typed
-	 * @param name
+	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
 	public Checker intValue(String message, String name) {
@@ -86,9 +86,22 @@ class Checker {
 	}
 
 	/**
+	 * Checks target node for the existence of a specified parent.
+	 *
+	 * @param message validation error message
+	 * @return The checker, for chaining method calls.
+	 */
+	public Checker hasParent(String message, TemplateId type) {
+		if (!shouldShortcut() && node.getParent().getType() != type) {
+			validationErrors.add(new ValidationError(message));
+		}
+		return this;
+	}
+
+	/**
 	 * Checks target node for the existence of any child nodes.
 	 *
-	 * @param message
+	 * @param message validation error message
 	 * @return The checker, for chaining method calls.
 	 */
 	public Checker hasChildren(String message) {
@@ -101,9 +114,9 @@ class Checker {
 	/**
 	 * Verifies that the target node has more than the given minimum of the given {@link TemplateId}s.
 	 *
-	 * @param message
-	 * @param minimum
-	 * @param types
+	 * @param message validation error message
+	 * @param minimum minimum required children of specified types
+	 * @param types types of children to filter by
 	 * @return The checker, for chaining method calls.
 	 */
 	public Checker childMinimum(String message, int minimum, TemplateId... types) {
@@ -119,9 +132,9 @@ class Checker {
 	/**
 	 * Verifies that the target node has less than the given maximum of the given {@link TemplateId}s.
 	 *
-	 * @param message
-	 * @param maximum
-	 * @param types
+	 * @param message validation error message
+	 * @param maximum maximum required children of specified types
+	 * @param types types of children to filter by
 	 * @return The checker, for chaining method calls.
 	 */
 	public Checker childMaximum(String message, int maximum, TemplateId... types) {
@@ -134,6 +147,12 @@ class Checker {
 		return this;
 	}
 
+	/**
+	 * Aggregate count of nodes of the given types
+	 *
+	 * @param types types of nodes to filter by
+	 * @return count
+	 */
 	private long tallyNodes(TemplateId... types) {
 		return Arrays.stream(types)
 			.mapToLong(type -> (nodeCount.get(type) == null) ? 0 : nodeCount.get(type))
