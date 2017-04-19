@@ -39,3 +39,4 @@ test:
     - cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS
     - mkdir $CIRCLE_ARTIFACTS/sonarlint
     - cp -R java-conversion-tool/src/main/.sonarlint/* $CIRCLE_ARTIFACTS/sonarlint
+    - cd ./java-conversion-tool/; mvn javadoc:javadoc; mkdir $CIRCLE_ARTIFACTS/JavaDocs/; cp -R ./target/site/apidocs/* $CIRCLE_ARTIFACTS/JavaDocs/

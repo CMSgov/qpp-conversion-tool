@@ -30,7 +30,7 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 				"    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>",
 				"  </observation>", "</root>");
 
-		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();

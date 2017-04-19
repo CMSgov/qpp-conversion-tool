@@ -26,7 +26,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) throws EncodeException {
-
 		wrapper.putString("programName", thisNode.getValue("programName"));
 		wrapper.putString("entityType", "individual");
 		wrapper.putString("taxpayerIdentificationNumber", thisNode.getValue("taxpayerIdentificationNumber"));
@@ -35,8 +34,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		Map<String, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 				Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
+		Node nullableReportingNode =
+				childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
 		Optional<Node> reportingNode
-				= Optional.ofNullable(childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId()))
+				= Optional.ofNullable(nullableReportingNode)
 				.flatMap(rp -> rp.getChildNodes().stream().findFirst());
 
 		Optional<String> performanceStart = reportingNode.flatMap(p -> Optional.of(p.getValue("performanceStart")));
@@ -46,8 +47,9 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			wrapper.putInteger("performanceYear", performanceStart.get().substring(0, 4));
 		}
 
-		wrapper.putObject("measurementSets", encodeMeasurementSets(childMapByTemplateId, performanceStart, performanceEnd));
-
+		JsonWrapper measurementSets =
+				encodeMeasurementSets(childMapByTemplateId, performanceStart, performanceEnd);
+		wrapper.putObject("measurementSets", measurementSets);
 	}
 
 	/**

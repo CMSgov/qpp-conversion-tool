@@ -33,7 +33,7 @@ public class DefaultEncoderTest {
 		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III.xml");
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
-		Node node = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node node = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
 		JsonWrapper wrapper = new JsonWrapper();
 		new QppOutputEncoder().encode(wrapper, node);

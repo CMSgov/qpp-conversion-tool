@@ -86,7 +86,7 @@ public class AggregateCountDecoderTest {
     @Test
     public void testAggregateCountDecoderIgnoresInvalidElements() throws Exception {
 
-        Node root = new QppXmlDecoder().decode(XmlUtils.stringToDOM(XML_FRAGMENT));
+        Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(XML_FRAGMENT));
         Node node = root.getChildNodes().get(0);
 
         assertThat("Parent exists", root, is(not(nullValue())));
@@ -110,7 +110,7 @@ public class AggregateCountDecoderTest {
     @Test
     public void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws Exception {
 
-        Node root = new QppXmlDecoder().decode( XmlUtils.stringToDOM( ANOTHER_XML_FRAGMENT ) );
+        Node root = new QppXmlDecoder().decode( XmlUtils.stringToDom( ANOTHER_XML_FRAGMENT ) );
 
         assertThat("Parent exists", root, is(not(nullValue())));
 

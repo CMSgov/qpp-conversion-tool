@@ -52,120 +52,120 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-// The names of the default decoder classes does not matter.
-// TODO must comment out these defaults as real implementations are written.
+	// The names of the default decoder classes does not matter.
+	// TODO must comment out these defaults as real implementations are written.
 	// this one looks like a node that is not necessary
 	@Decoder(TemplateId.PERFORMANCE_RATE)
-	public static class N_Decoder extends DefaultDecoder {
+	public static class PerformanceRateDecoder extends DefaultDecoder {
 
-		public N_Decoder() {
+		public PerformanceRateDecoder() {
 			super("Performance Rate");
 		}
 	}
 
-    // this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
+	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
 	@Decoder(TemplateId.CMS_AGGREGATE_COUNT)
-	public static class R_Decoder extends DefaultDecoder {
+	public static class CmsAggregateCountDecoder extends DefaultDecoder {
 
-		public R_Decoder() {
+		public CmsAggregateCountDecoder() {
 			super("Aggregate Count - CMS");
 		}
 	}
 
-	//	 this one looks like a node that is not necessary
+	// this one looks like a node that is not necessary
 	@Decoder(TemplateId.MEASURE_SECTION)
-	public static class B_Decoder extends DefaultDecoder {
+	public static class MeasureSectionDecoder extends DefaultDecoder {
 
-		public B_Decoder() {
+		public MeasureSectionDecoder() {
 			super("Measure Section");
 		}
 	}
 
-    // this one looks like a node that is not necessary
+	// this one looks like a node that is not necessary
 	@Decoder(TemplateId.MEASURE_SECTION_V2)
-	public static class D_Decoder extends DefaultDecoder {
+	public static class MeasureSectionV2Decoder extends DefaultDecoder {
 
-		public D_Decoder() {
+		public MeasureSectionV2Decoder() {
 			super("QRDA Category III Measure Section - CMS (V2)");
 		}
 	}
 
 	@Decoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
-	public static class I_Decoder extends DefaultDecoder {
+	public static class AciMeasurePerformedReferenceAndResultsDecoder extends DefaultDecoder {
 
-		public I_Decoder() {
+		public AciMeasurePerformedReferenceAndResultsDecoder() {
 			super("Advancing Care Information Measure Performed Measure Reference and Results");
 		}
 	}
 
 	@Decoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
-	public static class K_Decoder extends DefaultDecoder {
+	public static class MeasureReferenceResultsCmsV2Decoder extends DefaultDecoder {
 
-		public K_Decoder() {
+		public MeasureReferenceResultsCmsV2Decoder() {
 			super("Measure Reference and Results - CMS (V2)");
 		}
 	}
 
 	@Decoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
-	public static class S_Decoder extends DefaultDecoder {
+	public static class ContinuousVariableMeasureValueCmsDecoder extends DefaultDecoder {
 
-		public S_Decoder() {
+		public ContinuousVariableMeasureValueCmsDecoder() {
 			super("Continuous Variable Measure Value - CMS");
 		}
 	}
 
 	@Decoder(TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class T_Decoder extends DefaultDecoder {
+	public static class EthnicitySupplementalDataElementCmsV2Decoder extends DefaultDecoder {
 
-		public T_Decoder() {
+		public EthnicitySupplementalDataElementCmsV2Decoder() {
 			super("Ethnicity Supplemental Data Element – CMS (V2)");
 		}
 	}
 
 	@Decoder(TemplateId.MEASURE_DATA_CMS_V2)
-	public static class U_Decoder extends DefaultDecoder {
+	public static class MeasureDataCmsV2Decoder extends DefaultDecoder {
 
-		public U_Decoder() {
+		public MeasureDataCmsV2Decoder() {
 			super("Measure Data - CMS (V2)");
 		}
 	}
 
 	@Decoder(TemplateId.REPORTING_STRATUM_CMS)
-	public static class V_Decoder extends DefaultDecoder {
+	public static class ReportingStratumCmsDataDecoder extends DefaultDecoder {
 
-		public V_Decoder() {
+		public ReportingStratumCmsDataDecoder() {
 			super("Reporting Stratum - CMS");
 		}
 	}
 
 	@Decoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENTAL_CMS_V2)
-	public static class W_Decoder extends DefaultDecoder {
+	public static class SexSupplementalDataElementalCmsV2Decoder extends DefaultDecoder {
 
-		public W_Decoder() {
+		public SexSupplementalDataElementalCmsV2Decoder() {
 			super("Sex Supplemental Data Element - CMS (V2)");
 		}
 	}
 
 	@Decoder(TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class X_Decoder extends DefaultDecoder {
+	public static class RaceSupplementalDataElementCmsV2Decoder extends DefaultDecoder {
 
-		public X_Decoder() {
+		public RaceSupplementalDataElementCmsV2Decoder() {
 			super("Race Supplemental Data Element - CMS (V2)");
 		}
 	}
 
 	@Decoder(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class Y_Decoder extends DefaultDecoder {
+	public static class PayerSupplementalDataElementCmsV2Decoder extends DefaultDecoder {
 
-		public Y_Decoder() {
+		public PayerSupplementalDataElementCmsV2Decoder() {
 			super("Payer Supplemental Data Element - CMS (V2)");
 		}
 	}
 
 	@Decoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
-	public static class ZZ_Decoder extends DefaultDecoder {
+	public static class PerformanceRateProportionMeasureCmsV2Decoder extends DefaultDecoder {
 
-		public ZZ_Decoder() {
+		public PerformanceRateProportionMeasureCmsV2Decoder() {
 			super("Performance Rate for Proportion Measure - CMS (V2)");
 		}
 	}

@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
  * Encoder to serialize ACI Numerator Denominator Type Measure.
  */
 
-@Encoder(TemplateId.ACI_PROPORTION)
-public class AciProportionMeasureEncoder extends QppOutputEncoder {
+@Encoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
+public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 
 	/**
 	 *  Encodes an ACI Numerator Denominator Type Measure into the QPP format
@@ -34,7 +34,7 @@ public class AciProportionMeasureEncoder extends QppOutputEncoder {
 				Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
 		//Performance Rate node not needed
-		childMapByTemplateId.remove( TemplateId.PERFORMANCE_RATE.getTemplateId());
+		childMapByTemplateId.remove(TemplateId.PERFORMANCE_RATE.getTemplateId());
 
 		JsonWrapper childWrapper = encodeChildren(childMapByTemplateId);
 
