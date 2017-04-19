@@ -36,7 +36,8 @@ test:
   post:
     - cp benchmark/target/benchmark_output.txt $CIRCLE_ARTIFACTS
     - cp java-conversion-tool/target/java-conversion-tool.jar $CIRCLE_ARTIFACTS
-    - cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS
+    - mkdir -p $CIRCLE_ARTIFACTS/coverage/java-conversion-tool && cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/java-conversion-tool
+    - mkdir -p $CIRCLE_ARTIFACTS/coverage/java-conversion-tool && cp -R lambdize/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/lambdize
     - mkdir $CIRCLE_ARTIFACTS/sonarlint
     - cp -R java-conversion-tool/src/main/.sonarlint/* $CIRCLE_ARTIFACTS/sonarlint
     - cd ./java-conversion-tool/; mvn javadoc:javadoc; mkdir $CIRCLE_ARTIFACTS/JavaDocs/; cp -R ./target/site/apidocs/* $CIRCLE_ARTIFACTS/JavaDocs/

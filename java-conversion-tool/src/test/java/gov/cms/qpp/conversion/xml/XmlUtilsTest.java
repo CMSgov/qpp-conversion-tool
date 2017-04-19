@@ -10,8 +10,6 @@ import java.util.List;
 import org.jdom2.Element;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.xml.XmlUtils;
-
 public class XmlUtilsTest {
 
 	@Test
@@ -57,30 +55,5 @@ public class XmlUtilsTest {
 		Element dom = XmlUtils.stringToDom("invalid XML");
 
 		assertThat("returned dom should not be null", dom, is(nullValue()));
-	}
-	
-	@Test
-	public void fileToDom() throws Exception {
-		Element dom = XmlUtils.fileToDom("target/test-classes/test.xml");
-
-		assertThat("returned dom should not be null", dom, is(not(nullValue())));
-
-		List<Element> childElement = dom.getChildren();
-		assertThat("test root has one child",dom.getChildren().size(), is(1));
-
-		List<Element> leafElements = childElement.get(0).getChildren();
-
-		assertThat("test observation has five children", leafElements.size(), is(5));
-	}
-
-	@Test
-	public void fileToDom_null() throws Exception {
-		String nullfilename = null;
-		XmlUtils.fileToDom(nullfilename);
-	}
-
-	@Test(expected=XmlException.class)
-	public void fileToDom_fileNotFound() throws Exception {
-		XmlUtils.fileToDom("file/does/not/exist");
 	}
 }

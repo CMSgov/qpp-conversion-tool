@@ -1,5 +1,5 @@
 .DS_Store
-java-conversion-tool/jacoco.exec
+jacoco.exec
 dev-log.log
 *.orig
 target/

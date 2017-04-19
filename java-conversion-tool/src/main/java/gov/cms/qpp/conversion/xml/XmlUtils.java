@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -36,38 +35,19 @@ public class XmlUtils {
 		if (xml == null) {
 			return null;
 		}
-		
+
 		return parseXmlStream(new ByteArrayInputStream(xml.getBytes()));
 	}
 
 	/**
-	 * Parses an XML file specified by a path or filename.
-	 *
-	 * @param filename A path or filename of an XML file.
-	 * @return The root element of the XML tree.
-	 * @throws XmlException When a failure to parse the XML or open and read the file.
-	 */
-	public static Element fileToDom(String filename) throws XmlException {
-		if (filename == null) {
-			return null;
-		}
-		
-		return fileToDom(Paths.get(filename));
-	}
-
-	/**
-	 * Parses an XML file specified by the Path.
+	 * Returns an InputStream sourced by the given path.
 	 *
 	 * @param file An XML file.
-	 * @return The root element of the XML tree.
-	 * @throws XmlException When a failure to parse the XML or open and read the file.
+	 * @return InputStream for the file's content
+	 * @throws IOException When a failure to open and read the file.
 	 */
-	public static Element fileToDom(Path file) throws XmlException {
-		try (InputStream xmlStream = Files.newInputStream(file)) {
-			return parseXmlStream(xmlStream);
-		} catch (IOException e) {
-			throw new XmlException("File '" + file + "' Cannot be parsed", e);
-		}
+	public static InputStream fileToStream(Path file) throws IOException {
+		return Files.newInputStream(file);
 	}
 
 	/**
@@ -77,7 +57,7 @@ public class XmlUtils {
 	 * @return The root element of the XML tree.
 	 * @throws XmlException When a failure to parse the XML.
 	 */
-	protected static Element parseXmlStream(InputStream xmlStream) throws XmlException {
+	public static Element parseXmlStream(InputStream xmlStream) throws XmlException {
 		try {
 			SAXBuilder saxBuilder = new SAXBuilder();
 			Document dom = saxBuilder.build(xmlStream);
@@ -97,5 +77,5 @@ public class XmlUtils {
 		return Arrays.stream(parts)
 				.collect(Collectors.joining());
 	}
-	
+
 }
