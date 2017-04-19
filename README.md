@@ -113,6 +113,20 @@ Note: If you are using Windows, replace `./convert.sh` in the examples below wit
 ./convert.sh qrda-files/not-a-QDRA-III-file.xml
 ```
 
+### Serverless
+Install Serverless
+```shell
+npm install -g serverless
+```
+
+Deploy to S3
+```shell
+export AWS_ACCESS_KEY_ID=<your-key-here>
+export AWS_SECRET_ACCESS_KEY=<your-secret-key-here>
+# AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are now available for serverless to use
+serverless deploy
+```
+
 ## Want to contribute?
 
 Want to file a bug or contribute some code? Read up on our
