@@ -42,7 +42,7 @@ public class ValidationError {
 	 *
 	 * @return The path that this error references.
 	 */
-	public String getXPath() {
+	public String getPath() {
 		return path;
 	}
 

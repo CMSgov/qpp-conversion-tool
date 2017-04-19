@@ -319,7 +319,7 @@ public class Converter {
 	private void writeValidationErrors(List<ValidationError> validationErrors, Path outFile) {
 		try (Writer errWriter = Files.newBufferedWriter(outFile)) {
 			for (ValidationError error : validationErrors) {
-				String errorXPath = error.getXPath();
+				String errorXPath = error.getPath();
 				errWriter.write("ValidationError: " + error.getErrorText() + System.lineSeparator() + (errorXPath != null && !errorXPath.isEmpty() ? "\tat " + errorXPath : ""));
 			}
 		} catch (IOException e) { // coverage ignore candidate

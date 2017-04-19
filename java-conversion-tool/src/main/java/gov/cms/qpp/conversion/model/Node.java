@@ -27,7 +27,7 @@ public class Node implements Serializable {
 	private Node parent;
 	private boolean validated;
 	private String internalId;
-	private String xPath;
+	private String path;
 
 	/**
 	 * Default constructor initializes internal list of Nodes
@@ -186,21 +186,21 @@ public class Node implements Serializable {
 	}
 
 	/**
-	 * Returns the XPath from the original document this {@code Node} is associated with.
+	 * Returns the path from the original document this {@code Node} is associated with.
 	 *
-	 * @return The XPath.
+	 * @return The path.
 	 */
-	public String getXPath() {
-		return xPath;
+	public String getPath() {
+		return path;
 	}
 
 	/**
-	 * Sets the XPath that this {@code Node} is associated with.
+	 * Sets the path from the original document that this {@code Node} is associated with.
 	 *
-	 * @param newXPath The XPath.
+	 * @param newPath The path.
 	 */
-	public void setXPath(String newXPath) {
-		xPath = newXPath;
+	public void setPath(String newPath) {
+		path = newPath;
 	}
 
 	/**

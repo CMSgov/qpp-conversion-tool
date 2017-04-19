@@ -69,7 +69,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				}
 				Converter.CLIENT_LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
 				Node childNode = new Node(parentNode, templateId);
-				childNode.setXPath(XPathHelper.getAbsolutePath(element));
+				childNode.setPath(XPathHelper.getAbsolutePath(element));
 				
 				setNamespace(childEl, childDecoder);
 				
