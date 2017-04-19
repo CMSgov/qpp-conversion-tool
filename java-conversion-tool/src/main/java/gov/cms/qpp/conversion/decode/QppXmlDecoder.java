@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validations;
 import org.jdom2.Element;
+import org.jdom2.xpath.XPathHelper;
 
 import java.util.List;
 
@@ -68,6 +69,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				}
 				Converter.CLIENT_LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
 				Node childNode = new Node(parentNode, templateId);
+				childNode.setXPath(XPathHelper.getAbsolutePath(element));
 				
 				setNamespace(childEl, childDecoder);
 				

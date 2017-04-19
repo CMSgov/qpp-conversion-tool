@@ -27,6 +27,7 @@ public class Node implements Serializable {
 	private Node parent;
 	private boolean validated;
 	private String internalId;
+	private String xPath;
 
 	/**
 	 * Default constructor initializes internal list of Nodes
@@ -182,6 +183,14 @@ public class Node implements Serializable {
 	 */
 	public TemplateId getType() {
 		return type;
+	}
+
+	public String getXPath() {
+		return xPath;
+	}
+
+	public void setXPath(String newXPath) {
+		xPath = newXPath;
 	}
 
 	/**
