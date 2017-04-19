@@ -185,10 +185,20 @@ public class Node implements Serializable {
 		return type;
 	}
 
+	/**
+	 * Returns the XPath from the original document this {@code Node} is associated with.
+	 *
+	 * @return The XPath.
+	 */
 	public String getXPath() {
 		return xPath;
 	}
 
+	/**
+	 * Sets the XPath that this {@code Node} is associated with.
+	 *
+	 * @param newXPath The XPath.
+	 */
 	public void setXPath(String newXPath) {
 		xPath = newXPath;
 	}
