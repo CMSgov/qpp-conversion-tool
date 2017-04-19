@@ -8,17 +8,16 @@ import org.jdom2.Element;
 
 /**
  * Decoder to read XML Data for an ACI Section.
- *
  */
 @Decoder(TemplateId.ACI_SECTION)
 public class AciSectionDecoder extends QppXmlDecoder {
 
 	/**
-	 * Decodes an ACI Section into the QPP format
+	 * Decodes an ACI Section into the intermediate Node format
 	 *
 	 * @param element XML element that represents the ACI Section
 	 * @param thisNode Node represents the aci section
-	 * @return DecodeResult.TreeContinue thisNode gets the newly parsed XML Fragments
+	 * @return {@code DecodeResult.TREE_CONTINUE} to continue down the parsed XML
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {

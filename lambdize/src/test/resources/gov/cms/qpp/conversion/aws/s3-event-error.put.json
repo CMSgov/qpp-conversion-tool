@@ -11,7 +11,7 @@
         "object": {
           "eTag": "0123456789abcdef0123456789abcdef",
           "sequencer": "0A1B2C3D4E5F678901",
-          "key": "pre-conversion/valid-QRDA-III.xml",
+          "key": "pre-conversion/QRDA-III-without-required-measure.xml",
           "size": 1024
         },
         "bucket": {

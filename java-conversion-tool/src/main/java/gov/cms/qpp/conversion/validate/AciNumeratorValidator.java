@@ -9,12 +9,13 @@ import gov.cms.qpp.conversion.model.Validator;
  * and that its aggregate count value is a positive integer value.
  */
 @Validator(templateId = TemplateId.ACI_NUMERATOR, required = true)
-public class AciNumeratorValidator extends AciNumeratorDenominatorValidator {
+public class AciNumeratorValidator extends CommonNumeratorDenominatorValidator {
 	protected static final String NUMERATOR_NAME = "Numerator";
-  /**
-  Class that validates ACI Numerator Nodes
-  ACI Numerator Nodes should contain exactly one AggregateCount Node
-  */
+
+	/**
+	 * Class that validates ACI Numerator Nodes
+	 * ACI Numerator Nodes should contain exactly one AggregateCount Node
+	 */
 	public AciNumeratorValidator() {
 		nodeName = NUMERATOR_NAME;
 	}

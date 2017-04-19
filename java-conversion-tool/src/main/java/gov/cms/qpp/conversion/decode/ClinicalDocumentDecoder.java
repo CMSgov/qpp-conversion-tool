@@ -12,10 +12,24 @@ import java.util.function.Consumer;
 
 /**
  * Decoder to parse the root element of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
-
  */
 @Decoder(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentDecoder extends QppXmlDecoder {
+
+	private static final String PROGRAM_NAME =
+			"./ns:informationRecipient/ns:intendedRecipient/"
+			+ "ns:id[@root='2.16.840.1.113883.3.249.7']/@extension";
+
+	private static final String NATIONAL_PROVIDER_ID =
+			"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/"
+			+ "ns:id[@root='2.16.840.1.113883.4.6']/@extension";
+
+	private static final String TAX_PROVIDER_TAX_ID =
+			"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/"
+			+ "ns:representedOrganization/ns:id[@root='2.16.840.1.113883.4.2']/@extension";
+
+	private static final String COMPONENT_ELEMENT =
+			"./ns:component/ns:structuredBody/ns:component";
 
 	/**
 	 * internalDecode parses the xml fragment into thisNode
@@ -37,26 +51,22 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	}
 
 	private void setProgramNameOnNode(Element element, Node thisNode) {
-		String expressionStr = "./ns:informationRecipient/ns:intendedRecipient/ns:id[@root='2.16.840.1.113883.3.249.7']/@extension";
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue("programName", p.getValue().toLowerCase());
-		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+		setOnNode(element, PROGRAM_NAME, consumer, Filters.attribute(), true);
 	}
 
 	private void setNationalProviderIdOnNode(Element element, Node thisNode) {
-		String expressionStr = "./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/ns:id[@root='2.16.840.1.113883.4.6']/@extension";
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue("nationalProviderIdentifier", p.getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+		setOnNode(element, NATIONAL_PROVIDER_ID, consumer, Filters.attribute(), true);
 	}
 
 	private void setTaxProviderTaxIdOnNode(Element element, Node thisNode) {
-		String expressionStr = "./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity/ns:representedOrganization/ns:id[@root='2.16.840.1.113883.4.2']/@extension";
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue("taxpayerIdentificationNumber", p.getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+		setOnNode(element, TAX_PROVIDER_TAX_ID, consumer, Filters.attribute(), true);
 	}
 
 	private void processComponentElement(Element element, Node thisNode) {
-		String expressionStr = "./ns:component/ns:structuredBody/ns:component";
 		Consumer<? super List<Element>> consumer = p -> this.decode(p, thisNode);
-		setOnNode(element, expressionStr, consumer, Filters.element(), false);
+		setOnNode(element, COMPONENT_ELEMENT, consumer, Filters.element(), false);
 	}
 }

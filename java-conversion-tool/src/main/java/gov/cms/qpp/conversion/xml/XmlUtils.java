@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  */
 public class XmlUtils {
 	/**
-	 * Private constructor so utility class cannot be instantiated
+	 * Private constructor so utility class cannot be instantiated.
 	 */
 	private XmlUtils() {
 		//private constructor so utility class cannot be instantiated
@@ -31,7 +31,7 @@ public class XmlUtils {
 	 * @return The root element of the XML tree.
 	 * @throws XmlException When a failure to parse the XML.
 	 */
-	public static Element stringToDOM(String xml) throws XmlException {
+	public static Element stringToDom(String xml) throws XmlException {
 		if (xml == null) {
 			return null;
 		}
@@ -44,7 +44,7 @@ public class XmlUtils {
 	 *
 	 * @param file An XML file.
 	 * @return InputStream for the file's content
-	 * @throws XmlException When a failure to parse the XML or open and read the file.
+	 * @throws IOException When a failure to open and read the file.
 	 */
 	public static InputStream fileToStream(Path file) throws IOException {
 		return Files.newInputStream(file);

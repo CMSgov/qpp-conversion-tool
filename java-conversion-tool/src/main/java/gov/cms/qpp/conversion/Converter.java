@@ -21,7 +21,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -39,8 +38,9 @@ public class Converter {
 
 	public static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 
-	protected static final String SKIP_VALIDATION = "--skip-validation";
-	protected static final String SKIP_DEFAULTS = "--skip-defaults";
+	static final String SKIP_VALIDATION = "--skip-validation";
+	static final String SKIP_DEFAULTS = "--skip-defaults";
+	private static final String DIR_EXTRACTION = "[\\/\\\\]";
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
 
@@ -52,9 +52,9 @@ public class Converter {
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
+	private List<ValidationError> validationErrors = Collections.emptyList();
 	private InputStream xmlStream;
 	private Path inFile;
-	private List<ValidationError> validationErrors;
 	private Node decoded;
 
 	/**
@@ -92,10 +92,10 @@ public class Converter {
 	/**
 	 * validArgs checks the command line parameters and verifies the existence of Files.
 	 *
-	 * @param args String[] Command line parameters
-	 * @return Collection<File> list of file(s) that are to be transformed
+	 * @param args Command line parameters.
+	 * @return  A list of file(s) that are to be transformed.
 	 */
-	protected static Collection<Path> validArgs(String[] args) {
+	static Collection<Path> validArgs(String[] args) {
 		if (args.length < 1) {
 			CLIENT_LOG.error(NO_INPUT_FILE_SPECIFIED);
 			return new LinkedList<>();
@@ -115,31 +115,32 @@ public class Converter {
 		return validFiles;
 	}
 
-	private static void resetFlags(){
+	private static void resetFlags() {
 		doValidation = true;
 		doDefaults = true;
 	}
 
 	private static boolean checkFlags(String arg) {
-		if ( SKIP_VALIDATION.equals(arg) ) {
+		if (SKIP_VALIDATION.equals(arg)) {
 			doValidation = false;
 			return true;
 		}
 
-		if ( SKIP_DEFAULTS.equals(arg) ) {
+		if (SKIP_DEFAULTS.equals(arg)) {
 			doDefaults = false;
 			return true;
 		}
+
 		return false;
 	}
 
 	/**
 	 * Produce collection of files found within the given path
 	 *
-	 * @param path String file location
-	 * @return Collection<File> list of files at the file location
+	 * @param path A file location.
+	 * @return The list of files at the file location.
 	 */
-	protected static Collection<Path> checkPath(String path) {
+	static Collection<Path> checkPath(String path) {
 		Collection<Path> existingFiles = new LinkedList<>();
 
 		if (path == null || path.trim().isEmpty()) {
@@ -161,10 +162,10 @@ public class Converter {
 	/**
 	 * Accumulates collection of files that match the given path
 	 *
-	 * @param path
-	 * @return
+	 * @param path a path which may contain wildcards
+	 * @return a collection of paths representing files to be converted
 	 */
-	protected static Collection<Path> manyPath(String path) {
+	static Collection<Path> manyPath(String path) {
 		Path inDir = Paths.get(extractDir(path));
 		Pattern fileRegex = wildCardToRegex(path);
 		try {
@@ -184,8 +185,8 @@ public class Converter {
 	 * @param path String folder path to search
 	 * @return String up to the wild card character
 	 */
-	protected static String extractDir(String path) {
-		String[] parts = path.split("[\\/\\\\]");
+	static String extractDir(String path) {
+		String[] parts = path.split(DIR_EXTRACTION);
 
 		StringJoiner dirPath = new StringJoiner(FileSystems.getDefault().getSeparator());
 		for (String part : parts) {
@@ -208,16 +209,15 @@ public class Converter {
 	 * @param path String folder path of files to transform
 	 * @return String converts /* into /. for use by ListFiles.
 	 */
-	protected static Pattern wildCardToRegex(String path) {
-		String regex = "";
-
+	static Pattern wildCardToRegex(String path) {
+		String regex;
 		String dirPath = extractDir(path);
 		String wild = path;
 		if (dirPath.length() > 1) {
 			wild = wild.substring(dirPath.length());
 		}
 
-		String[] parts = wild.split("[\\/\\\\]");
+		String[] parts = wild.split(DIR_EXTRACTION);
 
 		if (parts.length > 2) {
 			CLIENT_LOG.error(TOO_MANY_WILD_CARDS, path);
@@ -243,18 +243,19 @@ public class Converter {
 			} else {
 				transform(xmlStream);
 			}
+			return getStatus();
 		} catch (XmlInputFileException | XmlException xe) {
 			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
-		} catch (Exception allE) {
-			DEV_LOG.error("Unexpected exception occurred during conversion", allE);// Eat all exceptions in the call
-		} finally {
+			return getStatus();
+		} catch (Exception exception) {
+			DEV_LOG.error("Unexpected exception occurred during conversion", exception);
 			return getStatus();
 		}
 	}
 
 	private Integer getStatus(){
-		Integer status = 0;
+		Integer status;
 		if (null == decoded){
 			status = 2;
 		} else{
@@ -263,11 +264,10 @@ public class Converter {
 		return status;
 	}
 
-	private Node transform(Path inFile) throws XmlException, IOException{
+	private void transform(Path inFile) throws XmlException, IOException{
 		String inputFileName = inFile.getFileName().toString().trim();
 		Node decoded = transform(XmlUtils.fileToStream(inFile));
 		Path outFile = getOutputFile(inputFileName);
-		Integer status = 0;
 
 		if(decoded != null) {
 			if (validationErrors.isEmpty()) {
@@ -276,12 +276,10 @@ public class Converter {
 				writeValidationErrors(validationErrors, outFile);
 			}
 		}
-
-		return decoded;
 	}
 
 	private String getFileExtension() {
-		return (validationErrors != null && !validationErrors.isEmpty()) ? ".err.txt" : ".qpp.json";
+		return (!validationErrors.isEmpty()) ? ".err.txt" : ".qpp.json";
 	}
 
 	private Node transform(InputStream inStream) throws XmlException {
@@ -303,12 +301,12 @@ public class Converter {
 	}
 
 	private void writeConverted(Node decoded, Path outFile) {
-		JsonOutputEncoder encoder = new QppOutputEncoder();
+		JsonOutputEncoder encoder = getEncoder();
 
 		CLIENT_LOG.info("Decoded template ID {} to file '{}'", decoded.getId(), outFile);
 
-		try ( Writer writer = Files.newBufferedWriter(outFile) ){
-			encoder.setNodes(Arrays.asList(decoded));
+		try (Writer writer = Files.newBufferedWriter(outFile)) {
+			encoder.setNodes(Collections.singletonList(decoded));
 			encoder.encode(writer);
 			// do something with encode validations
 		} catch (IOException | EncodeException e) { // coverage ignore candidate
@@ -331,24 +329,27 @@ public class Converter {
 	}
 
 	public InputStream getConversionResult(){
-		return (validationErrors != null && !validationErrors.isEmpty())
+		return (!validationErrors.isEmpty())
 				? writeValidationErrors()
 				: writeConverted() ;
 	}
 
 	private InputStream writeConverted() {
-
-		JsonOutputEncoder encoder = new QppOutputEncoder();
+		JsonOutputEncoder encoder = getEncoder();
 		CLIENT_LOG.info("Decoded template ID {}", decoded.getId());
 
 		try {
-			encoder.setNodes(Arrays.asList(decoded));
+			encoder.setNodes(Collections.singletonList(decoded));
 			return encoder.encode();
 		} catch (EncodeException e) {
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
 		} finally {
 			Validations.clear();
 		}
+	}
+
+	protected JsonOutputEncoder getEncoder() {
+		return new QppOutputEncoder();
 	}
 
 	private InputStream writeValidationErrors() {
@@ -361,7 +362,6 @@ public class Converter {
 
 	public Path getOutputFile(String name) {
 		String outName = name.replaceFirst("(?i)(\\.xml)?$", getFileExtension());
-		Path outFile = Paths.get(outName);
-		return outFile;
+		return Paths.get(outName);
 	}
 }

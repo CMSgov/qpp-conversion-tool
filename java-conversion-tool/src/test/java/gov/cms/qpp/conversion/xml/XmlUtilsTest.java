@@ -10,8 +10,6 @@ import java.util.List;
 import org.jdom2.Element;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.xml.XmlUtils;
-
 public class XmlUtilsTest {
 
 	@Test
@@ -25,7 +23,7 @@ public class XmlUtilsTest {
 				"    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>",
 				"  </observation>", "</root>");
 
-		Element dom = XmlUtils.stringToDOM(xmlFragment);
+		Element dom = XmlUtils.stringToDom(xmlFragment);
 
 		assertThat("returned dom should not be null", dom, is(not(nullValue())));
 
@@ -39,14 +37,14 @@ public class XmlUtilsTest {
 
 	@Test
 	public void stringToDom_null() throws Exception {
-		Element dom = XmlUtils.stringToDOM(null);
+		Element dom = XmlUtils.stringToDom(null);
 
 		assertThat("returned dom should not be null", dom, is(nullValue()));
 	}
 	
 	@Test(expected=XmlException.class)
 	public void stringToDom_emptyString() throws Exception {
-		Element dom = XmlUtils.stringToDOM("");
+		Element dom = XmlUtils.stringToDom("");
 
 		assertThat("returned dom should not be null", dom, is(nullValue()));
 	}
@@ -54,7 +52,7 @@ public class XmlUtilsTest {
 
 	@Test(expected=XmlException.class)
 	public void stringToDom_invalidXML() throws Exception {
-		Element dom = XmlUtils.stringToDOM("invalid XML");
+		Element dom = XmlUtils.stringToDom("invalid XML");
 
 		assertThat("returned dom should not be null", dom, is(nullValue()));
 	}

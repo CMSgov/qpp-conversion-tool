@@ -14,9 +14,8 @@ dependencies:
     - rm google-chrome.deb
   override:
     - cd java-conversion-tool; mvn dependency:resolve
-    # download and extract the sonarlint code quality tool
-    - wget -O sonarlint.zip https://bintray.com/sonarsource/Distribution/download_file?file_path=sonarlint-cli%2Fsonarlint-cli-2.1.0.566.zip
-    - unzip -d . sonarlint.zip
+    - wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
+    - unzip -d . sonarscanner.zip
     - cd frontend; yarn
   cache_directories:
     - ~/.cache/yarn
@@ -24,11 +23,12 @@ dependencies:
 test:
   pre:
     - cd frontend; npm install -g protractor
+    - cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
   override:
     - mvn clean package -Djacoco.skip.instrument=false
     - mvn integration-test
     - mvn jacoco:report
-    - cd java-conversion-tool/src/main; ../../../sonarlint-cli-2.1.0.566/bin/sonarlint
+    - ./sonarqube.sh
     - cd frontend; yarn run lint
     - cd frontend; yarn run test:ci
     - cd frontend; yarn run e2e:ci
@@ -36,6 +36,6 @@ test:
   post:
     - cp benchmark/target/benchmark_output.txt $CIRCLE_ARTIFACTS
     - cp java-conversion-tool/target/java-conversion-tool.jar $CIRCLE_ARTIFACTS
-    - cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS
-    - mkdir $CIRCLE_ARTIFACTS/sonarlint
-    - cp -R java-conversion-tool/src/main/.sonarlint/* $CIRCLE_ARTIFACTS/sonarlint
+    - mkdir -p $CIRCLE_ARTIFACTS/coverage/java-conversion-tool && cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/java-conversion-tool
+    - mkdir -p $CIRCLE_ARTIFACTS/coverage/lambdize && cp -R lambdize/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/lambdize
+    - cd ./java-conversion-tool/; mvn javadoc:javadoc; mkdir $CIRCLE_ARTIFACTS/JavaDocs/; cp -R ./target/site/apidocs/* $CIRCLE_ARTIFACTS/JavaDocs/

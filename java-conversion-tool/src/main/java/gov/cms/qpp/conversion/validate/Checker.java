@@ -18,35 +18,35 @@ class Checker {
 	private boolean anded;
 	private Map<TemplateId, Long> nodeCount;
 
-	private Checker( Node node, List<ValidationError> validationErrors, boolean anded ){
+	private Checker(Node node, List<ValidationError> validationErrors, boolean anded) {
 		this.node = node;
 		this.validationErrors = validationErrors;
 		this.anded = anded;
 		this.nodeCount = node.getChildNodes().stream().collect(
-				Collectors.groupingBy( Node::getType, Collectors.counting() )
+				Collectors.groupingBy(Node::getType, Collectors.counting())
 		);
 	}
 
 	/**
 	 * static factory that returns a shortcut validator
 	 *
-	 * @param node
-	 * @param validationErrors
-	 * @return
+	 * @param node node to be validated
+	 * @param validationErrors holder for validation errors
+	 * @return The checker, for chaining method calls.
 	 */
-	static Checker check( Node node, List<ValidationError> validationErrors ){
-		return new Checker( node, validationErrors, true);
+	static Checker check(Node node, List<ValidationError> validationErrors) {
+		return new Checker(node, validationErrors, true);
 	}
 
 	/**
 	 * static factory that returns a non-shortcut validator
 	 *
-	 * @param node
-	 * @param validationErrors
-	 * @return
+	 * @param node node to be validated
+	 * @param validationErrors holder for validation errors
+	 * @return The checker, for chaining method calls.
 	 */
-	static Checker thoroughlyCheck( Node node, List<ValidationError> validationErrors ){
-		return new Checker( node, validationErrors, false);
+	static Checker thoroughlyCheck(Node node, List<ValidationError> validationErrors) {
+		return new Checker(node, validationErrors, false);
 	}
 
 	private boolean shouldShortcut() {
@@ -57,25 +57,25 @@ class Checker {
 	 * checks target node for the existence of a value with the given name key
 	 *
 	 * @param message error message if searched value is not found
-	 * @param name
-	 * @return
+	 * @param name key of expected value
+	 * @return The checker, for chaining method calls.
 	 */
-	Checker value( String message, String name ) {
-		if ( !shouldShortcut() && node.getValue(name) == null ) {
+	Checker value(String message, String name) {
+		if (!shouldShortcut() && node.getValue(name) == null) {
 			validationErrors.add(new ValidationError(message));
 		}
 		return this;
 	}
 
 	/**
-	 * checks target node for the existence of an integer value with the given name key
+	 * Checks target node for the existence of an integer value with the given name key.
 	 *
 	 * @param message error message if searched value is not found or is not appropriately typed
-	 * @param name
-	 * @return
+	 * @param name key of expected value
+	 * @return The checker, for chaining method calls.
 	 */
-	public Checker intValue( String message, String name ) {
-		if ( !shouldShortcut() ) {
+	public Checker intValue(String message, String name) {
+		if (!shouldShortcut()) {
 			try {
 				Integer.parseInt(node.getValue(name));
 			} catch (NumberFormatException ex) {
@@ -86,28 +86,41 @@ class Checker {
 	}
 
 	/**
-	 * checks target node for the existence of any child nodes
+	 * Checks target node for the existence of a specified parent.
 	 *
-	 * @param message
-	 * @return
+	 * @param message validation error message
+	 * @return The checker, for chaining method calls.
 	 */
-	public Checker hasChildren(String message ) {
-		if ( !shouldShortcut() && node.getChildNodes().isEmpty() ) {
+	public Checker hasParent(String message, TemplateId type) {
+		if (!shouldShortcut() && node.getParent().getType() != type) {
 			validationErrors.add(new ValidationError(message));
 		}
 		return this;
 	}
 
 	/**
-	 * verifies that the target node has more than the given minimum of the given {@link TemplateId}s
+	 * Checks target node for the existence of any child nodes.
 	 *
-	 * @param message
-	 * @param minimum
-	 * @param types
-	 * @return
+	 * @param message validation error message
+	 * @return The checker, for chaining method calls.
 	 */
-	public Checker childMinimum( String message, int minimum, TemplateId... types  ) {
-		if ( !shouldShortcut() ) {
+	public Checker hasChildren(String message) {
+		if (!shouldShortcut() && node.getChildNodes().isEmpty()) {
+			validationErrors.add(new ValidationError(message));
+		}
+		return this;
+	}
+
+	/**
+	 * Verifies that the target node has more than the given minimum of the given {@link TemplateId}s.
+	 *
+	 * @param message validation error message
+	 * @param minimum minimum required children of specified types
+	 * @param types types of children to filter by
+	 * @return The checker, for chaining method calls.
+	 */
+	public Checker childMinimum(String message, int minimum, TemplateId... types) {
+		if (!shouldShortcut()) {
 			long count = tallyNodes(types);
 			if (count < minimum) {
 				validationErrors.add(new ValidationError(message));
@@ -117,15 +130,15 @@ class Checker {
 	}
 
 	/**
-	 * verifies that the target node has less than the given maximum of the given {@link TemplateId}s
+	 * Verifies that the target node has less than the given maximum of the given {@link TemplateId}s.
 	 *
-	 * @param message
-	 * @param maximum
-	 * @param types
-	 * @return
+	 * @param message validation error message
+	 * @param maximum maximum required children of specified types
+	 * @param types types of children to filter by
+	 * @return The checker, for chaining method calls.
 	 */
-	public Checker childMaximum( String message, int maximum, TemplateId... types ) {
-		if ( !shouldShortcut() ) {
+	public Checker childMaximum(String message, int maximum, TemplateId... types) {
+		if (!shouldShortcut()) {
 			long count = tallyNodes(types);
 			if (count > maximum) {
 				validationErrors.add(new ValidationError(message));
@@ -134,9 +147,15 @@ class Checker {
 		return this;
 	}
 
-	private long tallyNodes( TemplateId... types ) {
-		return Arrays.stream( types )
-			.mapToLong( type -> ( nodeCount.get( type ) == null ) ? 0 : nodeCount.get( type ) )
+	/**
+	 * Aggregate count of nodes of the given types
+	 *
+	 * @param types types of nodes to filter by
+	 * @return count
+	 */
+	private long tallyNodes(TemplateId... types) {
+		return Arrays.stream(types)
+			.mapToLong(type -> (nodeCount.get(type) == null) ? 0 : nodeCount.get(type))
 			.sum();
 	}
 }

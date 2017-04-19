@@ -164,8 +164,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 		final Element rootElement = xmlDoc.getDocument().getRootElement();
 
-		boolean isValidQrdaFile = containsClinicalDocumentElement(rootElement) &&
-		                          containsClinicalDocumentTemplateId(rootElement);
+		boolean isValidQrdaFile = containsClinicalDocumentElement(rootElement)
+		                          && containsClinicalDocumentTemplateId(rootElement);
 
 		if (!isValidQrdaFile) {
 			Converter.CLIENT_LOG.error("The file is not a QRDA-III XML document");
@@ -188,7 +188,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			final String root = currentChild.getAttributeValue("root");
 			final String extension = currentChild.getAttributeValue("extension");
 
-			if ( TemplateId.getTypeById(root, extension) == TemplateId.CLINICAL_DOCUMENT ) {
+			if (TemplateId.getTypeById(root, extension) == TemplateId.CLINICAL_DOCUMENT) {
 				containsTemplateId = true;
 				break;
 			}

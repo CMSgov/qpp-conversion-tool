@@ -16,7 +16,7 @@ import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class AciProportionMeasureRoundTripTest {
+public class AciNumeratorDenominatorRoundTripTest {
 
 	@Test
 	public void parseAciNumeratorDenominatorAsNode() throws Exception {
@@ -91,13 +91,13 @@ public class AciProportionMeasureRoundTripTest {
 				+ "				</entryRelationship>\n" + "			</observation>\n" + "		</component>\n"
 				+ "	</organizer>\n" + "</entry>";
 
-		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDOM(xmlFragment));
+		Node numeratorDenominatorNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
-		DefaultDecoder.removeDefaultNode(measureNode.getChildNodes());
+		DefaultDecoder.removeDefaultNode(numeratorDenominatorNode.getChildNodes());
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();
-		nodes.add(measureNode);
+		nodes.add(numeratorDenominatorNode);
 		encoder.setNodes(nodes);
 
 		StringWriter sw = new StringWriter();

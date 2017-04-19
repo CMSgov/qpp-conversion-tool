@@ -58,6 +58,12 @@
             <version>1.6.6</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.findify</groupId>
+            <artifactId>s3mock_2.12</artifactId>
+            <version>0.1.9</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -77,6 +83,10 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

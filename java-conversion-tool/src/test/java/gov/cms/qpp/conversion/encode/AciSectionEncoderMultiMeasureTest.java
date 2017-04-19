@@ -93,19 +93,19 @@ public class AciSectionEncoderMultiMeasureTest {
 		aciProportionNumeratorNode3.addChildNode(numeratorValueNode3);
 
 		aciProportionMeasureNode = new Node();
-		aciProportionMeasureNode.setId(TemplateId.ACI_PROPORTION.getTemplateId());
+		aciProportionMeasureNode.setId(TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
 		aciProportionMeasureNode.putValue("measureId", "ACI-PEA-1");
 
 		aciProportionMeasureNode2 = new Node();
-		aciProportionMeasureNode2.setId(TemplateId.ACI_PROPORTION.getTemplateId());
+		aciProportionMeasureNode2.setId(TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode2.addChildNode(aciProportionNumeratorNode2);
 		aciProportionMeasureNode2.addChildNode(aciProportionDenominatorNode2);
 		aciProportionMeasureNode2.putValue("measureId", "ACI_EP_1");
 
 		aciProportionMeasureNode3 = new Node();
-		aciProportionMeasureNode3.setId(TemplateId.ACI_PROPORTION.getTemplateId());
+		aciProportionMeasureNode3.setId(TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode3.addChildNode(aciProportionNumeratorNode3);
 		aciProportionMeasureNode3.addChildNode(aciProportionDenominatorNode3);
 		aciProportionMeasureNode3.putValue("measureId", "ACI_CCTPE_3");

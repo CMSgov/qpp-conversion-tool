@@ -1,5 +1,9 @@
 package gov.cms.qpp.conversion.aws;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
@@ -9,28 +13,26 @@ import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRe
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
+
 import gov.cms.qpp.conversion.Converter;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
-
 public class ConversionHandler implements RequestHandler<S3Event, String> {
+
+	@Override
 	public String handleRequest(S3Event s3event, Context context) {
 		try {
 			S3EventNotificationRecord record = s3event.getRecords().get(0);
 			String srcBucket = record.getS3().getBucket().getName();
 			String srcKey = formatSourceKey(record);
-			String filename = srcKey.replaceAll(".*/","");
+			String filename = srcKey.replaceAll(".*/", "");
 
 			AmazonS3 s3Client = getClient();
-			S3Object s3Object = s3Client.getObject( new GetObjectRequest(srcBucket, srcKey));
+			S3Object s3Object = s3Client.getObject(new GetObjectRequest(srcBucket, srcKey));
 
 			Converter converter = new Converter(s3Object.getObjectContent());
 			Integer status = converter.transform();
 
-			if (status < 2){
+			if (status < 2) {
 				String dstKey = "post-conversion/" + converter.getOutputFile(filename);
 				ObjectMetadata meta = new ObjectMetadata();
 				s3Client.putObject(srcBucket, dstKey, converter.getConversionResult(), meta);
@@ -42,11 +44,11 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 		}
 	}
 
-	protected AmazonS3 getClient(){
-		return AmazonS3ClientBuilder.standard().build();
+	public AmazonS3 getClient() {
+		return AmazonS3ClientBuilder.defaultClient(); // ignore coverage
 	}
 
-	private String formatSourceKey(S3EventNotificationRecord record) throws UnsupportedEncodingException {
+	protected String formatSourceKey(S3EventNotificationRecord record) throws UnsupportedEncodingException {
 		String srcKey = record.getS3().getObject().getKey().replace('+', ' ');
 		return URLDecoder.decode(srcKey, "UTF-8");
 	}

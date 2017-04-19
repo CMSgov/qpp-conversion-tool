@@ -4,7 +4,11 @@ import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
 
-import java.io.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
 import java.util.List;
 
 /**
@@ -30,6 +34,14 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 			writer.flush();
 		} catch (IOException e) {
 			throw new EncodeException("Failure to encode", e);
+		}
+	}
+
+	public final void encode(JsonWrapper wrapper, Node node) {
+		try {
+			internalEncode(wrapper, node);
+		} catch (EncodeException e) {
+			Validations.addValidation(e.getTemplateId(), e.getMessage());
 		}
 	}
 
@@ -65,14 +77,6 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 
 	public void setNodes(List<Node> someNodes) {
 		this.nodes = someNodes;
-	}
-
-	public final void encode(JsonWrapper wrapper, Node node) {
-		try {
-			internalEncode(wrapper, node);
-		} catch (EncodeException e) {
-			Validations.addValidation(e.getTemplateId(), e.getMessage());
-		}
 	}
 
 	protected abstract void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException;

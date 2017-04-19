@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface Validatable<V, T> {
 	
-	List<T> getValidationsById (V id);
+	List<T> getValidationsById(V id);
 	
 	Iterable<String> validations();
 	
