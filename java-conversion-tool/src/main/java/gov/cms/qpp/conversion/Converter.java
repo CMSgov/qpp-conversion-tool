@@ -5,7 +5,6 @@ import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
-import gov.cms.qpp.conversion.encode.OutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
@@ -53,9 +52,9 @@ public class Converter {
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
+	private List<ValidationError> validationErrors = Collections.emptyList();
 	private InputStream xmlStream;
 	private Path inFile;
-	private List<ValidationError> validationErrors;
 	private Node decoded;
 
 	/**
@@ -282,7 +281,7 @@ public class Converter {
 	}
 
 	private String getFileExtension() {
-		return (validationErrors != null && !validationErrors.isEmpty()) ? ".err.txt" : ".qpp.json";
+		return (!validationErrors.isEmpty()) ? ".err.txt" : ".qpp.json";
 	}
 
 	private Node transform(InputStream inStream) throws XmlException {
@@ -332,7 +331,7 @@ public class Converter {
 	}
 
 	public InputStream getConversionResult(){
-		return (validationErrors != null && !validationErrors.isEmpty())
+		return (!validationErrors.isEmpty())
 				? writeValidationErrors()
 				: writeConverted() ;
 	}
