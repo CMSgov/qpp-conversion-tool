@@ -1,39 +1,17 @@
 package gov.cms.qpp.conversion;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.doThrow;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
-import static org.powermock.api.support.membermodification.MemberMatcher.method;
-import static org.powermock.api.support.membermodification.MemberModifier.stub;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.List;
-import java.util.regex.Pattern;
-
+import gov.cms.qpp.conversion.decode.DecodeResult;
+import gov.cms.qpp.conversion.decode.XmlInputFileException;
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.encode.EncodeException;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
+import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.ValidationError;
+import gov.cms.qpp.conversion.validate.NodeValidator;
+import gov.cms.qpp.conversion.validate.QrdaValidator;
+import gov.cms.qpp.conversion.xml.XmlException;
 import org.jdom2.Element;
 import org.junit.After;
 import org.junit.Test;
@@ -46,17 +24,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
-import gov.cms.qpp.conversion.decode.DecodeResult;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
-import gov.cms.qpp.conversion.encode.EncodeException;
-import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
-import gov.cms.qpp.conversion.model.AnnotationMockHelper;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.ValidationError;
-import gov.cms.qpp.conversion.validate.NodeValidator;
-import gov.cms.qpp.conversion.validate.QrdaValidator;
-import gov.cms.qpp.conversion.xml.XmlException;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.file.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.*;
+import static org.powermock.api.support.membermodification.MemberMatcher.method;
+import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
@@ -302,7 +285,7 @@ public class ConverterTest {
 	}
 
 	@Test
-	@PrepareForTest({LoggerFactory.class})
+	@PrepareForTest({LoggerFactory.class, Converter.class})
 	public void testInvalidXml() {
 
 		//set-up
@@ -316,7 +299,7 @@ public class ConverterTest {
 		Converter.main("src/test/resources/non-xml-file.xml");
 
 		//assert
-		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(clientLogger).error( eq("The file is not a valid XML document") );
 	}
 
 	@Test
@@ -333,7 +316,7 @@ public class ConverterTest {
 		QppOutputEncoder encoder = mock( QppOutputEncoder.class );
 		whenNew( QppOutputEncoder.class ).withNoArguments().thenReturn( encoder );
 		EncodeException ex = new EncodeException( "mocked", new RuntimeException() );
-		doThrow( ex ).when( encoder ).encode( any( FileWriter.class ) );
+		doThrow( ex ).when( encoder ).encode( any(Writer.class) );
 
 		//execute
 		Converter.main(Converter.SKIP_VALIDATION,
@@ -363,7 +346,8 @@ public class ConverterTest {
 				"src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(devLogger).error( eq("The file is not a valid XML document"),
+				any(XmlInputFileException.class) );
 	}
 
 	@Test
@@ -407,7 +391,8 @@ public class ConverterTest {
 				"src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class) );
+		verify(devLogger).error( eq("The file is not a valid XML document"),
+				any(XmlInputFileException.class) );
 	}
 
 	@Test
@@ -474,8 +459,7 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException {
-
+	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException, IOException {
 		Converter converter = new Converter(Paths.get("src/test/resources/not-a-QRDA-III-file.xml"));
 
 		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");

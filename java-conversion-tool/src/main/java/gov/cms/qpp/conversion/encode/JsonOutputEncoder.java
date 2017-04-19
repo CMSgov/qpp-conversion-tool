@@ -3,7 +3,11 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Validations;
+
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 import java.util.List;
 
@@ -39,6 +43,17 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 		} catch (EncodeException e) {
 			Validations.addValidation(e.getTemplateId(), e.getMessage());
 		}
+	}
+
+	@Override
+	public InputStream encode() throws EncodeException {
+		Validations.init();
+
+		JsonWrapper wrapper = new JsonWrapper();
+		for (Node curNode : nodes) {
+			encode(wrapper, curNode);
+		}
+		return new ByteArrayInputStream( wrapper.toString().getBytes() );
 	}
 
 	@Override

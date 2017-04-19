@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Validate all ACI Proportion Type Measures.
+ * Validate all ACI Numerator Denominator Type Measures.
  */
 @Validator(templateId = TemplateId.ACI_NUMERATOR_DENOMINATOR, required = true)
 public class AciNumeratorDenominatorValidator extends NodeValidator {
@@ -24,12 +24,13 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	private String measureDataFileName = "measures-data-aci-short.json";
 
 	protected static final String ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED = "At least one Aci Numerator Denominator Measure Node is required";
-	protected static final String NO_PARENT_SECTION = "This ACI Measure Node should have an ACI Section Node as a parent";
-	protected static final String NO_NUMERATOR = "This ACI Measure Node does not contain a Numerator Node child";
-	protected static final String TOO_MANY_NUMERATORS = "This ACI Measure Node contains too many Numerator Node children";
-	protected static final String NO_DENOMINATOR = "This ACI Measure Node does not contain a Denominator Node child";
-	protected static final String TOO_MANY_DENOMINATORS = "This ACI Measure Node contains too many Denominator Node children";
-	protected static final String NO_CHILDREN = "This ACI Measure Node does not have any child Nodes";
+	protected static final String NO_PARENT_SECTION = "This ACI Numerator Denominator Node should have an ACI Section Node as a parent";
+	protected static final String NO_MEASURE_NAME = "This ACI Numerator Denominator Node does not contain a measure name ID";
+	protected static final String NO_NUMERATOR = "This ACI Numerator Denominator Node does not contain a Numerator Node child";
+	protected static final String TOO_MANY_NUMERATORS = "This ACI Numerator Denominator Node contains too many Numerator Node children";
+	protected static final String NO_DENOMINATOR = "This ACI Numerator Denominator Node does not contain a Denominator Node child";
+	protected static final String TOO_MANY_DENOMINATORS = "This ACI Numerator Denominator Node contains too many Denominator Node children";
+	protected static final String NO_CHILDREN = "This ACI Numerator Denominator Node does not have any child Nodes";
 	protected static final String NO_REQUIRED_MEASURE = "The required measure ''{0}'' is not present in the source file. Please add the ACI measure and try again.";
 
 	/**
@@ -40,41 +41,41 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	}
 
 	/**
-	 * Validates a single ACI Proportion Type Measure.
+	 * Validates a single ACI Numerator Denominator Type Measure.
 	 *
 	 * Validates the following.
 	 * <ul>
-	 *     <li>ACI Proportion Type Measure nodes have an ACI section as a parent.</li>
-	 *     <li>ACI Proportion Type Measure nodes have one and only one numerator node.</li>
-	 *     <li>ACI Proportion Type Measure nodes have one and only one denominator node.</li>
+	 *     <li>ACI Numerator Denominator Type Measure nodes have an ACI section as a parent.</li>
+	 *     <li>ACI Numerator Denominator Type Measure nodes have one and only one numerator node.</li>
+	 *     <li>ACI Numerator Denominator Type Measure nodes have one and only one denominator node.</li>
 	 * </ul>
 	 *
-	 * @param node The node that represents an ACI Proportion Type Measure.
+	 * @param node The node that represents an ACI Numerator Denominator Type Measure.
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 
-		//the aci proportion measure node must have an aci section node as parent
-		validateParentIsAciSection(node);
-		//the aci proportion measure node must have a numerator node and a denominator node as children
-		validateChildren(node);
+		//the aci numerator denominator measure node must have an aci section node as parent
+		Checker nodeChecker = check(node).hasParent(NO_PARENT_SECTION, TemplateId.ACI_SECTION);
+		//the aci numerator denominator measure node must have a numerator node and a denominator node as children
+		validateChildren(nodeChecker);
 	}
 
 	/**
-	 * Validates all the ACI Proportion Type Measures.
+	 * Validates all the ACI Numerator Denominator Type Measures.
 	 *
 	 * Validates the following.
 	 * <ul>
-	 *     <li>One ACI Proportion Type Measure node exists</li>
-	 *     <li>All the required measures are represented in at least one ACI Proportion Type Measure</li>
+	 *     <li>One ACI Numerator Denominator Type Measure node exists</li>
+	 *     <li>All the required measures are represented in at least one ACI Numerator Denominator Type Measure</li>
 	 * </ul>
 	 *
-	 * @param nodes A list of all the ACI Proportion Type Measure nodes.
+	 * @param nodes A list of all the ACI Numerator Denominator Type Measure nodes.
 	 */
 	@Override
 	protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
 
-		validateOneAciProportionExists(nodes);
+		validateOneAciNumeratorDenominatorExists(nodes);
 
 		List<MeasureConfig> configs = measureConfigs.getMeasureConfigs();
 
@@ -93,70 +94,42 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 		initMeasureConfigs();
 	}
 
-	private void validateParentIsAciSection(final Node node) {
-
-		if (TemplateId.ACI_SECTION != node.getParent().getType()) {
-			this.addValidationError(
-				new ValidationError(NO_PARENT_SECTION));
-		}
+	/**
+	 * Validates all of the given nodes children.
+	 *
+	 * @param nodeChecker for a node that represents the ACI Numerator Denominator Measure Section
+	 */
+	private void validateChildren(final Checker nodeChecker) {
+		nodeChecker.value(NO_MEASURE_NAME, "measureId")
+				.hasChildren(NO_CHILDREN)
+				.childMinimum(NO_DENOMINATOR, 1, TemplateId.ACI_DENOMINATOR)
+				.childMinimum(NO_NUMERATOR, 1, TemplateId.ACI_NUMERATOR)
+				.childMaximum(TOO_MANY_DENOMINATORS, 1, TemplateId.ACI_DENOMINATOR)
+				.childMaximum(TOO_MANY_NUMERATORS, 1, TemplateId.ACI_NUMERATOR);
 	}
 
-	private void validateChildren(final Node node) {
+	/**
+	 * Validates that an Aci Numerator Denominator Section Exists
+	 *
+	 * @param aciNumeratorDenominatorNodes List of nodes to validate
+	 */
+	private void validateOneAciNumeratorDenominatorExists(final List<Node> aciNumeratorDenominatorNodes) {
 
-		List<Node> children = node.getChildNodes();
-
-		if (!children.isEmpty()) {
-			int numeratorCount = 0;
-			int denominatorCount = 0;
-
-			for (Node child : children) {
-				if (TemplateId.ACI_DENOMINATOR == child.getType()) {
-					denominatorCount++;
-				} else if (TemplateId.ACI_NUMERATOR == child.getType()) {
-					numeratorCount++;
-				}
-			}
-
-			validateNumeratorCount(numeratorCount);
-			validateDenominatorCount(denominatorCount);
-		} else {
-			this.addValidationError(new ValidationError(NO_CHILDREN));
-		}
-	}
-
-	private void validateDenominatorCount(final int denominatorCount) {
-
-		if (denominatorCount == 0) {
-			this.addValidationError(
-					new ValidationError(NO_DENOMINATOR));
-		} else if (denominatorCount > 1) {
-			this.addValidationError(
-					new ValidationError(TOO_MANY_DENOMINATORS));
-		}
-	}
-
-	private void validateNumeratorCount(final int numeratorCount) {
-
-		if (numeratorCount == 0) {
-			this.addValidationError(
-					new ValidationError(NO_NUMERATOR));
-		} else if (numeratorCount > 1) {
-			this.addValidationError(
-					new ValidationError(TOO_MANY_NUMERATORS));
-		}
-	}
-
-	private void validateOneAciProportionExists(final List<Node> aciProportionNodes) {
-
-		if (aciProportionNodes.isEmpty()) {
+		if (aciNumeratorDenominatorNodes.isEmpty()) {
 			this.addValidationError(new ValidationError(ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED));
 		}
 	}
 
-	private void validateMeasureConfig(final MeasureConfig measureConfig, final List<Node> aciProportionNodes) {
+	/**
+	 * Validates all required measure configurations
+	 *
+	 * @param measureConfig Object that holds the measure configuration
+	 * @param aciNumeratorDenominatorNodes List of nodes to validate
+	 */
+	private void validateMeasureConfig(final MeasureConfig measureConfig, final List<Node> aciNumeratorDenominatorNodes) {
 
 		if (measureConfig.isRequired()) {
-			for (Node aNode : aciProportionNodes) {
+			for (Node aNode : aciNumeratorDenominatorNodes) {
 				if (Objects.equals(aNode.getValue("measureId"), measureConfig.getMeasureId())) {
 					return;
 				}
@@ -164,8 +137,13 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 			this.addValidationError(new ValidationError(MessageFormat.format(NO_REQUIRED_MEASURE, measureConfig.getMeasureId())));
 		}
+
+
 	}
 
+	/**
+	 * Initialize all measure configurationscle
+	 */
 	private void initMeasureConfigs() {
 
 		ObjectMapper mapper = new ObjectMapper();
