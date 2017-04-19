@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
+import gov.cms.qpp.conversion.encode.OutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
@@ -303,7 +304,7 @@ public class Converter {
 	}
 
 	private void writeConverted(Node decoded, Path outFile) {
-		JsonOutputEncoder encoder = new QppOutputEncoder();
+		JsonOutputEncoder encoder = getEncoder();
 
 		CLIENT_LOG.info("Decoded template ID {} to file '{}'", decoded.getId(), outFile);
 
@@ -337,8 +338,7 @@ public class Converter {
 	}
 
 	private InputStream writeConverted() {
-
-		JsonOutputEncoder encoder = new QppOutputEncoder();
+		JsonOutputEncoder encoder = getEncoder();
 		CLIENT_LOG.info("Decoded template ID {}", decoded.getId());
 
 		try {
@@ -349,6 +349,10 @@ public class Converter {
 		} finally {
 			Validations.clear();
 		}
+	}
+
+	protected JsonOutputEncoder getEncoder() {
+		return new QppOutputEncoder();
 	}
 
 	private InputStream writeValidationErrors() {

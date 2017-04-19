@@ -27,7 +27,6 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			String filename = srcKey.replaceAll(".*/", "");
 
 			AmazonS3 s3Client = getClient();
-			System.out.println("scrKey: " + srcKey);
 			S3Object s3Object = s3Client.getObject(new GetObjectRequest(srcBucket, srcKey));
 
 			Converter converter = new Converter(s3Object.getObjectContent());
