@@ -13,6 +13,7 @@ dependencies:
     - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
     - rm google-chrome.deb
   override:
+    - mvn --fail-never dependency:go-offline || true
     - cd java-conversion-tool; mvn dependency:resolve
     - wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
     - unzip -d . sonarscanner.zip
