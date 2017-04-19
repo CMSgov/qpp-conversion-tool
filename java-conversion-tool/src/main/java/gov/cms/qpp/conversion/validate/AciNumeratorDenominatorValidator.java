@@ -56,9 +56,9 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 
 		//the aci numerator denominator measure node must have an aci section node as parent
-		validateParentIsAciSection(node);
+		Checker nodeChecker = check(node).hasParent(NO_PARENT_SECTION, TemplateId.ACI_SECTION);
 		//the aci numerator denominator measure node must have a numerator node and a denominator node as children
-		validateChildren(node);
+		validateChildren(nodeChecker);
 	}
 
 	/**
@@ -95,81 +95,17 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	}
 
 	/**
-	 * Validates that the node given has a aci section parent
-	 *
-	 * @param node An object that holds the node to be validated
-	 */
-	private void validateParentIsAciSection(final Node node) {
-
-		if (TemplateId.ACI_SECTION != node.getParent().getType()) {
-			this.addValidationError(
-				new ValidationError(NO_PARENT_SECTION));
-		}
-	}
-
-	/**
 	 * Validates all of the given nodes children.
 	 *
-	 * @param node An object that represents the ACI Numerator Denominator Measure Section
+	 * @param nodeChecker for a node that represents the ACI Numerator Denominator Measure Section
 	 */
-	private void validateChildren(final Node node) {
-
-		List<Node> children = node.getChildNodes();
-
-		if (null == node.getValue("measureId")) {
-			this.addValidationError(
-					new ValidationError(NO_MEASURE_NAME));
-		}
-
-		if (!children.isEmpty()) {
-			int numeratorCount = 0;
-			int denominatorCount = 0;
-
-			for (Node child : children) {
-				if (TemplateId.ACI_DENOMINATOR == child.getType()) {
-					denominatorCount++;
-				} else if (TemplateId.ACI_NUMERATOR == child.getType()) {
-					numeratorCount++;
-				}
-			}
-
-			validateNumeratorCount(numeratorCount);
-			validateDenominatorCount(denominatorCount);
-		} else {
-			this.addValidationError(new ValidationError(NO_CHILDREN));
-		}
-	}
-
-	/**
-	 * Validates that the correct number of denominators was given
-	 *
-	 * @param denominatorCount A count of the total denominators
-	 */
-	private void validateDenominatorCount(final int denominatorCount) {
-
-		if (denominatorCount == 0) {
-			this.addValidationError(
-					new ValidationError(NO_DENOMINATOR));
-		} else if (denominatorCount > 1) {
-			this.addValidationError(
-					new ValidationError(TOO_MANY_DENOMINATORS));
-		}
-	}
-
-	/**
-	 * Validates that the correct number of numerators was given
-	 *
-	 * @param numeratorCount A count of the total numerators
-	 */
-	private void validateNumeratorCount(final int numeratorCount) {
-
-		if (numeratorCount == 0) {
-			this.addValidationError(
-					new ValidationError(NO_NUMERATOR));
-		} else if (numeratorCount > 1) {
-			this.addValidationError(
-					new ValidationError(TOO_MANY_NUMERATORS));
-		}
+	private void validateChildren(final Checker nodeChecker) {
+		nodeChecker.value(NO_MEASURE_NAME, "measureId")
+				.hasChildren(NO_CHILDREN)
+				.childMinimum(NO_DENOMINATOR, 1, TemplateId.ACI_DENOMINATOR)
+				.childMinimum(NO_NUMERATOR, 1, TemplateId.ACI_NUMERATOR)
+				.childMaximum(TOO_MANY_DENOMINATORS, 1, TemplateId.ACI_DENOMINATOR)
+				.childMaximum(TOO_MANY_NUMERATORS, 1, TemplateId.ACI_NUMERATOR);
 	}
 
 	/**
