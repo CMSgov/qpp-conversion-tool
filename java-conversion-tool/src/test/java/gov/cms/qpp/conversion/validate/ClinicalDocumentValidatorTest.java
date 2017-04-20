@@ -221,5 +221,4 @@ public class ClinicalDocumentValidatorTest {
 		assertThat("error should be about missing performance start",
 				errors.get(1).getErrorText(), is(ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
 	}
-
 }

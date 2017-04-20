@@ -47,6 +47,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 				.childMaximum(NO_DUPLICATE_SECTIONS, 1, TemplateId.ACI_SECTION)
 				.childMaximum(NO_DUPLICATE_SECTIONS, 1, TemplateId.IA_SECTION)
 				.childMaximum(NO_DUPLICATE_SECTIONS, 1, TemplateId.MEASURE_SECTION_V2)
+
 				.value(CONTAINS_PROGRAM_NAME, "programName")
 				.value(CONTAINS_TAX_ID_NUMBER, "taxpayerIdentificationNumber");
 
