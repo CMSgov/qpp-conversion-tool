@@ -20,7 +20,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	protected static final String CONTAINS_PROGRAM_NAME = "Clinical Document must have a program name";
 	protected static final String CONTAINS_PERFORMANCE_YEAR = "Clinical Document must have a performance year";
 	protected static final String CONTAINS_TAX_ID_NUMBER = "Clinical Document must have Tax Id Number (TIN)";
-
+	protected static final String REPORTING_PARAMETER_REQUIRED = "Clinical Document must have Report Paramters Section";
 	/**
 	 * Validates a single Clinical Document Node.
 	 * Validates the following.
@@ -41,7 +41,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 				.hasChildren(ONE_CHILD_REQUIRED)
 				.childMinimum(ONE_CHILD_REQUIRED, 1,
 						TemplateId.ACI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)
-				.childMinimum(ONE_CHILD_REQUIRED, 1, TemplateId.REPORTING_PARAMETERS_SECTION)
+				.childMinimum(REPORTING_PARAMETER_REQUIRED, 1, TemplateId.REPORTING_PARAMETERS_SECTION)
 				.value(CONTAINS_PROGRAM_NAME, "programName")
 				.value(CONTAINS_TAX_ID_NUMBER, "taxpayerIdentificationNumber");
 

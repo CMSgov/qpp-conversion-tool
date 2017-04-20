@@ -216,7 +216,7 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 		assertThat("there should be one error", errors, iterableWithSize(2));
 		assertThat("error should be about missing reporting node",
-				errors.get(0).getErrorText(), is(ClinicalDocumentValidator.ONE_CHILD_REQUIRED));
+				errors.get(0).getErrorText(), is(ClinicalDocumentValidator.REPORTING_PARAMETER_REQUIRED));
 		assertThat("error should be about missing performance start",
 				errors.get(1).getErrorText(), is(ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
 	}
