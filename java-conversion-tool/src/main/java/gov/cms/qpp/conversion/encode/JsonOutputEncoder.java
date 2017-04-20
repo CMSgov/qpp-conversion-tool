@@ -53,7 +53,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 		for (Node curNode : nodes) {
 			encode(wrapper, curNode);
 		}
-		return new ByteArrayInputStream( wrapper.toString().getBytes() );
+		return new ByteArrayInputStream(wrapper.toString().getBytes());
 	}
 
 	@Override

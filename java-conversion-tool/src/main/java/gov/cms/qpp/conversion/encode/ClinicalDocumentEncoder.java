@@ -62,8 +62,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @throws EncodeException If error occurs during encoding
 	 */
 	private JsonWrapper encodeMeasurementSets(Map<String, Node> childMapByTemplateId,
-	                                          Optional<String> performanceStart,
-	                                          Optional<String> performanceEnd) throws EncodeException {
+												Optional<String> performanceStart,
+												Optional<String> performanceEnd) throws EncodeException {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
 		JsonOutputEncoder sectionEncoder;
