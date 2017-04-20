@@ -320,7 +320,8 @@ public class Converter {
 		try (Writer errWriter = Files.newBufferedWriter(outFile)) {
 			for (ValidationError error : validationErrors) {
 				String errorXPath = error.getPath();
-				errWriter.write("ValidationError: " + error.getErrorText() + System.lineSeparator() + (errorXPath != null && !errorXPath.isEmpty() ? "\tat " + errorXPath : ""));
+				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator()
+				                + (errorXPath != null && !errorXPath.isEmpty() ? "\tat " + errorXPath : ""));
 			}
 		} catch (IOException e) { // coverage ignore candidate
 			DEV_LOG.error("Could not write to file: {}", outFile.toString(), e);

@@ -20,7 +20,7 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 	// is indented an extra level
 
 	@Test
-	public void aggregateCountAsNode() throws Exception {
+	public void decodeAggregateCountAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString("<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
 				"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
