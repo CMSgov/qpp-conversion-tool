@@ -15,7 +15,10 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -236,7 +239,7 @@ public class Converter {
 		return Pattern.compile(regex);
 	}
 
-	public Integer transform(){
+	public Integer transform() {
 		try {
 			if (inFile != null) {
 				transform(inFile);
@@ -254,32 +257,18 @@ public class Converter {
 		}
 	}
 
-	private Integer getStatus(){
-		Integer status;
-		if (null == decoded){
-			status = 2;
-		} else{
-			status = (validationErrors.isEmpty()) ? 0 : 1;
-		}
-		return status;
-	}
-
-	private void transform(Path inFile) throws XmlException, IOException{
+	private void transform(Path inFile) throws XmlException, IOException {
 		String inputFileName = inFile.getFileName().toString().trim();
 		Node decoded = transform(XmlUtils.fileToStream(inFile));
 		Path outFile = getOutputFile(inputFileName);
 
-		if(decoded != null) {
+		if (decoded != null) {
 			if (validationErrors.isEmpty()) {
 				writeConverted(decoded, outFile);
 			} else {
 				writeValidationErrors(validationErrors, outFile);
 			}
 		}
-	}
-
-	private String getFileExtension() {
-		return (!validationErrors.isEmpty()) ? ".err.txt" : ".qpp.json";
 	}
 
 	private Node transform(InputStream inStream) throws XmlException {
@@ -300,20 +289,28 @@ public class Converter {
 		return decoded;
 	}
 
-	private void writeConverted(Node decoded, Path outFile) {
-		JsonOutputEncoder encoder = getEncoder();
-
-		CLIENT_LOG.info("Decoded template ID {} to file '{}'", decoded.getId(), outFile);
-
-		try (Writer writer = Files.newBufferedWriter(outFile)) {
-			encoder.setNodes(Collections.singletonList(decoded));
-			encoder.encode(writer);
-			// do something with encode validations
-		} catch (IOException | EncodeException e) { // coverage ignore candidate
-			throw new XmlInputFileException("Issues decoding/encoding.", e);
-		} finally {
-			Validations.clear();
+	private Integer getStatus() {
+		Integer status;
+		if (null == decoded) {
+			status = 2;
+		} else {
+			status = (validationErrors.isEmpty()) ? 0 : 1;
 		}
+		return status;
+	}
+
+	public InputStream getConversionResult() {
+		return (!validationErrors.isEmpty())
+				? writeValidationErrors()
+				: writeConverted() ;
+	}
+
+	private InputStream writeValidationErrors() {
+		String errors = validationErrors.stream()
+				.map(error -> "Validation Error: " + error.getErrorText())
+				.collect(Collectors.joining(System.lineSeparator()));
+		Validations.clear();
+		return new ByteArrayInputStream(errors.getBytes());
 	}
 
 	private void writeValidationErrors(List<ValidationError> validationErrors, Path outFile) {
@@ -321,19 +318,13 @@ public class Converter {
 			for (ValidationError error : validationErrors) {
 				String errorXPath = error.getPath();
 				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator()
-				                + (errorXPath != null && !errorXPath.isEmpty() ? "\tat " + errorXPath : ""));
+								+ (errorXPath != null && !errorXPath.isEmpty() ? "\tat " + errorXPath : ""));
 			}
 		} catch (IOException e) { // coverage ignore candidate
 			DEV_LOG.error("Could not write to file: {}", outFile.toString(), e);
 		} finally {
 			Validations.clear();
 		}
-	}
-
-	public InputStream getConversionResult(){
-		return (!validationErrors.isEmpty())
-				? writeValidationErrors()
-				: writeConverted() ;
 	}
 
 	private InputStream writeConverted() {
@@ -350,20 +341,32 @@ public class Converter {
 		}
 	}
 
-	protected JsonOutputEncoder getEncoder() {
-		return new QppOutputEncoder();
+	private void writeConverted(Node decoded, Path outFile) {
+		JsonOutputEncoder encoder = getEncoder();
+
+		CLIENT_LOG.info("Decoded template ID {} to file '{}'", decoded.getId(), outFile);
+
+		try (Writer writer = Files.newBufferedWriter(outFile)) {
+			encoder.setNodes(Collections.singletonList(decoded));
+			encoder.encode(writer);
+			// do something with encode validations
+		} catch (IOException | EncodeException e) { // coverage ignore candidate
+			throw new XmlInputFileException("Issues decoding/encoding.", e);
+		} finally {
+			Validations.clear();
+		}
 	}
 
-	private InputStream writeValidationErrors() {
-		String errors = validationErrors.stream()
-				.map(error -> "Validation Error: " + error.getErrorText())
-				.collect(Collectors.joining(System.lineSeparator()));
-		Validations.clear();
-		return new ByteArrayInputStream( errors.getBytes() );
+	protected JsonOutputEncoder getEncoder() {
+		return new QppOutputEncoder();
 	}
 
 	public Path getOutputFile(String name) {
 		String outName = name.replaceFirst("(?i)(\\.xml)?$", getFileExtension());
 		return Paths.get(outName);
+	}
+
+	private String getFileExtension() {
+		return (!validationErrors.isEmpty()) ? ".err.txt" : ".qpp.json";
 	}
 }

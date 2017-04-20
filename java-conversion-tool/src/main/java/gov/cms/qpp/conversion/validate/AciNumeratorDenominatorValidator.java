@@ -23,15 +23,25 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	private MeasureConfigs measureConfigs;
 	private String measureDataFileName = "measures-data-aci-short.json";
 
-	protected static final String ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED = "At least one Aci Numerator Denominator Measure Node is required";
-	protected static final String NO_PARENT_SECTION = "This ACI Numerator Denominator Node should have an ACI Section Node as a parent";
-	protected static final String NO_MEASURE_NAME = "This ACI Numerator Denominator Node does not contain a measure name ID";
-	protected static final String NO_NUMERATOR = "This ACI Numerator Denominator Node does not contain a Numerator Node child";
-	protected static final String TOO_MANY_NUMERATORS = "This ACI Numerator Denominator Node contains too many Numerator Node children";
-	protected static final String NO_DENOMINATOR = "This ACI Numerator Denominator Node does not contain a Denominator Node child";
-	protected static final String TOO_MANY_DENOMINATORS = "This ACI Numerator Denominator Node contains too many Denominator Node children";
-	protected static final String NO_CHILDREN = "This ACI Numerator Denominator Node does not have any child Nodes";
-	protected static final String NO_REQUIRED_MEASURE = "The required measure ''{0}'' is not present in the source file. Please add the ACI measure and try again.";
+	protected static final String ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED =
+			"At least one Aci Numerator Denominator Measure Node is required";
+	protected static final String NO_PARENT_SECTION =
+			"This ACI Numerator Denominator Node should have an ACI Section Node as a parent";
+	protected static final String NO_MEASURE_NAME =
+			"This ACI Numerator Denominator Node does not contain a measure name ID";
+	protected static final String NO_NUMERATOR =
+			"This ACI Numerator Denominator Node does not contain a Numerator Node child";
+	protected static final String TOO_MANY_NUMERATORS =
+			"This ACI Numerator Denominator Node contains too many Numerator Node children";
+	protected static final String NO_DENOMINATOR =
+			"This ACI Numerator Denominator Node does not contain a Denominator Node child";
+	protected static final String TOO_MANY_DENOMINATORS =
+			"This ACI Numerator Denominator Node contains too many Denominator Node children";
+	protected static final String NO_CHILDREN =
+			"This ACI Numerator Denominator Node does not have any child Nodes";
+	protected static final String NO_REQUIRED_MEASURE =
+			"The required measure ''{0}'' is not present in the source file. "
+			+ "Please add the ACI measure and try again.";
 
 	/**
 	 * Constructs a new {@code AciNumeratorDenominatorValidator}.
@@ -73,7 +83,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	 * @param nodes A list of all the ACI Numerator Denominator Type Measure nodes.
 	 */
 	@Override
-	protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
+	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
 
 		validateOneAciNumeratorDenominatorExists(nodes);
 
@@ -99,7 +109,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	 *
 	 * @param nodeChecker for a node that represents the ACI Numerator Denominator Measure Section
 	 */
-	private void validateChildren(final Checker nodeChecker) {
+	private void validateChildren(Checker nodeChecker) {
 		nodeChecker.value(NO_MEASURE_NAME, "measureId")
 				.hasChildren(NO_CHILDREN)
 				.childMinimum(NO_DENOMINATOR, 1, TemplateId.ACI_DENOMINATOR)
@@ -113,7 +123,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	 *
 	 * @param aciNumeratorDenominatorNodes List of nodes to validate
 	 */
-	private void validateOneAciNumeratorDenominatorExists(final List<Node> aciNumeratorDenominatorNodes) {
+	private void validateOneAciNumeratorDenominatorExists(List<Node> aciNumeratorDenominatorNodes) {
 
 		if (aciNumeratorDenominatorNodes.isEmpty()) {
 			this.addValidationError(new ValidationError(ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED));
@@ -126,16 +136,18 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	 * @param measureConfig Object that holds the measure configuration
 	 * @param aciNumeratorDenominatorNodes List of nodes to validate
 	 */
-	private void validateMeasureConfig(final MeasureConfig measureConfig, final List<Node> aciNumeratorDenominatorNodes) {
+	private void validateMeasureConfig(MeasureConfig measureConfig, List<Node> aciNumeratorDenominatorNodes) {
 
 		if (measureConfig.isRequired()) {
-			for (Node aNode : aciNumeratorDenominatorNodes) {
-				if (Objects.equals(aNode.getValue("measureId"), measureConfig.getMeasureId())) {
+			for (Node aciNode : aciNumeratorDenominatorNodes) {
+				if (Objects.equals(aciNode.getValue("measureId"), measureConfig.getMeasureId())) {
 					return;
 				}
 			}
 
-			this.addValidationError(new ValidationError(MessageFormat.format(NO_REQUIRED_MEASURE, measureConfig.getMeasureId())));
+			String message = MessageFormat.format(NO_REQUIRED_MEASURE, measureConfig.getMeasureId());
+			ValidationError error = new ValidationError(message);
+			this.addValidationError(error);
 		}
 
 
@@ -152,7 +164,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 		try {
 			measureConfigs = mapper.treeToValue(mapper.readTree(measuresConfigResource.getInputStream()),
-			                                    MeasureConfigs.class);
+												MeasureConfigs.class);
 		} catch (IOException e) {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}

@@ -126,8 +126,8 @@ public class Registry<V extends Object, R extends Object> {
 		// This could be a class or class name and instantiated on lookup
 		if (registryMap.containsKey(registryKey)) {
 			DEV_LOG.error("Duplicate registered handler for " + registryKey
-			          + " both " + registryMap.get(registryKey).getName()
-			          + " and " + handler.getName());
+						+ " both " + registryMap.get(registryKey).getName()
+						+ " and " + handler.getName());
 		}
 		
 		registryMap.put(registryKey, handler);
