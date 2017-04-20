@@ -1,20 +1,19 @@
 package gov.cms.qpp.acceptance;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.junit.Test;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
-import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.xml.XmlUtils;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class AciNumeratorDenominatorRoundTripTest {
 
@@ -95,6 +94,11 @@ public class AciNumeratorDenominatorRoundTripTest {
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(numeratorDenominatorNode.getChildNodes());
 
+		String xPathExpected = "/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'organizer' " +
+		                       "and namespace-uri() = 'urn:hl7-org:v3']";
+		assertThat("The XPath of the numerator denominator node is incorrect",
+		           numeratorDenominatorNode.getChildNodes().get(0).getPath(), is(xPathExpected));
+
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();
 		nodes.add(numeratorDenominatorNode);
@@ -103,7 +107,7 @@ public class AciNumeratorDenominatorRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		String EXPECTED = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : 600,\n    \"denominator\" : 800\n  }\n}";
-		assertThat("expected encoder to return a representation of a measure", sw.toString(), is(EXPECTED));
+		String jsonExpected = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : 600,\n    \"denominator\" : 800\n  }\n}";
+		assertThat("expected encoder to return a representation of a measure", sw.toString(), is(jsonExpected));
 	}
 }

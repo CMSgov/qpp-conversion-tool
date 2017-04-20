@@ -15,29 +15,29 @@ public class IaMeasurePerformedValidator extends NodeValidator {
 
 	public static final String TYPE_ERROR = "Measure performed value is required and must be either a Y or an N.\n\t%s";
 	public static final String INCORRECT_CHILDREN_COUNT  = "Measure performed must have exactly one child.\n\t%s";
-	private static final String FIELD = "measurePerformed";
-
+    private static final String FIELD = "measurePerformed";
 	/**
 	 * Validates a single IA Measure Performed Value {@link Node}.
 	 *
 	 * Validates the following.
 	 * <ul>
-	 *	 <li>An string value named "measurePerformed" was decoded from the source element</li>
-	 *	 <li>The string value is either a Y or an N</li>
+	 *     <li>An string value named "measurePerformed" was decoded from the source element</li>
+	 *     <li>The string value is either a Y or an N</li>
 	 *</ul>
 	 *
 	 * @param node Node that represents a IA Measure Performed.
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
+	//	check( node ).value( VALUE_ERROR, FIELD );
 		List<Node> children = node.getChildNodes();
-		if (children == null || children.size() != 1) {
-			addValidationError(new ValidationError(String.format(INCORRECT_CHILDREN_COUNT, node.toString())));
+		if ( children == null || children.size() != 1 ){
+			addValidationError(new ValidationError(String.format(INCORRECT_CHILDREN_COUNT, node.toString()), node.getPath()));
 			return;
 		}
 		String value = children.get(0).getValue(FIELD);
-		if (!("Y".equals(value) || "N".equals(value))) {
-			addValidationError(new ValidationError(String.format(TYPE_ERROR, node.toString())));
+		if (!( "Y".equals(value ) || "N".equals(value))){
+			addValidationError(new ValidationError(String.format(TYPE_ERROR, node.toString()), children.get(0).getPath()));
 		}
 	}
 

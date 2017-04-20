@@ -15,10 +15,7 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
+import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -239,7 +236,7 @@ public class Converter {
 		return Pattern.compile(regex);
 	}
 
-	public Integer transform() {
+	public Integer transform(){
 		try {
 			if (inFile != null) {
 				transform(inFile);
@@ -257,18 +254,32 @@ public class Converter {
 		}
 	}
 
-	private void transform(Path inFile) throws XmlException, IOException {
+	private Integer getStatus(){
+		Integer status;
+		if (null == decoded){
+			status = 2;
+		} else{
+			status = (validationErrors.isEmpty()) ? 0 : 1;
+		}
+		return status;
+	}
+
+	private void transform(Path inFile) throws XmlException, IOException{
 		String inputFileName = inFile.getFileName().toString().trim();
 		Node decoded = transform(XmlUtils.fileToStream(inFile));
 		Path outFile = getOutputFile(inputFileName);
 
-		if (decoded != null) {
+		if(decoded != null) {
 			if (validationErrors.isEmpty()) {
 				writeConverted(decoded, outFile);
 			} else {
 				writeValidationErrors(validationErrors, outFile);
 			}
 		}
+	}
+
+	private String getFileExtension() {
+		return (!validationErrors.isEmpty()) ? ".err.txt" : ".qpp.json";
 	}
 
 	private Node transform(InputStream inStream) throws XmlException {
@@ -289,26 +300,6 @@ public class Converter {
 		return decoded;
 	}
 
-	private Integer getStatus() {
-		Integer status;
-		if (null == decoded) {
-			status = 2;
-		} else {
-			status = validationErrors.isEmpty() ? 0 : 1;
-		}
-		return status;
-	}
-
-	private String getFileExtension() {
-		return (!validationErrors.isEmpty()) ? ".err.txt" : ".qpp.json";
-	}
-
-	public InputStream getConversionResult() {
-		return (!validationErrors.isEmpty())
-				? writeValidationErrors()
-				: writeConverted();
-	}
-
 	private void writeConverted(Node decoded, Path outFile) {
 		JsonOutputEncoder encoder = getEncoder();
 
@@ -323,6 +314,26 @@ public class Converter {
 		} finally {
 			Validations.clear();
 		}
+	}
+
+	private void writeValidationErrors(List<ValidationError> validationErrors, Path outFile) {
+		try (Writer errWriter = Files.newBufferedWriter(outFile)) {
+			for (ValidationError error : validationErrors) {
+				String errorXPath = error.getPath();
+				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator()
+				                + (errorXPath != null && !errorXPath.isEmpty() ? "\tat " + errorXPath : ""));
+			}
+		} catch (IOException e) { // coverage ignore candidate
+			DEV_LOG.error("Could not write to file: {}", outFile.toString(), e);
+		} finally {
+			Validations.clear();
+		}
+	}
+
+	public InputStream getConversionResult(){
+		return (!validationErrors.isEmpty())
+				? writeValidationErrors()
+				: writeConverted() ;
 	}
 
 	private InputStream writeConverted() {
@@ -343,24 +354,12 @@ public class Converter {
 		return new QppOutputEncoder();
 	}
 
-	private void writeValidationErrors(List<ValidationError> validationErrors, Path outFile) {
-		try (Writer errWriter = Files.newBufferedWriter(outFile)) {
-			for (ValidationError error : validationErrors) {
-				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator());
-			}
-		} catch (IOException e) { // coverage ignore candidate
-			DEV_LOG.error("Could not write to file: {}", outFile.toString(), e);
-		} finally {
-			Validations.clear();
-		}
-	}
-
 	private InputStream writeValidationErrors() {
 		String errors = validationErrors.stream()
 				.map(error -> "Validation Error: " + error.getErrorText())
 				.collect(Collectors.joining(System.lineSeparator()));
 		Validations.clear();
-		return new ByteArrayInputStream(errors.getBytes());
+		return new ByteArrayInputStream( errors.getBytes() );
 	}
 
 	public Path getOutputFile(String name) {
