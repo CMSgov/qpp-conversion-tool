@@ -19,7 +19,7 @@ public class ClinicalDocumentValidatorTest {
 	private static final String EXPECTED_ONE_ALLOWED = "Only one Clinical Document Node is allowed";
 	private static final String EXPECTED_NO_SECTION = "Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
 
-	private Node makeReportingNode(){
+	private Node makeReportingNode() {
 		Node reportingSection = new Node(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
 		Node reportingParametersAct = new Node(reportingSection, TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
 		reportingParametersAct.putValue("performanceStart", "20170101");
@@ -27,13 +27,14 @@ public class ClinicalDocumentValidatorTest {
 		reportingSection.addChildNode(reportingParametersAct);
 		return reportingSection;
 	}
+
 	@Test
 	public void testClinicalDocumentPresent() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.addChildNode(makeReportingNode() );
+		clinicalDocumentNode.addChildNode(makeReportingNode());
 
 		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
@@ -52,7 +53,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.addChildNode(makeReportingNode() );
+		clinicalDocumentNode.addChildNode(makeReportingNode());
 
 		Node iaSectionNode = new Node(clinicalDocumentNode, TemplateId.IA_SECTION.getTemplateId());
 		iaSectionNode.putValue("category", "ia");
@@ -71,7 +72,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.addChildNode(makeReportingNode() );
+		clinicalDocumentNode.addChildNode(makeReportingNode());
 
 		Node ecqmSectionNode = new Node(clinicalDocumentNode, TemplateId.MEASURE_SECTION_V2.getTemplateId());
 		ecqmSectionNode.putValue("category", "eCQM");
@@ -114,7 +115,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.addChildNode(makeReportingNode() );
+		clinicalDocumentNode.addChildNode(makeReportingNode());
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
@@ -129,7 +130,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.addChildNode(makeReportingNode() );
+		clinicalDocumentNode.addChildNode(makeReportingNode());
 
 		Node placeholderNode = new Node("placeholder");
 
@@ -148,7 +149,7 @@ public class ClinicalDocumentValidatorTest {
 		//clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.addChildNode(makeReportingNode() );
+		clinicalDocumentNode.addChildNode(makeReportingNode());
 
 		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
@@ -167,7 +168,7 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.addChildNode(makeReportingNode() );
+		clinicalDocumentNode.addChildNode(makeReportingNode());
 
 		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
@@ -186,7 +187,7 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
-		clinicalDocumentNode.addChildNode(makeReportingNode() );
+		clinicalDocumentNode.addChildNode(makeReportingNode());
 
 		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
 		aciSectionNode.putValue("category", "aci");
