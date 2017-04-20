@@ -45,21 +45,24 @@ public class ErrorSource {
 	}
 
 	/**
-	 * @return
+	 * getValidationErrors returns the list of ValidationErrors
+	 * @return List<ValidationError>
 	 */
 	public List<ValidationError> getValidationErrors() {
 		return validationErrors;
 	}
 
 	/**
-	 * @param validationErrors
+	 * setValidationErrors sets the internal List of ValidationError
+	 * @param validationErrors List<ValidationError>
 	 */
 	public void setValidationErrors(final List<ValidationError> validationErrors) {
 		this.validationErrors = validationErrors;
 	}
 
 	/**
-	 * @param validationError
+	 * addValidationError Will add an error to the list of validation errors
+	 * @param validationError ValidationError
 	 */
 	public void addValidationError(final ValidationError validationError) {
 		if (null == validationErrors) {
