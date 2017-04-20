@@ -45,16 +45,16 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 		List<Node> children = node.getChildNodes();
 
 		if (children.isEmpty()) {
-			this.addValidationError(new ValidationError(String.format(NO_CHILDREN, node.toString())));
+			this.addValidationError(new ValidationError(String.format(NO_CHILDREN, node.toString()), node.getPath()));
 			return;
 		}
 		Node child = children.get(0);
 		if (TemplateId.ACI_AGGREGATE_COUNT != child.getType()) {
-			this.addValidationError(new ValidationError(String.format(INCORRECT_CHILD, node.toString())));
+			this.addValidationError(new ValidationError(String.format(INCORRECT_CHILD, node.toString()), node.getPath()));
 			return;
 		}
 		if (children.size() > 1) {
-			this.addValidationError(new ValidationError( String.format(TOO_MANY_CHILDREN, node.toString())));
+			this.addValidationError(new ValidationError(String.format(TOO_MANY_CHILDREN, node.toString()), node.getPath()));
 			return;
 		}
 		String value = child.getValue("aggregateCount");
@@ -62,17 +62,15 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 			int val = Integer.parseInt(value);
 			if (val < 0) {
 				this.addValidationError(
-						new ValidationError(String.format(INVALID_VALUE, value, node.toString())));
+						new ValidationError(String.format(INVALID_VALUE, value, node.toString()), child.getPath()));
 			}
-			if ( AciDenominatorValidator.DENOMINATOR_NAME.equals(nodeName) && val == 0 ){
+			if (AciDenominatorValidator.DENOMINATOR_NAME.equals(nodeName) && val == 0){
 				this.addValidationError(
-						new ValidationError(String.format(DENOMINATOR_CANNOT_BE_ZERO, value, node.toString())));
-
+						new ValidationError(String.format(DENOMINATOR_CANNOT_BE_ZERO, value, node.toString()), child.getPath()));
 			}
 		} catch (NumberFormatException nfe) {
 			this.addValidationError(
 					new ValidationError(String.format(INVALID_VALUE, value, node.toString())));
 		}
 	}
-
 }
