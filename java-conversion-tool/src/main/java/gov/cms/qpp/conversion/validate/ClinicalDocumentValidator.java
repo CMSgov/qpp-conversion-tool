@@ -13,10 +13,13 @@ import java.util.List;
 @Validator(templateId = TemplateId.CLINICAL_DOCUMENT, required = true)
 public class ClinicalDocumentValidator extends NodeValidator {
 
-	public static final String CLINICAL_DOCUMENT_REQUIRED = "Clinical Document Node is required";
-	public static final String EXACTLY_ONE_DOCUMENT_ALLOWED = "Only one Clinical Document Node is allowed";
-	public static final String ONE_CHILD_REQUIRED = "Clinical Document Node must have at least one Aci "
-			+ "or Ia Section Node as a child";
+	protected  static final String CLINICAL_DOCUMENT_REQUIRED = "Clinical Document Node is required";
+	protected static final String EXACTLY_ONE_DOCUMENT_ALLOWED = "Only one Clinical Document Node is allowed";
+	protected static final String ONE_CHILD_REQUIRED = "Clinical Document Node must have at least one Aci "
+			+ "or IA or eCQM Section Node as a child";
+	protected static final String CONTAINS_PROGRAM_NAME = "Clinical Document must have a program name";
+	protected static final String CONTAINS_PERFORMANCE_YEAR = "Clinical Document must have a performance year";
+	protected static final String CONTAINS_TAX_ID_NUMBER = "Clinical Document must have Tax Id Number (TIN)";
 
 	/**
 	 * Validates a single Clinical Document {@link gov.cms.qpp.conversion.model.Node}.
@@ -35,7 +38,18 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
 			.hasChildren(ONE_CHILD_REQUIRED)
-			.childMinimum(ONE_CHILD_REQUIRED, 1, TemplateId.ACI_SECTION, TemplateId.IA_SECTION);
+			.childMinimum(ONE_CHILD_REQUIRED, 1,
+					TemplateId.ACI_SECTION, TemplateId.IA_SECTION,
+					TemplateId.MEASURE_SECTION_V2)
+			.childMinimum(ONE_CHILD_REQUIRED, 1, TemplateId.REPORTING_PARAMETERS_SECTION)
+			.value(CONTAINS_PROGRAM_NAME, "programName")
+			.value(CONTAINS_TAX_ID_NUMBER, "taxpayerIdentificationNumber");
+		Node reportingParametersAct = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		if ( reportingParametersAct == null ){
+			getValidationErrors().add(new ValidationError(CONTAINS_PERFORMANCE_YEAR));
+		} else {
+			check(reportingParametersAct).value(CONTAINS_PERFORMANCE_YEAR, "performanceStart");
+		}
 	}
 
 	/**
