@@ -307,8 +307,9 @@ public class Converter {
 
 	private InputStream writeValidationErrors() {
 		String errors = validationErrors.stream()
-				.map(error -> "Validation Error: " + error.getErrorText())
-				.collect(Collectors.joining(System.lineSeparator()));
+			.map(error -> "Validation Error: " + error.getErrorText() + System.lineSeparator()
+				+ (error.getPath() != null && !error.getPath().isEmpty() ? "\tat " + error.getPath() : ""))
+			.collect(Collectors.joining(System.lineSeparator()));
 		Validations.clear();
 		return new ByteArrayInputStream(errors.getBytes());
 	}
