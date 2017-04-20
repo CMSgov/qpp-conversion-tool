@@ -3,24 +3,33 @@
 	xmlns="urn:hl7-org:v3"
 	xmlns:voc="urn:hl7-org:v3/voc">
 	<informationRecipient>
+		<fake1/>
 		<intendedRecipient>
+			<fake2/>
 			<id root="2.16.840.1.113883.3.249.7" extension="MIPS"/>
 		</intendedRecipient>
 	</informationRecipient>
 	<documentationOf typeCode="DOC">
+		<fake3/>
 		<serviceEvent classCode="PCPR">
+			<fake4/>
 			<effectiveTime>
+				<fake5/>
 				<low value="20170101"/>
 				<high value="20171231"/>
 			</effectiveTime>
 			<performer typeCode="PRF">
+				<fake6/>
 				<time>
+					<fake6/>
 					<low value="20170101"/>
 					<high value="20171231"/>
 				</time>
 				<assignedEntity>
+					<fake7/>
 					<id root="2.16.840.1.113883.4.6" extension="2567891421"/>
 					<representedOrganization>
+						<fake8/>
 						<id root="2.16.840.1.113883.4.2" extension="123456789"/>
 						<name>Good Health Clinic</name>
 					</representedOrganization>
@@ -28,4 +37,5 @@
 			</performer>
 		</serviceEvent>
 	</documentationOf>
+	<fake9/>
 </ClinicalDocument>
