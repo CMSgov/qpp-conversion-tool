@@ -16,8 +16,8 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentDecoderTest {
@@ -122,7 +122,6 @@ public class ClinicalDocumentDecoderTest {
 
 		Node clinicalDocument = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlWithGarbage));
 		Node performanceYear = clinicalDocument.getChildNodes().get(0);
-
 
 		assertThat("Should contain a program name", clinicalDocument.getValue("programName"), is("mips"));
 
