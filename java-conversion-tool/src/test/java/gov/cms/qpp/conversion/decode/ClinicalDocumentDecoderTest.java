@@ -115,6 +115,22 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
+	public void testClinicalDocumentIgnoresGarbage() throws IOException, XmlException {
+		ClassPathResource xmlResource = new ClassPathResource("QRDA-III-with-extra-elements.xml");
+		String xmlWithGarbage = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+
+		Node clinicalDocument = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+
+
+		DefaultDecoder.removeDefaultNode(clinicalDocument.getChildNodes());
+
+		assertThat("", clinicalDocument.getChildNodes(), );
+
+
+
+	}
+
+	@Test
 	public void testIaMeasurePerformed() {
 		Node iaSectionNode = root.getChildNodes().get(2);
 		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
