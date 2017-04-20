@@ -459,7 +459,7 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException, IOException {
+	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException {
 		Converter converter = new Converter(Paths.get("src/test/resources/not-a-QRDA-III-file.xml"));
 
 		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");

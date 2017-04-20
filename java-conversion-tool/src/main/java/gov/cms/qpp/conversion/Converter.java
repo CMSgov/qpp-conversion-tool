@@ -289,20 +289,17 @@ public class Converter {
 		return decoded;
 	}
 
-	private Integer getStatus() {
-		Integer status;
+	private int getStatus() {
 		if (null == decoded) {
-			status = 2;
-		} else {
-			status = (validationErrors.isEmpty()) ? 0 : 1;
+			return 2;
 		}
-		return status;
+		return validationErrors.isEmpty() ? 0 : 1;
 	}
 
 	public InputStream getConversionResult() {
 		return (!validationErrors.isEmpty())
 				? writeValidationErrors()
-				: writeConverted() ;
+				: writeConverted();
 	}
 
 	private InputStream writeValidationErrors() {
