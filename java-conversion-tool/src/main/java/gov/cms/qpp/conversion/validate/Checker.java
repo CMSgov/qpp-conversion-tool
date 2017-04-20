@@ -62,7 +62,7 @@ class Checker {
 	 */
 	Checker value(String message, String name) {
 		if (!shouldShortcut() && node.getValue(name) == null) {
-			validationErrors.add(new ValidationError(message));
+			validationErrors.add(new ValidationError(message, node.getPath()));
 		}
 		return this;
 	}
@@ -79,7 +79,7 @@ class Checker {
 			try {
 				Integer.parseInt(node.getValue(name));
 			} catch (NumberFormatException ex) {
-				validationErrors.add(new ValidationError(message));
+				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
 		}
 		return this;
@@ -93,7 +93,7 @@ class Checker {
 	 */
 	public Checker hasParent(String message, TemplateId type) {
 		if (!shouldShortcut() && node.getParent().getType() != type) {
-			validationErrors.add(new ValidationError(message));
+			validationErrors.add(new ValidationError(message, node.getPath()));
 		}
 		return this;
 	}
@@ -106,7 +106,7 @@ class Checker {
 	 */
 	public Checker hasChildren(String message) {
 		if (!shouldShortcut() && node.getChildNodes().isEmpty()) {
-			validationErrors.add(new ValidationError(message));
+			validationErrors.add(new ValidationError(message, node.getPath()));
 		}
 		return this;
 	}
@@ -123,7 +123,7 @@ class Checker {
 		if (!shouldShortcut()) {
 			long count = tallyNodes(types);
 			if (count < minimum) {
-				validationErrors.add(new ValidationError(message));
+				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
 		}
 		return this;
@@ -141,7 +141,7 @@ class Checker {
 		if (!shouldShortcut()) {
 			long count = tallyNodes(types);
 			if (count > maximum) {
-				validationErrors.add(new ValidationError(message));
+				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
 		}
 		return this;
