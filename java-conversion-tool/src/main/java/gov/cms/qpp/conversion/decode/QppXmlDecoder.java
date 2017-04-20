@@ -99,7 +99,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * @return status of current decode
 	 */
 	private DecodeResult testChildDecodeResult(final DecodeResult result, final Element childElement,
-	                                           final Node childNode) {
+												final Node childNode) {
 		if (result == null) {
 			Node placeholderNode = new Node(childNode.getParent(), "placeholder");
 			return decode(childElement, placeholderNode);
@@ -165,7 +165,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		final Element rootElement = xmlDoc.getDocument().getRootElement();
 
 		boolean isValidQrdaFile = containsClinicalDocumentElement(rootElement)
-		                          && containsClinicalDocumentTemplateId(rootElement);
+									&& containsClinicalDocumentTemplateId(rootElement);
 
 		if (!isValidQrdaFile) {
 			Converter.CLIENT_LOG.error("The file is not a QRDA-III XML document");
@@ -174,15 +174,15 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return isValidQrdaFile;
 	}
 
-	private boolean containsClinicalDocumentElement(final Element rootElement) {
+	private boolean containsClinicalDocumentElement(Element rootElement) {
 		return "ClinicalDocument".equals(rootElement.getName());
 	}
 
-	private boolean containsClinicalDocumentTemplateId(final Element rootElement) {
+	private boolean containsClinicalDocumentTemplateId(Element rootElement) {
 		boolean containsTemplateId = false;
 
-		final List<Element> clinicalDocumentChildren = rootElement.getChildren(TEMPLATE_ID,
-		                                                                       rootElement.getNamespace());
+		List<Element> clinicalDocumentChildren = rootElement.getChildren(TEMPLATE_ID,
+																			rootElement.getNamespace());
 
 		for (Element currentChild : clinicalDocumentChildren) {
 			final String root = currentChild.getAttributeValue("root");

@@ -164,7 +164,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 		try {
 			measureConfigs = mapper.treeToValue(mapper.readTree(measuresConfigResource.getInputStream()),
-			                                    MeasureConfigs.class);
+												MeasureConfigs.class);
 		} catch (IOException e) {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}
