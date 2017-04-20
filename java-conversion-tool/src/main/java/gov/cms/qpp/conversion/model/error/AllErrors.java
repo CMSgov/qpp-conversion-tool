@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Contains a list of error sources.
+ * Contains a list of error errorSources.
  */
 public class AllErrors {
-	private List<ErrorSource> sources;
+	private List<ErrorSource> errorSources;
 
 	/**
-	 * Constructs an {@code AllErrors} with no sources.
+	 * Constructs an {@code AllErrors} with no errorSources.
 	 */
 	public AllErrors() {
 		//empty on purpose
@@ -19,10 +19,10 @@ public class AllErrors {
 	/**
 	 * Constructs a {@code AllErrors} with the specified {@link gov.cms.qpp.conversion.model.error.ErrorSource}s.
 	 *
-	 * @param sources The list of {@code ErrorSource}s.
+	 * @param errorSources The list of {@code ErrorSource}s.
 	 */
-	public AllErrors(List<ErrorSource> sources) {
-		this.sources = sources;
+	public AllErrors(List<ErrorSource> errorSources) {
+		this.errorSources = errorSources;
 	}
 
 	/**
@@ -30,17 +30,17 @@ public class AllErrors {
 	 *
 	 * @return All the {@code ErrorSource}s.
 	 */
-	public List<ErrorSource> getSources() {
-		return sources;
+	public List<ErrorSource> getErrorSources() {
+		return errorSources;
 	}
 
 	/**
 	 * Sets all the {@link gov.cms.qpp.conversion.model.error.ErrorSource}.
 	 *
-	 * @param sources The {@code ErrorSource}s to use.
+	 * @param errorSources The {@code ErrorSource}s to use.
 	 */
-	public void setSources(final List<ErrorSource> sources) {
-		this.sources = sources;
+	public void setErrorSources(final List<ErrorSource> errorSources) {
+		this.errorSources = errorSources;
 	}
 
 	/**
@@ -49,10 +49,10 @@ public class AllErrors {
 	 * @param source The {@code ErrorSource} to add.
 	 */
 	public void addErrorSource(ErrorSource source) {
-		if (null == sources) {
-			sources = new ArrayList<>();
+		if (null == errorSources) {
+			errorSources = new ArrayList<>();
 		}
 
-		sources.add(source);
+		errorSources.add(source);
 	}
 }
