@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentDecoderTest {
@@ -119,15 +120,19 @@ public class ClinicalDocumentDecoderTest {
 		ClassPathResource xmlResource = new ClassPathResource("QRDA-III-with-extra-elements.xml");
 		String xmlWithGarbage = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
-		Node clinicalDocument = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node clinicalDocument = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlWithGarbage));
+		Node performanceYear = clinicalDocument.getChildNodes().get(0);
 
 
-		DefaultDecoder.removeDefaultNode(clinicalDocument.getChildNodes());
+		assertThat("Should contain a program name", clinicalDocument.getValue("programName"), is("mips"));
 
-		assertThat("", clinicalDocument.getChildNodes(), );
+		assertThat("Should contain a TIN", clinicalDocument.getValue("taxpayerIdentificationNumber"),is("123456789") );
 
+		assertThat("Should contain a performance year end", performanceYear.getChildNodes().get(0).getValue("performanceEnd"),
+				is("20171231"));
 
-
+		assertThat("Should contain a performance year start", performanceYear.getChildNodes().get(0).getValue("performanceStart"),
+				is("20170101"));
 	}
 
 	@Test
