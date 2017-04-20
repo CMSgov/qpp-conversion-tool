@@ -21,7 +21,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>gov.cms.qpp.conversion.Converter</mainClass>
+							<mainClass>gov.cms.qpp.conversion.ConversionEntry</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
