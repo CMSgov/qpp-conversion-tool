@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.junit.Assert.assertThat;
@@ -146,7 +147,6 @@ public class ClinicalDocumentValidatorTest {
 	@Test
 	public void testMissingName() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
-		//clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.addChildNode(makeReportingNode());
@@ -202,7 +202,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testClinicalDocumentMissingperformanceStartPresent() {
+	public void testClinicalDocumentMissingPerformanceStartPresent() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -220,5 +220,129 @@ public class ClinicalDocumentValidatorTest {
 				errors.get(0).getErrorText(), is(ClinicalDocumentValidator.REPORTING_PARAMETER_REQUIRED));
 		assertThat("error should be about missing performance start",
 				errors.get(1).getErrorText(), is(ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
+	}
+
+	@Test
+	public void testDuplicateAciSectionCausesError() {
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		clinicalDocumentNode.putValue("programName", "mips");
+		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
+		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
+
+		Node performanceSection = new Node(clinicalDocumentNode, TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
+		Node performanceYearNode = new Node(clinicalDocumentNode, TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		performanceYearNode.putValue("performanceStart", "20160101");
+		performanceSection.addChildNode(performanceYearNode);
+
+		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
+		aciSectionNode.putValue("category", "aci");
+
+		Node duplicateAciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
+		duplicateAciSectionNode.putValue("category", "aci");
+
+		clinicalDocumentNode.addChildNode(aciSectionNode);
+		clinicalDocumentNode.addChildNode(performanceSection);
+		clinicalDocumentNode.addChildNode(duplicateAciSectionNode);
+
+		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
+		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+
+		assertThat("Should contain one error", errors, hasSize(1));
+
+		assertThat("Should contain one error", errors.get(0).getErrorText(),
+				is(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ACI_SECTIONS));
+	}
+
+	@Test
+	public void testDuplicateIASectionCausesError() {
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		clinicalDocumentNode.putValue("programName", "mips");
+		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
+		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
+
+		Node performanceSection = new Node(clinicalDocumentNode, TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
+		Node performanceYearNode = new Node(clinicalDocumentNode, TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		performanceYearNode.putValue("performanceStart", "20160101");
+		performanceSection.addChildNode(performanceYearNode);
+
+		Node IASectionNode = new Node(clinicalDocumentNode, TemplateId.IA_SECTION.getTemplateId());
+		IASectionNode.putValue("category", "ia");
+
+		Node duplicateIASectionNode = new Node(clinicalDocumentNode, TemplateId.IA_SECTION.getTemplateId());
+		duplicateIASectionNode.putValue("category", "ia");
+
+		clinicalDocumentNode.addChildNode(IASectionNode);
+		clinicalDocumentNode.addChildNode(performanceSection);
+		clinicalDocumentNode.addChildNode(duplicateIASectionNode);
+
+		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
+		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+
+		assertThat("Should contain one error", errors, hasSize(1));
+
+		assertThat("Should contain one error", errors.get(0).getErrorText(),
+				is(ClinicalDocumentValidator.CONTAINS_DUPLICATE_IA_SECTIONS));
+
+	}
+
+	@Test
+	public void testDuplicateQualityMeasureSectionCausesError() {
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		clinicalDocumentNode.putValue("programName", "mips");
+		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
+		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
+
+		Node performanceSection = new Node(clinicalDocumentNode, TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
+		Node performanceYearNode = new Node(clinicalDocumentNode, TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		performanceYearNode.putValue("performanceStart", "20160101");
+		performanceSection.addChildNode(performanceYearNode);
+
+		Node qualityMeasureNode = new Node(clinicalDocumentNode, TemplateId.MEASURE_SECTION_V2.getTemplateId());
+		qualityMeasureNode.putValue("category", "ecqm");
+
+		Node duplicateQualityMeasureNode = new Node(clinicalDocumentNode, TemplateId.MEASURE_SECTION_V2.getTemplateId());
+		duplicateQualityMeasureNode.putValue("category", "ecqm");
+
+		clinicalDocumentNode.addChildNode(qualityMeasureNode);
+		clinicalDocumentNode.addChildNode(performanceSection);
+		clinicalDocumentNode.addChildNode(duplicateQualityMeasureNode);
+
+		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
+		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+
+		assertThat("Should contain one error", errors, hasSize(1));
+		assertThat("Should contain one error", errors.get(0).getErrorText(), is(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ECQM_SECTIONS));
+	}
+
+	@Test
+	public void testMultipleNonDuplicatedSectionsIsValid() {
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		clinicalDocumentNode.putValue("programName", "mips");
+		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
+		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
+
+		Node performanceSection = new Node(clinicalDocumentNode, TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
+		Node performanceYearNode = new Node(clinicalDocumentNode, TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		performanceYearNode.putValue("performanceStart", "20160101");
+		performanceSection.addChildNode(performanceYearNode);
+
+		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
+		aciSectionNode.putValue("category", "aci");
+
+		Node IASectionNode = new Node(clinicalDocumentNode, TemplateId.IA_SECTION.getTemplateId());
+		IASectionNode.putValue("category", "ia");
+
+		Node qualityMeasureNode = new Node(clinicalDocumentNode, TemplateId.MEASURE_SECTION_V2.getTemplateId());
+		qualityMeasureNode.putValue("category", "ecqm");
+
+		clinicalDocumentNode.addChildNode(aciSectionNode);
+		clinicalDocumentNode.addChildNode(performanceSection);
+		clinicalDocumentNode.addChildNode(IASectionNode);
+		clinicalDocumentNode.addChildNode(qualityMeasureNode);
+
+		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
+		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+
+		assertThat("Should have no validation errors", errors, hasSize(0));
 	}
 }
