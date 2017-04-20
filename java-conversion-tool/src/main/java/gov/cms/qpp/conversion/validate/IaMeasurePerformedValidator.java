@@ -32,12 +32,12 @@ public class IaMeasurePerformedValidator extends NodeValidator {
 	//	check( node ).value( VALUE_ERROR, FIELD );
 		List<Node> children = node.getChildNodes();
 		if ( children == null || children.size() != 1 ){
-			addValidationError(new ValidationError(String.format(INCORRECT_CHILDREN_COUNT , node.toString())));
+			addValidationError(new ValidationError(String.format(INCORRECT_CHILDREN_COUNT, node.toString()), node.getPath()));
 			return;
 		}
 		String value = children.get(0).getValue(FIELD);
 		if (!( "Y".equals(value ) || "N".equals(value))){
-			addValidationError(new ValidationError(String.format(TYPE_ERROR, node.toString())));
+			addValidationError(new ValidationError(String.format(TYPE_ERROR, node.toString()), children.get(0).getPath()));
 		}
 	}
 

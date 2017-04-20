@@ -25,8 +25,7 @@ test:
     - cd frontend; npm install -g protractor
     - cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
   override:
-    - mvn clean package -Djacoco.skip.instrument=false
-    - mvn integration-test
+    - mvn clean verify -Djacoco.skip.instrument=false
     - mvn jacoco:report
     - ./sonarqube.sh
     - cd frontend; yarn run lint
