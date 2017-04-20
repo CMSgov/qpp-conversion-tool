@@ -16,10 +16,8 @@
 
 	<modules>
 		<module>java-conversion-tool</module>
-		<!--
 		<module>benchmark</module>
 		<module>lambdize</module>
-		-->
 	</modules>
 
 	<build>
