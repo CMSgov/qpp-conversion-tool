@@ -22,8 +22,11 @@ public class ErrorSource {
 	}
 
 	/**
-	 * @param sourceIdentifier
-	 * @param validationErrors
+	 * Constructs an {@code ErrorSource} with the specified source identifier and list of
+	 * {@link gov.cms.qpp.conversion.model.ValidationError}.
+	 *
+	 * @param sourceIdentifier The identifier of a source that contains the validation errors
+	 * @param validationErrors The list of {@code ValidationError}s.
 	 */
 	public ErrorSource(final String sourceIdentifier, final List<ValidationError> validationErrors) {
 		this.sourceIdentifier = sourceIdentifier;
@@ -31,14 +34,18 @@ public class ErrorSource {
 	}
 
 	/**
-	 * @return
+	 * Gets the source identifier.
+	 *
+	 * @return The source identifier.
 	 */
 	public String getSourceIdentifier() {
 		return sourceIdentifier;
 	}
 
 	/**
-	 * @param sourceIdentifier
+	 * Sets the source identifier.
+	 *
+	 * @param sourceIdentifier The source identifier.
 	 */
 	public void setSourceIdentifier(final String sourceIdentifier) {
 		this.sourceIdentifier = sourceIdentifier;
@@ -46,6 +53,7 @@ public class ErrorSource {
 
 	/**
 	 * getValidationErrors returns the list of ValidationErrors
+	 *
 	 * @return List<ValidationError>
 	 */
 	public List<ValidationError> getValidationErrors() {
@@ -54,6 +62,7 @@ public class ErrorSource {
 
 	/**
 	 * setValidationErrors sets the internal List of ValidationError
+	 *
 	 * @param validationErrors List<ValidationError>
 	 */
 	public void setValidationErrors(final List<ValidationError> validationErrors) {
@@ -62,6 +71,7 @@ public class ErrorSource {
 
 	/**
 	 * addValidationError Will add an error to the list of validation errors
+	 *
 	 * @param validationError ValidationError
 	 */
 	public void addValidationError(final ValidationError validationError) {
