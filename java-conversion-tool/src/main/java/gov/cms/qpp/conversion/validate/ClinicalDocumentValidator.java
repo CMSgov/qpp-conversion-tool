@@ -41,7 +41,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	protected void internalValidateSingleNode(final Node node) {
 		check(node)
 				.hasChildren(ONE_CHILD_REQUIRED)
-				.childMinimum(ONE_CHIcLD_REQUIRED, 1,
+				.childMinimum(ONE_CHILD_REQUIRED, 1,
 						TemplateId.ACI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)
 				.childMinimum(REPORTING_PARAMETER_REQUIRED, 1, TemplateId.REPORTING_PARAMETERS_SECTION)
 				.childMaximum(NO_DUPLICATE_SECTIONS, 1, TemplateId.ACI_SECTION)
