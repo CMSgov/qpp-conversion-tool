@@ -46,7 +46,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			.value(CONTAINS_TAX_ID_NUMBER, "taxpayerIdentificationNumber");
 		Node reportingParametersAct = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
 		if ( reportingParametersAct == null ){
-			getValidationErrors().add(new ValidationError(CONTAINS_PERFORMANCE_YEAR));
+			getValidationErrors().add(new ValidationError(CONTAINS_PERFORMANCE_YEAR,node.getPath()));
 		} else {
 			check(reportingParametersAct).value(CONTAINS_PERFORMANCE_YEAR, "performanceStart");
 		}
