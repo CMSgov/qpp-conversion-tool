@@ -23,8 +23,6 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	protected Namespace defaultNs;
 	protected Namespace xpathNs;
 
-	private List<ValidationError> validationErrors = new ArrayList<>();
-
 	/**
 	 * decodeXml Determines what formats of xml we accept and decode to
 	 *
@@ -114,14 +112,6 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 		} else {
 			Optional.ofNullable(expression.evaluate(element)).ifPresent(consumer);
 		}
-	}
-
-	public void addValidationError(ValidationError error) {
-		validationErrors.add(error);
-	}
-
-	public List<ValidationError> getValidationErrors() {
-		return this.validationErrors;
 	}
 
 	/**

@@ -115,7 +115,6 @@ public class Converter {
 
 	private Node transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
-		validationErrors = new ArrayList<>();
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
 		if (null != decoded) {
 			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), inStream);

@@ -170,7 +170,6 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 		if (!isValidQrdaFile) {
 			Converter.CLIENT_LOG.error(NOT_VALID_QRDA_III_FORMAT);
-			addValidationError(new ValidationError(NOT_VALID_QRDA_III_FORMAT));
 		}
 		
 		return isValidQrdaFile;
