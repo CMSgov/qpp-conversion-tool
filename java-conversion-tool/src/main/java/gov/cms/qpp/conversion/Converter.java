@@ -95,7 +95,16 @@ public class Converter {
 			validationErrors.add(new ValidationError(UNEXPECTED_ERROR));
 			return getStatus();
 		} finally {
-			writeValidationErrors();
+			if(!validationErrors.isEmpty()) {
+				Path outFile;
+				if (inFile != null) {
+					String inputFileName = inFile.getFileName().toString().trim();
+					outFile = getOutputFile(inputFileName);
+				} else {
+					outFile = Paths.get("xmlstream.err.json");
+				}
+				writeValidationErrors(validationErrors, outFile);
+			}
 		}
 	}
 
@@ -104,12 +113,8 @@ public class Converter {
 		Node decoded = transform(XmlUtils.fileToStream(inFile));
 		Path outFile = getOutputFile(inputFileName);
 
-		if (decoded != null) {
-			if (validationErrors.isEmpty()) {
-				writeConverted(decoded, outFile);
-			} else {
-				writeValidationErrors(validationErrors, outFile);
-			}
+		if (decoded != null && validationErrors.isEmpty()) {
+			writeConverted(decoded, outFile);
 		}
 	}
 
@@ -123,7 +128,7 @@ public class Converter {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
 			}
 			if (doValidation) {
-				validationErrors = validator.validate(decoded);
+				validationErrors.addAll(validator.validate(decoded));
 			}
 		}
 
@@ -174,7 +179,9 @@ public class Converter {
 
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));
-			return encoder.encode();
+			InputStream inputStream = encoder.encode();
+			validationErrors.addAll(encoder.getValidationErrors());
+			return inputStream;
 		} catch (EncodeException e) {
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
 		} finally {
@@ -190,7 +197,7 @@ public class Converter {
 		try (Writer writer = Files.newBufferedWriter(outFile)) {
 			encoder.setNodes(Collections.singletonList(decoded));
 			encoder.encode(writer);
-			// do something with encode validations
+			validationErrors.addAll(encoder.getValidationErrors());
 		} catch (IOException | EncodeException e ) { // coverage ignore candidate
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
 		} finally {
