@@ -239,22 +239,20 @@ public class Converter {
 		return Pattern.compile(regex);
 	}
 
-	public Integer transform() {
+	public TransformationStatus transform() {
 		try {
 			if (inFile != null) {
 				transform(inFile);
 			} else {
 				transform(xmlStream);
 			}
-			return getStatus();
 		} catch (XmlInputFileException | XmlException xe) {
 			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
-			return getStatus();
 		} catch (Exception exception) {
 			DEV_LOG.error("Unexpected exception occurred during conversion", exception);
-			return getStatus();
 		}
+		return getStatus();
 	}
 
 	private void transform(Path inFile) throws XmlException, IOException {
@@ -289,11 +287,11 @@ public class Converter {
 		return decoded;
 	}
 
-	private int getStatus() {
+	private TransformationStatus getStatus() {
 		if (null == decoded) {
-			return 2;
+			return TransformationStatus.NON_RECOVERABLE;
 		}
-		return validationErrors.isEmpty() ? 0 : 1;
+		return validationErrors.isEmpty() ? TransformationStatus.SUCCESS : TransformationStatus.ERROR;
 	}
 
 	public InputStream getConversionResult() {
