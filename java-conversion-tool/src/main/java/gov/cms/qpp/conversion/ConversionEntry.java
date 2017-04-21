@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion;
 
 
 import gov.cms.qpp.conversion.segmentation.QRDAScoper;
+
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,14 +12,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static java.lang.System.exit;
 
 public class ConversionEntry {
 	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
@@ -35,7 +34,7 @@ public class ConversionEntry {
 	static final String SKIP_VALIDATION = "skipValidation";
 	static final String SKIP_DEFAULTS = "skipDefaults";
 	static final String TEMPLATE_SCOPE = "templateScope";
-	static final String HELP = "help";
+	private static final String HELP = "help";
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
@@ -49,12 +48,10 @@ public class ConversionEntry {
 	public static void main(String... args) {
 		Collection<Path> filenames = validArgs(args);
 		filenames.parallelStream().forEach(
-				(filename) -> {
-					new Converter(filename)
+				(filename) -> new Converter(filename)
 							.doValidation(doValidation)
 							.doDefaults(doDefaults)
-							.transform();
-				});
+							.transform());
 	}
 
 	/**
@@ -64,49 +61,48 @@ public class ConversionEntry {
 	 * @return  A list of file(s) that are to be transformed.
 	 */
 	static Collection<Path> validArgs(String[] args) {
-		CommandLine line;
+		Collection<Path> returnValue = new LinkedList<>();
 		try {
-			line = cli(args);
+			CommandLine line = cli(args);
+			if (!wantsHelp(line)) {
+				if (line.getArgList().isEmpty()) {
+					CLIENT_LOG.error(NO_INPUT_FILE_SPECIFIED);
+				} else {
+					returnValue = checkArgs(line);
+				}
+			}
 		} catch(ParseException pe) {
 			DEV_LOG.error(CLI_PROBLEM, pe);
 			CLIENT_LOG.error(CLI_PROBLEM);
-			return new LinkedList<>();
 		}
 
-		if (line.getArgList().isEmpty()) {
-			CLIENT_LOG.error(NO_INPUT_FILE_SPECIFIED);
-			return new LinkedList<>();
-		}
-
-		return checkArgs(line);
+		return returnValue;
 	}
 
 	static CommandLine cli(String[] arguments) throws ParseException {
 		options = new Options();
-		options.addOption("v", SKIP_VALIDATION, false, "skip validations");
-		options.addOption("d", SKIP_DEFAULTS, false,"skip defaulted transformations");
-		options.addOption("h", HELP, false,"this help message");
+		options.addOption("v", SKIP_VALIDATION, false, "Skip validations");
+		options.addOption("d", SKIP_DEFAULTS, false,"Skip defaulted transformations");
+		options.addOption("h", HELP, false,"This help message");
 
 		Option templateScope = Option.builder("t")
 				.longOpt(TEMPLATE_SCOPE)
-				.argName("scope...")
+				.argName("scope1,scope2,...")
 				.hasArg()
-				.desc("scope values to use for context. Valid values: " + QRDAScoper.getNames())
+				.desc("Comma delimited scope values to use for context. Valid values: " +
+						Arrays.toString(QRDAScoper.getNames()))
 				.build();
 		options.addOption(templateScope);
 
 		return new DefaultParser().parse(options, arguments);
 	}
 
-	static Collection<Path> checkArgs(CommandLine line) {
+	private static Collection<Path> checkArgs(CommandLine line) {
 		Collection<Path> validFiles = new LinkedList<>();
 
-		if (!wantsHelp(line)) {
-			checkFlags(line);
-
-			for (String arg : line.getArgList()) {
-				validFiles.addAll(checkPath(arg));
-			}
+		checkFlags(line);
+		for (String arg : line.getArgs()) {
+			validFiles.addAll(checkPath(arg));
 		}
 
 		return validFiles;
