@@ -332,7 +332,7 @@ public class Converter {
 			CLIENT_LOG.error(writingErrorString, outFile);
 			constructErrorJson(allErrors, errWriter);
 		} catch (IOException exception) { // coverage ignore candidate
-			final String notWriteErrorFile = MessageFormat.format("Could not write to error file {}", outFile.toString());
+			final String notWriteErrorFile = MessageFormat.format("Could not write to error file {0}", outFile.toString());
 			DEV_LOG.error(notWriteErrorFile, exception);
 			CLIENT_LOG.error(notWriteErrorFile);
 		} finally {

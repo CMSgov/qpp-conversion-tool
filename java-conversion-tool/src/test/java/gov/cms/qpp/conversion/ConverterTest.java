@@ -14,6 +14,7 @@ import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import org.jdom2.Element;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
@@ -45,7 +46,7 @@ import static org.powermock.api.support.membermodification.MemberModifier.stub;
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
 public class ConverterTest {
 
-	private static final String SEPERATOR = FileSystems.getDefault().getSeparator();
+	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 
 	@After
 	public void cleanup() throws IOException {
@@ -125,7 +126,7 @@ public class ConverterTest {
 	@Test
 	public void testExtractDir_unix() {
 		String regex = Converter.extractDir("path/to/dir/*.xml");
-		String expect = "path" + SEPERATOR + "to" + SEPERATOR + "dir";
+		String expect = "path" + SEPARATOR + "to" + SEPARATOR + "dir";
 		assertEquals(expect, regex);
 	}
 
@@ -134,7 +135,7 @@ public class ConverterTest {
 		// testing the extraction not the building on windows
 		String regex = Converter.extractDir("path\\to\\dir\\*.xml");
 		// this test is running on *nix so expect this path while testing
-		String expect = "path" + SEPERATOR + "to" + SEPERATOR + "dir";
+		String expect = "path" + SEPARATOR + "to" + SEPARATOR + "dir";
 
 		assertEquals(expect, regex);
 	}
@@ -265,7 +266,7 @@ public class ConverterTest {
 
 		//set-up
 		Path defaultJson = Paths.get("errantDefaultedNode.qpp.json");
-		Path defaultError = Paths.get("errantDefaultedNode.err.txt");
+		Path defaultError = Paths.get("errantDefaultedNode.err.json");
 
 		Files.deleteIfExists(defaultJson);
 		Files.deleteIfExists(defaultError);
@@ -402,18 +403,18 @@ public class ConverterTest {
 		//set-up
 		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toThrow( new IOException() );
 
-		mockStatic( LoggerFactory.class );
-		Logger devLogger = mock( Logger.class );
-		Logger clientLogger = mock( Logger.class );
-		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
-		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
+		mockStatic(LoggerFactory.class);
+		Logger devLogger = mock(Logger.class);
+		Logger clientLogger = mock(Logger.class);
+		when(LoggerFactory.getLogger(any(Class.class))).thenReturn(devLogger);
+		when(LoggerFactory.getLogger(anyString())).thenReturn(clientLogger);
 
 		//execute
 		Converter.main("src/test/resources/converter/defaultedNode.xml");
 
 		//assert
-		verify(devLogger).error( eq("Could not write to file: {}" ),
-				eq( "defaultedNode.err.txt" ), any(String.class) );
+		verify(devLogger).error( eq("Could not write to error file defaultedNode.err.json" ),
+				any(IOException.class));
 	}
 
 	@Test
