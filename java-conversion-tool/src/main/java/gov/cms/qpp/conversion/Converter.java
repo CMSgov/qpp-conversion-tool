@@ -311,17 +311,21 @@ public class Converter {
 	public InputStream getConversionResult() {
 		return (!validationErrors.isEmpty())
 				? writeValidationErrors()
-				: writeConverted() ;
+				: writeConverted();
 	}
 
+	/**
+	 * Compiles the validation errors into an {@code InputStream}.
+	 *
+	 * @return The errors.
+	 */
 	private InputStream writeValidationErrors() {
 		String identifier = xmlStream.toString();
 		AllErrors allErrors = constructErrorHierarchy(identifier, validationErrors);
 		byte[] errors = new byte[0];
 		try {
 			errors = constructErrorJson(allErrors);
-		}
-		catch (JsonProcessingException exception) {
+		} catch (JsonProcessingException exception) {
 			DEV_LOG.error("Error converting the validation errors into JSON", exception);
 			String exceptionJson = "{ \"exception\": \"JsonProcessingException\" }";
 			return new ByteArrayInputStream(exceptionJson.getBytes());
@@ -330,6 +334,12 @@ public class Converter {
 		return new ByteArrayInputStream(errors);
 	}
 
+	/**
+	 * Compiles the validation errors and writes them to the supplied path.
+	 *
+	 * @param validationErrors The validation errors to write.
+	 * @param outFile The path to the file to write the errors to.
+	 */
 	private void writeValidationErrors(List<ValidationError> validationErrors, Path outFile) {
 
 		String fileName = inFile.toString();
@@ -349,28 +359,60 @@ public class Converter {
 		}
 	}
 
+	/**
+	 * Constructs an {@link AllErrors} from all the validation errors.
+	 *
+	 * Currently consists of only a single {@link ErrorSource}.
+	 *
+	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
+	 * @param validationErrors A list of validation errors.
+	 * @return All the errors.
+	 */
+	private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<ValidationError> validationErrors) {
+		AllErrors allErrors = new AllErrors(Arrays.asList(constructErrorSource(inputIdentifier, validationErrors)));
+		return allErrors;
+	}
+
+	/**
+	 * Constructs an {@link ErrorSource} for the given {@code inputIdentifier} from the passed in validation errors.
+	 *
+	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
+	 * @param validationErrors A list of validation errors.
+	 * @return A single source of validation errors.
+	 */
+	private ErrorSource constructErrorSource(final String inputIdentifier, final List<ValidationError> validationErrors) {
+		ErrorSource errorSource = new ErrorSource();
+		errorSource.setSourceIdentifier(inputIdentifier);
+
+		for (ValidationError currentValidationError : validationErrors) {
+			errorSource.addValidationError(currentValidationError);
+		}
+
+		return errorSource;
+	}
+
+	/**
+	 * Writes the {@link AllErrors} in JSON format to the {@code Writer}.
+	 *
+	 * @param allErrors All the errors to write out into JSON.
+	 * @param writer The writer that will receive the JSON.
+	 * @throws IOException Thrown when AllErrors can't be serialized or if it can't be written to the Writer.
+	 */
 	private void writeErrorJson(final AllErrors allErrors, final Writer writer) throws IOException {
 		ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		jsonObjectWriter.writeValue(writer, allErrors);
 	}
 
+	/**
+	 * Converts the {@link AllErrors} into JSON and converts that into an array of {@code byte}s.
+	 *
+	 * @param allErrors All the errors to convert into JSON.
+	 * @return An array of bytes of JSON of AllErrors.
+	 * @throws JsonProcessingException Thrown when AllErrors can't be serialized into JSON.
+	 */
 	private byte[] constructErrorJson(final AllErrors allErrors) throws JsonProcessingException {
 		ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		return jsonObjectWriter.writeValueAsBytes(allErrors);
-	}
-
-	private AllErrors constructErrorHierarchy(final String inputFileName, final List<ValidationError> validationErrors) {
-		AllErrors allErrors = new AllErrors();
-
-		ErrorSource errorSource = new ErrorSource();
-		errorSource.setSourceIdentifier(inputFileName);
-		allErrors.addErrorSource(errorSource);
-
-		for(ValidationError currentValidationError : validationErrors) {
-			errorSource.addValidationError(currentValidationError);
-		}
-
-		return allErrors;
 	}
 
 	private InputStream writeConverted() {
