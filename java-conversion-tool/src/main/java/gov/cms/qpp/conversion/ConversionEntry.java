@@ -33,6 +33,7 @@ public class ConversionEntry {
 	private static final String DIR_EXTRACTION = "[\\/\\\\]";
 
 	static final String CLI_PROBLEM = "Problem parsing cli options";
+	static final String INVALID_TEMPLATE_SCOPE = "Invalid template scope: {}";
 	private static final String TOO_MANY_WILD_CARDS = "Too many wild cards in {}";
 	private static final String NO_INPUT_FILE_SPECIFIED = "No input filename was specified.";
 	private static final String FILE_DOES_NOT_EXIST = "{} does not exist.";
@@ -46,11 +47,16 @@ public class ConversionEntry {
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
 	private static Options options;
+	private static HelpFormatter formatter;
 
 	/**
 	 * prevent instantiation
 	 */
 	private ConversionEntry() {}
+
+	static {
+		initCli();
+	}
 
 	/**
 	 * The main entry point for conversion
@@ -76,12 +82,10 @@ public class ConversionEntry {
 		Collection<Path> returnValue = new LinkedList<>();
 		try {
 			CommandLine line = cli(args);
-			if (!wantsHelp(line)) {
-				if (line.getArgList().isEmpty()) {
-					CLIENT_LOG.error(NO_INPUT_FILE_SPECIFIED);
-				} else {
-					returnValue = checkArgs(line);
-				}
+			if (shouldContinue(line)) {
+				returnValue = checkArgs(line);
+			} else {
+				formatter.printHelp("convert", options, true);
 			}
 		} catch (ParseException pe) {
 			DEV_LOG.error(CLI_PROBLEM, pe);
@@ -91,14 +95,34 @@ public class ConversionEntry {
 		return returnValue;
 	}
 
-	/**
-	 * Interprets command line options
-	 *
-	 * @param arguments array of values entered on the command line
-	 * @return parsed representation of command line entries
-	 * @throws ParseException
-	 */
-	static CommandLine cli(String[] arguments) throws ParseException {
+	static boolean shouldContinue(CommandLine line) {
+		boolean result = !line.hasOption(HELP) && validatedScope(line);
+		if (result && line.getArgList().isEmpty()) {
+			CLIENT_LOG.error(NO_INPUT_FILE_SPECIFIED);
+			result = false;
+		}
+		return result;
+	}
+
+	static boolean validatedScope(CommandLine line) {
+		boolean isItValid = true;
+		if (line.hasOption(TEMPLATE_SCOPE)) {
+			String[] templates = line.getOptionValue(TEMPLATE_SCOPE).split(",");
+			isItValid = Arrays.stream(templates)
+					.allMatch(ConversionEntry::isValidScope);
+		}
+		return isItValid;
+	}
+
+	static boolean isValidScope(String scope) {
+		boolean success = QrdaScoper.getInstanceByName(scope) != null;
+		if (!success) {
+			CLIENT_LOG.error(INVALID_TEMPLATE_SCOPE, scope);
+		}
+		return success;
+	}
+
+	static void initCli() {
 		options = new Options();
 		options.addOption("v", SKIP_VALIDATION, false, "Skip validations");
 		options.addOption("d", SKIP_DEFAULTS, false,"Skip defaulted transformations");
@@ -113,6 +137,17 @@ public class ConversionEntry {
 				.build();
 		options.addOption(templateScope);
 
+		formatter = new HelpFormatter();
+	}
+
+	/**
+	 * Interprets command line options
+	 *
+	 * @param arguments array of values entered on the command line
+	 * @return parsed representation of command line entries
+	 * @throws ParseException
+	 */
+	static CommandLine cli(String[] arguments) throws ParseException {
 		return new DefaultParser().parse(options, arguments);
 	}
 
@@ -131,22 +166,6 @@ public class ConversionEntry {
 		}
 
 		return validFiles;
-	}
-
-	/**
-	 * Determines if the command line contains the help ("-h", "--help") switch.
-	 *
-	 * @param line parsed representation of the command line
-	 * @return whether or not the flag was entered
-	 */
-	private static boolean wantsHelp(CommandLine line) {
-		boolean bail = false;
-		if (line.hasOption(HELP)) {
-			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp("convert", options, true);
-			bail = true;
-		}
-		return bail;
 	}
 
 	/**

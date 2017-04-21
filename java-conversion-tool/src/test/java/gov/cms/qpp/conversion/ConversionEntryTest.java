@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion;
 
 import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.segmentation.QrdaScoper;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import org.apache.commons.cli.CommandLine;
@@ -240,8 +241,37 @@ public class ConversionEntryTest {
 
 	@Test
 	@PrepareForTest({LoggerFactory.class, ConversionEntry.class})
+	public void shouldDenyInvalidTemplateScopes() throws ParseException {
+		//setup
+		mockStatic( LoggerFactory.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
+
+		//when
+		CommandLine line = ConversionEntry.cli(new String[] {"-t", QrdaScoper.ACI_SECTION.name() + ",MEEP"});
+		boolean result = ConversionEntry.shouldContinue(line);
+
+		//then
+		assertFalse("MEEP and MAWP are not valid scopes", result);
+		verify(clientLogger).error(eq(ConversionEntry.INVALID_TEMPLATE_SCOPE), eq("MEEP"));
+	}
+
+	@Test
+	public void shouldAllowValidTemplateScopes() throws ParseException {
+		//when
+		CommandLine line = ConversionEntry.cli(new String[] {"file.txt", "-t", QrdaScoper.ACI_SECTION.name()
+				+ ","
+				+ QrdaScoper.IA_SECTION.name()});
+		boolean result = ConversionEntry.shouldContinue(line);
+
+		//then
+		assertTrue("Both should be valid scopes", result);
+	}
+
+	@Test
+	@PrepareForTest({LoggerFactory.class, ConversionEntry.class})
 	public void testValidArgs_ParseException() throws Exception {
-		//set-up
+		//setup
 		mockStatic( LoggerFactory.class );
 		Logger devLogger = mock( Logger.class );
 		Logger clientLogger = mock( Logger.class );

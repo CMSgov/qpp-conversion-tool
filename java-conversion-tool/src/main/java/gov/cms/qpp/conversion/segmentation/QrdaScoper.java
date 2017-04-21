@@ -43,12 +43,18 @@ public enum QrdaScoper {
 		return templates;
 	}
 
-	public Set<TemplateId> getTemplatesByName(String name) {
+	public static QrdaScoper getInstanceByName(String name) {
 		Optional<QrdaScoper> found = Arrays.stream(QrdaScoper.values())
 				.filter(inst -> inst.name().equals(name))
 				.findFirst();
 
-		return found.isPresent() ? found.get().value : CLINICAL_DOCUMENT.value;
+		return found.orElse(null);
+	}
+
+	public static Set<TemplateId> getTemplatesByName(String name) {
+		QrdaScoper scope = getInstanceByName(name);
+
+		return scope == null ? null : scope.value;
 	}
 
 	public static String[] getNames() {
