@@ -2,10 +2,14 @@ package gov.cms.qpp.conversion.segmentation;
 
 import gov.cms.qpp.conversion.model.TemplateId;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Optional;
 
 
-public enum QRDAScoper {
+public enum QrdaScoper {
 
 	ACI_AGGREGATE_COUNT("ACI_AGG_COUNT", TemplateId.ACI_AGGREGATE_COUNT),
 	ACI_NUMERATOR("ACI_NUM", TemplateId.ACI_NUMERATOR, ACI_AGGREGATE_COUNT),
@@ -20,7 +24,7 @@ public enum QRDAScoper {
 
 	private Set<TemplateId> value;
 
-	QRDAScoper(String name, Object... templates) {
+	QrdaScoper(String name, Object... templates) {
 		value = assemble(templates);
 	}
 
@@ -29,9 +33,9 @@ public enum QRDAScoper {
 		Set<TemplateId> templates = new HashSet<>();
 
 		Arrays.stream(tiers).forEach(tier -> {
-			if (tier instanceof TemplateId){
+			if (tier instanceof TemplateId) {
 				templates.add((TemplateId) tier);
-			} else if (tier instanceof Collection){
+			} else if (tier instanceof Collection) {
 				templates.addAll((Collection<TemplateId>) tier);
 			}
 		});
@@ -40,14 +44,14 @@ public enum QRDAScoper {
 	}
 
 	public Set<TemplateId> getTemplatesByName(String name) {
-		Optional<QRDAScoper> found = Arrays.stream(QRDAScoper.values())
-				.filter( inst -> inst.name().equals(name) )
+		Optional<QrdaScoper> found = Arrays.stream(QrdaScoper.values())
+				.filter(inst -> inst.name().equals(name))
 				.findFirst();
 
-		return (found.isPresent()) ? found.get().value : CLINICAL_DOCUMENT.value;
+		return found.isPresent() ? found.get().value : CLINICAL_DOCUMENT.value;
 	}
 
 	public static String[] getNames() {
-		return Arrays.stream(QRDAScoper.class.getEnumConstants()).map(Enum::name).toArray(String[]::new);
+		return Arrays.stream(QrdaScoper.class.getEnumConstants()).map(Enum::name).toArray(String[]::new);
 	}
 }

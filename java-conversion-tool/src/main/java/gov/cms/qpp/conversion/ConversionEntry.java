@@ -1,9 +1,13 @@
 package gov.cms.qpp.conversion;
 
 
-import gov.cms.qpp.conversion.segmentation.QRDAScoper;
-
-import org.apache.commons.cli.*;
+import gov.cms.qpp.conversion.segmentation.QrdaScoper;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +44,8 @@ public class ConversionEntry {
 	private static boolean doValidation = true;
 	private static Options options;
 
+	private ConversionEntry() {}
+
 	/**
 	 * The main entry point for conversion
 	 *
@@ -48,7 +54,7 @@ public class ConversionEntry {
 	public static void main(String... args) {
 		Collection<Path> filenames = validArgs(args);
 		filenames.parallelStream().forEach(
-				(filename) -> new Converter(filename)
+				filename -> new Converter(filename)
 							.doValidation(doValidation)
 							.doDefaults(doDefaults)
 							.transform());
@@ -71,7 +77,7 @@ public class ConversionEntry {
 					returnValue = checkArgs(line);
 				}
 			}
-		} catch(ParseException pe) {
+		} catch (ParseException pe) {
 			DEV_LOG.error(CLI_PROBLEM, pe);
 			CLIENT_LOG.error(CLI_PROBLEM);
 		}
@@ -89,8 +95,8 @@ public class ConversionEntry {
 				.longOpt(TEMPLATE_SCOPE)
 				.argName("scope1,scope2,...")
 				.hasArg()
-				.desc("Comma delimited scope values to use for context. Valid values: " +
-						Arrays.toString(QRDAScoper.getNames()))
+				.desc("Comma delimited scope values to use for context. Valid values: "
+						+ Arrays.toString(QrdaScoper.getNames()))
 				.build();
 		options.addOption(templateScope);
 
