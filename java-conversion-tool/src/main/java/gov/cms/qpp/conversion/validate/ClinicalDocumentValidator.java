@@ -20,7 +20,10 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	protected static final String CONTAINS_PROGRAM_NAME = "Clinical Document must have a program name";
 	protected static final String CONTAINS_PERFORMANCE_YEAR = "Clinical Document must have a performance year";
 	protected static final String CONTAINS_TAX_ID_NUMBER = "Clinical Document must have Tax Id Number (TIN)";
-	protected static final String REPORTING_PARAMETER_REQUIRED = "Clinical Document must have Report Paramters Section";
+	protected static final String CONTAINS_DUPLICATE_ACI_SECTIONS = "Clinical Document contains duplicate ACI sections";
+	protected static final String CONTAINS_DUPLICATE_IA_SECTIONS = "Clinical Document contains duplicate IA sections";
+	protected static final String CONTAINS_DUPLICATE_ECQM_SECTIONS = "Clinical Document contains duplicate eCQM sections";
+	protected static final String REPORTING_PARAMETER_REQUIRED = "Clinical Document must have Report Parameters Section";
 
 	/**
 	 * Validates a single Clinical Document Node.
@@ -43,6 +46,10 @@ public class ClinicalDocumentValidator extends NodeValidator {
 				.childMinimum(ONE_CHILD_REQUIRED, 1,
 						TemplateId.ACI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)
 				.childMinimum(REPORTING_PARAMETER_REQUIRED, 1, TemplateId.REPORTING_PARAMETERS_SECTION)
+				.childMaximum(CONTAINS_DUPLICATE_ACI_SECTIONS, 1, TemplateId.ACI_SECTION)
+				.childMaximum(CONTAINS_DUPLICATE_IA_SECTIONS, 1, TemplateId.IA_SECTION)
+				.childMaximum(CONTAINS_DUPLICATE_ECQM_SECTIONS, 1, TemplateId.MEASURE_SECTION_V2)
+
 				.value(CONTAINS_PROGRAM_NAME, "programName")
 				.value(CONTAINS_TAX_ID_NUMBER, "taxpayerIdentificationNumber");
 
@@ -72,4 +79,3 @@ public class ClinicalDocumentValidator extends NodeValidator {
 		}
 	}
 }
-

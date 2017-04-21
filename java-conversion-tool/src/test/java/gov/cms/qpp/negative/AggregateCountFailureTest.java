@@ -1,12 +1,13 @@
 package gov.cms.qpp.negative;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.ConversionEntry;
 import gov.cms.qpp.conversion.validate.AggregateCountValidator;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
@@ -22,7 +23,7 @@ public class AggregateCountFailureTest {
 		errorFile.delete();
 
 		//execute
-		Converter.main("src/test/resources/negative/QRDA-III-invalid-aggregate-count.xml");
+		ConversionEntry.main("src/test/resources/negative/QRDA-III-invalid-aggregate-count.xml");
 
 		//assert
 		assertThat("The error file must exist", errorFile.exists(), is(true));

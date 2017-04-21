@@ -36,7 +36,7 @@ public class ConverterBenchmark {
 	@Benchmark
 	@BenchmarkMode({Mode.Throughput, Mode.AverageTime})
 	public void benchmarkMain( Cleaner cleaner) {
-		Converter.main(new String[] {"src/main/resources/qrda-files/valid-QRDA-III.xml"});
+		ConversionEntry.main(new String[] {"src/main/resources/qrda-files/valid-QRDA-III.xml"});
 	}
 
 }
