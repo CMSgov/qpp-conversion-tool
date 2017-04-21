@@ -13,9 +13,12 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static java.lang.System.exit;
 
 public class ConversionEntry {
 	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
@@ -23,6 +26,7 @@ public class ConversionEntry {
 
 	private static final String DIR_EXTRACTION = "[\\/\\\\]";
 
+	private static final String CLI_PROBLEM = "Problem parsing cli options";
 	private static final String TOO_MANY_WILD_CARDS = "Too many wild cards in {}";
 	private static final String NO_INPUT_FILE_SPECIFIED = "No input filename was specified.";
 	private static final String FILE_DOES_NOT_EXIST = "{} does not exist.";
@@ -35,6 +39,7 @@ public class ConversionEntry {
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
+	private static Options options;
 
 	/**
 	 * The main entry point for conversion
@@ -59,42 +64,67 @@ public class ConversionEntry {
 	 * @return  A list of file(s) that are to be transformed.
 	 */
 	static Collection<Path> validArgs(String[] args) {
-		if (args.length < 1) {
+		CommandLine line;
+		try {
+			line = cli(args);
+		} catch(ParseException pe) {
+			DEV_LOG.error(CLI_PROBLEM, pe);
+			CLIENT_LOG.error(CLI_PROBLEM);
+			return new LinkedList<>();
+		}
+
+		if (line.getArgList().isEmpty()) {
 			CLIENT_LOG.error(NO_INPUT_FILE_SPECIFIED);
 			return new LinkedList<>();
 		}
 
+		return checkArgs(line);
+	}
+
+	static CommandLine cli(String[] arguments) throws ParseException {
+		options = new Options();
+		options.addOption("v", SKIP_VALIDATION, false, "skip validations");
+		options.addOption("d", SKIP_DEFAULTS, false,"skip defaulted transformations");
+		options.addOption("h", HELP, false,"this help message");
+
+		Option templateScope = Option.builder("t")
+				.longOpt(TEMPLATE_SCOPE)
+				.argName("scope...")
+				.hasArg()
+				.desc("scope values to use for context. Valid values: " + QRDAScoper.getNames())
+				.build();
+		options.addOption(templateScope);
+
+		return new DefaultParser().parse(options, arguments);
+	}
+
+	static Collection<Path> checkArgs(CommandLine line) {
 		Collection<Path> validFiles = new LinkedList<>();
 
-		resetFlags();
-		for (String arg : args) {
-			if (checkFlags(arg)) {
-				continue;
-			}
+		if (!wantsHelp(line)) {
+			checkFlags(line);
 
-			validFiles.addAll(checkPath(arg));
+			for (String arg : line.getArgList()) {
+				validFiles.addAll(checkPath(arg));
+			}
 		}
 
 		return validFiles;
 	}
 
-	private static void resetFlags() {
-		doValidation = true;
-		doDefaults = true;
+	private static boolean wantsHelp(CommandLine line) {
+		boolean bail = false;
+		if (line.hasOption(HELP)) {
+			HelpFormatter formatter = new HelpFormatter();
+			formatter.printHelp("convert", options, true);
+			bail = true;
+		}
+		return bail;
 	}
 
-	private static boolean checkFlags(String arg) {
-		if (SKIP_VALIDATION.equals(arg)) {
-			doValidation = false;
-			return true;
-		}
-
-		if (SKIP_DEFAULTS.equals(arg)) {
-			doDefaults = false;
-			return true;
-		}
-
-		return false;
+	private static void checkFlags(CommandLine line) {
+		doValidation = !line.hasOption(SKIP_VALIDATION);
+		doDefaults = !line.hasOption(SKIP_DEFAULTS);
 	}
 
 	/**
@@ -197,22 +227,5 @@ public class ConversionEntry {
 		}
 
 		return Pattern.compile(regex);
-	}
-
-	static CommandLine cli(String[] arguments) throws ParseException {
-		Options options = new Options();
-		options.addOption("v", SKIP_VALIDATION, false, "skip validations");
-		options.addOption("d", SKIP_DEFAULTS, false,"skip defaulted transformations");
-		options.addOption("h", HELP, false,"this help message");
-
-		Option templateScope = Option.builder("t")
-				.longOpt(TEMPLATE_SCOPE)
-				.argName("scope...")
-				.hasArg()
-				.desc("scope values to use for context. Valid values: " + QRDAScoper.getNames())
-				.build();
-		options.addOption(templateScope);
-
-		return new DefaultParser().parse(options, arguments);
 	}
 }

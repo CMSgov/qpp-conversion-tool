@@ -221,7 +221,7 @@ public class ConversionEntryTest {
 		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
 		AnnotationMockHelper.mockEncoder("867.5309", Jenncoder.class);
 
-		ConversionEntry.main(ConversionEntry.SKIP_VALIDATION,
+		ConversionEntry.main(SKIP_VALIDATION,
 				"src/test/resources/converter/defaultedNode.xml");
 
 		Path jennyJson = Paths.get("defaultedNode.qpp.json");
@@ -232,8 +232,8 @@ public class ConversionEntryTest {
 
 	@Test
 	public void testSkipDefaults() throws Exception {
-		ConversionEntry.main(ConversionEntry.SKIP_VALIDATION,
-				ConversionEntry.SKIP_DEFAULTS,
+		ConversionEntry.main(SKIP_VALIDATION,
+				SKIP_DEFAULTS,
 				"src/test/resources/converter/defaultedNode.xml");
 
 		Path jennyJson = Paths.get("defaultedNode.qpp.json");

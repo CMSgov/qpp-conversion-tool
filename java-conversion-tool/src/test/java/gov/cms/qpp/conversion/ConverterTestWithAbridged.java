@@ -33,7 +33,7 @@ public class ConverterTestWithAbridged {
 	public void testMultiThreadRun_testSkipValidationToo() throws IOException {
 		long start = System.currentTimeMillis();
 
-		ConversionEntry.main(ConversionEntry.SKIP_VALIDATION,
+		ConversionEntry.main("--" + ConversionEntry.SKIP_VALIDATION,
 				"src/test/resources/pathTest/a.xml",
 				"src/test/resources/pathTest/subdir/*.xml");
 
