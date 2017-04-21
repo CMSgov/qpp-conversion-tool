@@ -27,6 +27,7 @@ public class Node implements Serializable {
 	private Node parent;
 	private boolean validated;
 	private String internalId;
+	private String path;
 
 	/**
 	 * Default constructor initializes internal list of Nodes
@@ -182,6 +183,24 @@ public class Node implements Serializable {
 	 */
 	public TemplateId getType() {
 		return type;
+	}
+
+	/**
+	 * Returns the path from the original document this {@code Node} is associated with.
+	 *
+	 * @return The path.
+	 */
+	public String getPath() {
+		return path;
+	}
+
+	/**
+	 * Sets the path from the original document that this {@code Node} is associated with.
+	 *
+	 * @param newPath The path.
+	 */
+	public void setPath(String newPath) {
+		path = newPath;
 	}
 
 	/**
