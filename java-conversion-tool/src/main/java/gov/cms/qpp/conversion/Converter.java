@@ -22,6 +22,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,10 +38,11 @@ public class Converter {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
 
 	private static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
+	private static final String UNEXPECTED_ERROR= "Unexpected exception occurred during conversion";
 
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
-	private List<ValidationError> validationErrors = Collections.emptyList();
+	private List<ValidationError> validationErrors = new ArrayList<>();
 	private InputStream xmlStream;
 	private Path inFile;
 	private Node decoded;
@@ -86,10 +88,14 @@ public class Converter {
 		} catch (XmlInputFileException | XmlException xe) {
 			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
+			validationErrors.add(new ValidationError(NOT_VALID_XML_DOCUMENT));
 			return getStatus();
 		} catch (Exception exception) {
-			DEV_LOG.error("Unexpected exception occurred during conversion", exception);
+			DEV_LOG.error(UNEXPECTED_ERROR, exception);
+			validationErrors.add(new ValidationError(UNEXPECTED_ERROR));
 			return getStatus();
+		} finally {
+			writeValidationErrors();
 		}
 	}
 
@@ -109,7 +115,7 @@ public class Converter {
 
 	private Node transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
-		validationErrors = Collections.emptyList();
+		validationErrors = new ArrayList<>();
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
 		if (null != decoded) {
 			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), inStream);
@@ -138,7 +144,7 @@ public class Converter {
 	public InputStream getConversionResult() {
 		return (!validationErrors.isEmpty())
 				? writeValidationErrors()
-				: writeConverted() ;
+				: writeConverted();
 	}
 
 	private InputStream writeValidationErrors() {
@@ -186,7 +192,7 @@ public class Converter {
 			encoder.setNodes(Collections.singletonList(decoded));
 			encoder.encode(writer);
 			// do something with encode validations
-		} catch (IOException | EncodeException e) { // coverage ignore candidate
+		} catch (IOException | EncodeException e ) { // coverage ignore candidate
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
 		} finally {
 			Validations.clear();

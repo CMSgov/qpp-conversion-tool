@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.ValidationError;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;
@@ -43,8 +45,8 @@ public class EncoderNegativeConditionsTest {
 		assertThat("expected encoder to return an empty string", sw.toString(), is(EXPECTED));
 	}
 
-	@Test(expected = EncodeException.class)
-	public void testException() throws EncodeException {
+	@Test
+	public void testExceptionAddsValidation() throws EncodeException {
 		Node numeratorDenominatorNode;
 		List<Node> nodes;
 
@@ -62,6 +64,9 @@ public class EncoderNegativeConditionsTest {
 		FailingWriter failWrite = new FailingWriter();
 
 		encoder.encode(new BufferedWriter(failWrite));
-	}
 
+		assertThat("Should contain one error", encoder.getValidationErrors(), hasSize(1));
+		assertThat("Should have same correct message", encoder.getValidationErrors().get(0).getErrorText(),
+				is("Failure to encode"));
+	}
 }

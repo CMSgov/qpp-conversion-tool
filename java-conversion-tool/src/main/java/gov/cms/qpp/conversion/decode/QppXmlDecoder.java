@@ -1,11 +1,8 @@
 package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.model.Decoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.model.*;
+import gov.cms.qpp.conversion.validate.NodeValidator;
 import org.jdom2.Element;
 import org.jdom2.xpath.XPathHelper;
 
@@ -18,6 +15,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
+
+	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
 
 	/**
 	 * Decode iterates over the elements to find all child elements
@@ -170,7 +169,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 									&& containsClinicalDocumentTemplateId(rootElement);
 
 		if (!isValidQrdaFile) {
-			Converter.CLIENT_LOG.error("The file is not a QRDA-III XML document");
+			Converter.CLIENT_LOG.error(NOT_VALID_QRDA_III_FORMAT);
+			addValidationError(new ValidationError(NOT_VALID_QRDA_III_FORMAT));
 		}
 		
 		return isValidQrdaFile;

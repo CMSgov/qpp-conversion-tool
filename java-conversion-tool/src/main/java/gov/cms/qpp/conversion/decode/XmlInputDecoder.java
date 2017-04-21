@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.decode;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.ValidationError;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filter;
@@ -11,9 +12,7 @@ import org.jdom2.xpath.XPathFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -23,6 +22,8 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 
 	protected Namespace defaultNs;
 	protected Namespace xpathNs;
+
+	private List<ValidationError> validationErrors = new ArrayList<>();
 
 	/**
 	 * decodeXml Determines what formats of xml we accept and decode to
@@ -113,6 +114,14 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 		} else {
 			Optional.ofNullable(expression.evaluate(element)).ifPresent(consumer);
 		}
+	}
+
+	public void addValidationError(ValidationError error) {
+		validationErrors.add(error);
+	}
+
+	public List<ValidationError> getValidationErrors() {
+		return this.validationErrors;
 	}
 
 	/**
