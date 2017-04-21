@@ -31,6 +31,7 @@ public class ConversionEntry {
 	static final String SKIP_VALIDATION = "skipValidation";
 	static final String SKIP_DEFAULTS = "skipDefaults";
 	static final String TEMPLATE_SCOPE = "templateScope";
+	static final String HELP = "help";
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
@@ -200,10 +201,12 @@ public class ConversionEntry {
 
 	static CommandLine cli(String[] arguments) throws ParseException {
 		Options options = new Options();
-		options.addOption(SKIP_VALIDATION, false, "skip validations");
-		options.addOption(SKIP_DEFAULTS, false,"skip defaulted transformations");
+		options.addOption("v", SKIP_VALIDATION, false, "skip validations");
+		options.addOption("d", SKIP_DEFAULTS, false,"skip defaulted transformations");
+		options.addOption("h", HELP, false,"this help message");
 
-		Option templateScope = Option.builder(TEMPLATE_SCOPE)
+		Option templateScope = Option.builder("t")
+				.longOpt(TEMPLATE_SCOPE)
 				.argName("scope...")
 				.hasArg()
 				.desc("scope values to use for context. Valid values: " + QRDAScoper.getNames())

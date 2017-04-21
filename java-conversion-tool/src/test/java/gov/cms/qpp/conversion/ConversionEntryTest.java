@@ -31,9 +31,9 @@ import static org.powermock.api.support.membermodification.MemberModifier.stub;
 public class ConversionEntryTest {
 
 	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
-	private static final String SKIP_DEFAULTS = "-" + ConversionEntry.SKIP_DEFAULTS;
-	private static final String SKIP_VALIDATION = "-" + ConversionEntry.SKIP_VALIDATION;
-	private static final String TEMPLATE_SCOPE = "-" + ConversionEntry.TEMPLATE_SCOPE;
+	private static final String SKIP_DEFAULTS = "--" + ConversionEntry.SKIP_DEFAULTS;
+	private static final String SKIP_VALIDATION = "--" + ConversionEntry.SKIP_VALIDATION;
+	private static final String TEMPLATE_SCOPE = "--" + ConversionEntry.TEMPLATE_SCOPE;
 
 	@After
 	public void cleanup() throws IOException {
@@ -250,9 +250,29 @@ public class ConversionEntryTest {
 	}
 
 	@Test
+	public void testHandleSkipDefaultsAbbreviated() throws ParseException {
+		CommandLine line = ConversionEntry.cli(new String[] {"-d"});
+		assertTrue("Should have a skip default option", line.hasOption(ConversionEntry.SKIP_DEFAULTS));
+	}
+
+	@Test
 	public void testHandleSkipValidation() throws ParseException {
 		CommandLine line = ConversionEntry.cli(new String[] {SKIP_VALIDATION});
 		assertTrue("Should have a skip validation option", line.hasOption(ConversionEntry.SKIP_VALIDATION));
+	}
+
+	@Test
+	public void testHandleSkipValidationAbbreviated() throws ParseException {
+		CommandLine line = ConversionEntry.cli(new String[] {"-v"});
+		assertTrue("Should have a skip validation option", line.hasOption(ConversionEntry.SKIP_VALIDATION));
+	}
+
+	@Test
+	public void testHandleCombo() throws ParseException {
+		CommandLine line = ConversionEntry.cli(new String[] {"-dvt", "meep"});
+		assertTrue("Should have a skip validation option", line.hasOption(ConversionEntry.SKIP_VALIDATION));
+		assertTrue("Should have a skip default option", line.hasOption(ConversionEntry.SKIP_DEFAULTS));
+		assertEquals("Should be 'meep'", "meep", line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE));
 	}
 
 	@Test
@@ -263,8 +283,16 @@ public class ConversionEntryTest {
 	}
 
 	@Test
+	public void testHandleTemplateScopeAbbreviated() throws ParseException {
+		CommandLine line = ConversionEntry.cli(new String[] {"-t", "meep"});
+		assertTrue("Should have a template scope option", line.hasOption(ConversionEntry.TEMPLATE_SCOPE));
+		assertEquals("Should be 'meep'", "meep", line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE));
+	}
+
+	@Test
 	public void testHandleArguments() throws ParseException {
-		CommandLine line = ConversionEntry.cli(new String[] {SKIP_VALIDATION, "file.txt", TEMPLATE_SCOPE, "meep,mawp", "file2.txt"});
+		CommandLine line = ConversionEntry.cli(
+				new String[]{SKIP_VALIDATION, "file.txt", SKIP_DEFAULTS, "-t", "meep,mawp", "file2.txt"});
 		List<String> args = line.getArgList();
 
 		assertEquals("should be comprised of the 2 files", 2, args.size());
