@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
@@ -9,6 +11,8 @@ import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.ErrorSource;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -24,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -88,6 +93,7 @@ public class Converter {
 	 */
 	public static void main(String... args) {
 		Collection<Path> filenames = validArgs(args);
+		DEV_LOG.info("Converter invoked with arguments {}", Arrays.toString(args));
 		filenames.parallelStream().forEach(
 				(filename) -> new Converter(filename).transform());
 	}
@@ -240,6 +246,8 @@ public class Converter {
 	}
 
 	public Integer transform() {
+		DEV_LOG.info("Transform invoked with file {}", inFile);
+
 		try {
 			if (inFile != null) {
 				transform(inFile);
@@ -314,17 +322,42 @@ public class Converter {
 	}
 
 	private void writeValidationErrors(List<ValidationError> validationErrors, Path outFile) {
+
+		String fileName = inFile.toString();
+		AllErrors allErrors = constructErrorHierarchy(fileName, validationErrors);
+
 		try (Writer errWriter = Files.newBufferedWriter(outFile)) {
-			for (ValidationError error : validationErrors) {
-				String errorXPath = error.getPath();
-				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator()
-								+ (errorXPath != null && !errorXPath.isEmpty() ? "\tat " + errorXPath : ""));
-			}
-		} catch (IOException e) { // coverage ignore candidate
-			DEV_LOG.error("Could not write to file: {}", outFile.toString(), e);
+			final String writingErrorString = "Writing error file {}";
+			DEV_LOG.error(writingErrorString, outFile);
+			CLIENT_LOG.error(writingErrorString, outFile);
+			constructErrorJson(allErrors, errWriter);
+		} catch (IOException exception) { // coverage ignore candidate
+			final String notWriteErrorFile = MessageFormat.format("Could not write to error file {}", outFile.toString());
+			DEV_LOG.error(notWriteErrorFile, exception);
+			CLIENT_LOG.error(notWriteErrorFile);
 		} finally {
 			Validations.clear();
 		}
+	}
+
+	private void constructErrorJson(final AllErrors allErrors, final Writer writer) throws IOException {
+		ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+
+		jsonObjectWriter.writeValue(writer, allErrors);
+	}
+
+	private AllErrors constructErrorHierarchy(final String inputFileName, final List<ValidationError> validationErrors) {
+		AllErrors allErrors = new AllErrors();
+
+		ErrorSource errorSource = new ErrorSource();
+		errorSource.setSourceIdentifier(inputFileName);
+		allErrors.addErrorSource(errorSource);
+
+		for(ValidationError currentValidationError : validationErrors) {
+			errorSource.addValidationError(currentValidationError);
+		}
+
+		return allErrors;
 	}
 
 	private InputStream writeConverted() {
@@ -367,6 +400,6 @@ public class Converter {
 	}
 
 	private String getFileExtension() {
-		return (!validationErrors.isEmpty()) ? ".err.txt" : ".qpp.json";
+		return (!validationErrors.isEmpty()) ? ".err.json" : ".qpp.json";
 	}
 }
