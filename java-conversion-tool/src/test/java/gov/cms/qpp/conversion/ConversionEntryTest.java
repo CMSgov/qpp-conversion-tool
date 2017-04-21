@@ -3,6 +3,8 @@ package gov.cms.qpp.conversion;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.ParseException;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
@@ -28,6 +31,9 @@ import static org.powermock.api.support.membermodification.MemberModifier.stub;
 public class ConversionEntryTest {
 
 	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
+	private static final String SKIP_DEFAULTS = "-" + ConversionEntry.SKIP_DEFAULTS;
+	private static final String SKIP_VALIDATION = "-" + ConversionEntry.SKIP_VALIDATION;
+	private static final String TEMPLATE_SCOPE = "-" + ConversionEntry.TEMPLATE_SCOPE;
 
 	@After
 	public void cleanup() throws IOException {
@@ -235,4 +241,35 @@ public class ConversionEntryTest {
 
 		assertFalse(content.contains("Jenny"));
 	}
+
+	//cli
+	@Test
+	public void testHandleSkipDefaults() throws ParseException {
+		CommandLine line = ConversionEntry.cli(new String[] {SKIP_DEFAULTS});
+		assertTrue("Should have a skip default option", line.hasOption(ConversionEntry.SKIP_DEFAULTS));
+	}
+
+	@Test
+	public void testHandleSkipValidation() throws ParseException {
+		CommandLine line = ConversionEntry.cli(new String[] {SKIP_VALIDATION});
+		assertTrue("Should have a skip validation option", line.hasOption(ConversionEntry.SKIP_VALIDATION));
+	}
+
+	@Test
+	public void testHandleTemplateScope() throws ParseException {
+		CommandLine line = ConversionEntry.cli(new String[] {TEMPLATE_SCOPE, "meep"});
+		assertTrue("Should have a template scope option", line.hasOption(ConversionEntry.TEMPLATE_SCOPE));
+		assertEquals("Should be 'meep'", "meep", line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE));
+	}
+
+	@Test
+	public void testHandleArguments() throws ParseException {
+		CommandLine line = ConversionEntry.cli(new String[] {SKIP_VALIDATION, "file.txt", TEMPLATE_SCOPE, "meep,mawp", "file2.txt"});
+		List<String> args = line.getArgList();
+
+		assertEquals("should be comprised of the 2 files", 2, args.size());
+		assertEquals("file.txt", args.get(0));
+		assertEquals("file2.txt", args.get(1));
+	}
+
 }

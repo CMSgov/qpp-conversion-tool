@@ -1,6 +1,8 @@
 package gov.cms.qpp.conversion;
 
 
+import gov.cms.qpp.conversion.segmentation.QRDAScoper;
+import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +28,9 @@ public class ConversionEntry {
 	private static final String FILE_DOES_NOT_EXIST = "{} does not exist.";
 	private static final String CANNOT_LOCATE_FILE_PATH = "Cannot locate file path {0} {1}";
 
-	static final String SKIP_VALIDATION = "--skip-validation";
-	static final String SKIP_DEFAULTS = "--skip-defaults";
+	static final String SKIP_VALIDATION = "skipValidation";
+	static final String SKIP_DEFAULTS = "skipDefaults";
+	static final String TEMPLATE_SCOPE = "templateScope";
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
@@ -193,5 +196,20 @@ public class ConversionEntry {
 		}
 
 		return Pattern.compile(regex);
+	}
+
+	static CommandLine cli(String[] arguments) throws ParseException {
+		Options options = new Options();
+		options.addOption(SKIP_VALIDATION, false, "skip validations");
+		options.addOption(SKIP_DEFAULTS, false,"skip defaulted transformations");
+
+		Option templateScope = Option.builder(TEMPLATE_SCOPE)
+				.argName("scope...")
+				.hasArg()
+				.desc("scope values to use for context. Valid values: " + QRDAScoper.getNames())
+				.build();
+		options.addOption(templateScope);
+
+		return new DefaultParser().parse(options, arguments);
 	}
 }
