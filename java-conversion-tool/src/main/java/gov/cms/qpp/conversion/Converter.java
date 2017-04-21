@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
@@ -314,11 +315,19 @@ public class Converter {
 	}
 
 	private InputStream writeValidationErrors() {
-		String errors = validationErrors.stream()
-				.map(error -> "Validation Error: " + error.getErrorText())
-				.collect(Collectors.joining(System.lineSeparator()));
+		String identifier = xmlStream.toString();
+		AllErrors allErrors = constructErrorHierarchy(identifier, validationErrors);
+		byte[] errors = new byte[0];
+		try {
+			errors = constructErrorJson(allErrors);
+		}
+		catch (JsonProcessingException exception) {
+			DEV_LOG.error("Error converting the validation errors into JSON", exception);
+			String exceptionJson = "{ \"exception\": \"JsonProcessingException\" }";
+			return new ByteArrayInputStream(exceptionJson.getBytes());
+		}
 		Validations.clear();
-		return new ByteArrayInputStream(errors.getBytes());
+		return new ByteArrayInputStream(errors);
 	}
 
 	private void writeValidationErrors(List<ValidationError> validationErrors, Path outFile) {
@@ -330,7 +339,7 @@ public class Converter {
 			final String writingErrorString = "Writing error file {}";
 			DEV_LOG.error(writingErrorString, outFile);
 			CLIENT_LOG.error(writingErrorString, outFile);
-			constructErrorJson(allErrors, errWriter);
+			writeErrorJson(allErrors, errWriter);
 		} catch (IOException exception) { // coverage ignore candidate
 			final String notWriteErrorFile = MessageFormat.format("Could not write to error file {0}", outFile.toString());
 			DEV_LOG.error(notWriteErrorFile, exception);
@@ -340,10 +349,14 @@ public class Converter {
 		}
 	}
 
-	private void constructErrorJson(final AllErrors allErrors, final Writer writer) throws IOException {
+	private void writeErrorJson(final AllErrors allErrors, final Writer writer) throws IOException {
 		ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
-
 		jsonObjectWriter.writeValue(writer, allErrors);
+	}
+
+	private byte[] constructErrorJson(final AllErrors allErrors) throws JsonProcessingException {
+		ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		return jsonObjectWriter.writeValueAsBytes(allErrors);
 	}
 
 	private AllErrors constructErrorHierarchy(final String inputFileName, final List<ValidationError> validationErrors) {
