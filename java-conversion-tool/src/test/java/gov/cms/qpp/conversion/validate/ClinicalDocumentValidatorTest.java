@@ -25,8 +25,7 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		clinicalDocumentNode.addChildNode(createReportingNode());
 
-		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
-		aciSectionNode.putValue("category", "aci");
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
@@ -41,8 +40,7 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		clinicalDocumentNode.addChildNode(createReportingNode());
 
-		Node iaSectionNode = new Node(clinicalDocumentNode, TemplateId.IA_SECTION.getTemplateId());
-		iaSectionNode.putValue("category", "ia");
+		Node iaSectionNode = createIASectionNode(clinicalDocumentNode);
 
 		clinicalDocumentNode.addChildNode(iaSectionNode);
 
@@ -126,8 +124,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.addChildNode(createReportingNode());
 
-		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
-		aciSectionNode.putValue("category", "aci");
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
@@ -145,8 +142,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.addChildNode(createReportingNode());
 
-		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
-		aciSectionNode.putValue("category", "aci");
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
@@ -165,8 +161,7 @@ public class ClinicalDocumentValidatorTest {
 
 		clinicalDocumentNode.addChildNode(createReportingNode());
 
-		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
-		aciSectionNode.putValue("category", "aci");
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
@@ -181,8 +176,7 @@ public class ClinicalDocumentValidatorTest {
 	public void testClinicalDocumentMissingPerformanceStartPresent() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 
-		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
-		aciSectionNode.putValue("category", "aci");
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
@@ -201,15 +195,11 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node performanceSection = createReportingNode();
 
-		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
-		aciSectionNode.putValue("category", "aci");
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
-		Node duplicateAciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
-		duplicateAciSectionNode.putValue("category", "aci");
+		Node duplicateAciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
-		clinicalDocumentNode.addChildNode(aciSectionNode);
-		clinicalDocumentNode.addChildNode(performanceSection);
-		clinicalDocumentNode.addChildNode(duplicateAciSectionNode);
+		clinicalDocumentNode.addChildNodes(aciSectionNode, performanceSection, duplicateAciSectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
@@ -224,11 +214,9 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node performanceSection = createReportingNode();
 
-		Node IASectionNode = new Node(clinicalDocumentNode, TemplateId.IA_SECTION.getTemplateId());
-		IASectionNode.putValue("category", "ia");
+		Node IASectionNode = createIASectionNode(clinicalDocumentNode);
 
-		Node duplicateIASectionNode = new Node(clinicalDocumentNode, TemplateId.IA_SECTION.getTemplateId());
-		duplicateIASectionNode.putValue("category", "ia");
+		Node duplicateIASectionNode = createIASectionNode(clinicalDocumentNode);
 
 		clinicalDocumentNode.addChildNodes(IASectionNode, performanceSection, duplicateIASectionNode);
 
@@ -238,7 +226,6 @@ public class ClinicalDocumentValidatorTest {
 		assertThat("Should contain one error", errors, hasSize(1));
 		assertThat("Should contain one error", errors.get(0).getErrorText(),
 				is(ClinicalDocumentValidator.CONTAINS_DUPLICATE_IA_SECTIONS));
-
 	}
 
 	@Test
@@ -246,11 +233,9 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node performanceSection = createReportingNode();
 
-		Node qualityMeasureNode = new Node(clinicalDocumentNode, TemplateId.MEASURE_SECTION_V2.getTemplateId());
-		qualityMeasureNode.putValue("category", "ecqm");
+		Node qualityMeasureNode = createQualityMeasureSectionNode(clinicalDocumentNode);
 
-		Node duplicateQualityMeasureNode = new Node(clinicalDocumentNode, TemplateId.MEASURE_SECTION_V2.getTemplateId());
-		duplicateQualityMeasureNode.putValue("category", "ecqm");
+		Node duplicateQualityMeasureNode = createQualityMeasureSectionNode(clinicalDocumentNode);
 
 		clinicalDocumentNode.addChildNodes(qualityMeasureNode, performanceSection, duplicateQualityMeasureNode);
 
@@ -266,14 +251,11 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node performanceSection = createReportingNode();
 
-		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
-		aciSectionNode.putValue("category", "aci");
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
-		Node IASectionNode = new Node(clinicalDocumentNode, TemplateId.IA_SECTION.getTemplateId());
-		IASectionNode.putValue("category", "ia");
+		Node IASectionNode = createIASectionNode(clinicalDocumentNode);
 
-		Node qualityMeasureNode = new Node(clinicalDocumentNode, TemplateId.MEASURE_SECTION_V2.getTemplateId());
-		qualityMeasureNode.putValue("category", "ecqm");
+		Node qualityMeasureNode = createQualityMeasureSectionNode(clinicalDocumentNode);
 
 		clinicalDocumentNode.addChildNodes(aciSectionNode, performanceSection, IASectionNode, qualityMeasureNode);
 
@@ -298,5 +280,23 @@ public class ClinicalDocumentValidatorTest {
 		reportingParametersAct.putValue("performanceEnd", "20171231");
 		reportingSection.addChildNode(reportingParametersAct);
 		return reportingSection;
+	}
+
+	private Node createAciSectionNode(Node clinicalDocumentNode) {
+		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
+		aciSectionNode.putValue("category", "aci");
+		return aciSectionNode;
+	}
+
+	private Node createIASectionNode(Node clinicalDocumentNode) {
+		Node IASectionNode = new Node(clinicalDocumentNode, TemplateId.IA_SECTION.getTemplateId());
+		IASectionNode.putValue("category", "ia");
+		return IASectionNode;
+	}
+
+	private Node createQualityMeasureSectionNode(Node clinicalDocumentNode) {
+		Node qualityMeasureNode = new Node(clinicalDocumentNode, TemplateId.MEASURE_SECTION_V2.getTemplateId());
+		qualityMeasureNode.putValue("category", "ecqm");
+		return qualityMeasureNode;
 	}
 }
