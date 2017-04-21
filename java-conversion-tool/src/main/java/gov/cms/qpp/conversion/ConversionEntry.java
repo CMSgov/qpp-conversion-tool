@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion;
 
 
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScoper;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -18,7 +19,10 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -46,6 +50,7 @@ public class ConversionEntry {
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
+	private static Set<TemplateId> templateIds = new HashSet<>();
 	private static Options options;
 	private static HelpFormatter formatter;
 
@@ -108,8 +113,11 @@ public class ConversionEntry {
 		boolean isItValid = true;
 		if (line.hasOption(TEMPLATE_SCOPE)) {
 			String[] templates = line.getOptionValue(TEMPLATE_SCOPE).split(",");
-			isItValid = Arrays.stream(templates)
-					.allMatch(ConversionEntry::isValidScope);
+			List<QrdaScoper> mapped = Arrays.stream(templates)
+					.filter(ConversionEntry::isValidScope)
+					.map(ConversionEntry::aggregateTemplates)
+					.collect(Collectors.toList());
+			isItValid = mapped.size() == templates.length;
 		}
 		return isItValid;
 	}
@@ -120,6 +128,14 @@ public class ConversionEntry {
 			CLIENT_LOG.error(INVALID_TEMPLATE_SCOPE, scope);
 		}
 		return success;
+	}
+
+	static QrdaScoper aggregateTemplates(String name) {
+		QrdaScoper scope = QrdaScoper.getInstanceByName(name);
+		if (scope != null) {
+			templateIds.addAll(scope.getValue());
+		}
+		return scope;
 	}
 
 	static void initCli() {

@@ -60,4 +60,8 @@ public enum QrdaScoper {
 	public static String[] getNames() {
 		return Arrays.stream(QrdaScoper.class.getEnumConstants()).map(Enum::name).toArray(String[]::new);
 	}
+
+	public Set<TemplateId> getValue() {
+		return value;
+	}
 }
