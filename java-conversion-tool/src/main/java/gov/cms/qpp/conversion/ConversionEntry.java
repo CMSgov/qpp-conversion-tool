@@ -29,7 +29,7 @@ public class ConversionEntry {
 
 	private static final String DIR_EXTRACTION = "[\\/\\\\]";
 
-	private static final String CLI_PROBLEM = "Problem parsing cli options";
+	static final String CLI_PROBLEM = "Problem parsing cli options";
 	private static final String TOO_MANY_WILD_CARDS = "Too many wild cards in {}";
 	private static final String NO_INPUT_FILE_SPECIFIED = "No input filename was specified.";
 	private static final String FILE_DOES_NOT_EXIST = "{} does not exist.";

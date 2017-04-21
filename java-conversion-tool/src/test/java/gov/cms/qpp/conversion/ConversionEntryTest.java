@@ -1,16 +1,22 @@
 package gov.cms.qpp.conversion;
 
+import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +29,14 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
@@ -208,6 +222,15 @@ public class ConversionEntryTest {
 	}
 
 	@Test
+	public void testValidArgs_help() {
+		Collection<Path> files = ConversionEntry.validArgs(
+				new String[] { "-h", "src/test/resources/pathTest/a.xml", "src/test/resources/pathTest/subdir/*.xml" });
+
+		assertNotNull(files);
+		assertTrue("help option bails and forces return of empty input collection", files.isEmpty());
+	}
+
+	@Test
 	public void testValidArgs_noFiles() {
 		Collection<Path> files = ConversionEntry.validArgs(new String[] {});
 
@@ -215,6 +238,26 @@ public class ConversionEntryTest {
 		assertEquals(0, files.size());
 	}
 
+	@Test
+	@PrepareForTest({LoggerFactory.class, ConversionEntry.class})
+	public void testValidArgs_ParseException() throws Exception {
+		//set-up
+		mockStatic( LoggerFactory.class );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
+
+		DefaultParser mockParser = mock(DefaultParser.class);
+		when(mockParser.parse(any(Options.class), any(String[].class))).thenThrow(new ParseException("mock error"));
+		whenNew(DefaultParser.class).withNoArguments().thenReturn(mockParser);
+
+		//when
+		Collection<Path> files = ConversionEntry.validArgs(new String[] {});
+
+		//then
+		verify(clientLogger).error(eq(ConversionEntry.CLI_PROBLEM));
+	}
 
 	@Test
 	public void testDefaults() throws Exception {
