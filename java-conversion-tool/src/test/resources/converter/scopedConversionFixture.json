@@ -21,5 +21,12 @@
 				"denominator" : 600
 			}
 		} ]
+	},
+	"IA_SECTION": {
+		"category" : "ia",
+		"measurements" : [ {
+			"measureId" : "IA_EPA_1",
+			"value" : true
+		} ]
 	}
 }
