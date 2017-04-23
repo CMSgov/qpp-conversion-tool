@@ -7,8 +7,10 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.segmentation.QrdaScoper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -22,8 +24,10 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +45,7 @@ public class Converter {
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
 	private List<ValidationError> validationErrors = Collections.emptyList();
+	private Collection<TemplateId> scope;
 	private InputStream xmlStream;
 	private Path inFile;
 	private Node decoded;
@@ -84,6 +89,11 @@ public class Converter {
 	 */
 	public Converter doValidation(boolean doIt) {
 		this.doValidation = doIt;
+		return this;
+	}
+
+	public Converter scope (Collection<TemplateId> templateIds) {
+		this.scope = templateIds;
 		return this;
 	}
 
@@ -141,7 +151,7 @@ public class Converter {
 	private Node transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
 		validationErrors = Collections.emptyList();
-		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
+		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream), scope);
 		if (null != decoded) {
 			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), inStream);
 
