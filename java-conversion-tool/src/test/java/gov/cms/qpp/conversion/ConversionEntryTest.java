@@ -1,26 +1,32 @@
 package gov.cms.qpp.conversion;
 
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
+import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.segmentation.QrdaScoper;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,7 +35,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -43,16 +55,23 @@ import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
-public class ConversionEntryTest {
+public class ConversionEntryTest extends BaseTest {
 
 	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 	private static final String SKIP_DEFAULTS = "--" + ConversionEntry.SKIP_DEFAULTS;
 	private static final String SKIP_VALIDATION = "--" + ConversionEntry.SKIP_VALIDATION;
 	private static final String TEMPLATE_SCOPE = "--" + ConversionEntry.TEMPLATE_SCOPE;
+	private PrintStream stdout;
+
+	@Before
+	public void setup() throws Exception {
+		stdout = System.out;
+	}
 
 	@After
-	public void cleanup() throws IOException {
+	public void teardown() throws IOException {
 		Files.deleteIfExists(Paths.get("defaultedNode.qpp.json"));
+		System.setOut(stdout);
 	}
 
 	@Test
@@ -240,20 +259,18 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	@PrepareForTest({LoggerFactory.class, ConversionEntry.class})
 	public void shouldDenyInvalidTemplateScopes() throws ParseException {
 		//setup
-		mockStatic( LoggerFactory.class );
-		Logger clientLogger = mock( Logger.class );
-		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
+		ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(baos1));
 
 		//when
 		CommandLine line = ConversionEntry.cli(new String[] {"-t", QrdaScoper.ACI_SECTION.name() + ",MEEP"});
 		boolean result = ConversionEntry.shouldContinue(line);
 
 		//then
-		assertFalse("MEEP and MAWP are not valid scopes", result);
-		verify(clientLogger).error(eq(ConversionEntry.INVALID_TEMPLATE_SCOPE), eq("MEEP"));
+		assertFalse("MEEP is not a valid scope", result);
+		assertThat(baos1.toString(), containsString("Invalid template scope: MEEP"));
 	}
 
 	@Test
@@ -269,24 +286,21 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	@PrepareForTest({LoggerFactory.class, ConversionEntry.class})
-	public void testValidArgs_ParseException() throws Exception {
+	@PrepareForTest({DefaultParser.class, ConversionEntry.class})
+	public void testValidArgsParseException() throws Exception {
 		//setup
-		mockStatic( LoggerFactory.class );
-		Logger devLogger = mock( Logger.class );
-		Logger clientLogger = mock( Logger.class );
-		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
-		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
-
 		DefaultParser mockParser = mock(DefaultParser.class);
 		when(mockParser.parse(any(Options.class), any(String[].class))).thenThrow(new ParseException("mock error"));
 		whenNew(DefaultParser.class).withNoArguments().thenReturn(mockParser);
+
+		ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(baos1));
 
 		//when
 		Collection<Path> files = ConversionEntry.validArgs(new String[] {});
 
 		//then
-		verify(clientLogger).error(eq(ConversionEntry.CLI_PROBLEM));
+		assertThat(baos1.toString(), containsString(ConversionEntry.CLI_PROBLEM));
 	}
 
 	@Test

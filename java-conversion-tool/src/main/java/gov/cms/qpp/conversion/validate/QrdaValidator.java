@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.ConversionEntry;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
@@ -27,10 +28,7 @@ public class QrdaValidator {
 	private Collection<TemplateId> scope;
 
 	public QrdaValidator() {
-		this(null);
-	}
-
-	public QrdaValidator(Collection<TemplateId> scope) {
+		Collection<TemplateId> scope = ConversionEntry.getScope();
 		if (scope != null && !scope.isEmpty()) {
 			this.scope = scope;
 		}

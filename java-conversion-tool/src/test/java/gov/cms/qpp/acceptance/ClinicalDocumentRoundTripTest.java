@@ -55,7 +55,7 @@ public class ClinicalDocumentRoundTripTest {
 		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
-		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment), null);
+		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment));
 
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(clinicalDocumentNode.getChildNodes());

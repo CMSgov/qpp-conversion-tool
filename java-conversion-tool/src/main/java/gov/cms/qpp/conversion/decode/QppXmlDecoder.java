@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.ConversionEntry;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -27,15 +28,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * Initialize a qpp xml decoder
 	 */
 	public QppXmlDecoder() {
-		this(null);
-	}
-
-	/**
-	 * Initialize a qpp xml decoder
-	 *
-	 * @param scope a whitelist of templates to limit inclusion in the transformation
-	 */
-	public QppXmlDecoder(Collection<TemplateId> scope) {
+		Collection<TemplateId> scope = ConversionEntry.getScope();
 		if (scope != null && !scope.isEmpty()) {
 			this.scope = scope;
 		}

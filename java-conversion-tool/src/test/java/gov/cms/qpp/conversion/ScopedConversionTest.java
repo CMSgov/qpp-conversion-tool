@@ -29,7 +29,7 @@ public class ScopedConversionTest {
 	}
 
 	@Test
-	public void testScopedACI_SECTIONConversion() throws IOException {
+	public void testScopedAciSectionConversion() throws IOException {
 		//setup
 		String testSection = TemplateId.ACI_SECTION.name();
 
@@ -43,4 +43,5 @@ public class ScopedConversionTest {
 		assertEquals("content should match valid " + testSection + " fixture",
 				FIXTURES.get(testSection), content);
 	}
+
 }

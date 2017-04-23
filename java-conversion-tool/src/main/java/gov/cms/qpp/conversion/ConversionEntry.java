@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class ConversionEntry {
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
-	private static Set<TemplateId> templateIds = new HashSet<>();;
+	private static Set<TemplateId> templateIds = new HashSet<>();
 	private static Options options;
 	private static HelpFormatter formatter;
 
@@ -69,7 +70,6 @@ public class ConversionEntry {
 	 * @param args Command Line Arguments list of file names and flags
 	 */
 	public static void main(String... args) {
-		templateIds = new HashSet<>();
 		Collection<Path> filenames = validArgs(args);
 		filenames.parallelStream().forEach(
 				filename -> new Converter(filename)
@@ -296,5 +296,9 @@ public class ConversionEntry {
 		}
 
 		return Pattern.compile(regex);
+	}
+
+	public static Collection<TemplateId> getScope() {
+		return Collections.unmodifiableSet(templateIds);
 	}
 }

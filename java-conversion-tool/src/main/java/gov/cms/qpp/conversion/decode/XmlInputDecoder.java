@@ -32,8 +32,8 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @param xmlDoc XML document whose format is to be determined
 	 * @return Root intermediate format node
 	 */
-	public static Node decodeXml(Element xmlDoc, Collection<TemplateId> scope) {
-		List<XmlInputDecoder> xmlDecoders = Arrays.asList(new QppXmlDecoder(scope));
+	public static Node decodeXml(Element xmlDoc) {
+		List<XmlInputDecoder> xmlDecoders = Arrays.asList(new QppXmlDecoder());
 
 		for  (XmlInputDecoder decoder : xmlDecoders) {
 			if (decoder.accepts(xmlDoc)) {

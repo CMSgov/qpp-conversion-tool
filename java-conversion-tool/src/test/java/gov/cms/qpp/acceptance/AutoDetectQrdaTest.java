@@ -54,7 +54,7 @@ public class AutoDetectQrdaTest {
 		System.setOut(new PrintStream(baos1));
 
 		//execute
-		XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment), null);
+		XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment));
 
 		//assert
 		assertThat("Incorrect error message", baos1.toString(), is(EXPECTED_ERROR));
@@ -71,7 +71,7 @@ public class AutoDetectQrdaTest {
 		System.setOut(new PrintStream(baos2));
 
 		//execute
-		XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment), null);
+		XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment));
 
 		//assert
 		assertThat("Incorrect error message", baos2.toString(), is(EXPECTED_ERROR));
