@@ -21,7 +21,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 
-	private final Collection<TemplateId> scope;
+	private Collection<TemplateId> scope;
 
 	/**
 	 * Initialize a qpp xml decoder
@@ -36,7 +36,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * @param scope a whitelist of templates to limit inclusion in the transformation
 	 */
 	public QppXmlDecoder(Collection<TemplateId> scope) {
-		this.scope = scope;
+		if (scope != null && !scope.isEmpty()) {
+			this.scope = scope;
+		}
 	}
 
 	/**
