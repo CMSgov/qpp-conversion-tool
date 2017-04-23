@@ -28,15 +28,14 @@ public enum QrdaScoper {
 		value = assemble(templates);
 	}
 
-	@SuppressWarnings("unchecked")
 	private Set<TemplateId> assemble(Object... tiers) {
 		Set<TemplateId> templates = new HashSet<>();
 
 		Arrays.stream(tiers).forEach(tier -> {
 			if (tier instanceof TemplateId) {
 				templates.add((TemplateId) tier);
-			} else if (tier instanceof Collection) {
-				templates.addAll((Collection<TemplateId>) tier);
+			} else if (tier instanceof QrdaScoper) {
+				templates.addAll(((QrdaScoper) tier).getValue());
 			}
 		});
 

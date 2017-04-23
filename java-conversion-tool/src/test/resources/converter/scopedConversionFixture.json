@@ -1,0 +1,25 @@
+{
+	"ACI_SECTION": {
+		"value" : 50,
+		"category" : "aci",
+		"measurements" : [ {
+			"measureId" : "ACI-PEA-1",
+			"value" : {
+				"numerator" : 600,
+				"denominator" : 800
+			}
+		}, {
+			"measureId" : "ACI_EP_1",
+			"value" : {
+				"numerator" : 500,
+				"denominator" : 700
+			}
+		}, {
+			"measureId" : "ACI_CCTPE_3",
+			"value" : {
+				"numerator" : 400,
+				"denominator" : 600
+			}
+		} ]
+	}
+}

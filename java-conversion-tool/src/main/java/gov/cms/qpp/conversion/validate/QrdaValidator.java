@@ -3,11 +3,14 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +24,17 @@ public class QrdaValidator {
 
 	private final Map<String, List<Node>> nodesForTemplateIds = new HashMap<>();
 	private final List<ValidationError> validationErrors = new ArrayList<>();
+	private Collection<TemplateId> scope;
+
+	public QrdaValidator() {
+		this(null);
+	}
+
+	public QrdaValidator(Collection<TemplateId> scope) {
+		if (scope != null && !scope.isEmpty()) {
+			this.scope = scope;
+		}
+	}
 
 	/**
 	 * Validate all the {@link gov.cms.qpp.conversion.model.Node}s from the passed in Node and on down.
@@ -58,20 +72,31 @@ public class QrdaValidator {
 	 */
 	private void validateSingleNode(final Node node) {
 		final String templateId = node.getId();
-		NodeValidator validatorForNode = VALIDATORS.get(templateId);
+		NodeValidator validatorForNode = getValidator(templateId);
 
-		if (null == validatorForNode) {
-			return;
-		}
-
-		boolean isRequired = isValidationRequired(validatorForNode);
-		if (!isRequired) {
+		if (null == validatorForNode || !isValidationRequired(validatorForNode)) {
 			return;
 		}
 
 		addNodeToTemplateMap(node);
 		List<ValidationError> nodeErrors = validatorForNode.validateSingleNode(node);
 		validationErrors.addAll(nodeErrors);
+	}
+
+	/**
+	 * Retrieve a permitted {@link Validator}. {@link #scope} is used to determine which validators are allowable.
+	 *
+	 * @param templateId string representation of a would be validator's template id
+	 * @return validator that corresponds to the given template id
+	 */
+	private NodeValidator getValidator(String templateId) {
+		NodeValidator nodeValidator = VALIDATORS.get(templateId);
+		if (nodeValidator != null) {
+			Validator validator = AnnotationUtils.findAnnotation(nodeValidator.getClass(), Validator.class);
+			return (scope != null && !scope.contains(validator.templateId())) ? null : nodeValidator;
+		}
+
+		return null;
 	}
 
 	/**
@@ -126,7 +151,7 @@ public class QrdaValidator {
 		Converter.CLIENT_LOG.info("Validating all nodes by templateId");
 
 		for (String validatorKey : VALIDATORS.getKeys()) {
-			validateSingleTemplateId(VALIDATORS.get(validatorKey));
+			validateSingleTemplateId(getValidator(validatorKey));
 		}
 	}
 
@@ -137,8 +162,7 @@ public class QrdaValidator {
 	 * @param validator The validator that should be called.
 	 */
 	private void validateSingleTemplateId(final NodeValidator validator) {
-		boolean isRequired = isValidationRequired(validator);
-		if (!isRequired) {
+		if (null == validator || !isValidationRequired(validator)) {
 			return;
 		}
 

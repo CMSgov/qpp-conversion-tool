@@ -147,7 +147,7 @@ public class Converter {
 	 * @throws XmlException
 	 */
 	private Node transform(InputStream inStream) throws XmlException {
-		QrdaValidator validator = new QrdaValidator();
+		QrdaValidator validator = new QrdaValidator(scope);
 		validationErrors = Collections.emptyList();
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream), scope);
 		if (null != decoded) {
