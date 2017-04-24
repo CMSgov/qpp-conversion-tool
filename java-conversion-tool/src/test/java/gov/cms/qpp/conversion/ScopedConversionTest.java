@@ -79,6 +79,22 @@ public class ScopedConversionTest extends BaseTest {
 				FIXTURES.get(testSection), getScoped(content));
 	}
 
+	@Test
+	public void testFullScopeConversion() throws IOException {
+		//setup
+		String testSection = TemplateId.CLINICAL_DOCUMENT.name();
+
+		//when
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
+				"src/test/resources/valid-QRDA-III.xml");
+
+		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+
+		//then
+		assertEquals("content should match valid " + testSection + " fixture",
+				FIXTURES.get(testSection), content);
+	}
+
 	private List getScoped(HashMap<String,Object> content) {
 		return ((List) content.get("scoped"));
 	}

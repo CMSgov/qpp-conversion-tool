@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.junit.After;
@@ -29,6 +30,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -260,6 +262,14 @@ public class ConversionEntryTest extends BaseTest {
 		//then
 		assertFalse("MEEP is not a valid scope", result);
 		assertThat(baos1.toString(), containsString(ConversionEntry.INVALID_TEMPLATE_SCOPE));
+	}
+
+	@Test(expected = MissingArgumentException.class)
+	public void shouldAllowEmptyTemplateScope() throws ParseException {
+		//when
+		CommandLine line = ConversionEntry.cli(new String[] {"-t"});
+		ConversionEntry.shouldContinue(line);
+		fail("should have thrown MissingArgumentException");
 	}
 
 	@Test

@@ -50,7 +50,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder{
 	private boolean inSpecifiedScope(Node node) {
 		String type = node.getType().name();
 		Collection<QrdaScope> scope = ConversionEntry.getScope();
-		return scope != null && scope.contains(QrdaScope.getInstanceByName(type));
+		return scope.contains(QrdaScope.getInstanceByName(type));
 	}
 
 }

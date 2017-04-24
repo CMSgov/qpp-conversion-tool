@@ -37,7 +37,7 @@ public enum QrdaScope {
 		Arrays.stream(tiers).forEach(tier -> {
 			if (tier instanceof TemplateId) {
 				templates.add((TemplateId) tier);
-			} else if (tier instanceof QrdaScope) {
+			} else {
 				templates.addAll(((QrdaScope) tier).getValue());
 			}
 		});

@@ -269,7 +269,7 @@ public class Converter {
 	 */
 	protected JsonOutputEncoder getEncoder() {
 		Collection<QrdaScope> scope = ConversionEntry.getScope();
-		return (scope != null && !scope.isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
+		return (!scope.isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
 	}
 
 	/**

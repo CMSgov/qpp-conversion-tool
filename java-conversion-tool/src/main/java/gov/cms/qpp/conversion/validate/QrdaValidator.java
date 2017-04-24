@@ -30,7 +30,7 @@ public class QrdaValidator {
 
 	public QrdaValidator() {
 		Collection<TemplateId> scope = QrdaScope.getTemplates(ConversionEntry.getScope());
-		if (scope != null && !scope.isEmpty()) {
+		if (!scope.isEmpty()) {
 			this.scope = scope;
 		}
 	}
