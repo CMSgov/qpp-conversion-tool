@@ -138,16 +138,16 @@ public class Node {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("Node{");
-		sb.append("type=").append(type);
-		sb.append(", data=").append(data);
-		sb.append(", childNodes=").append((childNodes == null) ? "null" : "size:" + childNodes.size());
-		sb.append(", parent=").append((parent == null) ? "null" : "not null");
-		sb.append(", validated=").append(validated);
-		sb.append(", internalId='").append(internalId).append('\'');
-		sb.append(", path='").append(path).append('\'');
-		sb.append('}');
-		return sb.toString();
+		final StringBuilder nodeToStringBuilder = new StringBuilder("Node{");
+		nodeToStringBuilder.append("type=").append(type);
+		nodeToStringBuilder.append(", data=").append(data);
+		nodeToStringBuilder.append(", childNodes=").append((childNodes == null) ? "null" : "size:" + childNodes.size());
+		nodeToStringBuilder.append(", parent=").append((parent == null) ? "null" : "not null");
+		nodeToStringBuilder.append(", validated=").append(validated);
+		nodeToStringBuilder.append(", internalId='").append(internalId).append('\'');
+		nodeToStringBuilder.append(", path='").append(path).append('\'');
+		nodeToStringBuilder.append('}');
+		return nodeToStringBuilder.toString();
 	}
 
 	/**
