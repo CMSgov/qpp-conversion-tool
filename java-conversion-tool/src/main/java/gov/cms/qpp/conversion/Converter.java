@@ -6,10 +6,11 @@ import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -28,6 +29,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static gov.cms.qpp.conversion.ConversionEntry.getScope;
+
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
  * Expects a list of filenames as CLI parameters to be processed
@@ -43,7 +46,6 @@ public class Converter {
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
 	private List<ValidationError> validationErrors = Collections.emptyList();
-	private Collection<TemplateId> scope;
 	private InputStream xmlStream;
 	private Path inFile;
 	private Node decoded;
@@ -87,11 +89,6 @@ public class Converter {
 	 */
 	public Converter doValidation(boolean doIt) {
 		this.doValidation = doIt;
-		return this;
-	}
-
-	public Converter scope (Collection<TemplateId> templateIds) {
-		this.scope = templateIds;
 		return this;
 	}
 
@@ -270,7 +267,8 @@ public class Converter {
 	 * @return an encoder
 	 */
 	protected JsonOutputEncoder getEncoder() {
-		return new QppOutputEncoder();
+		Collection<QrdaScope> scope = ConversionEntry.getScope();
+		return (scope != null && !scope.isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
 	}
 
 	/**

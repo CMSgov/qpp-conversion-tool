@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion;
 
 
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.segmentation.QrdaScoper;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -38,7 +38,7 @@ public class ConversionEntry {
 	private static final String DIR_EXTRACTION = "[\\/\\\\]";
 
 	static final String CLI_PROBLEM = "Problem parsing cli options";
-	static final String INVALID_TEMPLATE_SCOPE = "Invalid template scope: {}";
+	static final String INVALID_TEMPLATE_SCOPE = "Invalid template scope";
 	private static final String TOO_MANY_WILD_CARDS = "Too many wild cards in {}";
 	private static final String NO_INPUT_FILE_SPECIFIED = "No input filename was specified.";
 	private static final String FILE_DOES_NOT_EXIST = "{} does not exist.";
@@ -51,7 +51,7 @@ public class ConversionEntry {
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
-	private static Set<TemplateId> templateIds = new HashSet<>();
+	private static Set<QrdaScope> scope = new HashSet<>();
 	private static Options options;
 	private static HelpFormatter formatter;
 
@@ -75,7 +75,6 @@ public class ConversionEntry {
 				filename -> new Converter(filename)
 							.doValidation(doValidation)
 							.doDefaults(doDefaults)
-							.scope(templateIds)
 							.transform());
 	}
 
@@ -114,30 +113,18 @@ public class ConversionEntry {
 	static boolean validatedScope(CommandLine line) {
 		boolean isItValid = true;
 		if (line.hasOption(TEMPLATE_SCOPE)) {
-			String[] templates = line.getOptionValue(TEMPLATE_SCOPE).split(",");
-			List<QrdaScoper> mapped = Arrays.stream(templates)
-					.filter(ConversionEntry::isValidScope)
-					.map(ConversionEntry::aggregateTemplates)
-					.collect(Collectors.toList());
-			isItValid = mapped.size() == templates.length;
+			String[] templateScope = line.getOptionValue(TEMPLATE_SCOPE).split(",");
+			scope = Arrays.stream(templateScope)
+					.map(QrdaScope::getInstanceByName)
+					.filter(s -> s != null)
+					.collect(Collectors.toSet());
+
+			if (scope.size() != templateScope.length) {
+				CLIENT_LOG.error(INVALID_TEMPLATE_SCOPE);
+				isItValid = false;
+			}
 		}
 		return isItValid;
-	}
-
-	static boolean isValidScope(String scope) {
-		boolean success = QrdaScoper.getInstanceByName(scope) != null;
-		if (!success) {
-			CLIENT_LOG.error(INVALID_TEMPLATE_SCOPE, scope);
-		}
-		return success;
-	}
-
-	static QrdaScoper aggregateTemplates(String name) {
-		QrdaScoper scope = QrdaScoper.getInstanceByName(name);
-		if (scope != null) {
-			templateIds.addAll(scope.getValue());
-		}
-		return scope;
 	}
 
 	static void initCli() {
@@ -151,7 +138,7 @@ public class ConversionEntry {
 				.argName("scope1,scope2,...")
 				.hasArg()
 				.desc("Comma delimited scope values to use for context. Valid values: "
-						+ Arrays.toString(QrdaScoper.getNames()))
+						+ Arrays.toString(QrdaScope.getNames()))
 				.build();
 		options.addOption(templateScope);
 
@@ -298,7 +285,7 @@ public class ConversionEntry {
 		return Pattern.compile(regex);
 	}
 
-	public static Collection<TemplateId> getScope() {
-		return Collections.unmodifiableSet(templateIds);
+	public static Collection<QrdaScope> getScope() {
+		return Collections.unmodifiableSet(scope);
 	}
 }

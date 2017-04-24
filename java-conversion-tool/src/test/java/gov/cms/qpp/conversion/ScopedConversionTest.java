@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 
 import static gov.cms.qpp.util.JsonHelper.readJson;
 import static junit.framework.TestCase.assertEquals;
@@ -42,7 +43,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), content);
+				FIXTURES.get(testSection), getScoped(content).get(0));
 	}
 
 
@@ -59,7 +60,26 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), content);
+				FIXTURES.get(testSection), getScoped(content).get(0));
 	}
 
+	@Test
+	public void testScopedAciAggregateCountConversion() throws IOException {
+		//setup
+		String testSection = TemplateId.ACI_AGGREGATE_COUNT.name();
+
+		//when
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
+				"src/test/resources/valid-QRDA-III.xml");
+
+		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+
+		//then
+		assertEquals("content should match valid " + testSection + " fixture",
+				FIXTURES.get(testSection), getScoped(content));
+	}
+
+	private List getScoped(HashMap<String,Object> content) {
+		return ((List) content.get("scoped"));
+	}
 }

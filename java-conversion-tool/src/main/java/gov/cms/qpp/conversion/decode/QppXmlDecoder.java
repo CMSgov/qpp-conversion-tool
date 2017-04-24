@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.jdom2.Element;
 import org.jdom2.xpath.XPathHelper;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -28,7 +29,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * Initialize a qpp xml decoder
 	 */
 	public QppXmlDecoder() {
-		Collection<TemplateId> scope = ConversionEntry.getScope();
+		Collection<TemplateId> scope = QrdaScope.getTemplates(ConversionEntry.getScope());
 		if (scope != null && !scope.isEmpty()) {
 			this.scope = scope;
 		}

@@ -1,18 +1,14 @@
 package gov.cms.qpp.conversion;
 
 import gov.cms.qpp.BaseTest;
-import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
-import gov.cms.qpp.conversion.model.Validations;
-import gov.cms.qpp.conversion.segmentation.QrdaScoper;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
-import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -36,18 +30,13 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
@@ -265,20 +254,20 @@ public class ConversionEntryTest extends BaseTest {
 		System.setOut(new PrintStream(baos1));
 
 		//when
-		CommandLine line = ConversionEntry.cli(new String[] {"-t", QrdaScoper.ACI_SECTION.name() + ",MEEP"});
+		CommandLine line = ConversionEntry.cli(new String[] {"-t", QrdaScope.ACI_SECTION.name() + ",MEEP"});
 		boolean result = ConversionEntry.shouldContinue(line);
 
 		//then
 		assertFalse("MEEP is not a valid scope", result);
-		assertThat(baos1.toString(), containsString("Invalid template scope: MEEP"));
+		assertThat(baos1.toString(), containsString("Invalid template scope"));
 	}
 
 	@Test
 	public void shouldAllowValidTemplateScopes() throws ParseException {
 		//when
-		CommandLine line = ConversionEntry.cli(new String[] {"file.txt", "-t", QrdaScoper.ACI_SECTION.name()
+		CommandLine line = ConversionEntry.cli(new String[] {"file.txt", "-t", QrdaScope.ACI_SECTION.name()
 				+ ","
-				+ QrdaScoper.IA_SECTION.name()});
+				+ QrdaScope.IA_SECTION.name()});
 		boolean result = ConversionEntry.shouldContinue(line);
 
 		//then

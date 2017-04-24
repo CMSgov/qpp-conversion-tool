@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class QrdaValidator {
 	private Collection<TemplateId> scope;
 
 	public QrdaValidator() {
-		Collection<TemplateId> scope = ConversionEntry.getScope();
+		Collection<TemplateId> scope = QrdaScope.getTemplates(ConversionEntry.getScope());
 		if (scope != null && !scope.isEmpty()) {
 			this.scope = scope;
 		}
