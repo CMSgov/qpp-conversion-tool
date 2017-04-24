@@ -376,6 +376,7 @@ CDA Header
                                 </observation>
                             </component>
                             <component>
+                                <!-- INVALID AGGREGATE COUNT TYPE -->
                                 <observation classCode="OBS" moodCode="EVN">
                                     <!-- ACI Numerator Denominator Type Measure Numerator Data templateId -->
                                     <templateId root="2.16.840.1.113883.10.20.27.3.31" extension="2016-09-01"/>
@@ -395,6 +396,27 @@ CDA Header
                                 </observation>
                             </component>
                             <component>
+                                <!-- EXTRA NUMERATOR -->
+                                <observation classCode="OBS" moodCode="EVN">
+                                    <!-- ACI Numerator Denominator Type Measure Numerator Data templateId -->
+                                    <templateId root="2.16.840.1.113883.10.20.27.3.31" extension="2016-09-01"/>
+                                    <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion"/>
+                                    <statusCode code="completed"/>
+                                    <value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
+                                    <!-- Numerator Count-->
+                                    <entryRelationship typeCode="SUBJ" inversionInd="true">
+                                        <observation classCode="OBS" moodCode="EVN">
+                                            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+                                            <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
+                                            <statusCode code="completed"/>
+                                            <value xsi:type="INT" value="Bob"/>
+                                            <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
+                                        </observation>
+                                    </entryRelationship>
+                                </observation>
+                            </component>
+                            <component>
+                                <!-- NO AGGREGATE COUNT VALUE -->
                                 <observation classCode="OBS" moodCode="EVN">
                                     <!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->
                                     <templateId root="2.16.840.1.113883.10.20.27.3.32" extension="2016-09-01"/>
@@ -597,12 +619,13 @@ CDA Header
                                 </externalDocument>
                             </reference>
                             <component>
+                                <!-- INVALID value[@code] -->
                                 <observation classCode="OBS" moodCode="EVN">
                                     <!-- Measure Performed templateId -->
                                     <templateId root="2.16.840.1.113883.10.20.27.3.27" extension="2016-09-01"/>
                                     <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion"/>
                                     <statusCode code="completed"/>
-                                    <value xsi:type="CD" code="Y" displayName="Yes" codeSystemName="Yes/no indicator (HL7 Table 0136)" codeSystem="2.16.840.1.113883.12.136"/>
+                                    <value xsi:type="CD" code="W" displayName="Yes" codeSystemName="Yes/no indicator (HL7 Table 0136)" codeSystem="2.16.840.1.113883.12.136"/>
                                 </observation>
                             </component>
                         </organizer>

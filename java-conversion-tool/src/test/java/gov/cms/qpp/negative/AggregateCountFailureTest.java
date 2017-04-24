@@ -18,12 +18,12 @@ public class AggregateCountFailureTest {
 	@Test
 	public void testInvalidAggregateCounts() throws IOException {
 		//set-up
-		final String errorFileName = "QRDA-III-invalid-aggregate-count.err.json";
+		final String errorFileName = "angerTheConverter.err.json";
 		File errorFile = new File(errorFileName);
 		errorFile.delete();
 
 		//execute
-		ConversionEntry.main("src/test/resources/negative/QRDA-III-invalid-aggregate-count.xml");
+		ConversionEntry.main("src/test/resources/negative/angerTheConverter.xml");
 
 		//assert
 		assertThat("The error file must exist", errorFile.exists(), is(true));
