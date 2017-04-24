@@ -1,5 +1,6 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -21,7 +22,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class ClinicalDocumentRoundTripTest {
+public class ClinicalDocumentRoundTripTest extends BaseTest {
 
 	private static final String EXPECTED = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
 			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
