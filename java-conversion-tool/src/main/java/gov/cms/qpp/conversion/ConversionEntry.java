@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion;
 
 
-import gov.cms.qpp.conversion.segmentation.QrdaScoper;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -18,18 +18,26 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Objects;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Entry point for the conversion process.
+ */
 public class ConversionEntry {
 	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionEntry.class);
 
 	private static final String DIR_EXTRACTION = "[\\/\\\\]";
 
-	private static final String CLI_PROBLEM = "Problem parsing cli options";
+	static final String CLI_PROBLEM = "Problem parsing cli options";
+	static final String INVALID_TEMPLATE_SCOPE = "Invalid template scope";
 	private static final String TOO_MANY_WILD_CARDS = "Too many wild cards in {}";
 	private static final String NO_INPUT_FILE_SPECIFIED = "No input filename was specified.";
 	private static final String FILE_DOES_NOT_EXIST = "{} does not exist.";
@@ -42,9 +50,18 @@ public class ConversionEntry {
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
+	private static Set<QrdaScope> scope = new HashSet<>();
 	private static Options options;
+	private static HelpFormatter formatter;
 
+	/**
+	 * prevent instantiation
+	 */
 	private ConversionEntry() {}
+
+	static {
+		initCli();
+	}
 
 	/**
 	 * The main entry point for conversion
@@ -70,12 +87,10 @@ public class ConversionEntry {
 		Collection<Path> returnValue = new LinkedList<>();
 		try {
 			CommandLine line = cli(args);
-			if (!wantsHelp(line)) {
-				if (line.getArgList().isEmpty()) {
-					CLIENT_LOG.error(NO_INPUT_FILE_SPECIFIED);
-				} else {
-					returnValue = checkArgs(line);
-				}
+			if (shouldContinue(line)) {
+				returnValue = checkArgs(line);
+			} else {
+				formatter.printHelp("convert", options, true);
 			}
 		} catch (ParseException pe) {
 			DEV_LOG.error(CLI_PROBLEM, pe);
@@ -85,7 +100,48 @@ public class ConversionEntry {
 		return returnValue;
 	}
 
-	static CommandLine cli(String[] arguments) throws ParseException {
+	/**
+	 * Determine if valid arguments were passed via the command line.
+	 *
+	 * @param line command line arguments
+	 * @return determination of validity
+	 */
+	static boolean shouldContinue(CommandLine line) {
+		boolean shouldContinue = !line.hasOption(HELP) && validatedScope(line);
+		if (shouldContinue && line.getArgList().isEmpty()) {
+			CLIENT_LOG.error(NO_INPUT_FILE_SPECIFIED);
+			shouldContinue = false;
+		}
+		return shouldContinue;
+	}
+
+	/**
+	 * Validate scope values passed via command line.
+	 *
+	 * @param line command line arguments
+	 * @return determination of validity
+	 */
+	private static boolean validatedScope(CommandLine line) {
+		boolean isItValid = true;
+		if (line.hasOption(TEMPLATE_SCOPE)) {
+			String[] templateScope = line.getOptionValue(TEMPLATE_SCOPE).split(",");
+			scope = Arrays.stream(templateScope)
+					.map(QrdaScope::getInstanceByName)
+					.filter(Objects::nonNull)
+					.collect(Collectors.toSet());
+
+			if (scope.size() != templateScope.length) {
+				CLIENT_LOG.error(INVALID_TEMPLATE_SCOPE);
+				isItValid = false;
+			}
+		}
+		return isItValid;
+	}
+
+	/**
+	 * Initialize the command line interface.
+	 */
+	private static void initCli() {
 		options = new Options();
 		options.addOption("v", SKIP_VALIDATION, false, "Skip validations");
 		options.addOption("d", SKIP_DEFAULTS, false,"Skip defaulted transformations");
@@ -96,13 +152,30 @@ public class ConversionEntry {
 				.argName("scope1,scope2,...")
 				.hasArg()
 				.desc("Comma delimited scope values to use for context. Valid values: "
-						+ Arrays.toString(QrdaScoper.getNames()))
+						+ Arrays.toString(QrdaScope.getNames()))
 				.build();
 		options.addOption(templateScope);
 
+		formatter = new HelpFormatter();
+	}
+
+	/**
+	 * Interprets command line options
+	 *
+	 * @param arguments array of values entered on the command line
+	 * @return parsed representation of command line entries
+	 * @throws ParseException when options cannot be parsed
+	 */
+	static CommandLine cli(String[] arguments) throws ParseException {
 		return new DefaultParser().parse(options, arguments);
 	}
 
+	/**
+	 * Extract values from command line entries and use as a means of configuration.
+	 *
+	 * @param line parsed command line
+	 * @return paths extracted from the command line
+	 */
 	private static Collection<Path> checkArgs(CommandLine line) {
 		Collection<Path> validFiles = new LinkedList<>();
 
@@ -114,16 +187,11 @@ public class ConversionEntry {
 		return validFiles;
 	}
 
-	private static boolean wantsHelp(CommandLine line) {
-		boolean bail = false;
-		if (line.hasOption(HELP)) {
-			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp("convert", options, true);
-			bail = true;
-		}
-		return bail;
-	}
-
+	/**
+	 * Mine values used to influence conversion behavior.
+	 *
+	 * @param line parsed representation of the command line
+	 */
 	private static void checkFlags(CommandLine line) {
 		doValidation = !line.hasOption(SKIP_VALIDATION);
 		doDefaults = !line.hasOption(SKIP_DEFAULTS);
@@ -229,5 +297,14 @@ public class ConversionEntry {
 		}
 
 		return Pattern.compile(regex);
+	}
+
+	/**
+	 * Get the scope that determines which data may be transformed.
+	 *
+	 * @return scope
+	 */
+	public static Collection<QrdaScope> getScope() {
+		return Collections.unmodifiableSet(scope);
 	}
 }

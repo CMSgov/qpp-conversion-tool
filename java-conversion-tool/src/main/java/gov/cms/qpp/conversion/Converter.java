@@ -9,11 +9,13 @@ import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.ErrorSource;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -29,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -71,16 +74,33 @@ public class Converter {
 		this.inFile = null;
 	}
 
-	public Converter doDefaults(boolean doIt) {
+	/**
+	 * Switch for enabling or disabling inclusion of default nodes.
+	 *
+	 * @param doIt toggle value
+	 * @return this for chaining
+	 */
+	Converter doDefaults(boolean doIt) {
 		this.doDefaults = doIt;
 		return this;
 	}
 
-	public Converter doValidation(boolean doIt) {
+	/**
+	 * Switch for enabling or disabling validation.
+	 *
+	 * @param doIt toggle value
+	 * @return this for chaining
+	 */
+	Converter doValidation(boolean doIt) {
 		this.doValidation = doIt;
 		return this;
 	}
 
+	/**
+	 * Transform the wrapped resource. This may be a {@link Path} or an {@link InputStream}.
+	 *
+	 * @return exit status code of the transformation. A non-zero exit represents a failure.
+	 */
 	public Integer transform() {
 		DEV_LOG.info("Transform invoked with file {}", inFile);
 
@@ -101,6 +121,13 @@ public class Converter {
 		}
 	}
 
+	/**
+	 * Transform a source a given file.
+	 *
+	 * @param inFile a source file
+	 * @throws XmlException when transforming
+	 * @throws IOException when writing to given file
+	 */
 	private void transform(Path inFile) throws XmlException, IOException {
 		String inputFileName = inFile.getFileName().toString().trim();
 		Node decoded = transform(XmlUtils.fileToStream(inFile));
@@ -115,6 +142,13 @@ public class Converter {
 		}
 	}
 
+	/**
+	 * Transform the content in a given input stream
+	 *
+	 * @param inStream source content
+	 * @return a transformed representation of the source content
+	 * @throws XmlException during transform
+	 */
 	private Node transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
 		validationErrors = Collections.emptyList();
@@ -133,6 +167,11 @@ public class Converter {
 		return decoded;
 	}
 
+	/**
+	 * Determine the exit status of the transformation
+	 *
+	 * @return exit status
+	 */
 	private Integer getStatus() {
 		Integer status;
 		if (null == decoded) {
@@ -143,6 +182,11 @@ public class Converter {
 		return status;
 	}
 
+	/**
+	 * Assemble output based on the existence of transformations errors
+	 *
+	 * @return resulting transformation output content
+	 */
 	public InputStream getConversionResult() {
 		return (!validationErrors.isEmpty())
 				? writeValidationErrors()
@@ -150,9 +194,9 @@ public class Converter {
 	}
 
 	/**
-	 * Compiles the validation errors into an {@code InputStream}.
+	 * Assemble transformation validation errors
 	 *
-	 * @return The errors.
+	 * @return error content
 	 */
 	private InputStream writeValidationErrors() {
 		String identifier = xmlStream.toString();
@@ -170,10 +214,10 @@ public class Converter {
 	}
 
 	/**
-	 * Compiles the validation errors and writes them to the supplied path.
+	 * Assemble transformation error content and write to a file.
 	 *
-	 * @param validationErrors The validation errors to write.
-	 * @param outFile The path to the file to write the errors to.
+	 * @param validationErrors errors that occurred during transformation
+	 * @param outFile destination file where error output should be written
 	 */
 	private void writeValidationErrors(List<ValidationError> validationErrors, Path outFile) {
 
@@ -215,14 +259,7 @@ public class Converter {
 	 * @return A single source of validation errors.
 	 */
 	private ErrorSource constructErrorSource(final String inputIdentifier, final List<ValidationError> validationErrors) {
-		ErrorSource errorSource = new ErrorSource();
-		errorSource.setSourceIdentifier(inputIdentifier);
-
-		for (ValidationError currentValidationError : validationErrors) {
-			errorSource.addValidationError(currentValidationError);
-		}
-
-		return errorSource;
+		return new ErrorSource(inputIdentifier, validationErrors);
 	}
 
 	/**
@@ -249,6 +286,11 @@ public class Converter {
 		return jsonObjectWriter.writeValueAsBytes(allErrors);
 	}
 
+	/**
+	 * Place transformed content into an input stream
+	 *
+	 * @return content resulting from the transformation
+	 */
 	private InputStream writeConverted() {
 		JsonOutputEncoder encoder = getEncoder();
 		CLIENT_LOG.info("Decoded template ID {}", decoded.getId());
@@ -263,6 +305,12 @@ public class Converter {
 		}
 	}
 
+	/**
+	 * Write converted content to a specified file
+	 * 
+	 * @param decoded content to be written
+	 * @param outFile destination file where output should be written
+	 */
 	private void writeConverted(Node decoded, Path outFile) {
 		JsonOutputEncoder encoder = getEncoder();
 
@@ -279,15 +327,33 @@ public class Converter {
 		}
 	}
 
+	/**
+	 * Encoder used to create the output representation of transformed data.
+	 *
+	 * @see QppOutputEncoder
+	 * @return an encoder
+	 */
 	protected JsonOutputEncoder getEncoder() {
-		return new QppOutputEncoder();
+		Collection<QrdaScope> scope = ConversionEntry.getScope();
+		return (!scope.isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
 	}
 
+	/**
+	 * Determine what the output file's name should be.
+	 *
+	 * @param name base string that helps relate the output file to it's corresponding source
+	 * @return the output file name
+	 */
 	public Path getOutputFile(String name) {
 		String outName = name.replaceFirst("(?i)(\\.xml)?$", getFileExtension());
 		return Paths.get(outName);
 	}
 
+	/**
+	 * Get an appropriate file extension for the transformation output filename.
+	 *
+	 * @return a file extension
+	 */
 	private String getFileExtension() {
 		return (!validationErrors.isEmpty()) ? ".err.json" : ".qpp.json";
 	}

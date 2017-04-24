@@ -1,5 +1,6 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
@@ -20,7 +21,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 
-public class AciSectionRoundTripTest {
+public class AciSectionRoundTripTest extends BaseTest {
 
 	@Test
 	public void parseSparseAciSectionAsNode() throws XmlException {
@@ -98,7 +99,7 @@ public class AciSectionRoundTripTest {
 		        + "</component>";
 
 		String expected = "{\n  \"category\" : \"aci\",\n  \"measurements\" : [ "
-		                                       + "{\n    \"measure\" : \"measure1\"\n  } ]\n}";
+				+ "{\n    \"measure\" : \"measure1\"\n  } ]\n}";
 
 		//Decode
 		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));

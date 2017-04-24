@@ -10,6 +10,7 @@ import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
@@ -68,7 +69,7 @@ public class ConverterTest {
 		//mocking
 		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
 		QrdaValidator mockQrdaValidator = AnnotationMockHelper.mockValidator("867.5309", TestDefaultValidator.class, true);
-		PowerMockito.whenNew(QrdaValidator.class).withNoArguments().thenReturn(mockQrdaValidator);
+		PowerMockito.whenNew(QrdaValidator.class).withAnyArguments().thenReturn(mockQrdaValidator);
 
 		//set-up
 		Path defaultJson = Paths.get("errantDefaultedNode.qpp.json");
@@ -279,7 +280,6 @@ public class ConverterTest {
 
 		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");
 		transformMethod.setAccessible(true);
-
 		Integer returnValue = (Integer)transformMethod.invoke(converter);
 
 		assertThat("Should not have a valid clinical document template id", returnValue, is(2));
