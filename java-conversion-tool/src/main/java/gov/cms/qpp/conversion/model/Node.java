@@ -1,13 +1,12 @@
 package gov.cms.qpp.conversion.model;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringJoiner;
 import java.util.function.Predicate;
 
 /**
@@ -18,8 +17,6 @@ import java.util.function.Predicate;
 public class Node implements Serializable {
 
 	private static final long serialVersionUID = 4602134063479322076L;
-	private static final String DEFAULT = "DEFAULT";
-	private static final String PLACEHOLDER = "PLACEHOLDER";
 	private TemplateId type;
 	private Map<String, String> data = new HashMap<>();
 
@@ -138,15 +135,22 @@ public class Node implements Serializable {
 	}
 
 	/**
-	 * toString will create a readable representation of this Node
-	 * {@code Node: templateId: PERFORMANCE_RATE, data: {DefaultDecoderFor=Performance Rate}
-	 * childNodes of PERFORMANCE_RATE -> (none)}
+	 * toString will create a readable representation of this {@code Node}.
 	 *
-	 * @return String
+	 * @return A string representation
 	 */
 	@Override
 	public String toString() {
-		return toStringWithTabs("");// no tabs to start
+		final StringBuilder sb = new StringBuilder("Node{");
+		sb.append("type=").append(type);
+		sb.append(", data=").append(data);
+		sb.append(", childNodes=").append((childNodes == null) ? "null" : "size:" + childNodes.size());
+		sb.append(", parent=").append((parent == null) ? "null" : "not null");
+		sb.append(", validated=").append(validated);
+		sb.append(", internalId='").append(internalId).append('\'');
+		sb.append(", path='").append(path).append('\'');
+		sb.append('}');
+		return sb.toString();
 	}
 
 	/**
@@ -251,16 +255,6 @@ public class Node implements Serializable {
 	}
 
 	/**
-	 * protected toString builds the string representation of this Node
-	 *
-	 * @param tabs String used for indentation of multiline strings
-	 * @return String
-	 */
-	protected String toStringWithTabs(String tabs) {
-		return tabs + selfToString() + "\n" + childrenToString(tabs + "\t");
-	}
-
-	/**
 	 * setValidated sets the internal state of this Node validation.
 	 * Used to control the recursion of nested validations
 	 *
@@ -289,34 +283,6 @@ public class Node implements Serializable {
 		this.childNodes = childNodes;
 	}
 
-	/**
-	 * selfToString helps build up the string representation of this node
-	 *
-	 * @return String
-	 */
-	private String selfToString() {
-		return "Node: templateId: " + getTypeName(type) + ", data: " + data;
-	}
-
-	/**
-	 * childrenToString recurse through the Child Nodes of this Node and
-	 * build the string representation of each.
-	 *
-	 * @param tabs String
-	 * @return String
-	 */
-	private String childrenToString(String tabs) {
-		StringJoiner children = new StringJoiner("\n");
-		if (childNodes.isEmpty()) {
-			children.add(" -> (none)");
-		} else {
-			children.add(": ");
-			for (Node child : childNodes) {
-				children.add(child.toStringWithTabs(tabs));
-			}
-		}
-		return tabs + "childNodes of " + getTypeName(type) + children;
-	}
 
 	/**
 	 * foundNode checks to see if any Node exists in the List
@@ -326,17 +292,5 @@ public class Node implements Serializable {
 	 */
 	private static boolean foundNode(List<?> nodes) {
 		return !nodes.isEmpty();
-	}
-
-	/**
-	 * getTypeName will return the String representation of the TemplateId enum
-	 * if available useful for toString representations of this Node.
-	 *
-	 * @param type TemplateId
-	 * @return String
-	 */
-	private String getTypeName(TemplateId type) {
-		return (DEFAULT.equals(type.name())
-				|| PLACEHOLDER.equals(type.name()) ? getId() : type.name());
 	}
 }
