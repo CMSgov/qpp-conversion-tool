@@ -25,7 +25,7 @@ public class QrdaScopeTest {
 	@Test
 	public void testGetTemplatesNull() {
 		//expect
-		assertEquals(null, QrdaScope.getTemplates(null));
+		assertEquals(0, QrdaScope.getTemplates(null).size());
 	}
 
 	@Test

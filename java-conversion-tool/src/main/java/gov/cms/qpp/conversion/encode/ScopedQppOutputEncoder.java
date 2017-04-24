@@ -12,9 +12,7 @@ import java.util.Collection;
 /**
  * Top level Encoder for serializing into QPP format.
  */
-public class ScopedQppOutputEncoder extends QppOutputEncoder{
-
-	protected static final Registry<String, JsonOutputEncoder> ENCODERS = new Registry<>(Encoder.class);
+public class ScopedQppOutputEncoder extends QppOutputEncoder {
 
 	/**
 	 * Encode the decoded node. If a {@link TemplateId#PLACEHOLDER} node is detected then assume

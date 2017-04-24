@@ -11,8 +11,8 @@ import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +29,9 @@ public class QrdaValidator {
 	private Collection<TemplateId> scope;
 
 	public QrdaValidator() {
-		Collection<TemplateId> scope = QrdaScope.getTemplates(ConversionEntry.getScope());
-		if (!scope.isEmpty()) {
-			this.scope = scope;
+		Collection<TemplateId> theScope = QrdaScope.getTemplates(ConversionEntry.getScope());
+		if (!theScope.isEmpty()) {
+			this.scope = theScope;
 		}
 	}
 
@@ -169,7 +169,7 @@ public class QrdaValidator {
 
 		Converter.CLIENT_LOG.debug("Validating nodes associated with templateId {}", templateId);
 
-		List<Node> nodesForTemplateId = nodesForTemplateIds.getOrDefault(templateId, Arrays.asList());
+		List<Node> nodesForTemplateId = nodesForTemplateIds.getOrDefault(templateId, Collections.emptyList());
 
 		List<ValidationError> nodesErrors = validator.validateSameTemplateIdNodes(nodesForTemplateId);
 		validationErrors.addAll(nodesErrors);

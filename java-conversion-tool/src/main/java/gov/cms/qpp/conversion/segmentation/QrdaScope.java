@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Optional;
@@ -55,7 +56,7 @@ public enum QrdaScope {
 
 	public static Set<TemplateId> getTemplates(Collection<QrdaScope> scopes) {
 		if (scopes == null) {
-			return null;
+			return Collections.emptySet();
 		}
 
 		return scopes.stream()
