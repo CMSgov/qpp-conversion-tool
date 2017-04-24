@@ -8,6 +8,8 @@ import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,9 +24,11 @@ import org.springframework.util.ReflectionUtils;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
@@ -32,6 +36,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -283,5 +288,21 @@ public class ConverterTest {
 		Integer returnValue = (Integer)transformMethod.invoke(converter);
 
 		assertThat("Should not have a valid clinical document template id", returnValue, is(2));
+	}
+
+	@Test
+	public void testJsonCreation() throws IOException {
+		Converter converter = new Converter(XmlUtils.fileToStream(Paths.get("src/test/resources/qrda_bad_denominator.xml")));
+
+		Integer returnValue = converter.transform();
+
+		assertThat("A non-zero return value was expected.", returnValue, is(not(0)));
+
+		InputStream errorResultsStream = converter.getConversionResult();
+		String errorResults = IOUtils.toString(errorResultsStream, StandardCharsets.UTF_8);
+
+		assertThat("The error results must have the source identifier.", errorResults, containsString("sourceIdentifier"));
+		assertThat("The error results must have some error text.", errorResults, containsString("errorText"));
+		assertThat("The error results must have an XPath.", errorResults, containsString("path"));
 	}
 }
