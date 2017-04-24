@@ -186,7 +186,7 @@ public class Converter {
 			CLIENT_LOG.error(writingErrorString, outFile);
 			writeErrorJson(allErrors, errWriter);
 		} catch (IOException exception) { // coverage ignore candidate
-			final String notWriteErrorFile = MessageFormat.format("Could not write to error file {0}", outFile.toString());
+			final String notWriteErrorFile = MessageFormat.format("Could not write to error file {0}", outFile);
 			DEV_LOG.error(notWriteErrorFile, exception);
 			CLIENT_LOG.error(notWriteErrorFile);
 		} finally {
@@ -204,8 +204,7 @@ public class Converter {
 	 * @return All the errors.
 	 */
 	private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<ValidationError> validationErrors) {
-		AllErrors allErrors = new AllErrors(Arrays.asList(constructErrorSource(inputIdentifier, validationErrors)));
-		return allErrors;
+		return new AllErrors(Arrays.asList(constructErrorSource(inputIdentifier, validationErrors)));
 	}
 
 	/**
