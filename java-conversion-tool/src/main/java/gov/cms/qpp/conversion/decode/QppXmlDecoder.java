@@ -29,9 +29,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * Initialize a qpp xml decoder
 	 */
 	public QppXmlDecoder() {
-		Collection<TemplateId> scope = QrdaScope.getTemplates(ConversionEntry.getScope());
-		if (!scope.isEmpty()) {
-			this.scope = scope;
+		Collection<TemplateId> theScope = QrdaScope.getTemplates(ConversionEntry.getScope());
+		if (!theScope.isEmpty()) {
+			this.scope = theScope;
 		}
 	}
 

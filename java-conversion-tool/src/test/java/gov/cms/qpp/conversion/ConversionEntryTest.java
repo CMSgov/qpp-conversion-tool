@@ -269,7 +269,6 @@ public class ConversionEntryTest extends BaseTest {
 		//when
 		CommandLine line = ConversionEntry.cli(new String[] {"-t"});
 		ConversionEntry.shouldContinue(line);
-		fail("should have thrown MissingArgumentException");
 	}
 
 	@Test

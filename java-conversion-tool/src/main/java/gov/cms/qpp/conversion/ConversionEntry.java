@@ -107,12 +107,12 @@ public class ConversionEntry {
 	 * @return determination of validity
 	 */
 	static boolean shouldContinue(CommandLine line) {
-		boolean result = !line.hasOption(HELP) && validatedScope(line);
-		if (result && line.getArgList().isEmpty()) {
+		boolean shouldContinue = !line.hasOption(HELP) && validatedScope(line);
+		if (shouldContinue && line.getArgList().isEmpty()) {
 			CLIENT_LOG.error(NO_INPUT_FILE_SPECIFIED);
-			result = false;
+			shouldContinue = false;
 		}
-		return result;
+		return shouldContinue;
 	}
 
 	/**

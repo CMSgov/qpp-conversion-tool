@@ -95,7 +95,7 @@ public class ScopedConversionTest extends BaseTest {
 				FIXTURES.get(testSection), content);
 	}
 
-	private List getScoped(HashMap<String,Object> content) {
-		return ((List) content.get("scoped"));
+	private List<?> getScoped(HashMap<String,Object> content) {
+		return ((List<?>) content.get("scoped"));
 	}
 }
