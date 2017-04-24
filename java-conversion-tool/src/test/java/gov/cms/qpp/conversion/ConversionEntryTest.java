@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
@@ -11,7 +10,6 @@ import org.apache.commons.cli.ParseException;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -28,7 +26,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -62,77 +63,77 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testWildCardToRegex_simpleFileWild() {
+	public void testWildCardToRegexSimpleFileWild() {
 		String regex = ConversionEntry.wildCardToRegex("*.xml").pattern();
 		String expect = ".*\\.xml";
 		assertEquals(expect, regex);
 	}
 
 	@Test
-	public void testWildCardToRegex_pathFileWild() {
+	public void testWildCardToRegexPathFileWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*.xml").pattern();
 		String expect = ".*\\.xml";
 		assertEquals(expect, regex);
 	}
 
 	@Test
-	public void testWildCardToRegex_pathAllWild() {
+	public void testWildCardToRegexPathAllWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*").pattern();
 		String expect = ".*";
 		assertEquals(expect, regex);
 	}
 
 	@Test
-	public void testWildCardToRegex_pathExtraWild() {
+	public void testWildCardToRegexPathExtraWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*.xm*").pattern();
 		String expect = ".*\\.xm.*";
 		assertEquals(expect, regex);
 	}
 
 	@Test
-	public void testWildCardToRegex_doubleStar() {
+	public void testWildCardToRegexDoubleStar() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/**").pattern();
 		String expect = ".";
 		assertEquals(expect, regex);
 	}
 
 	@Test
-	public void testWildCardToRegex_tooManyWild() {
+	public void testWildCardToRegexTooManyWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/*/*/*.xml").pattern();
 		String expect = "";
 		assertEquals(expect, regex);
 	}
 
 	@Test
-	public void testExtractDir_wildcard() {
+	public void testExtractDirWildcard() {
 		String regex = ConversionEntry.extractDir("path/*/*.xml");
 		String expect = "path";
 		assertEquals(expect, regex);
 	}
 
 	@Test
-	public void testExtractDir_none() {
+	public void testExtractDirNone() {
 		String regex = ConversionEntry.extractDir("*.xml");
 		String expect = ".";
 		assertEquals(expect, regex);
 	}
 
 	@Test
-	public void testExtractDir_root() {
+	public void testExtractDirRoot() {
 		String regex = ConversionEntry.extractDir( File.separator );
 		String expect = ".";
 		assertEquals(expect, regex);
 	}
 
 	@Test
-	public void testExtractDir_unix() {
+	public void testExtractDirUnix() {
 		String regex = ConversionEntry.extractDir("path/to/dir/*.xml");
 		String expect = "path" + SEPARATOR + "to" + SEPARATOR + "dir";
 		assertEquals(expect, regex);
 	}
 
 	@Test
-	public void testExtractDir_windows() {
+	public void testExtractDirWindows() {
 		// testing the extraction not the building on windows
 		String regex = ConversionEntry.extractDir("path\\to\\dir\\*.xml");
 		// this test is running on *nix so expect this path while testing
@@ -142,7 +143,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testManyPath_xml() {
+	public void testManyPathXml() {
 		Collection<Path> files = ConversionEntry.manyPath("src/test/resources/pathTest/*.xml");
 		assertNotNull(files);
 		assertEquals(3, files.size());
@@ -157,7 +158,7 @@ public class ConversionEntryTest {
 
 	@Test
 	@PrepareForTest({ConversionEntry.class})
-	public void testManyPath_dir() {
+	public void testManyPathDir() {
 		// ensure a directory
 		stub(method(ConversionEntry.class, "wildCardToRegex", String.class)).toReturn( Pattern.compile("src/test/resources/pathTest") );
 
@@ -167,7 +168,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testManyPath_doubleWild() {
+	public void testManyPathDoubleWild() {
 		Collection<Path> files = ConversionEntry.manyPath("src/test/resources/pathTest/*.xm*");
 		assertNotNull(files);
 		assertEquals(4, files.size());
@@ -177,7 +178,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testCheckPath_xml() {
+	public void testCheckPathXml() {
 		Collection<Path> files = ConversionEntry.checkPath("src/test/resources/pathTest/*.xml");
 		assertNotNull(files);
 		assertEquals(3, files.size());
@@ -200,7 +201,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testManyPath_pathNotFound() {
+	public void testManyPathPathNotFound() {
 		Collection<Path> files = ConversionEntry.manyPath("notExist/*.xml");
 
 		assertNotNull(files);
@@ -222,7 +223,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testValidArgs_help() {
+	public void testValidArgsHelp() {
 		Collection<Path> files = ConversionEntry.validArgs(
 				new String[] { "-h", "src/test/resources/pathTest/a.xml", "src/test/resources/pathTest/subdir/*.xml" });
 
@@ -231,7 +232,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testValidArgs_noFiles() {
+	public void testValidArgsNoFiles() {
 		Collection<Path> files = ConversionEntry.validArgs(new String[] {});
 
 		assertNotNull(files);
@@ -240,7 +241,7 @@ public class ConversionEntryTest {
 
 	@Test
 	@PrepareForTest({LoggerFactory.class, ConversionEntry.class})
-	public void testValidArgs_ParseException() throws Exception {
+	public void testValidArgsParseException() throws Exception {
 		//set-up
 		mockStatic( LoggerFactory.class );
 		Logger devLogger = mock( Logger.class );
@@ -253,7 +254,7 @@ public class ConversionEntryTest {
 		whenNew(DefaultParser.class).withNoArguments().thenReturn(mockParser);
 
 		//when
-		Collection<Path> files = ConversionEntry.validArgs(new String[] {});
+		ConversionEntry.validArgs(new String[] {});
 
 		//then
 		verify(clientLogger).error(eq(ConversionEntry.CLI_PROBLEM));

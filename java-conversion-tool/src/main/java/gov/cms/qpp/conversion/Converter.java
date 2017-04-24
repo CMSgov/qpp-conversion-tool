@@ -236,6 +236,7 @@ public class Converter {
 
 	/**
 	 * Write converted content to a specified file
+	 * 
 	 * @param decoded content to be written
 	 * @param outFile destination file where output should be written
 	 */
