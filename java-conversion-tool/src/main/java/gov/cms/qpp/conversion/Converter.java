@@ -9,11 +9,13 @@ import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.ErrorSource;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -29,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -77,7 +80,7 @@ public class Converter {
 	 * @param doIt toggle value
 	 * @return this for chaining
 	 */
-	public Converter doDefaults(boolean doIt) {
+	Converter doDefaults(boolean doIt) {
 		this.doDefaults = doIt;
 		return this;
 	}
@@ -88,7 +91,7 @@ public class Converter {
 	 * @param doIt toggle value
 	 * @return this for chaining
 	 */
-	public Converter doValidation(boolean doIt) {
+	Converter doValidation(boolean doIt) {
 		this.doValidation = doIt;
 		return this;
 	}
@@ -122,8 +125,8 @@ public class Converter {
 	 * Transform a source a given file.
 	 *
 	 * @param inFile a source file
-	 * @throws XmlException
-	 * @throws IOException
+	 * @throws XmlException when transforming
+	 * @throws IOException when writing to given file
 	 */
 	private void transform(Path inFile) throws XmlException, IOException {
 		String inputFileName = inFile.getFileName().toString().trim();
@@ -144,7 +147,7 @@ public class Converter {
 	 *
 	 * @param inStream source content
 	 * @return a transformed representation of the source content
-	 * @throws XmlException
+	 * @throws XmlException during transform
 	 */
 	private Node transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
@@ -331,7 +334,8 @@ public class Converter {
 	 * @return an encoder
 	 */
 	protected JsonOutputEncoder getEncoder() {
-		return new QppOutputEncoder();
+		Collection<QrdaScope> scope = ConversionEntry.getScope();
+		return (!scope.isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
 	}
 
 	/**

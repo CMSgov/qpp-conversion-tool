@@ -71,7 +71,7 @@ public class ConverterTest {
 		//mocking
 		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
 		QrdaValidator mockQrdaValidator = AnnotationMockHelper.mockValidator("867.5309", TestDefaultValidator.class, true);
-		PowerMockito.whenNew(QrdaValidator.class).withNoArguments().thenReturn(mockQrdaValidator);
+		PowerMockito.whenNew(QrdaValidator.class).withAnyArguments().thenReturn(mockQrdaValidator);
 
 		//set-up
 		Path defaultJson = Paths.get("errantDefaultedNode.qpp.json");

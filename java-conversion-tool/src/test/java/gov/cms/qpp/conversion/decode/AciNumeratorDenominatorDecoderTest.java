@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
@@ -16,7 +17,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
-public class AciNumeratorDenominatorDecoderTest {
+public class AciNumeratorDenominatorDecoderTest extends BaseTest {
 
 	private static final String MEASURE_ID = "ACI-PEA-1";
 
