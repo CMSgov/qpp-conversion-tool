@@ -80,6 +80,54 @@ public class ScopedConversionTest extends BaseTest {
 	}
 
 	@Test
+	public void testScopedAciNumeratorConversion() throws IOException {
+		//setup
+		String testSection = TemplateId.ACI_NUMERATOR.name();
+
+		//when
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
+				"src/test/resources/valid-QRDA-III.xml");
+
+		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+
+		//then
+		assertEquals("content should match valid " + testSection + " fixture",
+				FIXTURES.get(testSection), getScoped(content));
+	}
+
+	@Test
+	public void testScopedAciDenominatorConversion() throws IOException {
+		//setup
+		String testSection = TemplateId.ACI_DENOMINATOR.name();
+
+		//when
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
+				"src/test/resources/valid-QRDA-III.xml");
+
+		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+
+		//then
+		assertEquals("content should match valid " + testSection + " fixture",
+				FIXTURES.get(testSection), getScoped(content));
+	}
+
+	@Test
+	public void testScopedAciNumeratorDenominatorConversion() throws IOException {
+		//setup
+		String testSection = TemplateId.ACI_NUMERATOR_DENOMINATOR.name();
+
+		//when
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
+				"src/test/resources/valid-QRDA-III.xml");
+
+		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+
+		//then
+		assertEquals("content should match valid " + testSection + " fixture",
+				FIXTURES.get(testSection), getScoped(content));
+	}
+
+	@Test
 	public void testFullScopeConversion() throws IOException {
 		//setup
 		String testSection = TemplateId.CLINICAL_DOCUMENT.name();
