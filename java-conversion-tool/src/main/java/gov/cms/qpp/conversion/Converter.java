@@ -46,8 +46,8 @@ public class Converter {
 	public static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
 
-	private static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
-	private static final String UNEXPECTED_ERROR= "Unexpected exception occurred during conversion";
+	protected static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
+	protected static final String UNEXPECTED_ERROR= "Unexpected exception occurred during conversion";
 
 	private boolean doDefaults = true;
 	private boolean doValidation = true;

@@ -12,7 +12,6 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
@@ -59,6 +58,9 @@ public class ConverterTest {
 	@After
 	public void cleanup() throws IOException {
 		Files.deleteIfExists(Paths.get("defaultedNode.qpp.json"));
+		Files.deleteIfExists(Paths.get("defaultedNode.err.json"));
+		Files.deleteIfExists(Paths.get("non-xml-file.err.json"));
+		Files.deleteIfExists(Paths.get("not-a-QRDA-III-file.err.json"));
 	}
 
 	@Test
@@ -94,7 +96,7 @@ public class ConverterTest {
 
 	@Test
 	@PrepareForTest({LoggerFactory.class, Converter.class})
-	public void testInvalidXml() {
+	public void testInvalidXml() throws IOException {
 
 		//set-up
 		mockStatic( LoggerFactory.class );
@@ -107,8 +109,12 @@ public class ConverterTest {
 		Path path = Paths.get("src/test/resources/non-xml-file.xml");
 		new Converter(path).transform();
 
+		Path errOutputPath = Paths.get("non-xml-file.err.json");
+		String errorOutput = new String(Files.readAllBytes(errOutputPath));
+
 		//assert
-		verify(clientLogger).error( eq("The file is not a valid XML document") );
+		verify(clientLogger).error( eq(Converter.NOT_VALID_XML_DOCUMENT) );
+		assertThat("File must contain error message", errorOutput, containsString(Converter.NOT_VALID_XML_DOCUMENT));
 	}
 
 	@Test
@@ -135,7 +141,7 @@ public class ConverterTest {
 				.transform();
 
 		//assert
-		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class));
+		verify(devLogger).error( eq(Converter.NOT_VALID_XML_DOCUMENT), any(XmlException.class));
 	}
 
 	@Test
@@ -159,7 +165,7 @@ public class ConverterTest {
 				.transform();
 
 		//assert
-		verify(devLogger).error( eq("The file is not a valid XML document"),
+		verify(devLogger).error( eq(Converter.NOT_VALID_XML_DOCUMENT),
 				any(XmlInputFileException.class) );
 	}
 
@@ -170,6 +176,7 @@ public class ConverterTest {
 		//set-up
 		mockStatic(Files.class);
 		when(Files.newBufferedWriter(any(Path.class))).thenReturn(null).thenCallRealMethod();
+		when(Files.readAllBytes(any(Path.class))).thenCallRealMethod();
 
 		mockStatic( LoggerFactory.class );
 		Logger devLogger = mock( Logger.class );
@@ -184,8 +191,12 @@ public class ConverterTest {
 				.doValidation(false)
 				.transform();
 
+		Path errOutputPath = Paths.get("defaultedNode.err.json");
+		String errorOutput = new String(Files.readAllBytes(errOutputPath));
+
 		//assert
-		verify(devLogger).error( eq("Unexpected exception occurred during conversion"), any(NullPointerException.class) );
+		verify(devLogger).error( eq(Converter.UNEXPECTED_ERROR), any(NullPointerException.class) );
+		assertThat("File must contain error message", errorOutput, containsString(Converter.UNEXPECTED_ERROR));
 	}
 
 	@Test
@@ -307,5 +318,21 @@ public class ConverterTest {
 		assertThat("The error results must have the source identifier.", errorResults, containsString("sourceIdentifier"));
 		assertThat("The error results must have some error text.", errorResults, containsString("errorText"));
 		assertThat("The error results must have an XPath.", errorResults, containsString("path"));
+	}
+
+	@Test
+	public void testNotAValidQrdaIIIFile() throws IOException {
+		Path errOutput = Paths.get("not-a-QRDA-III-file.err.json");
+
+		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
+		new Converter(path)
+				.doDefaults(false)
+				.doValidation(false)
+				.transform();
+
+		String errorContent = new String(Files.readAllBytes(errOutput));
+
+		assertThat("File must contain the error string", errorContent,
+				containsString("The file is not a QRDA-III XML document"));
 	}
 }
