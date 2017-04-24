@@ -23,13 +23,16 @@ import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Entry point for the conversion process.
+ */
 public class ConversionEntry {
 	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionEntry.class);
 
 	private static final String DIR_EXTRACTION = "[\\/\\\\]";
 
-	private static final String CLI_PROBLEM = "Problem parsing cli options";
+	static final String CLI_PROBLEM = "Problem parsing cli options";
 	private static final String TOO_MANY_WILD_CARDS = "Too many wild cards in {}";
 	private static final String NO_INPUT_FILE_SPECIFIED = "No input filename was specified.";
 	private static final String FILE_DOES_NOT_EXIST = "{} does not exist.";
@@ -44,6 +47,9 @@ public class ConversionEntry {
 	private static boolean doValidation = true;
 	private static Options options;
 
+	/**
+	 * prevent instantiation
+	 */
 	private ConversionEntry() {}
 
 	/**
@@ -85,6 +91,13 @@ public class ConversionEntry {
 		return returnValue;
 	}
 
+	/**
+	 * Interprets command line options
+	 *
+	 * @param arguments array of values entered on the command line
+	 * @return parsed representation of command line entries
+	 * @throws ParseException
+	 */
 	static CommandLine cli(String[] arguments) throws ParseException {
 		options = new Options();
 		options.addOption("v", SKIP_VALIDATION, false, "Skip validations");
@@ -103,6 +116,12 @@ public class ConversionEntry {
 		return new DefaultParser().parse(options, arguments);
 	}
 
+	/**
+	 * Extract values from command line entries and use as a means of configuration.
+	 *
+	 * @param line parsed command line
+	 * @return paths extracted from the command line
+	 */
 	private static Collection<Path> checkArgs(CommandLine line) {
 		Collection<Path> validFiles = new LinkedList<>();
 
@@ -114,6 +133,12 @@ public class ConversionEntry {
 		return validFiles;
 	}
 
+	/**
+	 * Determines if the command line contains the help ("-h", "--help") switch.
+	 *
+	 * @param line parsed representation of the command line
+	 * @return whether or not the flag was entered
+	 */
 	private static boolean wantsHelp(CommandLine line) {
 		boolean bail = false;
 		if (line.hasOption(HELP)) {
@@ -124,6 +149,11 @@ public class ConversionEntry {
 		return bail;
 	}
 
+	/**
+	 * Mine values used to influence conversion behavior.
+	 *
+	 * @param line parsed representation of the command line
+	 */
 	private static void checkFlags(CommandLine line) {
 		doValidation = !line.hasOption(SKIP_VALIDATION);
 		doDefaults = !line.hasOption(SKIP_DEFAULTS);

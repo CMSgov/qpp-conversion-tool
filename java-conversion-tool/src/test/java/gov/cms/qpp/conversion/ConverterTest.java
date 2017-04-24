@@ -9,6 +9,7 @@ import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
@@ -284,7 +285,6 @@ public class ConverterTest {
 
 		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");
 		transformMethod.setAccessible(true);
-
 		Integer returnValue = (Integer)transformMethod.invoke(converter);
 
 		assertThat("Should not have a valid clinical document template id", returnValue, is(2));
