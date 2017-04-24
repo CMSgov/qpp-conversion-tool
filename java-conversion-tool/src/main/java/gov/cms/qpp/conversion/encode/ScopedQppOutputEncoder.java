@@ -8,8 +8,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Top level Encoder for serializing into QPP format.
@@ -19,7 +17,8 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder{
 	protected static final Registry<String, JsonOutputEncoder> ENCODERS = new Registry<>(Encoder.class);
 
 	/**
-	 *
+	 * Encode the decoded node. If a {@link TemplateId#PLACEHOLDER} node is detected then assume
+	 * the {@link ConversionEntry#scope} has been set to a level lower than {@link QrdaScope#CLINICAL_DOCUMENT}.
 	 *
 	 * @param wrapper object to encode into
 	 * @param node object to encode
@@ -27,8 +26,6 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder{
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
-		// stash the focused element types use to filter top level child nodes in placeholder
-
 		if (node.getType() == TemplateId.PLACEHOLDER) {
 			JsonWrapper scoped = new JsonWrapper();
 			node.getChildNodes().stream().filter(this::inSpecifiedScope)
@@ -44,6 +41,12 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder{
 		}
 	}
 
+	/**
+	 * Gatekeeper determining which decoded nodes may be encoded.
+	 *
+	 * @param node decoded node
+	 * @return determination as to whether or not the given node may be encoded
+	 */
 	private boolean inSpecifiedScope(Node node) {
 		String type = node.getType().name();
 		Collection<QrdaScope> scope = ConversionEntry.getScope();

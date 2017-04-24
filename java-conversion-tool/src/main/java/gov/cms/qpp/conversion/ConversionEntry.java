@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion;
 
 
-import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -22,7 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
@@ -101,6 +100,12 @@ public class ConversionEntry {
 		return returnValue;
 	}
 
+	/**
+	 * Determine if valid arguments were passed via the command line.
+	 *
+	 * @param line command line arguments
+	 * @return determination of validity
+	 */
 	static boolean shouldContinue(CommandLine line) {
 		boolean result = !line.hasOption(HELP) && validatedScope(line);
 		if (result && line.getArgList().isEmpty()) {
@@ -110,13 +115,19 @@ public class ConversionEntry {
 		return result;
 	}
 
-	static boolean validatedScope(CommandLine line) {
+	/**
+	 * Validate scope values passed via command line.
+	 *
+	 * @param line command line arguments
+	 * @return determination of validity
+	 */
+	private static boolean validatedScope(CommandLine line) {
 		boolean isItValid = true;
 		if (line.hasOption(TEMPLATE_SCOPE)) {
 			String[] templateScope = line.getOptionValue(TEMPLATE_SCOPE).split(",");
 			scope = Arrays.stream(templateScope)
 					.map(QrdaScope::getInstanceByName)
-					.filter(s -> s != null)
+					.filter(Objects::nonNull)
 					.collect(Collectors.toSet());
 
 			if (scope.size() != templateScope.length) {
@@ -127,7 +138,10 @@ public class ConversionEntry {
 		return isItValid;
 	}
 
-	static void initCli() {
+	/**
+	 * Initialize the command line interface.
+	 */
+	private static void initCli() {
 		options = new Options();
 		options.addOption("v", SKIP_VALIDATION, false, "Skip validations");
 		options.addOption("d", SKIP_DEFAULTS, false,"Skip defaulted transformations");
@@ -150,7 +164,7 @@ public class ConversionEntry {
 	 *
 	 * @param arguments array of values entered on the command line
 	 * @return parsed representation of command line entries
-	 * @throws ParseException
+	 * @throws ParseException when options cannot be parsed
 	 */
 	static CommandLine cli(String[] arguments) throws ParseException {
 		return new DefaultParser().parse(options, arguments);
@@ -285,6 +299,11 @@ public class ConversionEntry {
 		return Pattern.compile(regex);
 	}
 
+	/**
+	 * Get the scope that determines which data may be transformed.
+	 *
+	 * @return scope
+	 */
 	public static Collection<QrdaScope> getScope() {
 		return Collections.unmodifiableSet(scope);
 	}
