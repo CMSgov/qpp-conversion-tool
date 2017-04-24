@@ -215,14 +215,7 @@ public class Converter {
 	 * @return A single source of validation errors.
 	 */
 	private ErrorSource constructErrorSource(final String inputIdentifier, final List<ValidationError> validationErrors) {
-		ErrorSource errorSource = new ErrorSource();
-		errorSource.setSourceIdentifier(inputIdentifier);
-
-		for (ValidationError currentValidationError : validationErrors) {
-			errorSource.addValidationError(currentValidationError);
-		}
-
-		return errorSource;
+		return new ErrorSource(inputIdentifier, validationErrors);
 	}
 
 	/**
