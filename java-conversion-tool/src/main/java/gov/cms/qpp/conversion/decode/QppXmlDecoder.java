@@ -145,10 +145,12 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		}
 		
 		if (null != rootDecoder) {
+			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
 			rootDecoder.setNamespace(rootElement, rootDecoder);
 			rootDecoder.internalDecode(rootElement, rootNode);
 		} else {
-			rootNode.setId("placeholder");
+			rootNode.setId(TemplateId.PLACEHOLDER.getTemplateId());
+			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
 			this.decode(rootElement, rootNode);
 		}
 		
