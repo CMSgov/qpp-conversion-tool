@@ -45,6 +45,7 @@ public class Converter {
 	private List<ValidationError> validationErrors = new ArrayList<>();
 	private InputStream xmlStream;
 	private Path inFile;
+	private Path outFile;
 	private Node decoded;
 
 	/**
@@ -96,13 +97,6 @@ public class Converter {
 			return getStatus();
 		} finally {
 			if(!validationErrors.isEmpty()) {
-				Path outFile;
-				if (inFile != null) {
-					String inputFileName = inFile.getFileName().toString().trim();
-					outFile = getOutputFile(inputFileName);
-				} else {
-					outFile = Paths.get("xmlstream.err.json");
-				}
 				writeValidationErrors(validationErrors, outFile);
 			}
 		}
@@ -111,7 +105,7 @@ public class Converter {
 	private void transform(Path inFile) throws XmlException, IOException {
 		String inputFileName = inFile.getFileName().toString().trim();
 		Node decoded = transform(XmlUtils.fileToStream(inFile));
-		Path outFile = getOutputFile(inputFileName);
+		outFile = getOutputFile(inputFileName);
 
 		if (decoded != null && validationErrors.isEmpty()) {
 			writeConverted(decoded, outFile);
@@ -120,6 +114,7 @@ public class Converter {
 
 	private Node transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
+		outFile = Paths.get("xmlstream.err.json");
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
 		if (null != decoded) {
 			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), inStream);
@@ -130,6 +125,8 @@ public class Converter {
 			if (doValidation) {
 				validationErrors.addAll(validator.validate(decoded));
 			}
+		} else {
+			validationErrors.add(new ValidationError("The file is not a QRDA-III XML document"));
 		}
 
 		return decoded;
@@ -166,7 +163,7 @@ public class Converter {
 				errWriter.write("Validation Error: " + error.getErrorText() + System.lineSeparator()
 								+ (errorXPath != null && !errorXPath.isEmpty() ? "\tat " + errorXPath : ""));
 			}
-		} catch (IOException e) { // coverage ignore candidate
+		} catch (IOException | NullPointerException e) { // coverage ignore candidate
 			DEV_LOG.error("Could not write to file: {}", outFile.toString(), e);
 		} finally {
 			Validations.clear();
