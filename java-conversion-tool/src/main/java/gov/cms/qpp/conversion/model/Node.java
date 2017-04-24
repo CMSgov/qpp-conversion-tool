@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,9 +13,7 @@ import java.util.function.Predicate;
  * Map that holds the data gleaned from an input file.
  * Nodes can contain other nodes as children to create a hierarchy.
  */
-public class Node implements Serializable {
-
-	private static final long serialVersionUID = 4602134063479322076L;
+public class Node {
 	private TemplateId type;
 	private Map<String, String> data = new HashMap<>();
 
