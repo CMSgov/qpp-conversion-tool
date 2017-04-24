@@ -4,11 +4,10 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class NodeTest {
@@ -33,7 +32,7 @@ public class NodeTest {
 		assertTrue(toString.contains("ABC"));
 		assertTrue(toString.contains("DEF"));
 		assertTrue(toString.contains("GHI"));
-		assertTrue(toString.contains("JKL"));
+		assertFalse(toString.contains("JKL"));
 	}
 
 	@Test
@@ -47,27 +46,20 @@ public class NodeTest {
 
 		Node childNode = new Node();
 		childNode.setId("JKL");
+		childNode.setParent(node);
 		node.addChildNode(childNode);
-
-		Node subChild = new Node();
-		subChild.setId("I");
-		childNode.addChildNode(subChild);
-		subChild = new Node();
-		subChild.setId("II");
-		childNode.addChildNode(subChild);
 
 		childNode = new Node();
 		childNode.setId("PQD");
+		childNode.setParent(node);
 		node.addChildNode(childNode);
 
-		String nodeStr = node.toString();
-		// This is to test the visual nature of the Node.toString();
-
-		// test a few rows of node string
-		assertFalse(nodeStr.contains("\tNode: templateId: ABC, data: {DEF=GHI}"));
-		assertTrue(nodeStr.contains("Node: templateId: ABC, data: {DEF=GHI}"));
-		assertTrue(nodeStr.contains("\t\tchildNodes of JKL:"));
-		assertTrue(nodeStr.contains("\t\t\tchildNodes of II -> (none)"));
+		//ensure that we don't go down all the child nodes
+		assertThat("Node#toString must not recurse down its children and print the size instead.", node.toString(),
+			containsString("childNodes=size"));
+		//ensure we don't recurse up the parent
+		assertThat("Node#toString must not recurse down its children and print the size instead.", childNode.toString(),
+			containsString("parent=not null"));
 	}
 
 	@Test

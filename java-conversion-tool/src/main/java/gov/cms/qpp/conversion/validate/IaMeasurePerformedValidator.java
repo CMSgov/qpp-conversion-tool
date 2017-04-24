@@ -13,8 +13,8 @@ import java.util.List;
 @Validator(templateId = TemplateId.IA_MEASURE, required = true)
 public class IaMeasurePerformedValidator extends NodeValidator {
 
-	public static final String TYPE_ERROR = "Measure performed value is required and must be either a Y or an N.\n\t%s";
-	public static final String INCORRECT_CHILDREN_COUNT  = "Measure performed must have exactly one child.\n\t%s";
+	public static final String TYPE_ERROR = "Measure performed value is required and must be either a Y or an N.";
+	public static final String INCORRECT_CHILDREN_COUNT  = "Measure performed must have exactly one child.";
 	private static final String FIELD = "measurePerformed";
 
 	/**
@@ -32,12 +32,12 @@ public class IaMeasurePerformedValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 		List<Node> children = node.getChildNodes();
 		if (children == null || children.size() != 1) {
-			addValidationError(new ValidationError(String.format(INCORRECT_CHILDREN_COUNT, node.toString()), node.getPath()));
+			addValidationError(new ValidationError(INCORRECT_CHILDREN_COUNT, node.getPath()));
 			return;
 		}
 		String value = children.get(0).getValue(FIELD);
 		if (!("Y".equals(value) || "N".equals(value))) {
-			addValidationError(new ValidationError(String.format(TYPE_ERROR, node.toString()), children.get(0).getPath()));
+			addValidationError(new ValidationError(TYPE_ERROR, children.get(0).getPath()));
 		}
 	}
 
