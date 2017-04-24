@@ -24,16 +24,15 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 	private static final String SUBMISSION_METHOD = "submissionMethod";
 
 	/**
-	 *  Encodes an Quality Section into the QPP format
+	 * Encodes an Quality Section into the QPP format
 	 *
 	 * @param wrapper JsonWrapper that will represent the Quality Section
-	 * @param node Node that represents the Quality Section and its measurements children if any
+	 * @param node    Node that represents the Quality Section and its measurements children if any
 	 * @throws EncodeException If an error occurs during encoding
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		wrapper.putString(CATEGORY, node.getValue(CATEGORY));
-
 		wrapper.putString(SUBMISSION_METHOD, node.getValue(SUBMISSION_METHOD));
 
 		Map<String, Node> childMapByTemplateId = node.getChildNodes().stream().collect(
@@ -50,7 +49,6 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 			wrapper.putString(PERFORMANCE_END, performanceEnd.get());
 		}
 
-
 		List<Node> children = node.getChildNodes();
 		JsonWrapper measurementsWrapper = new JsonWrapper();
 
@@ -66,8 +64,7 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 			JsonOutputEncoder childEncoder = ENCODERS.get(templateId);
 
 			if (childEncoder == null) {
-				addValidation(templateId, "Failed to find an encoder for template " +
-					currentChild.getType().toString());
+				addValidation(templateId, "Failed to find an encoder for template " + currentChild.getType().toString());
 			} else {
 				childEncoder.encode(childWrapper, currentChild);
 				measurementsWrapper.putObject(childWrapper);

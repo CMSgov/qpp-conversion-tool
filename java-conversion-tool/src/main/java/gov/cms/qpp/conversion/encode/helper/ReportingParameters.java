@@ -12,18 +12,23 @@ import java.util.Optional;
 public class ReportingParameters {
 
 	/**
+	 * Private Constructor
+	 * Only public static methods in this helper class.
+	 */
+	private ReportingParameters() {
+		// Hide a public constructor for Static helper class
+	}
+
+	/**
 	 * The Clinical Document contains a Reporting Parameters Section,
 	 * Several encoders want access to the reporting node.
+	 *
 	 * @param childMapByTemplateId List of nodes for the children of Clinical Document
 	 * @return Optional Node  The Reporting Parameter Node if present
 	 */
-	public static Optional<Node> getReportingNode(Map<String, Node> childMapByTemplateId){
-
+	public static Optional<Node> getReportingNode(Map<String, Node> childMapByTemplateId) {
 		Node nullableReportingNode =
 				childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
-		Optional<Node> reportingNode
-				= Optional.ofNullable(nullableReportingNode)
-				.flatMap(rp -> rp.getChildNodes().stream().findFirst());
-		return reportingNode;
+		return Optional.ofNullable(nullableReportingNode).flatMap(rp -> rp.getChildNodes().stream().findFirst());
 	}
 }

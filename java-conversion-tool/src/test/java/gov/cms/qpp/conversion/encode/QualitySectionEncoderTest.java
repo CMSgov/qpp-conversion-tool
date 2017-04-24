@@ -1,6 +1,8 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.encode.helper.RegistryHelper;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Test;
 
@@ -11,7 +13,7 @@ import static org.junit.Assert.assertThat;
  */
 public class QualitySectionEncoderTest {
 	@Test
-	public void internalEncode() throws Exception {
+	public void internalEncode() throws EncodeException {
 		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2.getTemplateId());
 		qualitySectionNode.putValue("category", "quality");
 		qualitySectionNode.putValue("submissionMethod", "cmsWebInterface");
@@ -21,6 +23,36 @@ public class QualitySectionEncoderTest {
 
 		assertThat("Expect to encode category", jsonWrapper.getString("category"), is("quality"));
 		assertThat("Expect to encode submissionMethod", jsonWrapper.getString("submissionMethod"), is("cmsWebInterface"));
+	}
+
+	@Test
+	public void missingEncoderTest() throws Exception {
+
+		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
+
+		Registry<String, JsonOutputEncoder> invalidRegistry = RegistryHelper.makeInvalidRegistry( //This will be the classname of the child encoders
+				 "gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder$MeasureDataCmsV2Encoder");
+
+		boolean exception = false;
+		RegistryHelper.setEncoderRegistry(invalidRegistry); //Set Registry with missing class
+
+		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2.getTemplateId());
+		qualitySectionNode.putValue("category", "quality");
+		qualitySectionNode.putValue("submissionMethod", "cmsWebInterface");
+		Node measureDataNode = new Node(qualitySectionNode, TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		measureDataNode.putValue("SomeValueKey","SomeValueData");
+		qualitySectionNode.addChildNode(measureDataNode);
+		QualitySectionEncoder encoder = new QualitySectionEncoder();
+		JsonWrapper jsonWrapper = new JsonWrapper();
+
+		try {
+			encoder.internalEncode(jsonWrapper, qualitySectionNode );
+		} catch (EncodeException | NullPointerException e) {
+			exception = true;
+		}
+		assertThat("Expecting Encode Exception", exception, is(true));
+		RegistryHelper.setEncoderRegistry(validRegistry); //Restore Registry
+
 	}
 
 }
