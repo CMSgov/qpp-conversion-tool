@@ -14,6 +14,7 @@ public enum TemplateId {
 	ACI_DENOMINATOR("2.16.840.1.113883.10.20.27.3.32", "2016-09-01"),
 	IA_MEASURE("2.16.840.1.113883.10.20.27.3.33", "2016-09-01"),
 	REPORTING_PARAMETERS_ACT("2.16.840.1.113883.10.20.27.3.23", "2016-11-01"),
+	MEASURE_SECTION_V2("2.16.840.1.113883.10.20.27.2.3", "2016-11-01"),
 	REPORTING_PARAMETERS_SECTION("2.16.840.1.113883.10.20.27.2.6", "2016-11-01"),
 
 	//unimplemented
@@ -29,7 +30,6 @@ public enum TemplateId {
 	PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.18", "2016-11-01"),
 	PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2("2.16.840.1.113883.10.20.27.3.25", "2016-11-01"),
 	MEASURE_SECTION("2.16.840.1.113883.10.20.24.2.2"),
-	MEASURE_SECTION_V2("2.16.840.1.113883.10.20.27.2.3", "2016-11-01"),
 	NATIONAL_PROVIDER("2.16.840.1.113883.4.6"),
 	CMS_AGGREGATE_COUNT("2.16.840.1.113883.10.20.27.3.24"),
 
@@ -55,7 +55,7 @@ public enum TemplateId {
 	/**
 	 * Constructs a TemplateId with a root and an extension.
 	 *
-	 * @param root The root of the template ID.  Normally numbers with decimal points in between.
+	 * @param root      The root of the template ID.  Normally numbers with decimal points in between.
 	 * @param extension The extension of the template ID.  Normally a date.
 	 */
 	TemplateId(final String root, final String extension) {
@@ -104,7 +104,7 @@ public enum TemplateId {
 	/**
 	 * Returns the enumeration for the specified root and extension.
 	 *
-	 * @param root The root part of the templateId.
+	 * @param root      The root part of the templateId.
 	 * @param extension The extension part of the templateId.
 	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
 	 */
@@ -121,7 +121,7 @@ public enum TemplateId {
 	/**
 	 * Creates the templateId string in the same fashion that this enumeration does.
 	 *
-	 * @param root The root part of the templateId.
+	 * @param root      The root part of the templateId.
 	 * @param extension The extension part of the templateId.
 	 * @return A string that concatenates the arguments the same way the enumeration does.
 	 */
