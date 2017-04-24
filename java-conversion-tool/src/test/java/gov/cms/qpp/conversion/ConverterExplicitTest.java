@@ -47,7 +47,7 @@ public class ConverterExplicitTest {
 
 		assertEquals("transformation errors", status, TransformationStatus.ERROR);
 		assertNotNull("the conversion has a result", result);
-		assertEquals("expected conversion output name", "meep.err.txt", postName);
+		assertEquals("expected conversion output name", "meep.err.json", postName);
 	}
 
 	@Test

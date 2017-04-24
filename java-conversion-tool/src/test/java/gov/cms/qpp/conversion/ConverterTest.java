@@ -1,20 +1,16 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.conversion.decode.DecodeResult;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
-import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
-import org.jdom2.Element;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,20 +22,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.file.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.regex.Pattern;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.*;
+import static org.powermock.api.mockito.PowerMockito.doThrow;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
@@ -47,13 +57,12 @@ import static org.powermock.api.support.membermodification.MemberModifier.stub;
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
 public class ConverterTest {
 
-	private static final String SEPERATOR = FileSystems.getDefault().getSeparator();
+	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 
 	@After
 	public void cleanup() throws IOException {
 		Files.deleteIfExists(Paths.get("defaultedNode.qpp.json"));
 	}
-
 
 	@Test
 	@PrepareForTest({Converter.class, QrdaValidator.class})
@@ -66,7 +75,7 @@ public class ConverterTest {
 
 		//set-up
 		Path defaultJson = Paths.get("errantDefaultedNode.qpp.json");
-		Path defaultError = Paths.get("errantDefaultedNode.err.txt");
+		Path defaultError = Paths.get("errantDefaultedNode.err.json");
 
 		Files.deleteIfExists(defaultJson);
 		Files.deleteIfExists(defaultError);
@@ -213,19 +222,19 @@ public class ConverterTest {
 		//set-up
 		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toThrow( new IOException() );
 
-		mockStatic( LoggerFactory.class );
-		Logger devLogger = mock( Logger.class );
-		Logger clientLogger = mock( Logger.class );
-		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
-		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
+		mockStatic(LoggerFactory.class);
+		Logger devLogger = mock(Logger.class);
+		Logger clientLogger = mock(Logger.class);
+		when(LoggerFactory.getLogger(any(Class.class))).thenReturn(devLogger);
+		when(LoggerFactory.getLogger(anyString())).thenReturn(clientLogger);
 
 		//execute
 		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
 		new Converter(path).transform();
 
 		//assert
-		verify(devLogger).error( eq("Could not write to file: {}" ),
-				eq( "defaultedNode.err.txt" ), any(String.class) );
+		verify(devLogger).error( eq("Could not write to error file defaultedNode.err.json" ),
+				any(IOException.class));
 	}
 
 	@Test
@@ -252,24 +261,22 @@ public class ConverterTest {
 	public void testExceptionOnWriteValidationErrors() throws Exception {
 
 		//set-up
-		BufferedWriter writer = mock( BufferedWriter.class );
-		doThrow( new IOException() ).when( writer ).write( anyString() );
-		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn( writer );
+		BufferedWriter writer = mock(BufferedWriter.class);
+		doThrow(new IOException()).when(writer).write(any(char[].class), anyInt(), anyInt());
+		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn(writer);
 
-		mockStatic( LoggerFactory.class );
-		Logger devLogger = mock( Logger.class );
-		Logger clientLogger = mock( Logger.class );
-		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
-		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
+		mockStatic(LoggerFactory.class);
+		Logger devLogger = mock(Logger.class);
+		Logger clientLogger = mock(Logger.class);
+		when(LoggerFactory.getLogger(any(Class.class))).thenReturn(devLogger);
+		when(LoggerFactory.getLogger(anyString())).thenReturn(clientLogger);
 
 		//execute
 		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
 		new Converter(path).transform();
 
 		//assert
-		verify(devLogger).error( eq("Could not write to file: {}" ),
-				eq("defaultedNode.err.txt"),
-				any(IOException.class) );
+		verify(devLogger).error(eq("Could not write to error file defaultedNode.err.json"), any(IOException.class));
 	}
 
 	@Test
@@ -278,9 +285,24 @@ public class ConverterTest {
 
 		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");
 		transformMethod.setAccessible(true);
+		TransformationStatus returnValue = (TransformationStatus) transformMethod.invoke(converter);
 
-		Integer returnValue = (Integer)transformMethod.invoke(converter);
+		assertThat("Should not have a valid clinical document template id", returnValue, is(TransformationStatus.NON_RECOVERABLE));
+	}
 
-		assertThat("Should not have a valid clinical document template id", returnValue, is(2));
+	@Test
+	public void testJsonCreation() throws IOException {
+		Converter converter = new Converter(XmlUtils.fileToStream(Paths.get("src/test/resources/qrda_bad_denominator.xml")));
+
+		TransformationStatus returnValue = converter.transform();
+
+		assertThat("A non-zero return value was expected.", returnValue, is(not(TransformationStatus.SUCCESS)));
+
+		InputStream errorResultsStream = converter.getConversionResult();
+		String errorResults = IOUtils.toString(errorResultsStream, StandardCharsets.UTF_8);
+
+		assertThat("The error results must have the source identifier.", errorResults, containsString("sourceIdentifier"));
+		assertThat("The error results must have some error text.", errorResults, containsString("errorText"));
+		assertThat("The error results must have an XPath.", errorResults, containsString("path"));
 	}
 }
