@@ -6,7 +6,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -42,7 +41,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 	}
 
 	private Stream<Node> flattenNode(Node node) {
-		return Stream.concat( Stream.of(node),
+		return Stream.concat(Stream.of(node),
 				node.getChildNodes().stream().flatMap(this::flattenNode));
 	}
 
