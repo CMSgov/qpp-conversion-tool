@@ -121,7 +121,7 @@ public class Converter {
 			validationErrors.add(new ValidationError(UNEXPECTED_ERROR));
 		} finally {
 			if(!usingStream() && !validationErrors.isEmpty()) {
-				writeValidationErrors(validationErrors);
+				writeValidationErrorsToFile();
 			}
 		}
 		return getStatus();
@@ -170,6 +170,11 @@ public class Converter {
 		return decoded;
 	}
 
+	/**
+	 * Returns true if we are not using a file but using a stream.  False otherwise.
+	 *
+	 * @return Whether or not a stream is used in lieu of a file
+	 */
 	private boolean usingStream() {
 		return inFile == null && xmlStream != null;
 	}
@@ -196,7 +201,7 @@ public class Converter {
 	 */
 	public InputStream getConversionResult() {
 		return (!validationErrors.isEmpty())
-				? writeValidationErrors()
+				? writeValidationErrorsToStream()
 				: writeConverted();
 	}
 
@@ -205,7 +210,7 @@ public class Converter {
 	 *
 	 * @return error content
 	 */
-	private InputStream writeValidationErrors() {
+	private InputStream writeValidationErrorsToStream() {
 		String identifier = xmlStream.toString();
 		AllErrors allErrors = constructErrorHierarchy(identifier, validationErrors);
 		byte[] errors = new byte[0];
@@ -222,10 +227,8 @@ public class Converter {
 
 	/**
 	 * Assemble transformation error content and write to a file.
-	 *
-	 * @param validationErrors errors that occurred during transformation
 	 */
-	private void writeValidationErrors(List<ValidationError> validationErrors) {
+	private void writeValidationErrorsToFile() {
 		String fileName = inFile.getFileName().toString().trim();
 		Path outFile = getOutputFile(fileName);
 		AllErrors allErrors = constructErrorHierarchy(fileName, validationErrors);

@@ -5,13 +5,11 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,7 +24,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 	private List<ValidationError> validationErrors = new ArrayList<>();
 
 	@Override
-	public void encode(Writer writer) throws EncodeException{
+	public void encode(Writer writer) throws EncodeException {
 		Validations.init();
 
 		try {
