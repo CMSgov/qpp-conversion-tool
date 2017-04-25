@@ -23,7 +23,6 @@ public class QualitySectionDecoder extends QppXmlDecoder {
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		thisNode.putValue("category", "quality");
 		thisNode.putValue("submissionMethod", "cmsWebInterface");
-		decode(element.getChild("entry", defaultNs), thisNode);
 		return DecodeResult.TREE_CONTINUE;
 	}
 }
