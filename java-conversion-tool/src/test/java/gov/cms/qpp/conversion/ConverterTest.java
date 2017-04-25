@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
@@ -29,7 +30,6 @@ import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -40,7 +40,6 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -49,14 +48,13 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
+import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
 public class ConverterTest {
-
-	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 
 	@After
 	public void cleanup() throws IOException {
@@ -274,30 +272,27 @@ public class ConverterTest {
 	}
 
 	@Test
-	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
+	@PrepareForTest({LoggerFactory.class, Converter.class})
 	public void testExceptionOnWriteValidationErrors() throws Exception {
-
-		//set-up
-		BufferedWriter writer = mock(BufferedWriter.class);
-		doThrow(new IOException()).when(writer).write(any(char[].class), anyInt(), anyInt());
-		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn(writer);
-
 		mockStatic(LoggerFactory.class);
 		Logger devLogger = mock(Logger.class);
 		Logger clientLogger = mock(Logger.class);
 		when(LoggerFactory.getLogger(any(Class.class))).thenReturn(devLogger);
 		when(LoggerFactory.getLogger(anyString())).thenReturn(clientLogger);
-
+		
 		//execute
 		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
-		new Converter(path).transform();
+		
+		Converter converter = spy(new Converter(path));
+		doThrow(new IOException()).when(converter, "writeErrorJson", any(AllErrors.class), any(Writer.class));
+		converter.transform();
 
 		//assert
 		verify(devLogger).error(eq("Could not write to error file defaultedNode.err.json"), any(NullPointerException.class));
 	}
 
 	@Test
-	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException, IOException {
+	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException {
 		Converter converter = new Converter(Paths.get("src/test/resources/not-a-QRDA-III-file.xml"));
 
 		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");
