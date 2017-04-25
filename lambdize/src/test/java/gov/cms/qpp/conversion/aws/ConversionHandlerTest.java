@@ -1,7 +1,17 @@
 package gov.cms.qpp.conversion.aws;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.AnonymousAWSCredentials;
+import com.amazonaws.services.lambda.runtime.events.S3Event;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.event.S3EventNotification;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.amazonaws.services.s3.model.S3Object;
+import io.findify.s3mock.S3Mock;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -9,20 +19,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.amazonaws.services.s3.event.S3EventNotification;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.amazonaws.services.s3.model.S3Object;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.AnonymousAWSCredentials;
-import com.amazonaws.services.lambda.runtime.events.S3Event;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-
-import io.findify.s3mock.S3Mock;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
@@ -115,7 +117,7 @@ public class ConversionHandlerTest {
 		spyHandler.handleRequest(uglyInput, new TestContext());
 
 		S3Object error = client.getObject("qrda-conversion",
-						"post-conversion/QRDA-III-without-required-measure.err.txt");
+						"post-conversion/QRDA-III-without-required-measure.err.json");
 		assertNotNull("there's an error file", error);
 	}
 

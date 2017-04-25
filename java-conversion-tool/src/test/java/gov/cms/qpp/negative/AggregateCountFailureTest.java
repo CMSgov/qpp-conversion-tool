@@ -18,7 +18,7 @@ public class AggregateCountFailureTest {
 	@Test
 	public void testInvalidAggregateCounts() throws IOException {
 		//set-up
-		final String errorFileName = "QRDA-III-invalid-aggregate-count.err.txt";
+		final String errorFileName = "QRDA-III-invalid-aggregate-count.err.json";
 		File errorFile = new File(errorFileName);
 		errorFile.delete();
 
