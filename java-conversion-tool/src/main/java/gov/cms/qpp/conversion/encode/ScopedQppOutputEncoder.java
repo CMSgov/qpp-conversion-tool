@@ -40,6 +40,12 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 		}
 	}
 
+	/**
+	 * Recurse node hierarchy and flatten into stream.
+	 *
+	 * @param node top of hierarchy
+	 * @return flattened hierarchy
+	 */
 	private Stream<Node> flattenNode(Node node) {
 		return Stream.concat(Stream.of(node),
 				node.getChildNodes().stream().flatMap(this::flattenNode));

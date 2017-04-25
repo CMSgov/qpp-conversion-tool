@@ -17,6 +17,11 @@ import static junit.framework.TestCase.assertEquals;
 
 public class ScopedConversionTest extends BaseTest {
 
+	private static final String SUCCESS_MAKER = "src/test/resources/valid-QRDA-III.xml";
+	private static final String ERROR_MAKER = "src/test/resources/negative/angerTheConverter.xml";
+	private static final String SUCCESS_FILE = "valid-QRDA-III.qpp.json";
+	private static final String ERROR_FILE = "angerTheConverter.err.json";
+
 	private static final String TEMPLATE_SCOPE = "--" + ConversionEntry.TEMPLATE_SCOPE;
 	private static HashMap<String,Object> FIXTURES;
 
@@ -37,10 +42,8 @@ public class ScopedConversionTest extends BaseTest {
 		String testSection = TemplateId.ACI_SECTION.name();
 
 		//when
-		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
-				"src/test/resources/valid-QRDA-III.xml");
-
-		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
+		HashMap<String,Object> content = readJson(SUCCESS_FILE);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -54,10 +57,8 @@ public class ScopedConversionTest extends BaseTest {
 		String testSection = TemplateId.IA_SECTION.name();
 
 		//when
-		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
-				"src/test/resources/valid-QRDA-III.xml");
-
-		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
+		HashMap<String,Object> content = readJson(SUCCESS_FILE);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -70,10 +71,8 @@ public class ScopedConversionTest extends BaseTest {
 		String testSection = TemplateId.ACI_AGGREGATE_COUNT.name();
 
 		//when
-		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
-				"src/test/resources/valid-QRDA-III.xml");
-
-		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
+		HashMap<String,Object> content = readJson(SUCCESS_FILE);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -86,10 +85,8 @@ public class ScopedConversionTest extends BaseTest {
 		String testSection = TemplateId.ACI_NUMERATOR.name();
 
 		//when
-		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
-				"src/test/resources/valid-QRDA-III.xml");
-
-		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
+		HashMap<String,Object> content = readJson(SUCCESS_FILE);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -102,10 +99,8 @@ public class ScopedConversionTest extends BaseTest {
 		String testSection = TemplateId.ACI_DENOMINATOR.name();
 
 		//when
-		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
-				"src/test/resources/valid-QRDA-III.xml");
-
-		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
+		HashMap<String,Object> content = readJson(SUCCESS_FILE);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -118,10 +113,8 @@ public class ScopedConversionTest extends BaseTest {
 		String testSection = TemplateId.ACI_NUMERATOR_DENOMINATOR.name();
 
 		//when
-		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
-				"src/test/resources/valid-QRDA-III.xml");
-
-		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
+		HashMap<String,Object> content = readJson(SUCCESS_FILE);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -134,10 +127,8 @@ public class ScopedConversionTest extends BaseTest {
 		String testSection = TemplateId.CLINICAL_DOCUMENT.name();
 
 		//when
-		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
-				"src/test/resources/valid-QRDA-III.xml");
-
-		HashMap<String,Object> content = readJson("valid-QRDA-III.qpp.json");
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
+		HashMap<String,Object> content = readJson(SUCCESS_FILE);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -151,10 +142,8 @@ public class ScopedConversionTest extends BaseTest {
 		String testSection = TemplateId.CLINICAL_DOCUMENT.name();
 
 		//when
-		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
-				"src/test/resources/negative/angerTheConverter.xml");
-
-		HashMap<String,Object> content = readJson("angerTheConverter.err.json");
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, ERROR_MAKER);
+		HashMap<String,Object> content = readJson(ERROR_FILE);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -167,10 +156,8 @@ public class ScopedConversionTest extends BaseTest {
 		String testSection = TemplateId.ACI_NUMERATOR_DENOMINATOR.name();
 
 		//when
-		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
-				"src/test/resources/negative/angerTheConverter.xml");
-
-		HashMap<String, Object> content = readJson("angerTheConverter.err.json");
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, ERROR_MAKER);
+		HashMap<String,Object> content = readJson(ERROR_FILE);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -183,10 +170,8 @@ public class ScopedConversionTest extends BaseTest {
 		String testSection = TemplateId.IA_SECTION.name();
 
 		//when
-		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
-				"src/test/resources/negative/angerTheConverter.xml");
-
-		HashMap<String, Object> content = readJson("angerTheConverter.err.json");
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, ERROR_MAKER);
+		HashMap<String,Object> content = readJson(ERROR_FILE);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -199,10 +184,8 @@ public class ScopedConversionTest extends BaseTest {
 		String testSection = TemplateId.ACI_AGGREGATE_COUNT.name();
 
 		//when
-		ConversionEntry.main(TEMPLATE_SCOPE, testSection,
-				"src/test/resources/negative/angerTheConverter.xml");
-
-		HashMap<String, Object> content = readJson("angerTheConverter.err.json");
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, ERROR_MAKER);
+		HashMap<String,Object> content = readJson(ERROR_FILE);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
