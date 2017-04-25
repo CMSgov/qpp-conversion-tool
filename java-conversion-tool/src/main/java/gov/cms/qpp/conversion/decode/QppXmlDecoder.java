@@ -22,7 +22,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
-
+	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
 	private Collection<TemplateId> scope;
 
 	/**
@@ -205,7 +205,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 									&& containsClinicalDocumentTemplateId(rootElement);
 
 		if (!isValidQrdaFile) {
-			Converter.CLIENT_LOG.error("The file is not a QRDA-III XML document");
+			Converter.CLIENT_LOG.error(NOT_VALID_QRDA_III_FORMAT);
 		}
 		
 		return isValidQrdaFile;

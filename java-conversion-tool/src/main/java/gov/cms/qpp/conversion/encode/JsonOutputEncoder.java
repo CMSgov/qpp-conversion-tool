@@ -2,13 +2,16 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,8 +21,9 @@ import java.util.List;
  *
  */
 public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<String, String> {
-
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(JsonOutputEncoder.class);
 	private List<Node> nodes;
+	private List<ValidationError> validationErrors = new ArrayList<>();
 
 	@Override
 	public void encode(Writer writer) throws EncodeException {
@@ -32,8 +36,9 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 			}
 			writer.write(wrapper.toString());
 			writer.flush();
-		} catch (IOException e) {
-			throw new EncodeException("Failure to encode", e);
+		} catch (IOException exception) {
+			DEV_LOG.error("Couldn't write out JSON file.", exception);
+			validationErrors.add(new ValidationError("Failure to encode"));
 		}
 	}
 
@@ -41,7 +46,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 		try {
 			internalEncode(wrapper, node);
 		} catch (EncodeException e) {
-			Validations.addValidation(e.getTemplateId(), e.getMessage());
+			validationErrors.add(new ValidationError(e.getMessage()));
 		}
 	}
 
@@ -54,6 +59,14 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 			encode(wrapper, curNode);
 		}
 		return new ByteArrayInputStream(wrapper.toString().getBytes());
+	}
+
+	public void addValidationError(ValidationError validationError) {
+		validationErrors.add(validationError);
+	}
+
+	public List<ValidationError> getValidationErrors() {
+		return this.validationErrors;
 	}
 
 	@Override
