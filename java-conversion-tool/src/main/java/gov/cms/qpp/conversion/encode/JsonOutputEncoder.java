@@ -4,6 +4,8 @@ import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -19,7 +21,7 @@ import java.util.List;
  *
  */
 public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<String, String> {
-
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(JsonOutputEncoder.class);
 	private List<Node> nodes;
 	private List<ValidationError> validationErrors = new ArrayList<>();
 
@@ -34,7 +36,8 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 			}
 			writer.write(wrapper.toString());
 			writer.flush();
-		} catch (IOException e) {
+		} catch (IOException exception) {
+			DEV_LOG.error("Couldn't write out JSON file.", exception);
 			validationErrors.add(new ValidationError("Failure to encode"));
 		}
 	}
