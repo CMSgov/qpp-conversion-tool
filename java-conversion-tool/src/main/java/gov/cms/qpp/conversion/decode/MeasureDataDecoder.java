@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataDecoder extends QppXmlDecoder {
 	private final static List<String> MEASURES = Collections.singletonList("DENOM");
-	protected final static String MEASURE_TYPE = "type";
+	public final static String MEASURE_TYPE = "type";
 
 
 	/**

@@ -108,7 +108,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	protected void setOnNode(Element element, String expressionStr,
 					Consumer consumer, Filter<?> filter, boolean selectOne) {
 		XPathExpression<?> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
-		
+
 		if (selectOne) {
 			Optional.ofNullable(expression.evaluateFirst(element)).ifPresent(consumer);
 		} else {
