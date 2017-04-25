@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
  */
 @Encoder(TemplateId.MEASURE_SECTION_V2)
 public class QualitySectionEncoder extends QppOutputEncoder {
-	public static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualitySectionEncoder.class);
 	private static final String PERFORMANCE_START = "performanceStart";
 	private static final String PERFORMANCE_END = "performanceEnd";
@@ -69,8 +68,7 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 			if (childEncoder == null) {
 				String msg = "Failed to find an encoder for template " + currentChild.getType().toString();
 				DEV_LOG.error(msg);
-				Exception cause = new Exception ("Encoder Exception");
-				throw new EncodeException(msg, cause);
+				throw new EncodeException(msg);
 			} else {
 				childEncoder.encode(childWrapper, currentChild);
 				measurementsWrapper.putObject(childWrapper);
