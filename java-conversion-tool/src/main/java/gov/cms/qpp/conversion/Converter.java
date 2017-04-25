@@ -38,7 +38,7 @@ import java.util.List;
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
- * Expects a list of filenames as CLI parameters to be processed
+ * Expects a list of file names as CLI parameters to be processed
  * Supports wild card characters in paths
  */
 public class Converter {
@@ -47,7 +47,7 @@ public class Converter {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
 
 	protected static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
-	protected static final String UNEXPECTED_ERROR= "Unexpected exception occurred during conversion";
+	protected static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
 
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
@@ -119,11 +119,12 @@ public class Converter {
 		} catch (Exception exception) {
 			DEV_LOG.error(UNEXPECTED_ERROR, exception);
 			validationErrors.add(new ValidationError(UNEXPECTED_ERROR));
-		} finally {
-			if(!usingStream() && !validationErrors.isEmpty()) {
-				writeValidationErrorsToFile();
-			}
 		}
+
+		if (!usingStream() && !validationErrors.isEmpty()) {
+			writeValidationErrorsToFile();
+		}
+
 		return getStatus();
 	}
 
@@ -331,7 +332,7 @@ public class Converter {
 			encoder.setNodes(Collections.singletonList(decoded));
 			encoder.encode(writer);
 			validationErrors.addAll(encoder.getValidationErrors());
-		} catch (IOException | EncodeException e ) { // coverage ignore candidate
+		} catch (IOException | EncodeException e) { // coverage ignore candidate
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
 		} finally {
 			Validations.clear();
