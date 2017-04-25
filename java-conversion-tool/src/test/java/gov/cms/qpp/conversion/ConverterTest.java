@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -10,7 +13,6 @@ import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
@@ -47,9 +49,9 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
-import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
@@ -299,5 +301,25 @@ public class ConverterTest {
 		assertThat("The error results must have the source identifier.", errorResults, containsString("sourceIdentifier"));
 		assertThat("The error results must have some error text.", errorResults, containsString("errorText"));
 		assertThat("The error results must have an XPath.", errorResults, containsString("path"));
+	}
+
+	@Test
+	@PrepareForTest({Converter.class, ObjectMapper.class})
+	public void testJsonStreamFailure() throws Exception {
+		//mock
+		whenNew(ObjectMapper.class).withNoArguments().thenThrow(new JsonGenerationException("test exception", (JsonGenerator)null));
+
+		//run
+		Converter converter = new Converter(XmlUtils.fileToStream(Paths.get("src/test/resources/qrda_bad_denominator.xml")));
+		Integer returnValue = converter.transform();
+
+		//assert
+		assertThat("A non-zero return value was expected.", returnValue, is(not(0)));
+		String expectedExceptionJson = "{ \"exception\": \"JsonProcessingException\" }";
+		InputStream errorResultsStream = converter.getConversionResult();
+		String errorResults = IOUtils.toString(errorResultsStream, StandardCharsets.UTF_8);
+
+		assertThat("An exception creating the JSON should have been thrown resulting in a basic error JSON being returned.",
+			expectedExceptionJson, is(errorResults));
 	}
 }
