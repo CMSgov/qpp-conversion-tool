@@ -16,9 +16,7 @@ import static org.junit.Assert.assertThat;
 public class QualitySectionEncoderTest {
 	@Test
 	public void internalEncode() throws EncodeException {
-		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2.getTemplateId());
-		qualitySectionNode.putValue("category", "quality");
-		qualitySectionNode.putValue("submissionMethod", "cmsWebInterface");
+		Node qualitySectionNode = getQualitySectionNode();
 		QualitySectionEncoder encoder = new QualitySectionEncoder();
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
@@ -29,8 +27,9 @@ public class QualitySectionEncoderTest {
 
 	/**
 	 * Tests for the missing child encoder
-	 * @throws XmlException when parsing a xml fragment fails
-	 * @throws NoSuchFieldException Java Reflection Api error if field is not in object
+	 *
+	 * @throws XmlException           when parsing a xml fragment fails
+	 * @throws NoSuchFieldException   Java Reflection Api error if field is not in object
 	 * @throws IllegalAccessException Thrown if a Security Manager is present
 	 */
 	@Test
@@ -44,9 +43,7 @@ public class QualitySectionEncoderTest {
 		boolean exception = false;
 		RegistryHelper.setEncoderRegistry(invalidRegistry); //Set Registry with missing class
 
-		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2.getTemplateId());
-		qualitySectionNode.putValue("category", "quality");
-		qualitySectionNode.putValue("submissionMethod", "cmsWebInterface");
+		Node qualitySectionNode = getQualitySectionNode();
 		Node measureDataNode = new Node(qualitySectionNode, TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
 		measureDataNode.putValue("SomeValueKey", "SomeValueData");
 		qualitySectionNode.addChildNode(measureDataNode);
@@ -60,5 +57,17 @@ public class QualitySectionEncoderTest {
 		}
 		assertThat("Expecting Encode Exception", exception, is(true));
 		RegistryHelper.setEncoderRegistry(validRegistry); //Restore Registry
+	}
+
+	/**
+	 * Helper method to reduce duplication of code
+	 *
+	 * @return the newly constructed Quality Section Node
+	 */
+	private Node getQualitySectionNode() {
+		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2.getTemplateId());
+		qualitySectionNode.putValue("category", "quality");
+		qualitySectionNode.putValue("submissionMethod", "cmsWebInterface");
+		return qualitySectionNode;
 	}
 }
