@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.encode.helper.ReportingParameters;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -33,12 +34,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 		Map<String, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 				Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
-
-		Node nullableReportingNode =
-				childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
-		Optional<Node> reportingNode
-				= Optional.ofNullable(nullableReportingNode)
-				.flatMap(rp -> rp.getChildNodes().stream().findFirst());
+		Optional<Node> reportingNode = ReportingParameters.getReportingNode(childMapByTemplateId);
 
 		Optional<String> performanceStart = reportingNode.flatMap(p -> Optional.of(p.getValue("performanceStart")));
 		Optional<String> performanceEnd = reportingNode.flatMap(p -> Optional.of(p.getValue("performanceEnd")));
