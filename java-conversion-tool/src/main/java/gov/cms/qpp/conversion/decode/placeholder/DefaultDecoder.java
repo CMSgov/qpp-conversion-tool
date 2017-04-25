@@ -89,14 +89,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@Decoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
-	public static class MeasureReferenceResultsCmsV2Decoder extends DefaultDecoder {
-
-		public MeasureReferenceResultsCmsV2Decoder() {
-			super("Measure Reference and Results - CMS (V2)");
-		}
-	}
-
 	@Decoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
 	public static class ContinuousVariableMeasureValueCmsDecoder extends DefaultDecoder {
 
