@@ -107,13 +107,27 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 */
 	protected void setOnNode(Element element, String expressionStr,
 			Consumer consumer, Filter<?> filter, boolean selectOne) {
-		XPathExpression<?> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
-		
 		if (selectOne) {
-			Optional.ofNullable(expression.evaluateFirst(element)).ifPresent(consumer);
+			getSingleFromElement(element, expressionStr, filter).ifPresent(consumer);
 		} else {
-			Optional.ofNullable(expression.evaluate(element)).ifPresent(consumer);
+			getMultipleFromElement(element, expressionStr, filter).ifPresent(consumer);
 		}
+	}
+
+	private XPathExpression<?> getExpression(String expressionStr, Filter<?> filter) {
+		return XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
+	}
+
+	protected Optional<?> getSingleFromElement(Element element, String expressionStr,
+							 Filter<?> filter) {
+		XPathExpression<?> expression = getExpression(expressionStr, filter);
+		return Optional.ofNullable(expression.evaluateFirst(element));
+	}
+
+	protected Optional<List<?>> getMultipleFromElement(Element element, String expressionStr,
+										  Filter<?> filter) {
+		XPathExpression<?> expression = getExpression(expressionStr, filter);
+		return Optional.ofNullable(expression.evaluate(element));
 	}
 
 	/**

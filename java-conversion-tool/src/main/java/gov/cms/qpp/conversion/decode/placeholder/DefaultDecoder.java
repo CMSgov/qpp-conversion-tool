@@ -122,14 +122,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@Decoder(TemplateId.MEASURE_DATA_CMS_V2)
-	public static class MeasureDataCmsV2Decoder extends DefaultDecoder {
-
-		public MeasureDataCmsV2Decoder() {
-			super("Measure Data - CMS (V2)");
-		}
-	}
-
 	@Decoder(TemplateId.REPORTING_STRATUM_CMS)
 	public static class ReportingStratumCmsDataDecoder extends DefaultDecoder {
 
