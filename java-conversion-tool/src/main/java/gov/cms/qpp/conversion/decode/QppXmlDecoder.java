@@ -91,6 +91,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				
 				// the child decoder might require the entire its siblings
 				DecodeResult result = childDecoder.internalDecode(element, childNode);
+				if(result == DecodeResult.PARENT_FINISHED) {
+					return DecodeResult.TREE_FINISHED;
+				}
 
 				parentNode.addChildNode(childNode); // TODO ensure we need to always add
 				currentNode = childNode; // TODO this works for AciSectionDecoder
