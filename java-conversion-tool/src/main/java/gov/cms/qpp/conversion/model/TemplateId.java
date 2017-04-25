@@ -55,7 +55,7 @@ public enum TemplateId {
 	/**
 	 * Constructs a TemplateId with a root and an extension.
 	 *
-	 * @param root      The root of the template ID.  Normally numbers with decimal points in between.
+	 * @param root The root of the template ID.  Normally numbers with decimal points in between.
 	 * @param extension The extension of the template ID.  Normally a date.
 	 */
 	TemplateId(final String root, final String extension) {
@@ -103,7 +103,7 @@ public enum TemplateId {
 	/**
 	 * Returns the enumeration for the specified root and extension.
 	 *
-	 * @param root      The root part of the templateId.
+	 * @param root The root part of the templateId.
 	 * @param extension The extension part of the templateId.
 	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
 	 */
@@ -119,7 +119,7 @@ public enum TemplateId {
 	/**
 	 * Creates the templateId string in the same fashion that this enumeration does.
 	 *
-	 * @param root      The root part of the templateId.
+	 * @param root The root part of the templateId.
 	 * @param extension The extension part of the templateId.
 	 * @return A string that concatenates the arguments the same way the enumeration does.
 	 */

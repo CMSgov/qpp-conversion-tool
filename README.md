@@ -77,6 +77,28 @@ For the examples below, make sure you're in the `qpp-conversion-tool` directory.
 
 Note: If you are using Windows, replace `./convert.sh` in the examples below with `.\convert.bat`.
 
+### Conversion Help
+```shell
+./convert.sh -h
+```
+
+```
+usage: convert [-d] [-h] [-t <scope1,scope2,...>] [-v]
+    -d,--skipDefaults                        Skip defaulted transformations
+    -h,--help                                This help message
+    -t,--templateScope <scope1,scope2,...>   Comma delimited scope values to
+                                             use for context. Valid values:
+                                             [ACI_AGGREGATE_COUNT,
+                                             ACI_NUMERATOR, ACI_DENOMINATOR,
+                                             ACI_NUMERATOR_DENOMINATOR,
+                                             ACI_SECTION, MEASURE_PERFORMED,
+                                             IA_MEASURE, IA_SECTION,
+                                             REPORTING_PARAMETERS_ACT,
+                                             REPORTING_PARAMETERS_SECTION,
+                                             CLINICAL_DOCUMENT]
+    -v,--skipValidation                      Skip validations
+```
+
 ### Convert a valid file.
 
 ```shell
