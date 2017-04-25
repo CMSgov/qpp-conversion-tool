@@ -6,6 +6,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 import java.util.Collection;
+import java.util.stream.Stream;
 
 /**
  * Top level Encoder for serializing into QPP format.
@@ -24,7 +25,9 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		if (node.getType() == TemplateId.PLACEHOLDER) {
 			JsonWrapper scoped = new JsonWrapper();
-			node.getChildNodes().stream().filter(this::inSpecifiedScope)
+			node.getChildNodes().stream()
+					.flatMap(this::flattenNode)
+					.filter(this::inSpecifiedScope)
 					.forEach(child -> {
 				JsonWrapper childWrapper = new JsonWrapper();
 				JsonOutputEncoder encoder = ENCODERS.get(child.getId());
@@ -35,6 +38,17 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 		} else {
 			super.internalEncode(wrapper, node);
 		}
+	}
+
+	/**
+	 * Recurse node hierarchy and flatten into stream.
+	 *
+	 * @param node top of hierarchy
+	 * @return flattened hierarchy
+	 */
+	private Stream<Node> flattenNode(Node node) {
+		return Stream.concat(Stream.of(node),
+				node.getChildNodes().stream().flatMap(this::flattenNode));
 	}
 
 	/**
