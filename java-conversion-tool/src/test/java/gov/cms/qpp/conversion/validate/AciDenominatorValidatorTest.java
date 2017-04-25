@@ -39,7 +39,7 @@ public class AciDenominatorValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("No Children Validation Error not issued",
-				errors.get(0).getErrorText(), is(String.format(AciDenominatorValidator.NO_CHILDREN, aciDenominatorNode)));
+				errors.get(0).getErrorText(), is(AciDenominatorValidator.NO_CHILDREN));
 
 	}
 
@@ -66,7 +66,7 @@ public class AciDenominatorValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("Incorrect child Validation Error not issued", errors.get(0).getErrorText(),
-				is(String.format(AciDenominatorValidator.INCORRECT_CHILD, aciDenominatorNode)));
+				is(AciDenominatorValidator.INCORRECT_CHILD));
 
 	}
 
@@ -87,7 +87,7 @@ public class AciDenominatorValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("Too many children Validation Error not issued", errors.get(0).getErrorText(),
-				is(String.format(AciDenominatorValidator.TOO_MANY_CHILDREN, aciDenominatorNode)));
+				is(AciDenominatorValidator.TOO_MANY_CHILDREN));
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class AciDenominatorValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("Invalid Value Validation Error not issued", errors.get(0).getErrorText(),
-				is(String.format(AciDenominatorValidator.INVALID_VALUE, value, aciDenominatorNode)));
+				is(String.format(AciDenominatorValidator.INVALID_VALUE, value)));
 
 	}
 
@@ -120,7 +120,7 @@ public class AciDenominatorValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("Invalid Value Validation Error not issued", errors.get(0).getErrorText(),
-				is(String.format(AciDenominatorValidator.INVALID_VALUE, value, aciDenominatorNode)));
+				is(String.format(AciDenominatorValidator.INVALID_VALUE, value)));
 
 
 	}
@@ -137,8 +137,6 @@ public class AciDenominatorValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("Invalid Value Validation Error not issued", errors.get(0).getErrorText(),
-				is(String.format(CommonNumeratorDenominatorValidator.DENOMINATOR_CANNOT_BE_ZERO, value, aciDenominatorNode)));
-
-
+				is(String.format(CommonNumeratorDenominatorValidator.DENOMINATOR_CANNOT_BE_ZERO, value)));
 	}
 }

@@ -74,5 +74,38 @@
 			"performanceStart" : "2017-01-01",
 			"performanceEnd" : "2017-12-31"
 		} ]
-	}
+	},
+	"ACI_NUMERATOR_DENOMINATOR" : [ {
+		"measureId" : "ACI-PEA-1",
+		"value" : {
+			"numerator" : 600,
+			"denominator" : 800
+		}
+	}, {
+		"measureId" : "ACI_EP_1",
+		"value" : {
+			"numerator" : 500,
+			"denominator" : 700
+		}
+	}, {
+		"measureId" : "ACI_CCTPE_3",
+		"value" : {
+			"numerator" : 400,
+			"denominator" : 600
+		}
+	} ],
+	"ACI_DENOMINATOR" : [ {
+		"denominator" : 800
+	}, {
+		"denominator" : 700
+	}, {
+		"denominator" : 600
+	} ],
+	"ACI_NUMERATOR" : [ {
+		"numerator" : 600
+	}, {
+		"numerator" : 500
+	}, {
+		"numerator" : 400
+	} ]
 }
