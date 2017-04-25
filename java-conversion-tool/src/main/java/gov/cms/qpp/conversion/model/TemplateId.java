@@ -97,7 +97,6 @@ public enum TemplateId {
 				return type;
 			}
 		}
-
 		return TemplateId.DEFAULT;
 	}
 
@@ -114,7 +113,6 @@ public enum TemplateId {
 				return currentTemplateId;
 			}
 		}
-
 		return TemplateId.DEFAULT;
 	}
 
@@ -131,7 +129,6 @@ public enum TemplateId {
 		if (extension != null && !extension.isEmpty()) {
 			templateId += (":" + extension);
 		}
-
 		return templateId;
 	}
 }

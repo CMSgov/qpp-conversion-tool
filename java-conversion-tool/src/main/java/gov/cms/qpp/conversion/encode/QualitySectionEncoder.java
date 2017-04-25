@@ -4,6 +4,8 @@ import gov.cms.qpp.conversion.encode.helper.ReportingParameters;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,7 +19,8 @@ import java.util.stream.Collectors;
  */
 @Encoder(TemplateId.MEASURE_SECTION_V2)
 public class QualitySectionEncoder extends QppOutputEncoder {
-
+	public static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualitySectionEncoder.class);
 	private static final String PERFORMANCE_START = "performanceStart";
 	private static final String PERFORMANCE_END = "performanceEnd";
 	private static final String CATEGORY = "category";
@@ -56,7 +59,7 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 		wrapper.putObject("measurements", measurementsWrapper);
 	}
 
-	private void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) {
+	private void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) throws EncodeException {
 		JsonWrapper childWrapper;
 		for (Node currentChild : children) {
 			childWrapper = new JsonWrapper();
@@ -64,7 +67,10 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 			JsonOutputEncoder childEncoder = ENCODERS.get(templateId);
 
 			if (childEncoder == null) {
-				addValidation(templateId, "Failed to find an encoder for template " + currentChild.getType().toString());
+				String msg = "Failed to find an encoder for template " + currentChild.getType().toString();
+				DEV_LOG.error(msg);
+				Exception cause = new Exception ("Encoder Exception");
+				throw new EncodeException(msg, cause);
 			} else {
 				childEncoder.encode(childWrapper, currentChild);
 				measurementsWrapper.putObject(childWrapper);

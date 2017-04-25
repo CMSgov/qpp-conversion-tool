@@ -4,12 +4,12 @@ import gov.cms.qpp.conversion.encode.helper.RegistryHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.xml.XmlException;
 import org.junit.Test;
-
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
 /**
  * This class tests the QualitySectionEncoder class
  */
@@ -21,19 +21,25 @@ public class QualitySectionEncoderTest {
 		qualitySectionNode.putValue("submissionMethod", "cmsWebInterface");
 		QualitySectionEncoder encoder = new QualitySectionEncoder();
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		encoder.internalEncode(jsonWrapper, qualitySectionNode );
+		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 
 		assertThat("Expect to encode category", jsonWrapper.getString("category"), is("quality"));
 		assertThat("Expect to encode submissionMethod", jsonWrapper.getString("submissionMethod"), is("cmsWebInterface"));
 	}
 
+	/**
+	 * Tests for the missing child encoder
+	 * @throws XmlException when parsing a xml fragment fails
+	 * @throws NoSuchFieldException Java Reflection Api error if field is not in object
+	 * @throws IllegalAccessException Thrown if a Security Manager is present
+	 */
 	@Test
-	public void missingEncoderTest() throws Exception {
+	public void missingEncoderTest() throws XmlException, NoSuchFieldException, IllegalAccessException {
 
 		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
 
 		Registry<String, JsonOutputEncoder> invalidRegistry = RegistryHelper.makeInvalidRegistry( //This will be the classname of the child encoders
-				 "gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder$MeasureDataCmsV2Encoder");
+				"gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder$MeasureDataCmsV2Encoder");
 
 		boolean exception = false;
 		RegistryHelper.setEncoderRegistry(invalidRegistry); //Set Registry with missing class
@@ -42,23 +48,17 @@ public class QualitySectionEncoderTest {
 		qualitySectionNode.putValue("category", "quality");
 		qualitySectionNode.putValue("submissionMethod", "cmsWebInterface");
 		Node measureDataNode = new Node(qualitySectionNode, TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
-		measureDataNode.putValue("SomeValueKey","SomeValueData");
+		measureDataNode.putValue("SomeValueKey", "SomeValueData");
 		qualitySectionNode.addChildNode(measureDataNode);
 		QualitySectionEncoder encoder = new QualitySectionEncoder();
 		JsonWrapper jsonWrapper = new JsonWrapper();
 
 		try {
-			encoder.internalEncode(jsonWrapper, qualitySectionNode );
-			List<String> validations = encoder.getValidationsById(TemplateId.MEASURE_SECTION_V2.getTemplateId());
-			if ( !validations.isEmpty() ){
-				exception = true;
-			}
+			encoder.internalEncode(jsonWrapper, qualitySectionNode);
 		} catch (EncodeException | NullPointerException e) {
 			exception = true;
 		}
 		assertThat("Expecting Encode Exception", exception, is(true));
 		RegistryHelper.setEncoderRegistry(validRegistry); //Restore Registry
-
 	}
-
 }
