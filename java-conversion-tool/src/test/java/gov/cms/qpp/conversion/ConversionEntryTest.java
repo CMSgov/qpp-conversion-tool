@@ -30,7 +30,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

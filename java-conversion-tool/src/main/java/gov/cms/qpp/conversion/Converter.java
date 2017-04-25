@@ -29,6 +29,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,7 +38,7 @@ import java.util.List;
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
- * Expects a list of filenames as CLI parameters to be processed
+ * Expects a list of file names as CLI parameters to be processed
  * Supports wild card characters in paths
  */
 public class Converter {
@@ -45,11 +46,12 @@ public class Converter {
 	public static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
 
-	private static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
+	protected static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
+	protected static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
 
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
-	private List<ValidationError> validationErrors = Collections.emptyList();
+	private List<ValidationError> validationErrors = new ArrayList<>();
 	private InputStream xmlStream;
 	private Path inFile;
 	private Node decoded;
@@ -105,20 +107,25 @@ public class Converter {
 		DEV_LOG.info("Transform invoked with file {}", inFile);
 
 		try {
-			if (inFile != null) {
+			if (!usingStream()) {
 				transform(inFile);
 			} else {
 				transform(xmlStream);
 			}
-			return getStatus();
 		} catch (XmlInputFileException | XmlException xe) {
 			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
-			return getStatus();
+			validationErrors.add(new ValidationError(NOT_VALID_XML_DOCUMENT));
 		} catch (Exception exception) {
-			DEV_LOG.error("Unexpected exception occurred during conversion", exception);
-			return getStatus();
+			DEV_LOG.error(UNEXPECTED_ERROR, exception);
+			validationErrors.add(new ValidationError(UNEXPECTED_ERROR));
 		}
+
+		if (!usingStream() && !validationErrors.isEmpty()) {
+			writeValidationErrorsToFile();
+		}
+
+		return getStatus();
 	}
 
 	/**
@@ -133,12 +140,8 @@ public class Converter {
 		Node decoded = transform(XmlUtils.fileToStream(inFile));
 		Path outFile = getOutputFile(inputFileName);
 
-		if (decoded != null) {
-			if (validationErrors.isEmpty()) {
-				writeConverted(decoded, outFile);
-			} else {
-				writeValidationErrors(validationErrors, outFile);
-			}
+		if (decoded != null && validationErrors.isEmpty()) {
+			writeConverted(decoded, outFile);
 		}
 	}
 
@@ -151,7 +154,6 @@ public class Converter {
 	 */
 	private Node transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
-		validationErrors = Collections.emptyList();
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
 		if (null != decoded) {
 			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), inStream);
@@ -160,11 +162,22 @@ public class Converter {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
 			}
 			if (doValidation) {
-				validationErrors = validator.validate(decoded);
+				validationErrors.addAll(validator.validate(decoded));
 			}
+		} else {
+			validationErrors.add(new ValidationError("The file is not a QRDA-III XML document"));
 		}
 
 		return decoded;
+	}
+
+	/**
+	 * Returns true if we are not using a file but using a stream.  False otherwise.
+	 *
+	 * @return Whether or not a stream is used in lieu of a file
+	 */
+	private boolean usingStream() {
+		return inFile == null && xmlStream != null;
 	}
 
 	/**
@@ -189,7 +202,7 @@ public class Converter {
 	 */
 	public InputStream getConversionResult() {
 		return (!validationErrors.isEmpty())
-				? writeValidationErrors()
+				? writeValidationErrorsToStream()
 				: writeConverted();
 	}
 
@@ -198,7 +211,7 @@ public class Converter {
 	 *
 	 * @return error content
 	 */
-	private InputStream writeValidationErrors() {
+	private InputStream writeValidationErrorsToStream() {
 		String identifier = xmlStream.toString();
 		AllErrors allErrors = constructErrorHierarchy(identifier, validationErrors);
 		byte[] errors = new byte[0];
@@ -215,13 +228,10 @@ public class Converter {
 
 	/**
 	 * Assemble transformation error content and write to a file.
-	 *
-	 * @param validationErrors errors that occurred during transformation
-	 * @param outFile destination file where error output should be written
 	 */
-	private void writeValidationErrors(List<ValidationError> validationErrors, Path outFile) {
-
-		String fileName = inFile.toString();
+	private void writeValidationErrorsToFile() {
+		String fileName = inFile.getFileName().toString().trim();
+		Path outFile = getOutputFile(fileName);
 		AllErrors allErrors = constructErrorHierarchy(fileName, validationErrors);
 
 		try (Writer errWriter = Files.newBufferedWriter(outFile)) {
@@ -297,7 +307,9 @@ public class Converter {
 
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));
-			return encoder.encode();
+			InputStream inputStream = encoder.encode();
+			validationErrors.addAll(encoder.getValidationErrors());
+			return inputStream;
 		} catch (EncodeException e) {
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
 		} finally {
@@ -319,7 +331,7 @@ public class Converter {
 		try (Writer writer = Files.newBufferedWriter(outFile)) {
 			encoder.setNodes(Collections.singletonList(decoded));
 			encoder.encode(writer);
-			// do something with encode validations
+			validationErrors.addAll(encoder.getValidationErrors());
 		} catch (IOException | EncodeException e) { // coverage ignore candidate
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
 		} finally {
