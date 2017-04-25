@@ -6,6 +6,8 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 /**
@@ -47,6 +49,10 @@ public class QualitySectionEncoderTest {
 
 		try {
 			encoder.internalEncode(jsonWrapper, qualitySectionNode );
+			List<String> validations = encoder.getValidationsById(TemplateId.MEASURE_SECTION_V2.getTemplateId());
+			if ( !validations.isEmpty() ){
+				exception = true;
+			}
 		} catch (EncodeException | NullPointerException e) {
 			exception = true;
 		}
