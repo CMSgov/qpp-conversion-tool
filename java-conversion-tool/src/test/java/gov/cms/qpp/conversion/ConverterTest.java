@@ -9,9 +9,9 @@ import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
@@ -256,6 +256,7 @@ public class ConverterTest {
 		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(NullPointerException.class) );
 	}
 
+	@Ignore
 	@Test
 	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
 	public void testExceptionOnWriteValidationErrors() throws Exception {
