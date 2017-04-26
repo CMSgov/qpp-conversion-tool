@@ -9,15 +9,7 @@ import java.util.Optional;
 /**
  * This class helps get the Reporting Parameters out of the Clinical Document Encoder
  */
-public class ReportingParameters {
-
-	/**
-	 * Private Constructor
-	 * Only public static methods in this helper class.
-	 */
-	private ReportingParameters() {
-		// Hide a public constructor for Static helper class
-	}
+public interface ReportingParameters {
 
 	/**
 	 * The Clinical Document contains a Reporting Parameters Section,
