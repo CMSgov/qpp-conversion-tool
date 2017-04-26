@@ -118,6 +118,6 @@ public abstract class NodeValidator {
 	}
 
 	protected Checker thoroughlyCheck(Node node) {
-		return Checker.check(node, this.getValidationErrors());
+		return Checker.thoroughlyCheck(node, this.getValidationErrors());
 	}
 }
