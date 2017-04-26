@@ -103,14 +103,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	@Encoder(TemplateId.MEASURE_DATA_CMS_V2)
-	public static class MeasureDataCmsV2Encoder extends DefaultEncoder {
-
-		public MeasureDataCmsV2Encoder() {
-			super("Measure Data - CMS (V2)");
-		}
-	}
-
 	@Encoder(TemplateId.REPORTING_STRATUM_CMS)
 	public static class ReportingStratumCmsEncoder extends DefaultEncoder {
 

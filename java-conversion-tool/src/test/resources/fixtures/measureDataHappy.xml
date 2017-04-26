@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:hl7-org:v3 ../CDA_Schema_Files/infrastructure/cda/CDA_SDTC.xsd"
+      xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc">
+    <organizer classCode="CLUSTER" moodCode="EVN">
+        <component>
+            <observation classCode="OBS" moodCode="EVN">
+                <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+                <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+                <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+                      codeSystemName="ActCode" displayName="Assertion"/>
+                <statusCode code="completed"/>
+                <value xsi:type="CD" code="IPOP"
+                       codeSystem="2.16.840.1.113883.5.1063"
+                       codeSystemName="ObservationValue"/>
+                <!--IPOP Count-->
+                <entryRelationship typeCode="SUBJ" inversionInd="true">
+                    <observation classCode="OBS" moodCode="EVN">
+                        <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+                        <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+                        <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+                              codeSystemName="ActCode"
+                              displayName="rate aggregation"/>
+                        <statusCode code="completed"/>
+                        <value xsi:type="INT" value="950"/>
+                        <methodCode code="COUNT"
+                                    codeSystem="2.16.840.1.113883.5.84"
+                                    codeSystemName="ObservationMethod"
+                                    displayName="Count"/>
+                    </observation>
+                </entryRelationship>
+
+                <!--IPOP Population ID from eMeasure-->
+                <reference typeCode="REFR">
+                    <externalObservation classCode="OBS" moodCode="EVN">
+                        <id root="0739FE2E-B8DE-4A56-B064-877CC8E0977D"/>
+                    </externalObservation>
+                </reference>
+            </observation>
+        </component>
+                <!--DENOM Population-->
+        <component>
+        <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+            <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+            <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode" displayName="Assertion"/>
+            <statusCode code="completed"/>
+            <value xsi:type="CD" code="DENOM"
+                   codeSystem="2.16.840.1.113883.5.1063"
+                   codeSystemName="ObservationValue"/>
+            <!--DENOM Count-->
+            <entryRelationship typeCode="SUBJ" inversionInd="true">
+                <observation classCode="OBS" moodCode="EVN">
+                    <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+                    <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+                    <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+                          codeSystemName="ActCode"
+                          displayName="rate aggregation"/>
+                    <statusCode code="completed"/>
+                    <value xsi:type="INT" value="950"/>
+                    <methodCode code="COUNT"
+                                codeSystem="2.16.840.1.113883.5.84"
+                                codeSystemName="ObservationMethod"
+                                displayName="Count"/>
+                </observation>
+            </entryRelationship>
+
+            <!--DENOM Population ID from eMeasure-->
+            <reference typeCode="REFR">
+                <externalObservation classCode="OBS" moodCode="EVN">
+                    <id root="3D52925B-0D9B-466D-A181-68E984FA0634"/>
+                </externalObservation>
+            </reference>
+        </observation>
+        </component>
+                <!--NUMER Population-->
+        <component>
+        <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
+            <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+            <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+                  codeSystemName="ActCode" displayName="Assertion"/>
+            <statusCode code="completed"/>
+            <value xsi:type="CD" code="NUMER"
+                   codeSystem="2.16.840.1.113883.5.1063"
+                   codeSystemName="ObservationValue"/>
+            <!--NUMER Count-->
+            <entryRelationship typeCode="SUBJ" inversionInd="true">
+                <observation classCode="OBS" moodCode="EVN">
+                    <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+                    <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+                    <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
+                          codeSystemName="ActCode"
+                          displayName="rate aggregation"/>
+                    <statusCode code="completed"/>
+                    <value xsi:type="INT" value="900"/>
+                    <methodCode code="COUNT"
+                                codeSystem="2.16.840.1.113883.5.84"
+                                codeSystemName="ObservationMethod"
+                                displayName="Count"/>
+                </observation>
+            </entryRelationship>
+
+            <!--NUMER Population ID from eMeasure-->
+            <reference typeCode="REFR">
+                <externalObservation classCode="OBS" moodCode="EVN">
+                    <id root="6D01A564-58CC-4CF5-929F-B83583701BFE"/>
+                </externalObservation>
+            </reference>
+        </observation>
+        </component>
+    </organizer>
+</root>
