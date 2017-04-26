@@ -12,6 +12,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * Decoder for CMS V2 Measure Data
+ */
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataDecoder extends QppXmlDecoder {
 	private static final List<String> MEASURES = Collections.singletonList("DENOM");
@@ -29,7 +32,7 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		setMeasure(element, thisNode);
 
-		return thisNode.hasValue(MEASURE_TYPE) ? DecodeResult.TREE_CONTINUE : DecodeResult.PARENT_FINISHED;
+		return thisNode.hasValue(MEASURE_TYPE) ? DecodeResult.TREE_CONTINUE : DecodeResult.TREE_ESCAPED;
 	}
 
 	/**

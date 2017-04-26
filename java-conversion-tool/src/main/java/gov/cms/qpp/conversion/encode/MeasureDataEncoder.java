@@ -8,6 +8,9 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
+/**
+ * Encoder for CMS V2 Measure Data
+ */
 @Encoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataEncoder extends QppOutputEncoder {
 
