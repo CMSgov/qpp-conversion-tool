@@ -105,6 +105,7 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @param filter Filter to apply for the xpath
 	 * @param selectOne Whether to execute for the first match or multiple matches
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void setOnNode(Element element, String expressionStr,
 					Consumer consumer, Filter<?> filter, boolean selectOne) {
 		XPathExpression<?> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);

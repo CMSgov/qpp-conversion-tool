@@ -73,8 +73,8 @@ public class AnnotationMockHelper {
 	 * @param templateId The templateId string that you want the NodeValidator to validate.
 	 * @param validator The NodeValidator that is stored in the registry.
 	 */
-	private static void registerValidator(final String templateId, final Class<? extends NodeValidator> validator) {
-		final Registry<String, NodeValidator> registry = Whitebox.getInternalState(QrdaValidator.class, Registry.class);
+	private static void registerValidator(String templateId, Class<? extends NodeValidator> validator) {
+		Registry<String, NodeValidator> registry = Whitebox.getInternalState(QrdaValidator.class, Registry.class);
 		registry.register(templateId, validator);
 	}
 
@@ -88,8 +88,8 @@ public class AnnotationMockHelper {
 	 * @param required Whether the validation is required.
 	 * @throws Exception If the mocking fails.
 	 */
-	private static void mockQrdaValidator(final QrdaValidator spy, final String templateId,
-	                                      final Class<? extends NodeValidator> validator, final boolean required)
+	private static void mockQrdaValidator(QrdaValidator spy, String templateId,
+	                                      Class<? extends NodeValidator> validator, boolean required)
 		throws Exception {
 		PowerMockito.doReturn(required).when(spy, METHOD_IS_VALIDATION_REQUIRED, Matchers.isA(validator));
 		PowerMockito.doReturn(templateId).when(spy, METHOD_GET_TEMPLATE_ID, Matchers.isA(validator));

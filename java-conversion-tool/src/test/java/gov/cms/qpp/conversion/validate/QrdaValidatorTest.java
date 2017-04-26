@@ -33,7 +33,6 @@ public class QrdaValidatorTest {
 	private static List<Node> nodesPassedIntoValidateSingleNode;
 
 	private static List<Node> nodesPassedIntoRequiredValidateTemplateIdNodes;
-	private static List<Node> nodesPassedIntoOptionalValidateTemplateIdNodes;
 
 	private static final String TEST_REQUIRED_TEMPLATE_ID = "testRequiredTemplateId";
 	private static final String TEST_OPTIONAL_TEMPLATE_ID = "testOptionalTemplateId";
@@ -49,7 +48,6 @@ public class QrdaValidatorTest {
 	public void beforeEachTest() throws Exception {
 		nodesPassedIntoValidateSingleNode = new ArrayList<>();
 		nodesPassedIntoRequiredValidateTemplateIdNodes = null;
-		nodesPassedIntoOptionalValidateTemplateIdNodes = null;
 
 		objectUnderTest = AnnotationMockHelper.mockValidator(TEST_REQUIRED_TEMPLATE_ID, RequiredTestValidator.class, true);
 		objectUnderTest = AnnotationMockHelper.mockValidator(TEST_OPTIONAL_TEMPLATE_ID, OptionalTestValidator.class, false, objectUnderTest);
@@ -208,7 +206,6 @@ public class QrdaValidatorTest {
 
 		@Override
 		public void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
-			nodesPassedIntoOptionalValidateTemplateIdNodes = nodes;
 			addValidationError(TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES);
 		}
 	}

@@ -1,30 +1,35 @@
 package gov.cms.qpp.conversion.validate;
 
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations
  */
 class Checker {
+
 	private Node node;
 	private List<ValidationError> validationErrors;
 	private boolean anded;
-	private Map<TemplateId, Long> nodeCount;
+	private Map<TemplateId, AtomicInteger> nodeCount;
 
 	private Checker(Node node, List<ValidationError> validationErrors, boolean anded) {
 		this.node = node;
 		this.validationErrors = validationErrors;
 		this.anded = anded;
-		this.nodeCount = node.getChildNodes().stream().collect(
-				Collectors.groupingBy(Node::getType, Collectors.counting())
-		);
+		this.nodeCount = new EnumMap<>(TemplateId.class);
+		node.getChildNodes()
+			.stream()
+			.map(Node::getType)
+			.forEach(type -> this.nodeCount.computeIfAbsent(type, key -> new AtomicInteger()).incrementAndGet());
 	}
 
 	/**
@@ -121,7 +126,7 @@ class Checker {
 	 */
 	public Checker childMinimum(String message, int minimum, TemplateId... types) {
 		if (!shouldShortcut()) {
-			long count = tallyNodes(types);
+			int count = tallyNodes(types);
 			if (count < minimum) {
 				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
@@ -139,7 +144,7 @@ class Checker {
 	 */
 	public Checker childMaximum(String message, int maximum, TemplateId... types) {
 		if (!shouldShortcut()) {
-			long count = tallyNodes(types);
+			int count = tallyNodes(types);
 			if (count > maximum) {
 				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
@@ -153,9 +158,11 @@ class Checker {
 	 * @param types types of nodes to filter by
 	 * @return count
 	 */
-	private long tallyNodes(TemplateId... types) {
+	private int tallyNodes(TemplateId... types) {
 		return Arrays.stream(types)
-			.mapToLong(type -> (nodeCount.get(type) == null) ? 0 : nodeCount.get(type))
+			.map(nodeCount::get)
+			.filter(Objects::nonNull)
+			.mapToInt(AtomicInteger::get)
 			.sum();
 	}
 }

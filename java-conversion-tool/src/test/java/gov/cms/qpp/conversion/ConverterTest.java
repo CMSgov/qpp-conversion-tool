@@ -300,18 +300,18 @@ public class ConverterTest {
 
 		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");
 		transformMethod.setAccessible(true);
-		Integer returnValue = (Integer)transformMethod.invoke(converter);
+		TransformationStatus returnValue = (TransformationStatus) transformMethod.invoke(converter);
 
-		assertThat("Should not have a valid clinical document template id", returnValue, is(2));
+		assertThat("Should not have a valid clinical document template id", returnValue, is(TransformationStatus.NON_RECOVERABLE));
 	}
 
 	@Test
 	public void testJsonCreation() throws IOException {
 		Converter converter = new Converter(XmlUtils.fileToStream(Paths.get("src/test/resources/qrda_bad_denominator.xml")));
 
-		Integer returnValue = converter.transform();
+		TransformationStatus returnValue = converter.transform();
 
-		assertThat("A non-zero return value was expected.", returnValue, is(not(0)));
+		assertThat("A non-zero return value was expected.", returnValue, is(not(TransformationStatus.SUCCESS)));
 
 		InputStream errorResultsStream = converter.getConversionResult();
 		String errorResults = IOUtils.toString(errorResultsStream, StandardCharsets.UTF_8);
@@ -329,10 +329,10 @@ public class ConverterTest {
 
 		//run
 		Converter converter = new Converter(XmlUtils.fileToStream(Paths.get("src/test/resources/qrda_bad_denominator.xml")));
-		Integer returnValue = converter.transform();
+		TransformationStatus returnValue = converter.transform();
 
 		//assert
-		assertThat("A non-zero return value was expected.", returnValue, is(not(0)));
+		assertThat("A failure was expected.", returnValue, is(not(TransformationStatus.SUCCESS)));
 		String expectedExceptionJson = "{ \"exception\": \"JsonProcessingException\" }";
 		InputStream errorResultsStream = converter.getConversionResult();
 		String errorResults = IOUtils.toString(errorResultsStream, StandardCharsets.UTF_8);
