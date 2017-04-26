@@ -41,7 +41,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
-		check(node)
+		thoroughlyCheck(node)
 				.hasChildren(ONE_CHILD_REQUIRED)
 				.childMinimum(ONE_CHILD_REQUIRED, 1,
 						TemplateId.ACI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)

@@ -110,7 +110,7 @@ public class JsonWrapperTest {
 	@Test
 	public void testValidDate() throws Exception {
 		objectObjWrapper.putDate("19690720");
-		assertFalse("should be an object container", ((List) objectObjWrapper.getObject()).isEmpty());
+		assertFalse("should be an object container", ((List<?>) objectObjWrapper.getObject()).isEmpty());
 	}
 
 	@Test
