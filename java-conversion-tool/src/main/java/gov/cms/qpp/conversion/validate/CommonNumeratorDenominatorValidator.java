@@ -3,6 +3,8 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -11,8 +13,8 @@ import java.util.List;
  * Factored out common functionality
  */
 public class CommonNumeratorDenominatorValidator extends NodeValidator {
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(CommonNumeratorDenominatorValidator.class);
 
-	protected static String nodeName;
 	protected static final String EMPTY_MISSING_XML =
 			"ACI %s Node Aggregate is empty or missing";
 	protected static final String INCORRECT_CHILD =
@@ -25,6 +27,8 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 			"This ACI %s Node has too many child Nodes";
 	protected static final String DENOMINATOR_CANNOT_BE_ZERO =
 			"The ACI Denominator's Aggregate Value can not be zero";
+
+	protected String nodeName;
 
 	/**
 	 * internalValidateSameTemplateIdNodes allows for any cross node dependencies
@@ -76,6 +80,8 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 			}
 		} catch (NumberFormatException nfe) {
 			//no validation error required due to this being caught by the Aggregate Count validator
+			DEV_LOG.debug("Exception parsing the integer for a numerator or denominator, but this is OK. "
+				+ "Issue will be caught by Aggregate Count validator.", nfe);
 		}
 	}
 }
