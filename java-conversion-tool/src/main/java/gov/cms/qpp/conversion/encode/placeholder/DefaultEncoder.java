@@ -79,13 +79,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	@Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
-	public static class MeasureReferenceResultsCmsV2Encoder extends DefaultEncoder {
-		public MeasureReferenceResultsCmsV2Encoder() {
-			super("Measure Reference and Results - CMS (V2)");
-		}
-	}
-
 	@Encoder(TemplateId.REPORTING_PARAMETERS_ACT)
 	public static class ReportingParametersActEncoder extends DefaultEncoder {
 
