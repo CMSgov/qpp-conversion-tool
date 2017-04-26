@@ -1,15 +1,18 @@
 package gov.cms.qpp.conversion;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
@@ -30,7 +33,6 @@ import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -41,13 +43,13 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
@@ -57,11 +59,12 @@ import static org.powermock.api.support.membermodification.MemberModifier.stub;
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
 public class ConverterTest {
 
-	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
-
 	@After
 	public void cleanup() throws IOException {
 		Files.deleteIfExists(Paths.get("defaultedNode.qpp.json"));
+		Files.deleteIfExists(Paths.get("defaultedNode.err.json"));
+		Files.deleteIfExists(Paths.get("non-xml-file.err.json"));
+		Files.deleteIfExists(Paths.get("not-a-QRDA-III-file.err.json"));
 	}
 
 	@Test
@@ -97,7 +100,7 @@ public class ConverterTest {
 
 	@Test
 	@PrepareForTest({LoggerFactory.class, Converter.class})
-	public void testInvalidXml() {
+	public void testInvalidXml() throws IOException {
 
 		//set-up
 		mockStatic( LoggerFactory.class );
@@ -110,8 +113,12 @@ public class ConverterTest {
 		Path path = Paths.get("src/test/resources/non-xml-file.xml");
 		new Converter(path).transform();
 
+		Path errOutputPath = Paths.get("non-xml-file.err.json");
+		String errorOutput = new String(Files.readAllBytes(errOutputPath));
+
 		//assert
-		verify(clientLogger).error( eq("The file is not a valid XML document") );
+		verify(clientLogger).error( eq(Converter.NOT_VALID_XML_DOCUMENT) );
+		assertThat("File must contain error message", errorOutput, containsString(Converter.NOT_VALID_XML_DOCUMENT));
 	}
 
 	@Test
@@ -138,7 +145,7 @@ public class ConverterTest {
 				.transform();
 
 		//assert
-		verify(devLogger).error( eq("The file is not a valid XML document"), any(XmlException.class));
+		verify(devLogger).error( eq(Converter.NOT_VALID_XML_DOCUMENT), any(XmlException.class));
 	}
 
 	@Test
@@ -162,40 +169,18 @@ public class ConverterTest {
 				.transform();
 
 		//assert
-		verify(devLogger).error( eq("The file is not a valid XML document"),
+		verify(devLogger).error( eq(Converter.NOT_VALID_XML_DOCUMENT),
 				any(XmlInputFileException.class) );
 	}
 
 	@Test
-	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
+	@PrepareForTest({LoggerFactory.class, Converter.class, Files.class})
 	public void testUnexpectedEncodingError() throws Exception {
 
 		//set-up
-		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn( null );
-
-		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( logger );
-
-		//execute
-		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
-		new Converter(path)
-				.doValidation(false)
-				.doValidation(false)
-				.transform();
-
-		//assert
-		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(NullPointerException.class) );
-	}
-
-	@Test
-	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
-	public void testExceptionOnWriterClose() throws Exception {
-
-		//set-up
-		BufferedWriter writer = mock( BufferedWriter.class );
-		doThrow( new IOException() ).when( writer ).close();
-		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn( writer );
+		mockStatic(Files.class);
+		when(Files.newBufferedWriter(any(Path.class))).thenReturn(null).thenCallRealMethod();
+		when(Files.readAllBytes(any(Path.class))).thenCallRealMethod();
 
 		mockStatic( LoggerFactory.class );
 		Logger devLogger = mock( Logger.class );
@@ -206,7 +191,38 @@ public class ConverterTest {
 		//execute
 		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
 		new Converter(path)
+				.doDefaults(false)
 				.doValidation(false)
+				.transform();
+
+		Path errOutputPath = Paths.get("defaultedNode.err.json");
+		String errorOutput = new String(Files.readAllBytes(errOutputPath));
+
+		//assert
+		verify(devLogger).error( eq(Converter.UNEXPECTED_ERROR), any(NullPointerException.class) );
+		assertThat("File must contain error message", errorOutput, containsString(Converter.UNEXPECTED_ERROR));
+	}
+
+	@Test
+	@PrepareForTest({LoggerFactory.class, Converter.class, Files.class})
+	public void testExceptionOnWriterClose() throws Exception {
+
+		//set-up
+		BufferedWriter writer = mock( BufferedWriter.class );
+		doThrow( new IOException() ).when( writer ).close();
+		mockStatic(Files.class);
+		when(Files.newBufferedWriter(any(Path.class))).thenReturn(writer).thenCallRealMethod();
+
+		mockStatic( LoggerFactory.class );
+		Logger devLogger = mock( Logger.class );
+		Logger clientLogger = mock( Logger.class );
+		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( devLogger );
+		when( LoggerFactory.getLogger(anyString()) ).thenReturn( clientLogger );
+
+		//execute
+		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
+		new Converter(path)
+				.doDefaults(false)
 				.doValidation(false)
 				.transform();
 
@@ -242,28 +258,7 @@ public class ConverterTest {
 	public void testValidationErrorWriterInstantiationNull() throws Exception {
 
 		//set-up
-		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toThrow( null );
-
-		mockStatic( LoggerFactory.class );
-		Logger logger = mock( Logger.class );
-		when( LoggerFactory.getLogger(any(Class.class)) ).thenReturn( logger );
-
-		//execute
-		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
-		new Converter(path).transform();
-
-		//assert
-		verify(logger).error( eq("Unexpected exception occurred during conversion"), any(NullPointerException.class) );
-	}
-
-	@Test
-	@PrepareForTest({LoggerFactory.class, Converter.class, FileWriter.class})
-	public void testExceptionOnWriteValidationErrors() throws Exception {
-
-		//set-up
-		BufferedWriter writer = mock(BufferedWriter.class);
-		doThrow(new IOException()).when(writer).write(any(char[].class), anyInt(), anyInt());
-		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toReturn(writer);
+		stub(method(Files.class, "newBufferedWriter", Path.class, OpenOption.class)).toThrow(new IOException());
 
 		mockStatic(LoggerFactory.class);
 		Logger devLogger = mock(Logger.class);
@@ -276,7 +271,27 @@ public class ConverterTest {
 		new Converter(path).transform();
 
 		//assert
-		verify(devLogger).error(eq("Could not write to error file defaultedNode.err.json"), any(IOException.class));
+		verify(devLogger).error( eq("Could not write to error file defaultedNode.err.json"), any(NullPointerException.class) );
+	}
+
+	@Test
+	@PrepareForTest({LoggerFactory.class, Converter.class})
+	public void testExceptionOnWriteValidationErrors() throws Exception {
+		mockStatic(LoggerFactory.class);
+		Logger devLogger = mock(Logger.class);
+		Logger clientLogger = mock(Logger.class);
+		when(LoggerFactory.getLogger(any(Class.class))).thenReturn(devLogger);
+		when(LoggerFactory.getLogger(anyString())).thenReturn(clientLogger);
+		
+		//execute
+		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
+		
+		Converter converter = spy(new Converter(path));
+		doThrow(new IOException()).when(converter, "writeErrorJson", any(AllErrors.class), any(Writer.class));
+		converter.transform();
+
+		//assert
+		verify(devLogger).error(eq("Could not write to error file defaultedNode.err.json"), any(NullPointerException.class));
 	}
 
 	@Test
@@ -304,5 +319,41 @@ public class ConverterTest {
 		assertThat("The error results must have the source identifier.", errorResults, containsString("sourceIdentifier"));
 		assertThat("The error results must have some error text.", errorResults, containsString("errorText"));
 		assertThat("The error results must have an XPath.", errorResults, containsString("path"));
+	}
+
+	@Test
+	@PrepareForTest({Converter.class, ObjectMapper.class})
+	public void testJsonStreamFailure() throws Exception {
+		//mock
+		whenNew(ObjectMapper.class).withNoArguments().thenThrow(new JsonGenerationException("test exception", (JsonGenerator)null));
+
+		//run
+		Converter converter = new Converter(XmlUtils.fileToStream(Paths.get("src/test/resources/qrda_bad_denominator.xml")));
+		TransformationStatus returnValue = converter.transform();
+
+		//assert
+		assertThat("A failure was expected.", returnValue, is(not(TransformationStatus.SUCCESS)));
+		String expectedExceptionJson = "{ \"exception\": \"JsonProcessingException\" }";
+		InputStream errorResultsStream = converter.getConversionResult();
+		String errorResults = IOUtils.toString(errorResultsStream, StandardCharsets.UTF_8);
+
+		assertThat("An exception creating the JSON should have been thrown resulting in a basic error JSON being returned.",
+			expectedExceptionJson, is(errorResults));
+	}
+
+	@Test
+	public void testNotAValidQrdaIIIFile() throws IOException {
+		Path errOutput = Paths.get("not-a-QRDA-III-file.err.json");
+
+		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
+		new Converter(path)
+				.doDefaults(false)
+				.doValidation(false)
+				.transform();
+
+		String errorContent = new String(Files.readAllBytes(errOutput));
+
+		assertThat("File must contain the error string", errorContent,
+				containsString("The file is not a QRDA-III XML document"));
 	}
 }

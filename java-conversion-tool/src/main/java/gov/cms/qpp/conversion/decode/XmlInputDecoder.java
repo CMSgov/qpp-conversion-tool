@@ -11,6 +11,7 @@ import org.jdom2.xpath.XPathFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -30,9 +31,12 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 * @return Root intermediate format node
 	 */
 	public static Node decodeXml(Element xmlDoc) {
-		XmlInputDecoder xmlDecoder = new QppXmlDecoder();
-		if (xmlDecoder.accepts(xmlDoc)) {
-			return xmlDecoder.decode(xmlDoc);
+		List<XmlInputDecoder> xmlDecoders = Arrays.asList(new QppXmlDecoder());
+
+		for  (XmlInputDecoder decoder : xmlDecoders) {
+			if (decoder.accepts(xmlDoc)) {
+				return decoder.decode(xmlDoc);
+			}
 		}
 
 		Converter.CLIENT_LOG.error("The XML file is an unknown document");
@@ -103,9 +107,9 @@ public abstract class XmlInputDecoder implements InputDecoder, Validatable<Strin
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void setOnNode(Element element, String expressionStr,
-			Consumer consumer, Filter<?> filter, boolean selectOne) {
+					Consumer consumer, Filter<?> filter, boolean selectOne) {
 		XPathExpression<?> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
-		
+
 		if (selectOne) {
 			Optional.ofNullable(expression.evaluateFirst(element)).ifPresent(consumer);
 		} else {

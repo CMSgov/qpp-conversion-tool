@@ -43,7 +43,7 @@ Before you can use the qpp-conversion-tool, you must install and configure the f
 
 ### Getting and using the converter
 
-If you are using a Unix-like OS like Linux or OSX, open a terminal and go to the directory you want the converter tool directory to be created in:
+If you are using a Unix-like OS like Linux or macOS, open a terminal and go to the directory you want the converter tool directory to be created in:
 
 ```shell
 # Clone the GitHub repository:
@@ -76,6 +76,38 @@ cd qpp-conversion-tool
 For the examples below, make sure you're in the `qpp-conversion-tool` directory.
 
 Note: If you are using Windows, replace `./convert.sh` in the examples below with `.\convert.bat`.
+
+### Conversion Help
+```shell
+./convert.sh -h
+```
+
+```
+usage: convert [-d] [-h] [-t <scope1,scope2,...>] [-v]
+    -d,--skipDefaults                        Skip defaulted transformations
+    -h,--help                                This help message
+    -t,--templateScope <scope1,scope2,...>   Comma delimited scope values to
+                                             use for context. Valid values:
+                                             [ACI_AGGREGATE_COUNT,
+                                             ACI_NUMERATOR, ACI_DENOMINATOR,
+                                             ACI_NUMERATOR_DENOMINATOR,
+                                             ACI_SECTION, MEASURE_PERFORMED,
+                                             IA_MEASURE, IA_SECTION,
+                                             REPORTING_PARAMETERS_ACT,
+                                             REPORTING_PARAMETERS_SECTION,
+                                             CLINICAL_DOCUMENT]
+    -v,--skipValidation                      Skip validations
+```
+
+### Output
+If a QRDA-III XML file is successfully converted, a QPP JSON file is created in the current working directory.
+The file name will have the same name as the input file but with the extension `.qpp.json`.
+For example, `valid-QRDA-III.qpp.json`.
+
+When an invalid file is provided to the converter, an error JSON file is created in the current working directory.
+The file name will be the same as the input file but with the extension `.err.json`.
+For example, `not-a-QRDA-III-file.err.json`.  This error file contains descriptions and XPaths that help in identifying the
+errors in the provided input file.
 
 ### Convert a valid file.
 

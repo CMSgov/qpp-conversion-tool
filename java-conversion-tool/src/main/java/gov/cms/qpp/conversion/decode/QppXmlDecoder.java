@@ -1,14 +1,18 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.ConversionEntry;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validations;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.jdom2.Element;
 import org.jdom2.xpath.XPathHelper;
+import org.springframework.core.annotation.AnnotationUtils;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -18,6 +22,18 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
+	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
+	private Collection<TemplateId> scope;
+
+	/**
+	 * Initialize a qpp xml decoder
+	 */
+	public QppXmlDecoder() {
+		Collection<TemplateId> theScope = QrdaScope.getTemplates(ConversionEntry.getScope());
+		if (!theScope.isEmpty()) {
+			this.scope = theScope;
+		}
+	}
 
 	/**
 	 * Decode iterates over the elements to find all child elements
@@ -62,7 +78,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				String templateId = TemplateId.generateTemplateIdString(root, extension);
 				Converter.CLIENT_LOG.debug("templateIdFound:{}", templateId);
 
-				QppXmlDecoder childDecoder = DECODERS.get(templateId);
+				QppXmlDecoder childDecoder = getDecoder(templateId);
 
 				if (null == childDecoder) {
 					continue;
@@ -75,6 +91,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				
 				// the child decoder might require the entire its siblings
 				DecodeResult result = childDecoder.internalDecode(element, childNode);
+				if (result == DecodeResult.TREE_ESCAPED) {
+					return DecodeResult.TREE_FINISHED;
+				}
 
 				parentNode.addChildNode(childNode); // TODO ensure we need to always add
 				currentNode = childNode; // TODO this works for AciSectionDecoder
@@ -87,6 +106,23 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				// TODO might need a child node -- not sure
 				decode(childEl, currentNode);
 			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieve a permitted {@link Decoder}. {@link #scope} is used to determine which decoders are allowable.
+	 *
+	 * @param templateId string representation of a would be decoder's template id
+	 * @return decoder that corresponds to the given template id
+	 */
+	private QppXmlDecoder getDecoder(String templateId) {
+
+		QppXmlDecoder qppDecoder = DECODERS.get(templateId);
+		if (qppDecoder != null) {
+			Decoder decoder = AnnotationUtils.findAnnotation(qppDecoder.getClass(), Decoder.class);
+			return (scope != null && !scope.contains(decoder.value())) ? null : qppDecoder;
 		}
 
 		return null;
@@ -137,7 +173,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			String root = e.getAttributeValue("root");
 			String extension = e.getAttributeValue("extension");
 			String templateId = TemplateId.generateTemplateIdString(root, extension);
-			rootDecoder = DECODERS.get(templateId);
+			rootDecoder = getDecoder(templateId);
 			if (null != rootDecoder) {
 				rootNode.setId(templateId);
 				break;
@@ -172,7 +208,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 									&& containsClinicalDocumentTemplateId(rootElement);
 
 		if (!isValidQrdaFile) {
-			Converter.CLIENT_LOG.error("The file is not a QRDA-III XML document");
+			Converter.CLIENT_LOG.error(NOT_VALID_QRDA_III_FORMAT);
 		}
 		
 		return isValidQrdaFile;
