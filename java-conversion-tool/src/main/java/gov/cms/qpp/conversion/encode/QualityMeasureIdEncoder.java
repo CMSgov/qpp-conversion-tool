@@ -4,6 +4,8 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
+import java.util.List;
+
 /**
  * Encoder to serialize Quality Measure Identifier
  */
@@ -22,6 +24,27 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		wrapper.putString(MEASURE_ID, node.getValue(MEASURE_ID));
+		List<Node> children = node.getChildNodes();
+		JsonWrapper otherWrapper = new JsonWrapper();
+
+		encodeChildren(children, otherWrapper);
+		wrapper.putObject("measurements", otherWrapper);
+	}
+
+	/**
+	 * Encode child nodes.
+	 *
+	 * @param children nodes to encode
+	 * @param wrapper holder for encoded node data
+	 */
+	private void encodeChildren(List<Node> children, JsonWrapper wrapper) {
+		for (Node currentChild : children) {
+			JsonWrapper childWrapper = new JsonWrapper();
+			JsonOutputEncoder childEncoder = ENCODERS.get(currentChild.getId());
+
+			childEncoder.encode(childWrapper, currentChild);
+			wrapper.putObject(childWrapper);
+		}
 	}
 
 }

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.encode.helper.RegistryHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
@@ -38,7 +39,7 @@ public class QualitySectionEncoderTest {
 		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
 
 		Registry<String, JsonOutputEncoder> invalidRegistry = RegistryHelper.makeInvalidRegistry( //This will be the classname of the child encoders
-				"gov.cms.qpp.conversion.encode.placeholder.DefaultEncoder$MeasureDataCmsV2Encoder");
+				"gov.cms.qpp.conversion.encode.MeasureDataEncoder");
 
 		boolean exception = false;
 		RegistryHelper.setEncoderRegistry(invalidRegistry); //Set Registry with missing class

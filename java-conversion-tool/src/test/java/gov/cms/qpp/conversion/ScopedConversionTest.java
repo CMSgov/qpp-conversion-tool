@@ -37,6 +37,48 @@ public class ScopedConversionTest extends BaseTest {
 	}
 
 	@Test
+	public void testScopedV2MeasureSectionConversion() throws IOException {
+		//setup
+		String testSection = TemplateId.MEASURE_SECTION_V2.name();
+
+		//when
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
+		HashMap<String,Object> content = readJson(SUCCESS_FILE);
+
+		//then
+		assertEquals("content should match valid " + testSection + " fixture",
+				FIXTURES.get(testSection), getScoped(content).get(0));
+	}
+
+	@Test
+	public void testScopedCmsV2MeasureReferenceResultsConversion() throws IOException {
+		//setup
+		String testSection = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.name();
+
+		//when
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
+		HashMap<String,Object> content = readJson(SUCCESS_FILE);
+
+		//then
+		assertEquals("content should match valid " + testSection + " fixture",
+				FIXTURES.get(testSection), getScoped(content));
+	}
+
+	@Test
+	public void testScopedV2MeasureDataConversion() throws IOException {
+		//setup
+		String testSection = TemplateId.MEASURE_DATA_CMS_V2.name();
+
+		//when
+		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
+		HashMap<String,Object> content = readJson(SUCCESS_FILE);
+
+		//then
+		assertEquals("content should match valid " + testSection + " fixture",
+				FIXTURES.get(testSection), getScoped(content));
+	}
+
+	@Test
 	public void testScopedAciSectionConversion() throws IOException {
 		//setup
 		String testSection = TemplateId.ACI_SECTION.name();
@@ -191,8 +233,6 @@ public class ScopedConversionTest extends BaseTest {
 		assertEquals("content should match valid " + testSection + " fixture",
 				3, getErrors(content).size());
 	}
-
-
 
 	private List<?> getErrors(HashMap<String,Object> content) {
 		return (List<?>) ((HashMap<String, ?>) ((List<?>) content.get("errorSources")).get(0)).get("validationErrors");
