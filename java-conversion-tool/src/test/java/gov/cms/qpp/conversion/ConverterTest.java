@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -316,6 +319,26 @@ public class ConverterTest {
 		assertThat("The error results must have the source identifier.", errorResults, containsString("sourceIdentifier"));
 		assertThat("The error results must have some error text.", errorResults, containsString("errorText"));
 		assertThat("The error results must have an XPath.", errorResults, containsString("path"));
+	}
+
+	@Test
+	@PrepareForTest({Converter.class, ObjectMapper.class})
+	public void testJsonStreamFailure() throws Exception {
+		//mock
+		whenNew(ObjectMapper.class).withNoArguments().thenThrow(new JsonGenerationException("test exception", (JsonGenerator)null));
+
+		//run
+		Converter converter = new Converter(XmlUtils.fileToStream(Paths.get("src/test/resources/qrda_bad_denominator.xml")));
+		Integer returnValue = converter.transform();
+
+		//assert
+		assertThat("A non-zero return value was expected.", returnValue, is(not(0)));
+		String expectedExceptionJson = "{ \"exception\": \"JsonProcessingException\" }";
+		InputStream errorResultsStream = converter.getConversionResult();
+		String errorResults = IOUtils.toString(errorResultsStream, StandardCharsets.UTF_8);
+
+		assertThat("An exception creating the JSON should have been thrown resulting in a basic error JSON being returned.",
+			expectedExceptionJson, is(errorResults));
 	}
 
 	@Test
