@@ -81,28 +81,11 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	// this one looks like a node that is not necessary
-	@Decoder(TemplateId.MEASURE_SECTION_V2)
-	public static class MeasureSectionV2Decoder extends DefaultDecoder {
-
-		public MeasureSectionV2Decoder() {
-			super("QRDA Category III Measure Section - CMS (V2)");
-		}
-	}
-
 	@Decoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 	public static class AciMeasurePerformedReferenceAndResultsDecoder extends DefaultDecoder {
 
 		public AciMeasurePerformedReferenceAndResultsDecoder() {
 			super("Advancing Care Information Measure Performed Measure Reference and Results");
-		}
-	}
-
-	@Decoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
-	public static class MeasureReferenceResultsCmsV2Decoder extends DefaultDecoder {
-
-		public MeasureReferenceResultsCmsV2Decoder() {
-			super("Measure Reference and Results - CMS (V2)");
 		}
 	}
 

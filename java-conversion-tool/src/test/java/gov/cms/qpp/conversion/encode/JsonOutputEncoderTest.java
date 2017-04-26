@@ -1,9 +1,14 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
+
 import java.util.Iterator;
 import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -54,12 +59,9 @@ public class JsonOutputEncoderTest {
 
 	@Test
 	public void testAddValidationByEncodeException() {
-		assertFalse(joe.validations().iterator().hasNext());
-
 		joe.encode((JsonWrapper) null, (Node) null); // the values are not used in the test
 
-		Iterator<String> validations = joe.validations().iterator();
-		assertTrue(validations.hasNext());
-		assertEquals("id - thrown", validations.next());
+		List<ValidationError> validationErrors = joe.getValidationErrors();
+		assertThat("Should have one error message", validationErrors, hasSize(1));
 	}
 }

@@ -1,19 +1,18 @@
 package gov.cms.qpp.conversion.encode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import gov.cms.qpp.conversion.encode.helper.RegistryHelper;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.PrintStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import gov.cms.qpp.conversion.model.*;
-import org.apache.commons.io.output.NullOutputStream;
-import org.junit.Before;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentEncoderTest {
 
@@ -217,13 +216,14 @@ public class ClinicalDocumentEncoderTest {
 	@Test
 	public void testInvalidEncoder()throws Exception {
 		boolean exception = false;
-		Registry<String, JsonOutputEncoder> invalidRegistry = makeInvalidRegistry();
+		Registry<String, JsonOutputEncoder> invalidRegistry =
+				RegistryHelper.makeInvalidRegistry("gov.cms.qpp.conversion.encode.AciSectionEncoder");
 		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
 
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 
-		setEncoderRegistry(invalidRegistry); //Set Registry with missing class
+		RegistryHelper.setEncoderRegistry(invalidRegistry); //Set Registry with missing class
 		try {
 			clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 		} catch (EncodeException e) {
@@ -231,30 +231,9 @@ public class ClinicalDocumentEncoderTest {
 		}
 		assertThat("Expecting Encode Exception", exception, is(true));
 
-		setEncoderRegistry(validRegistry); //Restore Registry
+		RegistryHelper.setEncoderRegistry(validRegistry); //Restore Registry
 	}
 
-	private void setEncoderRegistry(Registry<String, JsonOutputEncoder> newRegistry)throws Exception  {
-		final Field field = QppOutputEncoder.class.getDeclaredField("ENCODERS");
-		field.setAccessible(true);
-		Field modifiersField = Field.class.getDeclaredField("modifiers");
-		modifiersField.setAccessible(true);
-		modifiersField.setInt(field, field.getModifiers()& ~Modifier.FINAL );
-		field.set(null, newRegistry);
 
-	}
-
-	private Registry<String, JsonOutputEncoder> makeInvalidRegistry() {
-		return new Registry<String, JsonOutputEncoder>(Encoder.class) {
-			@Override
-			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
-				if ("gov.cms.qpp.conversion.encode.AciSectionEncoder".equals(className)) {
-					System.setErr(new PrintStream(NullOutputStream.NULL_OUTPUT_STREAM));
-					throw new ClassNotFoundException();
-				}
-				return Class.forName(className);
-			}
-		};
-	}
 }
 

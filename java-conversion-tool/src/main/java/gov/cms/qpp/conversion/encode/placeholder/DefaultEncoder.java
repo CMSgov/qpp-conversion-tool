@@ -72,25 +72,10 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	// this one looks like a node that is not necessary
-	@Encoder(TemplateId.MEASURE_SECTION_V2)
-	public static class MeasureSectionV2Encoder extends DefaultEncoder {
-		public MeasureSectionV2Encoder() {
-			super("QRDA Category III Measure Section - CMS (V2)");
-		}
-	}
-
 	@Encoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 	public static class AciMeasurePerformedReferenceAndResultsEncoder extends DefaultEncoder {
 		public AciMeasurePerformedReferenceAndResultsEncoder() {
 			super("Advancing Care Information Measure Performed Measure Reference and Results");
-		}
-	}
-
-	@Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
-	public static class MeasureReferenceResultsCmsV2Encoder extends DefaultEncoder {
-		public MeasureReferenceResultsCmsV2Encoder() {
-			super("Measure Reference and Results - CMS (V2)");
 		}
 	}
 
