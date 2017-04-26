@@ -95,9 +95,6 @@ public class AggregateCountDecoderTest {
 
         assertThat("Node has one element", node.getChildNodes(), is(hasSize(1)));
 
-        assertThat("DefaultDecoderFor has measure data",
-                node.getValue("DefaultDecoderFor"), is("Measure Data - CMS (V2)"));
-
         assertThat("Node has aggregate count",
                 node.getChildNodes().get(0).getValue("aggregateCount"),
                 is("400"));

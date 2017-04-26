@@ -83,6 +83,16 @@ public class Node {
 	}
 
 	/**
+	 * Check if a value has been assigned to the given key.
+	 *
+	 * @param name key
+	 * @return corresponding value
+	 */
+	public boolean hasValue(String name) {
+		return data.containsKey(name);
+	}
+
+	/**
 	 * setId locates the appropriate TemplateId and sets the Node Type
 	 *
 	 * @param templateId String from the parsed xml fragment
