@@ -5,7 +5,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
 import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.ErrorSource;
 import org.junit.After;
 import org.junit.Test;
 
@@ -14,9 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static gov.cms.qpp.util.JsonHelper.readJson;
 import static org.hamcrest.CoreMatchers.is;
