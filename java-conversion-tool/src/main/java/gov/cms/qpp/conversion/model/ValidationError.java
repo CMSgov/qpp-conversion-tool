@@ -53,14 +53,6 @@ public class ValidationError {
 		return path;
 	}
 
-	public void setErrorText(String errorText) {
-		this.errorText = errorText;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
 	/**
 	 * @return A string representation.
 	 */
