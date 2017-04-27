@@ -8,6 +8,7 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -17,7 +18,9 @@ import java.util.function.Consumer;
  */
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataDecoder extends QppXmlDecoder {
-	private static final List<String> MEASURES = Collections.singletonList("DENOM");
+	private static final List<String> MEASURES = Arrays.asList(
+			"DENEX", "DENOM", "DENEXCEP", "IPOP", "NUMER");
+
 	public static final String MEASURE_TYPE = "type";
 
 
