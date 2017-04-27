@@ -1,16 +1,14 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
-import gov.cms.qpp.conversion.model.Validator;
 
 import java.util.List;
 
 /**
  * Validates IA Measure Performed Value - expects a  Y or N
  */
-@Validator(templateId = TemplateId.MEASURE_DATA_CMS_V2, required = true)
+//@Validator(templateId = TemplateId.MEASURE_DATA_CMS_V2, required = true)
 public class MeasureDataValidator extends NodeValidator {
 
 	public static final String TYPE_ERROR = "Measure performed value is required and must be either a Y or an N.";
