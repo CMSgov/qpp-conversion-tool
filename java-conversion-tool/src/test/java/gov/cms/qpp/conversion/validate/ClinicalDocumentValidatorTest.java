@@ -290,12 +290,22 @@ public class ClinicalDocumentValidatorTest {
 		HashMap<String, Object> response = readJson(CLINICAL_DOCUMENT_ERROR_FILE);
 		List<?> errors = getErrors(response);
 
-		assertThat("Must contain the error", errors, hasSize(3));
+		assertThat("Must contain the error", getErrorText((Map<String, ?>)errors.get(0)),
+				is(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
+		assertThat("Must contain the error", getErrorText((Map<String, ?>)errors.get(1)),
+				is(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
+		assertThat("Must contain the error", getErrorText((Map<String, ?>)errors.get(2)),
+				is(ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
 	}
 
 	private List<?> getErrors(Map<String,Object> content) {
 		return (List<?>) ((Map<String, ?>) ((List<?>) content.get("errorSources")).get(0)).get("validationErrors");
 	}
+
+	private String getErrorText(Map<String, ?> error) {
+		return (String)error.get("errorText");
+	}
+
 
 	private Node createValidClinicalDocumentNode() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
