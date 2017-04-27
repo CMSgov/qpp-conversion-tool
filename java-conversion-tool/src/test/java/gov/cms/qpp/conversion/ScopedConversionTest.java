@@ -259,7 +259,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				8, getErrors(content).size());
+				5, getErrors(content).size());
 	}
 
 	/**
@@ -278,7 +278,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				7, getErrors(content).size());
+				4, getErrors(content).size());
 	}
 
 	/**
