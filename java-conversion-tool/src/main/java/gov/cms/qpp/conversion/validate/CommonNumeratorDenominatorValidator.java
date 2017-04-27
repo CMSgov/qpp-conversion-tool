@@ -3,6 +3,8 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -11,20 +13,22 @@ import java.util.List;
  * Factored out common functionality
  */
 public class CommonNumeratorDenominatorValidator extends NodeValidator {
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(CommonNumeratorDenominatorValidator.class);
 
-	protected static String nodeName;
 	protected static final String EMPTY_MISSING_XML =
-			"ACI " + nodeName + " Node Aggregate is empty or missing";
+			"ACI %s Node Aggregate is empty or missing";
 	protected static final String INCORRECT_CHILD =
-			"This " + nodeName + " Node does not have an Aggregate Count Node";
+			"This %s Node does not have an Aggregate Count Node";
 	protected static final String INVALID_VALUE =
-			"This ACI " + nodeName + " Node Aggregate Value has an invalid value %s";
+			"This ACI %s Node Aggregate Value has an invalid value %s";
 	protected static final String NO_CHILDREN =
-			"This ACI " + nodeName + " Node does not have any child Nodes";
+			"This ACI %s Node does not have any child Nodes";
 	protected static final String TOO_MANY_CHILDREN =
-			"This ACI " + nodeName + " Node has too many child Nodes";
+			"This ACI %s Node has too many child Nodes";
 	protected static final String DENOMINATOR_CANNOT_BE_ZERO =
-			"The ACI Denominator Aggregate Value can not be zero %s";
+			"The ACI Denominator's Aggregate Value can not be zero";
+
+	protected String nodeName;
 
 	/**
 	 * internalValidateSameTemplateIdNodes allows for any cross node dependencies
@@ -45,22 +49,22 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		if (node == null) {
-			this.addValidationError(new ValidationError(EMPTY_MISSING_XML));
+			this.addValidationError(new ValidationError(String.format(EMPTY_MISSING_XML, nodeName)));
 			return;
 		}
 		List<Node> children = node.getChildNodes();
 
 		if (children.isEmpty()) {
-			this.addValidationError(new ValidationError(NO_CHILDREN, node.getPath()));
+			this.addValidationError(new ValidationError(String.format(NO_CHILDREN, nodeName), node.getPath()));
 			return;
 		}
 		Node child = children.get(0);
 		if (TemplateId.ACI_AGGREGATE_COUNT != child.getType()) {
-			this.addValidationError(new ValidationError(INCORRECT_CHILD, node.getPath()));
+			this.addValidationError(new ValidationError(String.format(INCORRECT_CHILD, nodeName), node.getPath()));
 			return;
 		}
 		if (children.size() > 1) {
-			this.addValidationError(new ValidationError(TOO_MANY_CHILDREN, node.getPath()));
+			this.addValidationError(new ValidationError(String.format(TOO_MANY_CHILDREN, nodeName), node.getPath()));
 			return;
 		}
 		String value = child.getValue("aggregateCount");
@@ -68,15 +72,16 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 			int val = Integer.parseInt(value);
 			if (val < 0) {
 				this.addValidationError(
-						new ValidationError(String.format(INVALID_VALUE, value), child.getPath()));
+						new ValidationError(String.format(INVALID_VALUE, nodeName, value), child.getPath()));
 			}
 			if (AciDenominatorValidator.DENOMINATOR_NAME.equals(nodeName) && val == 0) {
 				this.addValidationError(
-						new ValidationError(String.format(DENOMINATOR_CANNOT_BE_ZERO, value), child.getPath()));
+						new ValidationError(DENOMINATOR_CANNOT_BE_ZERO, child.getPath()));
 			}
 		} catch (NumberFormatException nfe) {
-			this.addValidationError(
-					new ValidationError(String.format(INVALID_VALUE, value)));
+			//no validation error required due to this being caught by the Aggregate Count validator
+			DEV_LOG.debug("Exception parsing the integer for a numerator or denominator, but this is OK. "
+				+ "Issue will be caught by Aggregate Count validator.", nfe);
 		}
 	}
 }
