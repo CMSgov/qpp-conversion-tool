@@ -24,6 +24,8 @@ public class QualityMeasureIdEncoderTest {
 
 	@Before
 	public void setUp() {
+		String type = "type";
+
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
 		qualityMeasureId.putValue("measureId", "Measure Id Value");
 
@@ -32,19 +34,19 @@ public class QualityMeasureIdEncoderTest {
 		aggregateCountNode.putValue("aggregateCount", "600");
 
 		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
-		populationNode.putValue("type", "IPOP");
+		populationNode.putValue(type, "IPOP");
 		populationNode.addChildNode(aggregateCountNode);
 
 		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
-		denomExclusionNode.putValue("type", "DENEX");
+		denomExclusionNode.putValue(type, "DENEX");
 		denomExclusionNode.addChildNode(aggregateCountNode);
 
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
-		numeratorNode.putValue("type", "NUMER");
+		numeratorNode.putValue(type, "NUMER");
 		numeratorNode.addChildNode(aggregateCountNode);
 
 		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
-		denominatorNode.putValue("type", "DENOM");
+		denominatorNode.putValue(type, "DENOM");
 		denominatorNode.addChildNode(aggregateCountNode);
 
 		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode);
