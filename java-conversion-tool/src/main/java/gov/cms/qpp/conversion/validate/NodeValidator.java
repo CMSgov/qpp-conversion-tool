@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.ValidationError;
+import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public abstract class NodeValidator {
 
 	/**
 	 * Validates a single {@link gov.cms.qpp.conversion.model.Node} and returns the list
-	 * of {@link gov.cms.qpp.conversion.model.ValidationError}s for that node.
+	 * of {@link ValidationError}s for that node.
 	 *
 	 * @param node The node to validate.
 	 * @return List of errors determined for the node paramter.
@@ -59,7 +59,7 @@ public abstract class NodeValidator {
 	}
 
 	/**
-	 * Used by child classes to add a {@link gov.cms.qpp.conversion.model.ValidationError}.
+	 * Used by child classes to add a {@link ValidationError}.
 	 *
 	 * @param newError The error to add to the list.
 	 */

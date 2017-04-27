@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.ValidationError;
+import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.Validations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

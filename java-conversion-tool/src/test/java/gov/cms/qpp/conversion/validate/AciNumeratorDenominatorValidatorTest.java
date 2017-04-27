@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import com.fasterxml.jackson.core.JsonParseException;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.ValidationError;
+import gov.cms.qpp.conversion.model.error.ValidationError;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
