@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.ValidationError;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -52,13 +53,12 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 		JsonWrapper childWrapper = new JsonWrapper();
 		for (Node currentChild : childMapByTemplateId.values()) {
 
-			String templateId = currentChild.getId();
 			JsonOutputEncoder childEncoder = ENCODERS.get(currentChild.getId());
 
-			if (childEncoder == null) {
-				addValidation(templateId, "Failed to find an encoder");
-			} else {
+			if (childEncoder != null) {
 				childEncoder.encode(childWrapper, currentChild);
+			} else {
+				addValidationError(new ValidationError("Failed to find an encoder", currentChild.getPath()));
 			}
 		}
 

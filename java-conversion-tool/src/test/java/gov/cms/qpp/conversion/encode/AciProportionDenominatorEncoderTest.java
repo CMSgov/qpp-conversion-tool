@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validations;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +33,6 @@ public class AciProportionDenominatorEncoderTest {
 		nodes.add(aciProportionDenominatorNode);
 
 		json = new JsonWrapper();
-		Validations.init();
 	}
 
 	@Test
