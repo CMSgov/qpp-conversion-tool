@@ -6,6 +6,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -15,23 +16,53 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertNotNull;
 
 public class MeasureDataDecoderTest extends BaseTest {
 	private static String happy;
+	private Node placeholder;
 
 	@BeforeClass
 	public static void setup() throws IOException {
 		happy = getFixture("measureDataHappy.xml");
 	}
 
-	@Test
-	public void testDecodeOfMeasureData() throws XmlException {
+	@Before
+	public void before() throws XmlException {
 		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder();
-		Node placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
-		Node measure =  placeholder.getChildNodes().get(0);
+		placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
+	}
 
-		assertThat("Should have a 'DENOM' measure",
-				measure.getValue(MEASURE_TYPE), is("DENOM"));
+	@Test
+	public void testDecodeOfDenomMeasureData() throws XmlException {
+		sharedTest("DENOM");
+	}
+
+	@Test
+	public void testDecodeOfNumerMeasureData() throws XmlException {
+		sharedTest("NUMER");
+	}
+
+	@Test
+	public void testDecodeOfDenexMeasureData() throws XmlException {
+		sharedTest("DENEX");
+	}
+
+	@Test
+	public void testDecodeOfDenexcepMeasureData() throws XmlException {
+		sharedTest("DENEXCEP");
+	}
+
+	@Test
+	public void testDecodeOfIpopMeasureData() throws XmlException {
+		sharedTest("IPOP");
+	}
+
+	private void sharedTest(String type) {
+		Node measure =  placeholder.findChildNode( node -> node.getValue(MEASURE_TYPE).equals(type));
+
+		String message = String.format("Should have a %s value", type);
+		assertNotNull(message, measure);
 		assertThat("Should have an aggregate count child",
 				measure.getChildNodes().get(0).getType(), is(TemplateId.ACI_AGGREGATE_COUNT));
 	}
@@ -41,7 +72,7 @@ public class MeasureDataDecoderTest extends BaseTest {
 		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder();
 		Node placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
 
-		assertThat("Should have one child", placeholder.getChildNodes(), hasSize(1));
+		assertThat("Should have five children", placeholder.getChildNodes(), hasSize(5));
 	}
 
 }
