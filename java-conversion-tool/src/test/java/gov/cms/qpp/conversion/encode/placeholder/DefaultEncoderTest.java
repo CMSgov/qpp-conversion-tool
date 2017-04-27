@@ -1,32 +1,18 @@
 package gov.cms.qpp.conversion.encode.placeholder;
 
-import java.nio.charset.Charset;
-
-import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
-
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.apache.commons.io.IOUtils;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
+
+import java.nio.charset.Charset;
 
 public class DefaultEncoderTest {
-
-	@Before
-	public void setup() throws Exception {
-		Validations.init();
-	}
-	
-	@After
-	public void teardown() throws Exception {
-		Validations.clear();
-	}
 	
 	@Test
 	public void encodeAllNodes() throws Exception {
