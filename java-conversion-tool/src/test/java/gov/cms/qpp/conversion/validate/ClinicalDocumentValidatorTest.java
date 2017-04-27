@@ -1,10 +1,16 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
+import org.junit.After;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,6 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentValidatorTest {
@@ -19,6 +26,12 @@ public class ClinicalDocumentValidatorTest {
 	private static final String EXPECTED_TEXT = "Clinical Document Node is required";
 	private static final String EXPECTED_ONE_ALLOWED = "Only one Clinical Document Node is allowed";
 	private static final String EXPECTED_NO_SECTION = "Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
+	private static final String clinicalDocumentErrorFile = "angerClinicalDocumentValidations.err.json";
+
+	@After
+	public void cleanup() throws IOException {
+		Files.deleteIfExists(Paths.get(clinicalDocumentErrorFile));
+	}
 
 	@Test
 	public void testClinicalDocumentPresent() {
@@ -263,6 +276,21 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("Should have no validation errors", errors, hasSize(0));
+	}
+
+	@Test
+	public void testClinicalDocumentValidationParsesMultipleErrors() throws IOException {
+		//setup
+		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
+		Path errOutput = Paths.get(clinicalDocumentErrorFile);
+
+		//execute
+		new Converter(path).transform();
+		String errorContent = new String(Files.readAllBytes(errOutput));
+
+		assertThat("Must contain the error", errorContent, containsString(ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
+		assertThat("Must contain the error", errorContent, containsString(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
+		assertThat("Must contain the error", errorContent, containsString(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
 	}
 
 	private Node createValidClinicalDocumentNode() {
