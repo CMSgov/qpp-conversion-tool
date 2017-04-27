@@ -23,6 +23,7 @@ public class CheckerTest {
 	private static final String OTHER_ERROR_MESSAGE = "some other error message";
 
 	private List<ValidationError> validationErrors;
+
 	@Before
 	public void beforeEach() {
 		validationErrors = new ArrayList<>();

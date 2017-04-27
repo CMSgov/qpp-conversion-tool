@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.ValidationError;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Node;

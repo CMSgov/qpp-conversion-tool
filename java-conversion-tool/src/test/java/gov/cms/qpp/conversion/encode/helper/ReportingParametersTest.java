@@ -24,7 +24,7 @@ public class ReportingParametersTest {
 	@Test
 	public void getReportingNodeBothValid() {
 
-		Map<String, Node> childMapByTemplateId = new HashMap();
+		Map<String, Node> childMapByTemplateId = new HashMap<>();
 		Node reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
 		Node reportingActNode = new Node(reportingParameterNode, TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
 		reportingParameterNode.addChildNode(reportingActNode);
@@ -53,7 +53,7 @@ public class ReportingParametersTest {
 	@Test
 	public void getReportingNodeEndMissing() {
 
-		Map<String, Node> childMapByTemplateId = new HashMap();
+		Map<String, Node> childMapByTemplateId = new HashMap<>();
 		Node reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
 		Node reportingActNode = new Node(reportingParameterNode, TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
 		reportingParameterNode.addChildNode(reportingActNode);

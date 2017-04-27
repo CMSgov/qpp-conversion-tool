@@ -28,11 +28,11 @@ public class ConverterExplicitTest {
 	public void testStreamConversion() throws IOException {
 		Path path = Paths.get(good);
 		Converter converter = new Converter(Files.newInputStream(path));
-		Integer status = converter.transform();
+		TransformationStatus status = converter.transform();
 		String postName = converter.getOutputFile("meep").toString();
 		InputStream result = converter.getConversionResult();
 
-		assertEquals("no problems", 0, status.intValue());
+		assertEquals("no problems", status, TransformationStatus.SUCCESS);
 		assertNotNull("the conversion has a result", result);
 		assertEquals("expected conversion output name", "meep.qpp.json", postName);
 	}
@@ -41,11 +41,11 @@ public class ConverterExplicitTest {
 	public void testStreamConversionError() throws IOException {
 		Path path = Paths.get(ugly);
 		Converter converter = new Converter(Files.newInputStream(path));
-		Integer status = converter.transform();
+		TransformationStatus status = converter.transform();
 		String postName = converter.getOutputFile("meep").toString();
 		InputStream result = converter.getConversionResult();
 
-		assertEquals("transformation errors", status.intValue(), 1);
+		assertEquals("transformation errors", status, TransformationStatus.ERROR);
 		assertNotNull("the conversion has a result", result);
 		assertEquals("expected conversion output name", "meep.err.json", postName);
 	}
@@ -54,9 +54,9 @@ public class ConverterExplicitTest {
 	public void testStreamConversionNonRecoverable() throws IOException {
 		Path path = Paths.get(bad);
 		Converter converter = new Converter(Files.newInputStream(path));
-		Integer status = converter.transform();
+		TransformationStatus status = converter.transform();
 
-		assertEquals("can't cope", status.intValue(), 2);
+		assertEquals("can't cope", status, TransformationStatus.NON_RECOVERABLE);
 	}
 
 	@Test(expected = XmlInputFileException.class)
