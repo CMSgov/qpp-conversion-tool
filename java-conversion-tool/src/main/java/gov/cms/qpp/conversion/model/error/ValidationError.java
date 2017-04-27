@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.model;
+package gov.cms.qpp.conversion.model.error;
 
 /**
  * Holds the error information from Validators.
