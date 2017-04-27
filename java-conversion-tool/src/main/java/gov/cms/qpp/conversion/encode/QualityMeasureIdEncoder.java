@@ -25,8 +25,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		wrapper.putString(MEASURE_ID, node.getValue(MEASURE_ID));
 		List<Node> children = node.getChildNodes();
-		JsonWrapper otherWrapper = new JsonWrapper();
-
 		encodeChildren(children, wrapper);
 	}
 
