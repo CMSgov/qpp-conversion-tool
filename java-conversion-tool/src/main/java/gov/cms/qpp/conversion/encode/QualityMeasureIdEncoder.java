@@ -34,15 +34,23 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the Quality Measures
 	 */
 	private void encodeChildren(JsonWrapper wrapper, Node parentNode) throws EncodeException {
-		Node populationNode = parentNode.findChildNode(n -> n.getValue("type").equals("IPOP"));
-		Node denomExclusionNode = parentNode.findChildNode(n -> n.getValue("type").equals("DENEX"));
-		Node numeratorNode = parentNode.findChildNode(n -> n.getValue("type").equals("NUMER"));
-		Node denominatorNode = parentNode.findChildNode(n -> n.getValue("type").equals("DENOM"));
+		JsonWrapper childWrapper = new JsonWrapper();
+		String type = "type";
+		String aggregateCount = "aggregateCount";
+
+		Node populationNode = parentNode.findChildNode(n -> n.getValue(type).equals("IPOP"));
+		Node numeratorNode = parentNode.findChildNode(n -> n.getValue(type).equals("NUMER"));
+		Node denomExclusionNode = parentNode.findChildNode(n -> n.getValue(type).equals("DENEX"));
+		Node denominatorNode = parentNode.findChildNode(n -> n.getValue(type).equals("DENOM"));
 		String performanceNotMet = calculatePerformanceNotMet(denominatorNode, denomExclusionNode);
 
-		wrapper.putInteger("populationTotal", populationNode.getChildNodes().get(0).getValue("aggregateCount"));
-		wrapper.putInteger("performanceMet", numeratorNode.getChildNodes().get(0).getValue("aggregateCount"));
-		wrapper.putInteger("performanceNotMet", performanceNotMet);
+		childWrapper.putBoolean("isEndToEndReported", "true");
+		childWrapper.putInteger("populationTotal", populationNode.getChildNodes().get(0).getValue(aggregateCount));
+		childWrapper.putInteger("performanceMet", numeratorNode.getChildNodes().get(0).getValue(aggregateCount));
+		childWrapper.putInteger("performanceExclusion", denomExclusionNode.getChildNodes().get(0).getValue(aggregateCount));
+		childWrapper.putInteger("performanceNotMet", performanceNotMet);
+
+		wrapper.putObject("value", childWrapper);
 	}
 
 	/**
