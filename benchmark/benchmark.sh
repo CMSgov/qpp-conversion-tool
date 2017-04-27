@@ -51,13 +51,14 @@ mv "${CSV}.copy" $CSV
 while read benchmark mode threads samples score scoreErr unit
 do
   if [[ "$mode" = "thrpt" && $(echo "$score < $THROUGHPUT" | bc -l) > 0 ]] ; then
-    echo "Failed throughput benchmark. $score < $THROUGHPUT"
+    >&2 echo "Failed throughput benchmark. $score < $THROUGHPUT"
     exit 2
   fi
 
   if [[ "$mode" = "avgt" && $(echo "$score > $AVERAGE_TIME" | bc -l) > 0 ]] ; then
-    echo "Failed average time benchmark. $score > $AVERAGE_TIME"
+    >&2 echo "Failed average time benchmark. $score > $AVERAGE_TIME"
     exit 3
   fi
 done < $CSV
 IFS=$OLD_IFS
+
