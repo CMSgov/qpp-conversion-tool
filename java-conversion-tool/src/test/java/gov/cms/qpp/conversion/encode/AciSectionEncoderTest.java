@@ -2,14 +2,14 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validations;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class AciSectionEncoderTest {
@@ -60,15 +60,7 @@ public class AciSectionEncoderTest {
 		aciSectionNode = new Node(ACI_SECTION_ID);
 		aciSectionNode.putValue(CATEGORY, ACI);
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
-
-		Validations.init();
 	}
-
-	@After
-	public void tearDown() {
-		Validations.clear();
-	}
-
 
 	@Test
 	public void testInternalEncode() throws EncodeException {
@@ -97,8 +89,8 @@ public class AciSectionEncoderTest {
 		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder();
 		aciSectionEncoder.internalEncode(testWrapper, aciSectionNode);
 
-		assertThat("Must have validation error.", aciSectionEncoder.getValidationsById(invalidMeasureNode), is(not(nullValue())));
-		assertThat("Must be correct validation error", aciSectionEncoder.getValidationsById(invalidMeasureNode).get(0),
+		assertThat("Must have validation error.", aciSectionEncoder.getValidationErrors(), is(not(nullValue())));
+		assertThat("Must be correct validation error", aciSectionEncoder.getValidationErrors().get(0).getErrorText(),
 				is("Failed to find an AciSectionEncoder"));
 	}
 }
