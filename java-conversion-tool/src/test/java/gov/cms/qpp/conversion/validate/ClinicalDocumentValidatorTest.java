@@ -290,6 +290,8 @@ public class ClinicalDocumentValidatorTest {
 		HashMap<String, Object> response = readJson(CLINICAL_DOCUMENT_ERROR_FILE);
 		List<?> errors = getErrors(response);
 
+		assertThat("Must have 3 errors", errors, hasSize(3));
+
 		assertThat("Must contain the error", getErrorText((Map<String, ?>)errors.get(0)),
 				is(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
 		assertThat("Must contain the error", getErrorText((Map<String, ?>)errors.get(1)),
