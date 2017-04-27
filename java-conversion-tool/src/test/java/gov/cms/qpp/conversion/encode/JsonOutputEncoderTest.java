@@ -2,19 +2,15 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.ValidationError;
-import gov.cms.qpp.conversion.model.Validations;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.Iterator;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import org.junit.Before;
-import org.junit.Test;
 
 public class JsonOutputEncoderTest {
 
@@ -30,31 +26,30 @@ public class JsonOutputEncoderTest {
 				throw ee;
 			}
 		};
-		Validations.init();
 	}
 
 	@Test
 	public void testAddValidationAndGetValidations() {
-		assertFalse(joe.validations().iterator().hasNext());
-		joe.addValidation("id", new EncodeException("error", new RuntimeException("test")));
-		joe.addValidation("id", "another");
-		Iterator<String> validations = joe.validations().iterator();
-		assertTrue(validations.hasNext());
-		assertEquals("id - error", validations.next());
-		assertEquals("id - another", validations.next());
+		assertEquals(0, joe.getValidationErrors().size());
+		joe.addValidationError(new ValidationError("error"));
+		joe.addValidationError(new ValidationError("another"));
+		List<ValidationError> validations = joe.getValidationErrors();
+		assertEquals(2, validations.size());
+		assertEquals("error", validations.get(0).getErrorText());
+		assertEquals("another", validations.get(1).getErrorText());
 	}
 
 	@Test
 	public void testAddValidationAndGetValidationById() {
-		List<String> validations = joe.getValidationsById("id");
-		assertEquals(null, validations);
+		List<ValidationError> validations = joe.getValidationErrors();
+		assertEquals(0, validations.size());
 
-		joe.addValidation("id", new EncodeException("err", new RuntimeException("test")));
+		joe.addValidationError(new ValidationError("err"));
 
-		validations = joe.getValidationsById("id");
+		validations = joe.getValidationErrors();
 		assertNotNull(validations);
 		assertEquals(1, validations.size());
-		assertEquals("err", validations.get(0));
+		assertEquals("err", validations.get(0).getErrorText());
 	}
 
 	@Test

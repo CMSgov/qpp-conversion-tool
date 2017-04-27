@@ -12,7 +12,6 @@ import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.ValidationError;
-import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.ErrorSource;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
@@ -213,7 +212,6 @@ public class Converter {
 			String exceptionJson = "{ \"exception\": \"JsonProcessingException\" }";
 			return new ByteArrayInputStream(exceptionJson.getBytes());
 		}
-		Validations.clear();
 		return new ByteArrayInputStream(errors);
 	}
 
@@ -234,8 +232,6 @@ public class Converter {
 			final String notWriteErrorFile = MessageFormat.format("Could not write to error file {0}", outFile);
 			DEV_LOG.error(notWriteErrorFile, exception);
 			CLIENT_LOG.error(notWriteErrorFile);
-		} finally {
-			Validations.clear();
 		}
 	}
 
@@ -303,8 +299,6 @@ public class Converter {
 			return inputStream;
 		} catch (EncodeException e) {
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
-		} finally {
-			Validations.clear();
 		}
 	}
 
@@ -325,8 +319,6 @@ public class Converter {
 			validationErrors.addAll(encoder.getValidationErrors());
 		} catch (IOException | EncodeException e) { // coverage ignore candidate
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
-		} finally {
-			Validations.clear();
 		}
 	}
 

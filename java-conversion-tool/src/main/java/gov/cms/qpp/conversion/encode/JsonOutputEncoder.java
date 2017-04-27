@@ -1,9 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.ValidationError;
-import gov.cms.qpp.conversion.model.Validations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,15 +18,13 @@ import java.util.List;
  * @author Scott Fradkin
  *
  */
-public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<String, String> {
+public abstract class JsonOutputEncoder implements OutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(JsonOutputEncoder.class);
 	private List<Node> nodes;
 	private List<ValidationError> validationErrors = new ArrayList<>();
 
 	@Override
 	public void encode(Writer writer) throws EncodeException {
-		Validations.init();
-
 		try {
 			JsonWrapper wrapper = new JsonWrapper();
 			for (Node curNode : nodes) {
@@ -52,8 +48,6 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 
 	@Override
 	public InputStream encode() throws EncodeException {
-		Validations.init();
-
 		JsonWrapper wrapper = new JsonWrapper();
 		for (Node curNode : nodes) {
 			encode(wrapper, curNode);
@@ -67,25 +61,6 @@ public abstract class JsonOutputEncoder implements OutputEncoder, Validatable<St
 
 	public List<ValidationError> getValidationErrors() {
 		return this.validationErrors;
-	}
-
-	@Override
-	public Iterable<String> validations() {
-		return Validations.values();
-	}
-
-	@Override
-	public List<String> getValidationsById(String templateId) {
-		return Validations.getValidationsById(templateId);
-	}
-
-	@Override
-	public void addValidation(String templateId, String validation) {
-		Validations.addValidation(templateId, validation);
-	}
-
-	public void addValidation(String templateId, EncodeException e) {
-		Validations.addValidation(templateId, e.getMessage());
 	}
 
 	public void setNodes(List<Node> someNodes) {

@@ -6,7 +6,6 @@ import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.jdom2.Element;
 import org.jdom2.xpath.XPathHelper;
@@ -148,7 +147,6 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		} else if (result == DecodeResult.TREE_CONTINUE) {
 			decode(childElement, childNode);
 		} else if (result == DecodeResult.ERROR) {
-			addValidation(childNode.getId(), "Failed to decode.");
 			Converter.CLIENT_LOG.error("Failed to decode templateId {} ", childNode.getId());
 		} else {
 			Converter.CLIENT_LOG.error("We need to define a default case. Could be TreeContinue?");
@@ -246,37 +244,5 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		return DecodeResult.NO_ACTION;
-	}
-
-	/**
-	 * Retrieves all validations
-	 *
-	 * @return validations
-	 */
-	@Override
-	public Iterable<String> validations() {
-		return Validations.values();
-	}
-
-	/**
-	 * Retrieves all validations for a specific template id
-	 *
-	 * @param templateId Identification of Element
-	 * @return validations
-	 */
-	@Override
-	public List<String> getValidationsById(String templateId) {
-		return Validations.getValidationsById(templateId);
-	}
-
-	/**
-	 * Adds a validation to the current list of validation errors
-	 *
-	 * @param templateId Identification of the validation error
-	 * @param validation Validation error to be added
-	 */
-	@Override
-	public void addValidation(String templateId, String validation) {
-		Validations.addValidation(templateId, validation);
 	}
 }

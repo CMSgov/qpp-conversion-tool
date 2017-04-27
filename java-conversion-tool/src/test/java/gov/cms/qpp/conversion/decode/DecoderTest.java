@@ -1,11 +1,8 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validations;
-import gov.cms.qpp.conversion.model.Decoder;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -47,16 +44,6 @@ public class DecoderTest {
 		TemplateId.ACI_DENOMINATOR.getTemplateId(),
 		TemplateId.IA_MEASURE.getTemplateId()
 	);
-	
-	
-	@Before
-	public void before() {
-		Validations.init();
-	}
-	@After
-	public void after() {
-		Validations.clear();
-	}
 
 	@Test
 	public void decodeTemplateIds() throws Exception {
