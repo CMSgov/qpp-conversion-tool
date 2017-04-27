@@ -1,30 +1,16 @@
 package gov.cms.qpp.conversion.decode.placeholder;
 
-import java.nio.charset.Charset;
-
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Validations;
-import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.nio.charset.Charset;
 
 public class DefaultDecoderTest {
-
-	@Before
-	public void setup() throws Exception {
-		Validations.init();
-	}
-
-	@After
-	public void teardown() throws Exception {
-		Validations.clear();
-	}
 
 	@Test
 	public void parseAllNodes() throws Exception {

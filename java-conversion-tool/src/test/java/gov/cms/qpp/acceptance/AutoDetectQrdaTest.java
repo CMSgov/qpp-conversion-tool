@@ -1,7 +1,6 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
-import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
@@ -33,14 +32,12 @@ public class AutoDetectQrdaTest {
 
 	@Before
 	public void setup() throws Exception {
-		Validations.init();
 		stdout = System.out;
 	}
 
 	@After
 	public void teardown() throws Exception {
 		System.setOut(stdout);
-		Validations.clear();
 	}
 
 	@Test

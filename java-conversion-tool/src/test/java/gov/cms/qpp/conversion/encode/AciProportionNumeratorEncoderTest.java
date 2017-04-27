@@ -2,8 +2,6 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validations;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,12 +32,6 @@ public class AciProportionNumeratorEncoderTest {
 		nodes.add(aciProportionNumeratorNode);
 
 		jsonWrapper = new JsonWrapper();
-		Validations.init();
-	}
-
-	@After
-	public void afterTests() {
-		Validations.clear();
 	}
 
 	@Test

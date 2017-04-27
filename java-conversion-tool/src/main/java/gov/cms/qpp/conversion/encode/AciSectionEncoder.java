@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.ValidationError;
 
 import java.util.List;
 
@@ -36,11 +37,11 @@ public class AciSectionEncoder extends QppOutputEncoder {
 			String templateId = currentChild.getId();
 			JsonOutputEncoder childEncoder = ENCODERS.get(templateId);
 
-			if (childEncoder == null) {
-				addValidation(templateId, "Failed to find an AciSectionEncoder");
-			} else {
+			if (childEncoder != null) {
 				childEncoder.encode(childWrapper, currentChild);
 				aciSectionsWrapper.putObject(childWrapper);
+			} else {
+				addValidationError(new ValidationError("Failed to find an AciSectionEncoder", currentChild.getPath()));
 			}
 		}
 	}
