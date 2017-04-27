@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.model.error;
 
-import gov.cms.qpp.conversion.model.ValidationError;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +21,7 @@ public class ErrorSource {
 
 	/**
 	 * Constructs an {@code ErrorSource} with the specified source identifier and list of
-	 * {@link gov.cms.qpp.conversion.model.ValidationError}.
+	 * {@link ValidationError}.
 	 *
 	 * @param sourceIdentifier The identifier of a source that contains the validation errors
 	 * @param validationErrors The list of {@code ValidationError}s.
