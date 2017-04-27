@@ -12,13 +12,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static gov.cms.qpp.util.JsonHelper.readJson;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
-import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentValidatorTest {
@@ -26,11 +28,11 @@ public class ClinicalDocumentValidatorTest {
 	private static final String EXPECTED_TEXT = "Clinical Document Node is required";
 	private static final String EXPECTED_ONE_ALLOWED = "Only one Clinical Document Node is allowed";
 	private static final String EXPECTED_NO_SECTION = "Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
-	private static final String clinicalDocumentErrorFile = "angerClinicalDocumentValidations.err.json";
+	private static final String CLINICAL_DOCUMENT_ERROR_FILE = "angerClinicalDocumentValidations.err.json";
 
 	@After
 	public void cleanup() throws IOException {
-		Files.deleteIfExists(Paths.get(clinicalDocumentErrorFile));
+		Files.deleteIfExists(Paths.get(CLINICAL_DOCUMENT_ERROR_FILE));
 	}
 
 	@Test
@@ -282,15 +284,17 @@ public class ClinicalDocumentValidatorTest {
 	public void testClinicalDocumentValidationParsesMultipleErrors() throws IOException {
 		//setup
 		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
-		Path errOutput = Paths.get(clinicalDocumentErrorFile);
 
 		//execute
 		new Converter(path).transform();
-		String errorContent = new String(Files.readAllBytes(errOutput));
+		HashMap<String, Object> response = readJson(CLINICAL_DOCUMENT_ERROR_FILE);
+		List<?> errors = getErrors(response);
 
-		assertThat("Must contain the error", errorContent, containsString(ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
-		assertThat("Must contain the error", errorContent, containsString(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
-		assertThat("Must contain the error", errorContent, containsString(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
+		assertThat("Must contain the error", errors, hasSize(3));
+	}
+
+	private List<?> getErrors(Map<String,Object> content) {
+		return (List<?>) ((Map<String, ?>) ((List<?>) content.get("errorSources")).get(0)).get("validationErrors");
 	}
 
 	private Node createValidClinicalDocumentNode() {
