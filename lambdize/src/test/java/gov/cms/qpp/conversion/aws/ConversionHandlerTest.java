@@ -1,5 +1,23 @@
 package gov.cms.qpp.conversion.aws;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.AnonymousAWSCredentials;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
@@ -8,23 +26,8 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.event.S3EventNotification;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.S3Object;
+
 import io.findify.s3mock.S3Mock;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.spy;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
@@ -69,13 +72,17 @@ public class ConversionHandlerTest {
 		Files.delete(S3_PATH);
 	}
 
+	private ConversionHandler handler;
+
+	@Before
+	public void setupTest() {
+		this.handler = spy(new ConversionHandler());
+		doReturn(client).when(handler).getClient();
+	}
+
 	@Test
 	public void testConversionHandler() {
-		ConversionHandler handler = new ConversionHandler();
-		ConversionHandler spyHandler = spy(handler);
-		doReturn(client).when(spyHandler).getClient();
-
-		spyHandler.handleRequest(goodInput, new TestContext());
+		handler.handleRequest(goodInput, new TestContext());
 
 		S3Object converted = client.getObject("qrda-conversion",
 				"post-conversion/valid-QRDA-III.qpp.json");
@@ -84,37 +91,25 @@ public class ConversionHandlerTest {
 
 	@Test(expected = AmazonS3Exception.class)
 	public void testConversionHandlerOnInvalidFileNoConversion() {
-		ConversionHandler handler = new ConversionHandler();
-		ConversionHandler spyHandler = spy(handler);
-		doReturn(client).when(spyHandler).getClient();
+		handler.handleRequest(badInput, new TestContext());
 
-		spyHandler.handleRequest(badInput, new TestContext());
-
-		S3Object converted = client.getObject("qrda-conversion",
+		client.getObject("qrda-conversion",
 				"post-conversion/not-a-QDRA-III-file.qpp.json");
 		fail("Should not find a converted json file.");
 	}
 
 	@Test(expected = AmazonS3Exception.class)
 	public void testConversionHandlerOnInvalidFileNoError() {
-		ConversionHandler handler = new ConversionHandler();
-		ConversionHandler spyHandler = spy(handler);
-		doReturn(client).when(spyHandler).getClient();
+		handler.handleRequest(badInput, new TestContext());
 
-		spyHandler.handleRequest(badInput, new TestContext());
-
-		S3Object error = client.getObject("qrda-conversion",
+		client.getObject("qrda-conversion",
 				"post-conversion/not-a-QDRA-III-file.err.xml");
 		fail("Should not find an error output file.");
 	}
 
 	@Test
 	public void testConversionHandlerErrantFile() {
-		ConversionHandler handler = new ConversionHandler();
-		ConversionHandler spyHandler = spy(handler);
-		doReturn(client).when(spyHandler).getClient();
-
-		spyHandler.handleRequest(uglyInput, new TestContext());
+		handler.handleRequest(uglyInput, new TestContext());
 
 		S3Object error = client.getObject("qrda-conversion",
 						"post-conversion/QRDA-III-without-required-measure.err.json");
@@ -123,13 +118,10 @@ public class ConversionHandlerTest {
 
 	@Test(expected = RuntimeException.class)
 	public void testFormatSourceKeyException() throws UnsupportedEncodingException {
-		ConversionHandler handler = new ConversionHandler();
-		ConversionHandler spyHandler = spy(handler);
-
-		doThrow(new UnsupportedEncodingException()).when(spyHandler)
+		doThrow(new UnsupportedEncodingException()).when(handler)
 				.formatSourceKey(any(S3EventNotification.S3EventNotificationRecord.class));
 
-	    spyHandler.handleRequest(goodInput, new TestContext());
+		handler.handleRequest(goodInput, new TestContext());
 	    fail("Should have thrown a RuntimeException");
 	}
 }

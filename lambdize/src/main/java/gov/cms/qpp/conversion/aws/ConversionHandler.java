@@ -15,6 +15,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.TransformationStatus;
 
 public class ConversionHandler implements RequestHandler<S3Event, String> {
 
@@ -30,9 +31,9 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			S3Object s3Object = s3Client.getObject(new GetObjectRequest(srcBucket, srcKey));
 
 			Converter converter = new Converter(s3Object.getObjectContent());
-			Integer status = converter.transform();
+			TransformationStatus status = converter.transform();
 
-			if (status < 2) {
+			if (status != TransformationStatus.NON_RECOVERABLE) {
 				String dstKey = "post-conversion/" + converter.getOutputFile(filename);
 				ObjectMetadata meta = new ObjectMetadata();
 				s3Client.putObject(srcBucket, dstKey, converter.getConversionResult(), meta);

@@ -98,14 +98,8 @@ public class Converter {
 		return this;
 	}
 
-	/**
-	 * Transform the wrapped resource. This may be a {@link Path} or an {@link InputStream}.
-	 *
-	 * @return exit status code of the transformation. A non-zero exit represents a failure.
-	 */
-	public Integer transform() {
+	public TransformationStatus transform() {
 		DEV_LOG.info("Transform invoked with file {}", inFile);
-
 		try {
 			if (!usingStream()) {
 				transform(inFile);
@@ -185,14 +179,11 @@ public class Converter {
 	 *
 	 * @return exit status
 	 */
-	private Integer getStatus() {
-		Integer status;
+	private TransformationStatus getStatus() {
 		if (null == decoded) {
-			status = 2;
-		} else {
-			status = (validationErrors.isEmpty()) ? 0 : 1;
+			return TransformationStatus.NON_RECOVERABLE;
 		}
-		return status;
+		return validationErrors.isEmpty() ? TransformationStatus.SUCCESS : TransformationStatus.ERROR;
 	}
 
 	/**
