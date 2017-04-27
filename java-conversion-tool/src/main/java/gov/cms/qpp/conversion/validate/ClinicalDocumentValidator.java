@@ -57,7 +57,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 		if (reportingParametersAct == null) {
 			getValidationErrors().add(new ValidationError(CONTAINS_PERFORMANCE_YEAR, node.getPath()));
 		} else {
-			check(reportingParametersAct).value(CONTAINS_PERFORMANCE_YEAR, "performanceStart");
+			thoroughlyCheck(reportingParametersAct).value(CONTAINS_PERFORMANCE_YEAR, "performanceStart");
 		}
 	}
 
