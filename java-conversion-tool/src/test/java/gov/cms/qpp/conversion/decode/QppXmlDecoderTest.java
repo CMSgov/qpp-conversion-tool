@@ -39,9 +39,7 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 		QppXmlDecoder objectUnderTest = new QppXmlDecoderTest();
 		objectUnderTest.decode(testElement, testNode);
-
-		//List<String> validations = objectUnderTest.getValidationsById("errorDecoder");
-
+		
 		assertThat("Child Node was not encountered" , errorDecode, is(true));
 	}
 	
