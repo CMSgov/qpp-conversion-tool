@@ -24,22 +24,38 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
 		wrapper.putString(MEASURE_ID, node.getValue(MEASURE_ID));
-		List<Node> children = node.getChildNodes();
-		encodeChildren(children, wrapper);
+		encodeChildren(wrapper, node);
 	}
 
 	/**
 	 * Encode child nodes.
 	 *
-	 * @param children nodes to encode
 	 * @param wrapper holder for encoded node data
+	 * @param parentNode holder of the Quality Measures
 	 */
-	private void encodeChildren(List<Node> children, JsonWrapper wrapper) {
-		for (Node currentChild : children) {
-			JsonOutputEncoder childEncoder = ENCODERS.get(currentChild.getId());
+	private void encodeChildren(JsonWrapper wrapper, Node parentNode) throws EncodeException {
+		Node populationNode = parentNode.findChildNode(n -> n.getValue("type").equals("IPOP"));
+		Node denomExclusionNode = parentNode.findChildNode(n -> n.getValue("type").equals("DENEX"));
+		Node numeratorNode = parentNode.findChildNode(n -> n.getValue("type").equals("NUMER"));
+		Node denominatorNode = parentNode.findChildNode(n -> n.getValue("type").equals("DENOM"));
+		String performanceNotMet = calculatePerformanceNotMet(denominatorNode, denomExclusionNode);
 
-			childEncoder.encode(wrapper, currentChild);
-		}
+		wrapper.putInteger("populationTotal", populationNode.getChildNodes().get(0).getValue("aggregateCount"));
+		wrapper.putInteger("performanceMet", numeratorNode.getChildNodes().get(0).getValue("aggregateCount"));
+		wrapper.putInteger("performanceNotMet", performanceNotMet);
+	}
+
+	/**
+	 * Calculates performance not met
+	 *
+	 * @param denominatorNode holder of the denominator aggregate count value
+	 * @param denomExclusionNode holder of the denominator exclusion aggregate count value
+	 * @return the calculation
+	 */
+	private String calculatePerformanceNotMet(Node denominatorNode, Node denomExclusionNode) {
+		Integer denominatorValue = Integer.parseInt(denominatorNode.getChildNodes().get(0).getValue("aggregateCount"));
+		Integer denomExclusionValue = Integer.parseInt(denomExclusionNode.getChildNodes().get(0).getValue("aggregateCount"));
+		return Integer.toString(denominatorValue - denomExclusionValue);
 	}
 
 }

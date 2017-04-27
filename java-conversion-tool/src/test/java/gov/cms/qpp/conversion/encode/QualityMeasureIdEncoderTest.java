@@ -24,6 +24,15 @@ public class QualityMeasureIdEncoderTest {
 		Node qualityMeasureId = new Node(root, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
 		qualityMeasureId.putValue("measureId", "Measure Id Value");
 
+		Node denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		denominatorNode.putValue("type", "DENOM");
+
+		Node aggCount = new Node();
+		aggCount.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		aggCount.putValue("aggregateCount", "600");
+		denominatorNode.addChildNode(aggCount);
+
+		qualityMeasureId.addChildNode(denominatorNode);
 
 		QualityMeasureIdEncoder encoder = new QualityMeasureIdEncoder();
 		JsonWrapper json = new JsonWrapper();
