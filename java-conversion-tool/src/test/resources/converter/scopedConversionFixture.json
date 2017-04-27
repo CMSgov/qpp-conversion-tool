@@ -107,5 +107,118 @@
 		"numerator" : 500
 	}, {
 		"numerator" : 400
+	} ],
+	"MEASURE_SECTION_V2" : {
+		"category" : "quality",
+		"submissionMethod" : "cmsWebInterface",
+		"measurements" : [ {
+			"measureId" : "40280381-51f0-825b-0152-22b98cff181a",
+			"DENOM" : 1000
+		}, {
+			"measureId" : "40280381-503f-a1fc-0150-d33f5b0a1b8c",
+			"DENOM" : 1000
+		}, {
+			"measureId" : "40280381-51f0-825b-0152-229c4ea3170c",
+			"DENOM" : 1000
+		}, {
+			"measureId" : "40280381-51f0-825b-0152-22a1e7e81737",
+			"DENOM" : 1000
+		}, {
+			"measureId" : "40280381-52fc-3a32-0153-395ce63513af",
+			"DENOM" : 1000
+		}, {
+			"measureId" : "40280381-52fc-3a32-0153-1a646a2a0bfa",
+			"DENOM" : 950
+		}, {
+			"measureId" : "40280381-51f0-825b-0152-229afff616ee",
+			"DENOM" : 950
+		}, {
+			"measureId" : "40280381-52fc-3a32-0153-1dfb2f2c0c48",
+			"DENOM" : 950
+		}, {
+			"measureId" : "40280381-51f0-825b-0152-22bd8ee41875",
+			"DENOM" : 950
+		}, {
+			"measureId" : "40280381-52fc-3a32-0153-1a3981870b45",
+			"DENOM" : 1000
+		}, {
+			"measureId" : "40280381-51f0-825b-0152-22aae8a21778",
+			"DENOM" : 1000
+		}, {
+			"measureId" : "40280381-537c-f767-0153-c378bd7207a5",
+			"DENOM" : 1000
+		}, {
+			"measureId" : "40280381-52fc-3a32-0153-3d64af97147b",
+			"DENOM" : 1000
+		} ]
+	},
+	"MEASURE_REFERENCE_RESULTS_CMS_V2" : [ {
+		"measureId" : "40280381-51f0-825b-0152-22b98cff181a",
+		"DENOM" : 1000
+	}, {
+		"measureId" : "40280381-503f-a1fc-0150-d33f5b0a1b8c",
+		"DENOM" : 1000
+	}, {
+		"measureId" : "40280381-51f0-825b-0152-229c4ea3170c",
+		"DENOM" : 1000
+	}, {
+		"measureId" : "40280381-51f0-825b-0152-22a1e7e81737",
+		"DENOM" : 1000
+	}, {
+		"measureId" : "40280381-52fc-3a32-0153-395ce63513af",
+		"DENOM" : 1000
+	}, {
+		"measureId" : "40280381-52fc-3a32-0153-1a646a2a0bfa",
+		"DENOM" : 950
+	}, {
+		"measureId" : "40280381-51f0-825b-0152-229afff616ee",
+		"DENOM" : 950
+	}, {
+		"measureId" : "40280381-52fc-3a32-0153-1dfb2f2c0c48",
+		"DENOM" : 950
+	}, {
+		"measureId" : "40280381-51f0-825b-0152-22bd8ee41875",
+		"DENOM" : 950
+	}, {
+		"measureId" : "40280381-52fc-3a32-0153-1a3981870b45",
+		"DENOM" : 1000
+	}, {
+		"measureId" : "40280381-51f0-825b-0152-22aae8a21778",
+		"DENOM" : 1000
+	}, {
+		"measureId" : "40280381-537c-f767-0153-c378bd7207a5",
+		"DENOM" : 1000
+	}, {
+		"measureId" : "40280381-52fc-3a32-0153-3d64af97147b",
+		"DENOM" : 1000
+	} ],
+	"MEASURE_DATA_CMS_V2" : [ {
+		"DENOM" : 1000
+	}, {
+		"DENOM" : 1000
+	}, {
+		"DENOM" : 1000
+	}, {
+		"DENOM" : 1000
+	}, {
+		"DENOM" : 1000
+	}, {
+		"DENOM" : 950
+	}, {
+		"DENOM" : 950
+	}, {
+		"DENOM" : 950
+	}, {
+		"DENOM" : 950
+	}, {
+		"DENOM" : 950
+	}, {
+		"DENOM" : 1000
+	}, {
+		"DENOM" : 1000
+	}, {
+		"DENOM" : 1000
+	}, {
+		"DENOM" : 1000
 	} ]
 }
