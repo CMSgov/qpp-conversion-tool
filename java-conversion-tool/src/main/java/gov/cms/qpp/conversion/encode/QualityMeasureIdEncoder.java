@@ -27,8 +27,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		List<Node> children = node.getChildNodes();
 		JsonWrapper otherWrapper = new JsonWrapper();
 
-		encodeChildren(children, otherWrapper);
-		wrapper.putObject("measurements", otherWrapper);
+		encodeChildren(children, wrapper);
 	}
 
 	/**
@@ -39,11 +38,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private void encodeChildren(List<Node> children, JsonWrapper wrapper) {
 		for (Node currentChild : children) {
-			JsonWrapper childWrapper = new JsonWrapper();
 			JsonOutputEncoder childEncoder = ENCODERS.get(currentChild.getId());
 
-			childEncoder.encode(childWrapper, currentChild);
-			wrapper.putObject(childWrapper);
+			childEncoder.encode(wrapper, currentChild);
 		}
 	}
 

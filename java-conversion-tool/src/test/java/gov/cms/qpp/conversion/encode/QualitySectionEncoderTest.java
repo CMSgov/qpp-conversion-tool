@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.encode.helper.RegistryHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
