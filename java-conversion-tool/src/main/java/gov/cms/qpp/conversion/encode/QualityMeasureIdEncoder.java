@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Encoder to serialize Quality Measure Identifier
@@ -44,8 +45,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Node denominatorNode = parentNode.findChildNode(n -> n.getValue(type).equals("DENOM"));
 		String performanceNotMet = calculatePerformanceNotMet(denominatorNode, denomExclusionNode);
 
+		String population = Optional.ofNullable(populationNode).map(node -> node.getChildNodes().get(0).getValue(aggregateCount)).orElse(null);
+
 		childWrapper.putBoolean("isEndToEndReported", "true");
-		childWrapper.putInteger("populationTotal", populationNode.getChildNodes().get(0).getValue(aggregateCount));
+		childWrapper.putInteger("populationTotal", population);
 		childWrapper.putInteger("performanceMet", numeratorNode.getChildNodes().get(0).getValue(aggregateCount));
 		childWrapper.putInteger("performanceExclusion", denomExclusionNode.getChildNodes().get(0).getValue(aggregateCount));
 		childWrapper.putInteger("performanceNotMet", performanceNotMet);
