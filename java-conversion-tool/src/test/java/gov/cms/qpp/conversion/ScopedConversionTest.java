@@ -1,7 +1,10 @@
 package gov.cms.qpp.conversion;
 
-import static gov.cms.qpp.util.JsonHelper.readJson;
-import static junit.framework.TestCase.assertEquals;
+import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,12 +12,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import gov.cms.qpp.BaseTest;
-import gov.cms.qpp.conversion.model.TemplateId;
+import static gov.cms.qpp.util.JsonHelper.readJson;
+import static junit.framework.TestCase.assertEquals;
 
 /**
  * Verify scoped conversions
@@ -259,7 +258,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				5, getErrors(content).size());
+				8, getErrors(content).size());
 	}
 
 	/**
@@ -278,7 +277,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				4, getErrors(content).size());
+				7, getErrors(content).size());
 	}
 
 	/**

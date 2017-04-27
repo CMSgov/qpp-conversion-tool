@@ -56,14 +56,22 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 		check(node).hasChildren(String.format(NO_CHILDREN, nodeName))
 				.childMinimum(String.format(INCORRECT_CHILD, nodeName), 1, TemplateId.ACI_AGGREGATE_COUNT)
 				.childMaximum(String.format(TOO_MANY_CHILDREN, nodeName), 1, TemplateId.ACI_AGGREGATE_COUNT);
-
+		if (!getValidationErrors().isEmpty()) {
+			return;
+		}
 		Node aggregateCountNode =
 				node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		if (aggregateCountNode == null) {
+			addValidationError(new ValidationError(String.format(INCORRECT_CHILD, nodeName)));
+			return;
+		}
 		check(aggregateCountNode).intValue(String.format(NOT_AN_INTEGER_VALUE, nodeName), AGGREGATE_COUNT_FIELD);
+		if (!getValidationErrors().isEmpty()) {
+			return;
+		}
 		int value = Integer.parseInt(aggregateCountNode.getValue(AGGREGATE_COUNT_FIELD));
 		if (value < 0) {
 			addValidationError(new ValidationError(String.format(INVALID_VALUE, nodeName, value)));
 		}
-
 	}
 }

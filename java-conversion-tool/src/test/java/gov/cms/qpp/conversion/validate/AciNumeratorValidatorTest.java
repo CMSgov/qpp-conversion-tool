@@ -102,8 +102,8 @@ public class AciNumeratorValidatorTest {
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
 		List<ValidationError> errors = validator.validateSingleNode(aciNumeratorNode);
-		assertThat("Validation error size should be 0 because this will be caught by the aggregate count validator.",
-			errors.size(), is(0));
+		assertThat("Validation error size should be 1 because this will be caught by the aggregate count validator.",
+			errors.size(), is(1));
 	}
 
 	@Test
