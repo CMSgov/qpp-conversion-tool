@@ -71,7 +71,5 @@ public class ConverterExplicitTest {
 
 		converterSpy.transform();
 		converterSpy.getConversionResult();
-
-		fail("should throw an EncodeException");
 	}
 }
