@@ -38,7 +38,7 @@ public class MeasureDataRoundTripTest extends BaseTest {
 
 	@Test
 	public void decodeMeasureDataAsNode() throws Exception {
-		for (String s : Arrays.asList("DENOM", "IPOP", "NUMER")) {
+		for (String s : Arrays.asList("DENOM", "IPOP", "NUMER", "DENEX", "DENEXCEP")) {
 			test(s);
 		}
 	}
