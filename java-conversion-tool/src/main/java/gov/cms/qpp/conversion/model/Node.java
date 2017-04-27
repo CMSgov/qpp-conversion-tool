@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -142,7 +141,7 @@ public class Node {
 	 */
 	public Node findChildNode(Predicate<Node> filter) {
 		List<Node> children = getChildNodes(filter);
-		return (children.isEmpty()) ? null : children.get(0);
+		return children.isEmpty() ? null : children.get(0);
 	}
 
 	/**
