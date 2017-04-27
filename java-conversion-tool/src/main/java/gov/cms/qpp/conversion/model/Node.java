@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -118,6 +119,27 @@ public class Node {
 	 */
 	public List<Node> getChildNodes() {
 		return childNodes;
+	}
+
+	/**
+	 * Returns a list of child Nodes for this Node that satisfy the predicate.
+	 *
+	 * @return List of matching child Nodes.
+	 * @param filter specifying match criteria
+	 */
+	public Stream<Node> getChildNodes(Predicate<Node> filter) {
+		return childNodes.stream()
+				.filter(filter);
+	}
+
+	/**
+	 * Returns the first child Node from this Node that satisfies the predicate.
+	 *
+	 * @return matching child Node.
+	 * @param filter specifying match criteria
+	 */
+	public Node findChildNode(Predicate<Node> filter) {
+		return getChildNodes(filter).findFirst().orElse(null);
 	}
 
 	/**
