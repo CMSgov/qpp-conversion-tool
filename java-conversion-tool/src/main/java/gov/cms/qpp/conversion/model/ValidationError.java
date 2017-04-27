@@ -9,6 +9,13 @@ public class ValidationError {
 	private String path = "";
 
 	/**
+	 * Dummy constructor for Jackson mapping
+	 */
+	public ValidationError() {
+		//Dummy constructor for jackson mapping
+	}
+
+	/**
 	 * Constructs a {@code ValidationError} with just a description.
 	 *
 	 * @param text A description of the error.
@@ -44,6 +51,14 @@ public class ValidationError {
 	 */
 	public String getPath() {
 		return path;
+	}
+
+	public void setErrorText(String errorText) {
+		this.errorText = errorText;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	/**
