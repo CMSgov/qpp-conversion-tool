@@ -5,11 +5,8 @@ import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Validations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
@@ -40,16 +37,6 @@ public class ClinicalDocumentRoundTripTest extends BaseTest {
 			+ "[ {\n      \"measureId\" : \"IA_EPA_1\",\n      \"value\" : true\n    } ]"
 			+ ",\n    \"source\" : \"provider\",\n    \"performanceStart\" : \"2017-01-01\",\n    "
 			+ "\"performanceEnd\" : \"2017-12-31\"\n  } ]\n}";
-
-	@Before
-	public void setup() throws Exception {
-		Validations.init();
-	}
-
-	@After
-	public void teardown() throws Exception {
-		Validations.clear();
-	}
 
 	@Test
 	public void parseClinicalDocument() throws Exception {

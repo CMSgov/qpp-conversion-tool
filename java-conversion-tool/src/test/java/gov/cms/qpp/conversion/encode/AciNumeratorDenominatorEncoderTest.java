@@ -2,8 +2,6 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validations;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,13 +63,6 @@ public class AciNumeratorDenominatorEncoderTest {
 
 		nodes = new ArrayList<>();
 		nodes.add(aciProportionMeasureNode);
-
-		Validations.init();
-	}
-
-	@After
-	public void tearDown() {
-		Validations.clear();
 	}
 
 	@Test
@@ -126,7 +117,7 @@ public class AciNumeratorDenominatorEncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
 
 		//assert
-		assertThat("There must be a single validation error", objectUnderTest.getValidationsById(unknownNodeId), hasSize(1));
-		assertThat("The validation error must be the inability to find an encoder", objectUnderTest.getValidationsById(unknownNodeId).get(0), is("Failed to find an encoder"));
+		assertThat("There must be a single validation error", objectUnderTest.getValidationErrors(), hasSize(1));
+		assertThat("The validation error must be the inability to find an encoder", objectUnderTest.getValidationErrors().get(0).getErrorText(), is("Failed to find an encoder"));
 	}
 }
