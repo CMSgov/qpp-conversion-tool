@@ -152,6 +152,15 @@ class Checker {
 		return this;
 	}
 
+	public Checker checkChild(Node child, boolean anded) {
+		return new Checker(child, validationErrors, anded);
+	}
+
+	public Checker markValidated() {
+		node.setValidated(true);
+		return this;
+	}
+
 	/**
 	 * Aggregate count of nodes of the given types
 	 *

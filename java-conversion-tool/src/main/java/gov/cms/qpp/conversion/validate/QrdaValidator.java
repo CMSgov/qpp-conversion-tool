@@ -137,10 +137,9 @@ public class QrdaValidator {
 	 * @param parentNode The children of this node are validated.
 	 */
 	private void validateChildren(final Node parentNode) {
-		for (Node childNode: parentNode.getChildNodes()) {
-
-			validateTree(childNode);
-		}
+		parentNode.getChildNodes().stream()
+				.filter(n -> !n.isValidated())
+				.forEach(this::validateTree);
 	}
 
 	/**

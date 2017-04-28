@@ -32,42 +32,18 @@ public class MeasureDataValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		List<Node> children = node.getChildNodes();
-		if (children == null || children.isEmpty() ) {
-			addValidationError(new ValidationError(INCORRECT_CHILDREN_COUNT, node.getPath()));
-			return;
-		}
-		int dataCount = 0; //Make sure we find at least one data value
-		int number; // Used to parse Integer into
-		List<Node> nodesList = null; //Get the children list of AggregateCount nodes expect one
-		for(Node child : children ) {
-			String value = child.getValue("type"); //One of MeasureDataDecoder.MEASURES.contains
-			if ( MeasureDataDecoder.MEASURES.contains(value)){
-				nodesList = child.findNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
-				if ( nodesList == null ) {
-					addValidationError(new ValidationError(MISSING_AGGREGATE_COUNT, child.getPath()));
-				}
-				if ( nodesList.size() > 1){
-					addValidationError(new ValidationError(INCORRECT_CHILDREN_COUNT, child.getPath()));
-				}
 
-				String nodeValue =  nodesList.get(0).getValue("aggregateCount");
-				if (nodeValue != null) {
-					try {
-						number = Integer.parseInt(nodeValue);
-						if (number < 0) {
-							addValidationError(new ValidationError(INVALID_VALUE, child.getPath()));
-						} else {
-							dataCount++;
-						}
-					} catch (NumberFormatException nfe) {
-						addValidationError(new ValidationError(INVALID_VALUE, child.getPath()));
-					}
-				}
-			}
-		}
-		if ( dataCount == 0 ){
-			addValidationError(new ValidationError(TYPE_ERROR, node.getPath()));
+		Checker checker = check(node)
+				.hasChildren(MISSING_AGGREGATE_COUNT)
+				.childMinimum(MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT)
+				.childMaximum(MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT);
+
+		if (getValidationErrors().isEmpty()) {
+			Node child = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+			checker.checkChild(child, true)
+					.value(AggregateCountValidator.VALUE_ERROR, "aggregateCount")
+					.intValue(AggregateCountValidator.TYPE_ERROR, "aggregateCount")
+			        .markValidated();
 		}
 	}
 

@@ -292,16 +292,16 @@ public class Node {
 	 *
 	 * @param validated boolean
 	 */
-	protected void setValidated(boolean validated) {
+	public void setValidated(boolean validated) {
 		this.validated = validated;
 	}
 
 	/**
-	 * isValidated returns the internal state of this Node validation
+	 * isValidated returns the state of this Node validation
 	 *
 	 * @return boolean
 	 */
-	protected boolean isValidated() {
+	public boolean isValidated() {
 		return validated;
 	}
 
