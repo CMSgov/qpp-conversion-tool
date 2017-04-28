@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.encode;
 /**
  * This exception indicates an issue encountered during the encoding (json serialization) process.
  */
-public class EncodeException extends Exception {
+public class EncodeException extends RuntimeException {
 
 	private static final long serialVersionUID = 2L;
 	private String templateId = "";

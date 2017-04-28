@@ -44,19 +44,22 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Node denomExclusionNode = parentNode.findChildNode(n -> n.getValue(type).equals("DENEX"));
 		Node denominatorNode = parentNode.findChildNode(n -> n.getValue(type).equals("DENOM"));
 
-		String population = Optional.ofNullable(populationNode).map(
-				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse(null);
-		String performanceMet = Optional.ofNullable(numeratorNode).map(
-				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse(null);
-		String performanceExclusion = Optional.ofNullable(denomExclusionNode).map(
-				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse(null);
-		String performanceNotMet = calculatePerformanceNotMet(denominatorNode, denomExclusionNode);
-
 		childWrapper.putBoolean("isEndToEndReported", "true");
-		childWrapper.putInteger("populationTotal", population);
-		childWrapper.putInteger("performanceMet", performanceMet);
-		childWrapper.putInteger("performanceExclusion", performanceExclusion);
-		childWrapper.putInteger("performanceNotMet", performanceNotMet);
+
+		Optional.ofNullable(populationNode).ifPresent(
+				node -> childWrapper.putInteger("populationTotal",
+						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
+
+		Optional.ofNullable(numeratorNode).ifPresent(
+				node -> childWrapper.putInteger("performanceMet",
+						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
+
+		Optional.ofNullable(denomExclusionNode).ifPresent(
+				node -> childWrapper.putInteger("performanceExclusion",
+						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
+
+		Optional.ofNullable(calculatePerformanceNotMet(denominatorNode, denomExclusionNode)).ifPresent(
+				performanceNotMet -> childWrapper.putInteger("performanceNotMet", performanceNotMet));
 
 		wrapper.putObject("value", childWrapper);
 	}
@@ -69,11 +72,14 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @return the calculation
 	 */
 	private String calculatePerformanceNotMet(Node denominatorNode, Node denomExclusionNode) {
-		Integer denominatorValue = Integer.parseInt(Optional.ofNullable(denominatorNode).map(
-				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse("0"));
-		Integer denomExclusionValue = Integer.parseInt(Optional.ofNullable(denomExclusionNode).map(
-				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse("0"));
-		return Integer.toString(denominatorValue - denomExclusionValue);
+		if(null == denominatorNode || null == denomExclusionNode) {
+			return null;
+		}
+
+		String denominatorValue = denominatorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+		String denomExclusionValue = denomExclusionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+
+		return Integer.toString(Integer.parseInt(denominatorValue) - Integer.parseInt(denomExclusionValue));
 	}
 
 }
