@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.ValidationError;
 import sun.plugin.dom.exception.InvalidStateException;
+import gov.cms.qpp.conversion.model.error.ValidationError;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations

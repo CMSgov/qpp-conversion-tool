@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.model;
+package gov.cms.qpp.conversion.model.error;
 
 /**
  * Holds the error information from Validators.
@@ -7,6 +7,13 @@ public class ValidationError {
 
 	private String errorText;
 	private String path = "";
+
+	/**
+	 * Dummy constructor for Jackson mapping
+	 */
+	public ValidationError() {
+		//Dummy constructor for jackson mapping
+	}
 
 	/**
 	 * Constructs a {@code ValidationError} with just a description.

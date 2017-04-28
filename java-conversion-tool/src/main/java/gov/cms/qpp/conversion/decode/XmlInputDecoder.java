@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.Validatable;
 import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
@@ -19,7 +18,7 @@ import java.util.function.Consumer;
 /**
  * Abstraction to parse XML files within the decoder structure.
  */
-public abstract class XmlInputDecoder implements InputDecoder, Validatable<String, String> {
+public abstract class XmlInputDecoder implements InputDecoder {
 
 	protected Namespace defaultNs;
 	protected Namespace xpathNs;

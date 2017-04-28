@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.ValidationError;
+import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class AciDenominatorValidator extends CommonNumeratorDenominatorValidator
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		super.internalValidateSingleNode(node);
-		if ( ! getValidationErrors().isEmpty() ){
+		if (!getValidationErrors().isEmpty()) {
 			return;
 		}
 		Node aggregateCountNode = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());

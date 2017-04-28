@@ -1,13 +1,21 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.ValidationError;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.ValidationError;
+import org.junit.After;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import static gov.cms.qpp.util.JsonHelper.readJson;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
@@ -19,6 +27,12 @@ public class ClinicalDocumentValidatorTest {
 	private static final String EXPECTED_TEXT = "Clinical Document Node is required";
 	private static final String EXPECTED_ONE_ALLOWED = "Only one Clinical Document Node is allowed";
 	private static final String EXPECTED_NO_SECTION = "Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
+	private static final String CLINICAL_DOCUMENT_ERROR_FILE = "angerClinicalDocumentValidations.err.json";
+
+	@After
+	public void cleanup() throws IOException {
+		Files.deleteIfExists(Paths.get(CLINICAL_DOCUMENT_ERROR_FILE));
+	}
 
 	@Test
 	public void testClinicalDocumentPresent() {
@@ -263,6 +277,30 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("Should have no validation errors", errors, hasSize(0));
+	}
+
+	@Test
+	public void testClinicalDocumentValidationParsesMultipleErrors() throws IOException {
+		//setup
+		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
+
+		//execute
+		new Converter(path).transform();
+		AllErrors allErrors = readJson(CLINICAL_DOCUMENT_ERROR_FILE, AllErrors.class);
+		List<ValidationError> errors = getErrors(allErrors);
+
+		assertThat("Must have 3 errors", errors, hasSize(3));
+
+		assertThat("Must contain the error", errors.get(0).getErrorText(),
+				is(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
+		assertThat("Must contain the error", errors.get(1).getErrorText(),
+				is(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
+		assertThat("Must contain the error", errors.get(2).getErrorText(),
+				is(ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
+	}
+
+	private List<ValidationError> getErrors(AllErrors content) {
+		return content.getErrorSources().get(0).getValidationErrors();
 	}
 
 	private Node createValidClinicalDocumentNode() {

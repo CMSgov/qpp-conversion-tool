@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.ValidationError;
+import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 
 import java.util.List;
@@ -57,7 +57,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 		if (reportingParametersAct == null) {
 			getValidationErrors().add(new ValidationError(CONTAINS_PERFORMANCE_YEAR, node.getPath()));
 		} else {
-			check(reportingParametersAct).value(CONTAINS_PERFORMANCE_YEAR, "performanceStart");
+			thoroughlyCheck(reportingParametersAct).value(CONTAINS_PERFORMANCE_YEAR, "performanceStart");
 		}
 	}
 

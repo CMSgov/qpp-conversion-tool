@@ -3,9 +3,6 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validations;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -46,19 +43,7 @@ public class EncoderTest {
 			TemplateId.ACI_NUMERATOR.getTemplateId(),
 			TemplateId.ACI_DENOMINATOR.getTemplateId(),
 			TemplateId.IA_MEASURE.getTemplateId()
-
 	);
-
-
-	@Before
-	public void before() {
-		Validations.init();
-	}
-
-	@After
-	public void after() {
-		Validations.clear();
-	}
 
 	/**
 	 * decodeTemplateIds for each TemplateId in the list ensure that it exists in
