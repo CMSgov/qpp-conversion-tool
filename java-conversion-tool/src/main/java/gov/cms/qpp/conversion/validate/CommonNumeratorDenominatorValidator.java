@@ -52,7 +52,6 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 			addValidationError(new ValidationError(String.format(EMPTY_MISSING_XML, nodeName)));
 			return;
 		}
-		List<Node> children = node.getChildNodes();
 		check(node).hasChildren(String.format(NO_CHILDREN, nodeName))
 				.childMinimum(String.format(INCORRECT_CHILD, nodeName), 1, TemplateId.ACI_AGGREGATE_COUNT)
 				.childMaximum(String.format(TOO_MANY_CHILDREN, nodeName), 1, TemplateId.ACI_AGGREGATE_COUNT);

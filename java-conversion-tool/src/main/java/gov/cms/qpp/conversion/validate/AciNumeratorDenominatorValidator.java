@@ -133,7 +133,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	/**
 	 * Validates all required measure configurations
 	 *
-	 * @param measureConfig                Object that holds the measure configuration
+	 * @param measureConfig Object that holds the measure configuration
 	 * @param aciNumeratorDenominatorNodes List of nodes to validate
 	 */
 	private void validateMeasureConfig(MeasureConfig measureConfig, List<Node> aciNumeratorDenominatorNodes) {

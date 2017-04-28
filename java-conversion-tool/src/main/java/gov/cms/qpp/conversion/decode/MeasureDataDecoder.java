@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  */
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataDecoder extends QppXmlDecoder {
-	public static final Set<String> MEASURES =
+	protected static final Set<String> MEASURES =
 			new HashSet<>(Arrays.asList("DENEX", "DENOM", "DENEXCEP", "IPOP", "NUMER"));
 
 	public static final String MEASURE_TYPE = "type";
