@@ -70,9 +70,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private String calculatePerformanceNotMet(Node denominatorNode, Node denomExclusionNode) {
 		Integer denominatorValue = Integer.parseInt(Optional.ofNullable(denominatorNode).map(
-				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse(""));
+				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse("0"));
 		Integer denomExclusionValue = Integer.parseInt(Optional.ofNullable(denomExclusionNode).map(
-				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse(""));
+				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse("0"));
 		return Integer.toString(denominatorValue - denomExclusionValue);
 	}
 
