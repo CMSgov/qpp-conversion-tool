@@ -31,7 +31,7 @@ public class IaMeasurePerformedValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		List<Node> children = node.getChildNodes();
-		if (children == null || children.size() != 1) {
+		if ( children.size() != 1) {
 			addValidationError(new ValidationError(INCORRECT_CHILDREN_COUNT, node.getPath()));
 			return;
 		}
