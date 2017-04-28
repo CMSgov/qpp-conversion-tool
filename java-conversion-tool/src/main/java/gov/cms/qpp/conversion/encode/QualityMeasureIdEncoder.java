@@ -14,6 +14,7 @@ import java.util.Optional;
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	private static final String MEASURE_ID = "measureId";
+	private static final String AGGREGATE_COUNT = "aggregateCount";
 
 	/**
 	 * Encodes an Quality Measure Id into the QPP format
@@ -37,20 +38,24 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private void encodeChildren(JsonWrapper wrapper, Node parentNode) throws EncodeException {
 		JsonWrapper childWrapper = new JsonWrapper();
 		String type = "type";
-		String aggregateCount = "aggregateCount";
 
 		Node populationNode = parentNode.findChildNode(n -> n.getValue(type).equals("IPOP"));
 		Node numeratorNode = parentNode.findChildNode(n -> n.getValue(type).equals("NUMER"));
 		Node denomExclusionNode = parentNode.findChildNode(n -> n.getValue(type).equals("DENEX"));
 		Node denominatorNode = parentNode.findChildNode(n -> n.getValue(type).equals("DENOM"));
-		String performanceNotMet = calculatePerformanceNotMet(denominatorNode, denomExclusionNode);
 
-		String population = Optional.ofNullable(populationNode).map(node -> node.getChildNodes().get(0).getValue(aggregateCount)).orElse(null);
+		String population = Optional.ofNullable(populationNode).map(
+				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse(null);
+		String performanceMet = Optional.ofNullable(numeratorNode).map(
+				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse(null);
+		String performanceExclusion = Optional.ofNullable(denomExclusionNode).map(
+				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse(null);
+		String performanceNotMet = calculatePerformanceNotMet(denominatorNode, denomExclusionNode);
 
 		childWrapper.putBoolean("isEndToEndReported", "true");
 		childWrapper.putInteger("populationTotal", population);
-		childWrapper.putInteger("performanceMet", numeratorNode.getChildNodes().get(0).getValue(aggregateCount));
-		childWrapper.putInteger("performanceExclusion", denomExclusionNode.getChildNodes().get(0).getValue(aggregateCount));
+		childWrapper.putInteger("performanceMet", performanceMet);
+		childWrapper.putInteger("performanceExclusion", performanceExclusion);
 		childWrapper.putInteger("performanceNotMet", performanceNotMet);
 
 		wrapper.putObject("value", childWrapper);
@@ -64,8 +69,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @return the calculation
 	 */
 	private String calculatePerformanceNotMet(Node denominatorNode, Node denomExclusionNode) {
-		Integer denominatorValue = Integer.parseInt(denominatorNode.getChildNodes().get(0).getValue("aggregateCount"));
-		Integer denomExclusionValue = Integer.parseInt(denomExclusionNode.getChildNodes().get(0).getValue("aggregateCount"));
+		Integer denominatorValue = Integer.parseInt(Optional.ofNullable(denominatorNode).map(
+				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse(""));
+		Integer denomExclusionValue = Integer.parseInt(Optional.ofNullable(denomExclusionNode).map(
+				node -> node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)).orElse(""));
 		return Integer.toString(denominatorValue - denomExclusionValue);
 	}
 
