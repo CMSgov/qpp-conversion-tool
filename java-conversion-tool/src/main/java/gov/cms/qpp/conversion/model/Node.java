@@ -2,13 +2,12 @@ package gov.cms.qpp.conversion.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -128,10 +127,9 @@ public class Node {
 	 * @return List of matching child Nodes.
 	 * @param filter specifying match criteria
 	 */
-	public List<Node> getChildNodes(Predicate<Node> filter) {
+	public Stream<Node> getChildNodes(Predicate<Node> filter) {
 		return childNodes.stream()
-				.filter(filter)
-				.collect(Collectors.toList());
+				.filter(filter);
 	}
 
 	/**
@@ -141,8 +139,7 @@ public class Node {
 	 * @param filter specifying match criteria
 	 */
 	public Node findChildNode(Predicate<Node> filter) {
-		List<Node> children = getChildNodes(filter);
-		return (children.isEmpty()) ? null : children.get(0);
+		return getChildNodes(filter).findFirst().orElse(null);
 	}
 
 	/**
