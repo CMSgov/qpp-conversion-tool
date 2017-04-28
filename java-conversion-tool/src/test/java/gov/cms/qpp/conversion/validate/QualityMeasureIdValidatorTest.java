@@ -8,9 +8,10 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
 
 public class QualityMeasureIdValidatorTest {
 	private QualityMeasureIdValidator objectUnderTest = new QualityMeasureIdValidator();
@@ -31,7 +32,8 @@ public class QualityMeasureIdValidatorTest {
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertThat("There must be only one validation error.", validationErrors, hasSize(1));
-		assertThat("Incorrect validation error.", validationErrors.get(0).getErrorText(), is(QualityMeasureIdValidator.MEASURE_GUID_MISSING));
+		assertThat("Incorrect validation error.", validationErrors.get(0),
+			validationErrorTextMatches(QualityMeasureIdValidator.MEASURE_GUID_MISSING));
 	}
 
 	@Test
@@ -41,7 +43,8 @@ public class QualityMeasureIdValidatorTest {
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertThat("There must be only one validation error.", validationErrors, hasSize(1));
-		assertThat("Incorrect validation error.", validationErrors.get(0).getErrorText(), is(QualityMeasureIdValidator.NO_CHILD_MEASURE));
+		assertThat("Incorrect validation error.", validationErrors.get(0),
+			validationErrorTextMatches(QualityMeasureIdValidator.NO_CHILD_MEASURE));
 	}
 
 	@Test
@@ -51,13 +54,15 @@ public class QualityMeasureIdValidatorTest {
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertThat("There must be only two validation errors.", validationErrors, hasSize(2));
-		assertThat("Incorrect validation error.", validationErrors.get(0).getErrorText(), is(QualityMeasureIdValidator.MEASURE_GUID_MISSING));
-		assertThat("Incorrect validation error.", validationErrors.get(1).getErrorText(), is(QualityMeasureIdValidator.NO_CHILD_MEASURE));
+		assertThat("Incorrect validation error.", validationErrors,
+			containsValidationErrorInAnyOrderIgnoringPath(QualityMeasureIdValidator.MEASURE_GUID_MISSING,
+				QualityMeasureIdValidator.NO_CHILD_MEASURE));
 	}
 
 	@Test
 	public void testInternalValidateSameTemplateIdNodes() {
-		List<ValidationError> validationErrors = objectUnderTest.validateSameTemplateIdNodes(Arrays.asList(createMeasureReferenceResultsNode(), createMeasureReferenceResultsNode()));
+		List<ValidationError> validationErrors = objectUnderTest.validateSameTemplateIdNodes(
+			Arrays.asList(createMeasureReferenceResultsNode(), createMeasureReferenceResultsNode()));
 
 		assertThat("There must not be any validation errors.", validationErrors, hasSize(0));
 	}
@@ -66,14 +71,14 @@ public class QualityMeasureIdValidatorTest {
 		return createMeasureReferenceResultsNode(true, true);
 	}
 
-	private Node createMeasureReferenceResultsNode(boolean addMeasureGuid, boolean addChildMeausre) {
+	private Node createMeasureReferenceResultsNode(boolean addMeasureGuid, boolean addChildMeasure) {
 		Node measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
 
 		if (addMeasureGuid) {
 			measureReferenceResultsNode.putValue("measureId", "asdf-1234-jkl-7890");
 		}
 
-		if (addChildMeausre) {
+		if (addChildMeasure) {
 			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
 			measureReferenceResultsNode.addChildNode(measureNode);
 		}
