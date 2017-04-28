@@ -23,12 +23,10 @@ public class QualityMeasureIdDecoderTest {
 	 */
 	@Test
 	public void internalDecodeValid() throws XmlException {
-		QualityMeasureIdDecoder decoder = new QualityMeasureIdDecoder();
-
 		Node qualityMeasureIdNode = new Node();
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(getXmlFragmentWithMeasureGuid("Measurement Id Value"));
-		decoder.setNamespace(qualityMeasureIdElement, decoder);
-		decoder.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
+		objectUnderTest.setNamespace(qualityMeasureIdElement, objectUnderTest);
+		objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		String value = qualityMeasureIdNode.getValue("measureId");
 		assertThat("Expect to have a value", value, is("Measurement Id Value"));
@@ -42,12 +40,11 @@ public class QualityMeasureIdDecoderTest {
 	@Test
 	public void internalDecodeMissingId() throws XmlException {
 		String xmlFragment = getXmlFragmentWithMeasureGuid("Measurement Id Value").replace("<id ", "<noid ");
-		QualityMeasureIdDecoder decoder = new QualityMeasureIdDecoder();
 
 		Node qualityMeasureIdNode = new Node();
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(xmlFragment);
-		decoder.setNamespace(qualityMeasureIdElement, decoder);
-		DecodeResult decodeResult = decoder.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
+		objectUnderTest.setNamespace(qualityMeasureIdElement, objectUnderTest);
+		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		assertThat("The incorrect DecodeResult was returned.", decodeResult, is(DecodeResult.TREE_CONTINUE));
 		String value = qualityMeasureIdNode.getValue("measureId");
@@ -92,15 +89,13 @@ public class QualityMeasureIdDecoderTest {
 
 	private void ignoreStratumMeasure(String xmlFragment) throws XmlException {
 		//set-up
-		QualityMeasureIdDecoder decoder = new QualityMeasureIdDecoder();
-
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(xmlFragment);
 		Node qualityMeasureIdNode = new Node();
 
-		decoder.setNamespace(qualityMeasureIdElement, decoder);
+		objectUnderTest.setNamespace(qualityMeasureIdElement, objectUnderTest);
 
 		//execute
-		DecodeResult decodeResult = decoder.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
+		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		//assert
 		assertThat("The incorrect DecodeResult was returned.", decodeResult, is(DecodeResult.TREE_ESCAPED));
