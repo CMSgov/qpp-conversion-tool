@@ -14,7 +14,6 @@ import java.util.List;
 @Validator(templateId = TemplateId.MEASURE_DATA_CMS_V2, required = true)
 public class MeasureDataValidator extends NodeValidator {
 
-	public static final String TYPE_ERROR = "Measure data value is required.";
 	public static final String MISSING_AGGREGATE_COUNT  = "Measure performed must have exactly one Aggregate Count.";
 	public static final String INVALID_VALUE = "Measure data must be a positive integer value";
 
@@ -31,11 +30,6 @@ public class MeasureDataValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		if (node == null) {
-			getValidationErrors().add(new ValidationError(TYPE_ERROR));
-			return;
-		}
-
 		Checker checker = check(node)
 				.hasChildren(MISSING_AGGREGATE_COUNT)
 				.childMinimum(MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT)

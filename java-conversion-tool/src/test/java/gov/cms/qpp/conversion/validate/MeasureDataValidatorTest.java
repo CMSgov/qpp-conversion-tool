@@ -10,7 +10,9 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static gov.cms.qpp.conversion.validate.MeasureDataValidator.MISSING_AGGREGATE_COUNT;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -27,6 +29,17 @@ public class MeasureDataValidatorTest extends BaseTest {
 
 		List<ValidationError> errors = validator.getValidationErrors();
 		assertThat("Expect no errors on the happy path ", errors.isEmpty(), is(true));
+	}
+
+	@Test
+	public void missingAggregateCount() throws Exception {
+		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		MeasureDataValidator validator = new MeasureDataValidator();
+		validator.internalValidateSingleNode(testNode);
+
+		List<ValidationError> errors = validator.getValidationErrors();
+		assertThat(errors.isEmpty(), is(false));
+		assertEquals(errors.get(0).getErrorText(), MISSING_AGGREGATE_COUNT);
 	}
 
 }
