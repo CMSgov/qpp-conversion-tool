@@ -60,7 +60,7 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 
 		XPathExpression<Attribute> expression = XPathFactory.instance().compile(expressionStr, Filters.attribute(), null,
 			xpathNs);
-		return Optional.ofNullable(expression.evaluateFirst(element)).map(attribute -> attribute.getValue())
+		return Optional.ofNullable(expression.evaluateFirst(element)).map(Attribute::getValue)
 			.orElse(null);
 	}
 }
