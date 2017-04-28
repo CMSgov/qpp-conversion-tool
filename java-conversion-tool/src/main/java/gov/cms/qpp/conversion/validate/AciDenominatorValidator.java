@@ -35,7 +35,7 @@ public class AciDenominatorValidator extends CommonNumeratorDenominatorValidator
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		super.internalValidateSingleNode(node);
-		if ( ! getValidationErrors().isEmpty() ){
+		if (!getValidationErrors().isEmpty()) {
 			return;
 		}
 		Node aggregateCountNode = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
