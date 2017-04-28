@@ -9,6 +9,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -118,8 +119,12 @@ class Checker {
 	 * @return The checker, for chaining method calls.
 	 */
 	public Checker hasParent(String message, TemplateId type) {
-		if (!shouldShortcut() && node.getParent().getType() != type) {
-			validationErrors.add(new ValidationError(message, node.getPath()));
+		if (!shouldShortcut()){
+			TemplateId parentType = Optional.ofNullable(node.getParent())
+					.orElse(new Node()).getType();
+			if (parentType != type) {
+				validationErrors.add(new ValidationError(message, node.getPath()));
+			}
 		}
 		return this;
 	}

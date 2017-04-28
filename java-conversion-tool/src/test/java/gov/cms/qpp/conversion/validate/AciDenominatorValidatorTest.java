@@ -45,17 +45,6 @@ public class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	public void missingXML() throws Exception {
-		AciDenominatorValidator validator = new AciDenominatorValidator();
-		List<ValidationError> errors = validator.validateSingleNode(null);
-
-		assertThat("Validation error size should be 1", errors.size(), is(1));
-		assertThat("Missing XML Validation Error not issued", errors.get(0).getErrorText(),
-				is(String.format(AciDenominatorValidator.EMPTY_MISSING_XML, AciDenominatorValidator.DENOMINATOR_NAME)));
-
-	}
-
-	@Test
 	public void incorrectChildrenTest() throws Exception {
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR.getTemplateId());
 		Node aggregateCountNode = new Node(TemplateId.ACI_SECTION.getTemplateId());

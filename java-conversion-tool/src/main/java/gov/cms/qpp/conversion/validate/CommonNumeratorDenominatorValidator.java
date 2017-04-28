@@ -11,9 +11,6 @@ import java.util.List;
  * Factored out common functionality
  */
 public class CommonNumeratorDenominatorValidator extends NodeValidator {
-
-	protected static final String EMPTY_MISSING_XML =
-			" %s Node Aggregate is empty or missing";
 	protected static final String INCORRECT_CHILD =
 			"This %s Node does not have an Aggregate Count Node";
 	protected static final String NOT_AN_INTEGER_VALUE =
@@ -47,11 +44,6 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-
-		if (node == null) {
-			addValidationError(new ValidationError(String.format(EMPTY_MISSING_XML, nodeName)));
-			return;
-		}
 		check(node).hasChildren(String.format(NO_CHILDREN, nodeName))
 				.childMinimum(String.format(INCORRECT_CHILD, nodeName), 1, TemplateId.ACI_AGGREGATE_COUNT)
 				.childMaximum(String.format(TOO_MANY_CHILDREN, nodeName), 1, TemplateId.ACI_AGGREGATE_COUNT);

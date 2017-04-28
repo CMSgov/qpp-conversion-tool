@@ -41,6 +41,18 @@ public class CheckerTest {
 	}
 
 	@Test
+	public void testParentFailure() {
+		Node meepNode = new Node( PARENT );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.hasParent( ERROR_MESSAGE,  TemplateId.ACI_DENOMINATOR) //fails
+				.hasParent( ERROR_MESSAGE,  TemplateId.ACI_DENOMINATOR); //shortcuts
+
+		assertEquals("There's an error", 1, validationErrors.size());
+		assertEquals( "message applied is the message given", validationErrors.get( 0 ).getErrorText(), ERROR_MESSAGE );
+	}
+
+	@Test
 	public void testValueFindSuccess() {
 		Node meepNode = new Node( PARENT );
 		meepNode.putValue( VALUE, "Bob" );
