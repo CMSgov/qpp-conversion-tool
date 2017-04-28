@@ -42,9 +42,8 @@ public class AciDenominatorValidator extends CommonNumeratorDenominatorValidator
 
 		int value = Integer.parseInt(aggregateCountNode.getValue("aggregateCount"));
 		if (value == 0) {
-			String message = String.format(DENOMINATOR_CANNOT_BE_ZERO, DENOMINATOR_NAME);
-			this.addValidationError(new ValidationError(message, aggregateCountNode.getPath()));
-			DEV_LOG.error(message);
+			this.addValidationError(new ValidationError(DENOMINATOR_CANNOT_BE_ZERO, aggregateCountNode.getPath()));
+			DEV_LOG.error(DENOMINATOR_CANNOT_BE_ZERO);
 		}
 	}
 }
