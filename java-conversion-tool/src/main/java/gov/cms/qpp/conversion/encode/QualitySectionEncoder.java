@@ -14,8 +14,6 @@ import java.util.List;
 @Encoder(TemplateId.MEASURE_SECTION_V2)
 public class QualitySectionEncoder extends QppOutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualitySectionEncoder.class);
-	private static final String PERFORMANCE_START = "performanceStart";
-	private static final String PERFORMANCE_END = "performanceEnd";
 	private static final String CATEGORY = "category";
 	private static final String SUBMISSION_METHOD = "submissionMethod";
 
