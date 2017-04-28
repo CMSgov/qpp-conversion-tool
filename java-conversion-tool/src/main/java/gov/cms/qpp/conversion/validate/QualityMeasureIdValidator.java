@@ -11,6 +11,9 @@ import java.util.List;
  */
 @Validator(templateId = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdValidator extends NodeValidator {
+	protected static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
+	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
+
 	/**
 	 * Validates that the Measure Reference Results node contains...
 	 * <ul>
@@ -22,9 +25,9 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
-		check(node)
-			.value("The measure reference results must have a measure GUID", "measureId")
-			.childMinimum("The measure reference results must have at least one measure", 1, TemplateId.MEASURE_DATA_CMS_V2);
+		thoroughlyCheck(node)
+			.value(MEASURE_GUID_MISSING, "measureId")
+			.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
 	}
 
 	/**
