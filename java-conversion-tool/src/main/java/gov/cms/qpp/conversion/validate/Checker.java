@@ -1,15 +1,15 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.ValidationError;
+
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations
@@ -117,7 +117,7 @@ class Checker {
 	}
 
 	/**
-	 * Verifies that the target node has more than the given minimum of the given {@link TemplateId}s.
+	 * Verifies that the target node has at least the given minimum or more of the given {@link TemplateId}s.
 	 *
 	 * @param message validation error message
 	 * @param minimum minimum required children of specified types
