@@ -17,6 +17,8 @@ import java.util.HashSet;
 public class BaseTest {
 
 	/**
+	 * Runs before each test.
+	 *
 	 * Ensure empty scope before each test.
 	 *
 	 * @throws NoSuchFieldException if scope field can't be located
@@ -24,12 +26,12 @@ public class BaseTest {
 	 */
 	@Before
 	public void preCleanup() throws NoSuchFieldException, IllegalAccessException {
-		Field scope = ConversionEntry.class.getDeclaredField("scope");
-		scope.setAccessible(true);
-		scope.set(null, new HashSet<>());
+		resetScope();
 	}
 
 	/**
+	 * Does clean-up after an entire test suite.
+	 *
 	 * Ensures an empty scope after each test suite so different scopes do not leak into another test suite.
 	 *
 	 * @throws NoSuchFieldException if scope field can't be located
@@ -37,9 +39,7 @@ public class BaseTest {
 	 */
 	@AfterClass
 	public static void postSuiteCleanup() throws NoSuchFieldException, IllegalAccessException {
-		Field scope = ConversionEntry.class.getDeclaredField("scope");
-		scope.setAccessible(true);
-		scope.set(null, new HashSet<>());
+		resetScope();
 	}
 
 	/**
@@ -52,5 +52,17 @@ public class BaseTest {
 	protected static String getFixture(final String name) throws IOException {
 		Path path = Paths.get("src/test/resources/fixtures/" + name);
 		return new String(Files.readAllBytes(path));
+	}
+
+	/**
+	 * Sets the scope to be empty.
+	 *
+	 * @throws NoSuchFieldException if scope field can't be located
+	 * @throws IllegalAccessException should scope not be accessible
+	 */
+	private static void resetScope() throws NoSuchFieldException, IllegalAccessException {
+		Field scope = ConversionEntry.class.getDeclaredField("scope");
+		scope.setAccessible(true);
+		scope.set(null, new HashSet<>());
 	}
 }
