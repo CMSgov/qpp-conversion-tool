@@ -46,7 +46,7 @@ public class MeasureDataValidator extends NodeValidator {
 			checker.checkChild(child, true)
 					.value(AggregateCountValidator.VALUE_ERROR, "aggregateCount")
 					.intValue(AggregateCountValidator.TYPE_ERROR, "aggregateCount")
-					//still needs > 0 validation
+					.greaterThan(INVALID_VALUE, 0)
 					.markValidated();
 		}
 	}

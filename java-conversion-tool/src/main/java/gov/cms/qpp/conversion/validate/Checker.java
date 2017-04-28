@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.ValidationError;
+import sun.plugin.dom.exception.InvalidStateException;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations
@@ -20,6 +21,7 @@ class Checker {
 	private List<ValidationError> validationErrors;
 	private boolean anded;
 	private Map<TemplateId, AtomicInteger> nodeCount;
+	private Comparable lastAppraised;
 
 	private Checker(Node node, List<ValidationError> validationErrors, boolean anded) {
 		this.node = node;
@@ -66,7 +68,8 @@ class Checker {
 	 * @return The checker, for chaining method calls.
 	 */
 	Checker value(String message, String name) {
-		if (!shouldShortcut() && node.getValue(name) == null) {
+		lastAppraised = node.getValue(name);
+		if (!shouldShortcut() && lastAppraised == null) {
 			validationErrors.add(new ValidationError(message, node.getPath()));
 		}
 		return this;
@@ -82,11 +85,30 @@ class Checker {
 	public Checker intValue(String message, String name) {
 		if (!shouldShortcut()) {
 			try {
-				Integer.parseInt(node.getValue(name));
+				lastAppraised = Integer.parseInt(node.getValue(name));
 			} catch (NumberFormatException ex) {
 				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
 		}
+		return this;
+	}
+
+	/**
+	 * Allow for compound comparisons of Node values.
+	 *
+	 * @param message error message should comparison fail
+	 * @param value to be compared against
+	 * @return The checker, for chaining method calls.
+	 */
+	@SuppressWarnings("unchecked")
+	public Checker greaterThan(String message, Comparable value) {
+		if (lastAppraised == null) {
+			throw new IllegalStateException("No last appraised value.");
+		}
+		if (!(lastAppraised.compareTo(value) > 0)) {
+			validationErrors.add(new ValidationError(message, node.getPath()));
+		}
+		lastAppraised = null;
 		return this;
 	}
 
