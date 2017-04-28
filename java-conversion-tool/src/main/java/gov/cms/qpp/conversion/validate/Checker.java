@@ -102,10 +102,7 @@ class Checker {
 	 */
 	@SuppressWarnings("unchecked")
 	public Checker greaterThan(String message, Comparable value) {
-		if (lastAppraised == null) {
-			throw new IllegalStateException("No last appraised value.");
-		}
-		if (lastAppraised.compareTo(value) <= 0) {
+		if (!shouldShortcut() && lastAppraised != null && lastAppraised.compareTo(value) <= 0) {
 			validationErrors.add(new ValidationError(message, node.getPath()));
 		}
 		lastAppraised = null;
@@ -119,7 +116,7 @@ class Checker {
 	 * @return The checker, for chaining method calls.
 	 */
 	public Checker hasParent(String message, TemplateId type) {
-		if (!shouldShortcut()){
+		if (!shouldShortcut()) {
 			TemplateId parentType = Optional.ofNullable(node.getParent())
 					.orElse(new Node()).getType();
 			if (parentType != type) {
@@ -176,10 +173,6 @@ class Checker {
 			}
 		}
 		return this;
-	}
-
-	public Checker checkChild(Node child, boolean anded) {
-		return new Checker(child, validationErrors, anded);
 	}
 
 	public Checker markValidated() {

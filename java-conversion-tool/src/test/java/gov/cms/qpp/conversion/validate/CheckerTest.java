@@ -283,6 +283,17 @@ public class CheckerTest {
 		assertFalse("There's an error", validationErrors.isEmpty() );
 	}
 
+	@Test
+	public void compoundIntValueCheckNoContext() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.greaterThan(ERROR_MESSAGE, 124);
+
+		assertTrue("There's no error", validationErrors.isEmpty() );
+	}
+
 	@Test(expected = ClassCastException.class)
 	public void compoundIntValueCheckCastException() {
 		Node meepNode = new Node( PARENT );
@@ -294,16 +305,6 @@ public class CheckerTest {
 
 		assertFalse("There's an error", validationErrors.isEmpty() );
 	}
-
-	@Test(expected = IllegalStateException.class)
-	public void compoundIntValueCheckIllegalStateException() {
-		Node meepNode = new Node( PARENT );
-		meepNode.putValue( VALUE, "123" );
-
-		Checker checker = Checker.check( meepNode, validationErrors );
-		checker.greaterThan(ERROR_MESSAGE, 122);
-	}
-
 
 	// thorough checking
 	@Test

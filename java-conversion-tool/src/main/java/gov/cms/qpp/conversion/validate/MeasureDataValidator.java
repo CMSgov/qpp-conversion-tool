@@ -28,14 +28,14 @@ public class MeasureDataValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		Checker checker = check(node)
+		check(node)
 				.hasChildren(MISSING_AGGREGATE_COUNT)
 				.childMinimum(MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT)
 				.childMaximum(MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT);
 
 		if (getValidationErrors().isEmpty()) {
 			Node child = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
-			checker.checkChild(child, true)
+			check(child)
 					.value(AggregateCountValidator.VALUE_ERROR, "aggregateCount")
 					.intValue(AggregateCountValidator.TYPE_ERROR, "aggregateCount")
 					.greaterThan(INVALID_VALUE, 0)
