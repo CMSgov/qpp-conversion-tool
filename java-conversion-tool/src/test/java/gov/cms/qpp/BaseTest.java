@@ -29,6 +29,12 @@ public class BaseTest {
 		scope.set(null, new HashSet<>());
 	}
 
+	/**
+	 * Ensures an empty scope after each test suite so different scopes do not leak into another test suite.
+	 *
+	 * @throws NoSuchFieldException if scope field can't be located
+	 * @throws IllegalAccessException should scope not be accessible
+	 */
 	@AfterClass
 	public static void postSuiteCleanup() throws NoSuchFieldException, IllegalAccessException {
 		Field scope = ConversionEntry.class.getDeclaredField("scope");
