@@ -17,7 +17,7 @@ public class PlaceholderEncoder extends QppOutputEncoder {
 	 * Encodes placeholder nodes into the wrapper
 	 *
 	 * @param wrapper object that will represent a placeholder
-	 * @param node    object that represents a placeholder
+	 * @param node object that represents a placeholder
 	 * @throws EncodeException If error occurs during encoding
 	 */
 	@Override
