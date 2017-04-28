@@ -105,7 +105,7 @@ class Checker {
 		if (lastAppraised == null) {
 			throw new IllegalStateException("No last appraised value.");
 		}
-		if (!(lastAppraised.compareTo(value) > 0)) {
+		if (lastAppraised.compareTo(value) <= 0) {
 			validationErrors.add(new ValidationError(message, node.getPath()));
 		}
 		lastAppraised = null;

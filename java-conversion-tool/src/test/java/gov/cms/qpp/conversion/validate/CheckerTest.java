@@ -258,6 +258,53 @@ public class CheckerTest {
 		assertTrue("There's no error", validationErrors.isEmpty() );
 	}
 
+	// compound checking
+	@Test
+	public void compoundIntValueCheckSuccess() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.intValue( ERROR_MESSAGE, VALUE )
+				.greaterThan(ERROR_MESSAGE, 122);
+
+		assertTrue("There's no error", validationErrors.isEmpty() );
+	}
+
+	@Test
+	public void compoundIntValueCheckFailure() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.intValue( ERROR_MESSAGE, VALUE )
+				.greaterThan(ERROR_MESSAGE, 124);
+
+		assertFalse("There's an error", validationErrors.isEmpty() );
+	}
+
+	@Test(expected = ClassCastException.class)
+	public void compoundIntValueCheckCastException() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.intValue( ERROR_MESSAGE, VALUE )
+				.greaterThan(ERROR_MESSAGE, "not an Integer");
+
+		assertFalse("There's an error", validationErrors.isEmpty() );
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void compoundIntValueCheckIllegalStateException() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.greaterThan(ERROR_MESSAGE, 122);
+	}
+
+
 	// thorough checking
 	@Test
 	public void testIntValueChildrenChildMinChildMaxFindFailure() {
