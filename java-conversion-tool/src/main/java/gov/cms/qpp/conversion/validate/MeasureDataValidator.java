@@ -16,7 +16,6 @@ public class MeasureDataValidator extends NodeValidator {
 
 	public static final String TYPE_ERROR = "Measure data value is required.";
 	public static final String MISSING_AGGREGATE_COUNT  = "Measure performed must have exactly one Aggregate Count.";
-	public static final String INCORRECT_CHILDREN_COUNT  = "Measure performed must have exactly one child Aggregate Count.";
 	public static final String INVALID_VALUE = "Measure data must be a positive integer value";
 
 	/**
@@ -32,6 +31,10 @@ public class MeasureDataValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
+		if (node == null) {
+			getValidationErrors().add(new ValidationError(TYPE_ERROR));
+			return;
+		}
 
 		Checker checker = check(node)
 				.hasChildren(MISSING_AGGREGATE_COUNT)
@@ -43,7 +46,8 @@ public class MeasureDataValidator extends NodeValidator {
 			checker.checkChild(child, true)
 					.value(AggregateCountValidator.VALUE_ERROR, "aggregateCount")
 					.intValue(AggregateCountValidator.TYPE_ERROR, "aggregateCount")
-			        .markValidated();
+					//still needs > 0 validation
+					.markValidated();
 		}
 	}
 
