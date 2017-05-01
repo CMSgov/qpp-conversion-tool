@@ -48,7 +48,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	}
 
 	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
-		Node populationNode = parentNode.findChildNode(n -> n.getValue(TYPE).equals("IPOP"));
+		Node populationNode = parentNode.findChildNode(n -> "IPOP".equals(n.getValue(TYPE)));
 
 		Optional.ofNullable(populationNode).ifPresent(
 				node -> wrapper.putInteger("populationTotal",
@@ -56,7 +56,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	}
 
 	private void encodePerformanceMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> n.getValue(TYPE).equals("NUMER"));
+		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(TYPE)));
 
 		Optional.ofNullable(numeratorNode).ifPresent(
 				node -> wrapper.putInteger("performanceMet",
@@ -64,8 +64,8 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	}
 
 	private void encodePerformance(JsonWrapper wrapper, Node parentNode) {
-		Node denomExclusionNode = parentNode.findChildNode(n -> n.getValue(TYPE).equals("DENEX"));
-		Node denominatorNode = parentNode.findChildNode(n -> n.getValue(TYPE).equals("DENOM"));
+		Node denomExclusionNode = parentNode.findChildNode(n -> "DENEX".equals(n.getValue(TYPE)));
+		Node denominatorNode = parentNode.findChildNode(n -> "DENOM".equals(n.getValue(TYPE)));
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
 				node -> wrapper.putInteger("performanceExclusion",
