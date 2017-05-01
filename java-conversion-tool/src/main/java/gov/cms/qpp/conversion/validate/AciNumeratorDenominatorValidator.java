@@ -41,7 +41,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 			"This ACI Numerator Denominator Node does not have any child Nodes";
 	protected static final String NO_REQUIRED_MEASURE =
 			"The required measure ''{0}'' is not present in the source file. "
-			+ "Please add the ACI measure and try again.";
+					+ "Please add the ACI measure and try again.";
 
 	/**
 	 * Constructs a new {@code AciNumeratorDenominatorValidator}.
@@ -52,12 +52,12 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 	/**
 	 * Validates a single ACI Numerator Denominator Type Measure.
-	 *
+	 * <p>
 	 * Validates the following.
 	 * <ul>
-	 *     <li>ACI Numerator Denominator Type Measure nodes have an ACI section as a parent.</li>
-	 *     <li>ACI Numerator Denominator Type Measure nodes have one and only one numerator node.</li>
-	 *     <li>ACI Numerator Denominator Type Measure nodes have one and only one denominator node.</li>
+	 * <li>ACI Numerator Denominator Type Measure nodes have an ACI section as a parent.</li>
+	 * <li>ACI Numerator Denominator Type Measure nodes have one and only one numerator node.</li>
+	 * <li>ACI Numerator Denominator Type Measure nodes have one and only one denominator node.</li>
 	 * </ul>
 	 *
 	 * @param node The node that represents an ACI Numerator Denominator Type Measure.
@@ -73,11 +73,11 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 	/**
 	 * Validates all the ACI Numerator Denominator Type Measures.
-	 *
+	 * <p>
 	 * Validates the following.
 	 * <ul>
-	 *     <li>One ACI Numerator Denominator Type Measure node exists</li>
-	 *     <li>All the required measures are represented in at least one ACI Numerator Denominator Type Measure</li>
+	 * <li>One ACI Numerator Denominator Type Measure node exists</li>
+	 * <li>All the required measures are represented in at least one ACI Numerator Denominator Type Measure</li>
 	 * </ul>
 	 *
 	 * @param nodes A list of all the ACI Numerator Denominator Type Measure nodes.
@@ -164,7 +164,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 		try {
 			measureConfigs = mapper.treeToValue(mapper.readTree(measuresConfigResource.getInputStream()),
-												MeasureConfigs.class);
+					MeasureConfigs.class);
 		} catch (IOException e) {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}

@@ -45,17 +45,6 @@ public class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	public void missingXML() throws Exception {
-		AciDenominatorValidator validator = new AciDenominatorValidator();
-		List<ValidationError> errors = validator.validateSingleNode(null);
-
-		assertThat("Validation error size should be 1", errors.size(), is(1));
-		assertThat("Missing XML Validation Error not issued", errors.get(0).getErrorText(),
-				is(String.format(AciDenominatorValidator.EMPTY_MISSING_XML, AciDenominatorValidator.DENOMINATOR_NAME)));
-
-	}
-
-	@Test
 	public void incorrectChildrenTest() throws Exception {
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR.getTemplateId());
 		Node aggregateCountNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
@@ -102,8 +91,8 @@ public class AciDenominatorValidatorTest {
 
 		AciDenominatorValidator validator = new AciDenominatorValidator();
 		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
-		assertThat("Validation error size should be 0 because this will be caught by the aggregate count validator.",
-			errors.size(), is(0));
+		assertThat("Validation error size should be 1 because this will be caught by the aggregate count validator.",
+			errors.size(), is(1));
 	}
 
 	@Test
@@ -119,7 +108,7 @@ public class AciDenominatorValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("Invalid Value Validation Error not issued", errors.get(0).getErrorText(),
-				is(String.format(AciDenominatorValidator.INVALID_VALUE, AciDenominatorValidator.DENOMINATOR_NAME, value)));
+				is(String.format(AciDenominatorValidator.INVALID_VALUE, AciDenominatorValidator.DENOMINATOR_NAME)));
 
 
 	}
@@ -136,6 +125,6 @@ public class AciDenominatorValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("Invalid Value Validation Error not issued", errors.get(0).getErrorText(),
-				is(CommonNumeratorDenominatorValidator.DENOMINATOR_CANNOT_BE_ZERO));
+				is(AciDenominatorValidator.DENOMINATOR_CANNOT_BE_ZERO));
 	}
 }

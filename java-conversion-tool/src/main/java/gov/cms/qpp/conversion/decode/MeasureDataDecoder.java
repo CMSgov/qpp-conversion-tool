@@ -1,24 +1,23 @@
 package gov.cms.qpp.conversion.decode;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Consumer;
-
+import gov.cms.qpp.conversion.model.Decoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 
-import gov.cms.qpp.conversion.model.Decoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Decoder for CMS V2 Measure Data
  */
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataDecoder extends QppXmlDecoder {
-	private static final Set<String> MEASURES =
+	protected static final Set<String> MEASURES =
 			new HashSet<>(Arrays.asList("DENEX", "DENOM", "DENEXCEP", "IPOP", "NUMER"));
 
 	public static final String MEASURE_TYPE = "type";

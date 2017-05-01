@@ -30,7 +30,7 @@ public class DecoderTest {
 		TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
 		TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
 		TemplateId.REPORTING_STRATUM_CMS.getTemplateId(),
-		TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENTAL_CMS_V2.getTemplateId(),
+		TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
 		TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
 		TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId(),
 		TemplateId.CMS_AGGREGATE_COUNT.getTemplateId(),
