@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
 
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 *
 	 * @param aggregateCountNode aggregate count node
 	 */
-	private void validateAggregateCount(Node aggregateCountNode){
+	private void validateAggregateCount(Node aggregateCountNode) {
 		String invalidMessage = String.format(INVALID_VALUE, nodeName);
 		check(aggregateCountNode)
 				.value(invalidMessage, AGGREGATE_COUNT_FIELD)
