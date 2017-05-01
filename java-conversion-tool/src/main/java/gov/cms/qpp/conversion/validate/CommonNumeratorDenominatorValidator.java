@@ -2,9 +2,6 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -13,26 +10,24 @@ import java.util.List;
  * Factored out common functionality
  */
 public class CommonNumeratorDenominatorValidator extends NodeValidator {
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(CommonNumeratorDenominatorValidator.class);
-
-	protected static final String EMPTY_MISSING_XML =
-			"ACI %s Node Aggregate is empty or missing";
 	protected static final String INCORRECT_CHILD =
 			"This %s Node does not have an Aggregate Count Node";
-	protected static final String INVALID_VALUE =
-			"This ACI %s Node Aggregate Value has an invalid value %s";
+	static final String NOT_AN_INTEGER_VALUE =
+			"This %s Node Aggregate Value is not an integer";
+	static final String INVALID_VALUE =
+			"This %s Node Aggregate Value has an invalid value";
 	protected static final String NO_CHILDREN =
-			"This ACI %s Node does not have any child Nodes";
+			"This %s Node does not have any child Nodes";
 	protected static final String TOO_MANY_CHILDREN =
-			"This ACI %s Node has too many child Nodes";
-	protected static final String DENOMINATOR_CANNOT_BE_ZERO =
-			"The ACI Denominator's Aggregate Value can not be zero";
+			"This %s Node has too many child Nodes";
+	protected static final String AGGREGATE_COUNT_FIELD = "aggregateCount";
 
 	protected String nodeName;
 
 	/**
 	 * internalValidateSameTemplateIdNodes allows for any cross node dependencies
 	 * to be validated. AciNumerator does not have any cross node dependencies
+	 *
 	 * @param nodes List of Node
 	 */
 	@Override
@@ -48,40 +43,28 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		if (node == null) {
-			this.addValidationError(new ValidationError(String.format(EMPTY_MISSING_XML, nodeName)));
-			return;
+		check(node).hasChildren(String.format(NO_CHILDREN, nodeName))
+				.childMinimum(String.format(INCORRECT_CHILD, nodeName), 1, TemplateId.ACI_AGGREGATE_COUNT)
+				.childMaximum(String.format(TOO_MANY_CHILDREN, nodeName), 1, TemplateId.ACI_AGGREGATE_COUNT);
+		if (getValidationErrors().isEmpty()) {
+			validateAggregateCount(
+					node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId()));
 		}
-		List<Node> children = node.getChildNodes();
+	}
 
-		if (children.isEmpty()) {
-			this.addValidationError(new ValidationError(String.format(NO_CHILDREN, nodeName), node.getPath()));
-			return;
-		}
-		Node child = children.get(0);
-		if (TemplateId.ACI_AGGREGATE_COUNT != child.getType()) {
-			this.addValidationError(new ValidationError(String.format(INCORRECT_CHILD, nodeName), node.getPath()));
-			return;
-		}
-		if (children.size() > 1) {
-			this.addValidationError(new ValidationError(String.format(TOO_MANY_CHILDREN, nodeName), node.getPath()));
-			return;
-		}
-		String value = child.getValue("aggregateCount");
-		try {
-			int val = Integer.parseInt(value);
-			if (val < 0) {
-				this.addValidationError(
-						new ValidationError(String.format(INVALID_VALUE, nodeName, value), child.getPath()));
-			}
-			if (AciDenominatorValidator.DENOMINATOR_NAME.equals(nodeName) && val == 0) {
-				this.addValidationError(
-						new ValidationError(DENOMINATOR_CANNOT_BE_ZERO, child.getPath()));
-			}
-		} catch (NumberFormatException nfe) {
-			//no validation error required due to this being caught by the Aggregate Count validator
-			DEV_LOG.debug("Exception parsing the integer for a numerator or denominator, but this is OK. "
-				+ "Issue will be caught by Aggregate Count validator.", nfe);
-		}
+	/**
+	 * Common ACI numerator denominator validation for aggregate count. Marks the
+	 * {@link TemplateId#ACI_AGGREGATE_COUNT} node as validated to prevent duplicate
+	 * validation by the {@link AggregateCountValidator}
+	 *
+	 * @param aggregateCountNode aggregate count node
+	 */
+	private void validateAggregateCount(Node aggregateCountNode) {
+		String invalidMessage = String.format(INVALID_VALUE, nodeName);
+		check(aggregateCountNode)
+				.value(invalidMessage, AGGREGATE_COUNT_FIELD)
+				.intValue(String.format(NOT_AN_INTEGER_VALUE, nodeName), AGGREGATE_COUNT_FIELD)
+				.greaterThan(invalidMessage, -1)
+				.markValidated();
 	}
 }
