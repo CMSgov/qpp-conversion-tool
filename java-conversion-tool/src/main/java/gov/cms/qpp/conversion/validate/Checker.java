@@ -146,7 +146,7 @@ class Checker {
 	}
 
 	/**
-	 * Verifies that the target node has more than the given minimum of the given {@link TemplateId}s.
+	 * Verifies that the target node has at least the given minimum or more of the given {@link TemplateId}s.
 	 *
 	 * @param message validation error message
 	 * @param minimum minimum required children of specified types
