@@ -64,7 +64,6 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 		check(aggregateCountNode)
 				.value(invalidMessage, AGGREGATE_COUNT_FIELD)
 				.intValue(String.format(NOT_AN_INTEGER_VALUE, nodeName), AGGREGATE_COUNT_FIELD)
-				.greaterThan(invalidMessage, -1)
-				.markValidated();
+				.greaterThan(invalidMessage, -1);
 	}
 }

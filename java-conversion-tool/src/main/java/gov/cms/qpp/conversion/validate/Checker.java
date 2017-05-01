@@ -32,6 +32,7 @@ class Checker {
 			.stream()
 			.map(Node::getType)
 			.forEach(type -> this.nodeCount.computeIfAbsent(type, key -> new AtomicInteger()).incrementAndGet());
+		this.node.setValidated(true);
 	}
 
 	/**
@@ -56,6 +57,11 @@ class Checker {
 		return new Checker(node, validationErrors, false);
 	}
 
+	/**
+	 * Governs whether or not a check should be performed based on prior anded check failures.
+	 *
+	 * @return determination as to whether or not a check should be performed
+	 */
 	private boolean shouldShortcut() {
 		return anded && !validationErrors.isEmpty();
 	}
@@ -172,11 +178,6 @@ class Checker {
 				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
 		}
-		return this;
-	}
-
-	public Checker markValidated() {
-		node.setValidated(true);
 		return this;
 	}
 
