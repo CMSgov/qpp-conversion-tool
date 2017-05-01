@@ -14,6 +14,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	private static final String MEASURE_ID = "measureId";
 	private static final String AGGREGATE_COUNT = "aggregateCount";
+	private static final String TYPE = "type";
 
 	/**
 	 * Encodes an Quality Measure Id into the QPP format
@@ -36,31 +37,42 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private void encodeChildren(JsonWrapper wrapper, Node parentNode) throws EncodeException {
 		JsonWrapper childWrapper = new JsonWrapper();
-		String type = "type";
-
-		Node populationNode = parentNode.findChildNode(n -> n.getValue(type).equals("IPOP"));
-		Node numeratorNode = parentNode.findChildNode(n -> n.getValue(type).equals("NUMER"));
-		Node denomExclusionNode = parentNode.findChildNode(n -> n.getValue(type).equals("DENEX"));
-		Node denominatorNode = parentNode.findChildNode(n -> n.getValue(type).equals("DENOM"));
 
 		childWrapper.putBoolean("isEndToEndReported", "true");
 
+		this.encodePopulationTotal(childWrapper, parentNode);
+		this.encodePerformanceMet(childWrapper, parentNode);
+		this.encodePerformance(childWrapper, parentNode);
+
+		wrapper.putObject("value", childWrapper);
+	}
+
+	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
+		Node populationNode = parentNode.findChildNode(n -> n.getValue(TYPE).equals("IPOP"));
+
 		Optional.ofNullable(populationNode).ifPresent(
-				node -> childWrapper.putInteger("populationTotal",
+				node -> wrapper.putInteger("populationTotal",
 						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
+	}
+
+	private void encodePerformanceMet(JsonWrapper wrapper, Node parentNode) {
+		Node numeratorNode = parentNode.findChildNode(n -> n.getValue(TYPE).equals("NUMER"));
 
 		Optional.ofNullable(numeratorNode).ifPresent(
-				node -> childWrapper.putInteger("performanceMet",
+				node -> wrapper.putInteger("performanceMet",
 						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
+	}
+
+	private void encodePerformance(JsonWrapper wrapper, Node parentNode) {
+		Node denomExclusionNode = parentNode.findChildNode(n -> n.getValue(TYPE).equals("DENEX"));
+		Node denominatorNode = parentNode.findChildNode(n -> n.getValue(TYPE).equals("DENOM"));
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
-				node -> childWrapper.putInteger("performanceExclusion",
+				node -> wrapper.putInteger("performanceExclusion",
 						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
 
 		Optional.ofNullable(calculatePerformanceNotMet(denominatorNode, denomExclusionNode)).ifPresent(
-				performanceNotMet -> childWrapper.putInteger("performanceNotMet", performanceNotMet));
-
-		wrapper.putObject("value", childWrapper);
+				performanceNotMet -> wrapper.putInteger("performanceNotMet", performanceNotMet));
 	}
 
 	/**
