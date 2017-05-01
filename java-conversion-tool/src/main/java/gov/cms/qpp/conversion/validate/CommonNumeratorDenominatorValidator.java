@@ -59,7 +59,7 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 *
 	 * @param aggregateCountNode aggregate count node
 	 */
-	private void validateAggregateCount(Node aggregateCountNode){
+	private void validateAggregateCount(Node aggregateCountNode) {
 		String invalidMessage = String.format(INVALID_VALUE, nodeName);
 		check(aggregateCountNode)
 				.value(invalidMessage, AGGREGATE_COUNT_FIELD)
