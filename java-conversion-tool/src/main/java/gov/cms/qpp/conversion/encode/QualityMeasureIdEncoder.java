@@ -24,7 +24,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @throws EncodeException If an error occurs during encoding
 	 */
 	@Override
-	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	public void internalEncode(JsonWrapper wrapper, Node node) {
 		wrapper.putString(MEASURE_ID, node.getValue(MEASURE_ID));
 		encodeChildren(wrapper, node);
 	}
@@ -35,7 +35,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param wrapper holder for encoded node data
 	 * @param parentNode holder of the Quality Measures
 	 */
-	private void encodeChildren(JsonWrapper wrapper, Node parentNode) throws EncodeException {
+	private void encodeChildren(JsonWrapper wrapper, Node parentNode) {
 		JsonWrapper childWrapper = new JsonWrapper();
 
 		childWrapper.putBoolean("isEndToEndReported", "true");
@@ -83,7 +83,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @return the calculation
 	 */
 	private String calculatePerformanceNotMet(Node denominatorNode, Node denomExclusionNode) {
-		if(null == denominatorNode || null == denomExclusionNode) {
+		if (null == denominatorNode || null == denomExclusionNode) {
 			return null;
 		}
 

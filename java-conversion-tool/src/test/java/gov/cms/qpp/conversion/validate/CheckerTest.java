@@ -41,6 +41,18 @@ public class CheckerTest {
 	}
 
 	@Test
+	public void testParentFailure() {
+		Node meepNode = new Node( PARENT );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.hasParent( ERROR_MESSAGE,  TemplateId.ACI_DENOMINATOR) //fails
+				.hasParent( ERROR_MESSAGE,  TemplateId.ACI_DENOMINATOR); //shortcuts
+
+		assertEquals("There's an error", 1, validationErrors.size());
+		assertEquals( "message applied is the message given", validationErrors.get( 0 ).getErrorText(), ERROR_MESSAGE );
+	}
+
+	@Test
 	public void testValueFindSuccess() {
 		Node meepNode = new Node( PARENT );
 		meepNode.putValue( VALUE, "Bob" );
@@ -244,6 +256,54 @@ public class CheckerTest {
 				.childMaximum( OTHER_ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER );
 
 		assertTrue("There's no error", validationErrors.isEmpty() );
+	}
+
+	// compound checking
+	@Test
+	public void compoundIntValueCheckSuccess() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.intValue( ERROR_MESSAGE, VALUE )
+				.greaterThan(ERROR_MESSAGE, 122);
+
+		assertTrue("There's no error", validationErrors.isEmpty() );
+	}
+
+	@Test
+	public void compoundIntValueCheckFailure() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.intValue( ERROR_MESSAGE, VALUE )
+				.greaterThan(ERROR_MESSAGE, 124);
+
+		assertFalse("There's an error", validationErrors.isEmpty() );
+	}
+
+	@Test
+	public void compoundIntValueCheckNoContext() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.greaterThan(ERROR_MESSAGE, 124);
+
+		assertTrue("There's no error", validationErrors.isEmpty() );
+	}
+
+	@Test(expected = ClassCastException.class)
+	public void compoundIntValueCheckCastException() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.intValue( ERROR_MESSAGE, VALUE )
+				.greaterThan(ERROR_MESSAGE, "not an Integer");
+
+		assertFalse("There's an error", validationErrors.isEmpty() );
 	}
 
 	// thorough checking
