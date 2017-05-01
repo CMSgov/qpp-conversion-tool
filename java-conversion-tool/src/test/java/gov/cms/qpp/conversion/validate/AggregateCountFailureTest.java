@@ -1,7 +1,6 @@
-package gov.cms.qpp.negative;
+package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.ConversionEntry;
-import gov.cms.qpp.conversion.validate.AggregateCountValidator;
 import org.junit.Test;
 
 import java.io.File;
@@ -31,10 +30,10 @@ public class AggregateCountFailureTest {
 		String errorContent = new String(Files.readAllBytes(Paths.get(errorFileName)));
 		assertThat("The error file flags a aggregate count type error",
 				errorContent,
-				containsString( AggregateCountValidator.TYPE_ERROR ));
+				containsString(String.format(CommonNumeratorDenominatorValidator.NOT_AN_INTEGER_VALUE, "Numerator")));
 		assertThat("The error file flags a aggregate count value error",
 				errorContent,
-				containsString( AggregateCountValidator.VALUE_ERROR ));
+				containsString(String.format(CommonNumeratorDenominatorValidator.INVALID_VALUE, "Denominator")));
 
 		//clean-up
 		errorFile.deleteOnExit();
