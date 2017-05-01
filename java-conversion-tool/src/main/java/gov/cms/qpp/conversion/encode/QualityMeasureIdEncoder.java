@@ -4,7 +4,6 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,7 +23,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @throws EncodeException If an error occurs during encoding
 	 */
 	@Override
-	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	public void internalEncode(JsonWrapper wrapper, Node node) {
 		wrapper.putString(MEASURE_ID, node.getValue(MEASURE_ID));
 		encodeChildren(wrapper, node);
 	}
@@ -35,14 +34,14 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param wrapper holder for encoded node data
 	 * @param parentNode holder of the Quality Measures
 	 */
-	private void encodeChildren(JsonWrapper wrapper, Node parentNode) throws EncodeException {
+	private void encodeChildren(JsonWrapper wrapper, Node parentNode) {
 		JsonWrapper childWrapper = new JsonWrapper();
 		String type = "type";
 
-		Node populationNode = parentNode.findChildNode(n -> n.getValue(type).equals("IPOP"));
-		Node numeratorNode = parentNode.findChildNode(n -> n.getValue(type).equals("NUMER"));
-		Node denomExclusionNode = parentNode.findChildNode(n -> n.getValue(type).equals("DENEX"));
-		Node denominatorNode = parentNode.findChildNode(n -> n.getValue(type).equals("DENOM"));
+		Node populationNode = parentNode.findChildNode(n -> "IPOP".equals(n.getValue(type)));
+		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(type)));
+		Node denomExclusionNode = parentNode.findChildNode(n -> "DENEX".equals(n.getValue(type)));
+		Node denominatorNode = parentNode.findChildNode(n -> "DENOM".equals(n.getValue(type)));
 
 		childWrapper.putBoolean("isEndToEndReported", "true");
 
@@ -72,7 +71,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @return the calculation
 	 */
 	private String calculatePerformanceNotMet(Node denominatorNode, Node denomExclusionNode) {
-		if(null == denominatorNode || null == denomExclusionNode) {
+		if (null == denominatorNode || null == denomExclusionNode) {
 			return null;
 		}
 
