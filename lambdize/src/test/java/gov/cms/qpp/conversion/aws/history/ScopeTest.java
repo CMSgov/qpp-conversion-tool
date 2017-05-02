@@ -15,7 +15,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 public class ScopeTest {
 //	private static final String BUCKET =  "qrda-history";
@@ -49,8 +53,12 @@ public class ScopeTest {
 					InputStream stream = s3Object.getObjectContent();
 					Converter convert = new Converter(stream);
 					TransformationStatus status = convert.transform();
-					System.out.println("Status: " + status);
-					//assertWhatever convert.getConversionResult();
+
+					InputStream jsonStream = convert.getConversionResult();
+					List<Map<?, ?>> aciSections = null;
+					aciSections = JsonHelper.readJsonAtJsonPath(jsonStream,
+						"$.measurementSets[?(@.category=='aci')]", List.class);
+					assertThat("There must not be any ACI sections in historical data.", aciSections, hasSize(0));
 				} );
 	}
 }
