@@ -9,6 +9,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.List;
 
 @Validator(templateId = TemplateId.ACI_SECTION, required = true)
@@ -27,7 +28,7 @@ public class AciSectionValidator extends NodeValidator {
 	protected void internalValidateSingleNode(final Node node) {
 		initMeasureConfigs();
 
-		check(node).childMinimum(ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED, 1, TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		thoroughlyCheck(node).childMinimum(ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED, 1, TemplateId.ACI_NUMERATOR_DENOMINATOR);
 
 		validateMeasureConfigs(node);
 	}
@@ -38,7 +39,7 @@ public class AciSectionValidator extends NodeValidator {
 	}
 
 	/**
-	 * Initialize all measure configurationscle
+	 * Initialize all measure configurations
 	 */
 	private void initMeasureConfigs() {
 
@@ -57,7 +58,8 @@ public class AciSectionValidator extends NodeValidator {
 	private void validateMeasureConfigs(final Node node) {
 		for (MeasureConfig config : measureConfigs.getMeasureConfigs()) {
 			if (config.isRequired()) {
-				check(node).hasMeasures(NO_REQUIRED_MEASURE, config.getMeasureId());
+				String expectedMeasureId = config.getMeasureId();
+				thoroughlyCheck(node).hasMeasures(MessageFormat.format(NO_REQUIRED_MEASURE, expectedMeasureId), expectedMeasureId);
 			}
 		}
 	}
