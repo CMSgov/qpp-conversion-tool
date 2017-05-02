@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import static junit.framework.TestCase.fail;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
@@ -63,7 +64,7 @@ public class ScopeTest {
 	}
 
 	@Test
-	public void s3() throws IOException {
+	public void historicalQrdaSansAci() throws IOException {
 		if(!runHistoricalTests) {
 			System.err.println("Not running historical test");
 			return;
@@ -76,10 +77,18 @@ public class ScopeTest {
 				.map(S3ObjectSummary::getKey)
 				.map(key -> s3Client.getObject(BUCKET, key))
 				.forEach( s3Object -> {
-					InputStream stream = s3Object.getObjectContent();
-					Converter convert = new Converter(stream);
 
-					TransformationStatus status = convert.transform();
+					Converter convert = null;
+					TransformationStatus status = TransformationStatus.ERROR;
+					try(InputStream stream = s3Object.getObjectContent()) {
+						convert = new Converter(stream);
+						convert.doValidation(false);
+
+						status = convert.transform();
+					} catch (IOException ioe) {
+						fail(ioe.getMessage());
+					}
+
 					assertThat("The file should have transformed correctly.", status, is(TransformationStatus.SUCCESS));
 
 					InputStream jsonStream = convert.getConversionResult();
