@@ -3,17 +3,18 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ValidationError;
+import org.hamcrest.core.Is;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created by Dave on 5/2/2017.
+ * Test class for MeasurePerformedValidator
  */
+
 public class MeasurePerformedValidatorTest {
 
 	/**
@@ -48,6 +49,6 @@ public class MeasurePerformedValidatorTest {
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
 		List<ValidationError> errors = validator.validateSingleNode(measurePerformedNode);
-		assertThat("no errors should be present", errors.size(), is(1));
+		assertThat("no errors should be present", errors.size(), Is.is(1));
 	}
 }
