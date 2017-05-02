@@ -1,4 +1,4 @@
-package gov.cms.qpp.util;
+package gov.cms.qpp.conversion.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,6 +21,19 @@ public class JsonHelper {
 	 */
 	public static <T> T readJson(String filePath, Class<T> valueType) throws IOException {
 		Path path = Paths.get(filePath);
-		return new ObjectMapper().readValue(path.toFile(), valueType);
+		return readJson(path, valueType);
+	}
+
+	/**
+	 * Read json file and return object type specified
+	 *
+	 * @param filePath json file path
+	 * @param valueType object type representation
+	 * @param <T> generic class type
+	 * @return Object of specified type
+	 * @throws IOException
+	 */
+	public static <T> T readJson(Path filePath, Class<T> valueType) throws IOException {
+		return new ObjectMapper().readValue(filePath.toFile(), valueType);
 	}
 }
