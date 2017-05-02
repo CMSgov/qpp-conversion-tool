@@ -6,6 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -21,21 +24,16 @@ public class QualityMeasureIdEncoderTest {
 	private Node aggregateCountNode;
 	private JsonWrapper wrapper;
 	private QualityMeasureIdEncoder encoder;
+	private String type = "type";
 
 	@Before
 	public void setUp() {
-		String type = "type";
-
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
 		qualityMeasureId.putValue("measureId", "Measure Id Value");
 
 		aggregateCountNode = new Node();
 		aggregateCountNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		aggregateCountNode.putValue("aggregateCount", "600");
-
-		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
-		populationNode.putValue(type, "IPOP");
-		populationNode.addChildNode(aggregateCountNode);
 
 		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
 		denomExclusionNode.putValue(type, "DENEX");
@@ -49,7 +47,7 @@ public class QualityMeasureIdEncoderTest {
 		denominatorNode.putValue(type, "DENOM");
 		denominatorNode.addChildNode(aggregateCountNode);
 
-		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode);
+		qualityMeasureId.addChildNodes(denomExclusionNode, numeratorNode, denominatorNode);
 
 		encoder = new QualityMeasureIdEncoder();
 		wrapper = new JsonWrapper();
@@ -74,6 +72,29 @@ public class QualityMeasureIdEncoderTest {
 
 	@Test
 	public void testPopulationTotalIsEncoded() {
+		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		populationNode.putValue(type, "IPOP");
+		populationNode.addChildNode(aggregateCountNode);
+		List<Node> children = Stream.concat(Stream.of(populationNode), qualityMeasureId.getChildNodes().stream())
+				.collect(Collectors.toList());
+		qualityMeasureId.setChildNodes(children);
+
+		executeInternalEncode();
+		LinkedHashMap<String, Object> childValues = getChildValues();
+
+		assertThat("expected encoder to return a single value",
+				childValues.get("populationTotal"), is(600));
+	}
+
+	@Test
+	public void testPopulationAltTotalIsEncoded() {
+		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		populationNode.putValue(type, "IPP");
+		populationNode.addChildNode(aggregateCountNode);
+		List<Node> children = Stream.concat(Stream.of(populationNode), qualityMeasureId.getChildNodes().stream())
+				.collect(Collectors.toList());
+		qualityMeasureId.setChildNodes(children);
+
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 

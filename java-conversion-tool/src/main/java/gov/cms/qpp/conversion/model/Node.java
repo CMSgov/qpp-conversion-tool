@@ -308,7 +308,7 @@ public class Node {
 	 *
 	 * @param childNodes The list of Nodes to become children.
 	 */
-	private void setChildNodes(List<Node> childNodes) {
+	public void setChildNodes(List<Node> childNodes) {
 		this.childNodes = childNodes;
 	}
 

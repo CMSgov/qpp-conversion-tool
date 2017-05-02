@@ -34,28 +34,33 @@ public class MeasureDataDecoderTest extends BaseTest {
 	}
 
 	@Test
-	public void testDecodeOfDenomMeasureData() throws XmlException {
+	public void testDecodeOfDenomMeasureData() {
 		sharedTest("DENOM");
 	}
 
 	@Test
-	public void testDecodeOfNumerMeasureData() throws XmlException {
+	public void testDecodeOfNumerMeasureData() {
 		sharedTest("NUMER");
 	}
 
 	@Test
-	public void testDecodeOfDenexMeasureData() throws XmlException {
+	public void testDecodeOfDenexMeasureData() {
 		sharedTest("DENEX");
 	}
 
 	@Test
-	public void testDecodeOfDenexcepMeasureData() throws XmlException {
+	public void testDecodeOfDenexcepMeasureData() {
 		sharedTest("DENEXCEP");
 	}
 
 	@Test
-	public void testDecodeOfIpopMeasureData() throws XmlException {
+	public void testDecodeOfIpopMeasureData() {
 		sharedTest("IPOP");
+	}
+
+	@Test
+	public void testDecodeOfIppMeasureData() {
+		sharedTest("IPP");
 	}
 
 	private void sharedTest(String type) {
@@ -72,7 +77,7 @@ public class MeasureDataDecoderTest extends BaseTest {
 		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder();
 		Node placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
 
-		assertThat("Should have five children", placeholder.getChildNodes(), hasSize(5));
+		assertThat("Should have five children", placeholder.getChildNodes(), hasSize(6));
 	}
 
 }
