@@ -44,24 +44,7 @@ public class IaMeasureValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(measureNode);
 		assertThat("no errors should be present", errors, empty());
 	}
-	/**
-	 * Validate an invalid value child Node
-	 *
-	 * @throws Exception on test error
-	 */
-	@Test
-	public void internalValidateSingleInvalidValueNode() throws Exception {
-		Node measureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
-		Node measurePerformedNode = new Node(measureNode, TemplateId.MEASURE_PERFORMED.getTemplateId());
-		measureNode.addChildNode(measurePerformedNode);
-		measurePerformedNode.putValue("measurePerformed", "abc");
 
-		IaMeasureValidator validator = new IaMeasureValidator();
-		List<ValidationError> errors = validator.validateSingleNode(measureNode);
-		assertThat("An invalid value error should be present", errors.size(), is(1));
-		String error = errors.get(0).getErrorText();
-		assertThat("The Invalid value Error is expected", error, is(IaMeasureValidator.TYPE_ERROR));
-	}
 
 	/**
 	 * Validate a missing child
