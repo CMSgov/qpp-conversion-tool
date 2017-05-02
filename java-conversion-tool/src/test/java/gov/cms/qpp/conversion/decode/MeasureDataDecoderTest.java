@@ -77,7 +77,7 @@ public class MeasureDataDecoderTest extends BaseTest {
 		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder();
 		Node placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
 
-		assertThat("Should have five children", placeholder.getChildNodes(), hasSize(6));
+		assertThat("Should have six children", placeholder.getChildNodes(), hasSize(6));
 	}
 
 }

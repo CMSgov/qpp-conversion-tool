@@ -57,7 +57,6 @@ public class QualityMeasureIdEncoderTest {
 
 	@Test
 	public void testMeasureIdIsEncoded() {
-		qualityMeasureId.addChildNodes(denomExclusionNode, numeratorNode, denominatorNode);
 		executeInternalEncode();
 
 		assertThat("expected encoder to return a single value",
@@ -66,7 +65,6 @@ public class QualityMeasureIdEncoderTest {
 
 	@Test
 	public void testEndToEndReportedIsEncoded() {
-		qualityMeasureId.addChildNodes(denomExclusionNode, numeratorNode, denominatorNode);
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
