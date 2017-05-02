@@ -113,7 +113,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@Decoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENTAL_CMS_V2)
+	@Decoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 	public static class SexSupplementalDataElementalCmsV2Decoder extends DefaultDecoder {
 
 		public SexSupplementalDataElementalCmsV2Decoder() {

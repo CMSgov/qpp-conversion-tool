@@ -1,7 +1,10 @@
 package gov.cms.qpp.conversion;
 
-import static gov.cms.qpp.util.JsonHelper.readJson;
-import static junit.framework.TestCase.assertEquals;
+import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,12 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import gov.cms.qpp.BaseTest;
-import gov.cms.qpp.conversion.model.TemplateId;
+import static gov.cms.qpp.util.JsonHelper.readJson;
+import static junit.framework.TestCase.assertEquals;
 
 /**
  * Verify scoped conversions

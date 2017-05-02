@@ -111,7 +111,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	@Encoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENTAL_CMS_V2)
+	@Encoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 	public static class SexSupplementalDataElementalCmsV2Encoder extends DefaultEncoder {
 
 		public SexSupplementalDataElementalCmsV2Encoder() {
