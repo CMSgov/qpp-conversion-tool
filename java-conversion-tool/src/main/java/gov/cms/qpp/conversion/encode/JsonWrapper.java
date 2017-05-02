@@ -82,9 +82,8 @@ public class JsonWrapper {
 	 * @param name key for value
 	 * @param value keyed value which must conform with {@link #validDate(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
 	 */
-	public JsonWrapper putDate(String name, String value) throws EncodeException {
+	public JsonWrapper putDate(String name, String value) {
 		try {
 			return putObject(name, validDate(value));
 		} catch (EncodeException e) {
@@ -99,9 +98,8 @@ public class JsonWrapper {
 	 * @see #putObject(Object)
 	 * @param value that must conform with {@link #validDate(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
 	 */
-	public JsonWrapper putDate(String value) throws EncodeException {
+	public JsonWrapper putDate(String value) {
 		try {
 			return putObject(validDate(value));
 		} catch (EncodeException e) {
@@ -117,9 +115,8 @@ public class JsonWrapper {
 	 * @param name key for value
 	 * @param value keyed value which must conform with {@link #validInteger(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
 	 */
-	public JsonWrapper putInteger(String name, String value) throws EncodeException {
+	public JsonWrapper putInteger(String name, String value) {
 		try {
 			return putObject(name, validInteger(value));
 		} catch (EncodeException e) {
@@ -134,9 +131,8 @@ public class JsonWrapper {
 	 * @see #putObject(Object)
 	 * @param value {@link String} must conform with {@link #validInteger(String)} validation
 	 * @return {@link JsonWrapper}
-	 * @throws EncodeException
 	 */
-	public JsonWrapper putInteger(String value) throws EncodeException {
+	public JsonWrapper putInteger(String value) {
 		try {
 			return putObject(validInteger(value));
 		} catch (EncodeException e) {
@@ -152,9 +148,8 @@ public class JsonWrapper {
 	 * @param name key for value
 	 * @param value keyed value that must conform with {@link #validFloat(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
 	 */
-	public JsonWrapper putFloat(String name, String value) throws EncodeException {
+	public JsonWrapper putFloat(String name, String value) {
 		try {
 			return putObject(name, validFloat(value));
 		} catch (EncodeException e) {
@@ -169,9 +164,8 @@ public class JsonWrapper {
 	 * @see #putObject(Object)
 	 * @param value that must conform with {@link #validFloat(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
 	 */
-	public JsonWrapper putFloat(String value) throws EncodeException {
+	public JsonWrapper putFloat(String value) {
 		try {
 			return putObject(validFloat(value));
 		} catch (EncodeException e) {
@@ -187,9 +181,8 @@ public class JsonWrapper {
 	 * @param name key for value
 	 * @param value keyed value that must conform with {@link #validBoolean(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
 	 */
-	public JsonWrapper putBoolean(String name, String value) throws EncodeException {
+	public JsonWrapper putBoolean(String name, String value) {
 		try {
 			return putObject(name, validBoolean(value));
 		} catch (EncodeException e) {
@@ -204,9 +197,8 @@ public class JsonWrapper {
 	 * @see #putObject(Object)
 	 * @param value that must conform with {@link #validBoolean(String)} validation
 	 * @return <i><b>this</b></i> reference for chaining
-	 * @throws EncodeException
 	 */
-	public JsonWrapper putBoolean(String value) throws EncodeException {
+	public JsonWrapper putBoolean(String value) {
 		try {
 			return putObject(validBoolean(value));
 		} catch (EncodeException e) {
