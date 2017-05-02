@@ -27,7 +27,7 @@ public class ScopedConversionTest extends BaseTest {
 	private static final String ERROR_FILE = "angerTheConverter.err.json";
 
 	private static final String TEMPLATE_SCOPE = "--" + ConversionEntry.TEMPLATE_SCOPE;
-	private static Map<String,Object> fixtures;
+	private static Map<String, Object> fixtures;
 
 	/**
 	 * Load fixture json for use as a baseline for expected scoped conversion outcomes.
@@ -62,7 +62,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
-		Map<String,Object> content = readJson(SUCCESS_FILE, HashMap.class);
+		Map<String, Object> content = readJson(SUCCESS_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -81,7 +81,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
-		Map<String,Object> content = readJson(SUCCESS_FILE, HashMap.class);
+		Map<String, Object> content = readJson(SUCCESS_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -100,7 +100,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
-		Map<String,Object> content = readJson(SUCCESS_FILE, HashMap.class);
+		Map<String, Object> content = readJson(SUCCESS_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -119,7 +119,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
-		Map<String,Object> content = readJson(SUCCESS_FILE, HashMap.class);
+		Map<String, Object> content = readJson(SUCCESS_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -139,7 +139,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
-		Map<String,Object> content = readJson(SUCCESS_FILE, HashMap.class);
+		Map<String, Object> content = readJson(SUCCESS_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -158,7 +158,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
-		Map<String,Object> content = readJson(SUCCESS_FILE, HashMap.class);
+		Map<String, Object> content = readJson(SUCCESS_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -177,7 +177,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
-		Map<String,Object> content = readJson(SUCCESS_FILE, HashMap.class);
+		Map<String, Object> content = readJson(SUCCESS_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -196,7 +196,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
-		Map<String,Object> content = readJson(SUCCESS_FILE, HashMap.class);
+		Map<String, Object> content = readJson(SUCCESS_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -215,7 +215,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
-		Map<String,Object> content = readJson(SUCCESS_FILE, HashMap.class);
+		Map<String, Object> content = readJson(SUCCESS_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -234,7 +234,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
-		Map<String,Object> content = readJson(SUCCESS_FILE, HashMap.class);
+		Map<String, Object> content = readJson(SUCCESS_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -255,7 +255,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, ERROR_MAKER);
-		Map<String,Object> content = readJson(ERROR_FILE, HashMap.class);
+		Map<String, Object> content = readJson(ERROR_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -274,7 +274,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, ERROR_MAKER);
-		Map<String,Object> content = readJson(ERROR_FILE, HashMap.class);
+		Map<String, Object> content = readJson(ERROR_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -293,7 +293,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, ERROR_MAKER);
-		Map<String,Object> content = readJson(ERROR_FILE, HashMap.class);
+		Map<String, Object> content = readJson(ERROR_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -312,7 +312,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		ConversionEntry.main(TEMPLATE_SCOPE, testSection, ERROR_MAKER);
-		Map<String,Object> content = readJson(ERROR_FILE, HashMap.class);
+		Map<String, Object> content = readJson(ERROR_FILE, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -326,7 +326,7 @@ public class ScopedConversionTest extends BaseTest {
 	 * @return list of validation errors
 	 */
 	@SuppressWarnings("unchecked")
-	private List<?> getErrors(Map<String,Object> content) {
+	private List<?> getErrors(Map<String, Object> content) {
 		return (List<?>) ((Map<String, ?>) ((List<?>) content.get("errorSources")).get(0)).get("validationErrors");
 	}
 
@@ -336,7 +336,7 @@ public class ScopedConversionTest extends BaseTest {
 	 * @param content hash representing valid conversion output
 	 * @return list of converted hashes / lists
 	 */
-	private List<?> getScoped(Map<String,Object> content) {
+	private List<?> getScoped(Map<String, Object> content) {
 		return (List<?>) content.get("scoped");
 	}
 }
