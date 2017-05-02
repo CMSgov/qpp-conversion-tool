@@ -33,27 +33,27 @@ public class MeasureDataDecoderTest extends BaseTest {
 	}
 
 	@Test
-	public void testDecodeOfDenomMeasureData() throws XmlException {
+	public void testDecodeOfDenomMeasureData() {
 		sharedTest("DENOM");
 	}
 
 	@Test
-	public void testDecodeOfNumerMeasureData() throws XmlException {
+	public void testDecodeOfNumerMeasureData() {
 		sharedTest("NUMER");
 	}
 
 	@Test
-	public void testDecodeOfDenexMeasureData() throws XmlException {
+	public void testDecodeOfDenexMeasureData() {
 		sharedTest("DENEX");
 	}
 
 	@Test
-	public void testDecodeOfDenexcepMeasureData() throws XmlException {
+	public void testDecodeOfDenexcepMeasureData() {
 		sharedTest("DENEXCEP");
 	}
 
 	@Test
-	public void testDecodeOfIpopMeasureData() throws XmlException {
+	public void testDecodeOfIpopMeasureData() {
 		sharedTest("IPOP");
 	}
 
