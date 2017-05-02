@@ -20,9 +20,9 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.Is.is;
 
 public class ScopeTest {
-//	private static final String BUCKET =  "qrda-history";
     private static final String BUCKET = "historical-qrda";
     private static final String ACCESS = "aws.accessKeyId";
 	private static final String SECRET = "aws.secretKey";
@@ -52,11 +52,13 @@ public class ScopeTest {
 				.forEach( s3Object -> {
 					InputStream stream = s3Object.getObjectContent();
 					Converter convert = new Converter(stream);
+
 					TransformationStatus status = convert.transform();
+					assertThat("The file should have transformed correctly.", status, is(TransformationStatus.ERROR));
 
 					InputStream jsonStream = convert.getConversionResult();
-					List<Map<?, ?>> aciSections = null;
-					aciSections = JsonHelper.readJsonAtJsonPath(jsonStream,
+
+					List<Map<?, ?>> aciSections = JsonHelper.readJsonAtJsonPath(jsonStream,
 						"$.measurementSets[?(@.category=='aci')]", List.class);
 					assertThat("There must not be any ACI sections in historical data.", aciSections, hasSize(0));
 				} );

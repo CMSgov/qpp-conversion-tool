@@ -1,13 +1,10 @@
 package gov.cms.qpp.conversion.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.jayway.jsonpath.JsonPath;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -42,22 +39,18 @@ public class JsonHelper {
 		return new ObjectMapper().readValue(filePath.toFile(), valueType);
 	}
 
-	public static <T> T readJsonAtJsonPath(Path filePath, String jsonPath, Class<T> returnType) throws IOException {
-		return JsonPath.parse(filePath).read(jsonPath, returnType);
-	}
-
+	/**
+	 * Reads JSON from the {@code InputStream} and returns a subset based on the provided JSONPath.
+	 *
+	 * See http://goessner.net/articles/JsonPath/
+	 *
+	 * @param jsonStream An InputStream containing JSON.
+	 * @param jsonPath A JSONPath as specified at http://goessner.net/articles/JsonPath/
+	 * @param returnType The requested return type as a class.
+	 * @param <T> The return type that you want.
+	 * @return The requested return type.
+	 */
 	public static <T> T readJsonAtJsonPath(InputStream jsonStream, String jsonPath, Class<T> returnType) {
 		return JsonPath.parse(jsonStream).read(jsonPath, returnType);
-	}
-
-	public static <T, V> T readValueAtJsonPathOnObject(V objectToSearch, String jsonPath, Class<T> returnType) throws IOException {
-		ObjectWriter jsonObjectWriter = new ObjectMapper().writer();
-
-		Writer stringWriter = new StringWriter();
-		jsonObjectWriter.writeValue(stringWriter, objectToSearch);
-
-		String jsonBlob = stringWriter.toString();
-
-		return JsonPath.parse(jsonBlob).read(jsonPath, returnType);
 	}
 }
