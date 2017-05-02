@@ -92,7 +92,7 @@ public class Converter {
 	 * @param doIt toggle value
 	 * @return this for chaining
 	 */
-	Converter doValidation(boolean doIt) {
+	public Converter doValidation(boolean doIt) {
 		this.doValidation = doIt;
 		return this;
 	}
