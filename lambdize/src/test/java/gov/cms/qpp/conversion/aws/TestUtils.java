@@ -48,8 +48,7 @@ public class TestUtils {
     public static <T> T parse(String resource, Class<T> clazz)
             throws IOException {
 
-        InputStream stream = TestUtils.class.getResourceAsStream(resource);
-        try {
+        try (InputStream stream = TestUtils.class.getResourceAsStream(resource)) {
             if (clazz == S3Event.class) {
                 String json = IOUtils.toString(stream);
                 S3EventNotification event = S3EventNotification.parseJson(json);
@@ -61,9 +60,7 @@ public class TestUtils {
             } else {
                 return mapper.readValue(stream, clazz);
             }
-        } finally {
-            stream.close();
-        } 
+        }
     }
 
     private static class TestJacksonMapperModule extends SimpleModule {
