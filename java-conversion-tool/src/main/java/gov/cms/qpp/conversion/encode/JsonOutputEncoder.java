@@ -24,7 +24,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	private List<ValidationError> validationErrors = new ArrayList<>();
 
 	@Override
-	public void encode(Writer writer) throws EncodeException {
+	public void encode(Writer writer) {
 		try {
 			JsonWrapper wrapper = new JsonWrapper();
 			for (Node curNode : nodes) {
@@ -47,7 +47,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	}
 
 	@Override
-	public InputStream encode() throws EncodeException {
+	public InputStream encode() {
 		JsonWrapper wrapper = new JsonWrapper();
 		for (Node curNode : nodes) {
 			encode(wrapper, curNode);
@@ -67,5 +67,5 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 		this.nodes = someNodes;
 	}
 
-	protected abstract void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException;
+	protected abstract void internalEncode(JsonWrapper wrapper, Node node);
 }

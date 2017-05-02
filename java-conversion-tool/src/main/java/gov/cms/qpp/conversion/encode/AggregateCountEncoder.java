@@ -19,7 +19,7 @@ public class AggregateCountEncoder extends QppOutputEncoder {
 	 * @throws EncodeException
 	 */
 	@Override
-	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		// simply writes the value in the Node
 		wrapper.putInteger("value", node.getValue("aggregateCount"));
 	}

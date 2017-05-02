@@ -19,7 +19,7 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 	 * @throws EncodeException If an error occurs during encoding
 	 */
 	@Override
-	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) {
 
 		List<Node> children = node.getChildNodes();
 
