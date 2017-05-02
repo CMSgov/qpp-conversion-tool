@@ -26,15 +26,17 @@ public class ScopeTest {
     private static final String BUCKET = "historical-qrda";
     private static final String ACCESS = "aws.accessKeyId";
 	private static final String SECRET = "aws.secretKey";
-
+	private static boolean runHistoricalTests = true;
 
 	@BeforeClass
 	@SuppressWarnings("unchecked")
 	public static void setup() throws IOException {
 		Map<String, String> properties = getS3Properties();
 
-		System.setProperty(ACCESS, properties.get(ACCESS));
-		System.setProperty(SECRET, properties.get(SECRET));
+		if (runHistoricalTests) {
+			System.setProperty(ACCESS, properties.get(ACCESS));
+			System.setProperty(SECRET, properties.get(SECRET));
+		}
 	}
 
 	private static Map<String, String> getS3Properties() {
@@ -46,12 +48,14 @@ public class ScopeTest {
 					.resolve("s3Properties.json");
 			properties = JsonHelper.readJson(path, Map.class);
 		} catch (Exception e) {
-			System.err.println("You must configure an s3Properties.json file: ");
+			runHistoricalTests = false;
+			System.err.println("You must configure an s3Properties.json file.  Will not run historical tests.");
 			e.printStackTrace(System.err);
 		}
 
-		if (properties == null || !(properties.containsKey(ACCESS) && properties.containsKey(SECRET))){
-			String message = String.format("s3Properties.json must contain %s and %s configurations.", ACCESS, SECRET);
+		if (properties == null || !(properties.containsKey(ACCESS) && properties.containsKey(SECRET))) {
+			runHistoricalTests = false;
+			String message = String.format("s3Properties.json must contain %s and %s configurations.  Will not run historical tests.", ACCESS, SECRET);
 			System.err.println(message);
 		}
 
@@ -60,6 +64,11 @@ public class ScopeTest {
 
 	@Test
 	public void s3() throws IOException {
+		if(!runHistoricalTests) {
+			System.err.println("Not running historical test");
+			return;
+		}
+
 		AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
 		ObjectListing listing
 				= s3Client.listObjects(BUCKET);
@@ -71,7 +80,7 @@ public class ScopeTest {
 					Converter convert = new Converter(stream);
 
 					TransformationStatus status = convert.transform();
-					assertThat("The file should have transformed correctly.", status, is(TransformationStatus.ERROR));
+					assertThat("The file should have transformed correctly.", status, is(TransformationStatus.SUCCESS));
 
 					InputStream jsonStream = convert.getConversionResult();
 
