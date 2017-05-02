@@ -24,8 +24,8 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 
 public class ScopeTest {
-    private static final String BUCKET = "historical-qrda";
-    private static final String ACCESS = "aws.accessKeyId";
+    	private static final String BUCKET = "historical-qrda";
+    	private static final String ACCESS = "aws.accessKeyId";
 	private static final String SECRET = "aws.secretKey";
 	private static boolean runHistoricalTests = true;
 
