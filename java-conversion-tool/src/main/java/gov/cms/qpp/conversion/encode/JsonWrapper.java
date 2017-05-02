@@ -330,7 +330,7 @@ public class JsonWrapper {
 	 * @return valid Integer
 	 * @throws EncodeException
 	 */
-	protected int validInteger(String value) throws EncodeException {
+	protected int validInteger(String value) {
 		try {
 			return Integer.parseInt(cleanString(value));
 		} catch (Exception e) {
@@ -345,7 +345,7 @@ public class JsonWrapper {
 	 * @return valid date String
 	 * @throws EncodeException
 	 */
-	protected String validDate(String value) throws EncodeException {
+	protected String validDate(String value) {
 		try {
 			LocalDate thisDate = LocalDate.parse(cleanString(value),  DateTimeFormatter.ofPattern("yyyyMMdd"));
 			return thisDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -361,7 +361,7 @@ public class JsonWrapper {
 	 * @return valid Float value
 	 * @throws EncodeException
 	 */
-	protected float validFloat(String value) throws EncodeException {
+	protected float validFloat(String value) {
 		try {
 			return Float.parseFloat(cleanString(value));
 		} catch (Exception e) {
@@ -376,7 +376,7 @@ public class JsonWrapper {
 	 * @return valid Boolean
 	 * @throws EncodeException
 	 */
-	protected boolean validBoolean(String value) throws EncodeException {
+	protected boolean validBoolean(String value) {
 		value = cleanString(value);
 		
 		if ("true".equals(value) || "yes".equals(value) || "y".equals(value)) {
