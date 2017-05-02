@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static gov.cms.qpp.util.JsonHelper.readJson;
+import static gov.cms.qpp.conversion.util.JsonHelper.readJson;
 import static junit.framework.TestCase.assertEquals;
 
 /**
