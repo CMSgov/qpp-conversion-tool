@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-import static gov.cms.qpp.util.JsonHelper.readJson;
+import static gov.cms.qpp.conversion.util.JsonHelper.readJson;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
