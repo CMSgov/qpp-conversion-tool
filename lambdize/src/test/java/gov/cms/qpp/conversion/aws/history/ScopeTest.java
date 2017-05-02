@@ -31,14 +31,31 @@ public class ScopeTest {
 	@BeforeClass
 	@SuppressWarnings("unchecked")
 	public static void setup() throws IOException {
-		Path path = Paths.get("src")
-				.resolve("test")
-				.resolve("resources")
-				.resolve("s3Properties.json");
-		Map<String, String> properties = JsonHelper.readJson(path, Map.class);
+		Map<String, String> properties = getS3Properties();
 
 		System.setProperty(ACCESS, properties.get(ACCESS));
 		System.setProperty(SECRET, properties.get(SECRET));
+	}
+
+	private static Map<String, String> getS3Properties() {
+		Map<String, String> properties = null;
+		try {
+			Path path = Paths.get("src")
+					.resolve("test")
+					.resolve("resources")
+					.resolve("s3Properties.json");
+			properties = JsonHelper.readJson(path, Map.class);
+		} catch (Exception e) {
+			System.err.println("You must configure an s3Properties.json file: ");
+			e.printStackTrace(System.err);
+		}
+
+		if (properties == null || !(properties.containsKey(ACCESS) && properties.containsKey(SECRET))){
+			String message = String.format("s3Properties.json must contain %s and %s configurations.", ACCESS, SECRET);
+			System.err.println(message);
+		}
+
+		return properties;
 	}
 
 	@Test
@@ -63,4 +80,5 @@ public class ScopeTest {
 					assertThat("There must not be any ACI sections in historical data.", aciSections, hasSize(0));
 				} );
 	}
+
 }
