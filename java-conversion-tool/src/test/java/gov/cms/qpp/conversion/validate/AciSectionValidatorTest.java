@@ -1,10 +1,14 @@
 package gov.cms.qpp.conversion.validate;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ValidationError;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -12,9 +16,13 @@ import java.util.List;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.assertThat;
 
 public class AciSectionValidatorTest {
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void testNoMeasurePresent() {
@@ -67,5 +75,37 @@ public class AciSectionValidatorTest {
 		List<ValidationError> errors = measureVal.validateSameTemplateIdNodes(Arrays.asList(aciSectionNode));
 
 		assertThat("there should be 0 errors", errors, empty());
+	}
+
+	@Test
+	public void testGoodMeasureDataFile() {
+
+		AciSectionValidator validator = new AciSectionValidator();
+		validator.setMeasureDataFile("measures-data-aci-short.json");
+		//no exception thrown
+	}
+
+	@Test
+	public void testNonExistingMeasureDataFile() {
+
+		//set-up
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectCause(isA(IOException.class));
+
+		//execute
+		AciSectionValidator validator = new AciSectionValidator();
+		validator.setMeasureDataFile("Bogus file name");
+	}
+
+	@Test
+	public void testBadFormattedMeasureDataFile() {
+
+		//set-up
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectCause(isA(JsonParseException.class));
+
+		//execute
+		AciSectionValidator validator = new AciSectionValidator();
+		validator.setMeasureDataFile("bad_formatted_measures_data.json");
 	}
 }
