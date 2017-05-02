@@ -8,10 +8,10 @@ import gov.cms.qpp.conversion.model.Validator;
 import java.util.List;
 
 /**
- * Validates Measure Performed Value - expects a  Y or N
+ * Validates IaMeasure Node - expects a child MEASURE_PERFORMED with a  Y or N value
  */
 @Validator(templateId = TemplateId.IA_MEASURE, required = true)
-public class MeasurePerformedValidator extends NodeValidator {
+public class IaMeasureValidator extends NodeValidator {
 
 	public static final String TYPE_ERROR = "Measure performed value is required and must be either a Y or an N.";
 	public static final String INCORRECT_CHILDREN_COUNT = "Measure performed must have exactly one child.";

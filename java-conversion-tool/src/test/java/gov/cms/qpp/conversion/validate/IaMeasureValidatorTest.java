@@ -12,9 +12,9 @@ import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.Assert.assertThat;
 
 /**
- * Test class for MeasurePerformedValidator
+ * Test class for IaMeasureValidator
  */
-public class MeasurePerformedValidatorTest {
+public class IaMeasureValidatorTest {
 
 	/**
 	 * Validate a correct set of Nodes
@@ -28,7 +28,7 @@ public class MeasurePerformedValidatorTest {
 		measureNode.addChildNode(measurePerformedNode);
 		measurePerformedNode.putValue("measurePerformed", "Y");
 
-		MeasurePerformedValidator validator = new MeasurePerformedValidator();
+		IaMeasureValidator validator = new IaMeasureValidator();
 		List<ValidationError> errors = validator.validateSingleNode(measureNode);
 		assertThat("no errors should be present", errors, empty());
 	}
@@ -40,7 +40,7 @@ public class MeasurePerformedValidatorTest {
 		measureNode.addChildNode(measurePerformedNode);
 		measurePerformedNode.putValue("measurePerformed", "N");
 
-		MeasurePerformedValidator validator = new MeasurePerformedValidator();
+		IaMeasureValidator validator = new IaMeasureValidator();
 		List<ValidationError> errors = validator.validateSingleNode(measureNode);
 		assertThat("no errors should be present", errors, empty());
 	}
@@ -56,11 +56,11 @@ public class MeasurePerformedValidatorTest {
 		measureNode.addChildNode(measurePerformedNode);
 		measurePerformedNode.putValue("measurePerformed", "abc");
 
-		MeasurePerformedValidator validator = new MeasurePerformedValidator();
+		IaMeasureValidator validator = new IaMeasureValidator();
 		List<ValidationError> errors = validator.validateSingleNode(measureNode);
 		assertThat("An invalid value error should be present", errors.size(), is(1));
 		String error = errors.get(0).getErrorText();
-		assertThat("The Invalid value Error is expected", error, is(MeasurePerformedValidator.TYPE_ERROR));
+		assertThat("The Invalid value Error is expected", error, is(IaMeasureValidator.TYPE_ERROR));
 	}
 
 	/**
@@ -72,12 +72,12 @@ public class MeasurePerformedValidatorTest {
 	public void testMissingNode() throws Exception {
 		Node measureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
 
-		MeasurePerformedValidator validator = new MeasurePerformedValidator();
+		IaMeasureValidator validator = new IaMeasureValidator();
 		List<ValidationError> errors = validator.validateSingleNode(measureNode);
 		assertThat("A missing child errors should be present", errors.size(), is(1));
 		String error = errors.get(0).getErrorText();
 		assertThat("The INCORRECT_CHILDREN_COUNT Error is expected", error,
-				is(MeasurePerformedValidator.INCORRECT_CHILDREN_COUNT));
+				is(IaMeasureValidator.INCORRECT_CHILDREN_COUNT));
 	}
 
 	/**
@@ -95,10 +95,10 @@ public class MeasurePerformedValidatorTest {
 		measureNode.addChildNode(measurePerformedNode2);
 		measurePerformedNode1.putValue("measurePerformed", "N");
 
-		MeasurePerformedValidator validator = new MeasurePerformedValidator();
+		IaMeasureValidator validator = new IaMeasureValidator();
 		List<ValidationError> errors = validator.validateSingleNode(measureNode);
 		assertThat("A Too Many children errors should be present", errors.size(), is(1));
 		String error = errors.get(0).getErrorText();
-		assertThat("The INCORRECT_CHILDREN_COUNT Error is expected", error, is(MeasurePerformedValidator.INCORRECT_CHILDREN_COUNT));
+		assertThat("The INCORRECT_CHILDREN_COUNT Error is expected", error, is(IaMeasureValidator.INCORRECT_CHILDREN_COUNT));
 	}
 }
