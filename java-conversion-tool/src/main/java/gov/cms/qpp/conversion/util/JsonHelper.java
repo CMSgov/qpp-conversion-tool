@@ -12,6 +12,14 @@ import java.nio.file.Paths;
  * Help with json comparisons
  */
 public class JsonHelper {
+
+	/**
+	 * Constructor that is private and empty because this is a utility class.
+	 */
+	private JsonHelper() {
+		//private and empty because this is a utility class
+	}
+
 	/**
 	 * Read json file and return object type specified
 	 *
