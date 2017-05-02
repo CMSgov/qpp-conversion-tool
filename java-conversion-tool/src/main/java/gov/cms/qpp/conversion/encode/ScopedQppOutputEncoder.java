@@ -22,7 +22,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 	 * @throws EncodeException If error occurs during encoding
 	 */
 	@Override
-	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		if (node.getType() == TemplateId.PLACEHOLDER) {
 			JsonWrapper scoped = new JsonWrapper();
 			node.getChildNodes().stream()

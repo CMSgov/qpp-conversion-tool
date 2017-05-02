@@ -25,7 +25,7 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 	 * @throws EncodeException If an error occurs during encoding
 	 */
 	@Override
-	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) {
 
 		//the measure node will have 2 child nodes
 		//one for the numerator and one for the denominator

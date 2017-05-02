@@ -13,10 +13,10 @@ public interface OutputEncoder {
 	 * 
 	 * @param writer
 	 */
-	void encode(Writer writer) throws EncodeException;
+	void encode(Writer writer);
 
 	/**
 	 * Encode data to a String
 	 */
-	InputStream encode() throws EncodeException;
+	InputStream encode();
 }
