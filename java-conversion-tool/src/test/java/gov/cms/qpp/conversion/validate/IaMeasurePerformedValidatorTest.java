@@ -22,11 +22,22 @@ public class IaMeasurePerformedValidatorTest {
 	 * @throws Exception on test error
 	 */
 	@Test
-	public void internalValidateSingleNode() throws Exception {
+	public void internalValidateSingleNodeY() throws Exception {
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
 		Node iaMeasurePerformedNode = new Node(iaMeasureNode, TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS.getTemplateId());
 		iaMeasureNode.addChildNode(iaMeasurePerformedNode);
 		iaMeasurePerformedNode.putValue("measurePerformed", "Y");
+
+		IaMeasurePerformedValidator validator = new IaMeasurePerformedValidator();
+		List<ValidationError> errors = validator.validateSingleNode(iaMeasureNode);
+		assertThat("no errors should be present", errors, empty());
+	}
+	@Test
+	public void internalValidateSingleNodeN() throws Exception {
+		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
+		Node iaMeasurePerformedNode = new Node(iaMeasureNode, TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS.getTemplateId());
+		iaMeasureNode.addChildNode(iaMeasurePerformedNode);
+		iaMeasurePerformedNode.putValue("measurePerformed", "N");
 
 		IaMeasurePerformedValidator validator = new IaMeasurePerformedValidator();
 		List<ValidationError> errors = validator.validateSingleNode(iaMeasureNode);
