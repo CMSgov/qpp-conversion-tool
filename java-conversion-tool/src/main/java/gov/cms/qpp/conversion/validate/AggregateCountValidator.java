@@ -17,10 +17,10 @@ public class AggregateCountValidator extends NodeValidator {
 
 	/**
 	 * Validates a single Aggregate Count {@link gov.cms.qpp.conversion.model.Node}.
-	 *
+	 * <p>
 	 * Validates the following.
 	 * <ul>
-	 *     <li>An integer value named "aggregateCount" was decoded from the source element</li>
+	 * <li>An integer value named "aggregateCount" was decoded from the source element</li>
 	 * </ul>
 	 *
 	 * @param node Node that represents a Aggregate Count.
@@ -28,8 +28,8 @@ public class AggregateCountValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-			.value(VALUE_ERROR, "aggregateCount")
-			.intValue(TYPE_ERROR, "aggregateCount");
+				.value(VALUE_ERROR, "aggregateCount")
+				.intValue(TYPE_ERROR, "aggregateCount");
 	}
 
 	@Override
