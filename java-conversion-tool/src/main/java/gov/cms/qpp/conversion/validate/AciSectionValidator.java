@@ -93,7 +93,8 @@ public class AciSectionValidator extends NodeValidator {
 		for (MeasureConfig config : measureConfigs.getMeasureConfigs()) {
 			if (config.isRequired()) {
 				String expectedMeasureId = config.getMeasureId();
-				thoroughlyCheck(node).hasMeasures(MessageFormat.format(NO_REQUIRED_MEASURE, expectedMeasureId), expectedMeasureId);
+				thoroughlyCheck(node).hasMeasures(MessageFormat.format(NO_REQUIRED_MEASURE, expectedMeasureId),
+					expectedMeasureId);
 			}
 		}
 	}

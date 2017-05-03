@@ -185,8 +185,8 @@ class Checker {
 		if (!shouldShortcut()) {
 			int numberOfMeasuresRequired = Arrays.asList(measureIds).size();
 
-			long numNodesWithWantedMeasureIds = node.getChildNodes(node -> {
-				String measureIdOfNode = node.getValue("measureId");
+			long numNodesWithWantedMeasureIds = node.getChildNodes(currentNode -> {
+				String measureIdOfNode = currentNode.getValue("measureId");
 				if (null == measureIdOfNode) {
 					return false;
 				}
@@ -198,7 +198,7 @@ class Checker {
 				return false;
 			}).count();
 
-			if(numberOfMeasuresRequired != numNodesWithWantedMeasureIds) {
+			if (numberOfMeasuresRequired != numNodesWithWantedMeasureIds) {
 				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
 		}
