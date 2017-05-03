@@ -181,6 +181,30 @@ class Checker {
 		return this;
 	}
 
+	public Checker hasMeasures(String message, String... measureIds) {
+		if (!shouldShortcut()) {
+			int numberOfMeasuresRequired = Arrays.asList(measureIds).size();
+
+			long numNodesWithWantedMeasureIds = node.getChildNodes(currentNode -> {
+				String measureIdOfNode = currentNode.getValue("measureId");
+				if (null == measureIdOfNode) {
+					return false;
+				}
+				for (String measureIdLookingFor : measureIds) {
+					if (measureIdOfNode.equals(measureIdLookingFor)) {
+						return true;
+					}
+				}
+				return false;
+			}).count();
+
+			if (numberOfMeasuresRequired != numNodesWithWantedMeasureIds) {
+				validationErrors.add(new ValidationError(message, node.getPath()));
+			}
+		}
+		return this;
+	}
+
 	/**
 	 * Aggregate count of nodes of the given types
 	 *
