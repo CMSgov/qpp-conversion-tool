@@ -26,7 +26,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @throws EncodeException If error occurs during encoding
 	 */
 	@Override
-	public void internalEncode(JsonWrapper wrapper, Node thisNode) throws EncodeException {
+	public void internalEncode(JsonWrapper wrapper, Node thisNode) {
 		wrapper.putString("programName", thisNode.getValue("programName"));
 		wrapper.putString("entityType", "individual");
 		wrapper.putString("taxpayerIdentificationNumber", thisNode.getValue("taxpayerIdentificationNumber"));
@@ -59,7 +59,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 */
 	private JsonWrapper encodeMeasurementSets(Map<String, Node> childMapByTemplateId,
 												Optional<String> performanceStart,
-												Optional<String> performanceEnd) throws EncodeException {
+												Optional<String> performanceEnd) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
 		JsonOutputEncoder sectionEncoder;

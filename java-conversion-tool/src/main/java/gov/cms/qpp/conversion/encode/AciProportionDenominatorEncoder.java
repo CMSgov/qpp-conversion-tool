@@ -15,7 +15,7 @@ import java.util.List;
 public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 
 	@Override
-	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		// simply writes the value in the Node
 
 		// the ACI Proportion Denominator Node should have a single child

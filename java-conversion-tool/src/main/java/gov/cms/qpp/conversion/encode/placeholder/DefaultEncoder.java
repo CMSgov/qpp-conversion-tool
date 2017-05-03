@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.encode.placeholder;
 
-import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.Encoder;
@@ -24,7 +23,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 	}
 
 	@Override
-	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		DEV_LOG.debug("Default JSON encoder {} is handling templateId {} and is described as '{}' ",
 				getClass(), node.getId(), description);
 
@@ -111,7 +110,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	@Encoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENTAL_CMS_V2)
+	@Encoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 	public static class SexSupplementalDataElementalCmsV2Encoder extends DefaultEncoder {
 
 		public SexSupplementalDataElementalCmsV2Encoder() {
