@@ -1,3 +1,23 @@
 <h1>
     {{title}}
 </h1>
+
+<form *ngIf="policy" #policyForm="ngForm" (ngSubmit)="onSubmit(policyForm)" action="{{ policy.bucket_url }}" method="post" enctype="multipart/form-data">
+  Key to upload:
+  <input type="hidden"  name="key" value="{{file_name}}" /><br />
+  <input type="hidden" name="acl" value="{{ policy.acl }}" />
+  <!-- <input type="hidden" name="success_action_status" value="{{ policy.success_action_status }}" /> -->
+  <input type="hidden" name="success_action_status" value="201" />
+
+  <input type="hidden"  name="Content-Type" value="xml" /><br />
+  <input type="hidden"   name="X-Amz-Credential" value="{{ policy.x_amz_credential }}" />
+  <input type="hidden"   name="X-Amz-Algorithm" value="{{ policy.x_amz_algorithm }}" />
+  <input type="hidden"   name="X-Amz-Date" value="{{ policy.x_amz_date }}" />
+
+  <input type="hidden" name="policy" value="{{ policy.policy }}" />
+  <input type="hidden" name="X-Amz-Signature" value="{{ policy.x_amz_signature }}" />
+  File:
+  <input type="file"   name="file" /> <br />
+
+  <input type="submit" name="submit" value="Upload to Amazon S3" />
+</form>
