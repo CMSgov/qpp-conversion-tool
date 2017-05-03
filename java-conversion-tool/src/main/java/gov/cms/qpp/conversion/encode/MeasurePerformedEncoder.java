@@ -18,7 +18,7 @@ public class MeasurePerformedEncoder extends QppOutputEncoder {
 	 * @throws EncodeException If error occurs during encoding
 	 */
 	@Override
-	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		wrapper.putBoolean("value", node.getValue("measurePerformed"));
 	}
 }

@@ -6,6 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -21,11 +24,10 @@ public class QualityMeasureIdEncoderTest {
 	private Node aggregateCountNode;
 	private JsonWrapper wrapper;
 	private QualityMeasureIdEncoder encoder;
+	private String type = "type";
 
 	@Before
 	public void setUp() {
-		String type = "type";
-
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
 		qualityMeasureId.putValue("measureId", "Measure Id Value");
 
@@ -48,8 +50,6 @@ public class QualityMeasureIdEncoderTest {
 		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
 		denominatorNode.putValue(type, "DENOM");
 		denominatorNode.addChildNode(aggregateCountNode);
-
-		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode);
 
 		encoder = new QualityMeasureIdEncoder();
 		wrapper = new JsonWrapper();
@@ -74,6 +74,18 @@ public class QualityMeasureIdEncoderTest {
 
 	@Test
 	public void testPopulationTotalIsEncoded() {
+		executeInternalEncode();
+		LinkedHashMap<String, Object> childValues = getChildValues();
+
+		assertThat("expected encoder to return a single value",
+				childValues.get("populationTotal"), is(600));
+	}
+
+	@Test
+	public void testPopulationAltTotalIsEncoded() {
+		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		populationNode.putValue(type, "IPP");
+		populationNode.addChildNode(aggregateCountNode);
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
@@ -108,6 +120,7 @@ public class QualityMeasureIdEncoderTest {
 	}
 
 	private void executeInternalEncode() {
+		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode);
 		try {
 			encoder.internalEncode(wrapper, qualityMeasureId);
 		} catch (EncodeException e) {

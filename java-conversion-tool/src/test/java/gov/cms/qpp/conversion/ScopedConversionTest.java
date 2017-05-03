@@ -27,7 +27,7 @@ public class ScopedConversionTest extends BaseTest {
 	private static final String ERROR_FILE = "angerTheConverter.err.json";
 
 	private static final String TEMPLATE_SCOPE = "--" + ConversionEntry.TEMPLATE_SCOPE;
-	private static Map<String, Object> FIXTURES;
+	private static Map<String, Object> fixtures;
 
 	/**
 	 * Load fixture json for use as a baseline for expected scoped conversion outcomes.
@@ -36,7 +36,7 @@ public class ScopedConversionTest extends BaseTest {
 	 */
 	@BeforeClass
 	public static void loadFixtures() throws IOException {
-		FIXTURES = readJson("src/test/resources/converter/scopedConversionFixture.json", HashMap.class);
+		fixtures = readJson("src/test/resources/converter/scopedConversionFixture.json", HashMap.class);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), getScoped(content).get(0));
+				fixtures.get(testSection), getScoped(content).get(0));
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), getScoped(content));
+				fixtures.get(testSection), getScoped(content));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), getScoped(content));
+				fixtures.get(testSection), getScoped(content));
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), getScoped(content).get(0));
+				fixtures.get(testSection), getScoped(content).get(0));
 	}
 
 
@@ -143,7 +143,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), getScoped(content).get(0));
+				fixtures.get(testSection), getScoped(content).get(0));
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), getScoped(content));
+				fixtures.get(testSection), getScoped(content));
 	}
 
 	/**
@@ -181,7 +181,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), getScoped(content));
+				fixtures.get(testSection), getScoped(content));
 	}
 
 	/**
@@ -200,7 +200,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), getScoped(content));
+				fixtures.get(testSection), getScoped(content));
 	}
 
 	/**
@@ -219,7 +219,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), getScoped(content));
+				fixtures.get(testSection), getScoped(content));
 	}
 
 	/**
@@ -238,7 +238,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				FIXTURES.get(testSection), content);
+				fixtures.get(testSection), content);
 	}
 
 	//negative

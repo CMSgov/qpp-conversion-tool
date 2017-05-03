@@ -4,8 +4,8 @@ CSV=${BM_OUTPUT}.cvs
 TXT=${BM_OUTPUT}.txt
 IS_A_NUMBER='^[0-9]*([.][0-9]+)?$'
 
-THROUGHPUT=3        # operations per second
-AVERAGE_TIME=.333   # seconds per operation
+THROUGHPUT=2      # operations per second
+AVERAGE_TIME=.5   # seconds per operation
 
 while getopts ":a:t:" opt; do
   case $opt in

@@ -21,7 +21,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	 * @throws EncodeException If an error occurs during encoding
 	 */
 	@Override
-	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	public void internalEncode(JsonWrapper wrapper, Node node) {
 		wrapper.putString("category", node.getValue("category"));
 		List<Node> children = node.getChildNodes();
 		JsonWrapper measurementsWrapper = new JsonWrapper();

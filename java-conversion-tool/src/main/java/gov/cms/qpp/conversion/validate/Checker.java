@@ -21,7 +21,7 @@ class Checker {
 	private List<ValidationError> validationErrors;
 	private boolean anded;
 	private Map<TemplateId, AtomicInteger> nodeCount;
-	private Comparable lastAppraised;
+	private Comparable<?> lastAppraised;
 
 	private Checker(Node node, List<ValidationError> validationErrors, boolean anded) {
 		this.node = node;
@@ -107,8 +107,8 @@ class Checker {
 	 * @return The checker, for chaining method calls.
 	 */
 	@SuppressWarnings("unchecked")
-	public Checker greaterThan(String message, Comparable value) {
-		if (!shouldShortcut() && lastAppraised != null && lastAppraised.compareTo(value) <= 0) {
+	public Checker greaterThan(String message, Comparable<?> value) {
+		if (!shouldShortcut() && lastAppraised != null && ((Comparable<Object>) lastAppraised).compareTo(value) <= 0) {
 			validationErrors.add(new ValidationError(message, node.getPath()));
 		}
 		lastAppraised = null;
