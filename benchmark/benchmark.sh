@@ -36,6 +36,12 @@ done
 
 cd $(dirname $0)
 
+PROJECT_VERSION=$(echo '${project.version}' | mvn help:evaluate | grep -v '^[[]')
+mvn dependency:get -Dartifact=gov.cms.qpp.conversion:java-conversion-tool:${PROJECT_VERSION} -o
+if [[ ! "$?" = "0" ]]; then
+  (cd ../java-conversion-tool && mvn clean install -Dmaven.test.skip=true)
+fi
+
 mvn clean package
 java -jar target/benchmarks.jar -rff $CSV -o $TXT -bm thrpt -bm avgt
 

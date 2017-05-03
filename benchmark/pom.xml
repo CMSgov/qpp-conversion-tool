@@ -9,7 +9,6 @@
 
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>benchmark</artifactId>
-	<version>1.0</version>
 	<packaging>jar</packaging>
 
 	<name>JMH benchmarking</name>
