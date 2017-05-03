@@ -9,7 +9,6 @@ import gov.cms.qpp.conversion.model.error.ValidationError;
  * Encoder to handle placeholder nodes.
  *
  * @author Scott Fradkin
- *
  */
 @Encoder(TemplateId.PLACEHOLDER)
 public class PlaceholderEncoder extends QppOutputEncoder {
@@ -22,7 +21,7 @@ public class PlaceholderEncoder extends QppOutputEncoder {
 	 * @throws EncodeException If error occurs during encoding
 	 */
 	@Override
-	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) {
 
 		for (Node child : node.getChildNodes()) {
 			String templateId = child.getId();

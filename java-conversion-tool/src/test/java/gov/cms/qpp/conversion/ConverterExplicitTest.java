@@ -14,7 +14,6 @@ import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
@@ -71,7 +70,5 @@ public class ConverterExplicitTest {
 
 		converterSpy.transform();
 		converterSpy.getConversionResult();
-
-		fail("should throw an EncodeException");
 	}
 }

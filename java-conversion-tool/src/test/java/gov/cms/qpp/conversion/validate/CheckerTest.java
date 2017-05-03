@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertFalse;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -37,6 +40,18 @@ public class CheckerTest {
 		checker.value( ERROR_MESSAGE, VALUE );
 
 		assertFalse("There's an error", validationErrors.isEmpty() );
+		assertEquals( "message applied is the message given", validationErrors.get( 0 ).getErrorText(), ERROR_MESSAGE );
+	}
+
+	@Test
+	public void testParentFailure() {
+		Node meepNode = new Node( PARENT );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.hasParent( ERROR_MESSAGE,  TemplateId.ACI_DENOMINATOR) //fails
+				.hasParent( ERROR_MESSAGE,  TemplateId.ACI_DENOMINATOR); //shortcuts
+
+		assertEquals("There's an error", 1, validationErrors.size());
 		assertEquals( "message applied is the message given", validationErrors.get( 0 ).getErrorText(), ERROR_MESSAGE );
 	}
 
@@ -246,6 +261,54 @@ public class CheckerTest {
 		assertTrue("There's no error", validationErrors.isEmpty() );
 	}
 
+	// compound checking
+	@Test
+	public void compoundIntValueCheckSuccess() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.intValue( ERROR_MESSAGE, VALUE )
+				.greaterThan(ERROR_MESSAGE, 122);
+
+		assertTrue("There's no error", validationErrors.isEmpty() );
+	}
+
+	@Test
+	public void compoundIntValueCheckFailure() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.intValue( ERROR_MESSAGE, VALUE )
+				.greaterThan(ERROR_MESSAGE, 124);
+
+		assertFalse("There's an error", validationErrors.isEmpty() );
+	}
+
+	@Test
+	public void compoundIntValueCheckNoContext() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.greaterThan(ERROR_MESSAGE, 124);
+
+		assertTrue("There's no error", validationErrors.isEmpty() );
+	}
+
+	@Test(expected = ClassCastException.class)
+	public void compoundIntValueCheckCastException() {
+		Node meepNode = new Node( PARENT );
+		meepNode.putValue( VALUE, "123" );
+
+		Checker checker = Checker.check( meepNode, validationErrors );
+		checker.intValue( ERROR_MESSAGE, VALUE )
+				.greaterThan(ERROR_MESSAGE, "not an Integer");
+
+		assertFalse("There's an error", validationErrors.isEmpty() );
+	}
+
 	// thorough checking
 	@Test
 	public void testIntValueChildrenChildMinChildMaxFindFailure() {
@@ -281,5 +344,58 @@ public class CheckerTest {
 				.childMaximum( "maximum failure", 2, TemplateId.PLACEHOLDER );
 
 		assertTrue("There are no errors", validationErrors.isEmpty() );
+	}
+
+	@Test
+	public void testHasMeasuresSuccess() {
+		String measure = "measure";
+		String measureId = "measureId";
+		String expectedMeasure1 = "asdf";
+		String expectedMeasure2 = "jkl;";
+		String anotherMeasureId = "DogCow";
+
+		Node section = new Node(PARENT);
+		Node measure1 = new Node(measure);
+		measure1.putValue(measureId, expectedMeasure1);
+		Node measure2 = new Node(measure);
+		measure2.putValue(measureId, anotherMeasureId);
+		Node measure3 = new Node(measure);
+		measure3.putValue(measureId, expectedMeasure2);
+
+		section.addChildNodes(measure1, measure2, measure3);
+
+		Checker checker = Checker.check(section, validationErrors);
+
+		checker.hasMeasures("measure failure", expectedMeasure1, expectedMeasure2);
+
+		assertThat("All the measures should have been found.", validationErrors, hasSize(0));
+	}
+
+	@Test
+	public void testHasMeasuresFailure() {
+		String measure = "measure";
+		String measureId = "measureId";
+		String expectedMeasure = "DogCow";
+		String anotherMeausure1 = "asdf";
+		String anotherMeausure2 = "jkl;";
+		String anotherMeausure3 = "qwerty";
+		String validationError = "measure failure";
+
+		Node section = new Node(PARENT);
+		Node measure1 = new Node(measure);
+		measure1.putValue(measureId, anotherMeausure1);
+		Node measure2 = new Node(measure);
+		measure2.putValue(measureId, anotherMeausure2);
+		Node measure3 = new Node(measure);
+		measure3.putValue(measureId, anotherMeausure3);
+
+		section.addChildNodes(measure1, measure2, measure3);
+
+		Checker checker = Checker.check(section, validationErrors);
+
+		checker.hasMeasures(validationError, expectedMeasure);
+
+		assertThat("A measure should not have been found.", validationErrors, hasSize(1));
+		assertThat("The validation error string did not match up.", validationErrors.get(0).getErrorText(), is(validationError));
 	}
 }
