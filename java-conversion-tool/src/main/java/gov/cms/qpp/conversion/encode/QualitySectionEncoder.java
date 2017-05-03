@@ -25,7 +25,7 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 	 * @throws EncodeException If an error occurs during encoding
 	 */
 	@Override
-	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	public void internalEncode(JsonWrapper wrapper, Node node) {
 		wrapper.putString(CATEGORY, node.getValue(CATEGORY));
 		wrapper.putString(SUBMISSION_METHOD, node.getValue(SUBMISSION_METHOD));
 
@@ -36,7 +36,7 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 		wrapper.putObject("measurements", measurementsWrapper);
 	}
 
-	private void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) throws EncodeException {
+	private void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) {
 		JsonWrapper childWrapper;
 		for (Node currentChild : children) {
 			childWrapper = new JsonWrapper();
