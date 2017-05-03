@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.encode.placeholder;
 
-import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.Encoder;
@@ -24,7 +23,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 	}
 
 	@Override
-	protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		DEV_LOG.debug("Default JSON encoder {} is handling templateId {} and is described as '{}' ",
 				getClass(), node.getId(), description);
 

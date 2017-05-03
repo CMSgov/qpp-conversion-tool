@@ -19,7 +19,7 @@ public class IaSectionEncoder extends AciSectionEncoder {
 	 * @throws EncodeException If error occurs during encoding
 	 */
 	@Override
-	public void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
+	public void internalEncode(JsonWrapper wrapper, Node node) {
 		super.internalEncode(wrapper, node);
 	}
 }
