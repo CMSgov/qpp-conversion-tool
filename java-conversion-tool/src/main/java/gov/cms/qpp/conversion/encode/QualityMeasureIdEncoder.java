@@ -4,7 +4,10 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Encoder to serialize Quality Measure Identifier
@@ -48,7 +51,8 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	}
 
 	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
-		Node populationNode = parentNode.findChildNode(n -> "IPOP".equals(n.getValue(TYPE)));
+		Set<String> accepted = new HashSet(Arrays.asList("IPOP", "IPP"));
+		Node populationNode = parentNode.findChildNode(n -> accepted.contains(n.getValue(TYPE)));
 
 		Optional.ofNullable(populationNode).ifPresent(
 				node -> wrapper.putInteger("populationTotal",

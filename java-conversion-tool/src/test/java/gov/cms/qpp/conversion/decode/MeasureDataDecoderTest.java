@@ -57,6 +57,11 @@ public class MeasureDataDecoderTest extends BaseTest {
 		sharedTest("IPOP");
 	}
 
+	@Test
+	public void testDecodeOfIppMeasureData() {
+		sharedTest("IPP");
+	}
+
 	private void sharedTest(String type) {
 		Node measure =  placeholder.findChildNode( node -> node.getValue(MEASURE_TYPE).equals(type));
 
@@ -71,7 +76,7 @@ public class MeasureDataDecoderTest extends BaseTest {
 		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder();
 		Node placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
 
-		assertThat("Should have five children", placeholder.getChildNodes(), hasSize(5));
+		assertThat("Should have six children", placeholder.getChildNodes(), hasSize(6));
 	}
 
 }
