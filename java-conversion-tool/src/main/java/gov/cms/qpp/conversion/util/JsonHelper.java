@@ -48,6 +48,19 @@ public class JsonHelper {
 	}
 
 	/**
+	 * Read json and return object type specified
+	 *
+	 * @param json content
+	 * @param valueType object type representation
+	 * @param <T> generic class type
+	 * @return Object of specified type
+	 * @throws IOException
+	 */
+	public static <T> T readJson(InputStream json, Class<T> valueType) throws IOException {
+		return new ObjectMapper().readValue(json, valueType);
+	}
+
+	/**
 	 * Reads JSON from the {@code InputStream} and returns a subset based on the provided JSONPath.
 	 *
 	 * See http://goessner.net/articles/JsonPath/
