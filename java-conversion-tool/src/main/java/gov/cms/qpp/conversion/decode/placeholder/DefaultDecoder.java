@@ -81,14 +81,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@Decoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
-	public static class AciMeasurePerformedReferenceAndResultsDecoder extends DefaultDecoder {
-
-		public AciMeasurePerformedReferenceAndResultsDecoder() {
-			super("Advancing Care Information Measure Performed Measure Reference and Results");
-		}
-	}
-
 	@Decoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
 	public static class ContinuousVariableMeasureValueCmsDecoder extends DefaultDecoder {
 

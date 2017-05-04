@@ -1,0 +1,31 @@
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
+	<entry>
+		<organizer classCode="CLUSTER" moodCode="EVN">
+			<!-- Implied template Measure Reference templateId -->
+			<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+			<!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->
+			<templateId root="2.16.840.1.113883.10.20.27.3.29" extension="2016-09-01"/>
+			<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
+			<statusCode code="completed"/>
+			<reference typeCode="REFR">
+				<!-- Reference to a particular ACI measure's unique identifier. -->
+				<externalDocument classCode="DOC" moodCode="EVN">
+					<!-- This is a temporary root OID that indicates this is an ACI measure identifier -->
+					<!-- extension is the unique identifier for an ACI measure. "ACI-PEA-1" is for illustration only. -->
+					<id root="2.16.840.1.113883.3.7031" extension="%s"/>
+					<!-- ACI measure title -->
+					<text>Patient Access</text>
+				</externalDocument>
+			</reference>
+			<component>
+				<observation classCode="OBS" moodCode="EVN">
+					<!-- Measure Performed templateId -->
+					<templateId root="2.16.840.1.113883.10.20.27.3.27" extension="2016-09-01"/>
+					<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion"/>
+					<statusCode code="completed"/>
+					<value xsi:type="CD" code="Y" displayName="Yes" codeSystemName="Yes/no indicator (HL7 Table 0136)" codeSystem="2.16.840.1.113883.12.136"/>
+				</observation>
+			</component>
+		</organizer>
+	</entry>
+</root>
