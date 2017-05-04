@@ -52,7 +52,7 @@ public class IaSectionValidatorTest {
 		iaValidator.internalValidateSingleNode(iaSectionNode);
 		List<ValidationError> errors = iaValidator.getValidationErrors();
 
-		assertThat("Must be missing the correct child", errors.get(0).getErrorText(),
+		assertThat("Must contain correct children", errors.get(0).getErrorText(),
 				is(IaSectionValidator.WRONG_CHILD_ERROR));
 	}
 }
