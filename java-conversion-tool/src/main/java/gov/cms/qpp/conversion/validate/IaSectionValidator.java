@@ -14,12 +14,23 @@ public class IaSectionValidator extends NodeValidator {
 
 	protected static final String MINIMIUM_REQUIREMENT_ERROR = "Must have at least one IA Measure";
 
+	/**
+	 * Validates a single IA Section node to ensure at least one Improvement Activity Measure exists
+	 *
+	 * @param node The node to validate.
+	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
 				.childMinimum(MINIMIUM_REQUIREMENT_ERROR, 1, TemplateId.IA_MEASURE);
 	}
 
+	/**
+	 * Checks the interdependency of nodes in the parsed tree.
+	 * IA Section has no dependencies on other nodes in the document.
+	 *
+	 * @param nodes The list of nodes to validate.
+	 */
 	@Override
 	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
 		// No current cross node IA section validations
