@@ -10,9 +10,9 @@ import java.util.List;
  * Validates Improvement Activity Section Node - expects at least one Improvement Activity Measure
  */
 @Validator(templateId = TemplateId.IA_SECTION, required = true)
-public class IASectionValidator extends NodeValidator {
+public class IaSectionValidator extends NodeValidator {
 
-	public static final String MINIMIUM_REQUIREMENT_ERROR = "Must have at least one IA Measure";
+	protected static final String MINIMIUM_REQUIREMENT_ERROR = "Must have at least one IA Measure";
 
 	@Override
 	protected void internalValidateSingleNode(Node node) {
