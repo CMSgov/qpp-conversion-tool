@@ -71,13 +71,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-//	@Encoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
-//	public static class AciMeasurePerformedReferenceAndResultsEncoder extends DefaultEncoder {
-//		public AciMeasurePerformedReferenceAndResultsEncoder() {
-//			super("Advancing Care Information Measure Performed Measure Reference and Results");
-//		}
-//	}
-
 	@Encoder(TemplateId.REPORTING_PARAMETERS_ACT)
 	public static class ReportingParametersActEncoder extends DefaultEncoder {
 

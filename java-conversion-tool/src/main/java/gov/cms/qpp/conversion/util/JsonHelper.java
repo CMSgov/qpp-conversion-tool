@@ -27,7 +27,7 @@ public class JsonHelper {
 	 * @param valueType object type representation
 	 * @param <T> generic class type
 	 * @return Object of specified type
-	 * @throws IOException
+	 * @throws IOException if problems arise while attempting to parse the resource at the given filePath
 	 */
 	public static <T> T readJson(String filePath, Class<T> valueType) throws IOException {
 		Path path = Paths.get(filePath);
@@ -41,7 +41,7 @@ public class JsonHelper {
 	 * @param valueType object type representation
 	 * @param <T> generic class type
 	 * @return Object of specified type
-	 * @throws IOException
+	 * @throws IOException if problems arise while attempting to parse the resource at the given filePath
 	 */
 	public static <T> T readJson(Path filePath, Class<T> valueType) throws IOException {
 		return new ObjectMapper().readValue(filePath.toFile(), valueType);
@@ -54,7 +54,7 @@ public class JsonHelper {
 	 * @param valueType object type representation
 	 * @param <T> generic class type
 	 * @return Object of specified type
-	 * @throws IOException
+	 * @throws IOException if problems arise while attempting to parse the json input stream
 	 */
 	public static <T> T readJson(InputStream json, Class<T> valueType) throws IOException {
 		return new ObjectMapper().readValue(json, valueType);
