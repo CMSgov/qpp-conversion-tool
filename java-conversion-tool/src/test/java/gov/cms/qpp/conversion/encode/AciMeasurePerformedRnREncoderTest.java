@@ -22,17 +22,23 @@ import static org.junit.Assert.fail;
 public class AciMeasurePerformedRnREncoderTest {
 
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
-	private static final String VALUE = "meep";
+	private static final String VALUE = "true";
 
 	private List<Node> nodes;
 	private Node aciMeasurePerformedRnR;
+	private Node measurePerformed;
 
 	@Before
 	public void createNode() {
 		aciMeasurePerformedRnR = new Node();
 		aciMeasurePerformedRnR.setId(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS.getTemplateId());
 		aciMeasurePerformedRnR.putValue("measureId", MEASURE_ID);
-		aciMeasurePerformedRnR.putValue("value", VALUE);
+
+		measurePerformed = new Node();
+		measurePerformed.setId(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		measurePerformed.putValue("measurePerformed", VALUE);
+
+		aciMeasurePerformedRnR.addChildNode(measurePerformed);
 
 		nodes = new ArrayList<>();
 		nodes.add(aciMeasurePerformedRnR);
@@ -59,7 +65,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	}
 
 	@Test
-	public void testInternalEncode() throws EncodeException {
+	public void testInternalEncode(){
 
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
