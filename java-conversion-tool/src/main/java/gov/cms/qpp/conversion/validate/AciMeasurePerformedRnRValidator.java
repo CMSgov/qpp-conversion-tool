@@ -12,9 +12,12 @@ import gov.cms.qpp.conversion.model.Validator;
 @Validator(templateId = TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 public class AciMeasurePerformedRnRValidator extends NodeValidator {
 
-	private static final String MEASURE_ID_IS_REQUIRED = "The ACI Measure Performed RnR's Measure ID is required";
-	private static final String MEASURE_PERFORMED_IS_REQUIRED = "The ACI Measure Performed RnR's Measure Performed is required";
-	private static final String MEASURE_PERFORMED_CAN_ONLY_BE_PRESENT_ONCE = "The ACI Measure Performed RnR's Measure Performed can only be present once";
+	private static final String MEASURE_ID_IS_REQUIRED =
+			"The ACI Measure Performed RnR's Measure ID is required";
+	private static final String MEASURE_PERFORMED_IS_REQUIRED =
+			"The ACI Measure Performed RnR's Measure Performed is required";
+	private static final String MEASURE_PERFORMED_CAN_ONLY_BE_PRESENT_ONCE =
+			"The ACI Measure Performed RnR's Measure Performed can only be present once";
 
 	/**
 	 * internalValidateSingleNode Checks that this node has a child and that the node contains a valid measureId
