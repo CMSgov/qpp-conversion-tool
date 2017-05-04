@@ -7,16 +7,20 @@ import org.jdom2.Element;
 
 /**
  * Decoder to parse Improvement Activity Section.
- * @author David Puglielli
- *
  */
 @Decoder(TemplateId.IA_SECTION)
 public class IaSectionDecoder extends QppXmlDecoder {
 
+	/**
+	 * DecodeResult reads the xml elements and stores them into the internal Node structure
+	 * This will update the thisNode value
+	 * @param element Top element in the XML document
+	 * @param thisNode Node
+	 * @return
+	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		thisnode.putValue("category", "ia");
-		decode(element.getChild("entry", defaultNs), thisnode);
-		return DecodeResult.TREE_FINISHED; // TODO maybe use TreeContinue and not call decode
+	protected DecodeResult internalDecode(Element element, Node thisNode) {
+		thisNode.putValue("category", "ia");
+		return DecodeResult.TREE_CONTINUE;
 	}
 }
