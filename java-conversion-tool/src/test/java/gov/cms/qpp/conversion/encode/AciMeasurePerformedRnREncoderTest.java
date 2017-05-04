@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -66,7 +68,6 @@ public class AciMeasurePerformedRnREncoderTest {
 
 	@Test
 	public void testInternalEncode(){
-
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder();
@@ -77,6 +78,21 @@ public class AciMeasurePerformedRnREncoderTest {
 		//assert
 		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
 		assertThat("The value must be" + VALUE, jsonWrapper.getString("value"), is(VALUE));
+	}
+
+	@Test
+	public void testInternalEncodeNoChildNoValue(){
+		//set-up
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder();
+		aciMeasurePerformedRnR.addChildNodes();
+
+		//execute
+		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
+
+		//assert
+		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
+		assertEquals("There should be no " + VALUE, jsonWrapper.getString("value"), null);
 	}
 
 }

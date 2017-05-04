@@ -12,13 +12,22 @@ public class AciMeasurePerformedRnREncoder extends QppOutputEncoder {
 	 *
 	 * @param wrapper Wrapper representing the {@link TemplateId#ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS} type
 	 * @param node Node that represents the {@link TemplateId#ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS}
-	 * @throws EncodeException If an error occurs during encoding
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		wrapper.putObject("measureId", node.getValue("measureId"));
-		Node child = node.findFirstNode(TemplateId.MEASURE_PERFORMED.getTemplateId());
-		wrapper.putObject("value", child.getValue("measurePerformed"));
+		encodeChild(wrapper, node);
 	}
 
+	/**
+	 *
+	 * @param wrapper
+	 * @param node
+	 */
+	private void encodeChild(JsonWrapper wrapper, Node node) {
+		Node child = node.findFirstNode(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		if (child != null) {
+			wrapper.putObject("value", child.getValue("measurePerformed"));
+		}
+	}
 }
