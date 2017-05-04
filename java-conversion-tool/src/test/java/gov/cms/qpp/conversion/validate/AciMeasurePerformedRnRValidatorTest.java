@@ -26,14 +26,13 @@ public class AciMeasurePerformedRnRValidatorTest {
 		aciMeasurePerformedRnRNode = new Node(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS.getTemplateId());
 		aciMeasurePerformedRnRNode.putValue("measureId", "ACI_INFBLO_1");
 
-		measurePerformed = new Node("value");
+		measurePerformed = new Node(TemplateId.MEASURE_PERFORMED.getTemplateId());
 		aciMeasurePerformedRnRNode.addChildNode(measurePerformed);
 	}
 
 	@Test
 	public void testValidateGoodData() throws Exception {
 		List<ValidationError> errors = run();
-
 		assertThat("no errors should be present", errors, empty());
 	}
 
@@ -48,7 +47,7 @@ public class AciMeasurePerformedRnRValidatorTest {
 	public void testWithNoChildren() throws Exception {
 		aciMeasurePerformedRnRNode.getChildNodes().clear();
 		List<ValidationError> errors = run();
-		assertThat("Validation error size should be 1", errors.size(), is(1));
+		assertThat("Validation error size should be 2", errors.size(), is(2));
 	}
 
 	private List<ValidationError> run() {

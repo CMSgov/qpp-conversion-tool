@@ -63,6 +63,13 @@ public class DefaultEncoder extends JsonOutputEncoder {
 	}
 	//	 this one looks like a node that is not necessary
 
+	@Encoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
+	public static class AciMeasurePerformedReferenceAndResultsEncoder extends DefaultEncoder {
+		public AciMeasurePerformedReferenceAndResultsEncoder() {
+			super("Advancing Care Information Measure Performed Measure Reference and Results");
+		}
+	}
+
 	@Encoder(TemplateId.MEASURE_SECTION)
 	public static class MeasureSectionEncoder extends DefaultEncoder {
 
