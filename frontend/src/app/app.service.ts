@@ -9,7 +9,7 @@ import {Parser} from 'xml2js';
 @Injectable()
 export class AppService {
 
-	private endpoint = 'https://gpeermmuj9.execute-api.us-east-1.amazonaws.com/dev/ping';
+	public endpoint = 'https://gpeermmuj9.execute-api.us-east-1.amazonaws.com/dev/ping';
 
 	constructor (private http: Http) {}
 

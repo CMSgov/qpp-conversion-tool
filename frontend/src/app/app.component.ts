@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 	title = 'Convert QRDA-III to QPP';
 	policy = { 'bucket_url': ''};
 	file_name: string;
@@ -39,9 +39,5 @@ export class AppComponent implements OnInit {
 			text += possible.charAt(Math.floor(Math.random() * possible.length));
 		}
 		this.file_name = text + '.xml';
-	};
-
-	ngOnInit(): void {
-		this.getPolicy();
 	};
 }
