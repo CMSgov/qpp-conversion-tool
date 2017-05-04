@@ -42,6 +42,8 @@ public class IaSectionValidatorTest {
 	@Test
 	public void testIncorrectChildValidation() {
 		Node iaSectionNode = new Node(TemplateId.IA_SECTION.getTemplateId());
+		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
+		iaSectionNode.addChildNode(iaMeasureNode);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 		iaSectionNode.addChildNode(aggregateCountNode);
 
@@ -51,6 +53,6 @@ public class IaSectionValidatorTest {
 		List<ValidationError> errors = iaValidator.getValidationErrors();
 
 		assertThat("Must be missing the correct child", errors.get(0).getErrorText(),
-				is(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR));
+				is(IaSectionValidator.WRONG_CHILD_ERROR));
 	}
 }

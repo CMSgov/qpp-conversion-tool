@@ -13,6 +13,7 @@ import java.util.List;
 public class IaSectionValidator extends NodeValidator {
 
 	protected static final String MINIMUM_REQUIREMENT_ERROR = "Must have at least one IA Measure";
+	protected static final String WRONG_CHILD_ERROR = "Must have only IA Measures";
 
 	/**
 	 * Validates a single IA Section node to ensure at least one Improvement Activity Measure exists
@@ -22,7 +23,8 @@ public class IaSectionValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-				.childMinimum(MINIMUM_REQUIREMENT_ERROR, 1, TemplateId.IA_MEASURE);
+				.childMinimum(MINIMUM_REQUIREMENT_ERROR, 1, TemplateId.IA_MEASURE)
+				.hasChildrenWithTemplateId(WRONG_CHILD_ERROR, TemplateId.IA_MEASURE);
 	}
 
 	/**

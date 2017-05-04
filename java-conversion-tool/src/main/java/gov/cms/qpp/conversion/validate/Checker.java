@@ -4,13 +4,9 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ValidationError;
 
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations
@@ -199,6 +195,29 @@ class Checker {
 			}).count();
 
 			if (numberOfMeasuresRequired != numNodesWithWantedMeasureIds) {
+				validationErrors.add(new ValidationError(message, node.getPath()));
+			}
+		}
+		return this;
+	}
+
+	/**
+	 *
+	 *
+	 * @param types
+	 * @return
+	 */
+	public Checker hasChildrenWithTemplateId(String message, TemplateId... types) {
+		if (!shouldShortcut()) {
+			Set<String> templateIds =
+					Arrays.stream(types)
+							.map(TemplateId::getTemplateId)
+							.collect(Collectors.toSet());
+
+			boolean valid = node.getChildNodes()
+					.stream()
+					.allMatch(node -> templateIds.contains(node.getId()));
+			if (!valid) {
 				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
 		}
