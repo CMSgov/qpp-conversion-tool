@@ -16,7 +16,6 @@ public class IaSectionDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		thisnode.putValue("category", "ia");
-		decode(element.getChild("entry", defaultNs), thisnode);
-		return DecodeResult.TREE_FINISHED; // TODO maybe use TreeContinue and not call decode
+		return DecodeResult.TREE_CONTINUE;
 	}
 }
