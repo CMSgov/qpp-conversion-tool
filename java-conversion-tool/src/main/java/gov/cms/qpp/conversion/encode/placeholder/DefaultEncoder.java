@@ -53,6 +53,13 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
+	@Encoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
+	public static class AciMeasurePerformedReferenceAndResultsEncoder extends DefaultEncoder {
+		public AciMeasurePerformedReferenceAndResultsEncoder() {
+			super("Advancing Care Information Measure Performed Measure Reference and Results");
+		}
+	}
+
 	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
 
 	@Encoder(TemplateId.CMS_AGGREGATE_COUNT)

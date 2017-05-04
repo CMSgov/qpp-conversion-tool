@@ -52,8 +52,7 @@ public class EncoderTest {
 	 */
 	@Test
 	public void decodeTemplateIds() throws Exception {
-		Registry<String, OutputEncoder> registry;
-		registry = new Registry<>(Encoder.class);
+		Registry<String, OutputEncoder> registry = new Registry<>(Encoder.class);
 		for (String templateId : templateIDs) {
 			OutputEncoder encoder = registry.get(templateId);
 			assertThat(templateId + " returned node should not be null", encoder, is(not(nullValue())));

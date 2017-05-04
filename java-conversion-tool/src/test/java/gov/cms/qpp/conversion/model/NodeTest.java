@@ -162,4 +162,13 @@ public class NodeTest {
 
 		assertEquals("should not find a node that has the searched id", parent.findFirstNode("findMe"), null);
 	}
+
+	@Test
+	public void testRemoveValue() {
+		Node node = new Node();
+		node.putValue("test", "hello");
+		assertTrue(node.hasValue("test"));
+		node.removeValue("test");
+		assertFalse(node.hasValue("test"));
+	}
 }
