@@ -7,8 +7,6 @@ import org.jdom2.Element;
 
 /**
  * Decoder to parse Improvement Activity Section.
- * @author David Puglielli
- *
  */
 @Decoder(TemplateId.IA_SECTION)
 public class IaSectionDecoder extends QppXmlDecoder {
