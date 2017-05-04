@@ -36,7 +36,7 @@ public class IaSectionValidatorTest {
 		List<ValidationError> errors = iaValidator.getValidationErrors();
 
 		assertThat("Must be missing the correct child", errors.get(0).getErrorText(),
-				is(IaSectionValidator.MINIMIUM_REQUIREMENT_ERROR));
+				is(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR));
 	}
 
 	@Test
@@ -51,6 +51,6 @@ public class IaSectionValidatorTest {
 		List<ValidationError> errors = iaValidator.getValidationErrors();
 
 		assertThat("Must be missing the correct child", errors.get(0).getErrorText(),
-				is(IaSectionValidator.MINIMIUM_REQUIREMENT_ERROR));
+				is(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR));
 	}
 }
