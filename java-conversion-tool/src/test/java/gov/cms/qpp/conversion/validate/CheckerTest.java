@@ -406,7 +406,7 @@ public class CheckerTest {
 		iaSectionNode.addChildNode(iaMeasureNode);
 
 		Checker checker = Checker.check(iaSectionNode, validationErrors);
-		checker.hasChildrenWithTemplateId(ERROR_MESSAGE, TemplateId.IA_MEASURE);
+		checker.onlyHasChildren(ERROR_MESSAGE, TemplateId.IA_MEASURE);
 
 		assertTrue("There are no errors", validationErrors.isEmpty());
 	}
@@ -421,7 +421,7 @@ public class CheckerTest {
 		iaSectionNode.addChildNode(aggregateCountNode);
 
 		Checker checker = Checker.check(iaSectionNode, validationErrors);
-		checker.hasChildrenWithTemplateId(ERROR_MESSAGE, TemplateId.IA_MEASURE);
+		checker.onlyHasChildren(ERROR_MESSAGE, TemplateId.IA_MEASURE);
 
 		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
 	}

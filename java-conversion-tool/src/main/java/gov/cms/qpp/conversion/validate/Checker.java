@@ -214,7 +214,7 @@ class Checker {
 	 * @param types types of template ids to filter
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker hasChildrenWithTemplateId(String message, TemplateId... types) {
+	public Checker onlyHasChildren(String message, TemplateId... types) {
 		if (!shouldShortcut()) {
 			Set<String> templateIds =
 				Arrays.stream(types)

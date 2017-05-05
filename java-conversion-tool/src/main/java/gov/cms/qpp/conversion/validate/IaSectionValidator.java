@@ -24,7 +24,7 @@ public class IaSectionValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
 				.childMinimum(MINIMUM_REQUIREMENT_ERROR, 1, TemplateId.IA_MEASURE)
-				.hasChildrenWithTemplateId(WRONG_CHILD_ERROR, TemplateId.IA_MEASURE);
+				.onlyHasChildren(WRONG_CHILD_ERROR, TemplateId.IA_MEASURE);
 	}
 
 	/**
