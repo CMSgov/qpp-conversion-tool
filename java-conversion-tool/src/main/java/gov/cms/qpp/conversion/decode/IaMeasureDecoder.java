@@ -11,24 +11,26 @@ import java.util.function.Consumer;
 
 /**
  * Decoder to parse Improvement Activity Performed Measure Reference and Results.
- * @author David Puglielli
  *
  */
 @Decoder(TemplateId.IA_MEASURE)
 public class IaMeasureDecoder extends QppXmlDecoder {
 
+	/**
+	 * Parses element containing a IA Measure into a node
+	 *
+	 * @param element Top element in the XML document
+	 * @param thisNode Top node created in the XML document
+	 * @return result that the decoder is finished for this node
+	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		setMeasureIdOnNode(element, thisnode);
+	protected DecodeResult internalDecode(Element element, Node thisNode) {
+		String expressionStr = "./ns:reference/ns:externalDocument/ns:id/@extension";
+		Consumer<? super Attribute> consumer = p -> thisNode.putValue("measureId", p.getValue());
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 
-		decode(element.getChild("component", defaultNs), thisnode);
+		decode(element.getChild("component", defaultNs), thisNode);
 
 		return DecodeResult.TREE_FINISHED;
-	}
-
-	private void setMeasureIdOnNode(Element element, Node thisnode) {
-		String expressionStr = "./ns:reference/ns:externalDocument/ns:id/@extension";
-		Consumer<? super Attribute> consumer = p -> thisnode.putValue("measureId", p.getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 }
