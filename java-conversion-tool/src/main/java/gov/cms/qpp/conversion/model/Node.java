@@ -84,6 +84,15 @@ public class Node {
 	}
 
 	/**
+	 * removeValue deletes the Value under the key: name
+	 *
+	 * @param name  String key to remove value under
+	 */
+	public void removeValue(String name) {
+		data.remove(name);
+	}
+
+	/**
 	 * Check if a value has been assigned to the given key.
 	 *
 	 * @param name key
