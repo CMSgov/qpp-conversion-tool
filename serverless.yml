@@ -18,9 +18,7 @@ provider:
 custom:
   defaultStage: dev
   profiles:
-    dev: lambdauser
-    prod: prodProfile
-
+    dev: default 
 
 package:
   artifact: lambdize/target/lambdize.jar
@@ -32,5 +30,3 @@ functions:
       - s3:
           bucket: qrda-conversion-files
           event: s3:ObjectCreated:*
-          rules:
-            - prefix: pre-conversion/

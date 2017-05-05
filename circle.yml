@@ -13,6 +13,7 @@ dependencies:
     - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
     - rm google-chrome.deb
   override:
+    - npm install serverless -g
     - cd java-conversion-tool; mvn dependency:resolve
     - wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
     - unzip -d . sonarscanner.zip
@@ -27,14 +28,16 @@ test:
   override:
     - mvn clean verify -Djacoco.skip.instrument=false
     - mvn jacoco:report
-    - ./sonarqube.sh
+    - ./bin/sonarqube.sh
     - cd frontend; yarn run lint
     - cd frontend; yarn run test:ci
     - cd frontend; yarn run e2e:ci
     - ./benchmark/benchmark.sh
   post:
+    - ./bin/serverless_deploy.sh
     - cp benchmark/target/benchmark_output.txt $CIRCLE_ARTIFACTS
     - cp java-conversion-tool/target/java-conversion-tool.jar $CIRCLE_ARTIFACTS
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/java-conversion-tool && cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/java-conversion-tool
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/lambdize && cp -R lambdize/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/lambdize
     - cd ./java-conversion-tool/; mvn javadoc:javadoc; mkdir $CIRCLE_ARTIFACTS/JavaDocs/; cp -R ./target/site/apidocs/* $CIRCLE_ARTIFACTS/JavaDocs/
+    
