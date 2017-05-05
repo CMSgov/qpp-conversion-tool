@@ -223,7 +223,7 @@ class Checker {
 
 			boolean valid = node.getChildNodes()
 				.stream()
-				.allMatch(node -> templateIds.contains(node.getId()));
+				.allMatch(childNode -> templateIds.contains(childNode.getId()));
 			if (!valid) {
 				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
