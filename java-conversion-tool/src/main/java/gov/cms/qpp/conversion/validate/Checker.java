@@ -202,21 +202,22 @@ class Checker {
 	}
 
 	/**
+	 * Verifies that the target node contains only children of specified template ids
 	 *
-	 *
-	 * @param types
-	 * @return
+	 * @param message validation error message
+	 * @param types types of template ids to filter
+	 * @return The checker, for chaining method calls.
 	 */
 	public Checker hasChildrenWithTemplateId(String message, TemplateId... types) {
 		if (!shouldShortcut()) {
 			Set<String> templateIds =
-					Arrays.stream(types)
-							.map(TemplateId::getTemplateId)
-							.collect(Collectors.toSet());
+				Arrays.stream(types)
+					.map(TemplateId::getTemplateId)
+					.collect(Collectors.toSet());
 
 			boolean valid = node.getChildNodes()
-					.stream()
-					.allMatch(node -> templateIds.contains(node.getId()));
+				.stream()
+				.allMatch(node -> templateIds.contains(node.getId()));
 			if (!valid) {
 				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
