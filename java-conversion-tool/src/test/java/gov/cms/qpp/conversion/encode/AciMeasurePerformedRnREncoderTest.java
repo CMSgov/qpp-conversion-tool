@@ -62,7 +62,7 @@ public class AciMeasurePerformedRnREncoderTest {
 
 		Map<String, String> content = JsonHelper.readJson(new ByteArrayInputStream(sw.toString().getBytes()), Map.class);
 
-		assertThat("measureId should be %s" + MEASURE_ID, content.get("measureId"), is(MEASURE_ID));
+		assertThat("measureId should be " + MEASURE_ID, content.get("measureId"), is(MEASURE_ID));
 		assertThat("value should be " + VALUE, content.get("value"), is(VALUE));
 	}
 
