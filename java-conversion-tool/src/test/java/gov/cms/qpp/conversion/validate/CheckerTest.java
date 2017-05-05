@@ -425,6 +425,6 @@ public class CheckerTest {
 		Checker checker = Checker.check(iaSectionNode, validationErrors);
 		checker.hasChildrenWithTemplateId(ERROR_MESSAGE, TemplateId.IA_MEASURE);
 
-		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+		assertThat("There should be an errorm", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
 	}
 }
