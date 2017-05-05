@@ -1,0 +1,26 @@
+service: issue-policy
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: ${opt:stage, self:custom.defaultStage}
+  profile: ${self:custom.profiles.${self:provider.stage}}
+  region: us-east-1
+custom:
+  defaultStage: dev
+  profiles:
+    dev: lambdauser
+    prod: prodProfile
+
+functions:
+  issuePolicy:
+    handler: endpoint.endpoint
+    environment:
+      ACCESS: ${file(./lambda_config.js):fetchAccessKey}
+      SECRET: ${file(./lambda_config.js):fetchSecretKey}
+      BUCKET: ${file(./lambda_config.js):fetchS3Bucket}
+
+    events:
+      - http:
+          path: ping
+          method: get
