@@ -8,9 +8,11 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations
@@ -199,6 +201,30 @@ class Checker {
 			}).count();
 
 			if (numberOfMeasuresRequired != numNodesWithWantedMeasureIds) {
+				validationErrors.add(new ValidationError(message, node.getPath()));
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * Verifies that the target node contains only children of specified template ids
+	 *
+	 * @param message validation error message
+	 * @param types types of template ids to filter
+	 * @return The checker, for chaining method calls.
+	 */
+	public Checker onlyHasChildren(String message, TemplateId... types) {
+		if (!shouldShortcut()) {
+			Set<String> templateIds =
+				Arrays.stream(types)
+					.map(TemplateId::getTemplateId)
+					.collect(Collectors.toSet());
+
+			boolean valid = node.getChildNodes()
+				.stream()
+				.allMatch(childNode -> templateIds.contains(childNode.getId()));
+			if (!valid) {
 				validationErrors.add(new ValidationError(message, node.getPath()));
 			}
 		}
