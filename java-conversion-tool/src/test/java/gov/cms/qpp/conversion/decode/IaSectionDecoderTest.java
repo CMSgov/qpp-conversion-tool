@@ -111,5 +111,4 @@ public class IaSectionDecoderTest {
 		"	</section>\n" +
 		"</component>";
 	}
-
 }
