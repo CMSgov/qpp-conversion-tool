@@ -29,8 +29,7 @@ public class IaSectionDecoderTest {
 
 	@Test
 	public void decodeAciSectionAsNode() throws XmlException {
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
-		DefaultDecoder.removeDefaultNode(root.getChildNodes());
+		Node root = executeDecoderWithoutDefaults();
 
 		Node iaSectionNode = root.getChildNodes().get(0);
 
@@ -39,8 +38,7 @@ public class IaSectionDecoderTest {
 
 	@Test
 	public void testDecodeIaSectionContainsIaMeasureSectionId() throws XmlException {
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
-		DefaultDecoder.removeDefaultNode(root.getChildNodes());
+		Node root = executeDecoderWithoutDefaults();
 
 		Node iaMeasureNode = root.getChildNodes().get(0).getChildNodes().get(0);
 
@@ -49,8 +47,7 @@ public class IaSectionDecoderTest {
 
 	@Test
 	public void testDecodeIaMeasureSectionContainsMeasurePerformed() throws XmlException {
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
-		DefaultDecoder.removeDefaultNode(root.getChildNodes());
+		Node root = executeDecoderWithoutDefaults();
 
 		Node iaMeasurePerformedNode = root.getChildNodes().get(0).getChildNodes().get(0).getChildNodes().get(0);
 		assertThat("returned measurePerformed", iaMeasurePerformedNode.getValue("measurePerformed"), is("Y"));
@@ -61,8 +58,16 @@ public class IaSectionDecoderTest {
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
 
+		Node root = executeDecoderWithoutDefaults();
+		Node iaSectionNode = root.getChildNodes().get(0);
+
+		assertThat("returned category", iaSectionNode.getValue("category"), is("ia"));
+	}
+
+	private Node executeDecoderWithoutDefaults() throws XmlException {
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(root.getChildNodes());
+		return root;
 	}
 
 	private String createAciSectionXmlFragment() {
