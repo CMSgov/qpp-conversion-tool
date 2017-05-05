@@ -398,4 +398,31 @@ public class CheckerTest {
 		assertThat("A measure should not have been found.", validationErrors, hasSize(1));
 		assertThat("The validation error string did not match up.", validationErrors.get(0).getErrorText(), is(validationError));
 	}
+
+	@Test
+	public void testHasChildrenWithTemplateIdSuccess() {
+		Node iaSectionNode = new Node(TemplateId.IA_SECTION.getTemplateId());
+		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
+		iaSectionNode.addChildNode(iaMeasureNode);
+
+		Checker checker = Checker.check(iaSectionNode, validationErrors);
+		checker.onlyHasChildren(ERROR_MESSAGE, TemplateId.IA_MEASURE);
+
+		assertTrue("There are no errors", validationErrors.isEmpty());
+	}
+
+	@Test
+	public void testHasChildrenWithTemplateIdFailure() {
+		Node iaSectionNode = new Node(TemplateId.IA_SECTION.getTemplateId());
+		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
+		iaSectionNode.addChildNode(iaMeasureNode);
+
+		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		iaSectionNode.addChildNode(aggregateCountNode);
+
+		Checker checker = Checker.check(iaSectionNode, validationErrors);
+		checker.onlyHasChildren(ERROR_MESSAGE, TemplateId.IA_MEASURE);
+
+		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+	}
 }
