@@ -22,11 +22,6 @@ public class IaSectionDecoderTest {
 		xmlFragment = createAciSectionXmlFragment();
 	}
 
-	@After
-	public void tearDown() {
-		xmlFragment = null;
-	}
-
 	@Test
 	public void decodeAciSectionAsNode() throws XmlException {
 		Node root = executeDecoderWithoutDefaults();
