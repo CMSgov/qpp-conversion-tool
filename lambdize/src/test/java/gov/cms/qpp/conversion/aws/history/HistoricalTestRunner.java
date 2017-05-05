@@ -11,6 +11,9 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 
+/**
+ * Test runner for historical tests
+ */
 public class HistoricalTestRunner extends BlockJUnit4ClassRunner {
 	private static final String ACCESS = "aws.accessKeyId";
 	private static final String SECRET = "aws.secretKey";
@@ -32,17 +35,22 @@ public class HistoricalTestRunner extends BlockJUnit4ClassRunner {
 	}
 
 	/**
-	 * Evaluates whether {@link FrameworkMethod}s are ignored based on the
-	 * {@link Ignore} annotation.
+	 * Evaluates whether {@link FrameworkMethod}s are ignored based on whether the test is
+	 * marked as {@link Ignore} or if historical tests are not supported.
 	 */
 	@Override
 	protected boolean isIgnored(FrameworkMethod child) {
 		if(!runHistoricalTests) {
 			System.err.println("Not running historical test");
 		}
-		return !runHistoricalTests || child.getAnnotation(Ignore.class) != null;
+		return !runHistoricalTests || super.isIgnored(child);
 	}
 
+	/**
+	 * Retrieve S3 related properties.
+	 *
+	 * @return property map
+	 */
 	private Map<String, String> getS3Properties() {
 		Map<String, String> properties = null;
 		try {
