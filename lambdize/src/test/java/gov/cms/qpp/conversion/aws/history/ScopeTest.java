@@ -9,6 +9,7 @@ import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.TransformationStatus;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -64,6 +65,7 @@ public class ScopeTest {
 	}
 
 	@Test
+	@Ignore
 	public void historicalQrdaSansAci() throws IOException {
 		if(!runHistoricalTests) {
 			System.err.println("Not running historical test");
