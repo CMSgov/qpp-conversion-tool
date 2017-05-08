@@ -34,7 +34,7 @@ public class IaSectionRoundTripTest {
 		String iaCategory = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
 				"$.measurementSets[3].category", String.class);
 
-		assertThat("Must contain a categoryc", iaCategory, is("ia"));
+		assertThat("Must contain a category", iaCategory, is("ia"));
 	}
 
 	@Test
