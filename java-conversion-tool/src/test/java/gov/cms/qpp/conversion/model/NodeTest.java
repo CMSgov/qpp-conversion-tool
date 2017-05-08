@@ -202,9 +202,6 @@ public class NodeTest {
 				"\t\t\tchildNodes of DEFAULT  -> (none)";
 
 		String debugString = root.toDebugString();
-		System.out.println(debugString);
-
 		assertThat("Expect the node hierarchy debug string", debugString, is(expected));
-
 	}
 }
