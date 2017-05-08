@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.encode.helper.QualityMeasuresLookup;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -28,14 +29,15 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) {
-		wrapper.putString(MEASURE_ID, node.getValue(MEASURE_ID));
+		String measureId = QualityMeasuresLookup.getMeasureId(node.getValue(MEASURE_ID));
+		wrapper.putString(MEASURE_ID, measureId);
 		encodeChildren(wrapper, node);
 	}
 
 	/**
 	 * Encode child nodes.
 	 *
-	 * @param wrapper holder for encoded node data
+	 * @param wrapper    holder for encoded node data
 	 * @param parentNode holder of the Quality Measures
 	 */
 	private void encodeChildren(JsonWrapper wrapper, Node parentNode) {
@@ -82,7 +84,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	/**
 	 * Calculates performance not met
 	 *
-	 * @param denominatorNode holder of the denominator aggregate count value
+	 * @param denominatorNode    holder of the denominator aggregate count value
 	 * @param denomExclusionNode holder of the denominator exclusion aggregate count value
 	 * @return the calculation
 	 */
