@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.jayway.jsonpath.PathNotFoundException;
 import gov.cms.qpp.conversion.aws.history.HistoricalTestRunner;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.apache.commons.cli.ParseException;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import static gov.cms.qpp.conversion.ConversionEntry.checkFlags;
 import static gov.cms.qpp.conversion.ConversionEntry.cli;
 import static gov.cms.qpp.conversion.ConversionEntry.validatedScope;
 import static com.amazonaws.util.IOUtils.copy;
@@ -28,11 +30,11 @@ import static org.hamcrest.core.Is.is;
 public class ScopeTest {
 	private static final String BUCKET = "qrda-history";
 
-	@Test
+	@Test(expected=PathNotFoundException.class)
 	@SuppressWarnings("unchecked")
 	public void historicalQrdaSansAci() throws IOException, ParseException {
-		String[] args = {"-t", "ACI_SECTION"};
-		validatedScope(cli(args));
+		String[] args = {"-t", "ACI_SECTION", "-b"};
+		validatedScope(checkFlags(cli(args)));
 
 		AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
 		ObjectListing listing
@@ -58,9 +60,9 @@ public class ScopeTest {
 
 					InputStream jsonStream = convert.getConversionResult();
 
+					//no scope means no transformation content
 					List<Map<?, ?>> aciSections = JsonHelper.readJsonAtJsonPath(jsonStream,
-						"$.measurementSets[?(@.category=='aci')]", List.class);
-					assertThat("There must not be any ACI sections in historical data.", aciSections, hasSize(0));
+						"$.scope", List.class);
 				} );
 	}
 }

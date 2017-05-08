@@ -43,6 +43,7 @@ public class ConversionEntry {
 	private static final String FILE_DOES_NOT_EXIST = "{} does not exist.";
 	private static final String CANNOT_LOCATE_FILE_PATH = "Cannot locate file path {0} {1}";
 
+	static final String BYGONE = "bygone";
 	static final String SKIP_VALIDATION = "skipValidation";
 	static final String SKIP_DEFAULTS = "skipDefaults";
 	static final String TEMPLATE_SCOPE = "templateScope";
@@ -50,6 +51,7 @@ public class ConversionEntry {
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
+	private static boolean historical;
 	private static Set<QrdaScope> scope = new HashSet<>();
 	private static Options options;
 	private static HelpFormatter formatter;
@@ -143,6 +145,7 @@ public class ConversionEntry {
 	 */
 	private static void initCli() {
 		options = new Options();
+		options.addOption("b", BYGONE, false, "Signals a historical conversion");
 		options.addOption("v", SKIP_VALIDATION, false, "Skip validations");
 		options.addOption("d", SKIP_DEFAULTS, false,"Skip defaulted transformations");
 		options.addOption("h", HELP, false,"This help message");
@@ -179,8 +182,7 @@ public class ConversionEntry {
 	private static Collection<Path> checkArgs(CommandLine line) {
 		Collection<Path> validFiles = new LinkedList<>();
 
-		checkFlags(line);
-		for (String arg : line.getArgs()) {
+		for (String arg : checkFlags(line).getArgs()) {
 			validFiles.addAll(checkPath(arg));
 		}
 
@@ -192,9 +194,15 @@ public class ConversionEntry {
 	 *
 	 * @param line parsed representation of the command line
 	 */
-	private static void checkFlags(CommandLine line) {
+	static CommandLine checkFlags(CommandLine line) {
 		doValidation = !line.hasOption(SKIP_VALIDATION);
 		doDefaults = !line.hasOption(SKIP_DEFAULTS);
+		historical = line.hasOption(BYGONE);
+		return line;
+	}
+
+	public static boolean isHistorical() {
+		return historical;
 	}
 
 	/**

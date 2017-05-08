@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.model;
 
+import gov.cms.qpp.conversion.ConversionEntry;
+
 /**
  * An enumeration of known templates IDs.
  */
@@ -108,7 +110,9 @@ public enum TemplateId {
 	 */
 	public static TemplateId getTypeById(final String root, final String extension) {
 		for (TemplateId currentTemplateId : TemplateId.values()) {
-			if (currentTemplateId.getRoot().equals(root) && currentTemplateId.getExtension().equals(extension)) {
+			if (ConversionEntry.isHistorical() && currentTemplateId.getRoot().equals(root)) {
+				return currentTemplateId;
+			} else if (currentTemplateId.getRoot().equals(root) && currentTemplateId.getExtension().equals(extension)) {
 				return currentTemplateId;
 			}
 		}
@@ -125,7 +129,7 @@ public enum TemplateId {
 	public static String generateTemplateIdString(final String root, final String extension) {
 		String templateId = root;
 
-		if (extension != null && !extension.isEmpty()) {
+		if (!ConversionEntry.isHistorical() && extension != null && !extension.isEmpty()) {
 			templateId += (":" + extension);
 		}
 		return templateId;
