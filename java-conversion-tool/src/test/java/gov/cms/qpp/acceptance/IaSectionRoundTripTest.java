@@ -34,7 +34,7 @@ public class IaSectionRoundTripTest {
 		String iaCategory = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
 				"$.measurementSets[3].category", String.class);
 
-		assertThat("", iaCategory, is("ia"));
+		assertThat("Must contain a categoryc", iaCategory, is("ia"));
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class IaSectionRoundTripTest {
 		String iaMeasureId = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
 				"$.measurementSets[3].measurements[0].measureId", String.class);
 
-		assertThat("", iaMeasureId, is("IA_EPA_1"));
+		assertThat("Must contain measure id", iaMeasureId, is("IA_EPA_1"));
 	}
 
 	@Test
@@ -52,6 +52,6 @@ public class IaSectionRoundTripTest {
 		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
 				"$.measurementSets[3].measurements[0].value", Boolean.class);
 
-		assertTrue("", measurePerformed);
+		assertTrue("Must contain a measure performed", measurePerformed);
 	}
 }
