@@ -39,6 +39,6 @@ public class QualityMeasureIdRoundTripTest {
 		assertThat("There should still be a quality measure even with the junk stuff in quality measure.",
 			qualityMeasures, hasSize(1));
 		assertThat("The measureId in the quality measure should still populate given the junk stuff in the measure.",
-			qualityMeasures.get(0).get("measureId"), is("40280381-51f0-825b-0152-22b98cff181a"));
+			qualityMeasures.get(0).get("measureId"), is("CMS165v5"));
 	}
 }
