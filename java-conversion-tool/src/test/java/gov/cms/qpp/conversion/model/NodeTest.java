@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -56,10 +57,10 @@ public class NodeTest {
 
 		//ensure that we don't go down all the child nodes
 		assertThat("Node#toString must not recurse down its children and print the size instead.", node.toString(),
-			containsString("childNodes=size"));
+				containsString("childNodes=size"));
 		//ensure we don't recurse up the parent
 		assertThat("Node#toString must not recurse down its children and print the size instead.", childNode.toString(),
-			containsString("parent=not null"));
+				containsString("parent=not null"));
 	}
 
 	@Test
@@ -99,10 +100,10 @@ public class NodeTest {
 	@Test
 	public void testFindNode() {
 		Node parent = new Node();
-		Node childOne = new Node( "don't.find.me" );
-		Node childTwo = new Node( "don't.find.me.either" );
-		Node childThree = new Node( "find.me.please" );
-		parent.addChildNodes( childOne, childTwo, childThree );
+		Node childOne = new Node("don't.find.me");
+		Node childTwo = new Node("don't.find.me.either");
+		Node childThree = new Node("find.me.please");
+		parent.addChildNodes(childOne, childTwo, childThree);
 
 		List<Node> results = parent.findNode("find.me.please");
 
@@ -112,9 +113,9 @@ public class NodeTest {
 	@Test
 	public void testFindNoNode() {
 		Node parent = new Node();
-		Node childOne = new Node( "don't.find.me" );
-		Node childTwo = new Node( "don't.find.me.either" );
-		parent.addChildNodes( childOne, childTwo);
+		Node childOne = new Node("don't.find.me");
+		Node childTwo = new Node("don't.find.me.either");
+		parent.addChildNodes(childOne, childTwo);
 
 		List<Node> results = parent.findNode("find.me.please");
 
@@ -123,9 +124,9 @@ public class NodeTest {
 
 	@Test
 	public void testFindNodeSelfIncluded() {
-		Node parent = new Node( "findMe" );
-		Node childOne = new Node( "findMe" );
-		parent.addChildNode( childOne );
+		Node parent = new Node("findMe");
+		Node childOne = new Node("findMe");
+		parent.addChildNode(childOne);
 
 		List<Node> results = parent.findNode("findMe");
 
@@ -134,9 +135,9 @@ public class NodeTest {
 
 	@Test
 	public void testFindFirstNodeSelf() {
-		Node parent = new Node( "findMe" );
-		Node childOne = new Node( "findMe" );
-		parent.addChildNode( childOne );
+		Node parent = new Node("findMe");
+		Node childOne = new Node("findMe");
+		parent.addChildNode(childOne);
 
 		assertEquals("should find itself if it has the searched id", parent.findFirstNode("findMe"), parent);
 	}
@@ -144,10 +145,10 @@ public class NodeTest {
 	@Test
 	public void testFindFirstNodeChildNode() {
 		Node parent = new Node();
-		Node childOne = new Node( "don'tFindMe" );
-		Node childTwo = new Node( "findMe" );
-		Node childThree = new Node( "findMe" );
-		parent.addChildNodes( childOne, childTwo, childThree );
+		Node childOne = new Node("don'tFindMe");
+		Node childTwo = new Node("findMe");
+		Node childThree = new Node("findMe");
+		parent.addChildNodes(childOne, childTwo, childThree);
 
 		assertEquals("should find first child that has the searched id", parent.findFirstNode("findMe"), childTwo);
 	}
@@ -155,10 +156,10 @@ public class NodeTest {
 	@Test
 	public void testFindFirstNoNode() {
 		Node parent = new Node();
-		Node childOne = new Node( "don't.find.me" );
-		Node childTwo = new Node( "don't.find.me" );
-		Node childThree = new Node( "don't.find.me" );
-		parent.addChildNodes( childOne, childTwo, childThree );
+		Node childOne = new Node("don't.find.me");
+		Node childTwo = new Node("don't.find.me");
+		Node childThree = new Node("don't.find.me");
+		parent.addChildNodes(childOne, childTwo, childThree);
 
 		assertEquals("should not find a node that has the searched id", parent.findFirstNode("findMe"), null);
 	}
@@ -170,5 +171,40 @@ public class NodeTest {
 		assertTrue(node.hasValue("test"));
 		node.removeValue("test");
 		assertFalse(node.hasValue("test"));
+	}
+
+	@Test
+	public void toDebugStringTest() {
+		Node root = new Node();
+		root.putValue("name", "root");
+		Node child1 = new Node(root, "child1");
+		child1.putValue("name", "child1");
+		Node child2 = new Node(root, "child2");
+		child2.putValue("name", "child2");
+		Node grandChild1 = new Node(child1, "grandChild1");
+		grandChild1.putValue("name", "grandChild1");
+		Node grandChild2 = new Node(child2, "grandChild2");
+		grandChild2.putValue("name", "grandChild2");
+		child1.addChildNode(grandChild1);
+		child2.addChildNode(grandChild2);
+		root.addChildNode(child1);
+		root.addChildNode(child2);
+
+		String expected = "Node: internalId: null , data: {name=root}\n" +
+				"\tchildNodes of null : \n" +
+				"\tNode: internalId: DEFAULT , data: {name=child1}\n" +
+				"\t\tchildNodes of DEFAULT : \n" +
+				"\t\tNode: internalId: DEFAULT , data: {name=grandChild1}\n" +
+				"\t\t\tchildNodes of DEFAULT  -> (none)\n" +
+				"\tNode: internalId: DEFAULT , data: {name=child2}\n" +
+				"\t\tchildNodes of DEFAULT : \n" +
+				"\t\tNode: internalId: DEFAULT , data: {name=grandChild2}\n" +
+				"\t\t\tchildNodes of DEFAULT  -> (none)";
+
+		String debugString = root.toDebugString();
+		System.out.println(debugString);
+
+		assertThat("Expect the node hierarchy debug string", debugString, is(expected));
+
 	}
 }
