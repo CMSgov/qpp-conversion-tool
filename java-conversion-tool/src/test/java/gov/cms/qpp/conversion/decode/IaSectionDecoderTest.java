@@ -33,23 +33,6 @@ public class IaSectionDecoderTest extends BaseTest {
 	}
 
 	@Test
-	public void testDecodeIaSectionContainsIaMeasureSectionId() throws XmlException {
-		Node root = executeDecoderWithoutDefaults();
-
-		Node iaMeasureNode = root.findFirstNode(TemplateId.IA_MEASURE.getTemplateId());
-
-		assertThat("returned should have measureId", iaMeasureNode.getValue("measureId"), is("IA_EPA_1"));
-	}
-
-	@Test
-	public void testDecodeIaMeasureSectionContainsMeasurePerformed() throws XmlException {
-		Node root = executeDecoderWithoutDefaults();
-
-		Node iaMeasurePerformedNode = root.findFirstNode(TemplateId.MEASURE_PERFORMED.getTemplateId());
-		assertThat("returned measurePerformed", iaMeasurePerformedNode.getValue("measurePerformed"), is("Y"));
-	}
-
-	@Test
 	public void testDecodeIaSectionIgnoresGarbage() throws XmlException {
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
