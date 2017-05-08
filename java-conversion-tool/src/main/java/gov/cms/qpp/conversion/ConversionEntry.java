@@ -201,6 +201,11 @@ public class ConversionEntry {
 		return line;
 	}
 
+	/**
+	 * Is this a conversion of historical submissions.
+	 *
+	 * @return determination of whether or not the conversion is enacted on historical submissions.
+	 */
 	public static boolean isHistorical() {
 		return historical;
 	}

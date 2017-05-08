@@ -34,34 +34,49 @@ public class ScopeTest {
 
 	@Test(expected=PathNotFoundException.class)
 	public void historicalAciSectionScope() throws IOException, ParseException {
+		//setup
 		String[] args = {"-t", "ACI_SECTION", "-b"};
 		validatedScope(checkFlags(cli(args)));
 
-		iterateBucketContents("$.scope", TransformationStatus.SUCCESS);
+		//expect
+		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
 	}
 
 	@Test
 	public void historicalClinicalDocumentScope() throws IOException, ParseException {
+		//setup
 		String[] args = {"-t", "CLINICAL_DOCUMENT", "-b"};
 		validatedScope(checkFlags(cli(args)));
 
+		//expect
 		List<List<Map<String, ?>>> results =
-				iterateBucketContents("$.errorSources", TransformationStatus.ERROR);
-
+				iterateBucketContents(convertEm("$.errorSources", TransformationStatus.ERROR));
 	}
 
-	private List<List<Map<String, ?>>> iterateBucketContents(
-			String jsonPath, TransformationStatus expectedStatus) {
+	/**
+	 * Iterate over qrda history bucket contents and apply specified conversion.
+	 *
+	 * @param conversion the conversion to be applied
+	 * @return a list of results
+	 */
+	private List<List<Map<String, ?>>> iterateBucketContents(Function<S3Object, List<Map<String, ?>>> conversion) {
 		AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
 		ObjectListing listing
 				= s3Client.listObjects(BUCKET);
 		return listing.getObjectSummaries().parallelStream()
 				.map(S3ObjectSummary::getKey)
 				.map(key -> s3Client.getObject(BUCKET, key))
-				.map(convertEm(jsonPath, expectedStatus))
+				.map(conversion)
 				.collect(Collectors.toList());
 	}
 
+	/**
+	 * A template for conversions to be applied to the historical qrda bucket's contents.
+	 *
+	 * @param jsonPath a json path used to extract contents from conversion results
+	 * @param expectedStatus expected outcome of respective conversions
+	 * @return a conversion function
+	 */
 	@SuppressWarnings("unchecked")
 	private Function<S3Object, List<Map<String, ?>>> convertEm(String jsonPath, TransformationStatus expectedStatus) {
 		return s3Object -> {
