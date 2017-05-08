@@ -7,8 +7,8 @@ describe('ng-test App', () => {
 		page = new NgTestPage();
 	});
 
-	it('should display message saying app works', () => {
+	it('should display message saying Convert QRDA-III to QPP', () => {
 		page.navigateTo();
-		expect(page.getParagraphText()).toEqual('app works!');
+		expect(page.getParagraphText()).toEqual('Convert QRDA-III to QPP');
 	});
 });

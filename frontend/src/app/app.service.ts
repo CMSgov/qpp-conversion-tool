@@ -4,23 +4,36 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import {Parser} from 'xml2js';
 
 @Injectable()
 export class AppService {
 
-	private endpoint = 'https://3u24bs28df.execute-api.us-east-1.amazonaws.com/dev/ping';
+	public endpoint = 'https://gpeermmuj9.execute-api.us-east-1.amazonaws.com/dev/ping';
 
 	constructor (private http: Http) {}
 
-	getEndpoint() {
+	getPolicy() {
 		return this.http.get(this.endpoint)
 			.map(this.extractData)
 			.catch(this.handleError);
 	}
 
+	postPolicy(url, form) {
+		return this.http.post(url, form);
+	}
+
 	private extractData(res: Response) {
 		const body = res.json();
-		return body.message || { };
+		console.log(body);
+		return body || { };
+	}
+
+	private parseXml(res: Response) {
+		const parser = new Parser();
+		const parseString = parser.parseString(res);
+		console.log(parseString);
+		return parseString;
 	}
 
 	private handleError (error: Response | any) {
