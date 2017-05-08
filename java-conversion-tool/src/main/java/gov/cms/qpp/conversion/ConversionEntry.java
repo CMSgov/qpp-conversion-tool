@@ -121,7 +121,7 @@ public class ConversionEntry {
 	 * @param line command line arguments
 	 * @return determination of validity
 	 */
-	private static boolean validatedScope(CommandLine line) {
+	static boolean validatedScope(CommandLine line) {
 		boolean isItValid = true;
 		if (line.hasOption(TEMPLATE_SCOPE)) {
 			String[] templateScope = line.getOptionValue(TEMPLATE_SCOPE).split(",");

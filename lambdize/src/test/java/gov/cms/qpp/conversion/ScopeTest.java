@@ -1,24 +1,24 @@
-package gov.cms.qpp.conversion.aws.history;
+package gov.cms.qpp.conversion;
 
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.TransformationStatus;
+import gov.cms.qpp.conversion.aws.history.HistoricalTestRunner;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.BeforeClass;
+import org.apache.commons.cli.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import static gov.cms.qpp.conversion.ConversionEntry.cli;
+import static gov.cms.qpp.conversion.ConversionEntry.validatedScope;
+import static com.amazonaws.util.IOUtils.copy;
 import static junit.framework.TestCase.fail;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -29,7 +29,11 @@ public class ScopeTest {
 	private static final String BUCKET = "qrda-history";
 
 	@Test
-	public void historicalQrdaSansAci() throws IOException {
+	@SuppressWarnings("unchecked")
+	public void historicalQrdaSansAci() throws IOException, ParseException {
+		String[] args = {"-t", "ACI_SECTION"};
+		validatedScope(cli(args));
+
 		AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
 		ObjectListing listing
 				= s3Client.listObjects(BUCKET);
@@ -41,10 +45,11 @@ public class ScopeTest {
 					Converter convert = null;
 					TransformationStatus status = TransformationStatus.ERROR;
 					try(InputStream stream = s3Object.getObjectContent()) {
-						convert = new Converter(stream);
-						convert.doValidation(false);
 
+						convert = new Converter(stream);
 						status = convert.transform();
+						InputStream result = convert.getConversionResult();
+						copy(result, System.out);
 					} catch (IOException ioe) {
 						fail(ioe.getMessage());
 					}
@@ -58,5 +63,4 @@ public class ScopeTest {
 					assertThat("There must not be any ACI sections in historical data.", aciSections, hasSize(0));
 				} );
 	}
-
 }
