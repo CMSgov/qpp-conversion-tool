@@ -92,7 +92,7 @@ public class QualitySectionDecoderTest {
 				+ " 				<!--Measure Reference and Results--> "
 				+ " 				<reference typeCode=\"REFR\"> "
 				+ " 					<externalDocument classCode=\"DOC\" moodCode=\"EVN\"> "
-				+ " 						<id root=\"2.16.840.1.113883.4.738\" extension=\"CMS165v5\"/> "
+				+ " 						<id root=\"2.16.840.1.113883.4.738\" extension=\"40280381-51f0-825b-0152-22b98cff181a\"/> "
 				+ " 						<code code=\"57024-2\" codeSystem=\"2.16.840.1.113883.6.1\" codeSystemName=\"LOINC\" displayName=\"Health Quality Measure Document\"/> "
 				+ " 						<text>Controlling High Blood Pressure</text> "
 				+ " 					</externalDocument> "

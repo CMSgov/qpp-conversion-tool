@@ -2727,7 +2727,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									DogCow to the moon and back!  This wont stop our converter from reading the below GUID.
-									<id root="2.16.840.1.113883.4.738" extension="CMS165v5"/>
+									<id root="2.16.840.1.113883.4.738" extension="40280381-51f0-825b-0152-22b98cff181a"/>
 									<DogCow root="Moof!"></DogCow>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Health Quality Measure Document"/>
 									<text>Controlling High Blood Pressure</text>

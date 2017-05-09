@@ -30,6 +30,7 @@ public class QualityMeasuresLookup {
 	 */
 	private QualityMeasuresLookup() {
 	}
+
 	/**
 	 * Look for the guid in the internal hash map and return its value
 	 *
