@@ -83,20 +83,22 @@ Note: If you are using Windows, replace `./convert.sh` in the examples below wit
 ```
 
 ```
-usage: convert [-d] [-h] [-t <scope1,scope2,...>] [-v]
-    -d,--skipDefaults                        Skip defaulted transformations
-    -h,--help                                This help message
-    -t,--templateScope <scope1,scope2,...>   Comma delimited scope values to
-                                             use for context. Valid values:
-                                             [ACI_AGGREGATE_COUNT,
-                                             ACI_NUMERATOR, ACI_DENOMINATOR,
-                                             ACI_NUMERATOR_DENOMINATOR,
-                                             ACI_SECTION, MEASURE_PERFORMED,
-                                             IA_MEASURE, IA_SECTION,
-                                             REPORTING_PARAMETERS_ACT,
-                                             REPORTING_PARAMETERS_SECTION,
-                                             CLINICAL_DOCUMENT]
-    -v,--skipValidation                      Skip validations
+usage: convert [-b] [-d] [-h] [-t <scope1,scope2,...>] [-v]
+ -b,--bygone                              Signals a historical conversion
+ -d,--skipDefaults                        Skip defaulted transformations
+ -h,--help                                This help message
+ -t,--templateScope <scope1,scope2,...>   Comma delimited scope values to
+                                          use for context. Valid values:
+                                          [ACI_AGGREGATE_COUNT,
+                                          ACI_NUMERATOR, ACI_DENOMINATOR,
+                                          ACI_NUMERATOR_DENOMINATOR,
+                                          ACI_SECTION, MEASURE_PERFORMED,
+                                          IA_MEASURE, IA_SECTION,
+                                          DEFAULTS, MEASURE_DATA_CMS_V2,
+                                          MEASURE_REFERENCE_RESULTS_CMS_V2
+                                          , MEASURE_SECTION_V2,
+                                          CLINICAL_DOCUMENT]
+ -v,--skipValidation                      Skip validations
 ```
 
 ### Output
