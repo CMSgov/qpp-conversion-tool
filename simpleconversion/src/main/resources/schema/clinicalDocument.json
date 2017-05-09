@@ -1,0 +1,21 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"id": "clinicalDocument",
+	"type": "object",
+	"properties": {
+		"programName": { "type": "string" },
+		"entityType": { "type": "string" },
+		"taxpayerIdentificationNumber": { "type": "string" },
+		"nationalProviderIdentifier": { "type": "string" },
+		"performanceYear": { "type": "string" },
+		"measurements": {
+			"type": "array",
+			"items": {
+				"anyOf": [
+					{ "aciSection": {"$ref": "aciSection.json"} }
+				]
+			}
+		}
+	},
+	"additionalProperties": false
+}

@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion;
 
 
+import gov.cms.qpp.model.AciNumeratorDenominator;
 import gov.cms.qpp.model.AciSection;
 import org.xml.sax.Attributes;
 
@@ -10,6 +11,7 @@ public class AciSectionDecoder extends TieredDecoder {
 
 	public AciSectionDecoder() {
 		section = new AciSection();
+		section.setCategory("aci");
 	}
 
 	@Override
@@ -28,6 +30,6 @@ public class AciSectionDecoder extends TieredDecoder {
 	}
 
 	public void addMeasurement(Object measurement) {
-		section.addMeasurement(measurement);
+		section.getMeasurements().add((AciNumeratorDenominator) measurement);
 	}
 }

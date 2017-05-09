@@ -41,6 +41,6 @@ public class ClinicalDocumentDecoder extends TieredDecoder {
 	}
 
 	public void addMeasurement(Object measurement) {
-		doc.addMeasurement(measurement);
+		doc.getMeasurements().add(measurement);
 	}
 }

@@ -1,8 +1,7 @@
 package gov.cms.qpp.conversion;
 
 import gov.cms.qpp.model.AciNumeratorDenominator;
-import gov.cms.qpp.model.AciSection;
-import gov.cms.qpp.model.TemplateId;
+import gov.cms.qpp.model.AciNumeratorDenominatorValue;
 import org.xml.sax.Attributes;
 
 import java.util.HashMap;
@@ -11,14 +10,17 @@ import java.util.function.Consumer;
 
 public class AciNumeratorDenominatorDecoder extends TieredDecoder {
 	private AciNumeratorDenominator numDen;
+	private AciNumeratorDenominatorValue value;
 	private TemplateId context = TemplateId.DEFAULT;
 	private Consumer<Integer> valueSetter;
 	private Map<TemplateId, Consumer<Integer>> setterHash = new HashMap<>();
 
 	public AciNumeratorDenominatorDecoder() {
+		value = new AciNumeratorDenominatorValue();
 		numDen = new AciNumeratorDenominator();
-		setterHash.put(TemplateId.ACI_DENOMINATOR, numDen::setDenominator);
-		setterHash.put(TemplateId.ACI_NUMERATOR, numDen::setNumerator);
+		numDen.setValue(value);
+		setterHash.put(TemplateId.ACI_DENOMINATOR, value::setDenominator);
+		setterHash.put(TemplateId.ACI_NUMERATOR, value::setNumerator);
 	}
 
 	@Override

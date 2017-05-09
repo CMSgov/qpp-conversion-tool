@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.model.TemplateId;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -56,13 +55,16 @@ public class ConversionHandler extends DefaultHandler {
 			throws SAXException
 	{
 		if (activeDecoder != null && activeDecoder.getTier() == docDescendancy.size()){
-			System.out.println(activeDecoder.exportDecoded().toString());
 			decoderDescendancy.pop();
 			if (!decoderDescendancy.empty()) {
 				activeDecoder = decoderDescendancy.peek();
 			}
 		}
 		docDescendancy.pop();
+	}
+
+	public Object getConverted() {
+		return activeDecoder.exportDecoded();
 	}
 
 	/**

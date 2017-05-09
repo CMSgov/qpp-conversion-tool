@@ -1,0 +1,16 @@
+{
+	"type" : "object",
+	"id":"#aciNumeratorDenominator",
+	"properties" : {
+		"measureId": {"type" : "string"},
+		"value": {
+			"javaType" : "gov.cms.qpp.model.AciNumeratorDenominatorValue",
+			"type": "object",
+			"properties": {
+				"numerator": "string",
+				"denominator": "string"
+			}
+		}
+	},
+	"additionalProperties": false
+}
