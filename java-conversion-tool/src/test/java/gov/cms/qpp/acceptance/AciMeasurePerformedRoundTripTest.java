@@ -38,9 +38,9 @@ public class AciMeasurePerformedRoundTripTest extends BaseTest {
 		List<Map<String, ?>> aciMeasures = JsonHelper.readJsonAtJsonPath(Paths.get("AciMeasurePerformedGarbage.qpp.json"),
 			"$.measurementSets[?(@.category=='aci')].measurements[?(@.measureId=='TEST_MEASURE_ID')]", List.class);
 
-		assertThat("There should still be a quality measure even with the junk stuff in quality measure.",
+		assertThat("There should still be an ACI measure even with the junk stuff in ACI measure.",
 			aciMeasures, hasSize(1));
-		assertThat("The measureId in the quality measure should still populate given the junk stuff in the measure.",
+		assertThat("The measureId in the ACI measure should still be populated given the junk stuff in the measure.",
 			aciMeasures.get(0).get("measureId"), is("TEST_MEASURE_ID"));
 	}
 }
