@@ -1,47 +1,44 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
-public class MeasurePerformedDecoderTest {
+public class MeasurePerformedDecoderTest extends BaseTest {
+	String xmlFragment;
+
+	@Before
+	public void setUp() throws IOException {
+		xmlFragment = getFixture("MeasurePerformed.xml");
+	}
 
 	@Test
 	public void testMeasurePerformed() throws XmlException {
-		String xmlFragment = createValidMeasurePerformedXml();
-
-		Node measurePerformedNode = executeMeasurePerformedDecoder(xmlFragment);
+		Node measurePerformedNode = executeMeasurePerformedDecoder(xmlFragment)
+				.findFirstNode(TemplateId.MEASURE_PERFORMED.getTemplateId());
 
 		assertValidMeasurePerformed(measurePerformedNode);
 	}
 
 	@Test
 	public void testGarbageXmlIsIgnore() throws XmlException {
-		String xmlFragment = createValidMeasurePerformedXml();
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\">abc<newnode>Some extra stuff</newnode></Stuff>Unexpected text appears here\n\n<statusCode ");
 
-		Node measurePerformedNode = executeMeasurePerformedDecoder(xmlFragment);
+		Node measurePerformedNode = executeMeasurePerformedDecoder(xmlFragment)
+				.findFirstNode(TemplateId.MEASURE_PERFORMED.getTemplateId());
 
 		assertValidMeasurePerformed(measurePerformedNode);
-	}
-
-	private String createValidMeasurePerformedXml() {
-		return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
-				+ "<observation classCode=\"OBS\" moodCode=\"EVN\">"
-				+ "        <!-- Measure Performed templateId -->"
-				+ "        <templateId root=\"2.16.840.1.113883.10.20.27.3.27\" extension=\"2016-09-01\"/>"
-				+ "        <code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"Assertion\"/>"
-				+ "        <statusCode code=\"completed\"/>"
-				+ "        <value xsi:type=\"CD\" code=\"Y\" displayName=\"Yes\" codeSystemName=\"Yes/no indicator (HL7 Table 0136)\" codeSystem=\"2.16.840.1.113883.12.136\"/>"
-				+ "    </observation>"
-				+ "</component>";
 	}
 
 	private Node executeMeasurePerformedDecoder(String xmlFragment) throws XmlException {
@@ -51,7 +48,6 @@ public class MeasurePerformedDecoderTest {
 
 	private void assertValidMeasurePerformed(Node measurePerformedNode) {
 		assertThat("Should have a measure perform",
-				measurePerformedNode.getChildNodes().get(0).getValue("measurePerformed"), is("Y"));
-		assertThat("Should have one child", measurePerformedNode.getChildNodes(), hasSize(1));
+				measurePerformedNode.getValue("measurePerformed"), is("Y"));
 	}
 }
