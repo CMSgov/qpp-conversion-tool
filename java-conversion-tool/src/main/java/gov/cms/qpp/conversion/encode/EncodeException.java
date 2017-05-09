@@ -5,7 +5,7 @@ package gov.cms.qpp.conversion.encode;
  */
 public class EncodeException extends RuntimeException {
 
-	private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 4L;
 	private final String templateId;
 
 	/**
