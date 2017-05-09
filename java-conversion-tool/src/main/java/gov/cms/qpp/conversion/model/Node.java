@@ -182,7 +182,7 @@ public class Node {
 		final StringBuilder nodeToString = new StringBuilder("Node{");
 		nodeToString.append("type=").append(type);
 		nodeToString.append(", data=").append(data);
-		nodeToString.append(", childNodes=").append((childNodes == null) ? "null" : "size:" + childNodes.size());
+		nodeToString.append(", childNodes=").append("size:" + childNodes.size());
 		nodeToString.append(", parent=").append((parent == null) ? "null" : "not null");
 		nodeToString.append(", validated=").append(validated);
 		nodeToString.append(", internalId='").append(internalId).append('\'');
@@ -390,6 +390,6 @@ public class Node {
 	 * @return Either the Template Id ENUM name or the template Id string if the name is not available.
 	 */
 	private String getName() {
-		return (type == null || type.name() == null ? (internalId + " ") : (type.name() + " "));
+		return (type == null ? (internalId + " ") : (type.name() + " "));
 	}
 }

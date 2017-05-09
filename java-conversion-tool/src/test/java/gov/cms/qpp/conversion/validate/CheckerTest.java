@@ -400,6 +400,35 @@ public class CheckerTest {
 	}
 
 	@Test
+	public void testCheckerHasMeasuresShortCut() {
+		List<ValidationError> errors = new ArrayList<>();
+		ValidationError err = new ValidationError();
+		errors.add(err);
+		Node root = new Node();
+		Checker checker = Checker.check(root,errors)
+				.hasMeasures("Some Message","MeasureId");
+
+		assertThat("Checker should return one validation error" ,
+				errors, hasSize(1));
+
+	}
+	@Test
+	public void testCheckerHasInvalidMeasure() {
+		List<ValidationError> errors = new ArrayList<>();
+
+		Node root = new Node();
+		Node measure = new Node(root,TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		measure.putValue("NotAmeasure","0");
+		root.addChildNode(measure);
+		Checker checker = Checker.check(root,errors)
+				.hasMeasures("Some Message","MeasureId");
+
+		assertThat("Checker should return one validation error" ,
+				errors, hasSize(1));
+
+	}
+
+	@Test
 	public void testHasChildrenWithTemplateIdSuccess() {
 		Node iaSectionNode = new Node(TemplateId.IA_SECTION.getTemplateId());
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
