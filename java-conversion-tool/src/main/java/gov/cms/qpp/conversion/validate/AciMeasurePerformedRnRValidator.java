@@ -1,10 +1,10 @@
 package gov.cms.qpp.conversion.validate;
 
-import java.util.List;
-
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+
+import java.util.List;
 
 /**
  * This Validator checks that the Measure ID is present.
@@ -26,11 +26,7 @@ public class AciMeasurePerformedRnRValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		thoroughlyCheck(node)
-			.hasChildren(MEASURE_PERFORMED_IS_REQUIRED)
-			.childMinimum(MEASURE_PERFORMED_IS_REQUIRED, 1, TemplateId.MEASURE_PERFORMED)
-			.childMaximum(MEASURE_PERFORMED_CAN_ONLY_BE_PRESENT_ONCE, 1, TemplateId.MEASURE_PERFORMED)
-			.value(MEASURE_ID_IS_REQUIRED, "measureId");
+		thoroughlyCheck(node).hasChildren(MEASURE_PERFORMED_IS_REQUIRED).childMinimum(MEASURE_PERFORMED_IS_REQUIRED, 1, TemplateId.MEASURE_PERFORMED).childMaximum(MEASURE_PERFORMED_CAN_ONLY_BE_PRESENT_ONCE, 1, TemplateId.MEASURE_PERFORMED).value(MEASURE_ID_IS_REQUIRED, "measureId");
 	}
 
 	@Override

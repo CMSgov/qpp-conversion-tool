@@ -9,6 +9,7 @@ import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.TransformationStatus;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,6 +30,7 @@ public class ScopeTest {
 	private static final String BUCKET = "qrda-history";
 
 	@Test
+	@Ignore
 	public void historicalQrdaSansAci() throws IOException {
 		AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
 		ObjectListing listing
