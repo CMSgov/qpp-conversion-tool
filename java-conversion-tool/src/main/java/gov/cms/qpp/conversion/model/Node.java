@@ -86,7 +86,7 @@ public class Node {
 	/**
 	 * removeValue deletes the Value under the key: name
 	 *
-	 * @param name  String key to remove value under
+	 * @param name String key to remove value under
 	 */
 	public void removeValue(String name) {
 		data.remove(name);
@@ -133,8 +133,8 @@ public class Node {
 	/**
 	 * Returns a list of child Nodes for this Node that satisfy the predicate.
 	 *
-	 * @return List of matching child Nodes.
 	 * @param filter specifying match criteria
+	 * @return List of matching child Nodes.
 	 */
 	public Stream<Node> getChildNodes(Predicate<Node> filter) {
 		return childNodes.stream()
@@ -144,8 +144,8 @@ public class Node {
 	/**
 	 * Returns the first child Node from this Node that satisfies the predicate.
 	 *
-	 * @return matching child Node.
 	 * @param filter specifying match criteria
+	 * @return matching child Node.
 	 */
 	public Node findChildNode(Predicate<Node> filter) {
 		return getChildNodes(filter).findFirst().orElse(null);
@@ -330,5 +330,66 @@ public class Node {
 	 */
 	private static boolean foundNode(List<?> nodes) {
 		return !nodes.isEmpty();
+	}
+
+
+	/**
+	 * Useful for debugging large files
+	 *
+	 * @return String representation of the Node hierarchy
+	 */
+	public String toDebugString() {
+		return toDebugString("");// no tabs to start
+	}
+
+	/**
+	 * Useful for debugging large input files
+	 * Creates a tabbed indentation of child nodes for the node being debugPrinted
+	 *
+	 * @param tabs indentation level
+	 * @return String representing the hierarchy of the node
+	 */
+	protected String toDebugString(String tabs) {
+		return tabs + selfToString() + "\n" + childrenToString(tabs + "\t");
+	}
+
+	/**
+	 * Helpful when debug printing this node
+	 *
+	 * @return this node as a string representation of the data it contains
+	 */
+	protected String selfToString() {
+		return "Node: internalId: " + getName() + ", data: " + data;
+	}
+
+	/**
+	 * Useful for debug printing a large input file
+	 *
+	 * @param tabs the indentation level of the child nodes
+	 * @return The list of child nodes as a string representation
+	 */
+	protected String childrenToString(String tabs) {
+		StringBuilder children = new StringBuilder();
+		if (childNodes.isEmpty()) {
+			children.append(" -> (none)");
+		} else {
+			children.append(": \n");
+			String sep = "";
+			String toBeSep = "\n";
+			for (Node child : childNodes) {
+				children.append(sep).append(child.toDebugString(tabs));
+				sep = toBeSep;
+			}
+		}
+		return tabs + "childNodes of " + getName() + children;
+	}
+
+	/**
+	 * gets the name of the TemplateId associated with this node
+	 *
+	 * @return Either the Template Id ENUM name or the template Id string if the name is not available.
+	 */
+	private String getName() {
+		return (type == null || type.name() == null ? (internalId + " ") : (type.name() + " "));
 	}
 }
