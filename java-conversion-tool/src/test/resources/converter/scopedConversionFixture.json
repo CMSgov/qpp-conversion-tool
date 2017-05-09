@@ -112,7 +112,7 @@
 		"category" : "quality",
 		"submissionMethod" : "cmsWebInterface",
 		"measurements" : [ {
-			"measureId" : "40280381-51f0-825b-0152-22b98cff181a",
+			"measureId" : "CMS165v5",
 			"value" : {
 				"isEndToEndReported" : true,
 				"populationTotal" : 1000,
@@ -121,14 +121,14 @@
 				"performanceNotMet" : 950
 			}
 		}, {
-			"measureId" : "40280381-503f-a1fc-0150-d33f5b0a1b8c",
+			"measureId" : "CMS185v5",
 			"value" : {
 				"isEndToEndReported" : true,
 				"populationTotal" : 1000,
 				"performanceMet" : 800
 			}
 		}, {
-			"measureId" : "40280381-51f0-825b-0152-229c4ea3170c",
+			"measureId" : "CMS125v5",
 			"value" : {
 				"isEndToEndReported" : true,
 				"populationTotal" : 1000,
@@ -137,7 +137,7 @@
 				"performanceNotMet" : 950
 			}
 		}, {
-			"measureId" : "40280381-51f0-825b-0152-22a1e7e81737",
+			"measureId" : "CMS130v5",
 			"value" : {
 				"isEndToEndReported" : true,
 				"populationTotal" : 1000,
@@ -146,21 +146,21 @@
 				"performanceNotMet" : 950
 			}
 		}, {
-			"measureId" : "40280381-52fc-3a32-0153-395ce63513af",
+			"measureId" : "CMS147v6",
 			"value" : {
 				"isEndToEndReported" : true,
 				"populationTotal" : 1000,
 				"performanceMet" : 800
 			}
 		}, {
-			"measureId" : "40280381-52fc-3a32-0153-1a646a2a0bfa",
+			"measureId" : "CMS127v5",
 			"value" : {
 				"isEndToEndReported" : true,
 				"populationTotal" : 950,
 				"performanceMet" : 800
 			}
 		}, {
-			"measureId" : "40280381-51f0-825b-0152-229afff616ee",
+			"measureId" : "CMS122v5",
 			"value" : {
 				"isEndToEndReported" : true,
 				"populationTotal" : 950,
@@ -181,21 +181,21 @@
 				"performanceMet" : 800
 			}
 		}, {
-			"measureId" : "40280381-52fc-3a32-0153-1a3981870b45",
+			"measureId" : "CMS144v5",
 			"value" : {
 				"isEndToEndReported" : true,
 				"populationTotal" : 1000,
 				"performanceMet" : 800
 			}
 		}, {
-			"measureId" : "40280381-51f0-825b-0152-22aae8a21778",
+			"measureId" : "CMS139v5",
 			"value" : {
 				"isEndToEndReported" : true,
 				"populationTotal" : 1000,
 				"performanceMet" : 800
 			}
 		}, {
-			"measureId" : "40280381-537c-f767-0153-c378bd7207a5",
+			"measureId" : "CMS2v6",
 			"value" : {
 				"isEndToEndReported" : true,
 				"populationTotal" : 1000,
@@ -204,7 +204,7 @@
 				"performanceNotMet" : 950
 			}
 		}, {
-			"measureId" : "40280381-52fc-3a32-0153-3d64af97147b",
+			"measureId" : "CMS68v6",
 			"value" : {
 				"isEndToEndReported" : true,
 				"populationTotal" : 1000,
@@ -213,7 +213,7 @@
 		} ]
 	},
 	"MEASURE_REFERENCE_RESULTS_CMS_V2" : [ {
-		"measureId" : "40280381-51f0-825b-0152-22b98cff181a",
+		"measureId" : "CMS165v5",
 		"value" : {
 			"isEndToEndReported" : true,
 			"populationTotal" : 1000,
@@ -222,14 +222,14 @@
 			"performanceNotMet" : 950
 		}
 	}, {
-		"measureId" : "40280381-503f-a1fc-0150-d33f5b0a1b8c",
+		"measureId" : "CMS185v5",
 		"value" : {
 			"isEndToEndReported" : true,
 			"populationTotal" : 1000,
 			"performanceMet" : 800
 		}
 	}, {
-		"measureId" : "40280381-51f0-825b-0152-229c4ea3170c",
+		"measureId" : "CMS125v5",
 		"value" : {
 			"isEndToEndReported" : true,
 			"populationTotal" : 1000,
@@ -238,7 +238,7 @@
 			"performanceNotMet" : 950
 		}
 	}, {
-		"measureId" : "40280381-51f0-825b-0152-22a1e7e81737",
+		"measureId" : "CMS130v5",
 		"value" : {
 			"isEndToEndReported" : true,
 			"populationTotal" : 1000,
@@ -247,21 +247,21 @@
 			"performanceNotMet" : 950
 		}
 	}, {
-		"measureId" : "40280381-52fc-3a32-0153-395ce63513af",
+		"measureId" : "CMS147v6",
 		"value" : {
 			"isEndToEndReported" : true,
 			"populationTotal" : 1000,
 			"performanceMet" : 800
 		}
 	}, {
-		"measureId" : "40280381-52fc-3a32-0153-1a646a2a0bfa",
+		"measureId" : "CMS127v5",
 		"value" : {
 			"isEndToEndReported" : true,
 			"populationTotal" : 950,
 			"performanceMet" : 800
 		}
 	}, {
-		"measureId" : "40280381-51f0-825b-0152-229afff616ee",
+		"measureId" : "CMS122v5",
 		"value" : {
 			"isEndToEndReported" : true,
 			"populationTotal" : 950,
@@ -282,21 +282,21 @@
 			"performanceMet" : 800
 		}
 	}, {
-		"measureId" : "40280381-52fc-3a32-0153-1a3981870b45",
+		"measureId" : "CMS144v5",
 		"value" : {
 			"isEndToEndReported" : true,
 			"populationTotal" : 1000,
 			"performanceMet" : 800
 		}
 	}, {
-		"measureId" : "40280381-51f0-825b-0152-22aae8a21778",
+		"measureId" : "CMS139v5",
 		"value" : {
 			"isEndToEndReported" : true,
 			"populationTotal" : 1000,
 			"performanceMet" : 800
 		}
 	}, {
-		"measureId" : "40280381-537c-f767-0153-c378bd7207a5",
+		"measureId" : "CMS2v6",
 		"value" : {
 			"isEndToEndReported" : true,
 			"populationTotal" : 1000,
@@ -305,7 +305,7 @@
 			"performanceNotMet" : 950
 		}
 	}, {
-		"measureId" : "40280381-52fc-3a32-0153-3d64af97147b",
+		"measureId" : "CMS68v6",
 		"value" : {
 			"isEndToEndReported" : true,
 			"populationTotal" : 1000,
