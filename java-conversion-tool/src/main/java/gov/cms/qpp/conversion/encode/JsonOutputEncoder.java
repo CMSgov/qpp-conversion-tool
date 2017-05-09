@@ -42,6 +42,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 		try {
 			internalEncode(wrapper, node);
 		} catch (EncodeException e) {
+			DEV_LOG.warn("Encode error when doing internalEncode, adding a new ValidationError", e);
 			validationErrors.add(new ValidationError(e.getMessage()));
 		}
 	}
