@@ -387,7 +387,7 @@ public class JsonWrapper {
 			return false;
 		}
 		
-		throw new EncodeException(value + " is not a boolean.", null);
+		throw new EncodeException(value + " is not a boolean.");
 	}
 
 	/**

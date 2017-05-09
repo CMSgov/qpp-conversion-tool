@@ -10,8 +10,7 @@ import static org.junit.Assert.assertThat;
 public class EncodeExceptionTest {
 	@Test
 	public void getTemplateId() throws Exception {
-		EncodeException e = new EncodeException("ErrorMessage");
-		e.setTemplateId("templateId");
+		EncodeException e = new EncodeException("ErrorMessage", "templateId");
 		String value = e.getTemplateId();
 		assertThat("Expect to get out what I put in", value, is("templateId"));
 	}
