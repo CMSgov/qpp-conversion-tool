@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Encoder;
-import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
@@ -10,16 +9,5 @@ import gov.cms.qpp.conversion.model.TemplateId;
  */
 @Encoder(TemplateId.IA_SECTION)
 public class IaSectionEncoder extends AciSectionEncoder {
-
-	/**
-	 * internalEncode for IA Section.
-	 *
-	 * @param wrapper JsonWrapper that will represent the ACI Section
-	 * @param node Node that represents the ACI Section
-	 * @throws EncodeException If error occurs during encoding
-	 */
-	@Override
-	public void internalEncode(JsonWrapper wrapper, Node node) {
-		super.internalEncode(wrapper, node);
-	}
+	//empty as it does the exact same thing as its parent class
 }

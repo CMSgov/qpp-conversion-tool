@@ -387,8 +387,8 @@ public class JsonWrapper {
 		if ("false".equals(cleanedValueString) || "no".equals(cleanedValueString) || "n".equals(cleanedValueString)) {
 			return false;
 		}
-		
-		throw new EncodeException(cleanedValueString + " is not a boolean.", null);
+
+		throw new EncodeException(cleanedValueString + " is not a boolean.");
 	}
 
 	/**

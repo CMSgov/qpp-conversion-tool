@@ -27,8 +27,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		DEV_LOG.debug("Default JSON encoder {} is handling templateId {} and is described as '{}' ",
 				getClass(), node.getId(), description);
 
-		// TODO like the decoder this might be better in the parent
-		// and we are given the child
 		JsonWrapper childWrapper = new JsonWrapper();
 
 		for (String name : node.getKeys()) {

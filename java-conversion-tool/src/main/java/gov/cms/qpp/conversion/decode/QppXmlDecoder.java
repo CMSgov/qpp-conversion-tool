@@ -22,6 +22,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
+	private static final String ROOT_STRING = "root";
+	private static final String EXTENSION_STRING = "extension";
 	private Collection<TemplateId> scope;
 
 	/**
@@ -72,8 +74,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		for (Element childEl : childElements) {
 
 			if (TEMPLATE_ID.equals(childEl.getName())) {
-				String root = childEl.getAttributeValue("root");
-				String extension = childEl.getAttributeValue("extension");
+				String root = childEl.getAttributeValue(ROOT_STRING);
+				String extension = childEl.getAttributeValue(EXTENSION_STRING);
 				String templateId = TemplateId.generateTemplateIdString(root, extension);
 				Converter.CLIENT_LOG.debug("templateIdFound:{}", templateId);
 
@@ -94,15 +96,14 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					return DecodeResult.TREE_FINISHED;
 				}
 
-				parentNode.addChildNode(childNode); // TODO ensure we need to always add
-				currentNode = childNode; // TODO this works for AciSectionDecoder
+				parentNode.addChildNode(childNode);
+				currentNode = childNode;
 
 				DecodeResult placeholderNode = testChildDecodeResult(result, childEl, childNode);
 				if (placeholderNode != null) {
 					return placeholderNode;
 				}
 			} else {
-				// TODO might need a child node -- not sure
 				decode(childEl, currentNode);
 			}
 		}
@@ -168,8 +169,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		
 		QppXmlDecoder rootDecoder = null;
 		for (Element e : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
-			String root = e.getAttributeValue("root");
-			String extension = e.getAttributeValue("extension");
+			String root = e.getAttributeValue(ROOT_STRING);
+			String extension = e.getAttributeValue(EXTENSION_STRING);
 			String templateId = TemplateId.generateTemplateIdString(root, extension);
 			rootDecoder = getDecoder(templateId);
 			if (null != rootDecoder) {
@@ -223,8 +224,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 																			rootElement.getNamespace());
 
 		for (Element currentChild : clinicalDocumentChildren) {
-			final String root = currentChild.getAttributeValue("root");
-			final String extension = currentChild.getAttributeValue("extension");
+			final String root = currentChild.getAttributeValue(ROOT_STRING);
+			final String extension = currentChild.getAttributeValue(EXTENSION_STRING);
 
 			if (TemplateId.getTypeById(root, extension) == TemplateId.CLINICAL_DOCUMENT) {
 				containsTemplateId = true;
