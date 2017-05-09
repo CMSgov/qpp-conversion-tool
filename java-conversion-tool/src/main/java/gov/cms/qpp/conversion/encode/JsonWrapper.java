@@ -47,11 +47,12 @@ public class JsonWrapper {
 	 * @return wrapped content
 	 */
 	public Object stripWrapper(Object value) {
+		Object internalValue = value;
 		if (value instanceof JsonWrapper) {
 			JsonWrapper wrapper = (JsonWrapper) value;
-			value = wrapper.getObject();
+			internalValue = wrapper.getObject();
 		}
-		return value;
+		return internalValue;
 	}
 
 	/**
@@ -221,11 +222,11 @@ public class JsonWrapper {
 	public JsonWrapper putObject(String name, Object value) {
 		checkState(list);
 		initAsObject();
-		value = stripWrapper(value);
-		if (value == null) {
+		Object internalValue = stripWrapper(value);
+		if (internalValue == null) {
 			return this;
 		}
-		this.object.put(name,value);
+		this.object.put(name, internalValue);
 		return this;
 	}
 
@@ -241,11 +242,11 @@ public class JsonWrapper {
 	public JsonWrapper putObject(Object value) {
 		checkState(object);
 		initAsList();
-		value = stripWrapper(value);
-		if (value == null) {
+		Object internalValue = stripWrapper(value);
+		if (internalValue == null) {
 			return this;
 		}
-		this.list.add(value);
+		this.list.add(internalValue);
 		return this;
 	}
 
@@ -377,17 +378,17 @@ public class JsonWrapper {
 	 * @throws EncodeException
 	 */
 	protected boolean validBoolean(String value) {
-		value = cleanString(value);
+		String cleanedValueString = cleanString(value);
 		
-		if ("true".equals(value) || "yes".equals(value) || "y".equals(value)) {
+		if ("true".equals(cleanedValueString) || "yes".equals(cleanedValueString) || "y".equals(cleanedValueString)) {
 			return true;
 		}
 		
-		if ("false".equals(value) || "no".equals(value) || "n".equals(value)) {
+		if ("false".equals(cleanedValueString) || "no".equals(cleanedValueString) || "n".equals(cleanedValueString)) {
 			return false;
 		}
-		
-		throw new EncodeException(value + " is not a boolean.");
+
+		throw new EncodeException(cleanedValueString + " is not a boolean.");
 	}
 
 	/**
