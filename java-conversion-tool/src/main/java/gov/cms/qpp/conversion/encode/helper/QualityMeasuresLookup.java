@@ -8,12 +8,6 @@ import java.util.Map;
  */
 public class QualityMeasuresLookup {
 
-	/**
-	 * Private Constructor for a static helper function class
-	 */
-	private QualityMeasuresLookup() {
-	}
-
 	// Private internal hashmap
 	private static final Map<String, String> internalMap = new HashMap();
 
@@ -32,7 +26,12 @@ public class QualityMeasuresLookup {
 	}
 
 	/**
-	 * Look for the guiid in the internal hash map and return its value
+	 * Private Constructor for a static helper function class
+	 */
+	private QualityMeasuresLookup() {
+	}
+	/**
+	 * Look for the guid in the internal hash map and return its value
 	 *
 	 * @param guid Measure GUID
 	 * @return String eMeasureId
