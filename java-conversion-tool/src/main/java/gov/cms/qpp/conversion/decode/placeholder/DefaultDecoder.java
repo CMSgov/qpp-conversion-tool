@@ -22,16 +22,13 @@ import java.util.List;
  */
 public class DefaultDecoder extends QppXmlDecoder {
 
-	final String description;
-
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(DefaultDecoder.class);
+
+	final String description;
 
 	public DefaultDecoder(String description) {
 		this.description = description;
 	}
-
-	static final String[] childrenToScan
-			= new String[]{"entry", "organizer", "component", "observation", "entryRelationship"};
 
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
