@@ -24,7 +24,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * Encodes an Quality Measure Id into the QPP format
 	 *
 	 * @param wrapper JsonWrapper that will represent the Quality Measure Identifier
-	 * @param node    Node that represents the Quality Measure Identifier
+	 * @param node Node that represents the Quality Measure Identifier
 	 * @throws EncodeException If an error occurs during encoding
 	 */
 	@Override
@@ -37,7 +37,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	/**
 	 * Encode child nodes.
 	 *
-	 * @param wrapper    holder for encoded node data
+	 * @param wrapper holder for encoded node data
 	 * @param parentNode holder of the Quality Measures
 	 */
 	private void encodeChildren(JsonWrapper wrapper, Node parentNode) {
@@ -84,7 +84,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	/**
 	 * Calculates performance not met
 	 *
-	 * @param denominatorNode    holder of the denominator aggregate count value
+	 * @param denominatorNode holder of the denominator aggregate count value
 	 * @param denomExclusionNode holder of the denominator exclusion aggregate count value
 	 * @return the calculation
 	 */
@@ -92,7 +92,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		if (null == denominatorNode || null == denomExclusionNode) {
 			return null;
 		}
-
 		String denominatorValue = denominatorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
 		String denomExclusionValue = denomExclusionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
 

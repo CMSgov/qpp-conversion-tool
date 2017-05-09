@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class helps lookup the eCQM Measure Id by GUUID
+ * This class helps lookup the eCQM Measure Id by GUID
  */
 public class QualityMeasuresLookup {
 
@@ -34,10 +34,10 @@ public class QualityMeasuresLookup {
 	/**
 	 * Look for the guiid in the internal hash map and return its value
 	 *
-	 * @param guiid Measure GUUID
+	 * @param guid Measure GUID
 	 * @return String eMeasureId
 	 */
-	public static String getMeasureId(String guiid) {
-		return internalMap.containsKey(guiid) ? internalMap.get(guiid) : guiid;
+	public static String getMeasureId(String guid) {
+		return internalMap.getOrDefault(guid, guid);
 	}
 }
