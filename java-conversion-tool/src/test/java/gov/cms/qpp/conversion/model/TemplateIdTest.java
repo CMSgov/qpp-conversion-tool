@@ -68,4 +68,9 @@ public class TemplateIdTest {
 		assertThat("TemplateId#generateTemplateIdString() is not working",
 		           TemplateId.generateTemplateIdString(root, extension), is(root + ":" + extension));
 	}
+	@Test
+	public void valueOfTest() {
+		String value = TemplateId.valueOf("DEFAULT").getTemplateId();
+		assertThat("Expect value of to return a TemplateId", value, is("default"));
+	}
 }
