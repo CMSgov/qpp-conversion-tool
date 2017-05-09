@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Encoder(TemplateId.IA_MEASURE)
 public class IaMeasureEncoder extends QppOutputEncoder {
-	private static String VALUE_STRING = "value";
+	private static final String VALUE_STRING = "value";
 
 	/**
 	 * internalEncode to encode the IA Performed Measure
