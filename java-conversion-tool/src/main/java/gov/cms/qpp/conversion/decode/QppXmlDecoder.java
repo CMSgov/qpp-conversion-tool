@@ -96,15 +96,14 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					return DecodeResult.TREE_FINISHED;
 				}
 
-				parentNode.addChildNode(childNode); // TODO ensure we need to always add
-				currentNode = childNode; // TODO this works for AciSectionDecoder
+				parentNode.addChildNode(childNode);
+				currentNode = childNode;
 
 				DecodeResult placeholderNode = testChildDecodeResult(result, childEl, childNode);
 				if (placeholderNode != null) {
 					return placeholderNode;
 				}
 			} else {
-				// TODO might need a child node -- not sure
 				decode(childEl, currentNode);
 			}
 		}

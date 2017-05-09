@@ -53,7 +53,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 	}
 
 	// The names of the default decoder classes does not matter.
-	// TODO must comment out these defaults as real implementations are written.
 	// this one looks like a node that is not necessary
 	@Decoder(TemplateId.PERFORMANCE_RATE)
 	public static class PerformanceRateDecoder extends DefaultDecoder {
