@@ -90,7 +90,7 @@ public class AciSectionValidator extends NodeValidator {
 	 * @param node An ACI section node.
 	 */
 	private void validateMeasureConfigs(final Node node) {
-		for (MeasureConfig config : measureConfigs.getMeasureConfigs()) {
+		for (MeasureConfig config : measureConfigs.getConfigurations()) {
 			if (config.isRequired()) {
 				String expectedMeasureId = config.getMeasureId();
 				thoroughlyCheck(node).hasMeasures(MessageFormat.format(NO_REQUIRED_MEASURE, expectedMeasureId),

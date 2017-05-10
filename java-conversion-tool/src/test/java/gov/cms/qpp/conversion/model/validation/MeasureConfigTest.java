@@ -30,8 +30,8 @@ public class MeasureConfigTest {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}
 
-		assertThat("measure configs should not be empty", measureConfigs.getMeasureConfigs(), hasSize(1));
-		List<MeasureConfig> configs = measureConfigs.getMeasureConfigs();
+		assertThat("measure configs should not be empty", measureConfigs.getConfigurations(), hasSize(1));
+		List<MeasureConfig> configs = measureConfigs.getConfigurations();
 		MeasureConfig theConfig = configs.get(0);
 
 		assertThat("category should be aci", theConfig.getCategory(), is("aci"));
