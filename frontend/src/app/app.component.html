@@ -4,7 +4,7 @@
 
 <button (click)="getPolicy()">Get Policy</button>
 
-<form *ngIf="policy" #policyForm="ngForm" (ngSubmit)="onSubmit(policyForm)" action="{{ policy.bucket_url }}" method="post" enctype="multipart/form-data">
+<form ngNoForm action="{{ policy.bucket_url }}" method="post" enctype="multipart/form-data">
     Key to upload:
     <input type="hidden" name="key" value="{{file_name}}" /><br />
     <input type="hidden" name="acl" value="{{ policy.acl }}" />
