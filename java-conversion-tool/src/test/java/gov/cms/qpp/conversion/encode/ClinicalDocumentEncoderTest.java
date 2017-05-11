@@ -218,7 +218,7 @@ public class ClinicalDocumentEncoderTest {
 		boolean exception = false;
 		Registry<String, JsonOutputEncoder> invalidRegistry =
 				RegistryHelper.makeInvalidRegistry("gov.cms.qpp.conversion.encode.AciSectionEncoder");
-		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.encoders;
+		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
 
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();

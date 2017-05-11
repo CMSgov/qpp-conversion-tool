@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The engine that executes the validators on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
+ * The engine that executes the VALIDATORS on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
  */
 public class QrdaValidator {
 
-	private static Registry<String, NodeValidator> validators = new Registry<>(Validator.class);
+	private static final Registry<String, NodeValidator> VALIDATORS = new Registry<>(Validator.class);
 
 	private final Map<String, List<Node>> nodesForTemplateIds = new HashMap<>();
 	private final List<ValidationError> validationErrors = new ArrayList<>();
@@ -83,13 +83,13 @@ public class QrdaValidator {
 	}
 
 	/**
-	 * Retrieve a permitted {@link Validator}. {@link #scope} is used to determine which validators are allowable.
+	 * Retrieve a permitted {@link Validator}. {@link #scope} is used to determine which VALIDATORS are allowable.
 	 *
 	 * @param templateId string representation of a would be validator's template id
 	 * @return validator that corresponds to the given template id
 	 */
 	private NodeValidator getValidator(String templateId) {
-		NodeValidator nodeValidator = validators.get(templateId);
+		NodeValidator nodeValidator = VALIDATORS.get(templateId);
 		if (nodeValidator != null) {
 			Validator validator = AnnotationUtils.findAnnotation(nodeValidator.getClass(), Validator.class);
 			return (scope != null && !scope.contains(validator.templateId())) ? null : nodeValidator;
@@ -143,12 +143,12 @@ public class QrdaValidator {
 	}
 
 	/**
-	 * Iterates over all the validators to have them validate similar nodes.
+	 * Iterates over all the VALIDATORS to have them validate similar nodes.
 	 */
 	private void validateTemplateIds() {
 		Converter.CLIENT_LOG.info("Validating all nodes by templateId");
 
-		for (String validatorKey : validators.getKeys()) {
+		for (String validatorKey : VALIDATORS.getKeys()) {
 			validateSingleTemplateId(getValidator(validatorKey));
 		}
 	}

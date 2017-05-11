@@ -19,11 +19,11 @@ import java.util.List;
  */
 public class QppXmlDecoder extends XmlInputDecoder {
 
+	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
 	private static final String ROOT_STRING = "root";
 	private static final String EXTENSION_STRING = "extension";
-	private static Registry<String, QppXmlDecoder> decoders = new Registry<>(Decoder.class);
 	private Collection<TemplateId> scope;
 
 	/**
@@ -112,14 +112,14 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	}
 
 	/**
-	 * Retrieve a permitted {@link Decoder}. {@link #scope} is used to determine which decoders are allowable.
+	 * Retrieve a permitted {@link Decoder}. {@link #scope} is used to determine which DECODERS are allowable.
 	 *
 	 * @param templateId string representation of a would be decoder's template id
 	 * @return decoder that corresponds to the given template id
 	 */
 	private QppXmlDecoder getDecoder(String templateId) {
 
-		QppXmlDecoder qppDecoder = decoders.get(templateId);
+		QppXmlDecoder qppDecoder = DECODERS.get(templateId);
 		if (qppDecoder != null) {
 			Decoder decoder = AnnotationUtils.findAnnotation(qppDecoder.getClass(), Decoder.class);
 			return (scope != null && !scope.contains(decoder.value())) ? null : qppDecoder;

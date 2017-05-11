@@ -35,9 +35,9 @@ public class QualitySectionEncoderTest {
 	@Test
 	public void missingEncoderTest() throws XmlException, NoSuchFieldException, IllegalAccessException {
 
-		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.encoders;
+		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
 
-		Registry<String, JsonOutputEncoder> invalidRegistry = RegistryHelper.makeInvalidRegistry( //This will be the classname of the child encoders
+		Registry<String, JsonOutputEncoder> invalidRegistry = RegistryHelper.makeInvalidRegistry( //This will be the classname of the child ENCODERS
 				"gov.cms.qpp.conversion.encode.MeasureDataEncoder");
 
 		boolean exception = false;

@@ -30,7 +30,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 					.filter(this::inSpecifiedScope)
 					.forEach(child -> {
 				JsonWrapper childWrapper = new JsonWrapper();
-				JsonOutputEncoder encoder = encoders.get(child.getId());
+				JsonOutputEncoder encoder = ENCODERS.get(child.getId());
 				encoder.encode(childWrapper, child);
 				scoped.putObject(childWrapper);
 			});

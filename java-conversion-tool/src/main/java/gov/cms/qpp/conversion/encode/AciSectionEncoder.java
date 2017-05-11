@@ -35,7 +35,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 		for (Node currentChild : children) {
 			childWrapper = new JsonWrapper();
 			String templateId = currentChild.getId();
-			JsonOutputEncoder childEncoder = encoders.get(templateId);
+			JsonOutputEncoder childEncoder = ENCODERS.get(templateId);
 
 			if (childEncoder != null) {
 				childEncoder.encode(childWrapper, currentChild);

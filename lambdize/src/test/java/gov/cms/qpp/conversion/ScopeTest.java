@@ -10,10 +10,7 @@ import com.jayway.jsonpath.PathNotFoundException;
 import gov.cms.qpp.conversion.aws.history.HistoricalTestRunner;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.model.Decoder;
-import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import net.minidev.json.JSONArray;
@@ -24,12 +21,10 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.amazonaws.util.IOUtils.copy;
@@ -48,46 +43,26 @@ public class ScopeTest {
 
 	public static void resetRegistries() {
 		try {
-			updateFinalField(
-					QppXmlDecoder.class.getDeclaredField("decoders"),
-					ScopeTest::decoderRegistry);
+			updateRegistry(
+					QppXmlDecoder.class.getDeclaredField("DECODERS"));
 
-			updateFinalField(
-					QrdaValidator.class.getDeclaredField("validators"),
-					ScopeTest::validatorRegistry);
+			updateRegistry(
+					QrdaValidator.class.getDeclaredField("VALIDATORS"));
 
-			updateFinalField(
-					QppOutputEncoder.class.getDeclaredField("encoders"),
-					ScopeTest::encoderRegistry);;
+			updateRegistry(
+					QppOutputEncoder.class.getDeclaredField("ENCODERS"));
 		} catch(Exception e) {
 			e.printStackTrace(System.err);
 		}
 	}
 
-	private static Registry<String, Validator> validatorRegistry() {
-		return new Registry<>(Validator.class);
-	}
-
-	private static Registry<String, Decoder> decoderRegistry() {
-		return new Registry<>(Decoder.class);
-	}
-
-	private static Registry<String, Encoder> encoderRegistry() {
-		return new Registry<>(Encoder.class);
-	}
-
-	private static void updateFinalField(Field field, Supplier<Registry<String, ?>> supplier) throws NoSuchFieldException, IllegalAccessException {
-		field.setAccessible(true);
-
-		Field modifiersField = Field.class.getDeclaredField("modifiers");
-		modifiersField.setAccessible(true);
-		modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-		field.set(null, supplier.get());
+	private static void updateRegistry(Field registry) throws IllegalAccessException {
+		registry.setAccessible(true);
+		((Registry) registry.get(null)).load();
 	}
 
 	@Test(expected=PathNotFoundException.class)
-	public void historicalAciSectionScope() throws IOException, ParseException, NoSuchFieldException, IllegalAccessException {
+	public void historicalAciSectionScope() throws ParseException {
 		//setup
 		String[] args = {"-t", "ACI_SECTION", "-b"};
 		validatedScope(checkFlags(cli(args)));
@@ -99,7 +74,7 @@ public class ScopeTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void historicalClinicalDocumentScope() throws IOException, ParseException, NoSuchFieldException, IllegalAccessException {
+	public void historicalClinicalDocumentScope() throws ParseException{
 		//setup
 		String[] args = {"-t", "CLINICAL_DOCUMENT", "-b"};
 		validatedScope(checkFlags(cli(args)));
