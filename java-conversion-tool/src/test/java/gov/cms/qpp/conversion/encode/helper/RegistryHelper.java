@@ -31,7 +31,7 @@ public class RegistryHelper {
 	 * @throws IllegalAccessException Can be caused if a Security manager is in place
 	 */
 	public static void setEncoderRegistry(Registry<String, JsonOutputEncoder> newRegistry) throws NoSuchFieldException, IllegalAccessException {
-		final Field field = QppOutputEncoder.class.getDeclaredField("ENCODERS");
+		final Field field = QppOutputEncoder.class.getDeclaredField("encoders");
 		field.setAccessible(true);
 		Field modifiersField = Field.class.getDeclaredField("modifiers");
 		modifiersField.setAccessible(true);

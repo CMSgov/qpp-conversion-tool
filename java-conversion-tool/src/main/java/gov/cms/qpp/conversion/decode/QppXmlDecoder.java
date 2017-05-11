@@ -19,11 +19,11 @@ import java.util.List;
  */
 public class QppXmlDecoder extends XmlInputDecoder {
 
-	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
 	private static final String ROOT_STRING = "root";
 	private static final String EXTENSION_STRING = "extension";
+	private static Registry<String, QppXmlDecoder> decoders = new Registry<>(Decoder.class);
 	private Collection<TemplateId> scope;
 
 	/**
@@ -119,7 +119,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 */
 	private QppXmlDecoder getDecoder(String templateId) {
 
-		QppXmlDecoder qppDecoder = DECODERS.get(templateId);
+		QppXmlDecoder qppDecoder = decoders.get(templateId);
 		if (qppDecoder != null) {
 			Decoder decoder = AnnotationUtils.findAnnotation(qppDecoder.getClass(), Decoder.class);
 			return (scope != null && !scope.contains(decoder.value())) ? null : qppDecoder;

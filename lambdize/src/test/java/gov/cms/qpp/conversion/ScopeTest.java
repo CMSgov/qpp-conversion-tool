@@ -8,7 +8,14 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.jayway.jsonpath.PathNotFoundException;
 import gov.cms.qpp.conversion.aws.history.HistoricalTestRunner;
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.model.Decoder;
+import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import gov.cms.qpp.conversion.validate.QrdaValidator;
 import net.minidev.json.JSONArray;
 import org.apache.commons.cli.ParseException;
 import org.junit.Test;
@@ -16,10 +23,13 @@ import org.junit.runner.RunWith;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.amazonaws.util.IOUtils.copy;
@@ -36,11 +46,52 @@ import static org.hamcrest.core.Is.is;
 public class ScopeTest {
 	private static final String BUCKET = "qrda-history";
 
+	public static void resetRegistries() {
+		try {
+			updateFinalField(
+					QppXmlDecoder.class.getDeclaredField("decoders"),
+					ScopeTest::decoderRegistry);
+
+			updateFinalField(
+					QrdaValidator.class.getDeclaredField("validators"),
+					ScopeTest::validatorRegistry);
+
+			updateFinalField(
+					QppOutputEncoder.class.getDeclaredField("encoders"),
+					ScopeTest::encoderRegistry);;
+		} catch(Exception e) {
+			e.printStackTrace(System.err);
+		}
+	}
+
+	private static Registry<String, Validator> validatorRegistry() {
+		return new Registry<>(Validator.class);
+	}
+
+	private static Registry<String, Decoder> decoderRegistry() {
+		return new Registry<>(Decoder.class);
+	}
+
+	private static Registry<String, Encoder> encoderRegistry() {
+		return new Registry<>(Encoder.class);
+	}
+
+	private static void updateFinalField(Field field, Supplier<Registry<String, ?>> supplier) throws NoSuchFieldException, IllegalAccessException {
+		field.setAccessible(true);
+
+		Field modifiersField = Field.class.getDeclaredField("modifiers");
+		modifiersField.setAccessible(true);
+		modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+		field.set(null, supplier.get());
+	}
+
 	@Test(expected=PathNotFoundException.class)
-	public void historicalAciSectionScope() throws IOException, ParseException {
+	public void historicalAciSectionScope() throws IOException, ParseException, NoSuchFieldException, IllegalAccessException {
 		//setup
 		String[] args = {"-t", "ACI_SECTION", "-b"};
 		validatedScope(checkFlags(cli(args)));
+		resetRegistries();
 
 		//expect
 		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
@@ -48,10 +99,11 @@ public class ScopeTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void historicalClinicalDocumentScope() throws IOException, ParseException {
+	public void historicalClinicalDocumentScope() throws IOException, ParseException, NoSuchFieldException, IllegalAccessException {
 		//setup
 		String[] args = {"-t", "CLINICAL_DOCUMENT", "-b"};
 		validatedScope(checkFlags(cli(args)));
+		resetRegistries();
 		String errorMessage =
 				"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
 
@@ -64,11 +116,11 @@ public class ScopeTest {
 		results.stream()
 				.flatMap(Collection::stream)
 				.forEach( r -> {
-			Map<String, String> result = (Map<String, String>) r;
-			assertEquals(result.get("errorText"),
-					"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child");
-			assertTrue(result.get("path").contains("ClinicalDocument"));
-		});
+					Map<String, String> result = (Map<String, String>) r;
+					assertEquals(result.get("errorText"),
+							"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child");
+					assertTrue(result.get("path").contains("ClinicalDocument"));
+				});
 	}
 
 
@@ -103,7 +155,6 @@ public class ScopeTest {
 			Converter convert = null;
 			TransformationStatus status = TransformationStatus.ERROR;
 			try(InputStream stream = s3Object.getObjectContent()) {
-
 				convert = new Converter(stream);
 				status = convert.transform();
 				InputStream result = convert.getConversionResult();

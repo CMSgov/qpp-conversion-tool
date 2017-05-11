@@ -33,7 +33,7 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 	}
 
 	private Integer encodeChild(Node numeratorValueNode) {
-		JsonOutputEncoder numeratorValueEncoder = ENCODERS.get(numeratorValueNode.getId());
+		JsonOutputEncoder numeratorValueEncoder = encoders.get(numeratorValueNode.getId());
 
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		numeratorValueEncoder.encode(jsonWrapper, numeratorValueNode);

@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class QrdaValidator {
 
-	private static final Registry<String, NodeValidator> VALIDATORS = new Registry<>(Validator.class);
+	private static Registry<String, NodeValidator> validators = new Registry<>(Validator.class);
 
 	private final Map<String, List<Node>> nodesForTemplateIds = new HashMap<>();
 	private final List<ValidationError> validationErrors = new ArrayList<>();
@@ -89,7 +89,7 @@ public class QrdaValidator {
 	 * @return validator that corresponds to the given template id
 	 */
 	private NodeValidator getValidator(String templateId) {
-		NodeValidator nodeValidator = VALIDATORS.get(templateId);
+		NodeValidator nodeValidator = validators.get(templateId);
 		if (nodeValidator != null) {
 			Validator validator = AnnotationUtils.findAnnotation(nodeValidator.getClass(), Validator.class);
 			return (scope != null && !scope.contains(validator.templateId())) ? null : nodeValidator;
@@ -148,7 +148,7 @@ public class QrdaValidator {
 	private void validateTemplateIds() {
 		Converter.CLIENT_LOG.info("Validating all nodes by templateId");
 
-		for (String validatorKey : VALIDATORS.getKeys()) {
+		for (String validatorKey : validators.getKeys()) {
 			validateSingleTemplateId(getValidator(validatorKey));
 		}
 	}

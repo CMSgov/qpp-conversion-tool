@@ -21,7 +21,7 @@ public class PlaceholderEncoderTest extends PlaceholderEncoder {
 
 		Registry<String, JsonOutputEncoder> invalidRegistry =
 				RegistryHelper.makeInvalidRegistry(PlaceholderEncoder.class.getName());
-		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
+		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.encoders;
 
 		Node root = new Node(TemplateId.DEFAULT.getTemplateId());
 		Node placeHolderNode = new Node(root, TemplateId.PLACEHOLDER.getTemplateId());

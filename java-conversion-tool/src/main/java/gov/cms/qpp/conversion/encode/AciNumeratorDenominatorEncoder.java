@@ -53,7 +53,7 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 		JsonWrapper childWrapper = new JsonWrapper();
 		for (Node currentChild : childMapByTemplateId.values()) {
 
-			JsonOutputEncoder childEncoder = ENCODERS.get(currentChild.getId());
+			JsonOutputEncoder childEncoder = encoders.get(currentChild.getId());
 
 			if (childEncoder != null) {
 				childEncoder.encode(childWrapper, currentChild);
