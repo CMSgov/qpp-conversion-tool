@@ -41,27 +41,10 @@ import static org.hamcrest.core.Is.is;
 public class ScopeTest {
 	private static final String BUCKET = "qrda-history";
 
-	public static void resetRegistries() {
-		try {
-			updateRegistry(QppXmlDecoder.class.getDeclaredField("DECODERS"));
-			updateRegistry(QrdaValidator.class.getDeclaredField("VALIDATORS"));
-			updateRegistry(QppOutputEncoder.class.getDeclaredField("ENCODERS"));
-		} catch(Exception e) {
-			e.printStackTrace(System.err);
-		}
-	}
-
-	private static void updateRegistry(Field registry) throws IllegalAccessException {
-		registry.setAccessible(true);
-		((Registry) registry.get(null)).load();
-	}
-
 	@Test(expected=PathNotFoundException.class)
 	public void historicalAciSectionScope() throws ParseException {
 		//setup
-		String[] args = {"-t", "ACI_SECTION", "-b"};
-		validatedScope(checkFlags(cli(args)));
-		resetRegistries();
+		setup("-t", "ACI_SECTION", "-b");
 
 		//expect
 		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
@@ -70,9 +53,7 @@ public class ScopeTest {
 	@Test(expected=PathNotFoundException.class)
 	public void historicalIaSectionScope() throws ParseException {
 		//setup
-		String[] args = {"-t", "IA_SECTION", "-b"};
-		validatedScope(checkFlags(cli(args)));
-		resetRegistries();
+		setup("-t", "IA_SECTION", "-b");
 
 		//expect
 		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
@@ -82,9 +63,7 @@ public class ScopeTest {
 	@SuppressWarnings("unchecked")
 	public void historicalIAMeasurePerformedScope() throws ParseException{
 		//setup
-		String[] args = {"-t", "IA_SECTION", "-b"};
-		validatedScope(checkFlags(cli(args)));
-		resetRegistries();
+		setup("-t", "IA_MEASURE", "-b");
 		String errorMessage =
 				"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
 
@@ -108,9 +87,7 @@ public class ScopeTest {
 	@SuppressWarnings("unchecked")
 	public void historicalClinicalDocumentScope() throws ParseException{
 		//setup
-		String[] args = {"-t", "CLINICAL_DOCUMENT", "-b"};
-		validatedScope(checkFlags(cli(args)));
-		resetRegistries();
+		setup("-t", "CLINICAL_DOCUMENT", "-b");
 		String errorMessage =
 				"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
 
@@ -128,6 +105,27 @@ public class ScopeTest {
 							"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child");
 					assertTrue(result.get("path").contains("ClinicalDocument"));
 				});
+	}
+
+	//setup
+	private static void setup(String... args) throws ParseException {
+		validatedScope(checkFlags(cli(args)));
+		resetRegistries();
+	}
+
+	private static void resetRegistries() {
+		try {
+			updateRegistry(QppXmlDecoder.class.getDeclaredField("DECODERS"));
+			updateRegistry(QrdaValidator.class.getDeclaredField("VALIDATORS"));
+			updateRegistry(QppOutputEncoder.class.getDeclaredField("ENCODERS"));
+		} catch(Exception e) {
+			e.printStackTrace(System.err);
+		}
+	}
+
+	private static void updateRegistry(Field registry) throws IllegalAccessException {
+		registry.setAccessible(true);
+		((Registry) registry.get(null)).load();
 	}
 
 	/**
