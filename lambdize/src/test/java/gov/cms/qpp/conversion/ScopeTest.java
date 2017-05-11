@@ -59,28 +59,13 @@ public class ScopeTest {
 		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
 	}
 
-	@Test
-	@SuppressWarnings("unchecked")
+	@Test(expected=PathNotFoundException.class)
 	public void historicalIAMeasurePerformedScope() throws ParseException{
 		//setup
 		setup("-t", "IA_MEASURE", "-b");
-		String errorMessage =
-				"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
 
-		//when
-		List<JSONArray> results =
-				iterateBucketContents(
-						convertEm("$.errorSources[*].validationErrors[*]", TransformationStatus.ERROR));
-
-		//then
-		results.stream()
-				.flatMap(Collection::stream)
-				.forEach( r -> {
-					Map<String, String> result = (Map<String, String>) r;
-					assertEquals(result.get("errorText"),
-							"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child");
-					assertTrue(result.get("path").contains("ClinicalDocument"));
-				});
+		//expect
+		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
 	}
 
 	@Test
