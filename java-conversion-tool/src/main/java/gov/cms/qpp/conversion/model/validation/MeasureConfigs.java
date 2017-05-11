@@ -10,11 +10,11 @@ public class MeasureConfigs {
 		// empty for jackson
 	}
 
-	public List<MeasureConfig> getConfigurations() {
+	public List<MeasureConfig> getMeasureConfigs() {
 		return configurations;
 	}
 
-	public void setConfigurations(List<MeasureConfig> measureConfigs) {
+	public void setMeasureConfigs(List<MeasureConfig> measureConfigs) {
 		this.configurations = measureConfigs;
 	}
 
