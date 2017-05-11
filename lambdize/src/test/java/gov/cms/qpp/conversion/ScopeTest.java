@@ -57,10 +57,11 @@ public class ScopeTest {
 	}
 
 	@Test(expected=PathNotFoundException.class)
-	public void historicalAciSectionScope() throws IOException, ParseException {
+	public void historicalAciSectionScope() throws ParseException {
 		//setup
 		String[] args = {"-t", "ACI_SECTION", "-b"};
 		validatedScope(checkFlags(cli(args)));
+		resetRegistries();
 
 		//expect
 		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
@@ -105,10 +106,11 @@ public class ScopeTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void historicalClinicalDocumentScope() throws IOException, ParseException {
+	public void historicalClinicalDocumentScope() throws ParseException{
 		//setup
 		String[] args = {"-t", "CLINICAL_DOCUMENT", "-b"};
 		validatedScope(checkFlags(cli(args)));
+		resetRegistries();
 		String errorMessage =
 				"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
 
@@ -121,11 +123,11 @@ public class ScopeTest {
 		results.stream()
 				.flatMap(Collection::stream)
 				.forEach( r -> {
-			Map<String, String> result = (Map<String, String>) r;
-			assertEquals(result.get("errorText"),
-					"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child");
-			assertTrue(result.get("path").contains("ClinicalDocument"));
-		});
+					Map<String, String> result = (Map<String, String>) r;
+					assertEquals(result.get("errorText"),
+							"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child");
+					assertTrue(result.get("path").contains("ClinicalDocument"));
+				});
 	}
 
 	/**
@@ -159,7 +161,6 @@ public class ScopeTest {
 			Converter convert = null;
 			TransformationStatus status = TransformationStatus.ERROR;
 			try(InputStream stream = s3Object.getObjectContent()) {
-
 				convert = new Converter(stream);
 				status = convert.transform();
 				InputStream result = convert.getConversionResult();

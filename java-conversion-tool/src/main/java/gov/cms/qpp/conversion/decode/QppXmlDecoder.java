@@ -112,7 +112,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	}
 
 	/**
-	 * Retrieve a permitted {@link Decoder}. {@link #scope} is used to determine which decoders are allowable.
+	 * Retrieve a permitted {@link Decoder}. {@link #scope} is used to determine which DECODERS are allowable.
 	 *
 	 * @param templateId string representation of a would be decoder's template id
 	 * @return decoder that corresponds to the given template id
