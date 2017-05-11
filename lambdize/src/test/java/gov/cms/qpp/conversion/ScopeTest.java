@@ -8,7 +8,11 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.jayway.jsonpath.PathNotFoundException;
 import gov.cms.qpp.conversion.aws.history.HistoricalTestRunner;
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import gov.cms.qpp.conversion.validate.QrdaValidator;
 import net.minidev.json.JSONArray;
 import org.apache.commons.cli.ParseException;
 import org.junit.Test;
@@ -16,6 +20,7 @@ import org.junit.runner.RunWith;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +41,21 @@ import static org.hamcrest.core.Is.is;
 public class ScopeTest {
 	private static final String BUCKET = "qrda-history";
 
+	public static void resetRegistries() {
+		try {
+			updateRegistry(QppXmlDecoder.class.getDeclaredField("DECODERS"));
+			updateRegistry(QrdaValidator.class.getDeclaredField("VALIDATORS"));
+			updateRegistry(QppOutputEncoder.class.getDeclaredField("ENCODERS"));
+		} catch(Exception e) {
+			e.printStackTrace(System.err);
+		}
+	}
+
+	private static void updateRegistry(Field registry) throws IllegalAccessException {
+		registry.setAccessible(true);
+		((Registry) registry.get(null)).load();
+	}
+
 	@Test(expected=PathNotFoundException.class)
 	public void historicalAciSectionScope() throws IOException, ParseException {
 		//setup
@@ -44,6 +64,43 @@ public class ScopeTest {
 
 		//expect
 		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
+	}
+
+	@Test(expected=PathNotFoundException.class)
+	public void historicalIaSectionScope() throws ParseException {
+		//setup
+		String[] args = {"-t", "IA_SECTION", "-b"};
+		validatedScope(checkFlags(cli(args)));
+		resetRegistries();
+
+		//expect
+		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void historicalIAMeasurePerformedScope() throws ParseException{
+		//setup
+		String[] args = {"-t", "IA_SECTION", "-b"};
+		validatedScope(checkFlags(cli(args)));
+		resetRegistries();
+		String errorMessage =
+				"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
+
+		//when
+		List<JSONArray> results =
+				iterateBucketContents(
+						convertEm("$.errorSources[*].validationErrors[*]", TransformationStatus.ERROR));
+
+		//then
+		results.stream()
+				.flatMap(Collection::stream)
+				.forEach( r -> {
+					Map<String, String> result = (Map<String, String>) r;
+					assertEquals(result.get("errorText"),
+							"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child");
+					assertTrue(result.get("path").contains("ClinicalDocument"));
+				});
 	}
 
 	@Test
@@ -70,7 +127,6 @@ public class ScopeTest {
 			assertTrue(result.get("path").contains("ClinicalDocument"));
 		});
 	}
-
 
 	/**
 	 * Iterate over qrda history bucket contents and apply specified conversion.
