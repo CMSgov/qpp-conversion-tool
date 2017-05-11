@@ -20,7 +20,7 @@ public class AciNumeratorValidatorTest {
 	public void internalValidateSingleNode() throws Exception {
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR.getTemplateId());
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
-		aggregateCountNode.putValue("aggregateCount", "100");
+		aggregateCountNode.putValue("aggregateCount", "0");
 		aciNumeratorNode.addChildNode(aggregateCountNode);
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
@@ -28,7 +28,6 @@ public class AciNumeratorValidatorTest {
 		errors.addAll(validator.validateSameTemplateIdNodes(Arrays.asList(aciNumeratorNode)));
 
 		assertThat("no errors should be present", errors, empty());
-
 	}
 
 	@Test

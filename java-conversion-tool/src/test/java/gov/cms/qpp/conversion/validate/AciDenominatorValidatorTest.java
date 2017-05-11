@@ -117,7 +117,7 @@ public class AciDenominatorValidatorTest {
 		//Not a number check
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR.getTemplateId());
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
-		String value = "0";
+		String value = "-1";
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciDenominatorNode.addChildNode(aggregateCountNode);
 
@@ -125,6 +125,6 @@ public class AciDenominatorValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(aciDenominatorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("Invalid Value Validation Error not issued", errors.get(0).getErrorText(),
-				is(AciDenominatorValidator.DENOMINATOR_CANNOT_BE_ZERO));
+				is(String.format("This %s Node Aggregate Value has an invalid value", AciDenominatorValidator.DENOMINATOR_NAME)));
 	}
 }
