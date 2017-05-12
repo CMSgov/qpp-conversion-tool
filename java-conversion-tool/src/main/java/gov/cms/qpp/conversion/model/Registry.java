@@ -39,6 +39,13 @@ public class Registry<V extends Object, R extends Object> {
 	 */
 	public Registry(Class<? extends Annotation> annotationClass) {
 		this.annotationClass = annotationClass;
+		load();
+	}
+
+	/**
+	 * load or reload registry contents
+	 */
+	public void load() {
 		init();
 		registerAnnotatedHandlers();
 	}

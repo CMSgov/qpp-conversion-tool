@@ -16,11 +16,21 @@ import static org.junit.Assert.assertThat;
  * Class to test the AciNumeratorValidator
  */
 public class AciNumeratorValidatorTest {
+	
 	@Test
-	public void internalValidateSingleNode() throws Exception {
+	public void internalValidateSingleNodeWithGreaterThanZeroValue() throws Exception {
+		validateNumeratorWithValue("100");
+	}
+
+	@Test
+	public void internalValidateSingleNodeWithZeroValue() throws Exception {
+		validateNumeratorWithValue("0");
+	}
+
+	private void validateNumeratorWithValue(String value) {
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR.getTemplateId());
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
-		aggregateCountNode.putValue("aggregateCount", "100");
+		aggregateCountNode.putValue("aggregateCount", value);
 		aciNumeratorNode.addChildNode(aggregateCountNode);
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
@@ -28,8 +38,8 @@ public class AciNumeratorValidatorTest {
 		errors.addAll(validator.validateSameTemplateIdNodes(Arrays.asList(aciNumeratorNode)));
 
 		assertThat("no errors should be present", errors, empty());
-
 	}
+
 
 	@Test
 	public void noChildrenTest() throws Exception {

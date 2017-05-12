@@ -382,7 +382,7 @@ CDA Header
 											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
 											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="0"/>
+											<value xsi:type="INT" value="-1"/>
 											<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
 										</observation>
 									</entryRelationship>
@@ -401,7 +401,7 @@ CDA Header
 											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
 											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="0"/>
+											<value xsi:type="INT" value="-1"/>
 											<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
 										</observation>
 									</entryRelationship>

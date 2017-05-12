@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The engine that executes the validators on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
+ * The engine that executes the VALIDATORS on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
  */
 public class QrdaValidator {
 
@@ -83,7 +83,7 @@ public class QrdaValidator {
 	}
 
 	/**
-	 * Retrieve a permitted {@link Validator}. {@link #scope} is used to determine which validators are allowable.
+	 * Retrieve a permitted {@link Validator}. {@link #scope} is used to determine which VALIDATORS are allowable.
 	 *
 	 * @param templateId string representation of a would be validator's template id
 	 * @return validator that corresponds to the given template id
@@ -143,7 +143,7 @@ public class QrdaValidator {
 	}
 
 	/**
-	 * Iterates over all the validators to have them validate similar nodes.
+	 * Iterates over all the VALIDATORS to have them validate similar nodes.
 	 */
 	private void validateTemplateIds() {
 		Converter.CLIENT_LOG.info("Validating all nodes by templateId");
