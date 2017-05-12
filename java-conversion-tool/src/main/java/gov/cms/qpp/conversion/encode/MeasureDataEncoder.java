@@ -28,6 +28,17 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 		String measureType = node.getValue(MEASURE_TYPE);
 		Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 
+		Map<String, String> measureTypeMapper = initializeMeasureTypeMap();
+
+		wrapper.putInteger(measureTypeMapper.get(measureType), aggCount.getValue(AGGREGATE_COUNT));
+	}
+
+	/**
+	 * Initializes the measure type map with specific values.
+	 *
+	 * @return intialized measure type map
+	 */
+	private Map<String, String> initializeMeasureTypeMap() {
 		Map<String , String> measureTypeMapper = new HashMap<>();
 		measureTypeMapper.put("IPOP", "initialPopulation");
 		measureTypeMapper.put("IPP", "initialPopulation");
@@ -35,8 +46,7 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 		measureTypeMapper.put("DENEX", "denominatorExclusions");
 		measureTypeMapper.put("DENEXCEP", "denominatorExceptions");
 		measureTypeMapper.put("NUMER", "numerator");
-
-		wrapper.putInteger(measureTypeMapper.get(measureType), aggCount.getValue(AGGREGATE_COUNT));
+		return measureTypeMapper;
 	}
 
 }
