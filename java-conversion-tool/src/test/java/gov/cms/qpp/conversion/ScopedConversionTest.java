@@ -46,7 +46,7 @@ public class ScopedConversionTest extends BaseTest {
 	 */
 	@After
 	public void cleanup() throws IOException {
-		clFiles.deleteIfExists(Paths.get("valid-QRDA-III.qpp.json"));
+		Files.deleteIfExists(Paths.get("valid-QRDA-III.qpp.json"));
 		Files.deleteIfExists(Paths.get("angerTheConverter.err.json"));
 	}
 
