@@ -25,10 +25,9 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
+		Map<String, String> measureTypeMapper = initializeMeasureTypeMap();
 		String measureType = node.getValue(MEASURE_TYPE);
 		Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
-
-		Map<String, String> measureTypeMapper = initializeMeasureTypeMap();
 
 		wrapper.putInteger(measureTypeMapper.get(measureType), aggCount.getValue(AGGREGATE_COUNT));
 	}
