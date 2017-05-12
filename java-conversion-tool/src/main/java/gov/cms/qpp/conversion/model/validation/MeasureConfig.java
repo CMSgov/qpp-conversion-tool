@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.model.validation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class MeasureConfig {
 
 	private String category;
@@ -20,6 +22,9 @@ public class MeasureConfig {
 	@JsonProperty("isBonus")
 	private boolean isBonus;
 	private String objective;
+
+	private String uuid;
+	private List<String> requiredPopulationCriteria;
 
 	public MeasureConfig() {
 		// empty constructor for jackson
@@ -121,4 +126,19 @@ public class MeasureConfig {
 		this.objective = objective;
 	}
 
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(final String uuid) {
+		this.uuid = uuid;
+	}
+
+	public List<String> getRequiredPopulationCriteria() {
+		return requiredPopulationCriteria;
+	}
+
+	public void setRequiredPopulationCriteria(final List<String> requiredPopulationCriteria) {
+		this.requiredPopulationCriteria = requiredPopulationCriteria;
+	}
 }
