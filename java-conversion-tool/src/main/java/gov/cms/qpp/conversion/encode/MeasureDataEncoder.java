@@ -5,6 +5,10 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
@@ -25,8 +29,19 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		String measureType = node.getValue(MEASURE_TYPE);
 		Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		Set<String> accepted = new HashSet(Arrays.asList("IPOP", "IPP"));
 
-		wrapper.putInteger(measureType, aggCount.getValue(AGGREGATE_COUNT));
+		if (accepted.contains(measureType)) {
+			wrapper.putInteger("initialPopulation", aggCount.getValue(AGGREGATE_COUNT));
+		} else if ("DENOM".equals(measureType)) {
+			wrapper.putInteger("denominator", aggCount.getValue(AGGREGATE_COUNT));
+		} else if ("DENEX".equals(measureType)) {
+			wrapper.putInteger("denominatorExclusions", aggCount.getValue(AGGREGATE_COUNT));
+		} else if ("DENEXCEP".equals(measureType)) {
+			wrapper.putInteger("denominatorExceptions", aggCount.getValue(AGGREGATE_COUNT));
+		} else if ("NUMER".equals(measureType)) {
+			wrapper.putInteger("numerator", aggCount.getValue(AGGREGATE_COUNT));
+		}
 	}
 
 }
