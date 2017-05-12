@@ -44,13 +44,12 @@ public enum TemplateId {
 	 * Defined TemplateId Constants
 	 */
 	private static class Constants {
-		
+		public static final String SEPTEMBER_EXTENSION = "2016-09-01";
+		public static final String NOVEMBER_EXTENSION = "2016-11-01";
+
 		private Constants() {
 			//Constructor to ensure Constants will not be instantiated
 		}
-
-		public static final String NOVEMBER_EXTENSION = "2016-11-01";
-		public static final String SEPTEMBER_EXTENSION = "2016-09-01";
 	}
 
 	private final String root;
