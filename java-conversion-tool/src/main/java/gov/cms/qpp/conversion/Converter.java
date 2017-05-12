@@ -130,11 +130,11 @@ public class Converter {
 	 */
 	private void transform(Path inFile) throws XmlException, IOException {
 		String inputFileName = inFile.getFileName().toString().trim();
-		Node decoded = transform(XmlUtils.fileToStream(inFile));
+		Node decodedNode = transform(XmlUtils.fileToStream(inFile));
 		Path outFile = getOutputFile(inputFileName);
 
-		if (decoded != null && validationErrors.isEmpty()) {
-			writeConverted(decoded, outFile);
+		if (decodedNode != null && validationErrors.isEmpty()) {
+			writeConverted(decodedNode, outFile);
 		}
 	}
 
