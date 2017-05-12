@@ -57,7 +57,7 @@ public class AciSectionValidator extends NodeValidator {
 	private void validateMeasureConfigs(final Node node) {
 		List<MeasureConfig> measureConfigs = MeasureConfigs.getMeasureConfigs();
 		for (MeasureConfig config : measureConfigs) {
-			if (config.isRequired()) {
+			if ("aci".equals(config.getCategory()) && config.isRequired()) {
 				String expectedMeasureId = config.getMeasureId();
 				thoroughlyCheck(node).hasMeasures(MessageFormat.format(NO_REQUIRED_MEASURE, expectedMeasureId),
 					expectedMeasureId);
