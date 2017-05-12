@@ -25,7 +25,7 @@ public class AciSectionValidator extends NodeValidator {
 			+ "Please add the ACI measure and try again.";
 
 	private MeasureConfigs measureConfigs;
-	private String measureDataFileName = "measures-data-aci-short.json";
+	private String measureDataFileName = "measures-data-short.json";
 
 	/**
 	 * Validates the ACI Section.

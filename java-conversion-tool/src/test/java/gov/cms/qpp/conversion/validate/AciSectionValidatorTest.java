@@ -81,7 +81,7 @@ public class AciSectionValidatorTest {
 	public void testGoodMeasureDataFile() {
 
 		AciSectionValidator validator = new AciSectionValidator();
-		validator.setMeasureDataFile("measures-data-aci-short.json");
+		validator.setMeasureDataFile("measures-data-short.json");
 		//no exception thrown
 	}
 
