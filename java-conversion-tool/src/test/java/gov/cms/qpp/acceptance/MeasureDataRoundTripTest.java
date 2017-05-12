@@ -24,7 +24,8 @@ import static org.junit.Assert.assertThat;
 public class MeasureDataRoundTripTest extends BaseTest {
 	private static String happy;
 	private static String expected =
-			"{\n  \"IPOP\" : 950,\n  \"IPP\" : 950,\n  \"DENOM\" : 950,\n  \"NUMER\" : 900,\n  \"DENEXCEP\" : 50,\n  \"DENEX\" : 50\n}";
+			"{\n  \"initialPopulation\" : 950,\n  \"denominator\" : 950,\n  \"numerator\" : 900,\n " +
+					" \"denominatorExceptions\" : 50,\n  \"denominatorExclusions\" : 50\n}";
 
 	@BeforeClass
 	public static void setup() throws IOException {

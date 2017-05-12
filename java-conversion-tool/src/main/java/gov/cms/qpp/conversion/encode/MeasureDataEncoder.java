@@ -4,6 +4,8 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import java.util.HashMap;
+import java.util.Map;
 
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
@@ -23,10 +25,27 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
+		Map<String, String> measureTypeMapper = initializeMeasureTypeMap();
 		String measureType = node.getValue(MEASURE_TYPE);
 		Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 
-		wrapper.putInteger(measureType, aggCount.getValue(AGGREGATE_COUNT));
+		wrapper.putInteger(measureTypeMapper.get(measureType), aggCount.getValue(AGGREGATE_COUNT));
+	}
+
+	/**
+	 * Initializes the measure type map with specific values.
+	 *
+	 * @return intialized measure type map
+	 */
+	private Map<String, String> initializeMeasureTypeMap() {
+		Map<String , String> measureTypeMapper = new HashMap<>();
+		measureTypeMapper.put("IPOP", "initialPopulation");
+		measureTypeMapper.put("IPP", "initialPopulation");
+		measureTypeMapper.put("DENOM", "denominator");
+		measureTypeMapper.put("DENEX", "denominatorExclusions");
+		measureTypeMapper.put("DENEXCEP", "denominatorExceptions");
+		measureTypeMapper.put("NUMER", "numerator");
+		return measureTypeMapper;
 	}
 
 }

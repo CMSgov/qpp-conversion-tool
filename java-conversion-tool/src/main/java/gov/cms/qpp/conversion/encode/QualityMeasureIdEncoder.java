@@ -49,6 +49,11 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		this.encodePerformanceMet(childWrapper, parentNode);
 		this.encodePerformance(childWrapper, parentNode);
 
+		for (Node childNode : parentNode.getChildNodes()) {
+			JsonOutputEncoder measureDataEncoder = ENCODERS.get(childNode.getId());
+			measureDataEncoder.encode(childWrapper, childNode);
+		}
+
 		wrapper.putObject("value", childWrapper);
 	}
 
