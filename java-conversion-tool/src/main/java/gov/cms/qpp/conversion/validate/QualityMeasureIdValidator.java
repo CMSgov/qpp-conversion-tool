@@ -40,7 +40,13 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateMeasureConfigs(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 
-		List<SubPopulation> subPopulations = configurationMap.get(node.getValue("measureId")).getSubPopulation();
+		MeasureConfig measureConfig = configurationMap.get(node.getValue("measureId"));
+
+		if (measureConfig == null) {
+			return;
+		}
+
+		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
 		for (SubPopulation subPopulation: subPopulations) {
 			validateDenominatorExclusion(node, subPopulation);
 		}
