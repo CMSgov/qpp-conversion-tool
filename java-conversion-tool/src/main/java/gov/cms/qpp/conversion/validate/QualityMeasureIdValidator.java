@@ -1,23 +1,19 @@
 package gov.cms.qpp.conversion.validate;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-
 import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Validates a Measure Reference Results node.
@@ -26,6 +22,7 @@ import java.util.stream.Stream;
 public class QualityMeasureIdValidator extends NodeValidator {
 	protected static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
+	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -74,8 +71,9 @@ public class QualityMeasureIdValidator extends NodeValidator {
 						thisNode -> key.equals(thisNode.getValue("type")))
 						.collect(Collectors.toList());
 				if (denominatorExclusionNode.isEmpty()) {
+					String message = String.format(REQUIRED_CHILD_MEASURE, label);
 					this.getValidationErrors().add(
-							new ValidationError("The eCQM measure requires a " + label, node.getPath()));
+							new ValidationError(message, node.getPath()));
 				}
 			}
 		};

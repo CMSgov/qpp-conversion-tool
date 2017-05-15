@@ -10,6 +10,7 @@ import java.util.List;
 
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
+import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
@@ -81,6 +82,7 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testInternalMissingDenexcepMeasure() {
+		String message = String.format(REQUIRED_CHILD_MEASURE, "denominator exception");
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 				.addMeasureId("40280381-52fc-3a32-0153-3d64af97147b")
 				.addChildMeasure("MEEP_MAWP")
@@ -89,7 +91,7 @@ public class QualityMeasureIdValidatorTest {
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertThat("Incorrect validation error.", validationErrors.get(0),
-				validationErrorTextMatches("The eCQM measure requires a denominator exception"));
+				validationErrorTextMatches(message));
 	}
 
 	private Node createMeasureReferenceResultsNode() {
