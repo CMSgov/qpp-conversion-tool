@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
 import java.text.MessageFormat;
@@ -18,8 +17,8 @@ public class AciSectionValidator extends NodeValidator {
 	protected static final String ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED =
 		"At least one Aci Numerator Denominator Measure Node is required";
 	protected static final String NO_REQUIRED_MEASURE =
-		"The required measure ''{0}'' is not present in the source file. "
-			+ "Please add the ACI measure and try again.";
+		"The required measures ''{0}'' is not present in the source file. "
+			+ "Please add the ACI measures and try again.";
 
 	/**
 	 * Validates the ACI Section.
@@ -55,13 +54,8 @@ public class AciSectionValidator extends NodeValidator {
 	 * @param node An ACI section node.
 	 */
 	private void validateMeasureConfigs(final Node node) {
-		List<MeasureConfig> measureConfigs = MeasureConfigs.getMeasureConfigs();
-		for (MeasureConfig config : measureConfigs) {
-			if ("aci".equals(config.getCategory()) && config.isRequired()) {
-				String expectedMeasureId = config.getMeasureId();
-				thoroughlyCheck(node).hasMeasures(MessageFormat.format(NO_REQUIRED_MEASURE, expectedMeasureId),
-					expectedMeasureId);
-			}
-		}
+		String[] requiredAciMeasures = {};
+		requiredAciMeasures = MeasureConfigs.requiredMeasuresForSection("aci").toArray(requiredAciMeasures);
+		thoroughlyCheck(node).hasMeasures(MessageFormat.format(NO_REQUIRED_MEASURE, requiredAciMeasures), requiredAciMeasures);
 	}
 }
