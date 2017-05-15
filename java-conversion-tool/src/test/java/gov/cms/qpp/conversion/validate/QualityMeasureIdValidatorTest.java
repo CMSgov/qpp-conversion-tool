@@ -111,7 +111,7 @@ public class QualityMeasureIdValidatorTest {
 
 		return builder.build();
 	}
-
+	
 	private static class MeasureReferenceBuilder {
 		Node measureReferenceResultsNode;
 

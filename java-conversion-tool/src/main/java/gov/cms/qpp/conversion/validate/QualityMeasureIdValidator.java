@@ -41,36 +41,68 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		validateMeasureConfigs(node);
 	}
 
+	/**
+	 * Validate measure configurations
+	 *
+	 * @param node to validate
+	 */
 	private void validateMeasureConfigs(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 
 		MeasureConfig measureConfig = configurationMap.get(node.getValue("measureId"));
 
-		if (measureConfig == null) {
+		if (measureConfig != null) {
+			validateAllSubPopulations(measureConfig, node);
+		}
+	}
+
+	/**
+	 * Validate sub-populations
+	 *
+	 * @param measureConfig Measure configuration meta data
+	 * @param node to validate
+	 */
+	private void validateAllSubPopulations(MeasureConfig measureConfig, Node node) {
+		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
+
+		if (subPopulations == null) {
 			return;
 		}
 
-		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
 		for (SubPopulation subPopulation: subPopulations) {
 			validateSubPopulation(node, subPopulation);
 		}
 	}
 
+	/**
+	 * Validate individual sub-populations.
+	 *
+	 * @param node to validate
+	 * @param subPopulation a grouping of measures
+	 */
 	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
 		List<Consumer<Node>> validations = Arrays.asList(
 				makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP", "denominator exception"),
 				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX", "denominator exclusion")
 		);
-		validations.forEach( validate -> validate.accept(node));
+		validations.forEach(validate -> validate.accept(node));
 	}
 
+	/**
+	 * Method template for measure validations.
+	 *
+	 * @param check a property existence check
+	 * @param key that identifies a measure
+	 * @param label a short measure description
+	 * @return a callback / consumer that will perform a measure specific validation against a given node.
+	 */
 	private Consumer<Node> makeValidator(Supplier<Object> check, String key, String label) {
 		return node -> {
 			if (check.get() != null) {
-				List<Node> denominatorExclusionNode = node.getChildNodes(
+				List<Node> childMeasureNode = node.getChildNodes(
 						thisNode -> key.equals(thisNode.getValue("type")))
 						.collect(Collectors.toList());
-				if (denominatorExclusionNode.isEmpty()) {
+				if (childMeasureNode.isEmpty()) {
 					String message = String.format(REQUIRED_CHILD_MEASURE, label);
 					this.getValidationErrors().add(
 							new ValidationError(message, node.getPath()));
