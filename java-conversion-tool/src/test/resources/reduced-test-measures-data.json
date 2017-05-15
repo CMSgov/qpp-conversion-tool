@@ -1,0 +1,76 @@
+[
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "ADHD: Follow-Up Care for Children Prescribed Attention-Deficit/Hyperactivity Disorder (ADHD) Medication",
+		"description": "Percentage of children 6-12 years of age and newly dispensed a medication for attention-deficit/hyperactivity disorder (ADHD) who had appropriate follow-up care.  Two rates are reported.  \na. Percentage of children who had one follow-up visit with a practitioner with prescribing authority during the 30-Day Initiation Phase.\nb. Percentage of children who remained on ADHD medication for at least 210 days and who, in addition to the visit in the Initiation Phase, had at least two additional follow-up visits with a practitioner within 270 days (9 months) after the Initiation Phase ended.\n",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "366",
+		"eMeasureId": "CMS136v6",
+		"eMeasureVerUUID": "requiresNothingGuid",
+		"nqfEMeasureId": null,
+		"nqfId": "0108",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"mentalBehavioralHealth",
+			"pediatrics"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Controlling High Blood Pressure",
+		"description": "Percentage of patients 18-85 years of age who had a diagnosis of hypertension and whose blood pressure was adequately controlled (<140/90mmHg) during the measurement period",
+		"nationalQualityCode": "ECC",
+		"measureType": "intermediateOutcome",
+		"measureId": "236",
+		"eMeasureId": "CMS165v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0018",
+		"isInverse": false,
+		"eMeasureVerUUID": "requiresDenominatorExclusionGuid",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "3AD33404-E734-4F67-9144-E4B63CB3F4BE",
+				"denominatorUUID": "E62FEBA3-0F98-460D-93CD-44314D7203A8",
+				"denominatorExclusionsUUID": "55A6D5F3-2029-4896-B850-4C7894161D7D",
+				"numeratorUUID": "F9FEBF42-4B21-47A9-B03E-D2DA5CF8492B",
+				"denominatorExceptionsUUID": null
+			}
+		],
+		"strata": [
+			{
+				"description": "Percentage of patients 18 - 85 years of age who had a diagnosis of hypertension and whose blood pressure was adequately controlled (< 140/90 mmHg) during the measurement period",
+				"name": "hypertension"
+			}
+		],
+		"isHighPriority": true,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"claims",
+			"electronicHealthRecord",
+			"cmsWebInterface",
+			"registry"
+		],
+		"measureSets": [
+			"internalMedicine",
+			"cardiology",
+			"obstetricsGynecology",
+			"preventiveMedicine",
+			"thoracicSurgery",
+			"vascularSurgery",
+			"generalPracticeFamilyMedicine"
+		]
+	}
+]

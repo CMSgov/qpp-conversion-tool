@@ -3,8 +3,12 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,9 +16,20 @@ import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.contains
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
 
 public class QualityMeasureIdValidatorTest {
 	private QualityMeasureIdValidator objectUnderTest = new QualityMeasureIdValidator();
+
+	@BeforeClass
+	public static void setupCustomMeasuresData() {
+		MeasureConfigs.setMeasureDataFile("reduced-test-measures-data.json");
+	}
+
+	@AfterClass
+	public static void resetMeasuresData() {
+		MeasureConfigs.setMeasureDataFile("measures-data-short.json");
+	}
 
 	@Test
 	public void validateHappyPath() {
@@ -60,6 +75,24 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
+	public void testDenominatorExclusionExists() {
+		Node measureReferenceResultsNode = createMeasureReferenceResultsNode("requiresDenominatorExclusionGuid", "DENEX");
+
+		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		assertThat("There must be zero validation errors.", validationErrors, empty());
+	}
+
+	@Test
+	public void testDenominatorExclusionMissing() {
+		Node measureReferenceResultsNode = createMeasureReferenceResultsNode("requiresDenominatorExclusionGuid", "DENEXCEP");
+
+		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		assertThat("There must be a validation error.", validationErrors, hasSize(1));
+		assertThat("Incorrect validation error.", validationErrors,
+			containsValidationErrorInAnyOrderIgnoringPath(MessageFormat.format(QualityMeasureIdValidator.MISSING_SUB_POPULATION, QualityMeasureIdValidator.DENEX)));
+	}
+
+	@Test
 	public void testInternalValidateSameTemplateIdNodes() {
 		List<ValidationError> validationErrors = objectUnderTest.validateSameTemplateIdNodes(
 			Arrays.asList(createMeasureReferenceResultsNode(), createMeasureReferenceResultsNode()));
@@ -75,11 +108,25 @@ public class QualityMeasureIdValidatorTest {
 		Node measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
 
 		if (addMeasureGuid) {
-			measureReferenceResultsNode.putValue("measureId", "asdf-1234-jkl-7890");
+			measureReferenceResultsNode.putValue("measureId", "requiresNothingGuid");
 		}
 
 		if (addChildMeasure) {
 			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+			measureReferenceResultsNode.addChildNode(measureNode);
+		}
+
+		return measureReferenceResultsNode;
+	}
+
+	private Node createMeasureReferenceResultsNode(String measureGuid, String... childrenSubPopulations) {
+		Node measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
+
+		measureReferenceResultsNode.putValue("measureId", measureGuid);
+
+		for (String subPopulation : childrenSubPopulations) {
+			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+			measureNode.putValue("type", subPopulation);
 			measureReferenceResultsNode.addChildNode(measureNode);
 		}
 

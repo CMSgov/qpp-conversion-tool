@@ -19,7 +19,6 @@ public class MeasureConfigs {
 
 	static {
 		initMeasureConfigs();
-		initConfigurationMap();
 	}
 
 	private MeasureConfigs() {
@@ -41,6 +40,8 @@ public class MeasureConfigs {
 		} catch (IOException e) {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}
+
+		initConfigurationMap();
 	}
 
 	private static void initConfigurationMap() {
