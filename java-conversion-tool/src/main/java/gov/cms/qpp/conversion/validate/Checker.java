@@ -183,6 +183,13 @@ class Checker {
 		return this;
 	}
 
+	/**
+	 * Verifies that the measures specified are contained within the current node's children
+	 *
+	 * @param message validation error message
+	 * @param measureIds measures specified for given node
+	 * @return The checker, for chaining method calls
+	 */
 	public Checker hasMeasures(String message, String... measureIds) {
 		if (!shouldShortcut()) {
 			int numberOfMeasuresRequired = Arrays.asList(measureIds).size();

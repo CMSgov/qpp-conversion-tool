@@ -1,14 +1,29 @@
 package gov.cms.qpp.conversion.model.validation;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Sub Population Identifiers Fields
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SubPopulation {
-	private String initialPopulationUUID;
-	private String denominatorUUID;
-	private String denominatorExclusionsUUID;
-	private String numeratorUUID;
-	private String denominatorExceptionsUUID;
+
+	@JsonProperty("initialPopulationUUID")
+	private String initialPopulationUuid;
+
+	@JsonProperty("denominatorUUID")
+	private String denominatorUuid;
+
+	@JsonProperty("denominatorExclusionsUUID")
+	private String denominatorExclusionsUuid;
+
+	@JsonProperty("numeratorUUID")
+	private String numeratorUuid;
+
+	@JsonProperty("denominatorExceptionsUUID")
+	private String denominatorExceptionsUuid;
+
 	private String strata1;
 	private String strata2;
 
@@ -16,44 +31,44 @@ public class SubPopulation {
 		//Empty Constructor for Jackson
 	}
 
-	public String getInitialPopulationUUID() {
-		return initialPopulationUUID;
+	public String getInitialPopulationUuid() {
+		return initialPopulationUuid;
 	}
 
-	public void setInitialPopulationUUID(String initialPopulationUUID) {
-		this.initialPopulationUUID = initialPopulationUUID;
+	public void setInitialPopulationUuid(String initialPopulationUuid) {
+		this.initialPopulationUuid = initialPopulationUuid;
 	}
 
-	public String getDenominatorUUID() {
-		return denominatorUUID;
+	public String getDenominatorUuid() {
+		return denominatorUuid;
 	}
 
-	public void setDenominatorUUID(String denominatorUUID) {
-		this.denominatorUUID = denominatorUUID;
+	public void setDenominatorUuid(String denominatorUuid) {
+		this.denominatorUuid = denominatorUuid;
 	}
 
-	public String getDenominatorExclusionsUUID() {
-		return denominatorExclusionsUUID;
+	public String getDenominatorExclusionsUuid() {
+		return denominatorExclusionsUuid;
 	}
 
-	public void setDenominatorExclusionsUUID(String denominatorExclusionsUUID) {
-		this.denominatorExclusionsUUID = denominatorExclusionsUUID;
+	public void setDenominatorExclusionsUuid(String denominatorExclusionsUuid) {
+		this.denominatorExclusionsUuid = denominatorExclusionsUuid;
 	}
 
-	public String getNumeratorUUID() {
-		return numeratorUUID;
+	public String getNumeratorUuid() {
+		return numeratorUuid;
 	}
 
-	public void setNumeratorUUID(String numeratorUUID) {
-		this.numeratorUUID = numeratorUUID;
+	public void setNumeratorUuid(String numeratorUuid) {
+		this.numeratorUuid = numeratorUuid;
 	}
 
-	public String getDenominatorExceptionsUUID() {
-		return denominatorExceptionsUUID;
+	public String getDenominatorExceptionsUuid() {
+		return denominatorExceptionsUuid;
 	}
 
-	public void setDenominatorExceptionsUUID(String denominatorExceptionsUUID) {
-		this.denominatorExceptionsUUID = denominatorExceptionsUUID;
+	public void setDenominatorExceptionsUuid(String denominatorExceptionsUuid) {
+		this.denominatorExceptionsUuid = denominatorExceptionsUuid;
 	}
 
 	public String getStrata1() {

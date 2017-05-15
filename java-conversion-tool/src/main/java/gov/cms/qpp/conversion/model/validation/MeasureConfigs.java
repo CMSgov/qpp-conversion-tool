@@ -2,6 +2,9 @@ package gov.cms.qpp.conversion.model.validation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -12,8 +15,11 @@ public class MeasureConfigs {
 	private static List<MeasureConfig> configurations;
 	private static String measureDataFileName = "measures-data-short.json";
 
+	private static Map<String, MeasureConfig> configurationMap;
+
 	static {
 		initMeasureConfigs();
+		initConfigurationMap();
 	}
 
 	private MeasureConfigs() {
@@ -37,6 +43,15 @@ public class MeasureConfigs {
 		}
 	}
 
+	private static void initConfigurationMap() {
+		configurationMap = configurations.stream().collect(Collectors.toMap(config -> {
+			String guid = config.getElectronicMeasureVerUuid();
+			String electronicMeasureId = config.getElectronicMeasureId();
+			String measureId = config.getMeasureId();
+			return (guid != null ? guid : (electronicMeasureId != null ? electronicMeasureId : measureId));
+		}, Function.identity()));
+	}
+
 	public static void setMeasureDataFile(String fileName) {
 		measureDataFileName = fileName;
 		initMeasureConfigs();
@@ -44,5 +59,9 @@ public class MeasureConfigs {
 
 	public static List<MeasureConfig> getMeasureConfigs() {
 		return configurations;
+	}
+
+	public static Map<String, MeasureConfig> getConfigurationMap() {
+		return configurationMap;
 	}
 }

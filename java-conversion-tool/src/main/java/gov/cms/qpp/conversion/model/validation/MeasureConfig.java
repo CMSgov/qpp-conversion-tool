@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MeasureConfig {
 
 	private String category;
@@ -25,7 +25,11 @@ public class MeasureConfig {
 	private boolean isBonus;
 	private String objective;
 
-	private String eMeasureVerUUID;
+	@JsonProperty("eMeasureId")
+	private String electronicMeasureId;
+
+	@JsonProperty("eMeasureVerUUID")
+	private String electronicMeasureVerUuid;
 
 	@JsonProperty("subPopulation")
 	private List<SubPopulation> subPopulations;
@@ -130,12 +134,20 @@ public class MeasureConfig {
 		this.objective = objective;
 	}
 
-	public String geteMeasureVerUUID() {
-		return eMeasureVerUUID;
+	public String getElectronicMeasureId() {
+		return electronicMeasureId;
 	}
 
-	public void seteMeasureVerUUID(final String eMeasureVerUUID) {
-		this.eMeasureVerUUID = eMeasureVerUUID;
+	public void setElectronicMeasureId(String electronicMeasureId) {
+		this.electronicMeasureId = electronicMeasureId;
+	}
+
+	public String getElectronicMeasureVerUuid() {
+		return electronicMeasureVerUuid;
+	}
+
+	public void setElectronicMeasureVerUuid(final String electronicMeasureVerUuid) {
+		this.electronicMeasureVerUuid = electronicMeasureVerUuid;
 	}
 
 	public List<SubPopulation> getSubPopulation() {
