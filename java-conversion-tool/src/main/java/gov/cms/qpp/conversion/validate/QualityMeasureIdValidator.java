@@ -8,9 +8,12 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 
-import java.text.MessageFormat;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -22,6 +25,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
 	protected static final String DENEX = "denominator exclusion";
+	protected static final String DENEXCEP = "denominator exception";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -41,19 +45,17 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	}
 
 	/**
-	 * Checks current node to whether it contains all proper configurations from the initialized configuration map
+	 * Validate measure configurations
 	 *
-	 * @param node The current node being validated
+	 * @param node to validate
 	 */
 	private void validateMeasureConfigs(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 
 		MeasureConfig measureConfig = configurationMap.get(node.getValue("measureId"));
-		if (measureConfig == null) {
-			return;
+		if (measureConfig != null) {
+			validateAllSubPopulations(node, measureConfig);
 		}
-
-		validateAllSubPopulation(node, measureConfig);
 	}
 
 	/**
@@ -62,34 +64,53 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node The current parent node
 	 * @param measureConfig The measure configuration's sub population to use
 	 */
-	private void validateAllSubPopulation(final Node node, final MeasureConfig measureConfig) {
+	private void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig) {
 		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
+
 		if (subPopulations == null) {
 			return;
 		}
 
 		for (SubPopulation subPopulation: subPopulations) {
-			validateDenominatorExclusion(node, subPopulation);
+			validateSubPopulation(node, subPopulation);
 		}
 	}
 
 	/**
-	 * Checks the current node sub population children for a denominator exclusion
+	 * Validate individual sub-populations.
 	 *
-	 * @param node The current parent node
-	 * @param subPopulation Current sub population to validate against
+	 * @param node to validate
+	 * @param subPopulation a grouping of measures
 	 */
-	private void validateDenominatorExclusion(Node node, SubPopulation subPopulation) {
-		String denominatorExclusion = subPopulation.getDenominatorExclusionsUuid();
-		if (denominatorExclusion != null) {
-			List<Node> denominatorExclusionNode = node.getChildNodes(
-					thisNode -> "DENEX".equals(thisNode.getValue("type"))).collect(Collectors.toList());
-			if (denominatorExclusionNode.isEmpty()) {
-				this.getValidationErrors().add(
-						new ValidationError(String.format(REQUIRED_CHILD_MEASURE, DENEX),
-							node.getPath()));
+	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
+		List<Consumer<Node>> validations = Arrays.asList(
+				makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP", DENEXCEP),
+				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX", DENEX)
+		);
+		validations.forEach(validate -> validate.accept(node));
+	}
+
+	/**
+	 * Method template for measure validations.
+	 *
+	 * @param check a property existence check
+	 * @param key that identifies a measure
+	 * @param label a short measure description
+	 * @return a callback / consumer that will perform a measure specific validation against a given node.
+	 */
+	private Consumer<Node> makeValidator(Supplier<Object> check, String key, String label) {
+		return node -> {
+			if (check.get() != null) {
+				List<Node> childMeasureNode = node.getChildNodes(
+						thisNode -> key.equals(thisNode.getValue("type")))
+						.collect(Collectors.toList());
+				if (childMeasureNode.isEmpty()) {
+					String message = String.format(REQUIRED_CHILD_MEASURE, label);
+					this.getValidationErrors().add(
+							new ValidationError(message, node.getPath()));
+				}
 			}
-		}
+		};
 	}
 
 

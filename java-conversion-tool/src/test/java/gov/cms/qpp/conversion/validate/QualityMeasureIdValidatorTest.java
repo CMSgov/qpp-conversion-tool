@@ -13,6 +13,7 @@ import java.util.List;
 
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
+import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
@@ -75,7 +76,7 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testDenominatorExclusionExists() {
-		Node measureReferenceResultsNode = createMeasureReferenceResultsNode("requiresDenominatorExclusionGuid", "DENEX");
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder().addMeasureId("requiresDenominatorExclusionGuid").addSubPopulationMeasureData("DENEX").build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must be zero validation errors.", validationErrors, empty());
@@ -83,7 +84,7 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testDenominatorExclusionMissing() {
-		Node measureReferenceResultsNode = createMeasureReferenceResultsNode("requiresDenominatorExclusionGuid", "DENEXCEP");
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder().addMeasureId("requiresDenominatorExclusionGuid").addSubPopulationMeasureData("DENEXCEP").build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must be a validation error.", validationErrors, hasSize(1));
@@ -99,36 +100,71 @@ public class QualityMeasureIdValidatorTest {
 		assertThat("There must not be any validation errors.", validationErrors, hasSize(0));
 	}
 
+	@Test
+	public void testInternalExistingDenexcepMeasure() {
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+				.addMeasureId("requiresDenominatorExceptionGuid")
+				.addSubPopulationMeasureData("DENEXCEP")
+				.build();
+
+		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		assertThat("There must not be any validation errors.", validationErrors, hasSize(0));
+	}
+
+	@Test
+	public void testInternalMissingDenexcepMeasure() {
+		String message = String.format(REQUIRED_CHILD_MEASURE, QualityMeasureIdValidator.DENEXCEP);
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+				.addMeasureId("requiresDenominatorExceptionGuid")
+				.addSubPopulationMeasureData("MEEP_MAWP")
+				.build();
+
+		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		assertThat("Incorrect validation error.", validationErrors,
+			containsValidationErrorInAnyOrderIgnoringPath(message));
+	}
+
 	private Node createMeasureReferenceResultsNode() {
 		return createMeasureReferenceResultsNode(true, true);
 	}
 
 	private Node createMeasureReferenceResultsNode(boolean addMeasureGuid, boolean addChildMeasure) {
-		Node measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
+		MeasureReferenceBuilder builder = new MeasureReferenceBuilder();
 
 		if (addMeasureGuid) {
-			measureReferenceResultsNode.putValue("measureId", "requiresNothingGuid");
+			builder.addMeasureId("requiresNothingGuid");
 		}
 
 		if (addChildMeasure) {
-			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
-			measureReferenceResultsNode.addChildNode(measureNode);
+			builder.addSubPopulationMeasureData("");
 		}
 
-		return measureReferenceResultsNode;
+		return builder.build();
 	}
+	
+	private static class MeasureReferenceBuilder {
+		Node measureReferenceResultsNode;
 
-	private Node createMeasureReferenceResultsNode(String measureGuid, String... childrenSubPopulations) {
-		Node measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
-
-		measureReferenceResultsNode.putValue("measureId", measureGuid);
-
-		for (String subPopulation : childrenSubPopulations) {
-			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
-			measureNode.putValue("type", subPopulation);
-			measureReferenceResultsNode.addChildNode(measureNode);
+		MeasureReferenceBuilder() {
+			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
 		}
 
-		return measureReferenceResultsNode;
+		MeasureReferenceBuilder addMeasureId(String measureId) {
+			measureReferenceResultsNode.putValue("measureId", measureId);
+			return this;
+		}
+
+		MeasureReferenceBuilder addSubPopulationMeasureData(String type) {
+			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+			measureNode.putValue("type", type);
+			measureReferenceResultsNode.addChildNode(measureNode);
+			return this;
+		}
+
+		Node build() {
+			return measureReferenceResultsNode;
+		}
 	}
 }
