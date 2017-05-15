@@ -3,13 +3,16 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-
 import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 public class QualityMeasureIdValidator extends NodeValidator {
 	protected static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
+	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -37,31 +41,74 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		validateMeasureConfigs(node);
 	}
 
+	/**
+	 * Validate measure configurations
+	 *
+	 * @param node to validate
+	 */
 	private void validateMeasureConfigs(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 
 		MeasureConfig measureConfig = configurationMap.get(node.getValue("measureId"));
 
-		if (measureConfig == null) {
-			return;
-		}
-
-		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
-		for (SubPopulation subPopulation: subPopulations) {
-			validateDenominatorExclusion(node, subPopulation);
+		if (measureConfig != null) {
+			validateAllSubPopulations(measureConfig, node);
 		}
 	}
 
-	private void validateDenominatorExclusion(Node node, SubPopulation subPopulation) {
-		String denominatorExclusion = subPopulation.getDenominatorExclusionsUuid();
-		if (denominatorExclusion != null) {
-			List<Node> denominatorExclusionNode = node.getChildNodes(
-					thisNode -> "DENEX".equals(thisNode.getValue("type"))).collect(Collectors.toList());
-			if (denominatorExclusionNode.isEmpty()) {
-				this.getValidationErrors().add(
-						new ValidationError("The eCQM measure requires a denominator exclusion", node.getPath()));
-			}
+	/**
+	 * Validate sub-populations
+	 *
+	 * @param measureConfig Measure configuration meta data
+	 * @param node to validate
+	 */
+	private void validateAllSubPopulations(MeasureConfig measureConfig, Node node) {
+		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
+
+		if (subPopulations == null) {
+			return;
 		}
+
+		for (SubPopulation subPopulation: subPopulations) {
+			validateSubPopulation(node, subPopulation);
+		}
+	}
+
+	/**
+	 * Validate individual sub-populations.
+	 *
+	 * @param node to validate
+	 * @param subPopulation a grouping of measures
+	 */
+	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
+		List<Consumer<Node>> validations = Arrays.asList(
+				makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP", "denominator exception"),
+				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX", "denominator exclusion")
+		);
+		validations.forEach(validate -> validate.accept(node));
+	}
+
+	/**
+	 * Method template for measure validations.
+	 *
+	 * @param check a property existence check
+	 * @param key that identifies a measure
+	 * @param label a short measure description
+	 * @return a callback / consumer that will perform a measure specific validation against a given node.
+	 */
+	private Consumer<Node> makeValidator(Supplier<Object> check, String key, String label) {
+		return node -> {
+			if (check.get() != null) {
+				List<Node> childMeasureNode = node.getChildNodes(
+						thisNode -> key.equals(thisNode.getValue("type")))
+						.collect(Collectors.toList());
+				if (childMeasureNode.isEmpty()) {
+					String message = String.format(REQUIRED_CHILD_MEASURE, label);
+					this.getValidationErrors().add(
+							new ValidationError(message, node.getPath()));
+				}
+			}
+		};
 	}
 
 

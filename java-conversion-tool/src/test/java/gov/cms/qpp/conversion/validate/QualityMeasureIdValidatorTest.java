@@ -10,6 +10,7 @@ import java.util.List;
 
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
+import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
@@ -67,22 +68,71 @@ public class QualityMeasureIdValidatorTest {
 		assertThat("There must not be any validation errors.", validationErrors, hasSize(0));
 	}
 
+	@Test
+	public void testInternalExistingDenexcepMeasure() {
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+				.addMeasureId("40280381-52fc-3a32-0153-3d64af97147b")
+				.addChildMeasure("DENEXCEP")
+				.build();
+
+		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		assertThat("There must not be any validation errors.", validationErrors, hasSize(0));
+	}
+
+	@Test
+	public void testInternalMissingDenexcepMeasure() {
+		String message = String.format(REQUIRED_CHILD_MEASURE, "denominator exception");
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+				.addMeasureId("40280381-52fc-3a32-0153-3d64af97147b")
+				.addChildMeasure("MEEP_MAWP")
+				.build();
+
+		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		assertThat("Incorrect validation error.", validationErrors.get(0),
+				validationErrorTextMatches(message));
+	}
+
 	private Node createMeasureReferenceResultsNode() {
 		return createMeasureReferenceResultsNode(true, true);
 	}
 
 	private Node createMeasureReferenceResultsNode(boolean addMeasureGuid, boolean addChildMeasure) {
-		Node measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
+		MeasureReferenceBuilder builder = new MeasureReferenceBuilder();
 
 		if (addMeasureGuid) {
-			measureReferenceResultsNode.putValue("measureId", "asdf-1234-jkl-7890");
+			builder.addMeasureId("asdf-1234-jkl-7890");
 		}
 
 		if (addChildMeasure) {
-			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
-			measureReferenceResultsNode.addChildNode(measureNode);
+			builder.addChildMeasure("");
 		}
 
-		return measureReferenceResultsNode;
+		return builder.build();
+	}
+	
+	private static class MeasureReferenceBuilder {
+		Node measureReferenceResultsNode;
+
+		MeasureReferenceBuilder() {
+			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
+		}
+
+		MeasureReferenceBuilder addMeasureId(String measureId) {
+			measureReferenceResultsNode.putValue("measureId", measureId);
+			return this;
+		}
+
+		MeasureReferenceBuilder addChildMeasure(String type) {
+			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+			measureNode.putValue("type", type);
+			measureReferenceResultsNode.addChildNode(measureNode);
+			return this;
+		}
+
+		Node build() {
+			return measureReferenceResultsNode;
+		}
 	}
 }

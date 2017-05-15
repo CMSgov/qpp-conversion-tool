@@ -102,6 +102,70 @@
 		"firstPerformanceYear": 2017,
 		"lastPerformanceYear": null,
 		"metricType": "singlePerformanceRate",
+		"title": "Documentation of Current Medications in the Medical Record",
+		"description": "Percentage of visits for patients aged 18 years and older for which the eligible professional attests to documenting a list of current medications using all immediate resources available on the date of the encounter.  This list must include ALL known prescriptions, over-the-counters, herbals, and vitamin/mineral/dietary (nutritional) supplements AND must contain the medications' name, dosage, frequency and route of administration.",
+		"nationalQualityCode": "PS",
+		"measureType": "process",
+		"measureId": "130",
+		"eMeasureId": "CMS68v6",
+		"nqfEMeasureId": null,
+		"nqfId": "0419",
+		"isInverse": false,
+		"eMeasureVerUUID": "40280381-52fc-3a32-0153-3d64af97147b",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "D412322D-11F1-4573-893E-E6A05855DE10",
+				"denominatorUUID": "375D0559-C749-4BB9-9267-81EDF447650B",
+				"denominatorExclusionsUUID": null,
+				"numeratorUUID": "EFFE261C-0D57-423E-992C-7141B132768C",
+				"denominatorExceptionsUUID": "3C100EC4-2990-4D79-AE14-E816F5E78AC8"
+			}
+		],
+		"strata": [
+			{
+				"description": "Percentage of visits for patients aged 18 years and older for which the eligible clinician attests to documenting a list of current medications using all immediate resources available on the date of the encounter. This list must include ALL known prescriptions, over-the-counters, herbals, and vitamin/mineral/dietary (nutritional) supplements must contain the medications’ name, dosage, frequency and route of administration",
+				"name": "document"
+			}
+		],
+		"isHighPriority": true,
+		"primarySteward": "Centers for Medicare & Medicaid Services",
+		"submissionMethods": [
+			"claims",
+			"electronicHealthRecord",
+			"registry"
+		],
+		"measureSets": [
+			"allergyImmunology",
+			"internalMedicine",
+			"anesthesiology",
+			"cardiology",
+			"dermatology",
+			"emergencyMedicine",
+			"gastroenterology",
+			"generalSurgery",
+			"generalOncology",
+			"hospitalists",
+			"neurology",
+			"obstetricsGynecology",
+			"ophthalmology",
+			"orthopedicSurgery",
+			"otolaryngology",
+			"physicalMedicine",
+			"preventiveMedicine",
+			"rheumatology",
+			"thoracicSurgery",
+			"urology",
+			"vascularSurgery",
+			"mentalBehavioralHealth",
+			"plasticSurgery",
+			"generalPracticeFamilyMedicine"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
 		"title": "Controlling High Blood Pressure",
 		"description": "Percentage of patients 18-85 years of age who had a diagnosis of hypertension and whose blood pressure was adequately controlled (<140/90mmHg) during the measurement period",
 		"nationalQualityCode": "ECC",
