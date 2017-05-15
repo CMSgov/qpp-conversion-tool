@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class QualityMeasureIdValidator extends NodeValidator {
 	protected static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
-	protected static final String MISSING_SUB_POPULATION = "The eCQM measure requires a {0}";
+	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
 	protected static final String DENEX = "denominator exclusion";
 
 	/**
@@ -56,6 +56,12 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		validateAllSubPopulation(node, measureConfig);
 	}
 
+	/**
+	 * Validates all the sub populations in the quality measure based on the measure configuration
+	 *
+	 * @param node The current parent node
+	 * @param measureConfig The measure configuration's sub population to use
+	 */
 	private void validateAllSubPopulation(final Node node, final MeasureConfig measureConfig) {
 		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
 		if (subPopulations == null) {
@@ -80,7 +86,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 					thisNode -> "DENEX".equals(thisNode.getValue("type"))).collect(Collectors.toList());
 			if (denominatorExclusionNode.isEmpty()) {
 				this.getValidationErrors().add(
-						new ValidationError(MessageFormat.format(MISSING_SUB_POPULATION, DENEX),
+						new ValidationError(String.format(REQUIRED_CHILD_MEASURE, DENEX),
 							node.getPath()));
 			}
 		}

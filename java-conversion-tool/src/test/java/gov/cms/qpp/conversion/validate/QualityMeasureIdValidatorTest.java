@@ -8,7 +8,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -89,7 +88,7 @@ public class QualityMeasureIdValidatorTest {
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must be a validation error.", validationErrors, hasSize(1));
 		assertThat("Incorrect validation error.", validationErrors,
-			containsValidationErrorInAnyOrderIgnoringPath(MessageFormat.format(QualityMeasureIdValidator.MISSING_SUB_POPULATION, QualityMeasureIdValidator.DENEX)));
+			containsValidationErrorInAnyOrderIgnoringPath(String.format(QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE, QualityMeasureIdValidator.DENEX)));
 	}
 
 	@Test
