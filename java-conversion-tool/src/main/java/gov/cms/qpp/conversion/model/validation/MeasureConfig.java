@@ -1,7 +1,11 @@
 package gov.cms.qpp.conversion.model.validation;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MeasureConfig {
 
 	private String category;
@@ -20,6 +24,15 @@ public class MeasureConfig {
 	@JsonProperty("isBonus")
 	private boolean isBonus;
 	private String objective;
+
+	@JsonProperty("eMeasureId")
+	private String electronicMeasureId;
+
+	@JsonProperty("eMeasureVerUUID")
+	private String electronicMeasureVerUuid;
+
+	@JsonProperty("subPopulation")
+	private List<SubPopulation> subPopulations;
 
 	public MeasureConfig() {
 		// empty constructor for jackson
@@ -121,4 +134,27 @@ public class MeasureConfig {
 		this.objective = objective;
 	}
 
+	public String getElectronicMeasureId() {
+		return electronicMeasureId;
+	}
+
+	public void setElectronicMeasureId(String electronicMeasureId) {
+		this.electronicMeasureId = electronicMeasureId;
+	}
+
+	public String getElectronicMeasureVerUuid() {
+		return electronicMeasureVerUuid;
+	}
+
+	public void setElectronicMeasureVerUuid(final String electronicMeasureVerUuid) {
+		this.electronicMeasureVerUuid = electronicMeasureVerUuid;
+	}
+
+	public List<SubPopulation> getSubPopulation() {
+		return subPopulations;
+	}
+
+	public void setSubPopulations(final List<SubPopulation> subPopulations) {
+		this.subPopulations = subPopulations;
+	}
 }

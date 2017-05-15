@@ -1,0 +1,839 @@
+[
+	{
+		"category": "aci",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "boolean",
+		"measureId": "ACI_PHCDRR_3",
+		"title": "Electronic Case Reporting",
+		"description": "The MIPS eligible clinician is in active engagement with a public health agency to electronically submit case reporting of reportable conditions.  Earn a 5 % bonus in the advancing care information performance category score for submitting to one or more public health or clinical data registries.",
+		"isRequired": false,
+		"weight": 5,
+		"measureSet": null,
+		"isBonus": true,
+		"objective": "publicHealthAndClinicalDataRegistryReporting"
+	},
+	{
+		"category": "aci",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "proportion",
+		"measureId": "ACI_EP_1",
+		"title": "e-Prescribing",
+		"description": "At least one permissible prescription written by the MIPS eligible clinician is queried for a drug formulary and transmitted electronically using certified EHR technology.",
+		"isRequired": true,
+		"weight": 0,
+		"measureSet": null,
+		"isBonus": false,
+		"objective": "electronicPrescribing"
+	},
+	{
+		"category": "aci",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "boolean",
+		"measureId": "ACI_PHCDRR_1",
+		"title": "Immunization Registry Reporting",
+		"description": "The MIPS eligible clinician is in active engagement with a public health agency to submit immunization data and receive immunization forecasts and histories from the public health immunization registry/immunization information system (IIS).",
+		"isRequired": false,
+		"weight": 10,
+		"measureSet": null,
+		"isBonus": false,
+		"objective": "publicHealthAndClinicalDataRegistryReporting"
+	},
+	{
+		"category": "aci",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "proportion",
+		"measureId": "ACI_CCTPE_3",
+		"title": "Patient-Generated Health Data",
+		"description": "Patient-generated health data or data from a non-clinical setting is incorporated into the certified EHR technology for at least one unique patient seen by the MIPS eligible clinician during the performance period.",
+		"isRequired": false,
+		"weight": 10,
+		"measureSet": null,
+		"isBonus": false,
+		"objective": "coordinationOfCareThroughPatientEngagement"
+	},
+	{
+		"category": "aci",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "proportion",
+		"measureId": "ACI_PEA_2",
+		"title": "Patient-Specific Education",
+		"description": "The MIPS eligible clinician must use clinically relevant information from certified EHR technology to identify patient-specific educational resources and provide electronic access to those materials to at least one unique patient seen by the MIPS eligible clinician.",
+		"isRequired": false,
+		"weight": 10,
+		"measureSet": null,
+		"isBonus": false,
+		"objective": "patientElectronicAccess"
+	},
+	{
+		"category": "aci",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "boolean",
+		"measureId": "ACI_PHCDRR_4",
+		"title": "Public Health Registry Reporting",
+		"description": "The MIPS eligible clinician is in active engagement with a public health agency to submit data to public health registries.  Earn a 5 % bonus in the advancing care information performance category score for submitting to one or more public health or clinical data registries.",
+		"isRequired": false,
+		"weight": 5,
+		"measureSet": null,
+		"isBonus": true,
+		"objective": "publicHealthAndClinicalDataRegistryReporting"
+	},
+	{
+		"category": "aci",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "proportion",
+		"measureId": "ACI_CCTPE_2",
+		"title": "Secure Messaging",
+		"description": "For at least one unique patient seen by the MIPS eligible clinician during the performance period, a secure message was sent using the electronic messaging function of certified EHR technology to the patient (or the patient-authorized representative), or in response to a secure message sent by the patient (or the patient-authorized representative), or in response to a secure message sent by the patient (or the patient-authorized representative).",
+		"isRequired": false,
+		"weight": 10,
+		"measureSet": null,
+		"isBonus": false,
+		"objective": "coordinationOfCareThroughPatientEngagement"
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Controlling High Blood Pressure",
+		"description": "Percentage of patients 18-85 years of age who had a diagnosis of hypertension and whose blood pressure was adequately controlled (<140/90mmHg) during the measurement period",
+		"nationalQualityCode": "ECC",
+		"measureType": "intermediateOutcome",
+		"measureId": "236",
+		"eMeasureId": "CMS165v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0018",
+		"isInverse": false,
+		"eMeasureVerUUID": "40280381-51f0-825b-0152-22b98cff181a",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "3AD33404-E734-4F67-9144-E4B63CB3F4BE",
+				"denominatorUUID": "E62FEBA3-0F98-460D-93CD-44314D7203A8",
+				"denominatorExclusionsUUID": "55A6D5F3-2029-4896-B850-4C7894161D7D",
+				"numeratorUUID": "F9FEBF42-4B21-47A9-B03E-D2DA5CF8492B",
+				"denominatorExceptionsUUID": null
+			}
+		],
+		"strata": [
+			{
+				"description": "Percentage of patients 18 - 85 years of age who had a diagnosis of hypertension and whose blood pressure was adequately controlled (< 140/90 mmHg) during the measurement period",
+				"name": "hypertension"
+			}
+		],
+		"isHighPriority": true,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"claims",
+			"electronicHealthRecord",
+			"cmsWebInterface",
+			"registry"
+		],
+		"measureSets": [
+			"internalMedicine",
+			"cardiology",
+			"obstetricsGynecology",
+			"preventiveMedicine",
+			"thoracicSurgery",
+			"vascularSurgery",
+			"generalPracticeFamilyMedicine"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "ADHD: Follow-Up Care for Children Prescribed Attention-Deficit/Hyperactivity Disorder (ADHD) Medication",
+		"description": "Percentage of children 6-12 years of age and newly dispensed a medication for attention-deficit/hyperactivity disorder (ADHD) who had appropriate follow-up care.  Two rates are reported.  \na. Percentage of children who had one follow-up visit with a practitioner with prescribing authority during the 30-Day Initiation Phase.\nb. Percentage of children who remained on ADHD medication for at least 210 days and who, in addition to the visit in the Initiation Phase, had at least two additional follow-up visits with a practitioner within 270 days (9 months) after the Initiation Phase ended.\n",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "366",
+		"eMeasureId": "CMS136v6",
+		"nqfEMeasureId": null,
+		"nqfId": "0108",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"mentalBehavioralHealth",
+			"pediatrics"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Adult Major Depressive Disorder (MDD): Suicide Risk Assessment",
+		"description": "Percentage of patients aged 18 years and older with a diagnosis of major depressive disorder (MDD) with a suicide risk assessment completed during the visit in which a new diagnosis or recurrent episode was identified",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "107",
+		"eMeasureId": "CMS161v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0104",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "Physician Consortium for Performance Improvement",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": []
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Anti-Depressant Medication Management",
+		"description": "Percentage of patients 18 years of age and older who were treated with antidepressant medication, had a diagnosis of major depression, and who remained on an antidepressant medication treatment. Two rates are reported. \na. Percentage of patients who remained on an antidepressant medication for at least 84 days (12 weeks). \nb. Percentage of patients who remained on an antidepressant medication for at least 180 days (6 months).\n",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "009",
+		"eMeasureId": "CMS128v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0105",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"internalMedicine",
+			"mentalBehavioralHealth",
+			"generalPracticeFamilyMedicine"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Bipolar Disorder and Major Depression: Appraisal for alcohol or chemical substance use",
+		"description": "Percentage of patients with depression or bipolar disorder with evidence of an initial assessment that includes an appraisal for alcohol or chemical substance use",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "367",
+		"eMeasureId": "CMS169v5",
+		"nqfEMeasureId": null,
+		"nqfId": null,
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "Center for Quality Assessment and Improvement in Mental Health",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": []
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Cervical Cancer Screening",
+		"description": "Percentage of women 21-64 years of age who were screened for cervical cancer using either of the following criteria:\n*  Women age 21-64 who had cervical cytology performed every 3 years\n*  Women age 30-64 who had cervical cytology/human papillomavirus (HPV) co-testing performed every 5 years\n",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "309",
+		"eMeasureId": "CMS124v5",
+		"eMeasureVerUUID": "40280381-51f0-825b-0152-229bdcab1702",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "3A29C38D-E468-47CC-995B-B281B1B066CF",
+				"denominatorUUID": "7CDA5C1B-CD31-4D16-80C4-22AE2F549D88",
+				"denominatorExclusionsUUID": "45A2163C-25C2-4245-A3C6-0BEE64E18B64",
+				"numeratorUUID": "3854BDE6-9614-475D-8E3B-5A041C04C291",
+				"denominatorExceptionsUUID": null
+			}
+		],
+		"nqfEMeasureId": null,
+		"nqfId": "0032",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"obstetricsGynecology",
+			"generalPracticeFamilyMedicine"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Child and Adolescent Major Depressive Disorder (MDD): Suicide Risk Assessment",
+		"description": "Percentage of patient visits for those patients aged 6 through 17 years with a diagnosis of major depressive disorder with an assessment for suicide risk\n",
+		"nationalQualityCode": "PS",
+		"measureType": "process",
+		"measureId": "382",
+		"eMeasureId": "CMS177v5",
+		"nqfEMeasureId": null,
+		"nqfId": "1365",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": true,
+		"primarySteward": "Physician Consortium for Performance Improvement",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"mentalBehavioralHealth",
+			"pediatrics"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Childhood Immunization Status",
+		"description": "Percentage of children 2 years of age who had four diphtheria, tetanus and acellular pertussis (DTaP); three polio (IPV), one measles, mumps and rubella (MMR); three H influenza type B (HiB); three hepatitis B (Hep B); one chicken pox (VZV); four pneumococcal conjugate (PCV); one hepatitis A (Hep A); two or three rotavirus (RV); and two influenza (flu) vaccines by their second birthday",
+		"nationalQualityCode": "CPH",
+		"measureType": "process",
+		"measureId": "240",
+		"eMeasureId": "CMS117v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0038",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"pediatrics"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Children Who Have Dental Decay or Cavities",
+		"description": "Percentage of children, age 0-20 years, who have had tooth decay or cavities during the measurement period",
+		"nationalQualityCode": "CPH",
+		"measureType": "outcome",
+		"measureId": "378",
+		"eMeasureId": "CMS75v5",
+		"nqfEMeasureId": null,
+		"nqfId": null,
+		"isInverse": true,
+		"strata": [],
+		"isHighPriority": true,
+		"primarySteward": "Centers for Medicare & Medicaid Services",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": []
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Chlamydia Screening for Women",
+		"description": "Percentage of women 16-24 years of age who were identified as sexually active and who had at least one test for chlamydia during the measurement period",
+		"nationalQualityCode": "CPH",
+		"measureType": "process",
+		"measureId": "310",
+		"eMeasureId": "CMS153v5",
+		"eMeasureVerUUID": "40280381-51f0-825b-0152-22b52da917ba",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "A417988B-395B-4108-9988-1AE443A1E254",
+				"denominatorUUID": "F25492A9-8164-4833-9A91-EA160ECC9190",
+				"denominatorExclusionsUUID": "341797C7-3664-41E2-9771-6D85B2085BFA",
+				"numeratorUUID": "D387E1DC-F06A-4054-87B1-40B863FCF8EC",
+				"denominatorExceptionsUUID": null,
+				"strata1": "FAA4002D-24D4-4BB8-964C-20BCFEDE528E",
+				"strata2": "91E24063-2360-4A7C-9AAC-549971972FAC"
+			}
+		],
+		"nqfEMeasureId": null,
+		"nqfId": "0033",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"obstetricsGynecology",
+			"pediatrics"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Closing the Referral Loop: Receipt of Specialist Report",
+		"description": "Percentage of patients with referrals, regardless of age, for which the referring provider receives a report from the provider to whom the patient was referred",
+		"nationalQualityCode": "CCC",
+		"measureType": "process",
+		"measureId": "374",
+		"eMeasureId": "CMS50v5",
+		"nqfEMeasureId": null,
+		"nqfId": null,
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": true,
+		"primarySteward": "Centers for Medicare & Medicaid Services",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"allergyImmunology",
+			"cardiology",
+			"dermatology",
+			"emergencyMedicine",
+			"gastroenterology",
+			"generalSurgery",
+			"generalOncology",
+			"hospitalists",
+			"neurology",
+			"obstetricsGynecology",
+			"ophthalmology",
+			"orthopedicSurgery",
+			"otolaryngology",
+			"physicalMedicine",
+			"preventiveMedicine",
+			"rheumatology",
+			"thoracicSurgery",
+			"urology",
+			"vascularSurgery",
+			"mentalBehavioralHealth",
+			"plasticSurgery"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Dementia: Cognitive Assessment",
+		"description": "Percentage of patients, regardless of age, with a diagnosis of dementia for whom an assessment of cognition is performed and the results reviewed at least once within a 12 month period",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "281",
+		"eMeasureId": "CMS149v5",
+		"nqfEMeasureId": null,
+		"nqfId": null,
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "Physician Consortium for Performance Improvement",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"neurology",
+			"mentalBehavioralHealth"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Depression Utilization of the PHQ-9 Tool",
+		"description": "Patients age 18 and older with the diagnosis of major depression or dysthymia who have a Patient Health Questionnaire (PHQ-9) tool administered at least once during a 4-month period in which there was a qualifying visit",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "371",
+		"eMeasureId": "CMS160v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0712",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "Minnesota Community Measurement",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"mentalBehavioralHealth"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Diabetes: Foot Exam",
+		"description": "The percentage of patients 18-75 years of age with diabetes (type 1 and type 2) who received a foot exam (visual inspection and sensory exam with mono filament and a pulse exam) during the measurement year",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "163",
+		"eMeasureId": "CMS123v5",
+		"eMeasureVerUUID": "40280381-51f0-825b-0152-229b7b2f16f9",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "9AB84D25-5883-4D85-A868-0D702403F250",
+				"denominatorUUID": "61B09878-32B3-4ECB-8E78-D1093E1FDDF9",
+				"denominatorExclusionsUUID": "02D13BF4-EF77-4DF4-A436-834AEDBE043C",
+				"numeratorUUID": "60EC6098-950A-40E5-994F-E9A62CFF6FC2",
+				"denominatorExceptionsUUID": null
+			}
+		],
+		"nqfEMeasureId": null,
+		"nqfId": "0056",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"internalMedicine",
+			"generalPracticeFamilyMedicine"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Diabetic Retinopathy: Documentation of Presence or Absence of Macular Edema and Level of Severity of Retinopathy",
+		"description": "Percentage of patients aged 18 years and older with a diagnosis of diabetic retinopathy who had a dilated macular or fundus exam performed which included documentation of the level of severity of retinopathy and the presence or absence of macular edema during one or more office visits within 12 months",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "018",
+		"eMeasureId": "CMS167v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0088",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "Physician Consortium for Performance Improvement",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"ophthalmology"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Falls: Screening for Future Fall Risk",
+		"description": "Percentage of patients 65 years of age and older who were screened for future fall risk during the measurement period.",
+		"nationalQualityCode": "PS",
+		"measureType": "process",
+		"measureId": "318",
+		"eMeasureId": "CMS139v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0101",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": true,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord",
+			"cmsWebInterface"
+		],
+		"measureSets": []
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Functional Status Assessment for Total Hip Replacement",
+		"description": "Percentage of patients 18 years of age and older with primary total hip arthroplasty (THA) who completed baseline and follow-up patient-reported functional status assessments",
+		"nationalQualityCode": "PCCEO",
+		"measureType": "process",
+		"measureId": "376",
+		"eMeasureId": "CMS56v5",
+		"nqfEMeasureId": null,
+		"nqfId": null,
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": true,
+		"primarySteward": "Centers for Medicare & Medicaid Services",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"orthopedicSurgery"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Functional Status Assessment for Total Knee Replacement",
+		"description": "Percentage of patients 18 years of age and older with primary total knee arthroplasty (TKA) who completed baseline and follow-up patient-reported functional status assessments",
+		"nationalQualityCode": "PCCEO",
+		"measureType": "process",
+		"measureId": "375",
+		"eMeasureId": "CMS66v5",
+		"nqfEMeasureId": null,
+		"nqfId": null,
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": true,
+		"primarySteward": "Centers for Medicare & Medicaid Services",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"orthopedicSurgery"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Functional Status Assessments for Congestive Heart Failure",
+		"description": "Percentage of patients 65 years of age and older with congestive  heart failure who completed initial and follow-up patient-reported functional status assessments",
+		"nationalQualityCode": "PCCEO",
+		"measureType": "process",
+		"measureId": "377",
+		"eMeasureId": "CMS90v6",
+		"nqfEMeasureId": null,
+		"nqfId": null,
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": true,
+		"primarySteward": "Centers for Medicare & Medicaid Services",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": []
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "HIV/AIDS: Pneumocystis Jiroveci Pneumonia (PCP) Prophylaxis",
+		"description": "Percentage of patients aged 6 weeks and older with a diagnosis of HIV/AIDS who were prescribed Pneumocystis jiroveci pneumonia (PCP) prophylaxis",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "160",
+		"eMeasureId": "CMS52v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0405",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"allergyImmunology",
+			"pediatrics"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Hypertension: Improvement in Blood Pressure",
+		"description": "Percentage of patients aged 18-85 years of age with a diagnosis of hypertension whose blood pressure improved during the measurement period.",
+		"nationalQualityCode": "ECC",
+		"measureType": "intermediateOutcome",
+		"measureId": "373",
+		"eMeasureId": "CMS65v6",
+		"nqfEMeasureId": null,
+		"nqfId": null,
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": true,
+		"primarySteward": "Centers for Medicare & Medicaid Services",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": []
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Initiation and Engagement of Alcohol and Other Drug Dependence Treatment",
+		"description": "Percentage of patients 13 years of age and older with a new episode of alcohol and other drug (AOD) dependence who received the following. Two rates are reported.\na. Percentage of patients who initiated treatment within 14 days of the diagnosis.\nb. Percentage of patients who initiated treatment and who had two or more additional services with an AOD diagnosis within 30 days of the initiation visit.\n",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "305",
+		"eMeasureId": "CMS137v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0004",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": []
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Maternal Depression Screening",
+		"description": "The percentage of children who turned 6 months of age during the measurement year, who had a face-to-face visit between the clinician and the child during child's first 6 months, and who had a maternal depression screening for the mother at least once between 0 and 6 months of life.\n",
+		"nationalQualityCode": "CPH",
+		"measureType": "process",
+		"measureId": "372",
+		"eMeasureId": "CMS82v4",
+		"nqfEMeasureId": null,
+		"nqfId": null,
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": []
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Pregnant women that had HBsAg testing",
+		"description": "This measure identifies pregnant women who had a HBsAg (hepatitis B) test during their pregnancy",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "369",
+		"eMeasureId": "CMS158v5",
+		"nqfEMeasureId": null,
+		"nqfId": null,
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "OptumInsight",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": []
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Primary Caries Prevention Intervention as Offered by Primary Care Providers, including Dentists",
+		"description": "Percentage of children, age 0-20 years, who received a fluoride varnish application during the measurement period.",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "379",
+		"eMeasureId": "CMS74v6",
+		"nqfEMeasureId": null,
+		"nqfId": null,
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "Centers for Medicare & Medicaid Services",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"pediatrics"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Use of Imaging Studies for Low Back Pain",
+		"description": "Percentage of patients 18-50 years of age with a diagnosis of low back pain who did not have an imaging study (plain X-ray, MRI, CT scan) within 28 days of the diagnosis.",
+		"nationalQualityCode": "ECR",
+		"measureType": "process",
+		"measureId": "312",
+		"eMeasureId": "CMS166v6",
+		"nqfEMeasureId": null,
+		"nqfId": "0052",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": true,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"orthopedicSurgery",
+			"physicalMedicine",
+			"generalPracticeFamilyMedicine"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Breast Cancer Screening",
+		"description": "Percentage of women 50-74 years of age who had a mammogram to screen for breast cancer.",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "112",
+		"eMeasureId": "CMS125v5",
+		"eMeasureVerUUID": "40280381-51f0-825b-0152-229c4ea3170c",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "66FD640C-70BB-400F-9926-98EA1ACEBEBA",
+				"denominatorUUID": "40FB2D5F-7DEF-4D41-80C4-F3FBA0ED5851",
+				"denominatorExclusionsUUID": "EC5CC49E-42A7-4DD8-BD40-A6258E71DCB9",
+				"numeratorUUID": "0AB40D2B-08CE-4185-8A54-336C3140644D",
+				"denominatorExceptionsUUID": null
+			}
+		],
+		"nqfEMeasureId": null,
+		"nqfId": "2372",
+		"isInverse": false,
+		"strata": [
+			{
+				"description": "Percentage of women 50 - 74 years of age who had a mammogram to screen for breast cancer",
+				"name": "mammogram"
+			}
+		],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"claims",
+			"electronicHealthRecord",
+			"cmsWebInterface",
+			"registry"
+		],
+		"measureSets": [
+			"internalMedicine",
+			"obstetricsGynecology",
+			"preventiveMedicine",
+			"generalPracticeFamilyMedicine"
+		]
+	}
+]

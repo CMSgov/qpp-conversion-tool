@@ -1,18 +1,16 @@
-{
-"measureConfigs" : [
-  {
-    "category": "aci",
-    "firstPerformanceYear": 2017,
-    "lastPerformanceYear": null,
-    "metricType": "proportion",
-    "measureId": "ACI_EP_1",
-    "title": "e-Prescribing",
-    "description": "At least one permissible prescription written by the MIPS eligible clinician is queried for a drug formulary and transmitted electronically using certified EHR technology.",
-    "isRequired": true,
-    "weight": 0,
-    "measureSet": null,
-    "isBonus": false,
-    "objective": "electronicPrescribing"
-  }
+[
+	{
+		"category": "aci",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "proportion",
+		"measureId": "ACI_EP_1",
+		"title": "e-Prescribing",
+		"description": "At least one permissible prescription written by the MIPS eligible clinician is queried for a drug formulary and transmitted electronically using certified EHR technology.",
+		"isRequired": true,
+		"weight": 0,
+		"measureSet": null,
+		"isBonus": false,
+		"objective": "electronicPrescribing"
+	}
 ]
-}
