@@ -3321,6 +3321,18 @@
     "measureType": "process",
     "measureId": "310",
     "eMeasureId": "CMS153v5",
+    "eMeasureVerUUID": "40280381-51f0-825b-0152-22b52da917ba",
+    "subPopulation": [
+      {
+        "initialPopulationUUID": "A417988B-395B-4108-9988-1AE443A1E254",
+        "denominatorUUID": "F25492A9-8164-4833-9A91-EA160ECC9190",
+        "denominatorExclusionsUUID": "341797C7-3664-41E2-9771-6D85B2085BFA",
+        "numeratorUUID": "D387E1DC-F06A-4054-87B1-40B863FCF8EC",
+        "denominatorExceptionsUUID": null,
+        "strata1": "FAA4002D-24D4-4BB8-964C-20BCFEDE528E",
+        "strata2": "91E24063-2360-4A7C-9AAC-549971972FAC"
+      }
+    ],
     "nqfEMeasureId": null,
     "nqfId": "0033",
     "isInverse": false,
