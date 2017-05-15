@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -8,9 +9,15 @@ import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Validates a Measure Reference Results node.
@@ -48,20 +55,30 @@ public class QualityMeasureIdValidator extends NodeValidator {
 
 		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
 		for (SubPopulation subPopulation: subPopulations) {
-			validateDenominatorExclusion(node, subPopulation);
+			validateSubPopulation(node, subPopulation);
 		}
 	}
 
-	private void validateDenominatorExclusion(Node node, SubPopulation subPopulation) {
-		String denominatorExclusion = subPopulation.getDenominatorExclusionsUuid();
-		if (denominatorExclusion != null) {
-			List<Node> denominatorExclusionNode = node.getChildNodes(
-					thisNode -> "DENEX".equals(thisNode.getValue("type"))).collect(Collectors.toList());
-			if (denominatorExclusionNode.isEmpty()) {
-				this.getValidationErrors().add(
-						new ValidationError("The eCQM measure requires a denominator exclusion", node.getPath()));
+	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
+		List<Consumer<Node>> validations = Arrays.asList(
+				makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP", "denominator exception"),
+				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX", "denominator exclusion")
+		);
+		validations.forEach( validate -> validate.accept(node));
+	}
+
+	private Consumer<Node> makeValidator(Supplier<Object> check, String key, String label) {
+		return node -> {
+			if (check.get() != null) {
+				List<Node> denominatorExclusionNode = node.getChildNodes(
+						thisNode -> key.equals(thisNode.getValue("type")))
+						.collect(Collectors.toList());
+				if (denominatorExclusionNode.isEmpty()) {
+					this.getValidationErrors().add(
+							new ValidationError("The eCQM measure requires a " + label, node.getPath()));
+				}
 			}
-		}
+		};
 	}
 
 
