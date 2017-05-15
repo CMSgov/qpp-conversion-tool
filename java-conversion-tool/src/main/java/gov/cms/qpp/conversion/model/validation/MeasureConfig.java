@@ -25,8 +25,10 @@ public class MeasureConfig {
 	private boolean isBonus;
 	private String objective;
 
-	private String uuid;
-	private List<String> requiredPopulationCriteria;
+	private String eMeasureVerUUID;
+
+	@JsonProperty("subPopulation")
+	private List<SubPopulation> subPopulations;
 
 	public MeasureConfig() {
 		// empty constructor for jackson
@@ -128,19 +130,19 @@ public class MeasureConfig {
 		this.objective = objective;
 	}
 
-	public String getUuid() {
-		return uuid;
+	public String geteMeasureVerUUID() {
+		return eMeasureVerUUID;
 	}
 
-	public void setUuid(final String uuid) {
-		this.uuid = uuid;
+	public void seteMeasureVerUUID(final String eMeasureVerUUID) {
+		this.eMeasureVerUUID = eMeasureVerUUID;
 	}
 
-	public List<String> getRequiredPopulationCriteria() {
-		return requiredPopulationCriteria;
+	public List<SubPopulation> getSubPopulation() {
+		return subPopulations;
 	}
 
-	public void setRequiredPopulationCriteria(final List<String> requiredPopulationCriteria) {
-		this.requiredPopulationCriteria = requiredPopulationCriteria;
+	public void setSubPopulations(final List<SubPopulation> subPopulations) {
+		this.subPopulations = subPopulations;
 	}
 }
