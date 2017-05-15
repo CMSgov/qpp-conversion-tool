@@ -37,6 +37,11 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		validateMeasureConfigs(node);
 	}
 
+	/**
+	 * Checks current node to whether it contains all proper configurations from the initialized configuration map
+	 *
+	 * @param node The current node being validated
+	 */
 	private void validateMeasureConfigs(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 
@@ -52,6 +57,12 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		}
 	}
 
+	/**
+	 * Checks the current node sub population children for a denominator exclusion
+	 *
+	 * @param node The current parent node
+	 * @param subPopulation Current sub population to validate against
+	 */
 	private void validateDenominatorExclusion(Node node, SubPopulation subPopulation) {
 		String denominatorExclusion = subPopulation.getDenominatorExclusionsUuid();
 		if (denominatorExclusion != null) {
