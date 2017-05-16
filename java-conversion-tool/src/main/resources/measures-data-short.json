@@ -101,6 +101,55 @@
 		"category": "quality",
 		"firstPerformanceYear": 2017,
 		"lastPerformanceYear": null,
+		"metricType": "multiPerformanceRate",
+		"title": "HIV/AIDS: Pneumocystis Jiroveci Pneumonia (PCP) Prophylaxis",
+		"description": "Percentage of patients aged 6 weeks and older with a diagnosis of HIV/AIDS who were prescribed Pneumocystis jiroveci pneumonia (PCP) prophylaxis",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "160",
+		"eMeasureId": "CMS52v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0405",
+		"isInverse": false,
+		"eMeasureVerUUID": "40280381-51f0-825b-0152-2273af5a150b",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "E681DBF8-F827-4586-B3E0-178FF19EC3A2",
+				"denominatorUUID": "04BF53CE-6993-4EA2-BFE5-66E36172B388",
+				"denominatorExclusionsUUID": null,
+				"numeratorUUID": "631C0B49-83F4-4A54-96C4-7E0766B2407C",
+				"denominatorExceptionsUUID": "58347456-D1F3-4BBB-9B35-5D42825A0AB3"
+			},
+			{
+				"initialPopulationUUID": "AAC578DB-1900-43BD-BBBF-50014A5457E5",
+				"denominatorUUID": "1574973E-EB52-40C7-9709-25ABEDBA99A3",
+				"denominatorExclusionsUUID": null,
+				"numeratorUUID": "5B7AC4EC-547A-47E5-AC5E-618401175511",
+				"denominatorExceptionsUUID": "B7CCA1A6-F352-4A23-BC89-6FE9B60DC0C6"
+			},
+			{
+				"initialPopulationUUID": "AF36C4A9-8BD9-4E21-838D-A47A1845EB90",
+				"denominatorUUID": "B95BC0D3-572E-462B-BAA2-46CD33A865CD",
+				"denominatorExclusionsUUID": null,
+				"numeratorUUID": "86F74F07-D593-44F6-AA12-405966400963",
+				"denominatorExceptionsUUID": null
+			}
+		],
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"allergyImmunology",
+			"pediatrics"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
 		"metricType": "singlePerformanceRate",
 		"title": "Documentation of Current Medications in the Medical Record",
 		"description": "Percentage of visits for patients aged 18 years and older for which the eligible professional attests to documenting a list of current medications using all immediate resources available on the date of the encounter.  This list must include ALL known prescriptions, over-the-counters, herbals, and vitamin/mineral/dietary (nutritional) supplements AND must contain the medications' name, dosage, frequency and route of administration.",
