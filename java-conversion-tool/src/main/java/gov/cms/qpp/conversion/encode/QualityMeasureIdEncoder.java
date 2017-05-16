@@ -45,35 +45,33 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			wrapper.putString(MEASURE_ID, measureId);
 			encodeChildren(wrapper, node);
 		} else {
-			encodeMultiPerformanceRate2(node, wrapper, measureConfig);
+			encodeMultiPerformanceRate(node, wrapper, measureConfig);
 		}
-	}
-
-	private Map<String, Integer> createMap(MeasureConfig measureConfig) {
-		Map<String, Integer> supPopMap = new HashMap<>();
-		int index = 0;
-		for (SubPopulation subPopulation : measureConfig.getSubPopulation()) {
-			supPopMap.put(subPopulation.getDenominatorUuid(), index);
-			supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
-			supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
-			supPopMap.put(subPopulation.getNumeratorUuid(), index);
-			supPopMap.put(subPopulation.getInitialPopulationUuid(), index);
-			index++;
-		}
-		return supPopMap;
 	}
 
 	/**
+	 * Encodes a multi performance rate proportion measure
 	 *
-	 *
-	 * @param node
-	 * @param wrapper
-	 * @param measureConfig
+	 * @param node parent node that holds the current performance rate proportion measures
+	 * @param wrapper object to be encoded into
+	 * @param measureConfig configurations to group performance rate proportion measures
 	 */
-	private void encodeMultiPerformanceRate2(Node node, JsonWrapper wrapper, MeasureConfig measureConfig) {
+	private void encodeMultiPerformanceRate(Node node, JsonWrapper wrapper, MeasureConfig measureConfig) {
+		List<Node> subPopNodes = createSubPopulationGrouping(node, measureConfig);
+		encodeMultiPerformanceChildren(wrapper, subPopNodes);
+	}
+
+	/**
+	 * Creates a grouping of sub populations extracted from the measure configurations
+	 *
+	 * @param node object that holds the nodes to be grouped
+	 * @param measureConfig object that holds the groupings
+	 * @return
+	 */
+	private List<Node> createSubPopulationGrouping(Node node, MeasureConfig measureConfig) {
 		int subPopCount = measureConfig.getSubPopulation().size();
 		List<Node> subPopNodes = new ArrayList<>(subPopCount);
-		Map<String, Integer> mapPopulationIdToSubPopIndex = createMap(measureConfig);
+		Map<String, Integer> mapPopulationIdToSubPopIndex = createSubPopulationIndexMap(measureConfig);
 		for (Node childNode : node.getChildNodes()) {
 			String populationId = childNode.getValue("populationId");
 
@@ -85,7 +83,27 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			}
 			newParentNode.addChildNode(childNode);
 		}
-		encodeMultiPerformanceChildren(wrapper, subPopNodes);
+		return subPopNodes;
+	}
+
+	/**
+	 * Creates a map of child guids to indexes for sub population grouping
+	 *
+	 * @param measureConfig configurations that group the sub populations
+	 * @return
+	 */
+	private Map<String, Integer> createSubPopulationIndexMap(MeasureConfig measureConfig) {
+		Map<String, Integer> supPopMap = new HashMap<>();
+		int index = 0;
+		for (SubPopulation subPopulation : measureConfig.getSubPopulation()) {
+			supPopMap.put(subPopulation.getDenominatorUuid(), index);
+			supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
+			supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
+			supPopMap.put(subPopulation.getNumeratorUuid(), index);
+			supPopMap.put(subPopulation.getInitialPopulationUuid(), index);
+			index++;
+		}
+		return supPopMap;
 	}
 
 	/**
@@ -126,10 +144,16 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		wrapper.putObject("value", childWrapper);
 	}
 
+	/**
+	 * Encodes a sub population
+	 *
+	 * @param parentNode holder of the sub populations
+	 * @param childWrapper holder of encoded sub populations
+	 */
 	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper) {
 		this.encodePopulationTotal(childWrapper, parentNode);
 		this.encodePerformanceMet(childWrapper, parentNode);
-		this.encodePerformance(childWrapper, parentNode);
+		this.encodePerformanceNotMet(childWrapper, parentNode);
 
 		for (Node childNode : parentNode.getChildNodes()) {
 			JsonOutputEncoder measureDataEncoder = ENCODERS.get(childNode.getId());
@@ -137,6 +161,12 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		}
 	}
 
+	/**
+	 * Encodes a population total from a initial population node
+	 *
+	 * @param wrapper holder of the encoded initial population
+	 * @param parentNode holder of the initial population
+	 */
 	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
 		Set<String> accepted = new HashSet(Arrays.asList("IPOP", "IPP"));
 		Node populationNode = parentNode.findChildNode(n -> accepted.contains(n.getValue(TYPE)));
@@ -146,6 +176,12 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
 	}
 
+	/**
+	 * Encodes a performance met from a numerator node
+	 *
+	 * @param wrapper holder of the encoded numerator node
+	 * @param parentNode holder of the the numerator node
+	 */
 	private void encodePerformanceMet(JsonWrapper wrapper, Node parentNode) {
 		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(TYPE)));
 
@@ -154,7 +190,13 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
 	}
 
-	private void encodePerformance(JsonWrapper wrapper, Node parentNode) {
+	/**
+	 * Encodes a performance not met from denominator and denominator exclusion
+	 *
+	 * @param wrapper holder of the encoded denominator and denominator exclusion nodes
+	 * @param parentNode holder of the denominator and denominator exclusion nodes
+	 */
+	private void encodePerformanceNotMet(JsonWrapper wrapper, Node parentNode) {
 		Node denomExclusionNode = parentNode.findChildNode(n -> "DENEX".equals(n.getValue(TYPE)));
 		Node denominatorNode = parentNode.findChildNode(n -> "DENOM".equals(n.getValue(TYPE)));
 
