@@ -12,7 +12,7 @@ import org.jdom2.filter.Filters;
  * Decodes a Performance Rate Proportion Measure V2
  */
 @Decoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
-public class PerformanceRateProportionMeasure extends QppXmlDecoder {
+public class PerformanceRateProportionMeasureDecoder extends QppXmlDecoder {
 
 	/**
 	 * Decodes a Performance Rate Proportion Measure V2 from the current element
@@ -51,7 +51,7 @@ public class PerformanceRateProportionMeasure extends QppXmlDecoder {
 	private void decodePerformanceRateValue(Element element, Node thisNode) {
 		String performanceRateValueExpression = "./ns:value/@value";
 		Consumer<? super Attribute> consumer =
-				p -> thisNode.putValue("performanceRateValueExpression", p.getValue().toLowerCase());
+				p -> thisNode.putValue("performanceRateValue", p.getValue().toLowerCase());
 		setOnNode(element, performanceRateValueExpression, consumer, Filters.attribute(), true);
 	}
 
