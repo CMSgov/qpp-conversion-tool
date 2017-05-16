@@ -5,8 +5,15 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
+import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.SubPopulation;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,9 +36,57 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) {
+		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 		String measureId = QualityMeasuresLookup.getMeasureId(node.getValue(MEASURE_ID));
-		wrapper.putString(MEASURE_ID, measureId);
-		encodeChildren(wrapper, node);
+		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_ID));
+
+		MeasureConfig config = configurationMap.get(measureId);
+		if ("singlePerformanceRate".equalsIgnoreCase(measureConfig.getMetricType())) {
+			wrapper.putString(MEASURE_ID, measureId);
+			encodeChildren(wrapper, node);
+		} else {
+			encodeMultiPerformanceRate2(node, wrapper, measureConfig);
+		}
+	}
+
+	private Map<String, Integer> createMap(MeasureConfig measureConfig) {
+		Map<String, Integer> supPopMap = new HashMap<>();
+		int index = 0;
+		for(SubPopulation subPopulation : measureConfig.getSubPopulation()) {
+			supPopMap.put(subPopulation.getDenominatorUuid(), index);
+			supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
+			supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
+			supPopMap.put(subPopulation.getNumeratorUuid(), index);
+			supPopMap.put(subPopulation.getInitialPopulationUuid(), index);
+			index++;
+		}
+c
+		return supPopMap;
+	}
+
+	/**
+	 *
+	 *
+	 * @param node
+	 * @param wrapper
+	 * @param measureConfig
+	 */
+	private void encodeMultiPerformanceRate2(Node node, JsonWrapper wrapper, MeasureConfig measureConfig) {
+		int subPopCount = measureConfig.getSubPopulation().size();
+		List<Node> subPopNodes = new ArrayList<>(subPopCount);
+		Map<String, Integer> mapPopulationIdToSubPopIndex = createMap(measureConfig);
+		for(Node childNode : node.getChildNodes()) {
+			String populationId = childNode.getValue("populationId");
+
+			int subPopIndex = mapPopulationIdToSubPopIndex.get(populationId);
+			Node newParentNode = subPopNodes.get(subPopIndex);
+			if (newParentNode == null) {
+				newParentNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
+				subPopNodes.set(subPopIndex, newParentNode);
+			}
+			newParentNode.addChildNode(childNode);
+		}
+		encodeMultiPerformanceChildren(wrapper, subPopNodes);
 	}
 
 	/**
@@ -45,6 +100,34 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 		childWrapper.putBoolean("isEndToEndReported", "true");
 
+		encodeSubPopulation(parentNode, childWrapper);
+
+		wrapper.putObject("value", childWrapper);
+	}
+
+	/**
+	 * Encode multi performance child nodes
+	 *
+	 * @param wrapper holder for encoded node data
+	 * @param subPopNodes holder of the Quality Measures
+	 */
+	private void encodeMultiPerformanceChildren(JsonWrapper wrapper, List<Node> subPopNodes) {
+		JsonWrapper childWrapper = new JsonWrapper();
+
+		childWrapper.putBoolean("isEndToEndReported", "true");
+
+		JsonWrapper strataListWrapper = new JsonWrapper();
+		for (Node subPopNode : subPopNodes) {
+			JsonWrapper strataWrapper = new JsonWrapper();
+			encodeSubPopulation(subPopNode, strataWrapper);
+			strataListWrapper.putObject(strataWrapper);
+		}
+		childWrapper.putObject("strata", strataListWrapper);
+
+		wrapper.putObject("value", childWrapper);
+	}
+
+	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper) {
 		this.encodePopulationTotal(childWrapper, parentNode);
 		this.encodePerformanceMet(childWrapper, parentNode);
 		this.encodePerformance(childWrapper, parentNode);
@@ -53,8 +136,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			JsonOutputEncoder measureDataEncoder = ENCODERS.get(childNode.getId());
 			measureDataEncoder.encode(childWrapper, childNode);
 		}
-
-		wrapper.putObject("value", childWrapper);
 	}
 
 	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
@@ -102,5 +183,4 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 		return Integer.toString(Integer.parseInt(denominatorValue) - Integer.parseInt(denomExclusionValue));
 	}
-
 }
