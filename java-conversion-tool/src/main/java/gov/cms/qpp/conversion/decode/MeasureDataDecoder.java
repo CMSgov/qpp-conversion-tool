@@ -55,6 +55,12 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 
+	/**
+	 * Decodes a population id into the current node
+	 *
+	 * @param element object holding the population id
+	 * @param thisNode object to decode the population id into
+	 */
 	private void setPopulationId(Element element, Node thisNode) {
 		String expressionStr = "./ns:reference/ns:externalObservation/ns:id/@root";
 		Consumer<? super Attribute> consumer = attr -> {
