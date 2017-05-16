@@ -8,9 +8,10 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
-import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
 import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -86,7 +87,11 @@ public class QualityMeasureIdValidatorTest {
 		String message = String.format(REQUIRED_CHILD_MEASURE, "denominator exception");
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 				.addMeasureId("40280381-52fc-3a32-0153-3d64af97147b")
-				.addChildMeasure("MEEP", "MAWP")
+				.addChildMeasure("IPOP", "D412322D-11F1-4573-893E-E6A05855DE10")
+				.addChildMeasure("IPP", "XXX")
+				.addChildMeasure("NUMER", "EFFE261C-0D57-423E-992C-7141B132768C")
+				.addChildMeasure("DENOM", "MAWP")
+				.addChildMeasure("DENEX", "MAWP")
 				.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -163,14 +168,14 @@ public class QualityMeasureIdValidatorTest {
 		}
 
 		MeasureReferenceBuilder addMeasureId(String measureId) {
-			measureReferenceResultsNode.putValue(MEASURE_ID, measureId);
+			measureReferenceResultsNode.putValue(MEASURE_TYPE, measureId);
 			return this;
 		}
 
-		MeasureReferenceBuilder addChildMeasure(String type, String measureId) {
+		MeasureReferenceBuilder addChildMeasure(String type, String populationId) {
 			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
-			measureNode.putValue("type", type);
-			measureNode.putValue(MEASURE_ID, measureId);
+			measureNode.putValue(MEASURE_TYPE, type);
+			measureNode.putValue(MEASURE_POPULATION, populationId);
 			measureReferenceResultsNode.addChildNode(measureNode);
 			return this;
 		}

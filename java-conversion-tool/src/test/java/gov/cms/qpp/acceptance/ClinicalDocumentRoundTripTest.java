@@ -5,14 +5,15 @@ import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +41,18 @@ public class ClinicalDocumentRoundTripTest extends BaseTest {
 
 	@Test
 	public void parseClinicalDocument() throws Exception {
-		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
-		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		//ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
+		//String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
 
+		String xmlFragment = IOUtils.toString( new FileReader(
+				new File("/users/dave/datadrive/flexion/sampledata/2017QRDA_III_Sample_File_QPP_Conversion_MultiplePerformanceRate.xml")));
 		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment));
 
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(clinicalDocumentNode.getChildNodes());
+
+		QrdaValidator validator = new QrdaValidator();
+		validator.validate(clinicalDocumentNode);
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		List<Node> nodes = new ArrayList<>();

@@ -15,6 +15,9 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
+
 /**
  * Validates a Measure Reference Results node.
  */
@@ -23,8 +26,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	protected static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
-	protected static final String MEASURE_ID = "measureId";
-
+//
 	/**
 	 * Validates that the Measure Reference Results node contains...
 	 * <ul>
@@ -36,8 +38,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
-		thoroughlyCheck(node)
-			.value(MEASURE_GUID_MISSING, MEASURE_ID)
+		thoroughlyCheck(node).value(MEASURE_GUID_MISSING, MEASURE_TYPE)
 			.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
@@ -50,7 +51,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateMeasureConfigs(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 
-		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_ID));
+		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_TYPE));
 
 		if (measureConfig != null) {
 			validateAllSubPopulations(measureConfig, node);
@@ -75,19 +76,23 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		}
 	}
 
-	/**
-	 * Validate individual sub-populations.
-	 *
-	 * @param node to validate
-	 * @param subPopulation a grouping of measures
-	 */
-	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
-		List<Consumer<Node>> validations = Arrays.asList(
-				makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP", "denominator exception"),
-				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX", "denominator exclusion")
-		);
-		validations.forEach(validate -> validate.accept(node));
-	}
+  /**
+   * Validate individual sub-populations.
+   *
+   * @param node to validate
+   * @param subPopulation a grouping of measures
+   */
+  private void validateSubPopulation(Node node, SubPopulation subPopulation) {
+    List<Consumer<Node>> validations =
+        Arrays.asList(
+            makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP", "denominator exception"),
+            makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX", "denominator exclusion"),
+            makeValidator(subPopulation::getNumeratorUuid, "NUMER", "numerator"),
+            makeValidator(subPopulation::getInitialPopulationUuid, "IPOP", "initial population"),
+		    makeValidator(subPopulation::getInitialPopulationUuid, "IPP", "initial population"),
+            makeValidator(subPopulation::getDenominatorUuid, "DENOM", "denominator"));
+    validations.forEach(validate -> validate.accept(node));
+  }
 
 	/**
 	 * Method template for measure validations.
@@ -101,8 +106,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		return node -> {
 			if (check.get() != null) {
 				List<Node> childMeasureNode = node.getChildNodes(
-						thisNode -> key.equals(thisNode.getValue("type"))
-								&& check.get().equals(thisNode.getValue(MEASURE_ID)))
+						thisNode -> key.equals(thisNode.getValue(MEASURE_TYPE))
+								&& check.get().equals(thisNode.getValue(MEASURE_POPULATION)))
 						.collect(Collectors.toList());
 				if (childMeasureNode.isEmpty()) {
 					String message = String.format(REQUIRED_CHILD_MEASURE, label);
