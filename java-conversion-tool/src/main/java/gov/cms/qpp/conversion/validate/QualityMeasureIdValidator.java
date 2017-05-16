@@ -42,8 +42,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
 		thoroughlyCheck(node)
-				.value(MEASURE_GUID_MISSING, MEASURE_TYPE)
-				.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
+			.value(MEASURE_GUID_MISSING, MEASURE_TYPE)
+			.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
 
@@ -88,15 +88,11 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
 		List<Consumer<Node>> validations =
-				Arrays.asList(
-						makeValidator(
-								subPopulation::getDenominatorExceptionsUuid, "denominator exception", "DENEXCEP"),
-						makeValidator(
-								subPopulation::getDenominatorExclusionsUuid, "denominator exclusion", "DENEX"),
-						makeValidator(subPopulation::getNumeratorUuid, "numerator", "NUMER"),
-						makeValidator(
-								subPopulation::getInitialPopulationUuid, "initial population", "IPOP", "IPP"),
-						makeValidator(subPopulation::getDenominatorUuid, "denominator", "DENOM"));
+			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, "denominator exception", "DENEXCEP"),
+				makeValidator(subPopulation::getDenominatorExclusionsUuid, "denominator exclusion", "DENEX"),
+				makeValidator(subPopulation::getNumeratorUuid, "numerator", "NUMER"),
+				makeValidator(subPopulation::getInitialPopulationUuid, "initial population", "IPOP", "IPP"),
+				makeValidator(subPopulation::getDenominatorUuid, "denominator", "DENOM"));
 		validations.forEach(validate -> validate.accept(node));
 	}
 
@@ -131,11 +127,9 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	private Predicate<Node> makeChildFinder(Supplier<Object> check, String... keys) {
 		return thisNode -> {
-			boolean validMeasureType =
-					(keys.length > 1)
-							? Arrays.stream(keys).anyMatch(key -> key.equals(thisNode.getValue(MEASURE_TYPE)))
-							: keys[0].equals(thisNode.getValue(MEASURE_TYPE));
-
+			boolean validMeasureType = (keys.length > 1)
+				? Arrays.stream(keys).anyMatch(key -> key.equals(thisNode.getValue(MEASURE_TYPE)))
+				: keys[0].equals(thisNode.getValue(MEASURE_TYPE));
 			return validMeasureType && check.get().equals(thisNode.getValue(MEASURE_POPULATION));
 		};
 	}
