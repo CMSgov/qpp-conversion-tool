@@ -60,7 +60,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			supPopMap.put(subPopulation.getInitialPopulationUuid(), index);
 			index++;
 		}
-c
 		return supPopMap;
 	}
 
