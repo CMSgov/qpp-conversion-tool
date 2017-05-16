@@ -100,7 +100,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		return node -> {
 			if (check.get() != null) {
 				List<Node> childMeasureNode = node.getChildNodes(
-						thisNode -> key.equals(thisNode.getValue("type")))
+						thisNode -> key.equals(thisNode.getValue("type"))
+								&& check.get().equals(thisNode.getValue("measureId")))
 						.collect(Collectors.toList());
 				if (childMeasureNode.isEmpty()) {
 					String message = String.format(REQUIRED_CHILD_MEASURE, label);
