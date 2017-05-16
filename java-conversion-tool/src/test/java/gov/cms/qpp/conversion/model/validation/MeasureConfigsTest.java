@@ -21,7 +21,6 @@ public class MeasureConfigsTest {
 
 	@Test
 	public void testGoodMeasureDataFile() {
-
 		MeasureConfigs.setMeasureDataFile("measures-data-short.json");
 		//no exception thrown
 	}
