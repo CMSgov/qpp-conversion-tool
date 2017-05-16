@@ -52,7 +52,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private Map<String, Integer> createMap(MeasureConfig measureConfig) {
 		Map<String, Integer> supPopMap = new HashMap<>();
 		int index = 0;
-		for(SubPopulation subPopulation : measureConfig.getSubPopulation()) {
+		for (SubPopulation subPopulation : measureConfig.getSubPopulation()) {
 			supPopMap.put(subPopulation.getDenominatorUuid(), index);
 			supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
 			supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
@@ -74,7 +74,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		int subPopCount = measureConfig.getSubPopulation().size();
 		List<Node> subPopNodes = new ArrayList<>(subPopCount);
 		Map<String, Integer> mapPopulationIdToSubPopIndex = createMap(measureConfig);
-		for(Node childNode : node.getChildNodes()) {
+		for (Node childNode : node.getChildNodes()) {
 			String populationId = childNode.getValue("populationId");
 
 			int subPopIndex = mapPopulationIdToSubPopIndex.get(populationId);
