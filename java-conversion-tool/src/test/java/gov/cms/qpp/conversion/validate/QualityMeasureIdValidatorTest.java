@@ -10,6 +10,7 @@ import java.util.List;
 
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
+import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
 import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -162,14 +163,14 @@ public class QualityMeasureIdValidatorTest {
 		}
 
 		MeasureReferenceBuilder addMeasureId(String measureId) {
-			measureReferenceResultsNode.putValue("measureId", measureId);
+			measureReferenceResultsNode.putValue(MEASURE_ID, measureId);
 			return this;
 		}
 
 		MeasureReferenceBuilder addChildMeasure(String type, String measureId) {
 			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
 			measureNode.putValue("type", type);
-			measureNode.putValue("measureId", measureId);
+			measureNode.putValue(MEASURE_ID, measureId);
 			measureReferenceResultsNode.addChildNode(measureNode);
 			return this;
 		}
