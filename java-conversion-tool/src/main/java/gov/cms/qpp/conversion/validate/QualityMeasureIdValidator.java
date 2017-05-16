@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,13 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATIO
 /** Validates a Measure Reference Results node. */
 @Validator(templateId = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdValidator extends NodeValidator {
-	static final String MEASURE_GUID_MISSING =
-			"The measure reference results must have a measure GUID";
-	static final String NO_CHILD_MEASURE =
-			"The measure reference results must have at least one measure";
-	static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
+
+	protected static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
+	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
+	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
+	protected static final String DENEX = "denominator exclusion";
+	protected static final String DENEXCEP = "denominator exception";
+	protected static final String MEASURE_ID = "measureId";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -58,17 +61,17 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_TYPE));
 
 		if (measureConfig != null) {
-			validateAllSubPopulations(measureConfig, node);
+			validateAllSubPopulations(node, measureConfig);
 		}
 	}
 
 	/**
-	 * Validate sub-populations
+	 * Validates all the sub populations in the quality measure based on the measure configuration
 	 *
-	 * @param measureConfig Measure configuration meta data
-	 * @param node to validate
+	 * @param node The current parent node
+	 * @param measureConfig The measure configuration's sub population to use
 	 */
-	private void validateAllSubPopulations(MeasureConfig measureConfig, Node node) {
+	private void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig) {
 		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
 
 		if (subPopulations == null) {
@@ -87,12 +90,14 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * @param subPopulation a grouping of measures
 	 */
 	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
+
 		List<Consumer<Node>> validations =
 			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, "denominator exception", "DENEXCEP"),
 				makeValidator(subPopulation::getDenominatorExclusionsUuid, "denominator exclusion", "DENEX"),
 				makeValidator(subPopulation::getNumeratorUuid, "numerator", "NUMER"),
 				makeValidator(subPopulation::getInitialPopulationUuid, "initial population", "IPOP", "IPP"),
 				makeValidator(subPopulation::getDenominatorUuid, "denominator", "DENOM"));
+
 		validations.forEach(validate -> validate.accept(node));
 	}
 
@@ -117,6 +122,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			}
 		};
 	}
+
 
 	/**
 	 * Search filter for child measure nodes.

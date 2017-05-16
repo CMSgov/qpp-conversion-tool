@@ -1,0 +1,189 @@
+[
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "ADHD: Follow-Up Care for Children Prescribed Attention-Deficit/Hyperactivity Disorder (ADHD) Medication",
+		"description": "Percentage of children 6-12 years of age and newly dispensed a medication for attention-deficit/hyperactivity disorder (ADHD) who had appropriate follow-up care.  Two rates are reported.  \na. Percentage of children who had one follow-up visit with a practitioner with prescribing authority during the 30-Day Initiation Phase.\nb. Percentage of children who remained on ADHD medication for at least 210 days and who, in addition to the visit in the Initiation Phase, had at least two additional follow-up visits with a practitioner within 270 days (9 months) after the Initiation Phase ended.\n",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "366",
+		"eMeasureId": "CMS136v6",
+		"eMeasureVerUUID": "requiresNothingGuid",
+		"nqfEMeasureId": null,
+		"nqfId": "0108",
+		"isInverse": false,
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"mentalBehavioralHealth",
+			"pediatrics"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Controlling High Blood Pressure",
+		"description": "Percentage of patients 18-85 years of age who had a diagnosis of hypertension and whose blood pressure was adequately controlled (<140/90mmHg) during the measurement period",
+		"nationalQualityCode": "ECC",
+		"measureType": "intermediateOutcome",
+		"measureId": "236",
+		"eMeasureId": "CMS165v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0018",
+		"isInverse": false,
+		"eMeasureVerUUID": "requiresDenominatorExclusionGuid",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "3AD33404-E734-4F67-9144-E4B63CB3F4BE",
+				"denominatorUUID": "E62FEBA3-0F98-460D-93CD-44314D7203A8",
+				"denominatorExclusionsUUID": "55A6D5F3-2029-4896-B850-4C7894161D7D",
+				"numeratorUUID": "F9FEBF42-4B21-47A9-B03E-D2DA5CF8492B",
+				"denominatorExceptionsUUID": null
+			}
+		],
+		"strata": [
+			{
+				"description": "Percentage of patients 18 - 85 years of age who had a diagnosis of hypertension and whose blood pressure was adequately controlled (< 140/90 mmHg) during the measurement period",
+				"name": "hypertension"
+			}
+		],
+		"isHighPriority": true,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"claims",
+			"electronicHealthRecord",
+			"cmsWebInterface",
+			"registry"
+		],
+		"measureSets": [
+			"internalMedicine",
+			"cardiology",
+			"obstetricsGynecology",
+			"preventiveMedicine",
+			"thoracicSurgery",
+			"vascularSurgery",
+			"generalPracticeFamilyMedicine"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"title": "Documentation of Current Medications in the Medical Record",
+		"description": "Percentage of visits for patients aged 18 years and older for which the eligible professional attests to documenting a list of current medications using all immediate resources available on the date of the encounter.  This list must include ALL known prescriptions, over-the-counters, herbals, and vitamin/mineral/dietary (nutritional) supplements AND must contain the medications' name, dosage, frequency and route of administration.",
+		"nationalQualityCode": "PS",
+		"measureType": "process",
+		"measureId": "130",
+		"eMeasureId": "CMS68v6",
+		"nqfEMeasureId": null,
+		"nqfId": "0419",
+		"isInverse": false,
+		"eMeasureVerUUID": "requiresDenominatorExceptionGuid",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "D412322D-11F1-4573-893E-E6A05855DE10",
+				"denominatorUUID": "375D0559-C749-4BB9-9267-81EDF447650B",
+				"denominatorExclusionsUUID": null,
+				"numeratorUUID": "EFFE261C-0D57-423E-992C-7141B132768C",
+				"denominatorExceptionsUUID": "3C100EC4-2990-4D79-AE14-E816F5E78AC8"
+			}
+		],
+		"strata": [
+			{
+				"description": "Percentage of visits for patients aged 18 years and older for which the eligible clinician attests to documenting a list of current medications using all immediate resources available on the date of the encounter. This list must include ALL known prescriptions, over-the-counters, herbals, and vitamin/mineral/dietary (nutritional) supplements must contain the medications’ name, dosage, frequency and route of administration",
+				"name": "document"
+			}
+		],
+		"isHighPriority": true,
+		"primarySteward": "Centers for Medicare & Medicaid Services",
+		"submissionMethods": [
+			"claims",
+			"electronicHealthRecord",
+			"registry"
+		],
+		"measureSets": [
+			"allergyImmunology",
+			"internalMedicine",
+			"anesthesiology",
+			"cardiology",
+			"dermatology",
+			"emergencyMedicine",
+			"gastroenterology",
+			"generalSurgery",
+			"generalOncology",
+			"hospitalists",
+			"neurology",
+			"obstetricsGynecology",
+			"ophthalmology",
+			"orthopedicSurgery",
+			"otolaryngology",
+			"physicalMedicine",
+			"preventiveMedicine",
+			"rheumatology",
+			"thoracicSurgery",
+			"urology",
+			"vascularSurgery",
+			"mentalBehavioralHealth",
+			"plasticSurgery",
+			"generalPracticeFamilyMedicine"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "multiPerformanceRate",
+		"title": "HIV/AIDS: Pneumocystis Jiroveci Pneumonia (PCP) Prophylaxis",
+		"description": "Percentage of patients aged 6 weeks and older with a diagnosis of HIV/AIDS who were prescribed Pneumocystis jiroveci pneumonia (PCP) prophylaxis",
+		"nationalQualityCode": "ECC",
+		"measureType": "process",
+		"measureId": "160",
+		"eMeasureId": "CMS52v5",
+		"nqfEMeasureId": null,
+		"nqfId": "0405",
+		"isInverse": false,
+		"eMeasureVerUUID": "multiplePopulationDenominatorExceptionGuid",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "E681DBF8-F827-4586-B3E0-178FF19EC3A2",
+				"denominatorUUID": "04BF53CE-6993-4EA2-BFE5-66E36172B388",
+				"denominatorExclusionsUUID": null,
+				"numeratorUUID": "631C0B49-83F4-4A54-96C4-7E0766B2407C",
+				"denominatorExceptionsUUID": "58347456-D1F3-4BBB-9B35-5D42825A0AB3"
+			},
+			{
+				"initialPopulationUUID": "AAC578DB-1900-43BD-BBBF-50014A5457E5",
+				"denominatorUUID": "1574973E-EB52-40C7-9709-25ABEDBA99A3",
+				"denominatorExclusionsUUID": null,
+				"numeratorUUID": "5B7AC4EC-547A-47E5-AC5E-618401175511",
+				"denominatorExceptionsUUID": "B7CCA1A6-F352-4A23-BC89-6FE9B60DC0C6"
+			},
+			{
+				"initialPopulationUUID": "AF36C4A9-8BD9-4E21-838D-A47A1845EB90",
+				"denominatorUUID": "B95BC0D3-572E-462B-BAA2-46CD33A865CD",
+				"denominatorExclusionsUUID": null,
+				"numeratorUUID": "86F74F07-D593-44F6-AA12-405966400963",
+				"denominatorExceptionsUUID": null
+			}
+		],
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "National Committee for Quality Assurance",
+		"submissionMethods": [
+			"electronicHealthRecord"
+		],
+		"measureSets": [
+			"allergyImmunology",
+			"pediatrics"
+		]
+	}
+]

@@ -3,6 +3,9 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -15,9 +18,20 @@ import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validati
 import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
 
 public class QualityMeasureIdValidatorTest {
 	private QualityMeasureIdValidator objectUnderTest = new QualityMeasureIdValidator();
+
+	@BeforeClass
+	public static void setupCustomMeasuresData() {
+		MeasureConfigs.setMeasureDataFile("reduced-test-measures-data.json");
+	}
+
+	@AfterClass
+	public static void resetMeasuresData() {
+		MeasureConfigs.setMeasureDataFile("measures-data-short.json");
+	}
 
 	@Test
 	public void validateHappyPath() {
@@ -63,6 +77,24 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
+	public void testDenominatorExclusionExists() {
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder().addMeasureId("requiresDenominatorExclusionGuid").addSubPopulationMeasureData("DENEX", "55A6D5F3-2029-4896-B850-4C7894161D7D").build();
+
+		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		assertThat("There must be zero validation errors.", validationErrors, empty());
+	}
+
+	@Test
+	public void testDenominatorExclusionMissing() {
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder().addMeasureId("requiresDenominatorExclusionGuid").addSubPopulationMeasureData("DENEXCEP", "anything").build();
+
+		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		assertThat("There must be a validation error.", validationErrors, hasSize(1));
+		assertThat("Incorrect validation error.", validationErrors,
+			containsValidationErrorInAnyOrderIgnoringPath(String.format(QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE, QualityMeasureIdValidator.DENEX)));
+	}
+
+	@Test
 	public void testInternalValidateSameTemplateIdNodes() {
 		List<ValidationError> validationErrors = objectUnderTest.validateSameTemplateIdNodes(
 			Arrays.asList(createMeasureReferenceResultsNode(), createMeasureReferenceResultsNode()));
@@ -73,12 +105,14 @@ public class QualityMeasureIdValidatorTest {
 	@Test
 	public void testInternalExistingDenexcepMeasure() {
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+
 			.addMeasureId("40280381-52fc-3a32-0153-3d64af97147b")
 			.addChildMeasure("DENEXCEP", "3C100EC4-2990-4D79-AE14-E816F5E78AC8")
 			.addChildMeasure("IPOP", "D412322D-11F1-4573-893E-E6A05855DE10")
 			.addChildMeasure("DENOM", "375D0559-C749-4BB9-9267-81EDF447650B")
 			.addChildMeasure("NUMER", "EFFE261C-0D57-423E-992C-7141B132768C")
 			.build();
+
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must not be any validation errors.", validationErrors, hasSize(0));
@@ -100,8 +134,9 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testInternalMissingDenexcepMeasure() {
-		String message = String.format(REQUIRED_CHILD_MEASURE, "denominator exception");
+		String message = String.format(REQUIRED_CHILD_MEASURE, QualityMeasureIdValidator.DENEXCEP);
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+
 			.addMeasureId("40280381-52fc-3a32-0153-3d64af97147b")
 			.addChildMeasure("IPOP", "D412322D-11F1-4573-893E-E6A05855DE10")
 			.addChildMeasure("NUMER", "EFFE261C-0D57-423E-992C-7141B132768C")
@@ -112,11 +147,17 @@ public class QualityMeasureIdValidatorTest {
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertThat("Incorrect validation error.", validationErrors.get(0), validationErrorTextMatches(message));
+
+		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		assertThat("Incorrect validation error.", validationErrors,
+			containsValidationErrorInAnyOrderIgnoringPath(message));
 	}
 
 	@Test
 	public void testInternalDenexcepMultipleSupPopulations() {
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+
 			.addMeasureId("40280381-51f0-825b-0152-2273af5a150b")
 			.addChildMeasure("IPOP", "E681DBF8-F827-4586-B3E0-178FF19EC3A2")
 			.addChildMeasure("DENOM", "04BF53CE-6993-4EA2-BFE5-66E36172B388")
@@ -139,7 +180,7 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testInternalDenexcepMultipleSupPopulationsInvalidMeasureId() {
-		String message = String.format(REQUIRED_CHILD_MEASURE, "denominator exception");
+		String message = String.format(REQUIRED_CHILD_MEASURE, QualityMeasureIdValidator.DENEXCEP);
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 			.addMeasureId("40280381-51f0-825b-0152-2273af5a150b")
 			.addChildMeasure("IPOP", "E681DBF8-F827-4586-B3E0-178FF19EC3A2")
@@ -147,10 +188,12 @@ public class QualityMeasureIdValidatorTest {
 			.addChildMeasure("DENEXCEP", "58347456-D1F3-4BBB-9B35-5D42825A0AB3__")
 			.addChildMeasure("NUMER", "631C0B49-83F4-4A54-96C4-7E0766B2407C")
 
+
 			.addChildMeasure("IPOP", "AAC578DB-1900-43BD-BBBF-50014A5457E5")
 			.addChildMeasure("DENOM", "1574973E-EB52-40C7-9709-25ABEDBA99A3")
 			.addChildMeasure("DENEXCEP", "B7CCA1A6-F352-4A23-BC89-6FE9B60DC0C6")
 			.addChildMeasure("NUMER", "5B7AC4EC-547A-47E5-AC5E-618401175511")
+
 
 			.addChildMeasure("IPOP", "AF36C4A9-8BD9-4E21-838D-A47A1845EB90")
 			.addChildMeasure("DENOM", "B95BC0D3-572E-462B-BAA2-46CD33A865CD")
@@ -160,12 +203,14 @@ public class QualityMeasureIdValidatorTest {
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("Incorrect validation error.", validationErrors.get(0), validationErrorTextMatches(message));
+
 	}
 
 	@Test
 	public void testInternalDenexcepMultipleSupPopulationsMissingMeasureId() {
-		String message = String.format(REQUIRED_CHILD_MEASURE, "denominator exception");
+		String message = String.format(REQUIRED_CHILD_MEASURE, QualityMeasureIdValidator.DENEXCEP);
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+
 			.addMeasureId("40280381-51f0-825b-0152-2273af5a150b")
 			.addChildMeasure("IPOP", "E681DBF8-F827-4586-B3E0-178FF19EC3A2")
 			.addChildMeasure("DENOM", "04BF53CE-6993-4EA2-BFE5-66E36172B388")
@@ -175,6 +220,7 @@ public class QualityMeasureIdValidatorTest {
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("Incorrect validation error.", validationErrors.get(0), validationErrorTextMatches(message));
+
 	}
 
 	private Node createMeasureReferenceResultsNode() {
@@ -184,10 +230,10 @@ public class QualityMeasureIdValidatorTest {
 	private Node createMeasureReferenceResultsNode(boolean addMeasureGuid, boolean addChildMeasure) {
 		MeasureReferenceBuilder builder = new MeasureReferenceBuilder();
 		if (addMeasureGuid) {
-			builder.addMeasureId("asdf-1234-jkl-7890");
+			builder.addMeasureId("requiresNothingGuid");
 		}
 		if (addChildMeasure) {
-			builder.addChildMeasure("", "");
+			builder.addSubPopulationMeasureData("", "");
 		}
 		return builder.build();
 	}
@@ -203,10 +249,12 @@ public class QualityMeasureIdValidatorTest {
 			return this;
 		}
 
+
 		MeasureReferenceBuilder addChildMeasure(String type, String populationId) {
 			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
 			measureNode.putValue(MEASURE_TYPE, type);
 			measureNode.putValue(MEASURE_POPULATION, populationId);
+
 			measureReferenceResultsNode.addChildNode(measureNode);
 			return this;
 		}
