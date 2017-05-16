@@ -23,6 +23,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	protected static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
+	protected static final String MEASURE_ID = "measureId";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -36,7 +37,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
 		thoroughlyCheck(node)
-			.value(MEASURE_GUID_MISSING, "measureId")
+			.value(MEASURE_GUID_MISSING, MEASURE_ID)
 			.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
@@ -49,7 +50,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateMeasureConfigs(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 
-		MeasureConfig measureConfig = configurationMap.get(node.getValue("measureId"));
+		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_ID));
 
 		if (measureConfig != null) {
 			validateAllSubPopulations(measureConfig, node);
@@ -100,7 +101,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		return node -> {
 			if (check.get() != null) {
 				List<Node> childMeasureNode = node.getChildNodes(
-						thisNode -> key.equals(thisNode.getValue("type")))
+						thisNode -> key.equals(thisNode.getValue("type"))
+								&& check.get().equals(thisNode.getValue(MEASURE_ID)))
 						.collect(Collectors.toList());
 				if (childMeasureNode.isEmpty()) {
 					String message = String.format(REQUIRED_CHILD_MEASURE, label);
