@@ -21,6 +21,7 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 			new HashSet<>(Arrays.asList("DENEX", "DENOM", "DENEXCEP", "IPP",  "IPOP", "NUMER"));
 
 	public static final String MEASURE_TYPE = "type";
+	public static final String MEASURE_POPULATION = "populationId";
 
 
 	/**
@@ -33,7 +34,7 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		setMeasure(element, thisNode);
-
+		setPopulationId(element, thisNode);
 		return thisNode.hasValue(MEASURE_TYPE) ? DecodeResult.TREE_CONTINUE : DecodeResult.TREE_ESCAPED;
 	}
 
@@ -50,6 +51,15 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 			if (MEASURES.contains(code)) {
 				thisNode.putValue(MEASURE_TYPE, code);
 			}
+		};
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+	}
+
+	private void setPopulationId(Element element, Node thisNode) {
+		String expressionStr = "./ns:reference/ns:externalObservation/ns:id/@root";
+		Consumer<? super Attribute> consumer = attr -> {
+			String code = attr.getValue();
+			thisNode.putValue(MEASURE_POPULATION, code);
 		};
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
