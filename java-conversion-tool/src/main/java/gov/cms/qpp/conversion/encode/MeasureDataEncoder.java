@@ -32,7 +32,6 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 		Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 
 		wrapper.putInteger(measureTypeMapper.get(measureType), aggCount.getValue(AGGREGATE_COUNT));
-		wrapper.putString("populationId",populationId);
 	}
 
 	/**
