@@ -1,9 +1,0 @@
-{
-  "errorSources" : [ {
-    "sourceIdentifier" : "test.xml",
-    "validationErrors" : [ {
-      "errorText" : "The file is not a QRDA-III XML document",
-      "path" : ""
-    } ]
-  } ]
-}
