@@ -36,9 +36,13 @@ public class QualityMeasureIdValidator extends NodeValidator {
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
-	 * A measure GUID.
-	 * At least one quality measure.
-
+	 *
+	 * <ul>
+	 *	 <li>A measure GUID.</li>
+	 *	 <li>At least one quality measure.</li>
+	 *	 <li>And validates the sub-populations</li>
+	 * </ul>
+	 *
 	 * @param node The node to validate.
 	 */
 
