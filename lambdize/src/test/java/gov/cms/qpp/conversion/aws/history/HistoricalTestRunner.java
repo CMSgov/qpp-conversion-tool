@@ -1,14 +1,15 @@
 package gov.cms.qpp.conversion.aws.history;
 
-import gov.cms.qpp.conversion.util.JsonHelper;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
+
 import org.junit.Ignore;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
+import gov.cms.qpp.conversion.util.JsonHelper;
 
 
 /**
@@ -52,7 +53,7 @@ public class HistoricalTestRunner extends BlockJUnit4ClassRunner {
 	 * @return property map
 	 */
 	private Map<String, String> getS3Properties() {
-		Map<String, String> properties = null;
+		Map<String, String> properties;
 		try {
 			Path path = Paths.get("src")
 					.resolve("test")
@@ -63,11 +64,18 @@ public class HistoricalTestRunner extends BlockJUnit4ClassRunner {
 			runHistoricalTests = false;
 			System.err.println("You must configure an s3Properties.json file.  Will not run historical tests.");
 			e.printStackTrace(System.err);
+			return null;
 		}
 
-		if (properties == null || !(properties.containsKey(ACCESS) && properties.containsKey(SECRET))) {
+		System.getProperties().entrySet()
+			.stream()
+			.filter(property -> property.getKey() instanceof String)
+			.filter(property -> property.getValue() instanceof String)
+			.forEach(property -> properties.put((String) property.getKey(), (String) property.getValue()));
+
+		if (!properties.containsKey(ACCESS) || !properties.containsKey(SECRET)) {
 			runHistoricalTests = false;
-			String message = String.format("s3Properties.json must contain %s and %s configurations.  Will not run historical tests.", ACCESS, SECRET);
+			String message = String.format("s3Properties.json must contain %s and %s configurations. Will not run historical tests.", ACCESS, SECRET);
 			System.err.println(message);
 		}
 
