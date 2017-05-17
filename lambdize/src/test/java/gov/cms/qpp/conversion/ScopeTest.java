@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion;
 
-
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectListing;
@@ -14,7 +13,6 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import net.minidev.json.JSONArray;
-import org.apache.commons.cli.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,10 +37,11 @@ import static org.hamcrest.core.Is.is;
 
 @RunWith(HistoricalTestRunner.class)
 public class ScopeTest {
+
 	private static final String BUCKET = "qrda-history";
 
 	@Test(expected=PathNotFoundException.class)
-	public void historicalAciSectionScope() throws ParseException {
+	public void historicalAciSectionScope() throws Exception {
 		//setup
 		setup("-t", "ACI_SECTION", "-b");
 
@@ -51,7 +50,7 @@ public class ScopeTest {
 	}
 
 	@Test(expected=PathNotFoundException.class)
-	public void historicalIaSectionScope() throws ParseException {
+	public void historicalIaSectionScope() throws Exception {
 		//setup
 		setup("-t", "IA_SECTION", "-b");
 
@@ -60,7 +59,7 @@ public class ScopeTest {
 	}
 
 	@Test(expected=PathNotFoundException.class)
-	public void historicalIAMeasurePerformedScope() throws ParseException{
+	public void historicalIAMeasurePerformedScope() throws Exception {
 		//setup
 		setup("-t", "IA_MEASURE", "-b");
 
@@ -70,11 +69,9 @@ public class ScopeTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void historicalClinicalDocumentScope() throws ParseException{
+	public void historicalClinicalDocumentScope() throws Exception {
 		//setup
 		setup("-t", "CLINICAL_DOCUMENT", "-b");
-		String errorMessage =
-				"Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
 
 		//when
 		List<JSONArray> results =
@@ -93,24 +90,21 @@ public class ScopeTest {
 	}
 
 	//setup
-	private static void setup(String... args) throws ParseException {
+	private static void setup(String... args) throws Exception {
 		validatedScope(checkFlags(cli(args)));
 		resetRegistries();
 	}
 
-	private static void resetRegistries() {
-		try {
-			updateRegistry(QppXmlDecoder.class.getDeclaredField("DECODERS"));
-			updateRegistry(QrdaValidator.class.getDeclaredField("VALIDATORS"));
-			updateRegistry(QppOutputEncoder.class.getDeclaredField("ENCODERS"));
-		} catch(Exception e) {
-			e.printStackTrace(System.err);
-		}
+	private static void resetRegistries() throws Exception {
+		updateRegistry(QppXmlDecoder.class, "DECODERS");
+		updateRegistry(QrdaValidator.class, "VALIDATORS");
+		updateRegistry(QppOutputEncoder.class, "ENCODERS");
 	}
 
-	private static void updateRegistry(Field registry) throws IllegalAccessException {
+	private static void updateRegistry(Class<?> location, String registryField) throws Exception {
+		Field registry = location.getDeclaredField(registryField);
 		registry.setAccessible(true);
-		((Registry) registry.get(null)).load();
+		((Registry<?, ?>) registry.get(null)).load();
 	}
 
 	/**
@@ -138,7 +132,6 @@ public class ScopeTest {
 	 * @param expectedStatus expected outcome of respective conversions
 	 * @return a conversion function
 	 */
-	@SuppressWarnings("unchecked")
 	private Function<S3Object, List<?>> convertEm(String jsonPath, TransformationStatus expectedStatus) {
 		return s3Object -> {
 			Converter convert = null;
