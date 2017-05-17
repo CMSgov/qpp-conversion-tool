@@ -12,11 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-/** Decoder for CMS V2 Measure Data */
+/**
+ * Decoder for CMS V2 Measure Data
+ */
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataDecoder extends QppXmlDecoder {
 	protected static final Set<String> MEASURES =
-			new HashSet<>(Arrays.asList("DENEX", "DENOM", "DENEXCEP", "IPP", "IPOP", "NUMER"));
+		new HashSet<>(Arrays.asList("DENEX", "DENOM", "DENEXCEP", "IPP", "IPOP", "NUMER"));
 
 	public static final String MEASURE_TYPE = "type";
 	public static final String MEASURE_POPULATION = "populationId";
@@ -44,12 +46,12 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 	private void setMeasure(Element element, Node thisNode) {
 		String expressionStr = "./ns:value/@code";
 		Consumer<? super Attribute> consumer =
-				attr -> {
-					String code = attr.getValue();
-					if (MEASURES.contains(code)) {
-						thisNode.putValue(MEASURE_TYPE, code);
-					}
-				};
+			attr -> {
+				String code = attr.getValue();
+				if (MEASURES.contains(code)) {
+					thisNode.putValue(MEASURE_TYPE, code);
+				}
+			};
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 

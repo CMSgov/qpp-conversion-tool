@@ -8,7 +8,6 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +16,12 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
-/** Validates a Measure Reference Results node. */
+/**
+ * Validates a Measure Reference Results node.
+ */
 @Validator(templateId = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdValidator extends NodeValidator {
 
@@ -35,12 +36,9 @@ public class QualityMeasureIdValidator extends NodeValidator {
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
-	 *
-	 * <ul>
-	 *	 <li>A measure GUID.
-	 *	 <li>At least one quality measure.
-	 * </ul>
-	 *
+	 * A measure GUID.
+	 * At least one quality measure.
+
 	 * @param node The node to validate.
 	 */
 
@@ -110,7 +108,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * @param keys that identify measures
 	 * @param label a short measure description
 	 * @return a callback / consumer that will perform a measure specific validation against a given
-	 *		 node.
+	 * node.
 	 */
 	private Consumer<Node> makeValidator(Supplier<Object> check, String label, String... keys) {
 		return node -> {

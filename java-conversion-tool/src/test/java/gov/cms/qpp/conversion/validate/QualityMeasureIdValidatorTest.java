@@ -102,7 +102,9 @@ public class QualityMeasureIdValidatorTest {
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must be a validation error.", validationErrors, hasSize(1));
 		assertThat("Incorrect validation error.", validationErrors,
-				containsValidationErrorInAnyOrderIgnoringPath(String.format(QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE, "denominator exclusion")));
+				containsValidationErrorInAnyOrderIgnoringPath(
+						String.format(QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE,
+						QualityMeasureIdValidator.DENEX)));
 	}
 
 	@Test
