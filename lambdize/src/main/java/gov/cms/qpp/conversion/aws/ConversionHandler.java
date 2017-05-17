@@ -30,7 +30,7 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			AmazonS3 s3Client = getClient();
 			S3Object s3Object = s3Client.getObject(new GetObjectRequest(srcBucket, srcKey));
 
-			Converter converter = new Converter(s3Object.getObjectContent());
+			Converter converter = new Converter(new NamedInputStream(srcKey, s3Object.getObjectContent()));
 			TransformationStatus status = converter.transform();
 
 			if (status != TransformationStatus.NON_RECOVERABLE) {
