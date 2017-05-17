@@ -20,6 +20,42 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 
 public class QualityMeasureIdValidatorTest {
+
+	final String IPOP = "IPOP";
+	final String IPP = "IPP";
+	final String DENOM = "DENOM";
+	final String NUMER = "NUMER";
+	final String DENEX = "DENEX";
+	final String DENEXCEP = "DENEXCEP";
+
+	final String REQUIRES_DENOM_EXCLUSION_GUID = "requiresDenominatorExclusionGuid";
+	final String REQUIRES_DENOM_EXCLUSION_IPOP_GUID = "3AD33404-E734-4F67-9144-E4B63CB3F4BE";
+	final String REQUIRES_DENOM_EXCLUSION_DENOM_GUID = "E62FEBA3-0F98-460D-93CD-44314D7203A8";
+	final String REQUIRES_DENOM_EXCLUSION_NUMER_GUID = "F9FEBF42-4B21-47A9-B03E-D2DA5CF8492B";
+	final String REQUIRES_DENOM_EXCLUSION_DENEX_GUID = "55A6D5F3-2029-4896-B850-4C7894161D7D";
+
+	final String REQUIRES_DENOM_EXCEPTION_GUID = "requiresDenominatorExceptionGuid";
+	final String REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID = "3C100EC4-2990-4D79-AE14-E816F5E78AC8";
+	final String REQUIRES_DENOM_EXCEPTION_IPOP_GUID = "D412322D-11F1-4573-893E-E6A05855DE10";
+	final String REQUIRES_DENOM_EXCEPTION_DENOM_GUID = "375D0559-C749-4BB9-9267-81EDF447650B";
+	final String REQUIRES_DENOM_EXCEPTION_NUMER_GUID = "EFFE261C-0D57-423E-992C-7141B132768C";
+
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID = "multiplePopulationDenominatorExceptionGuid";
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID = "E681DBF8-F827-4586-B3E0-178FF19EC3A2";
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM1_GUID = "04BF53CE-6993-4EA2-BFE5-66E36172B388";
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID = "58347456-D1F3-4BBB-9B35-5D42825A0AB3";
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID = "631C0B49-83F4-4A54-96C4-7E0766B2407C";
+
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP2_GUID = "AAC578DB-1900-43BD-BBBF-50014A5457E5";
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM2_GUID = "1574973E-EB52-40C7-9709-25ABEDBA99A3";
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXECEP2_GUID = "B7CCA1A6-F352-4A23-BC89-6FE9B60DC0C6";
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID = "5B7AC4EC-547A-47E5-AC5E-618401175511";
+
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP3_GUID = "AF36C4A9-8BD9-4E21-838D-A47A1845EB90";
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM3_GUID = "B95BC0D3-572E-462B-BAA2-46CD33A865CD";
+	final String MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID = "86F74F07-D593-44F6-AA12-405966400963";
+
+
 	private QualityMeasureIdValidator objectUnderTest = new QualityMeasureIdValidator();
 
 	@BeforeClass
@@ -49,7 +85,7 @@ public class QualityMeasureIdValidatorTest {
 
 		assertThat("There must be only one validation error.", validationErrors, hasSize(1));
 		assertThat("Incorrect validation error.", validationErrors,
-				containsValidationErrorInAnyOrderIgnoringPath(QualityMeasureIdValidator.MEASURE_GUID_MISSING));
+			containsValidationErrorInAnyOrderIgnoringPath(QualityMeasureIdValidator.MEASURE_GUID_MISSING));
 	}
 
 	@Test
@@ -60,7 +96,7 @@ public class QualityMeasureIdValidatorTest {
 
 		assertThat("There must be only one validation error.", validationErrors, hasSize(1));
 		assertThat("Incorrect validation error.", validationErrors,
-				containsValidationErrorInAnyOrderIgnoringPath(QualityMeasureIdValidator.NO_CHILD_MEASURE));
+			containsValidationErrorInAnyOrderIgnoringPath(QualityMeasureIdValidator.NO_CHILD_MEASURE));
 	}
 
 	@Test
@@ -71,19 +107,19 @@ public class QualityMeasureIdValidatorTest {
 
 		assertThat("There must be only two validation errors.", validationErrors, hasSize(2));
 		assertThat("Incorrect validation error.", validationErrors,
-				containsValidationErrorInAnyOrderIgnoringPath(QualityMeasureIdValidator.MEASURE_GUID_MISSING,
-						QualityMeasureIdValidator.NO_CHILD_MEASURE));
+			containsValidationErrorInAnyOrderIgnoringPath(QualityMeasureIdValidator.MEASURE_GUID_MISSING,
+				QualityMeasureIdValidator.NO_CHILD_MEASURE));
 	}
 
 	@Test
 	public void testDenominatorExclusionExists() {
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-				.addMeasureId("requiresDenominatorExclusionGuid")
-				.addSubPopulationMeasureData("IPOP", "3AD33404-E734-4F67-9144-E4B63CB3F4BE")
-				.addSubPopulationMeasureData("DENOM", "E62FEBA3-0F98-460D-93CD-44314D7203A8")
-				.addSubPopulationMeasureData("NUMER", "F9FEBF42-4B21-47A9-B03E-D2DA5CF8492B")
-				.addSubPopulationMeasureData("DENEX", "55A6D5F3-2029-4896-B850-4C7894161D7D")
-				.build();
+			.addMeasureId(REQUIRES_DENOM_EXCLUSION_GUID)
+			.addSubPopulationMeasureData(IPOP, REQUIRES_DENOM_EXCLUSION_IPOP_GUID)
+			.addSubPopulationMeasureData(DENOM, REQUIRES_DENOM_EXCLUSION_DENOM_GUID)
+			.addSubPopulationMeasureData(NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID)
+			.addSubPopulationMeasureData(DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID)
+			.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must be zero validation errors.", validationErrors, empty());
@@ -92,19 +128,19 @@ public class QualityMeasureIdValidatorTest {
 	@Test
 	public void testDenominatorExclusionMissing() {
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-				.addMeasureId("requiresDenominatorExclusionGuid")
-				.addSubPopulationMeasureData("DENEXCEP", "anything")
-				.addSubPopulationMeasureData("IPOP", "3AD33404-E734-4F67-9144-E4B63CB3F4BE")
-				.addSubPopulationMeasureData("DENOM", "E62FEBA3-0F98-460D-93CD-44314D7203A8")
-				.addSubPopulationMeasureData("NUMER", "F9FEBF42-4B21-47A9-B03E-D2DA5CF8492B")
-				.build();
+			.addMeasureId(REQUIRES_DENOM_EXCLUSION_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, "anything")
+			.addSubPopulationMeasureData(IPOP, REQUIRES_DENOM_EXCLUSION_IPOP_GUID)
+			.addSubPopulationMeasureData(DENOM, REQUIRES_DENOM_EXCLUSION_DENOM_GUID)
+			.addSubPopulationMeasureData(NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID)
+			.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must be a validation error.", validationErrors, hasSize(1));
 		assertThat("Incorrect validation error.", validationErrors,
-				containsValidationErrorInAnyOrderIgnoringPath(
-						String.format(QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE,
-						QualityMeasureIdValidator.DENEX)));
+			containsValidationErrorInAnyOrderIgnoringPath(
+				String.format(QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE,
+				QualityMeasureIdValidator.DENEX)));
 	}
 
 	@Test
@@ -118,14 +154,12 @@ public class QualityMeasureIdValidatorTest {
 	@Test
 	public void testInternalExistingDenexcepMeasure() {
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-
-				.addMeasureId("requiresDenominatorExceptionGuid")
-				.addSubPopulationMeasureData("DENEXCEP", "3C100EC4-2990-4D79-AE14-E816F5E78AC8")
-				.addSubPopulationMeasureData("IPOP", "D412322D-11F1-4573-893E-E6A05855DE10")
-				.addSubPopulationMeasureData("DENOM", "375D0559-C749-4BB9-9267-81EDF447650B")
-				.addSubPopulationMeasureData("NUMER", "EFFE261C-0D57-423E-992C-7141B132768C")
-				.build();
-
+			.addMeasureId(REQUIRES_DENOM_EXCEPTION_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID)
+			.addSubPopulationMeasureData(IPOP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID)
+			.addSubPopulationMeasureData(DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID)
+			.addSubPopulationMeasureData(NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID)
+			.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must not be any validation errors.", validationErrors, hasSize(0));
@@ -134,12 +168,12 @@ public class QualityMeasureIdValidatorTest {
 	@Test
 	public void testInternalIPPMeasure() {
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-				.addMeasureId("requiresDenominatorExceptionGuid")
-				.addSubPopulationMeasureData("DENEXCEP", "3C100EC4-2990-4D79-AE14-E816F5E78AC8")
-				.addSubPopulationMeasureData("IPP", "D412322D-11F1-4573-893E-E6A05855DE10")
-				.addSubPopulationMeasureData("DENOM", "375D0559-C749-4BB9-9267-81EDF447650B")
-				.addSubPopulationMeasureData("NUMER", "EFFE261C-0D57-423E-992C-7141B132768C")
-				.build();
+			.addMeasureId(REQUIRES_DENOM_EXCEPTION_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID)
+			.addSubPopulationMeasureData(IPP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID)
+			.addSubPopulationMeasureData(DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID)
+			.addSubPopulationMeasureData(NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID)
+			.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must not be any validation errors.", validationErrors, hasSize(0));
@@ -149,12 +183,11 @@ public class QualityMeasureIdValidatorTest {
 	public void testInternalMissingDenexcepMeasure() {
 		String message = String.format(REQUIRED_CHILD_MEASURE, QualityMeasureIdValidator.DENEXCEP);
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-
-				.addMeasureId("requiresDenominatorExceptionGuid")
-				.addSubPopulationMeasureData("IPOP", "D412322D-11F1-4573-893E-E6A05855DE10")
-				.addSubPopulationMeasureData("NUMER", "EFFE261C-0D57-423E-992C-7141B132768C")
-				.addSubPopulationMeasureData("DENOM", "375D0559-C749-4BB9-9267-81EDF447650B")
-				.build();
+			.addMeasureId(REQUIRES_DENOM_EXCEPTION_GUID)
+			.addSubPopulationMeasureData(IPOP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID)
+			.addSubPopulationMeasureData(NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID)
+			.addSubPopulationMeasureData(DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID)
+			.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("Incorrect validation error.", validationErrors, containsValidationErrorInAnyOrderIgnoringPath(message));
@@ -163,20 +196,20 @@ public class QualityMeasureIdValidatorTest {
 	@Test
 	public void testInternalDenexcepMultipleSupPopulations() {
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-			.addMeasureId("multiplePopulationDenominatorExceptionGuid")
-			.addSubPopulationMeasureData("IPOP", "E681DBF8-F827-4586-B3E0-178FF19EC3A2")
-			.addSubPopulationMeasureData("DENOM", "04BF53CE-6993-4EA2-BFE5-66E36172B388")
-			.addSubPopulationMeasureData("DENEXCEP", "58347456-D1F3-4BBB-9B35-5D42825A0AB3")
-			.addSubPopulationMeasureData("NUMER", "631C0B49-83F4-4A54-96C4-7E0766B2407C")
+			.addMeasureId(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM1_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID)
 
-			.addSubPopulationMeasureData("IPOP", "AAC578DB-1900-43BD-BBBF-50014A5457E5")
-			.addSubPopulationMeasureData("DENOM", "1574973E-EB52-40C7-9709-25ABEDBA99A3")
-			.addSubPopulationMeasureData("DENEXCEP", "B7CCA1A6-F352-4A23-BC89-6FE9B60DC0C6")
-			.addSubPopulationMeasureData("NUMER", "5B7AC4EC-547A-47E5-AC5E-618401175511")
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP2_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM2_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXECEP2_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID)
 
-			.addSubPopulationMeasureData("IPOP", "AF36C4A9-8BD9-4E21-838D-A47A1845EB90")
-			.addSubPopulationMeasureData("DENOM", "B95BC0D3-572E-462B-BAA2-46CD33A865CD")
-			.addSubPopulationMeasureData("NUMER", "86F74F07-D593-44F6-AA12-405966400963")
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP3_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM3_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID)
 			.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -187,23 +220,20 @@ public class QualityMeasureIdValidatorTest {
 	public void testInternalDenexcepMultipleSupPopulationsInvalidMeasureId() {
 		String message = String.format(REQUIRED_CHILD_MEASURE, QualityMeasureIdValidator.DENEXCEP);
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-			.addMeasureId("multiplePopulationDenominatorExceptionGuid")
-			.addSubPopulationMeasureData("IPOP", "E681DBF8-F827-4586-B3E0-178FF19EC3A2")
-			.addSubPopulationMeasureData("DENOM", "04BF53CE-6993-4EA2-BFE5-66E36172B388")
-			.addSubPopulationMeasureData("DENEXCEP", "58347456-D1F3-4BBB-9B35-5D42825A0AB3__")
-			.addSubPopulationMeasureData("NUMER", "631C0B49-83F4-4A54-96C4-7E0766B2407C")
+			.addMeasureId(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM1_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID+"INVALID")
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID)
 
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP2_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM2_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXECEP2_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID)
 
-			.addSubPopulationMeasureData("IPOP", "AAC578DB-1900-43BD-BBBF-50014A5457E5")
-			.addSubPopulationMeasureData("DENOM", "1574973E-EB52-40C7-9709-25ABEDBA99A3")
-			.addSubPopulationMeasureData("DENEXCEP", "B7CCA1A6-F352-4A23-BC89-6FE9B60DC0C6")
-			.addSubPopulationMeasureData("NUMER", "5B7AC4EC-547A-47E5-AC5E-618401175511")
-
-
-			.addSubPopulationMeasureData("IPOP", "AF36C4A9-8BD9-4E21-838D-A47A1845EB90")
-			.addSubPopulationMeasureData("DENOM", "B95BC0D3-572E-462B-BAA2-46CD33A865CD")
-			.addSubPopulationMeasureData("NUMER", "86F74F07-D593-44F6-AA12-405966400963")
-
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP3_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM3_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID)
 			.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -215,19 +245,19 @@ public class QualityMeasureIdValidatorTest {
 	public void testInternalDenexcepMultipleSupPopulationsMissingMeasureId() {
 		String message = String.format(REQUIRED_CHILD_MEASURE, QualityMeasureIdValidator.DENEXCEP);
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-			.addMeasureId("multiplePopulationDenominatorExceptionGuid")
-			.addSubPopulationMeasureData("IPOP", "E681DBF8-F827-4586-B3E0-178FF19EC3A2")
-			.addSubPopulationMeasureData("DENOM", "04BF53CE-6993-4EA2-BFE5-66E36172B388")
-			.addSubPopulationMeasureData("NUMER", "631C0B49-83F4-4A54-96C4-7E0766B2407C")
+			.addMeasureId(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM1_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID)
 
-			.addSubPopulationMeasureData("IPOP", "AAC578DB-1900-43BD-BBBF-50014A5457E5")
-			.addSubPopulationMeasureData("DENOM", "1574973E-EB52-40C7-9709-25ABEDBA99A3")
-			.addSubPopulationMeasureData("DENEXCEP", "B7CCA1A6-F352-4A23-BC89-6FE9B60DC0C6")
-			.addSubPopulationMeasureData("NUMER", "5B7AC4EC-547A-47E5-AC5E-618401175511")
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP2_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM2_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXECEP2_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID)
 
-			.addSubPopulationMeasureData("IPOP", "AF36C4A9-8BD9-4E21-838D-A47A1845EB90")
-			.addSubPopulationMeasureData("DENOM", "B95BC0D3-572E-462B-BAA2-46CD33A865CD")
-			.addSubPopulationMeasureData("NUMER", "86F74F07-D593-44F6-AA12-405966400963")
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP3_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM3_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID)
 			.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);

@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 /**
- * Decoder for CMS V2 Measure Data
+ * Decoder for CMS V2 Measure Data eCQM
  */
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataDecoder extends QppXmlDecoder {
@@ -45,13 +45,12 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 	 */
 	private void setMeasure(Element element, Node thisNode) {
 		String expressionStr = "./ns:value/@code";
-		Consumer<? super Attribute> consumer =
-			attr -> {
-				String code = attr.getValue();
-				if (MEASURES.contains(code)) {
-					thisNode.putValue(MEASURE_TYPE, code);
-				}
-			};
+		Consumer<? super Attribute> consumer = attr -> {
+			String code = attr.getValue();
+			if (MEASURES.contains(code)) {
+				thisNode.putValue(MEASURE_TYPE, code);
+			}
+		};
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 
@@ -63,8 +62,7 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 	 */
 	private void setPopulationId(Element element, Node thisNode) {
 		String expressionStr = "./ns:reference/ns:externalObservation/ns:id/@root";
-		Consumer<? super Attribute> consumer =
-			attr -> thisNode.putValue(MEASURE_POPULATION, attr.getValue());
+		Consumer<? super Attribute> consumer = attr -> thisNode.putValue(MEASURE_POPULATION, attr.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
 }
