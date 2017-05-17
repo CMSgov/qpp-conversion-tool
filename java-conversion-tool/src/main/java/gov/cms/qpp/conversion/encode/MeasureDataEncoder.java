@@ -4,11 +4,11 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
 /**
@@ -28,11 +28,9 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		Map<String, String> measureTypeMapper = initializeMeasureTypeMap();
 		String measureType = node.getValue(MEASURE_TYPE);
-		String populationId = node.getValue(MEASURE_POPULATION);
 		Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
 
 		wrapper.putInteger(measureTypeMapper.get(measureType), aggCount.getValue(AGGREGATE_COUNT));
-		wrapper.putString("populationId",populationId);
 	}
 
 	/**
