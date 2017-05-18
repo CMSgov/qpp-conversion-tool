@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.aws;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -30,16 +31,18 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			AmazonS3 s3Client = getClient();
 			S3Object s3Object = s3Client.getObject(new GetObjectRequest(srcBucket, srcKey));
 
-			Converter converter = new Converter(s3Object.getObjectContent());
-			TransformationStatus status = converter.transform();
+			try (InputStream input = new NamedInputStream(srcKey, s3Object.getObjectContent())) {
+				Converter converter = new Converter(input);
+				TransformationStatus status = converter.transform();
 
-			if (status != TransformationStatus.NON_RECOVERABLE) {
-				String dstKey = "post-conversion/" + converter.getOutputFile(filename);
-				ObjectMetadata meta = new ObjectMetadata();
-				s3Client.putObject(srcBucket, dstKey, converter.getConversionResult(), meta);
+				if (status != TransformationStatus.NON_RECOVERABLE) {
+					String dstKey = "post-conversion/" + converter.getOutputFile(filename);
+					ObjectMetadata meta = new ObjectMetadata();
+					s3Client.putObject(srcBucket, dstKey, converter.getConversionResult(), meta);
+				}
+
+				return "Ok";
 			}
-
-			return "Ok";
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
