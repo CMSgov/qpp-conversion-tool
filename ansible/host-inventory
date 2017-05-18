@@ -1,2 +1,5 @@
 [docker]
 localhost ansible_ssh_port=2266
+
+[ec2]
+54.82.207.7
