@@ -1,8 +1,8 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Decoder;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
@@ -91,16 +91,16 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 
 	private String[] getProgramNameEntityPair(String name) {
 		String[] pairs = new String[2];
-		if (MIPS_GROUP.compareToIgnoreCase(name) == 0) {
+		if (MIPS_GROUP.equalsIgnoreCase(name)) {
 			pairs[0] = MIPS_PROGRAM_NAME;
 			pairs[1] = ENTITY_GROUP;
-		} else if (MIPS_INDIVIDUAL.compareToIgnoreCase(name) == 0) {
+		} else if (MIPS_INDIVIDUAL.equalsIgnoreCase(name)) {
 			pairs[0] = MIPS_PROGRAM_NAME;
 			pairs[1] = ENTITY_INDIVIDUAL;
-		} else if (MIPS.compareToIgnoreCase(name) == 0) {
+		} else if (MIPS.equalsIgnoreCase(name)) {
 			pairs[0] = MIPS_PROGRAM_NAME;
 			pairs[1] = ENTITY_INDIVIDUAL;
-		} else if (CPCPLUS.compareToIgnoreCase(name) == 0) {
+		} else if (CPCPLUS.equalsIgnoreCase(name)) {
 			pairs[0] = CPCPLUS_PROGRAM_NAME;
 			pairs[1] = "";
 		} else {
