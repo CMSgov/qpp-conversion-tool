@@ -71,16 +71,12 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	}
 
 	private void setNationalProviderIdOnNode(Element element, Node thisNode) {
-		Consumer<? super Attribute> consumer = p -> {
-			thisNode.putValue(NATIONAL_PROVIDER_IDENTIFIER, p.getValue());
-		};
+		Consumer<? super Attribute> consumer = p -> thisNode.putValue(NATIONAL_PROVIDER_IDENTIFIER, p.getValue());
 		setOnNode(element, NATIONAL_PROVIDER_ID_PATH, consumer, Filters.attribute(), true);
 	}
 
 	private void setTaxProviderTaxIdOnNode(Element element, Node thisNode) {
-		Consumer<? super Attribute> consumer = p -> {
-			thisNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, p.getValue());
-		};
+		Consumer<? super Attribute> consumer = p -> thisNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, p.getValue());
 		setOnNode(element, TAX_PROVIDER_TAX_ID_PATH, consumer, Filters.attribute(), true);
 	}
 
@@ -91,15 +87,12 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 
 	private String[] getProgramNameEntityPair(String name) {
 		String[] pairs = new String[2];
-		if (MIPS_GROUP.equalsIgnoreCase(name)) {
+		if (MIPS.equalsIgnoreCase(name) || MIPS_INDIVIDUAL.equalsIgnoreCase(name)) {
+			pairs[0] = MIPS_PROGRAM_NAME;
+			pairs[1] = ENTITY_INDIVIDUAL;
+		} else if (MIPS_GROUP.equalsIgnoreCase(name)) {
 			pairs[0] = MIPS_PROGRAM_NAME;
 			pairs[1] = ENTITY_GROUP;
-		} else if (MIPS_INDIVIDUAL.equalsIgnoreCase(name)) {
-			pairs[0] = MIPS_PROGRAM_NAME;
-			pairs[1] = ENTITY_INDIVIDUAL;
-		} else if (MIPS.equalsIgnoreCase(name)) {
-			pairs[0] = MIPS_PROGRAM_NAME;
-			pairs[1] = ENTITY_INDIVIDUAL;
 		} else if (CPCPLUS.equalsIgnoreCase(name)) {
 			pairs[0] = CPCPLUS_PROGRAM_NAME;
 			pairs[1] = "";
