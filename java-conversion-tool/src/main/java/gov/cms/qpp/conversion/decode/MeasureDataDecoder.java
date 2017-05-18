@@ -59,7 +59,7 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 	 *
 	 * @param element Object that holds the XML representation of measure id
 	 * @param thisNode Holder for decoded data
-gi	 */
+	 */
 	private void setPopulationId(Element element, Node thisNode) {
 		String expressionStr = "./ns:reference/ns:externalObservation/ns:id/@root";
 		Consumer<? super Attribute> consumer = attr -> thisNode.putValue(MEASURE_POPULATION, attr.getValue());
