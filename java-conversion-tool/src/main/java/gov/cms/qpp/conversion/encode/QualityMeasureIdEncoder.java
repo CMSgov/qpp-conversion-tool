@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.encode.helper.QualityMeasuresLookup;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -45,6 +46,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			wrapper.putString(MEASURE_ID, measureId);
 			encodeChildren(wrapper, node);
 		} else {
+			wrapper.putString(MEASURE_ID, measureId);
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
 		}
 	}
@@ -102,18 +104,24 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private List<Node> createSubPopulationGrouping(Node node, MeasureConfig measureConfig) {
 		int subPopCount = measureConfig.getSubPopulation().size();
-		List<Node> subPopNodes = new ArrayList<>(subPopCount);
+		List<Node> subPopNodes = initializeMeasureDataList(subPopCount);
 		Map<String, Integer> mapPopulationIdToSubPopIndex = createSubPopulationIndexMap(measureConfig);
 		for (Node childNode : node.getChildNodes()) {
-			String populationId = childNode.getValue("populationId");
-
-			int subPopIndex = mapPopulationIdToSubPopIndex.get(populationId);
-			Node newParentNode = subPopNodes.get(subPopIndex);
-			if (newParentNode == null) {
-				newParentNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
-				subPopNodes.set(subPopIndex, newParentNode);
+			if (TemplateId.MEASURE_DATA_CMS_V2.equals(childNode.getType())) {
+				String populationId = childNode.getValue(MeasureDataDecoder.MEASURE_POPULATION);
+				int subPopIndex = mapPopulationIdToSubPopIndex.get(populationId);
+				Node newParentNode = subPopNodes.get(subPopIndex);
+				newParentNode.addChildNode(childNode);
 			}
-			newParentNode.addChildNode(childNode);
+		}
+		return subPopNodes;
+	}
+
+	private List<Node> initializeMeasureDataList(int subPopulationCount) {
+		List<Node> subPopNodes = new ArrayList<>(subPopulationCount);
+		for (int i = 1; i <= subPopulationCount; i++) {
+			Node parentNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
+			subPopNodes.add(parentNode);
 		}
 		return subPopNodes;
 	}
@@ -128,11 +136,21 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Map<String, Integer> supPopMap = new HashMap<>();
 		int index = 0;
 		for (SubPopulation subPopulation : measureConfig.getSubPopulation()) {
-			supPopMap.put(subPopulation.getDenominatorUuid(), index);
-			supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
-			supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
-			supPopMap.put(subPopulation.getNumeratorUuid(), index);
-			supPopMap.put(subPopulation.getInitialPopulationUuid(), index);
+			if (subPopulation.getDenominatorUuid() != null) {
+				supPopMap.put(subPopulation.getDenominatorUuid(), index);
+			}
+			if (subPopulation.getDenominatorExceptionsUuid() != null) {
+				supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
+			}
+			if (subPopulation.getDenominatorExclusionsUuid() != null) {
+				supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
+			}
+			if (subPopulation.getNumeratorUuid() != null) {
+				supPopMap.put(subPopulation.getNumeratorUuid(), index);
+			}
+			if (subPopulation.getInitialPopulationUuid() != null) {
+				supPopMap.put(subPopulation.getInitialPopulationUuid(), index);
+			}
 			index++;
 		}
 		return supPopMap;
