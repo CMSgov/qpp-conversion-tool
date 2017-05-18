@@ -40,7 +40,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		String measureId = QualityMeasuresLookup.getMeasureId(node.getValue(MEASURE_ID));
 		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_ID));
 
-		MeasureConfig config = configurationMap.get(measureId);
 		if ("singlePerformanceRate".equalsIgnoreCase(measureConfig.getMetricType())) {
 			wrapper.putString(MEASURE_ID, measureId);
 			encodeChildren(wrapper, node);
