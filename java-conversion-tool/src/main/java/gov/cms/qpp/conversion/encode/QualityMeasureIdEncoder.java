@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.encode.helper.QualityMeasuresLookup;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -40,12 +41,20 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		String measureId = QualityMeasuresLookup.getMeasureId(node.getValue(MEASURE_ID));
 		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_ID));
 
-		if ("singlePerformanceRate".equalsIgnoreCase(measureConfig.getMetricType())) {
+		if (isASinglePerformanceRate(measureConfig, measureId)) {
 			wrapper.putString(MEASURE_ID, measureId);
 			encodeChildren(wrapper, node);
 		} else {
 			encodeMultiPerformanceRate(node, wrapper, measureConfig);
 		}
+	}
+
+	private boolean isASinglePerformanceRate(MeasureConfig measureConfig, String measureId) {
+		if (measureConfig == null) {
+			Converter.CLIENT_LOG.info("Measure Configuration for {} is missing", measureId);
+			return true;
+		}
+		return "singlePerformanceRate".equalsIgnoreCase(measureConfig.getMetricType());
 	}
 
 	/**

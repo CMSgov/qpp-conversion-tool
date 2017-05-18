@@ -25,7 +25,7 @@ public class IaSectionRoundTripTest {
 
 	@After
 	public void cleanUp() throws IOException {
-		//Files.deleteIfExists(Paths.get("valid-QRDA-III.qpp.json"));
+		Files.deleteIfExists(Paths.get("valid-QRDA-III.qpp.json"));
 	}
 
 	@Test
