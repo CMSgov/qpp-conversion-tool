@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Encoder to serialize Quality Measure Identifier
+ * Encoder to serialize Quality Measure Identifier and Measure Sections
  */
 @Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
@@ -117,6 +117,12 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		return subPopNodes;
 	}
 
+	/**
+	 * Initializes a list of Measure Section nodes from how many sub populations are being converted
+	 *
+	 * @param subPopulationCount number of sub populations to convert
+	 * @return
+	 */
 	private List<Node> initializeMeasureDataList(int subPopulationCount) {
 		List<Node> subPopNodes = new ArrayList<>(subPopulationCount);
 		for (int i = 1; i <= subPopulationCount; i++) {
