@@ -1,0 +1,11 @@
+---
+- hosts: docker
+  remote_user: root
+  tasks:
+  - name: Install Java
+    apt:
+      name: default-jre
+  - name: Copy QPP Conversion Tools
+    copy:
+      src: ../java-conversion-tool/target/java-conversion-tool.jar
+      dest: /root/java-conversion-tool.jar
