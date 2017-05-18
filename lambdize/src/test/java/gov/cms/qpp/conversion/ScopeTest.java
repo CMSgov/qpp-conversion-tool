@@ -6,6 +6,8 @@ import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.jayway.jsonpath.PathNotFoundException;
+
+import gov.cms.qpp.conversion.aws.NamedInputStream;
 import gov.cms.qpp.conversion.aws.history.HistoricalTestRunner;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -136,7 +138,7 @@ public class ScopeTest {
 		return s3Object -> {
 			Converter convert = null;
 			TransformationStatus status = TransformationStatus.ERROR;
-			try(InputStream stream = s3Object.getObjectContent()) {
+			try(InputStream stream = new NamedInputStream(s3Object.getKey(), s3Object.getObjectContent())) {
 				convert = new Converter(stream);
 				status = convert.transform();
 				InputStream result = convert.getConversionResult();
