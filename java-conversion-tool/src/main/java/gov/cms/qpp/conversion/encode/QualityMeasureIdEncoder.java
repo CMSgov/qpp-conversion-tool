@@ -75,11 +75,8 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private void encodeChildren(JsonWrapper wrapper, Node parentNode) {
 		JsonWrapper childWrapper = new JsonWrapper();
-
-		childWrapper.putBoolean("isEndToEndReported", "true");
-
+		childWrapper.putBoolean("isEndToEndReported", "true");c
 		encodeSubPopulation(parentNode, childWrapper);
-
 		wrapper.putObject("value", childWrapper);
 	}
 
