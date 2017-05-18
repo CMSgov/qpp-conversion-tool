@@ -45,10 +45,18 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			wrapper.putString(MEASURE_ID, measureId);
 			encodeChildren(wrapper, node);
 		} else {
-			encodeMultiPerformanceRate(node, wrapper, measureConfig);
+			encodeMultiPerformanceRate(wrapper, node, measureConfig);
 		}
 	}
 
+	/**
+	 * Checks if is a single performance rate.
+	 * Defaults to single performance rate for missing configuration mappings
+	 *
+	 * @param measureConfig configuration in check
+	 * @param measureId variable to show when the mapping is non existent
+	 * @return
+	 */
 	private boolean isASinglePerformanceRate(MeasureConfig measureConfig, String measureId) {
 		if (measureConfig == null) {
 			Converter.CLIENT_LOG.info("Measure Configuration for {} is missing", measureId);
@@ -58,13 +66,29 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	}
 
 	/**
+	 * Encode child nodes.
+	 *
+	 * @param wrapper holder for encoded node data
+	 * @param parentNode holder of the Quality Measures
+	 */
+	private void encodeChildren(JsonWrapper wrapper, Node parentNode) {
+		JsonWrapper childWrapper = new JsonWrapper();
+
+		childWrapper.putBoolean("isEndToEndReported", "true");
+
+		encodeSubPopulation(parentNode, childWrapper);
+
+		wrapper.putObject("value", childWrapper);
+	}
+
+	/**
 	 * Encodes a multi performance rate proportion measure
 	 *
-	 * @param node parent node that holds the current performance rate proportion measures
 	 * @param wrapper object to be encoded into
+	 * @param node parent node that holds the current performance rate proportion measures
 	 * @param measureConfig configurations to group performance rate proportion measures
 	 */
-	private void encodeMultiPerformanceRate(Node node, JsonWrapper wrapper, MeasureConfig measureConfig) {
+	private void encodeMultiPerformanceRate(JsonWrapper wrapper, Node node, MeasureConfig measureConfig) {
 		List<Node> subPopNodes = createSubPopulationGrouping(node, measureConfig);
 		encodeMultiPerformanceChildren(wrapper, subPopNodes);
 	}
@@ -112,22 +136,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			index++;
 		}
 		return supPopMap;
-	}
-
-	/**
-	 * Encode child nodes.
-	 *
-	 * @param wrapper holder for encoded node data
-	 * @param parentNode holder of the Quality Measures
-	 */
-	private void encodeChildren(JsonWrapper wrapper, Node parentNode) {
-		JsonWrapper childWrapper = new JsonWrapper();
-
-		childWrapper.putBoolean("isEndToEndReported", "true");
-
-		encodeSubPopulation(parentNode, childWrapper);
-
-		wrapper.putObject("value", childWrapper);
 	}
 
 	/**
