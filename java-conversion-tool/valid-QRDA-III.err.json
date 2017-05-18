@@ -1,9 +1,0 @@
-{
-  "errorSources" : [ {
-    "sourceIdentifier" : "valid-QRDA-III.xml",
-    "validationErrors" : [ {
-      "errorText" : "Unexpected exception occurred during conversion",
-      "path" : ""
-    } ]
-  } ]
-}
