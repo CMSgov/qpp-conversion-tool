@@ -59,10 +59,9 @@ public class AciMeasurePerformedRnREncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
-		Map<String, String> content = JsonHelper.readJson(new ByteArrayInputStream(sw.toString().getBytes()), Map.class);
-
+		Map<String, Object> content = JsonHelper.readJson(new ByteArrayInputStream(sw.toString().getBytes()), Map.class);
 		assertThat("measureId should be " + MEASURE_ID, content.get("measureId"), is(MEASURE_ID));
-		assertThat("value should be " + VALUE, content.get("value"), is(true));
+		assertThat("value should be true " , content.get("value"), is (true));
 	}
 
 	@Test
