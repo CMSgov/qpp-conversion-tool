@@ -6,6 +6,16 @@
     apt:
       name: default-jre
     become: true
+  - name: Install Tomcat
+    apt:
+      name: tomcat8
+    become: true
+  - name: Start Tomcat
+    service:
+      name: tomcat8
+      enabled: yes
+      state: started
+    become: true
   - name: Copy QPP Conversion Tools
     copy:
       src: ./resources/java-conversion-tool.jar
