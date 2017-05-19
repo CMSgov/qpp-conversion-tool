@@ -2,10 +2,20 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.ValidationError;
 
 import java.util.List;
+
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME;
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.MIPS_PROGRAM_NAME;
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.PROGRAM_NAME;
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER;
+import static gov.cms.qpp.conversion.model.TemplateId.ACI_SECTION;
+import static gov.cms.qpp.conversion.model.TemplateId.IA_SECTION;
+import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_SECTION_V2;
+import static gov.cms.qpp.conversion.model.TemplateId.REPORTING_PARAMETERS_ACT;
+import static gov.cms.qpp.conversion.model.TemplateId.REPORTING_PARAMETERS_SECTION;
 
 /**
  * Validates the Clinical Document.
@@ -18,6 +28,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	protected static final String ONE_CHILD_REQUIRED = "Clinical Document Node must have at least one Aci "
 			+ "or IA or eCQM Section Node as a child";
 	protected static final String CONTAINS_PROGRAM_NAME = "Clinical Document must have a program name";
+	protected static final String INCORRECT_PROGRAM_NAME = "Clinical Document program name is not recognized";
 	protected static final String CONTAINS_PERFORMANCE_YEAR = "Clinical Document must have a performance year";
 	protected static final String CONTAINS_TAX_ID_NUMBER = "Clinical Document must have Tax Id Number (TIN)";
 	protected static final String CONTAINS_DUPLICATE_ACI_SECTIONS = "Clinical Document contains duplicate ACI sections";
@@ -42,18 +53,17 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
 		thoroughlyCheck(node)
-				.hasChildren(ONE_CHILD_REQUIRED)
-				.childMinimum(ONE_CHILD_REQUIRED, 1,
-						TemplateId.ACI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)
-				.childMinimum(REPORTING_PARAMETER_REQUIRED, 1, TemplateId.REPORTING_PARAMETERS_SECTION)
-				.childMaximum(CONTAINS_DUPLICATE_ACI_SECTIONS, 1, TemplateId.ACI_SECTION)
-				.childMaximum(CONTAINS_DUPLICATE_IA_SECTIONS, 1, TemplateId.IA_SECTION)
-				.childMaximum(CONTAINS_DUPLICATE_ECQM_SECTIONS, 1, TemplateId.MEASURE_SECTION_V2)
+			.hasChildren(ONE_CHILD_REQUIRED)
+			.childMinimum(ONE_CHILD_REQUIRED, 1, ACI_SECTION, IA_SECTION, MEASURE_SECTION_V2)
+			.childMinimum(REPORTING_PARAMETER_REQUIRED, 1, REPORTING_PARAMETERS_SECTION)
+			.childMaximum(CONTAINS_DUPLICATE_ACI_SECTIONS, 1, ACI_SECTION)
+			.childMaximum(CONTAINS_DUPLICATE_IA_SECTIONS, 1, IA_SECTION)
+			.childMaximum(CONTAINS_DUPLICATE_ECQM_SECTIONS, 1, MEASURE_SECTION_V2)
+			.value(CONTAINS_PROGRAM_NAME, PROGRAM_NAME)
+			.valueIn(INCORRECT_PROGRAM_NAME, PROGRAM_NAME, MIPS_PROGRAM_NAME, CPCPLUS_PROGRAM_NAME)
+			.value(CONTAINS_TAX_ID_NUMBER, TAX_PAYER_IDENTIFICATION_NUMBER);
 
-				.value(CONTAINS_PROGRAM_NAME, "programName")
-				.value(CONTAINS_TAX_ID_NUMBER, "taxpayerIdentificationNumber");
-
-		Node reportingParametersAct = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		Node reportingParametersAct = node.findFirstNode(REPORTING_PARAMETERS_ACT.getTemplateId());
 		if (reportingParametersAct == null) {
 			getValidationErrors().add(new ValidationError(CONTAINS_PERFORMANCE_YEAR, node.getPath()));
 		} else {

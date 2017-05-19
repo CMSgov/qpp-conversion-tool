@@ -20,6 +20,7 @@ import static org.junit.Assert.assertTrue;
  * Created by clydetedrick on 4/7/17.
  */
 public class CheckerTest {
+
 	private static final String PARENT = "parent";
 	private static final String VALUE = "value";
 	private static final String ERROR_MESSAGE = "error message";
@@ -455,4 +456,46 @@ public class CheckerTest {
 
 		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
 	}
+
+	@Test
+	public void testValueIn() throws Exception {
+		Node testNode = new Node();
+		final String KEY = "Key";
+		testNode.putValue(KEY, "My Value");
+		Checker checker = Checker.check(testNode, validationErrors);
+		checker.valueIn(ERROR_MESSAGE, KEY, "No Value" , "Some Value", "My Value");
+		assertThat("There should be no errors", validationErrors, hasSize(0));
+	}
+
+	@Test
+	public void testValueInNot() throws Exception {
+		Node testNode = new Node();
+		final String KEY = "Key";
+		testNode.putValue(KEY, "My Value Not");
+		Checker checker = Checker.check(testNode, validationErrors);
+		checker.valueIn(ERROR_MESSAGE, KEY, "No Value" , "Some Value", "My Value");
+		assertThat("There should be 1 error", validationErrors, hasSize(1));
+		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+	}
+	@Test
+	public void testValueInNull() throws Exception {
+		Node testNode = new Node();
+		final String KEY = "Key";
+		testNode.putValue(KEY, null);
+		Checker checker = Checker.check(testNode, validationErrors);
+		checker.valueIn(ERROR_MESSAGE, KEY, "No Value" , "Some Value", "My Value");
+		assertThat("There should be 1 error", validationErrors, hasSize(1));
+		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+	}
+	@Test
+	public void testValueInNulls() throws Exception {
+		Node testNode = new Node();
+		final String KEY = "Key";
+		testNode.putValue(KEY, "My Value");
+		Checker checker = Checker.check(testNode, validationErrors);
+		checker.valueIn(ERROR_MESSAGE, KEY, null);
+		assertThat("There should be 1 error", validationErrors, hasSize(1));
+		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+	}
+
 }

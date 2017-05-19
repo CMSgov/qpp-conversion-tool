@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -82,6 +82,35 @@ class Checker {
 		}
 		return this;
 	}
+
+	/**
+	 * checks target node for the existence of a value with the given name key
+	 * and matches that value with one of the supplied values.
+	 *
+	 * @param message error message if searched value is not found
+	 * @param name key of expected value
+	 * @param values List of strings to check for the existence of.
+	 * @return The checker, for chaining method calls.
+	 */
+	Checker valueIn(String message, String name, String ... values) {
+		boolean contains = false;
+		if (name != null) {
+			lastAppraised = node.getValue(name);
+			if (lastAppraised != null && values != null) {
+				for (String v : values) {
+					if (((String) lastAppraised).equalsIgnoreCase(v)) {
+						contains = true;
+						break;
+					}
+				}
+			}
+		}
+		if (!shouldShortcut() && !contains) {
+			validationErrors.add(new ValidationError(message, node.getPath()));
+		}
+		return this;
+	}
+
 
 	/**
 	 * Checks target node for the existence of an integer value with the given name key.

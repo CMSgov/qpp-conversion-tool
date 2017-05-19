@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -145,8 +146,9 @@ public class ClinicalDocumentValidatorTest {
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
-		assertThat("there should be one error", errors, iterableWithSize(1));
-		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
+		assertThat("there should be two errors", errors, iterableWithSize(2));
+		assertThat("error should be about missing missing program name", errors.get(0).getErrorText(), is(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
+		assertThat("error should be about incorrect program name", errors.get(1).getErrorText(), is(ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
 	}
 
 	@Test
@@ -289,15 +291,33 @@ public class ClinicalDocumentValidatorTest {
 		AllErrors allErrors = readJson(CLINICAL_DOCUMENT_ERROR_FILE, AllErrors.class);
 		List<ValidationError> errors = getErrors(allErrors);
 
-		assertThat("Must have 3 errors", errors, hasSize(3));
+		assertThat("Must have 4 errors", errors, hasSize(4));
 
 		assertThat("Must contain the error", errors.get(0).getErrorText(),
 				is(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
 		assertThat("Must contain the error", errors.get(1).getErrorText(),
-				is(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
+				is(ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
 		assertThat("Must contain the error", errors.get(2).getErrorText(),
+				is(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
+		assertThat("Must contain the error", errors.get(3).getErrorText(),
 				is(ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
 	}
+
+	@Test
+	public void testInvalidProgramName() {
+		Node clinicalDocumentNode = createValidClinicalDocumentNode();
+		Node performanceSection = createReportingNode();
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
+		clinicalDocumentNode.addChildNodes(aciSectionNode, performanceSection);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME,"Invalid program name");
+		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
+		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+
+		assertThat("Should have 1 validation errors", errors, hasSize(1));
+		assertThat("Must contain the error", errors.get(0).getErrorText(),
+				is(ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
+	}
+
 
 	private List<ValidationError> getErrors(AllErrors content) {
 		return content.getErrorSources().get(0).getValidationErrors();
