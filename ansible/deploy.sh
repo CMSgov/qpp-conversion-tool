@@ -12,6 +12,7 @@ if [[ "$DEPLOY_LOCATION" == "docker" ]]; then
 	do
 		echo "Killing container $CONTAINER because it is running the qpq_ansible image"
 		docker kill ${CONTAINER}
+		sleep 1
 	done
 
 	echo "Deleting the qpp_ansible image"
@@ -20,7 +21,7 @@ if [[ "$DEPLOY_LOCATION" == "docker" ]]; then
 	echo "Building the qpp_ansible image"
 	docker build -t qpp_ansible .
 	echo "Running the qpp_ansible image"
-	docker run --rm -d -p 2266:22 qpp_ansible
+	docker run --rm -d -p 2266:22 -p 8066:8080 qpp_ansible
 
 	# This is so the user doesn't get the SSH MITM warning
 	echo "Removing the previous known host line for the container"
