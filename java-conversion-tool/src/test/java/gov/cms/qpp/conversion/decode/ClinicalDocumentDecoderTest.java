@@ -16,7 +16,12 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.*;
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.CPCPLUS;
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.ENTITY_TYPE;
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.MIPS_PROGRAM_NAME;
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER;
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.PROGRAM_NAME;
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;

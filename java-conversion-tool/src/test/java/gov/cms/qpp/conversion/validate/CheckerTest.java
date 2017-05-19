@@ -483,7 +483,17 @@ public class CheckerTest {
 		final String KEY = "Key";
 		testNode.putValue(KEY, null);
 		Checker checker = Checker.check(testNode, validationErrors);
-		checker.valueIn(ERROR_MESSAGE, KEY, "No Value" , "Some Value", "My Value");
+		checker.valueIn(ERROR_MESSAGE, KEY, null);
+		assertThat("There should be 1 error", validationErrors, hasSize(1));
+		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+	}
+	@Test
+	public void testValueInKeyNull() throws Exception {
+		Node testNode = new Node();
+		final String KEY = "Key";
+		testNode.putValue(KEY, null);
+		Checker checker = Checker.check(testNode, validationErrors);
+		checker.valueIn(ERROR_MESSAGE, null, null);
 		assertThat("There should be 1 error", validationErrors, hasSize(1));
 		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
 	}
@@ -494,6 +504,18 @@ public class CheckerTest {
 		testNode.putValue(KEY, "My Value");
 		Checker checker = Checker.check(testNode, validationErrors);
 		checker.valueIn(ERROR_MESSAGE, KEY, null);
+		assertThat("There should be 1 error", validationErrors, hasSize(1));
+		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+	}
+	@Test
+	public void testValueInShouldShortCut() throws Exception {
+		Node testNode = new Node();
+		final String KEY = "Key";
+		testNode.putValue(KEY, null);
+		validationErrors.add(new ValidationError(ERROR_MESSAGE));
+		Checker checker = Checker.check(testNode, validationErrors);
+
+		checker.valueIn(ERROR_MESSAGE, KEY, null , "Some Value", "My Value");
 		assertThat("There should be 1 error", validationErrors, hasSize(1));
 		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
 	}
