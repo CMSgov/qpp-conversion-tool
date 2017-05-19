@@ -10,7 +10,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Encoder to serialize Quality Measure Identifier and Measure Sections
@@ -103,14 +104,14 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		int subPopCount = measureConfig.getSubPopulation().size();
 		List<Node> subPopNodes = initializeMeasureDataList(subPopCount);
 		Map<String, Integer> mapPopulationIdToSubPopIndex = createSubPopulationIndexMap(measureConfig);
-		for (Node childNode : node.getChildNodes()) {
-			if (TemplateId.MEASURE_DATA_CMS_V2.equals(childNode.getType())) {
-				String populationId = childNode.getValue(MeasureDataDecoder.MEASURE_POPULATION);
-				int subPopIndex = mapPopulationIdToSubPopIndex.get(populationId);
-				Node newParentNode = subPopNodes.get(subPopIndex);
-				newParentNode.addChildNode(childNode);
-			}
-		}
+		node.getChildNodes().stream()
+				.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V2.equals(childNode.getType()))
+				.forEach(childNode -> {
+					String populationId = childNode.getValue(MeasureDataDecoder.MEASURE_POPULATION);
+					int subPopIndex = mapPopulationIdToSubPopIndex.get(populationId);
+					Node newParentNode = subPopNodes.get(subPopIndex);
+					newParentNode.addChildNode(childNode);
+				});
 		return subPopNodes;
 	}
 
@@ -121,12 +122,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @return
 	 */
 	private List<Node> initializeMeasureDataList(int subPopulationCount) {
-		List<Node> subPopNodes = new ArrayList<>(subPopulationCount);
-		for (int i = 1; i <= subPopulationCount; i++) {
-			Node parentNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
-			subPopNodes.add(parentNode);
-		}
-		return subPopNodes;
+		return IntStream.range(0, subPopulationCount)
+				.mapToObj(node -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId()))
+				.collect(Collectors.toList());
 	}
 
 	/**
