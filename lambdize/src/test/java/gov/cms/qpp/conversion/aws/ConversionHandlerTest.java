@@ -78,7 +78,6 @@ public class ConversionHandlerTest {
 		doReturn(client).when(handler).getClient();
 	}
 
-//	@Ignore
 	@Test
 	public void testConversionHandler() {
 		handler.handleRequest(goodInput, new TestContext());

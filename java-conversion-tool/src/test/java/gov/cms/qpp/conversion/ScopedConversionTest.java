@@ -4,7 +4,6 @@ import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.After;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -95,7 +94,6 @@ public class ScopedConversionTest extends BaseTest {
 	 * @throws IOException
 	 */
 	@Test
-	@Ignore
 	public void testScopedV2MeasureDataConversion() throws IOException {
 		//setup
 		String testSection = TemplateId.MEASURE_DATA_CMS_V2.name();
@@ -154,7 +152,6 @@ public class ScopedConversionTest extends BaseTest {
 	 * @throws IOException
 	 */
 	@Test
-	@Ignore
 	public void testScopedAciAggregateCountConversion() throws IOException {
 		//setup
 		String testSection = TemplateId.ACI_AGGREGATE_COUNT.name();
