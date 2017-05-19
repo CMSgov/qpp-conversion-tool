@@ -8,7 +8,7 @@
     become: true
   - name: Copy QPP Conversion Tools
     copy:
-      src: ../java-conversion-tool/target/java-conversion-tool.jar
+      src: ./resources/java-conversion-tool.jar
       dest: ~/
   - name: Copy QRDA3 files
     copy:

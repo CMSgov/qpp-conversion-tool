@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
+DIRECTORY=$(dirname $0)
 DEPLOY_LOCATION=$1
 SUDO_PASSWORD=$2
+
+echo 'Retrieving resources'
+exec $DIRECTORY/getSource.sh
 
 echo "Deploying to $DEPLOY_LOCATION"
 
