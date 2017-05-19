@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class ConverterExplicitTest {
 	private static String bad = "../qrda-files/not-a-QDRA-III-file.xml";
 	private static String ugly = "../qrda-files/QRDA-III-without-required-measure.xml";
 
+	@Ignore
 	@Test
 	public void testStreamConversion() throws IOException {
 		Path path = Paths.get(good);
@@ -58,6 +60,7 @@ public class ConverterExplicitTest {
 		assertEquals("can't cope", status, TransformationStatus.NON_RECOVERABLE);
 	}
 
+	@Ignore
 	@Test(expected = XmlInputFileException.class)
 	public void testStreamConversionEncodeException() throws IOException, EncodeException {
 		JsonOutputEncoder encoderSpy = spy(new QppOutputEncoder());
