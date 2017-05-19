@@ -108,9 +108,11 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V2.equals(childNode.getType()))
 				.forEach(childNode -> {
 					String populationId = childNode.getValue(MeasureDataDecoder.MEASURE_POPULATION);
-					int subPopIndex = mapPopulationIdToSubPopIndex.get(populationId);
-					Node newParentNode = subPopNodes.get(subPopIndex);
-					newParentNode.addChildNode(childNode);
+					Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId);
+					if (subPopIndex != null) {
+						Node newParentNode = subPopNodes.get(subPopIndex);
+						newParentNode.addChildNode(childNode);
+					}
 				});
 		return subPopNodes;
 	}
@@ -137,21 +139,11 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Map<String, Integer> supPopMap = new HashMap<>();
 		int index = 0;
 		for (SubPopulation subPopulation : measureConfig.getSubPopulation()) {
-			if (subPopulation.getDenominatorUuid() != null) {
-				supPopMap.put(subPopulation.getDenominatorUuid(), index);
-			}
-			if (subPopulation.getDenominatorExceptionsUuid() != null) {
-				supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
-			}
-			if (subPopulation.getDenominatorExclusionsUuid() != null) {
-				supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
-			}
-			if (subPopulation.getNumeratorUuid() != null) {
-				supPopMap.put(subPopulation.getNumeratorUuid(), index);
-			}
-			if (subPopulation.getInitialPopulationUuid() != null) {
-				supPopMap.put(subPopulation.getInitialPopulationUuid(), index);
-			}
+			supPopMap.put(subPopulation.getDenominatorUuid(), index);
+			supPopMap.put(subPopulation.getDenominatorExceptionsUuid(), index);
+			supPopMap.put(subPopulation.getDenominatorExclusionsUuid(), index);
+			supPopMap.put(subPopulation.getNumeratorUuid(), index);
+			supPopMap.put(subPopulation.getInitialPopulationUuid(), index);
 			index++;
 		}
 		return supPopMap;
