@@ -130,6 +130,26 @@ public class QualityMeasureIdMultiEncoderTest {
 		assertThirdSubPopulation(subPopulations);
 	}
 
+	@Test
+	public void testInternalEncodeWithIgnoredMeasureData() {
+		Node populationCriteriaNode = new Node(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2.getTemplateId());
+		qualityMeasureId.addChildNodes(
+				populationNode, denomExceptionNode, numeratorNode, denominatorNode,
+				populationNodeTwo, denomExceptionNodeTwo, numeratorNodeTwo, denominatorNodeTwo,
+				populationNodeThree, numeratorNodeThree, denominatorNodeThree,
+				populationCriteriaNode);
+
+		encoder.internalEncode(wrapper, qualityMeasureId);
+
+		LinkedHashMap<String, Object> childValues = getChildValues();
+		List<LinkedHashMap<String, Integer>> subPopulations =
+				(List<LinkedHashMap<String, Integer>>)childValues.get("strata");
+
+		assertFirstSubPopulation(subPopulations);
+		assertSecondSubPopulation(subPopulations);
+		assertThirdSubPopulation(subPopulations);
+	}
+
 	private LinkedHashMap<String, Object> getChildValues() {
 		return (LinkedHashMap<String, Object>)((LinkedHashMap<String, Object>) wrapper.getObject()).get("value");
 	}
