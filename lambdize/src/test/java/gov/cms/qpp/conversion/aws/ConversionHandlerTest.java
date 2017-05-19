@@ -12,7 +12,6 @@ import io.findify.s3mock.S3Mock;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -79,7 +78,7 @@ public class ConversionHandlerTest {
 		doReturn(client).when(handler).getClient();
 	}
 
-	@Ignore
+//	@Ignore
 	@Test
 	public void testConversionHandler() {
 		handler.handleRequest(goodInput, new TestContext());
