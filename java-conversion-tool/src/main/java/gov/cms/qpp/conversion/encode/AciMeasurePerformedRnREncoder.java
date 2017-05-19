@@ -25,9 +25,14 @@ public class AciMeasurePerformedRnREncoder extends QppOutputEncoder {
 	 * @param node
 	 */
 	private void encodeChild(JsonWrapper wrapper, Node node) {
+		final String measurePerformedValue = "measurePerformed";
+		final String value = "value";
 		Node child = node.findFirstNode(TemplateId.MEASURE_PERFORMED.getTemplateId());
 		if (child != null) {
-			wrapper.putObject("value", child.getValue("measurePerformed"));
+			wrapper.putObject(value, child.getValue(measurePerformedValue));
+			if (null != wrapper.getBoolean(measurePerformedValue)) {
+				wrapper.putObject(value, wrapper.getBoolean(measurePerformedValue));
+			}
 		}
 	}
 }
