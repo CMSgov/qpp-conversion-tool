@@ -26,7 +26,6 @@ import java.util.stream.IntStream;
 @Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
-	public static final String VALUE = "value";
 	private static final String MEASURE_ID = "measureId";
 	private static final String AGGREGATE_COUNT = "aggregateCount";
 	private static final String TYPE = "type";
