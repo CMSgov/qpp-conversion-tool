@@ -47,21 +47,23 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 	 * @param thisNode internal Node representation
 	 */
 	private void setNationalProviderIdOnNode(Element element, Node thisNode) {
+		final String id = "id";
+		final String extension = "extension";
+		final String representedOrganization = "representedOrganization";
 
 		XPathExpression<?> expression = XPathFactory.instance().compile(PERFORMED_ASSIGNED_ENTITY_PATH,
 			Filters.element(), null,  xpathNs);
 		List<Element> assignedEntities = (List<Element>) expression.evaluate(element);
 		for ( Element assignedEntity: assignedEntities)
 		{
-			Element npiEl = assignedEntity.getChild("id", element.getNamespace());
-			String npi = npiEl.getAttributeValue("extension");
+			Element npiEl = assignedEntity.getChild(id, element.getNamespace());
+			Element taxEl = assignedEntity.getChild(representedOrganization,
+				element.getNamespace()).getChild(id, element.getNamespace());
 
-			Element taxEl = assignedEntity.getChild("representedOrganization",
-				element.getNamespace()).getChild("id", element.getNamespace());
-			String tin = taxEl.getAttributeValue("extension");
+			String npi = npiEl.getAttributeValue(extension);
+			String tin = taxEl.getAttributeValue(extension);
 
 			if ( tin != null && npi != null  ) {
-
 				Node child = new Node(NPI_TIN_ID);
 				child.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, tin);
 				child.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, npi);
