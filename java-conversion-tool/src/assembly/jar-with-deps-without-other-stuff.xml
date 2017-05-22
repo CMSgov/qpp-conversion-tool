@@ -13,6 +13,11 @@
             <useProjectArtifact>false</useProjectArtifact>
             <unpack>true</unpack>
             <scope>runtime</scope>
+            <excludes>
+                <exclude>org.jacoco:org.jacoco.agent</exclude>
+                <!--<exclude>com.fasterxml.jackson.dataformat:jackson-dataformat-xml</exclude>-->
+                <exclude>org.springframework:*</exclude>
+            </excludes>
         </dependencySet>
     </dependencySets>
     <fileSets>
