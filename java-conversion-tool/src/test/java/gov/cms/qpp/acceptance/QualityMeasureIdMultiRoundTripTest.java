@@ -31,13 +31,14 @@ public class QualityMeasureIdMultiRoundTripTest {
 	private final String NUMERATOR = "numerator";
 	private final String DENOMINATOR = "denominator";
 
-	private final String MEASURE_ID = "measureId";
-	public static final Path JUNK_QRDA3_FILE =
+	private static final Path JUNK_QRDA3_FILE =
 			Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");
+
+	private final String SUCCESS_JSON = "multiPerformanceRatePropMeasure.qpp.json";
 
 	@After
 	public void deleteJsonFile() throws IOException {
-		Files.deleteIfExists(Paths.get("multiPerformanceRatePropMeasure.qpp.json"));
+		Files.deleteIfExists(Paths.get(SUCCESS_JSON));
 	}
 
 	@Test
@@ -48,13 +49,12 @@ public class QualityMeasureIdMultiRoundTripTest {
 		assertThat("Converting the junk QRDA3 file should have been successful.", transformStatus,
 				is(TransformationStatus.SUCCESS));
 
-		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(Paths.get("multiPerformanceRatePropMeasure.qpp.json"),
+		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
 				"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
 
-		List<Map<String, Integer>> subPopulation = JsonHelper.readJsonAtJsonPath(Paths.get("multiPerformanceRatePropMeasure.qpp.json"),
+		List<Map<String, Integer>> subPopulation = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
 				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='CMS52v5')].value.strata[*]", List.class);
 
-		System.out.println(subPopulation);
 		assertThat("There should still be a quality measure even with the junk stuff in quality measure.",
 				qualityMeasures, hasSize(1));
 		assertThat("The measureId in the quality measure should still populate given the junk stuff in the measure.",

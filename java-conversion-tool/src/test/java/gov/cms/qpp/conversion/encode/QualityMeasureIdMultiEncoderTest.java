@@ -48,7 +48,12 @@ public class QualityMeasureIdMultiEncoderTest {
 
 	@BeforeClass
 	public static  void setUpCustomMeasureData() {
-		MeasureConfigs.setMeasureDataFile("test-measure-data.json");
+		MeasureConfigs.setMeasureDataFile("test-multi-prop-measure-data.json");
+	}
+
+	@AfterClass
+	public static void resetMeasuresData() {
+		MeasureConfigs.setMeasureDataFile("measures-data-short.json");
 	}
 
 	@Before
@@ -118,11 +123,6 @@ public class QualityMeasureIdMultiEncoderTest {
 
 		encoder = new QualityMeasureIdEncoder();
 		wrapper = new JsonWrapper();
-	}
-
-	@AfterClass
-	public static void resetMeasuresData() {
-		MeasureConfigs.setMeasureDataFile("measures-data-short.json");
 	}
 
 	@Test
