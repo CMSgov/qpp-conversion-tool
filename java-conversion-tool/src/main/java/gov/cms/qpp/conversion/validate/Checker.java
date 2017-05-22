@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -81,6 +81,44 @@ class Checker {
 			validationErrors.add(new ValidationError(message, node.getPath()));
 		}
 		return this;
+	}
+
+	/**
+	 * checks target node for the existence of a value with the given name key
+	 * and matches that value with one of the supplied values.
+	 *
+	 * @param message error message if searched value is not found
+	 * @param name key of expected value
+	 * @param values List of strings to check for the existence of.
+	 * @return The checker, for chaining method calls.
+	 */
+	Checker valueIn(String message, String name, String ... values) {
+		boolean contains = false;
+		if (name == null) {
+			setErrorMessage(message);
+			return this; //Short circuit on empty key or empty values
+		}
+		lastAppraised = node.getValue(name);
+		if (lastAppraised == null || values == null) {
+			setErrorMessage(message);
+			return this; //Short circuit on node doesn't contain key
+		}
+		for (String value : values) {
+			if (((String) lastAppraised).equalsIgnoreCase(value)) {
+				contains = true;
+				break;
+			}
+		}
+		if (!contains) {
+			setErrorMessage(message);
+		}
+		return this;
+	}
+
+	private void setErrorMessage(String message) {
+		if (! shouldShortcut()) {
+			validationErrors.add(new ValidationError(message, node.getPath()));
+		}
 	}
 
 	/**
