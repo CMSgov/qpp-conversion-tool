@@ -18,7 +18,7 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 
 	public static final String NPI_TIN_ID = "NPITIN";
 	private static final String PERFORMED_ASSIGNED_ENTITY_PATH =
-		"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity";
+			"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity";
 
 	/**
 	 * internalDecode parses the xml fragment into thisNode
@@ -43,6 +43,7 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 
 	/**
 	 * Parses out the multiple NPI / TIN numbers from multiple submission
+	 *
 	 * @param element XML Element
 	 * @param thisNode internal Node representation
 	 */
@@ -52,18 +53,21 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 		final String representedOrganization = "representedOrganization";
 
 		XPathExpression<?> expression = XPathFactory.instance().compile(PERFORMED_ASSIGNED_ENTITY_PATH,
-			Filters.element(), null,  xpathNs);
+				Filters.element(), null, xpathNs);
 		List<Element> assignedEntities = (List<Element>) expression.evaluate(element);
-		for ( Element assignedEntity: assignedEntities)
-		{
-			Element npiEl = assignedEntity.getChild(id, element.getNamespace());
-			Element taxEl = assignedEntity.getChild(representedOrganization,
-				element.getNamespace()).getChild(id, element.getNamespace());
-
+		Element npiEl = null;
+		Element taxEl = null;
+		for (Element assignedEntity : assignedEntities) {
+			npiEl = assignedEntity.getChild(id, element.getNamespace());
+			taxEl = assignedEntity.getChild(representedOrganization,
+					element.getNamespace()).getChild(id, element.getNamespace());
+			if (npiEl == null || taxEl == null) {
+				continue;
+			}
 			String npi = npiEl.getAttributeValue(extension);
 			String tin = taxEl.getAttributeValue(extension);
 
-			if ( tin != null && npi != null  ) {
+			if (tin != null && npi != null) {
 				Node child = new Node(NPI_TIN_ID);
 				child.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, tin);
 				child.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, npi);
