@@ -94,23 +94,32 @@ class Checker {
 	 */
 	Checker valueIn(String message, String name, String ... values) {
 		boolean contains = false;
-		if (name != null) {
-			lastAppraised = node.getValue(name);
-			if (lastAppraised != null && values != null) {
-				for (String v : values) {
-					if (((String) lastAppraised).equalsIgnoreCase(v)) {
-						contains = true;
-						break;
-					}
-				}
+		if (name == null ) {
+			setErrorMessage(message);
+			return this; //Short circuit on empty key or empty values
+		}
+		lastAppraised = node.getValue(name);
+		if (lastAppraised == null || values == null ) {
+			setErrorMessage(message);
+			return this; //Short circuit on node doesn't contain key
+		}
+		for (String value : values) {
+			if (((String) lastAppraised).equalsIgnoreCase(value)) {
+				contains = true;
+				break;
 			}
 		}
-		if (!shouldShortcut() && !contains) {
-			validationErrors.add(new ValidationError(message, node.getPath()));
+		if (!contains) {
+			setErrorMessage(message);
 		}
 		return this;
 	}
 
+	private void setErrorMessage(String message) {
+		if ( ! shouldShortcut()) {
+			validationErrors.add(new ValidationError(message, node.getPath()));
+		}
+	}
 
 	/**
 	 * Checks target node for the existence of an integer value with the given name key.
