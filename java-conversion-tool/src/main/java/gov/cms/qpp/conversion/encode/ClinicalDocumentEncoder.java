@@ -28,12 +28,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) {
 		wrapper.putString("programName", thisNode.getValue("programName"));
-		wrapper.putString("entityType", "individual");
+		wrapper.putString("entityType", thisNode.getValue("entityType"));
 		wrapper.putString("taxpayerIdentificationNumber", thisNode.getValue("taxpayerIdentificationNumber"));
 		wrapper.putString("nationalProviderIdentifier", thisNode.getValue("nationalProviderIdentifier"));
 
 		Map<String, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
-				Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
+			Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 		Optional<Node> reportingNode = ReportingParameters.getReportingNode(childMapByTemplateId);
 
 		Optional<String> performanceStart = reportingNode.flatMap(p -> Optional.of(p.getValue("performanceStart")));
@@ -44,7 +44,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		}
 
 		JsonWrapper measurementSets =
-				encodeMeasurementSets(childMapByTemplateId, performanceStart, performanceEnd);
+			encodeMeasurementSets(childMapByTemplateId, performanceStart, performanceEnd);
 		wrapper.putObject("measurementSets", measurementSets);
 	}
 
