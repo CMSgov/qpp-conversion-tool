@@ -94,12 +94,12 @@ class Checker {
 	 */
 	Checker valueIn(String message, String name, String ... values) {
 		boolean contains = false;
-		if (name == null ) {
+		if (name == null) {
 			setErrorMessage(message);
 			return this; //Short circuit on empty key or empty values
 		}
 		lastAppraised = node.getValue(name);
-		if (lastAppraised == null || values == null ) {
+		if (lastAppraised == null || values == null) {
 			setErrorMessage(message);
 			return this; //Short circuit on node doesn't contain key
 		}
@@ -116,7 +116,7 @@ class Checker {
 	}
 
 	private void setErrorMessage(String message) {
-		if ( ! shouldShortcut()) {
+		if (! shouldShortcut()) {
 			validationErrors.add(new ValidationError(message, node.getPath()));
 		}
 	}
