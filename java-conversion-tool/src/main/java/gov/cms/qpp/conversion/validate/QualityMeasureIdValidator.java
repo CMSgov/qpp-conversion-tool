@@ -68,7 +68,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateMeasureConfigs(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 
-		MeasureConfig measureConfig = configurationMap.get(node.getValue("measureId"));
+		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_ID));
 
 		if (measureConfig != null) {
 			validateAllSubPopulations(node, measureConfig);
