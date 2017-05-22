@@ -45,17 +45,20 @@ public class ClinicalDocumentDecoderTest {
 
 	@Test
 	public void testRootProgramName() {
-		assertThat("programName is correct", root.getValue("programName"), is("mips"));
+		assertThat("programName is correct", root.getValue(ClinicalDocumentDecoder.PROGRAM_NAME),
+			is(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME));
 	}
 
 	@Test
 	public void testRootNationalProviderIdentifier() {
-		assertThat("nationalProviderIdentifier correct", root.getValue("nationalProviderIdentifier"), is("2567891421"));
+		assertThat("nationalProviderIdentifier correct",
+			root.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
 	}
 
 	@Test
 	public void testRootTaxpayerIdentificationNumber() {
-		assertThat("taxpayerIdentificationNumber correct", root.getValue("taxpayerIdentificationNumber"), is("123456789"));
+		assertThat("taxpayerIdentificationNumber correct",
+			root.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
 	}
 
 	@Test
@@ -123,9 +126,11 @@ public class ClinicalDocumentDecoderTest {
 		Node clinicalDocument = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlWithGarbage));
 		Node performanceYear = clinicalDocument.getChildNodes().get(0);
 
-		assertThat("Should contain a program name", clinicalDocument.getValue("programName"), is("mips"));
+		assertThat("Should contain a program name",
+			clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME), is(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME));
 
-		assertThat("Should contain a TIN", clinicalDocument.getValue("taxpayerIdentificationNumber"),is("123456789") );
+		assertThat("Should contain a TIN",
+			clinicalDocument.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER),is("123456789") );
 
 		assertThat("Should contain a performance year end", performanceYear.getChildNodes().get(0).getValue("performanceEnd"),
 				is("20171231"));
@@ -145,43 +150,140 @@ public class ClinicalDocumentDecoderTest {
 	@Test
 	public void decodeClinicalDocumentInternalDecode() throws Exception {
 
-		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
-		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-
-		Element clinicalDocument = new Element("ClinicalDocument", rootns);
-		clinicalDocument.addNamespaceDeclaration(ns);
-
-		Element informationRecipient = prepareInfoRecipient(rootns);
-
-		Element documentationOf = prepareDocumentationElement(rootns);
-
-		Element component = prepareComponentElement(rootns);
-
-		clinicalDocument.addContent(informationRecipient);
-		clinicalDocument.addContent(documentationOf);
-		clinicalDocument.addContent(component);
-
+		Element clinicalDocument = makeClinicalDocument("MIPS");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
 		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
 		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
 		Node testChildNode = testParentNode.getChildNodes().get(0);
 
-		assertThat("Clinical Document doesn't contain program name", testParentNode.getValue("programName"), is("mips"));
-		assertThat("Clinical Document doesn't contain national provider", testParentNode.getValue("nationalProviderIdentifier"), is("2567891421"));
-		assertThat("Clinical Document doesn't contain taxpayer id number", testParentNode.getValue("taxpayerIdentificationNumber"), is("123456789"));
+		assertThat("Clinical Document doesn't contain program name",
+			testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME), is(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME));
+		assertThat("Clinical Document doesn't contain entity type",
+			testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE), is(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL));
+		assertThat("Clinical Document doesn't contain national provider",
+			testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+		assertThat("Clinical Document doesn't contain taxpayer id number",
+			testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
 		assertThat("Clinical Document doesn't contain the ACI Section child node", testChildNode, is(notNullValue()));
 		assertThat("Clinical Document doesn't contain ACI Section category", testChildNode.getValue("category"), is("aci"));
 
 	}
 
-	private Element prepareInfoRecipient(Namespace rootns) {
+	@Test
+	public void decodeClinicalDocumentInternalDecodeMIPSIndividual() throws Exception {
+
+		Element clinicalDocument = makeClinicalDocument("MIPS_INDIV");
+		Node testParentNode = new Node();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
+		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		Node testChildNode = testParentNode.getChildNodes().get(0);
+
+		assertThat("Clinical Document doesn't contain program name",
+			testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME), is(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME));
+		assertThat("Clinical Document doesn't contain entity type",
+			testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE), is(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL));
+		assertThat("Clinical Document doesn't contain national provider",
+			testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+		assertThat("Clinical Document doesn't contain taxpayer id number",
+			testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
+		assertThat("Clinical Document doesn't contain the ACI Section child node", testChildNode, is(notNullValue()));
+		assertThat("Clinical Document doesn't contain ACI Section category", testChildNode.getValue("category"), is("aci"));
+
+	}
+
+	@Test
+	public void decodeClinicalDocumentInternalDecodeMIPSGroup() throws Exception {
+
+		Element clinicalDocument = makeClinicalDocument("MIPS_GROUP");
+		Node testParentNode = new Node();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
+		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		Node testChildNode = testParentNode.getChildNodes().get(0);
+
+		assertThat("Clinical Document doesn't contain program name",
+			testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME), is(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME));
+		assertThat("Clinical Document doesn't contain entity type",
+			testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE), is(ClinicalDocumentDecoder.ENTITY_GROUP));
+		assertThat("Clinical Document doesn't contain national provider",
+			testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+		assertThat("Clinical Document doesn't contain taxpayer id number",
+			testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
+		assertThat("Clinical Document doesn't contain the ACI Section child node", testChildNode, is(notNullValue()));
+		assertThat("Clinical Document doesn't contain ACI Section category", testChildNode.getValue("category"), is("aci"));
+
+	}
+	@Test
+	public void decodeClinicalDocumentInternalDecodeCPCPlus() throws Exception {
+
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS);
+		Node testParentNode = new Node();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
+		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		Node testChildNode = testParentNode.getChildNodes().get(0);
+
+		assertThat("Clinical Document doesn't contain program name",
+			testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME), is(ClinicalDocumentDecoder.CPCPLUS.toLowerCase()));
+		assertThat("Clinical Document doesn't contain entity type",
+			testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE), is(""));
+		assertThat("Clinical Document doesn't contain national provider",
+			testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+		assertThat("Clinical Document doesn't contain taxpayer id number",
+			testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
+		assertThat("Clinical Document doesn't contain the ACI Section child node", testChildNode, is(notNullValue()));
+		assertThat("Clinical Document doesn't contain ACI Section category", testChildNode.getValue("category"), is("aci"));
+
+	}
+
+	@Test
+	public void decodeClinicalDocumentInternalDecodeUnknown() throws Exception {
+
+		Element clinicalDocument = makeClinicalDocument("Unknown");
+		Node testParentNode = new Node();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
+		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		Node testChildNode = testParentNode.getChildNodes().get(0);
+
+		assertThat("Clinical Document doesn't contain program name",
+			testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME), is("unknown"));
+		assertThat("Clinical Document doesn't contain entity type",
+			testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE), is("individual"));
+		assertThat("Clinical Document doesn't contain national provider",
+			testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+		assertThat("Clinical Document doesn't contain taxpayer id number",
+			testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
+		assertThat("Clinical Document doesn't contain the ACI Section child node", testChildNode, is(notNullValue()));
+		assertThat("Clinical Document doesn't contain ACI Section category", testChildNode.getValue("category"), is("aci"));
+
+	}
+
+	private Element makeClinicalDocument(String programName) {
+		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
+		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+		Element clinicalDocument = new Element("ClinicalDocument", rootns);
+		clinicalDocument.addNamespaceDeclaration(ns);
+		Element informationRecipient = prepareInfoRecipient(rootns, programName);
+		Element documentationOf = prepareDocumentationElement(rootns);
+		Element component = prepareComponentElement(rootns);
+
+		clinicalDocument.addContent(informationRecipient);
+		clinicalDocument.addContent(documentationOf);
+		clinicalDocument.addContent(component);
+		return clinicalDocument;
+	}
+
+	private Element prepareInfoRecipient(Namespace rootns, String programName) {
 		Element informationRecipient = new Element("informationRecipient", rootns);
 		Element intendedRecipient = new Element("intendedRecipient", rootns);
-		Element programName = new Element("id", rootns)
+		Element programNameEl = new Element("id", rootns)
 				.setAttribute("root", "2.16.840.1.113883.3.249.7")
-				.setAttribute("extension", "MIPS");
-		intendedRecipient.addContent(programName);
+				.setAttribute("extension", programName);
+		intendedRecipient.addContent(programNameEl);
 		informationRecipient.addContent(intendedRecipient);
 		return informationRecipient;
 	}

@@ -155,6 +155,7 @@ public class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode = new Node();
 		clinicalDocumentNode.setId(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
 		clinicalDocumentNode.putValue("programName", "mips");
+		clinicalDocumentNode.putValue("entityType", "individual");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.addChildNode(reportingParametersSectionNode);
@@ -233,7 +234,4 @@ public class ClinicalDocumentEncoderTest {
 
 		RegistryHelper.setEncoderRegistry(validRegistry); //Restore Registry
 	}
-
-
 }
-
