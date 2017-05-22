@@ -5,6 +5,8 @@ machine:
     version: 3.6.1
   node:
     version: 7
+  services:
+    - docker
   environment:
     PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/frontend/node_modules/.bin" # yarn
 
