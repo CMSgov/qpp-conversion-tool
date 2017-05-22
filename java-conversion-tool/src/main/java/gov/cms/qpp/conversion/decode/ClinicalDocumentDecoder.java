@@ -19,8 +19,8 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	/*  Constants for lookups and tests */
 	static final String PROGRAM_NAME = "programName";
 	static final String ENTITY_TYPE = "entityType";
-	static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
-	static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
+	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
+	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
 
 	static final String MIPS = "MIPS";
 	static final String MIPS_GROUP = "MIPS_GROUP";
