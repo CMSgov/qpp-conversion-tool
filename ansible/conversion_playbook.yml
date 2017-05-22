@@ -1,0 +1,56 @@
+---
+- hosts: '{{host_category}}'
+  remote_user: '{{remote_username}}'
+  tasks:
+  - name: Install apt-transport-https
+    apt:
+      name: apt-transport-https
+    become: true
+  - name: Install ca-certificates
+    apt:
+      name: ca-certificates
+    become: true
+  - name: Install software-properties-common
+    apt:
+      name: software-properties-common
+    become: true
+  - name: Install linux-image-extra-virtual
+    apt:
+      name: linux-image-extra-virtual
+    become: true
+  - name: Install Docker's GPG key
+    apt_key:
+      url: "https://download.docker.com/linux/ubuntu/gpg"
+    become: true
+  - name: Add Docker's registry
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+      update_cache: yes
+    become: true
+  - name: Install Docker
+    apt:
+      name: docker-ce
+    become: true
+  - name: Install Python's pip
+    apt:
+      name: python-pip
+    become: true
+  - name: Install Python's Docker library
+    pip:
+      name: docker-py
+    become: true
+  - name: Transfer QPP Conversion Tools Docker image
+    copy:
+      src: ../qpp_conversion_docker_image.tar
+      dest: ~/
+    become: true
+  - name: Load QPP Conversion Tools Docker image
+    docker_image:
+      name: qpp_conversion
+      state: present
+      load_path: ~/qpp_conversion_docker_image.tar
+    become: true
+  - name: Transfer sample QRDA files
+    copy:
+      src: ../qrda-files/
+      dest: ~/qrda-files/

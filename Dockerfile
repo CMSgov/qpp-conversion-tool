@@ -8,7 +8,7 @@ COPY ./ /usr/src/app/
 
 WORKDIR /usr/src/app/java-conversion-tool/
 
-RUN mvn install
+RUN mvn install -DskipTests
 
 WORKDIR /usr/src/qpp-files/
 
