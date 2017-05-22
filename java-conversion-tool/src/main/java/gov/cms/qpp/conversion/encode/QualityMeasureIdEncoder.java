@@ -26,9 +26,13 @@ import java.util.stream.IntStream;
 @Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
+	public static final String VALUE = "value";
 	private static final String MEASURE_ID = "measureId";
 	private static final String AGGREGATE_COUNT = "aggregateCount";
 	private static final String TYPE = "type";
+	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
+	private static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
+	private static final String TRUE = "true";
 
 	/**
 	 * Encodes an Quality Measure Id into the QPP format
@@ -65,7 +69,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			Converter.CLIENT_LOG.info("Measure Configuration for {} is missing", measureId);
 			return true;
 		}
-		return "singlePerformanceRate".equalsIgnoreCase(measureConfig.getMetricType());
+		return SINGLE_PERFORMANCE_RATE.equalsIgnoreCase(measureConfig.getMetricType());
 	}
 
 	/**
@@ -76,9 +80,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private void encodeChildren(JsonWrapper wrapper, Node parentNode) {
 		JsonWrapper childWrapper = new JsonWrapper();
-		childWrapper.putBoolean("isEndToEndReported", "true");
+		childWrapper.putBoolean(IS_END_TO_END_REPORTED, TRUE);
 		encodeSubPopulation(parentNode, childWrapper);
-		wrapper.putObject("value", childWrapper);
+		wrapper.putObject(VALUE, childWrapper);
 	}
 
 	/**
@@ -105,7 +109,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		List<Node> subPopNodes = initializeMeasureDataList(subPopCount);
 		Map<String, Integer> mapPopulationIdToSubPopIndex = createSubPopulationIndexMap(measureConfig);
 		node.getChildNodes().stream()
-				.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V2.equals(childNode.getType()))
+				.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V2 == childNode.getType())
 				.forEach(childNode -> {
 					String populationId = childNode.getValue(MeasureDataDecoder.MEASURE_POPULATION);
 					Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId);
@@ -158,7 +162,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private void encodeMultiPerformanceChildren(JsonWrapper wrapper, List<Node> subPopNodes) {
 		JsonWrapper childWrapper = new JsonWrapper();
 
-		childWrapper.putBoolean("isEndToEndReported", "true");
+		childWrapper.putBoolean(IS_END_TO_END_REPORTED, TRUE);
 
 		JsonWrapper strataListWrapper = new JsonWrapper();
 		for (Node subPopNode : subPopNodes) {
@@ -168,7 +172,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		}
 		childWrapper.putObject("strata", strataListWrapper);
 
-		wrapper.putObject("value", childWrapper);
+		wrapper.putObject(VALUE, childWrapper);
 	}
 
 	/**
