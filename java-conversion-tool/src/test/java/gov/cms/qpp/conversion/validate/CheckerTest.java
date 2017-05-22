@@ -9,15 +9,14 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.TestCase.assertFalse;
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 /**
- * Created by clydetedrick on 4/7/17.
+ * This will test the Checker functionality
  */
 public class CheckerTest {
 
@@ -40,8 +39,9 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.value(ERROR_MESSAGE, VALUE);
 
-		assertFalse("There's an error", validationErrors.isEmpty());
-		assertEquals("message applied is the message given", validationErrors.get(0).getErrorText(), ERROR_MESSAGE);
+		assertThat("There's an error", validationErrors, hasSize(1));
+		assertThat("message applied is the message given", validationErrors.get(0),
+			validationErrorTextMatches(ERROR_MESSAGE));
 	}
 
 	@Test
@@ -50,10 +50,11 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.hasParent(ERROR_MESSAGE, TemplateId.ACI_DENOMINATOR) //fails
-				.hasParent(ERROR_MESSAGE, TemplateId.ACI_DENOMINATOR); //shortcuts
+			.hasParent(ERROR_MESSAGE, TemplateId.ACI_DENOMINATOR); //shortcuts
 
-		assertEquals("There's an error", 1, validationErrors.size());
-		assertEquals("message applied is the message given", validationErrors.get(0).getErrorText(), ERROR_MESSAGE);
+		assertThat("There's an error", validationErrors, hasSize(1));
+		assertThat("message applied is the message given", validationErrors.get(0),
+			validationErrorTextMatches(ERROR_MESSAGE));
 	}
 
 	@Test
@@ -63,8 +64,7 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.value(ERROR_MESSAGE, VALUE);
-
-		assertTrue("There's no error", validationErrors.isEmpty());
+		assertThat("There's no error", validationErrors, empty());
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.intValue(ERROR_MESSAGE, VALUE);
 
-		assertFalse("There's an error", validationErrors.isEmpty());
+		assertThat("There's an error", validationErrors, hasSize(1));
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.value(ERROR_MESSAGE, VALUE);
 
-		assertTrue("There's no error", validationErrors.isEmpty());
+		assertThat("There's no error", validationErrors, empty());
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.hasChildren(ERROR_MESSAGE);
 
-		assertFalse("There's an error", validationErrors.isEmpty());
+		assertThat ("There's an error", validationErrors, hasSize(1));
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.hasChildren(ERROR_MESSAGE);
 
-		assertTrue("There's no error", validationErrors.isEmpty());
+		assertThat("There's no error", validationErrors, empty());
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.childMinimum(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER);
 
-		assertFalse("There's an error", validationErrors.isEmpty());
+		assertThat("There's an error", validationErrors, hasSize(1));
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.childMinimum(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER);
 
-		assertTrue("There's no error", validationErrors.isEmpty());
+		assertThat("There's no error", validationErrors, empty());
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.childMaximum(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER);
 
-		assertFalse("There's an error", validationErrors.isEmpty());
+		assertThat("There's an error", validationErrors, hasSize(1));
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.childMaximum(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER);
 
-		assertTrue("There's no error", validationErrors.isEmpty());
+		assertThat("There's no error", validationErrors, empty());
 	}
 
 	//chaining
@@ -170,8 +170,9 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.value(ERROR_MESSAGE, VALUE).hasChildren(OTHER_ERROR_MESSAGE);
 
-		assertFalse("There's an error", validationErrors.isEmpty());
-		assertEquals("message applied is other error message", validationErrors.get(0).getErrorText(), OTHER_ERROR_MESSAGE);
+		assertThat("There's an error", validationErrors, hasSize(1));
+		assertThat("message applied is other error message", validationErrors.get(0),
+			validationErrorTextMatches(OTHER_ERROR_MESSAGE));
 	}
 
 	@Test
@@ -183,7 +184,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.value(ERROR_MESSAGE, VALUE).hasChildren(OTHER_ERROR_MESSAGE);
 
-		assertTrue("There's no error", validationErrors.isEmpty());
+		assertThat("There's no error", validationErrors, empty());
 	}
 
 	@Test
@@ -192,11 +193,12 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.intValue(ERROR_MESSAGE, VALUE)
-				.value(ERROR_MESSAGE, VALUE)
-				.childMaximum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
-				.hasChildren(OTHER_ERROR_MESSAGE);
-
-		assertFalse("There's an error", validationErrors.isEmpty());
+			.value(ERROR_MESSAGE, VALUE)
+			.childMaximum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
+			.hasChildren(OTHER_ERROR_MESSAGE);
+		assertThat("There's an error", validationErrors, hasSize(1));
+		assertThat("message applied is other error message", validationErrors.get(0),
+				validationErrorTextMatches(ERROR_MESSAGE));
 	}
 
 	@Test
@@ -209,27 +211,29 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.value(ERROR_MESSAGE, VALUE)
-				.hasChildren(ERROR_MESSAGE)
-				.childMinimum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
-				.childMaximum(OTHER_ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER);
+			.hasChildren(ERROR_MESSAGE)
+			.childMinimum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
+			.childMaximum(OTHER_ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER);
 
-		assertFalse("There's an error", validationErrors.isEmpty());
-		assertEquals("message applied is other error message", validationErrors.get(0).getErrorText(), OTHER_ERROR_MESSAGE);
+		assertThat("There's an error", validationErrors, hasSize(1));
+		assertThat("message applied is other error message", validationErrors.get(0),
+				validationErrorTextMatches(OTHER_ERROR_MESSAGE));
 	}
 
 	@Test
 	public void testMaxFindMultipleTemplateIdsFailure() {
 		Node meepNode = new Node(PARENT);
 		meepNode.addChildNodes(
-				new Node(TemplateId.PLACEHOLDER.getTemplateId()),
-				new Node(TemplateId.PLACEHOLDER.getTemplateId()),
-				new Node(TemplateId.DEFAULT.getTemplateId()));
+			new Node(TemplateId.PLACEHOLDER.getTemplateId()),
+			new Node(TemplateId.PLACEHOLDER.getTemplateId()),
+			new Node(TemplateId.DEFAULT.getTemplateId()));
 
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.childMaximum("too many children", 2, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
 
-		assertFalse("There's an error", validationErrors.isEmpty());
-		assertEquals("message applied is other error message", validationErrors.get(0).getErrorText(), "too many children");
+		assertThat("There's an error", validationErrors, hasSize(1));
+		assertThat("message applied is other error message", validationErrors.get(0),
+			validationErrorTextMatches("too many children"));
 	}
 
 	@Test
@@ -243,8 +247,7 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.childMaximum("too many children", 3, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
-
-		assertTrue("There's no error", validationErrors.isEmpty());
+		assertThat("There should be no errors.", validationErrors, empty());
 	}
 
 	@Test
@@ -258,8 +261,7 @@ public class CheckerTest {
 				.hasChildren(ERROR_MESSAGE)
 				.childMinimum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
 				.childMaximum(OTHER_ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER);
-
-		assertTrue("There's no error", validationErrors.isEmpty());
+		assertThat("There should be no errors.", validationErrors, empty());
 	}
 
 	// compound checking
@@ -269,10 +271,8 @@ public class CheckerTest {
 		meepNode.putValue(VALUE, "123");
 
 		Checker checker = Checker.check(meepNode, validationErrors);
-		checker.intValue(ERROR_MESSAGE, VALUE)
-				.greaterThan(ERROR_MESSAGE, 122);
-
-		assertTrue("There's no error", validationErrors.isEmpty());
+		checker.intValue(ERROR_MESSAGE, VALUE).greaterThan(ERROR_MESSAGE, 122);
+		assertThat("There should be no errors.", validationErrors, empty());
 	}
 
 	@Test
@@ -281,10 +281,8 @@ public class CheckerTest {
 		meepNode.putValue(VALUE, "123");
 
 		Checker checker = Checker.check(meepNode, validationErrors);
-		checker.intValue(ERROR_MESSAGE, VALUE)
-				.greaterThan(ERROR_MESSAGE, 124);
-
-		assertFalse("There's an error", validationErrors.isEmpty());
+		checker.intValue(ERROR_MESSAGE, VALUE).greaterThan(ERROR_MESSAGE, 124);
+		assertThat("There should be one error.", validationErrors, hasSize(1));
 	}
 
 	@Test
@@ -294,8 +292,7 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, validationErrors);
 		checker.greaterThan(ERROR_MESSAGE, 124);
-
-		assertTrue("There's no error", validationErrors.isEmpty());
+		assertThat("There should be no errors.", validationErrors, empty());
 	}
 
 	@Test(expected = ClassCastException.class)
@@ -304,10 +301,8 @@ public class CheckerTest {
 		meepNode.putValue(VALUE, "123");
 
 		Checker checker = Checker.check(meepNode, validationErrors);
-		checker.intValue(ERROR_MESSAGE, VALUE)
-				.greaterThan(ERROR_MESSAGE, "not an Integer");
-
-		assertFalse("There's an error", validationErrors.isEmpty());
+		checker.intValue(ERROR_MESSAGE, VALUE).greaterThan(ERROR_MESSAGE, "not an Integer");
+		assertThat("There should be no errors.", validationErrors, empty());
 	}
 
 	// thorough checking
@@ -325,9 +320,9 @@ public class CheckerTest {
 				.childMinimum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
 				.childMaximum("maximum failure", 1, TemplateId.PLACEHOLDER);
 
-		assertEquals("There are errors", validationErrors.size(), 2);
-		assertEquals("int validation error", validationErrors.get(0).getErrorText(), "int failure");
-		assertEquals("maximum validation failure", validationErrors.get(1).getErrorText(), "maximum failure");
+		assertThat("There are errors", validationErrors, hasSize(2));
+		assertThat("int validation error", validationErrors,
+			containsValidationErrorInAnyOrderIgnoringPath("int failure" ,"maximum failure"));
 	}
 
 	@Test
@@ -344,7 +339,7 @@ public class CheckerTest {
 				.childMinimum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
 				.childMaximum("maximum failure", 2, TemplateId.PLACEHOLDER);
 
-		assertTrue("There are no errors", validationErrors.isEmpty());
+		assertThat("There should be no errors.", validationErrors, empty());
 	}
 
 	@Test
@@ -369,7 +364,7 @@ public class CheckerTest {
 
 		checker.hasMeasures("measure failure", expectedMeasure1, expectedMeasure2);
 
-		assertThat("All the measures should have been found.", validationErrors, hasSize(0));
+		assertThat("All the measures should have been found.", validationErrors, empty());
 	}
 
 	@Test
@@ -397,7 +392,8 @@ public class CheckerTest {
 		checker.hasMeasures(validationError, expectedMeasure);
 
 		assertThat("A measure should not have been found.", validationErrors, hasSize(1));
-		assertThat("The validation error string did not match up.", validationErrors.get(0).getErrorText(), is(validationError));
+		assertThat("The validation error string did not match up.", validationErrors.get(0),
+			validationErrorTextMatches(validationError));
 	}
 
 	@Test
@@ -409,8 +405,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(root, errors)
 				.hasMeasures("Some Message", "MeasureId");
 
-		assertThat("Checker should return one validation error",
-				errors, hasSize(1));
+		assertThat("Checker should return one validation error", errors, hasSize(1));
 
 	}
 
@@ -425,8 +420,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(root, errors)
 				.hasMeasures("Some Message", "MeasureId");
 
-		assertThat("Checker should return one validation error",
-				errors, hasSize(1));
+		assertThat("Checker should return one validation error", errors, hasSize(1));
 
 	}
 
@@ -438,8 +432,7 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(iaSectionNode, validationErrors);
 		checker.onlyHasChildren(ERROR_MESSAGE, TemplateId.IA_MEASURE);
-
-		assertTrue("There are no errors", validationErrors.isEmpty());
+		assertThat("There should be no errors", validationErrors, empty());
 	}
 
 	@Test
@@ -454,17 +447,17 @@ public class CheckerTest {
 		Checker checker = Checker.check(iaSectionNode, validationErrors);
 		checker.onlyHasChildren(ERROR_MESSAGE, TemplateId.IA_MEASURE);
 
-		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+		assertThat("There should be an error", validationErrors.get(0), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 
 	@Test
 	public void testValueIn() throws Exception {
 		Node testNode = new Node();
-		final String KEY = "Key";
-		testNode.putValue(KEY, "My Value");
+		final String key = "Key";
+		testNode.putValue(key, "My Value");
 		Checker checker = Checker.check(testNode, validationErrors);
-		checker.valueIn(ERROR_MESSAGE, KEY, "No Value" , "Some Value", "My Value");
-		assertThat("There should be no errors", validationErrors, hasSize(0));
+		checker.valueIn(ERROR_MESSAGE, key, "No Value" , "Some Value", "My Value");
+		assertThat("There should be no errors", validationErrors, empty());
 	}
 
 	@Test
@@ -475,7 +468,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(testNode, validationErrors);
 		checker.valueIn(ERROR_MESSAGE, KEY, "No Value" , "Some Value", "My Value");
 		assertThat("There should be 1 error", validationErrors, hasSize(1));
-		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+		assertThat("There should be an error", validationErrors.get(0), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 	@Test
 	public void testValueInNull() throws Exception {
@@ -485,7 +478,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(testNode, validationErrors);
 		checker.valueIn(ERROR_MESSAGE, KEY, null);
 		assertThat("There should be 1 error", validationErrors, hasSize(1));
-		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+		assertThat("There should be an error", validationErrors.get(0), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 	@Test
 	public void testValueInKeyNull() throws Exception {
@@ -495,7 +488,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(testNode, validationErrors);
 		checker.valueIn(ERROR_MESSAGE, null, null);
 		assertThat("There should be 1 error", validationErrors, hasSize(1));
-		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+		assertThat("There should be an error", validationErrors.get(0), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 	@Test
 	public void testValueInNulls() throws Exception {
@@ -505,7 +498,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(testNode, validationErrors);
 		checker.valueIn(ERROR_MESSAGE, KEY, null);
 		assertThat("There should be 1 error", validationErrors, hasSize(1));
-		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+		assertThat("There should be an error", validationErrors.get(0), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 	@Test
 	public void testValueInShouldShortCut() throws Exception {
@@ -517,7 +510,7 @@ public class CheckerTest {
 
 		checker.valueIn(ERROR_MESSAGE, KEY, null , "Some Value", "My Value");
 		assertThat("There should be 1 error", validationErrors, hasSize(1));
-		assertThat("There should be an error", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+		assertThat("There should be an error", validationErrors.get(0), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 
 }

@@ -16,8 +16,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
 import static gov.cms.qpp.conversion.util.JsonHelper.readJson;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
@@ -87,8 +87,8 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = validator.validateSameTemplateIdNodes(Arrays.asList());
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
-		assertThat("error should be about missing Clinical Document node", errors.get(0).getErrorText(),
-				is(EXPECTED_TEXT));
+		assertThat("error should be about missing Clinical Document node", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(EXPECTED_TEXT));
 	}
 
 	@Test
@@ -100,8 +100,8 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = validator.validateSameTemplateIdNodes(Arrays.asList(clinicalDocumentNode, clinicalDocumentNode2));
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
-		assertThat("error should be about too many Clinical Document nodes", errors.get(0).getErrorText(),
-				is(EXPECTED_ONE_ALLOWED));
+		assertThat("error should be about too many Clinical Document nodes", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(EXPECTED_ONE_ALLOWED));
 	}
 
 	@Test
@@ -113,7 +113,8 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
-		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(EXPECTED_NO_SECTION));
+		assertThat("error should be about missing section node", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(EXPECTED_NO_SECTION));
 	}
 
 	@Test
@@ -128,8 +129,9 @@ public class ClinicalDocumentValidatorTest {
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
-		assertThat("there should be one error", errors, iterableWithSize(1));
-		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(EXPECTED_NO_SECTION));
+		assertThat("there should be one error", errors, hasSize(1));
+		assertThat("error should be about missing section node", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(EXPECTED_NO_SECTION));
 	}
 
 	@Test
@@ -146,9 +148,11 @@ public class ClinicalDocumentValidatorTest {
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
-		assertThat("there should be two errors", errors, iterableWithSize(2));
-		assertThat("error should be about missing missing program name", errors.get(0).getErrorText(), is(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
-		assertThat("error should be about incorrect program name", errors.get(1).getErrorText(), is(ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
+		assertThat("there should be two errors", errors, hasSize(2));
+		assertThat("error should be about missing missing program name", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(
+				ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
+				ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
 	}
 
 	@Test
@@ -165,8 +169,9 @@ public class ClinicalDocumentValidatorTest {
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
-		assertThat("there should be one error", errors, iterableWithSize(1));
-		assertThat("error should be about missing section node", errors.get(0).getErrorText(), is(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
+		assertThat("there should be one error", errors, hasSize(1));
+		assertThat("error should be about missing section node", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
 	}
 
 	@Test
@@ -184,8 +189,7 @@ public class ClinicalDocumentValidatorTest {
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
-		assertThat("there should be no errors", errors, iterableWithSize(0));
-		assertThat("no errors should be present", errors, empty());
+		assertThat("there should be no errors", errors, empty());
 	}
 
 	@Test
@@ -199,11 +203,11 @@ public class ClinicalDocumentValidatorTest {
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
-		assertThat("there should be one error", errors, iterableWithSize(2));
-		assertThat("error should be about missing reporting node",
-				errors.get(0).getErrorText(), is(ClinicalDocumentValidator.REPORTING_PARAMETER_REQUIRED));
-		assertThat("error should be about missing performance start",
-				errors.get(1).getErrorText(), is(ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
+		assertThat("there should be one error", errors, hasSize(2));
+		assertThat("error should be about missing reporting node", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(
+					ClinicalDocumentValidator.REPORTING_PARAMETER_REQUIRED,
+					ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
 	}
 
 	@Test
@@ -221,8 +225,8 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("Should contain one error", errors, hasSize(1));
-		assertThat("Should contain one error", errors.get(0).getErrorText(),
-				is(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ACI_SECTIONS));
+		assertThat("Should contain one error", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ACI_SECTIONS));
 	}
 
 	@Test
@@ -240,8 +244,8 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("Should contain one error", errors, hasSize(1));
-		assertThat("Should contain one error", errors.get(0).getErrorText(),
-				is(ClinicalDocumentValidator.CONTAINS_DUPLICATE_IA_SECTIONS));
+		assertThat("Should contain one error", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(ClinicalDocumentValidator.CONTAINS_DUPLICATE_IA_SECTIONS));
 	}
 
 	@Test
@@ -259,7 +263,8 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("Should contain one error", errors, hasSize(1));
-		assertThat("Should contain one error", errors.get(0).getErrorText(), is(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ECQM_SECTIONS));
+		assertThat("Should contain one error", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ECQM_SECTIONS));
 	}
 
 	@Test
@@ -278,7 +283,7 @@ public class ClinicalDocumentValidatorTest {
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
-		assertThat("Should have no validation errors", errors, hasSize(0));
+		assertThat("Should have no validation errors", errors, empty());
 	}
 
 	@Test
@@ -293,14 +298,12 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("Must have 4 errors", errors, hasSize(4));
 
-		assertThat("Must contain the error", errors.get(0).getErrorText(),
-				is(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
-		assertThat("Must contain the error", errors.get(1).getErrorText(),
-				is(ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
-		assertThat("Must contain the error", errors.get(2).getErrorText(),
-				is(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
-		assertThat("Must contain the error", errors.get(3).getErrorText(),
-				is(ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
+		assertThat("Must contain the error", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(
+				ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
+				ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME,
+				ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER,
+				ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
 	}
 
 	@Test
@@ -314,8 +317,8 @@ public class ClinicalDocumentValidatorTest {
 		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("Should have 1 validation errors", errors, hasSize(1));
-		assertThat("Must contain the error", errors.get(0).getErrorText(),
-				is(ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
+		assertThat("Must contain the error", errors,
+			containsValidationErrorInAnyOrderIgnoringPath(ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
 	}
 
 
