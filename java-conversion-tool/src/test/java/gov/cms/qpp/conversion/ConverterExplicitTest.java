@@ -23,6 +23,7 @@ public class ConverterExplicitTest {
 	private static String bad = "../qrda-files/not-a-QDRA-III-file.xml";
 	private static String ugly = "../qrda-files/QRDA-III-without-required-measure.xml";
 
+
 	@Test
 	public void testStreamConversion() throws IOException {
 		Path path = Paths.get(good);

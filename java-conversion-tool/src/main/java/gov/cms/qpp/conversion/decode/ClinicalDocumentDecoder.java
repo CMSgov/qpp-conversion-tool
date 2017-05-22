@@ -17,19 +17,19 @@ import java.util.function.Consumer;
 public class ClinicalDocumentDecoder extends QppXmlDecoder {
 
 	/*  Constants for lookups and tests */
-	static final String PROGRAM_NAME = "programName";
+	public static final String PROGRAM_NAME = "programName";
 	static final String ENTITY_TYPE = "entityType";
 	static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
-	static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
+	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
 
+	public static final String MIPS_PROGRAM_NAME = "mips";
+	public static final String CPCPLUS_PROGRAM_NAME = "cpcplus";
 	static final String MIPS = "MIPS";
 	static final String MIPS_GROUP = "MIPS_GROUP";
 	static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
-	static final String MIPS_PROGRAM_NAME = "mips";
 	static final String ENTITY_GROUP = "group";
 	static final String ENTITY_INDIVIDUAL = "individual";
 	static final String CPCPLUS = "CPCPLUS";
-	static final String CPCPLUS_PROGRAM_NAME = "cpcplus";
 
 	private static final String PROGRAM_NAME_PATH =
 			"./ns:informationRecipient/ns:intendedRecipient/"
