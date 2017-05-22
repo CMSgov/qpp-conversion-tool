@@ -11,7 +11,6 @@ import java.util.List;
  */
 @Encoder(TemplateId.IA_MEASURE)
 public class IaMeasureEncoder extends QppOutputEncoder {
-	private static final String VALUE_STRING = "value";
 
 	/**
 	 * internalEncode to encode the IA Performed Measure
@@ -33,8 +32,8 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 			JsonWrapper value = new JsonWrapper();
 			measurePerformedEncoder.encode(value, measurePerformedNode);
 
-			if (null != value.getBoolean(VALUE_STRING)) {
-				wrapper.putObject(VALUE_STRING, value.getBoolean(VALUE_STRING));
+			if (null != value.getBoolean(VALUE)) {
+				wrapper.putObject(VALUE, value.getBoolean(VALUE));
 			}
 		}
 	}

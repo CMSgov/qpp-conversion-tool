@@ -1,15 +1,15 @@
 package gov.cms.qpp.conversion.validate;
 
-import java.util.List;
-
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
+import java.util.List;
+
 /**
  * This Validator checks that the Measure ID is present.
  */
-@Validator(templateId = TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
+@Validator(templateId = TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS, required = true)
 public class AciMeasurePerformedRnRValidator extends NodeValidator {
 
 	private static final String MEASURE_ID_IS_REQUIRED =

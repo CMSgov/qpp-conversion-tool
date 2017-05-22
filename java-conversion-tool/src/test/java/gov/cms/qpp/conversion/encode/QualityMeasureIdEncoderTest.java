@@ -28,7 +28,7 @@ public class QualityMeasureIdEncoderTest {
 	@Before
 	public void setUp() {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
-		qualityMeasureId.putValue("measureId", "Measure Id Value");
+		qualityMeasureId.putValue("measureId", "40280381-51f0-825b-0152-22b98cff181a");
 
 		aggregateCountNode = new Node();
 		aggregateCountNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
@@ -59,7 +59,7 @@ public class QualityMeasureIdEncoderTest {
 		executeInternalEncode();
 
 		assertThat("expected encoder to return a single value",
-				wrapper.getString("measureId"), is("Measure Id Value"));
+				wrapper.getString("measureId"), is("CMS165v5"));
 	}
 
 	@Test
