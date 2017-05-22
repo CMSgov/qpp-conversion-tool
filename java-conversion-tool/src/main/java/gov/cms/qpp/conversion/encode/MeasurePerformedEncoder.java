@@ -19,6 +19,6 @@ public class MeasurePerformedEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
-		wrapper.putBoolean("value", node.getValue("measurePerformed"));
+		wrapper.putBoolean(VALUE, node.getValue("measurePerformed"));
 	}
 }

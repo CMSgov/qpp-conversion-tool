@@ -1,0 +1,86 @@
+[
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "multiPerformanceRate",
+		"title": "test",
+		"description": "test",
+		"nationalQualityCode": "test",
+		"measureType": "test",
+		"measureId": "160",
+		"eMeasureId": "test",
+		"nqfEMeasureId": null,
+		"nqfId": "test",
+		"isInverse": false,
+		"eMeasureVerUUID": "test1",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": "ipop1",
+				"denominatorUUID": "denom1",
+				"denominatorExclusionsUUID": "denex1",
+				"numeratorUUID": "numer1",
+				"denominatorExceptionsUUID": "denexcep1"
+			},
+			{
+				"initialPopulationUUID": "ipop2",
+				"denominatorUUID": "denom2",
+				"denominatorExclusionsUUID": "denex2",
+				"numeratorUUID": "numer2",
+				"denominatorExceptionsUUID": "denexcep2"
+			}
+		],
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "test",
+		"submissionMethods": [
+			"test"
+		],
+		"measureSets": [
+			"test",
+			"test"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "multiPerformanceRate",
+		"title": "test",
+		"description": "test",
+		"nationalQualityCode": "test",
+		"measureType": "test",
+		"measureId": "160",
+		"eMeasureId": "test",
+		"nqfEMeasureId": null,
+		"nqfId": "test",
+		"isInverse": false,
+		"eMeasureVerUUID": "test2",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"numeratorUUID": null,
+				"denominatorExceptionsUUID": null
+			},
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"numeratorUUID": null,
+				"denominatorExceptionsUUID": null
+			}
+		],
+		"strata": [],
+		"isHighPriority": false,
+		"primarySteward": "test",
+		"submissionMethods": [
+			"test"
+		],
+		"measureSets": [
+			"test",
+			"test"
+		]
+	}
+]
