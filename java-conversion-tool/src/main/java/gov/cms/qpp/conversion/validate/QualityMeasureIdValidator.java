@@ -22,8 +22,10 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 /**
  * Validates a Measure Reference Results node.
  */
-@Validator(templateId = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
+@Validator(templateId = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, required = true)
 public class QualityMeasureIdValidator extends NodeValidator {
+
+	protected static final String MEASURE_ID = "measureId";
 
 	protected static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
@@ -48,8 +50,12 @@ public class QualityMeasureIdValidator extends NodeValidator {
 
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
+		//It is possible that we have a Measure in the input that we have not defined in
+		//the meta data measures-data.json
+		//This should not be an error
+
 		thoroughlyCheck(node)
-			.value(MEASURE_GUID_MISSING, MEASURE_TYPE)
+			.value(MEASURE_GUID_MISSING, MEASURE_ID)
 			.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
@@ -62,7 +68,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateMeasureConfigs(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 
-		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_TYPE));
+		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_ID));
 
 		if (measureConfig != null) {
 			validateAllSubPopulations(node, measureConfig);
