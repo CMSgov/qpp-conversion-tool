@@ -32,8 +32,8 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 			JsonWrapper value = new JsonWrapper();
 			measurePerformedEncoder.encode(value, measurePerformedNode);
 
-			if (null != value.getBoolean(QualityMeasureIdEncoder.VALUE)) {
-				wrapper.putObject(QualityMeasureIdEncoder.VALUE, value.getBoolean(QualityMeasureIdEncoder.VALUE));
+			if (null != value.getBoolean(QppOutputEncoder.VALUE)) {
+				wrapper.putObject(QppOutputEncoder.VALUE, value.getBoolean(QppOutputEncoder.VALUE));
 			}
 		}
 	}

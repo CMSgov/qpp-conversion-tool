@@ -31,9 +31,9 @@ public class AciMeasurePerformedRnREncoder extends QppOutputEncoder {
 		if (child != null) {
 			String measureValue = child.getValue(measurePerformedValue);
 			if ("Y".equalsIgnoreCase(measureValue) || "N".equalsIgnoreCase(measureValue)) {
-				wrapper.putBoolean(QualityMeasureIdEncoder.VALUE, measureValue);
+				wrapper.putBoolean(QppOutputEncoder.VALUE, measureValue);
 			} else {
-				wrapper.putObject(QualityMeasureIdEncoder.VALUE, measureValue);
+				wrapper.putObject(QppOutputEncoder.VALUE, measureValue);
 			}
 		}
 	}

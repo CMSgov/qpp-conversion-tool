@@ -172,7 +172,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		}
 		childWrapper.putObject("strata", strataListWrapper);
 
-		wrapper.putObject(VALUE, childWrapper);
+		wrapper.putObject(QppOutputEncoder.VALUE, childWrapper);
 	}
 
 	/**

@@ -38,6 +38,6 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		numeratorValueEncoder.encode(jsonWrapper, numeratorValueNode);
 
-		return jsonWrapper.getInteger(QualityMeasureIdEncoder.VALUE);
+		return jsonWrapper.getInteger(QppOutputEncoder.VALUE);
 	}
 }
