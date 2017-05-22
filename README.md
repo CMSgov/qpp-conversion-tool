@@ -1,7 +1,5 @@
 [![CircleCI](https://circleci.com/gh/CMSgov/qpp-conversion-tool.svg?style=shield&circle-token=138a1805ad2eb5e0a97e740abefd217aea014731)](https://circleci.com/gh/CMSgov/qpp-conversion-tool)
 
-**CMS REVIEWER NOTE: This text below models what an open souce project might look like. The process we used to build the converter is documented in the [Design Process](https://github.com/CMSgov/qpp-conversion-tool/blob/master/DESIGN_PROCESS.md) page. Links to developer instructions are at [the bottom](#want-to-contribute) of this page**
-
 # qpp-conversion-tool
 
 * [Installation Instructions](#developer-installation-instructions)
@@ -168,6 +166,10 @@ guidelines for [contributing][contributing], and [developer instructions][develo
 
 [contributing]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md
 [developer]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
+
+## Public Domain
+This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the CC0 1.0 Universal public domain dedication.
+All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.
 
 ## SonarQube
 [SonarQube](http://sonar.shareddev.flexion.us:9000/dashboard?id=gov.cms.qpp.conversion%3Aqpp-conversion)
