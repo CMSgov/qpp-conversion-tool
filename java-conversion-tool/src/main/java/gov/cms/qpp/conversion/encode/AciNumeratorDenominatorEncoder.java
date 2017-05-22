@@ -40,7 +40,7 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 		JsonWrapper childWrapper = encodeChildren(childMapByTemplateId);
 
 		wrapper.putObject("measureId", node.getValue("measureId"));
-		wrapper.putObject(QppOutputEncoder.VALUE, childWrapper);
+		wrapper.putObject(VALUE, childWrapper);
 	}
 
 	/**
