@@ -25,7 +25,6 @@ public class AciMeasurePerformedRnREncoder extends QppOutputEncoder {
 	 * @param node Internal representation of parsed xml elements
 	 */
 	private void encodeChild(JsonWrapper wrapper, Node node) {
-		final String value = "value";
 		final String measurePerformedValue = "measurePerformed";
 
 		Node child = node.findFirstNode(TemplateId.MEASURE_PERFORMED.getTemplateId());
