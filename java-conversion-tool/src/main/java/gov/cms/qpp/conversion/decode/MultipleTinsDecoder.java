@@ -16,7 +16,7 @@ import java.util.List;
 @Decoder(TemplateId.MULTIPLE_TINS)
 public class MultipleTinsDecoder extends QppXmlDecoder {
 
-	public final String NPI_TIN_ID = "NPITIN";
+	public static final String NPI_TIN_ID = "NPITIN";
 	private static final String PERFORMED_ASSIGNED_ENTITY_PATH =
 		"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity";
 
