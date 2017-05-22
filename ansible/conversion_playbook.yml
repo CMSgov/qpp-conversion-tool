@@ -1,6 +1,8 @@
 ---
-- hosts: '{{host_category}}'
-  remote_user: '{{remote_username}}'
+- hosts: all
+  remote_user: "{{remote_username}}"
+  vars:
+    ansible_become_pass: "{{sudoer_password}}"
   tasks:
   - name: Install apt-transport-https
     apt:

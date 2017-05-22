@@ -11,10 +11,14 @@ function build_and_tar_converter_image() {
 
 function run_ansible() {
 	echo "Running the Ansible playbook"
-	ansible-playbook --ask-become-pass -i ./ansible/host-inventory --extra-vars "host_category=$1 remote_username=$2" ./ansible/conversion_playbook.yml
+	ansible-playbook -i "$1," --extra-vars "remote_username=$2 sudoer_password=$3" ./ansible/conversion_playbook.yml
 }
 
+HOSTS=$1
+REMOTE_USERNAME=$2
+SUDOER_PASSWORD=$3
+
 build_and_tar_converter_image
-run_ansible ec2 pkendall
+run_ansible ${HOSTS} ${REMOTE_USERNAME} ${SUDOER_PASSWORD}
 
 echo "Done!"
