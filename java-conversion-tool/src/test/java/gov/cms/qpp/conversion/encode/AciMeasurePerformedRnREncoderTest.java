@@ -16,7 +16,6 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -24,7 +23,7 @@ import static org.junit.Assert.fail;
 public class AciMeasurePerformedRnREncoderTest {
 
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
-	private static final String VALUE = "true";
+	private static final String VALUE = "Y";
 
 	private List<Node> nodes;
 	private Node aciMeasurePerformedRnR;
@@ -60,10 +59,9 @@ public class AciMeasurePerformedRnREncoderTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
-		Map<String, String> content = JsonHelper.readJson(new ByteArrayInputStream(sw.toString().getBytes()), Map.class);
-
+		Map<String, Object> content = JsonHelper.readJson(new ByteArrayInputStream(sw.toString().getBytes()), Map.class);
 		assertThat("measureId should be " + MEASURE_ID, content.get("measureId"), is(MEASURE_ID));
-		assertThat("value should be " + VALUE, content.get("value"), is(VALUE));
+		assertThat("value should be true " , content.get("value"), is (true));
 	}
 
 	@Test
@@ -77,7 +75,7 @@ public class AciMeasurePerformedRnREncoderTest {
 
 		//assert
 		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
-		assertThat("The value must be" + VALUE, jsonWrapper.getString("value"), is(VALUE));
+		assertThat("The value must be" + VALUE, jsonWrapper.getBoolean("value"), is(true));
 	}
 
 	@Test
@@ -95,4 +93,49 @@ public class AciMeasurePerformedRnREncoderTest {
 		assertEquals("There should be no " + VALUE, jsonWrapper.getString("value"), null);
 	}
 
+	@Test
+	public void testInternalEncodeBooleanTrueValue() {
+		//set-up
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder();
+		aciMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed","Y");
+		//execute
+		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
+
+		//assert
+		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
+		assertThat("There value should be true " + VALUE, jsonWrapper.getBoolean("value"), is(true));
+
+	}
+
+	@Test
+	public void testInternalEncodeBooleanFalseValue() {
+		//set-up
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder();
+		aciMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed","N");
+		//execute
+		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
+
+		//assert
+		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
+		assertThat("There value should be false " + VALUE, jsonWrapper.getBoolean("value"), is(false));
+
+	}
+
+	@Test
+	public void testInternalEncodeBooleanStringValue() {
+		//set-up
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder();
+		String unknownValue = "Some unknown value";
+		aciMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed",unknownValue);
+		//execute
+		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
+
+		//assert
+		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
+		assertThat("There value should be some string value ", jsonWrapper.getString("value"), is(unknownValue));
+
+	}
 }
