@@ -97,27 +97,6 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testClassNotFoundCausesMissingEntriesInRegistry_throwsNoException() {
-		Registry<String, Decoder> registryA = new Registry<>(Decoder.class);
-
-		// Mock the condition where a class is not found during registry
-		// building
-		Registry<String, Decoder> registryB = new Registry<String, Decoder>(Decoder.class) {
-			@Override
-			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
-				if ("gov.cms.qpp.conversion.decode.AggregateCountDecoder".equals(className)) {
-					System.setErr(new PrintStream(NullOutputStream.NULL_OUTPUT_STREAM));
-					throw new ClassNotFoundException();
-				}
-				return Class.forName(className);
-			}
-		};
-
-		assertEquals("The class was not found in the Decoder registry", registryA.size(),
-				registryB.size() + 1);
-	}
-
-	@Test
 	public void testRegistryAddDuplicate() throws Exception {
 		registry.register("id", Placeholder.class);
 		registry.register("id", AnotherPlaceholder.class);
