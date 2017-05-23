@@ -70,11 +70,6 @@ public class Registry<V extends Object, R extends Object> {
 		}
 	}
 
-	// This allows for testing the ClassNotFoundException
-	protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
-		return Class.forName(className);
-	}
-
 	@SuppressWarnings("unchecked")
 	public V getAnnotationParam(Class<?> annotatedClass) {
 		Annotation annotation = annotatedClass.getAnnotation(annotationClass);

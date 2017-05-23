@@ -18,13 +18,4 @@
             </excludes>
         </dependencySet>
     </dependencySets>
-    <fileSets>
-        <fileSet>
-            <outputDirectory>/</outputDirectory>
-            <directory>${project.build.outputDirectory}</directory>
-            <excludes>
-                <exclude>**/logback.xml</exclude>
-            </excludes>
-        </fileSet>
-    </fileSets>
 </assembly>

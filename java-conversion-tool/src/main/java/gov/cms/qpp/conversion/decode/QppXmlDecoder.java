@@ -120,7 +120,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 		QppXmlDecoder qppDecoder = DECODERS.get(templateId);
 		if (qppDecoder != null) {
-			Decoder decoder =  qppDecoder.getClass().getAnnotation(Decoder.class);
+			Decoder decoder = qppDecoder.getClass().getAnnotation(Decoder.class);
 			return (scope != null && !scope.contains(decoder.value())) ? null : qppDecoder;
 		}
 
