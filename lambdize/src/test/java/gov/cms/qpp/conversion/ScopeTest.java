@@ -138,7 +138,7 @@ public class ScopeTest {
 		return s3Object -> {
 			Converter convert = null;
 			TransformationStatus status = TransformationStatus.ERROR;
-			try(InputStream stream = new NamedInputStream(s3Object.getKey(), s3Object.getObjectContent())) {
+			try(InputStream stream = new NamedInputStream(s3Object.getObjectContent(), s3Object.getKey())) {
 				convert = new Converter(stream);
 				status = convert.transform();
 				InputStream result = convert.getConversionResult();

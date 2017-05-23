@@ -133,7 +133,7 @@ public class Converter {
 	 */
 	private void transform(Path inFile) throws XmlException, IOException {
 		String inputFileName = inFile.getFileName().toString().trim();
-		Node decodedNode = transform(new NamedInputStream(inFile.toString(), XmlUtils.fileToStream(inFile)));
+		Node decodedNode = transform(new NamedInputStream(XmlUtils.fileToStream(inFile), inFile.toString()));
 		Path outFile = getOutputFile(inputFileName);
 
 		if (decodedNode != null && validationErrors.isEmpty()) {

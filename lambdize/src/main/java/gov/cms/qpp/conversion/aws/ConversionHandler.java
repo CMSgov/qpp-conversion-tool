@@ -32,7 +32,7 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			AmazonS3 s3Client = getClient();
 			S3Object s3Object = s3Client.getObject(new GetObjectRequest(srcBucket, srcKey));
 
-			try (InputStream input = new NamedInputStream(srcKey, s3Object.getObjectContent())) {
+			try (InputStream input = new NamedInputStream(s3Object.getObjectContent(), srcKey)) {
 				Converter converter = new Converter(input);
 				TransformationStatus status = converter.transform();
 
