@@ -38,7 +38,7 @@ public class ClinicalDocumentRoundTripTest extends BaseTest {
 			+ ",\n    \"source\" : \"provider\",\n    \"performanceStart\" : \"2017-01-01\",\n    "
 			+ "\"performanceEnd\" : \"2017-12-31\"\n  } ]\n}";
 
-@Test
+	@Test
 	public void parseClinicalDocument() throws Exception {
 		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
 		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
