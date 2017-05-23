@@ -11,6 +11,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static gov.cms.qpp.conversion.decode.MultipleTinsDecoder.NPI_TIN_ID;
+
 /**
  * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
@@ -65,11 +67,11 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-			childWrapper = new JsonWrapper();
-			sectionEncoder = ENCODERS.get(child.getId());
-			if ( sectionEncoder == null ){
+			if (NPI_TIN_ID.equalsIgnoreCase(child.getId())) {
 				continue; //MultiTINS is not a real encoder.
 			}
+			childWrapper = new JsonWrapper();
+			sectionEncoder = ENCODERS.get(child.getId());
 			// Section encoder is null when a decoder exists without a corresponding encoder
 			// currently don't have a set of IA Encoders, but this will protect against others
 			try {

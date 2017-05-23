@@ -14,7 +14,7 @@ import static gov.cms.qpp.conversion.decode.MultipleTinsDecoder.NPI_TIN_ID;
  * Or encodes one clinical document.
  */
 @Encoder(TemplateId.MULTIPLE_TINS)
-public class MultipleTinEncoder extends QppOutputEncoder {
+public class MultipleTinsEncoder extends QppOutputEncoder {
 
 	/**
 	 *
