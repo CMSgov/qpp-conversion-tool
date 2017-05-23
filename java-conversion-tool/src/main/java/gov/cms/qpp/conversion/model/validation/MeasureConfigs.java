@@ -3,9 +3,6 @@ package gov.cms.qpp.conversion.model.validation;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.reflections.util.ClasspathHelper;
-//import org.springframework.core.io.ClassPathResource;
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
