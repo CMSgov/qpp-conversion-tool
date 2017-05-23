@@ -7,12 +7,12 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.jayway.jsonpath.PathNotFoundException;
 
-import gov.cms.qpp.conversion.aws.NamedInputStream;
 import gov.cms.qpp.conversion.aws.history.HistoricalTestRunner;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import net.minidev.json.JSONArray;
 import org.junit.Test;

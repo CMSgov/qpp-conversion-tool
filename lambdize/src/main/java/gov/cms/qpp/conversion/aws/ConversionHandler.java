@@ -17,6 +17,7 @@ import com.amazonaws.services.s3.model.S3Object;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.TransformationStatus;
+import gov.cms.qpp.conversion.util.NamedInputStream;
 
 public class ConversionHandler implements RequestHandler<S3Event, String> {
 
