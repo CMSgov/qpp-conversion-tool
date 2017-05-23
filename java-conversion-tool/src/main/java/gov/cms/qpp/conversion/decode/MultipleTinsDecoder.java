@@ -22,9 +22,9 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 	public static final String NPI_TIN_ID = "NPITIN";
 	private static final String PERFORMED_ASSIGNED_ENTITY_PATH =
 			"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity";
-	private final String ID = "id";
-	private final String EXTENSION = "extension";
-	private final String REPRESENTED_ORGANIZATION = "representedOrganization";
+	private static final String ID = "id";
+	private static final String EXTENSION = "extension";
+	private static final String REPRESENTED_ORGANIZATION = "representedOrganization";
 
 	/**
 	 * internalDecode parses the xml fragment into thisNode
@@ -77,15 +77,14 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 		return assignedEntity -> {
 			Element npiEl = assignedEntity.getChild(ID, ns);
 			Element taxEl = assignedEntity.getChild(REPRESENTED_ORGANIZATION, ns);
-
-			if (npiEl == null || taxEl == null) {
-				return false;//Don't give up on bad document
+			Element taxChildEl = null;
+			if (npiEl != null && taxEl != null) {
+				taxChildEl = taxEl.getChild(ID, ns);
+				if (taxChildEl != null) {
+					return true;
+				}
 			}
-			Element taxChildEl = taxEl.getChild(ID, ns);
-			if (taxChildEl == null) {
-				return false;//Don't give up on bad document
-			}
-			return true;
+			return false;
 		};
 	}
 
