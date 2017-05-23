@@ -11,6 +11,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER;
+import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER;
 import static gov.cms.qpp.conversion.decode.MultipleTinsDecoder.NPI_TIN_ID;
 
 /**
@@ -31,8 +33,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) {
 		wrapper.putString("programName", thisNode.getValue("programName"));
 		wrapper.putString("entityType", thisNode.getValue("entityType"));
-		wrapper.putString("taxpayerIdentificationNumber", thisNode.getValue("taxpayerIdentificationNumber"));
-		wrapper.putString("nationalProviderIdentifier", thisNode.getValue("nationalProviderIdentifier"));
+		wrapper.putString(TAX_PAYER_IDENTIFICATION_NUMBER, thisNode.getValue(TAX_PAYER_IDENTIFICATION_NUMBER));
+		wrapper.putString(NATIONAL_PROVIDER_IDENTIFIER, thisNode.getValue(NATIONAL_PROVIDER_IDENTIFIER));
 
 		Map<String, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 			Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
