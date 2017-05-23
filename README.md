@@ -38,6 +38,7 @@ Before you can use the qpp-conversion-tool, you must install and configure the f
   Apache Maven 3.3.9
   ...
   ```
+* [Docker](https://www.docker.com) is not required but is an alternative to the above requirements if all you need is to run the converter.
 
 ### Getting and using the converter
 
@@ -68,6 +69,22 @@ cd qpp-conversion-tool
 
 # Try the convert script. If the JAR isn't built yet, the script will build it for you:
 .\convert.bat java-conversion-tool/src/test/resources/valid-QRDA-III.xml
+```
+
+If you are using Docker, open a terminal and go to the directory you want the converter tool directory to be created in:
+
+```shell
+# Clone the GitHub repository:
+git clone https://github.com/CMSgov/qpp-conversion-tool.git
+
+# Go to the qpp-conversion-tool directory:
+cd qpp-conversion-tool
+
+# Build the Docker image
+docker build -t qpp_conversion .
+
+# Run the Docker container
+docker run --rm -v <directory with QRDA3 files to be converted>:/usr/src/qrda-files/ -v <directory where the converted QPP files will be put>:/usr/src/qpp-files/ qpp_conversion
 ```
 
 ## User Instructions
