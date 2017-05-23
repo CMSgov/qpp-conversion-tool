@@ -10,6 +10,7 @@ import org.junit.Test;
 import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER;
 import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER;
 import static gov.cms.qpp.conversion.decode.MultipleTinsDecoder.NPI_TIN_ID;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MultipleTinsEncoderTest {
@@ -89,18 +90,26 @@ public class MultipleTinsEncoderTest {
 
 	@Test
 	public void testFirstTinNpiCombinationConversion() {
-		LinkedHashMap<String, Object> test = getChildValues();
-		System.out.println();
-		//assertThat("", ,);
+		LinkedHashMap<String, Object> firstMeasurementMap = getClinicalDocumentMeasurementFromIndex(0);
+
+		assertThat("Must contain the correct TIN",
+				firstMeasurementMap.get(TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
+		assertThat("Must contain the correct NPI",
+				firstMeasurementMap.get(NATIONAL_PROVIDER_IDENTIFIER), is("987654321"));
 	}
 
-	private LinkedHashMap<String, Object> getChildValues() {
-		return (LinkedHashMap<String, Object>)((LinkedList<LinkedHashMap<String, Object>>) testWrapper.getObject()).get(0);
+	@Test
+	public void testSecondTinNpiCombinationConversion() {
+		LinkedHashMap<String, Object> secondMeasurementMap = getClinicalDocumentMeasurementFromIndex(1);
+
+		assertThat("Must contain the correct TIN",
+				secondMeasurementMap.get(TAX_PAYER_IDENTIFICATION_NUMBER), is("111222333"));
+		assertThat("Must contain the correct NPI",
+				secondMeasurementMap.get(NATIONAL_PROVIDER_IDENTIFIER), is("333222111"));
 	}
 
-	/*private LinkedHashMap<String, Object> getChildValues() {
-		return (LinkedHashMap<String, Object>)(
-				(LinkedList<LinkedHashMap<String, LinkedList<LinkedHashMap<String, Object>>>>)
-						testWrapper.getObject()).get(0).get("measurementSets").get(0);
-	}*/
+	private LinkedHashMap<String, Object> getClinicalDocumentMeasurementFromIndex(Integer index) {
+		return ((LinkedList<LinkedHashMap<String, LinkedList<LinkedHashMap<String, Object>>>>)
+						testWrapper.getObject()).get(index).get("measurementSets").get(0);
+	}
 }
