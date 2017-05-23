@@ -14,7 +14,6 @@
             <unpack>true</unpack>
             <scope>runtime</scope>
             <excludes>
-                <exclude>commons-lang:commons-lang</exclude>
                 <exclude>org.jacoco:*</exclude>
             </excludes>
         </dependencySet>
