@@ -42,11 +42,9 @@ public class MeasureConfigs {
 		ObjectMapper mapper = new ObjectMapper();
 
 		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(measureDataFileName);
-		//ClassPathResource measuresConfigResource = new ClassPathResource(measureDataFileName);
 
 		try {
 			TypeReference<List<MeasureConfig>> measureConfigType = new TypeReference<List<MeasureConfig>>() {};
-			//configurations = mapper.readValue(measuresConfigResource.getInputStream(), measureConfigType);
 			configurations = mapper.readValue(measuresInput, measureConfigType);
 		} catch (IOException e) {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
