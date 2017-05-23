@@ -19,7 +19,6 @@ import static org.junit.Assert.assertThat;
 public class EncoderTest {
 
 	private final List<String> templateIDs = Arrays.asList(
-			TemplateId.MEASURE_SECTION.getTemplateId(),
 			TemplateId.CLINICAL_DOCUMENT.getTemplateId(),
 			TemplateId.MEASURE_SECTION_V2.getTemplateId(),
 			TemplateId.IA_SECTION.getTemplateId(),
@@ -27,11 +26,7 @@ public class EncoderTest {
 			TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(),
 			TemplateId.MEASURE_DATA_CMS_V2.getTemplateId(),
 			TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId(),
-			TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
-			TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
 			TemplateId.REPORTING_STRATUM_CMS.getTemplateId(),
-			TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
-			TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
 			TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId(),
 			TemplateId.CMS_AGGREGATE_COUNT.getTemplateId(),
 			TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2.getTemplateId(),
