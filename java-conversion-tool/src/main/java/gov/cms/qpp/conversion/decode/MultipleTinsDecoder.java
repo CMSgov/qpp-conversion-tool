@@ -10,6 +10,8 @@ import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Decoder to parse the root element of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
@@ -20,6 +22,9 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 	public static final String NPI_TIN_ID = "NPITIN";
 	private static final String PERFORMED_ASSIGNED_ENTITY_PATH =
 			"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity";
+	private final String ID = "id";
+	private final String EXTENSION = "extension";
+	private final String REPRESENTED_ORGANIZATION = "representedOrganization";
 
 	/**
 	 * internalDecode parses the xml fragment into thisNode
@@ -48,40 +53,64 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 	 * @param element XML Element
 	 * @param thisNode internal Node representation
 	 */
+	@SuppressWarnings("unchecked")
 	private void setNationalProviderIdOnNode(Element element, Node thisNode) {
-		final String id = "id";
-		final String extension = "extension";
-		final String representedOrganization = "representedOrganization";
 
 		Namespace ns = element.getNamespace();
-		Element npiEl = null;
-		Element taxEl = null;
-		Element taxChildEl = null;
 
 		XPathExpression<?> expression = XPathFactory.instance().compile(PERFORMED_ASSIGNED_ENTITY_PATH,
 				Filters.element(), null, xpathNs);
 		List<Element> assignedEntities = (List<Element>) expression.evaluate(element);
 
-		for (Element assignedEntity : assignedEntities) {
-			npiEl = assignedEntity.getChild(id, ns);
-			taxEl = assignedEntity.getChild(representedOrganization, ns);
+		assignedEntities.stream()
+				.filter(this.validAssignedEntity(ns))
+				.forEach(this.mapNpiTin(ns, thisNode));
+	}
+
+	/**
+	 * Create Namespace primed assignedEntity precondition / filter
+	 *
+	 * @param ns namespace
+	 * @return filter
+	 */
+	private Predicate<Element> validAssignedEntity(final Namespace ns) {
+		return assignedEntity -> {
+			Element npiEl = assignedEntity.getChild(ID, ns);
+			Element taxEl = assignedEntity.getChild(REPRESENTED_ORGANIZATION, ns);
 
 			if (npiEl == null || taxEl == null) {
-				continue;//Don't give up on bad document
+				return false;//Don't give up on bad document
 			}
-			taxChildEl = taxEl.getChild(id, ns);
+			Element taxChildEl = taxEl.getChild(ID, ns);
 			if (taxChildEl == null) {
-				continue;//Don't give up on bad document
+				return false;//Don't give up on bad document
 			}
-			String npi = npiEl.getAttributeValue(extension);
-			String tin = taxChildEl.getAttributeValue(extension);
+			return true;
+		};
+	}
 
-			if (tin != null && npi != null) { //Only create the child if both values are available
+	/**
+	 * Create a consumer primed with namespace that will update a given target node with NPI and TIN information.
+	 *
+	 * @param ns namespace
+	 * @param thisNode target node
+	 * @return consumer
+	 */
+	private Consumer<Element> mapNpiTin(final Namespace ns, final Node thisNode) {
+		return perform -> {
+			String npi = perform
+					.getChild(ID, ns)
+					.getAttributeValue(EXTENSION);
+			String tin = perform
+					.getChild(REPRESENTED_ORGANIZATION, ns)
+					.getChild(ID, ns)
+					.getAttributeValue(EXTENSION);
+			if (npi != null && tin != null) { //Only create the child if both values are available
 				Node child = new Node(NPI_TIN_ID);
 				child.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, npi);
 				child.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, tin);
 				thisNode.addChildNode(child);
 			}
-		}
+		};
 	}
 }
