@@ -3,9 +3,10 @@ package gov.cms.qpp.conversion.model.validation;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
+import org.reflections.util.ClasspathHelper;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -19,13 +20,13 @@ public class MeasureConfigTest {
 	public void testMeasureConfig() {
 		ObjectMapper mapper = new ObjectMapper();
 
-		ClassPathResource measuresConfigResource = new ClassPathResource("measures-data-aci-test.json");
-
+		InputStream stream =
+				ClasspathHelper.contextClassLoader().getResourceAsStream("measures-data-aci-test.json");
 		List<MeasureConfig> measureConfigs = null;
 
 		try {
 			TypeReference<List<MeasureConfig>> measureConfigType = new TypeReference<List<MeasureConfig>>() {};
-			measureConfigs = mapper.readValue(measuresConfigResource.getInputStream(), measureConfigType);
+			measureConfigs = mapper.readValue(stream, measureConfigType);
 		} catch (IOException e) {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}

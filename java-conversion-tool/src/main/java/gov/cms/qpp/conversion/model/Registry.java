@@ -1,11 +1,8 @@
 package gov.cms.qpp.conversion.model;
 
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -65,26 +62,17 @@ public class Registry<V extends Object, R extends Object> {
 	 */
 	@SuppressWarnings("unchecked")
 	void registerAnnotatedHandlers() {
-		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
-		scanner.addIncludeFilter(new AnnotationTypeFilter(annotationClass));
-		for (BeanDefinition bd : scanner.findCandidateComponents("gov.cms")) {
-			try {
-				Class<?> annotatedClass = getAnnotatedClass(bd.getBeanClassName());
-				register(getAnnotationParam(annotatedClass), (Class<R>) annotatedClass);
-			} catch (ClassNotFoundException e) {
-				DEV_LOG.error("Failed to register new transformation handler because: ", e);
-			}
-		}
-	}
+		Reflections reflections = new Reflections("gov.cms");
+		Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(annotationClass);
 
-	// This allows for testing the ClassNotFoundException
-	protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
-		return Class.forName(className);
+		for (Class<?> annotatedClass : annotatedClasses) {
+			register(getAnnotationParam(annotatedClass), (Class<R>) annotatedClass);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public V getAnnotationParam(Class<?> annotatedClass) {
-		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
+		Annotation annotation = annotatedClass.getAnnotation(annotationClass);
 
 		if (annotation instanceof Decoder) {
 			Decoder decoder = (Decoder) annotation;
