@@ -24,9 +24,9 @@
 							<mainClass>gov.cms.qpp.conversion.ConversionEntry</mainClass>
 						</manifest>
 					</archive>
-					<descriptors>
-						<descriptor>src/assembly/jar-with-deps-without-other-stuff.xml</descriptor>
-					</descriptors>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
 					<appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 				<executions>
