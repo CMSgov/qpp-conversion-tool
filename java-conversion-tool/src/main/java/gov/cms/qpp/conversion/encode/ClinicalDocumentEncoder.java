@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.encode.helper.ReportingParameters;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -11,16 +13,18 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER;
-import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER;
-import static gov.cms.qpp.conversion.decode.MultipleTinsDecoder.NPI_TIN_ID;
-
 /**
  * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
 
 @Encoder(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
+	final static String PERFORMANCE_END = "performanceEnd";
+	final static String PERFORMANCE_YEAR = "performanceYear";
+	final static String PERFORMANCE_START = "performanceStart";
+	final static String MEASUREMENT_SETS = "measurementSets";
+	final static String SOURCE = "source";
+	final static String PROVIDER = "provider";
 
 	/**
 	 * internalEncode encodes nodes into Json Wrapper.
@@ -31,25 +35,35 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) {
-		wrapper.putString("programName", thisNode.getValue("programName"));
-		wrapper.putString("entityType", thisNode.getValue("entityType"));
-		wrapper.putString(TAX_PAYER_IDENTIFICATION_NUMBER, thisNode.getValue(TAX_PAYER_IDENTIFICATION_NUMBER));
-		wrapper.putString(NATIONAL_PROVIDER_IDENTIFIER, thisNode.getValue(NATIONAL_PROVIDER_IDENTIFIER));
+		wrapper.putString(ClinicalDocumentDecoder.PROGRAM_NAME,
+			thisNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
+		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE,
+			thisNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE));
+		wrapper.putString(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+			thisNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
+		wrapper.putString(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+			thisNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
 
 		Map<String, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 			Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 		Optional<Node> reportingNode = ReportingParameters.getReportingNode(childMapByTemplateId);
 
-		Optional<String> performanceStart = reportingNode.flatMap(p -> Optional.of(p.getValue("performanceStart")));
-		Optional<String> performanceEnd = reportingNode.flatMap(p -> Optional.of(p.getValue("performanceEnd")));
+		Optional<String> performanceStart =
+			reportingNode.flatMap(p -> {
+				return Optional.of(p.getValue(PERFORMANCE_START));
+			});
+		Optional<String> performanceEnd =
+			reportingNode.flatMap(p -> {
+				return Optional.of(p.getValue(PERFORMANCE_END));
+			});
 
 		if (performanceStart.isPresent()) {
-			wrapper.putInteger("performanceYear", performanceStart.get().substring(0, 4));
+			wrapper.putInteger(PERFORMANCE_YEAR, performanceStart.get().substring(0, 4));
 		}
 
 		JsonWrapper measurementSets =
 			encodeMeasurementSets(childMapByTemplateId, performanceStart, performanceEnd);
-		wrapper.putObject("measurementSets", measurementSets);
+			wrapper.putObject(MEASUREMENT_SETS, measurementSets);
 	}
 
 	/**
@@ -69,7 +83,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-			if (NPI_TIN_ID.equalsIgnoreCase(child.getId())) {
+			if (MultipleTinsDecoder.NPI_TIN_ID.equalsIgnoreCase(child.getId())) {
 				continue; //MultiTINS is not a real encoder.
 			}
 			childWrapper = new JsonWrapper();
@@ -79,12 +93,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			try {
 				sectionEncoder.encode(childWrapper, child);
 
-				childWrapper.putString("source", "provider");
+				childWrapper.putString(SOURCE, PROVIDER);
 				if (performanceStart.isPresent()) {
-					childWrapper.putDate("performanceStart", performanceStart.get());
+					childWrapper.putDate(PERFORMANCE_START, performanceStart.get());
 				}
 				if (performanceEnd.isPresent()) {
-					childWrapper.putDate("performanceEnd", performanceEnd.get());
+					childWrapper.putDate(PERFORMANCE_END, performanceEnd.get());
 				}
 
 				measurementSetsWrapper.putObject(childWrapper);

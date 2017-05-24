@@ -1,15 +1,14 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER;
-import static gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER;
-import static gov.cms.qpp.conversion.decode.MultipleTinsDecoder.NPI_TIN_ID;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -28,15 +27,20 @@ public class MultipleTinsEncoderTest {
 	private Node multipleTinsNode;
 	private JsonWrapper testWrapper;
 
+	final static String NPI1 = "987654321";
+	final static String TIN1 = "123456789";
+	final static String NPI2 = "333222111";
+	final static String TIN2 = "111222333";
+
 	@Before
 	public void createMultipleTinNode() {
-		npiTinNodeOne = new Node(NPI_TIN_ID);
-		npiTinNodeOne.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
-		npiTinNodeOne.putValue(NATIONAL_PROVIDER_IDENTIFIER, "987654321");
+		npiTinNodeOne = new Node(MultipleTinsDecoder.NPI_TIN_ID);
+		npiTinNodeOne.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, NPI1);
+		npiTinNodeOne.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, TIN1);
 
-		npiTinNodeTwo = new Node(NPI_TIN_ID);
-		npiTinNodeTwo.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, "111222333");
-		npiTinNodeTwo.putValue(NATIONAL_PROVIDER_IDENTIFIER, "333222111");
+		npiTinNodeTwo = new Node(MultipleTinsDecoder.NPI_TIN_ID);
+		npiTinNodeTwo.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, NPI2);
+		npiTinNodeTwo.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, TIN2);
 
 		reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
 		reportingParametersActNode.putValue("performanceStart", "20170101");
@@ -92,24 +96,24 @@ public class MultipleTinsEncoderTest {
 	public void testFirstTinNpiCombinationConversion() {
 		LinkedHashMap<String, Object> firstMeasurementMap = getClinicalDocumentMeasurementFromIndex(0);
 
-		assertThat("Must contain the correct TIN",
-				firstMeasurementMap.get(TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
 		assertThat("Must contain the correct NPI",
-				firstMeasurementMap.get(NATIONAL_PROVIDER_IDENTIFIER), is("987654321"));
+				firstMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is(NPI1));
+		assertThat("Must contain the correct TIN",
+			firstMeasurementMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is(TIN1));
 	}
 
 	@Test
 	public void testSecondTinNpiCombinationConversion() {
 		LinkedHashMap<String, Object> secondMeasurementMap = getClinicalDocumentMeasurementFromIndex(1);
 
-		assertThat("Must contain the correct TIN",
-				secondMeasurementMap.get(TAX_PAYER_IDENTIFICATION_NUMBER), is("111222333"));
 		assertThat("Must contain the correct NPI",
-				secondMeasurementMap.get(NATIONAL_PROVIDER_IDENTIFIER), is("333222111"));
+				secondMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is(NPI2));
+		assertThat("Must contain the correct TIN",
+			secondMeasurementMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is(TIN2));
 	}
 
 	private LinkedHashMap<String, Object> getClinicalDocumentMeasurementFromIndex(Integer index) {
 		return ((LinkedList<LinkedHashMap<String, LinkedList<LinkedHashMap<String, Object>>>>)
-						testWrapper.getObject()).get(index).get("measurementSets").get(0);
+				testWrapper.getObject()).get(index).get("measurementSets").get(0);
 	}
 }

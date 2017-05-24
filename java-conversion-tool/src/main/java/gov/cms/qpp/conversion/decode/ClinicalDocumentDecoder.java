@@ -18,9 +18,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 
 	/*  Constants for lookups and tests */
 	public static final String PROGRAM_NAME = "programName";
-	static final String ENTITY_TYPE = "entityType";
-	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
-	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
+	public static final String ENTITY_TYPE = "entityType";
 	public static final String MIPS_PROGRAM_NAME = "mips";
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcplus";
 	static final String MIPS = "MIPS";
@@ -70,12 +68,12 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	}
 
 	private void setNationalProviderIdOnNode(Element element, Node thisNode) {
-		Consumer<? super Attribute> consumer = p -> thisNode.putValue(NATIONAL_PROVIDER_IDENTIFIER, p.getValue());
+		Consumer<? super Attribute> consumer = p -> thisNode.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, p.getValue());
 		setOnNode(element, NATIONAL_PROVIDER_ID_PATH, consumer, Filters.attribute(), true);
 	}
 
 	private void setTaxProviderTaxIdOnNode(Element element, Node thisNode) {
-		Consumer<? super Attribute> consumer = p -> thisNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, p.getValue());
+		Consumer<? super Attribute> consumer = p -> thisNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, p.getValue());
 		setOnNode(element, TAX_PROVIDER_TAX_ID_PATH, consumer, Filters.attribute(), true);
 	}
 

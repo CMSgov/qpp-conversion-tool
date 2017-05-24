@@ -20,6 +20,8 @@ import java.util.function.Predicate;
 public class MultipleTinsDecoder extends QppXmlDecoder {
 
 	public static final String NPI_TIN_ID = "NPITIN";
+	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
+	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
 	private static final String PERFORMED_ASSIGNED_ENTITY_PATH =
 			"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity";
 	private static final String ID = "id";
@@ -106,8 +108,8 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 					.getAttributeValue(EXTENSION);
 			if (npi != null && tin != null) { //Only create the child if both values are available
 				Node child = new Node(NPI_TIN_ID);
-				child.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, npi);
-				child.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, tin);
+				child.putValue(NATIONAL_PROVIDER_IDENTIFIER, npi);
+				child.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, tin);
 				thisNode.addChildNode(child);
 			}
 		};

@@ -11,7 +11,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
-import static gov.cms.qpp.conversion.decode.MultipleTinsDecoder.NPI_TIN_ID;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -33,23 +32,20 @@ public class MultipleTinsDecoderTest extends BaseTest {
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertThat("Expect that there are four children", children, hasSize(4));
 		int matches = 0;
-		String value = null;
+		String tin = null;
+		String npi = null;
 		for (Node child : children) {
-			if (child.getId().equals(NPI_TIN_ID)) {
-				value = child.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
-				if (TEST_TIN1.equals(value) ||
-						TEST_TIN2.equals(value) ||
-						TEST_TIN3.equals(value)) {
-					matches++;
-				}
-			}
-			if (child.getType().getTemplateId().equals(TemplateId.CLINICAL_DOCUMENT.getTemplateId())) {
+			if (child.getId().equals(MultipleTinsDecoder.NPI_TIN_ID)) {
+				npi = child.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER);
+				tin = child.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
+				matches += testChildExistence(npi, tin);
+			}else if (child.getType().getTemplateId().equals(TemplateId.CLINICAL_DOCUMENT.getTemplateId())) {
 				matches++;
 			}
 		}
-		// Assert that one child TIN is TIN-1
-		// Assert that one child TIN is TIN-2
-		// Assert that one child TIN is TIN-3
+		// Assert that one child TIN is TIN-1 and NPI is NPI-1
+		// Assert that one child TIN is TIN-2 and NPI is NPI-2
+		// Assert that one child TIN is TIN-3 and NPI is NPI-3
 		// Assert that one child is ClinicalDocument
 		assertThat("The correct children were decoded", matches, is(4));
 	}
@@ -61,25 +57,17 @@ public class MultipleTinsDecoderTest extends BaseTest {
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertThat("Expect that there are three children", children, hasSize(3));
 		int matches = 0;
+		String tin = null;
+		String npi = null;
 		for (Node child : children) {
-			if (child.getId().equals(NPI_TIN_ID)) {
-//				if ( TESTTIN1.equals(child.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))){
-//					matches++;
-//				}
-				if (TEST_TIN2.equals(child.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))) {
-					matches++;
-				}
-				if (TEST_TIN3.equals(child.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))) {
-					matches++;
-				}
-			}
-			if (child.getType().getTemplateId().equals(TemplateId.CLINICAL_DOCUMENT.getTemplateId())) {
+			if (child.getId().equals(MultipleTinsDecoder.NPI_TIN_ID)) {
+				npi = child.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER);
+				tin = child.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
+				matches += testChildExistence(npi, tin);
+			}else if (child.getType().getTemplateId().equals(TemplateId.CLINICAL_DOCUMENT.getTemplateId())) {
 				matches++;
 			}
 		}
-		// Assert that one child NPI is test1
-		// Assert that one child NPI is test2
-		// Assert that one child is ClinicalDocument
 		assertThat("The correct children were decoded", matches, is(3));
 	}
 
@@ -89,25 +77,18 @@ public class MultipleTinsDecoderTest extends BaseTest {
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertThat("Expect that there are three children", children, hasSize(3));
 		int matches = 0;
+		String tin = null;
+		String npi = null;
 		for (Node child : children) {
-			if (child.getId().equals(NPI_TIN_ID)) {
-//				if ( TESTTIN1.equals(child.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))){
-//					matches++;
-//				}
-				if (TEST_TIN2.equals(child.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))) {
-					matches++;
-				}
-				if (TEST_TIN3.equals(child.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))) {
-					matches++;
-				}
-			}
-			if (child.getType().getTemplateId().equals(TemplateId.CLINICAL_DOCUMENT.getTemplateId())) {
+			if (child.getId().equals(MultipleTinsDecoder.NPI_TIN_ID)) {
+				npi = child.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER);
+				tin = child.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
+				matches += testChildExistence(npi, tin);
+
+			}else if (child.getType().getTemplateId().equals(TemplateId.CLINICAL_DOCUMENT.getTemplateId())) {
 				matches++;
 			}
 		}
-		// Assert that one child NPI is test1
-		// Assert that one child NPI is test2
-		// Assert that one child is ClinicalDocument
 		assertThat("The correct children were decoded", matches, is(3));
 	}
 
@@ -130,6 +111,18 @@ public class MultipleTinsDecoderTest extends BaseTest {
 		Element multipleTinsElement = makeTestElementMissingTaxEl();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertThat("Expect that there are three children", children, hasSize(3));
+	}
+
+	private int testChildExistence(String npi, String tin) {
+		int match = 0;
+		if (TEST_NPI1.equals(npi) && TEST_TIN1.equals(tin)) {
+			match = 1;
+		} else if (TEST_NPI2.equals(npi) && TEST_TIN2.equals(tin)) {
+			match = 1;
+		} else if (TEST_NPI3.equals(npi) && TEST_TIN3.equals(tin)) {
+			match = 1;
+		}
+		return match;
 	}
 
 	private List<Node> getTestChildren(Element multipleTinsElement) {

@@ -53,13 +53,13 @@ public class ClinicalDocumentDecoderTest {
 	@Test
 	public void testRootNationalProviderIdentifier() {
 		assertThat("nationalProviderIdentifier correct",
-			clinicalDocument.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+			clinicalDocument.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
 	}
 
 	@Test
 	public void testRootTaxpayerIdentificationNumber() {
 		assertThat("taxpayerIdentificationNumber correct",
-			clinicalDocument.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
+			clinicalDocument.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class ClinicalDocumentDecoderTest {
 			clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME), is(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME));
 
 		assertThat("Should contain a TIN",
-			clinicalDocument.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER),is("123456789") );
+			clinicalDocument.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER),is("123456789") );
 
 		assertThat("Should contain a performance year end", performanceYear.getChildNodes().get(0).getValue("performanceEnd"),
 				is("20171231"));
@@ -164,9 +164,9 @@ public class ClinicalDocumentDecoderTest {
 		assertThat("Clinical Document doesn't contain entity type",
 			testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE), is(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL));
 		assertThat("Clinical Document doesn't contain national provider",
-			testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+			testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
 		assertThat("Clinical Document doesn't contain taxpayer id number",
-			testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
+			testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
 		assertThat("Clinical Document doesn't contain the ACI Section child node", testChildNode, is(notNullValue()));
 		assertThat("Clinical Document doesn't contain ACI Section category", testChildNode.getValue("category"), is("aci"));
 
@@ -187,9 +187,9 @@ public class ClinicalDocumentDecoderTest {
 		assertThat("Clinical Document doesn't contain entity type",
 			testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE), is(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL));
 		assertThat("Clinical Document doesn't contain national provider",
-			testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+			testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
 		assertThat("Clinical Document doesn't contain taxpayer id number",
-			testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
+			testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
 		assertThat("Clinical Document doesn't contain the ACI Section child node", testChildNode, is(notNullValue()));
 		assertThat("Clinical Document doesn't contain ACI Section category", testChildNode.getValue("category"), is("aci"));
 
@@ -210,9 +210,9 @@ public class ClinicalDocumentDecoderTest {
 		assertThat("Clinical Document doesn't contain entity type",
 			testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE), is(ClinicalDocumentDecoder.ENTITY_GROUP));
 		assertThat("Clinical Document doesn't contain national provider",
-			testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+			testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
 		assertThat("Clinical Document doesn't contain taxpayer id number",
-			testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
+			testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
 		assertThat("Clinical Document doesn't contain the ACI Section child node", testChildNode, is(notNullValue()));
 		assertThat("Clinical Document doesn't contain ACI Section category", testChildNode.getValue("category"), is("aci"));
 
@@ -232,9 +232,9 @@ public class ClinicalDocumentDecoderTest {
 		assertThat("Clinical Document doesn't contain entity type",
 			testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE), is(""));
 		assertThat("Clinical Document doesn't contain national provider",
-			testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+			testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
 		assertThat("Clinical Document doesn't contain taxpayer id number",
-			testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
+			testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
 		assertThat("Clinical Document doesn't contain the ACI Section child node", testChildNode, is(notNullValue()));
 		assertThat("Clinical Document doesn't contain ACI Section category", testChildNode.getValue("category"), is("aci"));
 
@@ -255,9 +255,9 @@ public class ClinicalDocumentDecoderTest {
 		assertThat("Clinical Document doesn't contain entity type",
 			testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE), is("individual"));
 		assertThat("Clinical Document doesn't contain national provider",
-			testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+			testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
 		assertThat("Clinical Document doesn't contain taxpayer id number",
-			testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
+			testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
 		assertThat("Clinical Document doesn't contain the ACI Section child node", testChildNode, is(notNullValue()));
 		assertThat("Clinical Document doesn't contain ACI Section category", testChildNode.getValue("category"), is("aci"));
 
