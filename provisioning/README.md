@@ -1,7 +1,6 @@
 The script depends on the [docker-machine](https://docs.docker.com/machine/) utility.
 
-An envVars.sh script must be included in the `provisioning`
-directory that specifies the following.
+An envVars.sh script must be included in the `provisioning` directory that specifies the following.
 
 ```
 #!/bin/bash
