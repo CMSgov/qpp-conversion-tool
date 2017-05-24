@@ -1,8 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.encode.helper.RegistryHelper;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Before;
 import org.junit.Test;
@@ -212,26 +210,5 @@ public class ClinicalDocumentEncoderTest {
 
 		assertThat("Must return a Clinical Document without measurement section", testJsonWrapper.toString(),
 				is(EXPECTED_NO_ACI));
-	}
-
-	@Test
-	public void testInvalidEncoder()throws Exception {
-		boolean exception = false;
-		Registry<String, JsonOutputEncoder> invalidRegistry =
-				RegistryHelper.makeInvalidRegistry("gov.cms.qpp.conversion.encode.AciSectionEncoder");
-		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
-
-		JsonWrapper testJsonWrapper = new JsonWrapper();
-		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
-
-		RegistryHelper.setEncoderRegistry(invalidRegistry); //Set Registry with missing class
-		try {
-			clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
-		} catch (EncodeException e) {
-			exception = true;
-		}
-		assertThat("Expecting Encode Exception", exception, is(true));
-
-		RegistryHelper.setEncoderRegistry(validRegistry); //Restore Registry
 	}
 }

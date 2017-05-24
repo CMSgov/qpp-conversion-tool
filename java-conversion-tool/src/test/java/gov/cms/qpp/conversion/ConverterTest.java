@@ -23,7 +23,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.ReflectionUtils;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -295,10 +294,10 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException {
+	public void testInvalidXmlFile() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
 		Converter converter = new Converter(Paths.get("src/test/resources/not-a-QRDA-III-file.xml"));
 
-		Method transformMethod = ReflectionUtils.findMethod(Converter.class, "transform");
+		Method transformMethod = Converter.class.getMethod("transform");
 		transformMethod.setAccessible(true);
 		TransformationStatus returnValue = (TransformationStatus) transformMethod.invoke(converter);
 

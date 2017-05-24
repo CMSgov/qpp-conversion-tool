@@ -6,6 +6,7 @@ import gov.cms.qpp.conversion.ConversionEntry;
  * An enumeration of known templates IDs.
  */
 public enum TemplateId {
+	QRDA_CATEGORY_III_REPORT_V3("2.16.840.1.113883.10.20.27.1.1", Constants.SEPTEMBER_EXTENSION),
 	CLINICAL_DOCUMENT("2.16.840.1.113883.10.20.27.1.2", Constants.NOVEMBER_EXTENSION),
 	ACI_AGGREGATE_COUNT("2.16.840.1.113883.10.20.27.3.3"),
 	IA_SECTION("2.16.840.1.113883.10.20.27.2.4", Constants.SEPTEMBER_EXTENSION),

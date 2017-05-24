@@ -9,10 +9,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.springframework.core.io.ClassPathResource;
+import org.reflections.util.ClasspathHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 
@@ -44,8 +45,7 @@ public class AutoDetectQrdaTest {
 	public void testNoTemplateId() throws IOException, XmlException {
 
 		//set-up
-		ClassPathResource xmlResource = new ClassPathResource("bogus-QDRA-III");
-		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III"), Charset.defaultCharset());
 
 		ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(baos1));
@@ -61,8 +61,7 @@ public class AutoDetectQrdaTest {
 	public void testNoClinicalDocumentElement() throws IOException, XmlException {
 
 		//set-up
-		ClassPathResource xmlResource = new ClassPathResource("bogus-QDRA-III-root");
-		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III-root"), Charset.defaultCharset());
 
 		ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(baos2));
@@ -72,5 +71,9 @@ public class AutoDetectQrdaTest {
 
 		//assert
 		assertThat("Incorrect error message", baos2.toString(), is(EXPECTED_ERROR));
+	}
+
+	private InputStream getStream(String path) {
+		return ClasspathHelper.contextClassLoader().getResourceAsStream(path);
 	}
 }

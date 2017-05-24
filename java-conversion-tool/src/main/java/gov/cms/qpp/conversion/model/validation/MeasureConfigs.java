@@ -2,9 +2,9 @@ package gov.cms.qpp.conversion.model.validation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.core.io.ClassPathResource;
-
+import org.reflections.util.ClasspathHelper;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -38,11 +38,11 @@ public class MeasureConfigs {
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		ClassPathResource measuresConfigResource = new ClassPathResource(measureDataFileName);
+		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(measureDataFileName);
 
 		try {
 			TypeReference<List<MeasureConfig>> measureConfigType = new TypeReference<List<MeasureConfig>>() {};
-			configurations = mapper.readValue(measuresConfigResource.getInputStream(), measureConfigType);
+			configurations = mapper.readValue(measuresInput, measureConfigType);
 		} catch (IOException e) {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}

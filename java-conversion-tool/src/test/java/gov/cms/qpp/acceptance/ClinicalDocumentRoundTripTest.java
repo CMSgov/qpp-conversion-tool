@@ -8,9 +8,10 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
+import org.reflections.util.ClasspathHelper;
 
 import java.io.BufferedWriter;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -40,8 +41,9 @@ public class ClinicalDocumentRoundTripTest extends BaseTest {
 
 	@Test
 	public void parseClinicalDocument() throws Exception {
-		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
-		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		InputStream stream =
+				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
+		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
 
 		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment));
 
