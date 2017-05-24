@@ -12,11 +12,6 @@ docker-machine create \
 --amazonec2-region us-east-1 ${name}
 
 localKey=$(cat ~/.ssh/id_rsa.pub) && \
-docker-machine ssh ${name} "echo "$localKey" >> .ssh/authorized_keys" && \
-eval "$(docker-machine env ${name})"
-
-docker-machine scp -r ${baseDir}/publicKeys ${name}:/home/ubuntu/publicKeys
-docker-machine scp -r ${baseDir}/createUser.sh ${name}:/home/ubuntu
-
-localKey=$(cat ~/.ssh/id_rsa.pub) && \
-docker-machine ssh ${name} "chmod +x /home/ubuntu/createUser.sh && /home/ubuntu/createUser.sh"
+docker-machine ssh ${name} "echo "$localKey" >> .ssh/authorized_keys"
+docker-machine scp -r ${baseDir}/instanceInit ${name}:/home/ubuntu/
+docker-machine ssh ${name} "chmod +x /home/ubuntu/instanceInit/init.sh && /home/ubuntu/instanceInit/init.sh"
