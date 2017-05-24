@@ -8,7 +8,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -91,7 +90,7 @@ public class QrdaValidator {
 	private NodeValidator getValidator(String templateId) {
 		NodeValidator nodeValidator = VALIDATORS.get(templateId);
 		if (nodeValidator != null) {
-			Validator validator = AnnotationUtils.findAnnotation(nodeValidator.getClass(), Validator.class);
+			Validator validator = nodeValidator.getClass().getAnnotation(Validator.class);
 			return (scope != null && !scope.contains(validator.templateId())) ? null : nodeValidator;
 		}
 

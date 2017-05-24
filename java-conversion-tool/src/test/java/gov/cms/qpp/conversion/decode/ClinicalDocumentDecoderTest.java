@@ -11,9 +11,10 @@ import org.jdom2.Namespace;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
+import org.reflections.util.ClasspathHelper;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -27,8 +28,9 @@ public class ClinicalDocumentDecoderTest {
 
 	@BeforeClass
 	public static void init() throws IOException {
-		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
-		xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		InputStream stream =
+				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
+		xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
 	}
 
 	@Before
@@ -120,8 +122,9 @@ public class ClinicalDocumentDecoderTest {
 
 	@Test
 	public void testClinicalDocumentIgnoresGarbage() throws IOException, XmlException {
-		ClassPathResource xmlResource = new ClassPathResource("QRDA-III-with-extra-elements.xml");
-		String xmlWithGarbage = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		InputStream stream =
+				ClasspathHelper.contextClassLoader().getResourceAsStream("QRDA-III-with-extra-elements.xml");
+		String xmlWithGarbage = IOUtils.toString(stream, Charset.defaultCharset());
 
 		Node clinicalDocument = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlWithGarbage));
 		Node performanceYear = clinicalDocument.getChildNodes().get(0);
