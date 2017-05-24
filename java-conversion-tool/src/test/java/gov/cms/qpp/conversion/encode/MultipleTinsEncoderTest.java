@@ -82,7 +82,7 @@ public class MultipleTinsEncoderTest {
 		clinicalDocumentNode.addChildNode(reportingParametersSectionNode);
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		multipleTinsNode = new Node(TemplateId.MULTIPLE_TINS.getTemplateId());
+		multipleTinsNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId());
 		multipleTinsNode.addChildNode(clinicalDocumentNode);
 		multipleTinsNode.addChildNode(npiTinNodeOne);
 		multipleTinsNode.addChildNode(npiTinNodeTwo);

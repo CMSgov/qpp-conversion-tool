@@ -16,7 +16,7 @@ import java.util.function.Predicate;
 /**
  * Decoder to parse the root element of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
-@Decoder(TemplateId.MULTIPLE_TINS)
+@Decoder(TemplateId.QRDA_CATEGORY_III_REPORT_V3)
 public class MultipleTinsDecoder extends QppXmlDecoder {
 
 	public static final String NPI_TIN_ID = "NPITIN";
