@@ -19,12 +19,12 @@ import java.util.stream.Collectors;
 
 @Encoder(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
-	final static String PERFORMANCE_END = "performanceEnd";
-	final static String PERFORMANCE_YEAR = "performanceYear";
-	final static String PERFORMANCE_START = "performanceStart";
-	final static String MEASUREMENT_SETS = "measurementSets";
-	final static String SOURCE = "source";
-	final static String PROVIDER = "provider";
+	static final String PERFORMANCE_END = "performanceEnd";
+	static final String PERFORMANCE_YEAR = "performanceYear";
+	static final String PERFORMANCE_START = "performanceStart";
+	static final String MEASUREMENT_SETS = "measurementSets";
+	static final String SOURCE = "source";
+	static final String PROVIDER = "provider";
 
 	/**
 	 * internalEncode encodes nodes into Json Wrapper.
@@ -49,13 +49,9 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		Optional<Node> reportingNode = ReportingParameters.getReportingNode(childMapByTemplateId);
 
 		Optional<String> performanceStart =
-			reportingNode.flatMap(p -> {
-				return Optional.of(p.getValue(PERFORMANCE_START));
-			});
+			reportingNode.flatMap(p -> Optional.of(p.getValue(PERFORMANCE_START)));
 		Optional<String> performanceEnd =
-			reportingNode.flatMap(p -> {
-				return Optional.of(p.getValue(PERFORMANCE_END));
-			});
+			reportingNode.flatMap(p -> Optional.of(p.getValue(PERFORMANCE_END)));
 
 		if (performanceStart.isPresent()) {
 			wrapper.putInteger(PERFORMANCE_YEAR, performanceStart.get().substring(0, 4));

@@ -68,12 +68,14 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	}
 
 	private void setNationalProviderIdOnNode(Element element, Node thisNode) {
-		Consumer<? super Attribute> consumer = p -> thisNode.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, p.getValue());
+		Consumer<? super Attribute> consumer = p ->
+				thisNode.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, p.getValue());
 		setOnNode(element, NATIONAL_PROVIDER_ID_PATH, consumer, Filters.attribute(), true);
 	}
 
 	private void setTaxProviderTaxIdOnNode(Element element, Node thisNode) {
-		Consumer<? super Attribute> consumer = p -> thisNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, p.getValue());
+		Consumer<? super Attribute> consumer = p ->
+				thisNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, p.getValue());
 		setOnNode(element, TAX_PROVIDER_TAX_ID_PATH, consumer, Filters.attribute(), true);
 	}
 
