@@ -26,9 +26,7 @@ public class MultipleTinsEncoder extends QppOutputEncoder {
 		List<Node> npiTinCombinations = node.findNode(MultipleTinsDecoder.NPI_TIN_ID);
 
 		if (npiTinCombinations.size() > 1) {
-			npiTinCombinations.forEach(npiTinNode -> {
-				encodeNpiTinCombinations(wrapper, node, npiTinNode);
-				});
+			npiTinCombinations.forEach(npiTinNode -> encodeNpiTinCombinations(wrapper, node, npiTinNode));
 		} else {
 			encodeSingleNpiTinCombination(wrapper, node);
 		}
