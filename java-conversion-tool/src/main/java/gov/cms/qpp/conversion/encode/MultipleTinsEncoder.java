@@ -11,7 +11,7 @@ import java.util.List;
  * Encodes either multiple clinical documents based on npi/tin combinations
  * Or encodes one clinical document.
  */
-@Encoder(TemplateId.MULTIPLE_TINS)
+@Encoder(TemplateId.QRDA_CATEGORY_III_REPORT_V3)
 public class MultipleTinsEncoder extends QppOutputEncoder {
 
 	/**
