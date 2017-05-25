@@ -30,7 +30,7 @@ public class QrdaServiceImpl implements QrdaService {
 
 			conversionResult = converter.getConversionResult();
 			status = converter.getStatus();
-		} catch(Exception exception) {
+		} catch (Exception exception) {
 			//here because the logging doesn't work yet
 			System.out.println("Exception!");
 			exception.printStackTrace();
