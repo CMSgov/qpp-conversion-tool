@@ -11,6 +11,14 @@ import java.io.InputStream;
 
 @Service
 public class QrdaServiceImpl implements QrdaService {
+
+	/**
+	 * Converts a given a input stream with to conversion result content
+	 *
+	 * @param fileInputStream Object to be converted
+	 * @return Results of the conversion
+	 * @throws IOException If error occurs during file upload or conversion
+	 */
 	@Override
 	public ConversionResult convertQrda3ToQpp(final InputStream fileInputStream) throws IOException {
 		InputStream conversionResult;
