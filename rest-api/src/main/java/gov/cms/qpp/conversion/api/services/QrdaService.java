@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- *
+ * Interface of the QRDA-III to QPP Conversion Service
  */
 public interface QrdaService {
 

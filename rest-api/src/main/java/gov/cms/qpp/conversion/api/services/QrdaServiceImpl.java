@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- *
+ * Implementation of the QRDA-III to QPP conversion service
  */
 @Service
 public class QrdaServiceImpl implements QrdaService {
