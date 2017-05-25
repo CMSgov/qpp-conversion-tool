@@ -3,14 +3,18 @@ package gov.cms.qpp.conversion.encode;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,12 +22,13 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 public class JsonWrapperTest {
 
-	ObjectWriter ow = JsonWrapper.getObjectWriter();
+	ObjectWriter ow = JsonWrapper.getObjectWriter(true);
 
 	public JsonWrapper objectObjWrapper;
 	public JsonWrapper objectStrWrapper;
 	public JsonWrapper listObjWrapper;
 	public JsonWrapper listStrWrapper;
+	public JsonWrapper unfilteredMetaWrapper;
 
 	@Before
 	public void before() {
@@ -31,6 +36,7 @@ public class JsonWrapperTest {
 		objectStrWrapper = new JsonWrapper();
 		listObjWrapper   = new JsonWrapper();
 		listStrWrapper   = new JsonWrapper();
+		unfilteredMetaWrapper = new JsonWrapper(false);
 	}
 
 	@Test
@@ -485,7 +491,46 @@ public class JsonWrapperTest {
 		assertEquals("expect Float", objectStrWrapper.getFloat("obj3"), Float.valueOf(1.1F) );
 		assertEquals("expect Boolean", objectStrWrapper.getBoolean("obj4"), Boolean.FALSE );
 	}
-	
+
+	@Test
+	public void metadataFiltered() throws IOException {
+		//setup
+		String shouldSerialize = "mawp";
+		String shouldNotSerialize = "metadata_meep";
+		objectObjWrapper.putString(shouldSerialize, shouldSerialize);
+		objectObjWrapper.putString(shouldNotSerialize, shouldNotSerialize);
+
+		//when
+		String json = objectObjWrapper.toString();
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode obj = mapper.readTree(json);
+
+		//then
+		assertEquals("Could not find " + shouldSerialize,
+				shouldSerialize, obj.findValue(shouldSerialize).asText());
+		assertNull("Should not find " + shouldNotSerialize, obj.findValue(shouldNotSerialize));
+	}
+
+	@Test
+	public void metadataUnfiltered() throws IOException {
+		//setup
+		String shouldSerialize = "mawp";
+		String shouldAlsoSerialize = "metadata_meep";
+		unfilteredMetaWrapper.putString(shouldSerialize, shouldSerialize);
+		unfilteredMetaWrapper.putString(shouldAlsoSerialize, shouldAlsoSerialize);
+
+		//when
+		String json = unfilteredMetaWrapper.toString();
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode obj = mapper.readTree(json);
+
+		//then
+		assertEquals("Could not find " + shouldSerialize,
+				shouldSerialize, obj.findValue(shouldSerialize).asText());
+		assertEquals("Could not find " + shouldAlsoSerialize,
+				shouldAlsoSerialize, obj.findValue(shouldAlsoSerialize).asText());
+	}
+
 }
 
 class MockBadJsonTarget {

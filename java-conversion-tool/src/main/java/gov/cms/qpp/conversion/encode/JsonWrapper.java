@@ -5,6 +5,14 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.introspect.Annotated;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.PropertyFilter;
+import com.fasterxml.jackson.databind.ser.PropertyWriter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +33,11 @@ public class JsonWrapper {
 	private List<Object> list;
 
 	public JsonWrapper() {
-		ow = getObjectWriter();
+		this(true);
+	}
+
+	public JsonWrapper(boolean filterMeta) {
+		ow = getObjectWriter(filterMeta);
 	}
 
 	/**
@@ -33,11 +45,43 @@ public class JsonWrapper {
 	 *
 	 * @return utility that will allow client to serialize wrapper contents as json
 	 */
-	public static ObjectWriter getObjectWriter() {
+	public static ObjectWriter getObjectWriter(boolean filterMeta) {
 		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
 		DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
 		printer.indentObjectsWith(withLinefeed);
-		return new ObjectMapper().writer().with(printer);
+		ObjectMapper om = new ObjectMapper();
+
+		if (filterMeta) {
+			outfitMetadataFilter(om);
+		}
+
+		return om.writer().with(printer);
+	}
+
+	private static void outfitMetadataFilter(ObjectMapper om) {
+		SimpleFilterProvider filters = new SimpleFilterProvider();
+		final String filterName = "exclude-metadata";
+			om.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+			@Override
+			public Object findFilterId(Annotated a) {
+				if (Map.class.isAssignableFrom(a.getRawType())) {
+					return filterName;
+				}
+				return super.findFilterId(a);
+			}
+		});
+		filters.addFilter(filterName, new SimpleBeanPropertyFilter() {
+			@Override
+			protected boolean include(BeanPropertyWriter writer) {
+				return true;
+			}
+
+			@Override
+			protected boolean include(PropertyWriter writer) {
+				return !writer.getName().startsWith("metadata_");
+			}
+		});
+		om.setFilterProvider(filters);
 	}
 
 	/**
