@@ -22,6 +22,14 @@ public class QrdaControllerV1 {
 	@Autowired
 	private QrdaService qrdaService;
 
+	/**
+	 * Endpoint to transform an uploaded file into a valid or error json response
+	 *
+	 * @param file Uploaded file
+	 * @param response Servlet response status
+	 * @return Valid json or error json content
+	 * @throws IOException If errors occur during file upload or conversion
+	 */
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String createResource(@RequestParam MultipartFile file, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpStatus.CREATED.value());
