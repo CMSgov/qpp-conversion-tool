@@ -15,15 +15,7 @@ public class ConversionResult {
 		return content;
 	}
 
-	public void setContent(final String content) {
-		this.content = content;
-	}
-
 	public TransformationStatus getStatus() {
 		return status;
-	}
-
-	public void setStatus(final TransformationStatus status) {
-		this.status = status;
 	}
 }
