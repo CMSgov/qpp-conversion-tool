@@ -9,11 +9,15 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.reflections.util.ClasspathHelper;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 public class DefaultEncoderTest {
 
@@ -40,7 +44,5 @@ public class DefaultEncoderTest {
 		JsonWrapper wrapper = new JsonWrapper();
 		new DefaultEncoder("Default Encode test").internalEncode(wrapper, root);
 		Assert.assertTrue(wrapper.toString().length() == 3);
-
 	}
-
 }

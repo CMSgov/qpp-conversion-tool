@@ -188,6 +188,15 @@ public class ClinicalDocumentEncoderTest {
 				is(EXPECTED_CLINICAL_DOC_FORMAT));
 	}
 
+	@Test(expected = EncodeException.class)
+	public void testInternalEncodeNegative() throws EncodeException {
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
+		clinicalDocumentNode.addChildNode(new Node("meep"));
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+	}
+
 	@Test
 	public void testInternalEncoderWithoutReporting() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(reportingParametersSectionNode);
