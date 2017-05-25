@@ -2,6 +2,9 @@ package gov.cms.qpp.conversion.api.model;
 
 import gov.cms.qpp.conversion.TransformationStatus;
 
+/**
+ *
+ */
 public class ConversionResult {
 	private String content;
 	private TransformationStatus status;

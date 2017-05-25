@@ -5,6 +5,9 @@ import gov.cms.qpp.conversion.api.model.ConversionResult;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ *
+ */
 public interface QrdaService {
 
 	/**
