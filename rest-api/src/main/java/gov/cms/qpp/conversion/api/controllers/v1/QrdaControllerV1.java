@@ -34,7 +34,7 @@ public class QrdaControllerV1 {
 	 * @throws IOException If errors occur during file upload or conversion
 	 */
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public String createResource(@RequestParam MultipartFile file, HttpServletResponse response) throws IOException {
+	public String uploadQrdaFile(@RequestParam MultipartFile file, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpStatus.CREATED.value());
 
 		ConversionResult conversionResult = qrdaService.convertQrda3ToQpp(file.getInputStream());
