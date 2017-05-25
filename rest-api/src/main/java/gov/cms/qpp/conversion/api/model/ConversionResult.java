@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.api.model;
 import gov.cms.qpp.conversion.TransformationStatus;
 
 /**
- *
+ * Object to hold the Conversion Result
  */
 public class ConversionResult {
 	private String content;

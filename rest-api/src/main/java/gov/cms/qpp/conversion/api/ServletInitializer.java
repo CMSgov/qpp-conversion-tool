@@ -4,12 +4,14 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 /**
- *
+ * Initialize the servlet container for application configuration
  */
 public class ServletInitializer extends SpringBootServletInitializer {
 	/**
-	 * @param application
-	 * @return
+	 * Configures the application via configuration classes
+	 *
+	 * @param application builder for the application context
+	 * @return application builder
 	 */
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
