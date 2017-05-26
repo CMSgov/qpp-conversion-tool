@@ -40,7 +40,5 @@ public class DefaultEncoderTest {
 		JsonWrapper wrapper = new JsonWrapper();
 		new DefaultEncoder("Default Encode test").internalEncode(wrapper, root);
 		Assert.assertTrue(wrapper.toString().length() == 3);
-
 	}
-
 }
