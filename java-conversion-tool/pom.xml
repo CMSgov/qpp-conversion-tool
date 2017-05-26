@@ -4,8 +4,7 @@
 	<parent>
 		<artifactId>java-conversion</artifactId>
 		<groupId>gov.cms.qpp.conversion</groupId>
-		<version>${conversion-tools.version}</version>
-		<relativePath>../</relativePath>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<name>java-conversion-tool</name>
