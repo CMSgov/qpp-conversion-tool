@@ -103,6 +103,11 @@ public class RegistryTest {
 		InputDecoder decoder = registry.get("id");
 		assertTrue("Registry should have overwritten id with the second one.", decoder instanceof AnotherPlaceholder);
 	}
+
+	@Test
+	public void testSize() {
+		assertTrue("Registry does not have contents", registry.size() > 0);
+	}
 }
 
 @SuppressWarnings("unused") // this is here for a the annotation tests
