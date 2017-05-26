@@ -126,7 +126,7 @@
 							<goal>report</goal>
 						</goals>
 						<configuration>
-							<dataFile>${project.build.directory}/coverage.exec</dataFile>
+							<dataFile>jacoco.exec</dataFile>
 						</configuration>
 					</execution>
 				</executions>
