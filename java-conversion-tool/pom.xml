@@ -5,12 +5,11 @@
 		<artifactId>java-conversion</artifactId>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>java-conversion-tool</artifactId>
 	<name>java-conversion-tool</name>
-	<version>0.0.1-SNAPSHOT</version>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
