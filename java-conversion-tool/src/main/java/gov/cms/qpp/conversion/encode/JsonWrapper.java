@@ -8,8 +8,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.PropertyFilter;
 import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -58,29 +56,16 @@ public class JsonWrapper {
 		return om.writer().with(printer);
 	}
 
+	/**
+	 * Outfit the given {@link ObjectMapper} with a filter that will treat all metadata map entries as transient.
+	 *
+	 * @param om object mapper to modify
+	 */
 	private static void outfitMetadataFilter(ObjectMapper om) {
-		SimpleFilterProvider filters = new SimpleFilterProvider();
 		final String filterName = "exclude-metadata";
-			om.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
-			@Override
-			public Object findFilterId(Annotated a) {
-				if (Map.class.isAssignableFrom(a.getRawType())) {
-					return filterName;
-				}
-				return super.findFilterId(a);
-			}
-		});
-		filters.addFilter(filterName, new SimpleBeanPropertyFilter() {
-			@Override
-			protected boolean include(BeanPropertyWriter writer) {
-				return true;
-			}
-
-			@Override
-			protected boolean include(PropertyWriter writer) {
-				return !writer.getName().startsWith("metadata_");
-			}
-		});
+		SimpleFilterProvider filters = new SimpleFilterProvider();
+		filters.addFilter(filterName, new MetadataPropertyFilter());
+		om.setAnnotationIntrospector(new JsonWrapperIntrospector(filterName));
 		om.setFilterProvider(filters);
 	}
 
@@ -493,6 +478,64 @@ public class JsonWrapper {
 			return ow.writeValueAsString(isObject() ? object : list);
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException("Issue rendering JSON from JsonWrapper Map", e);
+		}
+	}
+
+	/**
+	 * JsonWrapper specific annotation introspector. This gives us a way to programmatically associate
+	 * filtering for metadata properties prior to serialization. This is an advantage over annotated filtering
+	 * in that it's less rigid than compile time modification.
+	 */
+	private static class JsonWrapperIntrospector extends JacksonAnnotationIntrospector {
+		private String filterName;
+
+		/**
+		 * @param filterName name of filter to be aassociated during introspection
+		 */
+		private JsonWrapperIntrospector(String filterName) {
+			this.filterName = filterName;
+		}
+
+		/**
+		 * Apply the {@link JsonWrapperIntrospector#filterName} filter to all instances of Map.
+		 *
+		 * @param a objects to be serialized
+		 * @return either the specified filter or a the default supplied by the parent.
+		 * @see JacksonAnnotationIntrospector
+		 */
+		@Override
+		public Object findFilterId(Annotated a) {
+			if (Map.class.isAssignableFrom(a.getRawType())) {
+				return filterName;
+			}
+			return super.findFilterId(a);
+		}
+	}
+
+	/**
+	 * Filters out all map entries during serialization that have keys prefixed with "metadata_".
+	 */
+	private static class MetadataPropertyFilter extends SimpleBeanPropertyFilter {
+		/**
+		 * Pass through inclusion for beans.
+		 *
+		 * @param writer that performs serialization
+		 * @return determination of whether or not it should be serialized
+		 */
+		@Override
+		protected boolean include(BeanPropertyWriter writer) {
+			return true;
+		}
+
+		/**
+		 * Denies inclusion for "metadata_" prefixed properties.
+		 *
+		 * @param writer that performs serialization
+		 * @return determination of whether or not it should be serialized
+		 */
+		@Override
+		protected boolean include(PropertyWriter writer) {
+			return !writer.getName().startsWith("metadata_");
 		}
 	}
 }
