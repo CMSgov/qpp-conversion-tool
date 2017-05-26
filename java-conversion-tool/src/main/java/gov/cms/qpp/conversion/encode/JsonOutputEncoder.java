@@ -41,6 +41,9 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	public final void encode(JsonWrapper wrapper, Node node) {
 		try {
 			internalEncode(wrapper, node);
+			if (wrapper.isObject()) {
+				wrapper.putString("metadata_path", node.getPath());
+			}
 		} catch (EncodeException e) {
 			DEV_LOG.warn("Encode error when doing internalEncode, adding a new ValidationError", e);
 			validationErrors.add(new ValidationError(e.getMessage()));
