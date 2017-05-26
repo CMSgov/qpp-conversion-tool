@@ -22,6 +22,16 @@ public class QualitySectionEncoderTest {
 		assertThat("Expect to encode submissionMethod", jsonWrapper.getString("submissionMethod"), is("cmsWebInterface"));
 	}
 
+	@Test(expected = EncodeException.class)
+	public void internalEncodeNegative() throws EncodeException {
+		Node qualitySectionNode = getQualitySectionNode();
+		qualitySectionNode.addChildNode(new Node("meep"));
+
+		QualitySectionEncoder encoder = new QualitySectionEncoder();
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		encoder.internalEncode(jsonWrapper, qualitySectionNode);
+	}
+
 	/**
 	 * Helper method to reduce duplication of code
 	 *
