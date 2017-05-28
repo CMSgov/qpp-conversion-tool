@@ -1,10 +1,5 @@
 <?xml version="1.0"?>
 <configuration>
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>%-2level - %msg%n</pattern>
-		</encoder>
-	</appender>
 	<appender name="STDOUT_DETAIL" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
@@ -13,10 +8,4 @@
 	<root level="INFO">
 		<appender-ref ref="STDOUT_DETAIL"/>
 	</root>
-	<!--<logger name="gov.cms" level="INFO">-->
-		<!--<appender-ref ref="STDOUT_DETAIL"/>-->
-	<!--</logger>-->
-	<!--<logger name="CLIENT-LOG" level="INFO">-->
-		<!--<appender-ref ref="STDOUT"/>-->
-	<!--</logger>-->
 </configuration>
