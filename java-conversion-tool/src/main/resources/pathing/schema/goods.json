@@ -1,16 +1,13 @@
 {
 	"type":"object",
 	"additionalProperties": false,
-	"id":"#correlation",
+	"id":"#goods",
 	"properties":{
-		"decodeLabel": {
+		"relativeXPath": {
 			"type": "string"
 		},
-		"encodeLabel": {
+		"xmltype": {
 			"type": "string"
-		},
-		"goods": {
-			"$ref": "goods.json"
 		}
 	}
 }
