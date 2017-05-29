@@ -3,14 +3,14 @@
 	"additionalProperties": false,
 	"id":"#correlation",
 	"properties":{
-		"decodeLabel": {
+		"correlationId": {
 			"type": "string"
 		},
-		"encodeLabel": {
-			"type": "string"
-		},
-		"goods": {
-			"$ref": "goods.json"
+		"config": {
+			"type": "array",
+			"items": {
+				"$ref": "config.json"
+			}
 		}
 	}
 }

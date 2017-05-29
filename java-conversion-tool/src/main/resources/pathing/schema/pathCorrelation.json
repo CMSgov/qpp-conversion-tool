@@ -1,10 +1,17 @@
 {
+	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type":"object",
 	"additionalProperties": false,
 	"id":"#pathCorrelation",
 	"properties":{
-		"templateId": {
+		"uriSubstitution": {
 			"type": "string"
+		},
+		"templates": {
+			"type": "array",
+			"items": {
+				"$ref": "template.json"
+			}
 		},
 		"correlations": {
 			"type": "array",

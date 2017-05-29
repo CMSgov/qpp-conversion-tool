@@ -1,9 +1,18 @@
 {
 	"uriSubstitution": "<nsuri>",
-	"pathCorrelations": [
+	"templates": [
 		{
 			"templateId": "CLINICAL_DOCUMENT",
-			"correlations": [
+			"correlationId": "topLevel"
+		},{
+			"templateId": "QRDA_CATEGORY_III_REPORT_V3",
+			"correlationId": "topLevel"
+		}
+	],
+	"correlations": [
+		{
+			"correlationId": "topLevel",
+			"config": [
 				{
 					"decodeLabel": "programName",
 					"encodeLabel": "programName",
