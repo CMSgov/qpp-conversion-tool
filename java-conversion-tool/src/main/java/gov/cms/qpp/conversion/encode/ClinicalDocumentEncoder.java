@@ -89,7 +89,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			try {
 				sectionEncoder.encode(childWrapper, child);
 
-				childWrapper.putString(SOURCE, PROVIDER);
 				if (performanceStart.isPresent()) {
 					childWrapper.putDate(PERFORMANCE_START, performanceStart.get());
 				}
