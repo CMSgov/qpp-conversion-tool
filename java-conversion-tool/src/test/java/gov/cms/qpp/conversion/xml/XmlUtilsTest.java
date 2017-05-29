@@ -1,14 +1,16 @@
 package gov.cms.qpp.conversion.xml;
 
+import org.jdom2.Element;
+import org.junit.Test;
+
+import java.lang.reflect.Constructor;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
-
-import java.util.List;
-
-import org.jdom2.Element;
-import org.junit.Test;
 
 public class XmlUtilsTest {
 
@@ -55,5 +57,18 @@ public class XmlUtilsTest {
 		Element dom = XmlUtils.stringToDom("invalid XML");
 
 		assertThat("returned dom should not be null", dom, is(nullValue()));
+	}
+
+	@Test
+	public void privateConstructorTest() throws Exception {
+		// reflection concept to get constructor of a Singleton class.
+		Constructor<XmlUtils> constructor = XmlUtils.class.getDeclaredConstructor();
+		// change the accessibility of constructor for outside a class object creation.
+		constructor.setAccessible(true);
+		// creates object of a class as constructor is accessible now.
+		XmlUtils xmlUtils = constructor.newInstance();
+		// close the accessibility of a constructor.
+		constructor.setAccessible(false);
+		assertThat("Expect to have an instance here ", xmlUtils, instanceOf(XmlUtils.class));
 	}
 }

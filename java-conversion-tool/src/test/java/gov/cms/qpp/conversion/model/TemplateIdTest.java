@@ -1,12 +1,15 @@
 package gov.cms.qpp.conversion.model;
 
 import gov.cms.qpp.conversion.ConversionEntry;
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 public class TemplateIdTest {
 
@@ -95,5 +98,18 @@ public class TemplateIdTest {
 		assertThat("Expect value of to return a TemplateId", value, is(TemplateId.CLINICAL_DOCUMENT.getTemplateId()));
 
 		field.set(null, false);
+	}
+
+	@Test
+	public void privateConstructorTest() throws Exception {
+		// reflection concept to get constructor of a Singleton class.
+		TemplateId templateId = TemplateId.CLINICAL_DOCUMENT;
+		Class<?> constants = TemplateId.class.getDeclaredClasses()[0];
+		Constructor<?> constructor = constants.getDeclaredConstructors()[0];
+		constructor.setAccessible(true);
+		constructor.newInstance();
+
+		constructor.setAccessible(false);
+		Assert.assertThat("Expect to have an instance here ", constants, instanceOf(Class.class));
 	}
 }
