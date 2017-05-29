@@ -14,13 +14,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PathCorrelator {
+	private static String config = "pathing/path-correlation.json";
 	private static PathCorrelations pathCorrelations;
 	private static Map<String, Goods> pathCorrelationMap = new HashMap<>();
 
 	static {
+		initPathCorrelation();
+	}
+
+	private static void initPathCorrelation() {
 		try {
-			InputStream input = ClasspathHelper.contextClassLoader()
-					.getResourceAsStream("pathing/path-correlation.json");
+			InputStream input = ClasspathHelper.contextClassLoader().getResourceAsStream(config);
 			ObjectMapper mapper = new ObjectMapper();
 			pathCorrelations = mapper.readValue(input, PathCorrelations.class);
 			flattenCorrelations(pathCorrelations);
@@ -32,13 +36,13 @@ public class PathCorrelator {
 	private static void flattenCorrelations(PathCorrelations pathCorrelations) {
 		pathCorrelations.getPathCorrelations().stream()
 				.collect(Collectors.toMap(PathCorrelation::getTemplateId, pc -> pc))
-				.entrySet().stream().forEach(PathCorrelator::loadFlattenedEntries);
+				.entrySet().forEach(PathCorrelator::loadFlattenedEntries);
 	}
 
 	private static void loadFlattenedEntries(Map.Entry<String, PathCorrelation> entry) {
 		String key = entry.getKey();
 		PathCorrelation value = entry.getValue();
-		value.getCorrelations().stream().forEach(correlation -> {
+		value.getCorrelations().forEach(correlation -> {
 			if (null != correlation.getDecodeLabel()) {
 				pathCorrelationMap.put(
 						getKey(key, correlation.getDecodeLabel()), correlation.getGoods());
