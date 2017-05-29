@@ -53,6 +53,10 @@ public class PathCorrelator {
 		});
 	}
 
+	public static String getUriSubstitution() {
+		return pathCorrelation.getUriSubstitution();
+	}
+
 	public static String getKey(String template, String attribute) {
 		return template + "_" + attribute;
 	}

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -9,9 +10,6 @@ import org.jdom2.filter.Filters;
 
 import java.util.List;
 import java.util.function.Consumer;
-
-import static gov.cms.qpp.conversion.correlation.PathCorrelator.getKey;
-import static gov.cms.qpp.conversion.correlation.PathCorrelator.getPath;
 
 /**
  * Decoder to parse the root element of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
@@ -56,8 +54,8 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	}
 
 	private String getXpath(String attribute) {
-		String key = getKey(TemplateId.CLINICAL_DOCUMENT.name(), attribute);
-		return getPath(key, defaultNs.getURI());
+		String key = PathCorrelator.getKey(TemplateId.CLINICAL_DOCUMENT.name(), attribute);
+		return PathCorrelator.getPath(key, defaultNs.getURI());
 	}
 
 	private void setNationalProviderIdOnNode(Element element, Node thisNode) {

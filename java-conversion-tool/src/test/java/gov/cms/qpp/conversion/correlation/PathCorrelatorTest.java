@@ -10,9 +10,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class PathCorrelatorTest {
+
 	@Test
 	public void pathCorrelatorInitilization() {
 		String key = PathCorrelator.getKey(TemplateId.CLINICAL_DOCUMENT.name(),
@@ -34,5 +36,19 @@ public class PathCorrelatorTest {
 		} catch(InvocationTargetException ex) {
 			throw ex.getCause();
 		}
+	}
+
+	@Test
+	public void verifyXpathNsSubstitution() {
+		String meep = "meep";
+		String key = PathCorrelator.getKey(
+				TemplateId.CLINICAL_DOCUMENT.name(), ClinicalDocumentDecoder.PROGRAM_NAME);
+		String path = PathCorrelator.getPath(key, meep);
+
+		int meepCount = (path.length() - path.replaceAll(meep, "").length()) / meep.length();
+
+		assertThat("3 substitutions were expected", 3, is(meepCount));
+		assertThat("No substitution placeholders should remain",
+				path.indexOf(PathCorrelator.getUriSubstitution()), is(-1));
 	}
 }
