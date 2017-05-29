@@ -10,38 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentEncoderTest {
-
-	private static final String EXPECTED_CLINICAL_DOC_FORMAT = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
-			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
-			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\"," + "\n  \"performanceYear\" : 2017,"
-			+ "\n  \"measurementSets\" : [ " + "{\n    \"category\" : \"aci\",\n    \"measurements\" : [ "
-			+ "{\n      \"measureId\" : \"ACI-PEA-1\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    }, "
-			+ "{\n      \"measureId\" : \"ACI_EP_1\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 500,\n        \"denominator\" : 700\n      }\n    }, "
-			+ "{\n      \"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
-			+ "\n    \"source\" : \"provider\"," + "\n    \"performanceStart\" : \"2017-01-01\","
-			+ "\n    \"performanceEnd\" : \"2017-12-31\"" + "\n  } ]\n}";
-
-	private static final String EXPECTED_NO_REPORTING = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
-			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
-			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\","
-			+ "\n  \"measurementSets\" : [ " + "{\n    \"category\" : \"aci\",\n    \"measurements\" : [ "
-			+ "{\n      \"measureId\" : \"ACI-PEA-1\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    }, "
-			+ "{\n      \"measureId\" : \"ACI_EP_1\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 500,\n        \"denominator\" : 700\n      }\n    }, "
-			+ "{\n      \"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
-			+ "\n    \"source\" : \"provider\"\n  } ]\n}";
-
-	private static final String EXPECTED_NO_ACI = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
-			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
-			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\"," + "\n  \"performanceYear\" : 2017\n}";
 
 	private Node aciSectionNode;
 	private Node aciProportionMeasureNode;
@@ -183,9 +155,6 @@ public class ClinicalDocumentEncoderTest {
 				clinicalDocMap.get("nationalProviderIdentifier"), is("2567891421"));
 
 		assertThat("Must have a correct performanceYear", clinicalDocMap.get("performanceYear"), is(2017));
-
-		assertThat("Must have correct json formatting", testJsonWrapper.toString(),
-				is(EXPECTED_CLINICAL_DOC_FORMAT));
 	}
 
 	@Test(expected = EncodeException.class)
@@ -205,8 +174,12 @@ public class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		assertThat("Must return a Clinical Document without reporting parameter section", testJsonWrapper.toString(),
-				is(EXPECTED_NO_REPORTING));
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+
+		assertThat("Must not be a performanceStart because the reporting parameters was missing.",
+			((List<Map<?, ?>>)clinicalDocMap.get("measurementSets")).get(0).get("performanceStart"), is(nullValue()));
+		assertThat("Must not be a performanceEnd because the reporting parameters was missing.",
+			((List<Map<?, ?>>)clinicalDocMap.get("measurementSets")).get(0).get("performanceEnd"), is(nullValue()));
 	}
 
 	@Test
@@ -217,7 +190,9 @@ public class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		assertThat("Must return a Clinical Document without measurement section", testJsonWrapper.toString(),
-				is(EXPECTED_NO_ACI));
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+
+		assertThat("Must not be a performanceStart because the reporting parameters was missing.",
+			clinicalDocMap.get("measurementSets"), is(nullValue()));
 	}
 }
