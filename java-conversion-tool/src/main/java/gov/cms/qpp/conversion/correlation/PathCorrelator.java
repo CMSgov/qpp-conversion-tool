@@ -24,13 +24,15 @@ public class PathCorrelator {
 		initPathCorrelation();
 	}
 
+	private PathCorrelator() {}
+
 	private static void initPathCorrelation() {
 		try {
 			InputStream input = ClasspathHelper.contextClassLoader().getResourceAsStream(config);
 			ObjectMapper mapper = new ObjectMapper();
 			pathCorrelation = mapper.readValue(input, PathCorrelation.class);
 			flattenCorrelations(pathCorrelation);
-		} catch(IOException ioe) {
+		} catch (IOException ioe) {
 			throw new PathCorrelationException("Problem loading path correlation configuration", ioe);
 		}
 	}
