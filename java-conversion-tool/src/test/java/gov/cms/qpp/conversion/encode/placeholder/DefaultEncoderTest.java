@@ -1,25 +1,21 @@
 package gov.cms.qpp.conversion.encode.placeholder;
 
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.encode.EncodeException;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.reflections.util.ClasspathHelper;
+import gov.cms.qpp.conversion.decode.*;
+import gov.cms.qpp.conversion.encode.*;
+import gov.cms.qpp.conversion.model.*;
+import gov.cms.qpp.conversion.xml.*;
+import org.apache.commons.io.*;
+import org.junit.*;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.io.*;
+import java.nio.charset.*;
+import java.nio.file.*;
 
 public class DefaultEncoderTest {
 
 	@Test
 	public void encodeAllNodes() throws Exception {
-		InputStream stream = ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III.xml");
+		InputStream stream = XmlUtils.fileToStream(Paths.get("../qrda-files/valid-QRDA-III.xml"));
 		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
 
 		Node node = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));

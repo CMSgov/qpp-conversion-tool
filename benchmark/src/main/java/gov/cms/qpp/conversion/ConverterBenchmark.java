@@ -1,21 +1,10 @@
 package gov.cms.qpp.conversion;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
+import org.openjdk.jmh.annotations.*;
 
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Fork;
-import org.openjdk.jmh.annotations.Level;
-import org.openjdk.jmh.annotations.Measurement;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.TearDown;
-import org.openjdk.jmh.annotations.Warmup;
+import java.io.*;
+import java.nio.file.*;
+import java.util.concurrent.*;
 
 /**
  * Performance test harness.
@@ -45,7 +34,7 @@ public class ConverterBenchmark {
 	@Benchmark
 	@BenchmarkMode({Mode.Throughput, Mode.AverageTime})
 	public void benchmarkMain(Cleaner cleaner) {
-		ConversionEntry.main("src/main/resources/qrda-files/valid-QRDA-III.xml");
+		ConversionEntry.main("../qrda-files/valid-QRDA-III.xml");
 	}
 
 }
