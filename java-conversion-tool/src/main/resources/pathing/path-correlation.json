@@ -1,0 +1,38 @@
+{
+	"uriSubstitution": "<nsuri>",
+	"pathCorrelations": [
+		{
+			"templateId": "CLINICAL_DOCUMENT",
+			"correlations": [
+				{
+					"decodeLabel": "programName",
+					"encodeLabel": "programName",
+					"relativeXPath": "./*[local-name() = 'informationRecipient' and namespace-uri() = '<nsuri>']/*[local-name() = 'intendedRecipient' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.7']/@extension",
+					"xmltype": "attribute"
+				},
+				{
+					"encodeLabel": "entityType",
+					"relativeXPath": "./*[local-name() = 'informationRecipient' and namespace-uri() = '<nsuri>']/*[local-name() = 'intendedRecipient' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.7']/@extension",
+					"xmltype": "attribute"
+				},
+				{
+					"decodeLabel": "nationalProviderIdentifier",
+					"encodeLabel": "nationalProviderIdentifier",
+					"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.4.6']/@extension",
+					"xmltype": "attribute"
+				},
+				{
+					"decodeLabel": "taxpayerIdentificationNumber",
+					"encodeLabel": "taxpayerIdentificationNumber",
+					"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'representedOrganization' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.4.2']/@extension",
+					"xmltype": "attribute"
+				},
+				{
+					"decodeLabel": "components",
+					"relativeXPath": "./*[local-name() = 'component' and namespace-uri() = '<nsuri>']/*[local-name() = 'structuredBody' and namespace-uri() = '<nsuri>']/*[local-name() = 'component' and namespace-uri() = '<nsuri>']",
+					"xmltype": "element"
+				}
+			]
+		}
+	]
+}

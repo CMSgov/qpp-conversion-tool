@@ -1,0 +1,16 @@
+{
+	"type":"object",
+	"additionalProperties": false,
+	"id":"#pathCorrelation",
+	"properties":{
+		"templateId": {
+			"type": "string"
+		},
+		"correlations": {
+			"type": "array",
+			"items": {
+				"$ref": "correlation.json"
+			}
+		}
+	}
+}

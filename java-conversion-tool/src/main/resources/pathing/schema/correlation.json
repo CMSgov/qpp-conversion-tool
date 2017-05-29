@@ -1,0 +1,19 @@
+{
+	"type":"object",
+	"additionalProperties": false,
+	"id":"#correlation",
+	"properties":{
+		"decodeLabel": {
+			"type": "string"
+		},
+		"encodeLabel": {
+			"type": "string"
+		},
+		"relativeXPath": {
+			"type": "string"
+		},
+		"xmltype": {
+			"type": "string"
+		}
+	}
+}
