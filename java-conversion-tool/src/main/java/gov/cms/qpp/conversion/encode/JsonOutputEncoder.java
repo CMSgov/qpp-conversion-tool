@@ -42,6 +42,8 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 		try {
 			internalEncode(wrapper, node);
 			if (wrapper.isObject()) {
+				wrapper.putString("metadata_nsuri", node.getDefaultNsUri());
+				wrapper.putString("metadata_template", node.getType().name());
 				wrapper.putString("metadata_path", node.getPath());
 			}
 		} catch (EncodeException e) {

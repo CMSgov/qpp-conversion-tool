@@ -2,20 +2,22 @@ package gov.cms.qpp.conversion.correlation;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cms.qpp.conversion.correlation.model.Config;
+import gov.cms.qpp.conversion.correlation.model.Correlation;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
-import gov.cms.qpp.conversion.correlation.model.PathCorrelations;
 import org.reflections.util.ClasspathHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PathCorrelator {
 	private static String config = "pathing/path-correlation.json";
-	private static PathCorrelations pathCorrelations;
+	private static PathCorrelation pathCorrelation;
 	private static Map<String, Goods> pathCorrelationMap = new HashMap<>();
 
 	static {
@@ -26,31 +28,28 @@ public class PathCorrelator {
 		try {
 			InputStream input = ClasspathHelper.contextClassLoader().getResourceAsStream(config);
 			ObjectMapper mapper = new ObjectMapper();
-			pathCorrelations = mapper.readValue(input, PathCorrelations.class);
-			flattenCorrelations(pathCorrelations);
+			pathCorrelation = mapper.readValue(input, PathCorrelation.class);
+			flattenCorrelations(pathCorrelation);
 		} catch(IOException ioe) {
 			throw new PathCorrelationException("Problem loading path correlation configuration", ioe);
 		}
 	}
 
-	private static void flattenCorrelations(PathCorrelations pathCorrelations) {
-		pathCorrelations.getPathCorrelations().stream()
-				.collect(Collectors.toMap(PathCorrelation::getTemplateId, pc -> pc))
-				.entrySet().forEach(PathCorrelator::loadFlattenedEntries);
-	}
-
-	private static void loadFlattenedEntries(Map.Entry<String, PathCorrelation> entry) {
-		String key = entry.getKey();
-		PathCorrelation value = entry.getValue();
-		value.getCorrelations().forEach(correlation -> {
-			if (null != correlation.getDecodeLabel()) {
-				pathCorrelationMap.put(
-						getKey(key, correlation.getDecodeLabel()), correlation.getGoods());
-			}
-			if (null != correlation.getEncodeLabel()) {
-				pathCorrelationMap.put(
-						getKey(key, correlation.getEncodeLabel()), correlation.getGoods());
-			}
+	private static void flattenCorrelations(PathCorrelation pathCorrelation) {
+		Map<String, List<Config>> config = pathCorrelation.getCorrelations().stream()
+				.collect(Collectors.toMap(Correlation::getCorrelationId, Correlation::getConfig));
+		pathCorrelation.getTemplates().forEach(template -> {
+			List<Config> configs = config.get(template.getCorrelationId());
+			configs.forEach(conf -> {
+				if (null != conf.getDecodeLabel()) {
+					pathCorrelationMap.put(
+							getKey(template.getTemplateId(), conf.getDecodeLabel()), conf.getGoods());
+				}
+				if (null != conf.getEncodeLabel()) {
+					pathCorrelationMap.put(
+							getKey(template.getTemplateId(), conf.getEncodeLabel()), conf.getGoods());
+				}
+			});
 		});
 	}
 
@@ -61,6 +60,6 @@ public class PathCorrelator {
 	public static String getPath(String key, String uri) {
 		Goods goods = pathCorrelationMap.get(key);
 		return (goods == null) ? null :
-				goods.getRelativeXPath().replaceAll(pathCorrelations.getUriSubstitution(), uri);
+				goods.getRelativeXPath().replaceAll(pathCorrelation.getUriSubstitution(), uri);
 	}
 }
