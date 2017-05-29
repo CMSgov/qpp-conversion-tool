@@ -9,6 +9,8 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 /**
@@ -35,6 +37,6 @@ public class JsonHelperTest {
 		List<MeasureConfig> configurations;
 		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(measureDataFileName);
 		configurations = JsonHelper.readJsonAtJsonPath(measuresInput, "$",List.class);
-		assertThat("Expect to get a List of measureConfigs", configurations.isEmpty(), is(false) );
+		assertThat("Expect to get a List of measureConfigs", configurations,is(not(empty())));
 	}
 }
