@@ -24,20 +24,21 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 		List<Node> children = node.getChildNodes();
 
 		if (!children.isEmpty()) {
-			Integer numeratorValue = encodeChild(children.get(0));
+			JsonWrapper numerator = encodeChild(children.get(0));
 
-			if (null != numeratorValue) {
-				wrapper.putObject("numerator", numeratorValue);
+			if (null != numerator) {
+				wrapper.putObject("numerator", numerator.getInteger(VALUE));
+				wrapper.mergeMetadata(numerator);
 			}
 		}
 	}
 
-	private Integer encodeChild(Node numeratorValueNode) {
+	private JsonWrapper encodeChild(Node numeratorValueNode) {
 		JsonOutputEncoder numeratorValueEncoder = ENCODERS.get(numeratorValueNode.getId());
 
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		numeratorValueEncoder.encode(jsonWrapper, numeratorValueNode);
 
-		return jsonWrapper.getInteger(VALUE);
+		return jsonWrapper;
 	}
 }

@@ -21,7 +21,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -84,6 +86,16 @@ public class XpathJsonPathComparisonTest {
 		assertEquals("Attribute value should be: MIPS", "ACI_CCTPE_3", attribute.getValue());
 	}
 
+	@Test
+	public void compareAciMeasurePerformedMeasureIdAciPea1Numerator() throws IOException, XmlException {
+		String xPath = prepPath("measurementSets[2].measurements[0].value.numerator");
+		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
+
+		assertEquals("Attribute name should be: value", "value", attribute.getName());
+		assertEquals("Attribute value should be: 600", "600", attribute.getValue());
+	}
+
+	@SuppressWarnings("unchecked")
 	private String prepPath(String jsonPath) {
 		String base = "$";
 		String leaf = jsonPath;
@@ -97,12 +109,30 @@ public class XpathJsonPathComparisonTest {
 		JsonPath compiledPath = JsonPath.compile(base);
 		Map<String, Object> jsonMap = compiledPath.read(wrapper.toString());
 
-		String nsUrl = (String) jsonMap.get("metadata_nsuri");
-		String baseTemplate = (String) jsonMap.get("metadata_template");
-		String baseXpath = (String) jsonMap.get("metadata_path");
-		String relativeXpath = PathCorrelator.getXpath(baseTemplate, leaf, nsUrl);
-
-		return (relativeXpath != null) ? baseXpath + "/" + relativeXpath : baseXpath;
+		final String attribute = leaf;
+		List<Map<String, String>> metaHolder = (List<Map<String, String>>) jsonMap.get("metadata_holder");
+		if (metaHolder.size() > 1) {
+			Optional<Map<String, String>> blah = metaHolder.stream().filter(entry -> {
+				String xPath = PathCorrelator.getXpath(entry.get("template"), attribute, entry.get("nsuri"));
+				return xPath != null;
+			}).findFirst();
+			if (blah.isPresent()) {
+				Map<String, String> metadata = blah.get();
+				String nsUri = metadata.get("nsuri");
+				String baseTemplate = metadata.get("template");
+				String baseXpath = metadata.get("path");
+				String relativeXpath = PathCorrelator.getXpath(baseTemplate, attribute, nsUri);
+				return (relativeXpath != null) ? baseXpath + "/" + relativeXpath : baseXpath;
+			}
+			throw new RuntimeException("no path available");
+		} else {
+			Map<String, String> metadata = metaHolder.get(0);
+			String nsUri = metadata.get("nsuri");
+			String baseTemplate = metadata.get("template");
+			String baseXpath = metadata.get("path");
+			String relativeXpath = PathCorrelator.getXpath(baseTemplate, attribute, nsUri);
+			return (relativeXpath != null) ? baseXpath + "/" + relativeXpath : baseXpath;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
