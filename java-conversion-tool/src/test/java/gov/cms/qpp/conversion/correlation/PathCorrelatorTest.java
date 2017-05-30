@@ -47,8 +47,8 @@ public class PathCorrelatorTest {
 
 		int meepCount = (path.length() - path.replaceAll(meep, "").length()) / meep.length();
 
-		assertThat("3 substitutions were expected", 3, is(meepCount));
+		assertThat("3 substitutions were expected", meepCount, is(3));
 		assertThat("No substitution placeholders should remain",
-				path.indexOf(PathCorrelator.getUriSubstitution()), is(-1));
+				-1, is(path.indexOf(PathCorrelator.getUriSubstitution())));
 	}
 }
