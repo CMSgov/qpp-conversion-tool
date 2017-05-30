@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -26,30 +27,49 @@ public class MultipleTinsEncoder extends QppOutputEncoder {
 		List<Node> npiTinCombinations = node.findNode(MultipleTinsDecoder.NPI_TIN_ID);
 
 		if (npiTinCombinations.size() > 1) {
-			npiTinCombinations.forEach(npiTinNode -> encodeNpiTinCombinations(wrapper, node, npiTinNode));
+//			npiTinCombinations.forEach(npiTinNode -> encodeNpiTinCombinations(wrapper, node, npiTinNode));
+			JsonOutputEncoder clinicalDocumentEncoder = ENCODERS.get(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+			Node clinicalDocumentNode = node.findFirstNode(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+			clinicalDocumentEncoder.internalEncode(wrapper, clinicalDocumentNode);
+			encodeNpiTinCombinations(wrapper, clinicalDocumentNode, npiTinCombinations);
 		} else {
 			encodeSingleNpiTinCombination(wrapper, node);
 		}
 	}
 
-	/**
-	 * Encodes a new clinical document for each NPI/TIN combination.
-	 *
-	 * @param wrapper object to be encoded too
-	 * @param node object to encode from
-	 * @param npiTinNode current npi/tin combination node to encode
-	 */
-	private void encodeNpiTinCombinations(JsonWrapper wrapper, Node node, Node npiTinNode) {
-		JsonWrapper childWrapper = new JsonWrapper();
-		JsonOutputEncoder clinicalDocumentEncoder = ENCODERS.get(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
-		Node clinicalDocumentNode = node.findFirstNode(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+//	/**
+//	 * Encodes a new clinical document for each NPI/TIN combination.
+//	 *
+//	 * @param wrapper object to be encoded too
+//	 * @param node object to encode from
+//	 * @param npiTinNode current npi/tin combination node to encode
+//	 */
+//	private void encodeNpiTinCombinations(JsonWrapper wrapper, Node node, Node npiTinNode) {
+//		JsonWrapper childWrapper = new JsonWrapper();
+//		JsonOutputEncoder clinicalDocumentEncoder = ENCODERS.get(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+//		Node clinicalDocumentNode = node.findFirstNode(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+//
+//		clinicalDocumentNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+//			npiTinNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
+//		clinicalDocumentNode.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+//				npiTinNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
+//		clinicalDocumentEncoder.internalEncode(childWrapper, node);
+//		wrapper.putObject(childWrapper);
+//		System.out.println(wrapper.getObject());
+//	}
 
-		clinicalDocumentNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
-			npiTinNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
-		clinicalDocumentNode.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
-				npiTinNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
-		clinicalDocumentEncoder.internalEncode(childWrapper, node);
-		wrapper.putObject(childWrapper);
+	private void encodeNpiTinCombinations(JsonWrapper wrapper, Node clinicalDocumentNode,
+										  List<Node> npiTinCombinations) {
+		JsonWrapper parentWrapper = new JsonWrapper();
+		JsonOutputEncoder clinicalDocumentEncoder = ENCODERS.get(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+
+		npiTinCombinations.forEach(npiTinNode -> {
+			LinkedHashMap<String, Object> childValues =
+					(LinkedHashMap<String, Object>)((LinkedHashMap<String, Object>) wrapper.getObject());
+			System.out.println(childValues);
+
+		});
+		parentWrapper.putObject(wrapper);
 	}
 
 	/**
