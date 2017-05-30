@@ -9,6 +9,8 @@ import java.util.Set;
 import static gov.cms.qpp.conversion.segmentation.QrdaScope.ACI_AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.segmentation.QrdaScope.MEASURE_PERFORMED;
 import static junit.framework.TestCase.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 public class QrdaScopeTest {
 	@Test
@@ -32,5 +34,12 @@ public class QrdaScopeTest {
 	public void testGetTemplatesEmpty() {
 		//expect
 		assertEquals(0, QrdaScope.getTemplates(new HashSet<>()).size());
+	}
+
+	@Test
+	public void testValueOfString() {
+		//JaCoCo coverage test
+		QrdaScope scope = QrdaScope.valueOf("CLINICAL_DOCUMENT");
+		assertThat("QrdaScope of CLINICAL_DOCUMENT equals TemplateId", scope.name(), is("CLINICAL_DOCUMENT"));
 	}
 }

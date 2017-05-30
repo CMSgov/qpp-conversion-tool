@@ -21,7 +21,7 @@ import static junit.framework.TestCase.assertEquals;
  */
 public class ScopedConversionTest extends BaseTest {
 
-	private static final String SUCCESS_MAKER = "src/test/resources/valid-QRDA-III.xml";
+	private static final String SUCCESS_MAKER = "../qrda-files/valid-QRDA-III.xml";
 	private static final String ERROR_MAKER = "src/test/resources/negative/angerTheConverter.xml";
 	private static final String SUCCESS_FILE = "valid-QRDA-III.qpp.json";
 	private static final String ERROR_FILE = "angerTheConverter.err.json";
