@@ -569,12 +569,15 @@ public class JsonWrapper {
 		return returnValue;
 	}
 
-	void mergeMetadata(JsonWrapper otherWrapper) {
+	void mergeMetadata(JsonWrapper otherWrapper, String encodeLabel) {
 		if (!isObject()) {
 			return;
 		}
 		Set<Map<String, String>> meta = this.getMetadataHolder();
 		Set<Map<String, String>> otherMeta = otherWrapper.getMetadataHolder();
-		meta.addAll(otherMeta);
+		otherMeta.forEach(other -> {
+			other.put("encodeLabel", encodeLabel);
+			meta.add(other);
+		});
 	}
 }

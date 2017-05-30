@@ -95,6 +95,15 @@ public class XpathJsonPathComparisonTest {
 		assertEquals("Attribute value should be: 600", "600", attribute.getValue());
 	}
 
+	@Test
+	public void compareAciMeasurePerformedMeasureIdAciPea1Denominator() throws IOException, XmlException {
+		String xPath = prepPath("measurementSets[2].measurements[0].value.denominator");
+		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
+
+		assertEquals("Attribute name should be: value", "value", attribute.getName());
+		assertEquals("Attribute value should be: 600", "800", attribute.getValue());
+	}
+
 	@SuppressWarnings("unchecked")
 	private String prepPath(String jsonPath) {
 		String base = "$";
@@ -113,7 +122,10 @@ public class XpathJsonPathComparisonTest {
 		List<Map<String, String>> metaHolder = (List<Map<String, String>>) jsonMap.get("metadata_holder");
 		if (metaHolder.size() > 1) {
 			Optional<Map<String, String>> blah = metaHolder.stream().filter(entry -> {
-				String xPath = PathCorrelator.getXpath(entry.get("template"), attribute, entry.get("nsuri"));
+				String xPath = null;
+				if (entry.get("encodeLabel") == null || entry.get("encodeLabel").equals(attribute)) {
+					xPath = PathCorrelator.getXpath(entry.get("template"), attribute, entry.get("nsuri"));
+				}
 				return xPath != null;
 			}).findFirst();
 			if (blah.isPresent()) {

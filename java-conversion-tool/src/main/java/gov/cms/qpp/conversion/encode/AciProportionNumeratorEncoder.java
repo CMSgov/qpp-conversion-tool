@@ -10,6 +10,7 @@ import java.util.List;
  */
 @Encoder(TemplateId.ACI_NUMERATOR)
 public class AciProportionNumeratorEncoder extends QppOutputEncoder {
+	private static final String ENCODE_LABEL = "numerator";
 
 	/**
 	 *  Encodes an ACI Numerator Measure into the QPP format
@@ -26,9 +27,9 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 		if (!children.isEmpty()) {
 			JsonWrapper numerator = encodeChild(children.get(0));
 
-			if (null != numerator) {
-				wrapper.putObject("numerator", numerator.getInteger(VALUE));
-				wrapper.mergeMetadata(numerator);
+			if (null != numerator.getInteger(VALUE)) {
+				wrapper.putObject(ENCODE_LABEL, numerator.getInteger(VALUE));
+				wrapper.mergeMetadata(numerator, ENCODE_LABEL);
 			}
 		}
 	}
