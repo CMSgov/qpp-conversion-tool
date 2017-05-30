@@ -1,0 +1,13 @@
+{
+	"type":"object",
+	"additionalProperties": false,
+	"id":"#template",
+	"properties":{
+		"templateId": {
+			"type": "string"
+		},
+		"correlationId": {
+			"type": "string"
+		}
+	}
+}

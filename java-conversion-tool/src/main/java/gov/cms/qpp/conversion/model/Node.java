@@ -22,6 +22,7 @@ public class Node {
 	private Node parent;
 	private boolean validated;
 	private String internalId;
+	private String defaultNsUri;
 	private String path;
 
 	/**
@@ -186,6 +187,7 @@ public class Node {
 		nodeToString.append(", parent=").append((parent == null) ? "null" : "not null");
 		nodeToString.append(", validated=").append(validated);
 		nodeToString.append(", internalId='").append(internalId).append('\'');
+		nodeToString.append(", defaultNsUri='").append(defaultNsUri).append('\'');
 		nodeToString.append(", path='").append(path).append('\'');
 		nodeToString.append('}');
 		return nodeToString.toString();
@@ -243,6 +245,24 @@ public class Node {
 	 */
 	public void setPath(String newPath) {
 		path = newPath;
+	}
+
+	/**
+	 * Returns the defaultNsUri from the original document this {@code Node} is associated with.
+	 *
+	 * @return The default namespace URI.
+	 */
+	public String getDefaultNsUri() {
+		return defaultNsUri;
+	}
+
+	/**
+	 * Sets the defaultNsUri from the original document that this {@code Node} is associated with.
+	 *
+	 * @param newDefaultNsUri updated default namespace URI.
+	 */
+	public void setDefaultNsUri(String newDefaultNsUri) {
+		defaultNsUri = newDefaultNsUri;
 	}
 
 	/**
