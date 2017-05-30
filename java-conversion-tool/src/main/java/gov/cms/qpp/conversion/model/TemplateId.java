@@ -9,6 +9,7 @@ import gov.cms.qpp.conversion.ConversionEntry;
  * An enumeration of known templates IDs.
  */
 public enum TemplateId {
+	QRDA_CATEGORY_III_REPORT_V3("2.16.840.1.113883.10.20.27.1.1", Extension.SEPTEMBER),
 	CLINICAL_DOCUMENT("2.16.840.1.113883.10.20.27.1.2", Extension.NOVEMBER),
 	ACI_AGGREGATE_COUNT("2.16.840.1.113883.10.20.27.3.3"),
 	IA_SECTION("2.16.840.1.113883.10.20.27.2.4", Extension.SEPTEMBER),
@@ -64,14 +65,14 @@ public enum TemplateId {
 		}
 	}
 
-	private static final Map<String, Map<String, TemplateId>> ROOT_AND_EXTENSION_TO_TEMPLATE_ID = new HashMap<>();
+	private static final Map<String, Map<String, TemplateId>> ROOT_AND_TO_TEMPLATE_ID = new HashMap<>();
 
 	static
 	{
 		for (TemplateId templateId : TemplateId.values())
 		{
 			Map<String, TemplateId> extensionToTemplateId =
-					ROOT_AND_EXTENSION_TO_TEMPLATE_ID.computeIfAbsent(templateId.root, ignore -> new HashMap<>());
+					ROOT_AND_TO_TEMPLATE_ID.computeIfAbsent(templateId.root, ignore -> new HashMap<>());
 
 			extensionToTemplateId.put(templateId.extension.toString(), templateId);
 			extensionToTemplateId.putIfAbsent(null, templateId);
@@ -141,7 +142,7 @@ public enum TemplateId {
 	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
 	 */
 	public static TemplateId getTypeByIdAndExtension(String root, String extension) {
-		Map<String, TemplateId> extensionsToTemplateId = ROOT_AND_EXTENSION_TO_TEMPLATE_ID.get(root);
+		Map<String, TemplateId> extensionsToTemplateId = ROOT_AND_TO_TEMPLATE_ID.get(root);
 
 		if (extensionsToTemplateId == null) {
 			return TemplateId.DEFAULT;

@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -53,7 +54,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			.value(CONTAINS_PROGRAM_NAME, ClinicalDocumentDecoder.PROGRAM_NAME)
 			.valueIn(INCORRECT_PROGRAM_NAME, ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
 				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME)
-			.value(CONTAINS_TAX_ID_NUMBER, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
+			.value(CONTAINS_TAX_ID_NUMBER, MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
 
 		Node reportingParametersAct = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingParametersAct == null) {

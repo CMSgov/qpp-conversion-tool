@@ -1,4 +1,5 @@
 #!/bin/sh
+
 if [ ! -f java-conversion-tool/target/java-conversion-tool.jar ]; then
     echo "Jar not found. Building..."
     mvn package -Dmaven.test.skip=true

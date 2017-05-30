@@ -8,9 +8,10 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
+import org.reflections.util.ClasspathHelper;
 
 import java.io.BufferedWriter;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -21,27 +22,24 @@ import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentRoundTripTest extends BaseTest {
 
-	private static final String EXPECTED = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
-			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
-			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\"," + "\n  \"performanceYear\" : 2017,"
-			+ "\n  \"measurementSets\" : [ " + "{\n    \"category\" : \"aci\",\n    \"measurements\" : [ "
-			+ "{\n      \"measureId\" : \"ACI-PEA-1\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 600,\n        \"denominator\" : 800\n      }\n    }, "
-			+ "{\n      \"measureId\" : \"ACI_EP_1\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 500,\n        \"denominator\" : 700\n      }\n    }, "
-			+ "{\n      \"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
-			+ "\n    \"source\" : \"provider\"," + "\n    \"performanceStart\" : \"2017-01-01\","
-			+ "\n    \"performanceEnd\" : \"2017-12-31\"" + "\n  }, "
-			+ "{\n    \"category\" : \"ia\",\n    \"measurements\" : "
-			+ "[ {\n      \"measureId\" : \"IA_EPA_1\",\n      \"value\" : true\n    } ]"
-			+ ",\n    \"source\" : \"provider\",\n    \"performanceStart\" : \"2017-01-01\",\n    "
-			+ "\"performanceEnd\" : \"2017-12-31\"\n  } ]\n}";
+	private static final String EXPECTED = "{\n  \"programName\" : \"mips\",\n  \"entityType\" : \"individual\",\n  "
+		+ "\"taxpayerIdentificationNumber\" : \"123456789\",\n  \"nationalProviderIdentifier\" : \"2567891421\",\n  "
+		+ "\"performanceYear\" : 2017,\n  \"measurementSets\" : [ {\n    \"category\" : \"aci\",\n    "
+		+ "\"submissionMethod\" : \"electronicHealthRecord\",\n    \"measurements\" : [ {\n      "
+		+ "\"measureId\" : \"ACI-PEA-1\",\n      \"value\" : {\n        \"numerator\" : 600,\n        "
+		+ "\"denominator\" : 800\n      }\n    }, {\n      \"measureId\" : \"ACI_EP_1\",\n      \"value\" : {\n        "
+		+ "\"numerator\" : 500,\n        \"denominator\" : 700\n      }\n    }, {\n      \"measureId\" : \"ACI_CCTPE_3\",\n      "
+		+ "\"value\" : {\n        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],\n    "
+		+ "\"performanceStart\" : \"2017-01-01\",\n    \"performanceEnd\" : \"2017-12-31\"\n  }, {\n    "
+		+ "\"category\" : \"ia\",\n    \"submissionMethod\" : \"electronicHealthRecord\",\n    \"measurements\" : [ {\n      "
+		+ "\"measureId\" : \"IA_EPA_1\",\n      \"value\" : true\n    } ],\n    \"performanceStart\" : \"2017-01-01\",\n    "
+		+ "\"performanceEnd\" : \"2017-12-31\"\n  } ]\n}";
 
 	@Test
 	public void parseClinicalDocument() throws Exception {
-		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III-abridged.xml");
-		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+		InputStream stream =
+				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
+		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
 
 		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment));
 

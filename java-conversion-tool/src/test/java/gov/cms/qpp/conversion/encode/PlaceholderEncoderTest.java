@@ -1,22 +1,17 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.encode.helper.RegistryHelper;
+
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
 import org.junit.Test;
 
-import java.util.List;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+public class PlaceholderEncoderTest {
 
-/**
- * Tests the Placeholder adds coverage for CircleCI
- */
-public class PlaceholderEncoderTest extends PlaceholderEncoder {
 	@Test
+<<<<<<< HEAD
 	public void internalEncodeMissingEncoderTest() throws Exception {
 
 		Registry<JsonOutputEncoder> invalidRegistry =
@@ -36,7 +31,19 @@ public class PlaceholderEncoderTest extends PlaceholderEncoder {
 		assertThat("Expecting Encode Exception", errors.size(), is(1));
 
 		RegistryHelper.setEncoderRegistry(validRegistry); //Restore Registry
+=======
+	public void encodePlaceholderNodeNegative() throws EncodeException {
+		//setup
+		Node placeHolder = new Node(TemplateId.PLACEHOLDER.getTemplateId());
+		placeHolder.addChildNode(new Node("meep"));
+		JsonWrapper wrapper = new JsonWrapper();
+		PlaceholderEncoder encoder = new PlaceholderEncoder();
+
+		//when
+		encoder.internalEncode(wrapper, placeHolder);
+
+		//then
+		assertThat(encoder.getValidationErrors().size(), is(1));
+>>>>>>> 882897d9420680d6b881505a8292857495843042
 	}
-
 }
-

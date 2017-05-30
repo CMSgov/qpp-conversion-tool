@@ -6,12 +6,9 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 /**
  * This class manages the available transformation handlers. Currently it takes
@@ -66,28 +63,19 @@ public class Registry<R extends Object> {
 	 */
 	@SuppressWarnings("unchecked")
 	void registerAnnotatedHandlers() {
-		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
-		scanner.addIncludeFilter(new AnnotationTypeFilter(annotationClass));
-		for (BeanDefinition bd : scanner.findCandidateComponents("gov.cms")) {
-			try {
-				Class<?> annotatedClass = getAnnotatedClass(bd.getBeanClassName());
-				for (TemplateId key : getTemplateIds(annotatedClass)) {
-					register(key, (Class<R>) annotatedClass);
-				}
-			} catch (ClassNotFoundException e) {
-				DEV_LOG.error("Failed to register new transformation handler because: ", e);
+		Reflections reflections = new Reflections("gov.cms");
+		Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(annotationClass);
+
+		for (Class<?> annotatedClass : annotatedClasses) {
+			for (TemplateId key : getTemplateIds(annotatedClass)) {
+				register(key, (Class<R>) annotatedClass);
 			}
 		}
 	}
 
-	// This allows for testing the ClassNotFoundException
-	protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
-		return Class.forName(className);
-	}
-
 	public Set<TemplateId> getTemplateIds(Class<?> annotatedClass) {
+		Annotation annotation = annotatedClass.getAnnotation(annotationClass);
 		Set<TemplateId> values = EnumSet.noneOf(TemplateId.class);
-		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
 
 		if (annotation instanceof Decoder) {
 			Decoder decoder = (Decoder) annotation;

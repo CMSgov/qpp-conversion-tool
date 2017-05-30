@@ -107,6 +107,7 @@ public class RegistryTest {
 	}
 
 	@Test
+<<<<<<< HEAD
 	public void testClassNotFoundCausesMissingEntriesInRegistry_throwsNoException() {
 		Registry<Decoder> registryA = new Registry<>(Decoder.class);
 
@@ -128,11 +129,18 @@ public class RegistryTest {
 	}
 
 	@Test
+=======
+>>>>>>> 882897d9420680d6b881505a8292857495843042
 	public void testRegistryAddDuplicate() throws Exception {
 		registry.register(TemplateId.PLACEHOLDER, Placeholder.class);
 		registry.register(TemplateId.PLACEHOLDER, AnotherPlaceholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertTrue("Registry should have overwritten id with the second one.", decoder instanceof AnotherPlaceholder);
+	}
+
+	@Test
+	public void testSize() {
+		assertTrue("Registry does not have contents", registry.size() > 0);
 	}
 }
 

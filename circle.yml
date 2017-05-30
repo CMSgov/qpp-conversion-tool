@@ -1,8 +1,12 @@
 machine:
   java:
     version: openjdk8
+  python:
+    version: 3.6.1
   node:
     version: 7
+  services:
+    - docker
   environment:
     PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/frontend/node_modules/.bin" # yarn
 
@@ -12,6 +16,7 @@ dependencies:
     - cd java-conversion-tool; mvn dependency:resolve
     - wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
     - unzip -d . sonarscanner.zip
+    - pip install ansible
 
 test:
   pre:
@@ -23,6 +28,7 @@ test:
     - ./benchmark/benchmark.sh
   post:
     - ./bin/serverless_deploy.sh
+    - ./bin/docker_deploy.sh
     - cp benchmark/target/benchmark_output.txt $CIRCLE_ARTIFACTS
     - cp java-conversion-tool/target/java-conversion-tool.jar $CIRCLE_ARTIFACTS
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/java-conversion-tool && cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/java-conversion-tool

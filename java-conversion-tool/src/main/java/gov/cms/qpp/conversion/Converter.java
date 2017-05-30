@@ -78,6 +78,10 @@ public class Converter {
 		this.inFile = null;
 	}
 
+	public Node getDecoded() {
+		return decoded;
+	}
+
 	/**
 	 * Switch for enabling or disabling inclusion of default nodes.
 	 *
@@ -100,6 +104,11 @@ public class Converter {
 		return this;
 	}
 
+	/**
+	 * Perform conversion.
+	 *
+	 * @return status of conversion
+	 */
 	public TransformationStatus transform() {
 		DEV_LOG.info("Transform invoked with file {}", inFile);
 		try {

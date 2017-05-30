@@ -23,6 +23,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) {
 		wrapper.putString("category", node.getValue("category"));
+		wrapper.putString("submissionMethod", "electronicHealthRecord");
 		List<Node> children = node.getChildNodes();
 		JsonWrapper measurementsWrapper = new JsonWrapper();
 

@@ -6,16 +6,18 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
 
+import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 
 public class DefaultDecoderTest {
 
 	@Test
 	public void parseAllNodes() throws Exception {
-		ClassPathResource xmlResource = new ClassPathResource("valid-QRDA-III.xml");
-		String xmlFragment = IOUtils.toString(xmlResource.getInputStream(), Charset.defaultCharset());
+
+		InputStream stream = XmlUtils.fileToStream(Paths.get("../qrda-files/valid-QRDA-III.xml"));
+		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
 
 		Node node = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 

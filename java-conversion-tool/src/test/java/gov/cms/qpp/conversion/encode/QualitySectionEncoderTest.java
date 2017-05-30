@@ -1,10 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.encode.helper.RegistryHelper;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.xml.XmlException;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -25,6 +22,7 @@ public class QualitySectionEncoderTest {
 		assertThat("Expect to encode submissionMethod", jsonWrapper.getString("submissionMethod"), is("cmsWebInterface"));
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Tests for the missing child encoder
 	 *
@@ -47,16 +45,16 @@ public class QualitySectionEncoderTest {
 		Node measureDataNode = new Node(TemplateId.MEASURE_DATA_CMS_V2, qualitySectionNode);
 		measureDataNode.putValue("SomeValueKey", "SomeValueData");
 		qualitySectionNode.addChildNode(measureDataNode);
+=======
+	@Test(expected = EncodeException.class)
+	public void internalEncodeNegative() throws EncodeException {
+		Node qualitySectionNode = getQualitySectionNode();
+		qualitySectionNode.addChildNode(new Node("meep"));
+
+>>>>>>> 882897d9420680d6b881505a8292857495843042
 		QualitySectionEncoder encoder = new QualitySectionEncoder();
 		JsonWrapper jsonWrapper = new JsonWrapper();
-
-		try {
-			encoder.internalEncode(jsonWrapper, qualitySectionNode);
-		} catch (EncodeException | NullPointerException e) {
-			exception = true;
-		}
-		assertThat("Expecting Encode Exception", exception, is(true));
-		RegistryHelper.setEncoderRegistry(validRegistry); //Restore Registry
+		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 	}
 
 	/**

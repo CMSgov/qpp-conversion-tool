@@ -98,8 +98,8 @@ public class AciSectionRoundTripTest extends BaseTest {
 				+ "	</section>\n"
 		        + "</component>";
 
-		String expected = "{\n  \"category\" : \"aci\",\n  \"measurements\" : [ "
-				+ "{\n    \"measure\" : \"measure1\"\n  } ]\n}";
+		String expected = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  "
+			                  + "\"measurements\" : [ {\n    \"measure\" : \"measure1\"\n  } ]\n}";
 
 		//Decode
 		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
