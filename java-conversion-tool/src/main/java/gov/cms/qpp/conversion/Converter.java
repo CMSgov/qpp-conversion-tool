@@ -190,7 +190,7 @@ public class Converter {
 	 *
 	 * @return exit status
 	 */
-	private TransformationStatus getStatus() {
+	public TransformationStatus getStatus() {
 		if (null == decoded) {
 			return TransformationStatus.NON_RECOVERABLE;
 		}

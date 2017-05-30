@@ -1,0 +1,16 @@
+{
+	"type":"object",
+	"additionalProperties": false,
+	"id":"#config",
+	"properties":{
+		"decodeLabel": {
+			"type": "string"
+		},
+		"encodeLabel": {
+			"type": "string"
+		},
+		"goods": {
+			"$ref": "goods.json"
+		}
+	}
+}
