@@ -53,7 +53,7 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 					returnStream = errorsToInputStream(errors);
 				}
 
-				String dstKey = "post-conversion/" + converter.getOutputFile(filename);
+				String dstKey = "post-conversion/" + getOutputFile(filename, qpp != null);
 				ObjectMetadata meta = new ObjectMetadata();
 				s3Client.putObject(srcBucket, dstKey, returnStream, meta);
 
@@ -87,5 +87,25 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			errors = "{ \"exception\": \"JsonProcessingException\" }".getBytes();
 		}
 		return new ByteArrayInputStream(errors);
+	}
+
+	/**
+	 * Determine what the output file's name should be.
+	 *
+	 * @param name base string that helps relate the output file to it's corresponding source
+	 * @param success
+	 * @return the output file name
+	 */
+	private static String getOutputFile(String name, final boolean success) {
+		return name.replaceFirst("(?i)(\\.xml)?$", getFileExtension(success));
+	}
+
+	/**
+	 * Get an appropriate file extension for the transformation output filename.
+	 *
+	 * @return a file extension
+	 */
+	private static String getFileExtension(boolean success) {
+		return success ? ".qpp.json" : ".err.json";
 	}
 }

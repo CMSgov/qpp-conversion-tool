@@ -91,15 +91,15 @@ public class ConversionEntry {
 		try {
 			JsonWrapper jsonWrapper = converter.transform();
 			Path outFile = getOutputFile(filename.getFileName().toString(), true);
-			writeOut(jsonWrapper, outFile);
+			writeOutQpp(jsonWrapper, outFile);
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
 			Path outFile = getOutputFile(filename.getFileName().toString(), false);
-			writeOut(allErrors, outFile);
+			writeOutErrors(allErrors, outFile);
 		}
 	}
 
-	private static void writeOut(JsonWrapper jsonWrapper, Path outFile) {
+	private static void writeOutQpp(JsonWrapper jsonWrapper, Path outFile) {
 		try (Writer writer = Files.newBufferedWriter(outFile)) {
 			writer.write(jsonWrapper.toString());
 			writer.flush();
@@ -109,7 +109,7 @@ public class ConversionEntry {
 		}
 	}
 
-	private static void writeOut(AllErrors allErrors, Path outFile) {
+	private static void writeOutErrors(AllErrors allErrors, Path outFile) {
 		try (Writer writer = Files.newBufferedWriter(outFile)) {
 			ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
 			jsonObjectWriter.writeValue(writer, allErrors);
