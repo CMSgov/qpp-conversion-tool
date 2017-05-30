@@ -23,7 +23,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class XpathJsonPathComparisonTest {
-	private static Path path = Paths.get("src/test/resources/valid-QRDA-III.xml");
+	private static Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
 	private static XPathFactory xpf = XPathFactory.instance();
 	private static JsonWrapper wrapper = new JsonWrapper(false);
 
