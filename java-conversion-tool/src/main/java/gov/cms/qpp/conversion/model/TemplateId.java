@@ -39,6 +39,7 @@ public enum TemplateId {
 	CMS_AGGREGATE_COUNT("2.16.840.1.113883.10.20.27.3.24"),
 
 	//miscellaneous
+	NPI_TIN_ID("MultipleTins"),
 	NULL_RETURN("null.return"),
 	QED("Q.E.D"),
 	PLACEHOLDER("placeholder"),

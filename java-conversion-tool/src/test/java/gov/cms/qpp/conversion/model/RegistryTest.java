@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.model;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.InputDecoder;
 import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
-import org.apache.commons.io.output.NullOutputStream;
 import org.jdom2.Element;
 import org.junit.After;
 import org.junit.Before;
@@ -107,30 +106,6 @@ public class RegistryTest {
 	}
 
 	@Test
-<<<<<<< HEAD
-	public void testClassNotFoundCausesMissingEntriesInRegistry_throwsNoException() {
-		Registry<Decoder> registryA = new Registry<>(Decoder.class);
-
-		// Mock the condition where a class is not found during registry
-		// building
-		Registry<Decoder> registryB = new Registry<Decoder>(Decoder.class) {
-			@Override
-			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
-				if ("gov.cms.qpp.conversion.decode.AggregateCountDecoder".equals(className)) {
-					System.setErr(new PrintStream(NullOutputStream.NULL_OUTPUT_STREAM));
-					throw new ClassNotFoundException();
-				}
-				return Class.forName(className);
-			}
-		};
-
-		assertEquals("The class was not found in the Decoder registry", registryA.size(),
-				registryB.size() + 1);
-	}
-
-	@Test
-=======
->>>>>>> 882897d9420680d6b881505a8292857495843042
 	public void testRegistryAddDuplicate() throws Exception {
 		registry.register(TemplateId.PLACEHOLDER, Placeholder.class);
 		registry.register(TemplateId.PLACEHOLDER, AnotherPlaceholder.class);

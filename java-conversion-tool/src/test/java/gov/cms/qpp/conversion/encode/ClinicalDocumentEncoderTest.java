@@ -143,7 +143,7 @@ public class ClinicalDocumentEncoderTest {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
-		clinicalDocumentNode.addChildNode(new Node("meep"));
+		clinicalDocumentNode.addChildNode(new Node());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 	}
 
@@ -171,31 +171,7 @@ public class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-<<<<<<< HEAD
-		assertThat("Must return a Clinical Document without measurement section", testJsonWrapper.toString(),
-				is(EXPECTED_NO_ACI));
-	}
-
-	@Test
-	public void testInvalidEncoder()throws Exception {
-		boolean exception = false;
-		Registry<JsonOutputEncoder> invalidRegistry =
-				RegistryHelper.makeInvalidRegistry("gov.cms.qpp.conversion.encode.AciSectionEncoder");
-		Registry<JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
-
-		JsonWrapper testJsonWrapper = new JsonWrapper();
-		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
-
-		RegistryHelper.setEncoderRegistry(invalidRegistry); //Set Registry with missing class
-		try {
-			clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
-		} catch (EncodeException e) {
-			exception = true;
-		}
-		assertThat("Expecting Encode Exception", exception, is(true));
-=======
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
->>>>>>> 882897d9420680d6b881505a8292857495843042
 
 		assertThat("Must not be a performanceStart because the reporting parameters was missing.",
 			clinicalDocMap.get("measurementSets"), is(nullValue()));

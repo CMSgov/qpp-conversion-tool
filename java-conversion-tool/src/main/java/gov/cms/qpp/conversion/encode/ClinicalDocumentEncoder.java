@@ -79,7 +79,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-			if (MultipleTinsDecoder.NPI_TIN_ID.equalsIgnoreCase(child.getType())) {
+			if (TemplateId.NPI_TIN_ID == child.getType()) {
 				continue; //MultiTINS is not a real encoder.
 			}
 			childWrapper = new JsonWrapper();

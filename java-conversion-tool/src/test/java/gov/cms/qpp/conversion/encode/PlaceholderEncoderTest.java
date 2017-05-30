@@ -11,31 +11,10 @@ import static org.hamcrest.Matchers.is;
 public class PlaceholderEncoderTest {
 
 	@Test
-<<<<<<< HEAD
-	public void internalEncodeMissingEncoderTest() throws Exception {
-
-		Registry<JsonOutputEncoder> invalidRegistry =
-				RegistryHelper.makeInvalidRegistry(PlaceholderEncoder.class.getName());
-		Registry<JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
-
-		Node root = new Node(TemplateId.DEFAULT);
-		Node placeHolderNode = new Node(TemplateId.PLACEHOLDER, root);
-		root.addChildNode(placeHolderNode);
-		JsonWrapper testJsonWrapper = new JsonWrapper();
-		PlaceholderEncoder placeHolderEncoder = new PlaceholderEncoder();
-
-		RegistryHelper.setEncoderRegistry(invalidRegistry); //Set Registry with missing class
-
-		placeHolderEncoder.internalEncode(testJsonWrapper, root);
-		List<ValidationError> errors = placeHolderEncoder.getValidationErrors();
-		assertThat("Expecting Encode Exception", errors.size(), is(1));
-
-		RegistryHelper.setEncoderRegistry(validRegistry); //Restore Registry
-=======
 	public void encodePlaceholderNodeNegative() throws EncodeException {
 		//setup
-		Node placeHolder = new Node(TemplateId.PLACEHOLDER.getTemplateId());
-		placeHolder.addChildNode(new Node("meep"));
+		Node placeHolder = new Node(TemplateId.PLACEHOLDER);
+		placeHolder.addChildNode(new Node());
 		JsonWrapper wrapper = new JsonWrapper();
 		PlaceholderEncoder encoder = new PlaceholderEncoder();
 
@@ -44,6 +23,5 @@ public class PlaceholderEncoderTest {
 
 		//then
 		assertThat(encoder.getValidationErrors().size(), is(1));
->>>>>>> 882897d9420680d6b881505a8292857495843042
 	}
 }

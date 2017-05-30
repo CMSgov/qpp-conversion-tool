@@ -22,36 +22,11 @@ public class QualitySectionEncoderTest {
 		assertThat("Expect to encode submissionMethod", jsonWrapper.getString("submissionMethod"), is("cmsWebInterface"));
 	}
 
-<<<<<<< HEAD
-	/**
-	 * Tests for the missing child encoder
-	 *
-	 * @throws XmlException           when parsing a xml fragment fails
-	 * @throws NoSuchFieldException   Java Reflection Api error if field is not in object
-	 * @throws IllegalAccessException Thrown if a Security Manager is present
-	 */
-	@Test
-	public void missingEncoderTest() throws XmlException, NoSuchFieldException, IllegalAccessException {
-
-		Registry<JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
-
-		Registry<JsonOutputEncoder> invalidRegistry = RegistryHelper.makeInvalidRegistry( //This will be the classname of the child ENCODERS
-				"gov.cms.qpp.conversion.encode.MeasureDataEncoder");
-
-		boolean exception = false;
-		RegistryHelper.setEncoderRegistry(invalidRegistry); //Set Registry with missing class
-
-		Node qualitySectionNode = getQualitySectionNode();
-		Node measureDataNode = new Node(TemplateId.MEASURE_DATA_CMS_V2, qualitySectionNode);
-		measureDataNode.putValue("SomeValueKey", "SomeValueData");
-		qualitySectionNode.addChildNode(measureDataNode);
-=======
 	@Test(expected = EncodeException.class)
 	public void internalEncodeNegative() throws EncodeException {
 		Node qualitySectionNode = getQualitySectionNode();
-		qualitySectionNode.addChildNode(new Node("meep"));
+		qualitySectionNode.addChildNode(new Node());
 
->>>>>>> 882897d9420680d6b881505a8292857495843042
 		QualitySectionEncoder encoder = new QualitySectionEncoder();
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);

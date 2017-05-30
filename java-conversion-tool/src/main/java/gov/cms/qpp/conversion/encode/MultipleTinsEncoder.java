@@ -23,7 +23,7 @@ public class MultipleTinsEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) {
-		List<Node> npiTinCombinations = node.findNode(MultipleTinsDecoder.NPI_TIN_ID);
+		List<Node> npiTinCombinations = node.findNode(TemplateId.NPI_TIN_ID);
 
 		if (npiTinCombinations.size() > 1) {
 			npiTinCombinations.forEach(npiTinNode -> encodeNpiTinCombinations(wrapper, node, npiTinNode));

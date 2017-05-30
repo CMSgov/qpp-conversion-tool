@@ -1,0 +1,9 @@
+{
+  "errorSources" : [ {
+    "sourceIdentifier" : "defaultedNode.xml",
+    "validationErrors" : [ {
+      "errorText" : "The file is not a valid XML document",
+      "path" : ""
+    } ]
+  } ]
+}
