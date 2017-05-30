@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+
 import org.jdom2.Element;
 import org.junit.Test;
 
@@ -27,12 +29,12 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 	@Test
 	public void decodeInvalidChildReturnsError() {
-		AnnotationMockHelper.mockDecoder("errorDecoder", TestChildDecodeError.class);
-		AnnotationMockHelper.mockDecoder("noActionDecoder", TestChildNoAction.class);
+		AnnotationMockHelper.mockDecoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS, TestChildDecodeError.class);
+		AnnotationMockHelper.mockDecoder(TemplateId.PLACEHOLDER, TestChildNoAction.class);
 
 		Element testElement = new Element("testElement");
 		Element testChildElement = new Element("templateId");
-		testChildElement.setAttribute("root", "errorDecoder");
+		testChildElement.setAttribute("root", TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS.getTemplateId());
 
 		testElement.getChildren().add(testChildElement);
 		Node testNode = new Node();

@@ -30,7 +30,7 @@ public class TemplateIdTest {
 	public void testFindByTypeId1() {
 		TemplateId clinicalDocument = TemplateId.CLINICAL_DOCUMENT;
 		assertThat("TemplateId#getTypeById(String) is not working",
-		           TemplateId.getTypeById(clinicalDocument.getTemplateId()), is(clinicalDocument));
+		           TemplateId.getTypeById(clinicalDocument.getRoot()), is(clinicalDocument));
 	}
 
 	@Test
@@ -43,21 +43,21 @@ public class TemplateIdTest {
 	public void testFindByTypeId2() {
 		TemplateId clinicalDocument = TemplateId.CLINICAL_DOCUMENT;
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTypeById(clinicalDocument.getRoot(), clinicalDocument.getExtension()),
+		           TemplateId.getTypeByIdAndExtension(clinicalDocument.getRoot(), clinicalDocument.getExtension()),
 		           is(clinicalDocument));
 	}
 
 	@Test
 	public void testFindByTypeId2NotExist() {
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTypeById(TemplateId.CLINICAL_DOCUMENT.getRoot(), "nonExistingExtension"),
+		           TemplateId.getTypeByIdAndExtension(TemplateId.CLINICAL_DOCUMENT.getRoot(), "nonExistingExtension"),
 		           is(TemplateId.DEFAULT));
 	}
 
 	@Test
 	public void testFindByTypeId2NotExistAgain() {
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTypeById("nonExistingRoot", TemplateId.CLINICAL_DOCUMENT.getExtension()),
+		           TemplateId.getTypeByIdAndExtension("nonExistingRoot", TemplateId.CLINICAL_DOCUMENT.getExtension()),
 		           is(TemplateId.DEFAULT));
 	}
 

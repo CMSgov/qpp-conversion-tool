@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Validates Measure Data - an Aggregate Count child
  */
-@Validator(templateId = TemplateId.MEASURE_DATA_CMS_V2, required = true)
+@Validator(value = TemplateId.MEASURE_DATA_CMS_V2, required = true)
 public class MeasureDataValidator extends NodeValidator {
 
 	public static final String MISSING_AGGREGATE_COUNT  = "Measure performed must have exactly one Aggregate Count.";
@@ -34,7 +34,7 @@ public class MeasureDataValidator extends NodeValidator {
 				.childMaximum(MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT);
 
 		if (getValidationErrors().isEmpty()) {
-			Node child = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+			Node child = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 			check(child)
 					.value(AggregateCountValidator.VALUE_ERROR, "aggregateCount")
 					.intValue(AggregateCountValidator.TYPE_ERROR, "aggregateCount")

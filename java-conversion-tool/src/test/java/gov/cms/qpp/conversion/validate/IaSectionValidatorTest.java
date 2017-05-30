@@ -15,8 +15,8 @@ public class IaSectionValidatorTest {
 
 	@Test
 	public void testCorrectIaSectionPassesValidation() {
-		Node iaSectionNode = new Node(TemplateId.IA_SECTION.getTemplateId());
-		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
+		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
+		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		iaSectionNode.addChildNode(iaMeasureNode);
 
 		IaSectionValidator iaValidator = new IaSectionValidator();
@@ -29,7 +29,7 @@ public class IaSectionValidatorTest {
 
 	@Test
 	public void testValidatesMissingIAMeasure() {
-		Node iaSectionNode = new Node(TemplateId.IA_SECTION.getTemplateId());
+		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
 		IaSectionValidator iaValidator = new IaSectionValidator();
 
 		iaValidator.internalValidateSingleNode(iaSectionNode);
@@ -41,10 +41,10 @@ public class IaSectionValidatorTest {
 
 	@Test
 	public void testIncorrectChildValidation() {
-		Node iaSectionNode = new Node(TemplateId.IA_SECTION.getTemplateId());
-		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
+		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
+		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		iaSectionNode.addChildNode(iaMeasureNode);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		iaSectionNode.addChildNode(aggregateCountNode);
 
 		IaSectionValidator iaValidator = new IaSectionValidator();

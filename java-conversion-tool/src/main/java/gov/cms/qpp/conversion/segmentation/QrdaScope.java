@@ -1,15 +1,15 @@
 package gov.cms.qpp.conversion.segmentation;
 
-import gov.cms.qpp.conversion.model.TemplateId;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import gov.cms.qpp.conversion.model.TemplateId;
 
 public enum QrdaScope {
 
@@ -23,7 +23,10 @@ public enum QrdaScope {
 	IA_MEASURE(TemplateId.IA_MEASURE, MEASURE_PERFORMED),
 	IA_SECTION(TemplateId.IA_SECTION, IA_MEASURE),
 
-	MEASURE_DATA_CMS_V2(TemplateId.MEASURE_DATA_CMS_V2, ACI_AGGREGATE_COUNT),
+	DEFAULTS(TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2, TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2,
+			TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2, TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2),
+
+	MEASURE_DATA_CMS_V2(TemplateId.MEASURE_DATA_CMS_V2, DEFAULTS, ACI_AGGREGATE_COUNT),
 	MEASURE_REFERENCE_RESULTS_CMS_V2(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, MEASURE_DATA_CMS_V2),
 	MEASURE_SECTION_V2(TemplateId.MEASURE_SECTION_V2, MEASURE_REFERENCE_RESULTS_CMS_V2),
 
@@ -65,7 +68,7 @@ public enum QrdaScope {
 
 		return scopes.stream()
 				.flatMap(scope -> scope.getValue().stream())
-				.collect(Collectors.toSet());
+				.collect(Collectors.toCollection(() -> EnumSet.noneOf(TemplateId.class)));
 	}
 
 	public static String[] getNames() {

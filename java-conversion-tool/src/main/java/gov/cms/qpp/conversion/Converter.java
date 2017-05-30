@@ -152,7 +152,7 @@ public class Converter {
 		QrdaValidator validator = new QrdaValidator();
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
 		if (null != decoded) {
-			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), inStream);
+			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), inStream);
 
 			if (!doDefaults) {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
@@ -293,7 +293,7 @@ public class Converter {
 	 */
 	private InputStream writeConverted() {
 		JsonOutputEncoder encoder = getEncoder();
-		CLIENT_LOG.info("Decoded template ID {}", decoded.getId());
+		CLIENT_LOG.info("Decoded template ID {}", decoded.getType());
 
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));
@@ -314,7 +314,7 @@ public class Converter {
 	private void writeConverted(Node decoded, Path outFile) {
 		JsonOutputEncoder encoder = getEncoder();
 
-		CLIENT_LOG.info("Decoded template ID {} to file '{}'", decoded.getId(), outFile);
+		CLIENT_LOG.info("Decoded template ID {} to file '{}'", decoded.getType(), outFile);
 
 		try (Writer writer = Files.newBufferedWriter(outFile)) {
 			encoder.setNodes(Collections.singletonList(decoded));

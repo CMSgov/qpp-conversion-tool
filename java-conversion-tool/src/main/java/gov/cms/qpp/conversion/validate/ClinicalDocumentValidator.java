@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Validates the Clinical Document.
  */
-@Validator(templateId = TemplateId.CLINICAL_DOCUMENT, required = true)
+@Validator(value = TemplateId.CLINICAL_DOCUMENT, required = true)
 public class ClinicalDocumentValidator extends NodeValidator {
 
 	protected static final String CLINICAL_DOCUMENT_REQUIRED = "Clinical Document Node is required";
@@ -55,7 +55,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME)
 			.value(CONTAINS_TAX_ID_NUMBER, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
 
-		Node reportingParametersAct = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		Node reportingParametersAct = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingParametersAct == null) {
 			getValidationErrors().add(new ValidationError(CONTAINS_PERFORMANCE_YEAR, node.getPath()));
 		} else {

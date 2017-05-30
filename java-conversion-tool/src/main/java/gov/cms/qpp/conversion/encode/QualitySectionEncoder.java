@@ -40,7 +40,7 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 		JsonWrapper childWrapper;
 		for (Node currentChild : children) {
 			childWrapper = new JsonWrapper();
-			String templateId = currentChild.getId();
+			TemplateId templateId = currentChild.getType();
 			JsonOutputEncoder childEncoder = ENCODERS.get(templateId);
 
 			if (childEncoder == null) {

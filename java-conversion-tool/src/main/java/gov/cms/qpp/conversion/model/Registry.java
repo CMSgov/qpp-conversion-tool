@@ -1,16 +1,17 @@
 package gov.cms.qpp.conversion.model;
 
+import java.lang.annotation.Annotation;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-
-import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * This class manages the available transformation handlers. Currently it takes
@@ -21,7 +22,7 @@ import java.util.Set;
  *
  * @author David Uselmann
  */
-public class Registry<V extends Object, R extends Object> {
+public class Registry<R extends Object> {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Registry.class);
 
 	// For now this is static and can be refactored into an instance
@@ -30,7 +31,7 @@ public class Registry<V extends Object, R extends Object> {
 	 * This will be an XPATH string to converter handler registration Since
 	 * Converter was taken for the main stub, I chose Handler for now.
 	 */
-	private Map<V, Class<? extends R>> registryMap;
+	private Map<TemplateId, Class<? extends R>> registryMap;
 
 	private Class<? extends Annotation> annotationClass;
 
@@ -56,7 +57,7 @@ public class Registry<V extends Object, R extends Object> {
 	 * classes in the same package, like tests, have access.
 	 */
 	void init() {
-		registryMap = new HashMap<>();
+		registryMap = new EnumMap<>(TemplateId.class);
 	}
 
 	/**
@@ -70,7 +71,9 @@ public class Registry<V extends Object, R extends Object> {
 		for (BeanDefinition bd : scanner.findCandidateComponents("gov.cms")) {
 			try {
 				Class<?> annotatedClass = getAnnotatedClass(bd.getBeanClassName());
-				register(getAnnotationParam(annotatedClass), (Class<R>) annotatedClass);
+				for (TemplateId key : getTemplateIds(annotatedClass)) {
+					register(key, (Class<R>) annotatedClass);
+				}
 			} catch (ClassNotFoundException e) {
 				DEV_LOG.error("Failed to register new transformation handler because: ", e);
 			}
@@ -82,23 +85,23 @@ public class Registry<V extends Object, R extends Object> {
 		return Class.forName(className);
 	}
 
-	@SuppressWarnings("unchecked")
-	public V getAnnotationParam(Class<?> annotatedClass) {
+	public Set<TemplateId> getTemplateIds(Class<?> annotatedClass) {
+		Set<TemplateId> values = EnumSet.noneOf(TemplateId.class);
 		Annotation annotation = AnnotationUtils.findAnnotation(annotatedClass, annotationClass);
 
 		if (annotation instanceof Decoder) {
 			Decoder decoder = (Decoder) annotation;
-			return (V) decoder.value().getTemplateId();
+			values.add(decoder.value());
 		}
 		if (annotation instanceof Encoder) {
 			Encoder encoder = (Encoder) annotation;
-			return (V) encoder.value().getTemplateId();
+			values.add(encoder.value());
 		}
 		if (annotation instanceof Validator) {
 			Validator validator = (Validator) annotation;
-			return (V) validator.templateId().getTemplateId();
+			values.add(validator.value());
 		}
-		return null;
+		return values;
 	}
 
 	/**
@@ -108,7 +111,7 @@ public class Registry<V extends Object, R extends Object> {
 	 *
 	 * @param registryKey String
 	 */
-	public R get(String registryKey) {
+	public R get(TemplateId registryKey) {
 		try {
 			Class<? extends R> handlerClass = registryMap.get(registryKey);
 			if (handlerClass == null) {
@@ -127,7 +130,7 @@ public class Registry<V extends Object, R extends Object> {
 	 * @param registryKey String
 	 * @param handler
 	 */
-	public void register(V registryKey, Class<? extends R> handler) {
+	public void register(TemplateId registryKey, Class<? extends R> handler) {
 		DEV_LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
 				+ annotationClass.getSimpleName() + ".");
 		// This could be a class or class name and instantiated on lookup
@@ -140,7 +143,7 @@ public class Registry<V extends Object, R extends Object> {
 		registryMap.put(registryKey, handler);
 	}
 
-	public Set<V> getKeys() {
+	public Set<TemplateId> getKeys() {
 		return registryMap.keySet();
 	}
 

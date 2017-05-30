@@ -14,12 +14,6 @@ import static org.junit.Assert.assertThat;
 
 public class AciSectionEncoderTest {
 
-	private static final String ACI_SECTION_ID = TemplateId.ACI_SECTION.getTemplateId();
-	private static final String ACI_NUMERATOR_DENOMINATOR_ID = TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId();
-	private static final String ACI_PROPORTION_NUMERATOR_NODE_ID = TemplateId.ACI_NUMERATOR.getTemplateId();
-	private static final String ACI_PROPORTION_DENOMINATOR_NODE_ID = TemplateId.ACI_DENOMINATOR.getTemplateId();
-	private static final String NUMERATOR_NODE_ID = TemplateId.ACI_AGGREGATE_COUNT.getTemplateId();
-	private static final String DENOMINATOR_NODE_ID = TemplateId.ACI_AGGREGATE_COUNT.getTemplateId();
 	private static final String CATEGORY = "category";
 	private static final String ACI = "aci";
 	private static final String MEASUREMENTS = "measurements";
@@ -40,24 +34,24 @@ public class AciSectionEncoderTest {
 
 	@Before
 	public void createNode() {
-		numeratorValueNode = new Node(NUMERATOR_NODE_ID);
+		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue(AGGREGATE_COUNT_ID, "400");
 
-		denominatorValueNode = new Node(DENOMINATOR_NODE_ID);
+		denominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		denominatorValueNode.putValue(AGGREGATE_COUNT_ID, "600");
 
-		aciProportionDenominatorNode = new Node(ACI_PROPORTION_DENOMINATOR_NODE_ID);
+		aciProportionDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
 
-		aciProportionNumeratorNode = new Node(ACI_PROPORTION_NUMERATOR_NODE_ID);
+		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
 
-		aciNumeratorDenominatorNode = new Node(ACI_NUMERATOR_DENOMINATOR_ID);
+		aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
 		aciNumeratorDenominatorNode.addChildNode(aciProportionNumeratorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciProportionDenominatorNode);
 		aciNumeratorDenominatorNode.putValue(MEASUREMENT_ID, MEASUREMENT_ID_VALUE);
 
-		aciSectionNode = new Node(ACI_SECTION_ID);
+		aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue(CATEGORY, ACI);
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 	}
@@ -79,10 +73,9 @@ public class AciSectionEncoderTest {
 	public void testInternalEncodeWithNoChildren() throws EncodeException {
 		JsonWrapper testWrapper = new JsonWrapper();
 
-		final String invalidMeasureNode = "invalidMeasureNode";
-		Node invalidAciNumeratorDenominatorNode = new Node(invalidMeasureNode);
+		Node invalidAciNumeratorDenominatorNode = new Node();
 
-		aciSectionNode = new Node(ACI_SECTION_ID);
+		aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue(CATEGORY, ACI);
 		aciSectionNode.addChildNode(invalidAciNumeratorDenominatorNode);
 

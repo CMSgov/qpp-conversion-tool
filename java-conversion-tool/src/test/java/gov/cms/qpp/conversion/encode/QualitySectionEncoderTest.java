@@ -35,16 +35,16 @@ public class QualitySectionEncoderTest {
 	@Test
 	public void missingEncoderTest() throws XmlException, NoSuchFieldException, IllegalAccessException {
 
-		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
+		Registry<JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
 
-		Registry<String, JsonOutputEncoder> invalidRegistry = RegistryHelper.makeInvalidRegistry( //This will be the classname of the child ENCODERS
+		Registry<JsonOutputEncoder> invalidRegistry = RegistryHelper.makeInvalidRegistry( //This will be the classname of the child ENCODERS
 				"gov.cms.qpp.conversion.encode.MeasureDataEncoder");
 
 		boolean exception = false;
 		RegistryHelper.setEncoderRegistry(invalidRegistry); //Set Registry with missing class
 
 		Node qualitySectionNode = getQualitySectionNode();
-		Node measureDataNode = new Node(qualitySectionNode, TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		Node measureDataNode = new Node(TemplateId.MEASURE_DATA_CMS_V2, qualitySectionNode);
 		measureDataNode.putValue("SomeValueKey", "SomeValueData");
 		qualitySectionNode.addChildNode(measureDataNode);
 		QualitySectionEncoder encoder = new QualitySectionEncoder();
@@ -65,7 +65,7 @@ public class QualitySectionEncoderTest {
 	 * @return the newly constructed Quality Section Node
 	 */
 	private Node getQualitySectionNode() {
-		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2.getTemplateId());
+		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2);
 		qualitySectionNode.putValue("category", "quality");
 		qualitySectionNode.putValue("submissionMethod", "cmsWebInterface");
 		return qualitySectionNode;

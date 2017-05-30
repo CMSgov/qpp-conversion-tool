@@ -10,8 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.PrintStream;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -21,7 +24,7 @@ import static org.junit.Assert.fail;
 
 public class RegistryTest {
 
-	private Registry<String, InputDecoder> registry;
+	private Registry<InputDecoder> registry;
 	private PrintStream err;
 
 	@Before
@@ -38,7 +41,7 @@ public class RegistryTest {
 	@Test
 	public void testRegistryExistsByDefault() throws Exception {
 		try {
-			registry.register("id", Placeholder.class);
+			registry.register(TemplateId.PLACEHOLDER, Placeholder.class);
 		} catch (NullPointerException e) {
 			fail("Registry should always exist.");
 		}
@@ -47,16 +50,16 @@ public class RegistryTest {
 
 	@Test
 	public void testRegistryInit() throws Exception {
-		registry.register("id", Placeholder.class);
+		registry.register(TemplateId.PLACEHOLDER, Placeholder.class);
 		registry.init();
-		InputDecoder decoder = registry.get("id");
+		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertTrue("Registry should have been reset.", decoder == null);
 	}
 
 	@Test
 	public void testRegistryGetConverterHandler() throws Exception {
-		registry.register("id", Placeholder.class);
-		InputDecoder decoder = registry.get("id");
+		registry.register(TemplateId.PLACEHOLDER, Placeholder.class);
+		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertTrue("Registry should have been reset.", decoder instanceof Placeholder);
 	}
 
@@ -64,45 +67,52 @@ public class RegistryTest {
 	// registry
 	@Test
 	public void testRegistry_placeAndFetch() throws Exception {
-		String templateId = registry.getAnnotationParam(AggregateCountDecoder.class);
-		InputDecoder decoder = registry.get(templateId);
+		Set<TemplateId> templateIds = registry.getTemplateIds(AggregateCountDecoder.class);
+		assertThat(templateIds, hasSize(1));
+		for (TemplateId templateId : templateIds) {
+			InputDecoder decoder = registry.get(templateId);
 
-		assertNotNull("A handler is expected", decoder);
-		assertEquals("Handler should be an instance of the handler for the given XPATH", AggregateCountDecoder.class,
-				decoder.getClass());
+			assertNotNull("A handler is expected", decoder);
+			assertEquals("Handler should be an instance of the handler for the given XPATH", AggregateCountDecoder.class,
+					decoder.getClass());
+		}
 	}
 
 	@Test
-	public void testRegistry_getAnnotationParam() throws Exception {
-		String templateId = registry.getAnnotationParam(AggregateCountDecoder.class);
-		assertNotNull("A templateId is expected", templateId);
-		assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(), templateId);
+	public void testRegistry_getTemplateIds() throws Exception {
+		Set<TemplateId> templateIds = registry.getTemplateIds(AggregateCountDecoder.class);
+		assertThat("A templateId is expected", templateIds, hasSize(1));
+		for (TemplateId templateId : templateIds) {
+			assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT, templateId);
+		}
 
-		templateId = new Registry<String, Encoder>(Encoder.class).getAnnotationParam(AggregateCountEncoder.class);
-		assertNotNull("A templateId is expected", templateId);
-		assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(), templateId);
+		templateIds = new Registry<>(Encoder.class).getTemplateIds(AggregateCountEncoder.class);
+		assertThat("A templateId is expected", templateIds, hasSize(1));
+		for (TemplateId templateId : templateIds) {
+			assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT, templateId);
+		}
 	}
 
 	@Test
-	public void testRegistry_getAnnotationParam_NullReturn() throws Exception {
-		String templateId = new Registry<String, Encoder>(SuppressWarnings.class).getAnnotationParam(Placeholder.class);
-		assertTrue("A templateId is expected", templateId == null);
+	public void testRegistry_getTemplateIds_NullReturn() throws Exception {
+		Set<TemplateId> templateIds = new Registry<Encoder>(SuppressWarnings.class).getTemplateIds(Placeholder.class);
+		assertThat("A templateId is not expected", templateIds, empty());
 	}
 
 	@Test
 	public void testRegistryGetHandlerThatFailsConstruction() throws Exception {
-		registry.register("id", PrivateConstructor.class);
-		InputDecoder decoder = registry.get("id");
+		registry.register(TemplateId.PLACEHOLDER, PrivateConstructor.class);
+		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertThat("Registry should return null for faile construction not an exception.", decoder, is(nullValue()));
 	}
 
 	@Test
 	public void testClassNotFoundCausesMissingEntriesInRegistry_throwsNoException() {
-		Registry<String, Decoder> registryA = new Registry<>(Decoder.class);
+		Registry<Decoder> registryA = new Registry<>(Decoder.class);
 
 		// Mock the condition where a class is not found during registry
 		// building
-		Registry<String, Decoder> registryB = new Registry<String, Decoder>(Decoder.class) {
+		Registry<Decoder> registryB = new Registry<Decoder>(Decoder.class) {
 			@Override
 			protected Class<?> getAnnotatedClass(String className) throws ClassNotFoundException {
 				if ("gov.cms.qpp.conversion.decode.AggregateCountDecoder".equals(className)) {
@@ -119,9 +129,9 @@ public class RegistryTest {
 
 	@Test
 	public void testRegistryAddDuplicate() throws Exception {
-		registry.register("id", Placeholder.class);
-		registry.register("id", AnotherPlaceholder.class);
-		InputDecoder decoder = registry.get("id");
+		registry.register(TemplateId.PLACEHOLDER, Placeholder.class);
+		registry.register(TemplateId.PLACEHOLDER, AnotherPlaceholder.class);
+		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertTrue("Registry should have overwritten id with the second one.", decoder instanceof AnotherPlaceholder);
 	}
 }

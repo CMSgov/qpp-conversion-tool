@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import gov.cms.qpp.conversion.ConversionEntry;
 
 /**
@@ -25,8 +28,13 @@ public enum TemplateId {
 	//unimplemented
 	PERFORMANCE_RATE("2.16.840.1.113883.10.20.27.3.30", Extension.SEPTEMBER),
 	CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS("2.16.840.1.113883.10.20.27.3.26"),
+	ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.22", Extension.NOVEMBER),
 	REPORTING_STRATUM_CMS("2.16.840.1.113883.10.20.27.3.20"),
+	SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.21", Extension.NOVEMBER),
+	RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.19", Extension.NOVEMBER),
+	PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.18", Extension.NOVEMBER),
 	PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2("2.16.840.1.113883.10.20.27.3.25", Extension.NOVEMBER),
+	MEASURE_SECTION("2.16.840.1.113883.10.20.24.2.2"),
 	CMS_AGGREGATE_COUNT("2.16.840.1.113883.10.20.27.3.24"),
 
 	//miscellaneous
@@ -53,6 +61,20 @@ public enum TemplateId {
 		public String toString()
 		{
 			return this.extension;
+		}
+	}
+
+	private static final Map<String, Map<String, TemplateId>> ROOT_AND_EXTENSION_TO_TEMPLATE_ID = new HashMap<>();
+
+	static
+	{
+		for (TemplateId templateId : TemplateId.values())
+		{
+			Map<String, TemplateId> extensionToTemplateId =
+					ROOT_AND_EXTENSION_TO_TEMPLATE_ID.computeIfAbsent(templateId.root, ignore -> new HashMap<>());
+
+			extensionToTemplateId.put(templateId.extension.toString(), templateId);
+			extensionToTemplateId.putIfAbsent(null, templateId);
 		}
 	}
 
@@ -107,13 +129,8 @@ public enum TemplateId {
 	 * @param id The complete template ID (root + ":" + extension).
 	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
 	 */
-	public static TemplateId getTypeById(final String id) {
-		for (TemplateId type : TemplateId.values()) {
-			if (type.getTemplateId().equals(id)) {
-				return type;
-			}
-		}
-		return TemplateId.DEFAULT;
+	public static TemplateId getTypeById(String id) {
+		return getTypeByIdAndExtension(id, null);
 	}
 
 	/**
@@ -123,15 +140,18 @@ public enum TemplateId {
 	 * @param extension The extension part of the templateId.
 	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
 	 */
-	public static TemplateId getTypeById(String root, String extension) {
-		for (TemplateId currentTemplateId : TemplateId.values()) {
-			if (ConversionEntry.isHistorical() && currentTemplateId.getRoot().equals(root)) {
-				return currentTemplateId;
-			} else if (currentTemplateId.getRoot().equals(root) && currentTemplateId.getExtension().equals(extension)) {
-				return currentTemplateId;
-			}
+	public static TemplateId getTypeByIdAndExtension(String root, String extension) {
+		Map<String, TemplateId> extensionsToTemplateId = ROOT_AND_EXTENSION_TO_TEMPLATE_ID.get(root);
+
+		if (extensionsToTemplateId == null) {
+			return TemplateId.DEFAULT;
 		}
-		return TemplateId.DEFAULT;
+
+		if (ConversionEntry.isHistorical()) {
+			return extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
+		}
+
+		return extensionsToTemplateId.getOrDefault(extension, TemplateId.DEFAULT);
 	}
 
 	/**

@@ -14,7 +14,6 @@ public class JennyDecoder extends DefaultDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		thisnode.putValue("DefaultDecoderFor", "Jenny");
-		thisnode.setId("867.5309");
 		if (element.getChildren().size() > 1) {
 			thisnode.putValue( "problem", "too many children" );
 		}

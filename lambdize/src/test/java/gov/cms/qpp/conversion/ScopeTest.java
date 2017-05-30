@@ -106,7 +106,7 @@ public class ScopeTest {
 	private static void updateRegistry(Class<?> location, String registryField) throws Exception {
 		Field registry = location.getDeclaredField(registryField);
 		registry.setAccessible(true);
-		((Registry<?, ?>) registry.get(null)).load();
+		((Registry<?>) registry.get(null)).load();
 	}
 
 	/**

@@ -1,43 +1,44 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.model.Encoder;
-import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+
+import java.util.EnumSet;
+import java.util.Set;
+
+import org.junit.Test;
+
+import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
  * This class tests basic Encoder functionality for the defined list of tmeplateId's
  */
 public class EncoderTest {
 
-	private final List<String> templateIDs = Arrays.asList(
-			TemplateId.CLINICAL_DOCUMENT.getTemplateId(),
-			TemplateId.MEASURE_SECTION_V2.getTemplateId(),
-			TemplateId.IA_SECTION.getTemplateId(),
-			TemplateId.ACI_SECTION.getTemplateId(),
-			TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(),
-			TemplateId.MEASURE_DATA_CMS_V2.getTemplateId(),
-			TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId(),
-			TemplateId.REPORTING_STRATUM_CMS.getTemplateId(),
-			TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId(),
-			TemplateId.CMS_AGGREGATE_COUNT.getTemplateId(),
-			TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2.getTemplateId(),
-			TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS.getTemplateId(),
-			TemplateId.MEASURE_PERFORMED.getTemplateId(),
-			TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId(),
-			TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS.getTemplateId(),
-			TemplateId.PERFORMANCE_RATE.getTemplateId(),
-			TemplateId.ACI_NUMERATOR.getTemplateId(),
-			TemplateId.ACI_DENOMINATOR.getTemplateId(),
-			TemplateId.IA_MEASURE.getTemplateId()
+	private final Set<TemplateId> templateIds = EnumSet.of(
+			TemplateId.CLINICAL_DOCUMENT,
+			TemplateId.MEASURE_SECTION_V2,
+			TemplateId.IA_SECTION,
+			TemplateId.ACI_SECTION,
+			TemplateId.ACI_AGGREGATE_COUNT,
+			TemplateId.MEASURE_DATA_CMS_V2,
+			TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2,
+			TemplateId.REPORTING_STRATUM_CMS,
+			TemplateId.REPORTING_PARAMETERS_ACT,
+			TemplateId.CMS_AGGREGATE_COUNT,
+			TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2,
+			TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS,
+			TemplateId.MEASURE_PERFORMED,
+			TemplateId.ACI_NUMERATOR_DENOMINATOR,
+			TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS,
+			TemplateId.PERFORMANCE_RATE,
+			TemplateId.ACI_NUMERATOR,
+			TemplateId.ACI_DENOMINATOR,
+			TemplateId.IA_MEASURE
 	);
 
 	/**
@@ -47,8 +48,8 @@ public class EncoderTest {
 	 */
 	@Test
 	public void decodeTemplateIds() throws Exception {
-		Registry<String, OutputEncoder> registry = new Registry<>(Encoder.class);
-		for (String templateId : templateIDs) {
+		Registry<OutputEncoder> registry = new Registry<>(Encoder.class);
+		for (TemplateId templateId : templateIds) {
 			OutputEncoder encoder = registry.get(templateId);
 			assertThat(templateId + " returned node should not be null", encoder, is(not(nullValue())));
 		}

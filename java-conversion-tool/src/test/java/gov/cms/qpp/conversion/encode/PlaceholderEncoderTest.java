@@ -19,12 +19,12 @@ public class PlaceholderEncoderTest extends PlaceholderEncoder {
 	@Test
 	public void internalEncodeMissingEncoderTest() throws Exception {
 
-		Registry<String, JsonOutputEncoder> invalidRegistry =
+		Registry<JsonOutputEncoder> invalidRegistry =
 				RegistryHelper.makeInvalidRegistry(PlaceholderEncoder.class.getName());
-		Registry<String, JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
+		Registry<JsonOutputEncoder> validRegistry = QppOutputEncoder.ENCODERS;
 
-		Node root = new Node(TemplateId.DEFAULT.getTemplateId());
-		Node placeHolderNode = new Node(root, TemplateId.PLACEHOLDER.getTemplateId());
+		Node root = new Node(TemplateId.DEFAULT);
+		Node placeHolderNode = new Node(TemplateId.PLACEHOLDER, root);
 		root.addChildNode(placeHolderNode);
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 		PlaceholderEncoder placeHolderEncoder = new PlaceholderEncoder();

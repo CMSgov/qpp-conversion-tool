@@ -23,8 +23,8 @@ public class IaMeasureValidatorTest {
 	 */
 	@Test
 	public void internalValidateSingleNodeY() throws Exception {
-		Node measureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
-		Node measurePerformedNode = new Node(measureNode, TemplateId.MEASURE_PERFORMED.getTemplateId());
+		Node measureNode = new Node(TemplateId.IA_MEASURE);
+		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED, measureNode);
 		measureNode.addChildNode(measurePerformedNode);
 		measurePerformedNode.putValue("measurePerformed", "Y");
 
@@ -35,8 +35,8 @@ public class IaMeasureValidatorTest {
 
 	@Test
 	public void internalValidateSingleNodeN() throws Exception {
-		Node measureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
-		Node measurePerformedNode = new Node(measureNode, TemplateId.MEASURE_PERFORMED.getTemplateId());
+		Node measureNode = new Node(TemplateId.IA_MEASURE);
+		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED, measureNode);
 		measureNode.addChildNode(measurePerformedNode);
 		measurePerformedNode.putValue("measurePerformed", "N");
 
@@ -53,7 +53,7 @@ public class IaMeasureValidatorTest {
 	 */
 	@Test
 	public void testMissingNode() throws Exception {
-		Node measureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
+		Node measureNode = new Node(TemplateId.IA_MEASURE);
 
 		IaMeasureValidator validator = new IaMeasureValidator();
 		List<ValidationError> errors = validator.validateSingleNode(measureNode);
@@ -70,9 +70,9 @@ public class IaMeasureValidatorTest {
 	 */
 	@Test
 	public void testTooManyChildren() throws Exception {
-		Node measureNode = new Node(TemplateId.IA_MEASURE.getTemplateId());
-		Node measurePerformedNode1 = new Node(measureNode, TemplateId.MEASURE_PERFORMED.getTemplateId());
-		Node measurePerformedNode2 = new Node(measureNode, TemplateId.MEASURE_PERFORMED.getTemplateId());
+		Node measureNode = new Node(TemplateId.IA_MEASURE);
+		Node measurePerformedNode1 = new Node(TemplateId.MEASURE_PERFORMED, measureNode);
+		Node measurePerformedNode2 = new Node(TemplateId.MEASURE_PERFORMED, measureNode);
 		measureNode.addChildNode(measurePerformedNode1);
 		measurePerformedNode1.putValue("measurePerformed", "Y");
 		measureNode.addChildNode(measurePerformedNode2);

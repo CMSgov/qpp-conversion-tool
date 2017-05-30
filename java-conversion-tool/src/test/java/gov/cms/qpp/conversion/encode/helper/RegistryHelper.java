@@ -30,7 +30,7 @@ public class RegistryHelper {
 	 * @throws NoSuchFieldException   Java Reflection API
 	 * @throws IllegalAccessException Can be caused if a Security manager is in place
 	 */
-	public static void setEncoderRegistry(Registry<String, JsonOutputEncoder> newRegistry) throws NoSuchFieldException, IllegalAccessException {
+	public static void setEncoderRegistry(Registry<JsonOutputEncoder> newRegistry) throws NoSuchFieldException, IllegalAccessException {
 		final Field field = QppOutputEncoder.class.getDeclaredField("ENCODERS");
 		field.setAccessible(true);
 		Field modifiersField = Field.class.getDeclaredField("modifiers");
@@ -47,8 +47,8 @@ public class RegistryHelper {
 	 * @param missingClassName The class of the item to keep out of the registry
 	 * @return The newly created registry usually passed to SetEncoderRegistry
 	 */
-	public static Registry<String, JsonOutputEncoder> makeInvalidRegistry(String missingClassName) {
-		return new Registry<String, JsonOutputEncoder>(Encoder.class) {
+	public static Registry<JsonOutputEncoder> makeInvalidRegistry(String missingClassName) {
+		return new Registry<JsonOutputEncoder>(Encoder.class) {
 			/**
 			 * Overrides the creation of the Registry method of QppEncoder
 			 * @param className

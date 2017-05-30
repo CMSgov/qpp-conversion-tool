@@ -24,7 +24,7 @@ public class MeasurePerformedValidatorTest {
 	 */
 	@Test
 	public void internalValidateSingleNodeY() throws Exception {
-		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		measurePerformedNode.putValue("measurePerformed", "Y");
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
@@ -34,7 +34,7 @@ public class MeasurePerformedValidatorTest {
 
 	@Test
 	public void internalValidateSingleNodeN() throws Exception {
-		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		measurePerformedNode.putValue("measurePerformed", "N");
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
@@ -44,7 +44,7 @@ public class MeasurePerformedValidatorTest {
 
 	@Test
 	public void internalValidateSingleNodeInvalid() throws Exception {
-		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		measurePerformedNode.putValue("measurePerformed", "wrong value");
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();

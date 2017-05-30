@@ -25,7 +25,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		DEV_LOG.debug("Default JSON encoder {} is handling templateId {} and is described as '{}' ",
-				getClass(), node.getId(), description);
+				getClass(), node.getType().name(), description);
 
 		JsonWrapper childWrapper = new JsonWrapper();
 
@@ -34,10 +34,10 @@ public class DefaultEncoder extends JsonOutputEncoder {
 			childWrapper.putString(nameForEncode, node.getValue(name));
 		}
 
-		wrapper.putObject(node.getId(), childWrapper);
+		wrapper.putObject(node.getType().name(), childWrapper);
 
 		for (Node child : node.getChildNodes()) {
-			childWrapper.putObject(child.getId(), childWrapper);
+			childWrapper.putObject(child.getType().name(), childWrapper);
 			encode(childWrapper, child);
 		}
 	}
@@ -59,6 +59,15 @@ public class DefaultEncoder extends JsonOutputEncoder {
 			super("Aggregate Count - CMS");
 		}
 	}
+	//	 this one looks like a node that is not necessary
+
+	@Encoder(TemplateId.MEASURE_SECTION)
+	public static class MeasureSectionEncoder extends DefaultEncoder {
+
+		public MeasureSectionEncoder() {
+			super("Measure Section");
+		}
+	}
 
 	@Encoder(TemplateId.REPORTING_PARAMETERS_ACT)
 	public static class ReportingParametersActEncoder extends DefaultEncoder {
@@ -76,11 +85,43 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
+	@Encoder(TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
+	public static class EthnicitySupplementalDataElementCmsV2Encoder extends DefaultEncoder {
+
+		public EthnicitySupplementalDataElementCmsV2Encoder() {
+			super("Ethnicity Supplemental Data Element – CMS (V2)");
+		}
+	}
+
 	@Encoder(TemplateId.REPORTING_STRATUM_CMS)
 	public static class ReportingStratumCmsEncoder extends DefaultEncoder {
 
 		public ReportingStratumCmsEncoder() {
 			super("Reporting Stratum - CMS");
+		}
+	}
+
+	@Encoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
+	public static class SexSupplementalDataElementalCmsV2Encoder extends DefaultEncoder {
+
+		public SexSupplementalDataElementalCmsV2Encoder() {
+			super("Sex Supplemental Data Element - CMS (V2)");
+		}
+	}
+
+	@Encoder(TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
+	public static class RaceSupplementalDataElementCmsV2Encoder extends DefaultEncoder {
+
+		public RaceSupplementalDataElementCmsV2Encoder() {
+			super("Race Supplemental Data Element - CMS (V2)");
+		}
+	}
+
+	@Encoder(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
+	public static class PayerSupplementalDataElementCmsV2Encoder extends DefaultEncoder {
+
+		public PayerSupplementalDataElementCmsV2Encoder() {
+			super("Payer Supplemental Data Element - CMS (V2)");
 		}
 	}
 

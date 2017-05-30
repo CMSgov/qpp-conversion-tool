@@ -40,7 +40,7 @@ public class ClinicalDocumentDecoderTest {
 
 	@Test
 	public void testRootId() {
-		assertThat("template ID is correct", root.getId(), is(TemplateId.CLINICAL_DOCUMENT.getTemplateId()));
+		assertThat("template ID is correct", root.getType(), is(TemplateId.CLINICAL_DOCUMENT));
 	}
 
 	@Test
