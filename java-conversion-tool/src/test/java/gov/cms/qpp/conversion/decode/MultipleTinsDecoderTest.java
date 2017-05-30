@@ -39,7 +39,7 @@ public class MultipleTinsDecoderTest extends BaseTest {
 				npi = child.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER);
 				tin = child.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
 				matches += testChildExistence(npi, tin);
-			} else if (child.getType().getTemplateId().equals(TemplateId.CLINICAL_DOCUMENT.getTemplateId())) {
+			} else if (child.getType() == TemplateId.CLINICAL_DOCUMENT) {
 				matches++;
 			}
 		}
@@ -64,7 +64,7 @@ public class MultipleTinsDecoderTest extends BaseTest {
 				npi = child.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER);
 				tin = child.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
 				matches += testChildExistence(npi, tin);
-			}else if (child.getType().getTemplateId().equals(TemplateId.CLINICAL_DOCUMENT.getTemplateId())) {
+			} else if (child.getType() == TemplateId.CLINICAL_DOCUMENT) {
 				matches++;
 			}
 		}
@@ -85,7 +85,7 @@ public class MultipleTinsDecoderTest extends BaseTest {
 				tin = child.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
 				matches += testChildExistence(npi, tin);
 
-			}else if (child.getType().getTemplateId().equals(TemplateId.CLINICAL_DOCUMENT.getTemplateId())) {
+			} else if (child.getType() == TemplateId.CLINICAL_DOCUMENT) {
 				matches++;
 			}
 		}
