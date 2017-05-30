@@ -1,10 +1,5 @@
 package gov.cms.qpp.conversion.aws;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
@@ -14,9 +9,19 @@ import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRe
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.TransformationStatus;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.TransformException;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 public class ConversionHandler implements RequestHandler<S3Event, String> {
 
@@ -33,13 +38,24 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 
 			try (InputStream input = new NamedInputStream(srcKey, s3Object.getObjectContent())) {
 				Converter converter = new Converter(input);
-				TransformationStatus status = converter.transform();
-
-				if (status != TransformationStatus.NON_RECOVERABLE) {
-					String dstKey = "post-conversion/" + converter.getOutputFile(filename);
-					ObjectMetadata meta = new ObjectMetadata();
-					s3Client.putObject(srcBucket, dstKey, converter.getConversionResult(), meta);
+				JsonWrapper qpp = null;
+				AllErrors errors = null;
+				try {
+					qpp = converter.transform();
+				} catch(TransformException exception) {
+					errors = exception.getDetails();
 				}
+
+				InputStream returnStream = null;
+				if (qpp != null) {
+					returnStream = qppToInputStream(qpp);
+				} else if (errors != null) {
+					returnStream = errorsToInputStream(errors);
+				}
+
+				String dstKey = "post-conversion/" + converter.getOutputFile(filename);
+				ObjectMetadata meta = new ObjectMetadata();
+				s3Client.putObject(srcBucket, dstKey, returnStream, meta);
 
 				return "Ok";
 			}
@@ -55,5 +71,21 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 	protected String formatSourceKey(S3EventNotificationRecord record) throws UnsupportedEncodingException {
 		String srcKey = record.getS3().getObject().getKey().replace('+', ' ');
 		return URLDecoder.decode(srcKey, "UTF-8");
+	}
+
+	private InputStream qppToInputStream(JsonWrapper jsonWrapper) {
+		return new ByteArrayInputStream(jsonWrapper.toString().getBytes());
+	}
+
+	private InputStream errorsToInputStream(AllErrors allErrors) {
+		ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+
+		byte[] errors = new byte[0];
+		try {
+			errors = jsonObjectWriter.writeValueAsBytes(allErrors);
+		} catch (JsonProcessingException exception) {
+			errors = "{ \"exception\": \"JsonProcessingException\" }".getBytes();
+		}
+		return new ByteArrayInputStream(errors);
 	}
 }
