@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -228,25 +227,5 @@ public class Converter {
 	protected JsonOutputEncoder getEncoder() {
 		Collection<QrdaScope> scope = ConversionEntry.getScope();
 		return (!scope.isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
-	}
-
-	/**
-	 * Determine what the output file's name should be.
-	 *
-	 * @param name base string that helps relate the output file to it's corresponding source
-	 * @return the output file name
-	 */
-	public Path getOutputFile(String name) {
-		String outName = name.replaceFirst("(?i)(\\.xml)?$", getFileExtension());
-		return Paths.get(outName);
-	}
-
-	/**
-	 * Get an appropriate file extension for the transformation output filename.
-	 *
-	 * @return a file extension
-	 */
-	private String getFileExtension() {
-		return (!validationErrors.isEmpty()) ? ".err.json" : ".qpp.json";
 	}
 }
