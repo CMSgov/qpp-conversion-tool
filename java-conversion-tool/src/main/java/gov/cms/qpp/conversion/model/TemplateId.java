@@ -53,16 +53,15 @@ public enum TemplateId {
 		SEPTEMBER("2016-09-01"),
 		NOVEMBER("2016-11-01");
 
-		private final String extension;
+		private final String value;
 
-		private Extension(String extension) {
-			this.extension = extension;
+		private Extension(String value) {
+			this.value = value;
 		}
 
 		@Override
-		public String toString()
-		{
-			return this.extension;
+		public String toString() {
+			return this.value;
 		}
 	}
 
