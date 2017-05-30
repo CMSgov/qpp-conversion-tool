@@ -11,13 +11,17 @@ import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import gov.cms.qpp.conversion.model.Node;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Manages building a "simple" object of JSON conversion.
@@ -25,7 +29,7 @@ import java.util.Map;
  * This class is a wrapper around a list/map impl.
  */
 public class JsonWrapper {
-
+	private static final String METADATA_HOLDER = "metadata_holder";
 	private ObjectWriter ow;
 	private Map<String, Object> object;
 	private List<Object> list;
@@ -333,7 +337,7 @@ public class JsonWrapper {
 	 * @return T retrieved keyed value
 	 */
 	@SuppressWarnings("unchecked")
-	private <T> T getValue(String name) {
+	<T> T getValue(String name) {
 		if (isObject()) {
 			return (T) object.get(name);
 		}
@@ -537,5 +541,40 @@ public class JsonWrapper {
 		protected boolean include(PropertyWriter writer) {
 			return !writer.getName().startsWith("metadata_");
 		}
+	}
+
+	void attachMetadata(Node node) {
+		addMetaMap(getMetaMap(node));
+	}
+
+	private Map<String,String> getMetaMap(Node node) {
+		Map<String, String> metaMap = new HashMap<>();
+		metaMap.put("nsuri", node.getDefaultNsUri());
+		metaMap.put("template", node.getType().name());
+		metaMap.put("path", node.getPath());
+		return metaMap;
+	}
+
+	private void addMetaMap(Map<String, String> metaMap) {
+		Set<Map<String, String>> metaHolder = this.getMetadataHolder();
+		metaHolder.add(metaMap);
+	}
+
+	private Set<Map<String, String>> getMetadataHolder() {
+		Set<Map<String, String>> returnValue = this.getValue(METADATA_HOLDER);
+		if (returnValue == null) {
+			returnValue = new HashSet<Map<String, String>>();
+			this.putObject(METADATA_HOLDER, returnValue);
+		}
+		return returnValue;
+	}
+
+	void mergeMetadata(JsonWrapper otherWrapper) {
+		if (!isObject()) {
+			return;
+		}
+		Set<Map<String, String>> meta = this.getMetadataHolder();
+		Set<Map<String, String>> otherMeta = otherWrapper.getMetadataHolder();
+		meta.addAll(otherMeta);
 	}
 }

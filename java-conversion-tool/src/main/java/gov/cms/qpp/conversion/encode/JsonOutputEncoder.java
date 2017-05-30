@@ -10,7 +10,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Output JSON to a Writer.
@@ -42,9 +46,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 		try {
 			internalEncode(wrapper, node);
 			if (wrapper.isObject()) {
-				wrapper.putString("metadata_nsuri", node.getDefaultNsUri());
-				wrapper.putString("metadata_template", node.getType().name());
-				wrapper.putString("metadata_path", node.getPath());
+				wrapper.attachMetadata(node);
 			}
 		} catch (EncodeException e) {
 			DEV_LOG.warn("Encode error when doing internalEncode, adding a new ValidationError", e);
