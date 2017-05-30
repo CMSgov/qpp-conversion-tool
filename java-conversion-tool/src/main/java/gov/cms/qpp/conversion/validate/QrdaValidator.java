@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +23,7 @@ public class QrdaValidator {
 
 	private static final Registry<NodeValidator> VALIDATORS = new Registry<>(Validator.class);
 
-	private final Map<TemplateId, List<Node>> nodesForTemplateIds = new HashMap<>();
+	private final Map<TemplateId, List<Node>> nodesForTemplateIds = new EnumMap<>(TemplateId.class);
 	private final List<ValidationError> validationErrors = new ArrayList<>();
 	private Set<TemplateId> scope;
 

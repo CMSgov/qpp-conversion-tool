@@ -68,10 +68,8 @@ public enum TemplateId {
 
 	private static final Map<String, Map<String, TemplateId>> ROOT_AND_TO_TEMPLATE_ID = new HashMap<>();
 
-	static
-	{
-		for (TemplateId templateId : TemplateId.values())
-		{
+	static {
+		for (TemplateId templateId : TemplateId.values()) {
 			Map<String, TemplateId> extensionToTemplateId =
 					ROOT_AND_TO_TEMPLATE_ID.computeIfAbsent(templateId.root, ignore -> new HashMap<>());
 

@@ -10,7 +10,7 @@ public class IgnoredDecoder extends QppXmlDecoder {
 
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		return DecodeResult.TREE_CONTINUE; // TODO continue?
+		return DecodeResult.TREE_CONTINUE; // TODO Adam Edwards 5/30/2017 - should this be continue?
 	}
 
 }
