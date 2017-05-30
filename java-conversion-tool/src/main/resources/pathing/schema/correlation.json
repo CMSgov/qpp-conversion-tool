@@ -1,0 +1,16 @@
+{
+	"type":"object",
+	"additionalProperties": false,
+	"id":"#correlation",
+	"properties":{
+		"correlationId": {
+			"type": "string"
+		},
+		"config": {
+			"type": "array",
+			"items": {
+				"$ref": "config.json"
+			}
+		}
+	}
+}

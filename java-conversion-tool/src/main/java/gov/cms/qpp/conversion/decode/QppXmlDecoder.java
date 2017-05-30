@@ -85,6 +85,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				}
 				Converter.CLIENT_LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
 				Node childNode = new Node(parentNode, templateId);
+
+				childNode.setDefaultNsUri(defaultNs.getURI());
 				childNode.setPath(XPathHelper.getAbsolutePath(element));
 				
 				setNamespace(childEl, childDecoder);
@@ -179,8 +181,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		}
 		
 		if (null != rootDecoder) {
-			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
 			rootDecoder.setNamespace(rootElement, rootDecoder);
+			rootNode.setDefaultNsUri(rootDecoder.defaultNs.getURI());
+			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
 			rootDecoder.internalDecode(rootElement, rootNode);
 		} else {
 			rootNode.setId(TemplateId.PLACEHOLDER.getTemplateId());
