@@ -124,12 +124,4 @@ public class DefaultEncoder extends JsonOutputEncoder {
 			super("Payer Supplemental Data Element - CMS (V2)");
 		}
 	}
-
-	@Encoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
-	public static class PerformanceRateProportionMeasureCmsV2Encoder extends DefaultEncoder {
-
-		public PerformanceRateProportionMeasureCmsV2Encoder() {
-			super("Performance Rate for Proportion Measure - CMS (V2)");
-		}
-	}
 }
