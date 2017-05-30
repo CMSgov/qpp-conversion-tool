@@ -48,9 +48,10 @@ public class PathCorrelator {
 					pathCorrelationMap.put(
 							getKey(template.getTemplateId(), conf.getDecodeLabel()), conf.getGoods());
 				}
-				if (null != conf.getEncodeLabel()) {
-					pathCorrelationMap.put(
-							getKey(template.getTemplateId(), conf.getEncodeLabel()), conf.getGoods());
+				if (null != conf.getEncodeLabels()) {
+					conf.getEncodeLabels().forEach(label -> {
+						pathCorrelationMap.put(getKey(template.getTemplateId(), label), conf.getGoods());
+					});
 				}
 			});
 		});
