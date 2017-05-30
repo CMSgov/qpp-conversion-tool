@@ -7,6 +7,12 @@
 		},{
 			"templateId": "QRDA_CATEGORY_III_REPORT_V3",
 			"correlationId": "topLevel"
+		},{
+			"templateId": "ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS",
+			"correlationId": "aciMeasure"
+		},{
+			"templateId": "ACI_NUMERATOR_DENOMINATOR",
+			"correlationId": "aciMeasure"
 		}
 	],
 	"correlations": [
@@ -49,6 +55,19 @@
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'component' and namespace-uri() = '<nsuri>']/*[local-name() = 'structuredBody' and namespace-uri() = '<nsuri>']/*[local-name() = 'component' and namespace-uri() = '<nsuri>']",
 						"xmltype": "element"
+					}
+				}
+			]
+		},
+		{
+			"correlationId": "aciMeasure",
+			"config": [
+				{
+					"decodeLabel": "measureId",
+					"encodeLabel": "measureId",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = '<nsuri>']/*[local-name() = 'externalDocument' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>']/@extension",
+						"xmltype": "attribute"
 					}
 				}
 			]

@@ -6,6 +6,7 @@ import gov.cms.qpp.conversion.correlation.model.Config;
 import gov.cms.qpp.conversion.correlation.model.Correlation;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
+import gov.cms.qpp.conversion.model.TemplateId;
 import org.reflections.util.ClasspathHelper;
 
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class PathCorrelator {
 		});
 	}
 
-	public static String getUriSubstitution() {
+	static String getUriSubstitution() {
 		return pathCorrelation.getUriSubstitution();
 	}
 
@@ -63,7 +64,8 @@ public class PathCorrelator {
 		return template + "_" + attribute;
 	}
 
-	public static String getPath(String key, String uri) {
+	public static String getXpath(String base, String attribute, String uri) {
+		String key = PathCorrelator.getKey(base, attribute);
 		Goods goods = pathCorrelationMap.get(key);
 		return (goods == null) ? null :
 				goods.getRelativeXPath().replaceAll(pathCorrelation.getUriSubstitution(), uri);

@@ -57,6 +57,33 @@ public class XpathJsonPathComparisonTest {
 		assertEquals("Attribute value should be: MIPS", "MIPS", attribute.getValue());
 	}
 
+	@Test
+	public void compareAciMeasurePerformedMeasureIdAciPea1() throws IOException, XmlException {
+		String xPath = prepPath("measurementSets[2].measurements[0].measureId");
+		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
+
+		assertEquals("Attribute name should be: extension", "extension", attribute.getName());
+		assertEquals("Attribute value should be: MIPS", "ACI-PEA-1", attribute.getValue());
+	}
+
+	@Test
+	public void compareAciMeasurePerformedMeasureIdAciEp1() throws IOException, XmlException {
+		String xPath = prepPath("measurementSets[2].measurements[1].measureId");
+		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
+
+		assertEquals("Attribute name should be: extension", "extension", attribute.getName());
+		assertEquals("Attribute value should be: MIPS", "ACI_EP_1", attribute.getValue());
+	}
+
+	@Test
+	public void compareAciMeasurePerformedMeasureIdAciCctpe3() throws IOException, XmlException {
+		String xPath = prepPath("measurementSets[2].measurements[2].measureId");
+		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
+
+		assertEquals("Attribute name should be: extension", "extension", attribute.getName());
+		assertEquals("Attribute value should be: MIPS", "ACI_CCTPE_3", attribute.getValue());
+	}
+
 	private String prepPath(String jsonPath) {
 		String base = "$";
 		String leaf = jsonPath;
@@ -73,8 +100,7 @@ public class XpathJsonPathComparisonTest {
 		String nsUrl = (String) jsonMap.get("metadata_nsuri");
 		String baseTemplate = (String) jsonMap.get("metadata_template");
 		String baseXpath = (String) jsonMap.get("metadata_path");
-		String key = PathCorrelator.getKey(baseTemplate, leaf);
-		String relativeXpath = PathCorrelator.getPath(key, nsUrl);
+		String relativeXpath = PathCorrelator.getXpath(baseTemplate, leaf, nsUrl);
 
 		return (relativeXpath != null) ? baseXpath + "/" + relativeXpath : baseXpath;
 	}
