@@ -20,7 +20,7 @@ public class IaSectionRoundTripTest {
 
 	@Before
 	public void setUp() throws IOException {
-		file = Paths.get("src/test/resources/valid-QRDA-III.xml");
+		file = Paths.get("../qrda-files/valid-QRDA-III.xml");
 	}
 
 	@After

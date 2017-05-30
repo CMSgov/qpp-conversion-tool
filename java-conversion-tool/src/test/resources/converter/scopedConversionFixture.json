@@ -1,6 +1,7 @@
 {
 	"ACI_SECTION": {
 		"category": "aci",
+		"submissionMethod": "electronicHealthRecord",
 		"measurements": [
 			{
 				"measureId": "ACI-PEA-1",
@@ -27,6 +28,7 @@
 	},
 	"IA_SECTION": {
 		"category": "ia",
+		"submissionMethod": "electronicHealthRecord",
 		"measurements": [
 			{
 				"measureId": "IA_EPA_1",
@@ -2091,12 +2093,12 @@
 		"measurementSets": [
 			{
 				"value": 1000,
-				"source": "provider",
 				"performanceStart": "2017-01-01",
 				"performanceEnd": "2017-12-31"
 			},
 			{
 				"category": "aci",
+				"submissionMethod": "electronicHealthRecord",
 				"measurements": [
 					{
 						"measureId": "ACI-PEA-1",
@@ -2120,19 +2122,18 @@
 						}
 					}
 				],
-				"source": "provider",
 				"performanceStart": "2017-01-01",
 				"performanceEnd": "2017-12-31"
 			},
 			{
 				"category": "ia",
+				"submissionMethod": "electronicHealthRecord",
 				"measurements": [
 					{
 						"measureId": "IA_EPA_1",
 						"value": true
 					}
 				],
-				"source": "provider",
 				"performanceStart": "2017-01-01",
 				"performanceEnd": "2017-12-31"
 			}
