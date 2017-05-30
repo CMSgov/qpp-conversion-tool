@@ -245,7 +245,6 @@ public class ConversionEntry {
 		Path inDir = Paths.get(extractDir(path));
 		Pattern fileRegex = wildCardToRegex(path);
 		try {
-			System.out.println("opsgpoerh " + inDir);
 			return Files.walk(inDir)
 					.filter(file -> fileRegex.matcher(file.toString()).matches())
 					.filter(file -> !Files.isDirectory(file))
