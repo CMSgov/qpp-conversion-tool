@@ -19,8 +19,8 @@ public class ConversionFileWriterWrapper {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionFileWriterWrapper.class);
 
 	private Path inFile;
-	private boolean doDefaults;
-	private boolean doValidation;
+	private boolean doDefaults = true;
+	private boolean doValidation = true;
 
 	public ConversionFileWriterWrapper(Path inFile) {
 		this.inFile = inFile;

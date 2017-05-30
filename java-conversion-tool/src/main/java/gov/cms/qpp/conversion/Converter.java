@@ -158,7 +158,9 @@ public class Converter {
 				validationErrors.addAll(validator.validate(decoded));
 			}
 
-			qpp = encode();
+			if (validationErrors.isEmpty()) {
+				qpp = encode();
+			}
 		} else {
 			validationErrors.add(new ValidationError("The file is not a QRDA-III XML document"));
 		}
