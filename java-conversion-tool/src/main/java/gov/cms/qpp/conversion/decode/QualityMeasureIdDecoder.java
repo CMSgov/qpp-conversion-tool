@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
 
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -21,6 +22,7 @@ import java.util.Set;
 @Decoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdDecoder extends QppXmlDecoder {
 
+	private static final String MEASURE_ID = "measureId";
 	private static final Set<String> MEASURE_ID_CONTAINING_STRATUM = new HashSet<>(Arrays.asList(
 		"40280381-528a-60ff-0152-8e089ed20376", "40280381-51f0-825b-0152-22b52da917ba",
 		"40280381-51f0-825b-0152-22b695b217dc", "40280381-52fc-3a32-0153-1f6962df0f9c"));
@@ -43,7 +45,7 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 		if (MEASURE_ID_CONTAINING_STRATUM.contains(measureGuid)) {
 			decodeResult = DecodeResult.TREE_ESCAPED;
 		} else {
-			thisNode.putValue("measureId", measureGuid);
+			thisNode.putValue(MEASURE_ID, measureGuid);
 		}
 
 		return decodeResult;
@@ -56,11 +58,16 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 	 * @return The measure GUID in the Quality Measure Identifier
 	 */
 	private String getMeasureGuid(final Element element) {
-		String expressionStr = "./ns:reference/ns:externalDocument/ns:id[@root='2.16.840.1.113883.4.738']/@extension";
+		String expressionStr = getXpath(MEASURE_ID);
 
 		XPathExpression<Attribute> expression = XPathFactory.instance().compile(expressionStr, Filters.attribute(), null,
 			xpathNs);
 		return Optional.ofNullable(expression.evaluateFirst(element)).map(Attribute::getValue)
 			.orElse(null);
+	}
+
+	private String getXpath(String attribute) {
+		return PathCorrelator.getXpath(
+				TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.name(), attribute, defaultNs.getURI());
 	}
 }

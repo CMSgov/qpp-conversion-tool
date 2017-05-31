@@ -9,13 +9,31 @@
 			"correlationId": "topLevel"
 		},{
 			"templateId": "ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS",
-			"correlationId": "aciMeasure"
+			"correlationId": "measure"
 		},{
 			"templateId": "ACI_NUMERATOR_DENOMINATOR",
-			"correlationId": "aciMeasure"
+			"correlationId": "measure"
+		},{
+			"templateId": "IA_MEASURE",
+			"correlationId": "measure"
+		},{
+			"templateId": "MEASURE_REFERENCE_RESULTS_CMS_V2",
+			"correlationId": "qualityMeasure"
 		},{
 			"templateId": "ACI_AGGREGATE_COUNT",
 			"correlationId": "aggregateCount"
+		},{
+			"templateId": "MEASURE_PERFORMED",
+			"correlationId": "measurePerformed"
+		},{
+			"templateId": "REPORTING_PARAMETERS_ACT",
+			"correlationId": "reportingParameters"
+		},{
+			"templateId": "QRDA_CATEGORY_III_REPORT_V3",
+			"correlationId": "npiTinParent"
+		},{
+			"templateId": "MEASURE_DATA_CMS_V2",
+			"correlationId": "measureData"
 		}
 	],
 	"correlations": [
@@ -71,7 +89,7 @@
 			]
 		},
 		{
-			"correlationId": "aciMeasure",
+			"correlationId": "measure",
 			"config": [
 				{
 					"decodeLabel": "measureId",
@@ -80,6 +98,18 @@
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = '<nsuri>']/*[local-name() = 'externalDocument' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>']/@extension",
+						"xmltype": "attribute"
+					}
+				}
+			]
+		},
+		{
+			"correlationId": "qualityMeasure",
+			"config": [
+				{
+					"decodeLabel": "measureId",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = '<nsuri>']/*[local-name() = 'externalDocument' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.4.738']/@extension",
 						"xmltype": "attribute"
 					}
 				}
@@ -96,6 +126,67 @@
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@value",
+						"xmltype": "attribute"
+					}
+				}
+			]
+		},
+		{
+			"correlationId": "measurePerformed",
+			"config": [
+				{
+					"decodeLabel": "measurePerformed",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@code",
+						"xmltype": "attribute"
+					}
+				}
+			]
+		},{
+			"correlationId": "measureData",
+			"config": [
+				{
+					"decodeLabel": "type",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@code",
+						"xmltype": "attribute"
+					}
+				},
+				{
+					"decodeLabel": "populationId",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = '<nsuri>']/*[local-name() = 'externalObservation' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>']/@root",
+						"xmltype": "attribute"
+					}
+				}
+			]
+		},
+		{
+			"correlationId": "reportingParameters",
+			"config": [
+				{
+					"decodeLabel": "performanceStart",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'low' and namespace-uri() = '<nsuri>']/@value",
+						"xmltype": "attribute"
+					}
+				},
+				{
+					"decodeLabel": "performanceEnd",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'high' and namespace-uri() = '<nsuri>']/@value",
+						"xmltype": "attribute"
+					}
+				}
+			]
+		},
+		{
+			"correlationId": "npiTinParent",
+			"config": [
+				{
+					"decodeLabel": "NPITIN",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']",
 						"xmltype": "attribute"
 					}
 				}

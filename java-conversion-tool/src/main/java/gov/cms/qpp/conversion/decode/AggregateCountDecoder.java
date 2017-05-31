@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Decoder;
@@ -40,9 +41,14 @@ public class AggregateCountDecoder extends QppXmlDecoder {
 	 * @param thisnode Node
 	 */
 	protected void setSciNumeratorDenominatorOnNode(Element element, Node thisnode) {
-		String expressionStr = "./ns:value/@value";
+		String expressionStr = getXpath(AGGREGATE_COUNT);
 		Consumer<? super Attribute> consumer = p -> thisnode.putValue(AGGREGATE_COUNT, p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+	}
+
+	private String getXpath(String attribute) {
+		return PathCorrelator.getXpath(
+				TemplateId.ACI_AGGREGATE_COUNT.name(), attribute, defaultNs.getURI());
 	}
 
 }

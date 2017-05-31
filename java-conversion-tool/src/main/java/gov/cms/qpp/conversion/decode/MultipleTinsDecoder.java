@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -22,8 +23,6 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 	public static final String NPI_TIN_ID = "NPITIN";
 	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
 	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
-	private static final String PERFORMED_ASSIGNED_ENTITY_PATH =
-			"./ns:documentationOf/ns:serviceEvent/ns:performer/ns:assignedEntity";
 	private static final String ID = "id";
 	private static final String EXTENSION = "extension";
 	private static final String REPRESENTED_ORGANIZATION = "representedOrganization";
@@ -60,13 +59,19 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 
 		Namespace ns = element.getNamespace();
 
-		XPathExpression<?> expression = XPathFactory.instance().compile(PERFORMED_ASSIGNED_ENTITY_PATH,
+		XPathExpression<?> expression = XPathFactory.instance().compile(
+				getXpath(NPI_TIN_ID),
 				Filters.element(), null, xpathNs);
 		List<Element> assignedEntities = (List<Element>) expression.evaluate(element);
 
 		assignedEntities.stream()
 				.filter(this.validAssignedEntity(ns))
 				.forEach(this.mapNpiTin(ns, thisNode));
+	}
+
+	private String getXpath(String attribute) {
+		return PathCorrelator.getXpath(
+				TemplateId.QRDA_CATEGORY_III_REPORT_V3.name(), attribute, defaultNs.getURI());
 	}
 
 	/**
