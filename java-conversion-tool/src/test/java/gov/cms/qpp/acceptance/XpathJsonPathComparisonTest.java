@@ -15,7 +15,6 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -54,7 +53,8 @@ public class XpathJsonPathComparisonTest {
 
 	@Test
 	public void compareTopLevelAttributeProgramName() throws XmlException, IOException {
-		String xPath = prepPath("programName");
+		String jsonPath = "programName";
+		String xPath = prepPath(jsonPath);
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
 		assertEquals("Attribute name should be: extension", "extension", attribute.getName());
@@ -63,7 +63,8 @@ public class XpathJsonPathComparisonTest {
 
 	@Test
 	public void compareTopLevelAttributeTin() throws XmlException, IOException {
-		String xPath = prepPath("taxpayerIdentificationNumber");
+		String jsonPath = "taxpayerIdentificationNumber";
+		String xPath = prepPath(jsonPath);
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
 		assertEquals("Attribute name should be: extension", "extension", attribute.getName());
@@ -111,7 +112,8 @@ public class XpathJsonPathComparisonTest {
 	//ACI
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1() throws IOException, XmlException {
-		String xPath = prepPath("measurementSets[2].measurements[0].measureId");
+		String jsonPath = "measurementSets[2].measurements[0].measureId";
+		String xPath = prepPath(jsonPath);
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
 		assertEquals("Attribute name should be: extension", "extension", attribute.getName());
@@ -176,7 +178,8 @@ public class XpathJsonPathComparisonTest {
 	//Quality measure
 	@Test
 	public void compareQualityMeasureIdValuePerformanceNotMet() throws IOException, XmlException {
-		String xPath = prepPath("measurementSets[1].measurements[0].value.performanceNotMet");
+		String jsonPath = "measurementSets[1].measurements[0].value.performanceNotMet";
+		String xPath = prepPath(jsonPath);
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
 		assertEquals("Attribute name should be: value", "value", attribute.getName());
@@ -185,7 +188,8 @@ public class XpathJsonPathComparisonTest {
 
 	@Test
 	public void compareQualityMeasureIdValuePerformanceExclusion() throws IOException, XmlException {
-		String xPath = prepPath("measurementSets[1].measurements[0].value.performanceExclusion");
+		String jsonPath = "measurementSets[1].measurements[0].value.performanceExclusion";
+		String xPath = prepPath(jsonPath);
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
 		assertEquals("Attribute name should be: value", "value", attribute.getName());
@@ -265,20 +269,6 @@ public class XpathJsonPathComparisonTest {
 	@SuppressWarnings("unchecked")
 	private Map<String, String> getMetaMap(Map<String, Object> jsonMap, final String leaf) {
 		List<Map<String, String>> metaHolder = (List<Map<String, String>>) jsonMap.get("metadata_holder");
-//		if (metaHolder.size() > 1) {
-//			Stream<Map<String, String>> sorted = metaHolder.stream()
-//					.sorted(labeledFirst());
-//			return sorted.filter(entry -> {
-//				String xPath = null;
-//				if (entry.get("encodeLabel") == null || entry.get("encodeLabel").equals(leaf)) {
-//					xPath = PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri"));
-//				}
-//				return xPath != null;
-//			}).findFirst().orElse(null);
-//		} else {
-//			return metaHolder.get(0);
-//		}
-
 		Stream<Map<String, String>> sorted = metaHolder.stream()
 					.sorted(labeledFirst());
 		return sorted.filter(entry -> {
