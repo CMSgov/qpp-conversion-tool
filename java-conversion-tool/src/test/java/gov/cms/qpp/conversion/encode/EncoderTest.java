@@ -34,12 +34,10 @@ public class EncoderTest {
 			TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getTemplateId(),
 			TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId(),
 			TemplateId.CMS_AGGREGATE_COUNT.getTemplateId(),
-			TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2.getTemplateId(),
 			TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS.getTemplateId(),
 			TemplateId.MEASURE_PERFORMED.getTemplateId(),
 			TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId(),
 			TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS.getTemplateId(),
-			TemplateId.PERFORMANCE_RATE.getTemplateId(),
 			TemplateId.ACI_NUMERATOR.getTemplateId(),
 			TemplateId.ACI_DENOMINATOR.getTemplateId(),
 			TemplateId.IA_MEASURE.getTemplateId()
