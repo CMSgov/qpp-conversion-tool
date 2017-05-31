@@ -24,7 +24,7 @@ public class ConverterBenchmark implements FilenameFilter {
 	File path = SAMPLES_DIR;
 	
 	public boolean accept(File file, String name) {
-		return file.isFile() && name.endsWith(EXTENSION);
+		return new File(file,name).isFile() && name.endsWith(EXTENSION);
 	}
 	
 	public void doTearDown() {
@@ -62,6 +62,8 @@ public class ConverterBenchmark implements FilenameFilter {
 					
 					long finish = System.currentTimeMillis();
 					stats.addValue( (finish-start) / 1000);
+					
+					doTearDown();
 				}
 				// the benchmark
 				double mean = stats.getMean();
