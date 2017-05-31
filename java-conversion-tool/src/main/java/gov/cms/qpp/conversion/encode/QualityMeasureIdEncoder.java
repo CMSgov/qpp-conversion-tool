@@ -202,8 +202,12 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Node populationNode = parentNode.findChildNode(n -> accepted.contains(n.getValue(TYPE)));
 
 		Optional.ofNullable(populationNode).ifPresent(
-				node -> wrapper.putInteger("populationTotal",
-						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
+				node -> {
+					Node aggCount = node.getChildNodes().get(0);
+					maintainContinuity(wrapper, aggCount, "populationTotal");
+					wrapper.putInteger("populationTotal", aggCount.getValue(AGGREGATE_COUNT));
+				}
+		);
 	}
 
 	/**
@@ -216,8 +220,11 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(TYPE)));
 
 		Optional.ofNullable(numeratorNode).ifPresent(
-				node -> wrapper.putInteger("performanceMet",
-						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
+				node -> {
+					Node aggCount = node.getChildNodes().get(0);
+					maintainContinuity(wrapper, aggCount, "performanceMet");
+					wrapper.putInteger("performanceMet", aggCount.getValue(AGGREGATE_COUNT));
+				});
 	}
 
 	/**
@@ -231,11 +238,19 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Node denominatorNode = parentNode.findChildNode(n -> "DENOM".equals(n.getValue(TYPE)));
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
-				node -> wrapper.putInteger("performanceExclusion",
-						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
+				node -> {
+					Node aggCount = node.getChildNodes().get(0);
+					maintainContinuity(wrapper, aggCount, "performanceExclusion");
+					wrapper.putInteger("performanceExclusion", aggCount.getValue(AGGREGATE_COUNT));
+				});
 
 		Optional.ofNullable(calculatePerformanceNotMet(denominatorNode, denomExclusionNode)).ifPresent(
-				performanceNotMet -> wrapper.putInteger("performanceNotMet", performanceNotMet));
+				performanceNotMet -> {
+					//have to choose one of denominatorNode, denomExclusionNode
+					//Why are we deriving values???
+					maintainContinuity(wrapper, denomExclusionNode, "performanceNotMet");
+					wrapper.putInteger("performanceNotMet", performanceNotMet);
+				});
 	}
 
 	/**

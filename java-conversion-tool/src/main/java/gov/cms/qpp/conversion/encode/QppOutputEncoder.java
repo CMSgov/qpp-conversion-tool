@@ -29,4 +29,14 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 		}
 	}
 
+	protected void maintainContinuity(JsonWrapper wrapper, Node node, String leafLabel) {
+		JsonWrapper throwAway = new JsonWrapper();
+		JsonOutputEncoder used = ENCODERS.get(node.getId());
+		used.encode(throwAway, node);
+		maintainContinuity(wrapper, throwAway, leafLabel);
+	}
+
+	protected void maintainContinuity(JsonWrapper wrapper, JsonWrapper other, String leafLabel) {
+		wrapper.mergeMetadata(other, leafLabel);
+	}
 }

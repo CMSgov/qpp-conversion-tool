@@ -94,7 +94,8 @@
 				{
 					"decodeLabel": "measureId",
 					"encodeLabels": [
-						"measureId"
+						"measureId",
+						"value"
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = '<nsuri>']/*[local-name() = 'externalDocument' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>']/@extension",
@@ -122,7 +123,13 @@
 					"decodeLabel": "aggregateCount",
 					"encodeLabels": [
 						"denominator",
-						"numerator"
+						"numerator",
+						"performanceMet",
+						"performanceNotMet",
+						"performanceExclusion",
+						"populationTotal",
+						"initialPopulation",
+						"denominatorExclusions"
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@value",
@@ -136,6 +143,9 @@
 			"config": [
 				{
 					"decodeLabel": "measurePerformed",
+					"encodeLabels": [
+						"value"
+					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@code",
 						"xmltype": "attribute"

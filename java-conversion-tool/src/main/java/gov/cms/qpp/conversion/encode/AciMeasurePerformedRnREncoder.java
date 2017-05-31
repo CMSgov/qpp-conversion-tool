@@ -28,6 +28,8 @@ public class AciMeasurePerformedRnREncoder extends QppOutputEncoder {
 		final String measurePerformedValue = "measurePerformed";
 
 		Node child = node.findFirstNode(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		generateChildMeta(wrapper, child);
+
 		if (child != null) {
 			String measureValue = child.getValue(measurePerformedValue);
 			if ("Y".equalsIgnoreCase(measureValue) || "N".equalsIgnoreCase(measureValue)) {
@@ -36,5 +38,12 @@ public class AciMeasurePerformedRnREncoder extends QppOutputEncoder {
 				wrapper.putObject(VALUE, measureValue);
 			}
 		}
+	}
+
+	private void generateChildMeta(JsonWrapper wrapper, Node child) {
+		JsonOutputEncoder childEncoder = ENCODERS.get(child.getId());
+		JsonWrapper throwAway = new JsonWrapper();
+		childEncoder.encode(throwAway, child);
+		wrapper.mergeMetadata(throwAway, VALUE);
 	}
 }
