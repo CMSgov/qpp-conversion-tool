@@ -177,19 +177,6 @@ curl -X POST \
 The response body will either be the QPP JSON on success or error JSON on an error.
 The HTTP Status will be `201 Created` on succes or `422 Unprocessable entity` on an error.
 
-### Serverless
-Install Serverless
-```shell
-npm install -g serverless
-```
-
-Deploy to S3
-```shell
-export AWS_ACCESS_KEY_ID=<your-key-here>
-export AWS_SECRET_ACCESS_KEY=<your-secret-key-here>
-# AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are now available for serverless to use
-serverless deploy
-```
 
 ## Want to contribute?
 

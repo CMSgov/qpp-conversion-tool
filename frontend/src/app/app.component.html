@@ -1,24 +1,58 @@
-<h1>
-    {{title}}
-</h1>
+<section class="usa-section">
+    <div class="usa-grid">
+        <h1>{{title}}</h1>
+        <div class="usa-grid">
+            <div class="usa-width-whole">
+                <h2>Select files</h2>
 
-<button (click)="getPolicy()">Get Policy</button>
+                <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader" class="well my-drop-zone">
+                    Drop files here
+                </div>
 
-<form ngNoForm action="{{ policy.bucket_url }}" method="post" enctype="multipart/form-data">
-    Key to upload:
-    <input type="hidden" name="key" value="{{file_name}}" /><br />
-    <input type="hidden" name="acl" value="{{ policy.acl }}" />
-    <!-- <input type="hidden" name="success_action_status" value="{{ policy.success_action_status }}" /> -->
-    <input type="hidden" name="success_action_status" value="201" />
+                Single
+                <input type="file" ng2FileSelect [uploader]="uploader" />
 
-    <input type="hidden" name="Content-Type" value="xml" /><br />
-    <input type="hidden" name="X-Amz-Credential" value="{{ policy.x_amz_credential }}" />
-    <input type="hidden" name="X-Amz-Algorithm" value="{{ policy.x_amz_algorithm }}" />
-    <input type="hidden" name="X-Amz-Date" value="{{ policy.x_amz_date }}" />
+                <h2>Upload queue</h2>
+                <p>Queue length: {{ uploader?.queue?.length }}</p>
 
-    <input type="hidden" name="policy" value="{{ policy.policy }}" />
-    <input type="hidden" name="X-Amz-Signature" value="{{ policy.x_amz_signature }}" /> File:
-    <input type="file" name="file" /> <br />
-
-    <input type="submit" name="submit" value="Upload to Amazon S3" />
-</form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="50%">Name</th>
+                            <th>Size</th>
+                            <th>Progress</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of uploader.queue">
+                            <td><strong>{{ item?.file?.name }}</strong></td>
+                            <td>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                            <td>{{ item.progress }}%</td>
+                            <td class="text-center">
+                                <span *ngIf="item.isSuccess">success</span>
+                                <span *ngIf="item.isCancel">cancelled</span>
+                                <span *ngIf="item.isError">error</span>
+                            </td>
+                            <td nowrap>
+                                <button type="button" class="usa-button" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                  <span class="glyphicon glyphicon-upload"></span> Upload
+                </button>
+                                <button type="button" class="usa-button-gray" (click)="item.cancel()" [disabled]="!item.isUploading">
+                  <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                </button>
+                                <button type="button" class="usa-button-secondary" (click)="item.remove()">
+                  <span class="glyphicon glyphicon-trash"></span> Remove
+                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="response">
+                    {{response}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
