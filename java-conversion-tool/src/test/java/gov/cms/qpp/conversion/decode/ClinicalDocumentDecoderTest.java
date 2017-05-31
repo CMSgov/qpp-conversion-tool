@@ -36,14 +36,14 @@ public class ClinicalDocumentDecoderTest {
 	@Before
 	public void setupTest() throws XmlException {
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
-		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(clinicalDocument.getChildNodes());
 	}
 
 	@Test
 	public void testRootId() {
-		assertThat("template ID is correct", clinicalDocument.getId(), is(TemplateId.CLINICAL_DOCUMENT.getTemplateId()));
+		assertThat("template ID is correct", clinicalDocument.getType(), is(TemplateId.CLINICAL_DOCUMENT));
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class ClinicalDocumentDecoderTest {
 		String xmlWithGarbage = IOUtils.toString(stream, Charset.defaultCharset());
 
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlWithGarbage));
-		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 		Node performanceYear = clinicalDocument.getChildNodes().get(0);
 
 		assertThat("Should contain a program name",

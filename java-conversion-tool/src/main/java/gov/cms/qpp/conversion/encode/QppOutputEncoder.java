@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.Registry;
 public class QppOutputEncoder extends JsonOutputEncoder {
 
 	public static final String VALUE = "value";
-	protected static final Registry<String, JsonOutputEncoder> ENCODERS = new Registry<>(Encoder.class);
+	protected static final Registry<JsonOutputEncoder> ENCODERS = new Registry<>(Encoder.class);
 
 	/**
 	 * Top level internalEncode that calls it's children from the registry.
@@ -22,7 +22,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
-		JsonOutputEncoder encoder = ENCODERS.get(node.getId());
+		JsonOutputEncoder encoder = ENCODERS.get(node.getType());
 
 		if (null != encoder) {
 			encoder.encode(wrapper, node);
@@ -31,7 +31,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 
 	protected void maintainContinuity(JsonWrapper wrapper, Node node, String leafLabel) {
 		JsonWrapper throwAway = new JsonWrapper();
-		JsonOutputEncoder used = ENCODERS.get(node.getId());
+		JsonOutputEncoder used = ENCODERS.get(node.getType());
 		used.encode(throwAway, node);
 		maintainContinuity(wrapper, throwAway, leafLabel);
 	}

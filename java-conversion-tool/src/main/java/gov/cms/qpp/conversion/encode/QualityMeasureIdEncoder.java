@@ -128,7 +128,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private List<Node> initializeMeasureDataList(int subPopulationCount) {
 		return IntStream.range(0, subPopulationCount)
-				.mapToObj(node -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId()))
+				.mapToObj(ignore -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2))
 				.collect(Collectors.toList());
 	}
 
@@ -186,7 +186,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		this.encodePerformanceNotMet(childWrapper, parentNode);
 
 		for (Node childNode : parentNode.getChildNodes()) {
-			JsonOutputEncoder measureDataEncoder = ENCODERS.get(childNode.getId());
+			JsonOutputEncoder measureDataEncoder = ENCODERS.get(childNode.getType());
 			measureDataEncoder.encode(childWrapper, childNode);
 		}
 	}
@@ -198,7 +198,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the initial population
 	 */
 	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
-		Set<String> accepted = new HashSet(Arrays.asList("IPOP", "IPP"));
+		Set<String> accepted = new HashSet<>(Arrays.asList("IPOP", "IPP"));
 		Node populationNode = parentNode.findChildNode(n -> accepted.contains(n.getValue(TYPE)));
 
 		Optional.ofNullable(populationNode).ifPresent(

@@ -2,14 +2,12 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
-import gov.cms.qpp.conversion.encode.helper.ReportingParameters;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -37,8 +35,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) {
 		encodeToplevel(wrapper, thisNode);
 
-		Map<String, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
-			Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
+		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
+			Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
 		Node reportingNode = getReportingNode(childMapByTemplateId);
 
@@ -64,11 +62,11 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				thisNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
 	}
 
-	private Node getReportingNode(Map<String, Node> childMapByTemplateId) {
+	private Node getReportingNode(Map<TemplateId, Node> childMapByTemplateId) {
 		Node returnValue = new Node();
-		Node section = childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
+		Node section = childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION);
 		if (section != null) {
-			returnValue = section.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+			returnValue = section.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		}
 		return returnValue;
 	}
@@ -82,7 +80,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @return encoded measurement sets
 	 */
 	private JsonWrapper encodeMeasurementSets(JsonWrapper wrapper,
-											  Map<String, Node> childMapByTemplateId,
+											  Map<TemplateId, Node> childMapByTemplateId,
 											  Node reportingNode) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
@@ -91,11 +89,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		String performanceEnd = reportingNode.getValue(PERFORMANCE_END);
 
 		for (Node child : childMapByTemplateId.values()) {
-			if (MultipleTinsDecoder.NPI_TIN_ID.equalsIgnoreCase(child.getId())) {
+			if (TemplateId.NPI_TIN_ID == child.getType()) {
 				continue; //MultiTINS is not a real encoder.
 			}
 			childWrapper = new JsonWrapper();
-			sectionEncoder = ENCODERS.get(child.getId());
+			sectionEncoder = ENCODERS.get(child.getType());
+
 			// Section encoder is null when a decoder exists without a corresponding encoder
 			// currently don't have a set of IA Encoders, but this will protect against others
 			try {
@@ -112,7 +111,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 				measurementSetsWrapper.putObject(childWrapper);
 			} catch (NullPointerException exc) {
-				String message = "No encoder for decoder : " + child.getId();
+				String message = "No encoder for decoder : " + child.getType();
 				throw new EncodeException(message, exc);
 			}
 		}

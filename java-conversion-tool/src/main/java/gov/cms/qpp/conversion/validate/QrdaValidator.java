@@ -1,34 +1,34 @@
 package gov.cms.qpp.conversion.validate;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import gov.cms.qpp.conversion.ConversionEntry;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The engine that executes the VALIDATORS on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
  */
 public class QrdaValidator {
 
-	private static final Registry<String, NodeValidator> VALIDATORS = new Registry<>(Validator.class);
+	private static final Registry<NodeValidator> VALIDATORS = new Registry<>(Validator.class);
 
-	private final Map<String, List<Node>> nodesForTemplateIds = new HashMap<>();
+	private final Map<TemplateId, List<Node>> nodesForTemplateIds = new EnumMap<>(TemplateId.class);
 	private final List<ValidationError> validationErrors = new ArrayList<>();
-	private Collection<TemplateId> scope;
+	private Set<TemplateId> scope;
 
 	public QrdaValidator() {
-		Collection<TemplateId> theScope = QrdaScope.getTemplates(ConversionEntry.getScope());
+		Set<TemplateId> theScope = QrdaScope.getTemplates(ConversionEntry.getScope());
 		if (!theScope.isEmpty()) {
 			this.scope = theScope;
 		}
@@ -69,8 +69,7 @@ public class QrdaValidator {
 	 * @param node The node to validate.
 	 */
 	private void validateSingleNode(final Node node) {
-		final String templateId = node.getId();
-		NodeValidator validatorForNode = getValidator(templateId);
+		NodeValidator validatorForNode = getValidator(node.getType());
 
 		if (null == validatorForNode || !isValidationRequired(validatorForNode)) {
 			return;
@@ -87,11 +86,11 @@ public class QrdaValidator {
 	 * @param templateId string representation of a would be validator's template id
 	 * @return validator that corresponds to the given template id
 	 */
-	private NodeValidator getValidator(String templateId) {
+	private NodeValidator getValidator(TemplateId templateId) {
 		NodeValidator nodeValidator = VALIDATORS.get(templateId);
 		if (nodeValidator != null) {
 			Validator validator = nodeValidator.getClass().getAnnotation(Validator.class);
-			return (scope != null && !scope.contains(validator.templateId())) ? null : nodeValidator;
+			return (scope != null && !scope.contains(validator.value())) ? null : nodeValidator;
 		}
 
 		return null;
@@ -125,9 +124,9 @@ public class QrdaValidator {
 	 * @param node The node to add to the map.
 	 */
 	private void addNodeToTemplateMap(final Node node) {
-		nodesForTemplateIds.putIfAbsent(node.getId(), new ArrayList<>());
+		nodesForTemplateIds.putIfAbsent(node.getType(), new ArrayList<>());
 
-		nodesForTemplateIds.get(node.getId()).add(node);
+		nodesForTemplateIds.get(node.getType()).add(node);
 	}
 
 	/**
@@ -147,7 +146,7 @@ public class QrdaValidator {
 	private void validateTemplateIds() {
 		Converter.CLIENT_LOG.info("Validating all nodes by templateId");
 
-		for (String validatorKey : VALIDATORS.getKeys()) {
+		for (TemplateId validatorKey : VALIDATORS.getKeys()) {
 			validateSingleTemplateId(getValidator(validatorKey));
 		}
 	}
@@ -163,7 +162,7 @@ public class QrdaValidator {
 			return;
 		}
 
-		final String templateId = getTemplateId(validator);
+		final TemplateId templateId = getTemplateId(validator);
 
 		Converter.CLIENT_LOG.debug("Validating nodes associated with templateId {}", templateId);
 
@@ -179,7 +178,7 @@ public class QrdaValidator {
 	 * @param validatorForNode The NodeValidator that has the @Validator annotation
 	 * @return The templateId that the NodeValidator will validate
 	 */
-	private String getTemplateId(final NodeValidator validatorForNode) {
-		return getAnnotation(validatorForNode).templateId().getTemplateId();
+	private TemplateId getTemplateId(final NodeValidator validatorForNode) {
+		return getAnnotation(validatorForNode).value();
 	}
 }

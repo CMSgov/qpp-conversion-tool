@@ -1,8 +1,26 @@
 package gov.cms.qpp.conversion;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
@@ -11,29 +29,14 @@ import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.ErrorSource;
+import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
@@ -139,7 +142,7 @@ public class Converter {
 	 */
 	private void transform(Path inFile) throws XmlException, IOException {
 		String inputFileName = inFile.getFileName().toString().trim();
-		Node decodedNode = transform(XmlUtils.fileToStream(inFile));
+		Node decodedNode = transform(new NamedInputStream(XmlUtils.fileToStream(inFile), inFile.toString()));
 		Path outFile = getOutputFile(inputFileName);
 
 		if (decodedNode != null && validationErrors.isEmpty()) {
@@ -158,7 +161,7 @@ public class Converter {
 		QrdaValidator validator = new QrdaValidator();
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
 		if (null != decoded) {
-			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), inStream);
+			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), inStream);
 
 			if (!doDefaults) {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
@@ -299,7 +302,7 @@ public class Converter {
 	 */
 	private InputStream writeConverted() {
 		JsonOutputEncoder encoder = getEncoder();
-		CLIENT_LOG.info("Decoded template ID {}", decoded.getId());
+		CLIENT_LOG.info("Decoded template ID {}", decoded.getType());
 
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));
@@ -320,7 +323,7 @@ public class Converter {
 	private void writeConverted(Node decoded, Path outFile) {
 		JsonOutputEncoder encoder = getEncoder();
 
-		CLIENT_LOG.info("Decoded template ID {} to file '{}'", decoded.getId(), outFile);
+		CLIENT_LOG.info("Decoded template ID {} to file '{}'", decoded.getType(), outFile);
 
 		try (Writer writer = Files.newBufferedWriter(outFile)) {
 			encoder.setNodes(Collections.singletonList(decoded));

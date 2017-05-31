@@ -27,7 +27,7 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 
 		if (!children.isEmpty()) {
 			Node measurePerformedNode = children.get(0);
-			JsonOutputEncoder measurePerformedEncoder = ENCODERS.get(measurePerformedNode.getId());
+			JsonOutputEncoder measurePerformedEncoder = ENCODERS.get(measurePerformedNode.getType());
 
 			JsonWrapper value = new JsonWrapper();
 			measurePerformedEncoder.encode(value, measurePerformedNode);

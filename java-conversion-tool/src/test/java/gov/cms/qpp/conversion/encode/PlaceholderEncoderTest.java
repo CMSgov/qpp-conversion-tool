@@ -13,8 +13,8 @@ public class PlaceholderEncoderTest {
 	@Test
 	public void encodePlaceholderNodeNegative() throws EncodeException {
 		//setup
-		Node placeHolder = new Node(TemplateId.PLACEHOLDER.getTemplateId());
-		placeHolder.addChildNode(new Node("meep"));
+		Node placeHolder = new Node(TemplateId.PLACEHOLDER);
+		placeHolder.addChildNode(new Node());
 		JsonWrapper wrapper = new JsonWrapper();
 		PlaceholderEncoder encoder = new PlaceholderEncoder();
 

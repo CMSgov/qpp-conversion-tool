@@ -22,25 +22,25 @@ public class AciNumeratorDenominatorValidatorTest {
 
 	@Test
 	public void testMeasurePresent() {
-		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION, clinicalDocumentNode);
 		aciSectionNode.putValue("category", "aci");
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		Node aciNumeratorDenominatorNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
-		Node aciNumeratorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
@@ -54,10 +54,10 @@ public class AciNumeratorDenominatorValidatorTest {
 
 	@Test
 	public void testNumerateDenominatorMissingMeasureId() {
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
-		Node aciNumeratorDenominatorNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
-		Node aciDenominatorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
-		Node aciNumeratorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
+		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
@@ -76,21 +76,20 @@ public class AciNumeratorDenominatorValidatorTest {
 
 	@Test
 	public void testMeasureNodeInvalidParent() {
-		Node clinicalDocumentNode = new Node();
-		clinicalDocumentNode.setId(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node aciNumeratorDenominatorNode = new Node(clinicalDocumentNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, clinicalDocumentNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		clinicalDocumentNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
-		Node aciNumeratorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
@@ -106,10 +105,10 @@ public class AciNumeratorDenominatorValidatorTest {
 	@Test
 	public void testNoChildNodes() {
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciNumeratorDenominatorNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
@@ -124,16 +123,16 @@ public class AciNumeratorDenominatorValidatorTest {
 	@Test
 	public void testNoNumerator() {
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciNumeratorDenominatorNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
-		Node aciNumeratorPlaceholder = new Node(aciNumeratorDenominatorNode, TemplateId.PLACEHOLDER.getTemplateId());
+		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorPlaceholder = new Node(TemplateId.PLACEHOLDER, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorPlaceholder);
@@ -149,16 +148,16 @@ public class AciNumeratorDenominatorValidatorTest {
 	@Test
 	public void testNoDenominator() {
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciNumeratorDenominatorNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorPlaceholder = new Node(aciNumeratorDenominatorNode, TemplateId.PLACEHOLDER.getTemplateId());
-		Node aciNumeratorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aciDenominatorPlaceholder = new Node(TemplateId.PLACEHOLDER, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorPlaceholder);
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
@@ -174,17 +173,17 @@ public class AciNumeratorDenominatorValidatorTest {
 	@Test
 	public void testTooManyNumerators() {
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciNumeratorDenominatorNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
-		Node aciNumeratorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_NUMERATOR.getTemplateId());
-		Node aciNumeratorNode2 = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode2 = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
@@ -201,17 +200,17 @@ public class AciNumeratorDenominatorValidatorTest {
 	@Test
 	public void testTooManyDenominators() {
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciNumeratorDenominatorNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
-		Node aciDenominatorNode2 = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
-		Node aciNumeratorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciDenominatorNode2 = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode2);

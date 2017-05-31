@@ -30,17 +30,14 @@ public class IaSectionEncoderTest {
 
 	@Before
 	public void createNode() {
-		iaMeasurePerformedNode = new Node();
-		iaMeasurePerformedNode.setId(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		iaMeasurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		iaMeasurePerformedNode.putValue("measurePerformed", "Y");
 
-		iaMeasureNode = new Node();
-		iaMeasureNode.setId(TemplateId.IA_MEASURE.getTemplateId());
+		iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		iaMeasureNode.putValue("measureId", "IA_EPA_1");
 		iaMeasureNode.addChildNode(iaMeasurePerformedNode);
 
-		iaSectionNode = new Node();
-		iaSectionNode.setId(TemplateId.IA_SECTION.getTemplateId());
+		iaSectionNode = new Node(TemplateId.IA_SECTION);
 		iaSectionNode.putValue("category", "ia");
 		iaSectionNode.addChildNode(iaMeasureNode);
 

@@ -286,7 +286,7 @@ public class QualityMeasureIdValidatorTest {
 		Node measureReferenceResultsNode;
 
 		MeasureReferenceBuilder() {
-			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
+			measureReferenceResultsNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		}
 
 		MeasureReferenceBuilder addMeasureId(String measureId) {
@@ -296,7 +296,7 @@ public class QualityMeasureIdValidatorTest {
 
 
 		MeasureReferenceBuilder addSubPopulationMeasureData(String type, String populationId) {
-			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 			measureNode.putValue(MEASURE_TYPE, type);
 			measureNode.putValue(MEASURE_POPULATION, populationId);
 

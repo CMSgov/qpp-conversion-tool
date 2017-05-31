@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Validates Aggregate Count
  */
-@Validator(templateId = TemplateId.ACI_AGGREGATE_COUNT, required = true)
+@Validator(value = TemplateId.ACI_AGGREGATE_COUNT, required = true)
 public class AggregateCountValidator extends NodeValidator {
 
 	public static final String VALUE_ERROR = "Aggregate count value is required.";

@@ -31,11 +31,8 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 		//one for the numerator and one for the denominator
 
 		//forcing toMap to use LinkedHashMap because we care about the order of the elements
-		Map<String, Node> childMapByTemplateId = node.getChildNodes().stream().collect(
-				Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
-
-		//Performance Rate node not needed
-		childMapByTemplateId.remove(TemplateId.PERFORMANCE_RATE.getTemplateId());
+		Map<TemplateId, Node> childMapByTemplateId = node.getChildNodes().stream().collect(
+				Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
 		JsonWrapper childWrapper = encodeChildren(childMapByTemplateId);
 
@@ -49,11 +46,11 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 	 * @param childMapByTemplateId Map of children that will be encoded
 	 * @return JsonWrapper that will represent the encoded children
 	 */
-	private JsonWrapper encodeChildren(Map<String, Node> childMapByTemplateId) {
+	private JsonWrapper encodeChildren(Map<TemplateId, Node> childMapByTemplateId) {
 		JsonWrapper childWrapper = new JsonWrapper();
 		for (Node currentChild : childMapByTemplateId.values()) {
 
-			JsonOutputEncoder childEncoder = ENCODERS.get(currentChild.getId());
+			JsonOutputEncoder childEncoder = ENCODERS.get(currentChild.getType());
 
 			if (childEncoder != null) {
 				childEncoder.encode(childWrapper, currentChild);
