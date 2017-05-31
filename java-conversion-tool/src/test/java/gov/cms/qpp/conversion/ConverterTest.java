@@ -1,8 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -16,8 +13,6 @@ import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
-import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,19 +26,16 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -82,25 +74,37 @@ public class ConverterTest {
 		PowerMockito.whenNew(QrdaValidator.class).withNoArguments().thenReturn(mockQrdaValidator);
 
 		//set-up
-		Path defaultJson = Paths.get("errantDefaultedNode.qpp.json");
-		Path defaultError = Paths.get("errantDefaultedNode.err.json");
-
-		Files.deleteIfExists(defaultJson);
-		Files.deleteIfExists(defaultError);
+//		Path defaultJson = Paths.get("errantDefaultedNode.qpp.json");
+//		Path defaultError = Paths.get("errantDefaultedNode.err.json");
+//
+//		Files.deleteIfExists(defaultJson);
+//		Files.deleteIfExists(defaultError);
 
 		//execute
 		Path path = Paths.get("src/test/resources/converter/errantDefaultedNode.xml");
-		new Converter(path).transform();
+		Converter converter = new Converter(path);
 
 		//assert
-		assertThat("The JSON file must not exist", Files.exists(defaultJson), is(false));
-		assertThat("The error file must exist", Files.exists(defaultError), is(true));
+//		assertThat("The JSON file must not exist", Files.exists(defaultJson), is(false));
+//		assertThat("The error file must exist", Files.exists(defaultError), is(true));
+//
+//		String errorContent = new String(Files.readAllBytes(defaultError));
+//		assertThat("The error file is missing the specified content", errorContent, containsString("Jenny"));
+//
+//		//clean-up
+//		Files.delete(defaultError);
 
-		String errorContent = new String(Files.readAllBytes(defaultError));
-		assertThat("The error file is missing the specified content", errorContent, containsString("Jenny"));
+		try {
+			converter.transform();
+			fail("The converter should not create valid QPP JSON");
+		} catch (TransformException exception) {
+			AllErrors allErrors = exception.getDetails();
+			List<ErrorSource> errorSources = allErrors.getErrorSources();
+			assertThat("There must only be one error source.", errorSources, hasSize(1));
+			List<ValidationError> validationErrors = errorSources.get(0).getValidationErrors();
 
-		//clean-up
-		Files.delete(defaultError);
+			assertThat("The expected validation error was missing", validationErrors, containsValidationErrorInAnyOrderIgnoringPath("Test validation error for Jenny", "moof"));
+		}
 	}
 
 	@Test
@@ -311,42 +315,6 @@ public class ConverterTest {
 			ValidationError validationError = validationErrors.get(0);
 			assertThat("The validation error was incorrect", validationError, validationErrorTextMatches("The file is not a QRDA-III XML document"));
 		}
-	}
-
-	@Test
-	public void testJsonCreation() throws IOException {
-		Converter converter = new Converter(XmlUtils.fileToStream(Paths.get("src/test/resources/qrda_bad_denominator.xml")));
-
-		TransformationStatus returnValue = converter.transform();
-
-		assertThat("A non-zero return value was expected.", returnValue, is(not(TransformationStatus.SUCCESS)));
-
-		InputStream errorResultsStream = converter.getConversionResult();
-		String errorResults = IOUtils.toString(errorResultsStream, StandardCharsets.UTF_8);
-
-		assertThat("The error results must have the source identifier.", errorResults, containsString("sourceIdentifier"));
-		assertThat("The error results must have some error text.", errorResults, containsString("errorText"));
-		assertThat("The error results must have an XPath.", errorResults, containsString("path"));
-	}
-
-	@Test
-	@PrepareForTest({Converter.class, ObjectMapper.class})
-	public void testJsonStreamFailure() throws Exception {
-		//mock
-		whenNew(ObjectMapper.class).withNoArguments().thenThrow(new JsonGenerationException("test exception", (JsonGenerator)null));
-
-		//run
-		Converter converter = new Converter(XmlUtils.fileToStream(Paths.get("src/test/resources/qrda_bad_denominator.xml")));
-		TransformationStatus returnValue = converter.transform();
-
-		//assert
-		assertThat("A failure was expected.", returnValue, is(not(TransformationStatus.SUCCESS)));
-		String expectedExceptionJson = "{ \"exception\": \"JsonProcessingException\" }";
-		InputStream errorResultsStream = converter.getConversionResult();
-		String errorResults = IOUtils.toString(errorResultsStream, StandardCharsets.UTF_8);
-
-		assertThat("An exception creating the JSON should have been thrown resulting in a basic error JSON being returned.",
-			expectedExceptionJson, is(errorResults));
 	}
 
 	@Test
