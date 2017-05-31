@@ -22,7 +22,7 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 /**
  * Validates a Measure Reference Results node.
  */
-@Validator(templateId = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, required = true)
+@Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, required = true)
 public class QualityMeasureIdValidator extends NodeValidator {
 
 	protected static final String MEASURE_ID = "measureId";

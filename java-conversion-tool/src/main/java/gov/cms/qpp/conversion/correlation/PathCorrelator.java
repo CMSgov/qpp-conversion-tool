@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.correlation;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.correlation.model.Config;
 import gov.cms.qpp.conversion.correlation.model.Correlation;

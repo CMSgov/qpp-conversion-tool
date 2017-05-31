@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion;
 
 import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
@@ -306,8 +307,8 @@ public class ConversionEntryTest extends BaseTest {
 
 	@Test
 	public void testDefaults() throws Exception {
-		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
-		AnnotationMockHelper.mockEncoder("867.5309", Jenncoder.class);
+		AnnotationMockHelper.mockDecoder(TemplateId.DEFAULT, JennyDecoder.class);
+		AnnotationMockHelper.mockEncoder(TemplateId.DEFAULT, Jenncoder.class);
 
 		ConversionEntry.main(SKIP_VALIDATION,
 				"src/test/resources/converter/defaultedNode.xml");

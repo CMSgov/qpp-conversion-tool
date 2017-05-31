@@ -25,7 +25,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		DEV_LOG.debug("Default JSON encoder {} is handling templateId {} and is described as '{}' ",
-				getClass(), node.getId(), description);
+				getClass(), node.getType().name(), description);
 
 		JsonWrapper childWrapper = new JsonWrapper();
 
@@ -34,10 +34,10 @@ public class DefaultEncoder extends JsonOutputEncoder {
 			childWrapper.putString(nameForEncode, node.getValue(name));
 		}
 
-		wrapper.putObject(node.getId(), childWrapper);
+		wrapper.putObject(node.getType().name(), childWrapper);
 
 		for (Node child : node.getChildNodes()) {
-			childWrapper.putObject(child.getId(), childWrapper);
+			childWrapper.putObject(child.getType().name(), childWrapper);
 			encode(childWrapper, child);
 		}
 	}

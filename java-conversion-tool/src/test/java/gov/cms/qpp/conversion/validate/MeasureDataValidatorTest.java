@@ -24,7 +24,7 @@ public class MeasureDataValidatorTest extends BaseTest {
 		String happy = getFixture("measureDataHappy.xml");
 		Node placeholder = new QppXmlDecoder().decode(XmlUtils.stringToDom(happy));
 		MeasureDataValidator validator = new MeasureDataValidator();
-		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
 		List<ValidationError> errors = validator.getValidationErrors();
@@ -33,7 +33,7 @@ public class MeasureDataValidatorTest extends BaseTest {
 
 	@Test
 	public void missingAggregateCount() throws Exception {
-		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		MeasureDataValidator validator = new MeasureDataValidator();
 		validator.internalValidateSingleNode(testNode);
 

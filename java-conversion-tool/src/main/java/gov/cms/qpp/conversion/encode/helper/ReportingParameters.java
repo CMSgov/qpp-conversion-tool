@@ -18,9 +18,9 @@ public interface ReportingParameters {
 	 * @param childMapByTemplateId List of nodes for the children of Clinical Document
 	 * @return Optional Node  The Reporting Parameter Node if present
 	 */
-	public static Optional<Node> getReportingNode(Map<String, Node> childMapByTemplateId) {
+	public static Optional<Node> getReportingNode(Map<TemplateId, Node> childMapByTemplateId) {
 		Node nullableReportingNode =
-				childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
+				childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION);
 		return Optional.ofNullable(nullableReportingNode).flatMap(rp -> rp.getChildNodes().stream().findFirst());
 	}
 }

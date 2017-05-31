@@ -27,26 +27,25 @@ public class QualityMeasureIdEncoderTest {
 
 	@Before
 	public void setUp() {
-		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
+		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue("measureId", "40280381-51f0-825b-0152-22b98cff181a");
 
-		aggregateCountNode = new Node();
-		aggregateCountNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
 
-		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		populationNode.putValue(type, "IPOP");
 		populationNode.addChildNode(aggregateCountNode);
 
-		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		denomExclusionNode.putValue(type, "DENEX");
 		denomExclusionNode.addChildNode(aggregateCountNode);
 
-		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		numeratorNode.putValue(type, "NUMER");
 		numeratorNode.addChildNode(aggregateCountNode);
 
-		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		denominatorNode.putValue(type, "DENOM");
 		denominatorNode.addChildNode(aggregateCountNode);
 
@@ -82,7 +81,7 @@ public class QualityMeasureIdEncoderTest {
 
 	@Test
 	public void testPopulationAltTotalIsEncoded() {
-		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		populationNode.putValue(type, "IPP");
 		populationNode.addChildNode(aggregateCountNode);
 		executeInternalEncode();

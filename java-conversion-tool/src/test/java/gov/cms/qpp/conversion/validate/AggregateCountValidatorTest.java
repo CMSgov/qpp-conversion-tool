@@ -17,45 +17,45 @@ public class AggregateCountValidatorTest {
 
     @Test
     public void testIsAggregateCount() {
-        Node aggregateCountNode = new Node( TemplateId.ACI_AGGREGATE_COUNT.getTemplateId() );
+        Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 
         AggregateCountValidator validator = new AggregateCountValidator();
 
-        assertEquals("validator and node are compatible", validator.getTemplateId(), aggregateCountNode.getId());
+        assertEquals("validator and node are compatible", validator.getTemplateId(), aggregateCountNode.getType());
     }
 
     @Test
     public void testValueAbsenceFailure() {
-        Node aggregateCountNode = new Node( TemplateId.ACI_AGGREGATE_COUNT.getTemplateId() );
+        Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 
         AggregateCountValidator validator = new AggregateCountValidator();
         validator.internalValidateSingleNode( aggregateCountNode );
         List<ValidationError> errors = validator.getValidationErrors();
 
         assertFalse("there's an error", errors.isEmpty());
-        assertEquals( AggregateCountValidator.VALUE_ERROR, errors.get( 0 ).getErrorText() );
+        assertEquals(AggregateCountValidator.VALUE_ERROR, errors.get(0).getErrorText());
     }
 
     @Test
     public void testValueTypeFailure() {
-        Node aggregateCountNode = new Node( TemplateId.ACI_AGGREGATE_COUNT.getTemplateId() );
-        aggregateCountNode.putValue( AggregateCountDecoder.AGGREGATE_COUNT, "meep" );
+        Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+        aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "meep");
 
         AggregateCountValidator validator = new AggregateCountValidator();
-        validator.internalValidateSingleNode( aggregateCountNode );
+        validator.internalValidateSingleNode(aggregateCountNode);
         List<ValidationError> errors = validator.getValidationErrors();
 
         assertFalse("there's an error", errors.isEmpty());
-        assertEquals( AggregateCountValidator.TYPE_ERROR, errors.get( 0 ).getErrorText() );
+        assertEquals(AggregateCountValidator.TYPE_ERROR, errors.get(0).getErrorText());
     }
 
     @Test
     public void testValueTypeSuccess() {
-        Node aggregateCountNode = new Node( TemplateId.ACI_AGGREGATE_COUNT.getTemplateId() );
-        aggregateCountNode.putValue( AggregateCountDecoder.AGGREGATE_COUNT, "7" );
+        Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+        aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "7");
 
         AggregateCountValidator validator = new AggregateCountValidator();
-        validator.internalValidateSingleNode( aggregateCountNode );
+        validator.internalValidateSingleNode(aggregateCountNode);
         List<ValidationError> errors = validator.getValidationErrors();
 
         assertTrue("there are no errors", errors.isEmpty());

@@ -1,15 +1,12 @@
 package gov.cms.qpp.conversion.model;
 
 import gov.cms.qpp.conversion.ConversionEntry;
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 public class TemplateIdTest {
 
@@ -33,37 +30,24 @@ public class TemplateIdTest {
 	}
 
 	@Test
-	public void testFindByTypeId1() {
-		TemplateId clinicalDocument = TemplateId.CLINICAL_DOCUMENT;
-		assertThat("TemplateId#getTypeById(String) is not working",
-		           TemplateId.getTypeById(clinicalDocument.getTemplateId()), is(clinicalDocument));
-	}
-
-	@Test
-	public void testFindByTypeId1NotExist() {
-		assertThat("TemplateId#getTypeById(String) is not working",
-		           TemplateId.getTypeById("nonExistingTemplateId"), is(TemplateId.DEFAULT));
-	}
-
-	@Test
 	public void testFindByTypeId2() {
 		TemplateId clinicalDocument = TemplateId.CLINICAL_DOCUMENT;
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTypeById(clinicalDocument.getRoot(), clinicalDocument.getExtension()),
+		           TemplateId.getTemplateId(clinicalDocument.getRoot(), clinicalDocument.getExtension()),
 		           is(clinicalDocument));
 	}
 
 	@Test
 	public void testFindByTypeId2NotExist() {
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTypeById(TemplateId.CLINICAL_DOCUMENT.getRoot(), "nonExistingExtension"),
+		           TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(), "nonExistingExtension"),
 		           is(TemplateId.DEFAULT));
 	}
 
 	@Test
 	public void testFindByTypeId2NotExistAgain() {
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTypeById("nonExistingRoot", TemplateId.CLINICAL_DOCUMENT.getExtension()),
+		           TemplateId.getTemplateId("nonExistingRoot", TemplateId.CLINICAL_DOCUMENT.getExtension()),
 		           is(TemplateId.DEFAULT));
 	}
 
@@ -91,25 +75,13 @@ public class TemplateIdTest {
 		isLegacy = ConversionEntry.isHistorical();
 		assertThat("Legacy data is false", isLegacy, is(true));
 
-		String value = TemplateId.getTypeById(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId(),"").getTemplateId();
+		String value = TemplateId.getTemplateId(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId(), "").getTemplateId();
 		assertThat("Expect value of to return a TemplateId", value, is(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId()));
 
-		value = TemplateId.getTypeById(TemplateId.CLINICAL_DOCUMENT.getTemplateId(),"").getTemplateId();
+		value = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getTemplateId(),"").getTemplateId();
 		assertThat("Expect value of to return a TemplateId", value, is(TemplateId.CLINICAL_DOCUMENT.getTemplateId()));
 
 		field.set(null, false);
 	}
 
-	@Test
-	public void privateConstructorTest() throws Exception {
-		// reflection concept to get constructor of a Singleton class.
-		TemplateId templateId = TemplateId.CLINICAL_DOCUMENT;
-		Class<?> constants = TemplateId.class.getDeclaredClasses()[0];
-		Constructor<?> constructor = constants.getDeclaredConstructors()[0];
-		constructor.setAccessible(true);
-		constructor.newInstance();
-
-		constructor.setAccessible(false);
-		Assert.assertThat("Expect to have an instance here ", constants, instanceOf(Class.class));
-	}
 }

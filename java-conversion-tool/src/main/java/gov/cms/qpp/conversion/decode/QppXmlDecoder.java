@@ -1,5 +1,11 @@
 package gov.cms.qpp.conversion.decode;
 
+import java.util.List;
+import java.util.Set;
+
+import org.jdom2.Element;
+import org.jdom2.xpath.XPathHelper;
+
 import gov.cms.qpp.conversion.ConversionEntry;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Decoder;
@@ -7,29 +13,24 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import org.jdom2.Element;
-import org.jdom2.xpath.XPathHelper;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Top level Decoder for parsing into QPP format.
  */
 public class QppXmlDecoder extends XmlInputDecoder {
 
-	private static final Registry<String, QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
+	private static final Registry<QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
 	private static final String ROOT_STRING = "root";
 	private static final String EXTENSION_STRING = "extension";
-	private Collection<TemplateId> scope;
+	private Set<TemplateId> scope;
 
 	/**
 	 * Initialize a qpp xml decoder
 	 */
 	public QppXmlDecoder() {
-		Collection<TemplateId> theScope = QrdaScope.getTemplates(ConversionEntry.getScope());
+		Set<TemplateId> theScope = QrdaScope.getTemplates(ConversionEntry.getScope());
 		if (!theScope.isEmpty()) {
 			this.scope = theScope;
 		}
@@ -75,7 +76,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			if (TEMPLATE_ID.equals(childEl.getName())) {
 				String root = childEl.getAttributeValue(ROOT_STRING);
 				String extension = childEl.getAttributeValue(EXTENSION_STRING);
-				String templateId = TemplateId.generateTemplateIdString(root, extension);
+				TemplateId templateId = TemplateId.getTemplateId(root, extension);
 				Converter.CLIENT_LOG.debug("templateIdFound:{}", templateId);
 
 				QppXmlDecoder childDecoder = getDecoder(templateId);
@@ -84,7 +85,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 					continue;
 				}
 				Converter.CLIENT_LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
-				Node childNode = new Node(parentNode, templateId);
+				Node childNode = new Node(templateId, parentNode);
 
 				childNode.setDefaultNsUri(defaultNs.getURI());
 				childNode.setPath(XPathHelper.getAbsolutePath(element));
@@ -118,7 +119,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * @param templateId string representation of a would be decoder's template id
 	 * @return decoder that corresponds to the given template id
 	 */
-	private QppXmlDecoder getDecoder(String templateId) {
+	private QppXmlDecoder getDecoder(TemplateId templateId) {
 
 		QppXmlDecoder qppDecoder = DECODERS.get(templateId);
 		if (qppDecoder != null) {
@@ -140,7 +141,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	private DecodeResult testChildDecodeResult(final DecodeResult result, final Element childElement,
 												final Node childNode) {
 		if (result == null) {
-			Node placeholderNode = new Node(childNode.getParent(), "placeholder");
+			Node placeholderNode = new Node(TemplateId.PLACEHOLDER, childNode.getParent());
 			return decode(childElement, placeholderNode);
 		}
 
@@ -149,7 +150,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		} else if (result == DecodeResult.TREE_CONTINUE) {
 			decode(childElement, childNode);
 		} else if (result == DecodeResult.ERROR) {
-			Converter.CLIENT_LOG.error("Failed to decode templateId {} ", childNode.getId());
+			Converter.CLIENT_LOG.error("Failed to decode templateId {} ", childNode.getType());
 		} else {
 			Converter.CLIENT_LOG.error("We need to define a default case. Could be TreeContinue?");
 		}
@@ -172,10 +173,10 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		for (Element e : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
 			String root = e.getAttributeValue(ROOT_STRING);
 			String extension = e.getAttributeValue(EXTENSION_STRING);
-			String templateId = TemplateId.generateTemplateIdString(root, extension);
+			TemplateId templateId = TemplateId.getTemplateId(root, extension);
 			rootDecoder = getDecoder(templateId);
 			if (null != rootDecoder) {
-				rootNode.setId(templateId);
+				rootNode.setType(templateId);
 				break;
 			}
 		}
@@ -186,7 +187,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
 			rootDecoder.internalDecode(rootElement, rootNode);
 		} else {
-			rootNode.setId(TemplateId.PLACEHOLDER.getTemplateId());
+			rootNode.setType(TemplateId.PLACEHOLDER);
 			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
 			this.decode(rootElement, rootNode);
 		}
@@ -229,7 +230,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			final String root = currentChild.getAttributeValue(ROOT_STRING);
 			final String extension = currentChild.getAttributeValue(EXTENSION_STRING);
 
-			if (TemplateId.getTypeById(root, extension) == TemplateId.CLINICAL_DOCUMENT) {
+			if (TemplateId.getTemplateId(root, extension) == TemplateId.CLINICAL_DOCUMENT) {
 				containsTemplateId = true;
 				break;
 			}

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Validates Improvement Activity Section Node - expects at least one Improvement Activity Measure
  */
-@Validator(templateId = TemplateId.IA_SECTION, required = true)
+@Validator(value = TemplateId.IA_SECTION, required = true)
 public class IaSectionValidator extends NodeValidator {
 
 	protected static final String MINIMUM_REQUIREMENT_ERROR = "Must have at least one IA Measure";

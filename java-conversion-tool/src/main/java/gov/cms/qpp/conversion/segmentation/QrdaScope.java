@@ -1,15 +1,15 @@
 package gov.cms.qpp.conversion.segmentation;
 
-import gov.cms.qpp.conversion.model.TemplateId;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import gov.cms.qpp.conversion.model.TemplateId;
 
 public enum QrdaScope {
 
@@ -68,7 +68,7 @@ public enum QrdaScope {
 
 		return scopes.stream()
 				.flatMap(scope -> scope.getValue().stream())
-				.collect(Collectors.toSet());
+				.collect(Collectors.toCollection(() -> EnumSet.noneOf(TemplateId.class)));
 	}
 
 	public static String[] getNames() {

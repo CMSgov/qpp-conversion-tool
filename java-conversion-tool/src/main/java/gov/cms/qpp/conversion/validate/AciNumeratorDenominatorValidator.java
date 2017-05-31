@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Validate all ACI Numerator Denominator Type Measures.
  */
-@Validator(templateId = TemplateId.ACI_NUMERATOR_DENOMINATOR, required = true)
+@Validator(value = TemplateId.ACI_NUMERATOR_DENOMINATOR, required = true)
 public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 	protected static final String NO_PARENT_SECTION =

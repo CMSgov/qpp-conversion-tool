@@ -66,7 +66,7 @@ public class AciMeasurePerformedRnRDecoderTest extends BaseTest {
 		assertThat("The measureId must not be null.", actualMeasureId, is(not(nullValue())));
 		assertThat("The measureId is incorrect.", actualMeasureId, is(MEASURE_ID));
 		long measurePerformedCount = aciMeasurePerformedNode.getChildNodes(
-			node -> node.getId().equals(TemplateId.MEASURE_PERFORMED.getTemplateId())).count();
+			node -> node.getType() == TemplateId.MEASURE_PERFORMED).count();
 		assertThat("There must be one Measure Performed child node.", measurePerformedCount, is(1L));
 	}
 }

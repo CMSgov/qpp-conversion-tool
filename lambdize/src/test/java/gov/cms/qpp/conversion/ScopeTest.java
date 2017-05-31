@@ -7,12 +7,12 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.jayway.jsonpath.PathNotFoundException;
 
-import gov.cms.qpp.conversion.aws.NamedInputStream;
 import gov.cms.qpp.conversion.aws.history.HistoricalTestRunner;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import net.minidev.json.JSONArray;
 import org.junit.Test;
@@ -106,7 +106,7 @@ public class ScopeTest {
 	private static void updateRegistry(Class<?> location, String registryField) throws Exception {
 		Field registry = location.getDeclaredField(registryField);
 		registry.setAccessible(true);
-		((Registry<?, ?>) registry.get(null)).load();
+		((Registry<?>) registry.get(null)).load();
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class ScopeTest {
 		return s3Object -> {
 			Converter convert = null;
 			TransformationStatus status = TransformationStatus.ERROR;
-			try(InputStream stream = new NamedInputStream(s3Object.getKey(), s3Object.getObjectContent())) {
+			try(InputStream stream = new NamedInputStream(s3Object.getObjectContent(), s3Object.getKey())) {
 				convert = new Converter(stream);
 				status = convert.transform();
 				InputStream result = convert.getConversionResult();

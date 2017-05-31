@@ -44,8 +44,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		wrapper.putString(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
 			thisNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
 
-		Map<String, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
-			Collectors.toMap(Node::getId, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
+		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
+			Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 		Optional<Node> reportingNode = ReportingParameters.getReportingNode(childMapByTemplateId);
 
 		Optional<String> performanceStart =
@@ -71,7 +71,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @return
 	 * @throws EncodeException If error occurs during encoding
 	 */
-	private JsonWrapper encodeMeasurementSets(Map<String, Node> childMapByTemplateId,
+	private JsonWrapper encodeMeasurementSets(Map<TemplateId, Node> childMapByTemplateId,
 												Optional<String> performanceStart,
 												Optional<String> performanceEnd) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
@@ -79,11 +79,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-			if (MultipleTinsDecoder.NPI_TIN_ID.equalsIgnoreCase(child.getId())) {
+			if (TemplateId.NPI_TIN_ID == child.getType()) {
 				continue; //MultiTINS is not a real encoder.
 			}
 			childWrapper = new JsonWrapper();
-			sectionEncoder = ENCODERS.get(child.getId());
+			sectionEncoder = ENCODERS.get(child.getType());
+
 			// Section encoder is null when a decoder exists without a corresponding encoder
 			// currently don't have a set of IA Encoders, but this will protect against others
 			try {
@@ -98,7 +99,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 				measurementSetsWrapper.putObject(childWrapper);
 			} catch (NullPointerException exc) {
-				String message = "No encoder for decoder : " + child.getId();
+				String message = "No encoder for decoder : " + child.getType();
 				throw new EncodeException(message, exc);
 			}
 		}

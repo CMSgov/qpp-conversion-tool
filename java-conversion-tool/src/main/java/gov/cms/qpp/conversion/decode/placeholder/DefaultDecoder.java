@@ -33,7 +33,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		DEV_LOG.debug("Default decoder {} is handling templateId {} and is described as '{}' ",
-				getClass(), thisnode.getId(), description);
+				getClass(), thisnode.getType().name(), description);
 		thisnode.putValue("DefaultDecoderFor", description);
 		return DecodeResult.TREE_CONTINUE;
 	}
