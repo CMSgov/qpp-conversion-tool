@@ -65,8 +65,7 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 	private DecodeResult runTestChildDecodeResult(DecodeResult code) throws Exception {
 		QppXmlDecoder objectUnderTest = new QppXmlDecoder();
 		Element childElement = new Element("childElement");
-		Node childNode = new Node("childNode");
-		Object obj[] = new Object[3];
+		Node childNode = new Node();
 		String methodName = "testChildDecodeResult";
 		Method testChildDecodeResult = null;
 		Method[] methods = QppXmlDecoder.class.getDeclaredMethods();
