@@ -18,7 +18,8 @@
         "testTsconfig": "tsconfig.spec.json",
         "prefix": "app",
         "styles": [
-            "styles.css"
+            "../node_modules/uswds/src/stylesheets/_all.scss",
+            "styles.scss"
         ],
         "scripts": [],
         "environmentSource": "environments/environment.ts",

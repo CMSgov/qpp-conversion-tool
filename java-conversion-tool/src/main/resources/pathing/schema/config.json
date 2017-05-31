@@ -1,0 +1,19 @@
+{
+	"type":"object",
+	"additionalProperties": false,
+	"id":"#config",
+	"properties":{
+		"decodeLabel": {
+			"type": "string"
+		},
+		"encodeLabels": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"goods": {
+			"$ref": "goods.json"
+		}
+	}
+}

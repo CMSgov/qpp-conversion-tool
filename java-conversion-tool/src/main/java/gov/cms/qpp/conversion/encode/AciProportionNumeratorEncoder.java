@@ -10,6 +10,7 @@ import java.util.List;
  */
 @Encoder(TemplateId.ACI_NUMERATOR)
 public class AciProportionNumeratorEncoder extends QppOutputEncoder {
+	private static final String ENCODE_LABEL = "numerator";
 
 	/**
 	 *  Encodes an ACI Numerator Measure into the QPP format
@@ -24,20 +25,21 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 		List<Node> children = node.getChildNodes();
 
 		if (!children.isEmpty()) {
-			Integer numeratorValue = encodeChild(children.get(0));
+			JsonWrapper numerator = encodeChild(children.get(0));
 
-			if (null != numeratorValue) {
-				wrapper.putObject("numerator", numeratorValue);
+			if (null != numerator.getInteger(VALUE)) {
+				wrapper.putObject(ENCODE_LABEL, numerator.getInteger(VALUE));
+				wrapper.mergeMetadata(numerator, ENCODE_LABEL);
 			}
 		}
 	}
 
-	private Integer encodeChild(Node numeratorValueNode) {
-		JsonOutputEncoder numeratorValueEncoder = ENCODERS.get(numeratorValueNode.getId());
+	private JsonWrapper encodeChild(Node numeratorValueNode) {
+		JsonOutputEncoder numeratorValueEncoder = ENCODERS.get(numeratorValueNode.getType());
 
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		numeratorValueEncoder.encode(jsonWrapper, numeratorValueNode);
 
-		return jsonWrapper.getInteger(VALUE);
+		return jsonWrapper;
 	}
 }

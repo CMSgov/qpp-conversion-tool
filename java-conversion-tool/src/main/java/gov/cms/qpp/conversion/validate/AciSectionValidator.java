@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Validate the ACI Section.
  */
-@Validator(templateId = TemplateId.ACI_SECTION, required = true)
+@Validator(value = TemplateId.ACI_SECTION, required = true)
 public class AciSectionValidator extends NodeValidator {
 
 	protected static final String ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED =

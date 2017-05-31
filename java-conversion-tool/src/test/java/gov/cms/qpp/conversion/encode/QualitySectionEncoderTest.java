@@ -25,7 +25,7 @@ public class QualitySectionEncoderTest {
 	@Test(expected = EncodeException.class)
 	public void internalEncodeNegative() throws EncodeException {
 		Node qualitySectionNode = getQualitySectionNode();
-		qualitySectionNode.addChildNode(new Node("meep"));
+		qualitySectionNode.addChildNode(new Node());
 
 		QualitySectionEncoder encoder = new QualitySectionEncoder();
 		JsonWrapper jsonWrapper = new JsonWrapper();
@@ -38,7 +38,7 @@ public class QualitySectionEncoderTest {
 	 * @return the newly constructed Quality Section Node
 	 */
 	private Node getQualitySectionNode() {
-		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2.getTemplateId());
+		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2);
 		qualitySectionNode.putValue("category", "quality");
 		qualitySectionNode.putValue("submissionMethod", "cmsWebInterface");
 		return qualitySectionNode;

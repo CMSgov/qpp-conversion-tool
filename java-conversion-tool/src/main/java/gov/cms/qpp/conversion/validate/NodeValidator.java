@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.model.Validator;
 import org.slf4j.Logger;
@@ -108,9 +109,9 @@ public abstract class NodeValidator {
 	 *
 	 * @return templateId
 	 */
-	protected String getTemplateId() {
+	protected TemplateId getTemplateId() {
 		final Validator validator = this.getClass().getAnnotation(Validator.class);
-		return (null != validator) ? validator.templateId().getTemplateId() : "";
+		return (null != validator) ? validator.value() : null;
 	}
 
 	protected Checker check(Node node) {

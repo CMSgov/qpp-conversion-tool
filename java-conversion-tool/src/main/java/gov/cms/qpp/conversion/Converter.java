@@ -14,6 +14,7 @@ import gov.cms.qpp.conversion.model.error.ErrorSource;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -28,6 +29,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
@@ -134,7 +136,7 @@ public class Converter {
 	 * @throws IOException when writing to given file
 	 */
 	private JsonWrapper transform(Path inFile) throws XmlException, IOException {
-		return transform(XmlUtils.fileToStream(inFile));
+		return transform(new NamedInputStream(XmlUtils.fileToStream(inFile), inFile.toString()));
 	}
 
 	/**
@@ -149,7 +151,7 @@ public class Converter {
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
 		JsonWrapper qpp = null;
 		if (null != decoded) {
-			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getId(), inStream);
+			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), inStream);
 
 			if (!doDefaults) {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
@@ -208,7 +210,7 @@ public class Converter {
 	 */
 	private JsonWrapper encode() {
 		JsonOutputEncoder encoder = getEncoder();
-		CLIENT_LOG.info("Decoded template ID {}", decoded.getId());
+		CLIENT_LOG.info("Decoded template ID {}", decoded.getType());
 
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));

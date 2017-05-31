@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.ErrorSource;
 import gov.cms.qpp.conversion.model.error.TransformException;
@@ -76,8 +77,8 @@ public class ConverterTest {
 	public void testValidationErrors() throws Exception {
 
 		//mocking
-		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
-		QrdaValidator mockQrdaValidator = AnnotationMockHelper.mockValidator("867.5309", TestDefaultValidator.class, true);
+		AnnotationMockHelper.mockDecoder(TemplateId.DEFAULT, JennyDecoder.class);
+		QrdaValidator mockQrdaValidator = AnnotationMockHelper.mockValidator(TemplateId.DEFAULT, TestDefaultValidator.class, true);
 		PowerMockito.whenNew(QrdaValidator.class).withNoArguments().thenReturn(mockQrdaValidator);
 
 		//set-up

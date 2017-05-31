@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import gov.cms.qpp.conversion.util.NamedInputStream;
 
 public class ConversionHandler implements RequestHandler<S3Event, String> {
 
@@ -36,7 +37,7 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			AmazonS3 s3Client = getClient();
 			S3Object s3Object = s3Client.getObject(new GetObjectRequest(srcBucket, srcKey));
 
-			try (InputStream input = new NamedInputStream(srcKey, s3Object.getObjectContent())) {
+			try (InputStream input = new NamedInputStream(s3Object.getObjectContent(), srcKey)) {
 				Converter converter = new Converter(input);
 				JsonWrapper qpp = null;
 				AllErrors errors = null;

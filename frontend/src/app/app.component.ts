@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AppService } from './app.service';
+import { FileSelectDirective, FileDropDirective, FileUploader } from '../../node_modules/ng2-file-upload/ng2-file-upload';
 
+const URL  = 'http://184.73.24.93:2680/v1/qrda3';
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
@@ -8,36 +9,26 @@ import { AppService } from './app.service';
 })
 export class AppComponent {
 	title = 'Convert QRDA-III to QPP';
-	policy = { 'bucket_url': ''};
-	file_name: string;
-	success_data = {};
+	success_data: any;
+	error_data: any;
+	uploader: FileUploader = new FileUploader({url: URL});
+	hasBaseDropZoneOver: boolean;
+	hasAnotherDropZoneOver: boolean;
+	response: string;
 
-	constructor (private appService: AppService) {}
+	constructor () {
+		this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+			console.log('Endpoint Response:', response);
+			this.response = response;
+		};
+	}
 
-	onSubmit(policyForm: any) {
-		this.appService.postPolicy(this.policy.bucket_url, policyForm)
-			.subscribe(
-				data => this.success_data = data,
-				error => console.log('Error: ', error)
-			);
-	};
+	fileOverBase(e: any): void {
+		this.hasBaseDropZoneOver = e;
+	}
 
-	getPolicy() {
-		this.appService.getPolicy()
-			.subscribe(
-				data => this.policy = data,
-				error => console.log('Error: ', error)
-			);
-		this.generateFileName();
-	};
+	fileOverAnother(e: any): void {
+		this.hasAnotherDropZoneOver = e;
+	}
 
-	generateFileName() {
-		let text = '';
-		const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-		for ( let i = 0; i < 20; i++ ) {
-			text += possible.charAt(Math.floor(Math.random() * possible.length));
-		}
-		this.file_name = text + '.xml';
-	};
 }

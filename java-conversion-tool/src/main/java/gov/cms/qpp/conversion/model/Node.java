@@ -15,41 +15,22 @@ import java.util.stream.Stream;
  * Nodes can contain other nodes as children to create a hierarchy.
  */
 public class Node {
-	private TemplateId type;
-	private Map<String, String> data = new HashMap<>();
+	private final List<Node> childNodes = new ArrayList<>();
+	private final Map<String, String> data = new HashMap<>();
 
-	private List<Node> childNodes;
+	private TemplateId type;
 	private Node parent;
 	private boolean validated;
+
 	private String internalId;
+	private String defaultNsUri;
 	private String path;
 
 	/**
 	 * Default constructor initializes internal list of Nodes
 	 */
 	public Node() {
-		this.childNodes = new ArrayList<>();
-	}
-
-	/**
-	 * Constructor initialized with a template id string
-	 *
-	 * @param id String of the parsed template id.
-	 */
-	public Node(String id) {
-		this();
-		setId(id);
-		this.type = TemplateId.getTypeById(id);
-	}
-
-	/**
-	 * Constructor initialized with a Node
-	 *
-	 * @param parentNode Node
-	 */
-	public Node(Node parentNode) {
-		this();
-		this.parent = parentNode;
+		this(TemplateId.DEFAULT);
 	}
 
 	/**
@@ -58,9 +39,18 @@ public class Node {
 	 * @param parentNode Node
 	 * @param id         String representation of a template id
 	 */
-	public Node(Node parentNode, String id) {
-		this(parentNode);
-		setId(id);
+	public Node(TemplateId type, Node parent) {
+		this(type);
+		this.parent = parent;
+	}
+
+	/**
+	 * Constructor initialized with a template id string
+	 *
+	 * @param id String of the parsed template id.
+	 */
+	public Node(TemplateId templateId) {
+		this.type = templateId;
 	}
 
 	/**
@@ -103,25 +93,6 @@ public class Node {
 	}
 
 	/**
-	 * setId locates the appropriate TemplateId and sets the Node Type
-	 *
-	 * @param templateId String from the parsed xml fragment
-	 */
-	public void setId(String templateId) {
-		this.type = TemplateId.getTypeById(templateId);
-		this.internalId = templateId;
-	}
-
-	/**
-	 * getId returns the internal template id string
-	 *
-	 * @return String
-	 */
-	public String getId() {
-		return internalId;
-	}
-
-	/**
 	 * getChildNodes returns the list of child Nodes for this Node
 	 *
 	 * @return List of child Nodes.
@@ -152,12 +123,22 @@ public class Node {
 	}
 
 	/**
+	 * clears the old child nodes, replacing them with the given array
+	 *
+	 * @param childNodes vararg Node array
+	 */
+	public void setChildNodes(Node... childNodes) {
+		this.childNodes.clear();
+		this.childNodes.addAll(Arrays.asList(childNodes));
+	}
+
+	/**
 	 * convenience for adding multiple child nodes
 	 *
 	 * @param childNodes vararg Node array
 	 */
 	public void addChildNodes(Node... childNodes) {
-		this.setChildNodes(Arrays.asList(childNodes));
+		this.childNodes.addAll(Arrays.asList(childNodes));
 	}
 
 	/**
@@ -179,13 +160,14 @@ public class Node {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder nodeToString = new StringBuilder("Node{");
+		StringBuilder nodeToString = new StringBuilder("Node{");
 		nodeToString.append("type=").append(type);
 		nodeToString.append(", data=").append(data);
 		nodeToString.append(", childNodes=").append("size:" + childNodes.size());
 		nodeToString.append(", parent=").append((parent == null) ? "null" : "not null");
 		nodeToString.append(", validated=").append(validated);
 		nodeToString.append(", internalId='").append(internalId).append('\'');
+		nodeToString.append(", defaultNsUri='").append(defaultNsUri).append('\'');
 		nodeToString.append(", path='").append(path).append('\'');
 		nodeToString.append('}');
 		return nodeToString.toString();
@@ -219,6 +201,15 @@ public class Node {
 	}
 
 	/**
+	 * setType sets the TemplateId backing the node
+	 *
+	 * @param type TemplateId
+	 */
+	public void setType(TemplateId type) {
+		this.type = type;
+	}
+
+	/**
 	 * getTemplateId returns the Internal TemplateId associated to this Node
 	 *
 	 * @return TemplateId
@@ -246,34 +237,52 @@ public class Node {
 	}
 
 	/**
-	 * Search of this and child nodes for matching ids
+	 * Returns the defaultNsUri from the original document this {@code Node} is associated with.
 	 *
-	 * @param id templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
-	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
-	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
+	 * @return The default namespace URI.
 	 */
-	public List<Node> findNode(String id) {
-		return findNode(id, null);
+	public String getDefaultNsUri() {
+		return defaultNsUri;
+	}
+
+	/**
+	 * Sets the defaultNsUri from the original document that this {@code Node} is associated with.
+	 *
+	 * @param newDefaultNsUri updated default namespace URI.
+	 */
+	public void setDefaultNsUri(String newDefaultNsUri) {
+		defaultNsUri = newDefaultNsUri;
 	}
 
 	/**
 	 * Search of this and child nodes for matching ids
 	 *
-	 * @param id   templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
+	 * @param templateId templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
+	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
+	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
+	 */
+	public List<Node> findNode(TemplateId templateId) {
+		return findNode(templateId, null);
+	}
+
+	/**
+	 * Search of this and child nodes for matching ids
+	 *
+	 * @param templateId templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
 	 * @param bail lambda that consumes a list and returns a boolean that governs early exit
 	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
 	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
 	 */
-	private List<Node> findNode(String id, Predicate<List<?>> bail) {
+	private List<Node> findNode(TemplateId templateId, Predicate<List<?>> bail) {
 		List<Node> foundNodes = new ArrayList<>();
-		if (id.equals(getId())) {
+		if (this.type == templateId) {
 			foundNodes.add(this);
 		}
 		for (Node childNode : childNodes) {
 			if (bail != null && bail.test(foundNodes)) {
 				break;
 			}
-			List<Node> matches = childNode.findNode(id, bail);
+			List<Node> matches = childNode.findNode(templateId, bail);
 			foundNodes.addAll(matches);
 		}
 		return foundNodes;
@@ -282,13 +291,13 @@ public class Node {
 	/**
 	 * Search this and child nodes for first node with matching id
 	 *
-	 * @param id templateid that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
+	 * @param templateId TemplateId that identifies matching {@link gov.cms.qpp.conversion.model.Node}s
 	 * @return the first {@link gov.cms.qpp.conversion.model.Node} in this
 	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id or null
 	 * if no matches are found
 	 */
-	public Node findFirstNode(String id) {
-		List<Node> nodes = this.findNode(id, Node::foundNode);
+	public Node findFirstNode(TemplateId templateId) {
+		List<Node> nodes = this.findNode(templateId, Node::foundNode);
 		return nodes.isEmpty() ? null : nodes.get(0);
 	}
 
@@ -312,17 +321,6 @@ public class Node {
 	}
 
 	/**
-	 * setChildNodes will associate nested xml components with this parsed xml
-	 * fragment Node
-	 *
-	 * @param childNodes The list of Nodes to become children.
-	 */
-	private void setChildNodes(List<Node> childNodes) {
-		this.childNodes = childNodes;
-	}
-
-
-	/**
 	 * foundNode checks to see if any Node exists in the List
 	 *
 	 * @param nodes A list
@@ -330,66 +328,5 @@ public class Node {
 	 */
 	private static boolean foundNode(List<?> nodes) {
 		return !nodes.isEmpty();
-	}
-
-
-	/**
-	 * Useful for debugging large files
-	 *
-	 * @return String representation of the Node hierarchy
-	 */
-	public String toDebugString() {
-		return toDebugString("");// no tabs to start
-	}
-
-	/**
-	 * Useful for debugging large input files
-	 * Creates a tabbed indentation of child nodes for the node being debugPrinted
-	 *
-	 * @param tabs indentation level
-	 * @return String representing the hierarchy of the node
-	 */
-	protected String toDebugString(String tabs) {
-		return tabs + selfToString() + "\n" + childrenToString(tabs + "\t");
-	}
-
-	/**
-	 * Helpful when debug printing this node
-	 *
-	 * @return this node as a string representation of the data it contains
-	 */
-	protected String selfToString() {
-		return "Node: internalId: " + getName() + ", data: " + data;
-	}
-
-	/**
-	 * Useful for debug printing a large input file
-	 *
-	 * @param tabs the indentation level of the child nodes
-	 * @return The list of child nodes as a string representation
-	 */
-	protected String childrenToString(String tabs) {
-		StringBuilder children = new StringBuilder();
-		if (childNodes.isEmpty()) {
-			children.append(" -> (none)");
-		} else {
-			children.append(": \n");
-			String sep = "";
-			String toBeSep = "\n";
-			for (Node child : childNodes) {
-				children.append(sep).append(child.toDebugString(tabs));
-				sep = toBeSep;
-			}
-		}
-		return tabs + "childNodes of " + getName() + children;
-	}
-
-	/**
-	 * gets the name of the TemplateId associated with this node
-	 *
-	 * @return Either the Template Id ENUM name or the template Id string if the name is not available.
-	 */
-	private String getName() {
-		return (type == null ? (internalId + " ") : (type.name() + " "));
 	}
 }

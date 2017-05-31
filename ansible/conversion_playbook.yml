@@ -50,9 +50,14 @@
     docker_image:
       name: qpp_conversion
       state: present
+      force: yes
       load_path: ~/qpp_conversion_docker_image.tar
     become: true
-  - name: Transfer sample QRDA files
-    copy:
-      src: ../qrda-files/
-      dest: ~/qrda-files/
+  - name: Start QPP Conversion Tools Docker container
+    docker_container:
+      name: qpp_converter
+      image: qpp_conversion
+      recreate: yes
+      published_ports:
+        - 2680:8080
+    become: true

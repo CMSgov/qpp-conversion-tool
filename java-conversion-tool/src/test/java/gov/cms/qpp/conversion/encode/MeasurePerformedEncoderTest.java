@@ -11,7 +11,7 @@ public class MeasurePerformedEncoderTest {
 
 	@Test
 	public void testMeasurePerformedEncodesIntoWrapper() throws EncodeException {
-		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		measurePerformedNode.putValue("measurePerformed", "Y");
 
 		JsonWrapper jsonWrapper = new JsonWrapper();

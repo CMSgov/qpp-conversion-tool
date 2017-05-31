@@ -23,8 +23,6 @@ import static org.junit.Assert.fail;
 public class AciNumeratorDenominatorEncoderTest {
 
 	private static final String MEASURE_ID = "ACI-PEA-1";
-
-	private Node aciPerformanceRate;
 	private Node aciProportionMeasureNode;
 	private Node aciProportionNumeratorNode;
 	private Node aciProportionDenominatorNode;
@@ -34,29 +32,20 @@ public class AciNumeratorDenominatorEncoderTest {
 
 	@Before
 	public void createNode() {
-		numeratorValueNode = new Node();
-		numeratorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue("aggregateCount", "400");
 
-		denominatorValueNode = new Node();
-		denominatorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		denominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		denominatorValueNode.putValue("aggregateCount", "600");
 
-		aciProportionDenominatorNode = new Node();
-		aciProportionDenominatorNode.setId(TemplateId.ACI_DENOMINATOR.getTemplateId());
+		aciProportionDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
 
-		aciProportionNumeratorNode = new Node();
-		aciProportionNumeratorNode.setId(TemplateId.ACI_NUMERATOR.getTemplateId());
+		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
 
-		aciPerformanceRate = new Node();
-		aciPerformanceRate.setId(TemplateId.PERFORMANCE_RATE.getTemplateId());
-		aciPerformanceRate.putValue("DefaultDecoderFor", "Performance Rate");
-
 		aciProportionMeasureNode = new Node();
-		aciProportionMeasureNode.setId(TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
-		aciProportionMeasureNode.addChildNode(aciPerformanceRate);
+		aciProportionMeasureNode.setType(TemplateId.ACI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
 		aciProportionMeasureNode.putValue("measureId", MEASURE_ID);
@@ -103,14 +92,9 @@ public class AciNumeratorDenominatorEncoderTest {
 
 	@Test
 	public void testNoChildEncoder() throws EncodeException {
-
-		//set-up
-		final String unknownNodeId = "unknownNodeId";
-
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		AciNumeratorDenominatorEncoder objectUnderTest = new AciNumeratorDenominatorEncoder();
 		Node unknownNode = new Node();
-		unknownNode.setId(unknownNodeId);
 		aciProportionMeasureNode.addChildNode(unknownNode);
 
 		//execute

@@ -58,6 +58,25 @@
 			<plugin>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.jsonschema2pojo</groupId>
+				<artifactId>jsonschema2pojo-maven-plugin</artifactId>
+				<version>0.4.35</version>
+				<configuration>
+					<includeHashcodeAndEquals>false</includeHashcodeAndEquals>
+					<includeToString>false</includeToString>
+					<outputDirectory>${basedir}/src/main/java</outputDirectory>
+					<sourceDirectory>${basedir}/src/main/resources/pathing/schema</sourceDirectory>
+					<targetPackage>gov.cms.qpp.conversion.correlation.model</targetPackage>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -146,12 +165,6 @@
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-api-mockito</artifactId>
 			<version>1.6.6</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

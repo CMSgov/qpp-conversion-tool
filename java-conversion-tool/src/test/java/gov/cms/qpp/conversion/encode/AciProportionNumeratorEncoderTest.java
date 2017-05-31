@@ -20,12 +20,10 @@ public class AciProportionNumeratorEncoderTest {
 
 	@Before
 	public void createNode() {
-		numeratorDenominatorValueNode = new Node();
-		numeratorDenominatorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		numeratorDenominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorDenominatorValueNode.putValue("aggregateCount", "600");
 
-		aciProportionNumeratorNode = new Node();
-		aciProportionNumeratorNode.setId(TemplateId.ACI_NUMERATOR.getTemplateId());
+		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		aciProportionNumeratorNode.addChildNode(numeratorDenominatorValueNode);
 
 		nodes = new ArrayList<>();

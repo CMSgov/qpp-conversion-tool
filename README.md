@@ -71,7 +71,7 @@ cd qpp-conversion-tool
 .\convert.bat java-conversion-tool/src/test/resources/valid-QRDA-III.xml
 ```
 
-If you are using Docker, open a terminal and go to the directory you want the converter tool directory to be created in:
+If you are using Docker to run the conversion as a ReST API, open a terminal and go to the cloned directory:
 
 ```shell
 # Clone the GitHub repository:
@@ -84,15 +84,17 @@ cd qpp-conversion-tool
 docker build -t qpp_conversion .
 
 # Run the Docker container
-docker run --rm -v <directory with QRDA3 files to be converted>:/usr/src/qrda-files/ -v <directory where the converted QPP files will be put>:/usr/src/qpp-files/ qpp_conversion
+docker run --rm -p 8080:8080 qpp_conversion
 ```
 
 ## User Instructions
+
+### Command Line
 For the examples below, make sure you're in the `qpp-conversion-tool` directory.
 
 Note: If you are using Windows, replace `./convert.sh` in the examples below with `.\convert.bat`.
 
-### Conversion Help
+#### Conversion Help
 ```shell
 ./convert.sh -h
 ```
@@ -116,7 +118,7 @@ usage: convert [-b] [-d] [-h] [-t <scope1,scope2,...>] [-v]
  -v,--skipValidation                      Skip validations
 ```
 
-### Output
+#### Output
 If a QRDA-III XML file is successfully converted, a QPP JSON file is created in the current working directory.
 The file name will have the same name as the input file but with the extension `.qpp.json`.
 For example, `valid-QRDA-III.qpp.json`.
@@ -126,55 +128,55 @@ The file name will be the same as the input file but with the extension `.err.js
 For example, `not-a-QRDA-III-file.err.json`.  This error file contains descriptions and XPaths that help in identifying the
 errors in the provided input file.
 
-### Convert a valid file.
+#### Convert a valid file.
 
 ```shell
 ./convert.sh qrda-files/valid-QRDA-III.xml
 ```
 
-### Convert a valid file but skip inserting default stubs.
+#### Convert a valid file but skip inserting default stubs.
 
 ```shell
 ./convert.sh qrda-files/valid-QRDA-III.xml --skip-defaults
 ```
 
-### Convert an file without an 'xml' extension.
+#### Convert an file without an 'xml' extension.
 
 ```shell
 ./convert.sh qrda-files/valid-QRDA-III-without-xml-extension
 ```
 
-### Convert a bunch of QRDA-III files concurrently (multi-threaded).
+#### Convert a bunch of QRDA-III files concurrently (multi-threaded).
 
 ```shell
 ./convert.sh qrda-files/multi/*.xml
 ```
 
-### Try to convert a QRDA-III file that doesn't contain required measures.
+#### Try to convert a QRDA-III file that doesn't contain required measures.
 
 ```shell
 ./convert.sh qrda-files/QRDA-III-without-required-measure.xml
 ```
 
-### Try to convert a file that is not a QRDA-III file.
+#### Try to convert a file that is not a QRDA-III file.
 
 ```shell
 ./convert.sh qrda-files/not-a-QDRA-III-file.xml
 ```
 
-### Serverless
-Install Serverless
+### ReST API via Docker
+The Conversion Tool can be executed through a ReST API.  See [above](#getting-and-using-the-converter) for how to start the API endpoint.
 ```shell
-npm install -g serverless
+curl -X POST \
+  http://localhost:8080/v1/qrda3 \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+  -F file=@./qrda-files/valid-QRDA-III.xml
 ```
 
-Deploy to S3
-```shell
-export AWS_ACCESS_KEY_ID=<your-key-here>
-export AWS_SECRET_ACCESS_KEY=<your-secret-key-here>
-# AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are now available for serverless to use
-serverless deploy
-```
+The response body will either be the QPP JSON on success or error JSON on an error.
+The HTTP Status will be `201 Created` on succes or `422 Unprocessable entity` on an error.
+
 
 ## Want to contribute?
 

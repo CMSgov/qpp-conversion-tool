@@ -70,7 +70,7 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		clinicalDocumentNode.addChildNode(createReportingNode());
 
-		Node ecqmSectionNode = new Node(clinicalDocumentNode, TemplateId.MEASURE_SECTION_V2.getTemplateId());
+		Node ecqmSectionNode = new Node(TemplateId.MEASURE_SECTION_V2, clinicalDocumentNode);
 		ecqmSectionNode.putValue("category", "eCQM");
 
 		clinicalDocumentNode.addChildNode(ecqmSectionNode);
@@ -93,8 +93,8 @@ public class ClinicalDocumentValidatorTest {
 
 	@Test
 	public void testTooManyClinicalDocumentNodes() {
-		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
-		Node clinicalDocumentNode2 = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
+		Node clinicalDocumentNode2 = new Node(TemplateId.CLINICAL_DOCUMENT);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<ValidationError> errors = validator.validateSameTemplateIdNodes(Arrays.asList(clinicalDocumentNode, clinicalDocumentNode2));
@@ -122,7 +122,7 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		clinicalDocumentNode.addChildNode(createReportingNode());
 
-		Node placeholderNode = new Node("placeholder");
+		Node placeholderNode = new Node(TemplateId.PLACEHOLDER);
 
 		clinicalDocumentNode.addChildNode(placeholderNode);
 
@@ -136,7 +136,7 @@ public class ClinicalDocumentValidatorTest {
 
 	@Test
 	public void testMissingName() {
-		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.addChildNode(createReportingNode());
@@ -157,7 +157,7 @@ public class ClinicalDocumentValidatorTest {
 
 	@Test
 	public void testMissingTin() {
-		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		clinicalDocumentNode.addChildNode(createReportingNode());
@@ -176,7 +176,7 @@ public class ClinicalDocumentValidatorTest {
 
 	@Test
 	public void testNpiIsOptional() {
-		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 
@@ -327,7 +327,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	private Node createValidClinicalDocumentNode() {
-		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
@@ -335,8 +335,8 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	private Node createReportingNode() {
-		Node reportingSection = new Node(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
-		Node reportingParametersAct = new Node(reportingSection, TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		Node reportingSection = new Node(TemplateId.REPORTING_PARAMETERS_SECTION);
+		Node reportingParametersAct = new Node(TemplateId.REPORTING_PARAMETERS_ACT, reportingSection);
 		reportingParametersAct.putValue("performanceStart", "20170101");
 		reportingParametersAct.putValue("performanceEnd", "20171231");
 		reportingSection.addChildNode(reportingParametersAct);
@@ -344,19 +344,19 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	private Node createAciSectionNode(Node clinicalDocumentNode) {
-		Node aciSectionNode = new Node(clinicalDocumentNode, TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION, clinicalDocumentNode);
 		aciSectionNode.putValue("category", "aci");
 		return aciSectionNode;
 	}
 
 	private Node createIASectionNode(Node clinicalDocumentNode) {
-		Node IASectionNode = new Node(clinicalDocumentNode, TemplateId.IA_SECTION.getTemplateId());
+		Node IASectionNode = new Node(TemplateId.IA_SECTION, clinicalDocumentNode);
 		IASectionNode.putValue("category", "ia");
 		return IASectionNode;
 	}
 
 	private Node createQualityMeasureSectionNode(Node clinicalDocumentNode) {
-		Node qualityMeasureNode = new Node(clinicalDocumentNode, TemplateId.MEASURE_SECTION_V2.getTemplateId());
+		Node qualityMeasureNode = new Node(TemplateId.MEASURE_SECTION_V2, clinicalDocumentNode);
 		qualityMeasureNode.putValue("category", "ecqm");
 		return qualityMeasureNode;
 	}

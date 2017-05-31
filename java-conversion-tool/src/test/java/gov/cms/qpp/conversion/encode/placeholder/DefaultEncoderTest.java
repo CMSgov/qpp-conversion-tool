@@ -24,7 +24,7 @@ public class DefaultEncoderTest {
 
 		Node node = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
-		Node placeHolder = new Node(node, TemplateId.DEFAULT.getTemplateId());
+		Node placeHolder = new Node(TemplateId.DEFAULT, node);
 		node.addChildNode(placeHolder);
 		JsonWrapper wrapper = new JsonWrapper();
 		new QppOutputEncoder().encode(wrapper, node);
@@ -34,8 +34,8 @@ public class DefaultEncoderTest {
 
 	@Test
 	public void encodeDefaultNode() throws EncodeException {
-		Node root = new Node(TemplateId.DEFAULT.getTemplateId());
-		Node placeHolder = new Node(root, TemplateId.PLACEHOLDER.getTemplateId());
+		Node root = new Node(TemplateId.DEFAULT);
+		Node placeHolder = new Node(TemplateId.PLACEHOLDER, root);
 		root.addChildNode(placeHolder);
 		JsonWrapper wrapper = new JsonWrapper();
 		new DefaultEncoder("Default Encode test").internalEncode(wrapper, root);

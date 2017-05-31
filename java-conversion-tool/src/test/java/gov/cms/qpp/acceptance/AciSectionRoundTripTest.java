@@ -47,7 +47,7 @@ public class AciSectionRoundTripTest extends BaseTest {
 		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
-		Node aciSectionNode = parentNode.findFirstNode(TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = parentNode.findFirstNode(TemplateId.ACI_SECTION);
 		assertAciSectionHasSingleQedNode(aciSectionNode);
 	}
 
@@ -77,7 +77,7 @@ public class AciSectionRoundTripTest extends BaseTest {
 		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
-		Node aciSectionNode = parentNode.findFirstNode(TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = parentNode.findFirstNode(TemplateId.ACI_SECTION);
 		assertAciSectionHasSingleQedNode(aciSectionNode);
 	}
 

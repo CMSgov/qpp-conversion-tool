@@ -1,57 +1,52 @@
 package gov.cms.qpp.conversion.model;
 
-import org.junit.Test;
-
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.junit.Test;
 
 public class NodeTest {
 
 	@Test
 	public void testMembers() {
-		Node node = new Node();
+		TemplateId randomEnumValue1 = TemplateId.CMS_AGGREGATE_COUNT;
+		TemplateId randomEnumValue2 = TemplateId.ACI_SECTION;
+		Node node = new Node(randomEnumValue1);
 
-		node.setId("ABC");
 		node.putValue("DEF", "GHI");
 
 		assertEquals("GHI", node.getValue("DEF"));
 
 		Node childNode = new Node();
-		childNode.setId("JKL");
+		childNode.setType(randomEnumValue2);
 		node.addChildNode(childNode);
 
 		assertEquals(childNode, node.getChildNodes().get(0));
 
 		String toString = node.toString();
 
-		assertTrue(toString.contains("ABC"));
+		assertTrue(toString.contains(randomEnumValue1.name()));
 		assertTrue(toString.contains("DEF"));
 		assertTrue(toString.contains("GHI"));
-		assertFalse(toString.contains("JKL"));
+		assertFalse(toString.contains(randomEnumValue2.name()));
 	}
 
 	@Test
 	public void testToString() {
 		Node node = new Node();
 
-		node.setId("ABC");
-		node.putValue("DEF", "GHI");
-
-		assertEquals("GHI", node.getValue("DEF"));
-
 		Node childNode = new Node();
-		childNode.setId("JKL");
 		childNode.setParent(node);
 		node.addChildNode(childNode);
 
 		childNode = new Node();
-		childNode.setId("PQD");
 		childNode.setParent(node);
 		node.addChildNode(childNode);
 
@@ -73,12 +68,11 @@ public class NodeTest {
 
 	@Test
 	public void testParentMember() {
-		Node node = new Node();
-		Node parent = new Node("parent");
+		Node child = new Node();
+		Node parent = new Node();
+		child.setParent(parent);
 
-		node.setParent(parent);
-
-		assertTrue(node.getParent().getId().equals("parent"));
+		assertTrue(child.getParent() == parent);
 	}
 
 	@Test
@@ -100,12 +94,12 @@ public class NodeTest {
 	@Test
 	public void testFindNode() {
 		Node parent = new Node();
-		Node childOne = new Node("don't.find.me");
-		Node childTwo = new Node("don't.find.me.either");
-		Node childThree = new Node("find.me.please");
+		Node childOne = new Node();
+		Node childTwo = new Node();
+		Node childThree = new Node(TemplateId.PLACEHOLDER);
 		parent.addChildNodes(childOne, childTwo, childThree);
 
-		List<Node> results = parent.findNode("find.me.please");
+		List<Node> results = parent.findNode(TemplateId.PLACEHOLDER);
 
 		assertEquals("should find first child that has the searched id", results.size(), 1);
 	}
@@ -113,55 +107,55 @@ public class NodeTest {
 	@Test
 	public void testFindNoNode() {
 		Node parent = new Node();
-		Node childOne = new Node("don't.find.me");
-		Node childTwo = new Node("don't.find.me.either");
+		Node childOne = new Node();
+		Node childTwo = new Node();
 		parent.addChildNodes(childOne, childTwo);
 
-		List<Node> results = parent.findNode("find.me.please");
+		List<Node> results = parent.findNode(TemplateId.PLACEHOLDER);
 
 		assertTrue("should find first child that has the searched id", results.isEmpty());
 	}
 
 	@Test
 	public void testFindNodeSelfIncluded() {
-		Node parent = new Node("findMe");
-		Node childOne = new Node("findMe");
+		Node parent = new Node(TemplateId.PLACEHOLDER);
+		Node childOne = new Node(TemplateId.PLACEHOLDER);
 		parent.addChildNode(childOne);
 
-		List<Node> results = parent.findNode("findMe");
+		List<Node> results = parent.findNode(TemplateId.PLACEHOLDER);
 
 		assertEquals("should find itself if it has the searched id", results.size(), 2);
 	}
 
 	@Test
 	public void testFindFirstNodeSelf() {
-		Node parent = new Node("findMe");
-		Node childOne = new Node("findMe");
+		Node parent = new Node(TemplateId.PLACEHOLDER);
+		Node childOne = new Node(TemplateId.PLACEHOLDER);
 		parent.addChildNode(childOne);
 
-		assertEquals("should find itself if it has the searched id", parent.findFirstNode("findMe"), parent);
+		assertSame("should find itself if it has the searched id", parent.findFirstNode(TemplateId.PLACEHOLDER), parent);
 	}
 
 	@Test
 	public void testFindFirstNodeChildNode() {
 		Node parent = new Node();
-		Node childOne = new Node("don'tFindMe");
-		Node childTwo = new Node("findMe");
-		Node childThree = new Node("findMe");
+		Node childOne = new Node();
+		Node childTwo = new Node(TemplateId.PLACEHOLDER);
+		Node childThree = new Node(TemplateId.PLACEHOLDER);
 		parent.addChildNodes(childOne, childTwo, childThree);
 
-		assertEquals("should find first child that has the searched id", parent.findFirstNode("findMe"), childTwo);
+		assertSame("should find first child that has the searched id", parent.findFirstNode(TemplateId.PLACEHOLDER), childTwo);
 	}
 
 	@Test
 	public void testFindFirstNoNode() {
 		Node parent = new Node();
-		Node childOne = new Node("don't.find.me");
-		Node childTwo = new Node("don't.find.me");
-		Node childThree = new Node("don't.find.me");
+		Node childOne = new Node();
+		Node childTwo = new Node();
+		Node childThree = new Node();
 		parent.addChildNodes(childOne, childTwo, childThree);
 
-		assertEquals("should not find a node that has the searched id", parent.findFirstNode("findMe"), null);
+		assertNull("should not find a node that has the searched id", parent.findFirstNode(TemplateId.PLACEHOLDER));
 	}
 
 	@Test
@@ -171,37 +165,5 @@ public class NodeTest {
 		assertTrue(node.hasValue("test"));
 		node.removeValue("test");
 		assertFalse(node.hasValue("test"));
-	}
-
-	@Test
-	public void toDebugStringTest() {
-		Node root = new Node();
-		root.putValue("name", "root");
-		Node child1 = new Node(root, "child1");
-		child1.putValue("name", "child1");
-		Node child2 = new Node(root, "child2");
-		child2.putValue("name", "child2");
-		Node grandChild1 = new Node(child1, "grandChild1");
-		grandChild1.putValue("name", "grandChild1");
-		Node grandChild2 = new Node(child2, "grandChild2");
-		grandChild2.putValue("name", "grandChild2");
-		child1.addChildNode(grandChild1);
-		child2.addChildNode(grandChild2);
-		root.addChildNode(child1);
-		root.addChildNode(child2);
-
-		String expected = "Node: internalId: null , data: {name=root}\n" +
-				"\tchildNodes of null : \n" +
-				"\tNode: internalId: DEFAULT , data: {name=child1}\n" +
-				"\t\tchildNodes of DEFAULT : \n" +
-				"\t\tNode: internalId: DEFAULT , data: {name=grandChild1}\n" +
-				"\t\t\tchildNodes of DEFAULT  -> (none)\n" +
-				"\tNode: internalId: DEFAULT , data: {name=child2}\n" +
-				"\t\tchildNodes of DEFAULT : \n" +
-				"\t\tNode: internalId: DEFAULT , data: {name=grandChild2}\n" +
-				"\t\t\tchildNodes of DEFAULT  -> (none)";
-
-		String debugString = root.toDebugString();
-		assertThat("Expect the node hierarchy debug string", debugString, is(expected));
 	}
 }
