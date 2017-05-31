@@ -77,14 +77,29 @@ public class ConverterBenchmark implements FilenameFilter {
 	}
 	
 	
+	private void parseArgs(String[] args) {
+		for (String arg : args) {
+			try {
+				int number = Integer.parseInt(arg);
+				iterations = number;
+			} catch (NumberFormatException e) {
+				path = new File(arg);
+			}
+		}		
+	}
+	
+	
 	public static void main(String ... args) throws IOException {
 		ConverterBenchmark bench = new ConverterBenchmark();
+		
+		bench.parseArgs(args);
 		
 		// bench if if the files path is present 
 		if ( ! bench.doBenchmarks() ) {
 			System.out.println("Samples path does not exist.");
 		}
 	}
+
 
 }
 
