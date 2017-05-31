@@ -1,7 +1,0 @@
-{
-    "name": "aws-http-endpoint-to-s3-function",
-    "version": "1.0.0",
-    "description": "simple HTTP GET endpoint triggering an s3 lambda function",
-    "author": "Seth Alt",
-    "license": "MIT"
-}

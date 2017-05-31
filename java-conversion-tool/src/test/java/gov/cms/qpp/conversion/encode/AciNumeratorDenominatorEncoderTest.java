@@ -23,8 +23,6 @@ import static org.junit.Assert.fail;
 public class AciNumeratorDenominatorEncoderTest {
 
 	private static final String MEASURE_ID = "ACI-PEA-1";
-
-	private Node aciPerformanceRate;
 	private Node aciProportionMeasureNode;
 	private Node aciProportionNumeratorNode;
 	private Node aciProportionDenominatorNode;
@@ -46,11 +44,8 @@ public class AciNumeratorDenominatorEncoderTest {
 		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
 
-		aciPerformanceRate = new Node(TemplateId.PERFORMANCE_RATE);
-		aciPerformanceRate.putValue("DefaultDecoderFor", "Performance Rate");
-
-		aciProportionMeasureNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
-		aciProportionMeasureNode.addChildNode(aciPerformanceRate);
+		aciProportionMeasureNode = new Node();
+		aciProportionMeasureNode.setType(TemplateId.ACI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
 		aciProportionMeasureNode.putValue("measureId", MEASURE_ID);
