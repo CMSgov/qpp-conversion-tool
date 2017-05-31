@@ -190,6 +190,11 @@ public class Node {
 		this.parent = parent;
 	}
 
+	/**
+	 * setType sets the TemplateId backing the node
+	 *
+	 * @param type TemplateId
+	 */
 	public void setType(TemplateId type) {
 		this.type = type;
 	}
