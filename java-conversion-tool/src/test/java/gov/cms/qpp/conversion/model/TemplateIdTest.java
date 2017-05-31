@@ -30,37 +30,24 @@ public class TemplateIdTest {
 	}
 
 	@Test
-	public void testFindByTypeId1() {
-		TemplateId clinicalDocument = TemplateId.CLINICAL_DOCUMENT;
-		assertThat("TemplateId#getTypeById(String) is not working",
-		           TemplateId.getTypeById(clinicalDocument.getRoot()), is(clinicalDocument));
-	}
-
-	@Test
-	public void testFindByTypeId1NotExist() {
-		assertThat("TemplateId#getTypeById(String) is not working",
-		           TemplateId.getTypeById("nonExistingTemplateId"), is(TemplateId.DEFAULT));
-	}
-
-	@Test
 	public void testFindByTypeId2() {
 		TemplateId clinicalDocument = TemplateId.CLINICAL_DOCUMENT;
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTypeByIdAndExtension(clinicalDocument.getRoot(), clinicalDocument.getExtension()),
+		           TemplateId.getTemplateId(clinicalDocument.getRoot(), clinicalDocument.getExtension()),
 		           is(clinicalDocument));
 	}
 
 	@Test
 	public void testFindByTypeId2NotExist() {
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTypeByIdAndExtension(TemplateId.CLINICAL_DOCUMENT.getRoot(), "nonExistingExtension"),
+		           TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(), "nonExistingExtension"),
 		           is(TemplateId.DEFAULT));
 	}
 
 	@Test
 	public void testFindByTypeId2NotExistAgain() {
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTypeByIdAndExtension("nonExistingRoot", TemplateId.CLINICAL_DOCUMENT.getExtension()),
+		           TemplateId.getTemplateId("nonExistingRoot", TemplateId.CLINICAL_DOCUMENT.getExtension()),
 		           is(TemplateId.DEFAULT));
 	}
 
@@ -88,10 +75,10 @@ public class TemplateIdTest {
 		isLegacy = ConversionEntry.isHistorical();
 		assertThat("Legacy data is false", isLegacy, is(true));
 
-		String value = TemplateId.getTypeByIdAndExtension(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId(), "").getTemplateId();
+		String value = TemplateId.getTemplateId(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId(), "").getTemplateId();
 		assertThat("Expect value of to return a TemplateId", value, is(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId()));
 
-		value = TemplateId.getTypeByIdAndExtension(TemplateId.CLINICAL_DOCUMENT.getTemplateId(),"").getTemplateId();
+		value = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getTemplateId(),"").getTemplateId();
 		assertThat("Expect value of to return a TemplateId", value, is(TemplateId.CLINICAL_DOCUMENT.getTemplateId()));
 
 		field.set(null, false);

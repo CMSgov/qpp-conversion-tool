@@ -123,23 +123,13 @@ public enum TemplateId {
 	}
 
 	/**
-	 * Returns the enumeration for the specified ID.
-	 *
-	 * @param id The complete template ID (root + ":" + extension).
-	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
-	 */
-	public static TemplateId getTypeById(String id) {
-		return getTypeByIdAndExtension(id, null);
-	}
-
-	/**
 	 * Returns the enumeration for the specified root and extension.
 	 *
 	 * @param root The root part of the templateId.
 	 * @param extension The extension part of the templateId.
 	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
 	 */
-	public static TemplateId getTypeByIdAndExtension(String root, String extension) {
+	public static TemplateId getTemplateId(String root, String extension) {
 		Map<String, TemplateId> extensionsToTemplateId = ROOT_AND_TO_TEMPLATE_ID.get(root);
 
 		if (extensionsToTemplateId == null) {
@@ -160,7 +150,7 @@ public enum TemplateId {
 	 * @param extension The extension part of the templateId.
 	 * @return A string that concatenates the arguments the same way the enumeration does.
 	 */
-	public static String generateTemplateIdString(String root, String extension) {
+	static String generateTemplateIdString(String root, String extension) {
 		String templateId = root;
 
 		if (!ConversionEntry.isHistorical() && extension != null && !extension.isEmpty()) {
