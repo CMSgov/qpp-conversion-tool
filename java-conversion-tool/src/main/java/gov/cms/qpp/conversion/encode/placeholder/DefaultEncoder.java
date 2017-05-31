@@ -42,15 +42,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	// this one looks like a node that is not necessary
-	@Encoder(TemplateId.PERFORMANCE_RATE)
-	public static class PerformanceRateEncoder extends DefaultEncoder {
-
-		public PerformanceRateEncoder() {
-			super("Performance Rate");
-		}
-	}
-
 	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
 
 	@Encoder(TemplateId.CMS_AGGREGATE_COUNT)
@@ -122,14 +113,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 
 		public PayerSupplementalDataElementCmsV2Encoder() {
 			super("Payer Supplemental Data Element - CMS (V2)");
-		}
-	}
-
-	@Encoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
-	public static class PerformanceRateProportionMeasureCmsV2Encoder extends DefaultEncoder {
-
-		public PerformanceRateProportionMeasureCmsV2Encoder() {
-			super("Performance Rate for Proportion Measure - CMS (V2)");
 		}
 	}
 }

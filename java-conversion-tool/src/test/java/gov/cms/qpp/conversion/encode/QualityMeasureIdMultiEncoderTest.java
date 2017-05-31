@@ -3,12 +3,13 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import java.util.LinkedHashMap;
-import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -136,24 +137,6 @@ public class QualityMeasureIdMultiEncoderTest {
 		LinkedHashMap<String, Object> childValues = getChildValues();
 		List<LinkedHashMap<String, Integer>> subPopulations =
 				(List<LinkedHashMap<String, Integer>>)childValues.get("strata");
-		assertFirstSubPopulation(subPopulations);
-		assertSecondSubPopulation(subPopulations);
-	}
-
-	@Test
-	public void testInternalEncodeWithIgnoredMeasureData() {
-		Node populationCriteriaNode = new Node(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2.getTemplateId());
-		qualityMeasureId.addChildNodes(
-				populationNode, denomExceptionNode, denomExclusionNode, numeratorNode, denominatorNode,
-				populationNodeTwo, denomExceptionNodeTwo, denomExclusionNodeTwo, numeratorNodeTwo, denominatorNodeTwo,
-				populationCriteriaNode);
-
-		encoder.internalEncode(wrapper, qualityMeasureId);
-
-		LinkedHashMap<String, Object> childValues = getChildValues();
-		List<LinkedHashMap<String, Integer>> subPopulations =
-				(List<LinkedHashMap<String, Integer>>)childValues.get("strata");
-
 		assertFirstSubPopulation(subPopulations);
 		assertSecondSubPopulation(subPopulations);
 	}

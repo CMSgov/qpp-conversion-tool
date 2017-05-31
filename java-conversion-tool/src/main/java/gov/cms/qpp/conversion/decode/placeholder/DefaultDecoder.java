@@ -49,16 +49,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	// The names of the default decoder classes does not matter.
-	// this one looks like a node that is not necessary
-	@Decoder(TemplateId.PERFORMANCE_RATE)
-	public static class PerformanceRateDecoder extends DefaultDecoder {
-
-		public PerformanceRateDecoder() {
-			super("Performance Rate");
-		}
-	}
-
 	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
 	@Decoder(TemplateId.CMS_AGGREGATE_COUNT)
 	public static class CmsAggregateCountDecoder extends DefaultDecoder {
@@ -124,15 +114,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 			super("Payer Supplemental Data Element - CMS (V2)");
 		}
 	}
-
-	@Decoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
-	public static class PerformanceRateProportionMeasureCmsV2Decoder extends DefaultDecoder {
-
-		public PerformanceRateProportionMeasureCmsV2Decoder() {
-			super("Performance Rate for Proportion Measure - CMS (V2)");
-		}
-	}
-
 }
 
 /**
