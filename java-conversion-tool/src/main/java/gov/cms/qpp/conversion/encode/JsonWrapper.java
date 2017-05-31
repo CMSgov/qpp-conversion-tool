@@ -564,7 +564,7 @@ public class JsonWrapper {
 	private Set<Map<String, String>> getMetadataHolder() {
 		Set<Map<String, String>> returnValue = this.getValue(METADATA_HOLDER);
 		if (returnValue == null) {
-			returnValue = new HashSet<Map<String, String>>();
+			returnValue = new HashSet<>();
 			this.putObject(METADATA_HOLDER, returnValue);
 		}
 		return returnValue;
