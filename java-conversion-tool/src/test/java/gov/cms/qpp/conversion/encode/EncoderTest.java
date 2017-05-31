@@ -38,7 +38,6 @@ public class EncoderTest {
 			TemplateId.MEASURE_PERFORMED.getTemplateId(),
 			TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId(),
 			TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS.getTemplateId(),
-			TemplateId.PERFORMANCE_RATE.getTemplateId(),
 			TemplateId.ACI_NUMERATOR.getTemplateId(),
 			TemplateId.ACI_DENOMINATOR.getTemplateId(),
 			TemplateId.IA_MEASURE.getTemplateId()

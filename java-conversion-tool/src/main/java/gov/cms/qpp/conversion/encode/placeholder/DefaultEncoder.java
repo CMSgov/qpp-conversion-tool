@@ -42,15 +42,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	// this one looks like a node that is not necessary
-	@Encoder(TemplateId.PERFORMANCE_RATE)
-	public static class PerformanceRateEncoder extends DefaultEncoder {
-
-		public PerformanceRateEncoder() {
-			super("Performance Rate");
-		}
-	}
-
 	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
 
 	@Encoder(TemplateId.CMS_AGGREGATE_COUNT)

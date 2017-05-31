@@ -50,10 +50,6 @@ public class AciNumeratorDenominatorEncoderTest {
 		aciProportionNumeratorNode.setId(TemplateId.ACI_NUMERATOR.getTemplateId());
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
 
-		aciPerformanceRate = new Node();
-		aciPerformanceRate.setId(TemplateId.PERFORMANCE_RATE.getTemplateId());
-		aciPerformanceRate.putValue("DefaultDecoderFor", "Performance Rate");
-
 		aciProportionMeasureNode = new Node();
 		aciProportionMeasureNode.setId(TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
 		aciProportionMeasureNode.addChildNode(aciPerformanceRate);
