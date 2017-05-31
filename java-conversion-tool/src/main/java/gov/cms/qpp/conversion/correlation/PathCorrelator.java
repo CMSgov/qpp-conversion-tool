@@ -6,7 +6,6 @@ import gov.cms.qpp.conversion.correlation.model.Config;
 import gov.cms.qpp.conversion.correlation.model.Correlation;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
-import gov.cms.qpp.conversion.model.TemplateId;
 import org.reflections.util.ClasspathHelper;
 
 import java.io.IOException;
@@ -49,9 +48,8 @@ public class PathCorrelator {
 							getKey(template.getTemplateId(), conf.getDecodeLabel()), conf.getGoods());
 				}
 				if (null != conf.getEncodeLabels()) {
-					conf.getEncodeLabels().forEach(label -> {
-						pathCorrelationMap.put(getKey(template.getTemplateId(), label), conf.getGoods());
-					});
+					conf.getEncodeLabels().forEach(label ->
+						pathCorrelationMap.put(getKey(template.getTemplateId(), label), conf.getGoods()));
 				}
 			});
 		});

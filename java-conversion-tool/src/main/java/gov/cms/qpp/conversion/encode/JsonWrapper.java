@@ -549,6 +549,7 @@ public class JsonWrapper {
 
 	private Map<String,String> getMetaMap(Node node) {
 		Map<String, String> metaMap = new HashMap<>();
+		metaMap.put("encodeLabel", "");
 		metaMap.put("nsuri", node.getDefaultNsUri());
 		metaMap.put("template", node.getType().name());
 		metaMap.put("path", node.getPath());

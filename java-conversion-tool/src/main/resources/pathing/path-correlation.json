@@ -176,6 +176,10 @@
 			"config": [
 				{
 					"decodeLabel": "performanceStart",
+					"encodeLabels": [
+						"performanceStart",
+						"performanceYear"
+					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'low' and namespace-uri() = '<nsuri>']/@value",
 						"xmltype": "attribute"
@@ -183,6 +187,9 @@
 				},
 				{
 					"decodeLabel": "performanceEnd",
+					"encodeLabels": [
+						"performanceEnd"
+					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'high' and namespace-uri() = '<nsuri>']/@value",
 						"xmltype": "attribute"
@@ -195,6 +202,22 @@
 			"config": [
 				{
 					"decodeLabel": "NPITIN",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']",
+						"xmltype": "attribute"
+					}
+				}
+			]
+		},
+		{
+			"correlationId": "noop",
+			"config": [
+				{
+					"encodeLabels": [
+						"performanceYear",
+						"performanceStart",
+						"performanceEnd"
+					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']",
 						"xmltype": "attribute"

@@ -86,8 +86,26 @@ public class XpathJsonPathComparisonTest {
 		String xPath = prepPath("performanceYear");
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
-		assertEquals("Attribute name should be: extension", "extension", attribute.getName());
-		assertEquals("Attribute value should be: MIPS", "MIPS", attribute.getValue());
+		assertEquals("Attribute name should be: value", "value", attribute.getName());
+		assertEquals("Attribute value should be: 20170101", "20170101", attribute.getValue());
+	}
+
+	@Test
+	public void compareTopLevelAttributePerformanceStart() throws XmlException, IOException {
+		String xPath = prepPath("performanceStart");
+		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
+
+		assertEquals("Attribute name should be: value", "value", attribute.getName());
+		assertEquals("Attribute value should be: 20170101", "20170101", attribute.getValue());
+	}
+
+	@Test
+	public void compareTopLevelAttributePerformanceEnd() throws XmlException, IOException {
+		String xPath = prepPath("performanceEnd");
+		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
+
+		assertEquals("Attribute name should be: value", "value", attribute.getName());
+		assertEquals("Attribute value should be: 20171231", "20171231", attribute.getValue());
 	}
 
 	//ACI
@@ -247,19 +265,30 @@ public class XpathJsonPathComparisonTest {
 	@SuppressWarnings("unchecked")
 	private Map<String, String> getMetaMap(Map<String, Object> jsonMap, final String leaf) {
 		List<Map<String, String>> metaHolder = (List<Map<String, String>>) jsonMap.get("metadata_holder");
-		if (metaHolder.size() > 1) {
-			Stream<Map<String, String>> sorted = metaHolder.stream()
+//		if (metaHolder.size() > 1) {
+//			Stream<Map<String, String>> sorted = metaHolder.stream()
+//					.sorted(labeledFirst());
+//			return sorted.filter(entry -> {
+//				String xPath = null;
+//				if (entry.get("encodeLabel") == null || entry.get("encodeLabel").equals(leaf)) {
+//					xPath = PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri"));
+//				}
+//				return xPath != null;
+//			}).findFirst().orElse(null);
+//		} else {
+//			return metaHolder.get(0);
+//		}
+
+		Stream<Map<String, String>> sorted = metaHolder.stream()
 					.sorted(labeledFirst());
-			return sorted.filter(entry -> {
-				String xPath = null;
-				if (entry.get("encodeLabel") == null || entry.get("encodeLabel").equals(leaf)) {
-					xPath = PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri"));
-				}
-				return xPath != null;
-			}).findFirst().orElse(null);
-		} else {
-			return metaHolder.get(0);
-		}
+		return sorted.filter(entry -> {
+			if (entry.get("encodeLabel").equals(leaf)) {
+				return leaf.isEmpty() ||
+						PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
+			} else {
+				return entry.get("encodeLabel").isEmpty();
+			}
+		}).findFirst().orElse(null);
 	}
 
 	private Comparator<Map<String, String>> labeledFirst() {
@@ -267,10 +296,10 @@ public class XpathJsonPathComparisonTest {
 			String map1Label = map1.get("encodeLabel");
 			String map2Label = map2.get("encodeLabel");
 			int reply;
-			if ((map1Label != null && map2Label != null) ||
-					(map1Label == null && map2Label == null)) {
+			if ((!map1Label.isEmpty() && !map2Label.isEmpty()) ||
+					(map1Label.isEmpty() && map2Label.isEmpty())) {
 				reply = 0;
-			} else if (map1Label == null) {
+			} else if (map1Label.isEmpty()) {
 				reply = 1;
 			} else {
 				reply = -1;

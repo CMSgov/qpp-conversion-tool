@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  */
 @Decoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
 public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
-	private static String MEASURE_ID = "measureId";
+	private static final String MEASURE_ID = "measureId";
 
 	/**
 	 * Decodes an ACI Numerator Denominator Type Measure into an intermediate node
