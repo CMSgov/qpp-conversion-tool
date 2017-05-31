@@ -89,7 +89,7 @@ public class AciNumeratorDenominatorDecoderTest extends BaseTest {
 		Node aciMeasureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(getValidXmlFragment()));
 		Node numeratorDenominatorNode = aciMeasureNode.getChildNodes().get(0);
 		int numberNodes = countNodes(aciMeasureNode);
-		List<Node> nodeList = aciMeasureNode.findNode(TemplateId.ACI_NUMERATOR.getTemplateId());
+		List<Node> nodeList = aciMeasureNode.findNode(TemplateId.ACI_NUMERATOR);
 
 		assertThat("Decoded xml fragment should contain one child node",
 				aciMeasureNode.getChildNodes(), hasSize(1));
@@ -99,23 +99,23 @@ public class AciNumeratorDenominatorDecoderTest extends BaseTest {
 		assertThat("Should contain a measure id",
 				numeratorDenominatorNode.getValue("measureId"), is(MEASURE_ID));
 
-		assertThat("Should have Numerator", numeratorDenominatorNode.getChildNodes().get(0).getId(),
-				is(TemplateId.ACI_NUMERATOR.getTemplateId()));
+		assertThat("Should have Numerator", numeratorDenominatorNode.getChildNodes().get(0).getType(),
+				is(TemplateId.ACI_NUMERATOR));
 
-		assertThat("Should have Denominator", numeratorDenominatorNode.getChildNodes().get(1).getId(),
-				is(TemplateId.ACI_DENOMINATOR.getTemplateId()));
+		assertThat("Should have Denominator", numeratorDenominatorNode.getChildNodes().get(1).getType(),
+				is(TemplateId.ACI_DENOMINATOR));
 
-		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT);
 
 		assertThat("Decoded xml fragment " + TemplateId.ACI_NUMERATOR.name() +
 						" should contain " + TemplateId.ACI_AGGREGATE_COUNT.name(),
 				nodeList.size(), is(1));
 
-		nodeList = aciMeasureNode.findNode(TemplateId.ACI_DENOMINATOR.getTemplateId());
+		nodeList = aciMeasureNode.findNode(TemplateId.ACI_DENOMINATOR);
 		assertThat("Decoded xml fragment should contain " + TemplateId.ACI_DENOMINATOR.name(),
 				nodeList.size(), is(1));
 
-		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT);
 		assertThat("Decoded xml fragment " + TemplateId.ACI_NUMERATOR.name() +
 						" should contain " + TemplateId.ACI_AGGREGATE_COUNT.name(),
 				nodeList.size(), is(1));
@@ -137,20 +137,20 @@ public class AciNumeratorDenominatorDecoderTest extends BaseTest {
 		assertThat("Decoded xml fragment should contain one child node",
 				aciMeasureNode.getChildNodes().size(), is(1));
 
-		List<Node> nodeList = aciMeasureNode.findNode(TemplateId.ACI_NUMERATOR.getTemplateId());
+		List<Node> nodeList = aciMeasureNode.findNode(TemplateId.ACI_NUMERATOR);
 		assertThat("Decoded xml fragment should contain " + TemplateId.ACI_NUMERATOR.name(),
 				nodeList.size(), is(1));
 
-		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT);
 		assertThat("Decoded xml fragment " + TemplateId.ACI_NUMERATOR.name() +
 						" should contain " + TemplateId.ACI_AGGREGATE_COUNT.name(),
 				nodeList.size(), is(1));
 
-		nodeList = aciMeasureNode.findNode(TemplateId.ACI_DENOMINATOR.getTemplateId());
+		nodeList = aciMeasureNode.findNode(TemplateId.ACI_DENOMINATOR);
 		assertThat("Decoded xml fragment should contain " + TemplateId.ACI_DENOMINATOR.name(),
 				nodeList.size(), is(1));
 
-		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT);
 		assertThat("Decoded xml fragment " + TemplateId.ACI_NUMERATOR.name() +
 						" should contain " + TemplateId.ACI_AGGREGATE_COUNT.name(),
 				nodeList.size(), is(1));

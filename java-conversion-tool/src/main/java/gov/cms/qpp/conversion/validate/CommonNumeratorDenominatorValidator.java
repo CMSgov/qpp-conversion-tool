@@ -48,7 +48,7 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 				.childMaximum(String.format(TOO_MANY_CHILDREN, nodeName), 1, TemplateId.ACI_AGGREGATE_COUNT);
 		if (getValidationErrors().isEmpty()) {
 			validateAggregateCount(
-					node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId()));
+					node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT));
 		}
 	}
 

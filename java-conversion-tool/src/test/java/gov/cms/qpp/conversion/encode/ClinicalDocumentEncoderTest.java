@@ -10,38 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentEncoderTest {
-
-	private static final String EXPECTED_CLINICAL_DOC_FORMAT = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
-			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
-			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\"," + "\n  \"performanceYear\" : 2017,"
-			+ "\n  \"measurementSets\" : [ " + "{\n    \"category\" : \"aci\",\n    \"measurements\" : [ "
-			+ "{\n      \"measureId\" : \"ACI-PEA-1\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    }, "
-			+ "{\n      \"measureId\" : \"ACI_EP_1\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 500,\n        \"denominator\" : 700\n      }\n    }, "
-			+ "{\n      \"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
-			+ "\n    \"source\" : \"provider\"," + "\n    \"performanceStart\" : \"2017-01-01\","
-			+ "\n    \"performanceEnd\" : \"2017-12-31\"" + "\n  } ]\n}";
-
-	private static final String EXPECTED_NO_REPORTING = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
-			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
-			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\","
-			+ "\n  \"measurementSets\" : [ " + "{\n    \"category\" : \"aci\",\n    \"measurements\" : [ "
-			+ "{\n      \"measureId\" : \"ACI-PEA-1\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    }, "
-			+ "{\n      \"measureId\" : \"ACI_EP_1\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 500,\n        \"denominator\" : 700\n      }\n    }, "
-			+ "{\n      \"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n"
-			+ "        \"numerator\" : 400,\n        \"denominator\" : 600\n      }\n    } ],"
-			+ "\n    \"source\" : \"provider\"\n  } ]\n}";
-
-	private static final String EXPECTED_NO_ACI = "{\n  \"programName\" : \"mips\"," + "\n  \"entityType\" : \"individual\","
-			+ "\n  \"taxpayerIdentificationNumber\" : \"123456789\","
-			+ "\n  \"nationalProviderIdentifier\" : \"2567891421\"," + "\n  \"performanceYear\" : 2017\n}";
 
 	private Node aciSectionNode;
 	private Node aciProportionMeasureNode;
@@ -67,91 +39,72 @@ public class ClinicalDocumentEncoderTest {
 	@Before
 	public void createNode() {
 
-		numeratorValueNode = new Node();
-		numeratorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue("aggregateCount", "400");
 
-		numeratorValueNode2 = new Node();
-		numeratorValueNode2.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		numeratorValueNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorValueNode2.putValue("aggregateCount", "500");
 
-		numeratorValueNode3 = new Node();
-		numeratorValueNode3.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		numeratorValueNode3 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorValueNode3.putValue("aggregateCount", "400");
 
-		denominatorValueNode = new Node();
-		denominatorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		denominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		denominatorValueNode.putValue("aggregateCount", "600");
 
-		denominatorValueNode2 = new Node();
-		denominatorValueNode2.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		denominatorValueNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		denominatorValueNode2.putValue("aggregateCount", "700");
 
-		denominatorValueNode3 = new Node();
-		denominatorValueNode3.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		denominatorValueNode3 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		denominatorValueNode3.putValue("aggregateCount", "600");
 
-		aciProportionDenominatorNode = new Node();
-		aciProportionDenominatorNode.setId(TemplateId.ACI_DENOMINATOR.getTemplateId());
+		aciProportionDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
 
-		aciProportionDenominatorNode2 = new Node();
-		aciProportionDenominatorNode2.setId(TemplateId.ACI_DENOMINATOR.getTemplateId());
+		aciProportionDenominatorNode2 = new Node(TemplateId.ACI_DENOMINATOR);
 		aciProportionDenominatorNode2.addChildNode(denominatorValueNode2);
 
-		aciProportionDenominatorNode3 = new Node();
-		aciProportionDenominatorNode3.setId(TemplateId.ACI_DENOMINATOR.getTemplateId());
+		aciProportionDenominatorNode3 = new Node(TemplateId.ACI_DENOMINATOR);
 		aciProportionDenominatorNode3.addChildNode(denominatorValueNode3);
 
-		aciProportionNumeratorNode = new Node();
-		aciProportionNumeratorNode.setId(TemplateId.ACI_NUMERATOR.getTemplateId());
+		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
 
-		aciProportionNumeratorNode2 = new Node();
-		aciProportionNumeratorNode2.setId(TemplateId.ACI_NUMERATOR.getTemplateId());
+		aciProportionNumeratorNode2 = new Node(TemplateId.ACI_NUMERATOR);
 		aciProportionNumeratorNode2.addChildNode(numeratorValueNode2);
 
-		aciProportionNumeratorNode3 = new Node();
-		aciProportionNumeratorNode3.setId(TemplateId.ACI_NUMERATOR.getTemplateId());
+		aciProportionNumeratorNode3 = new Node(TemplateId.ACI_NUMERATOR);
 		aciProportionNumeratorNode3.addChildNode(numeratorValueNode3);
 
-		aciProportionMeasureNode = new Node();
-		aciProportionMeasureNode.setId(TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		aciProportionMeasureNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
 		aciProportionMeasureNode.putValue("measureId", "ACI-PEA-1");
 
-		aciProportionMeasureNode2 = new Node();
-		aciProportionMeasureNode2.setId(TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		aciProportionMeasureNode2 = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode2.addChildNode(aciProportionNumeratorNode2);
 		aciProportionMeasureNode2.addChildNode(aciProportionDenominatorNode2);
 		aciProportionMeasureNode2.putValue("measureId", "ACI_EP_1");
 
-		aciProportionMeasureNode3 = new Node();
-		aciProportionMeasureNode3.setId(TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		aciProportionMeasureNode3 = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode3.addChildNode(aciProportionNumeratorNode3);
 		aciProportionMeasureNode3.addChildNode(aciProportionDenominatorNode3);
 		aciProportionMeasureNode3.putValue("measureId", "ACI_CCTPE_3");
 
-		aciSectionNode = new Node();
-		aciSectionNode.setId(TemplateId.ACI_SECTION.getTemplateId());
+		aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);
 		aciSectionNode.addChildNode(aciProportionMeasureNode3);
 
-		reportingParametersActNode = new Node();
-		reportingParametersActNode.setId(TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		reportingParametersActNode.putValue("performanceStart", "20170101");
 		reportingParametersActNode.putValue("performanceEnd", "20171231");
 
-		reportingParametersSectionNode = new Node();
-		reportingParametersSectionNode.setId(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
+		reportingParametersSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION);
 		reportingParametersSectionNode.addChildNode(reportingParametersActNode);
 
 
-		clinicalDocumentNode = new Node();
-		clinicalDocumentNode.setId(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("entityType", "individual");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -183,9 +136,6 @@ public class ClinicalDocumentEncoderTest {
 				clinicalDocMap.get("nationalProviderIdentifier"), is("2567891421"));
 
 		assertThat("Must have a correct performanceYear", clinicalDocMap.get("performanceYear"), is(2017));
-
-		assertThat("Must have correct json formatting", testJsonWrapper.toString(),
-				is(EXPECTED_CLINICAL_DOC_FORMAT));
 	}
 
 	@Test(expected = EncodeException.class)
@@ -193,7 +143,7 @@ public class ClinicalDocumentEncoderTest {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
-		clinicalDocumentNode.addChildNode(new Node("meep"));
+		clinicalDocumentNode.addChildNode(new Node());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 	}
 
@@ -205,8 +155,12 @@ public class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		assertThat("Must return a Clinical Document without reporting parameter section", testJsonWrapper.toString(),
-				is(EXPECTED_NO_REPORTING));
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+
+		assertThat("Must not be a performanceStart because the reporting parameters was missing.",
+			((List<Map<?, ?>>)clinicalDocMap.get("measurementSets")).get(0).get("performanceStart"), is(nullValue()));
+		assertThat("Must not be a performanceEnd because the reporting parameters was missing.",
+			((List<Map<?, ?>>)clinicalDocMap.get("measurementSets")).get(0).get("performanceEnd"), is(nullValue()));
 	}
 
 	@Test
@@ -217,7 +171,9 @@ public class ClinicalDocumentEncoderTest {
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
-		assertThat("Must return a Clinical Document without measurement section", testJsonWrapper.toString(),
-				is(EXPECTED_NO_ACI));
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+
+		assertThat("Must not be a performanceStart because the reporting parameters was missing.",
+			clinicalDocMap.get("measurementSets"), is(nullValue()));
 	}
 }

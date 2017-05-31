@@ -19,7 +19,6 @@ import java.util.function.Predicate;
 @Decoder(TemplateId.QRDA_CATEGORY_III_REPORT_V3)
 public class MultipleTinsDecoder extends QppXmlDecoder {
 
-	public static final String NPI_TIN_ID = "NPITIN";
 	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
 	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
 	private static final String PERFORMED_ASSIGNED_ENTITY_PATH =
@@ -39,7 +38,7 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		setNationalProviderIdOnNode(element, thisNode);
 
-		Node child = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		Node child = new Node(TemplateId.CLINICAL_DOCUMENT);
 		ClinicalDocumentDecoder clinicalDocument = new ClinicalDocumentDecoder();
 		clinicalDocument.setNamespace(element, clinicalDocument);
 		clinicalDocument.internalDecode(element, child);
@@ -107,7 +106,7 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 					.getChild(ID, ns)
 					.getAttributeValue(EXTENSION);
 			if (npi != null && tin != null) { //Only create the child if both values are available
-				Node child = new Node(NPI_TIN_ID);
+				Node child = new Node(TemplateId.NPI_TIN_ID);
 				child.putValue(NATIONAL_PROVIDER_IDENTIFIER, npi);
 				child.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, tin);
 				thisNode.addChildNode(child);

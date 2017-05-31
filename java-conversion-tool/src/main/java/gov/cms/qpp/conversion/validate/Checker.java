@@ -6,13 +6,13 @@ import gov.cms.qpp.conversion.model.error.ValidationError;
 
 import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations
@@ -261,14 +261,14 @@ class Checker {
 	 */
 	public Checker onlyHasChildren(String message, TemplateId... types) {
 		if (!shouldShortcut()) {
-			Set<String> templateIds =
-				Arrays.stream(types)
-					.map(TemplateId::getTemplateId)
-					.collect(Collectors.toSet());
+			Set<TemplateId> templateIds = EnumSet.noneOf(TemplateId.class);
+			for (TemplateId templateId : types) {
+				templateIds.add(templateId);
+			}
 
 			boolean valid = node.getChildNodes()
 				.stream()
-				.allMatch(childNode -> templateIds.contains(childNode.getId()));
+				.allMatch(childNode -> templateIds.contains(childNode.getType()));
 			if (!valid) {
 				validationErrors.add(new ValidationError(message, node.getPath()));
 			}

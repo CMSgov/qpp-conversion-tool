@@ -24,14 +24,14 @@ public class ReportingParametersTest {
 	@Test
 	public void getReportingNodeBothValid() {
 
-		Map<String, Node> childMapByTemplateId = new HashMap<>();
-		Node reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
-		Node reportingActNode = new Node(reportingParameterNode, TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		Map<TemplateId, Node> childMapByTemplateId = new HashMap<>();
+		Node reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION);
+		Node reportingActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, reportingParameterNode);
 		reportingParameterNode.addChildNode(reportingActNode);
 		reportingActNode.putValue("performanceStart", "2017-01-01");
 		reportingActNode.putValue("performanceEnd", "2017-12-31");
 		childMapByTemplateId.put(
-				TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId(), reportingParameterNode);
+				TemplateId.REPORTING_PARAMETERS_SECTION, reportingParameterNode);
 
 		Optional<Node> result = ReportingParameters.getReportingNode(childMapByTemplateId);
 
@@ -53,14 +53,14 @@ public class ReportingParametersTest {
 	@Test
 	public void getReportingNodeEndMissing() {
 
-		Map<String, Node> childMapByTemplateId = new HashMap<>();
-		Node reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
-		Node reportingActNode = new Node(reportingParameterNode, TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		Map<TemplateId, Node> childMapByTemplateId = new HashMap<>();
+		Node reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION);
+		Node reportingActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, reportingParameterNode);
 		reportingParameterNode.addChildNode(reportingActNode);
 		reportingActNode.putValue("performanceStart", "2017-01-01");
 		reportingActNode.putValue("performanceEnd", "");
 		childMapByTemplateId.put(
-				TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId(), reportingParameterNode);
+				TemplateId.REPORTING_PARAMETERS_SECTION, reportingParameterNode);
 
 		Optional<Node> result = ReportingParameters.getReportingNode(childMapByTemplateId);
 

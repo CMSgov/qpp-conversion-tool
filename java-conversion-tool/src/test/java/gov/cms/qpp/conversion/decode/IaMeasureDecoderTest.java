@@ -10,7 +10,6 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -29,14 +28,14 @@ public class IaMeasureDecoderTest extends BaseTest {
 		IaMeasureDecoder decoder = new IaMeasureDecoder();
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 
-		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE.getTemplateId());
-		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
+		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED);
 		String value = measurePerformed.getValue("measurePerformed");
 
 		assertThat("Should contain the correct value", iaMeasure.getValue("measureId"),
 				is("IA_EPA_1"));
-		assertThat("Should contain the correct template id", measurePerformed.getId(),
-				is(TemplateId.MEASURE_PERFORMED.getTemplateId()));
+		assertThat("Should contain the correct template id", measurePerformed.getType(),
+				is(TemplateId.MEASURE_PERFORMED));
 		assertThat("The ACI_MEASURE_PERFORMED value should be \"Y\"" , value, is("Y"));
 	}
 
@@ -46,10 +45,10 @@ public class IaMeasureDecoderTest extends BaseTest {
 		IaMeasureDecoder decoder = new IaMeasureDecoder();
 
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
-		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE.getTemplateId());
+		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
 
-		assertThat("IAMeasure node should be IA_MEASURE ", iaMeasure.getId(),
-				is(TemplateId.IA_MEASURE.getTemplateId()));
+		assertThat("IAMeasure node should be IA_MEASURE ", iaMeasure.getType(),
+				is(TemplateId.IA_MEASURE));
 		assertThat("There should not be any child node", iaMeasure.getChildNodes().size(), is(0));
 	}
 
@@ -59,14 +58,14 @@ public class IaMeasureDecoderTest extends BaseTest {
 		xmlFragment = addExtraXml(xmlFragment);
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 
-		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE.getTemplateId());
-		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
+		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED);
 		String value = measurePerformed.getValue("measurePerformed");
 
 		assertThat("Should contain the correct value", iaMeasure.getValue("measureId"),
 				is("IA_EPA_1"));
-		assertThat("Should contain the correct template id", measurePerformed.getId(),
-				is(TemplateId.MEASURE_PERFORMED.getTemplateId()));
+		assertThat("Should contain the correct template id", measurePerformed.getType(),
+				is(TemplateId.MEASURE_PERFORMED));
 		assertThat("The MEASURE_PERFORMED value should be \"Y\"" , value, is("Y"));
 	}
 

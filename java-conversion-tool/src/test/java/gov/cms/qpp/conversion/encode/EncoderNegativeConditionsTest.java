@@ -22,7 +22,6 @@ public class EncoderNegativeConditionsTest {
 		QppOutputEncoder encoder = new QppOutputEncoder();
 
 		Node aNode = new Node();
-		aNode.setId("nothing");
 		aNode.putValue("something", "600");
 
 		List<Node> nodes = new ArrayList<>();
@@ -40,8 +39,8 @@ public class EncoderNegativeConditionsTest {
 
 		// NOTE: This test is only relevant in that it finds the deep value but
 		// it is not actually a result
-		String EXPECTED = "null";
-		assertThat("expected encoder to return an empty string", sw.toString(), is(EXPECTED));
+		String expected = "null";
+		assertThat("expected encoder to return an empty string", sw.toString(), is(expected));
 	}
 
 	@Test
@@ -49,8 +48,7 @@ public class EncoderNegativeConditionsTest {
 		Node numeratorDenominatorNode;
 		List<Node> nodes;
 
-		numeratorDenominatorNode = new Node();
-		numeratorDenominatorNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		numeratorDenominatorNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorDenominatorNode.putValue("aggregateCount", "600");
 
 		nodes = new ArrayList<>();

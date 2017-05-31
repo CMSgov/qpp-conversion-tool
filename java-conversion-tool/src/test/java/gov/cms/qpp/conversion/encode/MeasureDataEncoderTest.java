@@ -64,9 +64,9 @@ public class MeasureDataEncoderTest {
 	}
 
 	private Node setUpMeasureDataNode(String measureType) {
-		Node aggCount = new Node(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		Node aggCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggCount.putValue(AGGREGATE_COUNT, "900");
-		Node measureDataNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		Node measureDataNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		measureDataNode.putValue(MEASURE_TYPE, measureType);
 		measureDataNode.addChildNode(aggCount);
 		return measureDataNode;

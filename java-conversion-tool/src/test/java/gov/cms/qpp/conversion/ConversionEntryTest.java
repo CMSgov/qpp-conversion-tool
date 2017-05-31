@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion;
 
 import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
@@ -11,6 +12,7 @@ import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Constructor;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +34,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -168,10 +172,11 @@ public class ConversionEntryTest extends BaseTest {
 	@Test
 	@PrepareForTest({ConversionEntry.class})
 	public void testManyPathDir() {
+		String pathTest = "src/test/resources/pathTest";
 		// ensure a directory
-		stub(method(ConversionEntry.class, "wildCardToRegex", String.class)).toReturn( Pattern.compile("src/test/resources/pathTest") );
+		stub(method(ConversionEntry.class, "wildCardToRegex", String.class)).toReturn( Pattern.compile(pathTest) );
 
-		Collection<Path> files = ConversionEntry.manyPath("src/test/resources/pathTest");
+		Collection<Path> files = ConversionEntry.manyPath(pathTest);
 		assertNotNull(files);
 		assertEquals(0, files.size());
 	}
@@ -302,8 +307,8 @@ public class ConversionEntryTest extends BaseTest {
 
 	@Test
 	public void testDefaults() throws Exception {
-		AnnotationMockHelper.mockDecoder("867.5309", JennyDecoder.class);
-		AnnotationMockHelper.mockEncoder("867.5309", Jenncoder.class);
+		AnnotationMockHelper.mockDecoder(TemplateId.DEFAULT, JennyDecoder.class);
+		AnnotationMockHelper.mockEncoder(TemplateId.DEFAULT, Jenncoder.class);
 
 		ConversionEntry.main(SKIP_VALIDATION,
 				"src/test/resources/converter/defaultedNode.xml");
@@ -383,5 +388,16 @@ public class ConversionEntryTest extends BaseTest {
 		assertEquals("file.txt", args.get(0));
 		assertEquals("file2.txt", args.get(1));
 	}
-
+	@Test
+	public void privateConstructorTest() throws Exception {
+		// reflection concept to get constructor of a Singleton class.
+		Constructor<ConversionEntry> constructor = ConversionEntry.class.getDeclaredConstructor();
+		// change the accessibility of constructor for outside a class object creation.
+		constructor.setAccessible(true);
+		// creates object of a class as constructor is accessible now.
+		ConversionEntry conversionEntry = constructor.newInstance();
+		// close the accessibility of a constructor.
+		constructor.setAccessible(false);
+		Assert.assertThat("Expect to have an instance here ", conversionEntry, instanceOf(ConversionEntry.class));
+	}
 }

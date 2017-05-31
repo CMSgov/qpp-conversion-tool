@@ -1,26 +1,26 @@
 package gov.cms.qpp.conversion.encode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.Before;
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.model.Node;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class IaSectionEncoderTest {
 
-	private static final String EXPECTED = "{\n  \"category\" : \"ia\",\n  \"measurements\" : [ "
+	private static final String EXPECTED = "{\n  \"category\" : \"ia\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ "
 			+ "{\n    \"measureId\" : \"IA_EPA_1\",\n    \"value\" : true\n  } ]\n}";
-	private static final String EXPECTED_NO_MEASURE = "{\n  \"category\" : \"ia\"\n}";
-	private static final String EXPECTED_NO_MEASURE_VALUE_1 = "{\n  \"category\" : \"ia\",\n  \"measurements\" : [ "
+	private static final String EXPECTED_NO_MEASURE = "{\n  \"category\" : \"ia\",\n  \"submissionMethod\" : \"electronicHealthRecord\"\n}";
+	private static final String EXPECTED_NO_MEASURE_VALUE_1 = "{\n  \"category\" : \"ia\",\n  "
+			+ "\"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ "
 			+ "{\n    \"measureId\" : \"IA_EPA_1\"\n  } ]\n}";
 
 	private Node iaSectionNode;
@@ -30,17 +30,14 @@ public class IaSectionEncoderTest {
 
 	@Before
 	public void createNode() {
-		iaMeasurePerformedNode = new Node();
-		iaMeasurePerformedNode.setId(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		iaMeasurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		iaMeasurePerformedNode.putValue("measurePerformed", "Y");
 
-		iaMeasureNode = new Node();
-		iaMeasureNode.setId(TemplateId.IA_MEASURE.getTemplateId());
+		iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		iaMeasureNode.putValue("measureId", "IA_EPA_1");
 		iaMeasureNode.addChildNode(iaMeasurePerformedNode);
 
-		iaSectionNode = new Node();
-		iaSectionNode.setId(TemplateId.IA_SECTION.getTemplateId());
+		iaSectionNode = new Node(TemplateId.IA_SECTION);
 		iaSectionNode.putValue("category", "ia");
 		iaSectionNode.addChildNode(iaMeasureNode);
 

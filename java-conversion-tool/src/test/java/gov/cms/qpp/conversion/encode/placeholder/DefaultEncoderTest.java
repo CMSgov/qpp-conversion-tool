@@ -10,21 +10,21 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.reflections.util.ClasspathHelper;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 
 public class DefaultEncoderTest {
 
 	@Test
 	public void encodeAllNodes() throws Exception {
-		InputStream stream = ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III.xml");
+		InputStream stream = XmlUtils.fileToStream(Paths.get("../qrda-files/valid-QRDA-III.xml"));
 		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
 
 		Node node = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
 
-		Node placeHolder = new Node(node, TemplateId.DEFAULT.getTemplateId());
+		Node placeHolder = new Node(TemplateId.DEFAULT, node);
 		node.addChildNode(placeHolder);
 		JsonWrapper wrapper = new JsonWrapper();
 		new QppOutputEncoder().encode(wrapper, node);
@@ -34,8 +34,8 @@ public class DefaultEncoderTest {
 
 	@Test
 	public void encodeDefaultNode() throws EncodeException {
-		Node root = new Node(TemplateId.DEFAULT.getTemplateId());
-		Node placeHolder = new Node(root, TemplateId.PLACEHOLDER.getTemplateId());
+		Node root = new Node(TemplateId.DEFAULT);
+		Node placeHolder = new Node(TemplateId.PLACEHOLDER, root);
 		root.addChildNode(placeHolder);
 		JsonWrapper wrapper = new JsonWrapper();
 		new DefaultEncoder("Default Encode test").internalEncode(wrapper, root);

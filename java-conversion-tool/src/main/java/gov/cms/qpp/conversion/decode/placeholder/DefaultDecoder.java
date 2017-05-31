@@ -33,7 +33,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		DEV_LOG.debug("Default decoder {} is handling templateId {} and is described as '{}' ",
-				getClass(), thisnode.getId(), description);
+				getClass(), thisnode.getType().name(), description);
 		thisnode.putValue("DefaultDecoderFor", description);
 		return DecodeResult.TREE_CONTINUE;
 	}
@@ -46,16 +46,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 			} else {
 				removeDefaultNode(node.getChildNodes());
 			}
-		}
-	}
-
-	// The names of the default decoder classes does not matter.
-	// this one looks like a node that is not necessary
-	@Decoder(TemplateId.PERFORMANCE_RATE)
-	public static class PerformanceRateDecoder extends DefaultDecoder {
-
-		public PerformanceRateDecoder() {
-			super("Performance Rate");
 		}
 	}
 
@@ -124,15 +114,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 			super("Payer Supplemental Data Element - CMS (V2)");
 		}
 	}
-
-	@Decoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
-	public static class PerformanceRateProportionMeasureCmsV2Decoder extends DefaultDecoder {
-
-		public PerformanceRateProportionMeasureCmsV2Decoder() {
-			super("Performance Rate for Proportion Measure - CMS (V2)");
-		}
-	}
-
 }
 
 /**

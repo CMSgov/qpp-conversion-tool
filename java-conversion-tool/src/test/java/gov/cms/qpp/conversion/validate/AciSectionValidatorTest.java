@@ -23,8 +23,7 @@ public class AciSectionValidatorTest {
 
 	@Test
 	public void testNoMeasurePresent() {
-		Node aciSectionNode = new Node();
-		aciSectionNode.setId(TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
 		AciSectionValidator measureVal = new AciSectionValidator();
@@ -41,16 +40,16 @@ public class AciSectionValidatorTest {
 	@Test
 	public void testWrongMeasurePresent() {
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciNumeratorDenominatorNode = new Node(aciSectionNode, TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "TEST_MEASURE");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_DENOMINATOR.getTemplateId());
-		Node aciNumeratorNode = new Node(aciNumeratorDenominatorNode, TemplateId.ACI_NUMERATOR.getTemplateId());
+		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
@@ -65,7 +64,7 @@ public class AciSectionValidatorTest {
 
 	@Test
 	public void testNoCrossCuttingErrors() {
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION.getTemplateId());
+		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
 		AciSectionValidator measureVal = new AciSectionValidator();

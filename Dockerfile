@@ -1,17 +1,15 @@
 FROM maven:3-jdk-8
 
 RUN mkdir -p /usr/src/app/
-RUN mkdir -p /usr/src/qrda-files/
-RUN mkdir -p /usr/src/qpp-files/
+RUN mkdir -p /usr/src/run/
 
 COPY ./ /usr/src/app/
 
-WORKDIR /usr/src/app/java-conversion-tool/
+WORKDIR /usr/src/app/
 
 RUN mvn install -DskipTests
 
-WORKDIR /usr/src/qpp-files/
+WORKDIR /usr/src/run/
 
-VOLUME ["/usr/src/qrda-files/", "/usr/src/qpp-files/"]
-
-CMD ["java", "-jar", "../app/java-conversion-tool/target/java-conversion-tool.jar", "/usr/src/qrda-files/*"]
+EXPOSE 8080
+CMD ["java", "-jar", "../app/rest-api/target/rest-api.jar"]

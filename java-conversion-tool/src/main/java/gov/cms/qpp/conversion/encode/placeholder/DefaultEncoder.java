@@ -25,7 +25,7 @@ public class DefaultEncoder extends JsonOutputEncoder {
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		DEV_LOG.debug("Default JSON encoder {} is handling templateId {} and is described as '{}' ",
-				getClass(), node.getId(), description);
+				getClass(), node.getType().name(), description);
 
 		JsonWrapper childWrapper = new JsonWrapper();
 
@@ -34,20 +34,11 @@ public class DefaultEncoder extends JsonOutputEncoder {
 			childWrapper.putString(nameForEncode, node.getValue(name));
 		}
 
-		wrapper.putObject(node.getId(), childWrapper);
+		wrapper.putObject(node.getType().name(), childWrapper);
 
 		for (Node child : node.getChildNodes()) {
-			childWrapper.putObject(child.getId(), childWrapper);
+			childWrapper.putObject(child.getType().name(), childWrapper);
 			encode(childWrapper, child);
-		}
-	}
-
-	// this one looks like a node that is not necessary
-	@Encoder(TemplateId.PERFORMANCE_RATE)
-	public static class PerformanceRateEncoder extends DefaultEncoder {
-
-		public PerformanceRateEncoder() {
-			super("Performance Rate");
 		}
 	}
 
@@ -122,14 +113,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 
 		public PayerSupplementalDataElementCmsV2Encoder() {
 			super("Payer Supplemental Data Element - CMS (V2)");
-		}
-	}
-
-	@Encoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE_CMS_V2)
-	public static class PerformanceRateProportionMeasureCmsV2Encoder extends DefaultEncoder {
-
-		public PerformanceRateProportionMeasureCmsV2Encoder() {
-			super("Performance Rate for Proportion Measure - CMS (V2)");
 		}
 	}
 }

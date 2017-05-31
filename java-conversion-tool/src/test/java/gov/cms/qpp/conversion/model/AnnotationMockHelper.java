@@ -35,7 +35,7 @@ public class AnnotationMockHelper {
 	 * @return A spied QrdaValidator that has all the appropriate hooks in place to validate a test validator
 	 * @throws Exception If the mocking fails.
 	 */
-	public static QrdaValidator mockValidator(final String templateId, final Class<? extends NodeValidator> validator,
+	public static QrdaValidator mockValidator(final TemplateId templateId, final Class<? extends NodeValidator> validator,
 	                                          final boolean required) throws Exception {
 		return mockValidator(templateId, validator, required, null);
 	}
@@ -53,7 +53,7 @@ public class AnnotationMockHelper {
 	 * @return A spied QrdaValidator that has all the appropriate hooks in place to validate a test validator
 	 * @throws Exception If the mocking fails.
 	 */
-	public static QrdaValidator mockValidator(final String templateId, final Class<? extends NodeValidator> validator,
+	public static QrdaValidator mockValidator(final TemplateId templateId, final Class<? extends NodeValidator> validator,
 	                                          final boolean required,  QrdaValidator spy) throws Exception {
 		registerValidator(templateId, validator);
 
@@ -73,8 +73,8 @@ public class AnnotationMockHelper {
 	 * @param templateId The templateId string that you want the NodeValidator to validate.
 	 * @param validator The NodeValidator that is stored in the registry.
 	 */
-	private static void registerValidator(String templateId, Class<? extends NodeValidator> validator) {
-		Registry<String, NodeValidator> registry = Whitebox.getInternalState(QrdaValidator.class, Registry.class);
+	private static void registerValidator(TemplateId templateId, Class<? extends NodeValidator> validator) {
+		Registry<NodeValidator> registry = Whitebox.getInternalState(QrdaValidator.class, Registry.class);
 		registry.register(templateId, validator);
 	}
 
@@ -88,7 +88,7 @@ public class AnnotationMockHelper {
 	 * @param required Whether the validation is required.
 	 * @throws Exception If the mocking fails.
 	 */
-	private static void mockQrdaValidator(QrdaValidator spy, String templateId,
+	private static void mockQrdaValidator(QrdaValidator spy, TemplateId templateId,
 	                                      Class<? extends NodeValidator> validator, boolean required)
 		throws Exception {
 		PowerMockito.doReturn(required).when(spy, METHOD_IS_VALIDATION_REQUIRED, Matchers.isA(validator));
@@ -102,8 +102,8 @@ public class AnnotationMockHelper {
 	 * @param templateId The templateId string that you want the decoder to decode.
 	 * @param decoder The decoder to be stored in the registry.
 	 */
-	public static void mockDecoder(final String templateId, final Class<? extends QppXmlDecoder> decoder) {
-		final Registry<String, QppXmlDecoder> registry = Whitebox.getInternalState(QppXmlDecoder.class, Registry.class);
+	public static void mockDecoder(final TemplateId templateId, final Class<? extends QppXmlDecoder> decoder) {
+		final Registry<QppXmlDecoder> registry = Whitebox.getInternalState(QppXmlDecoder.class, Registry.class);
 		registry.register(templateId, decoder);
 	}
 
@@ -114,8 +114,8 @@ public class AnnotationMockHelper {
 	 * @param templateId The templateId string that you want the decoder to decode.
 	 * @param encoder The decoder to be stored in the registry.
 	 */
-	public static void mockEncoder(final String templateId, final Class<? extends JsonOutputEncoder> encoder) {
-		final Registry<String, JsonOutputEncoder> registry = Whitebox.getInternalState(QppOutputEncoder.class, Registry.class);
+	public static void mockEncoder(final TemplateId templateId, final Class<? extends JsonOutputEncoder> encoder) {
+		final Registry<JsonOutputEncoder> registry = Whitebox.getInternalState(QppOutputEncoder.class, Registry.class);
 		registry.register(templateId, encoder);
 	}
 }

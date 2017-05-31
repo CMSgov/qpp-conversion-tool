@@ -1,0 +1,13 @@
+{
+	"type":"object",
+	"additionalProperties": false,
+	"id":"#goods",
+	"properties":{
+		"relativeXPath": {
+			"type": "string"
+		},
+		"xmltype": {
+			"type": "string"
+		}
+	}
+}
