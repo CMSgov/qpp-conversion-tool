@@ -1,1 +1,18 @@
 /* Styles specific to app.component */
+
+.my-drop-zone {
+    box-sizing: border-box;
+    width: 300px;
+    height: 100px;
+    margin-bottom: 2em;
+    border: dotted 3px lightgray;
+}
+
+.nv-file-over {
+    border: dotted 3px red;
+}
+
+.another-file-over-class {
+    border: dotted 3px green;
+}
+

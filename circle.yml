@@ -12,7 +12,6 @@ machine:
 
 dependencies:
   override:
-    - npm install serverless -g
     - cd java-conversion-tool; mvn dependency:resolve
     - wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
     - unzip -d . sonarscanner.zip
@@ -27,7 +26,6 @@ test:
     - ./bin/sonarqube.sh
     - ./benchmark/benchmark.sh
   post:
-    - ./bin/serverless_deploy.sh
     - ./bin/docker_deploy.sh
     - cp benchmark/target/benchmark_output.txt $CIRCLE_ARTIFACTS
     - cp java-conversion-tool/target/java-conversion-tool.jar $CIRCLE_ARTIFACTS

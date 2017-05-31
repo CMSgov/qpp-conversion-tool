@@ -1,21 +1,20 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { AppService } from './app.service';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { FileSelectDirective, FileDropDirective, FileUploader } from '../../node_modules/ng2-file-upload/ng2-file-upload';
 
 describe('AppComponent', () => {
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
 			declarations: [
-				AppComponent
+				AppComponent,
+				FileSelectDirective,
+				FileDropDirective
 			],
 			imports: [
 				FormsModule,
 				HttpModule
-			],
-			providers: [
-				AppService
 			]
 		}).compileComponents();
 	}));
@@ -38,14 +37,4 @@ describe('AppComponent', () => {
 		const compiled = fixture.debugElement.nativeElement;
 		expect(compiled.querySelector('h1').textContent).toContain('Convert QRDA-III to QPP');
 	}));
-
-	it('should create random file name', async(() => {
-		const fixture = TestBed.createComponent(AppComponent);
-		fixture.componentInstance.generateFileName();
-		const filename = fixture.componentInstance.file_name;
-
-		expect(filename.length).toBeGreaterThan(23);
-		expect(filename).toContain('.xml');
-	}));
-
 });
