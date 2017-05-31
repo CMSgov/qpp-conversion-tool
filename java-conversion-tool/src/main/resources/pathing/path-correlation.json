@@ -208,22 +208,6 @@
 					}
 				}
 			]
-		},
-		{
-			"correlationId": "noop",
-			"config": [
-				{
-					"encodeLabels": [
-						"performanceYear",
-						"performanceStart",
-						"performanceEnd"
-					],
-					"goods": {
-						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']",
-						"xmltype": "attribute"
-					}
-				}
-			]
 		}
 	]
 }
