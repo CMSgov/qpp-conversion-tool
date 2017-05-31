@@ -1,72 +1,90 @@
 package gov.cms.qpp.conversion;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Fork;
-import org.openjdk.jmh.annotations.Level;
-import org.openjdk.jmh.annotations.Measurement;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.TearDown;
-import org.openjdk.jmh.annotations.Warmup;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
 
 /**
  * Performance test harness.
  */
-@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.MILLISECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.MILLISECONDS)
-@Fork(3)
-public class ConverterBenchmark {
+public class ConverterBenchmark implements FilenameFilter {
 
-	static File SAMPLES_DIR = new File("src/main/resources/qrda-files/");
-	static String EXTENSION = "qpp.json";
+	static final File SAMPLES_DIR = new File("src/main/resources/qrda-files/");
+	static final String EXTENSION = "qpp.json";
+	static final int ITERATIONS = 3;
 	
-	/**
-	 * State management for tests.
-	 */
-	@State(Scope.Thread)
-	public static class Cleaner implements FilenameFilter {
-		public boolean accept(File file, String name) {
-			return file.isFile() && name.endsWith(EXTENSION);
-		}
+	DescriptiveStatistics stats = new DescriptiveStatistics();
+	int iterations = ITERATIONS;
+	File path = SAMPLES_DIR;
+	
+	public boolean accept(File file, String name) {
+		return file.isFile() && name.endsWith(EXTENSION);
+	}
+	
+	public void doTearDown() {
+		// find all the files that were created
+		File[] dirFiles = path.listFiles((f,n)->accept(f,n));
+		File[] workingFiles = new File(".").listFiles((f,n)->accept(f,n));
 		
-		@TearDown(Level.Trial)
-		public void doTearDown() {
-			
-			// find all the files that were created
-			File[] dirFiles = SAMPLES_DIR.listFiles((f,n)->accept(f,n));
-			File[] workingFiles = new File(".").listFiles((f,n)->accept(f,n));
-			
-			// remove all those files 
-			Stream.concat(Arrays.stream(dirFiles), Arrays.stream(workingFiles))
-			      .filter(f->f.exists())
-			      .forEach(f->f.delete());
-		}
+		// remove all those files 
+		Stream.concat(Arrays.stream(dirFiles), Arrays.stream(workingFiles))
+		      .filter(f->f.exists())
+		      .forEach(f->f.delete());
 	}
 
-	/**
-	 * Benchmark qrda file conversion.
-	 *
-	 * @param cleaner State management for conversion runs, ensures that output files are deleted.
-	 */
-	@Benchmark
-	@BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-	@OutputTimeUnit(TimeUnit.SECONDS)
-	public void benchmarkMain(Cleaner cleaner) {
+	
+	public boolean doBenchmarks() throws IOException {
+		try (FileWriter benchFile = new FileWriter(new File("benchmarks.dat"));) {
+			
+			// Preliminaries: header and ensure path exists
+			System.out.println("Samples path is " + path);
+			
+			if ( ! path.exists() ) {
+				return false;
+			}
+			
+			benchFile.write("file,mean,std,iterations\n");
+			
+			// for each file - execute benchmark
+			for (File file : path.listFiles()) {
+				// execute a give number of times
+				for (int i=0; i<iterations; i++) {
+					long start = System.currentTimeMillis();
+					
+					 // the target
+					ConversionEntry.main(file.getAbsolutePath());
+					
+					long finish = System.currentTimeMillis();
+					stats.addValue( (finish-start) / 1000);
+				}
+				// the benchmark
+				double mean = stats.getMean();
+				double std  = stats.getStandardDeviation();
+				
+				// report
+				benchFile.write(file+","+mean+","+std+","+iterations+"\n");
+			}
+		}
+		return true;
+	}
+	
+	
+	public static void main(String ... args) throws IOException {
+		ConverterBenchmark bench = new ConverterBenchmark();
+		
 		// bench if if the files path is present 
-		if ( SAMPLES_DIR.exists() ) {
-			ConversionEntry.main(SAMPLES_DIR.getAbsolutePath()+"*");
-		} else {
-			System.err.println("Samples path does not exist. " + SAMPLES_DIR);
+		if ( ! bench.doBenchmarks() ) {
+			System.out.println("Samples path does not exist.");
 		}
 	}
 
 }
+
+
+
