@@ -7,8 +7,15 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.isA;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertThat;
 
 public class MeasureConfigsTest {
 	@Rule
@@ -45,5 +52,32 @@ public class MeasureConfigsTest {
 
 		//execute
 		MeasureConfigs.setMeasureDataFile("bad_formatted_measures_data.json");
+	}
+
+	@Test
+	public void privateConstructorTest() throws Exception {
+		// reflection concept to get constructor of a Singleton class.
+		Constructor<MeasureConfigs> constructor = MeasureConfigs.class.getDeclaredConstructor();
+		// change the accessibility of constructor for outside a class object creation.
+		constructor.setAccessible(true);
+		// creates object of a class as constructor is accessible now.
+		MeasureConfigs measureConfigs = constructor.newInstance();
+		// close the accessibility of a constructor.
+		constructor.setAccessible(false);
+		assertThat("Expect to have an instance here ", measureConfigs, instanceOf(MeasureConfigs.class));
+	}
+
+	@Test
+	public void getMeasureConfigsTest() {
+		List<MeasureConfig> configurations = MeasureConfigs.getMeasureConfigs();
+		assertThat("Expect the configurations to be a not empty list", configurations, is(not(empty())));
+	}
+
+	@Test
+	public void requiredMeasuresForSectionTest() {
+		List<String>requiredMeasures = MeasureConfigs.requiredMeasuresForSection("aci");
+		List<String>notRequiredMeasures = MeasureConfigs.requiredMeasuresForSection("quality");
+		assertThat("Expect the requiredMeasures to be a not empty list", requiredMeasures, is(not(empty())));
+		assertThat("Expect the notRequiredMeasures to be a empty list", notRequiredMeasures, is(empty()));
 	}
 }
