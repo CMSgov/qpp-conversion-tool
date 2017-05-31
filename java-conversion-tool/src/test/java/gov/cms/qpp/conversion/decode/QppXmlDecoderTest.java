@@ -37,7 +37,7 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 		Element testElement = new Element("testElement");
 		Element testChildElement = new Element("templateId");
-		testChildElement.setAttribute("root", TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS.getTemplateId());
+		testChildElement.setAttribute("root", TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS.getRoot());
 
 		testElement.getChildren().add(testChildElement);
 		Node testNode = new Node();

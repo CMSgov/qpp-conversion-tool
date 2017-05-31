@@ -123,6 +123,16 @@ public class Node {
 	}
 
 	/**
+	 * clears the old child nodes, replacing them with the given array
+	 *
+	 * @param childNodes vararg Node array
+	 */
+	public void setChildNodes(Node... childNodes) {
+		this.childNodes.clear();
+		this.childNodes.addAll(Arrays.asList(childNodes));
+	}
+
+	/**
 	 * convenience for adding multiple child nodes
 	 *
 	 * @param childNodes vararg Node array
