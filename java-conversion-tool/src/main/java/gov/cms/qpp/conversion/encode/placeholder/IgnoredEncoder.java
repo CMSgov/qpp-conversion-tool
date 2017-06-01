@@ -14,7 +14,7 @@ public class IgnoredEncoder extends JsonOutputEncoder {
 
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
-
+		// do nothing
 	}
 
 	@Encoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
