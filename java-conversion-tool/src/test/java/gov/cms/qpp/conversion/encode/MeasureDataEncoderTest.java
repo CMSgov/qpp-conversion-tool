@@ -10,6 +10,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MeasureDataEncoderTest {
+	private final String INITIAL_POPULATION = "eligiblePopulation";
 
 	@Test
 	public void testIpop() throws EncodeException {
@@ -17,7 +18,8 @@ public class MeasureDataEncoderTest {
 
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger("initialPopulation"), is(900));
+
+		assertThat("Must return correct encoded result", jsonWrapper.getInteger(INITIAL_POPULATION), is(900));
 	}
 
 	@Test
@@ -26,7 +28,7 @@ public class MeasureDataEncoderTest {
 
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger("initialPopulation"), is(900));
+		assertThat("Must return correct encoded result", jsonWrapper.getInteger(INITIAL_POPULATION), is(900));
 	}
 
 	@Test

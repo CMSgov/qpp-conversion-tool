@@ -22,7 +22,7 @@ public class QualityMeasureIdMultiEncoderTest {
 	private final String REQUIRE_DENOM_EXCLUS = "Must have a required denominatorExclusion";
 	private final String REQUIRE_DENOM = "Must have a required denominator";
 	private final String REQUIRE_NUMER = "Must have a required numerator";
-	private final String POPULATION_TOTAL = "populationTotal";
+	private final String POPULATION_TOTAL = "eligiblePopulation";
 	private final String PERFORMANCE_MET = "performanceMet";
 	private final String DENOMINATOR_EXCEPTIONS = "denominatorExceptions";
 	private final String DENOMINATOR_EXCLUSIONS = "denominatorExclusions";

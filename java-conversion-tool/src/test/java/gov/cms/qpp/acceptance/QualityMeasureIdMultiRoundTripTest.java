@@ -3,15 +3,16 @@ package gov.cms.qpp.acceptance;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.TransformationStatus;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import org.hamcrest.CoreMatchers;
+import org.junit.After;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import org.hamcrest.CoreMatchers;
-import org.junit.After;
-import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -21,11 +22,11 @@ public class QualityMeasureIdMultiRoundTripTest {
 	private final String REQUIRE_POPULATION_TOTAL = "Must have a required populationTotal";
 	private final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
 	private final String REQUIRE_INITIAL_POPULATION = "Must have a required initialPopulation";
-	private final String INITIAL_POPULATION = "initialPopulation";
+	private final String INITIAL_POPULATION = "eligiblePopulation";
 	private final String REQUIRE_DENOM_EXCEP = "Must have a required denominatorExceptions";
 	private final String REQUIRE_DENOM = "Must have a required denominator";
 	private final String REQUIRE_NUMER = "Must have a required numerator";
-	private final String POPULATION_TOTAL = "populationTotal";
+	private final String POPULATION_TOTAL = "eligiblePopulation";
 	private final String PERFORMANCE_MET = "performanceMet";
 	private final String DENOMINATOR_EXCEPTIONS = "denominatorExceptions";
 	private final String NUMERATOR = "numerator";

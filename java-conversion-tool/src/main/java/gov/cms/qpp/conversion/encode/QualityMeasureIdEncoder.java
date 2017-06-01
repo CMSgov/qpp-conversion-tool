@@ -6,10 +6,10 @@ import gov.cms.qpp.conversion.encode.helper.QualityMeasuresLookup;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -204,8 +204,8 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Optional.ofNullable(populationNode).ifPresent(
 				node -> {
 					Node aggCount = node.getChildNodes().get(0);
-					maintainContinuity(wrapper, aggCount, "populationTotal");
-					wrapper.putInteger("populationTotal", aggCount.getValue(AGGREGATE_COUNT));
+					maintainContinuity(wrapper, aggCount, "eligiblePopulation");
+					wrapper.putInteger("eligiblePopulation", aggCount.getValue(AGGREGATE_COUNT));
 				}
 		);
 	}
@@ -241,7 +241,11 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				node -> {
 					Node aggCount = node.getChildNodes().get(0);
 					maintainContinuity(wrapper, aggCount, "performanceExclusion");
-					wrapper.putInteger("performanceExclusion", aggCount.getValue(AGGREGATE_COUNT));
+					maintainContinuity(wrapper, aggCount, "eligiblePopulationExclusion");
+					maintainContinuity(wrapper, aggCount, "eligiblePopulationException");
+					String value = aggCount.getValue(AGGREGATE_COUNT);
+					wrapper.putInteger("eligiblePopulationExclusion", value);
+					wrapper.putInteger("eligiblePopulationException", value);
 				});
 
 		Optional.ofNullable(calculatePerformanceNotMet(denominatorNode, denomExclusionNode)).ifPresent(

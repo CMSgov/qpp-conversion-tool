@@ -76,7 +76,7 @@ public class QualityMeasureIdEncoderTest {
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
 		assertThat("expected encoder to return a single value",
-				childValues.get("populationTotal"), is(600));
+				childValues.get("eligiblePopulation"), is(600));
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class QualityMeasureIdEncoderTest {
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
 		assertThat("expected encoder to return a single value",
-				childValues.get("populationTotal"), is(600));
+				childValues.get("eligiblePopulation"), is(600));
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class QualityMeasureIdEncoderTest {
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
 		assertThat("expected encoder to return a single value",
-				childValues.get("performanceExclusion"), is(600));
+				childValues.get("eligiblePopulationExclusion"), is(600));
 	}
 
 	@Test

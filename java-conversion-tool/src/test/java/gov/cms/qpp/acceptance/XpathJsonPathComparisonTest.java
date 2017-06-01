@@ -223,20 +223,10 @@ public class XpathJsonPathComparisonTest {
 		assertEquals("Attribute value should be: 1000", "1000", attribute.getValue());
 	}
 	@Test
-	public void compareQualityMeasureIdValuePopulationTotal() throws IOException, XmlException {
-		String xPath = prepPath("measurementSets[1].measurements[0].value.populationTotal");
+	public void compareQualityMeasureIdValueEligiblePopulation() throws IOException, XmlException {
+		String xPath = prepPath("measurementSets[1].measurements[0].value.eligiblePopulation");
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
-
-		assertEquals("Attribute name should be: value", "value", attribute.getName());
-		assertEquals("Attribute value should be: 1000", "1000", attribute.getValue());
-	}
-
-	@Test
-	public void compareQualityMeasureIdValueInitialPopulation() throws IOException, XmlException {
-		String xPath = prepPath("measurementSets[1].measurements[0].value.initialPopulation");
-		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
-
-		assertEquals("Attribute name should be: value", "value", attribute.getName());
+		assertEquals("Attribute name for EligiblePopulation should be: value", "value", attribute.getName());
 		assertEquals("Attribute value should be: 1000", "1000", attribute.getValue());
 	}
 

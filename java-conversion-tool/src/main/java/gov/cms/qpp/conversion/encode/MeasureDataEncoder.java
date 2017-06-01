@@ -42,8 +42,8 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	 */
 	private Map<String, String> initializeMeasureTypeMap() {
 		Map<String , String> measureTypeMapper = new HashMap<>();
-		measureTypeMapper.put("IPOP", "initialPopulation");
-		measureTypeMapper.put("IPP", "initialPopulation");
+		measureTypeMapper.put("IPOP", "eligiblePopulation");
+		measureTypeMapper.put("IPP", "eligiblePopulation");
 		measureTypeMapper.put("DENOM", "denominator");
 		measureTypeMapper.put("DENEX", "denominatorExclusions");
 		measureTypeMapper.put("DENEXCEP", "denominatorExceptions");
