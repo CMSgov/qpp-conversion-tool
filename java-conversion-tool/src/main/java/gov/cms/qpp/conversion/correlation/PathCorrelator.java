@@ -1,18 +1,27 @@
 package gov.cms.qpp.conversion.correlation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import gov.cms.qpp.conversion.correlation.model.Config;
 import gov.cms.qpp.conversion.correlation.model.Correlation;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.jdom2.Attribute;
+import org.jdom2.filter.Filter;
+import org.jdom2.xpath.XPathExpression;
 import org.reflections.util.ClasspathHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathCorrelator {
 	private static String config = "pathing/path-correlation.json";
@@ -67,5 +76,62 @@ public class PathCorrelator {
 		Goods goods = pathCorrelationMap.get(key);
 		return (goods == null) ? null :
 				goods.getRelativeXPath().replaceAll(pathCorrelation.getUriSubstitution(), uri);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static String prepPath(String jsonPath, JsonWrapper wrapper) {
+		String base = "$";
+		String leaf = jsonPath;
+		int lastIndex = jsonPath.lastIndexOf(".");
+
+		if (lastIndex > 0) {
+			base = jsonPath.substring(0, lastIndex);
+			leaf = jsonPath.substring(lastIndex + 1);
+		}
+
+		JsonPath compiledPath = JsonPath.compile(base);
+		Map<String, Object> jsonMap = compiledPath.read(wrapper.toString());
+		Map<String, String> metaMap = getMetaMap(jsonMap, leaf);
+		return makePath(metaMap, leaf);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static Map<String, String> getMetaMap(Map<String, Object> jsonMap, final String leaf) {
+		List<Map<String, String>> metaHolder = (List<Map<String, String>>) jsonMap.get("metadata_holder");
+		Stream<Map<String, String>> sorted = metaHolder.stream()
+				.sorted(labeledFirst());
+		return sorted.filter(entry -> {
+			if (entry.get("encodeLabel").equals(leaf)) {
+				return leaf.isEmpty() ||
+						PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
+			} else {
+				return entry.get("encodeLabel").isEmpty();
+			}
+		}).findFirst().orElse(null);
+	}
+
+	private static Comparator<Map<String, String>> labeledFirst() {
+		return (Map<String, String> map1, Map<String, String> map2) -> {
+			String map1Label = map1.get("encodeLabel");
+			String map2Label = map2.get("encodeLabel");
+			int reply;
+			if ((!map1Label.isEmpty() && !map2Label.isEmpty()) ||
+					(map1Label.isEmpty() && map2Label.isEmpty())) {
+				reply = 0;
+			} else if (map1Label.isEmpty()) {
+				reply = 1;
+			} else {
+				reply = -1;
+			}
+			return reply;
+		};
+	}
+
+	private static String makePath(Map<String, String> metadata, final String leaf) {
+		String nsUri = metadata.get("nsuri");
+		String baseTemplate = metadata.get("template");
+		String baseXpath = metadata.get("path");
+		String relativeXpath = PathCorrelator.getXpath(baseTemplate, leaf, nsUri);
+		return (relativeXpath != null) ? baseXpath + "/" + relativeXpath : baseXpath;
 	}
 }
