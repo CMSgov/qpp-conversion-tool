@@ -56,7 +56,7 @@ public class ConverterBenchmark implements FilenameFilter {
 			benchFile.write("file,mean,std,iterations/files\n");
 			
 			// for each file in each path - execute benchmark
-			for (File path : paths) {				
+			for (File path : paths) {
 				DescriptiveStatistics pathStats = new DescriptiveStatistics();
 				
 				int fileCount = 0;
