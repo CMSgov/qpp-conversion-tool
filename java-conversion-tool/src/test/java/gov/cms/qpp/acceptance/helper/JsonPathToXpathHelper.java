@@ -63,7 +63,7 @@ public class JsonPathToXpathHelper {
 		if (!expectedValue.equals(attribute.getValue())) {
 			System.err.println("( " + jsonPath + " ) value ( " + expectedValue +
 					" ) does not equal ( " + attribute.getValue() +
-					" ) at \n( " + xPath + " ). Please investigate.");
+					" ) at \n( " + xPath + " ). \nPlease investigate.");
 		}
 
 		assertNotNull("Attribute value should not be null. json value:" + expectedValue,
