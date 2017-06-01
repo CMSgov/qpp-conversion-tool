@@ -105,14 +105,36 @@ public class ConverterBenchmarkTest {
 	
 	@Test
 	public void testParseArgs_force1() throws Exception {
-		bench.parseArgs(new String[] {"--force"});
+		boolean valid = bench.parseArgs(new String[] {"--force"});
+		assertTrue("Expect valid args", valid);
 		assertTrue("force should be detected and set benchmark instance force state", bench.force );
 	}
 	@Test
 	public void testParseArgs_force2() throws Exception {
-		bench.parseArgs(new String[] {"3", "--force"});
+		boolean valid = bench.parseArgs(new String[] {"3", "--force"});
+		assertTrue("Expect valid args", valid);
 		assertTrue("force should be detected and set benchmark instance force state", bench.force );
 	}
+	@Test
+	public void testParseArgs_pathsNotExistsForce() throws Exception {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintStream print = new PrintStream(baos);
+		PrintStream out = System.out;
+		try {
+			System.setOut(print);
+		
+			boolean valid = bench.parseArgs(new String[] {"--force", "asdf"});
+			assertFalse("Expect not valid args return when bad paths and force, force state will take care of that", valid);
+			assertTrue("force should be detected and set benchmark instance force state", bench.force );
+			
+			String outString = new String(baos.toByteArray());
+
+			assertEquals("Samples path does not exist: asdf\n", outString);
+		} finally {
+			System.setOut(out);
+		}
+	}
+
 	@Test
 	public void testParseArgs_help1() throws Exception {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -120,7 +142,8 @@ public class ConverterBenchmarkTest {
 		PrintStream out = System.out;
 		try {
 			System.setOut(print);
-			bench.parseArgs(new String[] {"--help"});
+			boolean valid = bench.parseArgs(new String[] {"--help"});
+			assertFalse("Expect non valid args returned to not run on help", valid);
 
 			String outString = new String(baos.toByteArray());
 
@@ -143,7 +166,8 @@ public class ConverterBenchmarkTest {
 		PrintStream out = System.out;
 		try {
 			System.setOut(print);
-			bench.parseArgs(new String[] {"3", "--help"});
+			boolean valid = bench.parseArgs(new String[] {"3", "--help"});
+			assertFalse("Expect non valid args returned to not run on help", valid);
 
 			String outString = new String(baos.toByteArray());
 
@@ -162,17 +186,55 @@ public class ConverterBenchmarkTest {
 	
 	@Test
 	public void testParseArgs_iterationsDefault() throws Exception {
-		bench.parseArgs(new String[] {});
+		boolean valid = bench.parseArgs(new String[] {});
+		assertTrue("Expect valid args", valid);
 		assertEquals("Expect default iterations when none given", bench.ITERATIONS, bench.iterations );
 	}
 	@Test
 	public void testParseArgs_iterations1() throws Exception {
-		bench.parseArgs(new String[] {"1"});
+		boolean valid = bench.parseArgs(new String[] {"1"});
+		assertTrue("Expect valid args", valid);
 		assertEquals("Expected 1 iteration when given", 1, bench.iterations );
 	}
 	@Test
 	public void testParseArgs_iterations2() throws Exception {
-		bench.parseArgs(new String[] {"--force", "2"});
+		boolean valid = bench.parseArgs(new String[] {"--force", "2"});
+		assertTrue("Expect valid args", valid);
 		assertEquals("Expected 2 iteration when given", 2, bench.iterations );
+	}
+	
+	
+	@Test
+	public void testParseArgs_pathExists() throws Exception {
+		boolean valid = bench.parseArgs(new String[] {"."});
+		assertTrue("Expect valid args", valid);
+		assertEquals("Expected 1 path that exists ", 1, bench.paths.size() );
+	}
+	@Test
+	public void testParseArgs_pathsExist() throws Exception {
+		boolean valid = bench.parseArgs(new String[] {".", ".."});
+		assertTrue("Expect valid args", valid);
+		assertEquals("Expected 2 paths that exist ", 2, bench.paths.size() );
+	}
+	
+	@Test
+	public void testParseArgs_pathsNotExists() throws Exception {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintStream print = new PrintStream(baos);
+		PrintStream out = System.out;
+		try {
+			System.setOut(print);
+		
+			boolean valid = bench.parseArgs(new String[] {"foo", "asdf"});
+			assertFalse("Expect not valid args when bad paths", valid);
+			
+			String outString = new String(baos.toByteArray());
+
+			assertEquals("Samples path does not exist: foo\nSamples path does not exist: asdf\n", outString);
+			assertEquals("Expected 1 paths that exist default", 1, bench.paths.size() );
+			assertEquals("Expected default path when all bad or none given", bench.SAMPLES_DIR, bench.paths.get(0) );
+		} finally {
+			System.setOut(out);
+		}
 	}
 }
