@@ -47,11 +47,15 @@ public class JsonWrapper {
 		this(filterMeta);
 		if (wrapper.isObject()) {
 			this.initAsObject();
-			this.object = (Map<String, Object>) this.stripWrapper(wrapper);
+			this.object = new LinkedHashMap<>(wrapper.object);
 		} else if (wrapper.isArray()) {
 			this.initAsList();
-			this.list.add(this.stripWrapper(wrapper));
+			this.list = new LinkedList<>(wrapper.list);
 		}
+	}
+
+	protected JsonWrapper(JsonWrapper jsonWrapper) {
+		this(jsonWrapper, true);
 	}
 
 	/**

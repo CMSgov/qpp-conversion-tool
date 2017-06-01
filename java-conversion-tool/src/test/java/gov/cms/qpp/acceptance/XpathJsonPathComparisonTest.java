@@ -50,18 +50,6 @@ public class XpathJsonPathComparisonTest {
 		helper.executeAttributeTest(jsonPath, "value", "20170101");
 	}
 
-	@Test
-	public void compareTopLevelAttributePerformanceStart() throws XmlException, IOException {
-		String jsonPath = "performanceStart";
-		helper.executeAttributeTest(jsonPath, "value", "20170101");
-	}
-
-	@Test
-	public void compareTopLevelAttributePerformanceEnd() throws XmlException, IOException {
-		String jsonPath = "performanceEnd";
-		helper.executeAttributeTest(jsonPath, "value", "20171231");
-	}
-
 	//ACI
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1() throws IOException, XmlException {
