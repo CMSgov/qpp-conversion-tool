@@ -1,12 +1,14 @@
 package gov.cms.qpp.conversion.model.error;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Contains a list of error errorSources.
  */
-public class AllErrors {
+public class AllErrors implements Serializable {c
+	private static final long serialVersionUID = -223805249639231357L;
 	private List<ErrorSource> errorSources;
 
 	/**
