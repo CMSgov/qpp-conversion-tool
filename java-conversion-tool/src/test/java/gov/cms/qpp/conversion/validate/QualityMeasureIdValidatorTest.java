@@ -13,7 +13,7 @@ import java.util.List;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
 import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -86,7 +86,7 @@ public class QualityMeasureIdValidatorTest {
 
 		assertThat("There must be only one validation error.", validationErrors, hasSize(1));
 		assertThat("Incorrect validation error.", validationErrors,
-			containsValidationErrorInAnyOrderIgnoringPath(QualityMeasureIdValidator.MEASURE_GUID_MISSING));
+			hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.MEASURE_GUID_MISSING));
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class QualityMeasureIdValidatorTest {
 
 		assertThat("There must be only one validation error.", validationErrors, hasSize(1));
 		assertThat("Incorrect validation error.", validationErrors,
-			containsValidationErrorInAnyOrderIgnoringPath(QualityMeasureIdValidator.NO_CHILD_MEASURE));
+			hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.NO_CHILD_MEASURE));
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class QualityMeasureIdValidatorTest {
 
 		assertThat("There must be only two validation errors.", validationErrors, hasSize(2));
 		assertThat("Incorrect validation error.", validationErrors,
-			containsValidationErrorInAnyOrderIgnoringPath(QualityMeasureIdValidator.MEASURE_GUID_MISSING,
+			hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.MEASURE_GUID_MISSING,
 				QualityMeasureIdValidator.NO_CHILD_MEASURE));
 	}
 
@@ -139,7 +139,7 @@ public class QualityMeasureIdValidatorTest {
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must be a validation error.", validationErrors, hasSize(1));
 		assertThat("Incorrect validation error.", validationErrors,
-			containsValidationErrorInAnyOrderIgnoringPath(
+			hasValidationErrorsIgnoringPath(
 				String.format(QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE,
 				QualityMeasureIdValidator.DENEX)));
 	}
@@ -191,7 +191,7 @@ public class QualityMeasureIdValidatorTest {
 			.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("Incorrect validation error.", validationErrors, containsValidationErrorInAnyOrderIgnoringPath(message));
+		assertThat("Incorrect validation error.", validationErrors, hasValidationErrorsIgnoringPath(message));
 	}
 
 	@Test
@@ -238,7 +238,7 @@ public class QualityMeasureIdValidatorTest {
 			.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("Incorrect validation error.", validationErrors, containsValidationErrorInAnyOrderIgnoringPath(message));
+		assertThat("Incorrect validation error.", validationErrors, hasValidationErrorsIgnoringPath(message));
 
 	}
 
@@ -262,7 +262,7 @@ public class QualityMeasureIdValidatorTest {
 			.build();
 
 		List<ValidationError> validationErrors = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("Incorrect validation error.", validationErrors, containsValidationErrorInAnyOrderIgnoringPath(message));
+		assertThat("Incorrect validation error.", validationErrors, hasValidationErrorsIgnoringPath(message));
 
 
 	}
