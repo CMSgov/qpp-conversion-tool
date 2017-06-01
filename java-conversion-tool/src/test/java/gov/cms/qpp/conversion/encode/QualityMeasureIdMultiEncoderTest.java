@@ -22,7 +22,7 @@ public class QualityMeasureIdMultiEncoderTest {
 	private final String REQUIRE_DENOM_EXCLUS = "Must have a required denominatorExclusion";
 	private final String REQUIRE_DENOM = "Must have a required denominator";
 	private final String REQUIRE_NUMER = "Must have a required numerator";
-	private final String POPULATION_TOTAL = "eligiblePopulation";
+	private final String ELIGIBLE_POPULATION = "eligiblePopulation";
 	private final String PERFORMANCE_MET = "performanceMet";
 	private final String DENOMINATOR_EXCEPTIONS = "denominatorExceptions";
 	private final String DENOMINATOR_EXCLUSIONS = "denominatorExclusions";
@@ -164,7 +164,7 @@ public class QualityMeasureIdMultiEncoderTest {
 	private void assertFirstSubPopulation(List<LinkedHashMap<String, Integer>> strata) {
 		LinkedHashMap<String, Integer> firstSubPopulation = strata.get(0);
 
-		assertThat(REQUIRE_POPULATION_TOTAL, firstSubPopulation.get(POPULATION_TOTAL), is(600));
+		assertThat(REQUIRE_POPULATION_TOTAL, firstSubPopulation.get(ELIGIBLE_POPULATION), is(600));
 		assertThat(REQUIRE_PERFORMANCE_MET, firstSubPopulation.get(PERFORMANCE_MET), is(600));
 		assertThat(REQUIRE_DENOM_EXCEP, firstSubPopulation.get(DENOMINATOR_EXCEPTIONS), is(600));
 		assertThat(REQUIRE_DENOM_EXCLUS, firstSubPopulation.get("denominatorExclusions"), is(600));
@@ -175,7 +175,7 @@ public class QualityMeasureIdMultiEncoderTest {
 	private void assertSecondSubPopulation(List<LinkedHashMap<String, Integer>> strata) {
 		LinkedHashMap<String, Integer> secondSubPopulation = strata.get(1);
 
-		assertThat(REQUIRE_POPULATION_TOTAL, secondSubPopulation	.get(POPULATION_TOTAL), is(600));
+		assertThat(REQUIRE_POPULATION_TOTAL, secondSubPopulation	.get(ELIGIBLE_POPULATION), is(600));
 		assertThat(REQUIRE_PERFORMANCE_MET, secondSubPopulation.get(PERFORMANCE_MET), is(600));
 		assertThat(REQUIRE_DENOM_EXCEP, secondSubPopulation.get(DENOMINATOR_EXCEPTIONS), is(600));
 		assertThat(REQUIRE_DENOM_EXCLUS, secondSubPopulation.get(DENOMINATOR_EXCLUSIONS), is(600));
