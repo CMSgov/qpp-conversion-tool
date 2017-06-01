@@ -23,8 +23,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ConversionHandler implements RequestHandler<S3Event, String> {
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionHandler.class);
 
 	@Override
 	public String handleRequest(S3Event s3event, Context context) {
@@ -43,8 +46,9 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			try (InputStream input = new NamedInputStream(s3Object.getObjectContent(), srcKey)) {
 				Converter converter = new Converter(input);
 				qpp = converter.transform();
-			} catch(TransformException exception) {
+			} catch (TransformException exception) {
 				errors = exception.getDetails();
+				DEV_LOG.info("Transformation error occured", exception);
 			}
 
 			InputStream returnStream = null;
@@ -85,6 +89,7 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			errors = jsonObjectWriter.writeValueAsBytes(allErrors);
 		} catch (JsonProcessingException exception) {
 			errors = "{ \"exception\": \"JsonProcessingException\" }".getBytes();
+			DEV_LOG.info("Json processing error occurred", exception);
 		}
 		return new ByteArrayInputStream(errors);
 	}
