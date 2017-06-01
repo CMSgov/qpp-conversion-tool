@@ -15,6 +15,7 @@ import gov.cms.qpp.conversion.model.Node;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -41,6 +42,12 @@ public class JsonWrapper {
 	public JsonWrapper(boolean filterMeta) {
 		ow = getObjectWriter(filterMeta);
 	}
+
+	protected JsonWrapper(JsonWrapper jsonWrapper) {
+		object = new LinkedHashMap<>(jsonWrapper.object);
+		ow =  getObjectWriter(true);
+	}
+
 
 	/**
 	 * Static factory that creates {@link com.fasterxml.jackson.databind.ObjectWriter}s.
