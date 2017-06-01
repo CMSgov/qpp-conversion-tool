@@ -1,7 +1,10 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
+import gov.cms.qpp.conversion.util.JsonHelper;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.Is.is;
 
 public class QualityMeasureIdMultiRoundTripTest {
 	private final String REQUIRE_POPULATION_TOTAL = "Must have a required populationTotal";
@@ -36,31 +41,28 @@ public class QualityMeasureIdMultiRoundTripTest {
 		Files.deleteIfExists(Paths.get(SUCCESS_JSON));
 	}
 
-//	@Test
-//	public void testRoundTripForQualityMeasureId() throws IOException {
-//		Converter converter = new Converter(JUNK_QRDA3_FILE);
-//		TransformationStatus transformStatus = converter.transform();
-//
-//		assertThat("Converting the junk QRDA3 file should have been successful.", transformStatus,
-//				is(TransformationStatus.SUCCESS));
-//
-//		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
-//				"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
-//
-//		List<Map<String, Integer>> subPopulation = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
-//				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='CMS52v5')].value.strata[*]", List.class);
-//
-//		assertThat("There should still be a quality measure even with the junk stuff in quality measure.",
-//				qualityMeasures, hasSize(1));
-//		assertThat("The measureId in the quality measure should still populate given the junk stuff in the measure.",
-//				qualityMeasures.get(0).get("measureId"), is("CMS52v5"));
-//
-//		assertFirstSubPopulation(subPopulation);
-//
-//		assertSecondSubPopulation(subPopulation);
-//
-//		assertThirdSubPopulation(subPopulation);
-//	}
+	@Test
+	public void testRoundTripForQualityMeasureId() throws IOException {
+		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(JUNK_QRDA3_FILE);
+		converterWrapper.transform();
+
+		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
+				"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
+
+		List<Map<String, Integer>> subPopulation = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
+				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='CMS52v5')].value.strata[*]", List.class);
+
+		assertThat("There should still be a quality measure even with the junk stuff in quality measure.",
+				qualityMeasures, hasSize(1));
+		assertThat("The measureId in the quality measure should still populate given the junk stuff in the measure.",
+				qualityMeasures.get(0).get("measureId"), is("CMS52v5"));
+
+		assertFirstSubPopulation(subPopulation);
+
+		assertSecondSubPopulation(subPopulation);
+
+		assertThirdSubPopulation(subPopulation);
+	}
 
 	private void assertFirstSubPopulation(List<Map<String, Integer>> subPopulation) {
 		assertThat(REQUIRE_POPULATION_TOTAL, subPopulation.get(0).get(POPULATION_TOTAL), CoreMatchers.is(600));
