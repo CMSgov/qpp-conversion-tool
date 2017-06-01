@@ -47,7 +47,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		}
 
 		JsonWrapper measurementSets =
-			encodeMeasurementSets(wrapper, childMapByTemplateId, reportingNode);
+			encodeMeasurementSets(childMapByTemplateId, reportingNode);
 			wrapper.putObject(MEASUREMENT_SETS, measurementSets);
 	}
 
@@ -79,8 +79,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @param reportingNode {@link TemplateId#REPORTING_PARAMETERS_ACT}
 	 * @return encoded measurement sets
 	 */
-	private JsonWrapper encodeMeasurementSets(JsonWrapper wrapper,
-											Map<TemplateId, Node> childMapByTemplateId,
+	private JsonWrapper encodeMeasurementSets(Map<TemplateId, Node> childMapByTemplateId,
 											Node reportingNode) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
