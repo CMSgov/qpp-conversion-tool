@@ -25,6 +25,7 @@ public class ClinicalDocumentDecoderTest {
 
 	private static String xmlFragment;
 	private Node clinicalDocument;
+	private final String ENTITY_ID_VALUE = "AR000000";
 
 	@BeforeClass
 	public static void init() throws IOException {
@@ -266,6 +267,18 @@ public class ClinicalDocumentDecoderTest {
 
 	}
 
+	@Test
+	public void decodeCpcPlusEntityIdTest() throws Exception {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
+		Node testParentNode = new Node();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
+		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		assertThat("Clinical Document contains the Entity Id",
+				testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID), is(ENTITY_ID_VALUE));
+	}
+
 	private Element makeClinicalDocument(String programName) {
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -291,6 +304,20 @@ public class ClinicalDocumentDecoderTest {
 		intendedRecipient.addContent(programNameEl);
 		informationRecipient.addContent(intendedRecipient);
 		return informationRecipient;
+	}
+
+	// This is the Entity Id for CPCPlus program name
+	private Element prepareParticipant(Namespace rootns) {
+		Element participant = new Element("participant", rootns);
+		Element associatedEntity = new Element("associatedEntity", rootns);
+
+		Element entityId = new Element("id", rootns)
+			.setAttribute("root", "2.16.840.1.113883.3.249.5.1")
+			.setAttribute("extension", ENTITY_ID_VALUE)
+			.setAttribute("assigningAuthorityName", "CMS-CMMI");
+		associatedEntity.addContent(entityId);
+		participant.addContent(associatedEntity);
+		return participant;
 	}
 
 	private Element prepareDocumentationElement(Namespace rootns) {
