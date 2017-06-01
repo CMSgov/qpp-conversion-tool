@@ -571,9 +571,6 @@ public class JsonWrapper {
 	}
 
 	void mergeMetadata(JsonWrapper otherWrapper, String encodeLabel) {
-		if (!isObject()) {
-			return;
-		}
 		Set<Map<String, String>> meta = this.getMetadataHolder();
 		Set<Map<String, String>> otherMeta = otherWrapper.getMetadataHolder();
 		otherMeta.forEach(other -> {
