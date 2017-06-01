@@ -42,6 +42,18 @@ public class JsonWrapper {
 		ow = getObjectWriter(filterMeta);
 	}
 
+	@SuppressWarnings("unchecked")
+	public JsonWrapper(JsonWrapper wrapper, boolean filterMeta) {
+		this(filterMeta);
+		if (wrapper.isObject()) {
+			this.initAsObject();
+			this.object = (Map<String, Object>) this.stripWrapper(wrapper);
+		} else if (wrapper.isArray()) {
+			this.initAsList();
+			this.list.add(this.stripWrapper(wrapper));
+		}
+	}
+
 	/**
 	 * Static factory that creates {@link com.fasterxml.jackson.databind.ObjectWriter}s.
 	 *
@@ -451,6 +463,15 @@ public class JsonWrapper {
 		if (check != null) {
 			throw new IllegalStateException("Current state may not change (from list to object or reverse).");
 		}
+	}
+
+	/**
+	 * Identifies whether or not the {@link JsonWrapper}'s content is an array.
+	 *
+	 * @return boolean is this a JSON array
+	 */
+	public boolean isArray() {
+		return list != null;
 	}
 
 	/**

@@ -2,20 +2,14 @@ package gov.cms.qpp.acceptance;
 
 
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.xml.XmlException;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import static org.junit.Assert.assertEquals;
 
 public class XpathJsonPathComparisonTest {
 	private static JsonWrapper wrapper = new JsonWrapper(false);
