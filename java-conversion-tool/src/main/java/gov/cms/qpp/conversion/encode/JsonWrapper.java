@@ -48,7 +48,6 @@ public class JsonWrapper {
 		ow =  getObjectWriter(true);
 	}
 
-
 	/**
 	 * Static factory that creates {@link com.fasterxml.jackson.databind.ObjectWriter}s.
 	 *
