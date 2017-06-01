@@ -12,7 +12,7 @@ public class IgnoredDecoder extends QppXmlDecoder {
 
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		return DecodeResult.TREE_CONTINUE;
+		return DecodeResult.TREE_FINISHED;
 	}
 
 	@Decoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
