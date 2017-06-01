@@ -103,8 +103,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @param reportingNode {@link TemplateId#REPORTING_PARAMETERS_ACT}
 	 * @return encoded measurement sets
 	 */
-	private JsonWrapper encodeMeasurementSets(
-			JsonWrapper wrapper, Map<TemplateId, Node> childMapByTemplateId, Node reportingNode) {
+
+	private JsonWrapper encodeMeasurementSets(JsonWrapper wrapper,
+	    Map<TemplateId, Node> childMapByTemplateId,
+      Node reportingNode) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
 		JsonOutputEncoder sectionEncoder;

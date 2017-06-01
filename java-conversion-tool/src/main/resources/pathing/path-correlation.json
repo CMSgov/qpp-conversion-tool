@@ -139,7 +139,8 @@
 						"performanceExclusion",
 						"populationTotal",
 						"initialPopulation",
-						"denominatorExclusions"
+						"denominatorExclusions",
+						"denominatorExceptions"
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@value",
