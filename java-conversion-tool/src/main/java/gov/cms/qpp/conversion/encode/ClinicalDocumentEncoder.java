@@ -102,11 +102,11 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 				if (performanceStart != null) {
 					childWrapper.putDate(PERFORMANCE_START, performanceStart);
-					maintainContinuity(wrapper, reportingNode, PERFORMANCE_START);
+					maintainContinuity(childWrapper, reportingNode, PERFORMANCE_START);
 				}
 				if (performanceEnd != null) {
 					childWrapper.putDate(PERFORMANCE_END, performanceEnd);
-					maintainContinuity(wrapper, reportingNode, PERFORMANCE_END);
+					maintainContinuity(childWrapper, reportingNode, PERFORMANCE_END);
 				}
 
 				measurementSetsWrapper.putObject(childWrapper);

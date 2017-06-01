@@ -88,7 +88,7 @@ public class Converter {
 	 * @param doIt toggle value
 	 * @return this for chaining
 	 */
-	Converter doDefaults(boolean doIt) {
+	public Converter doDefaults(boolean doIt) {
 		this.doDefaults = doIt;
 		return this;
 	}

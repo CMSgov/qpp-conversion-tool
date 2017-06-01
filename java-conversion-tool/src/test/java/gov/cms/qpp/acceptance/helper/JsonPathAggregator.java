@@ -3,6 +3,7 @@ package gov.cms.qpp.acceptance.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
+import gov.cms.qpp.conversion.decode.QualitySectionDecoder;
 import gov.cms.qpp.conversion.encode.QualityMeasureIdEncoder;
 
 import java.util.Arrays;
@@ -12,7 +13,9 @@ import java.util.Map;
 
 public class JsonPathAggregator {
 	private List<String> excluded = Arrays.asList(
-			QualityMeasureIdEncoder.IS_END_TO_END_REPORTED
+			QualityMeasureIdEncoder.IS_END_TO_END_REPORTED,
+			QualitySectionDecoder.CATEGORY,
+			QualitySectionDecoder.SUBMISSION_METHOD
 	);
 
 	Map<String, String> jsonPaths = new HashMap<>();

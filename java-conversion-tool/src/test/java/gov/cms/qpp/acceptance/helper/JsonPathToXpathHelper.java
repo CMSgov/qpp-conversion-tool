@@ -28,10 +28,14 @@ public class JsonPathToXpathHelper {
 	private JsonWrapper wrapper;
 
 	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper) throws IOException {
+		this(inPath, inWrapper, true);
+	}
+
+	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper, boolean doDefaults) throws IOException {
 		path = inPath;
 		wrapper = inWrapper;
 		InputStream xmlStream = XmlUtils.fileToStream(path);
-		Converter converter = new Converter(xmlStream);
+		Converter converter = new Converter(xmlStream).doDefaults(doDefaults);
 		converter.transform();
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		encoder.encode(wrapper, converter.getDecoded());

@@ -32,7 +32,7 @@ public class JsonPathToXpathCoverageTest {
 
 	private void checkCoverage(Path path) {
 		try{
-			helper = new JsonPathToXpathHelper(path, metaWrapper);
+			helper = new JsonPathToXpathHelper(path, metaWrapper, false);
 			JsonWrapper wrapper = new JsonWrapper(metaWrapper, true);
 			JsonNode root = om.readTree(wrapper.toString());
 			JsonPathAggregator agg = new JsonPathAggregator(root);
