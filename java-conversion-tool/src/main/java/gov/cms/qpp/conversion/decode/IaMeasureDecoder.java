@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Decoder;
@@ -25,12 +26,17 @@ public class IaMeasureDecoder extends QppXmlDecoder {
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
-		String expressionStr = "./ns:reference/ns:externalDocument/ns:id/@extension";
+		String expressionStr = getXpath("measureId");
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue("measureId", p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 
 		decode(element.getChild("component", defaultNs), thisNode);
 
 		return DecodeResult.TREE_FINISHED;
+	}
+
+	private String getXpath(String attribute) {
+		return PathCorrelator.getXpath(
+				TemplateId.IA_MEASURE.name(), attribute, defaultNs.getURI());
 	}
 }
