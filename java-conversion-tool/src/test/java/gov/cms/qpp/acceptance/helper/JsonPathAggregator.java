@@ -44,7 +44,6 @@ public class JsonPathAggregator {
 		} else if (node.isValueNode()) {
 			String value = node.asText();
 			jsonPaths.put(context, value);
-			//System.out.println("Value of :" + context + " is " + value);
 		}
 	}
 

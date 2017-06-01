@@ -51,7 +51,6 @@ public class JsonPathToXpathHelper {
 	}
 
 	public void executeAttributeTest(String jsonPath, String expectedValue) {
-		System.out.println("Json path: " + jsonPath);
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 
 		Attribute attribute = null;
@@ -63,8 +62,8 @@ public class JsonPathToXpathHelper {
 
 		if (!expectedValue.equals(attribute.getValue())) {
 			System.err.println("( " + jsonPath + " ) value ( " + expectedValue +
-					" ) does not equal it's xml source value ( " + attribute.getValue() +
-					" ) at ( " + xPath + " ). Please investigate.");
+					" ) does not equal ( " + attribute.getValue() +
+					" ) at \n( " + xPath + " ). Please investigate.");
 		}
 
 		assertNotNull("Attribute value should not be null. json value:" + expectedValue,
