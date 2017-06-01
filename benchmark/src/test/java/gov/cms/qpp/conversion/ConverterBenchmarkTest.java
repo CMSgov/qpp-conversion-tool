@@ -2,13 +2,16 @@ package gov.cms.qpp.conversion;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.OutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Writer;
+import java.util.regex.Pattern;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Before;
@@ -30,10 +33,9 @@ public class ConverterBenchmarkTest {
 			writer.write("test data");
 			assertTrue("Expect to find a qpp.json file that exists",
 					bench.accept(new File("."), testFile.getName()) );
+			
 		} finally {
-			if (testFile.exists()) {
-				testFile.delete();
-			}
+			delete(testFile);
 		}
 	}
 	@Test
@@ -46,10 +48,9 @@ public class ConverterBenchmarkTest {
 			writer.write("test data");
 			assertFalse("Do NOT expect to accept a non qpp.json file that exists",
 					bench.accept(new File("."), testFile.getName()) );
+
 		} finally {
-			if (testFile.exists()) {
-				testFile.delete();
-			}
+			delete(testFile);
 		}
 	}
 	
@@ -75,10 +76,9 @@ public class ConverterBenchmarkTest {
 			assertTrue("The test file is not present to test doTearDown", testFile.exists());
 			bench.doTearDown(new File("."));
 			assertTrue("Expect non qpp.json files to remain.", testFile.exists() );
+
 		} finally {
-			if (testFile.exists()) {
-				testFile.delete();
-			}
+			delete(testFile);
 		}
 	}
 	
@@ -235,6 +235,127 @@ public class ConverterBenchmarkTest {
 			assertEquals("Expected default path when all bad or none given", bench.SAMPLES_DIR, bench.paths.get(0) );
 		} finally {
 			System.setOut(out);
+		}
+	}
+	
+	@Test
+	public void testDoBenchmarks_single() throws Exception {
+		bench = new ConverterBenchmark() {
+			@Override
+			protected void doProfileAction(File file) {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		
+		bench.paths.clear();
+		bench.paths.add( new File("src/test/") );
+		
+		File testFile = new File("src/test/test.qpp.xml");
+		try {
+			createFile(testFile);
+			
+			bench.doBenchmarks();
+			
+			try (BufferedReader dat = new BufferedReader(
+					new FileReader( bench.BENCHMARK_DATA ) ) ) {
+			
+				String actual = dat.readLine();
+				assertEquals("file,mean,std,iterations/files",actual);
+				
+				actual = dat.readLine();
+				Pattern expected = Pattern.compile("src/test/"+testFile.getName()+",0.5\\d\\d\\d,0.0\\d\\d\\d,3");
+				assertTrue( expected.matcher(actual).matches() );
+				
+				actual = dat.readLine();
+				expected = Pattern.compile("src/test,0.5\\d\\d\\d,0.0\\d\\d\\d,1");
+				assertTrue( expected.matcher(actual).matches() );
+			}
+		} finally {
+			delete(testFile);
+			cleanup();
+		}
+		
+	}
+	
+	@Test
+	public void testDoBenchmarks_couple() throws Exception {
+		bench = new ConverterBenchmark() {
+			int sleeptime = 100; // first test file time
+			File firstTestFile = null;
+			@Override
+			protected void doProfileAction(File file) {
+				if (firstTestFile == null) {
+					firstTestFile = file;
+				}
+				if (firstTestFile != file) {
+					sleeptime = 300; // second test file time
+				}
+				
+				try {
+					Thread.sleep(sleeptime);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		
+		bench.paths.clear();
+		bench.paths.add( new File("src/test/") );
+		
+		File testFile1 = new File("src/test/test1.qpp.xml");
+		File testFile2 = new File("src/test/test2.qpp.xml");
+		File testFile3 = new File("src/test/test2.qpp.not"); // this file will not be processed
+		try {
+			createFile(testFile1);
+			createFile(testFile2);
+			createFile(testFile3);
+			
+			bench.doBenchmarks();
+			
+			try (BufferedReader dat = new BufferedReader(
+					new FileReader( bench.BENCHMARK_DATA ) ) ) {
+			
+				String actual = dat.readLine();
+				assertEquals("file,mean,std,iterations/files",actual);
+				
+				actual = dat.readLine();
+				Pattern expected = Pattern.compile("src/test/"+testFile1.getName()+",0.1\\d\\d\\d,0.0\\d\\d\\d,3");
+				assertTrue( expected.matcher(actual).matches() );
+				
+				actual = dat.readLine();
+				expected = Pattern.compile("src/test/"+testFile2.getName()+",0.3\\d\\d\\d,0.0\\d\\d\\d,3");
+				assertTrue( expected.matcher(actual).matches() );
+				
+				actual = dat.readLine();
+				expected = Pattern.compile("src/test,0.2\\d\\d\\d,0.1\\d\\d\\d,2");
+				assertTrue( expected.matcher(actual).matches() );
+			}
+		} finally {
+			delete(testFile1);
+			delete(testFile2);
+			delete(testFile3);
+			cleanup();
+		}
+		
+	}
+	
+	private void cleanup() {
+		delete( bench.BENCHMARK_DATA );
+		delete( new File("benchmarks.err") );
+		delete( new File("benchmarks.log") );
+	}
+	private void delete(File file) {
+		if (file.exists()) {
+			file.delete();
+		}
+	}
+	private void createFile(File testFile) throws IOException {
+		try (FileWriter writer = new FileWriter(testFile)) {
+			writer.write("test data");
 		}
 	}
 }

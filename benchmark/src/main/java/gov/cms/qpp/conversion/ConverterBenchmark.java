@@ -19,6 +19,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
  */
 public class ConverterBenchmark implements FilenameFilter {
 
+	static final File   BENCHMARK_DATA  = new File("benchmarks.dat");
 	static final File   SAMPLES_DIR     = new File("src/main/resources/qrda-files/");
 	static final String JSON_EXTENSION  = "qpp.json";
 	static final String INPUT_EXTENSION = ".xml";
@@ -52,7 +53,7 @@ public class ConverterBenchmark implements FilenameFilter {
 
 	
 	public void doBenchmarks() throws IOException {
-		try (FileWriter benchFile = new FileWriter(new File("benchmarks.dat"));) {
+		try (FileWriter benchFile = new FileWriter(BENCHMARK_DATA);) {
 			benchFile.write("file,mean,std,iterations/files\n");
 			
 			// for each file in each path - execute benchmark
@@ -69,8 +70,7 @@ public class ConverterBenchmark implements FilenameFilter {
 					for (int i=0; i<iterations; i++) {
 						long start = System.currentTimeMillis();
 						
-						 // the target
-						ConversionEntry.main(file.getAbsolutePath());
+						 doProfileAction(file);
 						
 						long finish = System.currentTimeMillis();
 						if (firstFile) {
@@ -88,6 +88,12 @@ public class ConverterBenchmark implements FilenameFilter {
 				doTearDown(path);
 			}
 		}
+	}
+
+	// this makes this all more testable by mocking this method
+	protected void doProfileAction(File file) {
+		// the target
+		ConversionEntry.main(file.getAbsolutePath());
 	}
 	
 	
