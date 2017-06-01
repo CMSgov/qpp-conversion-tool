@@ -94,7 +94,7 @@ public class MultipleTinsEncoderTest {
 
 	@Test
 	public void testFirstTinNpiCombinationConversion() {
-		LinkedHashMap<String, Object> firstMeasurementMap = getClinicalDocumentMeasurementFromIndex(0);
+		LinkedHashMap<String, Object> firstMeasurementMap = getIndexedClinicalDocumentFromWrapper(0);
 
 		assertThat("Must contain the correct NPI",
 				firstMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is(NPI1));
@@ -104,7 +104,7 @@ public class MultipleTinsEncoderTest {
 
 	@Test
 	public void testSecondTinNpiCombinationConversion() {
-		LinkedHashMap<String, Object> secondMeasurementMap = getClinicalDocumentMeasurementFromIndex(1);
+		LinkedHashMap<String, Object> secondMeasurementMap = getIndexedClinicalDocumentFromWrapper(1);
 
 		assertThat("Must contain the correct NPI",
 				secondMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is(NPI2));
@@ -112,8 +112,8 @@ public class MultipleTinsEncoderTest {
 			secondMeasurementMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is(TIN2));
 	}
 
-	private LinkedHashMap<String, Object> getClinicalDocumentMeasurementFromIndex(Integer index) {
-		return ((LinkedList<LinkedHashMap<String, LinkedList<LinkedHashMap<String, Object>>>>)
-				testWrapper.getObject()).get(index).get("measurementSets").get(0);
+	private LinkedHashMap<String, Object> getIndexedClinicalDocumentFromWrapper(Integer index) {
+		return ((LinkedList<LinkedHashMap<String, Object>>)
+				testWrapper.getObject()).get(index);
 	}
 }
