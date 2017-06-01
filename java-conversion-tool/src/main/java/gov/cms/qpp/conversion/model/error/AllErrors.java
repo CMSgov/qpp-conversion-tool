@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Contains a list of error errorSources.
  */
-public class AllErrors implements Serializable {c
+public class AllErrors implements Serializable {
 	private static final long serialVersionUID = -223805249639231357L;
 	private List<ErrorSource> errorSources;
 
