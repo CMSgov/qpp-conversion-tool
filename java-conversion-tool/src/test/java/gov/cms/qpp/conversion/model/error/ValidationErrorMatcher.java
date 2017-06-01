@@ -2,12 +2,10 @@ package gov.cms.qpp.conversion.model.error;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.IsCollectionContaining;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * A Hamcrest matcher for {@link ValidationError}.
@@ -16,7 +14,7 @@ import java.util.stream.Collectors;
  * <ul>
  *     <li>{@link #validationErrorTextMatches}</li>
  *     <li>{@link #validationErrorTextAndPathMatches}</li>
- *     <li>{@link #containsValidationErrorInAnyOrderIgnoringPath}</li>
+ *     <li>{@link #hasValidationErrorsIgnoringPath}</li>
  * </ul>
  */
 public class ValidationErrorMatcher extends TypeSafeMatcher<ValidationError> {
@@ -56,11 +54,11 @@ public class ValidationErrorMatcher extends TypeSafeMatcher<ValidationError> {
 	 * @param errorTexts The {@code errorText}s that the matcher should search for.
 	 * @return A matcher that matches all the {@code errorTexts} provided in many {@code ValidationError}s.
 	 */
-	public static Matcher<Iterable<? extends ValidationError>> containsValidationErrorInAnyOrderIgnoringPath(String... errorTexts) {
-		Collection<Matcher<? super ValidationError>> validationErrorMatchers = Arrays.stream(errorTexts)
-			.map(ValidationErrorMatcher::validationErrorTextMatches).collect(Collectors.toList());
+	public static Matcher<Iterable<ValidationError>> hasValidationErrorsIgnoringPath(String... errorTexts) {
+		Matcher<ValidationError>[] validationErrorMatchers = Arrays.stream(errorTexts)
+			.map(ValidationErrorMatcher::validationErrorTextMatches).toArray(ValidationErrorMatcher[]::new);
 
-		return Matchers.containsInAnyOrder(validationErrorMatchers);
+		return IsCollectionContaining.hasItems(validationErrorMatchers);
 	}
 
 	private String errorText = null;
