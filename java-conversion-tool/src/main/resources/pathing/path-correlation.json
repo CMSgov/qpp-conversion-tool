@@ -80,6 +80,16 @@
 					}
 				},
 				{
+					"decodeLabel": "entityId",
+					"encodeLabels": [
+						"entityId"
+					],
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.1']/@extension",
+						"xmltype": "attribute"
+					}
+				},
+				{
 					"decodeLabel": "components",
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'component' and namespace-uri() = '<nsuri>']/*[local-name() = 'structuredBody' and namespace-uri() = '<nsuri>']/*[local-name() = 'component' and namespace-uri() = '<nsuri>']",
