@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -317,7 +317,7 @@ public class CheckerTest {
 
 		assertThat("There are errors", validationErrors, hasSize(2));
 		assertThat("int validation error", validationErrors,
-				containsValidationErrorInAnyOrderIgnoringPath("int failure" ,"maximum failure"));
+				hasValidationErrorsIgnoringPath("int failure" ,"maximum failure"));
 	}
 
 	@Test
