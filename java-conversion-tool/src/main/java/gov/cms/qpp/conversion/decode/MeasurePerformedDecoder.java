@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Decoder;
@@ -35,8 +36,13 @@ public class MeasurePerformedDecoder extends QppXmlDecoder {
 	 * @param thisNode Object to hold the measure performed
 	 */
 	private void setMeasurePerformedOnNode(Element element, Node thisNode) {
-		String expressionStr = "./ns:value/@code";
+		String expressionStr = getXpath("measurePerformed");
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue("measurePerformed", p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+	}
+
+	private String getXpath(String attribute) {
+		return PathCorrelator.getXpath(
+				TemplateId.MEASURE_PERFORMED.name(), attribute, defaultNs.getURI());
 	}
 }
