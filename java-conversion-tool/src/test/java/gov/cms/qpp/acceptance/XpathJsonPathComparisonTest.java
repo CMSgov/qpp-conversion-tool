@@ -43,14 +43,11 @@ public class XpathJsonPathComparisonTest {
 		String jsonPath = "nationalProviderIdentifier";
 		helper.executeAttributeTest(jsonPath, "extension", "2567891421");
 	}
+
 	@Test
 	public void compareTopLevelAttributeEntityId() throws XmlException, IOException {
-		String xPath = prepPath("entityId");
-		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
-
-		assertEquals("Attribute name should be: extension", "extension", attribute.getName());
-		assertEquals("Attribute value should be: AR000000",
-				"AR000000", attribute.getValue());
+		String jsonPath = "entityId";
+		helper.executeAttributeTest(jsonPath, "extension", "AR000000");
 	}
 
 	@Test

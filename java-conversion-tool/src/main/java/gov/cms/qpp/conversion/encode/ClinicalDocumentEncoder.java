@@ -105,8 +105,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 */
 
 	private JsonWrapper encodeMeasurementSets(JsonWrapper wrapper,
-	    Map<TemplateId, Node> childMapByTemplateId,
-      Node reportingNode) {
+			Map<TemplateId, Node> childMapByTemplateId, Node reportingNode) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
 		JsonOutputEncoder sectionEncoder;
