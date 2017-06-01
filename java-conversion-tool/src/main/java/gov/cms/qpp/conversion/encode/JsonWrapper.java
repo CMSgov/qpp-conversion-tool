@@ -42,6 +42,11 @@ public class JsonWrapper {
 		ow = getObjectWriter(filterMeta);
 	}
 
+	protected JsonWrapper(JsonWrapper jsonWrapper) {
+		object = new LinkedHashMap<>(jsonWrapper.object);
+		ow =  getObjectWriter(true);
+	}
+
 	/**
 	 * Static factory that creates {@link com.fasterxml.jackson.databind.ObjectWriter}s.
 	 *
