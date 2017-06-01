@@ -102,7 +102,7 @@ public class Converter {
 	 *
 	 * @return status of conversion
 	 */
-	public JsonWrapper transform() throws TransformException {
+	public JsonWrapper transform() {
 		DEV_LOG.info("Transform invoked with file {}", inFile);
 		JsonWrapper qpp = null;
 		try {

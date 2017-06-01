@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.model.error;
 
 public class TransformException extends RuntimeException {
-	private AllErrors details;
+	private final AllErrors details;
 
 	public TransformException(String message, Throwable cause, AllErrors details) {
 		super(message, cause);

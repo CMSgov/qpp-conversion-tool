@@ -16,13 +16,13 @@ import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.util.NamedInputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import gov.cms.qpp.conversion.util.NamedInputStream;
 
 public class ConversionHandler implements RequestHandler<S3Event, String> {
 
@@ -37,29 +37,28 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			AmazonS3 s3Client = getClient();
 			S3Object s3Object = s3Client.getObject(new GetObjectRequest(srcBucket, srcKey));
 
+			JsonWrapper qpp = null;
+			AllErrors errors = null;
+
 			try (InputStream input = new NamedInputStream(s3Object.getObjectContent(), srcKey)) {
 				Converter converter = new Converter(input);
-				JsonWrapper qpp = null;
-				AllErrors errors = null;
-				try {
-					qpp = converter.transform();
-				} catch(TransformException exception) {
-					errors = exception.getDetails();
-				}
-
-				InputStream returnStream = null;
-				if (qpp != null) {
-					returnStream = qppToInputStream(qpp);
-				} else if (errors != null) {
-					returnStream = errorsToInputStream(errors);
-				}
-
-				String dstKey = "post-conversion/" + getOutputFile(filename, qpp != null);
-				ObjectMetadata meta = new ObjectMetadata();
-				s3Client.putObject(srcBucket, dstKey, returnStream, meta);
-
-				return "Ok";
+				qpp = converter.transform();
+			} catch(TransformException exception) {
+				errors = exception.getDetails();
 			}
+
+			InputStream returnStream = null;
+			if (qpp != null) {
+				returnStream = qppToInputStream(qpp);
+			} else if (errors != null) {
+				returnStream = errorsToInputStream(errors);
+			}
+
+			String dstKey = "post-conversion/" + getOutputFile(filename, qpp != null);
+			ObjectMetadata meta = new ObjectMetadata();
+			s3Client.putObject(srcBucket, dstKey, returnStream, meta);
+
+			return "Ok";
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
