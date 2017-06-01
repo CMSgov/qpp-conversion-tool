@@ -17,9 +17,8 @@ public class PathCorrelatorTest {
 
 	@Test
 	public void pathCorrelatorInitilization() {
-		String key = PathCorrelator.getKey(TemplateId.CLINICAL_DOCUMENT.name(),
-				ClinicalDocumentDecoder.PROGRAM_NAME);
-		String xpath = PathCorrelator.getPath(key, "meep");
+		String xpath = PathCorrelator.getXpath(TemplateId.CLINICAL_DOCUMENT.name(),
+				ClinicalDocumentDecoder.PROGRAM_NAME, "meep");
 		assertThat("xpath should not be null", xpath, notNullValue());
 	}
 
@@ -41,14 +40,13 @@ public class PathCorrelatorTest {
 	@Test
 	public void verifyXpathNsSubstitution() {
 		String meep = "meep";
-		String key = PathCorrelator.getKey(
-				TemplateId.CLINICAL_DOCUMENT.name(), ClinicalDocumentDecoder.PROGRAM_NAME);
-		String path = PathCorrelator.getPath(key, meep);
+		String path = PathCorrelator.getXpath(
+				TemplateId.CLINICAL_DOCUMENT.name(), ClinicalDocumentDecoder.PROGRAM_NAME, meep);
 
 		int meepCount = (path.length() - path.replaceAll(meep, "").length()) / meep.length();
 
 		assertThat("3 substitutions were expected", meepCount, is(3));
 		assertThat("No substitution placeholders should remain",
-				-1, is(path.indexOf(PathCorrelator.getUriSubstitution())));
+				path.indexOf(PathCorrelator.getUriSubstitution()), is(-1));
 	}
 }

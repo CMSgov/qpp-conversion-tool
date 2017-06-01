@@ -26,30 +26,34 @@ public class MultipleTinsEncoder extends QppOutputEncoder {
 		List<Node> npiTinCombinations = node.findNode(TemplateId.NPI_TIN_ID);
 
 		if (npiTinCombinations.size() > 1) {
-			npiTinCombinations.forEach(npiTinNode -> encodeNpiTinCombinations(wrapper, node, npiTinNode));
+			encodeNpiTinCombinations(wrapper, npiTinCombinations, node);
 		} else {
 			encodeSingleNpiTinCombination(wrapper, node);
 		}
 	}
 
 	/**
-	 * Encodes a new clinical document for each NPI/TIN combination.
+	 * Creates a new clinical document from a single clinical document encoding for each NPI/TIN combination.
 	 *
 	 * @param wrapper object to be encoded too
+	 * @param npiTinCombinations object holding the of National Provider Identifier/Taxpayer Identifier combinations
 	 * @param node object to encode from
-	 * @param npiTinNode current npi/tin combination node to encode
 	 */
-	private void encodeNpiTinCombinations(JsonWrapper wrapper, Node node, Node npiTinNode) {
-		JsonWrapper childWrapper = new JsonWrapper();
+	private void encodeNpiTinCombinations(JsonWrapper wrapper, List<Node> npiTinCombinations, Node node) {
 		JsonOutputEncoder clinicalDocumentEncoder = ENCODERS.get(TemplateId.CLINICAL_DOCUMENT);
 		Node clinicalDocumentNode = node.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 
-		clinicalDocumentNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
-			npiTinNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
-		clinicalDocumentNode.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
-				npiTinNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
-		clinicalDocumentEncoder.internalEncode(childWrapper, node);
-		wrapper.putObject(childWrapper);
+		JsonWrapper clinicalDocWrapper = new JsonWrapper();
+		clinicalDocumentEncoder.internalEncode(clinicalDocWrapper, clinicalDocumentNode);
+
+		npiTinCombinations.forEach(npiTinNode -> {
+			JsonWrapper childWrapper = new JsonWrapper(clinicalDocWrapper);
+			childWrapper.putString(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+					npiTinNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
+			childWrapper.putString(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+					npiTinNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
+			wrapper.putObject(childWrapper);
+		});
 	}
 
 	/**
