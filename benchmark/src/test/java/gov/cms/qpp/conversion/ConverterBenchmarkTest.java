@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.io.Writer;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
@@ -101,5 +103,76 @@ public class ConverterBenchmarkTest {
 		assertEquals("test.qpp.other,1.0000,0.0000,9\n", outString);
 	}
 	
+	@Test
+	public void testParseArgs_force1() throws Exception {
+		bench.parseArgs(new String[] {"--force"});
+		assertTrue("force should be detected and set benchmark instance force state", bench.force );
+	}
+	@Test
+	public void testParseArgs_force2() throws Exception {
+		bench.parseArgs(new String[] {"3", "--force"});
+		assertTrue("force should be detected and set benchmark instance force state", bench.force );
+	}
+	@Test
+	public void testParseArgs_help1() throws Exception {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintStream print = new PrintStream(baos);
+		PrintStream out = System.out;
+		try {
+			System.setOut(print);
+			bench.parseArgs(new String[] {"--help"});
 
+			String outString = new String(baos.toByteArray());
+
+			assertTrue("help should be detected and print the help",
+					outString.startsWith("[options]"));
+			assertTrue("help should be detected and print the help",
+					outString.contains("--force"));
+			assertTrue("help should be detected and print the help",
+					outString.contains("--help"));
+			assertTrue("help should be detected and print the help",
+					outString.contains("iterations - (default 3)"));
+		} finally {
+			System.setOut(out);
+		}
+	}
+	@Test
+	public void testParseArgs_help2() throws Exception {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintStream print = new PrintStream(baos);
+		PrintStream out = System.out;
+		try {
+			System.setOut(print);
+			bench.parseArgs(new String[] {"3", "--help"});
+
+			String outString = new String(baos.toByteArray());
+
+			assertTrue("help should be detected and print the help",
+					outString.startsWith("[options]"));
+			assertTrue("help should be detected and print the help",
+					outString.contains("--force"));
+			assertTrue("help should be detected and print the help",
+					outString.contains("--help"));
+			assertTrue("help should be detected and print the help",
+					outString.contains("iterations - (default 3)"));
+		} finally {
+			System.setOut(out);
+		}
+	}
+	
+	@Test
+	public void testParseArgs_iterationsDefault() throws Exception {
+		bench.parseArgs(new String[] {});
+		assertEquals("Expect default iterations when none given", bench.ITERATIONS, bench.iterations );
+	}
+	@Test
+	public void testParseArgs_iterations1() throws Exception {
+		bench.parseArgs(new String[] {"1"});
+		assertEquals("Expected 1 iteration when given", 1, bench.iterations );
+	}
+	@Test
+	public void testParseArgs_iterations2() throws Exception {
+		bench.parseArgs(new String[] {"--force", "2"});
+		assertEquals("Expected 2 iteration when given", 2, bench.iterations );
+	}
 }
