@@ -122,7 +122,7 @@ public class Converter {
 
 		if (!validationErrors.isEmpty()) {
 			throw new TransformException("Validation errors exist", null,
-				constructErrorHierarchy(inFile.getFileName().toString(), validationErrors));
+				constructErrorHierarchy(sourceIdentifier(), validationErrors));
 		}
 
 		return qpp;
@@ -231,5 +231,13 @@ public class Converter {
 	protected JsonOutputEncoder getEncoder() {
 		Collection<QrdaScope> scope = ConversionEntry.getScope();
 		return (!scope.isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
+	}
+
+	private String sourceIdentifier() {
+		if (usingStream()) {
+			return xmlStream.toString();
+		} else {
+			return inFile.getFileName().toString();
+		}
 	}
 }

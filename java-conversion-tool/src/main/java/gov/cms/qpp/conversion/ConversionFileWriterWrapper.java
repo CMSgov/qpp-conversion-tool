@@ -82,7 +82,6 @@ public class ConversionFileWriterWrapper {
 		try (Writer writer = Files.newBufferedWriter(outFile)) {
 			ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
 			jsonObjectWriter.writeValue(writer, allErrors);
-			writer.flush();
 		} catch (IOException exception) {
 			CLIENT_LOG.error("Could not write out error JSON to file");
 			DEV_LOG.error("Could not write out error JSON to file", exception);

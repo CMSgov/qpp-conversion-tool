@@ -5,12 +5,17 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.jayway.jsonpath.PathNotFoundException;
-
 import gov.cms.qpp.conversion.aws.history.HistoricalTestRunner;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
@@ -18,6 +23,7 @@ import net.minidev.json.JSONArray;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -34,8 +40,7 @@ import static gov.cms.qpp.conversion.ConversionEntry.validatedScope;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 
 @RunWith(HistoricalTestRunner.class)
 public class ScopeTest {
@@ -48,7 +53,7 @@ public class ScopeTest {
 		setup("-t", "ACI_SECTION", "-b");
 
 		//expect
-		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
+		iterateBucketContents(convertEm("$.scope", true));
 	}
 
 	@Test(expected=PathNotFoundException.class)
@@ -57,7 +62,7 @@ public class ScopeTest {
 		setup("-t", "IA_SECTION", "-b");
 
 		//expect
-		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
+		iterateBucketContents(convertEm("$.scope", true));
 	}
 
 	@Test(expected=PathNotFoundException.class)
@@ -66,7 +71,7 @@ public class ScopeTest {
 		setup("-t", "IA_MEASURE", "-b");
 
 		//expect
-		iterateBucketContents(convertEm("$.scope", TransformationStatus.SUCCESS));
+		iterateBucketContents(convertEm("$.scope", true));
 	}
 
 	@Test
@@ -78,7 +83,7 @@ public class ScopeTest {
 		//when
 		List<JSONArray> results =
 				iterateBucketContents(
-						convertEm("$.errorSources[*].validationErrors[*]", TransformationStatus.ERROR));
+						convertEm("$.errorSources[*].validationErrors[*]", false));
 
 		//then
 		results.stream()
@@ -134,31 +139,39 @@ public class ScopeTest {
 	 * @param expectedStatus expected outcome of respective conversions
 	 * @return a conversion function
 	 */
-	private Function<S3Object, List<?>> convertEm(String jsonPath, TransformationStatus expectedStatus) {
+	private Function<S3Object, List<?>> convertEm(String jsonPath, boolean expectSuccessfulConversion) {
 		return s3Object -> {
-			Converter convert = null;
-			TransformationStatus status = TransformationStatus.ERROR;
+			InputStream outputStream = null;
 			try(InputStream stream = new NamedInputStream(s3Object.getObjectContent(), s3Object.getKey())) {
-				convert = new Converter(stream);
-				status = convert.transform();
-				InputStream result = convert.getConversionResult();
-				copy(result, System.out);
-			} catch (IOException ioe) {
-				fail(ioe.getMessage());
+				Converter convert = new Converter(stream);
+				JsonWrapper qpp = convert.transform();
+				assertTrue("Expected the conversion to succeed.", expectSuccessfulConversion);
+				outputStream = qppToInputStream(qpp);
+				copy(outputStream, System.out);
+			} catch (IOException exception) {
+				fail(exception.getMessage());
+			} catch (TransformException exception) {
+				assertFalse("Expected the conversion to fail.", expectSuccessfulConversion);
+				outputStream = errorsToInputStream(exception.getDetails());
 			}
 
-			assertThat("The transformation resulted as expected. i.e. " + expectedStatus,
-					status, is(expectedStatus));
-
-			List<?> retrieved = null;
-			try(InputStream jsonStream = convert.getConversionResult()){
-				retrieved = JsonHelper.readJsonAtJsonPath(jsonStream,
-						jsonPath, List.class);
-			} catch (IOException ex) {
-				fail(ex.getMessage());
-			}
-
-			return retrieved;
+			return JsonHelper.readJsonAtJsonPath(outputStream, jsonPath, List.class);
 		};
+	}
+
+	private InputStream qppToInputStream(JsonWrapper jsonWrapper) {
+		return new ByteArrayInputStream(jsonWrapper.toString().getBytes());
+	}
+
+	private InputStream errorsToInputStream(AllErrors allErrors) {
+		ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+
+		byte[] errors = new byte[0];
+		try {
+			errors = jsonObjectWriter.writeValueAsBytes(allErrors);
+		} catch (JsonProcessingException exception) {
+			errors = "{ \"exception\": \"JsonProcessingException\" }".getBytes();
+		}
+		return new ByteArrayInputStream(errors);
 	}
 }
