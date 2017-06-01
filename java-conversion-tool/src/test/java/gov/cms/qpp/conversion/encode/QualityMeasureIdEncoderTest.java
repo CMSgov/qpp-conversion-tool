@@ -24,6 +24,7 @@ public class QualityMeasureIdEncoderTest {
 	private JsonWrapper wrapper;
 	private QualityMeasureIdEncoder encoder;
 	private String type = "type";
+	private final String ELIGIBLE_POPULATION = "eligiblePopulation";
 
 	@Before
 	public void setUp() {
@@ -75,8 +76,9 @@ public class QualityMeasureIdEncoderTest {
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
+
 		assertThat("expected encoder to return a single value",
-				childValues.get("eligiblePopulation"), is(600));
+				childValues.get(ELIGIBLE_POPULATION), is(600));
 	}
 
 	@Test
@@ -88,7 +90,7 @@ public class QualityMeasureIdEncoderTest {
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
 		assertThat("expected encoder to return a single value",
-				childValues.get("eligiblePopulation"), is(600));
+				childValues.get(ELIGIBLE_POPULATION), is(600));
 	}
 
 	@Test

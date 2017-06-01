@@ -33,6 +33,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
 
+
 	/**
 	 * Encodes an Quality Measure Id into the QPP format
 	 *
@@ -198,14 +199,15 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the initial population
 	 */
 	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
+		final String eligiblePopulation = "eligiblePopulation";
 		Set<String> accepted = new HashSet<>(Arrays.asList("IPOP", "IPP"));
 		Node populationNode = parentNode.findChildNode(n -> accepted.contains(n.getValue(TYPE)));
 
 		Optional.ofNullable(populationNode).ifPresent(
 				node -> {
 					Node aggCount = node.getChildNodes().get(0);
-					maintainContinuity(wrapper, aggCount, "eligiblePopulation");
-					wrapper.putInteger("eligiblePopulation", aggCount.getValue(AGGREGATE_COUNT));
+					maintainContinuity(wrapper, aggCount, eligiblePopulation);
+					wrapper.putInteger(eligiblePopulation, aggCount.getValue(AGGREGATE_COUNT));
 				}
 		);
 	}
