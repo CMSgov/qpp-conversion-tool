@@ -178,14 +178,21 @@ CDA Header
 	<!-- ** 1.1.6	participant is Device ** -->
 	<!--  The generic participant with a participationType of 'DEV' (device) and an associatedEntity classCode of 'RGPR' (regulated product) is used to represent the CMS EHR Certification ID. -->
 	<!--  MAY contain zero or more [0..*] participant (CONF:18300) such that it a.	SHALL contain exactly one [1..1] @typeCode="DEV" device (CodeSystem: HL7ParticipationType 2.16.840.1.113883.5.90 STATIC) (CONF:18301). -->
-	<participant typeCode="DEV">
-		<!-- b.	SHALL contain exactly one [1..1] associatedEntity (CONF:18302).  i.	This associatedEntity SHALL contain exactly one [1..1] @classCode="RGPR" Regulated Product (CodeSystem: RoleClass 2.16.840.1.113883.5.110 STATIC) (CONF:18303). -->
-		<associatedEntity classCode="RGPR">
-			<!-- If CMS EHR Certification ID  - This associatedEntity MAY contain zero or one [0..1] id (CONF:18304) such that it
-					1.	SHALL contain exactly one [1..1] @root="2.16.840.1.113883.3.2074.1" CMS EHR Certification ID (CONF:18305). Note: This value specifies that the id is the CMS EHR Certification ID. .-->
-			<id root="2.16.840.1.113883.3.2074.1"/>
-			<!-- This associatedEntity SHALL contain exactly one [1..1] code (CONF:18308).  This code SHALL contain exactly one [1..1] @code="129465004" medical record, device (CodeSystem: SNOMED CT 2.16.840.1.113883.6.96 STATIC) (CONF:18309). -->
-			<code code="129465004" displayName="medical record, device" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
+	<participant typeCode="LOC">
+		<associatedEntity classCode="SDLOC">
+			<id root="2.16.840.1.113883.3.249.5.1"
+				extension="AR000000"
+				assigningAuthorityName="CMS-CMMI"/>
+			<code code="394730007"
+				  displayName="healthcare related organization"
+				  codeSystem="2.16.840.1.113883.6.96"
+				  codeSystemName="SNOMED-CT"/>
+			<addr>
+				<streetAddressLine>123 Healthcare St</streetAddressLine>
+				<city>Norman</city>
+				<state>OK</state>
+				<postalCode>73019</postalCode>
+			</addr>
 		</associatedEntity>
 	</participant>
 	<!-- ** 1.1.8	documentationOf ** -->
