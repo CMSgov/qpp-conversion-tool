@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.containsValidationErrorInAnyOrderIgnoringPath;
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.util.JsonHelper.readJson;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
@@ -88,7 +88,7 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing Clinical Document node", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(EXPECTED_TEXT));
+			hasValidationErrorsIgnoringPath(EXPECTED_TEXT));
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about too many Clinical Document nodes", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(EXPECTED_ONE_ALLOWED));
+			hasValidationErrorsIgnoringPath(EXPECTED_ONE_ALLOWED));
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing section node", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(EXPECTED_NO_SECTION));
+			hasValidationErrorsIgnoringPath(EXPECTED_NO_SECTION));
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("there should be one error", errors, hasSize(1));
 		assertThat("error should be about missing section node", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(EXPECTED_NO_SECTION));
+			hasValidationErrorsIgnoringPath(EXPECTED_NO_SECTION));
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("there should be two errors", errors, hasSize(2));
 		assertThat("error should be about missing missing program name", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(
+			hasValidationErrorsIgnoringPath(
 				ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
 				ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
 	}
@@ -171,7 +171,7 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("there should be one error", errors, hasSize(1));
 		assertThat("error should be about missing section node", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
+			hasValidationErrorsIgnoringPath(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("there should be one error", errors, hasSize(2));
 		assertThat("error should be about missing reporting node", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(
+			hasValidationErrorsIgnoringPath(
 					ClinicalDocumentValidator.REPORTING_PARAMETER_REQUIRED,
 					ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
 	}
@@ -226,7 +226,7 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("Should contain one error", errors, hasSize(1));
 		assertThat("Should contain one error", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ACI_SECTIONS));
+			hasValidationErrorsIgnoringPath(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ACI_SECTIONS));
 	}
 
 	@Test
@@ -245,7 +245,7 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("Should contain one error", errors, hasSize(1));
 		assertThat("Should contain one error", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(ClinicalDocumentValidator.CONTAINS_DUPLICATE_IA_SECTIONS));
+			hasValidationErrorsIgnoringPath(ClinicalDocumentValidator.CONTAINS_DUPLICATE_IA_SECTIONS));
 	}
 
 	@Test
@@ -264,7 +264,7 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("Should contain one error", errors, hasSize(1));
 		assertThat("Should contain one error", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ECQM_SECTIONS));
+			hasValidationErrorsIgnoringPath(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ECQM_SECTIONS));
 	}
 
 	@Test
@@ -299,7 +299,7 @@ public class ClinicalDocumentValidatorTest {
 		assertThat("Must have 4 errors", errors, hasSize(4));
 
 		assertThat("Must contain the error", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(
+			hasValidationErrorsIgnoringPath(
 				ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
 				ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME,
 				ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER,
@@ -318,7 +318,7 @@ public class ClinicalDocumentValidatorTest {
 
 		assertThat("Should have 1 validation errors", errors, hasSize(1));
 		assertThat("Must contain the error", errors,
-			containsValidationErrorInAnyOrderIgnoringPath(ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
+			hasValidationErrorsIgnoringPath(ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
 	}
 
 
