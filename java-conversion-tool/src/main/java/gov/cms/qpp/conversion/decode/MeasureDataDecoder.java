@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -44,7 +45,7 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 	 * @param thisNode Holder for decoded data
 	 */
 	private void setMeasure(Element element, Node thisNode) {
-		String expressionStr = "./ns:value/@code";
+		String expressionStr = getXpath(MEASURE_TYPE);
 		Consumer<? super Attribute> consumer = attr -> {
 			String code = attr.getValue();
 			if (MEASURES.contains(code)) {
@@ -61,8 +62,13 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 	 * @param thisNode Holder for decoded data
 	 */
 	private void setPopulationId(Element element, Node thisNode) {
-		String expressionStr = "./ns:reference/ns:externalObservation/ns:id/@root";
+		String expressionStr = getXpath(MEASURE_POPULATION);
 		Consumer<? super Attribute> consumer = attr -> thisNode.putValue(MEASURE_POPULATION, attr.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+	}
+
+	private String getXpath(String attribute) {
+		return PathCorrelator.getXpath(
+				TemplateId.MEASURE_DATA_CMS_V2.name(), attribute, defaultNs.getURI());
 	}
 }

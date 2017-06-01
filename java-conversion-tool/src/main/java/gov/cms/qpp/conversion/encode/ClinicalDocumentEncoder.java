@@ -2,14 +2,12 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
-import gov.cms.qpp.conversion.encode.helper.ReportingParameters;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,48 +33,60 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) {
-		wrapper.putString(ClinicalDocumentDecoder.PROGRAM_NAME,
-			thisNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
-		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE,
-			thisNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE));
-		wrapper.putString(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
-			thisNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
-		wrapper.putString(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
-			thisNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
+		encodeToplevel(wrapper, thisNode);
 
 		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 			Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
-		Optional<Node> reportingNode = ReportingParameters.getReportingNode(childMapByTemplateId);
 
-		Optional<String> performanceStart =
-			reportingNode.flatMap(p -> Optional.of(p.getValue(PERFORMANCE_START)));
-		Optional<String> performanceEnd =
-			reportingNode.flatMap(p -> Optional.of(p.getValue(PERFORMANCE_END)));
+		Node reportingNode = getReportingNode(childMapByTemplateId);
 
-		if (performanceStart.isPresent()) {
-			wrapper.putInteger(PERFORMANCE_YEAR, performanceStart.get().substring(0, 4));
+		String performanceStart = reportingNode.getValue(PERFORMANCE_START);
+		if (performanceStart != null) {
+			wrapper.putInteger(PERFORMANCE_YEAR, performanceStart.substring(0, 4));
+			maintainContinuity(wrapper, reportingNode, PERFORMANCE_YEAR);
 		}
 
 		JsonWrapper measurementSets =
-			encodeMeasurementSets(childMapByTemplateId, performanceStart, performanceEnd);
+			encodeMeasurementSets(wrapper, childMapByTemplateId, reportingNode);
 			wrapper.putObject(MEASUREMENT_SETS, measurementSets);
+	}
+
+	private void encodeToplevel(JsonWrapper wrapper, Node thisNode) {
+		wrapper.putString(ClinicalDocumentDecoder.PROGRAM_NAME,
+				thisNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
+		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE,
+				thisNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE));
+		wrapper.putString(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+				thisNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
+		wrapper.putString(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+				thisNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
+	}
+
+	private Node getReportingNode(Map<TemplateId, Node> childMapByTemplateId) {
+		Node returnValue = new Node();
+		Node section = childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION);
+		if (section != null) {
+			returnValue = section.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		}
+		return returnValue;
 	}
 
 	/**
 	 * Method for encoding each child measurement set
 	 *
+	 * @param wrapper parent {@link JsonWrapper}
 	 * @param childMapByTemplateId object that represents the document's children
-	 * @param performanceStart object that represents the measurement performance start
-	 * @param performanceEnd object that represents the measurement performance end
-	 * @return
-	 * @throws EncodeException If error occurs during encoding
+	 * @param reportingNode {@link TemplateId#REPORTING_PARAMETERS_ACT}
+	 * @return encoded measurement sets
 	 */
-	private JsonWrapper encodeMeasurementSets(Map<TemplateId, Node> childMapByTemplateId,
-												Optional<String> performanceStart,
-												Optional<String> performanceEnd) {
+	private JsonWrapper encodeMeasurementSets(JsonWrapper wrapper,
+											  Map<TemplateId, Node> childMapByTemplateId,
+											  Node reportingNode) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
 		JsonOutputEncoder sectionEncoder;
+		String performanceStart = reportingNode.getValue(PERFORMANCE_START);
+		String performanceEnd = reportingNode.getValue(PERFORMANCE_END);
 
 		for (Node child : childMapByTemplateId.values()) {
 			if (TemplateId.NPI_TIN_ID == child.getType()) {
@@ -90,11 +100,13 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			try {
 				sectionEncoder.encode(childWrapper, child);
 
-				if (performanceStart.isPresent()) {
-					childWrapper.putDate(PERFORMANCE_START, performanceStart.get());
+				if (performanceStart != null) {
+					childWrapper.putDate(PERFORMANCE_START, performanceStart);
+					maintainContinuity(wrapper, reportingNode, PERFORMANCE_START);
 				}
-				if (performanceEnd.isPresent()) {
-					childWrapper.putDate(PERFORMANCE_END, performanceEnd.get());
+				if (performanceEnd != null) {
+					childWrapper.putDate(PERFORMANCE_END, performanceEnd);
+					maintainContinuity(wrapper, reportingNode, PERFORMANCE_END);
 				}
 
 				measurementSetsWrapper.putObject(childWrapper);

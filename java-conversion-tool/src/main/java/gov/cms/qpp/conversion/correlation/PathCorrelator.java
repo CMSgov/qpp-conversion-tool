@@ -46,15 +46,15 @@ public class PathCorrelator {
 					pathCorrelationMap.put(
 							getKey(template.getTemplateId(), conf.getDecodeLabel()), conf.getGoods());
 				}
-				if (null != conf.getEncodeLabel()) {
-					pathCorrelationMap.put(
-							getKey(template.getTemplateId(), conf.getEncodeLabel()), conf.getGoods());
+				if (null != conf.getEncodeLabels()) {
+					conf.getEncodeLabels().forEach(label ->
+						pathCorrelationMap.put(getKey(template.getTemplateId(), label), conf.getGoods()));
 				}
 			});
 		});
 	}
 
-	public static String getUriSubstitution() {
+	static String getUriSubstitution() {
 		return pathCorrelation.getUriSubstitution();
 	}
 
@@ -62,7 +62,8 @@ public class PathCorrelator {
 		return template + "_" + attribute;
 	}
 
-	public static String getPath(String key, String uri) {
+	public static String getXpath(String base, String attribute, String uri) {
+		String key = PathCorrelator.getKey(base, attribute);
 		Goods goods = pathCorrelationMap.get(key);
 		return (goods == null) ? null :
 				goods.getRelativeXPath().replaceAll(pathCorrelation.getUriSubstitution(), uri);

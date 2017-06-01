@@ -54,8 +54,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	}
 
 	private String getXpath(String attribute) {
-		String key = PathCorrelator.getKey(TemplateId.CLINICAL_DOCUMENT.name(), attribute);
-		return PathCorrelator.getPath(key, defaultNs.getURI());
+		return PathCorrelator.getXpath(TemplateId.CLINICAL_DOCUMENT.name(), attribute, defaultNs.getURI());
 	}
 
 	private void setNationalProviderIdOnNode(Element element, Node thisNode) {
