@@ -42,6 +42,11 @@ public class JsonWrapper {
 		ow = getObjectWriter(filterMeta);
 	}
 
+	protected JsonWrapper(JsonWrapper jsonWrapper) {
+		object = new LinkedHashMap<>(jsonWrapper.object);
+		ow =  getObjectWriter(true);
+	}
+
 	/**
 	 * Static factory that creates {@link com.fasterxml.jackson.databind.ObjectWriter}s.
 	 *
@@ -571,9 +576,6 @@ public class JsonWrapper {
 	}
 
 	void mergeMetadata(JsonWrapper otherWrapper, String encodeLabel) {
-		if (!isObject()) {
-			return;
-		}
 		Set<Map<String, String>> meta = this.getMetadataHolder();
 		Set<Map<String, String>> otherMeta = otherWrapper.getMetadataHolder();
 		otherMeta.forEach(other -> {
