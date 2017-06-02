@@ -16,10 +16,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
 public class QualityMeasureIdMultiEncoderTest {
-	private final String REQUIRE_POPULATION_TOTAL = "Must have a required populationTotal";
+	private final String REQUIRE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
 	private final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
-	private final String REQUIRE_DENOM_EXCEP = "Must have a required denominatorExceptions";
-	private final String REQUIRE_DENOM_EXCLUS = "Must have a required denominatorExclusion";
+	private final String REQUIRE_ELIGIBLE_POPULATION_EXCEP = "Must have a required eligiblePopulationException";
+	private final String REQUIRE_ELIGIBLE_POPULATION_EXCLUS = "Must have a required eligiblePopulationExclusion";
 	private final String REQUIRE_DENOM = "Must have a required denominator";
 	private final String REQUIRE_NUMER = "Must have a required numerator";
 	private final String ELIGIBLE_POPULATION = "eligiblePopulation";
@@ -168,8 +168,8 @@ public class QualityMeasureIdMultiEncoderTest {
 
 		assertThat(REQUIRE_POPULATION_TOTAL, firstSubPopulation.get(ELIGIBLE_POPULATION), is(600));
 		assertThat(REQUIRE_PERFORMANCE_MET, firstSubPopulation.get(PERFORMANCE_MET), is(600));
-		assertThat(REQUIRE_DENOM_EXCEP, firstSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
-		assertThat(REQUIRE_DENOM_EXCLUS, firstSubPopulation.get("eligiblePopulationExclusion"), is(600));
+		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, firstSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
+		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, firstSubPopulation.get("eligiblePopulationExclusion"), is(600));
 		assertThat(REQUIRE_NUMER, firstSubPopulation.get(NUMERATOR), is(600));
 		assertThat(REQUIRE_DENOM, firstSubPopulation.get(DENOMINATOR), is(600));
 	}
@@ -179,8 +179,8 @@ public class QualityMeasureIdMultiEncoderTest {
 
 		assertThat(REQUIRE_POPULATION_TOTAL, secondSubPopulation.get(ELIGIBLE_POPULATION), is(600));
 		assertThat(REQUIRE_PERFORMANCE_MET, secondSubPopulation.get(PERFORMANCE_MET), is(600));
-		assertThat(REQUIRE_DENOM_EXCEP, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
-		assertThat(REQUIRE_DENOM_EXCLUS, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION), is(600));
+		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
+		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION), is(600));
 		assertThat(REQUIRE_NUMER, secondSubPopulation.get(NUMERATOR), is(600));
 		assertThat(REQUIRE_DENOM, secondSubPopulation.get(DENOMINATOR), is(600));
 	}
