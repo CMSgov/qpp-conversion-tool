@@ -45,6 +45,12 @@ public class XpathJsonPathComparisonTest {
 	}
 
 	@Test
+	public void compareTopLevelAttributeEntityId() throws XmlException, IOException {
+		String jsonPath = "entityId";
+		helper.executeAttributeTest(jsonPath, "extension", "AR000000");
+	}
+
+	@Test
 	public void compareTopLevelAttributePerformanceYear() throws XmlException, IOException {
 		String jsonPath = "performanceYear";
 		helper.executeAttributeTest(jsonPath, "value", "20170101");

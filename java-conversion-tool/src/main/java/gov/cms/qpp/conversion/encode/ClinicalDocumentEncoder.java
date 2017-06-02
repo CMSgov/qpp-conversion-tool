@@ -27,16 +27,15 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	/**
 	 * internalEncode encodes nodes into Json Wrapper.
 	 *
-	 * @param wrapper  will hold the json format of nodes
+	 * @param wrapper will hold the json format of nodes
 	 * @param thisNode holds the decoded node sections of clinical document
-	 * @throws EncodeException If error occurs during encoding
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) {
 		encodeToplevel(wrapper, thisNode);
-
+		encodeEntityId(wrapper, thisNode);
 		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
-			Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
+				Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
 		Node reportingNode = getReportingNode(childMapByTemplateId);
 
@@ -47,10 +46,16 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		}
 
 		JsonWrapper measurementSets =
-			encodeMeasurementSets(wrapper, childMapByTemplateId, reportingNode);
-			wrapper.putObject(MEASUREMENT_SETS, measurementSets);
+				encodeMeasurementSets(wrapper, childMapByTemplateId, reportingNode);
+		wrapper.putObject(MEASUREMENT_SETS, measurementSets);
 	}
 
+	/**
+	 * This will add the attributes from the Clinical Document Node
+	 *
+	 * @param wrapper will hold the json format of nodes
+	 * @param thisNode holds the decoded node sections of clinical document
+	 */
 	private void encodeToplevel(JsonWrapper wrapper, Node thisNode) {
 		wrapper.putString(ClinicalDocumentDecoder.PROGRAM_NAME,
 				thisNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
@@ -62,6 +67,25 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				thisNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
 	}
 
+	/**
+	 * This will add the entityId from the Clinical Document Node
+	 *
+	 * @param wrapper will hold the json format of nodes
+	 * @param thisNode holds the decoded node sections of clinical document
+	 */
+	private void encodeEntityId(JsonWrapper wrapper, Node thisNode) {
+		String entityId = thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID);
+		if (entityId != null && !entityId.isEmpty()) {
+			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID, entityId);
+		}
+	}
+
+	/**
+	 * Gets the reporting parameters out of the decoded Clinical Document
+	 *
+	 * @param childMapByTemplateId Map of Nodes that are the decoded reporting parameters
+	 * @return The decoded reporting parameter internal representaion.
+	 */
 	private Node getReportingNode(Map<TemplateId, Node> childMapByTemplateId) {
 		Node returnValue = new Node();
 		Node section = childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION);
@@ -79,9 +103,9 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @param reportingNode {@link TemplateId#REPORTING_PARAMETERS_ACT}
 	 * @return encoded measurement sets
 	 */
+
 	private JsonWrapper encodeMeasurementSets(JsonWrapper wrapper,
-											Map<TemplateId, Node> childMapByTemplateId,
-											Node reportingNode) {
+			Map<TemplateId, Node> childMapByTemplateId, Node reportingNode) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
 		JsonOutputEncoder sectionEncoder;
@@ -94,12 +118,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			}
 			childWrapper = new JsonWrapper();
 			sectionEncoder = ENCODERS.get(child.getType());
-
-			// Section encoder is null when a decoder exists without a corresponding encoder
-			// currently don't have a set of IA Encoders, but this will protect against others
 			try {
 				sectionEncoder.encode(childWrapper, child);
-
 				if (performanceStart != null) {
 					childWrapper.putDate(PERFORMANCE_START, performanceStart);
 					maintainContinuity(wrapper, reportingNode, PERFORMANCE_START);
@@ -108,15 +128,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 					childWrapper.putDate(PERFORMANCE_END, performanceEnd);
 					maintainContinuity(wrapper, reportingNode, PERFORMANCE_END);
 				}
-
 				measurementSetsWrapper.putObject(childWrapper);
 			} catch (NullPointerException exc) {
 				String message = "No encoder for decoder : " + child.getType();
 				throw new EncodeException(message, exc);
 			}
 		}
-
 		return measurementSetsWrapper;
 	}
-
 }
