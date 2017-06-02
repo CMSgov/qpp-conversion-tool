@@ -14,6 +14,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Calls the {@link Converter} and writes the results to a file.
+ */
 public class ConversionFileWriterWrapper {
 	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionFileWriterWrapper.class);
@@ -48,6 +51,9 @@ public class ConversionFileWriterWrapper {
 		return this;
 	}
 
+	/**
+	 * Execute the conversion.
+	 */
 	public void transform() {
 		Converter converter = new Converter(inFile)
 			.doDefaults(doDefaults)
@@ -56,6 +62,11 @@ public class ConversionFileWriterWrapper {
 		executeConverter(converter);
 	}
 
+	/**
+	 * Execute the converter and do initial handling of the result.
+	 *
+	 * @param converter The Converter to execute.
+	 */
 	private void executeConverter(Converter converter) {
 		try {
 			JsonWrapper jsonWrapper = converter.transform();
@@ -74,6 +85,12 @@ public class ConversionFileWriterWrapper {
 		}
 	}
 
+	/**
+	 * Write out the QPP to a file.
+	 *
+	 * @param jsonWrapper The QPP to write
+	 * @param outFile The location to write.
+	 */
 	private void writeOutQpp(JsonWrapper jsonWrapper, Path outFile) {
 		try (Writer writer = Files.newBufferedWriter(outFile)) {
 			writer.write(jsonWrapper.toString());
@@ -84,6 +101,12 @@ public class ConversionFileWriterWrapper {
 		}
 	}
 
+	/**
+	 * Write out the errors to a file.
+	 *
+	 * @param allErrors The errors to write.
+	 * @param outFile The location to write.
+	 */
 	private void writeOutErrors(AllErrors allErrors, Path outFile) {
 		try (Writer writer = Files.newBufferedWriter(outFile)) {
 			ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -98,7 +121,7 @@ public class ConversionFileWriterWrapper {
 	 * Determine what the output file's name should be.
 	 *
 	 * @param name base string that helps relate the output file to it's corresponding source
-	 * @param success
+	 * @param success Whether the conversion was successful or not.
 	 * @return the output file name
 	 */
 	private Path getOutputFile(String name, final boolean success) {

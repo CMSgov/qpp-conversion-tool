@@ -10,9 +10,20 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/**
+ * Modify the controller to send back different responses for exceptions
+ */
 @ControllerAdvice
 public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler {
 
+	/**
+	 * "Catch" the {@link TransformException}.
+	 * Return the {@link AllErrors} with an HTTP status 422.
+	 *
+	 * @param exception The TransformException that was "caught".
+	 * @param request The request.
+	 * @return The AllErrors dto that details the TransformException.
+	 */
 	@ExceptionHandler(TransformException.class)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)

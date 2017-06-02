@@ -15,7 +15,7 @@ public interface OutputEncoder {
 	void encode(Writer writer);
 
 	/**
-	 * Encode data to a String
+	 * Encode data to JsonWrapper
 	 */
 	JsonWrapper encode();
 }
