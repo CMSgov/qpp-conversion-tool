@@ -6,9 +6,9 @@ package gov.cms.qpp.conversion.aws;
 public class LambdizeRuntimeException extends RuntimeException {
 	/**
 	 * Public Constructor
-	 * @param exception the exception that occurred
+	 * @param cause the exception that occurred
 	 */
-	public LambdizeRuntimeException(Exception exception) {
-		super(exception);
+	public LambdizeRuntimeException(Exception cause) {
+		super(cause);
 	}
 }
