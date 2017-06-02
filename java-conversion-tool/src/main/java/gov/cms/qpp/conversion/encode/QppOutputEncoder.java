@@ -30,6 +30,9 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	}
 
 	protected void maintainContinuity(JsonWrapper wrapper, Node node, String leafLabel) {
+		if (node == null) {
+			return;
+		}
 		JsonWrapper throwAway = new JsonWrapper();
 		JsonOutputEncoder used = ENCODERS.get(node.getType());
 		used.encode(throwAway, node);

@@ -2196,7 +2196,7 @@
 					"performanceMet": 800,
 					"eligiblePopulationExclusion": 50,
 					"eligiblePopulationException": 50,
-					"performanceNotMet": 950,
+					"performanceNotMet": 150,
 					"eligiblePopulationExclusion": 50,
 					"denominator": 1000,
 					"numerator": 800
@@ -2222,7 +2222,7 @@
 					"performanceMet": 800,
 					"eligiblePopulationExclusion": 50,
 					"eligiblePopulationException": 50,
-					"performanceNotMet": 950,
+					"performanceNotMet": 150,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2235,7 +2235,7 @@
 					"performanceMet": 800,
 					"eligiblePopulationExclusion": 50,
 					"eligiblePopulationException": 50,
-					"performanceNotMet": 950,
+					"performanceNotMet": 150,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2327,10 +2327,8 @@
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
 					"eligiblePopulationExclusion": 50,
-					"performanceNotMet": 950,
-					"eligiblePopulation": 1000,
-					"eligiblePopulationExclusion": 50,
 					"eligiblePopulationException": 50,
+					"performanceNotMet": 150,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2358,8 +2356,7 @@
 				"performanceMet": 800,
 				"eligiblePopulationExclusion": 50,
 				"eligiblePopulationException": 50,
-				"performanceNotMet": 950,
-				"eligiblePopulationExclusion": 50,
+				"performanceNotMet": 150,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2383,7 +2380,7 @@
 				"performanceMet": 800,
 				"eligiblePopulationExclusion": 50,
 				"eligiblePopulationException": 50,
-				"performanceNotMet": 950,
+				"performanceNotMet": 150,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2396,7 +2393,7 @@
 				"performanceMet": 800,
 				"eligiblePopulationExclusion": 50,
 				"eligiblePopulationException": 50,
-				"performanceNotMet": 950,
+				"performanceNotMet": 150,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2481,8 +2478,8 @@
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
 				"eligiblePopulationExclusion": 50,
-				"performanceNotMet": 950,
 				"eligiblePopulationException": 50,
+				"performanceNotMet": 150,
 				"denominator": 1000,
 				"numerator": 800
 			}

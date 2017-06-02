@@ -116,7 +116,7 @@ public class QualityMeasureIdEncoderTest {
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
 		assertThat("expected encoder to return a single value",
-				childValues.get("performanceNotMet"), is(0));
+				childValues.get("performanceNotMet"), is(-600));
 	}
 
 	@Test
@@ -125,15 +125,22 @@ public class QualityMeasureIdEncoderTest {
 		//Use reflection API to invoke private method
 		Class<?> c = QualityMeasureIdEncoder.class;
 		QualityMeasureIdEncoder encoder = (QualityMeasureIdEncoder)c.newInstance();
-		Method calculatePerformanceNotMetMethod = c.getDeclaredMethod("calculatePerformanceNotMet", Node.class, Node.class);
+		Method calculatePerformanceNotMetMethod =
+				c.getDeclaredMethod("calculatePerformanceNotMet", Node.class, Node.class, Node.class, Node.class);
+		Node numeratorNode = null;
 		Node denominatorNode = null;
 		Node denomExclusionNode = null;
+		Node denomExceptionNode = null;
 		calculatePerformanceNotMetMethod.setAccessible(true);
-		Object val = calculatePerformanceNotMetMethod.invoke(encoder,denominatorNode,denomExclusionNode );
+		Object val = calculatePerformanceNotMetMethod.invoke(encoder,
+				numeratorNode,denominatorNode,
+				denomExclusionNode,denomExceptionNode );
 		assertThat("Expect a null return value " , val, nullValue());
 
 		denominatorNode = new Node();
-		val = calculatePerformanceNotMetMethod.invoke(encoder, denominatorNode,denomExclusionNode );
+		val = calculatePerformanceNotMetMethod.invoke(encoder,
+				numeratorNode,denominatorNode,
+				denomExclusionNode,denomExceptionNode );
 		assertThat("Expect a null return value " , val, nullValue());
 	}
 

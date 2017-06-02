@@ -149,7 +149,6 @@ public class QualityMeasureIdMultiEncoderTest {
 				numeratorNode, denominatorNode, eligiblePopulationNodeTwo,
 				eligiblePopulationExceptionNodeTwo, numeratorNodeTwo, denominatorNodeTwo);
 
-
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
 		LinkedHashMap<String, Object> childValues = getChildValues();
