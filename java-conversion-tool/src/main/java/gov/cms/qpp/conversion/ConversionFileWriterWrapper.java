@@ -65,6 +65,7 @@ public class ConversionFileWriterWrapper {
 			AllErrors allErrors = exception.getDetails();
 			Path outFile = getOutputFile(inFile.getFileName().toString(), false);
 			writeOutErrors(allErrors, outFile);
+			DEV_LOG.error("Failure during converter execution", exception);
 		}
 	}
 

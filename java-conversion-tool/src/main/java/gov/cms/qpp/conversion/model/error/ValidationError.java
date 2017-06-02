@@ -1,10 +1,12 @@
 package gov.cms.qpp.conversion.model.error;
 
+import java.io.Serializable;
+
 /**
  * Holds the error information from Validators.
  */
-public class ValidationError {
-
+public class ValidationError implements Serializable {
+	private static final long serialVersionUID = 8818544157552590676L;
 	private String errorText;
 	private String path = "";
 
