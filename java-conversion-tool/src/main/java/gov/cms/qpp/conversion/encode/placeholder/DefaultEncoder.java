@@ -76,43 +76,11 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	@Encoder(TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class EthnicitySupplementalDataElementCmsV2Encoder extends DefaultEncoder {
-
-		public EthnicitySupplementalDataElementCmsV2Encoder() {
-			super("Ethnicity Supplemental Data Element – CMS (V2)");
-		}
-	}
-
 	@Encoder(TemplateId.REPORTING_STRATUM_CMS)
 	public static class ReportingStratumCmsEncoder extends DefaultEncoder {
 
 		public ReportingStratumCmsEncoder() {
 			super("Reporting Stratum - CMS");
-		}
-	}
-
-	@Encoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class SexSupplementalDataElementalCmsV2Encoder extends DefaultEncoder {
-
-		public SexSupplementalDataElementalCmsV2Encoder() {
-			super("Sex Supplemental Data Element - CMS (V2)");
-		}
-	}
-
-	@Encoder(TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class RaceSupplementalDataElementCmsV2Encoder extends DefaultEncoder {
-
-		public RaceSupplementalDataElementCmsV2Encoder() {
-			super("Race Supplemental Data Element - CMS (V2)");
-		}
-	}
-
-	@Encoder(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class PayerSupplementalDataElementCmsV2Encoder extends DefaultEncoder {
-
-		public PayerSupplementalDataElementCmsV2Encoder() {
-			super("Payer Supplemental Data Element - CMS (V2)");
 		}
 	}
 }

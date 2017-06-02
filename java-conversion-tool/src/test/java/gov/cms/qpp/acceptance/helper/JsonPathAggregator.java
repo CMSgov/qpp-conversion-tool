@@ -3,16 +3,16 @@ package gov.cms.qpp.acceptance.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.google.common.collect.Sets;
 import gov.cms.qpp.conversion.decode.QualitySectionDecoder;
 import gov.cms.qpp.conversion.encode.QualityMeasureIdEncoder;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class JsonPathAggregator {
-	private List<String> excluded = Arrays.asList(
+	private Set<String> excluded = Sets.newHashSet(
 			QualityMeasureIdEncoder.IS_END_TO_END_REPORTED,
 			QualitySectionDecoder.CATEGORY,
 			QualitySectionDecoder.SUBMISSION_METHOD
@@ -21,17 +21,17 @@ public class JsonPathAggregator {
 	Map<String, String> jsonPaths = new HashMap<>();
 
 	public JsonPathAggregator(JsonNode node) {
-		checkPaths("$", node);
+		aggregatePaths("$", node);
 	}
 
-	private void checkPaths(String context, JsonNode node) {
+	private void aggregatePaths(String context, JsonNode node) {
 		JsonNodeType type = node.getNodeType();
 		//disregard JsonNodeType.MISSING for the moment
 		if (node.isArray()) {
 			int index = 0;
 			for(JsonNode child : node) {
 				String newContext = context + "[" + index++ + "]";
-				checkPaths(newContext, child);
+				aggregatePaths(newContext, child);
 			}
 		} else if (node.isObject()) {
 			node.fieldNames().forEachRemaining( name -> {
@@ -39,7 +39,7 @@ public class JsonPathAggregator {
 					return;
 				}
 				String newContext = context + "." + name;
-				checkPaths(newContext, node.get(name));
+				aggregatePaths(newContext, node.get(name));
 			});
 		} else if (node.isValueNode()) {
 			String value = node.asText();
