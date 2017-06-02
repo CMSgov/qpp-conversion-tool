@@ -17,14 +17,14 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.NamedInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ConversionHandler implements RequestHandler<S3Event, String> {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionHandler.class);
@@ -79,10 +79,22 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 		}
 	}
 
+	/**
+	 * Serialize the QPP to an InputStream.
+	 *
+	 * @param jsonWrapper The QPP to serialize.
+	 * @return The serialized QPP.
+	 */
 	private InputStream qppToInputStream(JsonWrapper jsonWrapper) {
 		return new ByteArrayInputStream(jsonWrapper.toString().getBytes());
 	}
 
+	/**
+	 * Serialize the errors to an InputStream.
+	 *
+	 * @param allErrors The errors to serialize.
+	 * @return The serialized errors.
+	 */
 	private InputStream errorsToInputStream(AllErrors allErrors) {
 		ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
 

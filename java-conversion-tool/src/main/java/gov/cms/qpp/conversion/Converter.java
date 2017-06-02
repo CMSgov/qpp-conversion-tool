@@ -233,6 +233,11 @@ public class Converter {
 		return (!scope.isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
 	}
 
+	/**
+	 * Returns an identifier for either the file or stream depending on what is being used.
+	 *
+	 * @return An identifier.
+	 */
 	private String sourceIdentifier() {
 		if (usingStream()) {
 			return xmlStream.toString();
