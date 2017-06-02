@@ -71,16 +71,16 @@ public class ConversionFileWriterWrapper {
 		try {
 			JsonWrapper jsonWrapper = converter.transform();
 			Path outFile = getOutputFile(inFile.getFileName().toString(), true);
-			CLIENT_LOG.error("Successful conversion.  Writing out QPP to {}",
+			CLIENT_LOG.info("Successful conversion.  Writing out QPP to {}",
 				outFile.toString());
-			DEV_LOG.error("Successful conversion.");
+			DEV_LOG.info("Successful conversion.");
 			writeOutQpp(jsonWrapper, outFile);
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
 			Path outFile = getOutputFile(inFile.getFileName().toString(), false);
-			CLIENT_LOG.error("There were errors during conversion.  Writing out errors to {}",
+			CLIENT_LOG.warn("There were errors during conversion.  Writing out errors to {}",
 				outFile.toString());
-			DEV_LOG.error("There were errors during conversion.", exception);
+			DEV_LOG.warn("There were errors during conversion.", exception);
 			writeOutErrors(allErrors, outFile);
 		}
 	}
