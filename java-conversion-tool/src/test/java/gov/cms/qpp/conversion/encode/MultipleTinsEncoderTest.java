@@ -97,7 +97,7 @@ public class MultipleTinsEncoderTest {
 		LinkedHashMap<String, Object> firstMeasurementMap = getIndexedClinicalDocumentFromWrapper(0);
 
 		assertThat("Must contain the correct NPI",
-				firstMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is(NPI1));
+			firstMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is(NPI1));
 		assertThat("Must contain the correct TIN",
 			firstMeasurementMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is(TIN1));
 	}
@@ -112,6 +112,7 @@ public class MultipleTinsEncoderTest {
 			secondMeasurementMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is(TIN2));
 	}
 
+	@SuppressWarnings("unchecked")
 	private LinkedHashMap<String, Object> getIndexedClinicalDocumentFromWrapper(Integer index) {
 		return ((LinkedList<LinkedHashMap<String, Object>>)
 				testWrapper.getObject()).get(index);

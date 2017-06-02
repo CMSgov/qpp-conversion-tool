@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
+import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class JsonPathToXpathHelper {
@@ -26,10 +28,14 @@ public class JsonPathToXpathHelper {
 	private JsonWrapper wrapper;
 
 	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper) throws IOException {
+		this(inPath, inWrapper, true);
+	}
+
+	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper, boolean doDefaults) throws IOException {
 		path = inPath;
 		wrapper = inWrapper;
 		InputStream xmlStream = XmlUtils.fileToStream(path);
-		Converter converter = new Converter(xmlStream);
+		Converter converter = new Converter(xmlStream).doDefaults(doDefaults);
 		converter.transform();
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		encoder.encode(wrapper, converter.getDecoded());
@@ -42,6 +48,26 @@ public class JsonPathToXpathHelper {
 
 		assertEquals("Element name should be: " + xmlElementName,
 				xmlElementName, element.getName());
+	}
+
+	public void executeAttributeTest(String jsonPath, String expectedValue) {
+		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
+
+		Attribute attribute = null;
+		try {
+			attribute = evaluateXpath(xPath, Filters.attribute());
+		} catch (IOException | XmlException e) {
+			fail(e.getMessage());
+		}
+
+		if (!expectedValue.equals(attribute.getValue())) {
+			System.err.println("( " + jsonPath + " ) value ( " + expectedValue +
+					" ) does not equal ( " + attribute.getValue() +
+					" ) at \n( " + xPath + " ). \nPlease investigate.");
+		}
+
+		assertNotNull("Attribute value should not be null. json value:" + expectedValue,
+				attribute.getValue());
 	}
 
 	public void executeAttributeTest(String jsonPath, String xmlAttributeName, String expectedValue)

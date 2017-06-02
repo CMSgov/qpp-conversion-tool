@@ -20,9 +20,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	static final String PERFORMANCE_END = "performanceEnd";
 	static final String PERFORMANCE_YEAR = "performanceYear";
 	static final String PERFORMANCE_START = "performanceStart";
-	static final String MEASUREMENT_SETS = "measurementSets";
-	static final String SOURCE = "source";
-	static final String PROVIDER = "provider";
+	private static final String MEASUREMENT_SETS = "measurementSets";
 
 	/**
 	 * internalEncode encodes nodes into Json Wrapper.
@@ -46,8 +44,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		}
 
 		JsonWrapper measurementSets =
-				encodeMeasurementSets(wrapper, childMapByTemplateId, reportingNode);
-		wrapper.putObject(MEASUREMENT_SETS, measurementSets);
+			encodeMeasurementSets(childMapByTemplateId, reportingNode);
+			wrapper.putObject(MEASUREMENT_SETS, measurementSets);
 	}
 
 	/**
@@ -98,14 +96,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	/**
 	 * Method for encoding each child measurement set
 	 *
-	 * @param wrapper parent {@link JsonWrapper}
 	 * @param childMapByTemplateId object that represents the document's children
 	 * @param reportingNode {@link TemplateId#REPORTING_PARAMETERS_ACT}
 	 * @return encoded measurement sets
 	 */
-
-	private JsonWrapper encodeMeasurementSets(JsonWrapper wrapper,
-			Map<TemplateId, Node> childMapByTemplateId, Node reportingNode) {
+	private JsonWrapper encodeMeasurementSets(Map<TemplateId, Node> childMapByTemplateId,
+											Node reportingNode) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
 		JsonOutputEncoder sectionEncoder;
@@ -122,11 +118,11 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 				sectionEncoder.encode(childWrapper, child);
 				if (performanceStart != null) {
 					childWrapper.putDate(PERFORMANCE_START, performanceStart);
-					maintainContinuity(wrapper, reportingNode, PERFORMANCE_START);
+					maintainContinuity(childWrapper, reportingNode, PERFORMANCE_START);
 				}
 				if (performanceEnd != null) {
 					childWrapper.putDate(PERFORMANCE_END, performanceEnd);
-					maintainContinuity(wrapper, reportingNode, PERFORMANCE_END);
+					maintainContinuity(childWrapper, reportingNode, PERFORMANCE_END);
 				}
 				measurementSetsWrapper.putObject(childWrapper);
 			} catch (NullPointerException exc) {
