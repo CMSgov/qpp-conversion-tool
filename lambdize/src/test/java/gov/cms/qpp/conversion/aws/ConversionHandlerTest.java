@@ -35,6 +35,7 @@ public class ConversionHandlerTest {
 	private static final Path S3_PATH = Paths.get("s3");
 	private static final String BUCKET = "qrda-conversion";
 
+	private ConversionHandler handler;
 	private static S3Mock server;
 	private static S3Event goodInput;
 	private static S3Event badInput;
@@ -69,8 +70,6 @@ public class ConversionHandlerTest {
 		server.stop();
 		Files.delete(S3_PATH);
 	}
-
-	private ConversionHandler handler;
 
 	@Before
 	public void setupTest() {

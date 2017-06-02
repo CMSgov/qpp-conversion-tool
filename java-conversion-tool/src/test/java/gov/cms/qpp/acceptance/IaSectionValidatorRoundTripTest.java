@@ -1,6 +1,6 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.After;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class IaSectionValidatorRoundTripTest {
 	@Test
 	public void testIaSectionValidatorIncorrectChildren() throws IOException {
 		Path path = Paths.get("src/test/resources/negative/incorrectIaSectionChildren.xml");
-		new Converter(path).transform();
+		new ConversionFileWriterWrapper(path).transform();
 
 		String error = JsonHelper.readJsonAtJsonPath(Paths.get(ERROR_FILE),
 				"$.errorSources[0].validationErrors[0].errorText", String.class);
