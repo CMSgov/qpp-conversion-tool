@@ -38,9 +38,4 @@ public class ReportingParametersActDecoder extends QppXmlDecoder {
 		setOnNode(element, performanceStartExprStr, performanceStartConsumer, Filters.attribute(), true);
 		setOnNode(element, performanceEndExprStr, performanceEndConsumer, Filters.attribute(), true);
 	}
-
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.REPORTING_PARAMETERS_ACT.name(), attribute, defaultNs.getURI());
-	}
 }

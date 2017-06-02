@@ -43,9 +43,4 @@ public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue(MEASURE_ID, p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
-
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.ACI_NUMERATOR_DENOMINATOR.name(), attribute, defaultNs.getURI());
-	}
 }

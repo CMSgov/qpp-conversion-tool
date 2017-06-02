@@ -68,11 +68,6 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 				.forEach(this.mapNpiTin(ns, thisNode));
 	}
 
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.QRDA_CATEGORY_III_REPORT_V3.name(), attribute, defaultNs.getURI());
-	}
-
 	/**
 	 * Create Namespace primed assignedEntity precondition / filter
 	 *

@@ -66,8 +66,8 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 			.orElse(null);
 	}
 
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.name(), attribute, defaultNs.getURI());
-	}
+//	private String getXpath(String attribute) {
+//		String template = this.getClass().getAnnotation(Decoder.class).value().name();
+//		return PathCorrelator.getXpath(template, attribute, defaultNs.getURI());
+//	}
 }

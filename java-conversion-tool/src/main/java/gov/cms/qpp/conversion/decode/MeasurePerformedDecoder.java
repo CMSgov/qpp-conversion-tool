@@ -40,9 +40,4 @@ public class MeasurePerformedDecoder extends QppXmlDecoder {
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue("measurePerformed", p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
-
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.MEASURE_PERFORMED.name(), attribute, defaultNs.getURI());
-	}
 }

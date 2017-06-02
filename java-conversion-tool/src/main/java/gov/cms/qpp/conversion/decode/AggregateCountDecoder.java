@@ -45,10 +45,4 @@ public class AggregateCountDecoder extends QppXmlDecoder {
 		Consumer<? super Attribute> consumer = p -> thisnode.putValue(AGGREGATE_COUNT, p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
-
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.ACI_AGGREGATE_COUNT.name(), attribute, defaultNs.getURI());
-	}
-
 }

@@ -66,9 +66,4 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 		Consumer<? super Attribute> consumer = attr -> thisNode.putValue(MEASURE_POPULATION, attr.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 	}
-
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.MEASURE_DATA_CMS_V2.name(), attribute, defaultNs.getURI());
-	}
 }

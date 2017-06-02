@@ -34,9 +34,4 @@ public class IaMeasureDecoder extends QppXmlDecoder {
 
 		return DecodeResult.TREE_FINISHED;
 	}
-
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.IA_MEASURE.name(), attribute, defaultNs.getURI());
-	}
 }

@@ -138,14 +138,4 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 		}
 		return pairs;
 	}
-
-	/**
-	 * Returns the xpath from the path-correlation.json meta data
-	 *
-	 * @param attribute Key to the coorelation data
-	 * @return xpath expression as a string
-	 */
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(TemplateId.CLINICAL_DOCUMENT.name(), attribute, defaultNs.getURI());
-	}
 }
