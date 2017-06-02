@@ -275,12 +275,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		if (null == denominatorNode || null == denomExclusionNode) {
 			return null;
 		}
+		String denominatorValue = denominatorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+		String denomExclusionValue = denomExclusionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
 		String numeratorValue = numeratorNode == null ? "0" :
 				numeratorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
-		String denominatorValue = denominatorNode == null ? "0" :
-				denominatorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
-		String denomExclusionValue = denomExclusionNode == null ? "0" :
-				denomExclusionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
 		String denomExceptionValue = denomExceptionNode == null ? "0" :
 				denomExceptionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
 
