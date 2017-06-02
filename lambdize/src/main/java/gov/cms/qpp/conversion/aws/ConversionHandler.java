@@ -49,7 +49,7 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			errors = exception.getDetails();
 			DEV_LOG.info("Transformation error occurred", exception);
 		} catch (IOException exception) {
-			throw new RuntimeException(exception);
+			throw new LambdizeRuntimeException(exception);
 		}
 
 		InputStream returnStream = null;
@@ -75,7 +75,7 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 			String srcKey = record.getS3().getObject().getKey().replace('+', ' ');
 			return URLDecoder.decode(srcKey, "UTF-8");
 		} catch (UnsupportedEncodingException exception) {
-			throw new RuntimeException(exception);
+			throw new LambdizeRuntimeException(exception);
 		}
 	}
 
