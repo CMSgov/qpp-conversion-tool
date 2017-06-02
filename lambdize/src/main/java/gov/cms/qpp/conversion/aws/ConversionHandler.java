@@ -48,7 +48,7 @@ public class ConversionHandler implements RequestHandler<S3Event, String> {
 				qpp = converter.transform();
 			} catch (TransformException exception) {
 				errors = exception.getDetails();
-				DEV_LOG.info("Transformation error occured", exception);
+				DEV_LOG.info("Transformation error occurred", exception);
 			}
 
 			InputStream returnStream = null;
