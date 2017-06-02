@@ -26,7 +26,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	private final String REQUIRE_NUMER = "Must have a required numerator";
 	private final String ELIGIBLE_POPULATION = "eligiblePopulation";
 	private final String PERFORMANCE_MET = "performanceMet";
-	private final String DENOMINATOR_EXCEPTIONS = "denominatorExceptions";
+	private final String ELIGIBLE_POPULATION_EXCEPTION = "eligiblePopulationException";
 	private final String NUMERATOR = "numerator";
 	private final String DENOMINATOR = "denominator";
 
@@ -69,7 +69,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	private void assertFirstSubPopulation(List<Map<String, Integer>> subPopulation) {
 		assertThat(REQUIRE_POPULATION_TOTAL, subPopulation.get(0).get(ELIGIBLE_POPULATION), CoreMatchers.is(600));
 		assertThat(REQUIRE_PERFORMANCE_MET, subPopulation.get(0).get(PERFORMANCE_MET), CoreMatchers.is(486));
-		assertThat(REQUIRE_DENOM_EXCEP, subPopulation.get(0).get(DENOMINATOR_EXCEPTIONS), CoreMatchers.is(35));
+		assertThat(REQUIRE_DENOM_EXCEP, subPopulation.get(0).get(ELIGIBLE_POPULATION_EXCEPTION), CoreMatchers.is(35));
 		assertThat(REQUIRE_NUMER, subPopulation.get(0).get(NUMERATOR), CoreMatchers.is(486));
 		assertThat(REQUIRE_DENOM, subPopulation.get(0).get(DENOMINATOR), CoreMatchers.is(600));
 	}
@@ -77,7 +77,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	private void assertSecondSubPopulation(List<Map<String, Integer>> subPopulation) {
 		assertThat(REQUIRE_POPULATION_TOTAL, subPopulation.get(1).get(ELIGIBLE_POPULATION), CoreMatchers.is(800));
 		assertThat(REQUIRE_PERFORMANCE_MET, subPopulation.get(1).get(PERFORMANCE_MET), CoreMatchers.is(700));
-		assertThat(REQUIRE_DENOM_EXCEP, subPopulation.get(1).get(DENOMINATOR_EXCEPTIONS), CoreMatchers.is(40));
+		assertThat(REQUIRE_DENOM_EXCEP, subPopulation.get(1).get(ELIGIBLE_POPULATION_EXCEPTION), CoreMatchers.is(40));
 		assertThat(REQUIRE_NUMER, subPopulation.get(1).get(NUMERATOR), CoreMatchers.is(700));
 		assertThat(REQUIRE_DENOM, subPopulation.get(1).get(DENOMINATOR), CoreMatchers.is(800));
 	}

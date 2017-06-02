@@ -2197,7 +2197,7 @@
 					"eligiblePopulationExclusion": 50,
 					"eligiblePopulationException": 50,
 					"performanceNotMet": 950,
-					"denominatorExclusions": 50,
+					"eligiblePopulationExclusion": 50,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2208,7 +2208,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"denominatorExceptions": 50,
+					"eligiblePopulation": 1000,
+					"eligiblePopulationException": 50,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2222,7 +2223,6 @@
 					"eligiblePopulationExclusion": 50,
 					"eligiblePopulationException": 50,
 					"performanceNotMet": 950,
-					"denominatorExclusions": 50,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2236,7 +2236,6 @@
 					"eligiblePopulationExclusion": 50,
 					"eligiblePopulationException": 50,
 					"performanceNotMet": 950,
-					"denominatorExclusions": 50,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2247,7 +2246,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"denominatorExceptions": 50,
+					"eligiblePopulation": 1000,
+					"eligiblePopulationException": 50,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2258,6 +2258,7 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 950,
 					"performanceMet": 800,
+					"eligiblePopulation": 950,
 					"denominator": 950,
 					"numerator": 800
 				}
@@ -2268,6 +2269,7 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 950,
 					"performanceMet": 800,
+					"eligiblePopulation": 950,
 					"denominator": 950,
 					"numerator": 800
 				}
@@ -2278,6 +2280,7 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 950,
 					"performanceMet": 800,
+					"eligiblePopulation": 950,
 					"denominator": 950,
 					"numerator": 800
 				}
@@ -2288,6 +2291,7 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 950,
 					"performanceMet": 800,
+					"eligiblePopulation": 950,
 					"denominator": 950,
 					"numerator": 750
 				}
@@ -2298,7 +2302,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"denominatorExceptions": 50,
+					"eligiblePopulation": 1000,
+					"eligiblePopulationException": 50,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2309,7 +2314,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"denominatorExceptions": 50,
+					"eligiblePopulation": 1000,
+					"eligiblePopulationException": 50,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2321,10 +2327,10 @@
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
 					"eligiblePopulationExclusion": 50,
-					"eligiblePopulationException": 50,
 					"performanceNotMet": 950,
-					"denominatorExclusions": 50,
-					"denominatorExceptions": 50,
+					"eligiblePopulation": 1000,
+					"eligiblePopulationExclusion": 50,
+					"eligiblePopulationException": 50,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2335,7 +2341,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"denominatorExceptions": 50,
+					"eligiblePopulation": 1000,
+					"eligiblePopulationException": 50,
 					"denominator": 1000,
 					"numerator": 800
 				}
@@ -2352,7 +2359,7 @@
 				"eligiblePopulationExclusion": 50,
 				"eligiblePopulationException": 50,
 				"performanceNotMet": 950,
-				"denominatorExclusions": 50,
+				"eligiblePopulationExclusion": 50,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2363,7 +2370,7 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"denominatorExceptions": 50,
+				"eligiblePopulationException": 50,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2377,7 +2384,6 @@
 				"eligiblePopulationExclusion": 50,
 				"eligiblePopulationException": 50,
 				"performanceNotMet": 950,
-				"denominatorExclusions": 50,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2391,7 +2397,6 @@
 				"eligiblePopulationExclusion": 50,
 				"eligiblePopulationException": 50,
 				"performanceNotMet": 950,
-				"denominatorExclusions": 50,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2402,7 +2407,7 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"denominatorExceptions": 50,
+				"eligiblePopulationException": 50,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2453,7 +2458,7 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"denominatorExceptions": 50,
+				"eligiblePopulationException": 50,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2464,7 +2469,7 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"denominatorExceptions": 50,
+				"eligiblePopulationException": 50,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2476,10 +2481,8 @@
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
 				"eligiblePopulationExclusion": 50,
-				"eligiblePopulationException": 50,
 				"performanceNotMet": 950,
-				"denominatorExclusions": 50,
-				"denominatorExceptions": 50,
+				"eligiblePopulationException": 50,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2490,7 +2493,7 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"denominatorExceptions": 50,
+				"eligiblePopulationException": 50,
 				"denominator": 1000,
 				"numerator": 800
 			}
@@ -2501,7 +2504,7 @@
 			"eligiblePopulation": 1000
 		},
 		{
-			"denominatorExclusions": 50
+			"eligiblePopulationExclusion": 50
 		},
 		{
 			"denominator": 1000
@@ -2513,7 +2516,7 @@
 			"eligiblePopulation": 1000
 		},
 		{
-			"denominatorExceptions": 50
+			"eligiblePopulationException": 50
 		},
 		{
 			"denominator": 1000
@@ -2525,7 +2528,7 @@
 			"eligiblePopulation": 1000
 		},
 		{
-			"denominatorExclusions": 50
+			"eligiblePopulationExclusion": 50
 		},
 		{
 			"denominator": 1000
@@ -2537,7 +2540,7 @@
 			"eligiblePopulation": 1000
 		},
 		{
-			"denominatorExclusions": 50
+			"eligiblePopulationExclusion": 50
 		},
 		{
 			"denominator": 1000
@@ -2549,7 +2552,7 @@
 			"eligiblePopulation": 1000
 		},
 		{
-			"denominatorExceptions": 50
+			"eligiblePopulationException": 50
 		},
 		{
 			"denominator": 1000
@@ -2606,7 +2609,7 @@
 			"eligiblePopulation": 1000
 		},
 		{
-			"denominatorExceptions": 50
+			"eligiblePopulationException": 50
 		},
 		{
 			"denominator": 1000
@@ -2618,7 +2621,7 @@
 			"eligiblePopulation": 1000
 		},
 		{
-			"denominatorExceptions": 50
+			"eligiblePopulationException": 50
 		},
 		{
 			"denominator": 1000
@@ -2630,10 +2633,10 @@
 			"eligiblePopulation": 1000
 		},
 		{
-			"denominatorExclusions": 50
+			"eligiblePopulationExclusion": 50
 		},
 		{
-			"denominatorExceptions": 50
+			"eligiblePopulationException": 50
 		},
 		{
 			"denominator": 1000
@@ -2645,7 +2648,7 @@
 			"eligiblePopulation": 1000
 		},
 		{
-			"denominatorExceptions": 50
+			"eligiblePopulationException": 50
 		},
 		{
 			"denominator": 1000

@@ -25,7 +25,7 @@ public class MeasureDataRoundTripTest extends BaseTest {
 	private static String happy;
 	private static String expected =
 			"{\n  \"eligiblePopulation\" : 950,\n  \"denominator\" : 950,\n  \"numerator\" : 900,\n " +
-					" \"denominatorExceptions\" : 50,\n  \"denominatorExclusions\" : 50\n}";
+					" \"eligiblePopulationException\" : 50,\n  \"eligiblePopulationExclusion\" : 50\n}";
 
 	@BeforeClass
 	public static void setup() throws IOException {
@@ -39,12 +39,12 @@ public class MeasureDataRoundTripTest extends BaseTest {
 
 	@Test
 	public void decodeIpopMeasureDataAsNode() throws Exception {
-		test("IPOP");
+		test("IPOP");//eligiblePopulation
 	}
 
 	@Test
 	public void decodeIppMeasureDataAsNode() throws Exception {
-		test("IPP");
+		test("IPP");//eligiblePopulation
 	}
 
 	@Test
@@ -54,12 +54,12 @@ public class MeasureDataRoundTripTest extends BaseTest {
 
 	@Test
 	public void decodeDenexMeasureDataAsNode() throws Exception {
-		test("DENEX");
+		test("DENEX");//eligiblePopulationExclusion
 	}
 
 	@Test
 	public void decodeDenexcepMeasureDataAsNode() throws Exception {
-		test("DENEXCEP");
+		test("DENEXCEP");//eligiblePopulationException
 	}
 
 	private void test(String type) throws Exception {

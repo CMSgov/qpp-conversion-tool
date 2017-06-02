@@ -144,8 +144,8 @@ public class XpathJsonPathComparisonTest {
 	}
 
 	@Test
-	public void compareQualityMeasureIdValueDenominatorExclusions() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[0].value.denominatorExclusions";
+	public void compareQualityMeasureIdValueEligiblePopulationExclusion() throws IOException, XmlException {
+		String jsonPath = "measurementSets[1].measurements[0].value.eligiblePopulationExclusion";
 		helper.executeAttributeTest(jsonPath, "value", "50");
 	}
 }

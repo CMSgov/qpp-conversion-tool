@@ -32,7 +32,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
 	protected static final String DENEX = "denominator exclusion";
 	protected static final String DENEXCEP = "denominator exception";
-	protected static final String IPOP = "initial population";
+	protected static final String IPOP = "eligible population";
 	protected static final String NUMER = "numerator";
 	protected static final String DENOM = "denominator";
 
