@@ -17,5 +17,5 @@ public interface QrdaService {
 	 * @return Results of the conversion
 	 * @throws IOException If error occurs during file upload or conversion
 	 */
-	JsonWrapper convertQrda3ToQpp(InputStream fileInputStream) throws IOException;
+	JsonWrapper convertQrda3ToQpp(InputStream fileInputStream);
 }

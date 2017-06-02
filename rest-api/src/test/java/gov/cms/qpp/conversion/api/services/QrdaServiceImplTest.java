@@ -13,7 +13,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -63,13 +62,13 @@ public class QrdaServiceImplTest {
 	}
 
 	@Test
-	public void testConvertQrda3ToQppSuccess() throws IOException {
+	public void testConvertQrda3ToQppSuccess() {
 		JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_SUCCESS_QRDA_INPUT_STREAM);
 		assertThat("The JSON content is incorrect.", qpp.getString(KEY), is(MOCK_SUCCESS_QPP_STRING));
 	}
 
 	@Test
-	public void testConvertQrda3ToQppError() throws IOException {
+	public void testConvertQrda3ToQppError() {
 		try {
 			JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_ERROR_QRDA_INPUT_STREAM);
 			fail();

@@ -21,7 +21,7 @@ public class QrdaServiceImpl implements QrdaService {
 	 * @throws IOException If error occurs during file upload or conversion
 	 */
 	@Override
-	public JsonWrapper convertQrda3ToQpp(final InputStream fileInputStream) throws IOException {
+	public JsonWrapper convertQrda3ToQpp(final InputStream fileInputStream) {
 		Converter converter = new Converter(fileInputStream);
 		return converter.transform();
 	}
