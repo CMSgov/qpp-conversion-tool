@@ -1,9 +1,7 @@
 package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.TransformationStatus;
-import gov.cms.qpp.conversion.api.model.ConversionResult;
-import org.apache.commons.io.IOUtils;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,15 +21,8 @@ public class QrdaServiceImpl implements QrdaService {
 	 * @throws IOException If error occurs during file upload or conversion
 	 */
 	@Override
-	public ConversionResult convertQrda3ToQpp(final InputStream fileInputStream) throws IOException {
+	public JsonWrapper convertQrda3ToQpp(final InputStream fileInputStream) {
 		Converter converter = new Converter(fileInputStream);
-		converter.transform();
-
-		InputStream conversionResult = converter.getConversionResult();
-		TransformationStatus status = converter.getStatus();
-
-		String stringConversionResult = IOUtils.toString(conversionResult, "UTF-8");
-		//need to work on optimization so this doesn't try to copy a potentially large QPP file
-		return new ConversionResult(stringConversionResult, status);
+		return converter.transform();
 	}
 }
