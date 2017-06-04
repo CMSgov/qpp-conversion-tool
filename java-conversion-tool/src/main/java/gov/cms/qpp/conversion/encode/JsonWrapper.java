@@ -42,9 +42,20 @@ public class JsonWrapper {
 		ow = getObjectWriter(filterMeta);
 	}
 
+	@SuppressWarnings("unchecked")
+	public JsonWrapper(JsonWrapper wrapper, boolean filterMeta) {
+		this(filterMeta);
+		if (wrapper.isObject()) {
+			this.initAsObject();
+			this.object = new LinkedHashMap<>(wrapper.object);
+		} else if (wrapper.isArray()) {
+			this.initAsList();
+			this.list = new LinkedList<>(wrapper.list);
+		}
+	}
+
 	protected JsonWrapper(JsonWrapper jsonWrapper) {
-		object = new LinkedHashMap<>(jsonWrapper.object);
-		ow =  getObjectWriter(true);
+		this(jsonWrapper, true);
 	}
 
 	/**
@@ -456,6 +467,15 @@ public class JsonWrapper {
 		if (check != null) {
 			throw new IllegalStateException("Current state may not change (from list to object or reverse).");
 		}
+	}
+
+	/**
+	 * Identifies whether or not the {@link JsonWrapper}'s content is an array.
+	 *
+	 * @return boolean is this a JSON array
+	 */
+	public boolean isArray() {
+		return list != null;
 	}
 
 	/**

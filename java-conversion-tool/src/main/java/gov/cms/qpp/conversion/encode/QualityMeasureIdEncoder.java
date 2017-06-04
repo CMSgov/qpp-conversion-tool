@@ -30,7 +30,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String AGGREGATE_COUNT = "aggregateCount";
 	private static final String TYPE = "type";
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
-	private static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
+	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
 
 

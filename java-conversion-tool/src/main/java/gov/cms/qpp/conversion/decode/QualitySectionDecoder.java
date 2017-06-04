@@ -11,6 +11,8 @@ import org.jdom2.Element;
  */
 @Decoder(TemplateId.MEASURE_SECTION_V2)
 public class QualitySectionDecoder extends QppXmlDecoder {
+	public static final String CATEGORY = "category";
+	public static final String SUBMISSION_METHOD = "submissionMethod";
 
 	/**
 	 * Decodes an Quality Measure Section into the intermediate Node format
@@ -21,8 +23,8 @@ public class QualitySectionDecoder extends QppXmlDecoder {
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
-		thisNode.putValue("category", "quality");
-		thisNode.putValue("submissionMethod", "cmsWebInterface");
+		thisNode.putValue(CATEGORY, "quality");
+		thisNode.putValue(SUBMISSION_METHOD, "cmsWebInterface");
 		return DecodeResult.TREE_CONTINUE;
 	}
 }

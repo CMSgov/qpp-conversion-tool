@@ -1,7 +1,6 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.TransformationStatus;
+import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
@@ -38,11 +37,8 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 	@Test
 	public void testRoundTripForQualityMeasureId() throws IOException {
-		Converter converter = new Converter(JUNK_QRDA3_FILE);
-		TransformationStatus transformStatus = converter.transform();
-
-		assertThat("Converting the junk QRDA3 file should have been successful.", transformStatus,
-				is(TransformationStatus.SUCCESS));
+		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(JUNK_QRDA3_FILE);
+		converterWrapper.transform();
 
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
 				"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);

@@ -1,7 +1,6 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.TransformationStatus;
+import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.After;
 import org.junit.Test;
@@ -27,11 +26,8 @@ public class QualityMeasureIdRoundTripTest {
 
 	@Test
 	public void testRoundTripForQualityMeasureId() throws IOException {
-		Converter converter = new Converter(JUNK_QRDA3_FILE);
-		TransformationStatus transformStatus = converter.transform();
-
-		assertThat("Converting the junk QRDA3 file should have been successful.", transformStatus,
-			is(TransformationStatus.SUCCESS));
+		ConversionFileWriterWrapper converter = new ConversionFileWriterWrapper(JUNK_QRDA3_FILE);
+		converter.transform();
 
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(Paths.get("junk_in_quality_measure.qpp.json"),
 			"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
