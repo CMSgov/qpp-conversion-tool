@@ -26,8 +26,6 @@ public class QualityMeasureIdMultiEncoderTest {
 	private final String PERFORMANCE_MET = "performanceMet";
 	private final String ELIGIBLE_POPULATION_EXCEPTION = "eligiblePopulationException";
 	private final String ELIGIBLE_POPULATION_EXCLUSION = "eligiblePopulationExclusion";
-	private final String NUMERATOR = "numerator";
-	private final String DENOMINATOR = "denominator";
 	private final String TYPE = "type";
 	private final String POPULATION_ID = "populationId";
 	private final String MEASURE_ID = "measureId";
@@ -155,7 +153,7 @@ public class QualityMeasureIdMultiEncoderTest {
 		List<LinkedHashMap<String, Integer>> subPopulations =
 				(List<LinkedHashMap<String, Integer>>)childValues.get("strata");
 
-		assertThat("Must have no sub populations encoded", subPopulations, hasSize(0));
+		assertThat("Must have two sub populations encoded", subPopulations, hasSize(2));
 	}
 
 	private LinkedHashMap<String, Object> getChildValues() {
@@ -169,8 +167,6 @@ public class QualityMeasureIdMultiEncoderTest {
 		assertThat(REQUIRE_PERFORMANCE_MET, firstSubPopulation.get(PERFORMANCE_MET), is(600));
 		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, firstSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
 		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, firstSubPopulation.get("eligiblePopulationExclusion"), is(600));
-		assertThat(REQUIRE_NUMER, firstSubPopulation.get(NUMERATOR), is(600));
-		assertThat(REQUIRE_DENOM, firstSubPopulation.get(DENOMINATOR), is(600));
 	}
 
 	private void assertSecondSubPopulation(List<LinkedHashMap<String, Integer>> strata) {
@@ -180,7 +176,5 @@ public class QualityMeasureIdMultiEncoderTest {
 		assertThat(REQUIRE_PERFORMANCE_MET, secondSubPopulation.get(PERFORMANCE_MET), is(600));
 		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
 		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION), is(600));
-		assertThat(REQUIRE_NUMER, secondSubPopulation.get(NUMERATOR), is(600));
-		assertThat(REQUIRE_DENOM, secondSubPopulation.get(DENOMINATOR), is(600));
 	}
 }

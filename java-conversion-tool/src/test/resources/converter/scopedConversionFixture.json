@@ -6,22 +6,22 @@
 			{
 				"measureId": "ACI-PEA-1",
 				"value": {
-					"numerator": 600,
-					"denominator": 800
+					"performanceMet": 600,
+					"eligiblePopulation": 800
 				}
 			},
 			{
 				"measureId": "ACI_EP_1",
 				"value": {
-					"numerator": 500,
-					"denominator": 700
+					"performanceMet": 500,
+					"eligiblePopulation": 700
 				}
 			},
 			{
 				"measureId": "ACI_CCTPE_3",
 				"value": {
-					"numerator": 400,
-					"denominator": 600
+					"performanceMet": 400,
+					"eligiblePopulation": 600
 				}
 			}
 		]
@@ -2103,22 +2103,22 @@
 					{
 						"measureId": "ACI-PEA-1",
 						"value": {
-							"numerator": 600,
-							"denominator": 800
+							"performanceMet": 600,
+							"eligiblePopulation": 800
 						}
 					},
 					{
 						"measureId": "ACI_EP_1",
 						"value": {
-							"numerator": 500,
-							"denominator": 700
+							"performanceMet": 500,
+							"eligiblePopulation": 700
 						}
 					},
 					{
 						"measureId": "ACI_CCTPE_3",
 						"value": {
-							"numerator": 400,
-							"denominator": 600
+							"performanceMet": 400,
+							"eligiblePopulation": 600
 						}
 					}
 				],
@@ -2143,45 +2143,45 @@
 		{
 			"measureId": "ACI-PEA-1",
 			"value": {
-				"numerator": 600,
-				"denominator": 800
+				"performanceMet": 600,
+				"eligiblePopulation": 800
 			}
 		},
 		{
 			"measureId": "ACI_EP_1",
 			"value": {
-				"numerator": 500,
-				"denominator": 700
+				"performanceMet": 500,
+				"eligiblePopulation": 700
 			}
 		},
 		{
 			"measureId": "ACI_CCTPE_3",
 			"value": {
-				"numerator": 400,
-				"denominator": 600
+				"performanceMet": 400,
+				"eligiblePopulation": 600
 			}
 		}
 	],
 	"ACI_DENOMINATOR": [
 		{
-			"denominator": 800
+			"eligiblePopulation": 800
 		},
 		{
-			"denominator": 700
+			"eligiblePopulation": 700
 		},
 		{
-			"denominator": 600
+			"eligiblePopulation": 600
 		}
 	],
 	"ACI_NUMERATOR": [
 		{
-			"numerator": 600
+			"performanceMet": 600
 		},
 		{
-			"numerator": 500
+			"performanceMet": 500
 		},
 		{
-			"numerator": 400
+			"performanceMet": 400
 		}
 	],
 	"MEASURE_SECTION_V2": {
@@ -2195,11 +2195,7 @@
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
 					"eligiblePopulationExclusion": 50,
-					"eligiblePopulationException": 50,
-					"performanceNotMet": 150,
-					"eligiblePopulationExclusion": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"performanceNotMet": 150
 				}
 			},
 			{
@@ -2208,10 +2204,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"eligiblePopulation": 1000,
-					"eligiblePopulationException": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"performanceNotMet": 200,
+					"eligiblePopulationException": 50
 				}
 			},
 			{
@@ -2221,10 +2215,7 @@
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
 					"eligiblePopulationExclusion": 50,
-					"eligiblePopulationException": 50,
-					"performanceNotMet": 150,
-					"denominator": 1000,
-					"numerator": 800
+					"performanceNotMet": 150
 				}
 			},
 			{
@@ -2234,10 +2225,7 @@
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
 					"eligiblePopulationExclusion": 50,
-					"eligiblePopulationException": 50,
-					"performanceNotMet": 150,
-					"denominator": 1000,
-					"numerator": 800
+					"performanceNotMet": 150
 				}
 			},
 			{
@@ -2246,10 +2234,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"eligiblePopulation": 1000,
-					"eligiblePopulationException": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"performanceNotMet": 200,
+					"eligiblePopulationException": 50
 				}
 			},
 			{
@@ -2258,9 +2244,7 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 950,
 					"performanceMet": 800,
-					"eligiblePopulation": 950,
-					"denominator": 950,
-					"numerator": 800
+					"performanceNotMet": 150
 				}
 			},
 			{
@@ -2269,9 +2253,7 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 950,
 					"performanceMet": 800,
-					"eligiblePopulation": 950,
-					"denominator": 950,
-					"numerator": 800
+					"performanceNotMet": 150
 				}
 			},
 			{
@@ -2280,9 +2262,7 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 950,
 					"performanceMet": 800,
-					"eligiblePopulation": 950,
-					"denominator": 950,
-					"numerator": 800
+					"performanceNotMet": 150
 				}
 			},
 			{
@@ -2290,10 +2270,8 @@
 				"value": {
 					"isEndToEndReported": true,
 					"eligiblePopulation": 950,
-					"performanceMet": 800,
-					"eligiblePopulation": 950,
-					"denominator": 950,
-					"numerator": 750
+					"performanceMet": 750,
+					"performanceNotMet": 150
 				}
 			},
 			{
@@ -2302,10 +2280,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"eligiblePopulation": 1000,
-					"eligiblePopulationException": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"performanceNotMet": 200,
+					"eligiblePopulationException": 50
 				}
 			},
 			{
@@ -2314,10 +2290,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"eligiblePopulation": 1000,
-					"eligiblePopulationException": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"performanceNotMet": 200,
+					"eligiblePopulationException": 50
 				}
 			},
 			{
@@ -2327,10 +2301,8 @@
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
 					"eligiblePopulationExclusion": 50,
-					"eligiblePopulationException": 50,
 					"performanceNotMet": 150,
-					"denominator": 1000,
-					"numerator": 800
+					"eligiblePopulationException": 50
 				}
 			},
 			{
@@ -2339,10 +2311,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"eligiblePopulation": 1000,
-					"eligiblePopulationException": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"performanceNotMet": 200,
+					"eligiblePopulationException": 50
 				}
 			}
 		]
@@ -2355,10 +2325,7 @@
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
 				"eligiblePopulationExclusion": 50,
-				"eligiblePopulationException": 50,
-				"performanceNotMet": 150,
-				"denominator": 1000,
-				"numerator": 800
+				"performanceNotMet": 150
 			}
 		},
 		{
@@ -2367,9 +2334,8 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"eligiblePopulationException": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"performanceNotMet": 200,
+				"eligiblePopulationException": 50
 			}
 		},
 		{
@@ -2379,10 +2345,7 @@
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
 				"eligiblePopulationExclusion": 50,
-				"eligiblePopulationException": 50,
-				"performanceNotMet": 150,
-				"denominator": 1000,
-				"numerator": 800
+				"performanceNotMet": 150
 			}
 		},
 		{
@@ -2392,10 +2355,7 @@
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
 				"eligiblePopulationExclusion": 50,
-				"eligiblePopulationException": 50,
-				"performanceNotMet": 150,
-				"denominator": 1000,
-				"numerator": 800
+				"performanceNotMet": 150
 			}
 		},
 		{
@@ -2404,9 +2364,8 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"eligiblePopulationException": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"performanceNotMet": 200,
+				"eligiblePopulationException": 50
 			}
 		},
 		{
@@ -2415,8 +2374,7 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 950,
 				"performanceMet": 800,
-				"denominator": 950,
-				"numerator": 800
+				"performanceNotMet": 150
 			}
 		},
 		{
@@ -2425,8 +2383,7 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 950,
 				"performanceMet": 800,
-				"denominator": 950,
-				"numerator": 800
+				"performanceNotMet": 150
 			}
 		},
 		{
@@ -2435,8 +2392,7 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 950,
 				"performanceMet": 800,
-				"denominator": 950,
-				"numerator": 800
+				"performanceNotMet": 150
 			}
 		},
 		{
@@ -2444,9 +2400,8 @@
 			"value": {
 				"isEndToEndReported": true,
 				"eligiblePopulation": 950,
-				"performanceMet": 800,
-				"denominator": 950,
-				"numerator": 750
+				"performanceMet": 750,
+				"performanceNotMet": 150
 			}
 		},
 		{
@@ -2455,9 +2410,8 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"eligiblePopulationException": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"performanceNotMet": 200,
+				"eligiblePopulationException": 50
 			}
 		},
 		{
@@ -2466,9 +2420,8 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"eligiblePopulationException": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"performanceNotMet": 200,
+				"eligiblePopulationException": 50
 			}
 		},
 		{
@@ -2478,10 +2431,9 @@
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
 				"eligiblePopulationExclusion": 50,
-				"eligiblePopulationException": 50,
 				"performanceNotMet": 150,
-				"denominator": 1000,
-				"numerator": 800
+				"eligiblePopulationException": 50
+
 			}
 		},
 		{
@@ -2490,144 +2442,143 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"eligiblePopulationException": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"performanceNotMet": 200,
+				"eligiblePopulationException": 50
 			}
 		}
 	],
 	"MEASURE_DATA_CMS_V2": [
 		{
-			"eligiblePopulation": 1000
+			"performanceMet": 1000
 		},
 		{
 			"eligiblePopulationExclusion": 50
 		},
 		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
-		},
-		{
 			"eligiblePopulation": 1000
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 1000
 		},
 		{
 			"eligiblePopulationException": 50
 		},
 		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
-		},
-		{
 			"eligiblePopulation": 1000
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 1000
 		},
 		{
 			"eligiblePopulationExclusion": 50
 		},
 		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
-		},
-		{
 			"eligiblePopulation": 1000
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 1000
 		},
 		{
 			"eligiblePopulationExclusion": 50
 		},
 		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
-		},
-		{
 			"eligiblePopulation": 1000
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 1000
 		},
 		{
 			"eligiblePopulationException": 50
 		},
 		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
-		},
-		{
-			"eligiblePopulation": 950
-		},
-		{
-			"denominator": 950
-		},
-		{
-			"numerator": 800
-		},
-		{
-			"eligiblePopulation": 950
-		},
-		{
-			"denominator": 950
-		},
-		{
-			"numerator": 800
-		},
-		{
-			"eligiblePopulation": 950
-		},
-		{
-			"denominator": 950
-		},
-		{
-			"numerator": 800
-		},
-		{
-			"eligiblePopulation": 950
-		},
-		{
-			"denominator": 950
-		},
-		{
-			"numerator": 800
-		},
-		{
-			"eligiblePopulation": 950
-		},
-		{
-			"denominator": 950
-		},
-		{
-			"numerator": 750
-		},
-		{
 			"eligiblePopulation": 1000
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 950
+		},
+		{
+			"eligiblePopulation": 950
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 950
+		},
+		{
+			"eligiblePopulation": 950
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 950
+		},
+		{
+			"eligiblePopulation": 950
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 950
+		},
+		{
+			"eligiblePopulation": 950
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 950
+		},
+		{
+			"eligiblePopulation": 950
+		},
+		{
+			"performanceMet": 750
+		},
+		{
+			"performanceMet": 1000
 		},
 		{
 			"eligiblePopulationException": 50
 		},
 		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
-		},
-		{
 			"eligiblePopulation": 1000
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 1000
 		},
 		{
 			"eligiblePopulationException": 50
 		},
 		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
-		},
-		{
 			"eligiblePopulation": 1000
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 1000
 		},
 		{
 			"eligiblePopulationExclusion": 50
@@ -2636,22 +2587,22 @@
 			"eligiblePopulationException": 50
 		},
 		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
-		},
-		{
 			"eligiblePopulation": 1000
+		},
+		{
+			"performanceMet": 800
+		},
+		{
+			"performanceMet": 1000
 		},
 		{
 			"eligiblePopulationException": 50
 		},
 		{
-			"denominator": 1000
+			"eligiblePopulation": 1000
 		},
 		{
-			"numerator": 800
+			"performanceMet": 800
 		}
 	]
 }

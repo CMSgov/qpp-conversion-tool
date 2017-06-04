@@ -89,13 +89,13 @@ public class XpathJsonPathComparisonTest {
 
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1Numerator() throws IOException, XmlException {
-		String jsonPath = "measurementSets[2].measurements[0].value.numerator";
+		String jsonPath = "measurementSets[2].measurements[0].value.performanceMet";
 		helper.executeAttributeTest(jsonPath, "value", "600");
 	}
 
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1Denominator() throws IOException, XmlException {
-		String jsonPath = "measurementSets[2].measurements[0].value.denominator";
+		String jsonPath = "measurementSets[2].measurements[0].value.eligiblePopulation";
 		helper.executeAttributeTest(jsonPath, "value", "800");
 	}
 
@@ -121,25 +121,25 @@ public class XpathJsonPathComparisonTest {
 
 	@Test
 	public void compareQualityMeasureIdValuePerformanceExclusion() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[0].value.performanceExclusion";
+		String jsonPath = "measurementSets[1].measurements[0].value.eligiblePopulationExclusion";
 		helper.executeAttributeTest(jsonPath, "value", "50");
 	}
 
 	@Test
 	public void compareQualityMeasureIdValuePerformanceMet() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].value.performanceMet";
-		helper.executeAttributeTest(jsonPath, "value", "800");
+		helper.executeAttributeTest(jsonPath, "value", "1000");
 	}
 
 	@Test
 	public void compareQualityMeasureIdValueNumerator() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[0].value.numerator";
-		helper.executeAttributeTest(jsonPath, "value", "800");
+		String jsonPath = "measurementSets[1].measurements[0].value.performanceMet";
+		helper.executeAttributeTest(jsonPath, "value", "1000");
 	}
 
 	@Test
 	public void compareQualityMeasureIdValueDenominator() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[0].value.denominator";
+		String jsonPath = "measurementSets[1].measurements[0].value.eligiblePopulation";
 		helper.executeAttributeTest(jsonPath, "value", "1000");
 	}
 

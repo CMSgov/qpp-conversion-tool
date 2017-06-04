@@ -42,12 +42,12 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	 */
 	private Map<String, String> initializeMeasureTypeMap() {
 		Map<String , String> measureTypeMapper = new HashMap<>();
-		measureTypeMapper.put("IPOP", "eligiblePopulation");
-		measureTypeMapper.put("IPP", "eligiblePopulation");
-		measureTypeMapper.put("DENOM", "denominator");
+		measureTypeMapper.put("IPOP", "performanceMet");
+		measureTypeMapper.put("IPP", "performanceMet");
+		measureTypeMapper.put("NUMER", "performanceMet");
+		measureTypeMapper.put("DENOM", "eligiblePopulation");
 		measureTypeMapper.put("DENEX", "eligiblePopulationExclusion");
 		measureTypeMapper.put("DENEXCEP", "eligiblePopulationException");
-		measureTypeMapper.put("NUMER", "numerator");
 		return measureTypeMapper;
 	}
 

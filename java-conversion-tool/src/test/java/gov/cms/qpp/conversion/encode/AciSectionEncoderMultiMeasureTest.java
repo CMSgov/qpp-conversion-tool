@@ -19,11 +19,11 @@ public class AciSectionEncoderMultiMeasureTest {
 	private static final String EXPECTED = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  "
 			+ "\"measurements\" : [ "
 			+ "{\n    \"measureId\" : \"ACI-PEA-1\",\n    \"value\" : {\n"
-			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }, "
+			+ "      \"performanceMet\" : 400,\n      \"eligiblePopulation\" : 600\n    }\n  }, "
 			+ "{\n    \"measureId\" : \"ACI_EP_1\",\n    \"value\" : {\n"
-			+ "      \"numerator\" : 500,\n      \"denominator\" : 700\n    }\n  }, "
+			+ "      \"performanceMet\" : 500,\n      \"eligiblePopulation\" : 700\n    }\n  }, "
 			+ "{\n    \"measureId\" : \"ACI_CCTPE_3\",\n    \"value\" : {\n"
-			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }" + " ]\n" + "}";
+			+ "      \"performanceMet\" : 400,\n      \"eligiblePopulation\" : 600\n    }\n  }" + " ]\n" + "}";
 
 	private Node aciSectionNode;
 	private Node aciProportionMeasureNode;

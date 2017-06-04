@@ -1,19 +1,18 @@
 package gov.cms.qpp.acceptance;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.junit.Test;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.xml.XmlUtils;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class AciProportionNumeratorRoundTripTest {
 
@@ -46,8 +45,8 @@ public class AciProportionNumeratorRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		String EXPECTED = "{\n  \"numerator\" : 600\n}";
-		assertThat("expected encoder to return a representation of a numerator with a value", sw.toString(),
+		String EXPECTED = "{\n  \"performanceMet\" : 600\n}";
+		assertThat("expected encoder to return a representation of a performanceMet with a value", sw.toString(),
 				is(EXPECTED));
 	}
 }

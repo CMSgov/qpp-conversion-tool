@@ -24,8 +24,8 @@ import static org.junit.Assert.assertThat;
 public class MeasureDataRoundTripTest extends BaseTest {
 	private static String happy;
 	private static String expected =
-			"{\n  \"eligiblePopulation\" : 950,\n  \"denominator\" : 950,\n  \"numerator\" : 900,\n " +
-					" \"eligiblePopulationException\" : 50,\n  \"eligiblePopulationExclusion\" : 50\n}";
+			"{\n  \"performanceMet\" : 900,\n  \"eligiblePopulation\" : 950,\n" +
+			"  \"eligiblePopulationException\" : 50,\n  \"eligiblePopulationExclusion\" : 50\n}";
 
 	@BeforeClass
 	public static void setup() throws IOException {
@@ -39,17 +39,17 @@ public class MeasureDataRoundTripTest extends BaseTest {
 
 	@Test
 	public void decodeIpopMeasureDataAsNode() throws Exception {
-		test("IPOP");//eligiblePopulation
+		test("IPOP");//eligiblePopulation - DENOM
 	}
 
 	@Test
 	public void decodeIppMeasureDataAsNode() throws Exception {
-		test("IPP");//eligiblePopulation
+		test("IPP");//eligiblePopulation- DENOM
 	}
 
 	@Test
 	public void decodeNumerMeasureDataAsNode() throws Exception {
-		test("NUMER");
+		test("NUMER");//performanceMet
 	}
 
 	@Test

@@ -5,11 +5,9 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -117,31 +115,6 @@ public class QualityMeasureIdEncoderTest {
 
 		assertThat("expected encoder to return a single value",
 				childValues.get("performanceNotMet"), is(-600));
-	}
-
-	@Test
-	public void calculatePerformanceNotMetTest1() throws Exception {
-		//This test was written for CircleCI coverage
-		//Use reflection API to invoke private method
-		Class<?> c = QualityMeasureIdEncoder.class;
-		QualityMeasureIdEncoder encoder = (QualityMeasureIdEncoder)c.newInstance();
-		Method calculatePerformanceNotMetMethod =
-				c.getDeclaredMethod("calculatePerformanceNotMet", Node.class, Node.class, Node.class, Node.class);
-		Node numeratorNode = null;
-		Node denominatorNode = null;
-		Node denomExclusionNode = null;
-		Node denomExceptionNode = null;
-		calculatePerformanceNotMetMethod.setAccessible(true);
-		Object val = calculatePerformanceNotMetMethod.invoke(encoder,
-				numeratorNode,denominatorNode,
-				denomExclusionNode,denomExceptionNode );
-		assertThat("Expect a null return value " , val, nullValue());
-
-		denominatorNode = new Node();
-		val = calculatePerformanceNotMetMethod.invoke(encoder,
-				numeratorNode,denominatorNode,
-				denomExclusionNode,denomExceptionNode );
-		assertThat("Expect a null return value " , val, nullValue());
 	}
 
 	private void executeInternalEncode() {

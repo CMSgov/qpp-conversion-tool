@@ -37,7 +37,7 @@ public class AciProportionNumeratorEncoderTest {
 		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder();
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
-		assertThat("Must have a numerator value of 600", 600, is(jsonWrapper.getInteger("numerator")));
+		assertThat("Must have a performanceMet value of 600", 600, is(jsonWrapper.getInteger("performanceMet")));
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class AciProportionNumeratorEncoderTest {
 		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder();
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
-		assertThat("Must have a null numerator", null, is(jsonWrapper.getInteger("numerator")));
+		assertThat("Must have a null performanceMet", null, is(jsonWrapper.getInteger("performanceMet")));
 	}
 
 	@Test
@@ -57,6 +57,6 @@ public class AciProportionNumeratorEncoderTest {
 		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder();
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
-		assertThat("Must have a numerator value of null", null, is(jsonWrapper.getInteger("numerator")));
+		assertThat("Must have a performanceMet value of null", null, is(jsonWrapper.getInteger("performanceMet")));
 	}
 }

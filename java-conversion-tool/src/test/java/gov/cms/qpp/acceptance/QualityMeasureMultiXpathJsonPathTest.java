@@ -29,12 +29,12 @@ public class QualityMeasureMultiXpathJsonPathTest {
 	@Test
 	public void compareFirstSubPopPerfMet() throws XmlException, IOException {
 		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].performanceMet";
-		helper.executeAttributeTest(jsonPath, "value", "486");
+		helper.executeAttributeTest(jsonPath, "value", "600");
 	}
 
 	@Test
 	public void compareFirstSubPopDenominator() throws XmlException, IOException {
-		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].denominator";
+		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].eligiblePopulation";
 		helper.executeAttributeTest(jsonPath, "value", "600");
 	}
 
@@ -46,8 +46,8 @@ public class QualityMeasureMultiXpathJsonPathTest {
 
 	@Test
 	public void compareFirstSubPopNumerator() throws XmlException, IOException {
-		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].numerator";
-		helper.executeAttributeTest(jsonPath, "value", "486");
+		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].performanceMet";
+		helper.executeAttributeTest(jsonPath, "value", "600");
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class QualityMeasureMultiXpathJsonPathTest {
 
 	@Test
 	public void compareThirdSubPopNumerator() throws XmlException, IOException {
-		String jsonPath = "measurementSets[1].measurements[0].value.strata[2].numerator";
+		String jsonPath = "measurementSets[1].measurements[0].value.strata[2].performanceMet";
 		helper.executeAttributeTest(jsonPath, "value", "520");
 	}
 }

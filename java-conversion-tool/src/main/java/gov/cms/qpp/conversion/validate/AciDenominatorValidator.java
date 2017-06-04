@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.Validator;
  */
 @Validator(value = TemplateId.ACI_DENOMINATOR, required = true)
 public class AciDenominatorValidator extends CommonNumeratorDenominatorValidator {
-	protected static final String DENOMINATOR_NAME = "Denominator";
+	protected static final String DENOMINATOR_NAME = "Eligible Population";
 
 	/**
 	 * Public constructor sets the node name for this class

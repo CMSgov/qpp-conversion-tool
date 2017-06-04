@@ -244,11 +244,16 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Optional.ofNullable(denomExclusionNode).ifPresent(
 				node -> {
 					Node aggCount = node.getChildNodes().get(0);
-					maintainContinuity(wrapper, aggCount, "performanceExclusion");
 					maintainContinuity(wrapper, aggCount, "eligiblePopulationExclusion");
-					maintainContinuity(wrapper, aggCount, "eligiblePopulationException");
 					String value = aggCount.getValue(AGGREGATE_COUNT);
 					wrapper.putInteger("eligiblePopulationExclusion", value);
+				});
+
+		Optional.ofNullable(denominatorExceptionNode).ifPresent(
+				node -> {
+					Node aggCount = node.getChildNodes().get(0);
+					maintainContinuity(wrapper, aggCount, "eligiblePopulationException");
+					String value = aggCount.getValue(AGGREGATE_COUNT);
 					wrapper.putInteger("eligiblePopulationException", value);
 				});
 
@@ -272,17 +277,17 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private String calculatePerformanceNotMet(Node numeratorNode, Node denominatorNode,
 											Node denomExclusionNode, Node denomExceptionNode) {
-		if (null == denominatorNode || null == denomExclusionNode) {
-			return null;
-		}
-		String denominatorValue = denominatorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
-		String denomExclusionValue = denomExclusionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+
+		String denominatorValue = denominatorNode == null ? "0" :
+				denominatorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+		String denomExclusionValue = denomExclusionNode == null ? "0" :
+				denomExclusionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
 		String numeratorValue = numeratorNode == null ? "0" :
 				numeratorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
 		String denomExceptionValue = denomExceptionNode == null ? "0" :
 				denomExceptionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
 
-		//for eCQMs, will be equal to denominator - numerator - denominator exclusion - denominator exception
+		// for eCQMs, will be equal to denominator - numerator - denominator exclusion - denominator exception
 		return Integer.toString(Integer.parseInt(denominatorValue)
 				- Integer.parseInt(numeratorValue)
 				- Integer.parseInt(denomExclusionValue)
