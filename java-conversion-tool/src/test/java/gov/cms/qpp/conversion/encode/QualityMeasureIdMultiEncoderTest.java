@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.empty;
 
 public class QualityMeasureIdMultiEncoderTest {
 	private final String REQUIRE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
@@ -153,7 +153,7 @@ public class QualityMeasureIdMultiEncoderTest {
 		List<LinkedHashMap<String, Integer>> subPopulations =
 				(List<LinkedHashMap<String, Integer>>)childValues.get("strata");
 
-		assertThat("Must have two sub populations encoded", subPopulations, hasSize(2));
+		assertThat("Must have zero sub populations encoded", subPopulations, is(empty()));
 	}
 
 	private LinkedHashMap<String, Object> getChildValues() {

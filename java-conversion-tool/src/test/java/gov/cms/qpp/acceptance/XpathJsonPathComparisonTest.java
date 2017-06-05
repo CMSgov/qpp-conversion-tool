@@ -100,13 +100,6 @@ public class XpathJsonPathComparisonTest {
 		helper.executeAttributeTest(jsonPath, "extension", "IA_EPA_1");
 	}
 
-	//Quality measure
-	@Test
-	public void compareQualityMeasureIdValuePerformanceNotMet() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[0].value.performanceNotMet";
-		helper.executeAttributeTest(jsonPath, "value", "50");
-	}
-
 	@Test
 	public void compareQualityMeasureIdValuePerformanceExclusion() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].value.eligiblePopulationExclusion";

@@ -239,7 +239,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(TYPE)));
 		Node denominatorNode = parentNode.findChildNode(n -> "DENOM".equals(n.getValue(TYPE)));
 		Node denomExclusionNode = parentNode.findChildNode(n -> "DENEX".equals(n.getValue(TYPE)));
-		Node denominatorExceptionNode = parentNode.findChildNode(n -> "DENEXCP".equals(n.getValue(TYPE)));
+		Node denomExceptionNode = parentNode.findChildNode(n -> "DENEXCP".equals(n.getValue(TYPE)));
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
 				node -> {
@@ -249,7 +249,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 					wrapper.putInteger("eligiblePopulationExclusion", value);
 				});
 
-		Optional.ofNullable(denominatorExceptionNode).ifPresent(
+		Optional.ofNullable(denomExceptionNode).ifPresent(
 				node -> {
 					Node aggCount = node.getChildNodes().get(0);
 					maintainContinuity(wrapper, aggCount, "eligiblePopulationException");
@@ -257,13 +257,14 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 					wrapper.putInteger("eligiblePopulationException", value);
 				});
 
-		Optional.ofNullable(
-			calculatePerformanceNotMet(numeratorNode, denominatorNode,
-				denomExclusionNode, denominatorExceptionNode)).ifPresent(
-				performanceNotMet -> {
+		Optional.ofNullable(denominatorNode).ifPresent(
+				node -> {
+					String performanceNotMet = calculatePerformanceNotMet(numeratorNode, denominatorNode,
+							denomExclusionNode, denomExceptionNode);
+					Node aggCount = node.getChildNodes().get(0);
 					//for eCQMs, will be equal to
 					// denominator - numerator - denominator exclusion - denominator exception
-					maintainContinuity(wrapper, denomExclusionNode, "performanceNotMet");
+					maintainContinuity(wrapper, aggCount, "performanceNotMet");
 					wrapper.putInteger("performanceNotMet", performanceNotMet);
 				});
 	}
