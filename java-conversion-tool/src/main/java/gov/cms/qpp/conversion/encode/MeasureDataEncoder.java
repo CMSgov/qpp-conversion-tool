@@ -33,6 +33,7 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 		String encodeLabel = measureTypeMapper.get(measureType);
 		wrapper.putInteger(encodeLabel, aggCount.getValue(AGGREGATE_COUNT));
 		maintainContinuity(wrapper, aggCount, encodeLabel);
+
 	}
 
 	/**
@@ -42,10 +43,12 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	 */
 	private Map<String, String> initializeMeasureTypeMap() {
 		Map<String , String> measureTypeMapper = new HashMap<>();
-		measureTypeMapper.put("IPOP", "performanceMet");
-		measureTypeMapper.put("IPP", "performanceMet");
+		final String eligiblePopulation = "eligiblePopulation";
+
+		measureTypeMapper.put("IPOP", eligiblePopulation);
+		measureTypeMapper.put("IPP", eligiblePopulation);
 		measureTypeMapper.put("NUMER", "performanceMet");
-		measureTypeMapper.put("DENOM", "eligiblePopulation");
+		measureTypeMapper.put("DENOM", eligiblePopulation);
 		measureTypeMapper.put("DENEX", "eligiblePopulationExclusion");
 		measureTypeMapper.put("DENEXCEP", "eligiblePopulationException");
 		return measureTypeMapper;

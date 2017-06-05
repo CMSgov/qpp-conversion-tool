@@ -109,13 +109,13 @@ public class XpathJsonPathComparisonTest {
 	@Test
 	public void compareQualityMeasureIdValuePerformanceMet() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].value.performanceMet";
-		helper.executeAttributeTest(jsonPath, "value", "1000");
+		helper.executeAttributeTest(jsonPath, "value", "800");
 	}
 
 	@Test
 	public void compareQualityMeasureIdValueNumerator() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].value.performanceMet";
-		helper.executeAttributeTest(jsonPath, "value", "1000");
+		helper.executeAttributeTest(jsonPath, "value", "800");
 	}
 
 	@Test

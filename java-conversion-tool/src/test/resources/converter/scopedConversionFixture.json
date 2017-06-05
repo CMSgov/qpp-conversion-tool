@@ -2204,8 +2204,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"performanceNotMet": 200,
-					"eligiblePopulationException": 50
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 150
 				}
 			},
 			{
@@ -2234,8 +2234,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"performanceNotMet": 200,
-					"eligiblePopulationException": 50
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 150
 				}
 			},
 			{
@@ -2280,8 +2280,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"performanceNotMet": 200,
-					"eligiblePopulationException": 50
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 150
 				}
 			},
 			{
@@ -2290,8 +2290,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"performanceNotMet": 200,
-					"eligiblePopulationException": 50
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 150
 				}
 			},
 			{
@@ -2301,8 +2301,8 @@
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
 					"eligiblePopulationExclusion": 50,
-					"performanceNotMet": 150,
-					"eligiblePopulationException": 50
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 100
 				}
 			},
 			{
@@ -2311,8 +2311,8 @@
 					"isEndToEndReported": true,
 					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"performanceNotMet": 200,
-					"eligiblePopulationException": 50
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 150
 				}
 			}
 		]
@@ -2334,8 +2334,8 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"performanceNotMet": 200,
-				"eligiblePopulationException": 50
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 150
 			}
 		},
 		{
@@ -2364,8 +2364,8 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"performanceNotMet": 200,
-				"eligiblePopulationException": 50
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 150
 			}
 		},
 		{
@@ -2410,8 +2410,8 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"performanceNotMet": 200,
-				"eligiblePopulationException": 50
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 150
 			}
 		},
 		{
@@ -2420,8 +2420,8 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"performanceNotMet": 200,
-				"eligiblePopulationException": 50
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 150
 			}
 		},
 		{
@@ -2431,9 +2431,8 @@
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
 				"eligiblePopulationExclusion": 50,
-				"performanceNotMet": 150,
-				"eligiblePopulationException": 50
-
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 100
 			}
 		},
 		{
@@ -2442,14 +2441,14 @@
 				"isEndToEndReported": true,
 				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"performanceNotMet": 200,
-				"eligiblePopulationException": 50
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 150
 			}
 		}
 	],
 	"MEASURE_DATA_CMS_V2": [
 		{
-			"performanceMet": 1000
+			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationExclusion": 50
@@ -2461,7 +2460,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 1000
+			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationException": 50
@@ -2473,7 +2472,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 1000
+			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationExclusion": 50
@@ -2485,7 +2484,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 1000
+			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationExclusion": 50
@@ -2497,7 +2496,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 1000
+			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationException": 50
@@ -2509,7 +2508,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 950
+			"eligiblePopulation": 950
 		},
 		{
 			"eligiblePopulation": 950
@@ -2518,7 +2517,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 950
+			"eligiblePopulation": 950
 		},
 		{
 			"eligiblePopulation": 950
@@ -2527,7 +2526,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 950
+			"eligiblePopulation": 950
 		},
 		{
 			"eligiblePopulation": 950
@@ -2536,7 +2535,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 950
+			"eligiblePopulation": 950
 		},
 		{
 			"eligiblePopulation": 950
@@ -2545,7 +2544,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 950
+			"eligiblePopulation": 950
 		},
 		{
 			"eligiblePopulation": 950
@@ -2554,7 +2553,7 @@
 			"performanceMet": 750
 		},
 		{
-			"performanceMet": 1000
+			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationException": 50
@@ -2566,7 +2565,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 1000
+			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationException": 50
@@ -2578,7 +2577,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 1000
+			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationExclusion": 50
@@ -2593,7 +2592,7 @@
 			"performanceMet": 800
 		},
 		{
-			"performanceMet": 1000
+			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationException": 50

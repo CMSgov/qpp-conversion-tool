@@ -29,7 +29,7 @@ public class QualityMeasureMultiXpathJsonPathTest {
 	@Test
 	public void compareFirstSubPopPerfMet() throws XmlException, IOException {
 		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].performanceMet";
-		helper.executeAttributeTest(jsonPath, "value", "600");
+		helper.executeAttributeTest(jsonPath, "value", "486");
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class QualityMeasureMultiXpathJsonPathTest {
 	@Test
 	public void compareFirstSubPopNumerator() throws XmlException, IOException {
 		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].performanceMet";
-		helper.executeAttributeTest(jsonPath, "value", "600");
+		helper.executeAttributeTest(jsonPath, "value", "486");
 	}
 
 	@Test

@@ -239,7 +239,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(TYPE)));
 		Node denominatorNode = parentNode.findChildNode(n -> "DENOM".equals(n.getValue(TYPE)));
 		Node denomExclusionNode = parentNode.findChildNode(n -> "DENEX".equals(n.getValue(TYPE)));
-		Node denomExceptionNode = parentNode.findChildNode(n -> "DENEXCP".equals(n.getValue(TYPE)));
+		Node denomExceptionNode = parentNode.findChildNode(n -> "DENEXCEP".equals(n.getValue(TYPE)));
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
 				node -> {

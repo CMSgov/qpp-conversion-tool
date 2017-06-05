@@ -19,40 +19,40 @@ public class MeasureDataEncoderTest {
 	public void testIpop() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode("IPOP");
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger(PERFORMANCE_MET), is(900));
+		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION), is(900));
 	}
 
 	@Test
 	public void testIpp() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode("IPP");
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger(PERFORMANCE_MET), is(900));
+		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION), is(900));
 	}
 
 	@Test
 	public void testDenominator() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode("DENOM");
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger("eligiblePopulation"), is(900));
+		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION), is(900));
 	}
 	@Test
 	public void testEligiblePopulationException() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode("DENEXCEP");
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger("eligiblePopulationException"), is(900));
+		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION_EXCEP), is(900));
 	}
 	@Test
 	public void testEligiblePopulationExclusion() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode("DENEX");
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger("eligiblePopulationExclusion"), is(900));
+		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION_EX), is(900));
 	}
 
 	@Test
 	public void testPerformanceMet() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode("NUMER");
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger("performanceMet"), is(900));
+		assertThat("Must return correct encoded result", jsonWrapper.getInteger(PERFORMANCE_MET), is(900));
 	}
 
 	private Node setUpMeasureDataNode(String measureType) {
