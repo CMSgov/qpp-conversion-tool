@@ -182,7 +182,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param childWrapper holder of encoded sub populations
 	 */
 	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper) {
-		this.encodePopulationTotal(childWrapper, parentNode);
+		this.encodeEligiblePopulation(childWrapper, parentNode);
 		this.encodePerformanceMet(childWrapper, parentNode);
 		this.encodePerformanceNotMet(childWrapper, parentNode);
 
@@ -198,7 +198,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param wrapper holder of the encoded initial population
 	 * @param parentNode holder of the initial population
 	 */
-	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
+	private void encodeEligiblePopulation(JsonWrapper wrapper, Node parentNode) {
 		final String eligiblePopulation = "eligiblePopulation";
 		Set<String> accepted = new HashSet<>(Arrays.asList("IPOP", "IPP"));
 		Node populationNode = parentNode.findChildNode(n -> accepted.contains(n.getValue(TYPE)));
