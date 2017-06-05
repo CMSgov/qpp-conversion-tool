@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.decode;
 import java.util.List;
 import java.util.Set;
 
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import org.jdom2.Element;
 import org.jdom2.xpath.XPathHelper;
 
@@ -248,5 +249,16 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		return DecodeResult.NO_ACTION;
+	}
+
+	/**
+	 * Returns the xpath from the path-correlation.json meta data
+	 *
+	 * @param attribute Key to the correlation data
+	 * @return xpath expression as a string
+	 */
+	protected String getXpath(String attribute) {
+		String template = this.getClass().getAnnotation(Decoder.class).value().name();
+		return PathCorrelator.getXpath(template, attribute, defaultNs.getURI());
 	}
 }

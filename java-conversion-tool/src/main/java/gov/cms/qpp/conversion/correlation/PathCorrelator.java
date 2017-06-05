@@ -18,8 +18,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Maintains associations between QPP json paths and their pre-transformation xpaths.
+ */
 public class PathCorrelator {
 	private static final String ENCODE_LABEL = "encodeLabel";
+	@SuppressWarnings("FieldCanBeLocal")
 	private static String config = "pathing/path-correlation.json";
 	private static PathCorrelation pathCorrelation;
 	private static Map<String, Goods> pathCorrelationMap = new HashMap<>();
@@ -30,6 +34,9 @@ public class PathCorrelator {
 
 	private PathCorrelator() {}
 
+	/**
+	 * Initializes correlations between json paths and xpaths
+	 */
 	private static void initPathCorrelation() {
 		try {
 			InputStream input = ClasspathHelper.contextClassLoader().getResourceAsStream(config);
@@ -41,6 +48,12 @@ public class PathCorrelator {
 		}
 	}
 
+	/**
+	 * Creates a key value store of mappings using the correlation cofiguration:
+	 * <a href="https://github.com/CMSgov/qpp-conversion-tool/blob/master/java-conversion-tool/src/main/resources/pathing/path-correlation.json">path-correlation.json</a>
+	 *
+	 * @param pathCorrelation deserialized representation of the aforementioned correlation configuration
+	 */
 	private static void flattenCorrelations(PathCorrelation pathCorrelation) {
 		Map<String, List<Config>> config = pathCorrelation.getCorrelations().stream()
 				.collect(Collectors.toMap(Correlation::getCorrelationId, Correlation::getConfig));
@@ -59,14 +72,34 @@ public class PathCorrelator {
 		});
 	}
 
+	/**
+	 * Retrieve the replacement marker for namespace uri substitution.
+	 *
+	 * @return substitution place holder
+	 */
 	static String getUriSubstitution() {
 		return pathCorrelation.getUriSubstitution();
 	}
 
-	public static String getKey(String template, String attribute) {
+	/**
+	 * Create key value from given key components.
+	 *
+	 * @param template template name
+	 * @param attribute name encoded or decoded for given template
+	 * @return concatenated key value
+	 */
+	private static String getKey(String template, String attribute) {
 		return template + "_" + attribute;
 	}
 
+	/**
+	 * Assemble an xpath for a given base template and leaf attribute.
+	 *
+	 * @param base base template name
+	 * @param attribute leaf attribute name
+	 * @param uri URI to substitute
+	 * @return xpath expression
+	 */
 	public static String getXpath(String base, String attribute, String uri) {
 		String key = PathCorrelator.getKey(base, attribute);
 		Goods goods = pathCorrelationMap.get(key);
@@ -74,6 +107,13 @@ public class PathCorrelator {
 				goods.getRelativeXPath().replaceAll(pathCorrelation.getUriSubstitution(), uri);
 	}
 
+	/**
+	 * Assemble an xpath using the given json path and json wrapper.
+	 *
+	 * @param jsonPath definite json path
+	 * @param wrapper object representation of QPP json
+	 * @return xpath that correlates to supplied json path
+	 */
 	@SuppressWarnings("unchecked")
 	public static String prepPath(String jsonPath, JsonWrapper wrapper) {
 		String base = "$";
@@ -91,6 +131,13 @@ public class PathCorrelator {
 		return makePath(metaMap, leaf);
 	}
 
+	/**
+	 * Retrieve metadata from map representing a json hash.
+	 *
+	 * @param jsonMap json hash
+	 * @param leaf name of leaf json attribute
+	 * @return metadata map
+	 */
 	@SuppressWarnings("unchecked")
 	private static Map<String, String> getMetaMap(Map<String, Object> jsonMap, final String leaf) {
 		List<Map<String, String>> metaHolder = (List<Map<String, String>>) jsonMap.get("metadata_holder");
@@ -106,6 +153,12 @@ public class PathCorrelator {
 		}).findFirst().orElse(null);
 	}
 
+	/**
+	 * Order metadata maps by placing a higher priority on maps containing a non-empty
+	 * {@link PathCorrelator#ENCODE_LABEL}.
+	 *
+	 * @return a comparator that will enact prioritization
+	 */
 	private static Comparator<Map<String, String>> labeledFirst() {
 		return (Map<String, String> map1, Map<String, String> map2) -> {
 			String map1Label = map1.get(ENCODE_LABEL);
@@ -123,6 +176,13 @@ public class PathCorrelator {
 		};
 	}
 
+	/**
+	 * Assemble base xpath with a relative xpath that identifies a leaf json attribute.
+	 *
+	 * @param metadata attribute specific metadata hash
+	 * @param leaf attribute name
+	 * @return xpath expression
+	 */
 	private static String makePath(Map<String, String> metadata, final String leaf) {
 		String nsUri = metadata.get("nsuri");
 		String baseTemplate = metadata.get("template");
@@ -130,6 +190,4 @@ public class PathCorrelator {
 		String relativeXpath = PathCorrelator.getXpath(baseTemplate, leaf, nsUri);
 		return (relativeXpath != null) ? baseXpath + "/" + relativeXpath : baseXpath;
 	}
-
-
 }

@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
 
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -64,10 +63,5 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 			xpathNs);
 		return Optional.ofNullable(expression.evaluateFirst(element)).map(Attribute::getValue)
 			.orElse(null);
-	}
-
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.name(), attribute, defaultNs.getURI());
 	}
 }
