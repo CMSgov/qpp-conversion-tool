@@ -1,9 +1,8 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
+import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Decoder;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
@@ -37,10 +36,5 @@ public class ReportingParametersActDecoder extends QppXmlDecoder {
 
 		setOnNode(element, performanceStartExprStr, performanceStartConsumer, Filters.attribute(), true);
 		setOnNode(element, performanceEndExprStr, performanceEndConsumer, Filters.attribute(), true);
-	}
-
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.REPORTING_PARAMETERS_ACT.name(), attribute, defaultNs.getURI());
 	}
 }

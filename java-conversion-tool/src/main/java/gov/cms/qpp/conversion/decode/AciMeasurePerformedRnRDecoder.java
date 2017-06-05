@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -40,10 +39,5 @@ public class AciMeasurePerformedRnRDecoder extends QppXmlDecoder {
 		String expressionStr = getXpath(MEASURE_ID);
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue(MEASURE_ID, p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
-	}
-
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS.name(), attribute, defaultNs.getURI());
 	}
 }

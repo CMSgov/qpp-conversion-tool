@@ -1,6 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 
+import com.jayway.jsonpath.PathNotFoundException;
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.xml.XmlException;
@@ -147,5 +148,11 @@ public class XpathJsonPathComparisonTest {
 	public void compareQualityMeasureIdValueDenominatorExclusions() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].value.denominatorExclusions";
 		helper.executeAttributeTest(jsonPath, "value", "50");
+	}
+
+	@Test(expected = PathNotFoundException.class)
+	public void nonexistentJsonPath() throws IOException, XmlException {
+		String jsonPath = "meep.mawp";
+		helper.executeAttributeTest(jsonPath, "", "");
 	}
 }

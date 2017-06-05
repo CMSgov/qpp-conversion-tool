@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -66,11 +65,6 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 		assignedEntities.stream()
 				.filter(this.validAssignedEntity(ns))
 				.forEach(this.mapNpiTin(ns, thisNode));
-	}
-
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.QRDA_CATEGORY_III_REPORT_V3.name(), attribute, defaultNs.getURI());
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -137,15 +136,5 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 			pairs[1] = ENTITY_INDIVIDUAL;
 		}
 		return pairs;
-	}
-
-	/**
-	 * Returns the xpath from the path-correlation.json meta data
-	 *
-	 * @param attribute Key to the coorelation data
-	 * @return xpath expression as a string
-	 */
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(TemplateId.CLINICAL_DOCUMENT.name(), attribute, defaultNs.getURI());
 	}
 }
