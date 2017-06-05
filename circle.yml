@@ -24,7 +24,6 @@ test:
     - mvn clean verify -Djacoco.skip.instrument=false
     - mvn jacoco:report
     - ./bin/sonarqube.sh
-    - ./benchmark/benchmark.sh
   post:
     - ./bin/docker_deploy.sh
     - cp benchmark/target/benchmark_output.txt $CIRCLE_ARTIFACTS
