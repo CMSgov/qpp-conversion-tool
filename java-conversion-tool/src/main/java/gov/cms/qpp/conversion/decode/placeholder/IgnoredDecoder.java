@@ -35,4 +35,12 @@ public class IgnoredDecoder extends QppXmlDecoder {
 
 	}
 
+	@Decoder(TemplateId.MEASURE_SECTION)
+	public static class MeasureSectionDecoder extends DefaultDecoder {
+
+		public MeasureSectionDecoder() {
+			super("Measure Section");
+		}
+	}
+
 }
