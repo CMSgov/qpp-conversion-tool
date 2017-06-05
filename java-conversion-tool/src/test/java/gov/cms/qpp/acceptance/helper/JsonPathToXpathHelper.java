@@ -59,7 +59,10 @@ public class JsonPathToXpathHelper {
 		} catch (IOException | XmlException e) {
 			fail(e.getMessage());
 		}
-
+		if ( attribute == null ) {
+			System.out.println("Derived values don't have xPath " + jsonPath + " " + expectedValue);
+			return;
+		}
 		if (!expectedValue.equals(attribute.getValue())) {
 			System.err.println("( " + jsonPath + " ) value ( " + expectedValue +
 					" ) does not equal ( " + attribute.getValue() +
