@@ -1,42 +1,35 @@
 package gov.cms.qpp.conversion;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.ErrorSource;
+import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
@@ -109,13 +102,14 @@ public class Converter {
 	 *
 	 * @return status of conversion
 	 */
-	public TransformationStatus transform() {
+	public JsonWrapper transform() {
 		DEV_LOG.info("Transform invoked with file {}", inFile);
+		JsonWrapper qpp = null;
 		try {
 			if (!usingStream()) {
-				transform(inFile);
+				qpp = transform(inFile);
 			} else {
-				transform(xmlStream);
+				qpp = transform(xmlStream);
 			}
 		} catch (XmlInputFileException | XmlException xe) {
 			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
@@ -126,11 +120,12 @@ public class Converter {
 			validationErrors.add(new ValidationError(UNEXPECTED_ERROR));
 		}
 
-		if (!usingStream() && !validationErrors.isEmpty()) {
-			writeValidationErrorsToFile();
+		if (!validationErrors.isEmpty()) {
+			throw new TransformException("Validation errors exist", null,
+				constructErrorHierarchy(sourceIdentifier(), validationErrors));
 		}
 
-		return getStatus();
+		return qpp;
 	}
 
 	/**
@@ -140,14 +135,8 @@ public class Converter {
 	 * @throws XmlException when transforming
 	 * @throws IOException when writing to given file
 	 */
-	private void transform(Path inFile) throws XmlException, IOException {
-		String inputFileName = inFile.getFileName().toString().trim();
-		Node decodedNode = transform(new NamedInputStream(XmlUtils.fileToStream(inFile), inFile.toString()));
-		Path outFile = getOutputFile(inputFileName);
-
-		if (decodedNode != null && validationErrors.isEmpty()) {
-			writeConverted(decodedNode, outFile);
-		}
+	private JsonWrapper transform(Path inFile) throws XmlException, IOException {
+		return transform(new NamedInputStream(XmlUtils.fileToStream(inFile), inFile.toString()));
 	}
 
 	/**
@@ -157,9 +146,10 @@ public class Converter {
 	 * @return a transformed representation of the source content
 	 * @throws XmlException during transform
 	 */
-	private Node transform(InputStream inStream) throws XmlException {
+	private JsonWrapper transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
+		JsonWrapper qpp = null;
 		if (null != decoded) {
 			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), inStream);
 
@@ -169,11 +159,15 @@ public class Converter {
 			if (doValidation) {
 				validationErrors.addAll(validator.validate(decoded));
 			}
+
+			if (validationErrors.isEmpty()) {
+				qpp = encode();
+			}
 		} else {
 			validationErrors.add(new ValidationError("The file is not a QRDA-III XML document"));
 		}
 
-		return decoded;
+		return qpp;
 	}
 
 	/**
@@ -183,68 +177,6 @@ public class Converter {
 	 */
 	private boolean usingStream() {
 		return inFile == null && xmlStream != null;
-	}
-
-	/**
-	 * Determine the exit status of the transformation
-	 *
-	 * @return exit status
-	 */
-	public TransformationStatus getStatus() {
-		if (null == decoded) {
-			return TransformationStatus.NON_RECOVERABLE;
-		}
-		return validationErrors.isEmpty() ? TransformationStatus.SUCCESS : TransformationStatus.ERROR;
-	}
-
-	/**
-	 * Assemble output based on the existence of transformations errors
-	 *
-	 * @return resulting transformation output content
-	 */
-	public InputStream getConversionResult() {
-		return (!validationErrors.isEmpty())
-				? writeValidationErrorsToStream()
-				: writeConverted();
-	}
-
-	/**
-	 * Assemble transformation validation errors
-	 *
-	 * @return error content
-	 */
-	private InputStream writeValidationErrorsToStream() {
-		String identifier = xmlStream.toString();
-		AllErrors allErrors = constructErrorHierarchy(identifier, validationErrors);
-		byte[] errors = new byte[0];
-		try {
-			errors = constructErrorJson(allErrors);
-		} catch (JsonProcessingException exception) {
-			DEV_LOG.error("Error converting the validation errors into JSON", exception);
-			String exceptionJson = "{ \"exception\": \"JsonProcessingException\" }";
-			return new ByteArrayInputStream(exceptionJson.getBytes());
-		}
-		return new ByteArrayInputStream(errors);
-	}
-
-	/**
-	 * Assemble transformation error content and write to a file.
-	 */
-	private void writeValidationErrorsToFile() {
-		String fileName = inFile.getFileName().toString().trim();
-		Path outFile = getOutputFile(fileName);
-		AllErrors allErrors = constructErrorHierarchy(fileName, validationErrors);
-
-		try (Writer errWriter = Files.newBufferedWriter(outFile)) {
-			final String writingErrorString = "Writing error file {}";
-			DEV_LOG.error(writingErrorString, outFile);
-			CLIENT_LOG.error(writingErrorString, outFile);
-			writeErrorJson(allErrors, errWriter);
-		} catch (IOException exception) { // coverage ignore candidate
-			final String notWriteErrorFile = MessageFormat.format("Could not write to error file {0}", outFile);
-			DEV_LOG.error(notWriteErrorFile, exception);
-			CLIENT_LOG.error(notWriteErrorFile);
-		}
 	}
 
 	/**
@@ -272,64 +204,20 @@ public class Converter {
 	}
 
 	/**
-	 * Writes the {@link AllErrors} in JSON format to the {@code Writer}.
-	 *
-	 * @param allErrors All the errors to write out into JSON.
-	 * @param writer The writer that will receive the JSON.
-	 * @throws IOException Thrown when AllErrors can't be serialized or if it can't be written to the Writer.
-	 */
-	private void writeErrorJson(final AllErrors allErrors, final Writer writer) throws IOException {
-		ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		jsonObjectWriter.writeValue(writer, allErrors);
-	}
-
-	/**
-	 * Converts the {@link AllErrors} into JSON and converts that into an array of {@code byte}s.
-	 *
-	 * @param allErrors All the errors to convert into JSON.
-	 * @return An array of bytes of JSON of AllErrors.
-	 * @throws JsonProcessingException Thrown when AllErrors can't be serialized into JSON.
-	 */
-	private byte[] constructErrorJson(final AllErrors allErrors) throws JsonProcessingException {
-		ObjectWriter jsonObjectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		return jsonObjectWriter.writeValueAsBytes(allErrors);
-	}
-
-	/**
 	 * Place transformed content into an input stream
 	 *
 	 * @return content resulting from the transformation
 	 */
-	private InputStream writeConverted() {
+	private JsonWrapper encode() {
 		JsonOutputEncoder encoder = getEncoder();
 		CLIENT_LOG.info("Decoded template ID {}", decoded.getType());
 
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));
-			InputStream inputStream = encoder.encode();
+			JsonWrapper qpp = encoder.encode();
 			validationErrors.addAll(encoder.getValidationErrors());
-			return inputStream;
+			return qpp;
 		} catch (EncodeException e) {
-			throw new XmlInputFileException("Issues decoding/encoding.", e);
-		}
-	}
-
-	/**
-	 * Write converted content to a specified file
-	 * 
-	 * @param decoded content to be written
-	 * @param outFile destination file where output should be written
-	 */
-	private void writeConverted(Node decoded, Path outFile) {
-		JsonOutputEncoder encoder = getEncoder();
-
-		CLIENT_LOG.info("Decoded template ID {} to file '{}'", decoded.getType(), outFile);
-
-		try (Writer writer = Files.newBufferedWriter(outFile)) {
-			encoder.setNodes(Collections.singletonList(decoded));
-			encoder.encode(writer);
-			validationErrors.addAll(encoder.getValidationErrors());
-		} catch (IOException | EncodeException e) { // coverage ignore candidate
 			throw new XmlInputFileException("Issues decoding/encoding.", e);
 		}
 	}
@@ -346,22 +234,15 @@ public class Converter {
 	}
 
 	/**
-	 * Determine what the output file's name should be.
+	 * Returns an identifier for either the file or stream depending on what is being used.
 	 *
-	 * @param name base string that helps relate the output file to it's corresponding source
-	 * @return the output file name
+	 * @return An identifier.
 	 */
-	public Path getOutputFile(String name) {
-		String outName = name.replaceFirst("(?i)(\\.xml)?$", getFileExtension());
-		return Paths.get(outName);
-	}
-
-	/**
-	 * Get an appropriate file extension for the transformation output filename.
-	 *
-	 * @return a file extension
-	 */
-	private String getFileExtension() {
-		return (!validationErrors.isEmpty()) ? ".err.json" : ".qpp.json";
+	private String sourceIdentifier() {
+		if (usingStream()) {
+			return xmlStream.toString();
+		} else {
+			return inFile.getFileName().toString();
+		}
 	}
 }

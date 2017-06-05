@@ -1,8 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.BaseTest;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.TransformationStatus;
+import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.After;
 import org.junit.Test;
@@ -29,11 +28,8 @@ public class AciMeasurePerformedRoundTripTest extends BaseTest {
 
 	@Test
 	public void testGarbage() throws IOException {
-		Converter converter = new Converter(JUNK_QRDA3_FILE);
-		TransformationStatus transformStatus = converter.transform();
-
-		assertThat("Converting the junk QRDA3 file should have been successful.", transformStatus,
-			is(TransformationStatus.SUCCESS));
+		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(JUNK_QRDA3_FILE);
+		converterWrapper.transform();
 
 		List<Map<String, ?>> aciMeasures = JsonHelper.readJsonAtJsonPath(Paths.get("AciMeasurePerformedGarbage.qpp.json"),
 			"$.measurementSets[?(@.category=='aci')].measurements[?(@.measureId=='TEST_MEASURE_ID')]", List.class);
