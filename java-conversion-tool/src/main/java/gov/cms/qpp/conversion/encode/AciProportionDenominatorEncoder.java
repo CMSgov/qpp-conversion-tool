@@ -13,6 +13,7 @@ import java.util.List;
 
 @Encoder(TemplateId.ACI_DENOMINATOR)
 public class AciProportionDenominatorEncoder extends QppOutputEncoder {
+	private static final String ENCODE_LABEL = "denominator";
 
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
@@ -23,14 +24,14 @@ public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 		List<Node> children = node.getChildNodes();
 		if (!children.isEmpty()) {
 			Node denominatorValueNode = children.get(0);
-			JsonOutputEncoder denominatorValueEncoder = ENCODERS.get(denominatorValueNode.getId());
+			JsonOutputEncoder denominatorValueEncoder = ENCODERS.get(denominatorValueNode.getType());
 
 			JsonWrapper value = new JsonWrapper();
 			denominatorValueEncoder.encode(value, denominatorValueNode);
-			Integer denominator = value.getInteger(VALUE);
 
-			if (null != denominator) {
-				wrapper.putObject("denominator", denominator);
+			if (null != value.getInteger(VALUE)) {
+				wrapper.putObject(ENCODE_LABEL, value.getInteger(VALUE));
+				wrapper.mergeMetadata(value, ENCODE_LABEL);
 			}
 		}
 	}

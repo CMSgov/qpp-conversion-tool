@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model.error;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,8 @@ import java.util.List;
  *
  * The source could be a file, a stream, or some other entity.
  */
-public class ErrorSource {
+public class ErrorSource implements Serializable {
+	private static final long serialVersionUID = 1596644641404778774L;
 	private String sourceIdentifier;
 	private List<ValidationError> validationErrors;
 

@@ -30,7 +30,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String AGGREGATE_COUNT = "aggregateCount";
 	private static final String TYPE = "type";
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
-	private static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
+	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
 
 	/**
@@ -128,7 +128,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private List<Node> initializeMeasureDataList(int subPopulationCount) {
 		return IntStream.range(0, subPopulationCount)
-				.mapToObj(node -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId()))
+				.mapToObj(ignore -> new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2))
 				.collect(Collectors.toList());
 	}
 
@@ -186,7 +186,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		this.encodePerformanceNotMet(childWrapper, parentNode);
 
 		for (Node childNode : parentNode.getChildNodes()) {
-			JsonOutputEncoder measureDataEncoder = ENCODERS.get(childNode.getId());
+			JsonOutputEncoder measureDataEncoder = ENCODERS.get(childNode.getType());
 			measureDataEncoder.encode(childWrapper, childNode);
 		}
 	}
@@ -198,12 +198,16 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the initial population
 	 */
 	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
-		Set<String> accepted = new HashSet(Arrays.asList("IPOP", "IPP"));
+		Set<String> accepted = new HashSet<>(Arrays.asList("IPOP", "IPP"));
 		Node populationNode = parentNode.findChildNode(n -> accepted.contains(n.getValue(TYPE)));
 
 		Optional.ofNullable(populationNode).ifPresent(
-				node -> wrapper.putInteger("populationTotal",
-						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
+				node -> {
+					Node aggCount = node.getChildNodes().get(0);
+					maintainContinuity(wrapper, aggCount, "populationTotal");
+					wrapper.putInteger("populationTotal", aggCount.getValue(AGGREGATE_COUNT));
+				}
+		);
 	}
 
 	/**
@@ -216,8 +220,11 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(TYPE)));
 
 		Optional.ofNullable(numeratorNode).ifPresent(
-				node -> wrapper.putInteger("performanceMet",
-						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
+				node -> {
+					Node aggCount = node.getChildNodes().get(0);
+					maintainContinuity(wrapper, aggCount, "performanceMet");
+					wrapper.putInteger("performanceMet", aggCount.getValue(AGGREGATE_COUNT));
+				});
 	}
 
 	/**
@@ -231,11 +238,19 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Node denominatorNode = parentNode.findChildNode(n -> "DENOM".equals(n.getValue(TYPE)));
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
-				node -> wrapper.putInteger("performanceExclusion",
-						node.getChildNodes().get(0).getValue(AGGREGATE_COUNT)));
+				node -> {
+					Node aggCount = node.getChildNodes().get(0);
+					maintainContinuity(wrapper, aggCount, "performanceExclusion");
+					wrapper.putInteger("performanceExclusion", aggCount.getValue(AGGREGATE_COUNT));
+				});
 
 		Optional.ofNullable(calculatePerformanceNotMet(denominatorNode, denomExclusionNode)).ifPresent(
-				performanceNotMet -> wrapper.putInteger("performanceNotMet", performanceNotMet));
+				performanceNotMet -> {
+					//have to choose one of denominatorNode, denomExclusionNode
+					//Why are we deriving values???
+					maintainContinuity(wrapper, denomExclusionNode, "performanceNotMet");
+					wrapper.putInteger("performanceNotMet", performanceNotMet);
+				});
 	}
 
 	/**

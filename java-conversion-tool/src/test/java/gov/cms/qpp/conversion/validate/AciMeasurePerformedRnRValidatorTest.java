@@ -23,10 +23,10 @@ public class AciMeasurePerformedRnRValidatorTest {
 	public void init() {
 		validator = new AciMeasurePerformedRnRValidator();
 
-		aciMeasurePerformedRnRNode = new Node(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS.getTemplateId());
+		aciMeasurePerformedRnRNode = new Node(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS);
 		aciMeasurePerformedRnRNode.putValue("measureId", "ACI_INFBLO_1");
 
-		measurePerformed = new Node(TemplateId.MEASURE_PERFORMED.getTemplateId());
+		measurePerformed = new Node(TemplateId.MEASURE_PERFORMED);
 		aciMeasurePerformedRnRNode.addChildNode(measurePerformed);
 	}
 

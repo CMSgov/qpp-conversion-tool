@@ -34,55 +34,55 @@ public class MultipleTinsEncoderTest {
 
 	@Before
 	public void createMultipleTinNode() {
-		npiTinNodeOne = new Node(MultipleTinsDecoder.NPI_TIN_ID);
+		npiTinNodeOne = new Node(TemplateId.NPI_TIN_ID);
 		npiTinNodeOne.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, NPI1);
 		npiTinNodeOne.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, TIN1);
 
-		npiTinNodeTwo = new Node(MultipleTinsDecoder.NPI_TIN_ID);
+		npiTinNodeTwo = new Node(TemplateId.NPI_TIN_ID);
 		npiTinNodeTwo.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, NPI2);
 		npiTinNodeTwo.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, TIN2);
 
-		reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT.getTemplateId());
+		reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		reportingParametersActNode.putValue("performanceStart", "20170101");
 		reportingParametersActNode.putValue("performanceEnd", "20171231");
 
-		reportingParametersSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION.getTemplateId());
+		reportingParametersSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION);
 		reportingParametersSectionNode.addChildNode(reportingParametersActNode);
 
 		numeratorValueNode = new Node();
-		numeratorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		numeratorValueNode.setType(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue("aggregateCount", "400");
 
 		aciProportionNumeratorNode = new Node();
-		aciProportionNumeratorNode.setId(TemplateId.ACI_NUMERATOR.getTemplateId());
+		aciProportionNumeratorNode.setType(TemplateId.ACI_NUMERATOR);
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
 
 		denominatorValueNode = new Node();
-		denominatorValueNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		denominatorValueNode.setType(TemplateId.ACI_AGGREGATE_COUNT);
 		denominatorValueNode.putValue("aggregateCount", "600");
 
 		aciProportionDenominatorNode = new Node();
-		aciProportionDenominatorNode.setId(TemplateId.ACI_DENOMINATOR.getTemplateId());
+		aciProportionDenominatorNode.setType(TemplateId.ACI_DENOMINATOR);
 		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
 
 		aciProportionMeasureNode = new Node();
-		aciProportionMeasureNode.setId(TemplateId.ACI_NUMERATOR_DENOMINATOR.getTemplateId());
+		aciProportionMeasureNode.setType(TemplateId.ACI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
 		aciProportionMeasureNode.putValue("measureId", "ACI-PEA-1");
 
 		aciSectionNode = new Node();
-		aciSectionNode.setId(TemplateId.ACI_SECTION.getTemplateId());
+		aciSectionNode.setType(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 
-		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT.getTemplateId());
+		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("entityType", "individual");
 		clinicalDocumentNode.addChildNode(reportingParametersSectionNode);
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		multipleTinsNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId());
+		multipleTinsNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
 		multipleTinsNode.addChildNode(clinicalDocumentNode);
 		multipleTinsNode.addChildNode(npiTinNodeOne);
 		multipleTinsNode.addChildNode(npiTinNodeTwo);
@@ -94,17 +94,17 @@ public class MultipleTinsEncoderTest {
 
 	@Test
 	public void testFirstTinNpiCombinationConversion() {
-		LinkedHashMap<String, Object> firstMeasurementMap = getClinicalDocumentMeasurementFromIndex(0);
+		LinkedHashMap<String, Object> firstMeasurementMap = getIndexedClinicalDocumentFromWrapper(0);
 
 		assertThat("Must contain the correct NPI",
-				firstMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is(NPI1));
+			firstMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is(NPI1));
 		assertThat("Must contain the correct TIN",
 			firstMeasurementMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is(TIN1));
 	}
 
 	@Test
 	public void testSecondTinNpiCombinationConversion() {
-		LinkedHashMap<String, Object> secondMeasurementMap = getClinicalDocumentMeasurementFromIndex(1);
+		LinkedHashMap<String, Object> secondMeasurementMap = getIndexedClinicalDocumentFromWrapper(1);
 
 		assertThat("Must contain the correct NPI",
 				secondMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is(NPI2));
@@ -112,8 +112,9 @@ public class MultipleTinsEncoderTest {
 			secondMeasurementMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is(TIN2));
 	}
 
-	private LinkedHashMap<String, Object> getClinicalDocumentMeasurementFromIndex(Integer index) {
-		return ((LinkedList<LinkedHashMap<String, LinkedList<LinkedHashMap<String, Object>>>>)
-				testWrapper.getObject()).get(index).get("measurementSets").get(0);
+	@SuppressWarnings("unchecked")
+	private LinkedHashMap<String, Object> getIndexedClinicalDocumentFromWrapper(Integer index) {
+		return ((LinkedList<LinkedHashMap<String, Object>>)
+				testWrapper.getObject()).get(index);
 	}
 }

@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
-import gov.cms.qpp.conversion.api.model.ConversionResult;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,5 +17,5 @@ public interface QrdaService {
 	 * @return Results of the conversion
 	 * @throws IOException If error occurs during file upload or conversion
 	 */
-	ConversionResult convertQrda3ToQpp(InputStream fileInputStream) throws IOException;
+	JsonWrapper convertQrda3ToQpp(InputStream fileInputStream);
 }

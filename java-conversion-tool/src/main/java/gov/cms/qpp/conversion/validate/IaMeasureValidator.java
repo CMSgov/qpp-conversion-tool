@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Validates IaMeasure Node - expects a child MEASURE_PERFORMED with a  Y or N value
  */
-@Validator(templateId = TemplateId.IA_MEASURE, required = true)
+@Validator(value = TemplateId.IA_MEASURE, required = true)
 public class IaMeasureValidator extends NodeValidator {
 
 	public static final String TYPE_ERROR = "Measure performed value is required and must be either a Y or an N.";

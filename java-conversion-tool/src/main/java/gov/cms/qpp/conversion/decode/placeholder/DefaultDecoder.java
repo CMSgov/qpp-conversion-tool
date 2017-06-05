@@ -33,7 +33,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
 		DEV_LOG.debug("Default decoder {} is handling templateId {} and is described as '{}' ",
-				getClass(), thisnode.getId(), description);
+				getClass(), thisnode.getType().name(), description);
 		thisnode.putValue("DefaultDecoderFor", description);
 		return DecodeResult.TREE_CONTINUE;
 	}
@@ -75,43 +75,11 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@Decoder(TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class EthnicitySupplementalDataElementCmsV2Decoder extends DefaultDecoder {
-
-		public EthnicitySupplementalDataElementCmsV2Decoder() {
-			super("Ethnicity Supplemental Data Element – CMS (V2)");
-		}
-	}
-
 	@Decoder(TemplateId.REPORTING_STRATUM_CMS)
 	public static class ReportingStratumCmsDataDecoder extends DefaultDecoder {
 
 		public ReportingStratumCmsDataDecoder() {
 			super("Reporting Stratum - CMS");
-		}
-	}
-
-	@Decoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class SexSupplementalDataElementalCmsV2Decoder extends DefaultDecoder {
-
-		public SexSupplementalDataElementalCmsV2Decoder() {
-			super("Sex Supplemental Data Element - CMS (V2)");
-		}
-	}
-
-	@Decoder(TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class RaceSupplementalDataElementCmsV2Decoder extends DefaultDecoder {
-
-		public RaceSupplementalDataElementCmsV2Decoder() {
-			super("Race Supplemental Data Element - CMS (V2)");
-		}
-	}
-
-	@Decoder(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-	public static class PayerSupplementalDataElementCmsV2Decoder extends DefaultDecoder {
-
-		public PayerSupplementalDataElementCmsV2Decoder() {
-			super("Payer Supplemental Data Element - CMS (V2)");
 		}
 	}
 }

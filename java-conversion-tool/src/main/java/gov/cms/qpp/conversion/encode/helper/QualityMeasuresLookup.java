@@ -9,7 +9,7 @@ import java.util.Map;
 public class QualityMeasuresLookup {
 
 	// Private internal hashmap
-	private static final Map<String, String> internalMap = new HashMap();
+	private static final Map<String, String> internalMap = new HashMap<>();
 
 	static {
 		internalMap.put("40280381-52fc-3a32-0153-1a4ba57f0b8a","CMS117v5");

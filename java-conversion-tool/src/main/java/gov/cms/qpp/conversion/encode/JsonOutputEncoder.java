@@ -5,9 +5,7 @@ import gov.cms.qpp.conversion.model.error.ValidationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +40,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 		try {
 			internalEncode(wrapper, node);
 			if (wrapper.isObject()) {
-				wrapper.putString("metadata_nsuri", node.getDefaultNsUri());
-				wrapper.putString("metadata_template", node.getType().name());
-				wrapper.putString("metadata_path", node.getPath());
+				wrapper.attachMetadata(node);
 			}
 		} catch (EncodeException e) {
 			DEV_LOG.warn("Encode error when doing internalEncode, adding a new ValidationError", e);
@@ -53,12 +49,12 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 	}
 
 	@Override
-	public InputStream encode() {
+	public JsonWrapper encode() {
 		JsonWrapper wrapper = new JsonWrapper();
 		for (Node curNode : nodes) {
 			encode(wrapper, curNode);
 		}
-		return new ByteArrayInputStream(wrapper.toString().getBytes());
+		return wrapper;
 	}
 
 	public void addValidationError(ValidationError validationError) {

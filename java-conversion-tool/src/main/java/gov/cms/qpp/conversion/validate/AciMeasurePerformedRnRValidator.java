@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * This Validator checks that the Measure ID is present.
  */
-@Validator(templateId = TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS, required = true)
+@Validator(value = TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS, required = true)
 public class AciMeasurePerformedRnRValidator extends NodeValidator {
 
 	private static final String MEASURE_ID_IS_REQUIRED =

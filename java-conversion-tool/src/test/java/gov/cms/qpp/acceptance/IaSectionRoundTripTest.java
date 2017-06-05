@@ -1,6 +1,6 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.After;
 import org.junit.Before;
@@ -19,7 +19,7 @@ public class IaSectionRoundTripTest {
 	Path file;
 
 	@Before
-	public void setUp() throws IOException {
+	public void setUp() {
 		file = Paths.get("../qrda-files/valid-QRDA-III.xml");
 	}
 
@@ -30,7 +30,7 @@ public class IaSectionRoundTripTest {
 
 	@Test
 	public void testIaSectionConvertsIaCategory() throws IOException {
-		new Converter(file).transform();
+		new ConversionFileWriterWrapper(file).transform();
 		String iaCategory = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
 				"$.measurementSets[3].category", String.class);
 
@@ -39,7 +39,7 @@ public class IaSectionRoundTripTest {
 
 	@Test
 	public void testIaSectionConvertsIaMeasureId() throws IOException {
-		new Converter(file).transform();
+		new ConversionFileWriterWrapper(file).transform();
 		String iaMeasureId = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
 				"$.measurementSets[3].measurements[0].measureId", String.class);
 
@@ -48,7 +48,7 @@ public class IaSectionRoundTripTest {
 
 	@Test
 	public void testIaSectionConvertsMeasurePerformed() throws IOException {
-		new Converter(file).transform();
+		new ConversionFileWriterWrapper(file).transform();
 		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
 				"$.measurementSets[3].measurements[0].value", Boolean.class);
 

@@ -64,60 +64,59 @@ public class QualityMeasureIdMultiEncoderTest {
 		String numer = "NUMER";
 		String denom = "DENOM";
 		String denex = "DENEX";
-		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.getTemplateId());
+		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue(MEASURE_ID, "test1");
 
-		aggregateCountNode = new Node();
-		aggregateCountNode.setId(TemplateId.ACI_AGGREGATE_COUNT.getTemplateId());
+		aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
 
-		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		populationNode.putValue(TYPE, ipop);
 		populationNode.putValue(POPULATION_ID, "ipop1");
 		populationNode.addChildNode(aggregateCountNode);
 
-		populationNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		populationNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		populationNodeTwo.putValue(TYPE, ipop);
 		populationNodeTwo.putValue(POPULATION_ID, "ipop2");
 		populationNodeTwo.addChildNode(aggregateCountNode);
 
-		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		denomExclusionNode.putValue(TYPE, denex);
 		denomExclusionNode.putValue(POPULATION_ID, "denex1");
 		denomExclusionNode.addChildNode(aggregateCountNode);
 
-		denomExclusionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		denomExclusionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		denomExclusionNodeTwo.putValue(TYPE, denex);
 		denomExclusionNodeTwo.putValue(POPULATION_ID, "denex2");
 		denomExclusionNodeTwo.addChildNode(aggregateCountNode);
 
-		denomExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		denomExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		denomExceptionNode.putValue(TYPE, denexcep);
 		denomExceptionNode.putValue(POPULATION_ID, "denexcep1");
 		denomExceptionNode.addChildNode(aggregateCountNode);
 
-		denomExceptionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		denomExceptionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		denomExceptionNodeTwo.putValue(TYPE, denexcep);
 		denomExceptionNodeTwo.putValue(POPULATION_ID, "denexcep2");
 		denomExceptionNodeTwo.addChildNode(aggregateCountNode);
 
-		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 
 		numeratorNode.putValue(TYPE, numer);
 		numeratorNode.putValue(POPULATION_ID, "numer1");
 		numeratorNode.addChildNode(aggregateCountNode);
 
-		numeratorNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		numeratorNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		numeratorNodeTwo.putValue(TYPE, numer);
 		numeratorNodeTwo.putValue(POPULATION_ID, "numer2");
 		numeratorNodeTwo.addChildNode(aggregateCountNode);
 
-		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		denominatorNode.putValue(TYPE, denom);
 		denominatorNode.putValue(POPULATION_ID, "denom1");
 		denominatorNode.addChildNode(aggregateCountNode);
 
-		denominatorNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2.getTemplateId());
+		denominatorNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		denominatorNodeTwo.putValue(TYPE, denom);
 		denominatorNodeTwo.putValue(POPULATION_ID, "denom2");
 		denominatorNodeTwo.addChildNode(aggregateCountNode);
