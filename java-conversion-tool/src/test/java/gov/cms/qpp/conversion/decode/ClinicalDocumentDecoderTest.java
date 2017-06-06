@@ -66,12 +66,6 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void testReportParameterSource() {
-		Node reportParameterSectionNode = clinicalDocument.getChildNodes().get(0);
-		assertThat("returned category", reportParameterSectionNode.getValue("source"), is("provider"));
-	}
-
-	@Test
 	public void testReportActPerformanceStart() {
 		Node reportParameterSectionNode = clinicalDocument.getChildNodes().get(0);
 		Node reportingActSectionNodeMeasureNode = reportParameterSectionNode.getChildNodes().get(0);
