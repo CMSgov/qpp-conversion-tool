@@ -244,10 +244,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 		Optional.ofNullable(numeratorNode).ifPresent(
 			node -> {
-			Node aggCount = node.getChildNodes().get(0);
-			maintainContinuity(wrapper, node, "stratum");
-			wrapper.putString("stratum", node.getValue(MeasureDataDecoder.MEASURE_POPULATION));
-		});
+				maintainContinuity(wrapper, node, "stratum");
+				wrapper.putString("stratum", node.getValue(MeasureDataDecoder.MEASURE_POPULATION));
+			});
 	}
 
 	/**
