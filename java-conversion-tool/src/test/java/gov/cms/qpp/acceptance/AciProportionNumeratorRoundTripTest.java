@@ -45,7 +45,7 @@ public class AciProportionNumeratorRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		String EXPECTED = "{\n  \"performanceMet\" : 600\n}";
+		String EXPECTED = "{\n  \"numerator\" : 600\n}";
 		assertThat("expected encoder to return a representation of a performanceMet with a value", sw.toString(),
 				is(EXPECTED));
 	}

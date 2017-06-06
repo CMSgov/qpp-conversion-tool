@@ -6,22 +6,22 @@
 			{
 				"measureId": "ACI-PEA-1",
 				"value": {
-					"performanceMet": 600,
-					"eligiblePopulation": 800
+					"numerator": 600,
+					"denominator": 800
 				}
 			},
 			{
 				"measureId": "ACI_EP_1",
 				"value": {
-					"performanceMet": 500,
-					"eligiblePopulation": 700
+					"numerator": 500,
+					"denominator": 700
 				}
 			},
 			{
 				"measureId": "ACI_CCTPE_3",
 				"value": {
-					"performanceMet": 400,
-					"eligiblePopulation": 600
+					"numerator": 400,
+					"denominator": 600
 				}
 			}
 		]
@@ -2103,22 +2103,22 @@
 					{
 						"measureId": "ACI-PEA-1",
 						"value": {
-							"performanceMet": 600,
-							"eligiblePopulation": 800
+							"numerator": 600,
+							"denominator": 800
 						}
 					},
 					{
 						"measureId": "ACI_EP_1",
 						"value": {
-							"performanceMet": 500,
-							"eligiblePopulation": 700
+							"numerator": 500,
+							"denominator": 700
 						}
 					},
 					{
 						"measureId": "ACI_CCTPE_3",
 						"value": {
-							"performanceMet": 400,
-							"eligiblePopulation": 600
+							"numerator": 400,
+							"denominator": 600
 						}
 					}
 				],
@@ -2143,45 +2143,45 @@
 		{
 			"measureId": "ACI-PEA-1",
 			"value": {
-				"performanceMet": 600,
-				"eligiblePopulation": 800
+				"numerator": 600,
+				"denominator": 800
 			}
 		},
 		{
 			"measureId": "ACI_EP_1",
 			"value": {
-				"performanceMet": 500,
-				"eligiblePopulation": 700
+				"numerator": 500,
+				"denominator": 700
 			}
 		},
 		{
 			"measureId": "ACI_CCTPE_3",
 			"value": {
-				"performanceMet": 400,
-				"eligiblePopulation": 600
+				"numerator": 400,
+				"denominator": 600
 			}
 		}
 	],
 	"ACI_DENOMINATOR": [
 		{
-			"eligiblePopulation": 800
+			"denominator": 800
 		},
 		{
-			"eligiblePopulation": 700
+			"denominator": 700
 		},
 		{
-			"eligiblePopulation": 600
+			"denominator": 600
 		}
 	],
 	"ACI_NUMERATOR": [
 		{
-			"performanceMet": 600
+			"numerator": 600
 		},
 		{
-			"performanceMet": 500
+			"numerator": 500
 		},
 		{
-			"performanceMet": 400
+			"numerator": 400
 		}
 	],
 	"MEASURE_SECTION_V2": {

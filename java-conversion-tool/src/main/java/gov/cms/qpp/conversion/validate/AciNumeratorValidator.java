@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.Validator;
  */
 @Validator(value = TemplateId.ACI_NUMERATOR, required = true)
 public class AciNumeratorValidator extends CommonNumeratorDenominatorValidator {
-	protected static final String NUMERATOR_NAME = "PerformanceMet";
+	protected static final String NUMERATOR_NAME = "Numerator";
 
 	/**
 	 * Class that validates ACI Numerator Nodes

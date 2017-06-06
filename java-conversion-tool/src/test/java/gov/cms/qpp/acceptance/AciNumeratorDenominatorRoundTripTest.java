@@ -107,7 +107,7 @@ public class AciNumeratorDenominatorRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		String jsonExpected = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"performanceMet\" : 600,\n    \"eligiblePopulation\" : 800\n  }\n}";
+		String jsonExpected = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : 600,\n    \"denominator\" : 800\n  }\n}";
 		assertThat("expected encoder to return a representation of a measure", sw.toString(), is(jsonExpected));
 	}
 }

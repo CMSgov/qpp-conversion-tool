@@ -78,13 +78,13 @@ public class XpathJsonPathComparisonTest {
 
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1Numerator() throws IOException, XmlException {
-		String jsonPath = "measurementSets[2].measurements[0].value.performanceMet";
+		String jsonPath = "measurementSets[2].measurements[0].value.numerator";
 		helper.executeAttributeTest(jsonPath, "value", "600");
 	}
 
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1Denominator() throws IOException, XmlException {
-		String jsonPath = "measurementSets[2].measurements[0].value.eligiblePopulation";
+		String jsonPath = "measurementSets[2].measurements[0].value.denominator";
 		helper.executeAttributeTest(jsonPath, "value", "800");
 	}
 

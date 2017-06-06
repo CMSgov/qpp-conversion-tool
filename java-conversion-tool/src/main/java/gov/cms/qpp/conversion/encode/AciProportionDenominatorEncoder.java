@@ -13,7 +13,7 @@ import java.util.List;
 
 @Encoder(TemplateId.ACI_DENOMINATOR)
 public class AciProportionDenominatorEncoder extends QppOutputEncoder {
-	private static final String ENCODE_LABEL = "eligiblePopulation";
+	private static final String ENCODE_LABEL = "denominator";
 
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {

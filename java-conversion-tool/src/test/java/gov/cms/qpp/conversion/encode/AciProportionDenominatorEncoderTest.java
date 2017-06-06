@@ -37,7 +37,7 @@ public class AciProportionDenominatorEncoderTest {
 	public void testEncoder() {
 		runEncoder();
 
-		assertThat("eligiblePopulation value must be 600", json.getInteger("eligiblePopulation"), is(600));
+		assertThat("denominator value must be 600", json.getInteger("denominator"), is(600));
 	}
 
 	@Test
@@ -45,7 +45,7 @@ public class AciProportionDenominatorEncoderTest {
 		aciProportionDenominatorNode.getChildNodes().remove(numeratorDenominatorValueNode);
 		runEncoder();
 
-		assertNull("eligiblePopulation value must be null", json.getInteger("eligiblePopulation"));
+		assertNull("denominator value must be null", json.getInteger("denominator"));
 	}
 
 	@Test

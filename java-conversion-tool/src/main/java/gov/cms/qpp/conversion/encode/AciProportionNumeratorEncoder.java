@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Encoder(TemplateId.ACI_NUMERATOR)
 public class AciProportionNumeratorEncoder extends QppOutputEncoder {
-	private static final String ENCODE_LABEL = "performanceMet";
+	private static final String ENCODE_LABEL = "numerator";
 
 	/**
 	 *  Encodes an ACI Numerator Measure into the QPP format

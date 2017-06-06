@@ -46,7 +46,7 @@ public class AciProportionDenominatorRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		String EXPECTED = "{\n  \"eligiblePopulation\" : 600\n}";
+		String EXPECTED = "{\n  \"denominator\" : 600\n}";
 		assertThat("expected encoder to return a representation of a denominator with a value", sw.toString(),
 				is(EXPECTED));
 	}
