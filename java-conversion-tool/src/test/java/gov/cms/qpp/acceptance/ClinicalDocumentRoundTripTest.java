@@ -1,24 +1,24 @@
 package gov.cms.qpp.acceptance;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.util.Collections;
+
+import org.apache.commons.io.IOUtils;
+import org.junit.Test;
+import org.reflections.util.ClasspathHelper;
+
 import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
-import org.reflections.util.ClasspathHelper;
-
-import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentRoundTripTest extends BaseTest {
 
@@ -47,9 +47,7 @@ public class ClinicalDocumentRoundTripTest extends BaseTest {
 		DefaultDecoder.removeDefaultNode(clinicalDocumentNode.getChildNodes());
 
 		QppOutputEncoder encoder = new QppOutputEncoder();
-		List<Node> nodes = new ArrayList<>();
-		nodes.add(clinicalDocumentNode);
-		encoder.setNodes(nodes);
+		encoder.setNodes(Collections.singletonList(clinicalDocumentNode));
 
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));

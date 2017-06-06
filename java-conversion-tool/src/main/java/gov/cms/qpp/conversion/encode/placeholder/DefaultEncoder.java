@@ -50,15 +50,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 			super("Aggregate Count - CMS");
 		}
 	}
-	//	 this one looks like a node that is not necessary
-
-	@Encoder(TemplateId.MEASURE_SECTION)
-	public static class MeasureSectionEncoder extends DefaultEncoder {
-
-		public MeasureSectionEncoder() {
-			super("Measure Section");
-		}
-	}
 
 	@Encoder(TemplateId.REPORTING_PARAMETERS_ACT)
 	public static class ReportingParametersActEncoder extends DefaultEncoder {

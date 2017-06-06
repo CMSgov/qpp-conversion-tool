@@ -58,15 +58,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	// this one looks like a node that is not necessary
-	@Decoder(TemplateId.MEASURE_SECTION)
-	public static class MeasureSectionDecoder extends DefaultDecoder {
-
-		public MeasureSectionDecoder() {
-			super("Measure Section");
-		}
-	}
-
 	@Decoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
 	public static class ContinuousVariableMeasureValueCmsDecoder extends DefaultDecoder {
 
