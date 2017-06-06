@@ -17,7 +17,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 public class DecoderTest {
 
 	private final Set<TemplateId> templateIds = EnumSet.of(
-			TemplateId.MEASURE_SECTION,
 			TemplateId.CLINICAL_DOCUMENT,
 			TemplateId.MEASURE_SECTION_V2,
 			TemplateId.IA_SECTION,
