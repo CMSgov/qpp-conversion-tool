@@ -183,6 +183,8 @@ visit [http://qrda-conversion-ui.s3-website-us-east-1.amazonaws.com/](http://qrd
 
 Use the upload interface to add QRDA XML files to an upload queue. Click `upload` next to the file names to convert the files.
 
+#### Do not send any PII (Personally Identifiable Information) in the QRDA file.  This is not a secure system
+
 ## Want to contribute?
 
 Want to file a bug or contribute some code? Read up on our
