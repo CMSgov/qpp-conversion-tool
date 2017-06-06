@@ -42,14 +42,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
-
-	@Encoder(TemplateId.CMS_AGGREGATE_COUNT)
-	public static class CmsAggregateCountEncoder extends DefaultEncoder {
-		public CmsAggregateCountEncoder() {
-			super("Aggregate Count - CMS");
-		}
-	}
 
 	@Encoder(TemplateId.REPORTING_PARAMETERS_ACT)
 	public static class ReportingParametersActEncoder extends DefaultEncoder {
