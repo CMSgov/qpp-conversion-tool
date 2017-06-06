@@ -16,20 +16,6 @@ public class MeasureDataEncoderTest {
 	private final String ELIGIBLE_POPULATION_EXCEP = "eligiblePopulationException";//DENEXCP
 
 	@Test
-	public void testIpop() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode("IPOP");
-		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION), is(900));
-	}
-
-	@Test
-	public void testIpp() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode("IPP");
-		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION), is(900));
-	}
-
-	@Test
 	public void testDenominator() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode("DENOM");
 		JsonWrapper jsonWrapper = encode(measureDataNode);

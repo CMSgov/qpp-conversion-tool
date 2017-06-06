@@ -38,16 +38,6 @@ public class MeasureDataRoundTripTest extends BaseTest {
 	}
 
 	@Test
-	public void decodeIpopMeasureDataAsNode() throws Exception {
-		test("IPOP");//eligiblePopulation - DENOM
-	}
-
-	@Test
-	public void decodeIppMeasureDataAsNode() throws Exception {
-		test("IPP");//eligiblePopulation- DENOM
-	}
-
-	@Test
 	public void decodeNumerMeasureDataAsNode() throws Exception {
 		test("NUMER");//performanceMet
 	}

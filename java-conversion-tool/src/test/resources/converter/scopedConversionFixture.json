@@ -2448,9 +2448,6 @@
 	],
 	"MEASURE_DATA_CMS_V2": [
 		{
-			"eligiblePopulation": 1000
-		},
-		{
 			"eligiblePopulationExclusion": 50
 		},
 		{
@@ -2458,9 +2455,6 @@
 		},
 		{
 			"performanceMet": 800
-		},
-		{
-			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationException": 50
@@ -2472,9 +2466,6 @@
 			"performanceMet": 800
 		},
 		{
-			"eligiblePopulation": 1000
-		},
-		{
 			"eligiblePopulationExclusion": 50
 		},
 		{
@@ -2484,9 +2475,6 @@
 			"performanceMet": 800
 		},
 		{
-			"eligiblePopulation": 1000
-		},
-		{
 			"eligiblePopulationExclusion": 50
 		},
 		{
@@ -2494,9 +2482,6 @@
 		},
 		{
 			"performanceMet": 800
-		},
-		{
-			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationException": 50
@@ -2511,22 +2496,7 @@
 			"eligiblePopulation": 950
 		},
 		{
-			"eligiblePopulation": 950
-		},
-		{
 			"performanceMet": 800
-		},
-		{
-			"eligiblePopulation": 950
-		},
-		{
-			"eligiblePopulation": 950
-		},
-		{
-			"performanceMet": 800
-		},
-		{
-			"eligiblePopulation": 950
 		},
 		{
 			"eligiblePopulation": 950
@@ -2538,13 +2508,13 @@
 			"eligiblePopulation": 950
 		},
 		{
-			"eligiblePopulation": 950
-		},
-		{
 			"performanceMet": 800
 		},
 		{
 			"eligiblePopulation": 950
+		},
+		{
+			"performanceMet": 800
 		},
 		{
 			"eligiblePopulation": 950
@@ -2553,9 +2523,6 @@
 			"performanceMet": 750
 		},
 		{
-			"eligiblePopulation": 1000
-		},
-		{
 			"eligiblePopulationException": 50
 		},
 		{
@@ -2565,9 +2532,6 @@
 			"performanceMet": 800
 		},
 		{
-			"eligiblePopulation": 1000
-		},
-		{
 			"eligiblePopulationException": 50
 		},
 		{
@@ -2575,9 +2539,6 @@
 		},
 		{
 			"performanceMet": 800
-		},
-		{
-			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationExclusion": 50
@@ -2590,9 +2551,6 @@
 		},
 		{
 			"performanceMet": 800
-		},
-		{
-			"eligiblePopulation": 1000
 		},
 		{
 			"eligiblePopulationException": 50
