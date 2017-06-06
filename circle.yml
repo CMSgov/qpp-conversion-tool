@@ -24,10 +24,8 @@ test:
     - mvn clean verify -Djacoco.skip.instrument=false
     - mvn jacoco:report
     - ./bin/sonarqube.sh
-    - ./benchmark/benchmark.sh
   post:
     - ./bin/docker_deploy.sh
-    - cp benchmark/target/benchmark_output.txt $CIRCLE_ARTIFACTS
     - cp java-conversion-tool/target/java-conversion-tool.jar $CIRCLE_ARTIFACTS
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/java-conversion-tool && cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/java-conversion-tool
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/lambdize && cp -R lambdize/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/lambdize
