@@ -177,6 +177,11 @@ curl -X POST \
 The response body will either be the QPP JSON on success or error JSON on an error.
 The HTTP Status will be `201 Created` on succes or `422 Unprocessable entity` on an error.
 
+### Simple UI to test converter
+
+visit [http://qrda-conversion-ui.s3-website-us-east-1.amazonaws.com/](http://qrda-conversion-ui.s3-website-us-east-1.amazonaws.com/) 
+
+Use the upload interface to add QRDA XML files to an upload queue. Click `upload` next to the file names to convert the files.
 
 ## Want to contribute?
 
