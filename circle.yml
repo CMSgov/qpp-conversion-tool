@@ -47,7 +47,7 @@ test:
     - cd ./java-conversion-tool/; mvn javadoc:javadoc; mkdir $CIRCLE_ARTIFACTS/JavaDocs/; cp -R ./target/site/apidocs/* $CIRCLE_ARTIFACTS/JavaDocs/
 deployment:
   dev: 
-    branch: QPPCT-138-deploy-simple-ui
+    branch: master
     commands:
       - cd frontend; yarn run build 
       - aws s3 sync frontend/dist s3://qrda-conversion-ui --delete
