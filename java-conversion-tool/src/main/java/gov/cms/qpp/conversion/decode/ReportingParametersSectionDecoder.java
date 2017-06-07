@@ -15,7 +15,6 @@ public class ReportingParametersSectionDecoder extends QppXmlDecoder {
 
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisnode) {
-		thisnode.putValue("source", "provider");
 		return DecodeResult.TREE_CONTINUE;
 	}
 }
