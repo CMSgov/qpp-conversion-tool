@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -19,7 +18,7 @@ import java.util.function.Consumer;
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataDecoder extends QppXmlDecoder {
 	protected static final Set<String> MEASURES =
-		new HashSet<>(Arrays.asList("DENEX", "DENOM", "DENEXCEP", "IPP", "IPOP", "NUMER"));
+		new HashSet<>(Arrays.asList("DENEX", "DENOM", "DENEXCEP", "NUMER"));
 
 	public static final String MEASURE_TYPE = "type";
 	public static final String MEASURE_POPULATION = "populationId";
@@ -65,10 +64,5 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 		String expressionStr = getXpath(MEASURE_POPULATION);
 		Consumer<? super Attribute> consumer = attr -> thisNode.putValue(MEASURE_POPULATION, attr.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
-	}
-
-	private String getXpath(String attribute) {
-		return PathCorrelator.getXpath(
-				TemplateId.MEASURE_DATA_CMS_V2.name(), attribute, defaultNs.getURI());
 	}
 }

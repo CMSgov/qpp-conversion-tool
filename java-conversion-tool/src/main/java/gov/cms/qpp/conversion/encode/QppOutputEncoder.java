@@ -29,14 +29,29 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 		}
 	}
 
-	protected void maintainContinuity(JsonWrapper wrapper, Node node, String leafLabel) {
+	/**
+	 * Provide a means to associate json path to xpath expression when data is harvested from nodes by means
+	 * other than extraction via the node's specified {@link Encoder}.
+	 *
+	 * @param wrapper parent {@link JsonWrapper}
+	 * @param node decoded QRDA node
+	 * @param leafLabel encoded json attribute name
+	 */
+	void maintainContinuity(JsonWrapper wrapper, Node node, String leafLabel) {
 		JsonWrapper throwAway = new JsonWrapper();
 		JsonOutputEncoder used = ENCODERS.get(node.getType());
 		used.encode(throwAway, node);
 		maintainContinuity(wrapper, throwAway, leafLabel);
 	}
 
-	protected void maintainContinuity(JsonWrapper wrapper, JsonWrapper other, String leafLabel) {
+	/**
+	 * Convenience override for {@link QppOutputEncoder#maintainContinuity(JsonWrapper, Node, String)}
+	 *
+	 * @param wrapper parent wrapper
+	 * @param other wrapper whose metadata is to be merged with parent
+	 * @param leafLabel json attribute name
+	 */
+	void maintainContinuity(JsonWrapper wrapper, JsonWrapper other, String leafLabel) {
 		wrapper.mergeMetadata(other, leafLabel);
 	}
 }
