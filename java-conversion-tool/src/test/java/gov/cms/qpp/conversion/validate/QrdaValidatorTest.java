@@ -36,7 +36,7 @@ public class QrdaValidatorTest {
 	private static List<Node> nodesPassedIntoRequiredValidateTemplateIdNodes;
 
 	private static final TemplateId TEST_REQUIRED_TEMPLATE_ID = TemplateId.ACI_NUMERATOR_DENOMINATOR;
-	private static final TemplateId TEST_OPTIONAL_TEMPLATE_ID = TemplateId.CMS_AGGREGATE_COUNT;
+	//private static final TemplateId TEST_OPTIONAL_TEMPLATE_ID = TemplateId.CMS_AGGREGATE_COUNT;
 
 	private static final ValidationError TEST_VALIDATION_ERROR_FOR_SINGLE_NODE =
 		new ValidationError("single node validation error");
@@ -51,7 +51,7 @@ public class QrdaValidatorTest {
 		nodesPassedIntoRequiredValidateTemplateIdNodes = null;
 
 		objectUnderTest = AnnotationMockHelper.mockValidator(TEST_REQUIRED_TEMPLATE_ID, RequiredTestValidator.class, true);
-		objectUnderTest = AnnotationMockHelper.mockValidator(TEST_OPTIONAL_TEMPLATE_ID, OptionalTestValidator.class, false, objectUnderTest);
+		objectUnderTest = AnnotationMockHelper.mockValidator(TemplateId.PLACEHOLDER, OptionalTestValidator.class, false, objectUnderTest);
 
 		activated = true;
 	}
@@ -137,7 +137,7 @@ public class QrdaValidatorTest {
 
 		//set-up
 		Node testRootNode = new Node();
-		testRootNode.setType(TEST_OPTIONAL_TEMPLATE_ID);
+		testRootNode.setType(TemplateId.PLACEHOLDER);
 		final String testKey = "testKey";
 		final String testValue = "testValue";
 		testRootNode.putValue(testKey, testValue);
