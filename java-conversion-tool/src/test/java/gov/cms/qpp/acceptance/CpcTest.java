@@ -25,25 +25,25 @@ public class CpcTest {
 	}
 
 	@Test
-	public void historicalAciSectionScope() throws Exception {
+	public void historicalAciSectionScope() {
 		run("ACI_SECTION");
 		assertSuccess();
 	}
 
 	@Test
-	public void historicalIaSectionScope() throws Exception {
+	public void historicalIaSectionScope() {
 		run("IA_SECTION");
 		assertSuccess();
 	}
 
 	@Test
-	public void historicalIAMeasurePerformedScope() throws Exception {
+	public void historicalIAMeasurePerformedScope() {
 		run("IA_MEASURE");
 		assertSuccess();
 	}
 
 	@Test
-	public void historicalClinicalDocumentScope() throws Exception {
+	public void historicalClinicalDocumentScope() {
 		run("CLINICAL_DOCUMENT");
 		assertError();
 	}
