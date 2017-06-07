@@ -218,11 +218,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the the numerator node
 	 */
 	private void encodePerformanceMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> {
-
-			return NUMER.equals(n.getValue(TYPE));
-		});
-
+		Node numeratorNode = parentNode.findChildNode(n -> NUMER.equals(n.getValue(TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 			node -> {
 				Node aggCount = node.getChildNodes().get(0);
