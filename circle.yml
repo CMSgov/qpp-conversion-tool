@@ -22,8 +22,6 @@ dependencies:
     - unzip -d . sonarscanner.zip
     - pip install ansible
     - cd frontend; yarn
-    - docker info
-    - docker build -t clydet/qpp_conversion .
   cache_directories:
     - ~/.cache/yarn
 
@@ -53,8 +51,3 @@ deployment:
     commands:
       - cd frontend; yarn run build 
       - aws s3 sync frontend/dist s3://qrda-conversion-ui --delete
-  hub:
-    branch: /^(?!master$).*$/
-    commands:
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push clydet/qpp_conversion
