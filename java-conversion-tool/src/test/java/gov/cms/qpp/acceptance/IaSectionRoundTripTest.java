@@ -32,7 +32,7 @@ public class IaSectionRoundTripTest {
 	public void testIaSectionConvertsIaCategory() throws IOException {
 		new ConversionFileWriterWrapper(file).transform();
 		String iaCategory = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
-				"$.measurementSets[3].category", String.class);
+				"$.measurementSets[2].category", String.class);
 
 		assertThat("Must contain a category", iaCategory, is("ia"));
 	}
@@ -41,7 +41,7 @@ public class IaSectionRoundTripTest {
 	public void testIaSectionConvertsIaMeasureId() throws IOException {
 		new ConversionFileWriterWrapper(file).transform();
 		String iaMeasureId = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
-				"$.measurementSets[3].measurements[0].measureId", String.class);
+				"$.measurementSets[2].measurements[0].measureId", String.class);
 
 		assertThat("Must contain measure id", iaMeasureId, is("IA_EPA_1"));
 	}
@@ -50,7 +50,7 @@ public class IaSectionRoundTripTest {
 	public void testIaSectionConvertsMeasurePerformed() throws IOException {
 		new ConversionFileWriterWrapper(file).transform();
 		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
-				"$.measurementSets[3].measurements[0].value", Boolean.class);
+				"$.measurementSets[2].measurements[0].value", Boolean.class);
 
 		assertTrue("Must contain a measure performed", measurePerformed);
 	}

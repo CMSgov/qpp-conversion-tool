@@ -49,15 +49,6 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	// this seems to be handled by 2.16.840.1.113883.10.20.27.3.3
-	@Decoder(TemplateId.CMS_AGGREGATE_COUNT)
-	public static class CmsAggregateCountDecoder extends DefaultDecoder {
-
-		public CmsAggregateCountDecoder() {
-			super("Aggregate Count - CMS");
-		}
-	}
-
 	@Decoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
 	public static class ContinuousVariableMeasureValueCmsDecoder extends DefaultDecoder {
 

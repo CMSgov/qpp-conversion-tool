@@ -20,7 +20,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 public class EncoderTest {
 
 	private final Set<TemplateId> templateIds = EnumSet.of(
-			TemplateId.MEASURE_SECTION,
 			TemplateId.CLINICAL_DOCUMENT,
 			TemplateId.MEASURE_SECTION_V2,
 			TemplateId.IA_SECTION,
@@ -34,7 +33,6 @@ public class EncoderTest {
 			TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2,
 			TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2,
 			TemplateId.REPORTING_PARAMETERS_ACT,
-			TemplateId.CMS_AGGREGATE_COUNT,
 			TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS,
 			TemplateId.MEASURE_PERFORMED,
 			TemplateId.ACI_NUMERATOR_DENOMINATOR,

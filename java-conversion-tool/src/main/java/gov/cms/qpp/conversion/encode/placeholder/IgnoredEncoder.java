@@ -37,12 +37,4 @@ public class IgnoredEncoder extends JsonOutputEncoder {
 
 	}
 
-	@Encoder(TemplateId.MEASURE_SECTION)
-	public static class MeasureSectionEncoder extends DefaultEncoder {
-
-		public MeasureSectionEncoder() {
-			super("Measure Section");
-		}
-	}
-
 }

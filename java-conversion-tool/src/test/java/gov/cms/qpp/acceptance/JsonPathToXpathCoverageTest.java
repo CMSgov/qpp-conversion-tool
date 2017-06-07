@@ -38,7 +38,7 @@ public class JsonPathToXpathCoverageTest {
 			JsonPathAggregator agg = new JsonPathAggregator(root);
 
 			agg.getJsonPaths().forEach(
-							(key, value) -> helper.executeAttributeTest(key, value));
+				(key, value) -> helper.executeAttributeTest(key, value));
 		} catch (IOException ex) {
 			fail(ex.getMessage());
 		}

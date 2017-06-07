@@ -22,49 +22,49 @@ public class QualityMeasureMultiXpathJsonPathTest {
 
 	@Test
 	public void compareFirstSubEligiblePopTotal() throws XmlException, IOException {
-		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].eligiblePopulation";
+		String jsonPath = "measurementSets[0].measurements[0].value.strata[0].eligiblePopulation";
 		helper.executeAttributeTest(jsonPath, "value", "600");
 	}
 
 	@Test
 	public void compareFirstSubPopPerfMet() throws XmlException, IOException {
-		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].performanceMet";
+		String jsonPath = "measurementSets[0].measurements[0].value.strata[0].performanceMet";
 		helper.executeAttributeTest(jsonPath, "value", "486");
 	}
 
 	@Test
 	public void compareFirstSubPopDenominator() throws XmlException, IOException {
-		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].eligiblePopulation";
+		String jsonPath = "measurementSets[0].measurements[0].value.strata[0].eligiblePopulation";
 		helper.executeAttributeTest(jsonPath, "value", "600");
 	}
 
 	@Test
 	public void compareFirstSubPopDenominatorExceptions() throws XmlException, IOException {
-		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].eligiblePopulationException";
+		String jsonPath = "measurementSets[0].measurements[0].value.strata[0].eligiblePopulationException";
 		helper.executeAttributeTest(jsonPath, "value", "35");
 	}
 
 	@Test
 	public void compareFirstSubPopNumerator() throws XmlException, IOException {
-		String jsonPath = "measurementSets[1].measurements[0].value.strata[0].performanceMet";
+		String jsonPath = "measurementSets[0].measurements[0].value.strata[0].performanceMet";
 		helper.executeAttributeTest(jsonPath, "value", "486");
 	}
 
 	@Test
 	public void compareSecondSubEligiblePopTotal() throws XmlException, IOException {
-		String jsonPath = "measurementSets[1].measurements[0].value.strata[1].eligiblePopulation";
+		String jsonPath = "measurementSets[0].measurements[0].value.strata[1].eligiblePopulation";
 		helper.executeAttributeTest(jsonPath, "value", "800");
 	}
 
 	@Test
 	public void compareSecondSubPopDenExcep() throws XmlException, IOException {
-		String jsonPath = "measurementSets[1].measurements[0].value.strata[1].eligiblePopulationException";
+		String jsonPath = "measurementSets[0].measurements[0].value.strata[1].eligiblePopulationException";
 		helper.executeAttributeTest(jsonPath, "value", "40");
 	}
 
 	@Test
 	public void compareThirdSubPopNumerator() throws XmlException, IOException {
-		String jsonPath = "measurementSets[1].measurements[0].value.strata[2].performanceMet";
+		String jsonPath = "measurementSets[0].measurements[0].value.strata[2].performanceMet";
 		helper.executeAttributeTest(jsonPath, "value", "520");
 	}
 }
