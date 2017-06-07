@@ -31,10 +31,10 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
 	protected static final String DENEX = "denominator exclusion";
-	protected static final String DENEXCEP = "denominator exception";
-	protected static final String IPOP = "initial population";
-	protected static final String NUMER = "numerator";
-	protected static final String DENOM = "denominator";
+	protected static final String DENEXCEP = "eligiblePopulationExclusion";
+	protected static final String IPOP = "eligible population";
+	protected static final String NUMER = "performanceMet";
+	protected static final String DENOM = "eligiblePopulation";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -105,7 +105,6 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, DENEXCEP, "DENEXCEP"),
 				makeValidator(subPopulation::getDenominatorExclusionsUuid, DENEX, "DENEX"),
 				makeValidator(subPopulation::getNumeratorUuid, NUMER, "NUMER"),
-				makeValidator(subPopulation::getInitialPopulationUuid, IPOP, "IPOP", "IPP"),
 				makeValidator(subPopulation::getDenominatorUuid, DENOM, "DENOM"));
 
 		validations.forEach(validate -> validate.accept(node));
