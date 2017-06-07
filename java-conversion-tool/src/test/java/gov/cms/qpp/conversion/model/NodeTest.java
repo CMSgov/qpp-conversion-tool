@@ -16,7 +16,7 @@ public class NodeTest {
 
 	@Test
 	public void testMembers() {
-		TemplateId randomEnumValue1 = TemplateId.CMS_AGGREGATE_COUNT;
+		TemplateId randomEnumValue1 = TemplateId.PLACEHOLDER;
 		TemplateId randomEnumValue2 = TemplateId.ACI_SECTION;
 		Node node = new Node(randomEnumValue1);
 

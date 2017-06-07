@@ -60,80 +60,81 @@ public class XpathJsonPathComparisonTest {
 	//ACI
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1() throws IOException, XmlException {
-		String jsonPath = "measurementSets[2].measurements[0].measureId";
+		String jsonPath = "measurementSets[1].measurements[0].measureId";
 		helper.executeAttributeTest(jsonPath, "extension", "ACI-PEA-1");
 	}
 
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciEp1() throws IOException, XmlException {
-		String jsonPath = "measurementSets[2].measurements[1].measureId";
+		String jsonPath = "measurementSets[1].measurements[1].measureId";
 		helper.executeAttributeTest(jsonPath, "extension", "ACI_EP_1");
 	}
 
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciCctpe3() throws IOException, XmlException {
-		String jsonPath = "measurementSets[2].measurements[2].measureId";
+		String jsonPath = "measurementSets[1].measurements[2].measureId";
 		helper.executeAttributeTest(jsonPath, "extension", "ACI_CCTPE_3");
 	}
 
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1Numerator() throws IOException, XmlException {
-		String jsonPath = "measurementSets[2].measurements[0].value.numerator";
+		String jsonPath = "measurementSets[1].measurements[0].value.numerator";
 		helper.executeAttributeTest(jsonPath, "value", "600");
 	}
 
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1Denominator() throws IOException, XmlException {
-		String jsonPath = "measurementSets[2].measurements[0].value.denominator";
+		String jsonPath = "measurementSets[1].measurements[0].value.denominator";
 		helper.executeAttributeTest(jsonPath, "value", "800");
 	}
 
 	//IA
 	@Test
 	public void compareIaMeasurePerformedMeasureIdIaEpa1Value() throws IOException, XmlException {
-		String jsonPath = "measurementSets[3].measurements[0].value";
+		String jsonPath = "measurementSets[2].measurements[0].value";
 		helper.executeAttributeTest(jsonPath, "code", "Y");
 	}
 
 	@Test
 	public void compareIaMeasurePerformedMeasureIdIaEpa1() throws IOException, XmlException {
-		String jsonPath = "measurementSets[3].measurements[0].measureId";
+		String jsonPath = "measurementSets[2].measurements[0].measureId";
 		helper.executeAttributeTest(jsonPath, "extension", "IA_EPA_1");
 	}
 
+	//Quality measure
 	@Test
 	public void compareQualityMeasureIdValuePerformanceExclusion() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[0].value.eligiblePopulationExclusion";
+		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulationExclusion";
 		helper.executeAttributeTest(jsonPath, "value", "50");
 	}
 
 	@Test
 	public void compareQualityMeasureIdValuePerformanceMet() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[0].value.performanceMet";
+		String jsonPath = "measurementSets[0].measurements[0].value.performanceMet";
 		helper.executeAttributeTest(jsonPath, "value", "800");
 	}
 
 	@Test
 	public void compareQualityMeasureIdValueNumerator() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[0].value.performanceMet";
+		String jsonPath = "measurementSets[0].measurements[0].value.performanceMet";
 		helper.executeAttributeTest(jsonPath, "value", "800");
 	}
 
 	@Test
 	public void compareQualityMeasureIdValueDenominator() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[0].value.eligiblePopulation";
+		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulation";
 		helper.executeAttributeTest(jsonPath, "value", "1000");
 	}
 
 	@Test
 	public void compareQualityMeasureIdValueEligiblePopulation() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[0].value.eligiblePopulation";
+		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulation";
 		helper.executeAttributeTest(jsonPath, "value", "1000");
 	}
 
 	@Test
 	public void compareQualityMeasureIdValueEligiblePopulationExclusion() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[0].value.eligiblePopulationExclusion";
+		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulationExclusion";
 		helper.executeAttributeTest(jsonPath, "value", "50");
 	}
 
