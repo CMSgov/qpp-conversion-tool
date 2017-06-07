@@ -51,5 +51,3 @@ deployment:
     commands:
       - cd frontend; yarn run build 
       - aws s3 sync frontend/dist s3://qrda-conversion-ui --delete
-
-      
