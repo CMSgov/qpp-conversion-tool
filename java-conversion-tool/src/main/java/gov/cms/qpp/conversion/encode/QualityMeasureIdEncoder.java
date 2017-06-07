@@ -32,7 +32,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
-
+	private static final String NUMER = "NUMER";
 
 	/**
 	 * Encodes an Quality Measure Id into the QPP format
@@ -218,7 +218,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the the numerator node
 	 */
 	private void encodePerformanceMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> {
+
+			return NUMER.equals(n.getValue(TYPE));
+		});
 
 		Optional.ofNullable(numeratorNode).ifPresent(
 			node -> {
@@ -235,7 +238,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode Node
 	 */
 	private void encodeStratum(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> NUMER.equals(n.getValue(TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 				node -> {
 					maintainContinuity(wrapper, node, "stratum");
@@ -250,7 +253,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the denominator and denominator exclusion nodes
 	 */
 	private void encodePerformanceNotMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> NUMER.equals(n.getValue(TYPE)));
 		Node denominatorNode = parentNode.findChildNode(n -> "DENOM".equals(n.getValue(TYPE)));
 		Node denomExclusionNode = parentNode.findChildNode(n -> "DENEX".equals(n.getValue(TYPE)));
 		Node denomExceptionNode = parentNode.findChildNode(n -> "DENEXCEP".equals(n.getValue(TYPE)));
