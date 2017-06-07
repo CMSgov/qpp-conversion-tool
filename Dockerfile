@@ -8,6 +8,7 @@ COPY ./ /usr/src/app/
 WORKDIR /usr/src/app/
 
 RUN mvn install -DskipTests
+RUN rm -rf /usr/src/app/
 
 WORKDIR /usr/src/run/
 
