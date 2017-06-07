@@ -1,14 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.junit.Test;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class ReportingParametersSectionDecoderTest {
 
@@ -52,7 +51,6 @@ public class ReportingParametersSectionDecoderTest {
 		assertThat("returned node should not be null", root.getChildNodes(), is(not(nullValue())));
 		assertThat("returned node should have one child decoder node", root.getChildNodes().size(), is(1));
 		Node reportingSectionNode = root.getChildNodes().get(0);
-		assertThat("returned category", reportingSectionNode.getValue("source"), is("provider"));
 
 		// Should have a Measure node 
 		assertThat("returned node should not be null", reportingSectionNode.getChildNodes(), is(not(nullValue())));
