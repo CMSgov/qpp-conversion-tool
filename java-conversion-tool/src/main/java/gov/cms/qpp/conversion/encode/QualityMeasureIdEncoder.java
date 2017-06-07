@@ -32,7 +32,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
-	private boolean isAsinglePerformanceRate = true; //Decides if encoded should include a stratum attribute
 
 	/**
 	 * Encodes an Quality Measure Id into the QPP format
@@ -62,16 +61,14 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 *
 	 * @param measureConfig configuration in check
 	 * @param measureId variable to show when the mapping is non existent
-	 * @return
+	 * @return SINGLE_PERFORMANCE_RATE. == measureConfig.getMetricType()
 	 */
 	private boolean isASinglePerformanceRate(MeasureConfig measureConfig, String measureId) {
 		if (measureConfig == null) {
 			Converter.CLIENT_LOG.info("Measure Configuration for {} is missing", measureId);
-			isAsinglePerformanceRate = true;
-		} else {
-			isAsinglePerformanceRate = SINGLE_PERFORMANCE_RATE.equalsIgnoreCase(measureConfig.getMetricType());
+			return true;
 		}
-		return isAsinglePerformanceRate;
+		return SINGLE_PERFORMANCE_RATE.equalsIgnoreCase(measureConfig.getMetricType());
 	}
 
 	/**
@@ -83,7 +80,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private void encodeChildren(JsonWrapper wrapper, Node parentNode) {
 		JsonWrapper childWrapper = new JsonWrapper();
 		childWrapper.putBoolean(IS_END_TO_END_REPORTED, TRUE);
-		encodeSubPopulation(parentNode, childWrapper);
+		encodeSubPopulation(parentNode, childWrapper, false);
 		wrapper.putObject(VALUE, childWrapper);
 	}
 
@@ -104,7 +101,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 *
 	 * @param node object that holds the nodes to be grouped
 	 * @param measureConfig object that holds the groupings
-	 * @return
+	 * @return List of decoded Nodes
 	 */
 	private List<Node> createSubPopulationGrouping(Node node, MeasureConfig measureConfig) {
 		int subPopCount = measureConfig.getSubPopulation().size();
@@ -127,7 +124,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * Initializes a list of Measure Section nodes from how many sub populations are being converted
 	 *
 	 * @param subPopulationCount number of sub populations to convert
-	 * @return
+	 * @return List of decoded Nodes
 	 */
 	private List<Node> initializeMeasureDataList(int subPopulationCount) {
 		return IntStream.range(0, subPopulationCount)
@@ -139,7 +136,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * Creates a map of child guids to indexes for sub population grouping
 	 *
 	 * @param measureConfig configurations that group the sub populations
-	 * @return
+	 * @return Map of Population UUID keys and index values
 	 */
 	private Map<String, Integer> createSubPopulationIndexMap(MeasureConfig measureConfig) {
 		Map<String, Integer> supPopMap = new HashMap<>();
@@ -163,13 +160,11 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private void encodeMultiPerformanceChildren(JsonWrapper wrapper, List<Node> subPopNodes) {
 		JsonWrapper childWrapper = new JsonWrapper();
-
 		childWrapper.putBoolean(IS_END_TO_END_REPORTED, TRUE);
-
 		JsonWrapper strataListWrapper = new JsonWrapper();
 		for (Node subPopNode : subPopNodes) {
 			JsonWrapper strataWrapper = new JsonWrapper();
-			encodeSubPopulation(subPopNode, strataWrapper);
+			encodeSubPopulation(subPopNode, strataWrapper, true);
 			strataListWrapper.putObject(strataWrapper);
 		}
 		childWrapper.putObject("strata", strataListWrapper);
@@ -182,7 +177,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the sub populations
 	 * @param childWrapper holder of encoded sub populations
 	 */
-	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper) {
+	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper, boolean isMultiRate) {
 		this.encodePopulationTotal(childWrapper, parentNode);
 		this.encodePerformanceMet(childWrapper, parentNode);
 		this.encodePerformanceNotMet(childWrapper, parentNode);
@@ -191,7 +186,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			JsonOutputEncoder measureDataEncoder = ENCODERS.get(childNode.getType());
 			measureDataEncoder.encode(childWrapper, childNode);
 		}
-		if (!isAsinglePerformanceRate) {
+		if (isMultiRate) {
 			this.encodeStratum(childWrapper, parentNode);
 		}
 	}
