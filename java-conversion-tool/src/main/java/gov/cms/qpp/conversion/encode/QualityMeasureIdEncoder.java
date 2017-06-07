@@ -6,17 +6,14 @@ import gov.cms.qpp.conversion.encode.helper.QualityMeasuresLookup;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import java.util.Arrays;
+
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -32,6 +29,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
+
 
 	/**
 	 * Encodes an Quality Measure Id into the QPP format
@@ -181,8 +179,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param childWrapper holder of encoded sub populations
 	 */
 	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper) {
-		this.encodePopulationTotal(childWrapper, parentNode);
-		this.encodePerformanceMet(childWrapper, parentNode);
 		this.encodePerformanceNotMet(childWrapper, parentNode);
 
 		for (Node childNode : parentNode.getChildNodes()) {
@@ -192,63 +188,41 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	}
 
 	/**
-	 * Encodes a population total from a initial population node
-	 *
-	 * @param wrapper holder of the encoded initial population
-	 * @param parentNode holder of the initial population
-	 */
-	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
-		Set<String> accepted = new HashSet<>(Arrays.asList("IPOP", "IPP"));
-		Node populationNode = parentNode.findChildNode(n -> accepted.contains(n.getValue(TYPE)));
-
-		Optional.ofNullable(populationNode).ifPresent(
-				node -> {
-					Node aggCount = node.getChildNodes().get(0);
-					maintainContinuity(wrapper, aggCount, "populationTotal");
-					wrapper.putInteger("populationTotal", aggCount.getValue(AGGREGATE_COUNT));
-				}
-		);
-	}
-
-	/**
-	 * Encodes a performance met from a numerator node
-	 *
-	 * @param wrapper holder of the encoded numerator node
-	 * @param parentNode holder of the the numerator node
-	 */
-	private void encodePerformanceMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(TYPE)));
-
-		Optional.ofNullable(numeratorNode).ifPresent(
-				node -> {
-					Node aggCount = node.getChildNodes().get(0);
-					maintainContinuity(wrapper, aggCount, "performanceMet");
-					wrapper.putInteger("performanceMet", aggCount.getValue(AGGREGATE_COUNT));
-				});
-	}
-
-	/**
 	 * Encodes a performance not met from denominator and denominator exclusion
 	 *
 	 * @param wrapper holder of the encoded denominator and denominator exclusion nodes
 	 * @param parentNode holder of the denominator and denominator exclusion nodes
 	 */
 	private void encodePerformanceNotMet(JsonWrapper wrapper, Node parentNode) {
-		Node denomExclusionNode = parentNode.findChildNode(n -> "DENEX".equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> "NUMER".equals(n.getValue(TYPE)));
 		Node denominatorNode = parentNode.findChildNode(n -> "DENOM".equals(n.getValue(TYPE)));
+		Node denomExclusionNode = parentNode.findChildNode(n -> "DENEX".equals(n.getValue(TYPE)));
+		Node denomExceptionNode = parentNode.findChildNode(n -> "DENEXCEP".equals(n.getValue(TYPE)));
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
 				node -> {
 					Node aggCount = node.getChildNodes().get(0);
-					maintainContinuity(wrapper, aggCount, "performanceExclusion");
-					wrapper.putInteger("performanceExclusion", aggCount.getValue(AGGREGATE_COUNT));
+					maintainContinuity(wrapper, aggCount, "eligiblePopulationExclusion");
+					String value = aggCount.getValue(AGGREGATE_COUNT);
+					wrapper.putInteger("eligiblePopulationExclusion", value);
 				});
 
-		Optional.ofNullable(calculatePerformanceNotMet(denominatorNode, denomExclusionNode)).ifPresent(
-				performanceNotMet -> {
-					//have to choose one of denominatorNode, denomExclusionNode
-					//Why are we deriving values???
-					maintainContinuity(wrapper, denomExclusionNode, "performanceNotMet");
+		Optional.ofNullable(denomExceptionNode).ifPresent(
+				node -> {
+					Node aggCount = node.getChildNodes().get(0);
+					maintainContinuity(wrapper, aggCount, "eligiblePopulationException");
+					String value = aggCount.getValue(AGGREGATE_COUNT);
+					wrapper.putInteger("eligiblePopulationException", value);
+				});
+
+		Optional.ofNullable(denominatorNode).ifPresent(
+				node -> {
+					String performanceNotMet = calculatePerformanceNotMet(numeratorNode, denominatorNode,
+							denomExclusionNode, denomExceptionNode);
+					Node aggCount = node.getChildNodes().get(0);
+					//for eCQMs, will be equal to
+					// denominator - numerator - denominator exclusion - denominator exception
+					maintainContinuity(wrapper, aggCount, "performanceNotMet");
 					wrapper.putInteger("performanceNotMet", performanceNotMet);
 				});
 	}
@@ -260,13 +234,22 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param denomExclusionNode holder of the denominator exclusion aggregate count value
 	 * @return the calculation
 	 */
-	private String calculatePerformanceNotMet(Node denominatorNode, Node denomExclusionNode) {
-		if (null == denominatorNode || null == denomExclusionNode) {
-			return null;
-		}
-		String denominatorValue = denominatorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
-		String denomExclusionValue = denomExclusionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+	private String calculatePerformanceNotMet(Node numeratorNode, Node denominatorNode,
+											Node denomExclusionNode, Node denomExceptionNode) {
 
-		return Integer.toString(Integer.parseInt(denominatorValue) - Integer.parseInt(denomExclusionValue));
+		String denominatorValue = denominatorNode == null ? "0" :
+				denominatorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+		String denomExclusionValue = denomExclusionNode == null ? "0" :
+				denomExclusionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+		String numeratorValue = numeratorNode == null ? "0" :
+				numeratorNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+		String denomExceptionValue = denomExceptionNode == null ? "0" :
+				denomExceptionNode.getChildNodes().get(0).getValue(AGGREGATE_COUNT);
+
+		// for eCQMs, will be equal to denominator - numerator - denominator exclusion - denominator exception
+		return Integer.toString(Integer.parseInt(denominatorValue)
+				- Integer.parseInt(numeratorValue)
+				- Integer.parseInt(denomExclusionValue)
+				- Integer.parseInt(denomExceptionValue));
 	}
 }

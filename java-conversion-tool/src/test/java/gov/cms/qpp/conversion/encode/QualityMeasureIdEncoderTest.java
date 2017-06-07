@@ -5,11 +5,9 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -24,6 +22,7 @@ public class QualityMeasureIdEncoderTest {
 	private JsonWrapper wrapper;
 	private QualityMeasureIdEncoder encoder;
 	private String type = "type";
+	private final String ELIGIBLE_POPULATION = "eligiblePopulation";
 
 	@Before
 	public void setUp() {
@@ -75,8 +74,9 @@ public class QualityMeasureIdEncoderTest {
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
+
 		assertThat("expected encoder to return a single value",
-				childValues.get("populationTotal"), is(600));
+				childValues.get(ELIGIBLE_POPULATION), is(600));
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class QualityMeasureIdEncoderTest {
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
 		assertThat("expected encoder to return a single value",
-				childValues.get("populationTotal"), is(600));
+				childValues.get(ELIGIBLE_POPULATION), is(600));
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class QualityMeasureIdEncoderTest {
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
 		assertThat("expected encoder to return a single value",
-				childValues.get("performanceExclusion"), is(600));
+				childValues.get("eligiblePopulationExclusion"), is(600));
 	}
 
 	@Test
@@ -114,25 +114,7 @@ public class QualityMeasureIdEncoderTest {
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
 		assertThat("expected encoder to return a single value",
-				childValues.get("performanceNotMet"), is(0));
-	}
-
-	@Test
-	public void calculatePerformanceNotMetTest1() throws Exception {
-		//This test was written for CircleCI coverage
-		//Use reflection API to invoke private method
-		Class<?> c = QualityMeasureIdEncoder.class;
-		QualityMeasureIdEncoder encoder = (QualityMeasureIdEncoder)c.newInstance();
-		Method calculatePerformanceNotMetMethod = c.getDeclaredMethod("calculatePerformanceNotMet", Node.class, Node.class);
-		Node denominatorNode = null;
-		Node denomExclusionNode = null;
-		calculatePerformanceNotMetMethod.setAccessible(true);
-		Object val = calculatePerformanceNotMetMethod.invoke(encoder,denominatorNode,denomExclusionNode );
-		assertThat("Expect a null return value " , val, nullValue());
-
-		denominatorNode = new Node();
-		val = calculatePerformanceNotMetMethod.invoke(encoder, denominatorNode,denomExclusionNode );
-		assertThat("Expect a null return value " , val, nullValue());
+				childValues.get("performanceNotMet"), is(-600));
 	}
 
 	private void executeInternalEncode() {
