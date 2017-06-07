@@ -61,7 +61,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 *
 	 * @param measureConfig configuration in check
 	 * @param measureId variable to show when the mapping is non existent
-	 * @return SINGLE_PERFORMANCE_RATE. == measureConfig.getMetricType()
+	 * @return SINGLE_PERFORMANCE_RATE == measureConfig.getMetricType()
 	 */
 	private boolean isASinglePerformanceRate(MeasureConfig measureConfig, String measureId) {
 		if (measureConfig == null) {
