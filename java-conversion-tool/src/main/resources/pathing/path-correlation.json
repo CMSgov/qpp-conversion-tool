@@ -137,10 +137,9 @@
 						"performanceMet",
 						"performanceNotMet",
 						"performanceExclusion",
-						"populationTotal",
-						"initialPopulation",
-						"denominatorExclusions",
-						"denominatorExceptions"
+						"eligiblePopulation",
+						"eligiblePopulationExclusion",
+						"eligiblePopulationException"
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@value",

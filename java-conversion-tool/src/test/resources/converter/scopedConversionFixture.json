@@ -2192,161 +2192,127 @@
 				"measureId": "CMS165v5",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 1000,
+					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"performanceExclusion": 50,
-					"performanceNotMet": 950,
-					"initialPopulation": 1000,
-					"denominatorExclusions": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"eligiblePopulationExclusion": 50,
+					"performanceNotMet": 150
 				}
 			},
 			{
 				"measureId": "CMS138v5",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 1000,
+					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"initialPopulation": 1000,
-					"denominatorExceptions": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 150
 				}
 			},
 			{
 				"measureId": "CMS125v5",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 1000,
+					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"performanceExclusion": 50,
-					"performanceNotMet": 950,
-					"initialPopulation": 1000,
-					"denominatorExclusions": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"eligiblePopulationExclusion": 50,
+					"performanceNotMet": 150
 				}
 			},
 			{
 				"measureId": "CMS130v5",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 1000,
+					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"performanceExclusion": 50,
-					"performanceNotMet": 950,
-					"initialPopulation": 1000,
-					"denominatorExclusions": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"eligiblePopulationExclusion": 50,
+					"performanceNotMet": 150
 				}
 			},
 			{
 				"measureId": "CMS147v6",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 1000,
+					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"initialPopulation": 1000,
-					"denominatorExceptions": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 150
 				}
 			},
 			{
 				"measureId": "CMS127v5",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 950,
+					"eligiblePopulation": 950,
 					"performanceMet": 800,
-					"initialPopulation": 950,
-					"denominator": 950,
-					"numerator": 800
+					"performanceNotMet": 150
 				}
 			},
 			{
 				"measureId": "CMS122v5",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 950,
+					"eligiblePopulation": 950,
 					"performanceMet": 800,
-					"initialPopulation": 950,
-					"denominator": 950,
-					"numerator": 800
+					"performanceNotMet": 150
 				}
 			},
 			{
 				"measureId": "40280381-52fc-3a32-0153-1dfb2f2c0c48",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 950,
+					"eligiblePopulation": 950,
 					"performanceMet": 800,
-					"initialPopulation": 950,
-					"denominator": 950,
-					"numerator": 800
+					"performanceNotMet": 150
 				}
 			},
 			{
 				"measureId": "40280381-51f0-825b-0152-22bd8ee41875",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 950,
-					"performanceMet": 800,
-					"initialPopulation": 950,
-					"denominator": 950,
-					"numerator": 750
+					"eligiblePopulation": 950,
+					"performanceMet": 750,
+					"performanceNotMet": 150
 				}
 			},
 			{
 				"measureId": "CMS144v5",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 1000,
+					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"initialPopulation": 1000,
-					"denominatorExceptions": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 150
 				}
 			},
 			{
 				"measureId": "CMS139v5",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 1000,
+					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"initialPopulation": 1000,
-					"denominatorExceptions": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 150
 				}
 			},
 			{
 				"measureId": "CMS2v6",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 1000,
+					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"performanceExclusion": 50,
-					"performanceNotMet": 950,
-					"initialPopulation": 1000,
-					"denominatorExclusions": 50,
-					"denominatorExceptions": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"eligiblePopulationExclusion": 50,
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 100
 				}
 			},
 			{
 				"measureId": "CMS68v6",
 				"value": {
 					"isEndToEndReported": true,
-					"populationTotal": 1000,
+					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"initialPopulation": 1000,
-					"denominatorExceptions": 50,
-					"denominator": 1000,
-					"numerator": 800
+					"eligiblePopulationException": 50,
+					"performanceNotMet": 150
 				}
 			}
 		]
@@ -2356,320 +2322,244 @@
 			"measureId": "CMS165v5",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 1000,
+				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"performanceExclusion": 50,
-				"performanceNotMet": 950,
-				"initialPopulation": 1000,
-				"denominatorExclusions": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"eligiblePopulationExclusion": 50,
+				"performanceNotMet": 150
 			}
 		},
 		{
 			"measureId": "CMS138v5",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 1000,
+				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"initialPopulation": 1000,
-				"denominatorExceptions": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 150
 			}
 		},
 		{
 			"measureId": "CMS125v5",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 1000,
+				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"performanceExclusion": 50,
-				"performanceNotMet": 950,
-				"initialPopulation": 1000,
-				"denominatorExclusions": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"eligiblePopulationExclusion": 50,
+				"performanceNotMet": 150
 			}
 		},
 		{
 			"measureId": "CMS130v5",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 1000,
+				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"performanceExclusion": 50,
-				"performanceNotMet": 950,
-				"initialPopulation": 1000,
-				"denominatorExclusions": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"eligiblePopulationExclusion": 50,
+				"performanceNotMet": 150
 			}
 		},
 		{
 			"measureId": "CMS147v6",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 1000,
+				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"initialPopulation": 1000,
-				"denominatorExceptions": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 150
 			}
 		},
 		{
 			"measureId": "CMS127v5",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 950,
+				"eligiblePopulation": 950,
 				"performanceMet": 800,
-				"initialPopulation": 950,
-				"denominator": 950,
-				"numerator": 800
+				"performanceNotMet": 150
 			}
 		},
 		{
 			"measureId": "CMS122v5",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 950,
+				"eligiblePopulation": 950,
 				"performanceMet": 800,
-				"initialPopulation": 950,
-				"denominator": 950,
-				"numerator": 800
+				"performanceNotMet": 150
 			}
 		},
 		{
 			"measureId": "40280381-52fc-3a32-0153-1dfb2f2c0c48",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 950,
+				"eligiblePopulation": 950,
 				"performanceMet": 800,
-				"initialPopulation": 950,
-				"denominator": 950,
-				"numerator": 800
+				"performanceNotMet": 150
 			}
 		},
 		{
 			"measureId": "40280381-51f0-825b-0152-22bd8ee41875",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 950,
-				"performanceMet": 800,
-				"initialPopulation": 950,
-				"denominator": 950,
-				"numerator": 750
+				"eligiblePopulation": 950,
+				"performanceMet": 750,
+				"performanceNotMet": 150
 			}
 		},
 		{
 			"measureId": "CMS144v5",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 1000,
+				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"initialPopulation": 1000,
-				"denominatorExceptions": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 150
 			}
 		},
 		{
 			"measureId": "CMS139v5",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 1000,
+				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"initialPopulation": 1000,
-				"denominatorExceptions": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 150
 			}
 		},
 		{
 			"measureId": "CMS2v6",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 1000,
+				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"performanceExclusion": 50,
-				"performanceNotMet": 950,
-				"initialPopulation": 1000,
-				"denominatorExclusions": 50,
-				"denominatorExceptions": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"eligiblePopulationExclusion": 50,
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 100
 			}
 		},
 		{
 			"measureId": "CMS68v6",
 			"value": {
 				"isEndToEndReported": true,
-				"populationTotal": 1000,
+				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"initialPopulation": 1000,
-				"denominatorExceptions": 50,
-				"denominator": 1000,
-				"numerator": 800
+				"eligiblePopulationException": 50,
+				"performanceNotMet": 150
 			}
 		}
 	],
 	"MEASURE_DATA_CMS_V2": [
 		{
-			"initialPopulation": 1000
+			"eligiblePopulationExclusion": 50
 		},
 		{
-			"denominatorExclusions": 50
+			"eligiblePopulation": 1000
 		},
 		{
-			"denominator": 1000
+			"performanceMet": 800
 		},
 		{
-			"numerator": 800
+			"eligiblePopulationException": 50
 		},
 		{
-			"initialPopulation": 1000
+			"eligiblePopulation": 1000
 		},
 		{
-			"denominatorExceptions": 50
+			"performanceMet": 800
 		},
 		{
-			"denominator": 1000
+			"eligiblePopulationExclusion": 50
 		},
 		{
-			"numerator": 800
+			"eligiblePopulation": 1000
 		},
 		{
-			"initialPopulation": 1000
+			"performanceMet": 800
 		},
 		{
-			"denominatorExclusions": 50
+			"eligiblePopulationExclusion": 50
 		},
 		{
-			"denominator": 1000
+			"eligiblePopulation": 1000
 		},
 		{
-			"numerator": 800
+			"performanceMet": 800
 		},
 		{
-			"initialPopulation": 1000
+			"eligiblePopulationException": 50
 		},
 		{
-			"denominatorExclusions": 50
+			"eligiblePopulation": 1000
 		},
 		{
-			"denominator": 1000
+			"performanceMet": 800
 		},
 		{
-			"numerator": 800
+			"eligiblePopulation": 950
 		},
 		{
-			"initialPopulation": 1000
+			"performanceMet": 800
 		},
 		{
-			"denominatorExceptions": 50
+			"eligiblePopulation": 950
 		},
 		{
-			"denominator": 1000
+			"performanceMet": 800
 		},
 		{
-			"numerator": 800
+			"eligiblePopulation": 950
 		},
 		{
-			"initialPopulation": 950
+			"performanceMet": 800
 		},
 		{
-			"denominator": 950
+			"eligiblePopulation": 950
 		},
 		{
-			"numerator": 800
+			"performanceMet": 800
 		},
 		{
-			"initialPopulation": 950
+			"eligiblePopulation": 950
 		},
 		{
-			"denominator": 950
+			"performanceMet": 750
 		},
 		{
-			"numerator": 800
+			"eligiblePopulationException": 50
 		},
 		{
-			"initialPopulation": 950
+			"eligiblePopulation": 1000
 		},
 		{
-			"denominator": 950
+			"performanceMet": 800
 		},
 		{
-			"numerator": 800
+			"eligiblePopulationException": 50
 		},
 		{
-			"initialPopulation": 950
+			"eligiblePopulation": 1000
 		},
 		{
-			"denominator": 950
+			"performanceMet": 800
 		},
 		{
-			"numerator": 800
+			"eligiblePopulationExclusion": 50
 		},
 		{
-			"initialPopulation": 950
+			"eligiblePopulationException": 50
 		},
 		{
-			"denominator": 950
+			"eligiblePopulation": 1000
 		},
 		{
-			"numerator": 750
+			"performanceMet": 800
 		},
 		{
-			"initialPopulation": 1000
+			"eligiblePopulationException": 50
 		},
 		{
-			"denominatorExceptions": 50
+			"eligiblePopulation": 1000
 		},
 		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
-		},
-		{
-			"initialPopulation": 1000
-		},
-		{
-			"denominatorExceptions": 50
-		},
-		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
-		},
-		{
-			"initialPopulation": 1000
-		},
-		{
-			"denominatorExclusions": 50
-		},
-		{
-			"denominatorExceptions": 50
-		},
-		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
-		},
-		{
-			"initialPopulation": 1000
-		},
-		{
-			"denominatorExceptions": 50
-		},
-		{
-			"denominator": 1000
-		},
-		{
-			"numerator": 800
+			"performanceMet": 800
 		}
 	]
 }

@@ -13,32 +13,30 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.empty;
 
 public class QualityMeasureIdMultiEncoderTest {
-	private final String REQUIRE_POPULATION_TOTAL = "Must have a required populationTotal";
+	private final String REQUIRE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
 	private final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
-	private final String REQUIRE_DENOM_EXCEP = "Must have a required denominatorExceptions";
-	private final String REQUIRE_DENOM_EXCLUS = "Must have a required denominatorExclusion";
+	private final String REQUIRE_ELIGIBLE_POPULATION_EXCEP = "Must have a required eligiblePopulationException";
+	private final String REQUIRE_ELIGIBLE_POPULATION_EXCLUS = "Must have a required eligiblePopulationExclusion";
 	private final String REQUIRE_DENOM = "Must have a required denominator";
 	private final String REQUIRE_NUMER = "Must have a required numerator";
-	private final String POPULATION_TOTAL = "populationTotal";
+	private final String ELIGIBLE_POPULATION = "eligiblePopulation";
 	private final String PERFORMANCE_MET = "performanceMet";
-	private final String DENOMINATOR_EXCEPTIONS = "denominatorExceptions";
-	private final String DENOMINATOR_EXCLUSIONS = "denominatorExclusions";
-	private final String NUMERATOR = "numerator";
-	private final String DENOMINATOR = "denominator";
+	private final String ELIGIBLE_POPULATION_EXCEPTION = "eligiblePopulationException";
+	private final String ELIGIBLE_POPULATION_EXCLUSION = "eligiblePopulationExclusion";
 	private final String TYPE = "type";
 	private final String POPULATION_ID = "populationId";
 	private final String MEASURE_ID = "measureId";
 
 	private Node qualityMeasureId;
-	private Node populationNode;
-	private Node populationNodeTwo;
-	private Node denomExclusionNode;
-	private Node denomExclusionNodeTwo;
-	private Node denomExceptionNode;
-	private Node denomExceptionNodeTwo;
+	private Node eligiblePopulationNode;
+	private Node eligiblePopulationNodeTwo;
+	private Node eligiblePopulationExclusionNode;
+	private Node eligiblePopulationExclusionNodeTwo;
+	private Node eligiblePopulationExceptionNode;
+	private Node eligiblePopulationExceptionNodeTwo;
 	private Node numeratorNode;
 	private Node numeratorNodeTwo;
 	private Node denominatorNode;
@@ -70,35 +68,35 @@ public class QualityMeasureIdMultiEncoderTest {
 		aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
 
-		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		populationNode.putValue(TYPE, ipop);
-		populationNode.putValue(POPULATION_ID, "ipop1");
-		populationNode.addChildNode(aggregateCountNode);
+		eligiblePopulationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		eligiblePopulationNode.putValue(TYPE, ipop);
+		eligiblePopulationNode.putValue(POPULATION_ID, "ipop1");
+		eligiblePopulationNode.addChildNode(aggregateCountNode);
 
-		populationNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		populationNodeTwo.putValue(TYPE, ipop);
-		populationNodeTwo.putValue(POPULATION_ID, "ipop2");
-		populationNodeTwo.addChildNode(aggregateCountNode);
+		eligiblePopulationNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		eligiblePopulationNodeTwo.putValue(TYPE, ipop);
+		eligiblePopulationNodeTwo.putValue(POPULATION_ID, "ipop2");
+		eligiblePopulationNodeTwo.addChildNode(aggregateCountNode);
 
-		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denomExclusionNode.putValue(TYPE, denex);
-		denomExclusionNode.putValue(POPULATION_ID, "denex1");
-		denomExclusionNode.addChildNode(aggregateCountNode);
+		eligiblePopulationExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		eligiblePopulationExclusionNode.putValue(TYPE, denex);
+		eligiblePopulationExclusionNode.putValue(POPULATION_ID, "denex1");
+		eligiblePopulationExclusionNode.addChildNode(aggregateCountNode);
 
-		denomExclusionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denomExclusionNodeTwo.putValue(TYPE, denex);
-		denomExclusionNodeTwo.putValue(POPULATION_ID, "denex2");
-		denomExclusionNodeTwo.addChildNode(aggregateCountNode);
+		eligiblePopulationExclusionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		eligiblePopulationExclusionNodeTwo.putValue(TYPE, denex);
+		eligiblePopulationExclusionNodeTwo.putValue(POPULATION_ID, "denex2");
+		eligiblePopulationExclusionNodeTwo.addChildNode(aggregateCountNode);
 
-		denomExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denomExceptionNode.putValue(TYPE, denexcep);
-		denomExceptionNode.putValue(POPULATION_ID, "denexcep1");
-		denomExceptionNode.addChildNode(aggregateCountNode);
+		eligiblePopulationExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		eligiblePopulationExceptionNode.putValue(TYPE, denexcep);
+		eligiblePopulationExceptionNode.putValue(POPULATION_ID, "denexcep1");
+		eligiblePopulationExceptionNode.addChildNode(aggregateCountNode);
 
-		denomExceptionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denomExceptionNodeTwo.putValue(TYPE, denexcep);
-		denomExceptionNodeTwo.putValue(POPULATION_ID, "denexcep2");
-		denomExceptionNodeTwo.addChildNode(aggregateCountNode);
+		eligiblePopulationExceptionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		eligiblePopulationExceptionNodeTwo.putValue(TYPE, denexcep);
+		eligiblePopulationExceptionNodeTwo.putValue(POPULATION_ID, "denexcep2");
+		eligiblePopulationExceptionNodeTwo.addChildNode(aggregateCountNode);
 
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 
@@ -128,8 +126,10 @@ public class QualityMeasureIdMultiEncoderTest {
 	@Test
 	public void testInternalEncode() {
 		qualityMeasureId.addChildNodes(
-				populationNode, denomExceptionNode, denomExclusionNode, numeratorNode, denominatorNode,
-				populationNodeTwo, denomExceptionNodeTwo, denomExclusionNodeTwo, numeratorNodeTwo, denominatorNodeTwo);
+				eligiblePopulationNode, eligiblePopulationExceptionNode,
+				eligiblePopulationExclusionNode, numeratorNode, denominatorNode,
+				eligiblePopulationNodeTwo, eligiblePopulationExceptionNodeTwo,
+				eligiblePopulationExclusionNodeTwo, numeratorNodeTwo, denominatorNodeTwo);
 
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
@@ -143,10 +143,9 @@ public class QualityMeasureIdMultiEncoderTest {
 	@Test
 	public void testNullSubPopulations() {
 		qualityMeasureId.putValue(MEASURE_ID, "test2");
-		qualityMeasureId.addChildNodes(
-				populationNode, denomExceptionNode, numeratorNode, denominatorNode,
-				populationNodeTwo, denomExceptionNodeTwo, numeratorNodeTwo, denominatorNodeTwo);
-
+		qualityMeasureId.addChildNodes(eligiblePopulationNode, eligiblePopulationExceptionNode,
+				numeratorNode, denominatorNode, eligiblePopulationNodeTwo,
+				eligiblePopulationExceptionNodeTwo, numeratorNodeTwo, denominatorNodeTwo);
 
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
@@ -154,7 +153,7 @@ public class QualityMeasureIdMultiEncoderTest {
 		List<LinkedHashMap<String, Integer>> subPopulations =
 				(List<LinkedHashMap<String, Integer>>)childValues.get("strata");
 
-		assertThat("Must have no sub populations encoded", subPopulations, hasSize(0));
+		assertThat("Must have zero sub populations encoded", subPopulations, is(empty()));
 	}
 
 	private LinkedHashMap<String, Object> getChildValues() {
@@ -164,22 +163,18 @@ public class QualityMeasureIdMultiEncoderTest {
 	private void assertFirstSubPopulation(List<LinkedHashMap<String, Integer>> strata) {
 		LinkedHashMap<String, Integer> firstSubPopulation = strata.get(0);
 
-		assertThat(REQUIRE_POPULATION_TOTAL, firstSubPopulation.get(POPULATION_TOTAL), is(600));
+		assertThat(REQUIRE_POPULATION_TOTAL, firstSubPopulation.get(ELIGIBLE_POPULATION), is(600));
 		assertThat(REQUIRE_PERFORMANCE_MET, firstSubPopulation.get(PERFORMANCE_MET), is(600));
-		assertThat(REQUIRE_DENOM_EXCEP, firstSubPopulation.get(DENOMINATOR_EXCEPTIONS), is(600));
-		assertThat(REQUIRE_DENOM_EXCLUS, firstSubPopulation.get("denominatorExclusions"), is(600));
-		assertThat(REQUIRE_NUMER, firstSubPopulation.get(NUMERATOR), is(600));
-		assertThat(REQUIRE_DENOM, firstSubPopulation.get(DENOMINATOR), is(600));
+		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, firstSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
+		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, firstSubPopulation.get("eligiblePopulationExclusion"), is(600));
 	}
 
 	private void assertSecondSubPopulation(List<LinkedHashMap<String, Integer>> strata) {
 		LinkedHashMap<String, Integer> secondSubPopulation = strata.get(1);
 
-		assertThat(REQUIRE_POPULATION_TOTAL, secondSubPopulation	.get(POPULATION_TOTAL), is(600));
+		assertThat(REQUIRE_POPULATION_TOTAL, secondSubPopulation.get(ELIGIBLE_POPULATION), is(600));
 		assertThat(REQUIRE_PERFORMANCE_MET, secondSubPopulation.get(PERFORMANCE_MET), is(600));
-		assertThat(REQUIRE_DENOM_EXCEP, secondSubPopulation.get(DENOMINATOR_EXCEPTIONS), is(600));
-		assertThat(REQUIRE_DENOM_EXCLUS, secondSubPopulation.get(DENOMINATOR_EXCLUSIONS), is(600));
-		assertThat(REQUIRE_NUMER, secondSubPopulation.get(NUMERATOR), is(600));
-		assertThat(REQUIRE_DENOM, secondSubPopulation.get(DENOMINATOR), is(600));
+		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
+		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION), is(600));
 	}
 }
