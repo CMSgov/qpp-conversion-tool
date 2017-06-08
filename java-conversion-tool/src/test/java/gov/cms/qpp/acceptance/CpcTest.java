@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import gov.cms.qpp.conversion.ConversionEntry;
 
-public class CpcTest {
+public class CpcTest extends ConversionEntrySuite {
 
 	private static final String CPC_FILE = "src/test/resources/cpc1.xml";
 	private static final Path SUCCESS = Paths.get("cpc1.qpp.json");
