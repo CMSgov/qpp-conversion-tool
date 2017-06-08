@@ -43,7 +43,7 @@ public class PathCorrelatorTest {
 		String path = PathCorrelator.getXpath(
 				TemplateId.CLINICAL_DOCUMENT.name(), ClinicalDocumentDecoder.PROGRAM_NAME, meep);
 
-		int meepCount = (path.length() - path.replaceAll(meep, "").length()) / meep.length();
+		int meepCount = (path.length() - path.replace(meep, "").length()) / meep.length();
 
 		assertThat("3 substitutions were expected", meepCount, is(3));
 		assertThat("No substitution placeholders should remain",
