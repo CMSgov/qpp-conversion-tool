@@ -103,7 +103,7 @@ public class Converter {
 	 * @return status of conversion
 	 */
 	public JsonWrapper transform() {
-		DEV_LOG.info("Transform invoked with file {}", inFile);
+		DEV_LOG.info("Transform invoked with file {}", getName());
 		JsonWrapper qpp = null;
 		try {
 			if (!usingStream()) {
@@ -126,6 +126,10 @@ public class Converter {
 		}
 
 		return qpp;
+	}
+
+	private String getName() {
+		return (inFile == null ? xmlStream : inFile).toString();
 	}
 
 	/**
