@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class MeasurePerformedValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 		String value = node.getValue(FIELD);
 		if (!("Y".equals(value) || "N".equals(value))) {
-			addValidationError(new ValidationError(IaMeasureValidator.TYPE_ERROR, node.getPath()));
+			addValidationError(new Detail(IaMeasureValidator.TYPE_ERROR, node.getPath()));
 		}
 	}
 

@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,33 +29,33 @@ public class JsonOutputEncoderTest {
 
 	@Test
 	public void testAddValidationAndGetValidations() {
-		assertEquals(0, joe.getValidationErrors().size());
-		joe.addValidationError(new ValidationError("error"));
-		joe.addValidationError(new ValidationError("another"));
-		List<ValidationError> validations = joe.getValidationErrors();
+		assertEquals(0, joe.getDetails().size());
+		joe.addValidationError(new Detail("error"));
+		joe.addValidationError(new Detail("another"));
+		List<Detail> validations = joe.getDetails();
 		assertEquals(2, validations.size());
-		assertEquals("error", validations.get(0).getErrorText());
-		assertEquals("another", validations.get(1).getErrorText());
+		assertEquals("error", validations.get(0).getMessage());
+		assertEquals("another", validations.get(1).getMessage());
 	}
 
 	@Test
 	public void testAddValidationAndGetValidationById() {
-		List<ValidationError> validations = joe.getValidationErrors();
+		List<Detail> validations = joe.getDetails();
 		assertEquals(0, validations.size());
 
-		joe.addValidationError(new ValidationError("err"));
+		joe.addValidationError(new Detail("err"));
 
-		validations = joe.getValidationErrors();
+		validations = joe.getDetails();
 		assertNotNull(validations);
 		assertEquals(1, validations.size());
-		assertEquals("err", validations.get(0).getErrorText());
+		assertEquals("err", validations.get(0).getMessage());
 	}
 
 	@Test
 	public void testAddValidationByEncodeException() {
 		joe.encode((JsonWrapper) null, (Node) null); // the values are not used in the test
 
-		List<ValidationError> validationErrors = joe.getValidationErrors();
-		assertThat("Should have one error message", validationErrors, hasSize(1));
+		List<Detail> details = joe.getDetails();
+		assertThat("Should have one error message", details, hasSize(1));
 	}
 }

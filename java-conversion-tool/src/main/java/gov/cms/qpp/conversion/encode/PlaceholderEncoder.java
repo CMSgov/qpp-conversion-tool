@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 
 /**
  * Encoder to handle placeholder nodes.
@@ -28,7 +28,7 @@ public class PlaceholderEncoder extends QppOutputEncoder {
 			if (encoder != null) {
 				encoder.encode(wrapper, child);
 			} else {
-				addValidationError(new ValidationError("Failed to find an encoder", child.getPath()));
+				addValidationError(new Detail("Failed to find an encoder", child.getPath()));
 			}
 		}
 	}

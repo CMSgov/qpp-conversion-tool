@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.Test;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class IaSectionValidatorTest {
 		IaSectionValidator iaValidator = new IaSectionValidator();
 
 		iaValidator.internalValidateSingleNode(iaSectionNode);
-		List<ValidationError> errors = iaValidator.getValidationErrors();
+		List<Detail> errors = iaValidator.getDetails();
 
 		assertThat("Must contain no errors", errors, hasSize(0));
 	}
@@ -33,9 +33,9 @@ public class IaSectionValidatorTest {
 		IaSectionValidator iaValidator = new IaSectionValidator();
 
 		iaValidator.internalValidateSingleNode(iaSectionNode);
-		List<ValidationError> errors = iaValidator.getValidationErrors();
+		List<Detail> errors = iaValidator.getDetails();
 
-		assertThat("Must be missing the correct child", errors.get(0).getErrorText(),
+		assertThat("Must be missing the correct child", errors.get(0).getMessage(),
 				is(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR));
 	}
 
@@ -50,9 +50,9 @@ public class IaSectionValidatorTest {
 		IaSectionValidator iaValidator = new IaSectionValidator();
 
 		iaValidator.internalValidateSingleNode(iaSectionNode);
-		List<ValidationError> errors = iaValidator.getValidationErrors();
+		List<Detail> errors = iaValidator.getDetails();
 
-		assertThat("Must contain correct children", errors.get(0).getErrorText(),
+		assertThat("Must contain correct children", errors.get(0).getMessage(),
 				is(IaSectionValidator.WRONG_CHILD_ERROR));
 	}
 }

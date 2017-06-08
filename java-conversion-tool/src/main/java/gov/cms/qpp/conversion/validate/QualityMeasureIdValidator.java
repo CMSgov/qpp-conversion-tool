@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
@@ -126,7 +126,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				List<Node> childMeasureNodes = node.getChildNodes(childFinder).collect(Collectors.toList());
 				if (childMeasureNodes.isEmpty()) {
 					String message = String.format(REQUIRED_CHILD_MEASURE, label);
-					this.getValidationErrors().add(new ValidationError(message, node.getPath()));
+					this.getDetails().add(new Detail(message, node.getPath()));
 				}
 			}
 		};

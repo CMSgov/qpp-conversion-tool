@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.api.services;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.ErrorSource;
+import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -53,7 +53,7 @@ public class QrdaServiceImplTest {
 
 		whenNew(Converter.class).withArguments(MOCK_ERROR_QRDA_INPUT_STREAM).thenAnswer(invocationOnMock -> {
 			AllErrors allErrors = new AllErrors();
-			allErrors.addErrorSource(new ErrorSource(MOCK_ERROR_SOURCE_IDENTIFIER, null));
+			allErrors.addError(new Error(MOCK_ERROR_SOURCE_IDENTIFIER, null));
 			TransformException transformException = new TransformException("mock problem", new NullPointerException(), allErrors);
 			when(mockConverter.transform()).thenThrow(transformException);
 
@@ -74,7 +74,7 @@ public class QrdaServiceImplTest {
 			fail();
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
-			assertThat("", allErrors.getErrorSources().get(0).getSourceIdentifier(), is(MOCK_ERROR_SOURCE_IDENTIFIER));
+			assertThat("", allErrors.getErrors().get(0).getSourceIdentifier(), is(MOCK_ERROR_SOURCE_IDENTIFIER));
 		} catch (Exception exception) {
 			fail();
 		}

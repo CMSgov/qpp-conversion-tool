@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.Test;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class IaMeasureValidatorTest {
 		measurePerformedNode.putValue("measurePerformed", "Y");
 
 		IaMeasureValidator validator = new IaMeasureValidator();
-		List<ValidationError> errors = validator.validateSingleNode(measureNode);
+		List<Detail> errors = validator.validateSingleNode(measureNode);
 		assertThat("no errors should be present", errors, empty());
 	}
 
@@ -41,7 +41,7 @@ public class IaMeasureValidatorTest {
 		measurePerformedNode.putValue("measurePerformed", "N");
 
 		IaMeasureValidator validator = new IaMeasureValidator();
-		List<ValidationError> errors = validator.validateSingleNode(measureNode);
+		List<Detail> errors = validator.validateSingleNode(measureNode);
 		assertThat("no errors should be present", errors, empty());
 	}
 
@@ -56,9 +56,9 @@ public class IaMeasureValidatorTest {
 		Node measureNode = new Node(TemplateId.IA_MEASURE);
 
 		IaMeasureValidator validator = new IaMeasureValidator();
-		List<ValidationError> errors = validator.validateSingleNode(measureNode);
+		List<Detail> errors = validator.validateSingleNode(measureNode);
 		assertThat("A missing child errors should be present", errors.size(), is(1));
-		String error = errors.get(0).getErrorText();
+		String error = errors.get(0).getMessage();
 		assertThat("The INCORRECT_CHILDREN_COUNT Error is expected", error,
 				is(IaMeasureValidator.INCORRECT_CHILDREN_COUNT));
 	}
@@ -79,9 +79,9 @@ public class IaMeasureValidatorTest {
 		measurePerformedNode1.putValue("measurePerformed", "N");
 
 		IaMeasureValidator validator = new IaMeasureValidator();
-		List<ValidationError> errors = validator.validateSingleNode(measureNode);
+		List<Detail> errors = validator.validateSingleNode(measureNode);
 		assertThat("A Too Many children errors should be present", errors.size(), is(1));
-		String error = errors.get(0).getErrorText();
+		String error = errors.get(0).getMessage();
 		assertThat("The INCORRECT_CHILDREN_COUNT Error is expected", error, is(IaMeasureValidator.INCORRECT_CHILDREN_COUNT));
 	}
 }

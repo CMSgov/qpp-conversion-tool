@@ -62,8 +62,8 @@ public class EncoderNegativeConditionsTest {
 
 		encoder.encode(new BufferedWriter(failWrite));
 
-		assertThat("Should contain one error", encoder.getValidationErrors(), hasSize(1));
-		assertThat("Should have same correct message", encoder.getValidationErrors().get(0).getErrorText(),
+		assertThat("Should contain one error", encoder.getDetails(), hasSize(1));
+		assertThat("Should have same correct message", encoder.getDetails().get(0).getMessage(),
 				is("Failure to encode"));
 	}
 }
