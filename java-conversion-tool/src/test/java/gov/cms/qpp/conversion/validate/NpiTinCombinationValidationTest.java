@@ -108,6 +108,21 @@ public class NpiTinCombinationValidationTest {
 				is(NpiTinCombinationValidation.ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED));
 	}
 
+	@Test
+	public void testInvalidEntityType() {
+		createClinicalDocumentWithProgramType(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
+				"Invalid");
+
+		npiTinCombinationNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
+		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
+		npiTinCombinationNode.addChildNode(npiTinNodeOne);
+		npiTinCombinationNode.addChildNode(npiTinNodeTwo);
+
+		validator.internalValidateSingleNode(npiTinCombinationNode);
+
+		assertThat("Must validate with no errors", validator.getValidationErrors() , hasSize(0));c
+	}
+
 	private void createClinicalDocumentWithProgramType(final String programName, final String entityType) {
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, programName);
