@@ -128,10 +128,6 @@ public class Converter {
 		return qpp;
 	}
 
-	private String getName() {
-		return (inFile == null ? xmlStream : inFile).toString();
-	}
-
 	/**
 	 * Transform a source a given file.
 	 *
@@ -172,6 +168,10 @@ public class Converter {
 		}
 
 		return qpp;
+	}
+
+	private String getName() {
+		return (inFile == null ? xmlStream : inFile).toString();
 	}
 
 	/**
