@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -14,8 +13,13 @@ import java.util.List;
 @Validator(value = TemplateId.QRDA_CATEGORY_III_REPORT_V3, required = true)
 public class NpiTinCombinationValidation extends NodeValidator {
 
-	private static final String ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED = "Must have only one NPI/TIN combination";
+	protected static final String ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED = "Must have only one NPI/TIN combination";
 
+	/**
+	 * Validates the NPI/TIN Combination within the QRDA Category III Report V3 section
+	 *
+	 * @param node The node to validate.
+	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		Node clinicalDocumentNode = node.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
