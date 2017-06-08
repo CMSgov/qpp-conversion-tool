@@ -84,6 +84,21 @@ class Checker {
 	}
 
 	/**
+	 * checks target node to ensure no value is retrieved with given name key
+	 *
+	 * @param message error message if searched value is not found
+	 * @param name key of expected value
+	 * @return The checker, for chaining method calls.
+	 */
+	Checker valueIsNull(String message, String name) {
+		lastAppraised = node.getValue(name);
+		if (!shouldShortcut() && lastAppraised != null) {
+			validationErrors.add(new ValidationError(message, node.getPath()));
+		}
+		return this;
+	}
+
+	/**
 	 * checks target node for the existence of a value with the given name key
 	 * and matches that value with one of the supplied values.
 	 *
