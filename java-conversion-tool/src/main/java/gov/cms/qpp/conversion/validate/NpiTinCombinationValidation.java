@@ -42,8 +42,8 @@ public class NpiTinCombinationValidation extends NodeValidator {
 	 * @return true for proper program name and type
 	 */
 	private boolean isMipsIndividual(String programName, String entityType) {
-		 return (ClinicalDocumentDecoder.MIPS.equalsIgnoreCase(programName) &&
-				ClinicalDocumentDecoder.ENTITY_INDIVIDUAL.equalsIgnoreCase(entityType));
+		 return (ClinicalDocumentDecoder.MIPS.equalsIgnoreCase(programName)
+				 && ClinicalDocumentDecoder.ENTITY_INDIVIDUAL.equalsIgnoreCase(entityType));
 	}
 
 	/**
