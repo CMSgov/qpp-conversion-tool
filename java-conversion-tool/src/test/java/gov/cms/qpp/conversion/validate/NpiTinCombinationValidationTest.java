@@ -104,7 +104,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with one error", validator.getValidationErrors().get(0).getErrorText() ,
+		assertThat("Must validate with the correct error", validator.getValidationErrors().get(0).getErrorText() ,
 				is(NpiTinCombinationValidation.ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED));
 	}
 
