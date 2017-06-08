@@ -84,6 +84,6 @@ public class NpiTinCombinationValidationTest {
 	private void createClinicalDocumentWithProgramType(final String programName, final String entityType) {
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, programName);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, entityType);gi
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, entityType);
 	}
 }
