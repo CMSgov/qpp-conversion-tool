@@ -24,7 +24,7 @@ public class NpiTinCombinationValidationTest {
 	final static String TIN2 = "111222333";
 
 	@Before
-	public void createMultipleTinNode() {
+	public void setUpNpiTinCombinations() {
 		npiTinNodeOne = new Node(TemplateId.NPI_TIN_ID);
 		npiTinNodeOne.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, NPI1);
 		npiTinNodeOne.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, TIN1);
