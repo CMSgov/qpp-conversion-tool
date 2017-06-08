@@ -120,7 +120,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with no errors", validator.getValidationErrors() , hasSize(0));c
+		assertThat("Must validate with no errors", validator.getValidationErrors() , hasSize(0));
 	}
 
 	private void createClinicalDocumentWithProgramType(final String programName, final String entityType) {
