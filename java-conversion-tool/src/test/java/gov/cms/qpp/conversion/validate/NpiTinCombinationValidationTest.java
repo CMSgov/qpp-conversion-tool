@@ -14,14 +14,6 @@ import static org.hamcrest.Matchers.is;
 public class NpiTinCombinationValidationTest {
 	private Node npiTinNodeOne;
 	private Node npiTinNodeTwo;
-	private Node reportingParametersActNode;
-	private Node reportingParametersSectionNode;
-	private Node numeratorValueNode;
-	private Node aciProportionNumeratorNode;
-	private Node denominatorValueNode;
-	private Node aciProportionDenominatorNode;
-	private Node aciProportionMeasureNode;
-	private Node aciSectionNode;
 	private Node clinicalDocumentNode;
 	private Node npiTinCombinationNode;
 	private NpiTinCombinationValidation validator;
@@ -40,40 +32,6 @@ public class NpiTinCombinationValidationTest {
 		npiTinNodeTwo = new Node(TemplateId.NPI_TIN_ID);
 		npiTinNodeTwo.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, NPI2);
 		npiTinNodeTwo.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, TIN2);
-
-		reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		reportingParametersActNode.putValue("performanceStart", "20170101");
-		reportingParametersActNode.putValue("performanceEnd", "20171231");
-
-		reportingParametersSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION);
-		reportingParametersSectionNode.addChildNode(reportingParametersActNode);
-
-		numeratorValueNode = new Node();
-		numeratorValueNode.setType(TemplateId.ACI_AGGREGATE_COUNT);
-		numeratorValueNode.putValue("aggregateCount", "400");
-
-		aciProportionNumeratorNode = new Node();
-		aciProportionNumeratorNode.setType(TemplateId.ACI_NUMERATOR);
-		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
-
-		denominatorValueNode = new Node();
-		denominatorValueNode.setType(TemplateId.ACI_AGGREGATE_COUNT);
-		denominatorValueNode.putValue("aggregateCount", "600");
-
-		aciProportionDenominatorNode = new Node();
-		aciProportionDenominatorNode.setType(TemplateId.ACI_DENOMINATOR);
-		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
-
-		aciProportionMeasureNode = new Node();
-		aciProportionMeasureNode.setType(TemplateId.ACI_NUMERATOR_DENOMINATOR);
-		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
-		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
-		aciProportionMeasureNode.putValue("measureId", "ACI-PEA-1");
-
-		aciSectionNode = new Node();
-		aciSectionNode.setType(TemplateId.ACI_SECTION);
-		aciSectionNode.putValue("category", "aci");
-		aciSectionNode.addChildNode(aciProportionMeasureNode);
 
 		validator = new NpiTinCombinationValidation();
 	}
@@ -126,8 +84,6 @@ public class NpiTinCombinationValidationTest {
 	private void createClinicalDocumentWithProgramType(final String programName, final String entityType) {
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, programName);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, entityType);
-		clinicalDocumentNode.addChildNode(reportingParametersSectionNode);
-		clinicalDocumentNode.addChildNode(aciSectionNode);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, entityType);gi
 	}
 }
