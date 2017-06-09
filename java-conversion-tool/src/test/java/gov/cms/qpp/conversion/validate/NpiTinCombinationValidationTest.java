@@ -56,7 +56,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with no errors", validator.getValidationErrors() , empty());
+		assertThat("Must validate with no errors", validator.getDetails() , empty());
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getValidationErrors().get(0).getErrorText(),
+		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().get(0).getMessage(),
 				is(NpiTinCombinationValidation.ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED));
 	}
 
@@ -87,7 +87,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with no errors", validator.getValidationErrors() , hasSize(0));
+		assertThat("Must validate with no errors", validator.getDetails() , hasSize(0));
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with no errors", validator.getValidationErrors() , empty());
+		assertThat("Must validate with no errors", validator.getDetails() , empty());
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getValidationErrors().get(0).getErrorText(),
+		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().get(0).getMessage(),
 				is(NpiTinCombinationValidation.ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED));
 	}
 
@@ -131,7 +131,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getValidationErrors().get(0).getErrorText(),
+		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().get(0).getMessage(),
 				is(NpiTinCombinationValidation.NO_NPI_ALLOWED));
 	}
 
@@ -146,7 +146,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getValidationErrors().get(0).getErrorText(),
+		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().get(0).getMessage(),
 				is(NpiTinCombinationValidation.CONTAINS_TAXPAYER_IDENTIFICATION_NUMBER));
 	}
 

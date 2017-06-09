@@ -93,7 +93,7 @@ class Checker {
 	Checker valueIsNull(String message, String name) {
 		lastAppraised = node.getValue(name);
 		if (!shouldShortcut() && lastAppraised != null) {
-			validationErrors.add(new ValidationError(message, node.getPath()));
+			details.add(new Detail(message, node.getPath()));
 		}
 		return this;
 	}

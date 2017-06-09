@@ -510,18 +510,18 @@ public class CheckerTest {
 		String key = "My Key";
 		String value = null;
 		Node testNode = makeTestNode(key, value);
-		Checker checker = Checker.check(testNode, validationErrors);
+		Checker checker = Checker.check(testNode, details);
 		checker.valueIsNull(ERROR_MESSAGE, key);
-		assertThat("There should be no errors", validationErrors, hasSize(0));
+		assertThat("There should be no errors", details, hasSize(0));
 	}
 	@Test
 	public void testUnhappyValueIsNull() throws Exception {
 		String key = "My Key";
 		String value = "Not Null Value";
 		Node testNode = makeTestNode(key, value);
-		Checker checker = Checker.check(testNode, validationErrors);
+		Checker checker = Checker.check(testNode, details);
 		checker.valueIsNull(ERROR_MESSAGE, key);
-		assertThat("There should be no errors", validationErrors.get(0).getErrorText(), is(ERROR_MESSAGE));
+		assertThat("There should be no errors", details.get(0).getMessage(), is(ERROR_MESSAGE));
 	}
 
 	private Node makeTestNode(String key, String value) {
