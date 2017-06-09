@@ -10,9 +10,9 @@ import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.ErrorSource;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
@@ -46,7 +46,7 @@ public class Converter {
 
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
-	private List<ValidationError> validationErrors = new ArrayList<>();
+	private List<Detail> details = new ArrayList<>();
 	private InputStream xmlStream;
 	private Path inFile;
 	private Node decoded;
@@ -114,15 +114,15 @@ public class Converter {
 		} catch (XmlInputFileException | XmlException xe) {
 			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
-			validationErrors.add(new ValidationError(NOT_VALID_XML_DOCUMENT));
+			details.add(new Detail(NOT_VALID_XML_DOCUMENT));
 		} catch (Exception exception) {
 			DEV_LOG.error(UNEXPECTED_ERROR, exception);
-			validationErrors.add(new ValidationError(UNEXPECTED_ERROR));
+			details.add(new Detail(UNEXPECTED_ERROR));
 		}
 
-		if (!validationErrors.isEmpty()) {
+		if (!details.isEmpty()) {
 			throw new TransformException("Validation errors exist", null,
-				constructErrorHierarchy(sourceIdentifier(), validationErrors));
+				constructErrorHierarchy(sourceIdentifier(), details));
 		}
 
 		return qpp;
@@ -157,14 +157,14 @@ public class Converter {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
 			}
 			if (doValidation) {
-				validationErrors.addAll(validator.validate(decoded));
+				details.addAll(validator.validate(decoded));
 			}
 
-			if (validationErrors.isEmpty()) {
+			if (details.isEmpty()) {
 				qpp = encode();
 			}
 		} else {
-			validationErrors.add(new ValidationError("The file is not a QRDA-III XML document"));
+			details.add(new Detail("The file is not a QRDA-III XML document"));
 		}
 
 		return qpp;
@@ -186,25 +186,25 @@ public class Converter {
 	/**
 	 * Constructs an {@link AllErrors} from all the validation errors.
 	 *
-	 * Currently consists of only a single {@link ErrorSource}.
+	 * Currently consists of only a single {@link Error}.
 	 *
 	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
-	 * @param validationErrors A list of validation errors.
+	 * @param details A list of validation errors.
 	 * @return All the errors.
 	 */
-	private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<ValidationError> validationErrors) {
-		return new AllErrors(Arrays.asList(constructErrorSource(inputIdentifier, validationErrors)));
+	private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
+		return new AllErrors(Arrays.asList(constructErrorSource(inputIdentifier, details)));
 	}
 
 	/**
-	 * Constructs an {@link ErrorSource} for the given {@code inputIdentifier} from the passed in validation errors.
+	 * Constructs an {@link Error} for the given {@code inputIdentifier} from the passed in validation errors.
 	 *
 	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
-	 * @param validationErrors A list of validation errors.
+	 * @param details A list of validation errors.
 	 * @return A single source of validation errors.
 	 */
-	private ErrorSource constructErrorSource(final String inputIdentifier, final List<ValidationError> validationErrors) {
-		return new ErrorSource(inputIdentifier, validationErrors);
+	private Error constructErrorSource(final String inputIdentifier, final List<Detail> details) {
+		return new Error(inputIdentifier, details);
 	}
 
 	/**
@@ -219,7 +219,7 @@ public class Converter {
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));
 			JsonWrapper qpp = encoder.encode();
-			validationErrors.addAll(encoder.getValidationErrors());
+			details.addAll(encoder.getDetails());
 			return qpp;
 		} catch (EncodeException e) {
 			throw new XmlInputFileException("Issues decoding/encoding.", e);

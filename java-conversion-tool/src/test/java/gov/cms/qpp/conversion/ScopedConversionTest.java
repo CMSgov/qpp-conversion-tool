@@ -327,7 +327,7 @@ public class ScopedConversionTest extends BaseTest {
 	 */
 	@SuppressWarnings("unchecked")
 	private List<?> getErrors(Map<String, Object> content) {
-		return (List<?>) ((Map<String, ?>) ((List<?>) content.get("errorSources")).get(0)).get("validationErrors");
+		return (List<?>) ((Map<String, ?>) ((List<?>) content.get("errors")).get(0)).get("details");
 	}
 
 	/**

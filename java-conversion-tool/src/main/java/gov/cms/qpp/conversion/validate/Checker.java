@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -20,14 +20,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 class Checker {
 
 	private Node node;
-	private List<ValidationError> validationErrors;
+	private List<Detail> details;
 	private boolean anded;
 	private Map<TemplateId, AtomicInteger> nodeCount;
 	private Comparable<?> lastAppraised;
 
-	private Checker(Node node, List<ValidationError> validationErrors, boolean anded) {
+	private Checker(Node node, List<Detail> details, boolean anded) {
 		this.node = node;
-		this.validationErrors = validationErrors;
+		this.details = details;
 		this.anded = anded;
 		this.nodeCount = new EnumMap<>(TemplateId.class);
 		node.getChildNodes()
@@ -41,22 +41,22 @@ class Checker {
 	 * static factory that returns a shortcut validator
 	 *
 	 * @param node node to be validated
-	 * @param validationErrors holder for validation errors
+	 * @param details holder for validation errors
 	 * @return The checker, for chaining method calls.
 	 */
-	static Checker check(Node node, List<ValidationError> validationErrors) {
-		return new Checker(node, validationErrors, true);
+	static Checker check(Node node, List<Detail> details) {
+		return new Checker(node, details, true);
 	}
 
 	/**
 	 * static factory that returns a non-shortcut validator
 	 *
 	 * @param node node to be validated
-	 * @param validationErrors holder for validation errors
+	 * @param details holder for validation errors
 	 * @return The checker, for chaining method calls.
 	 */
-	static Checker thoroughlyCheck(Node node, List<ValidationError> validationErrors) {
-		return new Checker(node, validationErrors, false);
+	static Checker thoroughlyCheck(Node node, List<Detail> details) {
+		return new Checker(node, details, false);
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Checker {
 	 * @return determination as to whether or not a check should be performed
 	 */
 	private boolean shouldShortcut() {
-		return anded && !validationErrors.isEmpty();
+		return anded && !details.isEmpty();
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Checker {
 	Checker value(String message, String name) {
 		lastAppraised = node.getValue(name);
 		if (!shouldShortcut() && lastAppraised == null) {
-			validationErrors.add(new ValidationError(message, node.getPath()));
+			details.add(new Detail(message, node.getPath()));
 		}
 		return this;
 	}
@@ -117,7 +117,7 @@ class Checker {
 
 	private void setErrorMessage(String message) {
 		if (! shouldShortcut()) {
-			validationErrors.add(new ValidationError(message, node.getPath()));
+			details.add(new Detail(message, node.getPath()));
 		}
 	}
 
@@ -133,7 +133,7 @@ class Checker {
 			try {
 				lastAppraised = Integer.parseInt(node.getValue(name));
 			} catch (NumberFormatException ex) {
-				validationErrors.add(new ValidationError(message, node.getPath()));
+				details.add(new Detail(message, node.getPath()));
 			}
 		}
 		return this;
@@ -149,7 +149,7 @@ class Checker {
 	@SuppressWarnings("unchecked")
 	public Checker greaterThan(String message, Comparable<?> value) {
 		if (!shouldShortcut() && lastAppraised != null && ((Comparable<Object>) lastAppraised).compareTo(value) <= 0) {
-			validationErrors.add(new ValidationError(message, node.getPath()));
+			details.add(new Detail(message, node.getPath()));
 		}
 		lastAppraised = null;
 		return this;
@@ -166,7 +166,7 @@ class Checker {
 			TemplateId parentType = Optional.ofNullable(node.getParent())
 					.orElse(new Node()).getType();
 			if (parentType != type) {
-				validationErrors.add(new ValidationError(message, node.getPath()));
+				details.add(new Detail(message, node.getPath()));
 			}
 		}
 		return this;
@@ -180,7 +180,7 @@ class Checker {
 	 */
 	public Checker hasChildren(String message) {
 		if (!shouldShortcut() && node.getChildNodes().isEmpty()) {
-			validationErrors.add(new ValidationError(message, node.getPath()));
+			details.add(new Detail(message, node.getPath()));
 		}
 		return this;
 	}
@@ -197,7 +197,7 @@ class Checker {
 		if (!shouldShortcut()) {
 			int count = tallyNodes(types);
 			if (count < minimum) {
-				validationErrors.add(new ValidationError(message, node.getPath()));
+				details.add(new Detail(message, node.getPath()));
 			}
 		}
 		return this;
@@ -215,7 +215,7 @@ class Checker {
 		if (!shouldShortcut()) {
 			int count = tallyNodes(types);
 			if (count > maximum) {
-				validationErrors.add(new ValidationError(message, node.getPath()));
+				details.add(new Detail(message, node.getPath()));
 			}
 		}
 		return this;
@@ -246,7 +246,7 @@ class Checker {
 			}).count();
 
 			if (numberOfMeasuresRequired != numNodesWithWantedMeasureIds) {
-				validationErrors.add(new ValidationError(message, node.getPath()));
+				details.add(new Detail(message, node.getPath()));
 			}
 		}
 		return this;
@@ -270,7 +270,7 @@ class Checker {
 				.stream()
 				.allMatch(childNode -> templateIds.contains(childNode.getType()));
 			if (!valid) {
-				validationErrors.add(new ValidationError(message, node.getPath()));
+				details.add(new Detail(message, node.getPath()));
 			}
 		}
 		return this;

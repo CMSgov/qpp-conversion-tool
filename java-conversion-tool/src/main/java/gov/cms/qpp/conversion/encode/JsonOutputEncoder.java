@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class JsonOutputEncoder implements OutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(JsonOutputEncoder.class);
 	private List<Node> nodes;
-	private List<ValidationError> validationErrors = new ArrayList<>();
+	private List<Detail> details = new ArrayList<>();
 
 	@Override
 	public void encode(Writer writer) {
@@ -32,7 +32,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 			writer.flush();
 		} catch (IOException exception) {
 			DEV_LOG.error("Couldn't write out JSON file.", exception);
-			validationErrors.add(new ValidationError("Failure to encode"));
+			details.add(new Detail("Failure to encode"));
 		}
 	}
 
@@ -43,8 +43,8 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 				wrapper.attachMetadata(node);
 			}
 		} catch (EncodeException e) {
-			DEV_LOG.warn("Encode error when doing internalEncode, adding a new ValidationError", e);
-			validationErrors.add(new ValidationError(e.getMessage()));
+			DEV_LOG.warn("Encode error when doing internalEncode, adding a new Detail", e);
+			details.add(new Detail(e.getMessage()));
 		}
 	}
 
@@ -57,12 +57,12 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 		return wrapper;
 	}
 
-	public void addValidationError(ValidationError validationError) {
-		validationErrors.add(validationError);
+	public void addValidationError(Detail detail) {
+		details.add(detail);
 	}
 
-	public List<ValidationError> getValidationErrors() {
-		return this.validationErrors;
+	public List<Detail> getDetails() {
+		return this.details;
 	}
 
 	public void setNodes(List<Node> someNodes) {

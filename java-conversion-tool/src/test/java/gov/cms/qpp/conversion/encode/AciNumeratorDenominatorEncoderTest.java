@@ -101,7 +101,7 @@ public class AciNumeratorDenominatorEncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
 
 		//assert
-		assertThat("There must be a single validation error", objectUnderTest.getValidationErrors(), hasSize(1));
-		assertThat("The validation error must be the inability to find an encoder", objectUnderTest.getValidationErrors().get(0).getErrorText(), is("Failed to find an encoder"));
+		assertThat("There must be a single validation error", objectUnderTest.getDetails(), hasSize(1));
+		assertThat("The validation error must be the inability to find an encoder", objectUnderTest.getDetails().get(0).getMessage(), is("Failed to find an encoder"));
 	}
 }
