@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.Test;
 
 import java.util.List;
@@ -30,10 +30,10 @@ public class AggregateCountValidatorTest {
 
         AggregateCountValidator validator = new AggregateCountValidator();
         validator.internalValidateSingleNode( aggregateCountNode );
-        List<ValidationError> errors = validator.getValidationErrors();
+        List<Detail> errors = validator.getDetails();
 
         assertFalse("there's an error", errors.isEmpty());
-        assertEquals(AggregateCountValidator.VALUE_ERROR, errors.get(0).getErrorText());
+        assertEquals(AggregateCountValidator.VALUE_ERROR, errors.get(0).getMessage());
     }
 
     @Test
@@ -43,10 +43,10 @@ public class AggregateCountValidatorTest {
 
         AggregateCountValidator validator = new AggregateCountValidator();
         validator.internalValidateSingleNode(aggregateCountNode);
-        List<ValidationError> errors = validator.getValidationErrors();
+        List<Detail> errors = validator.getDetails();
 
         assertFalse("there's an error", errors.isEmpty());
-        assertEquals(AggregateCountValidator.TYPE_ERROR, errors.get(0).getErrorText());
+        assertEquals(AggregateCountValidator.TYPE_ERROR, errors.get(0).getMessage());
     }
 
     @Test
@@ -56,7 +56,7 @@ public class AggregateCountValidatorTest {
 
         AggregateCountValidator validator = new AggregateCountValidator();
         validator.internalValidateSingleNode(aggregateCountNode);
-        List<ValidationError> errors = validator.getValidationErrors();
+        List<Detail> errors = validator.getDetails();
 
         assertTrue("there are no errors", errors.isEmpty());
     }

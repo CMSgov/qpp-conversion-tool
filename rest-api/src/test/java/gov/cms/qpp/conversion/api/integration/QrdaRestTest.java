@@ -54,6 +54,6 @@ public class QrdaRestTest {
 			.fileUpload("/v1/qrda3").file(qrda3File))
 			.andExpect(status().is(422))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-			.andExpect(jsonPath("$.errorSources").exists());
+			.andExpect(jsonPath("$.errors").exists());
 	}
 }

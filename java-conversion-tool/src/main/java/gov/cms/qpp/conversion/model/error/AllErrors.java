@@ -5,56 +5,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Contains a list of error errorSources.
+ * Contains a list of error errors.
  */
 public class AllErrors implements Serializable {
 	private static final long serialVersionUID = -223805249639231357L;
-	private List<ErrorSource> errorSources;
+	private List<Error> errors;
 
 	/**
-	 * Constructs an {@code AllErrors} with no errorSources.
+	 * Constructs an {@code AllErrors} with no errors.
 	 */
 	public AllErrors() {
 		//empty on purpose
 	}
 
 	/**
-	 * Constructs a {@code AllErrors} with the specified {@link gov.cms.qpp.conversion.model.error.ErrorSource}s.
+	 * Constructs a {@code AllErrors} with the specified {@link Error}s.
 	 *
-	 * @param errorSources The list of {@code ErrorSource}s.
+	 * @param errors The list of {@code Error}s.
 	 */
-	public AllErrors(List<ErrorSource> errorSources) {
-		this.errorSources = errorSources;
+	public AllErrors(List<Error> errors) {
+		this.errors = errors;
 	}
 
 	/**
-	 * Gets all the {@link gov.cms.qpp.conversion.model.error.ErrorSource}s.
+	 * Gets all the {@link Error}s.
 	 *
-	 * @return All the {@code ErrorSource}s.
+	 * @return All the {@code Error}s.
 	 */
-	public List<ErrorSource> getErrorSources() {
-		return errorSources;
+	public List<Error> getErrors() {
+		return errors;
 	}
 
 	/**
-	 * Sets all the {@link gov.cms.qpp.conversion.model.error.ErrorSource}.
+	 * Sets all the {@link Error}.
 	 *
-	 * @param errorSources The {@code ErrorSource}s to use.
+	 * @param errors The {@code Error}s to use.
 	 */
-	public void setErrorSources(final List<ErrorSource> errorSources) {
-		this.errorSources = errorSources;
+	public void setErrors(final List<Error> errors) {
+		this.errors = errors;
 	}
 
 	/**
-	 * Adds a {@link gov.cms.qpp.conversion.model.error.ErrorSource} to the list.
+	 * Adds a {@link Error} to the list.
 	 *
-	 * @param source The {@code ErrorSource} to add.
+	 * @param error The {@code Error} to add.
 	 */
-	public void addErrorSource(ErrorSource source) {
-		if (null == errorSources) {
-			errorSources = new ArrayList<>();
+	public void addError(Error error) {
+		if (null == errors) {
+			errors = new ArrayList<>();
 		}
 
-		errorSources.add(source);
+		errors.add(error);
 	}
 }

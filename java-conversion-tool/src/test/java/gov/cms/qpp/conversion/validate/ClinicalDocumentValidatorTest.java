@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.After;
 import org.junit.Test;
 
@@ -45,7 +45,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("no errors should be present", errors, empty());
 	}
@@ -60,7 +60,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(iaSectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("no errors should be present", errors, empty());
 	}
@@ -76,7 +76,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(ecqmSectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("no errors should be present", errors, empty());
 	}
@@ -84,7 +84,7 @@ public class ClinicalDocumentValidatorTest {
 	@Test
 	public void testClinicalDocumentNotPresent() {
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSameTemplateIdNodes(Arrays.asList());
+		List<Detail> errors = validator.validateSameTemplateIdNodes(Arrays.asList());
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing Clinical Document node", errors,
@@ -97,7 +97,7 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode2 = new Node(TemplateId.CLINICAL_DOCUMENT);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSameTemplateIdNodes(Arrays.asList(clinicalDocumentNode, clinicalDocumentNode2));
+		List<Detail> errors = validator.validateSameTemplateIdNodes(Arrays.asList(clinicalDocumentNode, clinicalDocumentNode2));
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about too many Clinical Document nodes", errors,
@@ -110,7 +110,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(createReportingNode());
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing section node", errors,
@@ -127,7 +127,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(placeholderNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("there should be one error", errors, hasSize(1));
 		assertThat("error should be about missing section node", errors,
@@ -146,7 +146,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("there should be two errors", errors, hasSize(2));
 		assertThat("error should be about missing missing program name", errors,
@@ -167,7 +167,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("there should be one error", errors, hasSize(1));
 		assertThat("error should be about missing section node", errors,
@@ -187,7 +187,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("there should be no errors", errors, empty());
 	}
@@ -201,7 +201,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("there should be one error", errors, hasSize(2));
 		assertThat("error should be about missing reporting node", errors,
@@ -222,7 +222,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNodes(aciSectionNode, performanceSection, duplicateAciSectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("Should contain one error", errors, hasSize(1));
 		assertThat("Should contain one error", errors,
@@ -241,7 +241,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNodes(IASectionNode, performanceSection, duplicateIASectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("Should contain one error", errors, hasSize(1));
 		assertThat("Should contain one error", errors,
@@ -260,7 +260,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNodes(qualityMeasureNode, performanceSection, duplicateQualityMeasureNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("Should contain one error", errors, hasSize(1));
 		assertThat("Should contain one error", errors,
@@ -281,7 +281,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNodes(aciSectionNode, performanceSection, IASectionNode, qualityMeasureNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("Should have no validation errors", errors, empty());
 	}
@@ -294,7 +294,7 @@ public class ClinicalDocumentValidatorTest {
 		//execute
 		new ConversionFileWriterWrapper(path).transform();
 		AllErrors allErrors = readJson(CLINICAL_DOCUMENT_ERROR_FILE, AllErrors.class);
-		List<ValidationError> errors = getErrors(allErrors);
+		List<Detail> errors = getErrors(allErrors);
 
 		assertThat("Must have 4 errors", errors, hasSize(4));
 
@@ -314,7 +314,7 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.addChildNodes(aciSectionNode, performanceSection);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME,"Invalid program name");
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<ValidationError> errors = validator.validateSingleNode(clinicalDocumentNode);
+		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("Should have 1 validation errors", errors, hasSize(1));
 		assertThat("Must contain the error", errors,
@@ -322,8 +322,8 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 
-	private List<ValidationError> getErrors(AllErrors content) {
-		return content.getErrorSources().get(0).getValidationErrors();
+	private List<Detail> getErrors(AllErrors content) {
+		return content.getErrors().get(0).getDetails();
 	}
 
 	private Node createValidClinicalDocumentNode() {

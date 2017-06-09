@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import org.hamcrest.core.Is;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public class MeasurePerformedValidatorTest {
 		measurePerformedNode.putValue("measurePerformed", "Y");
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
-		List<ValidationError> errors = validator.validateSingleNode(measurePerformedNode);
+		List<Detail> errors = validator.validateSingleNode(measurePerformedNode);
 		assertThat("no errors should be present", errors, empty());
 	}
 
@@ -38,7 +38,7 @@ public class MeasurePerformedValidatorTest {
 		measurePerformedNode.putValue("measurePerformed", "N");
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
-		List<ValidationError> errors = validator.validateSingleNode(measurePerformedNode);
+		List<Detail> errors = validator.validateSingleNode(measurePerformedNode);
 		assertThat("no errors should be present", errors, empty());
 	}
 
@@ -48,7 +48,7 @@ public class MeasurePerformedValidatorTest {
 		measurePerformedNode.putValue("measurePerformed", "wrong value");
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
-		List<ValidationError> errors = validator.validateSingleNode(measurePerformedNode);
+		List<Detail> errors = validator.validateSingleNode(measurePerformedNode);
 		assertThat("no errors should be present", errors.size(), Is.is(1));
 	}
 }
