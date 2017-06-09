@@ -61,6 +61,13 @@ public class NpiTinCombinationValidation extends NodeValidator {
 				 && ClinicalDocumentDecoder.ENTITY_INDIVIDUAL.equalsIgnoreCase(entityType));
 	}
 
+	/**
+	 * Checks the program name and entity type for Mips Group
+	 *
+	 * @param programName name to be checked
+	 * @param entityType type to be checked
+	 * @return true for a proper program name and type
+	 */
 	private boolean isMipsGroup(String programName, String entityType) {
 		return (ClinicalDocumentDecoder.MIPS.equalsIgnoreCase(programName)
 				&& ClinicalDocumentDecoder.ENTITY_GROUP.equalsIgnoreCase(entityType));
