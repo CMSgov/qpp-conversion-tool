@@ -47,7 +47,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with no errors", validator.getValidationErrors() , hasSize(0));
+		assertThat("Must validate with no errors", validator.getDetails() , hasSize(0));
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with the correct error", validator.getValidationErrors().get(0).getErrorText() ,
+		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage() ,
 				is(NpiTinCombinationValidation.ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED));
 	}
 
@@ -78,7 +78,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with no errors", validator.getValidationErrors() , hasSize(0));
+		assertThat("Must validate with no errors", validator.getDetails() , hasSize(0));
 	}
 
 	private void createClinicalDocumentWithProgramType(final String programName, final String entityType) {
