@@ -13,7 +13,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 /**
@@ -24,7 +24,7 @@ public class QrdaValidator {
 	private static final Registry<NodeValidator> VALIDATORS = new Registry<>(Validator.class);
 
 	private final Map<TemplateId, List<Node>> nodesForTemplateIds = new EnumMap<>(TemplateId.class);
-	private final List<ValidationError> validationErrors = new ArrayList<>();
+	private final List<Detail> details = new ArrayList<>();
 	private Set<TemplateId> scope;
 
 	public QrdaValidator() {
@@ -40,7 +40,7 @@ public class QrdaValidator {
 	 * @param rootNode The root node that all other nodes descend from.
 	 * @return The list of validation errors for the entire tree of nodes.
 	 */
-	public List<ValidationError> validate(Node rootNode) {
+	public List<Detail> validate(Node rootNode) {
 		Converter.CLIENT_LOG.info("Validating all nodes in the tree");
 
 		//validate each node while traversing the tree
@@ -49,7 +49,7 @@ public class QrdaValidator {
 		//validate lists of nodes grouped by templateId
 		validateTemplateIds();
 
-		return validationErrors;
+		return details;
 	}
 
 	/**
@@ -76,8 +76,8 @@ public class QrdaValidator {
 		}
 
 		addNodeToTemplateMap(node);
-		List<ValidationError> nodeErrors = validatorForNode.validateSingleNode(node);
-		validationErrors.addAll(nodeErrors);
+		List<Detail> nodeErrors = validatorForNode.validateSingleNode(node);
+		details.addAll(nodeErrors);
 	}
 
 	/**
@@ -168,8 +168,8 @@ public class QrdaValidator {
 
 		List<Node> nodesForTemplateId = nodesForTemplateIds.getOrDefault(templateId, Collections.emptyList());
 
-		List<ValidationError> nodesErrors = validator.validateSameTemplateIdNodes(nodesForTemplateId);
-		validationErrors.addAll(nodesErrors);
+		List<Detail> nodesErrors = validator.validateSameTemplateIdNodes(nodesForTemplateId);
+		details.addAll(nodesErrors);
 	}
 
 	/**

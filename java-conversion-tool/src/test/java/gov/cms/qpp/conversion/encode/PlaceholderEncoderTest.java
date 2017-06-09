@@ -22,6 +22,6 @@ public class PlaceholderEncoderTest {
 		encoder.internalEncode(wrapper, placeHolder);
 
 		//then
-		assertThat(encoder.getValidationErrors().size(), is(1));
+		assertThat(encoder.getDetails().size(), is(1));
 	}
 }

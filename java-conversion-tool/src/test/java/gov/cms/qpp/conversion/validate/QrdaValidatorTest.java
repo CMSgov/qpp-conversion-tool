@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,12 +38,12 @@ public class QrdaValidatorTest {
 	private static final TemplateId TEST_REQUIRED_TEMPLATE_ID = TemplateId.ACI_NUMERATOR_DENOMINATOR;
 	//private static final TemplateId TEST_OPTIONAL_TEMPLATE_ID = TemplateId.CMS_AGGREGATE_COUNT;
 
-	private static final ValidationError TEST_VALIDATION_ERROR_FOR_SINGLE_NODE =
-		new ValidationError("single node validation error");
-	private static final ValidationError TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES =
-		new ValidationError("list of nodes required validation error");
-	private static final ValidationError TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES =
-		new ValidationError("list of nodes optional validation error");
+	private static final Detail TEST_VALIDATION_ERROR_FOR_SINGLE_NODE =
+		new Detail("single node validation error");
+	private static final Detail TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES =
+		new Detail("list of nodes required validation error");
+	private static final Detail TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES =
+		new Detail("list of nodes optional validation error");
 
 	@Before
 	public void beforeEachTest() throws Exception {
@@ -71,15 +71,15 @@ public class QrdaValidatorTest {
 		testRootNode.putValue(testKey, testValue);
 
 		//execute
-		List<ValidationError> validationErrors = objectUnderTest.validate(testRootNode);
+		List<Detail> details = objectUnderTest.validate(testRootNode);
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 1, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
 		assertThat("The validation errors is missing items from the expected templateId",
-		           validationErrors, hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE,
+				details, hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE,
 		                                      TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES));
 		assertThat("The validation errors (incorrectly) has an error from the optional templateId",
-		           validationErrors, not(hasItem(TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES)));
+				details, not(hasItem(TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES)));
 	}
 
 	@Test
@@ -99,17 +99,17 @@ public class QrdaValidatorTest {
 		testRootNode.addChildNode(testChildNode2);
 
 		//execute
-		List<ValidationError> validationErrors = objectUnderTest.validate(testRootNode);
+		List<Detail> details = objectUnderTest.validate(testRootNode);
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 2, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
 		assertNodeList(nodesPassedIntoRequiredValidateTemplateIdNodes, 2, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
 		assertThat("The validation errors is missing the specific number of single node errors",
-		           Collections.frequency(validationErrors, TEST_VALIDATION_ERROR_FOR_SINGLE_NODE), is(2));
+		           Collections.frequency(details, TEST_VALIDATION_ERROR_FOR_SINGLE_NODE), is(2));
 		assertThat("The validation errors is missing the specific number of required templateId errors",
-		           Collections.frequency(validationErrors, TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES), is(1));
+		           Collections.frequency(details, TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES), is(1));
 		assertThat("The validation errors (incorrectly) has an error from the optional templateId",
-		           validationErrors, not(hasItem(TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES)));
+				details, not(hasItem(TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES)));
 	}
 
 	@Test
@@ -119,15 +119,15 @@ public class QrdaValidatorTest {
 		Node testRootNode = new Node();
 
 		//execute
-		List<ValidationError> validationErrors = objectUnderTest.validate(testRootNode);
+		List<Detail> details = objectUnderTest.validate(testRootNode);
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 0, null, null, null);
 		assertThat("The list of nodes has an incorrect size", nodesPassedIntoRequiredValidateTemplateIdNodes, hasSize(0));
 		assertThat("The validation errors is missing an item from the expected templateId",
-		           validationErrors, hasItem(TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES));
+				details, hasItem(TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES));
 		assertThat("The validation errors (incorrectly) has a single node error and an error from the  and optional templateId",
-		           validationErrors, not(hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE,
+				details, not(hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE,
 		                                          TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES)));
 
 	}
@@ -143,15 +143,15 @@ public class QrdaValidatorTest {
 		testRootNode.putValue(testKey, testValue);
 
 		//execute
-		List<ValidationError> validationErrors = objectUnderTest.validate(testRootNode);
+		List<Detail> details = objectUnderTest.validate(testRootNode);
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 0, null, null, null);
 		assertThat("The list of nodes has an incorrect size", nodesPassedIntoRequiredValidateTemplateIdNodes, hasSize(0));
 		assertThat("The validation errors is missing an item from the expected templateId",
-		           validationErrors, hasItem(TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES));
+				details, hasItem(TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES));
 		assertThat("The validation errors (incorrectly) has a single node error and an error from the  and optional templateId",
-		           validationErrors, not(hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE,
+				details, not(hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE,
 		                                          TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES)));
 	}
 

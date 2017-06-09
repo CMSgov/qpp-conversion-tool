@@ -33,7 +33,7 @@ public class MeasureDataValidator extends NodeValidator {
 				.childMinimum(MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT)
 				.childMaximum(MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT);
 
-		if (getValidationErrors().isEmpty()) {
+		if (getDetails().isEmpty()) {
 			Node child = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 			check(child)
 					.value(AggregateCountValidator.VALUE_ERROR, "aggregateCount")

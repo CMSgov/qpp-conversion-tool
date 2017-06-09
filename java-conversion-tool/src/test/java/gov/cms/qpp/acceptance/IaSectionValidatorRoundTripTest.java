@@ -27,7 +27,7 @@ public class IaSectionValidatorRoundTripTest {
 		new ConversionFileWriterWrapper(path).transform();
 
 		String error = JsonHelper.readJsonAtJsonPath(Paths.get(ERROR_FILE),
-				"$.errorSources[0].validationErrors[0].errorText", String.class);
+				"$.errors[0].details[0].message", String.class);
 
 		assertThat("Must contain correct error message", error, is("Must have only IA Measures"));
 	}

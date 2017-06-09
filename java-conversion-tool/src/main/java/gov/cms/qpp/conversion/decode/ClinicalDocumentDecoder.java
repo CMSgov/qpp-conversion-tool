@@ -22,12 +22,12 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	public static final String MIPS_PROGRAM_NAME = "mips";
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcplus";
 	public static final String ENTITY_ID = "entityId";
-	static final String MIPS = "MIPS";
-	static final String MIPS_GROUP = "MIPS_GROUP";
-	static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
-	static final String ENTITY_GROUP = "group";
-	static final String ENTITY_INDIVIDUAL = "individual";
-	static final String CPCPLUS = "CPCPLUS";
+	public static final String MIPS = "MIPS";
+	public static final String MIPS_GROUP = "MIPS_GROUP";
+	public static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
+	public static final String ENTITY_GROUP = "group";
+	public static final String ENTITY_INDIVIDUAL = "individual";
+	public static final String CPCPLUS = "CPCPLUS";
 
 	/**
 	 * internalDecode parses the xml fragment into thisNode
