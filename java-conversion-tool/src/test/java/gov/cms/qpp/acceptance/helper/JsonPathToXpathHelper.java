@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Attribute;
@@ -34,7 +35,7 @@ public class JsonPathToXpathHelper {
 	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper, boolean doDefaults) throws IOException {
 		path = inPath;
 		wrapper = inWrapper;
-		InputStream xmlStream = XmlUtils.fileToStream(path);
+		InputStream xmlStream = new NamedInputStream(XmlUtils.fileToStream(path), path.toString());
 		Converter converter = new Converter(xmlStream).doDefaults(doDefaults);
 		converter.transform();
 		QppOutputEncoder encoder = new QppOutputEncoder();

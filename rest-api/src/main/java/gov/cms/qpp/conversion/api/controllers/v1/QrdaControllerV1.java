@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.util.NamedInputStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,7 +37,7 @@ public class QrdaControllerV1 {
 	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public String uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
-		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(file.getInputStream());
+		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(new NamedInputStream(file.getInputStream(), file.getName()));
 		return qpp.toString();
 	}
 }
