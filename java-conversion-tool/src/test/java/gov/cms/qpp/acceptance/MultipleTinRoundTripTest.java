@@ -18,20 +18,19 @@ import static org.junit.Assert.assertThat;
 
 public class MultipleTinRoundTripTest {
 	private static JsonWrapper wrapper = new JsonWrapper();
-	private static JsonPathToXpathHelper helper;
 	private static ReadContext ctx;
 
 	@BeforeClass
 	public static void setup() throws IOException {
 		Path path = Paths.get("../qrda-files/ComprehensivePrimaryCare_Sample_QRDA_III.xml");
-		helper = new JsonPathToXpathHelper(path, wrapper, false);
+		new JsonPathToXpathHelper(path, wrapper, false);
 		ctx = JsonPath.parse(wrapper.toString());
 	}
 
 	@Test
 	public void hasMultipleNpiTinCombo() {
 		List<Map<String, Object>> topLevel = ctx.read("$");
-		assertThat("", topLevel.size(), is(5));
+		assertThat("There should be five", topLevel.size(), is(5));
 	}
 
 }
