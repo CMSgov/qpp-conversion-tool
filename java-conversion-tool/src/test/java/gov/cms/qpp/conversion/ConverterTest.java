@@ -6,9 +6,9 @@ import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.ErrorSource;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.model.error.ValidationError;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.util.NamedInputStream;
@@ -78,10 +78,10 @@ public class ConverterTest {
 			fail("The converter should not create valid QPP JSON");
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
-			List<ErrorSource> errorSources = allErrors.getErrorSources();
-			assertThat("There must only be one error source.", errorSources, hasSize(1));
-			List<ValidationError> validationErrors = errorSources.get(0).getValidationErrors();
-			assertThat("The expected validation error was missing", validationErrors, hasValidationErrorsIgnoringPath("Test validation error for Jenny"));
+			List<Error> errors = allErrors.getErrors();
+			assertThat("There must only be one error source.", errors, hasSize(1));
+			List<Detail> details = errors.get(0).getDetails();
+			assertThat("The expected validation error was missing", details, hasValidationErrorsIgnoringPath("Test validation error for Jenny"));
 		}
 	}
 
@@ -95,12 +95,12 @@ public class ConverterTest {
 			fail();
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
-			List<ErrorSource> errorSources = allErrors.getErrorSources();
-			assertThat("There must only be one error source.", errorSources, hasSize(1));
-			List<ValidationError> validationErrors = errorSources.get(0).getValidationErrors();
-			assertThat("There must be only one validation error.", validationErrors, hasSize(1));
-			ValidationError validationError = validationErrors.get(0);
-			assertThat("The validation error was incorrect", validationError, validationErrorTextMatches(Converter.NOT_VALID_XML_DOCUMENT));
+			List<Error> errors = allErrors.getErrors();
+			assertThat("There must only be one error source.", errors, hasSize(1));
+			List<Detail> details = errors.get(0).getDetails();
+			assertThat("There must be only one validation error.", details, hasSize(1));
+			Detail detail = details.get(0);
+			assertThat("The validation error was incorrect", detail, validationErrorTextMatches(Converter.NOT_VALID_XML_DOCUMENT));
 		}
 	}
 
@@ -122,12 +122,12 @@ public class ConverterTest {
 			fail();
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
-			List<ErrorSource> errorSources = allErrors.getErrorSources();
-			assertThat("There must only be one error source.", errorSources, hasSize(1));
-			List<ValidationError> validationErrors = errorSources.get(0).getValidationErrors();
-			assertThat("There must be only one validation error.", validationErrors, hasSize(1));
-			ValidationError validationError = validationErrors.get(0);
-			assertThat("The validation error was incorrect", validationError, validationErrorTextMatches(Converter.NOT_VALID_XML_DOCUMENT));
+			List<Error> errors = allErrors.getErrors();
+			assertThat("There must only be one error source.", errors, hasSize(1));
+			List<Detail> details = errors.get(0).getDetails();
+			assertThat("There must be only one validation error.", details, hasSize(1));
+			Detail detail = details.get(0);
+			assertThat("The validation error was incorrect", detail, validationErrorTextMatches(Converter.NOT_VALID_XML_DOCUMENT));
 		}
 	}
 
@@ -140,12 +140,12 @@ public class ConverterTest {
 			fail();
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
-			List<ErrorSource> errorSources = allErrors.getErrorSources();
-			assertThat("There must only be one error source.", errorSources, hasSize(1));
-			List<ValidationError> validationErrors = errorSources.get(0).getValidationErrors();
-			assertThat("There must be only one validation error.", validationErrors, hasSize(1));
-			ValidationError validationError = validationErrors.get(0);
-			assertThat("The validation error was incorrect", validationError, validationErrorTextMatches("The file is not a QRDA-III XML document"));
+			List<Error> errors = allErrors.getErrors();
+			assertThat("There must only be one error source.", errors, hasSize(1));
+			List<Detail> details = errors.get(0).getDetails();
+			assertThat("There must be only one validation error.", details, hasSize(1));
+			Detail detail = details.get(0);
+			assertThat("The validation error was incorrect", detail, validationErrorTextMatches("The file is not a QRDA-III XML document"));
 		}
 	}
 
@@ -161,12 +161,12 @@ public class ConverterTest {
 			fail();
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
-			List<ErrorSource> errorSources = allErrors.getErrorSources();
-			assertThat("There must only be one error source.", errorSources, hasSize(1));
-			List<ValidationError> validationErrors = errorSources.get(0).getValidationErrors();
-			assertThat("There must be only one validation error.", validationErrors, hasSize(1));
-			ValidationError validationError = validationErrors.get(0);
-			assertThat("The validation error was incorrect", validationError, validationErrorTextMatches("The file is not a QRDA-III XML document"));
+			List<Error> errors = allErrors.getErrors();
+			assertThat("There must only be one error source.", errors, hasSize(1));
+			List<Detail> details = errors.get(0).getDetails();
+			assertThat("There must be only one validation error.", details, hasSize(1));
+			Detail detail = details.get(0);
+			assertThat("The validation error was incorrect", detail, validationErrorTextMatches("The file is not a QRDA-III XML document"));
 		}
 	}
 
@@ -186,12 +186,12 @@ public class ConverterTest {
 			fail();
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
-			List<ErrorSource> errorSources = allErrors.getErrorSources();
-			assertThat("There must only be one error source.", errorSources, hasSize(1));
-			List<ValidationError> validationErrors = errorSources.get(0).getValidationErrors();
-			assertThat("There must be only one validation error.", validationErrors, hasSize(1));
-			ValidationError validationError = validationErrors.get(0);
-			assertThat("The validation error was incorrect", validationError, validationErrorTextMatches(Converter.UNEXPECTED_ERROR));
+			List<Error> errors = allErrors.getErrors();
+			assertThat("There must only be one error source.", errors, hasSize(1));
+			List<Detail> details = errors.get(0).getDetails();
+			assertThat("There must be only one validation error.", details, hasSize(1));
+			Detail detail = details.get(0);
+			assertThat("The validation error was incorrect", detail, validationErrorTextMatches(Converter.UNEXPECTED_ERROR));
 		}
 	}
 }

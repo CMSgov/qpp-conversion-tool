@@ -4,7 +4,7 @@ import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ public class MeasureDataValidatorTest extends BaseTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		List<ValidationError> errors = validator.getValidationErrors();
+		List<Detail> errors = validator.getDetails();
 		assertThat("Expect no errors on the happy path ", errors.isEmpty(), is(true));
 	}
 
@@ -37,9 +37,9 @@ public class MeasureDataValidatorTest extends BaseTest {
 		MeasureDataValidator validator = new MeasureDataValidator();
 		validator.internalValidateSingleNode(testNode);
 
-		List<ValidationError> errors = validator.getValidationErrors();
+		List<Detail> errors = validator.getDetails();
 		assertThat(errors.isEmpty(), is(false));
-		assertEquals(errors.get(0).getErrorText(), MISSING_AGGREGATE_COUNT);
+		assertEquals(errors.get(0).getMessage(), MISSING_AGGREGATE_COUNT);
 	}
 
 }

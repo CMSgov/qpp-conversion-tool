@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -28,12 +28,12 @@ public class AciSectionValidatorTest {
 
 		AciSectionValidator measureVal = new AciSectionValidator();
 
-		List<ValidationError> errors = measureVal.validateSingleNode(aciSectionNode);
+		List<Detail> errors = measureVal.validateSingleNode(aciSectionNode);
 
 		assertThat("there should be 2 error", errors, hasSize(2));
-		assertThat("error should be about missing proportion node", errors.get(0).getErrorText(),
+		assertThat("error should be about missing proportion node", errors.get(0).getMessage(),
 			is(AciSectionValidator.ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED));
-		assertThat("error should be about missing required Measure", errors.get(1).getErrorText(),
+		assertThat("error should be about missing required Measure", errors.get(1).getMessage(),
 			is(MessageFormat.format(AciSectionValidator.NO_REQUIRED_MEASURE, "ACI_EP_1")));
 	}
 
@@ -55,10 +55,10 @@ public class AciSectionValidatorTest {
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
 
 		AciSectionValidator measureval = new AciSectionValidator();
-		List<ValidationError> errors = measureval.validateSingleNode(aciSectionNode);
+		List<Detail> errors = measureval.validateSingleNode(aciSectionNode);
 
 		assertThat("there should be 1 error", errors, hasSize(1));
-		assertThat("error should be about the required measure not present", errors.get(0).getErrorText(),
+		assertThat("error should be about the required measure not present", errors.get(0).getMessage(),
 			is(MessageFormat.format(AciSectionValidator.NO_REQUIRED_MEASURE, "ACI_EP_1")));
 	}
 
@@ -68,7 +68,7 @@ public class AciSectionValidatorTest {
 		aciSectionNode.putValue("category", "aci");
 
 		AciSectionValidator measureVal = new AciSectionValidator();
-		List<ValidationError> errors = measureVal.validateSameTemplateIdNodes(Arrays.asList(aciSectionNode));
+		List<Detail> errors = measureVal.validateSameTemplateIdNodes(Arrays.asList(aciSectionNode));
 
 		assertThat("there should be 0 errors", errors, empty());
 	}

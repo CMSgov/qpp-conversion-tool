@@ -80,8 +80,8 @@ public class AciSectionEncoderTest {
 		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder();
 		aciSectionEncoder.internalEncode(testWrapper, aciSectionNode);
 
-		assertThat("Must have validation error.", aciSectionEncoder.getValidationErrors(), is(not(nullValue())));
-		assertThat("Must be correct validation error", aciSectionEncoder.getValidationErrors().get(0).getErrorText(),
+		assertThat("Must have validation error.", aciSectionEncoder.getDetails(), is(not(nullValue())));
+		assertThat("Must be correct validation error", aciSectionEncoder.getDetails().get(0).getMessage(),
 				is("Failed to find an AciSectionEncoder"));
 	}
 }

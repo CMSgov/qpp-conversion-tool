@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.ValidationError;
+import gov.cms.qpp.conversion.model.error.Detail;
 
 import java.util.List;
 
@@ -58,7 +58,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 
 		Node reportingParametersAct = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingParametersAct == null) {
-			getValidationErrors().add(new ValidationError(CONTAINS_PERFORMANCE_YEAR, node.getPath()));
+			getDetails().add(new Detail(CONTAINS_PERFORMANCE_YEAR, node.getPath()));
 		} else {
 			thoroughlyCheck(reportingParametersAct).value(CONTAINS_PERFORMANCE_YEAR, "performanceStart");
 		}
@@ -76,9 +76,9 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
 		if (nodes.isEmpty()) {
-			this.addValidationError(new ValidationError(CLINICAL_DOCUMENT_REQUIRED));
+			this.addValidationError(new Detail(CLINICAL_DOCUMENT_REQUIRED));
 		} else if (nodes.size() > 1) {
-			this.addValidationError(new ValidationError(EXACTLY_ONE_DOCUMENT_ALLOWED));
+			this.addValidationError(new Detail(EXACTLY_ONE_DOCUMENT_ALLOWED));
 		}
 	}
 }
