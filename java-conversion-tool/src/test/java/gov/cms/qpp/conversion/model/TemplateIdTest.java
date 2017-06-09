@@ -19,7 +19,7 @@ public class TemplateIdTest {
 	@Test
 	public void testExtension() {
 		assertThat("TemplateId#getExtension() is not working", TemplateId.CLINICAL_DOCUMENT.getExtension(),
-		           is("2016-11-01"));
+		           is("2017-07-01"));
 	}
 
 	@Test
