@@ -31,15 +31,10 @@ public class NpiTinCombinationValidation extends NodeValidator {
 		final String entityType = clinicalDocumentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE);
 
 		if (isMipsIndividual(programName, entityType)) {
-			check(node)
-				.childMaximum(ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED, 1, TemplateId.NPI_TIN_ID)
-				.childMinimum(ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED, 1, TemplateId.NPI_TIN_ID);
+			ensureOneNpiTInCombinationExists(node);
 
 		} else if (isMipsGroup(programName, entityType)) {
-			check(node)
-				.childMaximum(ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED, 1, TemplateId.NPI_TIN_ID)
-				.childMinimum(ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED, 1, TemplateId.NPI_TIN_ID);
-
+			ensureOneNpiTInCombinationExists(node);
 			check(node.findFirstNode(TemplateId.NPI_TIN_ID))
 					.value(CONTAINS_TAXPAYER_IDENTIFICATION_NUMBER,
 							MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
@@ -47,6 +42,17 @@ public class NpiTinCombinationValidation extends NodeValidator {
 							MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER);
 		}
 
+	}
+
+	/**
+	 * Validates that only one NPI/TIN combination was decoded
+	 *
+	 * @param node object to be validated
+	 */
+	private void ensureOneNpiTInCombinationExists(Node node) {
+		check(node)
+			.childMaximum(ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED, 1, TemplateId.NPI_TIN_ID)
+			.childMinimum(ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED, 1, TemplateId.NPI_TIN_ID);
 	}
 
 	/**
