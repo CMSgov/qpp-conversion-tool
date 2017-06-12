@@ -93,7 +93,7 @@ class Checker {
 	Checker singleValue(String message, String name) {
 		value(message, name);
 		List<String> duplicates = node.getDuplicateValues(name);
-		if (duplicates != null && duplicates.size() > 0) {
+		if (duplicates != null && !duplicates.isEmpty()) {
 			details.add(new Detail(message, node.getPath()));
 		}
 		return this;
