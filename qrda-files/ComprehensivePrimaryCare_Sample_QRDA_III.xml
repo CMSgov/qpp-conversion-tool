@@ -124,6 +124,23 @@
          </addr>
       </associatedEntity>
    </participant>
+    <!--<participant typeCode="LOC">-->
+        <!--<associatedEntity classCode="SDLOC">-->
+            <!--<id root="2.16.840.1.113883.3.249.5.1"-->
+                <!--extension="AR000000"-->
+                <!--assigningAuthorityName="CMS-CMMI"/>-->
+            <!--<code code="394730007"-->
+                  <!--displayName="healthcare related organization"-->
+                  <!--codeSystem="2.16.840.1.113883.6.96"-->
+                  <!--codeSystemName="SNOMED-CT"/>-->
+            <!--<addr>-->
+                <!--<streetAddressLine>123 Healthcare St</streetAddressLine>-->
+                <!--<city>Norman</city>-->
+                <!--<state>OK</state>-->
+                <!--<postalCode>73019</postalCode>-->
+            <!--</addr>-->
+        <!--</associatedEntity>-->
+    <!--</participant>-->
    <!--Providers in Practice Site for which data is being submitted-->
 	<documentationOf typeCode="DOC">
       <serviceEvent classCode="PCPR">

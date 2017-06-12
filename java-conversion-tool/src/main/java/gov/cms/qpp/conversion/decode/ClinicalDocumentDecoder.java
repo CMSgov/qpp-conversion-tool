@@ -54,12 +54,12 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setEntityIdOnNode(Element element, Node thisNode) {
-		if (!CPCPLUS_PROGRAM_NAME.equals(thisNode.getValue(PROGRAM_NAME))) {
-			return;
+		if (CPCPLUS_PROGRAM_NAME.equals(thisNode.getValue(PROGRAM_NAME))) {
+			Consumer<? super List<Attribute>> consumer = ids -> {
+				ids.forEach( id -> thisNode.putValue(ENTITY_ID, id.getValue(), false));
+			};
+			setOnNode(element, getXpath(ENTITY_ID), consumer, Filters.attribute(), false);
 		}
-		Consumer<? super Attribute> consumer = p ->
-				thisNode.putValue(ENTITY_ID, p.getValue());
-		setOnNode(element, getXpath(ENTITY_ID), consumer, Filters.attribute(), true);
 	}
 
 	/**

@@ -84,6 +84,22 @@ class Checker {
 	}
 
 	/**
+	 * checks target node for the existence of a single value with the given name key
+	 *
+	 * @param message error message if searched value is not found
+	 * @param name key of expected value
+	 * @return The checker, for chaining method calls.
+	 */
+	Checker singleValue(String message, String name) {
+		value(message, name);
+		List<String> duplicates = node.getDuplicateValues(name);
+		if (duplicates != null && duplicates.size() > 0) {
+			details.add(new Detail(message, node.getPath()));
+		}
+		return this;
+	}
+
+	/**
 	 * checks target node for the existence of a value with the given name key
 	 * and matches that value with one of the supplied values.
 	 *

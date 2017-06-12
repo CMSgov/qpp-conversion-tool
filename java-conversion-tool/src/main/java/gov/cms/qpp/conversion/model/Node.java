@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -17,12 +18,12 @@ import java.util.stream.Stream;
 public class Node {
 	private final List<Node> childNodes = new ArrayList<>();
 	private final Map<String, String> data = new HashMap<>();
+	private final Map<String, List<String>> duplicateData = new HashMap<>();
 
 	private TemplateId type;
 	private Node parent;
 	private boolean validated;
 
-	private String internalId;
 	private String defaultNsUri;
 	private String path;
 
@@ -36,8 +37,8 @@ public class Node {
 	/**
 	 * Constructor initialized with a Node and a template id String
 	 *
-	 * @param parentNode Node
-	 * @param id         String representation of a template id
+	 * @param type of node
+	 * @param parent this node's parent node
 	 */
 	public Node(TemplateId type, Node parent) {
 		this(type);
@@ -47,7 +48,7 @@ public class Node {
 	/**
 	 * Constructor initialized with a template id string
 	 *
-	 * @param id String of the parsed template id.
+	 * @param templateId String of the parsed template id.
 	 */
 	public Node(TemplateId templateId) {
 		this.type = templateId;
@@ -59,8 +60,20 @@ public class Node {
 	 * @param name String key for the value
 	 * @return String
 	 */
-	public String getValue(String name) {
-		return data.get(name);
+	@SuppressWarnings("unchecked")
+	public <T> T getValue(String name) {
+		return (T) data.get(name);
+	}
+
+	/**
+	 * getDuplicateValues returns the string value of the xml fragment parsed into this Node
+	 *
+	 * @param name String key for the value
+	 * @return mapped duplicates of target value
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getDuplicateValues(String name) {
+		return (T) duplicateData.get(name);
 	}
 
 	/**
@@ -70,7 +83,26 @@ public class Node {
 	 * @param value String that is stored with this xml parsed Node
 	 */
 	public void putValue(String name, String value) {
-		data.put(name, value);
+		putValue(name, value, true);
+	}
+
+	/**
+	 * putValue stores the Value under the key: name
+	 *
+	 * @param name  String key to store value under
+	 * @param value String that is stored with this xml parsed Node
+	 */
+	public void putValue(String name, String value, boolean replace) {
+		if (getValue(name) == null || replace) {
+			data.put(name, value);
+		} else {
+			List<String> duplicates = Optional.of(duplicateData.get(name))
+					.orElseGet(() -> {
+				duplicateData.put(name, new ArrayList<>());
+				return duplicateData.get(name);
+			});
+			duplicates.add(value);
+		}
 	}
 
 	/**
@@ -163,10 +195,9 @@ public class Node {
 		StringBuilder nodeToString = new StringBuilder("Node{");
 		nodeToString.append("type=").append(type);
 		nodeToString.append(", data=").append(data);
-		nodeToString.append(", childNodes=").append("size:" + childNodes.size());
+		nodeToString.append(", childNodes=").append("size:").append(childNodes.size());
 		nodeToString.append(", parent=").append((parent == null) ? "null" : "not null");
 		nodeToString.append(", validated=").append(validated);
-		nodeToString.append(", internalId='").append(internalId).append('\'');
 		nodeToString.append(", defaultNsUri='").append(defaultNsUri).append('\'');
 		nodeToString.append(", path='").append(path).append('\'');
 		nodeToString.append('}');

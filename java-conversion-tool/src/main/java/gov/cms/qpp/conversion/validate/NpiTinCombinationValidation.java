@@ -15,6 +15,8 @@ public class NpiTinCombinationValidation extends NodeValidator {
 
 	protected static final String AT_LEAST_ONE_NPI_TIN_COMBINATION = "Must have at least one NPI/TIN combination";
 	protected static final String ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED = "Must have only one NPI/TIN combination";
+	protected static final String ONLY_ONE_APM_ALLOWED =
+			"Only one Alternative Payment Model (APM) Entity Identifier should be specified";
 
 	/**
 	 * Validates the NPI/TIN Combination within the QRDA Category III Report V3 section
@@ -34,6 +36,8 @@ public class NpiTinCombinationValidation extends NodeValidator {
 		} else if (ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(programName)) {
 			check(node)
 				.childMinimum(AT_LEAST_ONE_NPI_TIN_COMBINATION, 1, TemplateId.NPI_TIN_ID);
+			check(clinicalDocumentNode)
+				.singleValue(ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.ENTITY_ID);
 		}
 	}
 
