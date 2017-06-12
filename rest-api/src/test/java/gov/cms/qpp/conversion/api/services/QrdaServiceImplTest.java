@@ -14,6 +14,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -46,7 +47,7 @@ public class QrdaServiceImplTest {
 		whenNew(Converter.class).withArguments(MOCK_SUCCESS_QRDA_INPUT_STREAM).thenAnswer(invocationOnMock -> {
 			JsonWrapper qpp = new JsonWrapper();
 			qpp.putString(KEY, MOCK_SUCCESS_QPP_STRING);
-			when(mockConverter.transform()).thenReturn(qpp);
+			when(mockConverter.transform()).thenReturn(CompletableFuture.completedFuture(qpp));
 
 			return mockConverter;
 		});

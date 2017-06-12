@@ -1,5 +1,24 @@
 package gov.cms.qpp.conversion;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Throwables;
+
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
@@ -18,17 +37,6 @@ import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 
 /**
@@ -102,30 +110,32 @@ public class Converter {
 	 *
 	 * @return status of conversion
 	 */
-	public JsonWrapper transform() {
-		DEV_LOG.info("Transform invoked with file {}", getName());
-		JsonWrapper qpp = null;
-		try {
-			if (!usingStream()) {
-				qpp = transform(inFile);
-			} else {
-				qpp = transform(xmlStream);
+	public CompletableFuture<JsonWrapper> transform() {
+		return CompletableFuture.supplyAsync(() -> {
+			DEV_LOG.info("Transform invoked with file {}", getName());
+			JsonWrapper qpp = null;
+			try {
+				if (!usingStream()) {
+					qpp = transform(inFile);
+				} else {
+					qpp = transform(xmlStream);
+				}
+			} catch (XmlInputFileException | XmlException xe) {
+				CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
+				DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
+				details.add(new Detail(NOT_VALID_XML_DOCUMENT));
+			} catch (Exception exception) {
+				DEV_LOG.error(UNEXPECTED_ERROR, exception);
+				details.add(new Detail(UNEXPECTED_ERROR));
 			}
-		} catch (XmlInputFileException | XmlException xe) {
-			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
-			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
-			details.add(new Detail(NOT_VALID_XML_DOCUMENT));
-		} catch (Exception exception) {
-			DEV_LOG.error(UNEXPECTED_ERROR, exception);
-			details.add(new Detail(UNEXPECTED_ERROR));
-		}
 
-		if (!details.isEmpty()) {
-			throw new TransformException("Validation errors exist", null,
-				constructErrorHierarchy(sourceIdentifier(), details));
-		}
+			if (!details.isEmpty()) {
+				throw new TransformException("Validation errors exist", null,
+					constructErrorHierarchy(sourceIdentifier(), details));
+			}
 
-		return qpp;
+			return qpp;
+		});
 	}
 
 	/**

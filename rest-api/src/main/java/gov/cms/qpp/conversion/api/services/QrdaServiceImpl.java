@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion.api.services;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.springframework.stereotype.Service;
+
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.util.ExceptionHelper;
 
 /**
  * Implementation of the QRDA-III to QPP conversion service
@@ -21,8 +23,7 @@ public class QrdaServiceImpl implements QrdaService {
 	 * @throws IOException If error occurs during file upload or conversion
 	 */
 	@Override
-	public JsonWrapper convertQrda3ToQpp(InputStream fileInputStream) {
-		Converter converter = new Converter(fileInputStream);
-		return converter.transform();
+	public JsonWrapper convertQrda3ToQpp(InputStream stream) {
+		return ExceptionHelper.runOrPropagate(new Converter(stream).transform()::get);
 	}
 }

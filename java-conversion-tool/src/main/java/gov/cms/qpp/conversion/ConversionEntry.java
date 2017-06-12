@@ -1,16 +1,6 @@
 package gov.cms.qpp.conversion;
 
 
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,6 +16,18 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import gov.cms.qpp.conversion.util.ExceptionHelper;
 
 /**
  * Entry point for the conversion process.
@@ -72,11 +74,12 @@ public class ConversionEntry {
 	 */
 	public static void main(String... args) {
 		Collection<Path> filenames = validArgs(args);
-		filenames.parallelStream().forEach(
-				filename -> new ConversionFileWriterWrapper(filename)
-							.doValidation(doValidation)
-							.doDefaults(doDefaults)
-							.transform());
+		filenames.parallelStream()
+			.map(ConversionFileWriterWrapper::new)
+			.map(converter -> converter.doValidation(doValidation)
+					.doDefaults(doDefaults))
+			.map(ConversionFileWriterWrapper::transform)
+			.forEach(ExceptionHelper::runOrPropagate);
 	}
 
 	/**
