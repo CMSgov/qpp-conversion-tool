@@ -76,6 +76,79 @@ public class NpiTinCombinationValidationTest {
 	}
 
 	@Test
+	public void testValidCpcPlusMultipleNpiTinCombination() {
+		createClinicalDocumentWithProgramType(
+				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, "", "AR00000");
+
+		npiTinCombinationNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
+		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
+		npiTinCombinationNode.addChildNode(firstValidNpiTinNode);
+		npiTinCombinationNode.addChildNode(secondValidNpiTinNode);
+
+		validator.internalValidateSingleNode(npiTinCombinationNode);
+
+		assertThat("Must validate with no errors", validator.getDetails() , hasSize(0));
+	}
+
+	@Test
+	public void testValidCpcPlusIndividualNpiTinCombination() {
+		createClinicalDocumentWithProgramType(
+				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, "", "AR00000");
+
+		npiTinCombinationNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
+		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
+		npiTinCombinationNode.addChildNode(firstValidNpiTinNode);
+
+		validator.internalValidateSingleNode(npiTinCombinationNode);
+
+		assertThat("Must validate with no errors", validator.getDetails() , hasSize(0));
+	}
+
+	@Test
+	public void testValidCpcPlusNoNpiTinCombination() {
+		createClinicalDocumentWithProgramType(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, "");
+
+		npiTinCombinationNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
+		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
+		validator.internalValidateSingleNode(npiTinCombinationNode);
+
+		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage() ,
+				is(NpiTinCombinationValidation.AT_LEAST_ONE_NPI_TIN_COMBINATION));
+	}
+
+	@Test
+	public void testCpcPlusMultipleApm() {
+		createClinicalDocumentWithProgramType(
+				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, "", "AR00000");
+		// extra APM
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "1234567", false);
+
+		npiTinCombinationNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
+		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
+		npiTinCombinationNode.addChildNode(firstValidNpiTinNode);
+
+		validator.internalValidateSingleNode(npiTinCombinationNode);
+
+		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage() ,
+				is(NpiTinCombinationValidation.ONLY_ONE_APM_ALLOWED));
+	}
+
+	@Test
+	public void testCpcPlusNoApm() {
+		createClinicalDocumentWithProgramType(
+				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, "");
+
+		npiTinCombinationNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
+		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
+		npiTinCombinationNode.addChildNode(firstValidNpiTinNode);
+
+		validator.internalValidateSingleNode(npiTinCombinationNode);
+
+		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage() ,
+				is(NpiTinCombinationValidation.ONLY_ONE_APM_ALLOWED));
+	}
+
+	@Test
 	public void testInvalidEntityType() {
 		createClinicalDocumentWithProgramType(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
 				"Invalid");
@@ -148,6 +221,13 @@ public class NpiTinCombinationValidationTest {
 
 		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().get(0).getMessage(),
 				is(NpiTinCombinationValidation.CONTAINS_TAXPAYER_IDENTIFICATION_NUMBER));
+	}
+
+	private void createClinicalDocumentWithProgramType(final String programName,
+													   final String entityType,
+													   final String entityId) {
+		createClinicalDocumentWithProgramType(programName, entityType);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, entityId);
 	}
 
 	private void createClinicalDocumentWithProgramType(final String programName, final String entityType) {
