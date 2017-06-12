@@ -214,7 +214,7 @@ public class AciNumeratorDenominatorDecoderTest extends BaseTest {
 				"\n<!-- Implied template Measure Reference templateId -->",
 				"\n<templateId root=\"2.16.840.1.113883.10.20.24.3.98\"/>",
 				"\n<!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->",
-				"\n<templateId root=\"2.16.840.1.113883.10.20.27.3.28\" extension=\"2016-09-01\"/>",
+				"\n<templateId root=\"2.16.840.1.113883.10.20.27.3.28\" extension=\"2017-06-01\"/>",
 				"\n<id root=\"ac575aef-7062-4ea2-b723-df517cfa470a\"/>",
 				"\n<statusCode code=\"completed\"/>",
 				"\n<reference typeCode=\"REFR\">",
