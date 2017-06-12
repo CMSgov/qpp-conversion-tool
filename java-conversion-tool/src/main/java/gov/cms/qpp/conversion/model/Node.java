@@ -96,7 +96,7 @@ public class Node {
 		if (getValue(name) == null || replace) {
 			data.put(name, value);
 		} else {
-			List<String> duplicates = Optional.of(duplicateData.get(name))
+			List<String> duplicates = Optional.ofNullable(duplicateData.get(name))
 					.orElseGet(() -> {
 				duplicateData.put(name, new ArrayList<>());
 				return duplicateData.get(name);
