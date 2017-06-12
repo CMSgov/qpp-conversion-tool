@@ -16,8 +16,8 @@
 
 	<modules>
 		<module>java-conversion-tool</module>
-		<module>benchmark</module>
 		<module>rest-api</module>
+		<module>benchmark</module>
 	</modules>
 
 	<build>
