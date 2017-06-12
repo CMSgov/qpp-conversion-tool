@@ -124,5 +124,6 @@ public class NpiTinCombinationValidationTest {
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, programName);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, entityType);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "AR000000");
 	}
 }

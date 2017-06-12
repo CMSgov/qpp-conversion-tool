@@ -37,6 +37,7 @@ public class NpiTinCombinationValidation extends NodeValidator {
 			check(node)
 				.childMinimum(AT_LEAST_ONE_NPI_TIN_COMBINATION, 1, TemplateId.NPI_TIN_ID);
 			check(clinicalDocumentNode)
+				.incompleteValidation()
 				.singleValue(ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.ENTITY_ID);
 		}
 	}

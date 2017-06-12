@@ -293,6 +293,16 @@ class Checker {
 	}
 
 	/**
+	 * Marks the checked node as being incompletely validated.
+	 *
+	 * @return The checker, for chaining method calls.
+	 */
+	public Checker incompleteValidation() {
+		node.setValidated(false);
+		return this;
+	}
+
+	/**
 	 * Aggregate count of nodes of the given types
 	 *
 	 * @param types types of nodes to filter by
