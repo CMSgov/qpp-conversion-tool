@@ -155,7 +155,7 @@ public class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertThat("Must not be a measure because the measure was missing.",
+		assertThat("Must not contain a measure because the measurements are missing.",
 				clinicalDocMap.get(MEASUREMENT_SETS), is(nullValue()));
 	}
 
