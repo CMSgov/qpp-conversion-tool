@@ -42,15 +42,6 @@ public class DefaultEncoder extends JsonOutputEncoder {
 		}
 	}
 
-
-	@Encoder(TemplateId.REPORTING_PARAMETERS_ACT)
-	public static class ReportingParametersActEncoder extends DefaultEncoder {
-
-		public ReportingParametersActEncoder() {
-			super("Reporting Parameters Act - CMS (V2)*");
-		}
-	}
-
 	@Encoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
 	public static class ContinuousVariableMeasureValueCmsEncoder extends DefaultEncoder {
 
