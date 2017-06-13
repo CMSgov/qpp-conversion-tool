@@ -29,23 +29,25 @@ public class ReportingParametersActEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
-		String date = node.getValue(PERFORMANCE_START);
+		encodeDate(wrapper, node, PERFORMANCE_START);
+		encodeDate(wrapper, node, PERFORMANCE_END);
+	}
+
+	/**
+	 * Will encode the performance parameter for the specified key
+	 * @param wrapper JsonWrapper
+	 * @param node parent Node internal representation of xml element
+	 * @param key one of either PERFORMANCE_START, or PERFORMANCE_END
+	 */
+	private void encodeDate(JsonWrapper wrapper, Node node, String key) {
+		String date = node.getValue(key);
 		try {
-			wrapper.putDate(PERFORMANCE_START, date);
+			wrapper.putDate(key, date);
 		} catch (EncodeException | NullPointerException | DateTimeParseException dtpe) {
-			final String message = "Error parsing reporting parameter performance start date";
+			final String message = "Error parsing reporting parameter " + key;
 			CLIENT_LOG.error(message);
 			DEV_LOG.error(message, dtpe);
-			wrapper.putString(PERFORMANCE_START, date);
-		}
-		date = node.getValue(PERFORMANCE_END);
-		try {
-			wrapper.putDate(PERFORMANCE_END, date);
-		} catch (EncodeException | NullPointerException | DateTimeParseException dtpe) {
-			final String message = "Error parsing reporting parameter performance end date";
-			CLIENT_LOG.error(message);
-			DEV_LOG.error(message, dtpe);
-			wrapper.putString(PERFORMANCE_END, date);
+			wrapper.putString(key, date);
 		}
 	}
 }
