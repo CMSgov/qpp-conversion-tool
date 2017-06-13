@@ -16,10 +16,10 @@ import static org.hamcrest.Matchers.is;
 public class ReportingParametersActRoundTripTest {
 	private static final Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 
-	private final String SUCCESS_JSON = "valid-QRDA-III-latest.qpp.json";
+	private static final String SUCCESS_JSON = "valid-QRDA-III-latest.qpp.json";
 
 	@Before
-	public void setUp() throws IOException {
+	public void setUp() {
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 		converterWrapper.transform();
 	}

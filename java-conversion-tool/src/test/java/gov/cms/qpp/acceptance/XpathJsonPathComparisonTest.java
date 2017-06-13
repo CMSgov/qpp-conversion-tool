@@ -16,6 +16,7 @@ public class XpathJsonPathComparisonTest {
 	private static JsonWrapper wrapper = new JsonWrapper(false);
 	private static Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 	private static JsonPathToXpathHelper helper;
+	private static final String EXTENSION = "extension";
 
 	@BeforeClass
 	public static void beforeClass() throws IOException {
@@ -30,44 +31,44 @@ public class XpathJsonPathComparisonTest {
 	@Test
 	public void compareTopLevelAttributeProgramName() throws XmlException, IOException {
 		String jsonPath = "programName";
-		helper.executeAttributeTest(jsonPath, "extension", "MIPS_INDIV");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "MIPS_INDIV");
 	}
 
 	@Test
 	public void compareTopLevelAttributeTin() throws XmlException, IOException {
 		String jsonPath = "taxpayerIdentificationNumber";
-		helper.executeAttributeTest(jsonPath, "extension", "123456789");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "123456789");
 	}
 
 	@Test
 	public void compareTopLevelAttributeNpi() throws XmlException, IOException {
 		String jsonPath = "nationalProviderIdentifier";
-		helper.executeAttributeTest(jsonPath, "extension", "2567891421");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "2567891421");
 	}
 
 	@Test
 	public void compareTopLevelAttributeEntityId() throws XmlException, IOException {
 		String jsonPath = "entityId";
-		helper.executeAttributeTest(jsonPath, "extension", "AR000000");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "AR000000");
 	}
 
 	//ACI
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].measureId";
-		helper.executeAttributeTest(jsonPath, "extension", "ACI_PEA_1");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "ACI_PEA_1");
 	}
 
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciEp1() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[1].measureId";
-		helper.executeAttributeTest(jsonPath, "extension", "ACI_EP_1");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "ACI_EP_1");
 	}
 
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciCctpe3() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[2].measureId";
-		helper.executeAttributeTest(jsonPath, "extension", "ACI_CCTPE_3");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "ACI_CCTPE_3");
 	}
 
 	@Test
@@ -92,7 +93,7 @@ public class XpathJsonPathComparisonTest {
 	@Test
 	public void compareIaMeasurePerformedMeasureIdIaEpa1() throws IOException, XmlException {
 		String jsonPath = "measurementSets[2].measurements[0].measureId";
-		helper.executeAttributeTest(jsonPath, "extension", "IA_EPA_3");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "IA_EPA_3");
 	}
 
 	//Quality measure
