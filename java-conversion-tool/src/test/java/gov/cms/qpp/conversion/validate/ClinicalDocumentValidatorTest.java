@@ -107,6 +107,7 @@ public class ClinicalDocumentValidatorTest {
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
+		System.out.print(errors);
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing section node", errors,
@@ -181,24 +182,6 @@ public class ClinicalDocumentValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("there should be no errors", errors, empty());
-	}
-
-	@Test
-	public void testClinicalDocumentMissingPerformanceStartPresent() {
-		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-
-		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
-
-		clinicalDocumentNode.addChildNode(aciSectionNode);
-
-		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
-
-		assertThat("there should be one error", errors, hasSize(2));
-		assertThat("error should be about missing reporting node", errors,
-			hasValidationErrorsIgnoringPath(
-					ClinicalDocumentValidator.REPORTING_PARAMETER_REQUIRED,
-					ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
 	}
 
 	@Test
@@ -283,14 +266,13 @@ public class ClinicalDocumentValidatorTest {
 		AllErrors allErrors = readJson(CLINICAL_DOCUMENT_ERROR_FILE, AllErrors.class);
 		List<Detail> errors = getErrors(allErrors);
 
-		assertThat("Must have 4 errors", errors, hasSize(4));
+		assertThat("Must have 3 errors", errors, hasSize(3));
 
 		assertThat("Must contain the error", errors,
 			hasValidationErrorsIgnoringPath(
 				ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
 				ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME,
-				ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER,
-				ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
+				ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
 	}
 
 	@Test

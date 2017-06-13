@@ -131,11 +131,21 @@ CDA Header
 			</representedOrganization>
 		</assignedEntity>
 	</legalAuthenticator>
-	<participant typeCode="DEV">
-		<associatedEntity classCode="RGPR">
-			<id root="2.16.840.1.113883.3.2074.1"/>
-			<code code="129465004" displayName="medical record, device"
-				codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
+	<participant typeCode="LOC">
+		<associatedEntity classCode="SDLOC">
+			<id root="2.16.840.1.113883.3.249.5.1"
+				extension="AR000000"
+				assigningAuthorityName="CMS-CMMI"/>
+			<code code="394730007"
+				  displayName="healthcare related organization"
+				  codeSystem="2.16.840.1.113883.6.96"
+				  codeSystemName="SNOMED-CT"/>
+			<addr>
+				<streetAddressLine>123 Healthcare St</streetAddressLine>
+				<city>Norman</city>
+				<state>OK</state>
+				<postalCode>73019</postalCode>
+			</addr>
 		</associatedEntity>
 	</participant>
 	<documentationOf typeCode="DOC">
@@ -6724,7 +6734,7 @@ CDA Header
 						</organizer>
 					</entry>
 					
-					<!-- ACI_PPHI_1	Reporting Metric: Yes/No -->
+					<!-- ACI_EP_1	Reporting Metric: Yes/No -->
 					<!-- Advancing Care Information Measure Performed Measure Reference and Results -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -6738,7 +6748,7 @@ CDA Header
 								<!-- Reference to a particular ACI measure's unique identifier. -->
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<!-- This is a temporary root OID that indicates this is an ACI measure identifier -->
-									<id root="2.16.840.1.113883.3.7031" extension="ACI_PPHI_1"/>
+									<id root="2.16.840.1.113883.3.7031" extension="ACI_EP_1"/>
 									<!-- ACI measure title -->
 									<text>Security Risk Analysis</text>
 								</externalDocument>
@@ -6754,6 +6764,73 @@ CDA Header
 									<value xsi:type="CD" code="Y" displayName="Yes"
 										codeSystemName="Yes/no indicator (HL7 Table 0136)"
 										codeSystem="2.16.840.1.113883.12.136"/>
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+
+					<!-- ACI_CCTPE_3 -->
+					<entry>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<!-- Implied template Measure Reference templateId -->
+							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+							<!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->
+							<templateId root="2.16.840.1.113883.10.20.27.3.28" extension="2017-06-01"/>
+							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
+							<statusCode code="completed"/>
+							<reference typeCode="REFR">
+								<!-- Reference to a particular ACI measure's unique identifier. -->
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<id root="2.16.840.1.113883.3.7031" extension="ACI_CCTPE_3"/>
+									<!-- ACI measure title -->
+									<text>Flexion Test 2</text>
+								</externalDocument>
+							</reference>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- Performance Rate templateId -->
+									<templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
+									<code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Performance Rate"/>
+									<statusCode code="completed"/>
+									<value xsi:type="REAL" value="0.750000"/>
+								</observation>
+							</component>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- ACI Numerator Denominator Type Measure Numerator Data templateId -->
+									<templateId root="2.16.840.1.113883.10.20.27.3.31" extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
+									<!-- Numerator Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="400"/>
+											<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
+										</observation>
+									</entryRelationship>
+								</observation>
+							</component>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->
+									<templateId root="2.16.840.1.113883.10.20.27.3.32" extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
+									<!-- Denominator Count-->
+									<entryRelationship typeCode="SUBJ" inversionInd="true">
+										<observation classCode="OBS" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
+											<statusCode code="completed"/>
+											<value xsi:type="INT" value="600"/>
+											<methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
+										</observation>
+									</entryRelationship>
 								</observation>
 							</component>
 						</organizer>

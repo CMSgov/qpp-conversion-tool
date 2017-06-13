@@ -45,7 +45,6 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
 		thoroughlyCheck(node)
-			.hasChildren(ONE_CHILD_REQUIRED)
 			.childMinimum(ONE_CHILD_REQUIRED, 1, TemplateId.ACI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)
 			.childMaximum(CONTAINS_DUPLICATE_ACI_SECTIONS, 1, TemplateId.ACI_SECTION)
 			.childMaximum(CONTAINS_DUPLICATE_IA_SECTIONS, 1, TemplateId.IA_SECTION)
@@ -54,13 +53,6 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			.valueIn(INCORRECT_PROGRAM_NAME, ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
 				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME)
 			.value(CONTAINS_TAX_ID_NUMBER, MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
-
-		Node reportingParametersAct = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
-		if (reportingParametersAct == null) {
-			getDetails().add(new Detail(CONTAINS_PERFORMANCE_YEAR, node.getPath()));
-		} else {
-			thoroughlyCheck(reportingParametersAct).value(CONTAINS_PERFORMANCE_YEAR, "performanceStart");
-		}
 	}
 
 	/**

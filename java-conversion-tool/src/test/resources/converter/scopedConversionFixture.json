@@ -2085,16 +2085,13 @@
 		}
 	],
 	"CLINICAL_DOCUMENT": {
-		"programName": "mips",
-		"entityType": "individual",
-		"taxpayerIdentificationNumber": "123456789",
-		"nationalProviderIdentifier": "2567891421",
-		"performanceYear": 2017,
 		"measurementSets": [
 			{
-				"value": 1000,
-				"performanceStart": "2017-01-01",
-				"performanceEnd": "2017-12-31"
+				"value": 1000
+			},
+			{
+				"performanceStart": "2017-02-01",
+				"performanceEnd": "2017-05-31"
 			},
 			{
 				"category": "aci",
@@ -2120,10 +2117,12 @@
 							"numerator": 400,
 							"denominator": 600
 						}
+					},
+					{
+						"performanceStart": "2017-02-01",
+						"performanceEnd": "2017-05-31"
 					}
-				],
-				"performanceStart": "2017-01-01",
-				"performanceEnd": "2017-12-31"
+				]
 			},
 			{
 				"category": "ia",
@@ -2132,12 +2131,18 @@
 					{
 						"measureId": "IA_EPA_1",
 						"value": true
+					},
+					{
+						"performanceStart": "2017-02-01",
+						"performanceEnd": "2017-05-31"
 					}
-				],
-				"performanceStart": "2017-01-01",
-				"performanceEnd": "2017-12-31"
+				]
 			}
-		]
+		],
+		"programName": "mips",
+		"entityType": "individual",
+		"nationalProviderIdentifier": "2567891421",
+		"taxpayerIdentificationNumber": "123456789"
 	},
 	"ACI_NUMERATOR_DENOMINATOR": [
 		{

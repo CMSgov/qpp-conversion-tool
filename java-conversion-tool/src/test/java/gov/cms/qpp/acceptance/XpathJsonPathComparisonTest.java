@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 
 public class XpathJsonPathComparisonTest {
 	private static JsonWrapper wrapper = new JsonWrapper(false);
-	private static Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
+	private static Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 	private static JsonPathToXpathHelper helper;
 
 	@BeforeClass
@@ -30,7 +30,7 @@ public class XpathJsonPathComparisonTest {
 	@Test
 	public void compareTopLevelAttributeProgramName() throws XmlException, IOException {
 		String jsonPath = "programName";
-		helper.executeAttributeTest(jsonPath, "extension", "MIPS");
+		helper.executeAttributeTest(jsonPath, "extension", "MIPS_INDIV");
 	}
 
 	@Test
@@ -51,17 +51,11 @@ public class XpathJsonPathComparisonTest {
 		helper.executeAttributeTest(jsonPath, "extension", "AR000000");
 	}
 
-	@Test
-	public void compareTopLevelAttributePerformanceYear() throws XmlException, IOException {
-		String jsonPath = "performanceYear";
-		helper.executeAttributeTest(jsonPath, "value", "20170101");
-	}
-
 	//ACI
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].measureId";
-		helper.executeAttributeTest(jsonPath, "extension", "ACI-PEA-1");
+		helper.executeAttributeTest(jsonPath, "extension", "ACI_PEA_1");
 	}
 
 	@Test
@@ -98,7 +92,7 @@ public class XpathJsonPathComparisonTest {
 	@Test
 	public void compareIaMeasurePerformedMeasureIdIaEpa1() throws IOException, XmlException {
 		String jsonPath = "measurementSets[2].measurements[0].measureId";
-		helper.executeAttributeTest(jsonPath, "extension", "IA_EPA_1");
+		helper.executeAttributeTest(jsonPath, "extension", "IA_EPA_3");
 	}
 
 	//Quality measure
