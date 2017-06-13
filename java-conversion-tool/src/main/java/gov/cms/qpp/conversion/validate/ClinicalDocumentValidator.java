@@ -21,12 +21,10 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			+ "or IA or eCQM Section Node as a child";
 	protected static final String CONTAINS_PROGRAM_NAME = "Clinical Document must have a program name";
 	protected static final String INCORRECT_PROGRAM_NAME = "Clinical Document program name is not recognized";
-	protected static final String CONTAINS_PERFORMANCE_YEAR = "Clinical Document must have a performance year";
 	protected static final String CONTAINS_TAX_ID_NUMBER = "Clinical Document must have Tax Id Number (TIN)";
 	protected static final String CONTAINS_DUPLICATE_ACI_SECTIONS = "Clinical Document contains duplicate ACI sections";
 	protected static final String CONTAINS_DUPLICATE_IA_SECTIONS = "Clinical Document contains duplicate IA sections";
 	protected static final String CONTAINS_DUPLICATE_ECQM_SECTIONS = "Clinical Document contains duplicate eCQM sections";
-	protected static final String REPORTING_PARAMETER_REQUIRED = "Clinical Document must have Report Parameters Section";
 
 	/**
 	 * Validates a single Clinical Document Node.
