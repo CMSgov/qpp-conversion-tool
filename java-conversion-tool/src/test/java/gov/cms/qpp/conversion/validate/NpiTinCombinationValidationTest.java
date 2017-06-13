@@ -112,7 +112,7 @@ public class NpiTinCombinationValidationTest {
 		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage() ,
+		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage(),
 				is(NpiTinCombinationValidation.AT_LEAST_ONE_NPI_TIN_COMBINATION));
 	}
 
@@ -129,7 +129,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage() ,
+		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage(),
 				is(NpiTinCombinationValidation.ONLY_ONE_APM_ALLOWED));
 	}
 
@@ -144,7 +144,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage() ,
+		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage(),
 				is(NpiTinCombinationValidation.ONLY_ONE_APM_ALLOWED));
 	}
 
@@ -223,8 +223,7 @@ public class NpiTinCombinationValidationTest {
 				is(NpiTinCombinationValidation.CONTAINS_TAXPAYER_IDENTIFICATION_NUMBER));
 	}
 
-	private void createClinicalDocumentWithProgramType(final String programName,
-													   final String entityType,
+	private void createClinicalDocumentWithProgramType(final String programName, final String entityType,
 													   final String entityId) {
 		createClinicalDocumentWithProgramType(programName, entityType);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, entityId);
