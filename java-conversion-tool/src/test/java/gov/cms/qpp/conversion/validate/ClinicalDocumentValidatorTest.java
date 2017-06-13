@@ -107,7 +107,6 @@ public class ClinicalDocumentValidatorTest {
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
-		System.out.print(errors);
 
 		assertThat("there should be one error", errors, iterableWithSize(1));
 		assertThat("error should be about missing section node", errors,
