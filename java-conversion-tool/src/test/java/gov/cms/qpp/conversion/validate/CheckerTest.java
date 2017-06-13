@@ -12,6 +12,7 @@ import java.util.List;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 
@@ -503,6 +504,24 @@ public class CheckerTest {
 		checker.valueIn(ERROR_MESSAGE, key, null , "Some Value", "My Value");
 		assertThat("There should be 1 error", details, hasSize(1));
 		assertThat("There should be an error", details.get(0), validationErrorTextMatches(ERROR_MESSAGE));
+	}
+	@Test
+	public void testHappyValueIsNull() throws Exception {
+		String key = "My Key";
+		String value = null;
+		Node testNode = makeTestNode(key, value);
+		Checker checker = Checker.check(testNode, details);
+		checker.valueIsNull(ERROR_MESSAGE, key);
+		assertThat("There should be no errors", details, hasSize(0));
+	}
+	@Test
+	public void testUnhappyValueIsNull() throws Exception {
+		String key = "My Key";
+		String value = "Not Null Value";
+		Node testNode = makeTestNode(key, value);
+		Checker checker = Checker.check(testNode, details);
+		checker.valueIsNull(ERROR_MESSAGE, key);
+		assertThat("There should be no errors", details.get(0).getMessage(), is(ERROR_MESSAGE));
 	}
 
 	private Node makeTestNode(String key, String value) {
