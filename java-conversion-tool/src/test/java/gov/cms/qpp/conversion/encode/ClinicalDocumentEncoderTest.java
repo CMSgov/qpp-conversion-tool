@@ -134,8 +134,6 @@ public class ClinicalDocumentEncoderTest {
 
 		assertThat("Must have a correct nationalProviderIdentifier",
 				clinicalDocMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
-
-		assertThat("Must have a correct performanceYear", clinicalDocMap.get(ClinicalDocumentEncoder.PERFORMANCE_YEAR), is(2017));
 	}
 
 	@Test(expected = EncodeException.class)
@@ -160,7 +158,7 @@ public class ClinicalDocumentEncoderTest {
 		assertThat("Must not be a measure because the measure was missing.",
 				clinicalDocMap.get(MEASUREMENT_SETS), is(nullValue()));
 	}
-	
+
 	@Test
 	public void testInternalEncodeEmptyEntityId() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
