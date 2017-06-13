@@ -15,8 +15,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class MultipleTinsEncoderTest {
 	private Node npiTinNodeOne;
 	private Node npiTinNodeTwo;
-	private Node reportingParametersActNode;
-	private Node reportingParametersSectionNode;
 	private Node numeratorValueNode;
 	private Node aciProportionNumeratorNode;
 	private Node denominatorValueNode;
@@ -41,13 +39,6 @@ public class MultipleTinsEncoderTest {
 		npiTinNodeTwo = new Node(TemplateId.NPI_TIN_ID);
 		npiTinNodeTwo.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, NPI2);
 		npiTinNodeTwo.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, TIN2);
-
-		reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		reportingParametersActNode.putValue("performanceStart", "20170101");
-		reportingParametersActNode.putValue("performanceEnd", "20171231");
-
-		reportingParametersSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION);
-		reportingParametersSectionNode.addChildNode(reportingParametersActNode);
 
 		numeratorValueNode = new Node();
 		numeratorValueNode.setType(TemplateId.ACI_AGGREGATE_COUNT);
@@ -79,7 +70,6 @@ public class MultipleTinsEncoderTest {
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("entityType", "individual");
-		clinicalDocumentNode.addChildNode(reportingParametersSectionNode);
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		multipleTinsNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
