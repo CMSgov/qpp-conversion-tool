@@ -7,6 +7,8 @@ import gov.cms.qpp.conversion.model.error.Detail;
 
 import java.util.List;
 
+import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
+
 /**
  * Encoder to serialize ACI Section and it's measures
  */
@@ -66,6 +68,11 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	 */
 	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
 		JsonOutputEncoder reportingParamEncoder = ENCODERS.get(TemplateId.REPORTING_PARAMETERS_ACT);
-		reportingParamEncoder.encode(wrapper, node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT));
+		Node reportingParameters = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		if ( reportingParameters == null ){
+			CLIENT_LOG.error("Missing Reporting Parameters from ACI Section");
+			return;
+		}
+		reportingParamEncoder.encode(wrapper, reportingParameters);
 	}
 }
