@@ -31,6 +31,16 @@ public class MultipleTinsDecoderTest extends BaseTest {
 		Element multipleTinsElement = makeTestElement();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertThat("Expect that there are four children", children, hasSize(4));
+		int matches = countMatches(children);
+
+		// Assert that one child TIN is TIN-1 and NPI is NPI-1
+		// Assert that one child TIN is TIN-2 and NPI is NPI-2
+		// Assert that one child TIN is TIN-3 and NPI is NPI-3
+		// Assert that one child is ClinicalDocument
+		assertThat("The correct children were decoded", matches, is(4));
+	}
+
+	private int countMatches(List<Node> children) {
 		int matches = 0;
 		String tin = null;
 		String npi = null;
@@ -43,11 +53,7 @@ public class MultipleTinsDecoderTest extends BaseTest {
 				matches++;
 			}
 		}
-		// Assert that one child TIN is TIN-1 and NPI is NPI-1
-		// Assert that one child TIN is TIN-2 and NPI is NPI-2
-		// Assert that one child TIN is TIN-3 and NPI is NPI-3
-		// Assert that one child is ClinicalDocument
-		assertThat("The correct children were decoded", matches, is(4));
+		return matches;
 	}
 
 	@Test
@@ -56,18 +62,7 @@ public class MultipleTinsDecoderTest extends BaseTest {
 		Element multipleTinsElement = makeTestElementMissingNPI();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertThat("Expect that there are three children", children, hasSize(3));
-		int matches = 0;
-		String tin = null;
-		String npi = null;
-		for (Node child : children) {
-			if (child.getType() == TemplateId.NPI_TIN_ID) {
-				npi = child.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER);
-				tin = child.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
-				matches += testChildExistence(npi, tin);
-			} else if (child.getType() == TemplateId.CLINICAL_DOCUMENT) {
-				matches++;
-			}
-		}
+		int matches = countMatches(children);
 		assertThat("The correct children were decoded", matches, is(3));
 	}
 
@@ -76,19 +71,7 @@ public class MultipleTinsDecoderTest extends BaseTest {
 		Element multipleTinsElement = makeTestElementMissingTIN();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertThat("Expect that there are three children", children, hasSize(3));
-		int matches = 0;
-		String tin = null;
-		String npi = null;
-		for (Node child : children) {
-			if (child.getType() == TemplateId.NPI_TIN_ID) {
-				npi = child.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER);
-				tin = child.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
-				matches += testChildExistence(npi, tin);
-
-			} else if (child.getType() == TemplateId.CLINICAL_DOCUMENT) {
-				matches++;
-			}
-		}
+		int matches = countMatches(children);
 		assertThat("The correct children were decoded", matches, is(3));
 	}
 

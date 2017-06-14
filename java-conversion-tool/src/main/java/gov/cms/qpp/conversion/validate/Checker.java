@@ -84,6 +84,37 @@ class Checker {
 	}
 
 	/**
+	 * checks target node to ensure no value is retrieved with given name key
+	 *
+	 * @param message error message if searched value is not found
+	 * @param name key of expected value
+	 * @return The checker, for chaining method calls.
+	 */
+	Checker valueIsNull(String message, String name) {
+		lastAppraised = node.getValue(name);
+		if (!shouldShortcut() && lastAppraised != null) {
+			details.add(new Detail(message, node.getPath()));
+		}
+		return this;
+	}
+
+	/**
+	 * checks target node for the existence of a single value with the given name key
+	 *
+	 * @param message error message if searched value is not found
+	 * @param name key of expected value
+	 * @return The checker, for chaining method calls.
+	 */
+	Checker singleValue(String message, String name) {
+		value(message, name);
+		List<String> duplicates = node.getDuplicateValues(name);
+		if (duplicates != null && !duplicates.isEmpty()) {
+			details.add(new Detail(message, node.getPath()));
+		}
+		return this;
+	}
+
+	/**
 	 * checks target node for the existence of a value with the given name key
 	 * and matches that value with one of the supplied values.
 	 *
@@ -273,6 +304,16 @@ class Checker {
 				details.add(new Detail(message, node.getPath()));
 			}
 		}
+		return this;
+	}
+
+	/**
+	 * Marks the checked node as being incompletely validated.
+	 *
+	 * @return The checker, for chaining method calls.
+	 */
+	public Checker incompleteValidation() {
+		node.setValidated(false);
 		return this;
 	}
 

@@ -3,7 +3,7 @@
 	<organizer classCode="CLUSTER" moodCode="EVN">
 		<!-- Implied template Measure Reference templateId -->
 		<!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->
-		<templateId root="2.16.840.1.113883.10.20.27.3.28" extension="2016-09-01"/>
+		<templateId root="2.16.840.1.113883.10.20.27.3.28" extension="2017-06-01"/>
 		<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
 		<statusCode code="completed"/>
 		<reference typeCode="REFR">

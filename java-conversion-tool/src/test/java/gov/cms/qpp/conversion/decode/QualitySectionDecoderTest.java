@@ -67,7 +67,7 @@ public class QualitySectionDecoderTest {
 				+ " 				<!-- Measure Section --> "
 				+ " 				<templateId root=\"2.16.840.1.113883.10.20.24.2.2\"/> "
 				+ " 				<!-- Advancing Care Information Section templateId --> "
-				+ " 				<templateId root=\"2.16.840.1.113883.10.20.27.2.5\" extension=\"2016-09-01\"/> "
+				+ " 				<templateId root=\"2.16.840.1.113883.10.20.27.2.5\" extension=\"2017-06-01\"/> "
 				+ " 				<component> "
 				+ " 					<observation classCode=\"OBS\" moodCode=\"EVN\"> "
 				+ " 						<!-- Performance Rate templateId --> "

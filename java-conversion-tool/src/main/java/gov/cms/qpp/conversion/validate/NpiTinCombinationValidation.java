@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -13,7 +14,13 @@ import java.util.List;
 @Validator(value = TemplateId.QRDA_CATEGORY_III_REPORT_V3, required = true)
 public class NpiTinCombinationValidation extends NodeValidator {
 
+	protected static final String AT_LEAST_ONE_NPI_TIN_COMBINATION = "Must have at least one NPI/TIN combination";
 	protected static final String ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED = "Must have only one NPI/TIN combination";
+	protected static final String NO_NPI_ALLOWED = "Must not contain a National Provider ID";
+	protected static final String CONTAINS_TAXPAYER_IDENTIFICATION_NUMBER =
+			"Must contain a Taxpayer Identification Number";
+	protected static final String ONLY_ONE_APM_ALLOWED =
+			"One and only one Alternative Payment Model (APM) Entity Identifier should be specified";
 
 	/**
 	 * Validates the NPI/TIN Combination within the QRDA Category III Report V3 section
@@ -27,11 +34,33 @@ public class NpiTinCombinationValidation extends NodeValidator {
 		final String entityType = clinicalDocumentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE);
 
 		if (isMipsIndividual(programName, entityType)) {
+			ensureOneNpiTinCombinationExists(node);
+		} else if (isMipsGroup(programName, entityType)) {
+			ensureOneNpiTinCombinationExists(node);
+			check(node.findFirstNode(TemplateId.NPI_TIN_ID))
+					.value(CONTAINS_TAXPAYER_IDENTIFICATION_NUMBER,
+							MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
+					.valueIsNull(NO_NPI_ALLOWED,
+							MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER);
+		} else if (ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(programName)) {
 			check(node)
-				.childMaximum(ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED, 1, TemplateId.NPI_TIN_ID)
-				.childMinimum(ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED, 1, TemplateId.NPI_TIN_ID);
-
+				.childMinimum(AT_LEAST_ONE_NPI_TIN_COMBINATION, 1, TemplateId.NPI_TIN_ID);
+			check(clinicalDocumentNode)
+				.incompleteValidation()
+				.singleValue(ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.ENTITY_ID);
 		}
+
+	}
+
+	/**
+	 * Validates that only one NPI/TIN combination was decoded
+	 *
+	 * @param node object to be validated
+	 */
+	private void ensureOneNpiTinCombinationExists(Node node) {
+		check(node)
+			.childMaximum(ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED, 1, TemplateId.NPI_TIN_ID)
+			.childMinimum(ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED, 1, TemplateId.NPI_TIN_ID);
 	}
 
 	/**
@@ -44,6 +73,18 @@ public class NpiTinCombinationValidation extends NodeValidator {
 	private boolean isMipsIndividual(String programName, String entityType) {
 		 return (ClinicalDocumentDecoder.MIPS.equalsIgnoreCase(programName)
 				 && ClinicalDocumentDecoder.ENTITY_INDIVIDUAL.equalsIgnoreCase(entityType));
+	}
+
+	/**
+	 * Checks the program name and entity type for Mips Group
+	 *
+	 * @param programName name to be checked
+	 * @param entityType type to be checked
+	 * @return true for a proper program name and type
+	 */
+	private boolean isMipsGroup(String programName, String entityType) {
+		return (ClinicalDocumentDecoder.MIPS.equalsIgnoreCase(programName)
+				&& ClinicalDocumentDecoder.ENTITY_GROUP.equalsIgnoreCase(entityType));
 	}
 
 	/**
