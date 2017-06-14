@@ -54,6 +54,18 @@ public class XpathJsonPathComparisonTest {
 
 	//ACI
 	@Test
+	public void compareAciMeasurePerformanceEnd() throws IOException, XmlException {
+		String jsonPath = "measurementSets[1].performanceEnd";
+		helper.executeAttributeTest(jsonPath, "value", "20170531");
+	}
+
+	@Test
+	public void compareAciMeasurePerformanceStart() throws IOException, XmlException {
+		String jsonPath = "measurementSets[1].performanceStart";
+		helper.executeAttributeTest(jsonPath, "value", "20170201");
+	}
+
+	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].measureId";
 		helper.executeAttributeTest(jsonPath, EXTENSION, "ACI_PEA_1");
@@ -85,6 +97,18 @@ public class XpathJsonPathComparisonTest {
 
 	//IA
 	@Test
+	public void compareIaMeasurePerformanceEnd() throws IOException, XmlException {
+		String jsonPath = "measurementSets[2].performanceEnd";
+		helper.executeAttributeTest(jsonPath, "value", "20170430");
+	}
+
+	@Test
+	public void compareIaMeasurePerformanceStart() throws IOException, XmlException {
+		String jsonPath = "measurementSets[2].performanceStart";
+		helper.executeAttributeTest(jsonPath, "value", "20170101");
+	}
+
+	@Test
 	public void compareIaMeasurePerformedMeasureIdIaEpa1Value() throws IOException, XmlException {
 		String jsonPath = "measurementSets[2].measurements[0].value";
 		helper.executeAttributeTest(jsonPath, "code", "Y");
@@ -97,6 +121,18 @@ public class XpathJsonPathComparisonTest {
 	}
 
 	//Quality measure
+	@Test
+	public void compareQualityMeasurePerformanceEnd() throws IOException, XmlException {
+		String jsonPath = "measurementSets[0].performanceEnd";
+		helper.executeAttributeTest(jsonPath, "value", "20171231");
+	}
+
+	@Test
+	public void compareQualityMeasurePerformanceStart() throws IOException, XmlException {
+		String jsonPath = "measurementSets[0].performanceStart";
+		helper.executeAttributeTest(jsonPath, "value", "20170101");
+	}
+
 	@Test
 	public void compareQualityMeasureIdValuePerformanceExclusion() throws IOException, XmlException {
 		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulationExclusion";

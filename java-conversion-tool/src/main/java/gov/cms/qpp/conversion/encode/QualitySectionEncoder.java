@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -72,6 +73,9 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 	 */
 	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
 		JsonOutputEncoder reportingParamEncoder = ENCODERS.get(TemplateId.REPORTING_PARAMETERS_ACT);
-		reportingParamEncoder.encode(wrapper, node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT));
+		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		reportingParamEncoder.encode(wrapper, reportingChild);
+		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_END);
+		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_START);
 	}
 }
