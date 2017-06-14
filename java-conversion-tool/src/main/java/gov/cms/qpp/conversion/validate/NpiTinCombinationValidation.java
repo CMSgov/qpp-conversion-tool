@@ -40,7 +40,7 @@ public class NpiTinCombinationValidation extends NodeValidator {
 			check(node.findFirstNode(TemplateId.NPI_TIN_ID))
 					.value(CONTAINS_TAXPAYER_IDENTIFICATION_NUMBER,
 							MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER)
-					.valueIsNull(NO_NPI_ALLOWED,
+					.valueIsEmpty(NO_NPI_ALLOWED,
 							MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER);
 		} else if (ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(programName)) {
 			check(node)

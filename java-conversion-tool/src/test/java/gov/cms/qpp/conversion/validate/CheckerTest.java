@@ -506,12 +506,21 @@ public class CheckerTest {
 		assertThat("There should be an error", details.get(0), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 	@Test
-	public void testHappyValueIsNull() throws Exception {
+	public void testHappyValueIsEmptyAsNull() throws Exception {
 		String key = "My Key";
 		String value = null;
 		Node testNode = makeTestNode(key, value);
 		Checker checker = Checker.check(testNode, details);
-		checker.valueIsNull(ERROR_MESSAGE, key);
+		checker.valueIsEmpty(ERROR_MESSAGE, key);
+		assertThat("There should be no errors", details, hasSize(0));
+	}
+	@Test
+	public void testHappyValueIsEmptyAsString() throws Exception {
+		String key = "My Key";
+		String value = "";
+		Node testNode = makeTestNode(key, value);
+		Checker checker = Checker.check(testNode, details);
+		checker.valueIsEmpty(ERROR_MESSAGE, key);
 		assertThat("There should be no errors", details, hasSize(0));
 	}
 	@Test
@@ -520,7 +529,7 @@ public class CheckerTest {
 		String value = "Not Null Value";
 		Node testNode = makeTestNode(key, value);
 		Checker checker = Checker.check(testNode, details);
-		checker.valueIsNull(ERROR_MESSAGE, key);
+		checker.valueIsEmpty(ERROR_MESSAGE, key);
 		assertThat("There should be no errors", details.get(0).getMessage(), is(ERROR_MESSAGE));
 	}
 
