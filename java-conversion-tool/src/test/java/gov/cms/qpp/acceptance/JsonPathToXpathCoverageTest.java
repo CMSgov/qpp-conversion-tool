@@ -2,7 +2,6 @@ package gov.cms.qpp.acceptance;
 
 import static junit.framework.TestCase.fail;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -40,7 +39,7 @@ public class JsonPathToXpathCoverageTest {
 
 			agg.getJsonPaths().forEach(
 				(key, value) -> helper.executeAttributeTest(key, value));
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			fail(ex.getMessage());
 		}
 	}

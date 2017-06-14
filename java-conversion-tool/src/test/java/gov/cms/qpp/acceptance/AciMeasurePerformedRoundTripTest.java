@@ -27,9 +27,9 @@ public class AciMeasurePerformedRoundTripTest extends BaseTest {
 	}
 
 	@Test
-	public void testGarbage() throws IOException {
+	public void testGarbage() throws Exception {
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(JUNK_QRDA3_FILE);
-		converterWrapper.transform();
+		converterWrapper.transform().call();
 
 		List<Map<String, ?>> aciMeasures = JsonHelper.readJsonAtJsonPath(Paths.get("AciMeasurePerformedGarbage.qpp.json"),
 			"$.measurementSets[?(@.category=='aci')].measurements[?(@.measureId=='TEST_MEASURE_ID')]", List.class);

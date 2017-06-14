@@ -287,12 +287,12 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testClinicalDocumentValidationParsesMultipleErrors() throws IOException {
+	public void testClinicalDocumentValidationParsesMultipleErrors() throws Exception {
 		//setup
 		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
 
 		//execute
-		new ConversionFileWriterWrapper(path).transform();
+		new ConversionFileWriterWrapper(path).transform().call();
 		AllErrors allErrors = readJson(CLINICAL_DOCUMENT_ERROR_FILE, AllErrors.class);
 		List<Detail> errors = getErrors(allErrors);
 

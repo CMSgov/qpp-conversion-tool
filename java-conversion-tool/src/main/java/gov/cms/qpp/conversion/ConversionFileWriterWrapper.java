@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,10 +84,7 @@ public class ConversionFileWriterWrapper {
 			handleConversion(jsonWrapper);
 		});
 
-		return () -> {
-			ExceptionHelper.runOrSilence(conversion::get);
-			return conversion.isCompletedExceptionally();
-		};
+		return CompletableFutureCaller.of(conversion);
 	}
 
 	private void handleConversion(JsonWrapper jsonWrapper) {

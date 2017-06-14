@@ -29,8 +29,8 @@ public class IaSectionRoundTripTest {
 	}
 
 	@Test
-	public void testIaSectionConvertsIaCategory() throws IOException {
-		new ConversionFileWriterWrapper(file).transform();
+	public void testIaSectionConvertsIaCategory() throws Exception {
+		new ConversionFileWriterWrapper(file).transform().call();
 		String iaCategory = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
 				"$.measurementSets[2].category", String.class);
 
@@ -38,8 +38,8 @@ public class IaSectionRoundTripTest {
 	}
 
 	@Test
-	public void testIaSectionConvertsIaMeasureId() throws IOException {
-		new ConversionFileWriterWrapper(file).transform();
+	public void testIaSectionConvertsIaMeasureId() throws Exception {
+		new ConversionFileWriterWrapper(file).transform().call();
 		String iaMeasureId = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
 				"$.measurementSets[2].measurements[0].measureId", String.class);
 
@@ -47,8 +47,8 @@ public class IaSectionRoundTripTest {
 	}
 
 	@Test
-	public void testIaSectionConvertsMeasurePerformed() throws IOException {
-		new ConversionFileWriterWrapper(file).transform();
+	public void testIaSectionConvertsMeasurePerformed() throws Exception {
+		new ConversionFileWriterWrapper(file).transform().call();
 		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
 				"$.measurementSets[2].measurements[0].value", Boolean.class);
 

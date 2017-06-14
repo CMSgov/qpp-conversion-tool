@@ -18,7 +18,7 @@ public class XpathJsonPathComparisonTest {
 	private static JsonPathToXpathHelper helper;
 
 	@BeforeClass
-	public static void beforeClass() throws IOException {
+	public static void beforeClass() throws Exception {
 		helper = new JsonPathToXpathHelper(path, wrapper);
 	}
 

@@ -22,9 +22,9 @@ public class IaSectionValidatorRoundTripTest {
 	}
 
 	@Test
-	public void testIaSectionValidatorIncorrectChildren() throws IOException {
+	public void testIaSectionValidatorIncorrectChildren() throws Exception {
 		Path path = Paths.get("src/test/resources/negative/incorrectIaSectionChildren.xml");
-		new ConversionFileWriterWrapper(path).transform();
+		new ConversionFileWriterWrapper(path).transform().call();
 
 		String error = JsonHelper.readJsonAtJsonPath(Paths.get(ERROR_FILE),
 				"$.errors[0].details[0].message", String.class);

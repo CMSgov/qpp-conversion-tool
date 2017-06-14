@@ -34,69 +34,69 @@ public class ConversionFileWriterWrapperTest {
 	}
 
 	@Test
-	public void testValidQpp() {
+	public void testValidQpp() throws Exception {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
-		converterWrapper.doDefaults(false).transform();
+		converterWrapper.doDefaults(false).transform().call();
 
 		assertFileExists("valid-QRDA-III.qpp.json");
 	}
 
 	@Test
-	public void testInvalidQpp() {
+	public void testInvalidQpp() throws Exception {
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
-		converterWrapper.transform();
+		converterWrapper.transform().call();
 
 		assertFileExists("not-a-QRDA-III-file.err.json");
 	}
 
 	@Test
-	public void testSkipValidations() {
+	public void testSkipValidations() throws Exception {
 		Path path = Paths.get("src/test/resources/qrda_bad_denominator.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
-		converterWrapper.doValidation(false).transform();
+		converterWrapper.doValidation(false).transform().call();
 
 		assertFileExists("qrda_bad_denominator.qpp.json");
 	}
 
 	@Test
 	@PrepareForTest({Files.class, ConversionFileWriterWrapper.class})
-	public void testFailureToWriteQpp() throws IOException {
+	public void testFailureToWriteQpp() throws Exception {
 		mockStatic(Files.class);
 		when(Files.newBufferedWriter(any(Path.class))).thenThrow(new IOException());
 
 		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
-		converterWrapper.transform();
+		converterWrapper.transform().call();
 
 		assertFileDoesNotExists("valid-QRDA-III.qpp.json");
 	}
 
 	@Test
 	@PrepareForTest({Files.class, ConversionFileWriterWrapper.class})
-	public void testFailureToWriteErrors() throws IOException {
+	public void testFailureToWriteErrors() throws Exception {
 		mockStatic(Files.class);
 		when(Files.newBufferedWriter(any(Path.class))).thenThrow(new IOException());
 
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
-		converterWrapper.transform();
+		converterWrapper.transform().call();
 
 		assertFileDoesNotExists("not-a-QRDA-III-file.err.json");
 	}
 
 	@Test
-	public void testErrorHasSourceId() throws IOException {
+	public void testErrorHasSourceId() throws Exception {
 		//when
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
-		converterWrapper.transform();
+		converterWrapper.transform().call();
 
 		//then
 		String sourceId = JsonHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file.err.json"),
@@ -106,14 +106,14 @@ public class ConversionFileWriterWrapperTest {
 	}
 
 	@Test
-	public void testErrorHasDetail() throws IOException {
+	public void testErrorHasDetail() throws Exception {
 		//setup
 		String errorMessage = "The file is not a QRDA-III XML document";
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 
 		//when
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
-		converterWrapper.transform();
+		converterWrapper.transform().call();
 		Map<String, String> detail = JsonHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file.err.json"),
 				"$.errors[0].details[0]");
 
@@ -123,7 +123,7 @@ public class ConversionFileWriterWrapperTest {
 	}
 
 	@Test
-	public void testErrorHasMultipleDetails() throws IOException {
+	public void testErrorHasMultipleDetails() throws Exception {
 		//setup
 		String firstMessage = "This Numerator Node Aggregate Value has an invalid value";
 		String secondMessage = "This Denominator Node Aggregate Value has an invalid value";
@@ -131,7 +131,7 @@ public class ConversionFileWriterWrapperTest {
 
 		//when
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
-		converterWrapper.transform();
+		converterWrapper.transform().call();
 		Map<String, String> firstDetail = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
 				"$.errors[0].details[0]");
 		Map<String, String> secondDetail = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),

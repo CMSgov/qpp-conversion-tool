@@ -25,9 +25,9 @@ public class QualityMeasureIdRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureId() throws IOException {
+	public void testRoundTripForQualityMeasureId() throws Exception {
 		ConversionFileWriterWrapper converter = new ConversionFileWriterWrapper(JUNK_QRDA3_FILE);
-		converter.transform();
+		converter.transform().call();
 
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(Paths.get("junk_in_quality_measure.qpp.json"),
 			"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
