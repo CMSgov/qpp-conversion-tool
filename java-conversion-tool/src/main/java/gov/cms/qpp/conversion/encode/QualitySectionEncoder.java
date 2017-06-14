@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
+
 /**
  * Encoder to serialize Quality Section  (eCQM) and it's measures
  */
@@ -36,7 +38,7 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 		encodeChildren(children, measurementsWrapper);
 		wrapper.putObject("measurements", measurementsWrapper);
 
-		encodeReportingParameter(wrapper, node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT));
+		encodeReportingParameter(wrapper, node);
 	}
 
 	/**
@@ -69,11 +71,15 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 	 * Encodes the reporting parameter section
 	 *
 	 * @param wrapper wrapper that holds the section
-	 * @param node
+	 * @param node quality section node
 	 */
 	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
 		JsonOutputEncoder reportingParamEncoder = ENCODERS.get(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		if ( reportingChild == null ){
+			CLIENT_LOG.error("Missing Reporting Parameters from eCQM Section");
+			return;
+		}
 		reportingParamEncoder.encode(wrapper, reportingChild);
 		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_END);
 		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_START);
