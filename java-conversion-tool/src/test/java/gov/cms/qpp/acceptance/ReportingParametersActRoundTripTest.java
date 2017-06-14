@@ -32,7 +32,7 @@ public class ReportingParametersActRoundTripTest {
 	@Test
 	public void testQualityMeasuresContainsPerformanceStart() throws IOException {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
-		"$.measurementSets[0].measurements[4].performanceStart", String.class);
+		"$.measurementSets[0].performanceStart", String.class);
 
 		assertThat("", performanceStart, is("2017-01-01"));
 	}
@@ -40,7 +40,7 @@ public class ReportingParametersActRoundTripTest {
 	@Test
 	public void testQualityMeasuresContainsPerformanceEnd() throws IOException {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
-				"$.measurementSets[0].measurements[4].performanceEnd", String.class);
+				"$.measurementSets[0].performanceEnd", String.class);
 
 		assertThat("", performanceStart, is("2017-12-31"));
 	}
@@ -48,7 +48,7 @@ public class ReportingParametersActRoundTripTest {
 	@Test
 	public void testAciSectionContainsPerformanceStart() throws IOException {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
-				"$.measurementSets[1].measurements[3].performanceStart", String.class);
+				"$.measurementSets[1].performanceStart", String.class);
 
 		assertThat("", performanceStart, is("2017-02-01"));
 	}
@@ -56,7 +56,7 @@ public class ReportingParametersActRoundTripTest {
 	@Test
 	public void testAciSectionContainsPerformanceEnd() throws IOException {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
-				"$.measurementSets[1].measurements[3].performanceEnd", String.class);
+				"$.measurementSets[1].performanceEnd", String.class);
 
 		assertThat("", performanceStart, is("2017-05-31"));
 	}
@@ -64,7 +64,7 @@ public class ReportingParametersActRoundTripTest {
 	@Test
 	public void testIaContainsPerformanceStart() throws IOException {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
-				"$.measurementSets[2].measurements[2].performanceStart", String.class);
+				"$.measurementSets[2].performanceStart", String.class);
 
 		assertThat("", performanceStart, is("2017-01-01"));
 	}
@@ -72,7 +72,7 @@ public class ReportingParametersActRoundTripTest {
 	@Test
 	public void testIaContainsPerformanceEnd() throws IOException {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
-				"$.measurementSets[2].measurements[2].performanceEnd", String.class);
+				"$.measurementSets[2].performanceEnd", String.class);
 
 		assertThat("", performanceStart, is("2017-04-30"));
 	}

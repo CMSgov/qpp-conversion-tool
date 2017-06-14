@@ -194,7 +194,7 @@
 						"performanceYear"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'low' and namespace-uri() = '<nsuri>']/@value",
+						"relativeXPath": "./*[local-name() = 'entry' and namespace-uri() = '<nsuri>']/*[local-name() = 'act' and namespace-uri() = '<nsuri>']/*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'low' and namespace-uri() = '<nsuri>']/@value",
 						"xmltype": "attribute"
 					}
 				},
@@ -204,7 +204,7 @@
 						"performanceEnd"
 					],
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'high' and namespace-uri() = '<nsuri>']/@value",
+						"relativeXPath": "./*[local-name() = 'entry' and namespace-uri() = '<nsuri>']/*[local-name() = 'act' and namespace-uri() = '<nsuri>']/*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'high' and namespace-uri() = '<nsuri>']/@value",
 						"xmltype": "attribute"
 					}
 				}

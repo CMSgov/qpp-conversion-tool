@@ -34,23 +34,44 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 
 		encodeChildren(children, measurementsWrapper);
 		wrapper.putObject("measurements", measurementsWrapper);
+
+		encodeReportingParameter(wrapper, node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT));
 	}
 
+	/**
+	 * Encodes the children of the eCQM section
+	 *
+	 * @param children child nodes of the section
+	 * @param measurementsWrapper wrapper that holds the section measurements
+	 */
 	private void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) {
 		JsonWrapper childWrapper;
 		for (Node currentChild : children) {
 			childWrapper = new JsonWrapper();
 			TemplateId templateId = currentChild.getType();
-			JsonOutputEncoder childEncoder = ENCODERS.get(templateId);
+			if (TemplateId.REPORTING_PARAMETERS_ACT != templateId) {
+				JsonOutputEncoder childEncoder = ENCODERS.get(templateId);
 
-			if (childEncoder == null) {
-				String msg = "Failed to find an encoder for template " + currentChild.getType().toString();
-				DEV_LOG.error(msg);
-				throw new EncodeException(msg);
-			} else {
-				childEncoder.encode(childWrapper, currentChild);
-				measurementsWrapper.putObject(childWrapper);
+				if (childEncoder == null) {
+					String msg = "Failed to find an encoder for template " + currentChild.getType().toString();
+					DEV_LOG.error(msg);
+					throw new EncodeException(msg);
+				} else {
+					childEncoder.encode(childWrapper, currentChild);
+					measurementsWrapper.putObject(childWrapper);
+				}
 			}
 		}
+	}
+
+	/**
+	 * Encodes the reporting parameter section
+	 *
+	 * @param wrapper wrapper that holds the section
+	 * @param node
+	 */
+	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
+		JsonOutputEncoder reportingParamEncoder = ENCODERS.get(TemplateId.REPORTING_PARAMETERS_ACT);
+		reportingParamEncoder.encode(wrapper, node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT));
 	}
 }
