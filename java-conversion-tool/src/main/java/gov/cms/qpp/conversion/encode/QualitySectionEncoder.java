@@ -35,7 +35,7 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 		encodeChildren(children, measurementsWrapper);
 		wrapper.putObject("measurements", measurementsWrapper);
 
-		encodeReportingParameter(wrapper, node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT));
+		encodeReportingParameter(wrapper, node);
 	}
 
 	/**

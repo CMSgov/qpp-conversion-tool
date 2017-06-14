@@ -2090,15 +2090,15 @@
 				"value": 1000
 			},
 			{
-				"performanceStart": "2017-02-01",
-				"performanceEnd": "2017-05-31"
+				"performanceStart": "2017-01-01",
+				"performanceEnd": "2017-12-31"
 			},
 			{
 				"category": "aci",
 				"submissionMethod": "electronicHealthRecord",
 				"measurements": [
 					{
-						"measureId": "ACI-PEA-1",
+						"measureId": "ACI_PEA_1",
 						"value": {
 							"numerator": 600,
 							"denominator": 800
@@ -2107,36 +2107,29 @@
 					{
 						"measureId": "ACI_EP_1",
 						"value": {
-							"numerator": 500,
-							"denominator": 700
-						}
-					},
-					{
-						"measureId": "ACI_CCTPE_3",
-						"value": {
 							"numerator": 400,
 							"denominator": 600
 						}
-					},
-					{
-						"performanceStart": "2017-02-01",
-						"performanceEnd": "2017-05-31"
 					}
-				]
+				],
+				"performanceStart": "2017-02-01",
+				"performanceEnd": "2017-05-31"
 			},
 			{
 				"category": "ia",
 				"submissionMethod": "electronicHealthRecord",
 				"measurements": [
 					{
-						"measureId": "IA_EPA_1",
+						"measureId": "IA_EPA_3",
 						"value": true
 					},
 					{
-						"performanceStart": "2017-02-01",
-						"performanceEnd": "2017-05-31"
+						"measureId": "IA_CC_10",
+						"value": true
 					}
-				]
+				],
+				"performanceStart": "2017-01-01",
+				"performanceEnd": "2017-04-30"
 			}
 		],
 		"programName": "mips",
