@@ -68,7 +68,7 @@ git clone https://github.com/CMSgov/qpp-conversion-tool.git
 cd qpp-conversion-tool
 
 # Try the convert script. If the JAR isn't built yet, the script will build it for you:
-.\convert.bat java-conversion-tool/src/test/resources/valid-QRDA-III.xml
+convert.bat java-conversion-tool/src/test/resources/valid-QRDA-III.xml
 ```
 
 If you are using Docker to run the conversion as a ReST API, open a terminal and go to the cloned directory:
