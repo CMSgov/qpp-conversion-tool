@@ -506,7 +506,7 @@ public class JsonWrapper {
 		try {
 			return ow.writeValueAsString(isObject() ? object : list);
 		} catch (JsonProcessingException e) {
-			throw new RuntimeException("Issue rendering JSON from JsonWrapper Map", e);
+			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
 		}
 	}
 
