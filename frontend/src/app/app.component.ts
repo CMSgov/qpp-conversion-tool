@@ -27,9 +27,9 @@ export class AppComponent {
 			console.log('Endpoint Response:', response);
 			this.status = status;
 			this.generateDownloadJsonUri(response);
+			this.response = JSON.parse(response);
 			if (item.isError) {
 				this.error = true;
-				this.response = JSON.parse(response);
 			} else {
 				this.error = false;
 				this.fileName = item.file.name.replace('.xml', '') + '.json';
