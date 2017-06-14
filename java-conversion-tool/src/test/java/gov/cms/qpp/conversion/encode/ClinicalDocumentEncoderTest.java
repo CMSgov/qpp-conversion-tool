@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Before;
@@ -18,6 +19,7 @@ import static org.junit.Assert.assertThat;
 public class ClinicalDocumentEncoderTest {
 
 	private Node aciSectionNode;
+	private Node aciReportingPerformanceNode;
 	private Node aciProportionMeasureNode;
 	private Node aciProportionNumeratorNode;
 	private Node aciProportionDenominatorNode;
@@ -101,6 +103,11 @@ public class ClinicalDocumentEncoderTest {
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);
 		aciSectionNode.addChildNode(aciProportionMeasureNode3);
+
+		aciReportingPerformanceNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		aciReportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
+		aciReportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
+		aciSectionNode.addChildNode(aciReportingPerformanceNode);
 
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "mips");
