@@ -1,10 +1,10 @@
 package gov.cms.qpp.conversion.validate;
 
+import java.util.List;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-
-import java.util.List;
 
 /**
  * Validate all ACI Numerator Denominator Type Measures.

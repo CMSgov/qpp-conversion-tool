@@ -1,18 +1,19 @@
 package gov.cms.qpp.conversion.util;
 
-import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import org.junit.Test;
-import org.reflections.util.ClasspathHelper;
-
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
+
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.util.List;
+
+import org.junit.Test;
+import org.reflections.util.ClasspathHelper;
+
+import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 /**
  * Test class to increase JaCoCo code coverage
  */

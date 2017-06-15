@@ -1,11 +1,11 @@
 package gov.cms.qpp.conversion.encode;
 
+import java.util.List;
+
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-
-import java.util.List;
 
 /**
  * Encoder to serialize ACI Section and it's measures

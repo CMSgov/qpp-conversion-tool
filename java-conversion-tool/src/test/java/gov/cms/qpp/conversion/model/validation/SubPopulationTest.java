@@ -1,8 +1,8 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertNull;
+
+import org.junit.Test;
 
 /**
  * SubPopulation Test class to increase JaCoCo Code Coverage

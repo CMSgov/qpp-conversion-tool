@@ -1,10 +1,7 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.BaseTest;
-import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static gov.cms.qpp.conversion.util.JsonHelper.readJson;
+import static junit.framework.TestCase.assertEquals;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,13 +10,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static gov.cms.qpp.conversion.util.JsonHelper.readJson;
-import static junit.framework.TestCase.assertEquals;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import gov.cms.qpp.ConversionTestSuite;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
  * Verify scoped conversions
  */
-public class ScopedConversionTest extends BaseTest {
+public class ScopedConversionTest extends ConversionTestSuite {
 
 	private static final String SUCCESS_MAKER = "../qrda-files/valid-QRDA-III.xml";
 	private static final String ERROR_MAKER = "src/test/resources/negative/angerTheConverter.xml";

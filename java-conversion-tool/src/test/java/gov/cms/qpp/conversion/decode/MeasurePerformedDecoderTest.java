@@ -8,13 +8,13 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.ConversionTestSuite;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class MeasurePerformedDecoderTest extends BaseTest {
+public class MeasurePerformedDecoderTest extends ConversionTestSuite {
 	String xmlFragment;
 
 	@Before

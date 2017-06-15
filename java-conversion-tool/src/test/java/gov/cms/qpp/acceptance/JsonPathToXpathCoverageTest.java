@@ -11,11 +11,12 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.cms.qpp.ConversionTestSuite;
 import gov.cms.qpp.acceptance.helper.JsonPathAggregator;
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 
-public class JsonPathToXpathCoverageTest {
+public class JsonPathToXpathCoverageTest extends ConversionTestSuite {
 
 	private static JsonWrapper metaWrapper = new JsonWrapper(false);
 

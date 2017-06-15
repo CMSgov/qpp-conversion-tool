@@ -10,9 +10,10 @@ import java.nio.file.Paths;
 import org.junit.After;
 import org.junit.Test;
 
+import gov.cms.qpp.ConversionTestSuite;
 import gov.cms.qpp.conversion.ConversionEntry;
 
-public class CpcTest extends ConversionEntrySuite {
+public class CpcTest extends ConversionTestSuite {
 
 	private static final String CPC_FILE = "src/test/resources/cpc1.xml";
 	private static final Path SUCCESS = Paths.get("cpc1.qpp.json");

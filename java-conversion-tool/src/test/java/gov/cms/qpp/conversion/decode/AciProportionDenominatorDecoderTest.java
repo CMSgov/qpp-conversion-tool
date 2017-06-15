@@ -1,11 +1,14 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.xml.XmlUtils;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
 /**
  * AciProportionDenominatorDecoderTest JUnit test for

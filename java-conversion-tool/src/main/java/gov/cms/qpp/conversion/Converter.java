@@ -9,15 +9,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Throwables;
 
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
@@ -37,7 +31,6 @@ import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
@@ -115,10 +108,10 @@ public class Converter {
 			DEV_LOG.info("Transform invoked with file {}", getName());
 			JsonWrapper qpp = null;
 			try {
-				if (!usingStream()) {
-					qpp = transform(inFile);
-				} else {
+				if (usingStream()) {
 					qpp = transform(xmlStream);
+				} else {
+					qpp = transform(inFile);
 				}
 			} catch (XmlInputFileException | XmlException xe) {
 				CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
@@ -131,7 +124,7 @@ public class Converter {
 
 			if (!details.isEmpty()) {
 				throw new TransformException("Validation errors exist", null,
-					constructErrorHierarchy(sourceIdentifier(), details));
+					constructErrorHierarchy(getName(), details));
 			}
 
 			return qpp;
@@ -159,6 +152,7 @@ public class Converter {
 	private JsonWrapper transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
+		System.out.println(decoded);
 		JsonWrapper qpp = null;
 		if (null != decoded) {
 			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), inStream);
@@ -181,7 +175,7 @@ public class Converter {
 	}
 
 	private String getName() {
-		return (inFile == null ? xmlStream : inFile).toString();
+		return (inFile == null ? xmlStream : inFile.getFileName()).toString();
 	}
 
 	/**
@@ -245,18 +239,5 @@ public class Converter {
 	protected JsonOutputEncoder getEncoder() {
 		Collection<QrdaScope> scope = ConversionEntry.getScope();
 		return (!scope.isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
-	}
-
-	/**
-	 * Returns an identifier for either the file or stream depending on what is being used.
-	 *
-	 * @return An identifier.
-	 */
-	private String sourceIdentifier() {
-		if (usingStream()) {
-			return xmlStream.toString();
-		} else {
-			return inFile.getFileName().toString();
-		}
 	}
 }

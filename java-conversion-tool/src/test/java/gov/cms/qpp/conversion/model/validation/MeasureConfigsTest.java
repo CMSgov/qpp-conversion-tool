@@ -1,21 +1,22 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import org.junit.AfterClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.isA;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.List;
+
+import org.junit.AfterClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 public class MeasureConfigsTest {
 	@Rule

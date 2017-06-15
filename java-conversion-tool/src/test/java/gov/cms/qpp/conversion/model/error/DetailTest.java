@@ -1,10 +1,10 @@
 package gov.cms.qpp.conversion.model.error;
 
 
-import org.junit.Test;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+
+import org.junit.Test;
 
 public class DetailTest {
 	@Test

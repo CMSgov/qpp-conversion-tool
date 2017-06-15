@@ -13,14 +13,14 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.reflections.util.ClasspathHelper;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.ConversionTestSuite;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class ClinicalDocumentRoundTripTest extends BaseTest {
+public class ClinicalDocumentRoundTripTest extends ConversionTestSuite {
 
 	private static final String EXPECTED = "{\n  \"programName\" : \"mips\",\n  \"entityType\" : \"individual\",\n  "
 		+ "\"taxpayerIdentificationNumber\" : \"123456789\",\n  \"nationalProviderIdentifier\" : \"2567891421\",\n  "

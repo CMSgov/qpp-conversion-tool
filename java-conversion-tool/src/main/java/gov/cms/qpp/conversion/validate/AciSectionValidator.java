@@ -1,12 +1,12 @@
 package gov.cms.qpp.conversion.validate;
 
+import java.text.MessageFormat;
+import java.util.List;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-
-import java.text.MessageFormat;
-import java.util.List;
 
 /**
  * Validate the ACI Section.

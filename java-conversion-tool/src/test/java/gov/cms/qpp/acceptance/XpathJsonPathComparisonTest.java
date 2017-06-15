@@ -1,18 +1,21 @@
 package gov.cms.qpp.acceptance;
 
-
-import com.jayway.jsonpath.PathNotFoundException;
-import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.xml.XmlException;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class XpathJsonPathComparisonTest {
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.jayway.jsonpath.PathNotFoundException;
+
+import gov.cms.qpp.ConversionTestSuite;
+import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.xml.XmlException;
+
+public class XpathJsonPathComparisonTest extends ConversionTestSuite {
+
 	private static JsonWrapper wrapper = new JsonWrapper(false);
 	private static Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
 	private static JsonPathToXpathHelper helper;

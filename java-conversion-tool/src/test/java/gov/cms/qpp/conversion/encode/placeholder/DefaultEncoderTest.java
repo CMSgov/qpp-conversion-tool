@@ -1,5 +1,13 @@
 package gov.cms.qpp.conversion.encode.placeholder;
 
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
+
+import org.apache.commons.io.IOUtils;
+import org.junit.Assert;
+import org.junit.Test;
+
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -7,13 +15,6 @@ import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.file.Paths;
 
 public class DefaultEncoderTest {
 

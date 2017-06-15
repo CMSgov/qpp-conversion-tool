@@ -1,11 +1,11 @@
 package gov.cms.qpp.conversion.model.error;
 
+import java.util.Arrays;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsCollectionContaining;
-
-import java.util.Arrays;
 
 /**
  * A Hamcrest matcher for {@link Detail}.

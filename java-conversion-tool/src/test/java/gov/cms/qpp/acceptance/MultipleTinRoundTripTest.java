@@ -14,10 +14,11 @@ import org.junit.Test;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
 
+import gov.cms.qpp.ConversionTestSuite;
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 
-public class MultipleTinRoundTripTest {
+public class MultipleTinRoundTripTest extends ConversionTestSuite {
 	private static JsonWrapper wrapper = new JsonWrapper();
 	private static ReadContext ctx;
 

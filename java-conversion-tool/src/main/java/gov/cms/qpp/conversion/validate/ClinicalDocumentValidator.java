@@ -1,13 +1,13 @@
 package gov.cms.qpp.conversion.validate;
 
+import java.util.List;
+
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
-
-import java.util.List;
 
 /**
  * Validates the Clinical Document.

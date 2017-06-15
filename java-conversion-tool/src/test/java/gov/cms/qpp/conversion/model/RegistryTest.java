@@ -1,25 +1,26 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.decode.InputDecoder;
-import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
-import org.jdom2.Element;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.PrintStream;
-import java.util.Set;
-
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.io.PrintStream;
+import java.util.Set;
+
+import org.jdom2.Element;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.decode.InputDecoder;
+import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
 
 public class RegistryTest {
 

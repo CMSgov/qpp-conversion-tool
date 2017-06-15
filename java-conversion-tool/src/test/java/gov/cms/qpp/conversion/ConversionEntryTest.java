@@ -1,38 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.BaseTest;
-import gov.cms.qpp.conversion.model.AnnotationMockHelper;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.conversion.stubs.Jenncoder;
-import gov.cms.qpp.conversion.stubs.JennyDecoder;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.MissingArgumentException;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.lang.reflect.Constructor;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertEquals;
@@ -47,25 +14,52 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.lang.reflect.Constructor;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.MissingArgumentException;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import gov.cms.qpp.ConversionTestSuite;
+import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import gov.cms.qpp.conversion.stubs.Jenncoder;
+import gov.cms.qpp.conversion.stubs.JennyDecoder;
+
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
-public class ConversionEntryTest extends BaseTest {
+public class ConversionEntryTest extends ConversionTestSuite {
 
 	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 	private static final String SKIP_DEFAULTS = "--" + ConversionEntry.SKIP_DEFAULTS;
 	private static final String SKIP_VALIDATION = "--" + ConversionEntry.SKIP_VALIDATION;
 	private static final String TEMPLATE_SCOPE = "--" + ConversionEntry.TEMPLATE_SCOPE;
-	private PrintStream stdout;
-
-	@Before
-	public void setup() throws Exception {
-		stdout = System.out;
-	}
 
 	@After
 	public void teardown() throws IOException {
 		Files.deleteIfExists(Paths.get("defaultedNode.qpp.json"));
-		System.setOut(stdout);
 	}
 
 	@Test
@@ -170,7 +164,7 @@ public class ConversionEntryTest extends BaseTest {
 	}
 
 	@Test
-	@PrepareForTest({ConversionEntry.class})
+	@PrepareForTest(ConversionEntry.class)
 	public void testManyPathDir() {
 		String pathTest = "src/test/resources/pathTest";
 		// ensure a directory
@@ -320,6 +314,7 @@ public class ConversionEntryTest extends BaseTest {
 	}
 
 	@Test
+	@Ignore
 	public void testSkipDefaults() throws Exception {
 		ConversionEntry.main(SKIP_VALIDATION,
 				SKIP_DEFAULTS,

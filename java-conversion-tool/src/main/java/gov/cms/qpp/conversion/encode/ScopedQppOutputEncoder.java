@@ -1,12 +1,12 @@
 package gov.cms.qpp.conversion.encode;
 
+import java.util.Collection;
+import java.util.stream.Stream;
+
 import gov.cms.qpp.conversion.ConversionEntry;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-
-import java.util.Collection;
-import java.util.stream.Stream;
 
 /**
  * Top level Encoder for serializing into QPP format.

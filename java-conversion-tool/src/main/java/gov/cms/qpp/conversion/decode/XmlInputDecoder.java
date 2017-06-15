@@ -1,19 +1,20 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.model.Node;
-import org.jdom2.Element;
-import org.jdom2.Namespace;
-import org.jdom2.filter.Filter;
-import org.jdom2.xpath.XPathExpression;
-import org.jdom2.xpath.XPathFactory;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.jdom2.filter.Filter;
+import org.jdom2.xpath.XPathExpression;
+import org.jdom2.xpath.XPathFactory;
+
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.model.Node;
 
 /**
  * Abstraction to parse XML files within the decoder structure.

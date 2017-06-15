@@ -1,24 +1,26 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.BaseTest;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.xml.XmlException;
-import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.jdom2.Element;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.util.List;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.jdom2.Element;
+import org.junit.Test;
+
+import gov.cms.qpp.ConversionTestSuite;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+
 /**
  * Test class for MultipleTinsDecoder
  */
-public class MultipleTinsDecoderTest extends BaseTest {
+public class MultipleTinsDecoderTest extends ConversionTestSuite {
+
 	private final String TEST_NPI1 = "NPI-1";
 	private final String TEST_NPI2 = "NPI-2";
 	private final String TEST_NPI3 = "NPI-3";

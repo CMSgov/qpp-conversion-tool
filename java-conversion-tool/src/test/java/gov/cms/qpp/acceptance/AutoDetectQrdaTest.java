@@ -1,8 +1,14 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.decode.XmlInputDecoder;
-import gov.cms.qpp.conversion.xml.XmlException;
-import gov.cms.qpp.conversion.xml.XmlUtils;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.nio.charset.Charset;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -11,16 +17,12 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.reflections.util.ClasspathHelper;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.nio.charset.Charset;
+import gov.cms.qpp.ConversionTestSuite;
+import gov.cms.qpp.conversion.decode.XmlInputDecoder;
+import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-public class AutoDetectQrdaTest {
+public class AutoDetectQrdaTest extends ConversionTestSuite {
 
 	private PrintStream stdout;
 

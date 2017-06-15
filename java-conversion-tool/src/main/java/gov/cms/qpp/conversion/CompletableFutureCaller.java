@@ -35,7 +35,7 @@ public class CompletableFutureCaller implements Callable<Boolean> {
 	 * @return whether the future was completed exceptionally
 	 */
 	@Override
-	public Boolean call() throws Exception {
+	public Boolean call() {
 		ExceptionHelper.runOrSilence(future::get);
 		return future.isCompletedExceptionally();
 	}

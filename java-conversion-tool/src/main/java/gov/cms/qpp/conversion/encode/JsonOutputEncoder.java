@@ -1,14 +1,15 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.error.Detail;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.error.Detail;
 
 /**
  * Output JSON to a Writer.

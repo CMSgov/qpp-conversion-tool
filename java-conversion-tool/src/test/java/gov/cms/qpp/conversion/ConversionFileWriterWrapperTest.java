@@ -1,18 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -22,8 +9,26 @@ import static org.mockito.Matchers.any;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import gov.cms.qpp.ConversionTestSuite;
+import gov.cms.qpp.conversion.util.JsonHelper;
+
 @RunWith(PowerMockRunner.class)
-public class ConversionFileWriterWrapperTest {
+@PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
+public class ConversionFileWriterWrapperTest extends ConversionTestSuite {
 
 	@After
 	public void deleteFiles() throws IOException {
@@ -124,6 +129,8 @@ public class ConversionFileWriterWrapperTest {
 
 	@Test
 	public void testErrorHasMultipleDetails() throws Exception {
+		System.setOut(console());
+		System.out.println("RUNNING STUPID TEST");
 		//setup
 		String firstMessage = "This Numerator Node Aggregate Value has an invalid value";
 		String secondMessage = "This Denominator Node Aggregate Value has an invalid value";
@@ -131,7 +138,9 @@ public class ConversionFileWriterWrapperTest {
 
 		//when
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
-		converterWrapper.transform().call();
+		System.out.println("CALLING TRANSFORM");
+		boolean r = converterWrapper.transform().call();
+		console().println("DONE: " + r);
 		Map<String, String> firstDetail = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
 				"$.errors[0].details[0]");
 		Map<String, String> secondDetail = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),

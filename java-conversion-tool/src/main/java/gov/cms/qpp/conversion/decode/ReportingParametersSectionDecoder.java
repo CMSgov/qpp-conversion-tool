@@ -1,9 +1,10 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+
+import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Decoder;
-import org.jdom2.Element;
 
 /**
  * Decoder to parse QRDA Category III Reporting Parameters Section.

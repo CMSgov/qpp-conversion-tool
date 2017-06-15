@@ -9,7 +9,9 @@ import java.nio.file.Paths;
 
 import org.junit.Test;
 
-public class ConverterTestWithAbridged {
+import gov.cms.qpp.ConversionTestSuite;
+
+public class ConverterTestWithAbridged extends ConversionTestSuite {
 
 	@Test
 	public void testWithAbridgedXml() throws IOException {

@@ -1,10 +1,10 @@
 package gov.cms.qpp.conversion.encode;
 
+import java.util.List;
+
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-
-import java.util.List;
 
 /**
  * Encoder to serialize Improvement Activity Performed Measure Reference and Results

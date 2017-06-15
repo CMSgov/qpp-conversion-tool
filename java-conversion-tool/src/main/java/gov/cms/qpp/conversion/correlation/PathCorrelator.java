@@ -1,14 +1,5 @@
 package gov.cms.qpp.conversion.correlation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
-import gov.cms.qpp.conversion.correlation.model.Config;
-import gov.cms.qpp.conversion.correlation.model.Correlation;
-import gov.cms.qpp.conversion.correlation.model.Goods;
-import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import org.reflections.util.ClasspathHelper;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Comparator;
@@ -17,6 +8,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.reflections.util.ClasspathHelper;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
+
+import gov.cms.qpp.conversion.correlation.model.Config;
+import gov.cms.qpp.conversion.correlation.model.Correlation;
+import gov.cms.qpp.conversion.correlation.model.Goods;
+import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 
 /**
  * Maintains associations between QPP json paths and their pre-transformation xpaths.
