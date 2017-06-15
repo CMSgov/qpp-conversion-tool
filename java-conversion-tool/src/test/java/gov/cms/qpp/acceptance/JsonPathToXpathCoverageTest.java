@@ -26,9 +26,8 @@ public class JsonPathToXpathCoverageTest {
 	@Test
 	public void coverage() {
 		Arrays.asList(
-				Paths.get("../qrda-files/valid-QRDA-III-latest.xml")
-				//,
-				//Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml")
+				Paths.get("../qrda-files/valid-QRDA-III-latest.xml"),
+				Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml")
 		).forEach(this::checkCoverage);
 	}
 
