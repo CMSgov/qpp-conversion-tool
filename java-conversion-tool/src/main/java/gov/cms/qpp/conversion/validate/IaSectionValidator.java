@@ -12,10 +12,10 @@ import java.util.List;
 @Validator(value = TemplateId.IA_SECTION, required = true)
 public class IaSectionValidator extends NodeValidator {
 
-	protected static final String MINIMUM_REQUIREMENT_ERROR = "The IA Section must have at least one IA Measure";
-	protected static final String MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR
-			= "The IA Section must have a only one Reporting Parameter ACT";
-	protected static final String WRONG_CHILD_ERROR =
+	public static final String MINIMUM_REQUIREMENT_ERROR = "The IA Section must have at least one IA Measure";
+	public static final String MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR
+			= "The IA Section must have one Reporting Parameter ACT";
+	public static final String WRONG_CHILD_ERROR =
 			"The IA Section must contain only measures and reporting parameter";
 
 	/**
