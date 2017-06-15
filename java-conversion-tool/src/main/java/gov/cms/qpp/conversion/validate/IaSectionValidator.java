@@ -13,7 +13,7 @@ import java.util.List;
 public class IaSectionValidator extends NodeValidator {
 
 	public static final String MINIMUM_REQUIREMENT_ERROR = "The IA Section must have at least one IA Measure";
-	public static final String MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR
+	public static final String REPORTING_PARAM_REQUIREMENT_ERROR
 			= "The IA Section must have one Reporting Parameter ACT";
 	public static final String WRONG_CHILD_ERROR =
 			"The IA Section must contain only measures and reporting parameter";
@@ -27,9 +27,9 @@ public class IaSectionValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
 				.childMinimum(MINIMUM_REQUIREMENT_ERROR, 1, TemplateId.IA_MEASURE)
-				.childMinimum(MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
+				.childMinimum(REPORTING_PARAM_REQUIREMENT_ERROR, 1,
 						TemplateId.REPORTING_PARAMETERS_ACT)
-				.childMaximum(MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
+				.childMaximum(REPORTING_PARAM_REQUIREMENT_ERROR, 1,
 						TemplateId.REPORTING_PARAMETERS_ACT)
 				.onlyHasChildren(WRONG_CHILD_ERROR, TemplateId.IA_MEASURE, TemplateId.REPORTING_PARAMETERS_ACT);
 	}

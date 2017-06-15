@@ -59,6 +59,6 @@ public class IaSectionValidatorRoundTripTest {
 				"$.errors[0].details[0].message", String.class);
 
 		assertThat("Must contain correct error message", error,
-				is(IaSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR));
+				is(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR));
 	}
 }
