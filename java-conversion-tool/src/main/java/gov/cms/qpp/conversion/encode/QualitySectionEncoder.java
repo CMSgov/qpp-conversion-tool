@@ -76,7 +76,7 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
 		JsonOutputEncoder reportingParamEncoder = ENCODERS.get(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
-		if ( reportingChild == null ){
+		if (reportingChild == null) {
 			CLIENT_LOG.error("Missing Reporting Parameters from eCQM Section");
 			return;
 		}
