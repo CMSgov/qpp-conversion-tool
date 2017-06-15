@@ -33,7 +33,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	public static Node decodeXml(Element xmlDoc) {
 		List<XmlInputDecoder> xmlDecoders = Arrays.asList(new QppXmlDecoder());
 
-		for  (XmlInputDecoder decoder : xmlDecoders) {
+		for (XmlInputDecoder decoder : xmlDecoders) {
 			if (decoder.accepts(xmlDoc)) {
 				return decoder.decode(xmlDoc);
 			}

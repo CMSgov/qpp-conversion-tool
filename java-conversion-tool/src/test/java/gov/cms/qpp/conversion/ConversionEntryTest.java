@@ -314,7 +314,6 @@ public class ConversionEntryTest extends ConversionTestSuite {
 	}
 
 	@Test
-	@Ignore
 	public void testSkipDefaults() throws Exception {
 		ConversionEntry.main(SKIP_VALIDATION,
 				SKIP_DEFAULTS,
