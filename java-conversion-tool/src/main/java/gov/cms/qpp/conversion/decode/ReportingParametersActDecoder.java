@@ -14,8 +14,8 @@ import java.util.function.Consumer;
  */
 @Decoder(TemplateId.REPORTING_PARAMETERS_ACT)
 public class ReportingParametersActDecoder extends QppXmlDecoder {
-	private static final String PERFORMANCE_START = "performanceStart";
-	private static final String PERFORMANCE_END = "performanceEnd";
+	public static final String PERFORMANCE_START = "performanceStart";
+	public static final String PERFORMANCE_END = "performanceEnd";
 
 	/**
 	 * Decodes a given element for a reporting parameter into a specified node

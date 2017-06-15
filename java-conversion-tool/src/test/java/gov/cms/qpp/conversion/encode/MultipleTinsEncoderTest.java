@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Before;
@@ -21,6 +22,7 @@ public class MultipleTinsEncoderTest {
 	private Node aciProportionDenominatorNode;
 	private Node aciProportionMeasureNode;
 	private Node aciSectionNode;
+	private Node reportingPerformanceNode;
 	private Node clinicalDocumentNode;
 	private Node multipleTinsNode;
 	private JsonWrapper testWrapper;
@@ -66,6 +68,11 @@ public class MultipleTinsEncoderTest {
 		aciSectionNode.setType(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
+
+		reportingPerformanceNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		reportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
+		reportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
+		aciSectionNode.addChildNode(reportingPerformanceNode);
 
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");

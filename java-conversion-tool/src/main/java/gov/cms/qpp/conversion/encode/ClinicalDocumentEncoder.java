@@ -17,9 +17,6 @@ import java.util.stream.Collectors;
 
 @Encoder(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
-	static final String PERFORMANCE_END = "performanceEnd";
-	static final String PERFORMANCE_YEAR = "performanceYear";
-	static final String PERFORMANCE_START = "performanceStart";
 	private static final String MEASUREMENT_SETS = "measurementSets";
 
 	/**

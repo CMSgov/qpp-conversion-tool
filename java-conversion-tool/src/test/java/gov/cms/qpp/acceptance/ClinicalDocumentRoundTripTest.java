@@ -30,11 +30,11 @@ public class ClinicalDocumentRoundTripTest extends BaseTest {
 			+ "\"numerator\" : 600,\n        \"denominator\" : 800\n      }\n    }, {\n      \"measureId\" : \"ACI_EP_1\",\n      "
 			+ "\"value\" : {\n        \"numerator\" : 500,\n        \"denominator\" : 700\n      }\n    }, {\n      "
 			+ "\"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n        \"numerator\" : 400,\n        "
-			+ "\"denominator\" : 600\n      }\n    }, {\n      \"performanceStart\" : \"2017-01-01\",\n      "
-			+ "\"performanceEnd\" : \"2017-12-31\"\n    } ]\n  }, "
+			+ "\"denominator\" : 600\n      }\n    } ],\n    \"performanceStart\" : \"2017-01-01\",\n    "
+			+ "\"performanceEnd\" : \"2017-12-31\"\n  }, "
 			+ "{\n    \"category\" : \"ia\",\n    \"submissionMethod\" : \"electronicHealthRecord\",\n    "
-			+ "\"measurements\" : [ {\n      \"measureId\" : \"IA_EPA_1\",\n      \"value\" : true\n    }, {\n      "
-			+ "\"performanceStart\" : \"2017-01-01\",\n      \"performanceEnd\" : \"2017-12-31\"\n    } ]\n  } ]\n}";
+			+ "\"measurements\" : [ {\n      \"measureId\" : \"IA_EPA_1\",\n      \"value\" : true\n    } ],\n    "
+			+ "\"performanceStart\" : \"2017-01-01\",\n    \"performanceEnd\" : \"2017-12-31\"\n  } ]\n}";
 
 	@Test
 	public void parseClinicalDocument() throws Exception {
