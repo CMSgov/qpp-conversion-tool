@@ -17,7 +17,8 @@ public class IaSectionValidatorTest {
 	public void testCorrectIaSectionPassesValidation() {
 		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
-		iaSectionNode.addChildNode(iaMeasureNode);
+		Node reportingParamActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		iaSectionNode.addChildNodes(iaMeasureNode, reportingParamActNode);
 
 		IaSectionValidator iaValidator = new IaSectionValidator();
 
@@ -43,9 +44,9 @@ public class IaSectionValidatorTest {
 	public void testIncorrectChildValidation() {
 		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
-		iaSectionNode.addChildNode(iaMeasureNode);
+		Node reportingParamActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
-		iaSectionNode.addChildNode(aggregateCountNode);
+		iaSectionNode.addChildNodes(iaMeasureNode, reportingParamActNode, aggregateCountNode);
 
 		IaSectionValidator iaValidator = new IaSectionValidator();
 

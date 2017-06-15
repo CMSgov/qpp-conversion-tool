@@ -24,6 +24,8 @@ public class AciSectionValidatorTest {
 	@Test
 	public void testNoMeasurePresent() {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		Node reportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		aciSectionNode.addChildNode(reportingParamNode);
 		aciSectionNode.putValue("category", "aci");
 
 		AciSectionValidator measureVal = new AciSectionValidator();
@@ -41,7 +43,9 @@ public class AciSectionValidatorTest {
 	public void testWrongMeasurePresent() {
 
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		Node reportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		aciSectionNode.putValue("category", "aci");
+		aciSectionNode.addChildNode(reportingParamNode);
 
 		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "TEST_MEASURE");

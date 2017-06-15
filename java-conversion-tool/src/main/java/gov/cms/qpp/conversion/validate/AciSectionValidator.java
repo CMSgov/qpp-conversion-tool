@@ -17,7 +17,7 @@ public class AciSectionValidator extends NodeValidator {
 	protected static final String ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED =
 		"At least one Aci Numerator Denominator Measure Node is required";
 	protected static final String MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR
-			= "The ACI Section must have a only one Reporting Parameter ACT";
+			= "The ACI Section must have one Reporting Parameter ACT";
 	protected static final String NO_REQUIRED_MEASURE =
 		"The required measures ''{0}'' is not present in the source file. "
 			+ "Please add the ACI measures and try again.";
