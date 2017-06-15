@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * Validates a Quality Measure Section node.
  */
-@Validator(value = TemplateId.MEASURE_SECTION_V2)
+@Validator(value = TemplateId.MEASURE_SECTION_V2, required = true)
 public class QualityMeasureSectionValidator extends NodeValidator {
-	protected static final String MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR
+	protected static final String REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR
 			= "The Quality Measure Section must have a only one Reporting Parameter ACT";
 
 	/**
@@ -21,9 +21,9 @@ public class QualityMeasureSectionValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-			.childMinimum(MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
+			.childMinimum(REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
 					TemplateId.REPORTING_PARAMETERS_ACT)
-			.childMaximum(MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
+			.childMaximum(REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
 					TemplateId.REPORTING_PARAMETERS_ACT);
 	}
 
