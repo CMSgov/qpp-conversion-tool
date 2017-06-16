@@ -119,41 +119,6 @@
 		<structuredBody>
 			<!--
 			********************************************************
-			QRDA-III Reporting Parameters Section - CMS (V2)
-			urn:hl7ii:2.16.840.1.113883.10.20.27.2.6:2016-11-01
-			********************************************************
-			-->
-			<component>
-				<section>
-					<templateId root="2.16.840.1.113883.10.20.17.2.1"/>
-					<templateId root="2.16.840.1.113883.10.20.27.2.2"/>
-					<templateId root="2.16.840.1.113883.10.20.27.2.6" extension="2016-11-01"/>
-					<code code="55187-9" codeSystem="2.16.840.1.113883.6.1"/>
-					<title>Reporting Parameters</title>
-					<text>
-						<list>
-							<item>Reporting period: 01 January 2017 - 31 December 2017</item>
-						</list>
-					</text>
-					<!-- Reporting Parameters Act - CMS (V2)
-					urn:hl7ii:2.16.840.1.113883.10.20.27.3.23:2016-11-01 -->
-					<entry typeCode="DRIV">
-						<act classCode="ACT" moodCode="EVN">
-							<templateId root="2.16.840.1.113883.10.20.17.3.8"/>
-							<templateId root="2.16.840.1.113883.10.20.27.3.23" extension="2016-11-01"/>
-							<id root="00b669fd-fa4d-4f5c-b109-65c6bbbf73ae"/>
-							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
-								displayName="Observation Parameters"/>
-							<effectiveTime>
-								<low value="20170101"/>
-								<high value="20171231"/>
-							</effectiveTime>
-						</act>
-					</entry>
-				</section>
-			</component>
-			<!--
-			********************************************************
 			QRDA Category III Measure Section - CMS (V2)
 			urn:hl7ii:2.16.840.1.113883.10.20.27.2.3:2016-11-01
 			********************************************************
@@ -1143,6 +1108,18 @@
 								</observation>
 							</component>
 						</organizer>
+					</entry>
+					<entry typeCode="DRIV">
+						<act classCode="ACT" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+							<id root="00b669fd-fa4d-4f5c-b109-65c6bbbf73ae"/>
+							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
+								  displayName="Observation Parameters"/>
+							<effectiveTime>
+								<low value="20170201"/>
+								<high value="20170531"/>
+							</effectiveTime>
+						</act>
 					</entry>
 				</section>
 			</component>
