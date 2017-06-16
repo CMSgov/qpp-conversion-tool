@@ -4,6 +4,9 @@ import java.util.concurrent.Callable;
 
 public class ExceptionHelper {
 
+	private ExceptionHelper() {
+	}
+
 	public static <T> T runOrSilence(Callable<T> callable) {
 		try {
 			return callable.call();
@@ -35,9 +38,6 @@ public class ExceptionHelper {
 		}
 
 		return unwrap(caught.getCause(), desired);
-	}
-
-	private ExceptionHelper() {
 	}
 
 }
