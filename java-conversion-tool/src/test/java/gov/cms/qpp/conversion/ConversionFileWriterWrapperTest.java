@@ -1,67 +1,59 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.ConversionTestSuite;
-import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.After;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class ConversionFileWriterWrapperTest extends ConversionTestSuite {
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
 
-	@After
-	public void deleteFiles() throws IOException {
-		Files.deleteIfExists(Paths.get("valid-QRDA-III.qpp.json"));
-		Files.deleteIfExists(Paths.get("not-a-QRDA-III-file.err.json"));
-		Files.deleteIfExists(Paths.get("qrda_bad_denominator.qpp.json"));
-		Files.deleteIfExists(Paths.get("qrda_bad_denominator.err.json"));
-	}
+import org.junit.Test;
+
+import gov.cms.qpp.conversion.util.JsonHelper;
+
+public class ConversionFileWriterWrapperTest extends ConversionFileWriterWrapperTestSuite {
 
 	@Test
-	public void testValidQpp() throws Exception {
+	public void testValidQpp() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
-		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
+		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path)
+				.doDefaults(false);
 
-		converterWrapper.doDefaults(false).transform().call();
+		transform(converterWrapper);
 
 		assertFileExists("valid-QRDA-III.qpp.json");
 	}
 
 	@Test
-	public void testInvalidQpp() throws Exception {
+	public void testInvalidQpp() {
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
-		converterWrapper.transform().call();
+		transform(converterWrapper);
 
 		assertFileExists("not-a-QRDA-III-file.err.json");
 	}
 
 	@Test
-	public void testSkipValidations() throws Exception {
+	public void testSkipValidations() {
 		Path path = Paths.get("src/test/resources/qrda_bad_denominator.xml");
-		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
+		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path)
+				.doValidation(false);
 
-		converterWrapper.doValidation(false).transform().call();
+		transform(converterWrapper);
 
 		assertFileExists("qrda_bad_denominator.qpp.json");
 	}
 
 	@Test
-	public void testErrorHasSourceId() throws Exception {
+	public void testErrorHasSourceId() throws IOException {
 		//when
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
-		converterWrapper.transform().call();
+		transform(converterWrapper);
 
 		//then
 		String sourceId = JsonHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file.err.json"),
@@ -71,14 +63,14 @@ public class ConversionFileWriterWrapperTest extends ConversionTestSuite {
 	}
 
 	@Test
-	public void testErrorHasDetail() throws Exception {
+	public void testErrorHasDetail() throws IOException {
 		//setup
 		String errorMessage = "The file is not a QRDA-III XML document";
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 
 		//when
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
-		converterWrapper.transform().call();
+		transform(converterWrapper);
 		Map<String, String> detail = JsonHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file.err.json"),
 				"$.errors[0].details[0]");
 
@@ -88,9 +80,7 @@ public class ConversionFileWriterWrapperTest extends ConversionTestSuite {
 	}
 
 	@Test
-	public void testErrorHasMultipleDetails() throws Exception {
-		System.setOut(console());
-		System.out.println("RUNNING STUPID TEST");
+	public void testErrorHasMultipleDetails() throws IOException {
 		//setup
 		String firstMessage = "This Numerator Node Aggregate Value has an invalid value";
 		String secondMessage = "This Denominator Node Aggregate Value has an invalid value";
@@ -98,9 +88,7 @@ public class ConversionFileWriterWrapperTest extends ConversionTestSuite {
 
 		//when
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
-		System.out.println("CALLING TRANSFORM");
-		boolean r = converterWrapper.transform().call();
-		console().println("DONE: " + r);
+		transform(converterWrapper);
 		Map<String, String> firstDetail = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
 				"$.errors[0].details[0]");
 		Map<String, String> secondDetail = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
@@ -113,8 +101,4 @@ public class ConversionFileWriterWrapperTest extends ConversionTestSuite {
 		assertNotNull("Contains detail path", secondDetail.get("path"));
 	}
 
-	private void assertFileExists(final String fileName) {
-		Path possibleFile = Paths.get(fileName);
-		assertTrue("The file " + fileName + " must exist.", Files.exists(possibleFile));
-	}
 }

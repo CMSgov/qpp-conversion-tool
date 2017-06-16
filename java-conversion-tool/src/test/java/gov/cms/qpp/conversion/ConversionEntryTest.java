@@ -299,6 +299,7 @@ public class ConversionEntryTest extends ConversionTestSuite {
 	}
 
 	@Test
+	@PrepareForTest(ConversionEntry.class)
 	public void testDefaults() throws Exception {
 		AnnotationMockHelper.mockDecoder(TemplateId.DEFAULT, JennyDecoder.class);
 		AnnotationMockHelper.mockEncoder(TemplateId.DEFAULT, Jenncoder.class);
@@ -313,6 +314,7 @@ public class ConversionEntryTest extends ConversionTestSuite {
 	}
 
 	@Test
+	@PrepareForTest(ConversionEntry.class)
 	public void testSkipDefaults() throws Exception {
 		ConversionEntry.main(SKIP_VALIDATION,
 				SKIP_DEFAULTS,

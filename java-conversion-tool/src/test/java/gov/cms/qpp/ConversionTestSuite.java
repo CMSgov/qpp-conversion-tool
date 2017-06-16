@@ -25,18 +25,44 @@ public abstract class ConversionTestSuite {
 		}
 	});
 
+	private static final Map<Field, Object> FLAGS = new HashMap<>();
+
+	static {
+		for (Field field : ConversionEntry.class.getDeclaredFields()) {
+			if (isResettable(field)) {
+				field.setAccessible(true);
+				try {
+					FLAGS.put(field, field.get(null));
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	private static boolean isResettable(Field field) {
+		if (!isBoolean(field)) {
+			return false;
+		}
+		int mod = field.getModifiers();
+		return Modifier.isStatic(mod) && !Modifier.isFinal(mod);
+	}
+
+	private static boolean isBoolean(Field field) {
+		Class<?> type = field.getType();
+		return type == boolean.class || type == Boolean.class;
+	}
+
 	protected static String getFixture(final String name) throws IOException {
 		Path path = Paths.get("src/test/resources/fixtures/" + name);
 		return new String(Files.readAllBytes(path));
 	}
 
-	private final Map<Field, Object> flags = new HashMap<>();
 	private PrintStream stdout;
 	private PrintStream stderr;
 
 	@Before
 	public final void setupSuite() throws Exception {
-		saveFlags();
 		saveOutput();
 		ignoreOutput();
 	}
@@ -58,18 +84,8 @@ public abstract class ConversionTestSuite {
 		System.setErr(IGNORED);
 	}
 
-	private void saveFlags() throws IllegalArgumentException, IllegalAccessException {
-		this.flags.clear();
-		for (Field field : ConversionEntry.class.getDeclaredFields()) {
-			if (isResettable(field)) {
-				field.setAccessible(true);
-				this.flags.put(field, field.get(null));
-			}
-		}
-	}
-
 	private void resetFlags() {
-		this.flags.forEach((field, value) -> {
+		FLAGS.forEach((field, value) -> {
 			try {
 				field.set(null, value);
 			} catch (Exception e) {
@@ -88,19 +104,6 @@ public abstract class ConversionTestSuite {
 	private void resetOutput() {
 		System.setOut(stdout);
 		System.setErr(stderr);
-	}
-
-	private boolean isResettable(Field field) {
-		if (!isBoolean(field)) {
-			return false;
-		}
-		int mod = field.getModifiers();
-		return Modifier.isStatic(mod) && !Modifier.isFinal(mod);
-	}
-
-	private boolean isBoolean(Field field) {
-		Class<?> type = field.getType();
-		return type == boolean.class || type == Boolean.class;
 	}
 
 	protected final PrintStream console() {
