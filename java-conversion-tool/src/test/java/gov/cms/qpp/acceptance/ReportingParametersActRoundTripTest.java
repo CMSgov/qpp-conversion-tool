@@ -14,13 +14,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class ReportingParametersActRoundTripTest {
-	private static final Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+	private static final Path VALID_QRDA_III = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 
 	private static final String SUCCESS_JSON = "valid-QRDA-III-latest.qpp.json";
 
 	@Before
 	public void setUp() {
-		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
+		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(VALID_QRDA_III);
 		converterWrapper.transform();
 	}
 
