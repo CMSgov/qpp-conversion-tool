@@ -31,6 +31,7 @@ public class IaSectionValidatorRoundTripTest extends ConversionTestSuite {
 		String error = JsonHelper.readJsonAtJsonPath(Paths.get(ERROR_FILE),
 				"$.errors[0].details[0].message", String.class);
 
-		assertThat("Must contain correct error message", error, is("Must have only IA Measures"));
+		assertThat("Must contain correct error message", error,
+				is("The IA Section must contain only measures and reporting parameter"));
 	}
 }

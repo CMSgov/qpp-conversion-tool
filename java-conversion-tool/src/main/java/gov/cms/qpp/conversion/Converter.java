@@ -152,7 +152,6 @@ public class Converter {
 	private JsonWrapper transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
-		System.out.println(decoded);
 		JsonWrapper qpp = null;
 		if (null != decoded) {
 			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), inStream);

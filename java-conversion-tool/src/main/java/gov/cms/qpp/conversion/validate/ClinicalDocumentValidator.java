@@ -21,12 +21,10 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			+ "or IA or eCQM Section Node as a child";
 	protected static final String CONTAINS_PROGRAM_NAME = "Clinical Document must have a program name";
 	protected static final String INCORRECT_PROGRAM_NAME = "Clinical Document program name is not recognized";
-	protected static final String CONTAINS_PERFORMANCE_YEAR = "Clinical Document must have a performance year";
 	protected static final String CONTAINS_TAX_ID_NUMBER = "Clinical Document must have Tax Id Number (TIN)";
 	protected static final String CONTAINS_DUPLICATE_ACI_SECTIONS = "Clinical Document contains duplicate ACI sections";
 	protected static final String CONTAINS_DUPLICATE_IA_SECTIONS = "Clinical Document contains duplicate IA sections";
 	protected static final String CONTAINS_DUPLICATE_ECQM_SECTIONS = "Clinical Document contains duplicate eCQM sections";
-	protected static final String REPORTING_PARAMETER_REQUIRED = "Clinical Document must have Report Parameters Section";
 
 	/**
 	 * Validates a single Clinical Document Node.
@@ -45,9 +43,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
 		thoroughlyCheck(node)
-			.hasChildren(ONE_CHILD_REQUIRED)
 			.childMinimum(ONE_CHILD_REQUIRED, 1, TemplateId.ACI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)
-			.childMinimum(REPORTING_PARAMETER_REQUIRED, 1, TemplateId.REPORTING_PARAMETERS_SECTION)
 			.childMaximum(CONTAINS_DUPLICATE_ACI_SECTIONS, 1, TemplateId.ACI_SECTION)
 			.childMaximum(CONTAINS_DUPLICATE_IA_SECTIONS, 1, TemplateId.IA_SECTION)
 			.childMaximum(CONTAINS_DUPLICATE_ECQM_SECTIONS, 1, TemplateId.MEASURE_SECTION_V2)
@@ -55,13 +51,6 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			.valueIn(INCORRECT_PROGRAM_NAME, ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
 				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME)
 			.value(CONTAINS_TAX_ID_NUMBER, MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
-
-		Node reportingParametersAct = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
-		if (reportingParametersAct == null) {
-			getDetails().add(new Detail(CONTAINS_PERFORMANCE_YEAR, node.getPath()));
-		} else {
-			thoroughlyCheck(reportingParametersAct).value(CONTAINS_PERFORMANCE_YEAR, "performanceStart");
-		}
 	}
 
 	/**

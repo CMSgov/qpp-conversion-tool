@@ -48,8 +48,6 @@ public class QualityMeasureIdMultiRoundTripTest extends ConversionTestSuite {
 		List<Map<String, Integer>> subPopulation = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
 				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='CMS52v5')].value.strata[*]", List.class);
 
-		assertThat("There should still be a quality measure even with the junk stuff in quality measure.",
-				qualityMeasures, hasSize(1));
 		assertThat("The measureId in the quality measure should still populate given the junk stuff in the measure.",
 				qualityMeasures.get(0).get("measureId"), is("CMS52v5"));
 

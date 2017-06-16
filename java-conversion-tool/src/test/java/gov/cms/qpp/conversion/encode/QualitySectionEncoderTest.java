@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
@@ -12,6 +13,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * This class tests the QualitySectionEncoder class
  */
 public class QualitySectionEncoderTest {
+
 	@Test
 	public void internalEncode() throws EncodeException {
 		Node qualitySectionNode = getQualitySectionNode();
@@ -42,6 +44,10 @@ public class QualitySectionEncoderTest {
 		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2);
 		qualitySectionNode.putValue("category", "quality");
 		qualitySectionNode.putValue("submissionMethod", "cmsWebInterface");
+		Node reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		reportingParameterNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START,"20170101");
+		reportingParameterNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
+		qualitySectionNode.addChildNode(reportingParameterNode);
 		return qualitySectionNode;
 	}
 }

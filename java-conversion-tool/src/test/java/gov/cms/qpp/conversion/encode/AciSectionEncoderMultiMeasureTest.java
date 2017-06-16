@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
@@ -24,9 +25,10 @@ public class AciSectionEncoderMultiMeasureTest {
 			+ "{\n    \"measureId\" : \"ACI_EP_1\",\n    \"value\" : {\n"
 			+ "      \"numerator\" : 500,\n      \"denominator\" : 700\n    }\n  }, "
 			+ "{\n    \"measureId\" : \"ACI_CCTPE_3\",\n    \"value\" : {\n"
-			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }" + " ]\n" + "}";
+			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }" + " ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
 
 	private Node aciSectionNode;
+	private Node reportingParametersNode;
 	private Node aciProportionMeasureNode;
 	private Node aciProportionNumeratorNode;
 	private Node aciProportionDenominatorNode;
@@ -102,6 +104,11 @@ public class AciSectionEncoderMultiMeasureTest {
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);
 		aciSectionNode.addChildNode(aciProportionMeasureNode3);
+
+		reportingParametersNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START,"20170101");
+		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END,"20171231");
+		aciSectionNode.addChildNode(reportingParametersNode);
 
 		nodes = new ArrayList<>();
 		nodes.add(aciSectionNode);

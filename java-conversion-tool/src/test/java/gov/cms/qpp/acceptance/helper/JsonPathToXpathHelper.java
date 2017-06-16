@@ -62,6 +62,11 @@ public class JsonPathToXpathHelper {
 			fail(e.getMessage());
 		}
 
+		if (attribute == null) {
+			System.out.println("no attribute for path: " + jsonPath
+					+ "\n xpath: " + xPath);
+		}
+
 		if (!expectedValue.equals(attribute.getValue())) {
 			System.err.println("( " + jsonPath + " ) value ( " + expectedValue +
 					" ) does not equal ( " + attribute.getValue() +

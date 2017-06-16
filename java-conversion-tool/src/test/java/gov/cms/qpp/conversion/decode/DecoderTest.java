@@ -21,7 +21,6 @@ public class DecoderTest {
 			TemplateId.MEASURE_SECTION_V2,
 			TemplateId.IA_SECTION,
 			TemplateId.ACI_SECTION,
-			TemplateId.REPORTING_PARAMETERS_SECTION,
 			TemplateId.ACI_AGGREGATE_COUNT,
 			TemplateId.MEASURE_DATA_CMS_V2,
 			TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2,

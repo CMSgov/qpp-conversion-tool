@@ -17,8 +17,9 @@ import gov.cms.qpp.conversion.xml.XmlException;
 public class XpathJsonPathComparisonTest extends ConversionTestSuite {
 
 	private static JsonWrapper wrapper = new JsonWrapper(false);
-	private static Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
+	private static Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 	private static JsonPathToXpathHelper helper;
+	private static final String EXTENSION = "extension";
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {
@@ -33,52 +34,52 @@ public class XpathJsonPathComparisonTest extends ConversionTestSuite {
 	@Test
 	public void compareTopLevelAttributeProgramName() throws XmlException, IOException {
 		String jsonPath = "programName";
-		helper.executeAttributeTest(jsonPath, "extension", "MIPS");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "MIPS_INDIV");
 	}
 
 	@Test
 	public void compareTopLevelAttributeTin() throws XmlException, IOException {
 		String jsonPath = "taxpayerIdentificationNumber";
-		helper.executeAttributeTest(jsonPath, "extension", "123456789");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "123456789");
 	}
 
 	@Test
 	public void compareTopLevelAttributeNpi() throws XmlException, IOException {
 		String jsonPath = "nationalProviderIdentifier";
-		helper.executeAttributeTest(jsonPath, "extension", "2567891421");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "2567891421");
 	}
 
 	@Test
 	public void compareTopLevelAttributeEntityId() throws XmlException, IOException {
 		String jsonPath = "entityId";
-		helper.executeAttributeTest(jsonPath, "extension", "AR000000");
-	}
-
-	@Test
-	public void compareTopLevelAttributePerformanceYear() throws XmlException, IOException {
-		String jsonPath = "performanceYear";
-		helper.executeAttributeTest(jsonPath, "value", "20170101");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "AR000000");
 	}
 
 	//ACI
 	@Test
+	public void compareAciMeasurePerformanceEnd() throws IOException, XmlException {
+		String jsonPath = "measurementSets[1].performanceEnd";
+		helper.executeAttributeTest(jsonPath, "value", "20170531");
+	}
+
+	@Test
+	public void compareAciMeasurePerformanceStart() throws IOException, XmlException {
+		String jsonPath = "measurementSets[1].performanceStart";
+		helper.executeAttributeTest(jsonPath, "value", "20170201");
+	}
+
+	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].measureId";
-		helper.executeAttributeTest(jsonPath, "extension", "ACI-PEA-1");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "ACI_PEA_1");
 	}
 
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciEp1() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[1].measureId";
-		helper.executeAttributeTest(jsonPath, "extension", "ACI_EP_1");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "ACI_EP_1");
 	}
-
-	@Test
-	public void compareAciMeasurePerformedMeasureIdAciCctpe3() throws IOException, XmlException {
-		String jsonPath = "measurementSets[1].measurements[2].measureId";
-		helper.executeAttributeTest(jsonPath, "extension", "ACI_CCTPE_3");
-	}
-
+	
 	@Test
 	public void compareAciMeasurePerformedMeasureIdAciPea1Numerator() throws IOException, XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].value.numerator";
@@ -93,6 +94,18 @@ public class XpathJsonPathComparisonTest extends ConversionTestSuite {
 
 	//IA
 	@Test
+	public void compareIaMeasurePerformanceEnd() throws IOException, XmlException {
+		String jsonPath = "measurementSets[2].performanceEnd";
+		helper.executeAttributeTest(jsonPath, "value", "20170430");
+	}
+
+	@Test
+	public void compareIaMeasurePerformanceStart() throws IOException, XmlException {
+		String jsonPath = "measurementSets[2].performanceStart";
+		helper.executeAttributeTest(jsonPath, "value", "20170101");
+	}
+
+	@Test
 	public void compareIaMeasurePerformedMeasureIdIaEpa1Value() throws IOException, XmlException {
 		String jsonPath = "measurementSets[2].measurements[0].value";
 		helper.executeAttributeTest(jsonPath, "code", "Y");
@@ -101,10 +114,22 @@ public class XpathJsonPathComparisonTest extends ConversionTestSuite {
 	@Test
 	public void compareIaMeasurePerformedMeasureIdIaEpa1() throws IOException, XmlException {
 		String jsonPath = "measurementSets[2].measurements[0].measureId";
-		helper.executeAttributeTest(jsonPath, "extension", "IA_EPA_1");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "IA_EPA_3");
 	}
 
 	//Quality measure
+	@Test
+	public void compareQualityMeasurePerformanceEnd() throws IOException, XmlException {
+		String jsonPath = "measurementSets[0].performanceEnd";
+		helper.executeAttributeTest(jsonPath, "value", "20171231");
+	}
+
+	@Test
+	public void compareQualityMeasurePerformanceStart() throws IOException, XmlException {
+		String jsonPath = "measurementSets[0].performanceStart";
+		helper.executeAttributeTest(jsonPath, "value", "20170101");
+	}
+
 	@Test
 	public void compareQualityMeasureIdValuePerformanceExclusion() throws IOException, XmlException {
 		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulationExclusion";

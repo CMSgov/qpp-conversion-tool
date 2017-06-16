@@ -1,17 +1,17 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Map;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
 
 public class AciSectionEncoderTest {
 
@@ -25,6 +25,7 @@ public class AciSectionEncoderTest {
 	private static final String AGGREGATE_COUNT_ID = "aggregateCount";
 
 	private Node aciSectionNode;
+	private Node reportingParametersNode;
 	private Node aciNumeratorDenominatorNode;
 	private Node aciProportionNumeratorNode;
 	private Node aciProportionDenominatorNode;
@@ -50,9 +51,14 @@ public class AciSectionEncoderTest {
 		aciNumeratorDenominatorNode.addChildNode(aciProportionDenominatorNode);
 		aciNumeratorDenominatorNode.putValue(MEASUREMENT_ID, MEASUREMENT_ID_VALUE);
 
+		reportingParametersNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START,"20170101");
+		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END,"20171231");
+
 		aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue(CATEGORY, ACI);
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
+		aciSectionNode.addChildNode(reportingParametersNode);
 	}
 
 	@Test
@@ -60,6 +66,7 @@ public class AciSectionEncoderTest {
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder();
 		aciSectionEncoder.internalEncode(jsonWrapper, aciSectionNode);
+
 		Map<?, ?> testMapObject = (Map<?, ?>) jsonWrapper.getObject();
 
 		assertThat("Must have a child node", testMapObject, is(not(nullValue())));
@@ -77,6 +84,7 @@ public class AciSectionEncoderTest {
 		aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue(CATEGORY, ACI);
 		aciSectionNode.addChildNode(invalidAciNumeratorDenominatorNode);
+		aciSectionNode.addChildNode(reportingParametersNode);
 
 		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder();
 		aciSectionEncoder.internalEncode(testWrapper, aciSectionNode);

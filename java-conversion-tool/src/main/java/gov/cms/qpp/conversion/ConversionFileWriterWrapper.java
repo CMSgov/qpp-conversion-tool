@@ -5,7 +5,6 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -61,7 +60,7 @@ public class ConversionFileWriterWrapper {
 	 * Execute the conversion.
 	 * @return 
 	 */
-	public Callable<Boolean> transform() {
+	public CompletableFutureCaller transform() {
 		Converter converter = new Converter(inFile)
 			.doDefaults(doDefaults)
 			.doValidation(doValidation);
@@ -74,7 +73,7 @@ public class ConversionFileWriterWrapper {
 	 *
 	 * @param converter The Converter to execute.
 	 */
-	private Callable<Boolean> executeConverter(Converter converter) {
+	private CompletableFutureCaller executeConverter(Converter converter) {
 		CompletableFuture<?> conversion = converter.transform().whenComplete((jsonWrapper, exception) -> {
 			if (exception != null) {
 				handleConverterError(exception);

@@ -22,36 +22,36 @@ public class IaSectionRoundTripTest extends ConversionTestSuite {
 
 	@Before
 	public void setUp() {
-		file = Paths.get("../qrda-files/valid-QRDA-III.xml");
+		file = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 	}
 
 	@After
 	public void cleanUp() throws IOException {
-		Files.deleteIfExists(Paths.get("valid-QRDA-III.qpp.json"));
+		Files.deleteIfExists(Paths.get("valid-QRDA-III-latest.qpp.json"));
 	}
 
 	@Test
-	public void testIaSectionConvertsIaCategory() throws Exception {
+	public void testIaSectionConvertsIaCategory() throws IOException {
 		new ConversionFileWriterWrapper(file).transform().call();
-		String iaCategory = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
+		String iaCategory = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III-latest.qpp.json"),
 				"$.measurementSets[2].category", String.class);
 
 		assertThat("Must contain a category", iaCategory, is("ia"));
 	}
 
 	@Test
-	public void testIaSectionConvertsIaMeasureId() throws Exception {
+	public void testIaSectionConvertsIaMeasureId() throws IOException {
 		new ConversionFileWriterWrapper(file).transform().call();
-		String iaMeasureId = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
+		String iaMeasureId = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III-latest.qpp.json"),
 				"$.measurementSets[2].measurements[0].measureId", String.class);
 
-		assertThat("Must contain measure id", iaMeasureId, is("IA_EPA_1"));
+		assertThat("Must contain measure id", iaMeasureId, is("IA_EPA_3"));
 	}
 
 	@Test
-	public void testIaSectionConvertsMeasurePerformed() throws Exception {
+	public void testIaSectionConvertsMeasurePerformed() throws IOException {
 		new ConversionFileWriterWrapper(file).transform().call();
-		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III.qpp.json"),
+		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III-latest.qpp.json"),
 				"$.measurementSets[2].measurements[0].value", Boolean.class);
 
 		assertTrue("Must contain a measure performed", measurePerformed);

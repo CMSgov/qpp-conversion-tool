@@ -22,9 +22,9 @@ import gov.cms.qpp.conversion.model.TemplateId;
  */
 public class ScopedConversionTest extends ConversionTestSuite {
 
-	private static final String SUCCESS_MAKER = "../qrda-files/valid-QRDA-III.xml";
+	private static final String SUCCESS_MAKER = "../qrda-files/valid-QRDA-III-latest.xml";
 	private static final String ERROR_MAKER = "src/test/resources/negative/angerTheConverter.xml";
-	private static final String SUCCESS_FILE = "valid-QRDA-III.qpp.json";
+	private static final String SUCCESS_FILE = "valid-QRDA-III-latest.qpp.json";
 	private static final String ERROR_FILE = "angerTheConverter.err.json";
 
 	private static final String TEMPLATE_SCOPE = "--" + ConversionEntry.TEMPLATE_SCOPE;

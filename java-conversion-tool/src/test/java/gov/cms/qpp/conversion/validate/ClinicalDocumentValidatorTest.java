@@ -39,7 +39,6 @@ public class ClinicalDocumentValidatorTest {
 	@Test
 	public void testClinicalDocumentPresent() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		clinicalDocumentNode.addChildNode(createReportingNode());
 
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
@@ -54,7 +53,6 @@ public class ClinicalDocumentValidatorTest {
 	@Test
 	public void testClinicalDocumentPresentIa() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		clinicalDocumentNode.addChildNode(createReportingNode());
 
 		Node iaSectionNode = createIASectionNode(clinicalDocumentNode);
 
@@ -69,7 +67,6 @@ public class ClinicalDocumentValidatorTest {
 	@Test
 	public void testClinicalDocumentPresentEcQM() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		clinicalDocumentNode.addChildNode(createReportingNode());
 
 		Node ecqmSectionNode = new Node(TemplateId.MEASURE_SECTION_V2, clinicalDocumentNode);
 		ecqmSectionNode.putValue("category", "eCQM");
@@ -108,7 +105,6 @@ public class ClinicalDocumentValidatorTest {
 	@Test
 	public void testNoSections() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		clinicalDocumentNode.addChildNode(createReportingNode());
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
@@ -121,7 +117,6 @@ public class ClinicalDocumentValidatorTest {
 	@Test
 	public void testNoSectionsOtherChildren() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		clinicalDocumentNode.addChildNode(createReportingNode());
 
 		Node placeholderNode = new Node(TemplateId.PLACEHOLDER);
 
@@ -140,7 +135,6 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.addChildNode(createReportingNode());
 
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
@@ -161,7 +155,6 @@ public class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
-		clinicalDocumentNode.addChildNode(createReportingNode());
 
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
@@ -181,8 +174,6 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 
-		clinicalDocumentNode.addChildNode(createReportingNode());
-
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
@@ -194,33 +185,14 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testClinicalDocumentMissingPerformanceStartPresent() {
-		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-
-		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
-
-		clinicalDocumentNode.addChildNode(aciSectionNode);
-
-		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
-
-		assertThat("there should be one error", errors, hasSize(2));
-		assertThat("error should be about missing reporting node", errors,
-			hasValidationErrorsIgnoringPath(
-					ClinicalDocumentValidator.REPORTING_PARAMETER_REQUIRED,
-					ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
-	}
-
-	@Test
 	public void testDuplicateAciSectionCausesError() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		Node performanceSection = createReportingNode();
 
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
 		Node duplicateAciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
-		clinicalDocumentNode.addChildNodes(aciSectionNode, performanceSection, duplicateAciSectionNode);
+		clinicalDocumentNode.addChildNodes(aciSectionNode, duplicateAciSectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
@@ -233,13 +205,12 @@ public class ClinicalDocumentValidatorTest {
 	@Test
 	public void testDuplicateIASectionCausesError() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		Node performanceSection = createReportingNode();
 
 		Node IASectionNode = createIASectionNode(clinicalDocumentNode);
 
 		Node duplicateIASectionNode = createIASectionNode(clinicalDocumentNode);
 
-		clinicalDocumentNode.addChildNodes(IASectionNode, performanceSection, duplicateIASectionNode);
+		clinicalDocumentNode.addChildNodes(IASectionNode, duplicateIASectionNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
@@ -252,13 +223,12 @@ public class ClinicalDocumentValidatorTest {
 	@Test
 	public void testDuplicateQualityMeasureSectionCausesError() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		Node performanceSection = createReportingNode();
 
 		Node qualityMeasureNode = createQualityMeasureSectionNode(clinicalDocumentNode);
 
 		Node duplicateQualityMeasureNode = createQualityMeasureSectionNode(clinicalDocumentNode);
 
-		clinicalDocumentNode.addChildNodes(qualityMeasureNode, performanceSection, duplicateQualityMeasureNode);
+		clinicalDocumentNode.addChildNodes(qualityMeasureNode, duplicateQualityMeasureNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
@@ -271,7 +241,6 @@ public class ClinicalDocumentValidatorTest {
 	@Test
 	public void testMultipleNonDuplicatedSectionsIsValid() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		Node performanceSection = createReportingNode();
 
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 
@@ -279,7 +248,7 @@ public class ClinicalDocumentValidatorTest {
 
 		Node qualityMeasureNode = createQualityMeasureSectionNode(clinicalDocumentNode);
 
-		clinicalDocumentNode.addChildNodes(aciSectionNode, performanceSection, IASectionNode, qualityMeasureNode);
+		clinicalDocumentNode.addChildNodes(aciSectionNode, IASectionNode, qualityMeasureNode);
 
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
@@ -297,22 +266,20 @@ public class ClinicalDocumentValidatorTest {
 		AllErrors allErrors = readJson(CLINICAL_DOCUMENT_ERROR_FILE, AllErrors.class);
 		List<Detail> errors = getErrors(allErrors);
 
-		assertThat("Must have 4 errors", errors, hasSize(4));
+		assertThat("Must have 3 errors", errors, hasSize(3));
 
 		assertThat("Must contain the error", errors,
 			hasValidationErrorsIgnoringPath(
 				ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
 				ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME,
-				ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER,
-				ClinicalDocumentValidator.CONTAINS_PERFORMANCE_YEAR));
+				ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
 	}
 
 	@Test
 	public void testInvalidProgramName() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
-		Node performanceSection = createReportingNode();
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
-		clinicalDocumentNode.addChildNodes(aciSectionNode, performanceSection);
+		clinicalDocumentNode.addChildNodes(aciSectionNode);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME,"Invalid program name");
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
@@ -333,15 +300,6 @@ public class ClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
 		return clinicalDocumentNode;
-	}
-
-	private Node createReportingNode() {
-		Node reportingSection = new Node(TemplateId.REPORTING_PARAMETERS_SECTION);
-		Node reportingParametersAct = new Node(TemplateId.REPORTING_PARAMETERS_ACT, reportingSection);
-		reportingParametersAct.putValue("performanceStart", "20170101");
-		reportingParametersAct.putValue("performanceEnd", "20171231");
-		reportingSection.addChildNode(reportingParametersAct);
-		return reportingSection;
 	}
 
 	private Node createAciSectionNode(Node clinicalDocumentNode) {

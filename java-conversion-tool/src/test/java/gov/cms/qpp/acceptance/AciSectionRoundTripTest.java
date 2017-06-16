@@ -40,6 +40,18 @@ public class AciSectionRoundTripTest extends ConversionTestSuite {
 		                     + "				<templateId root=\"Q.E.D\"/>\n"
 		                     + "			</qed>"
 		                     + "		</entry>\n"
+							 + "		<entry typeCode=\"DRIV\">"
+							 + "			<act classCode=\"ACT\" moodCode=\"EVN\">"
+							 + "				<templateId root=\"2.16.840.1.113883.10.20.17.3.8\"/>"
+							 + "				<id root=\"00b669fd-fa4d-4f5c-b109-65c6bbbf73ae\"/>"
+							 + "				<code code=\"252116004\" codeSystem=\"2.16.840.1.113883.6.96\""
+							 + "					displayName=\"Observation Parameters\"/>"
+							 + "				<effectiveTime>"
+							 + "					<low value=\"20170101\"/>"
+							 + "					<high value=\"20170430\"/>"
+							 + "				</effectiveTime>"
+							 + "			</act>"
+							 + "		</entry>"
 		                     + "	</section>\n"
 		                     + "</component>";
 
@@ -70,6 +82,18 @@ public class AciSectionRoundTripTest extends ConversionTestSuite {
 		                     + "				<templateId root=\"Q.E.D\"/>\n"
 		                     + "			</qed>"
 		                     + "		</entry>\n"
+							 + "		<entry typeCode=\"DRIV\">"
+							 + "			<act classCode=\"ACT\" moodCode=\"EVN\">"
+							 + "				<templateId root=\"2.16.840.1.113883.10.20.17.3.8\"/>"
+							 + "				<id root=\"00b669fd-fa4d-4f5c-b109-65c6bbbf73ae\"/>"
+							 + "				<code code=\"252116004\" codeSystem=\"2.16.840.1.113883.6.96\""
+						 	 + "					displayName=\"Observation Parameters\"/>"
+							 + "				<effectiveTime>"
+							 + "					<low value=\"20170101\"/>"
+							 + "					<high value=\"20170430\"/>"
+							 + "				</effectiveTime>"
+							 + "			</act>"
+							 + "		</entry>"
 		                     + "	</section>\n"
 		                     + "</component>";
 
@@ -96,11 +120,22 @@ public class AciSectionRoundTripTest extends ConversionTestSuite {
 				+ "				<templateId root=\"Q.E.D\"/>\n"
 		        + "			</qed>"
 		        + "		</entry>\n"
+				+ "		<entry typeCode=\"DRIV\">"
+				+ "			<act classCode=\"ACT\" moodCode=\"EVN\">"
+				+ "				<templateId root=\"2.16.840.1.113883.10.20.17.3.8\"/>"
+				+ "				<id root=\"00b669fd-fa4d-4f5c-b109-65c6bbbf73ae\"/>"
+				+ "				<code code=\"252116004\" codeSystem=\"2.16.840.1.113883.6.96\""
+				+ "					displayName=\"Observation Parameters\"/>"
+				+ "				<effectiveTime>"
+				+ "					<low value=\"20170101\"/>"
+				+ "					<high value=\"20170430\"/>"
+				+ "				</effectiveTime>"
+				+ "			</act>"
+				+ "		</entry>"
 				+ "	</section>\n"
 		        + "</component>";
 
-		String expected = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  "
-			                  + "\"measurements\" : [ {\n    \"measure\" : \"measure1\"\n  } ]\n}";
+		String expected = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ {\n    \"measure\" : \"measure1\"\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-04-30\"\n}";
 
 		//Decode
 		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
@@ -122,7 +157,6 @@ public class AciSectionRoundTripTest extends ConversionTestSuite {
 
 	private void assertAciSectionHasSingleQedNode(Node aciSectionNode) {
 		assertThat(aciSectionNode, is(notNullValue()));
-		assertThat(aciSectionNode.getChildNodes(), hasSize(1));
 		assertThat(aciSectionNode.getChildNodes().get(0).getType(), is(TemplateId.QED));
 	}
 }

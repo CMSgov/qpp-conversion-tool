@@ -85,7 +85,6 @@ public class AciMeasurePerformedRnREncoderTest {
 
 		//execute
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
-		System.out.println(aciMeasurePerformedRnR.findFirstNode(TemplateId.MEASURE_PERFORMED));
 
 		//assert
 		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
