@@ -4,7 +4,7 @@
 		"submissionMethod": "electronicHealthRecord",
 		"measurements": [
 			{
-				"measureId": "ACI-PEA-1",
+				"measureId": "ACI_PEA_1",
 				"value": {
 					"numerator": 600,
 					"denominator": 800
@@ -12,13 +12,6 @@
 			},
 			{
 				"measureId": "ACI_EP_1",
-				"value": {
-					"numerator": 500,
-					"denominator": 700
-				}
-			},
-			{
-				"measureId": "ACI_CCTPE_3",
 				"value": {
 					"numerator": 400,
 					"denominator": 600
@@ -31,7 +24,11 @@
 		"submissionMethod": "electronicHealthRecord",
 		"measurements": [
 			{
-				"measureId": "IA_EPA_1",
+				"measureId": "IA_EPA_3",
+				"value": true
+			},
+			{
+				"measureId": "IA_CC_10",
 				"value": true
 			}
 		]
@@ -194,6 +191,123 @@
 			"value": 50
 		},
 		{
+			"value": 950
+		},
+		{
+			"value": 400
+		},
+		{
+			"value": 550
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 600
+		},
+		{
+			"value": 300
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 300
+		},
+		{
+			"value": 0
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 250
+		},
+		{
+			"value": 300
+		},
+		{
+			"value": 50
+		},
+		{
+			"value": 950
+		},
+		{
+			"value": 400
+		},
+		{
+			"value": 550
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 600
+		},
+		{
+			"value": 300
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 300
+		},
+		{
+			"value": 0
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 250
+		},
+		{
+			"value": 300
+		},
+		{
+			"value": 50
+		},
+		{
+			"value": 900
+		},
+		{
+			"value": 400
+		},
+		{
+			"value": 500
+		},
+		{
+			"value": 550
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 250
+		},
+		{
+			"value": 598
+		},
+		{
+			"value": 50
+		},
+		{
+			"value": 2
+		},
+		{
+			"value": 300
+		},
+		{
+			"value": 200
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 50
+		},
+		{
 			"value": 1000
 		},
 		{
@@ -233,1849 +347,163 @@
 			"value": 50
 		},
 		{
+			"value": 20
+		},
+		{
+			"value": 12
+		},
+		{
+			"value": 8
+		},
+		{
+			"value": 18
+		},
+		{
+			"value": 2
+		},
+		{
+			"value": 3
+		},
+		{
+			"value": 15
+		},
+		{
+			"value": 2
+		},
+		{
+			"value": 0
+		},
+		{
+			"value": 10
+		},
+		{
+			"value": 3
+		},
+		{
+			"value": 5
+		},
+		{
+			"value": 2
+		},
+		{
+			"value": 1000
+		},
+		{
+			"value": 400
+		},
+		{
+			"value": 600
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 650
+		},
+		{
+			"value": 300
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 0
+		},
+		{
+			"value": 350
+		},
+		{
+			"value": 250
+		},
+		{
+			"value": 350
+		},
+		{
 			"value": 50
 		},
 		{
-			"value": 30
+			"value": 800
 		},
 		{
-			"value": 20
+			"value": 300
+		},
+		{
+			"value": 500
+		},
+		{
+			"value": 250
+		},
+		{
+			"value": 550
+		},
+		{
+			"value": 250
+		},
+		{
+			"value": 300
+		},
+		{
+			"value": 250
+		},
+		{
+			"value": 0
+		},
+		{
+			"value": 300
+		},
+		{
+			"value": 200
+		},
+		{
+			"value": 250
+		},
+		{
+			"value": 50
+		},
+		{
+			"value": 600
+		},
+		{
+			"value": 600
+		},
+		{
+			"value": 35
+		},
+		{
+			"value": 486
+		},
+		{
+			"value": 800
+		},
+		{
+			"value": 800
 		},
 		{
 			"value": 40
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 30
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 40
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 30
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 40
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 30
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 40
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 950
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 950
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 950
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 950
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 950
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 950
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 950
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 950
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 950
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 950
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 750
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 450
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 30
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 40
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 30
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 40
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 30
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 40
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 30
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 40
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 30
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 40
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 20
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 15
-		},
-		{
-			"value": 10
-		},
-		{
-			"value": 1000
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 650
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 350
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 500
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 550
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 0
-		},
-		{
-			"value": 300
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 250
-		},
-		{
-			"value": 50
-		},
-		{
-			"value": 600
-		},
-		{
-			"value": 800
-		},
-		{
-			"value": 500
 		},
 		{
 			"value": 700
+		},
+		{
+			"value": 580
+		},
+		{
+			"value": 580
+		},
+		{
+			"value": 40
+		},
+		{
+			"value": 520
+		},
+		{
+			"value": 600
+		},
+		{
+			"value": 800
 		},
 		{
 			"value": 400
@@ -2085,14 +513,11 @@
 		}
 	],
 	"CLINICAL_DOCUMENT": {
-		"programName": "mips",
-		"entityType": "individual",
-		"taxpayerIdentificationNumber": "123456789",
-		"nationalProviderIdentifier": "2567891421",
-		"performanceYear": 2017,
 		"measurementSets": [
 			{
-				"value": 1000,
+				"value": 1000
+			},
+			{
 				"performanceStart": "2017-01-01",
 				"performanceEnd": "2017-12-31"
 			},
@@ -2101,7 +526,7 @@
 				"submissionMethod": "electronicHealthRecord",
 				"measurements": [
 					{
-						"measureId": "ACI-PEA-1",
+						"measureId": "ACI_PEA_1",
 						"value": {
 							"numerator": 600,
 							"denominator": 800
@@ -2110,38 +535,39 @@
 					{
 						"measureId": "ACI_EP_1",
 						"value": {
-							"numerator": 500,
-							"denominator": 700
-						}
-					},
-					{
-						"measureId": "ACI_CCTPE_3",
-						"value": {
 							"numerator": 400,
 							"denominator": 600
 						}
 					}
 				],
-				"performanceStart": "2017-01-01",
-				"performanceEnd": "2017-12-31"
+				"performanceStart": "2017-02-01",
+				"performanceEnd": "2017-05-31"
 			},
 			{
 				"category": "ia",
 				"submissionMethod": "electronicHealthRecord",
 				"measurements": [
 					{
-						"measureId": "IA_EPA_1",
+						"measureId": "IA_EPA_3",
+						"value": true
+					},
+					{
+						"measureId": "IA_CC_10",
 						"value": true
 					}
 				],
 				"performanceStart": "2017-01-01",
-				"performanceEnd": "2017-12-31"
+				"performanceEnd": "2017-04-30"
 			}
-		]
+		],
+		"programName": "mips",
+		"entityType": "individual",
+		"nationalProviderIdentifier": "2567891421",
+		"taxpayerIdentificationNumber": "123456789"
 	},
 	"ACI_NUMERATOR_DENOMINATOR": [
 		{
-			"measureId": "ACI-PEA-1",
+			"measureId": "ACI_PEA_1",
 			"value": {
 				"numerator": 600,
 				"denominator": 800
@@ -2149,13 +575,6 @@
 		},
 		{
 			"measureId": "ACI_EP_1",
-			"value": {
-				"numerator": 500,
-				"denominator": 700
-			}
-		},
-		{
-			"measureId": "ACI_CCTPE_3",
 			"value": {
 				"numerator": 400,
 				"denominator": 600
@@ -2167,18 +586,12 @@
 			"denominator": 800
 		},
 		{
-			"denominator": 700
-		},
-		{
 			"denominator": 600
 		}
 	],
 	"ACI_NUMERATOR": [
 		{
 			"numerator": 600
-		},
-		{
-			"numerator": 500
 		},
 		{
 			"numerator": 400
@@ -2192,127 +605,38 @@
 				"measureId": "CMS165v5",
 				"value": {
 					"isEndToEndReported": true,
-					"eligiblePopulation": 1000,
 					"performanceMet": 800,
 					"eligiblePopulationExclusion": 50,
-					"performanceNotMet": 150
-				}
-			},
-			{
-				"measureId": "CMS138v5",
-				"value": {
-					"isEndToEndReported": true,
-					"eligiblePopulation": 1000,
-					"performanceMet": 800,
-					"eligiblePopulationException": 50,
-					"performanceNotMet": 150
-				}
-			},
-			{
-				"measureId": "CMS125v5",
-				"value": {
-					"isEndToEndReported": true,
-					"eligiblePopulation": 1000,
-					"performanceMet": 800,
-					"eligiblePopulationExclusion": 50,
-					"performanceNotMet": 150
-				}
-			},
-			{
-				"measureId": "CMS130v5",
-				"value": {
-					"isEndToEndReported": true,
-					"eligiblePopulation": 1000,
-					"performanceMet": 800,
-					"eligiblePopulationExclusion": 50,
-					"performanceNotMet": 150
-				}
-			},
-			{
-				"measureId": "CMS147v6",
-				"value": {
-					"isEndToEndReported": true,
-					"eligiblePopulation": 1000,
-					"performanceMet": 800,
-					"eligiblePopulationException": 50,
-					"performanceNotMet": 150
-				}
-			},
-			{
-				"measureId": "CMS127v5",
-				"value": {
-					"isEndToEndReported": true,
-					"eligiblePopulation": 950,
-					"performanceMet": 800,
-					"performanceNotMet": 150
+					"performanceNotMet": 150,
+					"eligiblePopulation": 1000
 				}
 			},
 			{
 				"measureId": "CMS122v5",
 				"value": {
 					"isEndToEndReported": true,
-					"eligiblePopulation": 950,
-					"performanceMet": 800,
-					"performanceNotMet": 150
-				}
-			},
-			{
-				"measureId": "40280381-52fc-3a32-0153-1dfb2f2c0c48",
-				"value": {
-					"isEndToEndReported": true,
-					"eligiblePopulation": 950,
-					"performanceMet": 800,
-					"performanceNotMet": 150
-				}
-			},
-			{
-				"measureId": "40280381-51f0-825b-0152-22bd8ee41875",
-				"value": {
-					"isEndToEndReported": true,
-					"eligiblePopulation": 950,
-					"performanceMet": 750,
-					"performanceNotMet": 150
-				}
-			},
-			{
-				"measureId": "CMS144v5",
-				"value": {
-					"isEndToEndReported": true,
-					"eligiblePopulation": 1000,
-					"performanceMet": 800,
-					"eligiblePopulationException": 50,
-					"performanceNotMet": 150
-				}
-			},
-			{
-				"measureId": "CMS139v5",
-				"value": {
-					"isEndToEndReported": true,
-					"eligiblePopulation": 1000,
-					"performanceMet": 800,
-					"eligiblePopulationException": 50,
-					"performanceNotMet": 150
-				}
-			},
-			{
-				"measureId": "CMS2v6",
-				"value": {
-					"isEndToEndReported": true,
-					"eligiblePopulation": 1000,
-					"performanceMet": 800,
-					"eligiblePopulationExclusion": 50,
-					"eligiblePopulationException": 50,
-					"performanceNotMet": 100
+					"performanceMet": 900,
+					"performanceNotMet": 50,
+					"eligiblePopulation": 950
 				}
 			},
 			{
 				"measureId": "CMS68v6",
 				"value": {
 					"isEndToEndReported": true,
-					"eligiblePopulation": 1000,
 					"performanceMet": 800,
-					"eligiblePopulationException": 50,
-					"performanceNotMet": 150
+					"eligiblePopulationException": 20,
+					"performanceNotMet": 180,
+					"eligiblePopulation": 1000
+				}
+			},
+			{
+				"measureId": "CMS160v5",
+				"value": {
+					"isEndToEndReported": true,
+					"performanceMet": 520,
+					"performanceNotMet": 114,
+					"eligiblePopulation": 40
 				}
 			}
 		]
@@ -2322,127 +646,38 @@
 			"measureId": "CMS165v5",
 			"value": {
 				"isEndToEndReported": true,
-				"eligiblePopulation": 1000,
 				"performanceMet": 800,
 				"eligiblePopulationExclusion": 50,
-				"performanceNotMet": 150
-			}
-		},
-		{
-			"measureId": "CMS138v5",
-			"value": {
-				"isEndToEndReported": true,
-				"eligiblePopulation": 1000,
-				"performanceMet": 800,
-				"eligiblePopulationException": 50,
-				"performanceNotMet": 150
-			}
-		},
-		{
-			"measureId": "CMS125v5",
-			"value": {
-				"isEndToEndReported": true,
-				"eligiblePopulation": 1000,
-				"performanceMet": 800,
-				"eligiblePopulationExclusion": 50,
-				"performanceNotMet": 150
-			}
-		},
-		{
-			"measureId": "CMS130v5",
-			"value": {
-				"isEndToEndReported": true,
-				"eligiblePopulation": 1000,
-				"performanceMet": 800,
-				"eligiblePopulationExclusion": 50,
-				"performanceNotMet": 150
-			}
-		},
-		{
-			"measureId": "CMS147v6",
-			"value": {
-				"isEndToEndReported": true,
-				"eligiblePopulation": 1000,
-				"performanceMet": 800,
-				"eligiblePopulationException": 50,
-				"performanceNotMet": 150
-			}
-		},
-		{
-			"measureId": "CMS127v5",
-			"value": {
-				"isEndToEndReported": true,
-				"eligiblePopulation": 950,
-				"performanceMet": 800,
-				"performanceNotMet": 150
+				"performanceNotMet": 150,
+				"eligiblePopulation": 1000
 			}
 		},
 		{
 			"measureId": "CMS122v5",
 			"value": {
 				"isEndToEndReported": true,
-				"eligiblePopulation": 950,
-				"performanceMet": 800,
-				"performanceNotMet": 150
-			}
-		},
-		{
-			"measureId": "40280381-52fc-3a32-0153-1dfb2f2c0c48",
-			"value": {
-				"isEndToEndReported": true,
-				"eligiblePopulation": 950,
-				"performanceMet": 800,
-				"performanceNotMet": 150
-			}
-		},
-		{
-			"measureId": "40280381-51f0-825b-0152-22bd8ee41875",
-			"value": {
-				"isEndToEndReported": true,
-				"eligiblePopulation": 950,
-				"performanceMet": 750,
-				"performanceNotMet": 150
-			}
-		},
-		{
-			"measureId": "CMS144v5",
-			"value": {
-				"isEndToEndReported": true,
-				"eligiblePopulation": 1000,
-				"performanceMet": 800,
-				"eligiblePopulationException": 50,
-				"performanceNotMet": 150
-			}
-		},
-		{
-			"measureId": "CMS139v5",
-			"value": {
-				"isEndToEndReported": true,
-				"eligiblePopulation": 1000,
-				"performanceMet": 800,
-				"eligiblePopulationException": 50,
-				"performanceNotMet": 150
-			}
-		},
-		{
-			"measureId": "CMS2v6",
-			"value": {
-				"isEndToEndReported": true,
-				"eligiblePopulation": 1000,
-				"performanceMet": 800,
-				"eligiblePopulationExclusion": 50,
-				"eligiblePopulationException": 50,
-				"performanceNotMet": 100
+				"performanceMet": 900,
+				"performanceNotMet": 50,
+				"eligiblePopulation": 950
 			}
 		},
 		{
 			"measureId": "CMS68v6",
 			"value": {
 				"isEndToEndReported": true,
-				"eligiblePopulation": 1000,
 				"performanceMet": 800,
-				"eligiblePopulationException": 50,
-				"performanceNotMet": 150
+				"eligiblePopulationException": 20,
+				"performanceNotMet": 180,
+				"eligiblePopulation": 1000
+			}
+		},
+		{
+			"measureId": "CMS160v5",
+			"value": {
+				"isEndToEndReported": true,
+				"performanceMet": 520,
+				"performanceNotMet": 114,
+				"eligiblePopulation": 40
 			}
 		}
 	],
@@ -2457,73 +692,13 @@
 			"performanceMet": 800
 		},
 		{
-			"eligiblePopulationException": 50
-		},
-		{
-			"eligiblePopulation": 1000
-		},
-		{
-			"performanceMet": 800
-		},
-		{
-			"eligiblePopulationExclusion": 50
-		},
-		{
-			"eligiblePopulation": 1000
-		},
-		{
-			"performanceMet": 800
-		},
-		{
-			"eligiblePopulationExclusion": 50
-		},
-		{
-			"eligiblePopulation": 1000
-		},
-		{
-			"performanceMet": 800
-		},
-		{
-			"eligiblePopulationException": 50
-		},
-		{
-			"eligiblePopulation": 1000
-		},
-		{
-			"performanceMet": 800
-		},
-		{
 			"eligiblePopulation": 950
 		},
 		{
-			"performanceMet": 800
+			"performanceMet": 900
 		},
 		{
-			"eligiblePopulation": 950
-		},
-		{
-			"performanceMet": 800
-		},
-		{
-			"eligiblePopulation": 950
-		},
-		{
-			"performanceMet": 800
-		},
-		{
-			"eligiblePopulation": 950
-		},
-		{
-			"performanceMet": 800
-		},
-		{
-			"eligiblePopulation": 950
-		},
-		{
-			"performanceMet": 750
-		},
-		{
-			"eligiblePopulationException": 50
+			"eligiblePopulationException": 20
 		},
 		{
 			"eligiblePopulation": 1000
@@ -2532,34 +707,31 @@
 			"performanceMet": 800
 		},
 		{
-			"eligiblePopulationException": 50
+			"eligiblePopulation": 600
 		},
 		{
-			"eligiblePopulation": 1000
+			"eligiblePopulation": 35
 		},
 		{
-			"performanceMet": 800
+			"performanceMet": 486
 		},
 		{
-			"eligiblePopulationExclusion": 50
+			"eligiblePopulation": 800
 		},
 		{
-			"eligiblePopulationException": 50
+			"eligiblePopulation": 40
 		},
 		{
-			"eligiblePopulation": 1000
+			"performanceMet": 700
 		},
 		{
-			"performanceMet": 800
+			"eligiblePopulation": 580
 		},
 		{
-			"eligiblePopulationException": 50
+			"eligiblePopulation": 40
 		},
 		{
-			"eligiblePopulation": 1000
-		},
-		{
-			"performanceMet": 800
+			"performanceMet": 520
 		}
 	]
 }

@@ -17,9 +17,6 @@ import java.util.stream.Collectors;
 
 @Encoder(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
-	static final String PERFORMANCE_END = "performanceEnd";
-	static final String PERFORMANCE_YEAR = "performanceYear";
-	static final String PERFORMANCE_START = "performanceStart";
 	private static final String MEASUREMENT_SETS = "measurementSets";
 
 	/**
@@ -35,16 +32,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 				Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
-		Node reportingNode = getReportingNode(childMapByTemplateId);
-
-		String performanceStart = reportingNode.getValue(PERFORMANCE_START);
-		if (performanceStart != null) {
-			wrapper.putInteger(PERFORMANCE_YEAR, performanceStart.substring(0, 4));
-			maintainContinuity(wrapper, reportingNode, PERFORMANCE_YEAR);
-		}
-
 		JsonWrapper measurementSets =
-			encodeMeasurementSets(childMapByTemplateId, reportingNode);
+			encodeMeasurementSets(childMapByTemplateId);
 			wrapper.putObject(MEASUREMENT_SETS, measurementSets);
 	}
 
@@ -79,34 +68,15 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	}
 
 	/**
-	 * Gets the reporting parameters out of the decoded Clinical Document
-	 *
-	 * @param childMapByTemplateId Map of Nodes that are the decoded reporting parameters
-	 * @return The decoded reporting parameter internal representaion.
-	 */
-	private Node getReportingNode(Map<TemplateId, Node> childMapByTemplateId) {
-		Node returnValue = new Node();
-		Node section = childMapByTemplateId.remove(TemplateId.REPORTING_PARAMETERS_SECTION);
-		if (section != null) {
-			returnValue = section.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
-		}
-		return returnValue;
-	}
-
-	/**
 	 * Method for encoding each child measurement set
 	 *
 	 * @param childMapByTemplateId object that represents the document's children
-	 * @param reportingNode {@link TemplateId#REPORTING_PARAMETERS_ACT}
 	 * @return encoded measurement sets
 	 */
-	private JsonWrapper encodeMeasurementSets(Map<TemplateId, Node> childMapByTemplateId,
-											Node reportingNode) {
+	private JsonWrapper encodeMeasurementSets(Map<TemplateId, Node> childMapByTemplateId) {
 		JsonWrapper measurementSetsWrapper = new JsonWrapper();
 		JsonWrapper childWrapper;
 		JsonOutputEncoder sectionEncoder;
-		String performanceStart = reportingNode.getValue(PERFORMANCE_START);
-		String performanceEnd = reportingNode.getValue(PERFORMANCE_END);
 
 		for (Node child : childMapByTemplateId.values()) {
 			if (TemplateId.NPI_TIN_ID == child.getType()) {
@@ -116,14 +86,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			sectionEncoder = ENCODERS.get(child.getType());
 			try {
 				sectionEncoder.encode(childWrapper, child);
-				if (performanceStart != null) {
-					childWrapper.putDate(PERFORMANCE_START, performanceStart);
-					maintainContinuity(childWrapper, reportingNode, PERFORMANCE_START);
-				}
-				if (performanceEnd != null) {
-					childWrapper.putDate(PERFORMANCE_END, performanceEnd);
-					maintainContinuity(childWrapper, reportingNode, PERFORMANCE_END);
-				}
 				measurementSetsWrapper.putObject(childWrapper);
 			} catch (NullPointerException exc) {
 				String message = "No encoder for decoder : " + child.getType();
