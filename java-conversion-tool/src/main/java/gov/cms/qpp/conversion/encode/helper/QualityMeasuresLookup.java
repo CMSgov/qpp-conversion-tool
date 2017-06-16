@@ -46,12 +46,15 @@ public class QualityMeasuresLookup {
 		internalMap.put("40280381-5118-2f4e-0151-3a9382cd09ba","CMS159v5");
 		internalMap.put("40280381-503f-a1fc-0150-afe320c01761","CMS160v5");
 		internalMap.put("40280381-503f-a1fc-0150-de8350a220c3","CMS161v5");
+		internalMap.put("40280381-52fc-3a32-0153-1dfb2f2c0c48","CMS163");
+
 		internalMap.put("40280381-52fc-3a32-0153-5736a9401b9f","CMS164v5");
 		internalMap.put("40280381-51f0-825b-0152-22b98cff181a","CMS165v5");
 		internalMap.put("40280381-51f0-825b-0152-22ba7621182e","CMS166v6");
 		internalMap.put("40280381-52fc-3a32-0153-1a4838b80b79","CMS167v5");
 		internalMap.put("40280381-503f-a1fc-0150-67942bbc07d7","CMS169v5");
 		internalMap.put("40280381-503f-a1fc-0151-11602d4d2909","CMS177v5");
+		internalMap.put("40280381-51f0-825b-0152-22bd8ee41875","CMS182");
 		internalMap.put("40280381-528a-60ff-0152-94967c8a0860","CMS22v5");
 		internalMap.put("40280381-537c-f767-0153-c378bd7207a5","CMS2v6");
 		internalMap.put("40280381-5118-2f4e-0151-59fb81bf1055","CMS50v5");
