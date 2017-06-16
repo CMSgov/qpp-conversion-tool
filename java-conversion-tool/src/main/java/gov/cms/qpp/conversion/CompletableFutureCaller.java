@@ -15,6 +15,12 @@ import gov.cms.qpp.conversion.util.ExceptionHelper;
  */
 public class CompletableFutureCaller implements Callable<Boolean> {
 
+	private final CompletableFuture<?> future;
+
+	private CompletableFutureCaller(CompletableFuture<?> future) {
+		this.future = future;
+	}
+
 	/**
 	 * @param future The CompletableFuture to call
 	 * @return a CompletableFutureCaller of the given CompletableFuture
@@ -23,12 +29,6 @@ public class CompletableFutureCaller implements Callable<Boolean> {
 	public static CompletableFutureCaller of(CompletableFuture<?> future) {
 		Objects.requireNonNull(future, "future");
 		return new CompletableFutureCaller(future);
-	}
-
-	private final CompletableFuture<?> future;
-
-	private CompletableFutureCaller(CompletableFuture<?> future) {
-		this.future = future;
 	}
 
 	/**
