@@ -92,7 +92,6 @@ class Checker {
 	 */
 	Checker valueIsEmpty(String message, String name) {
 		lastAppraised = node.getValue(name);
-		System.out.println(lastAppraised);
 		if (!shouldShortcut() && (lastAppraised != null && lastAppraised != "")) {
 			details.add(new Detail(message, node.getPath()));
 		}
