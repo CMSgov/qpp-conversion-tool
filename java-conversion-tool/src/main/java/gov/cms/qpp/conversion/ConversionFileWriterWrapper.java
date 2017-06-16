@@ -1,19 +1,23 @@
 package gov.cms.qpp.conversion;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.CompletableFuture;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.util.ExceptionHelper;
 
 /**
  * Calls the {@link Converter} and writes the results to a file.
@@ -54,13 +58,14 @@ public class ConversionFileWriterWrapper {
 
 	/**
 	 * Execute the conversion.
+	 * @return 
 	 */
-	public void transform() {
+	public CompletableFutureCaller transform() {
 		Converter converter = new Converter(inFile)
 			.doDefaults(doDefaults)
 			.doValidation(doValidation);
 
-		executeConverter(converter);
+		return executeConverter(converter);
 	}
 
 	/**
@@ -68,22 +73,40 @@ public class ConversionFileWriterWrapper {
 	 *
 	 * @param converter The Converter to execute.
 	 */
-	private void executeConverter(Converter converter) {
-		try {
-			JsonWrapper jsonWrapper = converter.transform();
-			Path outFile = getOutputFile(inFile.getFileName().toString(), true);
-			CLIENT_LOG.info("Successful conversion.  Writing out QPP to {}",
-				outFile.toString());
-			DEV_LOG.info("Successful conversion.");
-			writeOutQpp(jsonWrapper, outFile);
-		} catch (TransformException exception) {
-			AllErrors allErrors = exception.getDetails();
-			Path outFile = getOutputFile(inFile.getFileName().toString(), false);
-			CLIENT_LOG.warn("There were errors during conversion.  Writing out errors to {}",
-				outFile.toString());
-			DEV_LOG.warn("There were errors during conversion.", exception);
-			writeOutErrors(allErrors, outFile);
+	private CompletableFutureCaller executeConverter(Converter converter) {
+		CompletableFuture<?> conversion = converter.transform().whenComplete((jsonWrapper, exception) -> {
+			if (exception != null) {
+				handleConverterError(exception);
+				return;
+			}
+
+			handleConversion(jsonWrapper);
+		});
+
+		return CompletableFutureCaller.of(conversion);
+	}
+
+	private void handleConversion(JsonWrapper jsonWrapper) {
+		Path outFile = getOutputFile(inFile.getFileName().toString(), true);
+		CLIENT_LOG.info("Successful conversion.  Writing out QPP to {}",
+			outFile.toString());
+		DEV_LOG.info("Successful conversion.");
+		writeOutQpp(jsonWrapper, outFile);
+	}
+
+	private void handleConverterError(Throwable caught) {
+		TransformException error = ExceptionHelper.unwrap(caught, TransformException.class);
+		if (error == null) {
+			throw ExceptionHelper.propagated(caught);
 		}
+
+		AllErrors allErrors = error.getDetails();
+		Path outFile = getOutputFile(inFile.getFileName().toString(), false);
+		CLIENT_LOG.warn("There were errors during conversion.  Writing out errors to {}",
+			outFile.toString());
+		DEV_LOG.warn("There were errors during conversion.", error);
+		writeOutErrors(allErrors, outFile);
+		return;
 	}
 
 	/**

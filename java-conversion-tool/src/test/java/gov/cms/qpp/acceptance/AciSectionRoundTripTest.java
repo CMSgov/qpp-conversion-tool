@@ -1,6 +1,18 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.BaseTest;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertThat;
+
+import java.io.BufferedWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+import gov.cms.qpp.ConversionTestSuite;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
@@ -9,19 +21,8 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
 
-import java.io.BufferedWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
-
-public class AciSectionRoundTripTest extends BaseTest {
+public class AciSectionRoundTripTest extends ConversionTestSuite {
 
 	@Test
 	public void parseSparseAciSectionAsNode() throws XmlException {

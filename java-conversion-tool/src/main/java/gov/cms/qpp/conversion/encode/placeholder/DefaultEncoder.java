@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.encode.placeholder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Encoder used as a placeholder when a fully implemented encoder has yet to be

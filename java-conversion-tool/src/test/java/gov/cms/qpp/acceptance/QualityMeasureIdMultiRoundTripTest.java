@@ -1,10 +1,8 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
-import gov.cms.qpp.conversion.util.JsonHelper;
-import org.hamcrest.CoreMatchers;
-import org.junit.After;
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.Is.is;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,11 +11,15 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
+import org.hamcrest.CoreMatchers;
+import org.junit.After;
+import org.junit.Test;
 
-public class QualityMeasureIdMultiRoundTripTest {
+import gov.cms.qpp.ConversionTestSuite;
+import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
+import gov.cms.qpp.conversion.util.JsonHelper;
+
+public class QualityMeasureIdMultiRoundTripTest extends ConversionTestSuite {
 	private final String REQUIRE_ELIGIBLE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
 	private final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
 	private final String REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS = "Must have a required eligiblePopulationException";
@@ -36,9 +38,9 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureId() throws IOException {
+	public void testRoundTripForQualityMeasureId() throws Exception {
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(JUNK_QRDA3_FILE);
-		converterWrapper.transform();
+		converterWrapper.transform().call();
 
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
 				"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);

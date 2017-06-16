@@ -1,16 +1,16 @@
 package gov.cms.qpp.conversion.segmentation;
 
 
-import org.junit.Test;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import static gov.cms.qpp.conversion.segmentation.QrdaScope.ACI_AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.segmentation.QrdaScope.MEASURE_PERFORMED;
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.junit.Test;
 
 public class QrdaScopeTest {
 	@Test

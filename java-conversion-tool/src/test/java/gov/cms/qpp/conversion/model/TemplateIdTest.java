@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.ConversionEntry;
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 import java.lang.reflect.Field;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import org.junit.Test;
+
+import gov.cms.qpp.conversion.ConversionEntry;
 
 public class TemplateIdTest {
 

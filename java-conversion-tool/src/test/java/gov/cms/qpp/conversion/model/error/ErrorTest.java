@@ -1,14 +1,14 @@
 package gov.cms.qpp.conversion.model.error;
 
-import org.junit.Test;
-
-import java.util.Collections;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
+
+import java.util.Collections;
+
+import org.junit.Test;
 
 public class ErrorTest {
 	@Test

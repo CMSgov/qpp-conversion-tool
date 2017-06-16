@@ -1,10 +1,10 @@
 package gov.cms.qpp.conversion.stubs;
 
+import java.util.List;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.validate.NodeValidator;
-
-import java.util.List;
 
 
 public class TestDefaultValidator extends NodeValidator {

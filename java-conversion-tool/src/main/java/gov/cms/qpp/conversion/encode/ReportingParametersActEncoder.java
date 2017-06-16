@@ -1,14 +1,15 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.model.Encoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
 
 import java.time.format.DateTimeParseException;
 
-import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
  * Encoder to serialize reporting paramters

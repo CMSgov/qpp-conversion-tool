@@ -1,7 +1,21 @@
 package gov.cms.qpp.conversion;
 
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.LinkedList;
+import java.util.Objects;
+import java.util.Set;
+import java.util.StringJoiner;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -11,26 +25,14 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Objects;
-import java.util.Set;
-import java.util.StringJoiner;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import gov.cms.qpp.conversion.util.ExceptionHelper;
 
 /**
  * Entry point for the conversion process.
  */
 public class ConversionEntry {
+
 	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionEntry.class);
 
@@ -49,10 +51,10 @@ public class ConversionEntry {
 	static final String TEMPLATE_SCOPE = "templateScope";
 	private static final String HELP = "help";
 
-	private static boolean doDefaults = true;
-	private static boolean doValidation = true;
-	private static boolean historical;
-	private static Set<QrdaScope> scope = new HashSet<>();
+	private static final Set<QrdaScope> SCOPE = EnumSet.noneOf(QrdaScope.class);
+	private static volatile boolean doDefaults = true;
+	private static volatile boolean doValidation = true;
+	private static volatile boolean historical;
 	private static Options options;
 	private static HelpFormatter formatter;
 
@@ -71,12 +73,13 @@ public class ConversionEntry {
 	 * @param args Command Line Arguments list of file names and flags
 	 */
 	public static void main(String... args) {
-		Collection<Path> filenames = validArgs(args);
-		filenames.parallelStream().forEach(
-				filename -> new ConversionFileWriterWrapper(filename)
-							.doValidation(doValidation)
-							.doDefaults(doDefaults)
-							.transform());
+		Collection<Path> files = validArgs(args);
+		files.stream()
+			.map(ConversionFileWriterWrapper::new)
+			.map(converter -> converter.doValidation(doValidation)
+					.doDefaults(doDefaults))
+			.map(ConversionFileWriterWrapper::transform)
+			.forEach(ExceptionHelper::runOrPropagate);
 	}
 
 	/**
@@ -127,12 +130,13 @@ public class ConversionEntry {
 		boolean isItValid = true;
 		if (line.hasOption(TEMPLATE_SCOPE)) {
 			String[] templateScope = line.getOptionValue(TEMPLATE_SCOPE).split(",");
-			scope = Arrays.stream(templateScope)
-					.map(QrdaScope::getInstanceByName)
-					.filter(Objects::nonNull)
-					.collect(Collectors.toSet());
+			SCOPE.clear();
+			Arrays.stream(templateScope)
+				.map(QrdaScope::getInstanceByName)
+				.filter(Objects::nonNull)
+				.forEach(SCOPE::add);
 
-			if (scope.size() != templateScope.length) {
+			if (SCOPE.size() != templateScope.length) {
 				CLIENT_LOG.error(INVALID_TEMPLATE_SCOPE);
 				isItValid = false;
 			}
@@ -318,6 +322,6 @@ public class ConversionEntry {
 	 * @return scope
 	 */
 	public static Collection<QrdaScope> getScope() {
-		return Collections.unmodifiableSet(scope);
+		return Collections.unmodifiableSet(SCOPE);
 	}
 }

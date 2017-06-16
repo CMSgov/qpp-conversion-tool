@@ -1,15 +1,15 @@
 package gov.cms.qpp.conversion.encode;
 
 
-import gov.cms.qpp.conversion.model.Encoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
+import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
  * Encoder for CMS V2 Measure Data

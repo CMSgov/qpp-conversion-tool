@@ -1,15 +1,16 @@
 package gov.cms.qpp.conversion.encode;
 
+import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
 
 /**
  * Encoder to serialize Quality Section  (eCQM) and it's measures

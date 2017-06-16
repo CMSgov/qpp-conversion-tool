@@ -1,9 +1,9 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.ConversionEntry;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import gov.cms.qpp.conversion.ConversionEntry;
 
 /**
  * An enumeration of known templates IDs.

@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion.encode;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -9,9 +12,6 @@ import org.junit.Test;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MultipleTinsEncoderTest {
 	private Node npiTinNodeOne;

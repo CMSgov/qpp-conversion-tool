@@ -3,12 +3,12 @@ package gov.cms.qpp.conversion.decode;
 import java.util.List;
 import java.util.Set;
 
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import org.jdom2.Element;
 import org.jdom2.xpath.XPathHelper;
 
 import gov.cms.qpp.conversion.ConversionEntry;
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;

@@ -1,22 +1,25 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.xml.XmlException;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class QualityMeasureMultiXpathJsonPathTest {
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import gov.cms.qpp.ConversionTestSuite;
+import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.xml.XmlException;
+
+public class QualityMeasureMultiXpathJsonPathTest extends ConversionTestSuite {
+
 	private static JsonWrapper wrapper = new JsonWrapper(false);
 	private static Path path = Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");
 	private static JsonPathToXpathHelper helper;
 
 	@BeforeClass
-	public static void beforeClass() throws IOException {
+	public static void beforeClass() throws Exception {
 		helper = new JsonPathToXpathHelper(path, wrapper);
 	}
 

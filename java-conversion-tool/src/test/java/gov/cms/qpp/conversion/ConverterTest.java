@@ -1,7 +1,32 @@
 package gov.cms.qpp.conversion;
 
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
+import static gov.cms.qpp.conversion.util.ConverterTestHelper.run;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.powermock.api.mockito.PowerMockito.doThrow;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import gov.cms.qpp.ConversionTestSuite;
 import gov.cms.qpp.conversion.encode.EncodeException;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -14,40 +39,17 @@ import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.powermock.api.mockito.PowerMockito.doThrow;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
-public class ConverterTest {
+public class ConverterTest extends ConversionTestSuite {
 
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppFile() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
 		Converter converter = new Converter(path);
 
-		JsonWrapper qpp = converter.transform();
+		run(converter);
 		//no exception should be thrown, hence explicitly stating the expected exception is None
 	}
 
@@ -57,7 +59,7 @@ public class ConverterTest {
 		NamedInputStream inputStream = new NamedInputStream(XmlUtils.fileToStream(path), path.toString());
 		Converter converter = new Converter(inputStream);
 
-		JsonWrapper qpp = converter.transform();
+		run(converter);
 		//no exception should be thrown, hence explicitly stating the expected exception is None
 	}
 
@@ -74,7 +76,7 @@ public class ConverterTest {
 		Converter converter = new Converter(path);
 
 		try {
-			converter.transform();
+			run(converter);
 			fail("The converter should not create valid QPP JSON");
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
@@ -86,12 +88,12 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testInvalidXml() throws IOException {
+	public void testInvalidXml() {
 		Path path = Paths.get("src/test/resources/non-xml-file.xml");
 		Converter converter = new Converter(path);
 
 		try {
-			converter.transform();
+			run(converter);
 			fail();
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
@@ -118,7 +120,7 @@ public class ConverterTest {
 				.doValidation(false);
 
 		try {
-			converter.transform();
+			run(converter);
 			fail();
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
@@ -136,7 +138,7 @@ public class ConverterTest {
 		Converter converter = new Converter(Paths.get("src/test/resources/not-a-QRDA-III-file.xml"));
 		
 		try {
-			converter.transform();
+			run(converter);
 			fail();
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
@@ -150,14 +152,14 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testNotAValidQrdaIIIFile() throws IOException {
+	public void testNotAValidQrdaIIIFile() {
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 		Converter converter = new Converter(path)
 				.doDefaults(false)
 				.doValidation(false);
 
 		try {
-			converter.transform();
+			run(converter);
 			fail();
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
@@ -182,7 +184,7 @@ public class ConverterTest {
 		Converter converter = new Converter(path);
 
 		try {
-			converter.transform();
+			run(converter);
 			fail();
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();

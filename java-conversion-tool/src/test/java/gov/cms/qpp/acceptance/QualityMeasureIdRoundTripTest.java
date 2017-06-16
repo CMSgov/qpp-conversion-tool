@@ -1,9 +1,8 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
-import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.After;
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.Is.is;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,11 +11,14 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
+import org.junit.After;
+import org.junit.Test;
 
-public class QualityMeasureIdRoundTripTest {
+import gov.cms.qpp.ConversionTestSuite;
+import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
+import gov.cms.qpp.conversion.util.JsonHelper;
+
+public class QualityMeasureIdRoundTripTest extends ConversionTestSuite {
 	public static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/junk_in_quality_measure.xml");
 
 	@After
@@ -25,9 +27,9 @@ public class QualityMeasureIdRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureId() throws IOException {
+	public void testRoundTripForQualityMeasureId() throws Exception {
 		ConversionFileWriterWrapper converter = new ConversionFileWriterWrapper(JUNK_QRDA3_FILE);
-		converter.transform();
+		converter.transform().call();
 
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(Paths.get("junk_in_quality_measure.qpp.json"),
 			"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);

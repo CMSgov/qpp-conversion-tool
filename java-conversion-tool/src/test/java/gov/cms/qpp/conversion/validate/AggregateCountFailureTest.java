@@ -1,18 +1,20 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.ConversionEntry;
-import org.junit.Test;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertThat;
+import org.junit.Test;
 
-public class AggregateCountFailureTest {
+import gov.cms.qpp.ConversionTestSuite;
+import gov.cms.qpp.conversion.ConversionEntry;
+
+public class AggregateCountFailureTest extends ConversionTestSuite {
 
 	@Test
 	public void testInvalidAggregateCounts() throws IOException {

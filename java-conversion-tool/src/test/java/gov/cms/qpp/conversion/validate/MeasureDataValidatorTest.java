@@ -1,24 +1,25 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.BaseTest;
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
-
-import java.util.List;
-
 import static gov.cms.qpp.conversion.validate.MeasureDataValidator.MISSING_AGGREGATE_COUNT;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
+import java.util.List;
+
+import org.junit.Test;
+
+import gov.cms.qpp.ConversionTestSuite;
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+
 /**
  * Test the MeasureData Validator
  */
-public class MeasureDataValidatorTest extends BaseTest {
+public class MeasureDataValidatorTest extends ConversionTestSuite {
 	@Test
 	public void internalValidateSingleNode() throws Exception {
 		String happy = getFixture("measureDataHappy.xml");

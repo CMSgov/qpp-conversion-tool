@@ -1,13 +1,13 @@
 package gov.cms.qpp.conversion.encode.helper;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.lang.reflect.Constructor;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+
+import java.lang.reflect.Constructor;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Class to test the Quality Measures Lookup helper

@@ -1,12 +1,13 @@
 package gov.cms.qpp.acceptance.helper;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.util.NamedInputStream;
-import gov.cms.qpp.conversion.xml.XmlException;
-import gov.cms.qpp.conversion.xml.XmlUtils;
+import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filter;
@@ -14,30 +15,30 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-
-import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.util.NamedInputStream;
+import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class JsonPathToXpathHelper {
+
 	private static XPathFactory xpf = XPathFactory.instance();
 	private Path path;
 	private JsonWrapper wrapper;
 
-	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper) throws IOException {
+	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper) throws Exception {
 		this(inPath, inWrapper, true);
 	}
 
-	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper, boolean doDefaults) throws IOException {
+	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper, boolean doDefaults) throws Exception {
 		path = inPath;
 		wrapper = inWrapper;
 		InputStream xmlStream = new NamedInputStream(XmlUtils.fileToStream(path), path.toString());
 		Converter converter = new Converter(xmlStream).doDefaults(doDefaults);
-		converter.transform();
+		converter.transform().get();
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		encoder.encode(wrapper, converter.getDecoded());
 	}

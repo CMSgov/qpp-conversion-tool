@@ -21,7 +21,7 @@ public class ReportingParametersActRoundTripTest {
 	@Before
 	public void setUp() {
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(VALID_QRDA_III);
-		converterWrapper.transform();
+		converterWrapper.transform().call();
 	}
 
 	@After

@@ -1,5 +1,15 @@
 package gov.cms.qpp.conversion.encode;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -11,17 +21,8 @@ import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import gov.cms.qpp.conversion.model.Node;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import gov.cms.qpp.conversion.model.Node;
 
 /**
  * Manages building a "simple" object of JSON conversion.
@@ -42,7 +43,6 @@ public class JsonWrapper {
 		ow = getObjectWriter(filterMeta);
 	}
 
-	@SuppressWarnings("unchecked")
 	public JsonWrapper(JsonWrapper wrapper, boolean filterMeta) {
 		this(filterMeta);
 		if (wrapper.isObject()) {

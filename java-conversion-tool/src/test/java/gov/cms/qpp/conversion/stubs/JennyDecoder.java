@@ -1,9 +1,10 @@
 package gov.cms.qpp.conversion.stubs;
 
+import org.jdom2.Element;
+
 import gov.cms.qpp.conversion.decode.DecodeResult;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
-import org.jdom2.Element;
 
 
 public class JennyDecoder extends DefaultDecoder {

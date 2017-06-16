@@ -1,16 +1,16 @@
 package gov.cms.qpp.conversion.xml;
 
-import org.jdom2.Element;
-import org.junit.Test;
-
-import java.lang.reflect.Constructor;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
+
+import java.lang.reflect.Constructor;
+import java.util.List;
+
+import org.jdom2.Element;
+import org.junit.Test;
 
 public class XmlUtilsTest {
 
