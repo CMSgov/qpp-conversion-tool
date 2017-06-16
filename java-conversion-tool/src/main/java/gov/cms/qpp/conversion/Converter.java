@@ -98,37 +98,39 @@ public class Converter {
 		return this;
 	}
 
+	private JsonWrapper runTransformation() {
+		DEV_LOG.info("Transform invoked with file {}", getName());
+		JsonWrapper qpp = null;
+		try {
+			if (usingStream()) {
+				qpp = transform(xmlStream);
+			} else {
+				qpp = transform(inFile);
+			}
+		} catch (XmlInputFileException | XmlException xe) {
+			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
+			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
+			details.add(new Detail(NOT_VALID_XML_DOCUMENT));
+		} catch (Exception exception) {
+			DEV_LOG.error(UNEXPECTED_ERROR, exception);
+			details.add(new Detail(UNEXPECTED_ERROR));
+		}
+
+		if (!details.isEmpty()) {
+			throw new TransformException("Validation errors exist", null,
+				constructErrorHierarchy(getName(), details));
+		}
+
+		return qpp;
+	}
+
 	/**
 	 * Perform conversion.
 	 *
 	 * @return status of conversion
 	 */
 	public CompletableFuture<JsonWrapper> transform() {
-		return CompletableFuture.supplyAsync(() -> {
-			DEV_LOG.info("Transform invoked with file {}", getName());
-			JsonWrapper qpp = null;
-			try {
-				if (usingStream()) {
-					qpp = transform(xmlStream);
-				} else {
-					qpp = transform(inFile);
-				}
-			} catch (XmlInputFileException | XmlException xe) {
-				CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
-				DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
-				details.add(new Detail(NOT_VALID_XML_DOCUMENT));
-			} catch (Exception exception) {
-				DEV_LOG.error(UNEXPECTED_ERROR, exception);
-				details.add(new Detail(UNEXPECTED_ERROR));
-			}
-
-			if (!details.isEmpty()) {
-				throw new TransformException("Validation errors exist", null,
-					constructErrorHierarchy(getName(), details));
-			}
-
-			return qpp;
-		});
+		return CompletableFuture.supplyAsync(this::runTransformation);
 	}
 
 	/**
