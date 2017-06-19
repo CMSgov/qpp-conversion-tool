@@ -1,15 +1,14 @@
 {
 	"ACI_SECTION": {
-		"category": "aci",
-		"submissionMethod": "electronicHealthRecord",
-		"measurements": [
-			{
-				"measureId": "ACI_PEA_1",
-				"value": {
-					"numerator": 600,
-					"denominator": 800
-				}
-			},
+		"category" : "aci",
+		"submissionMethod" : "electronicHealthRecord",
+		"measurements" : [ {
+			"measureId" : "ACI_PEA_1",
+			"value" : {
+				"numerator" : 600,
+				"denominator" : 800
+			}
+		},
 			{
 				"measureId": "ACI_EP_1",
 				"value": {
@@ -608,22 +607,6 @@
 		"nationalProviderIdentifier": "2567891421",
 		"taxpayerIdentificationNumber": "123456789"
 	},
-	"ACI_NUMERATOR_DENOMINATOR": [
-		{
-			"measureId": "ACI_PEA_1",
-			"value": {
-				"numerator": 600,
-				"denominator": 800
-			}
-		},
-		{
-			"measureId": "ACI_EP_1",
-			"value": {
-				"numerator": 400,
-				"denominator": 600
-			}
-		}
-	],
 	"ACI_DENOMINATOR": [
 		{
 			"denominator": 800
@@ -689,95 +672,92 @@
 	},
 	"MEASURE_REFERENCE_RESULTS_CMS_V2": [
 		{
-			"measureId": "CMS165v5",
+			"measureId" : "CMS165v5",
+			"value" : {
+				"isEndToEndReported" : true,
+				"performanceMet" : 800,
+				"eligiblePopulationExclusion" : 50,
+				"performanceNotMet" : 150,
+				"eligiblePopulation" : 1000
+			}
+		}, {
+			"measureId" : "CMS122v5",
+			"value" : {
+				"isEndToEndReported" : true,
+				"performanceMet" : 900,
+				"performanceNotMet" : 50,
+				"eligiblePopulation" : 950
+			}
+		}, {
+			"measureId" : "CMS68v6",
+			"value" : {
+				"isEndToEndReported" : true,
+				"performanceMet" : 800,
+				"eligiblePopulationException" : 20,
+				"performanceNotMet" : 180,
+				"eligiblePopulation" : 1000
+			}
+		}, {
+			"measureId" : "CMS160v5",
+			"value" : {
+				"isEndToEndReported" : true,
+				"performanceMet" : 520,
+				"performanceNotMet" : 114,
+				"eligiblePopulation" : 40
+			}
+		}
+	],
+	"ACI_NUMERATOR_DENOMINATOR": [
+		{
+			"measureId": "ACI_PEA_1",
 			"value": {
-				"isEndToEndReported": true,
-				"performanceMet": 800,
-				"eligiblePopulationExclusion": 50,
-				"performanceNotMet": 150,
-				"eligiblePopulation": 1000
+				"numerator": 600,
+				"denominator": 800
 			}
 		},
 		{
-			"measureId": "CMS122v5",
+			"measureId": "ACI_EP_1",
 			"value": {
-				"isEndToEndReported": true,
-				"performanceMet": 900,
-				"performanceNotMet": 50,
-				"eligiblePopulation": 950
-			}
-		},
-		{
-			"measureId": "CMS68v6",
-			"value": {
-				"isEndToEndReported": true,
-				"performanceMet": 800,
-				"eligiblePopulationException": 20,
-				"performanceNotMet": 180,
-				"eligiblePopulation": 1000
-			}
-		},
-		{
-			"measureId": "CMS160v5",
-			"value": {
-				"isEndToEndReported": true,
-				"performanceMet": 520,
-				"performanceNotMet": 114,
-				"eligiblePopulation": 40
+				"numerator": 400,
+				"denominator": 600
 			}
 		}
 	],
 	"MEASURE_DATA_CMS_V2": [
 		{
-			"eligiblePopulationExclusion": 50
-		},
-		{
-			"eligiblePopulation": 1000
-		},
-		{
-			"performanceMet": 800
-		},
-		{
-			"eligiblePopulation": 950
-		},
-		{
-			"performanceMet": 900
-		},
-		{
-			"eligiblePopulationException": 20
-		},
-		{
-			"eligiblePopulation": 1000
-		},
-		{
-			"performanceMet": 800
-		},
-		{
-			"eligiblePopulation": 600
-		},
-		{
-			"eligiblePopulation": 35
-		},
-		{
-			"performanceMet": 486
-		},
-		{
-			"eligiblePopulation": 800
-		},
-		{
-			"eligiblePopulation": 40
-		},
-		{
-			"performanceMet": 700
-		},
-		{
-			"eligiblePopulation": 580
-		},
-		{
-			"eligiblePopulation": 40
-		},
-		{
-			"performanceMet": 520
+			"eligiblePopulationExclusion" : 50
+		}, {
+			"eligiblePopulation" : 1000
+		}, {
+			"performanceMet" : 800
+		}, {
+			"eligiblePopulation" : 950
+		}, {
+			"performanceMet" : 900
+		}, {
+			"eligiblePopulationException" : 20
+		}, {
+			"eligiblePopulation" : 1000
+		}, {
+			"performanceMet" : 800
+		}, {
+			"eligiblePopulation" : 600
+		}, {
+			"eligiblePopulation" : 35
+		}, {
+			"performanceMet" : 486
+		}, {
+			"eligiblePopulation" : 800
+		}, {
+			"eligiblePopulation" : 40
+		}, {
+			"performanceMet" : 700
+		}, {
+			"eligiblePopulation" : 580
+		}, {
+			"eligiblePopulation" : 40
+		}, {
+			"performanceMet" : 520
 		}
 	]
 }
