@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Before;
@@ -18,6 +19,7 @@ import static org.junit.Assert.assertThat;
 public class ClinicalDocumentEncoderTest {
 
 	private Node aciSectionNode;
+	private Node aciReportingPerformanceNode;
 	private Node aciProportionMeasureNode;
 	private Node aciProportionNumeratorNode;
 	private Node aciProportionDenominatorNode;
@@ -33,8 +35,6 @@ public class ClinicalDocumentEncoderTest {
 	private Node aciProportionDenominatorNode3;
 	private Node numeratorValueNode3;
 	private Node denominatorValueNode3;
-	private Node reportingParametersActNode;
-	private Node reportingParametersSectionNode;
 	private Node clinicalDocumentNode;
 	private List<Node> nodes;
 	private final String AGGREGATE_COUNT = "aggregateCount";
@@ -104,13 +104,10 @@ public class ClinicalDocumentEncoderTest {
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);
 		aciSectionNode.addChildNode(aciProportionMeasureNode3);
 
-		reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		reportingParametersActNode.putValue(ClinicalDocumentEncoder.PERFORMANCE_START, "20170101");
-		reportingParametersActNode.putValue(ClinicalDocumentEncoder.PERFORMANCE_END, "20171231");
-
-		reportingParametersSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_SECTION);
-		reportingParametersSectionNode.addChildNode(reportingParametersActNode);
-
+		aciReportingPerformanceNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		aciReportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
+		aciReportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
+		aciSectionNode.addChildNode(aciReportingPerformanceNode);
 
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "mips");
@@ -118,7 +115,6 @@ public class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
 		clinicalDocumentNode.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, "2567891421");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,  "AR000000" );
-		clinicalDocumentNode.addChildNode(reportingParametersSectionNode);
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		nodes = new ArrayList<>();
@@ -145,8 +141,6 @@ public class ClinicalDocumentEncoderTest {
 
 		assertThat("Must have a correct nationalProviderIdentifier",
 				clinicalDocMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
-
-		assertThat("Must have a correct performanceYear", clinicalDocMap.get(ClinicalDocumentEncoder.PERFORMANCE_YEAR), is(2017));
 	}
 
 	@Test(expected = EncodeException.class)
@@ -159,22 +153,6 @@ public class ClinicalDocumentEncoderTest {
 	}
 
 	@Test
-	public void testInternalEncoderWithoutReporting() throws EncodeException {
-		clinicalDocumentNode.getChildNodes().remove(reportingParametersSectionNode);
-		JsonWrapper testJsonWrapper = new JsonWrapper();
-
-		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
-		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
-
-		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
-
-		assertThat("Must not be a performanceStart because the reporting parameters was missing.",
-			((List<Map<?, ?>>)clinicalDocMap.get("measurementSets")).get(0).get(ClinicalDocumentEncoder.PERFORMANCE_START), is(nullValue()));
-		assertThat("Must not be a performanceEnd because the reporting parameters was missing.",
-			((List<Map<?, ?>>)clinicalDocMap.get("measurementSets")).get(0).get(ClinicalDocumentEncoder.PERFORMANCE_END), is(nullValue()));
-	}
-
-	@Test
 	public void testInternalEncodeWithoutMeasures() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
 		JsonWrapper testJsonWrapper = new JsonWrapper();
@@ -184,9 +162,10 @@ public class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertThat("Must not be a performanceStart because the reporting parameters was missing.",
-			clinicalDocMap.get(MEASUREMENT_SETS), is(nullValue()));
+		assertThat("Must not contain a measure because the measurements are missing.",
+				clinicalDocMap.get(MEASUREMENT_SETS), is(nullValue()));
 	}
+
 	@Test
 	public void testInternalEncodeEmptyEntityId() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);

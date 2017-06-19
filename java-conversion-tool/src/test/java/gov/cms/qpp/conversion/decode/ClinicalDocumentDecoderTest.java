@@ -66,52 +66,38 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void testReportActPerformanceStart() {
-		Node reportParameterSectionNode = clinicalDocument.getChildNodes().get(0);
-		Node reportingActSectionNodeMeasureNode = reportParameterSectionNode.getChildNodes().get(0);
-		assertThat("returned should value", reportingActSectionNodeMeasureNode.getValue("performanceStart"), is("20170101"));
-	}
-
-	@Test
-	public void testReportActPerformanceEnd() {
-		Node reportParameterSectionNode = clinicalDocument.getChildNodes().get(0);
-		Node reportingActSectionNodeMeasureNode = reportParameterSectionNode.getChildNodes().get(0);
-		assertThat("returned should value", reportingActSectionNodeMeasureNode.getValue("performanceEnd"), is("20171231"));
-	}
-
-	@Test
 	public void testAciCategory() {
-		Node aciSectionNode = clinicalDocument.getChildNodes().get(1);
+		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertThat("returned category should be aci", aciSectionNode.getValue("category"), is("aci"));
 	}
 
 	@Test
 	public void testAciPea1MeasureId() {
-		Node aciSectionNode = clinicalDocument.getChildNodes().get(1);
+		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertThat("returned measureId ACI-PEA-1", aciSectionNode.getChildNodes().get(0).getValue("measureId"), is("ACI-PEA-1"));
 	}
 
 	@Test
 	public void testAciEp1MeasureId() {
-		Node aciSectionNode = clinicalDocument.getChildNodes().get(1);
+		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertThat("returned measureId ACI_EP_1", aciSectionNode.getChildNodes().get(1).getValue("measureId"), is("ACI_EP_1"));
 	}
 
 	@Test
 	public void testAciCctpe3MeasureId() {
-		Node aciSectionNode = clinicalDocument.getChildNodes().get(1);
+		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertThat("returned measureId ACI_CCTPE_3", aciSectionNode.getChildNodes().get(2).getValue("measureId"), is("ACI_CCTPE_3"));
 	}
 
 	@Test
 	public void testIaCategory() {
-		Node iaSectionNode = clinicalDocument.getChildNodes().get(2);
+		Node iaSectionNode = clinicalDocument.getChildNodes().get(1);
 		assertThat("returned category", iaSectionNode.getValue("category"), is("ia"));
 	}
 
 	@Test
 	public void testIaMeasureId() {
-		Node iaSectionNode = clinicalDocument.getChildNodes().get(2);
+		Node iaSectionNode = clinicalDocument.getChildNodes().get(1);
 		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
 		assertThat("returned should have measureId", iaMeasureNode.getValue("measureId"), is("IA_EPA_1"));
 	}
@@ -124,24 +110,17 @@ public class ClinicalDocumentDecoderTest {
 
 		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlWithGarbage));
 		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
-		Node performanceYear = clinicalDocument.getChildNodes().get(0);
 
 		assertThat("Should contain a program name",
 			clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME), is(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME));
 
 		assertThat("Should contain a TIN",
 			clinicalDocument.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER),is("123456789") );
-
-		assertThat("Should contain a performance year end", performanceYear.getChildNodes().get(0).getValue("performanceEnd"),
-				is("20171231"));
-
-		assertThat("Should contain a performance year start", performanceYear.getChildNodes().get(0).getValue("performanceStart"),
-				is("20170101"));
 	}
 
 	@Test
 	public void testIaMeasurePerformed() {
-		Node iaSectionNode = clinicalDocument.getChildNodes().get(2);
+		Node iaSectionNode = clinicalDocument.getChildNodes().get(1);
 		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
 		Node iaMeasurePerformedNode = iaMeasureNode.getChildNodes().get(0);
 		assertThat("returned measurePerformed", iaMeasurePerformedNode.getValue("measurePerformed"), is("Y"));
