@@ -76,7 +76,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		} else {
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
 				CLIENT_LOG.error("MEASURE_GUID_MISSING " + value);
-				this.getDetails().add(new Detail(MEASURE_GUID_MISSING, node.getPath()));
+				this.addValidationError(new Detail(MEASURE_GUID_MISSING, node.getPath()));
 			}
 		}
 	}
