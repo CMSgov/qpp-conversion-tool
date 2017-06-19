@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -11,65 +12,88 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class AciSectionValidatorTest {
+	private static final String VALID_ACI_MEASURE = "ACI_EP_1";
+	private Node reportingParamNode;
+	private Node aciNumeratorDenominatorNode;
+	private Node measureNode;
+	private Node aciSectionNode;
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
+	@Before
+	public void setUpAciSectionNode() {
+		reportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		measureNode = new Node(TemplateId.MEASURE_PERFORMED);
+		measureNode.putValue("measureId", VALID_ACI_MEASURE);
+
+		aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		aciSectionNode.putValue("category", "aci");
+	}
+
 	@Test
 	public void testNoMeasurePresent() {
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
-		aciSectionNode.putValue("category", "aci");
+		aciSectionNode.addChildNodes(reportingParamNode, aciNumeratorDenominatorNode);
 
-		AciSectionValidator measureVal = new AciSectionValidator();
+		AciSectionValidator aciSectionValidator = new AciSectionValidator();
 
-		List<Detail> errors = measureVal.validateSingleNode(aciSectionNode);
+		List<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
 
-		assertThat("there should be 2 error", errors, hasSize(2));
-		assertThat("error should be about missing proportion node", errors.get(0).getMessage(),
-			is(AciSectionValidator.ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED));
-		assertThat("error should be about missing required Measure", errors.get(1).getMessage(),
-			is(MessageFormat.format(AciSectionValidator.NO_REQUIRED_MEASURE, "ACI_EP_1")));
+		assertThat("error should be about missing required Measure", errors.get(0).getMessage(),
+			is(MessageFormat.format(AciSectionValidator.NO_REQUIRED_MEASURE, VALID_ACI_MEASURE)));
 	}
 
 	@Test
 	public void testWrongMeasurePresent() {
+		Node invalidAciNumerDenomNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
+		invalidAciNumerDenomNode.putValue("measureId", "INVALID_ACI_MEASURE");
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
-		aciSectionNode.putValue("category", "aci");
+		aciSectionNode.addChildNodes(reportingParamNode, invalidAciNumerDenomNode, invalidAciNumerDenomNode);
+		aciSectionNode.addChildNode(invalidAciNumerDenomNode);
 
-		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
-		aciNumeratorDenominatorNode.putValue("measureId", "TEST_MEASURE");
+		AciSectionValidator aciSectionValidator = new AciSectionValidator();
+		List<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
 
-		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
-
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
-
-		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
-		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
-
-		AciSectionValidator measureval = new AciSectionValidator();
-		List<Detail> errors = measureval.validateSingleNode(aciSectionNode);
-
-		assertThat("there should be 1 error", errors, hasSize(1));
 		assertThat("error should be about the required measure not present", errors.get(0).getMessage(),
-			is(MessageFormat.format(AciSectionValidator.NO_REQUIRED_MEASURE, "ACI_EP_1")));
+			is(MessageFormat.format(AciSectionValidator.NO_REQUIRED_MEASURE, VALID_ACI_MEASURE)));
 	}
 
 	@Test
 	public void testNoCrossCuttingErrors() {
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
-		aciSectionNode.putValue("category", "aci");
-
 		AciSectionValidator measureVal = new AciSectionValidator();
 		List<Detail> errors = measureVal.validateSameTemplateIdNodes(Arrays.asList(aciSectionNode));
 
 		assertThat("there should be 0 errors", errors, empty());
+	}
+
+	@Test
+	public void testNoReportingParamPresent() {
+		aciSectionNode.addChildNodes(aciNumeratorDenominatorNode, measureNode);
+
+		AciSectionValidator aciSectionValidator = new AciSectionValidator();
+
+		List<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
+
+		assertThat("error should be about missing proportion node", errors.get(0).getMessage(),
+				is(AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR));
+	}
+
+	@Test
+	public void testTooManyReportingParams() {
+		Node invalidReportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		aciSectionNode.addChildNodes(reportingParamNode, invalidReportingParamNode, aciNumeratorDenominatorNode, measureNode);
+
+		AciSectionValidator aciSectionValidator = new AciSectionValidator();
+
+		List<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
+
+		assertThat("error should be about missing required Measure", errors.get(0).getMessage(),
+				is(AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR));
 	}
 }

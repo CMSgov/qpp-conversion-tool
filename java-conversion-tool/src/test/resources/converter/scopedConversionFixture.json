@@ -8,28 +8,33 @@
 				"numerator" : 600,
 				"denominator" : 800
 			}
-		}, {
-			"measureId" : "ACI_EP_1",
-			"value" : {
-				"numerator" : 400,
-				"denominator" : 600
+		},
+			{
+				"measureId": "ACI_EP_1",
+				"value": {
+					"numerator": 400,
+					"denominator": 600
+				}
 			}
-		} ],
-		"performanceStart" : "2017-02-01",
-		"performanceEnd" : "2017-05-31"
+		],
+		"performanceStart": "2017-02-01",
+		"performanceEnd": "2017-05-31"
 	},
 	"IA_SECTION": {
-		"category" : "ia",
-		"submissionMethod" : "electronicHealthRecord",
-		"measurements" : [ {
-			"measureId" : "IA_EPA_3",
-			"value" : true
-		}, {
-			"measureId" : "IA_CC_10",
-			"value" : true
-		} ],
-		"performanceStart" : "2017-01-01",
-		"performanceEnd" : "2017-04-30"
+		"category": "ia",
+		"submissionMethod": "electronicHealthRecord",
+		"measurements": [
+			{
+				"measureId": "IA_EPA_3",
+				"value": true
+			},
+			{
+				"measureId": "IA_CC_10",
+				"value": true
+			}
+		],
+		"performanceStart": "2017-01-01",
+		"performanceEnd": "2017-04-30"
 	},
 	"ACI_AGGREGATE_COUNT": [
 		{
@@ -511,81 +516,96 @@
 		}
 	],
 	"CLINICAL_DOCUMENT": {
-		"programName" : "mips",
-		"entityType" : "individual",
-		"taxpayerIdentificationNumber" : "123456789",
-		"nationalProviderIdentifier" : "2567891421",
-		"measurementSets" : [ {
-			"category" : "quality",
-			"submissionMethod" : "cmsWebInterface",
-			"measurements" : [ {
-				"measureId" : "CMS165v5",
-				"value" : {
-					"isEndToEndReported" : true,
-					"performanceMet" : 800,
-					"eligiblePopulationExclusion" : 50,
-					"performanceNotMet" : 150,
-					"eligiblePopulation" : 1000
-				}
-			}, {
-				"measureId" : "CMS122v5",
-				"value" : {
-					"isEndToEndReported" : true,
-					"performanceMet" : 900,
-					"performanceNotMet" : 50,
-					"eligiblePopulation" : 950
-				}
-			}, {
-				"measureId" : "CMS68v6",
-				"value" : {
-					"isEndToEndReported" : true,
-					"performanceMet" : 800,
-					"eligiblePopulationException" : 20,
-					"performanceNotMet" : 180,
-					"eligiblePopulation" : 1000
-				}
-			}, {
-				"measureId" : "CMS160v5",
-				"value" : {
-					"isEndToEndReported" : true,
-					"performanceMet" : 520,
-					"performanceNotMet" : 114,
-					"eligiblePopulation" : 40
-				}
-			} ],
-			"performanceStart" : "2017-01-01",
-			"performanceEnd" : "2017-12-31"
-		},{
-			"category" : "aci",
-			"submissionMethod" : "electronicHealthRecord",
-			"measurements" : [ {
-				"measureId" : "ACI_PEA_1",
-				"value" : {
-					"numerator" : 600,
-					"denominator" : 800
-				}
-			}, {
-				"measureId" : "ACI_EP_1",
-				"value" : {
-					"numerator" : 400,
-					"denominator" : 600
-				}
-			} ],
-			"performanceStart" : "2017-02-01",
-			"performanceEnd" : "2017-05-31"
-		}, {
-			"category" : "ia",
-			"submissionMethod" : "electronicHealthRecord",
-			"measurements" : [ {
-				"measureId" : "IA_EPA_3",
-				"value" : true
-			}, {
-				"measureId" : "IA_CC_10",
-				"value" : true
-			} ],
-			"performanceStart" : "2017-01-01",
-			"performanceEnd" : "2017-04-30"
-		} ]
+		"measurementSets": [
+			{
+				"category": "quality",
+				"submissionMethod": "cmsWebInterface",
+				"measurements": [
+					{
+						"measureId": "CMS165v5",
+						"value": {
+							"isEndToEndReported": true,
+							"performanceMet": 800,
+							"eligiblePopulationExclusion": 50,
+							"performanceNotMet": 150,
+							"eligiblePopulation": 1000
+						}
+					},
+					{
+						"measureId": "CMS122v5",
+						"value": {
+							"isEndToEndReported": true,
+							"performanceMet": 900,
+							"performanceNotMet": 50,
+							"eligiblePopulation": 950
+						}
+					},
+					{
+						"measureId": "CMS68v6",
+						"value": {
+							"isEndToEndReported": true,
+							"performanceMet": 800,
+							"eligiblePopulationException": 20,
+							"performanceNotMet": 180,
+							"eligiblePopulation": 1000
+						}
+					},
+					{
+						"measureId": "CMS160v5",
+						"value": {
+							"isEndToEndReported": true,
+							"performanceMet": 520,
+							"performanceNotMet": 114,
+							"eligiblePopulation": 40
+						}
+					}
+				],
+				"performanceStart": "2017-01-01",
+				"performanceEnd": "2017-12-31"
+			},
+			{
+				"category": "aci",
+				"submissionMethod": "electronicHealthRecord",
+				"measurements": [
+					{
+						"measureId": "ACI_PEA_1",
+						"value": {
+							"numerator": 600,
+							"denominator": 800
+						}
+					},
+					{
+						"measureId": "ACI_EP_1",
+						"value": {
+							"numerator": 400,
+							"denominator": 600
+						}
+					}
+				],
+				"performanceStart": "2017-02-01",
+				"performanceEnd": "2017-05-31"
+			},
+			{
+				"category": "ia",
+				"submissionMethod": "electronicHealthRecord",
+				"measurements": [
+					{
+						"measureId": "IA_EPA_3",
+						"value": true
+					},
+					{
+						"measureId": "IA_CC_10",
+						"value": true
+					}
+				],
+				"performanceStart": "2017-01-01",
+				"performanceEnd": "2017-04-30"
+			}
+		],
+		"programName": "mips",
+		"entityType": "individual",
+		"nationalProviderIdentifier": "2567891421",
+		"taxpayerIdentificationNumber": "123456789"
 	},
 	"ACI_DENOMINATOR": [
 		{
@@ -603,6 +623,53 @@
 			"numerator": 400
 		}
 	],
+	"MEASURE_SECTION_V2": {
+		"category": "quality",
+		"submissionMethod": "cmsWebInterface",
+		"measurements": [
+			{
+				"measureId": "CMS165v5",
+				"value": {
+					"isEndToEndReported": true,
+					"performanceMet": 800,
+					"eligiblePopulationExclusion": 50,
+					"performanceNotMet": 150,
+					"eligiblePopulation": 1000
+				}
+			},
+			{
+				"measureId": "CMS122v5",
+				"value": {
+					"isEndToEndReported": true,
+					"performanceMet": 900,
+					"performanceNotMet": 50,
+					"eligiblePopulation": 950
+				}
+			},
+			{
+				"measureId": "CMS68v6",
+				"value": {
+					"isEndToEndReported": true,
+					"performanceMet": 800,
+					"eligiblePopulationException": 20,
+					"performanceNotMet": 180,
+					"eligiblePopulation": 1000
+				}
+			},
+			{
+				"measureId": "CMS160v5",
+				"value": {
+					"isEndToEndReported": true,
+					"performanceMet": 520,
+					"performanceNotMet": 114,
+					"eligiblePopulation": 40
+				}
+			}
+		],
+		"performanceStart": "2017-01-01",
+		"performanceEnd": "2017-12-31"
+
+	},
 	"MEASURE_REFERENCE_RESULTS_CMS_V2": [
 		{
 			"measureId" : "CMS165v5",
@@ -656,45 +723,6 @@
 			}
 		}
 	],
-	"MEASURE_SECTION_V2": {
-		"category" : "quality",
-		"submissionMethod" : "cmsWebInterface",
-		"measurements" : [ {
-			"measureId" : "CMS165v5",
-			"value" : {
-				"isEndToEndReported" : true,
-				"performanceMet" : 800,
-				"eligiblePopulationExclusion" : 50,
-				"performanceNotMet" : 150,
-				"eligiblePopulation" : 1000
-			}
-		}, {
-			"measureId" : "CMS122v5",
-			"value" : {
-				"isEndToEndReported" : true,
-				"performanceMet" : 900,
-				"performanceNotMet" : 50,
-				"eligiblePopulation" : 950
-			}
-		}, {
-			"measureId" : "CMS68v6",
-			"value" : {
-				"isEndToEndReported" : true,
-				"performanceMet" : 800,
-				"eligiblePopulationException" : 20,
-				"performanceNotMet" : 180,
-				"eligiblePopulation" : 1000
-			}
-		}, {
-			"measureId" : "CMS160v5",
-			"value" : {
-				"isEndToEndReported" : true,
-				"performanceMet" : 520,
-				"performanceNotMet" : 114,
-				"eligiblePopulation" : 40
-			}
-		} ]
-	},
 	"MEASURE_DATA_CMS_V2": [
 		{
 			"eligiblePopulationExclusion" : 50

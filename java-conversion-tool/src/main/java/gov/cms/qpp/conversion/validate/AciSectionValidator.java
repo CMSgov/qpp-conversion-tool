@@ -16,9 +16,12 @@ public class AciSectionValidator extends NodeValidator {
 
 	protected static final String ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED =
 		"At least one Aci Numerator Denominator Measure Node is required";
+	protected static final String MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR
+			= "The ACI Section must have one Reporting Parameter ACT";
 	protected static final String NO_REQUIRED_MEASURE =
 		"The required measures ''{0}'' is not present in the source file. "
 			+ "Please add the ACI measures and try again.";
+
 
 	/**
 	 * Validates the ACI Section.
@@ -33,7 +36,12 @@ public class AciSectionValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
-		thoroughlyCheck(node).childMinimum(ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED, 1, TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		thoroughlyCheck(node)
+				.childMinimum(ACI_NUMERATOR_DENOMINATOR_NODE_REQUIRED, 1, TemplateId.ACI_NUMERATOR_DENOMINATOR)
+				.childMinimum(MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
+						TemplateId.REPORTING_PARAMETERS_ACT)
+				.childMaximum(MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
+						TemplateId.REPORTING_PARAMETERS_ACT);
 
 		validateMeasureConfigs(node);
 	}
