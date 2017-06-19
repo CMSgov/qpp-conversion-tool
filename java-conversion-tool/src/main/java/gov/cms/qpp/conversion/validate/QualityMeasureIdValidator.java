@@ -16,6 +16,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
@@ -67,11 +68,16 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	private void validateMeasureConfigs(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
-
-		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_ID));
+		String value = node.getValue(MEASURE_ID);
+		MeasureConfig measureConfig = configurationMap.get(value);
 
 		if (measureConfig != null) {
 			validateAllSubPopulations(node, measureConfig);
+		} else {
+			if (value != null) { // This check has already been made and a detail will exist if value is null.
+				CLIENT_LOG.error("MEASURE_GUID_MISSING " + value);
+				this.addValidationError(new Detail(MEASURE_GUID_MISSING, node.getPath()));
+			}
 		}
 	}
 
@@ -131,7 +137,6 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			}
 		};
 	}
-
 
 	/**
 	 * Search filter for child measure nodes.

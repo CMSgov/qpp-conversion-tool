@@ -127,6 +127,20 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
+	public void testInvalidMeasureId() {
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+				.addMeasureId("InvalidMeasureId")
+				.addSubPopulationMeasureData(IPOP, REQUIRES_DENOM_EXCLUSION_IPOP_GUID)
+				.addSubPopulationMeasureData(DENOM, REQUIRES_DENOM_EXCLUSION_DENOM_GUID)
+				.addSubPopulationMeasureData(NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID)
+				.addSubPopulationMeasureData(DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID)
+				.build();
+
+		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		assertThat("There must be one validation errors.", details, hasSize(1));
+	}
+
+	@Test
 	public void testDenominatorExclusionMissing() {
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 			.addMeasureId(REQUIRES_DENOM_EXCLUSION_GUID)

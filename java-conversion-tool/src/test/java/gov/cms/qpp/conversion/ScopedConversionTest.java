@@ -46,7 +46,7 @@ public class ScopedConversionTest extends BaseTest {
 	 */
 	@After
 	public void cleanup() throws IOException {
-		Files.deleteIfExists(Paths.get("valid-QRDA-III.qpp.json"));
+		Files.deleteIfExists(Paths.get("valid-QRDA-III-latest.qpp.json"));
 		Files.deleteIfExists(Paths.get("angerTheConverter.err.json"));
 	}
 
@@ -259,7 +259,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				5, getErrors(content).size());
+				7, getErrors(content).size());
 	}
 
 	/**
@@ -278,7 +278,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				4, getErrors(content).size());
+				5, getErrors(content).size());
 	}
 
 	/**
@@ -297,7 +297,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
-				1, getErrors(content).size());
+				2, getErrors(content).size());
 	}
 
 	/**

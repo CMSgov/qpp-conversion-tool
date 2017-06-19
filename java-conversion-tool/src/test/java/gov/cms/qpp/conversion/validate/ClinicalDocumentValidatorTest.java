@@ -265,7 +265,7 @@ public class ClinicalDocumentValidatorTest {
 		AllErrors allErrors = readJson(CLINICAL_DOCUMENT_ERROR_FILE, AllErrors.class);
 		List<Detail> errors = getErrors(allErrors);
 
-		assertThat("Must have 3 errors", errors, hasSize(3));
+		assertThat("Must have 5 errors", errors, hasSize(5));
 
 		assertThat("Must contain the error", errors,
 			hasValidationErrorsIgnoringPath(

@@ -90,9 +90,9 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	Checker valueIsNull(String message, String name) {
+	Checker valueIsEmpty(String message, String name) {
 		lastAppraised = node.getValue(name);
-		if (!shouldShortcut() && lastAppraised != null) {
+		if (!shouldShortcut() && (lastAppraised != null && lastAppraised != "")) {
 			details.add(new Detail(message, node.getPath()));
 		}
 		return this;

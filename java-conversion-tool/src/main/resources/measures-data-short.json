@@ -576,6 +576,7 @@
 		"measureType": "process",
 		"measureId": "371",
 		"eMeasureId": "CMS160v5",
+		"eMeasureVerUUID": "40280381-503f-a1fc-0150-afe320c01761",
 		"nqfEMeasureId": null,
 		"nqfId": "0712",
 		"isInverse": false,
@@ -947,6 +948,193 @@
 			"obstetricsGynecology",
 			"preventiveMedicine",
 			"generalPracticeFamilyMedicine"
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"eMeasureId": "CMS163",
+		"eMeasureVerUUID": "40280381-52fc-3a32-0153-1dfb2f2c0c48",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"numeratorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"denominatorExceptionsUUID": null
+			}
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"eMeasureId": "CMS182",
+		"eMeasureVerUUID": "40280381-51f0-825b-0152-22bd8ee41875",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"numeratorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"denominatorExceptionsUUID": null
+			}
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"eMeasureId": "CMS138",
+		"eMeasureVerUUID": "40280381-503f-a1fc-0150-d33f5b0a1b8c",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"numeratorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"denominatorExceptionsUUID": null
+			}
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"eMeasureId": "CMS130",
+		"eMeasureVerUUID": "40280381-51f0-825b-0152-22a1e7e81737",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"numeratorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"denominatorExceptionsUUID": null
+			}
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"eMeasureId": "CMS147",
+		"eMeasureVerUUID": "40280381-52fc-3a32-0153-395ce63513af",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"numeratorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"denominatorExceptionsUUID": null
+			}
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"eMeasureId": "CMS127",
+		"eMeasureVerUUID": "40280381-52fc-3a32-0153-1a646a2a0bfa",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"numeratorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"denominatorExceptionsUUID": null
+			}
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"eMeasureId": "CMS122",
+		"eMeasureVerUUID": "40280381-51f0-825b-0152-229afff616ee",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"numeratorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"denominatorExceptionsUUID": null
+			}
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"eMeasureId": "CMS144",
+		"eMeasureVerUUID": "40280381-52fc-3a32-0153-1a3981870b45",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"numeratorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"denominatorExceptionsUUID": null
+			}
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"eMeasureId": "CMS139",
+		"eMeasureVerUUID": "40280381-51f0-825b-0152-22aae8a21778",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"numeratorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"denominatorExceptionsUUID": null
+			}
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"eMeasureId": "CMS2",
+		"eMeasureVerUUID": "40280381-537c-f767-0153-c378bd7207a5",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"numeratorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"denominatorExceptionsUUID": null
+			}
+		]
+	},
+	{
+		"category": "quality",
+		"firstPerformanceYear": 2017,
+		"lastPerformanceYear": null,
+		"metricType": "singlePerformanceRate",
+		"eMeasureId": "",
+		"eMeasureVerUUID": "40280381-4b9a-3825-014b-c290abf408ca",
+		"subPopulation": [
+			{
+				"initialPopulationUUID": null,
+				"denominatorUUID": null,
+				"numeratorUUID": null,
+				"denominatorExclusionsUUID": null,
+				"denominatorExceptionsUUID": null
+			}
 		]
 	}
 ]
