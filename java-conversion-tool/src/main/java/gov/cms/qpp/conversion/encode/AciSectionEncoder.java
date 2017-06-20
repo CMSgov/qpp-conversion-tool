@@ -16,6 +16,8 @@ import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
 @Encoder(TemplateId.ACI_SECTION)
 public class AciSectionEncoder extends QppOutputEncoder {
 
+	public static final String SUBMISSION_METHOD = "submissionMethod";
+
 	/**
 	 *  Encodes an ACI Section into the QPP format
 	 *
@@ -38,7 +40,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 
 	protected void encodeTopLevelValues(JsonWrapper wrapper, Node node) {
 		wrapper.putString("category", node.getValue("category"));
-		wrapper.putString("submissionMethod", "electronicHealthRecord");
+		wrapper.putString(SUBMISSION_METHOD, "electronicHealthRecord");
 	}
 
 	/**
@@ -59,7 +61,8 @@ public class AciSectionEncoder extends QppOutputEncoder {
 					childEncoder.encode(childWrapper, currentChild);
 					measurementsWrapper.putObject(childWrapper);
 				} else {
-					addValidationError(new Detail("Failed to find an AciSectionEncoder", currentChild.getPath()));
+					addValidationError(new Detail("Failed to find an encoder for child node " + currentChild.getType(),
+						currentChild.getPath()));
 				}
 			}
 		}

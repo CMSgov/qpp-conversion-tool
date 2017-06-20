@@ -96,7 +96,7 @@ public class AciSectionEncoderTest {
 
 		assertThat("Must have validation error.", aciSectionEncoder.getDetails(), is(not(nullValue())));
 		assertThat("Must be correct validation error", aciSectionEncoder.getDetails().get(0).getMessage(),
-				is("Failed to find an AciSectionEncoder"));
+				is("Failed to find an encoder for child node DEFAULT"));
 	}
 
 	@Test

@@ -519,7 +519,7 @@
 		"measurementSets": [
 			{
 				"category": "quality",
-				"submissionMethod": "cmsWebInterface",
+				"submissionMethod": "electronicHealthRecord",
 				"measurements": [
 					{
 						"measureId": "CMS165v5",
@@ -625,7 +625,7 @@
 	],
 	"MEASURE_SECTION_V2": {
 		"category": "quality",
-		"submissionMethod": "cmsWebInterface",
+		"submissionMethod": "electronicHealthRecord",
 		"measurements": [
 			{
 				"measureId": "CMS165v5",
