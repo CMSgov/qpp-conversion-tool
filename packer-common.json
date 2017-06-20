@@ -1,7 +1,7 @@
 {
-	"iam_instance_profile": "server-nonprod", // IAM profile w/adequate perms
-	"instance_type": "m4.large",              // a large one speeds up deploys
-	"region": "us-east-1",                    // your desired region
-	"subnet_id": "subnet-eb786fc1",            // subnet of your packer VPC
-	"vpc_id": "vpc-f6e79891"                  // ID of your packer VPC
+	"iam_instance_profile": "server-nonprod",
+	"instance_type": "m4.large",
+	"region": "us-east-1",
+	"subnet_id": "subnet-eb786fc1",
+	"vpc_id": "vpc-f6e79891"
 }
