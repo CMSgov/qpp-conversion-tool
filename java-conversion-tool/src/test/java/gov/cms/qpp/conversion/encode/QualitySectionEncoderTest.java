@@ -7,6 +7,11 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 /**
  * This class tests the QualitySectionEncoder class
@@ -31,6 +36,20 @@ public class QualitySectionEncoderTest {
 		QualitySectionEncoder encoder = new QualitySectionEncoder();
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
+	}
+
+	@Test
+	public void internalEncodeNoReportingParametersNegative() throws EncodeException {
+		Node qualitySectionNode = getQualitySectionNode();
+		Node removeMe = qualitySectionNode.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		qualitySectionNode.getChildNodes().remove(removeMe);
+
+		QualitySectionEncoder mock = mock(QualitySectionEncoder.class);
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		mock.internalEncode(jsonWrapper, qualitySectionNode);
+
+		verify(mock, never())
+				.maintainContinuity(anyObject(), any(JsonWrapper.class), anyObject());
 	}
 
 	/**
