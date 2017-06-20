@@ -15,30 +15,15 @@ import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
  * Encoder to serialize Quality Section  (eCQM) and it's measures
  */
 @Encoder(TemplateId.MEASURE_SECTION_V2)
-public class QualitySectionEncoder extends QppOutputEncoder {
+public class QualitySectionEncoder extends AciSectionEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualitySectionEncoder.class);
 	private static final String CATEGORY = "category";
 	private static final String SUBMISSION_METHOD = "submissionMethod";
 
-	/**
-	 * Encodes an Quality Section into the QPP format
-	 *
-	 * @param wrapper JsonWrapper that will represent the Quality Section
-	 * @param node    Node that represents the Quality Section and its measurements children if any
-	 * @throws EncodeException If an error occurs during encoding
-	 */
 	@Override
-	public void internalEncode(JsonWrapper wrapper, Node node) {
+	protected void encodeTopLevelValues(JsonWrapper wrapper, Node node) {
 		wrapper.putString(CATEGORY, node.getValue(CATEGORY));
 		wrapper.putString(SUBMISSION_METHOD, node.getValue(SUBMISSION_METHOD));
-
-		List<Node> children = node.getChildNodes();
-		JsonWrapper measurementsWrapper = new JsonWrapper();
-
-		encodeChildren(children, measurementsWrapper);
-		wrapper.putObject("measurements", measurementsWrapper);
-
-		encodeReportingParameter(wrapper, node);
 	}
 
 	/**
@@ -47,7 +32,7 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 	 * @param children child nodes of the section
 	 * @param measurementsWrapper wrapper that holds the section measurements
 	 */
-	private void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) {
+	protected void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) {
 		JsonWrapper childWrapper;
 		for (Node currentChild : children) {
 			childWrapper = new JsonWrapper();
@@ -73,7 +58,7 @@ public class QualitySectionEncoder extends QppOutputEncoder {
 	 * @param wrapper wrapper that holds the section
 	 * @param node quality section node
 	 */
-	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
+	protected void encodeReportingParameter(JsonWrapper wrapper, Node node) {
 		JsonOutputEncoder reportingParamEncoder = ENCODERS.get(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingChild == null) {

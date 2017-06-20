@@ -25,8 +25,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) {
-		wrapper.putString("category", node.getValue("category"));
-		wrapper.putString("submissionMethod", "electronicHealthRecord");
+		encodeTopLevelValues(wrapper, node);
 		List<Node> children = node.getChildNodes();
 		JsonWrapper measurementsWrapper = new JsonWrapper();
 
@@ -37,13 +36,18 @@ public class AciSectionEncoder extends QppOutputEncoder {
 		encodeReportingParameter(wrapper, node);
 	}
 
+	protected void encodeTopLevelValues(JsonWrapper wrapper, Node node) {
+		wrapper.putString("category", node.getValue("category"));
+		wrapper.putString("submissionMethod", "electronicHealthRecord");
+	}
+
 	/**
 	 * Encodes the children of the given section
 	 *
 	 * @param children child nodes of the given section
 	 * @param measurementsWrapper wrapper that holds the measurements of a section
 	 */
-	private void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) {
+	protected void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) {
 		JsonWrapper childWrapper;
 		for (Node currentChild : children) {
 			childWrapper = new JsonWrapper();
@@ -67,7 +71,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	 * @param wrapper wrapper that holds the section
 	 * @param node ACI Section Node
 	 */
-	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
+	protected void encodeReportingParameter(JsonWrapper wrapper, Node node) {
 		JsonOutputEncoder reportingParamEncoder = ENCODERS.get(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingChild == null) {
