@@ -40,6 +40,16 @@ public class JsonWrapperTest {
 	}
 
 	@Test
+	public void testCopyConstructor() {
+		JsonWrapper wrapper = new JsonWrapper();
+		wrapper.putString("you're an array");
+		JsonWrapper copyWrapper = new JsonWrapper(wrapper);
+
+		assertEquals("String representations should be equal",
+				copyWrapper.toString(), wrapper.toString());
+	}
+
+	@Test
 	public void testInitAsList() {
 		assertTrue("Object should be null until the first put", listStrWrapper.getObject() == null);
 		listStrWrapper.putString("name");
