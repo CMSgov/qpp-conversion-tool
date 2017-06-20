@@ -12,6 +12,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 public class AciSectionEncoderTest {
 
@@ -92,5 +97,17 @@ public class AciSectionEncoderTest {
 		assertThat("Must have validation error.", aciSectionEncoder.getDetails(), is(not(nullValue())));
 		assertThat("Must be correct validation error", aciSectionEncoder.getDetails().get(0).getMessage(),
 				is("Failed to find an AciSectionEncoder"));
+	}
+
+	@Test
+	public void internalEncodeNegativeWithNoReportingParameters() throws EncodeException {
+
+		aciSectionNode.getChildNodes().remove(reportingParametersNode);
+
+		AciSectionEncoder encoder = spy(new AciSectionEncoder());
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		encoder.internalEncode(jsonWrapper, aciSectionNode);
+
+		verify(encoder, never()).maintainContinuity(any(JsonWrapper.class), any(Node.class), anyString());
 	}
 }
