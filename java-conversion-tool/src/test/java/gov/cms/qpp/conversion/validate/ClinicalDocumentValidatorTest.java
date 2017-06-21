@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
@@ -25,8 +24,6 @@ import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentValidatorTest {
 
-	private static final String EXPECTED_TEXT = "Clinical Document Node is required";
-	private static final String EXPECTED_ONE_ALLOWED = "Only one Clinical Document Node is allowed";
 	private static final String EXPECTED_NO_SECTION = "Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
 	private static final String CLINICAL_DOCUMENT_ERROR_FILE = "angerClinicalDocumentValidations.err.json";
 
@@ -76,31 +73,6 @@ public class ClinicalDocumentValidatorTest {
 		List<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertThat("no errors should be present", errors, empty());
-	}
-
-	@Test
-	public void testClinicalDocumentNotPresent() {
-		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		//List<Detail> errors = validator.validateSameTemplateIdNodes(Arrays.asList());
-		List<Detail> errors = Arrays.asList();
-
-		assertThat("there should be one error", errors, iterableWithSize(1));
-		assertThat("error should be about missing Clinical Document node", errors,
-			hasValidationErrorsIgnoringPath(EXPECTED_TEXT));
-	}
-
-	@Test
-	public void testTooManyClinicalDocumentNodes() {
-		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
-		Node clinicalDocumentNode2 = new Node(TemplateId.CLINICAL_DOCUMENT);
-
-		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
-		//List<Detail> errors = validator.validateSameTemplateIdNodes(Arrays.asList(clinicalDocumentNode, clinicalDocumentNode2));
-		List<Detail> errors = Arrays.asList();
-
-		assertThat("there should be one error", errors, iterableWithSize(1));
-		assertThat("error should be about too many Clinical Document nodes", errors,
-			hasValidationErrorsIgnoringPath(EXPECTED_ONE_ALLOWED));
 	}
 
 	@Test
