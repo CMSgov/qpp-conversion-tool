@@ -13,6 +13,8 @@ import gov.cms.qpp.conversion.model.Validator;
 @Validator(value = TemplateId.QRDA_CATEGORY_III_REPORT_V3, required = true)
 public class NpiTinCombinationValidation extends NodeValidator {
 
+	protected static final String CLINICAL_DOCUMENT_REQUIRED = "Clinical Document Node is required";
+	protected static final String EXACTLY_ONE_DOCUMENT_ALLOWED = "Only one Clinical Document Node is allowed";
 	protected static final String AT_LEAST_ONE_NPI_TIN_COMBINATION = "Must have at least one NPI/TIN combination";
 	protected static final String ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED = "Must have only one NPI/TIN combination";
 	protected static final String NO_NPI_ALLOWED = "Must not contain a National Provider ID";
@@ -28,6 +30,13 @@ public class NpiTinCombinationValidation extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
+		check(node).childMinimum(CLINICAL_DOCUMENT_REQUIRED, 1, TemplateId.CLINICAL_DOCUMENT)
+			.childMaximum(EXACTLY_ONE_DOCUMENT_ALLOWED, 1, TemplateId.CLINICAL_DOCUMENT);
+
+		if (getDetails().size() > 0) {
+			return;
+		}
+
 		Node clinicalDocumentNode = node.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 		final String programName = clinicalDocumentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME);
 		final String entityType = clinicalDocumentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE);
