@@ -7,7 +7,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -47,7 +46,6 @@ public class AciNumeratorDenominatorValidatorTest {
 
 		AciNumeratorDenominatorValidator measureVal = new AciNumeratorDenominatorValidator();
 		List<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode);
-		errors.addAll(measureVal.validateSameTemplateIdNodes(Arrays.asList(aciNumeratorDenominatorNode)));
 
 		assertThat("no errors should be present", errors, empty());
 	}

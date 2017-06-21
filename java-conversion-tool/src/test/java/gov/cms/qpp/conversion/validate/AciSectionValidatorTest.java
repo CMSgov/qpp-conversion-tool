@@ -9,10 +9,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -62,14 +60,6 @@ public class AciSectionValidatorTest {
 
 		assertThat("error should be about the required measure not present", errors.get(0).getMessage(),
 			is(MessageFormat.format(AciSectionValidator.NO_REQUIRED_MEASURE, VALID_ACI_MEASURE)));
-	}
-
-	@Test
-	public void testNoCrossCuttingErrors() {
-		AciSectionValidator measureVal = new AciSectionValidator();
-		List<Detail> errors = measureVal.validateSameTemplateIdNodes(Arrays.asList(aciSectionNode));
-
-		assertThat("there should be 0 errors", errors, empty());
 	}
 
 	@Test
