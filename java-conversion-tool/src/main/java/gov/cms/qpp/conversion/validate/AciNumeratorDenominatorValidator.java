@@ -4,8 +4,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
-import java.util.List;
-
 /**
  * Validate all ACI Numerator Denominator Type Measures.
  */
@@ -46,16 +44,6 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 		Checker nodeChecker = check(node).hasParent(NO_PARENT_SECTION, TemplateId.ACI_SECTION);
 		//the aci numerator denominator measure node must have a numerator node and a denominator node as children
 		validateChildren(nodeChecker);
-	}
-
-	/**
-	 * Does nothing.
-	 *
-	 * @param nodes A list of all the ACI Numerator Denominator Type Measure nodes.
-	 */
-	@Override
-	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
-		//no cross-node validations
 	}
 
 	/**

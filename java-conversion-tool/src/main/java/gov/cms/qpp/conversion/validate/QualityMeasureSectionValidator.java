@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import java.util.List;
 
 /**
  * Validates a Quality Measure Section node.
@@ -25,15 +24,5 @@ public class QualityMeasureSectionValidator extends NodeValidator {
 					TemplateId.REPORTING_PARAMETERS_ACT)
 			.childMaximum(REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
 					TemplateId.REPORTING_PARAMETERS_ACT);
-	}
-
-	/**
-	 * Does nothing.
-	 *
-	 * @param nodes The list of nodes to validate.
-	 */
-	@Override
-	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
-		//no cross-node validations required
 	}
 }

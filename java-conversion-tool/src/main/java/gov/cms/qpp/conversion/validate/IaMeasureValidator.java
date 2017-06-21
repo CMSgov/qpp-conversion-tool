@@ -4,8 +4,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
-import java.util.List;
-
 /**
  * Validates IaMeasure Node - expects a child MEASURE_PERFORMED with a  Y or N value
  */
@@ -31,16 +29,5 @@ public class IaMeasureValidator extends NodeValidator {
 		Checker.check(node, getDetails())
 				.childMinimum(INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED)
 				.childMaximum(INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED);
-	}
-
-	/**
-	 * Checks the interdependency of nodes in the parsed tree.
-	 * IA Measure Performed has no dependencies on other nodes in the document.
-	 *
-	 * @param nodes The list of nodes to validate.
-	 */
-	@Override
-	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
-		// No current cross node Aggregate Count validations
 	}
 }

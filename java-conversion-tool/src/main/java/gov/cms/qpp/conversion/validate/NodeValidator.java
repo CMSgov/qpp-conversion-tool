@@ -33,24 +33,6 @@ public abstract class NodeValidator {
 	}
 
 	/**
-	 * Validates a list of {@link gov.cms.qpp.conversion.model.Node}s that all have the same ID.
-	 *
-	 * <p>
-	 * Some validators need a list of all the {@link gov.cms.qpp.conversion.model.Node}s of the same ID to validate
-	 * certain aspects.  For example, validate that at least one node in the QRDA3 document contains a
-	 * {@code measureId} of {@code ACI_PHCDRR_3}.
-	 * </p>
-	 *
-	 * @param nodes A list of nodes that all have the same ID.
-	 * @return List of errors determined from the list of nodes.
-	 * @see #internalValidateSameTemplateIdNodes(List)
-	 */
-	public List<Detail> validateSameTemplateIdNodes(final List<Node> nodes) {
-		internalValidateSameTemplateIdNodes(nodes);
-		return getDetails();
-	}
-
-	/**
 	 * Used by child classes to get the current list of validation errors they have added.
 	 *
 	 * @return The current list of validation errors.
@@ -82,23 +64,6 @@ public abstract class NodeValidator {
 	 * @param node The node to validate.
 	 */
 	protected abstract void internalValidateSingleNode(final Node node);
-
-	/**
-	 * Overridden by child classes to validate a list of {@link gov.cms.qpp.conversion.model.Node}s.
-	 *
-	 * <p>
-	 * The implementation should validate the list of {@link gov.cms.qpp.conversion.model.Node}s as a whole. 
-	 * An implementation must not do single node validations on each element of the list.  Single node
-	 * validations are done exclusively in {@link #internalValidateSingleNode(Node)}. Instead, an implementation
-	 * must validate things that can only be validated given all the Nodes with the same ID - that ID being
-	 * the templateId of the {@link gov.cms.qpp.conversion.model.Validator} - in the QRDA3 file. 
-	 * For example, validate that at least one node in the QRDA3 document contains a {@code measureId}
-	 * of {@code ACI_PHCDRR_3}.
-	 * </p>
-	 *
-	 * @param nodes The list of nodes to validate.
-	 */
-	protected abstract void internalValidateSameTemplateIdNodes(final List<Node> nodes);
 
 	private void logValidationError(final Detail newError) {
 		DEV_LOG.debug("Error '{}' added for templateId {}", newError, getTemplateId());

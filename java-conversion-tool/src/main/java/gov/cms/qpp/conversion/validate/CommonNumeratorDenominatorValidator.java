@@ -3,8 +3,6 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
-import java.util.List;
-
 /**
  * Super class for AciNumeratorValidator and AciDenominatorValidator classes
  * Factored out common functionality
@@ -23,17 +21,6 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	protected static final String AGGREGATE_COUNT_FIELD = "aggregateCount";
 
 	protected String nodeName;
-
-	/**
-	 * internalValidateSameTemplateIdNodes allows for any cross node dependencies
-	 * to be validated. AciNumerator does not have any cross node dependencies
-	 *
-	 * @param nodes List of Node
-	 */
-	@Override
-	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
-		// no cross-node ACI Numerator validations required
-	}
 
 	/**
 	 * internalValidateSingleNode inspects the node for certain validations.

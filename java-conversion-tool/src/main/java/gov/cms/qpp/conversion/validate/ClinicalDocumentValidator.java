@@ -62,7 +62,6 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	 *
 	 * @param nodes The list of all the Clinical Documents nodes.
 	 */
-	@Override
 	protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
 		if (nodes.isEmpty()) {
 			this.addValidationError(new Detail(CLINICAL_DOCUMENT_REQUIRED));

@@ -5,7 +5,6 @@ import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import java.util.List;
 
 /**
  * Validates the QRDA Category II Report Node's national provide identifier/taxpayer identification number combinations
@@ -85,16 +84,5 @@ public class NpiTinCombinationValidation extends NodeValidator {
 	private boolean isMipsGroup(String programName, String entityType) {
 		return (ClinicalDocumentDecoder.MIPS.equalsIgnoreCase(programName)
 				&& ClinicalDocumentDecoder.ENTITY_GROUP.equalsIgnoreCase(entityType));
-	}
-
-	/**
-	 * Checks the interdependency of nodes in the parsed tree.
-	 * QRDA Category Report has no dependencies on other nodes in the document.
-	 *
-	 * @param nodes The list of nodes to validate.
-	 */
-	@Override
-	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
-		// No current cross node QRDA Category Report validations
 	}
 }

@@ -6,7 +6,6 @@ import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 
 import java.text.MessageFormat;
-import java.util.List;
 
 /**
  * Validate the ACI Section.
@@ -44,16 +43,6 @@ public class AciSectionValidator extends NodeValidator {
 						TemplateId.REPORTING_PARAMETERS_ACT);
 
 		validateMeasureConfigs(node);
-	}
-
-	/**
-	 * Does nothing.
-	 *
-	 * @param nodes The list of nodes to validate.
-	 */
-	@Override
-	protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
-		//no cross-node validations
 	}
 
 	/**

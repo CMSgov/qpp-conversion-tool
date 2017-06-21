@@ -4,7 +4,6 @@ import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +29,6 @@ import static org.hamcrest.core.IsNull.nullValue;
 public class QrdaValidatorTest {
 
 	private QrdaValidator objectUnderTest;
-	private static boolean activated = false;
 	private static List<Node> nodesPassedIntoValidateSingleNode;
 
 	private static List<Node> nodesPassedIntoRequiredValidateTemplateIdNodes;
@@ -52,13 +50,6 @@ public class QrdaValidatorTest {
 
 		objectUnderTest = AnnotationMockHelper.mockValidator(TEST_REQUIRED_TEMPLATE_ID, RequiredTestValidator.class, true);
 		objectUnderTest = AnnotationMockHelper.mockValidator(TemplateId.PLACEHOLDER, OptionalTestValidator.class, false, objectUnderTest);
-
-		activated = true;
-	}
-
-	@After
-	public void afterEachTest() {
-		activated = false;
 	}
 
 	@Test
@@ -182,14 +173,6 @@ public class QrdaValidatorTest {
 			nodesPassedIntoValidateSingleNode.add(node);
 			addValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 		}
-
-		@Override
-		public void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
-			nodesPassedIntoRequiredValidateTemplateIdNodes = nodes;
-			if ( activated ) {
-				addValidationError(TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES);
-			}
-		}
 	}
 
 	public static class OptionalTestValidator extends NodeValidator {
@@ -198,11 +181,6 @@ public class QrdaValidatorTest {
 		public void internalValidateSingleNode(final Node node) {
 			nodesPassedIntoValidateSingleNode.add(node);
 			addValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
-		}
-
-		@Override
-		public void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
-			addValidationError(TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES);
 		}
 	}
 }

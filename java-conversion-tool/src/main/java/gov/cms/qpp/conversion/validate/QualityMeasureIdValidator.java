@@ -153,14 +153,4 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			return validMeasureType && check.get().equals(thisNode.getValue(MEASURE_POPULATION));
 		};
 	}
-
-	/**
-	 * Does nothing.
-	 *
-	 * @param nodes The list of nodes to validate.
-	 */
-	@Override
-	protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
-		//no cross-node validations required
-	}
 }

@@ -4,8 +4,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
-import java.util.List;
-
 /**
  * Validates Aggregate Count
  */
@@ -30,10 +28,5 @@ public class AggregateCountValidator extends NodeValidator {
 		check(node)
 			.value(VALUE_ERROR, "aggregateCount")
 			.intValue(TYPE_ERROR, "aggregateCount");
-	}
-
-	@Override
-	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
-		// No current cross node Aggregate Count validations
 	}
 }
