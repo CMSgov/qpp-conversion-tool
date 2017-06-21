@@ -5,8 +5,14 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Test;
 
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 /**
  * This class tests the QualitySectionEncoder class
@@ -20,10 +26,10 @@ public class QualitySectionEncoderTest {
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 
 		assertThat("Expect to encode category", jsonWrapper.getString("category"), is("quality"));
-		assertThat("Expect to encode submissionMethod", jsonWrapper.getString("submissionMethod"), is("cmsWebInterface"));
+		assertThat("Expect to encode submissionMethod", jsonWrapper.getString("submissionMethod"), is("electronicHealthRecord"));
 	}
 
-	@Test(expected = EncodeException.class)
+	@Test
 	public void internalEncodeNegative() throws EncodeException {
 		Node qualitySectionNode = getQualitySectionNode();
 		qualitySectionNode.addChildNode(new Node());
@@ -31,6 +37,23 @@ public class QualitySectionEncoderTest {
 		QualitySectionEncoder encoder = new QualitySectionEncoder();
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
+
+		assertThat("An encoder for a child node should not have been found.", encoder.getDetails(), hasValidationErrorsIgnoringPath("Failed to find an encoder for child node DEFAULT"));
+
+	}
+
+	@Test
+	public void internalEncodeNoReportingParametersNegative() throws EncodeException {
+		Node qualitySectionNode = getQualitySectionNode();
+		Node removeMe = qualitySectionNode.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		qualitySectionNode.getChildNodes().remove(removeMe);
+
+		QualitySectionEncoder mock = mock(QualitySectionEncoder.class);
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		mock.internalEncode(jsonWrapper, qualitySectionNode);
+
+		verify(mock, never())
+				.maintainContinuity(anyObject(), any(JsonWrapper.class), anyObject());
 	}
 
 	/**
@@ -41,7 +64,7 @@ public class QualitySectionEncoderTest {
 	private Node getQualitySectionNode() {
 		Node qualitySectionNode = new Node(TemplateId.MEASURE_SECTION_V2);
 		qualitySectionNode.putValue("category", "quality");
-		qualitySectionNode.putValue("submissionMethod", "cmsWebInterface");
+		qualitySectionNode.putValue("submissionMethod", "electronicHealthRecord");
 		Node reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		reportingParameterNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START,"20170101");
 		reportingParameterNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
