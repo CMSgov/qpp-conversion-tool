@@ -46,6 +46,17 @@
       src: ../qpp_conversion_docker_image.tar
       dest: ~/
     become: true
+  - name: Stop and remove QPP Conversion Tools Docker container
+    docker_container:
+      name: qpp_converter
+      state: absent
+    become: true
+  - name: Delete old QPP Conversion Tools Docker image
+    docker_image:
+      name: qpp_conversion
+      state: absent
+      force: yes
+    become: true
   - name: Load QPP Conversion Tools Docker image
     docker_image:
       name: qpp_conversion

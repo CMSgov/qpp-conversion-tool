@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.google.common.collect.Sets;
 import gov.cms.qpp.conversion.decode.QualitySectionDecoder;
+import gov.cms.qpp.conversion.encode.AciSectionEncoder;
 import gov.cms.qpp.conversion.encode.QualityMeasureIdEncoder;
 
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class JsonPathAggregator {
 	private Set<String> excluded = Sets.newHashSet(
 			QualityMeasureIdEncoder.IS_END_TO_END_REPORTED,
 			QualitySectionDecoder.CATEGORY,
-			QualitySectionDecoder.SUBMISSION_METHOD
+			AciSectionEncoder.SUBMISSION_METHOD
 	);
 
 	Map<String, String> jsonPaths = new HashMap<>();
