@@ -33,7 +33,7 @@ public class NpiTinCombinationValidation extends NodeValidator {
 		check(node).childMinimum(CLINICAL_DOCUMENT_REQUIRED, 1, TemplateId.CLINICAL_DOCUMENT)
 			.childMaximum(EXACTLY_ONE_DOCUMENT_ALLOWED, 1, TemplateId.CLINICAL_DOCUMENT);
 
-		if (getDetails().size() > 0) {
+		if (!getDetails().isEmpty()) {
 			return;
 		}
 
