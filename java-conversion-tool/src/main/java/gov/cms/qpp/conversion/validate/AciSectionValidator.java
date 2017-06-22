@@ -42,7 +42,7 @@ public class AciSectionValidator extends NodeValidator {
 				.childMaximum(MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
 						TemplateId.REPORTING_PARAMETERS_ACT);
 
-		validateMeasureConfigs(node);
+		//validateMeasureConfigs(node);
 	}
 
 	/**
