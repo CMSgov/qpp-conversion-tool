@@ -5,7 +5,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.collection.IsEmptyCollection.empty;
@@ -35,7 +34,6 @@ public class AciNumeratorValidatorTest {
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
 		List<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
-		errors.addAll(validator.validateSameTemplateIdNodes(Arrays.asList(aciNumeratorNode)));
 
 		assertThat("no errors should be present", errors, empty());
 	}

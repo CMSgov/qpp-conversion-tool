@@ -8,7 +8,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
@@ -156,14 +155,6 @@ public class QualityMeasureIdValidatorTest {
 			hasValidationErrorsIgnoringPath(
 				String.format(QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE,
 				QualityMeasureIdValidator.DENEX)));
-	}
-
-	@Test
-	public void testInternalValidateSameTemplateIdNodes() {
-		List<Detail> details = objectUnderTest.validateSameTemplateIdNodes(
-				Arrays.asList(createMeasureReferenceResultsNode(), createMeasureReferenceResultsNode()));
-
-		assertThat("There must not be any validation errors.", details, hasSize(0));
 	}
 
 	@Test
