@@ -3,7 +3,9 @@ package gov.cms.qpp.conversion.model.validation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MeasureConfig {
@@ -18,7 +20,7 @@ public class MeasureConfig {
 
 	@JsonProperty("isRequired")
 	private boolean isRequired;
-	private int weight;
+	//private int weight;
 	private String measureSet;
 
 	@JsonProperty("isBonus")
@@ -28,11 +30,13 @@ public class MeasureConfig {
 	@JsonProperty("eMeasureId")
 	private String electronicMeasureId;
 
-	@JsonProperty("eMeasureVerUUID")
+	@JsonProperty("eMeasureUuid")
 	private String electronicMeasureVerUuid;
 
-	@JsonProperty("subPopulation")
-	private List<SubPopulation> subPopulations;
+//	@JsonProperty("subPopulation")
+//	private List<SubPopulation> subPopulations;
+
+	private List<Strata> strata;
 
 	public MeasureConfig() {
 		// empty constructor for jackson
@@ -102,13 +106,13 @@ public class MeasureConfig {
 		this.isRequired = isRequired;
 	}
 
-	public int getWeight() {
-		return weight;
-	}
-
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
+//	public int getWeight() {
+//		return weight;
+//	}
+//
+//	public void setWeight(int weight) {
+//		this.weight = weight;
+//	}
 
 	public String getMeasureSet() {
 		return measureSet;
@@ -150,11 +154,31 @@ public class MeasureConfig {
 		this.electronicMeasureVerUuid = electronicMeasureVerUuid;
 	}
 
-	public List<SubPopulation> getSubPopulation() {
-		return subPopulations;
+//	public List<SubPopulation> getSubPopulation() {
+//		return subPopulations;
+//	}
+//
+//	public void setSubPopulations(final List<SubPopulation> subPopulations) {
+//		this.subPopulations = subPopulations;
+//	}
+
+	public List<Strata> getStrata() {
+		return strata;
 	}
 
-	public void setSubPopulations(final List<SubPopulation> subPopulations) {
-		this.subPopulations = subPopulations;
+	public void setStrata(final List<Strata> strata) {
+		this.strata = strata;
+	}
+
+	public List<SubPopulation> getSubPopulation() {
+		List<Strata> stratas = getStrata();
+
+		if (stratas == null) {
+			return Collections.emptyList();
+		}
+
+		List<SubPopulation> subPopulations = stratas.stream().map(Strata::getElectronicMeasureUuids).collect(Collectors.toList());
+
+		return subPopulations;
 	}
 }

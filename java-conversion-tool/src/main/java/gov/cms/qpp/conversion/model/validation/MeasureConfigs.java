@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class MeasureConfigs {
 
 	private static List<MeasureConfig> configurations;
-	private static String measureDataFileName = "measures-data-short.json";
+	private static String measureDataFileName = "measures-data.json";
 
 	private static Map<String, MeasureConfig> configurationMap;
 
