@@ -22,7 +22,7 @@ public class MultipleTinRoundTripTest {
 
 	@BeforeClass
 	public static void setup() throws IOException {
-		Path path = Paths.get("../qrda-files/ComprehensivePrimaryCare_Sample_QRDA_III.xml");
+		Path path = Paths.get("../qrda-files/ComprehensivePrimaryCare_Sample_QRDA_III-latest.xml");
 		new JsonPathToXpathHelper(path, wrapper, false);
 		ctx = JsonPath.parse(wrapper.toString());
 	}
