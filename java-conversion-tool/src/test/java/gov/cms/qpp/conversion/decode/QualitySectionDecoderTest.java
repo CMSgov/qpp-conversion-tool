@@ -30,8 +30,6 @@ public class QualitySectionDecoderTest {
 		sectionDecoder.internalDecode(element, node);
 
 		assertThat("Expect node to have property category ", node.getValue("category"), is("quality"));
-		assertThat("Expect node to have property submission method ", node.getValue("submissionMethod"), is("cmsWebInterface"));
-
 		//Performance start and Performance end are parsed by ReportParameters decoder and are not children of this decoder
 	}
 
