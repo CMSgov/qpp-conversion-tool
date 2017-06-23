@@ -55,8 +55,8 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 */
 	private void setEntityIdOnNode(Element element, Node thisNode) {
 		if (CPCPLUS_PROGRAM_NAME.equals(thisNode.getValue(PROGRAM_NAME))) {
-			Consumer<? super List<Attribute>> consumer = ids ->
-				ids.forEach(id -> thisNode.putValue(ENTITY_ID, id.getValue(), false));
+			Consumer<Attribute> consumer = id ->
+				thisNode.putValue(ENTITY_ID, id.getValue(), false);
 			setOnNode(element, getXpath(ENTITY_ID), consumer, Filters.attribute(), false);
 		}
 	}
@@ -70,10 +70,10 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	private void setProgramNameOnNode(Element element, Node thisNode) {
 		Consumer<? super Attribute> consumer = p -> {
 			String[] nameEntityPair = getProgramNameEntityPair(p.getValue());
-			thisNode.putValue(PROGRAM_NAME, nameEntityPair[0]);
-			thisNode.putValue(ENTITY_TYPE, nameEntityPair[1]);
+			thisNode.putValue(PROGRAM_NAME, nameEntityPair[0], false);
+			thisNode.putValue(ENTITY_TYPE, nameEntityPair[1], false);
 		};
-		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), true);
+		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
 	}
 
 	/**
@@ -97,9 +97,10 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 */
 	private void setTaxProviderTaxIdOnNode(Element element, Node thisNode) {
 		Consumer<? super Attribute> consumer = p ->
-				thisNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, p.getValue());
+				thisNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+						p.getValue(), false);
 		setOnNode(element, getXpath(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER),
-				consumer, Filters.attribute(), true);
+				consumer, Filters.attribute(), false);
 	}
 
 	/**
@@ -109,7 +110,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void processComponentElement(Element element, Node thisNode) {
-		Consumer<? super List<Element>> consumer = p -> this.decode(p, thisNode);
+		Consumer<Element> consumer = p -> this.decode(p, thisNode);
 		setOnNode(element, getXpath("components"), consumer, Filters.element(), false);
 	}
 
