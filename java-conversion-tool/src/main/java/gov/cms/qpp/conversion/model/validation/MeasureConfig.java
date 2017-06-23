@@ -157,8 +157,6 @@ public class MeasureConfig {
 			return Collections.emptyList();
 		}
 
-		List<SubPopulation> subPopulations = stratas.stream().map(Strata::getElectronicMeasureUuids).collect(Collectors.toList());
-
-		return subPopulations;
+		return stratas.stream().map(Strata::getElectronicMeasureUuids).collect(Collectors.toList());
 	}
 }
