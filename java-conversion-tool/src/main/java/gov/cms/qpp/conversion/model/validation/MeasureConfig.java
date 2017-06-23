@@ -20,7 +20,6 @@ public class MeasureConfig {
 
 	@JsonProperty("isRequired")
 	private boolean isRequired;
-	//private int weight;
 	private String measureSet;
 
 	@JsonProperty("isBonus")
@@ -32,9 +31,6 @@ public class MeasureConfig {
 
 	@JsonProperty("eMeasureUuid")
 	private String electronicMeasureVerUuid;
-
-//	@JsonProperty("subPopulation")
-//	private List<SubPopulation> subPopulations;
 
 	private List<Strata> strata;
 
@@ -106,14 +102,6 @@ public class MeasureConfig {
 		this.isRequired = isRequired;
 	}
 
-//	public int getWeight() {
-//		return weight;
-//	}
-//
-//	public void setWeight(int weight) {
-//		this.weight = weight;
-//	}
-
 	public String getMeasureSet() {
 		return measureSet;
 	}
@@ -153,14 +141,6 @@ public class MeasureConfig {
 	public void setElectronicMeasureVerUuid(final String electronicMeasureVerUuid) {
 		this.electronicMeasureVerUuid = electronicMeasureVerUuid;
 	}
-
-//	public List<SubPopulation> getSubPopulation() {
-//		return subPopulations;
-//	}
-//
-//	public void setSubPopulations(final List<SubPopulation> subPopulations) {
-//		this.subPopulations = subPopulations;
-//	}
 
 	public List<Strata> getStrata() {
 		return strata;
