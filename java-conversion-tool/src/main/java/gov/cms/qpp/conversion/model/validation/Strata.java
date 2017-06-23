@@ -3,6 +3,9 @@ package gov.cms.qpp.conversion.model.validation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Holds stratification information about sub-populations.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Strata {
 
