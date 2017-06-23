@@ -13,24 +13,27 @@
 		"nqfEMeasureId": null,
 		"nqfId": "test",
 		"isInverse": false,
-		"eMeasureVerUUID": "test1",
-		"subPopulation": [
+		"eMeasureUuid": "test1",
+		"strata": [
 			{
-				"initialPopulationUUID": "ipop1",
-				"denominatorUUID": "denom1",
-				"denominatorExclusionsUUID": "denex1",
-				"numeratorUUID": "numer1",
-				"denominatorExceptionsUUID": "denexcep1"
+				"eMeasureUuids": {
+					"initialPopulationUuid": "ipop1",
+					"denominatorUuid": "denom1",
+					"denominatorExclusionUuid": "denex1",
+					"numeratorUuid": "numer1",
+					"denominatorExceptionUuid": "denexcep1"
+				}
 			},
 			{
-				"initialPopulationUUID": "ipop2",
-				"denominatorUUID": "denom2",
-				"denominatorExclusionsUUID": "denex2",
-				"numeratorUUID": "numer2",
-				"denominatorExceptionsUUID": "denexcep2"
+				"eMeasureUuids": {
+					"initialPopulationUuid": "ipop2",
+					"denominatorUuid": "denom2",
+					"denominatorExclusionUuid": "denex2",
+					"numeratorUuid": "numer2",
+					"denominatorExceptionUuid": "denexcep2"
+				}
 			}
 		],
-		"strata": [],
 		"isHighPriority": false,
 		"primarySteward": "test",
 		"submissionMethods": [
@@ -55,24 +58,27 @@
 		"nqfEMeasureId": null,
 		"nqfId": "test",
 		"isInverse": false,
-		"eMeasureVerUUID": "test2",
-		"subPopulation": [
+		"eMeasureUuid": "test2",
+		"strata": [
 			{
-				"initialPopulationUUID": null,
-				"denominatorUUID": null,
-				"denominatorExclusionsUUID": null,
-				"numeratorUUID": null,
-				"denominatorExceptionsUUID": null
+				"eMeasureUuids": {
+					"initialPopulationUuid": null,
+					"denominatorUuid": null,
+					"denominatorExclusionUuid": null,
+					"numeratorUuid": null,
+					"denominatorExceptionUuid": null
+				}
 			},
 			{
-				"initialPopulationUUID": null,
-				"denominatorUUID": null,
-				"denominatorExclusionsUUID": null,
-				"numeratorUUID": null,
-				"denominatorExceptionsUUID": null
+				"eMeasureUuids": {
+					"initialPopulationUuid": null,
+					"denominatorUuid": null,
+					"denominatorExclusionUuid": null,
+					"numeratorUuid": null,
+					"denominatorExceptionUuid": null
+				}
 			}
 		],
-		"strata": [],
 		"isHighPriority": false,
 		"primarySteward": "test",
 		"submissionMethods": [

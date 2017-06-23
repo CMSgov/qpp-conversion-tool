@@ -10,7 +10,7 @@
 		"measureType": "process",
 		"measureId": "366",
 		"eMeasureId": "CMS136v6",
-		"eMeasureVerUUID": "requiresNothingGuid",
+		"eMeasureUuid": "requiresNothingGuid",
 		"nqfEMeasureId": null,
 		"nqfId": "0108",
 		"isInverse": false,
@@ -39,20 +39,18 @@
 		"nqfEMeasureId": null,
 		"nqfId": "0018",
 		"isInverse": false,
-		"eMeasureVerUUID": "requiresDenominatorExclusionGuid",
-		"subPopulation": [
-			{
-				"initialPopulationUUID": "3AD33404-E734-4F67-9144-E4B63CB3F4BE",
-				"denominatorUUID": "E62FEBA3-0F98-460D-93CD-44314D7203A8",
-				"denominatorExclusionsUUID": "55A6D5F3-2029-4896-B850-4C7894161D7D",
-				"numeratorUUID": "F9FEBF42-4B21-47A9-B03E-D2DA5CF8492B",
-				"denominatorExceptionsUUID": null
-			}
-		],
+		"eMeasureUuid": "requiresDenominatorExclusionGuid",
 		"strata": [
 			{
 				"description": "Percentage of patients 18 - 85 years of age who had a diagnosis of hypertension and whose blood pressure was adequately controlled (< 140/90 mmHg) during the measurement period",
-				"name": "hypertension"
+				"name": "hypertension",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "3AD33404-E734-4F67-9144-E4B63CB3F4BE",
+					"denominatorUuid": "E62FEBA3-0F98-460D-93CD-44314D7203A8",
+					"denominatorExclusionUuid": "55A6D5F3-2029-4896-B850-4C7894161D7D",
+					"numeratorUuid": "F9FEBF42-4B21-47A9-B03E-D2DA5CF8492B",
+					"denominatorExceptionUuid": null
+				}
 			}
 		],
 		"isHighPriority": true,
@@ -87,20 +85,18 @@
 		"nqfEMeasureId": null,
 		"nqfId": "0419",
 		"isInverse": false,
-		"eMeasureVerUUID": "requiresDenominatorExceptionGuid",
-		"subPopulation": [
-			{
-				"initialPopulationUUID": "D412322D-11F1-4573-893E-E6A05855DE10",
-				"denominatorUUID": "375D0559-C749-4BB9-9267-81EDF447650B",
-				"denominatorExclusionsUUID": null,
-				"numeratorUUID": "EFFE261C-0D57-423E-992C-7141B132768C",
-				"denominatorExceptionsUUID": "3C100EC4-2990-4D79-AE14-E816F5E78AC8"
-			}
-		],
+		"eMeasureUuid": "requiresDenominatorExceptionGuid",
 		"strata": [
 			{
 				"description": "Percentage of visits for patients aged 18 years and older for which the eligible clinician attests to documenting a list of current medications using all immediate resources available on the date of the encounter. This list must include ALL known prescriptions, over-the-counters, herbals, and vitamin/mineral/dietary (nutritional) supplements must contain the medications’ name, dosage, frequency and route of administration",
-				"name": "document"
+				"name": "document",
+				"eMeasureUuids": {
+					"initialPopulationUuid": "D412322D-11F1-4573-893E-E6A05855DE10",
+					"denominatorUuid": "375D0559-C749-4BB9-9267-81EDF447650B",
+					"denominatorExclusionUuid": null,
+					"numeratorUuid": "EFFE261C-0D57-423E-992C-7141B132768C",
+					"denominatorExceptionUuid": "3C100EC4-2990-4D79-AE14-E816F5E78AC8"
+				}
 			}
 		],
 		"isHighPriority": true,
@@ -151,31 +147,36 @@
 		"nqfEMeasureId": null,
 		"nqfId": "0405",
 		"isInverse": false,
-		"eMeasureVerUUID": "multiplePopulationDenominatorExceptionGuid",
-		"subPopulation": [
+		"eMeasureUuid": "multiplePopulationDenominatorExceptionGuid",
+		"strata": [
 			{
-				"initialPopulationUUID": "E681DBF8-F827-4586-B3E0-178FF19EC3A2",
-				"denominatorUUID": "04BF53CE-6993-4EA2-BFE5-66E36172B388",
-				"denominatorExclusionsUUID": null,
-				"numeratorUUID": "631C0B49-83F4-4A54-96C4-7E0766B2407C",
-				"denominatorExceptionsUUID": "58347456-D1F3-4BBB-9B35-5D42825A0AB3"
+				"eMeasureUuids": {
+					"initialPopulationUuid": "E681DBF8-F827-4586-B3E0-178FF19EC3A2",
+					"denominatorUuid": "04BF53CE-6993-4EA2-BFE5-66E36172B388",
+					"denominatorExclusionUuid": null,
+					"numeratorUuid": "631C0B49-83F4-4A54-96C4-7E0766B2407C",
+					"denominatorExceptionUuid": "58347456-D1F3-4BBB-9B35-5D42825A0AB3"
+				}
 			},
 			{
-				"initialPopulationUUID": "AAC578DB-1900-43BD-BBBF-50014A5457E5",
-				"denominatorUUID": "1574973E-EB52-40C7-9709-25ABEDBA99A3",
-				"denominatorExclusionsUUID": null,
-				"numeratorUUID": "5B7AC4EC-547A-47E5-AC5E-618401175511",
-				"denominatorExceptionsUUID": "B7CCA1A6-F352-4A23-BC89-6FE9B60DC0C6"
+				"eMeasureUuids": {
+					"initialPopulationUuid": "AAC578DB-1900-43BD-BBBF-50014A5457E5",
+					"denominatorUuid": "1574973E-EB52-40C7-9709-25ABEDBA99A3",
+					"denominatorExclusionUuid": null,
+					"numeratorUuid": "5B7AC4EC-547A-47E5-AC5E-618401175511",
+					"denominatorExceptionUuid": "B7CCA1A6-F352-4A23-BC89-6FE9B60DC0C6"
+				}
 			},
 			{
-				"initialPopulationUUID": "AF36C4A9-8BD9-4E21-838D-A47A1845EB90",
-				"denominatorUUID": "B95BC0D3-572E-462B-BAA2-46CD33A865CD",
-				"denominatorExclusionsUUID": null,
-				"numeratorUUID": "86F74F07-D593-44F6-AA12-405966400963",
-				"denominatorExceptionsUUID": null
+				"eMeasureUuids": {
+					"initialPopulationUuid": "AF36C4A9-8BD9-4E21-838D-A47A1845EB90",
+					"denominatorUuid": "B95BC0D3-572E-462B-BAA2-46CD33A865CD",
+					"denominatorExclusionUuid": null,
+					"numeratorUuid": "86F74F07-D593-44F6-AA12-405966400963",
+					"denominatorExceptionUuid": null
+				}
 			}
 		],
-		"strata": [],
 		"isHighPriority": false,
 		"primarySteward": "National Committee for Quality Assurance",
 		"submissionMethods": [
