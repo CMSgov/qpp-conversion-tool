@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 
 import java.util.Arrays;
@@ -49,7 +50,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 		if (isASinglePerformanceRate(measureConfig, measureId)) {
 			wrapper.putString(MEASURE_ID, measureId);
-			encodeChildren(wrapper, node);
+			encodeChildren(wrapper, node, measureConfig);
 		} else {
 			wrapper.putString(MEASURE_ID, measureId);
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
@@ -74,14 +75,14 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	/**
 	 * Encode child nodes.
-	 *
-	 * @param wrapper holder for encoded node data
+	 *  @param wrapper holder for encoded node data
 	 * @param parentNode holder of the Quality Measures
+	 * @param measureConfig
 	 */
-	private void encodeChildren(JsonWrapper wrapper, Node parentNode) {
+	private void encodeChildren(JsonWrapper wrapper, Node parentNode, final MeasureConfig measureConfig) {
 		JsonWrapper childWrapper = new JsonWrapper();
 		childWrapper.putBoolean(IS_END_TO_END_REPORTED, TRUE);
-		encodeSubPopulation(parentNode, childWrapper, false);
+		encodeSubPopulation(parentNode, childWrapper, false, measureConfig);
 		wrapper.putObject(VALUE, childWrapper);
 	}
 
@@ -94,7 +95,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private void encodeMultiPerformanceRate(JsonWrapper wrapper, Node node, MeasureConfig measureConfig) {
 		List<Node> subPopNodes = createSubPopulationGrouping(node, measureConfig);
-		encodeMultiPerformanceChildren(wrapper, subPopNodes);
+		encodeMultiPerformanceChildren(wrapper, subPopNodes, measureConfig);
 	}
 
 	/**
@@ -155,17 +156,17 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	/**
 	 * Encode multi performance child nodes
-	 *
-	 * @param wrapper holder for encoded node data
+	 *  @param wrapper holder for encoded node data
 	 * @param subPopNodes holder of the Quality Measures
+	 * @param measureConfig
 	 */
-	private void encodeMultiPerformanceChildren(JsonWrapper wrapper, List<Node> subPopNodes) {
+	private void encodeMultiPerformanceChildren(JsonWrapper wrapper, List<Node> subPopNodes, final MeasureConfig measureConfig) {
 		JsonWrapper childWrapper = new JsonWrapper();
 		childWrapper.putBoolean(IS_END_TO_END_REPORTED, TRUE);
 		JsonWrapper strataListWrapper = new JsonWrapper();
 		for (Node subPopNode : subPopNodes) {
 			JsonWrapper strataWrapper = new JsonWrapper();
-			encodeSubPopulation(subPopNode, strataWrapper, true);
+			encodeSubPopulation(subPopNode, strataWrapper, true, measureConfig);
 			strataListWrapper.putObject(strataWrapper);
 		}
 		childWrapper.putObject("strata", strataListWrapper);
@@ -174,11 +175,11 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	/**
 	 * Encodes a sub population
-	 *
-	 * @param parentNode holder of the sub populations
+	 *  @param parentNode holder of the sub populations
 	 * @param childWrapper holder of encoded sub populations
+	 * @param measureConfig
 	 */
-	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper, boolean isMultiRate) {
+	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper, boolean isMultiRate, final MeasureConfig measureConfig) {
 		this.encodePopulationTotal(childWrapper, parentNode);
 		this.encodePerformanceMet(childWrapper, parentNode);
 		this.encodePerformanceNotMet(childWrapper, parentNode);
@@ -188,7 +189,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			measureDataEncoder.encode(childWrapper, childNode);
 		}
 		if (isMultiRate) {
-			this.encodeStratum(childWrapper, parentNode);
+			this.encodeStratum(childWrapper, parentNode, measureConfig);
 		}
 	}
 
@@ -232,14 +233,34 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * Adds the Stratum attribute to the QPP document
 	 * @param wrapper JsonWrapper
 	 * @param parentNode Node
+	 * @param measureConfig
 	 */
-	private void encodeStratum(JsonWrapper wrapper, Node parentNode) {
+	private void encodeStratum(JsonWrapper wrapper, Node parentNode, final MeasureConfig measureConfig) {
 		Node numeratorNode = parentNode.findChildNode(n -> NUMER.equals(n.getValue(TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 				node -> {
 					maintainContinuity(wrapper, node, "stratum");
-					wrapper.putString("stratum", node.getValue(MeasureDataDecoder.MEASURE_POPULATION));
+					String numeratorPopulationId = node.getValue(MeasureDataDecoder.MEASURE_POPULATION);
+					String stratum = stratumForNumeratorUuid(numeratorPopulationId, measureConfig);
+					wrapper.putString("stratum", stratum);
 				});
+	}
+
+	/**
+	 * Given the numerator UUID, return the associated strata name that contains that numerator.
+	 *
+	 * @param numeratorUuid The numerator to search for.
+	 * @param measureConfig The measure configuration to search within.
+	 * @return The strata name.
+	 */
+	private String stratumForNumeratorUuid(String numeratorUuid, MeasureConfig measureConfig) {
+		List<Strata> stratas = measureConfig.getStrata();
+		Optional<String> possibleStratum = stratas.stream()
+			.filter(strata -> numeratorUuid.equals(strata.getElectronicMeasureUuids().getNumeratorUuid()))
+			.map(Strata::getName)
+			.findFirst();
+
+		return possibleStratum.orElse(numeratorUuid);
 	}
 
 	/**
