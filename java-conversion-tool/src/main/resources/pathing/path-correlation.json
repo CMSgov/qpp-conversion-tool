@@ -190,8 +190,7 @@
 				{
 					"decodeLabel": "performanceStart",
 					"encodeLabels": [
-						"performanceStart",
-						"performanceYear"
+						"performanceStart"
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'low' and namespace-uri() = '<nsuri>']/@value",
