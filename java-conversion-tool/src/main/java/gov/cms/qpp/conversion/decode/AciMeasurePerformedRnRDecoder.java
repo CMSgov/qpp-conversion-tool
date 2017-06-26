@@ -37,7 +37,8 @@ public class AciMeasurePerformedRnRDecoder extends QppXmlDecoder {
 	 */
 	private void setMeasureIdOnNode(Element element, Node thisNode) {
 		String expressionStr = getXpath(MEASURE_ID);
-		Consumer<? super Attribute> consumer = p -> thisNode.putValue(MEASURE_ID, p.getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+		Consumer<? super Attribute> consumer = p ->
+				thisNode.putValue(MEASURE_ID, p.getValue(), false);
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), false);
 	}
 }

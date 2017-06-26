@@ -50,14 +50,17 @@ import java.util.Set;
 
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class SingularAttributeTest {
 
 	private static final String NAMESPACE_URI = "urn:hl7-org:v3";
 	private static Map<String, Goods> corrMap;
-	private static Document document;
 	private static DocumentBuilderFactory dbf;
+	private static Set<String> exclusions;
+	private static int inclusionCount = 0;
+
 	private TransformerFactory tf = TransformerFactory.newInstance();
 	private XPathFactory xpf = XPathFactory.newInstance();
 
@@ -70,18 +73,8 @@ public class SingularAttributeTest {
 		Field corrMapField = PathCorrelator.class.getDeclaredField("pathCorrelationMap");
 		corrMapField.setAccessible(true);
 		corrMap = (Map<String, Goods>) corrMapField.get(null);
-	}
 
-	//TODO: look into ENTITY_TYPE w/ multiple tin example
-	//TODO: Exempt
-	// MultipleTinsDecoder TAX_PAYER_IDENTIFICATION_NUMBER
-	// MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER
-	// due to ugliness with multiple tin decoding
-
-	@Test
-	public void blanketDoubleUp() {
-
-		Set<String> exclusions = new HashSet<>(
+		exclusions = new HashSet<>(
 			Arrays.asList(
 				//MultipleTinsDecoder maps multiple tin/npi combination
 				MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
@@ -99,18 +92,46 @@ public class SingularAttributeTest {
 
 		corrMap.keySet().forEach(key -> {
 			String[] components = key.split(PathCorrelator.KEY_DELIMITER);
-			if (!exclusions.contains(components[1])) {
-				List<Detail> details = executeScenario(components[0], components[1], false);
-
-				if (details.isEmpty()) {
-					System.out.println("Combination of: " + components[0] + " and " +
-							components[1] + " should be unique.");
-				}
-				assertThat(
-					"Combination of: " + components[0] + " and " + components[1] + " should be unique.",
-					details.size(), greaterThan(0));
+			if (!exclusions.contains(components[1])){
+				inclusionCount++;
 			}
 		});
+	}
+
+	//TODO: look into ENTITY_TYPE w/ multiple tin example
+	//TODO: Exempt
+	// MultipleTinsDecoder TAX_PAYER_IDENTIFICATION_NUMBER
+	// MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER
+	// due to ugliness with multiple tin decoding
+
+	@Test
+	public void blanketDoubleUp() {
+		assertThat("failed duplication scenarios should equal the inclusion count",
+				blanketCheck(true), is(inclusionCount));
+	}
+
+	@Test
+	public void blanketRemoval() {
+		assertThat("failed removal scenarios should equal the inclusion count",
+				blanketCheck(false), is(inclusionCount));
+	}
+
+	private int blanketCheck(boolean doubleUp) {
+		int errorCount = 0;
+		for (String key : corrMap.keySet()) {
+			String[] components = key.split(PathCorrelator.KEY_DELIMITER);
+			if (!exclusions.contains(components[1])) {
+				List<Detail> details = executeScenario(components[0], components[1], doubleUp);
+
+				if (!details.isEmpty()) {
+					errorCount++;
+				}
+				assertThat("Combination of: " + components[0] + " and " +
+					components[1] + " should be unique.",
+					details.size(), greaterThan(0));
+			}
+		}
+		return errorCount;
 	}
 
 	@Test
@@ -158,7 +179,7 @@ public class SingularAttributeTest {
 
 	private InputStream upsetTheNorm(String xPath, boolean remove) {
 		try {
-			document = dbf.newDocumentBuilder().parse(
+			Document document = dbf.newDocumentBuilder().parse(
 					new File("../qrda-files/valid-QRDA-III-latest.xml"));
 			XPath xpath = xpf.newXPath();
 			XPathExpression expression = xpath.compile(xPath);
@@ -196,13 +217,4 @@ public class SingularAttributeTest {
 			throw new RuntimeException(ex);
 		}
 	}
-
-
-//	@Test
-//	public void doubleUpMeasurePerformedRnR() {
-//		String xPath = getPath(
-//				TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS,
-//				AciMeasurePerformedRnRDecoder.MEASURE_ID);
-//		doubleUp(xPath);
-//	}
 }

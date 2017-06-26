@@ -53,7 +53,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	 */
 	private void validateChildren(Checker nodeChecker) {
 		nodeChecker
-				.value(NO_MEASURE_NAME, "measureId")
+				.singleValue(NO_MEASURE_NAME, "measureId")
 				.hasChildren(NO_CHILDREN)
 				.childMinimum(NO_DENOMINATOR, 1, TemplateId.ACI_DENOMINATOR)
 				.childMinimum(NO_NUMERATOR, 1, TemplateId.ACI_NUMERATOR)
