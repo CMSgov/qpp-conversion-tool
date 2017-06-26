@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.Detail;
 
 /**
  * Validate The Measure Performed Node 2.16.840.1.113883.10.20.27.3.27

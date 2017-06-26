@@ -7,7 +7,6 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
