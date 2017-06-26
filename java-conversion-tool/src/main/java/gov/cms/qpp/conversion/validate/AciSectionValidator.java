@@ -3,9 +3,6 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-
-import java.text.MessageFormat;
 
 /**
  * Validate the ACI Section.
@@ -41,18 +38,5 @@ public class AciSectionValidator extends NodeValidator {
 						TemplateId.REPORTING_PARAMETERS_ACT)
 				.childMaximum(MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
 						TemplateId.REPORTING_PARAMETERS_ACT);
-
-		//validateMeasureConfigs(node);
-	}
-
-	/**
-	 * Validates all required measure configurations exist in the ACI section.
-	 *
-	 * @param node An ACI section node.
-	 */
-	private void validateMeasureConfigs(final Node node) {
-		String[] requiredAciMeasures = {};
-		requiredAciMeasures = MeasureConfigs.requiredMeasuresForSection("aci").toArray(requiredAciMeasures);
-		thoroughlyCheck(node).hasMeasures(MessageFormat.format(NO_REQUIRED_MEASURE, requiredAciMeasures), requiredAciMeasures);
 	}
 }
