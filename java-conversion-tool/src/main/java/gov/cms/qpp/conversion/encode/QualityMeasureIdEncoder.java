@@ -181,7 +181,8 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param childWrapper holder of encoded sub populations
 	 * @param measureConfig The measure configuration for the current measure.
 	 */
-	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper, boolean isMultiRate, final MeasureConfig measureConfig) {
+	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper, boolean isMultiRate,
+		final MeasureConfig measureConfig) {
 		this.encodePopulationTotal(childWrapper, parentNode);
 		this.encodePerformanceMet(childWrapper, parentNode);
 		this.encodePerformanceNotMet(childWrapper, parentNode);
@@ -233,7 +234,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	/**
 	 * Adds the Stratum attribute to the QPP document
-	 * 
+	 *
 	 * @param wrapper JsonWrapper
 	 * @param parentNode Node
 	 * @param measureConfig The measure configuration for the current measure.
