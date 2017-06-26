@@ -10,7 +10,8 @@ import gov.cms.qpp.conversion.model.Validator;
 @Validator(value = TemplateId.IA_MEASURE, required = true)
 public class IaMeasureValidator extends NodeValidator {
 
-	public static final String TYPE_ERROR = "Measure performed value is required and must be either a Y or an N.";
+	public static final String TYPE_ERROR =
+			"A single measure performed value is required and must be either a Y or an N.";
 	public static final String INCORRECT_CHILDREN_COUNT = "Measure performed must have exactly one child.";
 
 	/**

@@ -12,8 +12,10 @@ import org.jdom2.xpath.XPathFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Decoder to read XML Data for an Quality Measure Identifier (eCQM).
@@ -37,14 +39,16 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
-		String measureGuid = getMeasureGuid(element);
-
 		DecodeResult decodeResult = DecodeResult.TREE_CONTINUE;
+		List<String> measureGuids = getMeasureGuid(element);
 
-		if (MEASURE_ID_CONTAINING_STRATUM.contains(measureGuid)) {
-			decodeResult = DecodeResult.TREE_ESCAPED;
-		} else {
-			thisNode.putValue(MEASURE_ID, measureGuid);
+		for (String measureGuid : measureGuids) {
+			if (!decodeResult.equals(DecodeResult.TREE_ESCAPED)
+					&& MEASURE_ID_CONTAINING_STRATUM.contains(measureGuid)) {
+				decodeResult = DecodeResult.TREE_ESCAPED;
+			} else {
+				thisNode.putValue(MEASURE_ID, measureGuid, false);
+			}
 		}
 
 		return decodeResult;
@@ -56,12 +60,13 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 	 * @param element XML element that represents the Quality Measure Identifier
 	 * @return The measure GUID in the Quality Measure Identifier
 	 */
-	private String getMeasureGuid(final Element element) {
+	private List<String> getMeasureGuid(final Element element) {
 		String expressionStr = getXpath(MEASURE_ID);
 
-		XPathExpression<Attribute> expression = XPathFactory.instance().compile(expressionStr, Filters.attribute(), null,
-			xpathNs);
-		return Optional.ofNullable(expression.evaluateFirst(element)).map(Attribute::getValue)
-			.orElse(null);
+		XPathExpression<Attribute> expression = XPathFactory.instance()
+			.compile(expressionStr, Filters.attribute(), null, xpathNs);
+		return expression.evaluate(element).stream()
+			.map(Attribute::getValue)
+			.collect(Collectors.toList());
 	}
 }

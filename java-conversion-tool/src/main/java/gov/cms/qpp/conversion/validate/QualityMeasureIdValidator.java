@@ -56,7 +56,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		//This should not be an error
 
 		thoroughlyCheck(node)
-			.value(MEASURE_GUID_MISSING, MEASURE_ID)
+			.singleValue(MEASURE_GUID_MISSING, MEASURE_ID)
 			.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}

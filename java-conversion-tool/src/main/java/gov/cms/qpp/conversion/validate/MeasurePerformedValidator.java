@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 @Validator(value = TemplateId.MEASURE_PERFORMED, required = true)
 public class MeasurePerformedValidator extends NodeValidator {
 	private static final String FIELD = "measurePerformed";
+	private static final String[] BOOLEAN_VALUES = {"Y", "N"};
 
 	/**
 	 * An string value named "measurePerformed" was decoded from the source element<
@@ -20,9 +21,8 @@ public class MeasurePerformedValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		String value = node.getValue(FIELD);
-		if (!("Y".equals(value) || "N".equals(value))) {
-			addValidationError(new Detail(IaMeasureValidator.TYPE_ERROR, node.getPath()));
-		}
+		check(node)
+			.singleValue(IaMeasureValidator.TYPE_ERROR, FIELD)
+			.valueIn(IaMeasureValidator.TYPE_ERROR, FIELD, BOOLEAN_VALUES);
 	}
 }

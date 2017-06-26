@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  */
 @Decoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 public class AciMeasurePerformedRnRDecoder extends QppXmlDecoder {
-	private static final String MEASURE_ID = "measureId";
+	public static final String MEASURE_ID = "measureId";
 
 	/**
 	 * Decodes an ACI Measure Performed Reference and Results into an intermediate node

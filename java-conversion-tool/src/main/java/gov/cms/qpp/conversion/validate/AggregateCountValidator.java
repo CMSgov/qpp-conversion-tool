@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.Validator;
 @Validator(value = TemplateId.ACI_AGGREGATE_COUNT, required = true)
 public class AggregateCountValidator extends NodeValidator {
 
-	public static final String VALUE_ERROR = "Aggregate count value is required.";
+	public static final String VALUE_ERROR = "A single aggregate count value is required.";
 	public static final String TYPE_ERROR = "Aggregate count value must be an integer.";
 
 	/**
@@ -26,7 +26,7 @@ public class AggregateCountValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-			.value(VALUE_ERROR, "aggregateCount")
+			.singleValue(VALUE_ERROR, "aggregateCount")
 			.intValue(TYPE_ERROR, "aggregateCount");
 	}
 }

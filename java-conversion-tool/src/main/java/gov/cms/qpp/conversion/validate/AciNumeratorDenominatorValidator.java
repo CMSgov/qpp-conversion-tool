@@ -52,7 +52,8 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	 * @param nodeChecker for a node that represents the ACI Numerator Denominator Measure Section
 	 */
 	private void validateChildren(Checker nodeChecker) {
-		nodeChecker.value(NO_MEASURE_NAME, "measureId")
+		nodeChecker
+				.value(NO_MEASURE_NAME, "measureId")
 				.hasChildren(NO_CHILDREN)
 				.childMinimum(NO_DENOMINATOR, 1, TemplateId.ACI_DENOMINATOR)
 				.childMinimum(NO_NUMERATOR, 1, TemplateId.ACI_NUMERATOR)
