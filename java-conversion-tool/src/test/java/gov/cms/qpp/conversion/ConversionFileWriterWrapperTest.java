@@ -27,7 +27,7 @@ public class ConversionFileWriterWrapperTest {
 
 	@After
 	public void deleteFiles() throws IOException {
-		Files.deleteIfExists(Paths.get("valid-QRDA-III.qpp.json"));
+		Files.deleteIfExists(Paths.get("valid-QRDA-III-latest.qpp.json"));
 		Files.deleteIfExists(Paths.get("not-a-QRDA-III-file.err.json"));
 		Files.deleteIfExists(Paths.get("qrda_bad_denominator.qpp.json"));
 		Files.deleteIfExists(Paths.get("qrda_bad_denominator.err.json"));
@@ -35,12 +35,12 @@ public class ConversionFileWriterWrapperTest {
 
 	@Test
 	public void testValidQpp() {
-		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
+		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
 		converterWrapper.doDefaults(false).transform();
 
-		assertFileExists("valid-QRDA-III.qpp.json");
+		assertFileExists("valid-QRDA-III-latest.qpp.json");
 	}
 
 	@Test
@@ -69,12 +69,12 @@ public class ConversionFileWriterWrapperTest {
 		mockStatic(Files.class);
 		when(Files.newBufferedWriter(any(Path.class))).thenThrow(new IOException());
 
-		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
+		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
 		converterWrapper.transform();
 
-		assertFileDoesNotExists("valid-QRDA-III.qpp.json");
+		assertFileDoesNotExists("valid-QRDA-III-latest.qpp.json");
 	}
 
 	@Test

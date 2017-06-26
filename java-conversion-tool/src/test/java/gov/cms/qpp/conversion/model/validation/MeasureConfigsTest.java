@@ -23,12 +23,12 @@ public class MeasureConfigsTest {
 
 	@AfterClass
 	public static void resetMeasureConfiguration() {
-		MeasureConfigs.setMeasureDataFile("measures-data-short.json");
+		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@Test
 	public void testGoodMeasureDataFile() {
-		MeasureConfigs.setMeasureDataFile("measures-data-short.json");
+		MeasureConfigs.setMeasureDataFile("reduced-test-measures-data.json");
 		//no exception thrown
 	}
 
@@ -69,12 +69,14 @@ public class MeasureConfigsTest {
 
 	@Test
 	public void getMeasureConfigsTest() {
+		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		List<MeasureConfig> configurations = MeasureConfigs.getMeasureConfigs();
 		assertThat("Expect the configurations to be a not empty list", configurations, is(not(empty())));
 	}
 
 	@Test
 	public void requiredMeasuresForSectionTest() {
+		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		List<String>requiredMeasures = MeasureConfigs.requiredMeasuresForSection("aci");
 		List<String>notRequiredMeasures = MeasureConfigs.requiredMeasuresForSection("quality");
 		assertThat("Expect the requiredMeasures to be a not empty list", requiredMeasures, is(not(empty())));
