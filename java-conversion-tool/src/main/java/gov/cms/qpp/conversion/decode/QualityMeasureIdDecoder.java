@@ -41,13 +41,11 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 		DecodeResult decodeResult = DecodeResult.TREE_CONTINUE;
 		List<String> measureGuids = getMeasureGuid(element);
 
-		for (String measureGuid : measureGuids) {
-			if (!decodeResult.equals(DecodeResult.TREE_ESCAPED)
-					&& MEASURE_ID_CONTAINING_STRATUM.contains(measureGuid)) {
-				decodeResult = DecodeResult.TREE_ESCAPED;
-			} else {
-				thisNode.putValue(MEASURE_ID, measureGuid, false);
-			}
+		if (measureGuids.stream().anyMatch(MEASURE_ID_CONTAINING_STRATUM::contains)) {
+			decodeResult = DecodeResult.TREE_ESCAPED;
+		} else {
+			measureGuids.forEach(measureGuid ->
+				thisNode.putValue(MEASURE_ID, measureGuid, false));
 		}
 
 		return decodeResult;

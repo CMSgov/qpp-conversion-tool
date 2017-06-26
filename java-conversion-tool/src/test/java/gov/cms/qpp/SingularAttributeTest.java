@@ -107,21 +107,21 @@ public class SingularAttributeTest {
 	@Test
 	public void blanketDoubleUp() {
 		assertThat("failed duplication scenarios should equal the inclusion count",
-				blanketCheck(true), is(inclusionCount));
+				blanketCheck(false), is(inclusionCount));
 	}
 
 	@Test
 	public void blanketRemoval() {
 		assertThat("failed removal scenarios should equal the inclusion count",
-				blanketCheck(false), is(inclusionCount));
+				blanketCheck(true), is(inclusionCount));
 	}
 
-	private int blanketCheck(boolean doubleUp) {
+	private int blanketCheck(boolean remove) {
 		int errorCount = 0;
 		for (String key : corrMap.keySet()) {
 			String[] components = key.split(PathCorrelator.KEY_DELIMITER);
 			if (!exclusions.contains(components[1])) {
-				List<Detail> details = executeScenario(components[0], components[1], doubleUp);
+				List<Detail> details = executeScenario(components[0], components[1], remove);
 
 				if (!details.isEmpty()) {
 					errorCount++;
