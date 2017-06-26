@@ -75,9 +75,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	/**
 	 * Encode child nodes.
-	 *  @param wrapper holder for encoded node data
+	 * @param wrapper holder for encoded node data
 	 * @param parentNode holder of the Quality Measures
-	 * @param measureConfig
+	 * @param measureConfig The measure configuration for the current measure.
 	 */
 	private void encodeChildren(JsonWrapper wrapper, Node parentNode, final MeasureConfig measureConfig) {
 		JsonWrapper childWrapper = new JsonWrapper();
@@ -156,9 +156,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	/**
 	 * Encode multi performance child nodes
-	 *  @param wrapper holder for encoded node data
+	 *
+	 * @param wrapper holder for encoded node data
 	 * @param subPopNodes holder of the Quality Measures
-	 * @param measureConfig
+	 * @param measureConfig The measure configuration for the current measure.
 	 */
 	private void encodeMultiPerformanceChildren(JsonWrapper wrapper, List<Node> subPopNodes, final MeasureConfig measureConfig) {
 		JsonWrapper childWrapper = new JsonWrapper();
@@ -175,9 +176,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	/**
 	 * Encodes a sub population
-	 *  @param parentNode holder of the sub populations
+	 *
+	 * @param parentNode holder of the sub populations
 	 * @param childWrapper holder of encoded sub populations
-	 * @param measureConfig
+	 * @param measureConfig The measure configuration for the current measure.
 	 */
 	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper, boolean isMultiRate, final MeasureConfig measureConfig) {
 		this.encodePopulationTotal(childWrapper, parentNode);
@@ -231,9 +233,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	/**
 	 * Adds the Stratum attribute to the QPP document
+	 * 
 	 * @param wrapper JsonWrapper
 	 * @param parentNode Node
-	 * @param measureConfig
+	 * @param measureConfig The measure configuration for the current measure.
 	 */
 	private void encodeStratum(JsonWrapper wrapper, Node parentNode, final MeasureConfig measureConfig) {
 		Node numeratorNode = parentNode.findChildNode(n -> NUMER.equals(n.getValue(TYPE)));
