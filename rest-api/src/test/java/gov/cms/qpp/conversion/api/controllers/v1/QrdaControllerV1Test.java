@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class QrdaControllerV1Test {
 
 	@InjectMocks
-	private static QrdaControllerV1 objectUnderTest;
+	private QrdaControllerV1 objectUnderTest;
 
 	@Mock
 	private QrdaService qrdaService;

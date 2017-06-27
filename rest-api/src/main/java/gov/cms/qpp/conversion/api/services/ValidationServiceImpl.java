@@ -19,12 +19,16 @@ import java.io.IOException;
 @Service
 public class ValidationServiceImpl implements ValidationService {
 
+	static final String VALIDATION_URL_ENV_NAME = "VALIDATION_URL";
+
 	@Autowired
 	private Environment environment;
 
+	private RestTemplate restTemplate = new RestTemplate();
+
 	@Override
 	public void validateQpp(final JsonWrapper qpp, final Converter converter) {
-		String validationUrl = environment.getProperty("VALIDATION_URL");
+		String validationUrl = environment.getProperty(VALIDATION_URL_ENV_NAME);
 
 		if (validationUrl == null) {
 			return;
@@ -39,7 +43,6 @@ public class ValidationServiceImpl implements ValidationService {
 	}
 
 	private ResponseEntity<String> callValidationEndpoint(String url, JsonWrapper qpp) {
-		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(new NoHandlingErrorHandler());
 		HttpEntity<String> request = new HttpEntity<>(qpp.toString());
 		return restTemplate.postForEntity(url, request, String.class);
