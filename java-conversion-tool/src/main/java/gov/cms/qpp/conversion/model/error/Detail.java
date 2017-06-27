@@ -112,14 +112,28 @@ public class Detail implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) {
+			return true;
+		}
+
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
 		Detail detail = (Detail) o;
 
-		if (message != null ? !message.equals(detail.message) : detail.message != null) return false;
-		if (path != null ? !path.equals(detail.path) : detail.path != null) return false;
-		if (value != null ? !value.equals(detail.value) : detail.value != null) return false;
+		if (message != null ? !message.equals(detail.message) : detail.message != null) {
+			return false;
+		}
+
+		if (path != null ? !path.equals(detail.path) : detail.path != null) {
+			return false;
+		}
+
+		if (value != null ? !value.equals(detail.value) : detail.value != null) {
+			return false;
+		}
+		
 		return type != null ? type.equals(detail.type) : detail.type == null;
 	}
 
