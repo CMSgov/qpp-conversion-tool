@@ -36,7 +36,7 @@ public class ValidationServiceImpl implements ValidationService {
 	public void validateQpp(final JsonWrapper qpp, final Converter converter) {
 		String validationUrl = environment.getProperty(VALIDATION_URL_ENV_NAME);
 
-		if (validationUrl == null) {
+		if (validationUrl == null || validationUrl.isEmpty()) {
 			return;
 		}
 

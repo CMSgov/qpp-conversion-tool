@@ -1,4 +1,8 @@
-app:
-  build: .
-  ports:
-    - "2680:8080"
+version: "2"
+services:
+  rest:
+    build: .
+    ports:
+      - "2680:8080"
+    environment:
+      - VALIDATION_URL=
