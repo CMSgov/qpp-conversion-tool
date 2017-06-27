@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
@@ -49,7 +50,12 @@ public class ValidationServiceImpl implements ValidationService {
 
 	private ResponseEntity<String> callValidationEndpoint(String url, JsonWrapper qpp) {
 		restTemplate.setErrorHandler(new NoHandlingErrorHandler());
-		HttpEntity<String> request = new HttpEntity<>(qpp.toString());
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+		headers.add(HttpHeaders.ACCEPT, "application/json");
+
+		HttpEntity<String> request = new HttpEntity<>(qpp.toString(), headers);
 		return restTemplate.postForEntity(url, request, String.class);
 	}
 
@@ -67,7 +73,7 @@ public class ValidationServiceImpl implements ValidationService {
 		return errors;
 	}
 
-	Error getError(String response) {
+	private Error getError(String response) {
 		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes()), ErrorMessage.class)
 				.getError();
 	}

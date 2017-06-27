@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -52,6 +53,31 @@ public class ValidationServiceImplTest {
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
+	private static Path pathToSubmissionError;
+
+	private static JsonWrapper qppWrapper;
+
+	private static AllErrors convertedErrors;
+
+	private static ErrorMessage submissionError;
+
+	@BeforeClass
+	public static void setup() throws IOException {
+		pathToSubmissionError = Paths.get("src/test/resources/submissionErrorFixture.json");
+		Path toConvert = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+		qppWrapper = new JsonWrapper(new Converter(toConvert).transform(), false);
+		prepAllErrors();
+	}
+
+	private static void prepAllErrors() throws IOException {
+		ValidationServiceImpl service = new ValidationServiceImpl();
+		submissionError = JsonHelper.readJsonAtJsonPath(
+			pathToSubmissionError, "$", ErrorMessage.class);
+
+		String errorJson = new ObjectMapper().writeValueAsString(submissionError);
+		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
+	}
+
 	@Test
 	public void testNoValidationUrl() {
 		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn(null);
@@ -75,52 +101,31 @@ public class ValidationServiceImplTest {
 	}
 
 	@Test
-	public void testValidationFail() {
+	public void testValidationFail() throws IOException {
 		String validationUrl = "https://qpp.net/validate";
 
 		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn(validationUrl);
-		ResponseEntity<String> spiedResponseEntity = spy(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
+		ResponseEntity<String> spiedResponseEntity = spy(new ResponseEntity<>(FileUtils.readFileToString(pathToSubmissionError.toFile(), "UTF-8") ,HttpStatus.UNPROCESSABLE_ENTITY));
 		when(restTemplate.postForEntity(eq(validationUrl), any(HttpEntity.class), eq(String.class))).thenReturn(spiedResponseEntity);
 
 		thrown.expect(TransformException.class);
 		thrown.expectMessage("Converted QPP failed validation");
 
-		objectUnderTest.validateQpp(new JsonWrapper(), null);
-	}
-
-	private static Path path;
-	private static JsonWrapper wrapper;
-	private static AllErrors errors;
-	private static ErrorMessage message;
-
-
-	@BeforeClass
-	public static void setup() throws IOException {
-		path = Paths.get("src/test/resources/submissionErrorFixture.json");
-		Path toConvert = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		wrapper = new JsonWrapper(new Converter(toConvert).transform(), false);
-		prepAllErrors();
-	}
-
-	private static void prepAllErrors() throws IOException {
-		ValidationServiceImpl service = new ValidationServiceImpl();
-		message = JsonHelper.readJsonAtJsonPath(
-			path, "$.invalidMeasureId", ErrorMessage.class);
-
-		String errorJson = new ObjectMapper().writeValueAsString(message);
-		errors = service.convertQppValidationErrorsToQrda(errorJson, wrapper);
+		objectUnderTest.validateQpp(qppWrapper, null);
 	}
 
 	@Test
 	public void testJsonDeserialization() {
-		assertThat("Error json should map to AllErrors", errors.getErrors(), hasSize(1));
+		assertThat("Error json should map to AllErrors", convertedErrors.getErrors(), hasSize(1));
 	}
 
 	@Test
 	public void testQppToQrdaErrorPathConversion() {
-		Detail detail = message.getError().getDetails().get(0);
-		Detail mappedDetails = errors.getErrors().get(0).getDetails().get(0);
+		Detail detail = submissionError.getError().getDetails().get(0);
+		Detail mappedDetails = convertedErrors.getErrors().get(0).getDetails().get(0);
 
+		System.out.println(detail.getPath());
+		System.out.println(mappedDetails.getPath());
 		assertNotEquals("Json path should be converted to xpath",
 			detail.getPath(), mappedDetails.getPath());
 	}
