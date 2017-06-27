@@ -85,7 +85,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		Assert.assertThat("Should only have no error detail", details, hasSize(0));
+		Assert.assertThat("Should have no error detail", details, hasSize(0));
 	}
 
 	@Test
@@ -96,20 +96,23 @@ public class QualityMeasureIdMultiRoundTripTest {
 		List<Detail> details = executeScenario(path, false);
 
 		Assert.assertThat("Should only have one error detail", details, hasSize(1));
-		Assert.assertThat("error should regard the need for a single measure type", details,
+		Assert.assertThat("Error should regard the need for a single measure type", details,
 				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_TYPE));
 	}
 
 	@Test
 	public void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
+		String message = String.format(
+				QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE,
+				QualityMeasureIdValidator.DENOM);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
-		List<Detail> details = executeScenario(path, false);
+		List<Detail> details = executeScenario(path, true);
 
 		Assert.assertThat("Should only have one error detail", details, hasSize(1));
-		Assert.assertThat("error should regard the need for a single measure type", details,
-				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_TYPE));
+		Assert.assertThat("Error should regard the need for a single measure type", details,
+				hasValidationErrorsIgnoringPath(message));
 	}
 
 	@Test
@@ -129,10 +132,10 @@ public class QualityMeasureIdMultiRoundTripTest {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/reference/externalObservation/id";
 
-		List<Detail> details = executeScenario(path, false);
+		List<Detail> details = executeScenario(path, true);
 
-		Assert.assertThat("Should only have one error detail", details, hasSize(1));
-		Assert.assertThat("error should regard the need for a single measure population", details,
+		Assert.assertThat("Should only have two error details", details, hasSize(2));
+		Assert.assertThat("Error should regard the need for a single measure population", details,
 				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_POPULATION));
 	}
 

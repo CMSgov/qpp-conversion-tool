@@ -34,11 +34,11 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	public static final String SINGLE_MEASURE_TYPE =
 			"The measure reference results must have a single measure type";
 	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
-	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
+	public static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
 	protected static final String DENEX = "denominator exclusion";
 	protected static final String DENEXCEP = "eligiblePopulationExclusion";
 	protected static final String NUMER = "performanceMet";
-	protected static final String DENOM = "eligiblePopulation";
+	public static final String DENOM = "eligiblePopulation";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
