@@ -1,18 +1,31 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import gov.cms.qpp.conversion.validate.ClinicalDocumentValidator;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
@@ -28,7 +41,15 @@ public class QualityMeasureIdMultiRoundTripTest {
 	private static final Path JUNK_QRDA3_FILE =
 			Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");
 
+	private static MarkupManipulator manipulator;
+
 	private final String SUCCESS_JSON = "multiPerformanceRatePropMeasure.qpp.json";
+
+	@BeforeClass
+	public static void setup() throws ParserConfigurationException, SAXException, IOException {
+		manipulator = new MarkupManipulator.MarkupManipulatorBuilder()
+			.setPathname(JUNK_QRDA3_FILE).build();
+	}
 
 	@After
 	public void deleteJsonFile() throws IOException {
@@ -54,6 +75,32 @@ public class QualityMeasureIdMultiRoundTripTest {
 		assertSecondSubPopulation(subPopulation);
 
 		assertThirdSubPopulation(subPopulation);
+	}
+
+	@Test
+	public void testRoundTripForQualityMeasureIdWithDuplicateMeasureType() {
+		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
+				"component[5]/observation/value/@code";
+
+		List<Detail> details = executeScenario(path, false);
+
+		Assert.assertThat("error should be about missing missing program name", details,
+				hasValidationErrorsIgnoringPath(
+						ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
+						ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
+	}
+
+	private List<Detail> executeScenario(String path, boolean remove) {
+		InputStream modified = manipulator.upsetTheNorm(path, remove);
+		Converter converter = new Converter(modified);
+		List<Detail> details = new ArrayList<>();
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+		return details;
 	}
 
 	private void assertFirstSubPopulation(List<Map<String, Integer>> subPopulation) {

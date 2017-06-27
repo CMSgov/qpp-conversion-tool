@@ -48,10 +48,10 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 		Consumer<? super Attribute> consumer = attr -> {
 			String code = attr.getValue();
 			if (MEASURES.contains(code)) {
-				thisNode.putValue(MEASURE_TYPE, code);
+				thisNode.putValue(MEASURE_TYPE, code, false);
 			}
 		};
-		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), false);
 	}
 
 	/**
@@ -62,7 +62,8 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 	 */
 	private void setPopulationId(Element element, Node thisNode) {
 		String expressionStr = getXpath(MEASURE_POPULATION);
-		Consumer<? super Attribute> consumer = attr -> thisNode.putValue(MEASURE_POPULATION, attr.getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+		Consumer<? super Attribute> consumer = attr ->
+				thisNode.putValue(MEASURE_POPULATION, attr.getValue(), false);
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), false);
 	}
 }
