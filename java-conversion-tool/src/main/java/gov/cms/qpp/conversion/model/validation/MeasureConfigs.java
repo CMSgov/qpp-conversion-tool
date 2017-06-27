@@ -11,9 +11,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MeasureConfigs {
+	public static final String DEFAULT_MEASURE_DATA_FILE_NAME = "measures-data.json";
 
 	private static List<MeasureConfig> configurations;
-	private static String measureDataFileName = "measures-data-short.json";
+	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
 
 	private static Map<String, MeasureConfig> configurationMap;
 

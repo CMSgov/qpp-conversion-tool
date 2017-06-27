@@ -52,7 +52,7 @@ public class QualityMeasureIdMultiEncoderTest {
 
 	@AfterClass
 	public static void resetMeasuresData() {
-		MeasureConfigs.setMeasureDataFile("measures-data-short.json");
+		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@Before

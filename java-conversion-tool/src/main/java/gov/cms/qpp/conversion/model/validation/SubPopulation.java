@@ -9,19 +9,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SubPopulation {
 
-	@JsonProperty("initialPopulationUUID")
+	@JsonProperty("initialPopulationUuid")
 	private String initialPopulationUuid;
 
-	@JsonProperty("denominatorUUID")
+	@JsonProperty("denominatorUuid")
 	private String denominatorUuid;
 
-	@JsonProperty("denominatorExclusionsUUID")
+	@JsonProperty("denominatorExclusionUuid")
 	private String denominatorExclusionsUuid;
 
-	@JsonProperty("numeratorUUID")
+	@JsonProperty("numeratorUuid")
 	private String numeratorUuid;
 
-	@JsonProperty("denominatorExceptionsUUID")
+	@JsonProperty("denominatorExceptionUuid")
 	private String denominatorExceptionsUuid;
 
 	private String strata1;
