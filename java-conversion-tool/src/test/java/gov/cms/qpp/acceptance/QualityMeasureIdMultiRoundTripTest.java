@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.ClinicalDocumentValidator;
+import gov.cms.qpp.conversion.validate.QualityMeasureIdValidator;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Assert;
@@ -78,16 +79,61 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureIdWithDuplicateMeasureType() {
+	public void testRoundTripForQualityMeasureIdWithDuplicateIpopMeasureType() {
+		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
+				"component[4]/observation/value/@code";
+
+		List<Detail> details = executeScenario(path, false);
+
+		Assert.assertThat("Should only have no error detail", details, hasSize(0));
+	}
+
+	@Test
+	public void testRoundTripForQualityMeasureIdWithDuplicateDenomMeasureType() {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
 		List<Detail> details = executeScenario(path, false);
 
-		Assert.assertThat("error should be about missing missing program name", details,
-				hasValidationErrorsIgnoringPath(
-						ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
-						ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
+		Assert.assertThat("Should only have one error detail", details, hasSize(1));
+		Assert.assertThat("error should regard the need for a single measure type", details,
+				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_TYPE));
+	}
+
+	@Test
+	public void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
+		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
+				"component[5]/observation/value/@code";
+
+		List<Detail> details = executeScenario(path, false);
+
+		Assert.assertThat("Should only have one error detail", details, hasSize(1));
+		Assert.assertThat("error should regard the need for a single measure type", details,
+				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_TYPE));
+	}
+
+	@Test
+	public void testRoundTripForQualityMeasureIdWithDuplicateDenomMeasurePopulation() {
+		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
+				"component[5]/observation/reference/externalObservation/id";
+
+		List<Detail> details = executeScenario(path, false);
+
+		Assert.assertThat("Should only have one error detail", details, hasSize(1));
+		Assert.assertThat("error should regard the need for a single measure population", details,
+				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_POPULATION));
+	}
+
+	@Test
+	public void testRoundTripForQualityMeasureIdWithNoDenomMeasurePopulation() {
+		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
+				"component[5]/observation/reference/externalObservation/id";
+
+		List<Detail> details = executeScenario(path, false);
+
+		Assert.assertThat("Should only have one error detail", details, hasSize(1));
+		Assert.assertThat("error should regard the need for a single measure population", details,
+				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_POPULATION));
 	}
 
 	private List<Detail> executeScenario(String path, boolean remove) {

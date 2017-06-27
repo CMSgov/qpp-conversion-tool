@@ -20,12 +20,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 class Checker {
 
 	private Node node;
-	private List<Detail> details;
+	private Set<Detail> details;
 	private boolean anded;
 	private Map<TemplateId, AtomicInteger> nodeCount;
 	private Comparable<?> lastAppraised;
 
-	private Checker(Node node, List<Detail> details, boolean anded) {
+	private Checker(Node node, Set<Detail> details, boolean anded) {
 		this.node = node;
 		this.details = details;
 		this.anded = anded;
@@ -44,7 +44,7 @@ class Checker {
 	 * @param details holder for validation errors
 	 * @return The checker, for chaining method calls.
 	 */
-	static Checker check(Node node, List<Detail> details) {
+	static Checker check(Node node, Set<Detail> details) {
 		return new Checker(node, details, true);
 	}
 
@@ -55,7 +55,7 @@ class Checker {
 	 * @param details holder for validation errors
 	 * @return The checker, for chaining method calls.
 	 */
-	static Checker thoroughlyCheck(Node node, List<Detail> details) {
+	static Checker thoroughlyCheck(Node node, Set<Detail> details) {
 		return new Checker(node, details, false);
 	}
 

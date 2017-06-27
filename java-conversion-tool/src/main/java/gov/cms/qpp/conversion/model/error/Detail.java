@@ -103,4 +103,37 @@ public class Detail implements Serializable {
 		sb.append('}');
 		return sb.toString();
 	}
+
+	/**
+	 * Evaluate equality of state.
+	 *
+	 * @param o Object to compare against
+	 * @return evaluation
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Detail detail = (Detail) o;
+
+		if (message != null ? !message.equals(detail.message) : detail.message != null) return false;
+		if (path != null ? !path.equals(detail.path) : detail.path != null) return false;
+		if (value != null ? !value.equals(detail.value) : detail.value != null) return false;
+		return type != null ? type.equals(detail.type) : detail.type == null;
+	}
+
+	/**
+	 * get object hash code
+	 *
+	 * @return
+	 */
+	@Override
+	public int hashCode() {
+		int result = message != null ? message.hashCode() : 0;
+		result = 31 * result + (path != null ? path.hashCode() : 0);
+		result = 31 * result + (value != null ? value.hashCode() : 0);
+		result = 31 * result + (type != null ? type.hashCode() : 0);
+		return result;
+	}
 }

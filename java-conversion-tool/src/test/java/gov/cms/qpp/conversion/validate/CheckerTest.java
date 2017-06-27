@@ -6,8 +6,8 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
@@ -25,11 +25,11 @@ public class CheckerTest {
 	private static final String ERROR_MESSAGE = "error message";
 	private static final String OTHER_ERROR_MESSAGE = "some other error message";
 
-	private List<Detail> details;
+	private Set<Detail> details;
 
 	@Before
 	public void beforeEach() {
-		details = new ArrayList<>();
+		details = new LinkedHashSet<>();
 	}
 
 	@Test
@@ -40,7 +40,7 @@ public class CheckerTest {
 		checker.value(ERROR_MESSAGE, VALUE);
 
 		assertThat("There's an error", details, hasSize(1));
-		assertThat("message applied is the message given", details.get(0),
+		assertThat("message applied is the message given", details.iterator().next(),
 				validationErrorTextMatches(ERROR_MESSAGE));
 	}
 
@@ -53,7 +53,7 @@ public class CheckerTest {
 				.hasParent(ERROR_MESSAGE, TemplateId.ACI_DENOMINATOR); //shortcuts
 
 		assertThat("There's an error", details, hasSize(1));
-		assertThat("message applied is the message given", details.get(0),
+		assertThat("message applied is the message given", details.iterator().next(),
 				validationErrorTextMatches(ERROR_MESSAGE));
 	}
 
@@ -167,7 +167,7 @@ public class CheckerTest {
 		checker.value(ERROR_MESSAGE, VALUE).hasChildren(OTHER_ERROR_MESSAGE);
 
 		assertThat("There's an error", details, hasSize(1));
-		assertThat("message applied is other error message", details.get(0),
+		assertThat("message applied is other error message", details.iterator().next(),
 				validationErrorTextMatches(OTHER_ERROR_MESSAGE));
 	}
 
@@ -193,7 +193,7 @@ public class CheckerTest {
 				.childMaximum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
 				.hasChildren(OTHER_ERROR_MESSAGE);
 		assertThat("There's an error", details, hasSize(1));
-		assertThat("message applied is other error message", details.get(0),
+		assertThat("message applied is other error message", details.iterator().next(),
 				validationErrorTextMatches(ERROR_MESSAGE));
 	}
 
@@ -212,7 +212,7 @@ public class CheckerTest {
 				.childMaximum(OTHER_ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER);
 
 		assertThat("There's an error", details, hasSize(1));
-		assertThat("message applied is other error message", details.get(0),
+		assertThat("message applied is other error message", details.iterator().next(),
 				validationErrorTextMatches(OTHER_ERROR_MESSAGE));
 	}
 
@@ -228,7 +228,7 @@ public class CheckerTest {
 		checker.childMaximum("too many children", 2, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
 
 		assertThat("There's an error", details, hasSize(1));
-		assertThat("message applied is other error message", details.get(0),
+		assertThat("message applied is other error message", details.iterator().next(),
 				validationErrorTextMatches("too many children"));
 	}
 
@@ -386,13 +386,13 @@ public class CheckerTest {
 		checker.hasMeasures(validationError, expectedMeasure);
 
 		assertThat("A measure should not have been found.", details, hasSize(1));
-		assertThat("The validation error string did not match up.", details.get(0),
+		assertThat("The validation error string did not match up.", details.iterator().next(),
 				validationErrorTextMatches(validationError));
 	}
 
 	@Test
 	public void testCheckerHasMeasuresShortCut() {
-		List<Detail> errors = new ArrayList<>();
+		Set<Detail> errors = new LinkedHashSet<>();
 		Detail err = new Detail();
 		errors.add(err);
 		Node root = new Node();
@@ -405,7 +405,7 @@ public class CheckerTest {
 
 	@Test
 	public void testCheckerHasInvalidMeasure() {
-		List<Detail> errors = new ArrayList<>();
+		Set<Detail> errors = new LinkedHashSet<>();
 
 		Node root = new Node();
 		Node measure = new Node(TemplateId.CLINICAL_DOCUMENT, root);
@@ -441,7 +441,8 @@ public class CheckerTest {
 		Checker checker = Checker.check(iaSectionNode, details);
 		checker.onlyHasChildren(ERROR_MESSAGE, TemplateId.IA_MEASURE);
 
-		assertThat("There should be an error", details.get(0), validationErrorTextMatches(ERROR_MESSAGE));
+		assertThat("There should be an error",
+				details.iterator().next(), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 
 	@Test
@@ -462,7 +463,8 @@ public class CheckerTest {
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIn(ERROR_MESSAGE, key, "No Value" , "Some Value", "My Value");
 		assertThat("There should be 1 error", details, hasSize(1));
-		assertThat("There should be an error", details.get(0), validationErrorTextMatches(ERROR_MESSAGE));
+		assertThat("There should be an error",
+				details.iterator().next(), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 	@Test
 	public void testValueInNull() throws Exception {
@@ -472,7 +474,8 @@ public class CheckerTest {
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIn(ERROR_MESSAGE, key, null);
 		assertThat("There should be 1 error", details, hasSize(1));
-		assertThat("There should be an error", details.get(0), validationErrorTextMatches(ERROR_MESSAGE));
+		assertThat("There should be an error",
+				details.iterator().next(), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 	@Test
 	public void testValueInKeyNull() throws Exception {
@@ -482,7 +485,8 @@ public class CheckerTest {
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIn(ERROR_MESSAGE, null, null);
 		assertThat("There should be 1 error", details, hasSize(1));
-		assertThat("There should be an error", details.get(0), validationErrorTextMatches(ERROR_MESSAGE));
+		assertThat("There should be an error",
+				details.iterator().next(), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 	@Test
 	public void testValueInNulls() throws Exception {
@@ -492,7 +496,8 @@ public class CheckerTest {
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIn(ERROR_MESSAGE, key, null);
 		assertThat("There should be 1 error", details, hasSize(1));
-		assertThat("There should be an error", details.get(0), validationErrorTextMatches(ERROR_MESSAGE));
+		assertThat("There should be an error",
+				details.iterator().next(), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 	@Test
 	public void testValueInShouldShortCut() throws Exception {
@@ -503,7 +508,8 @@ public class CheckerTest {
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIn(ERROR_MESSAGE, key, null , "Some Value", "My Value");
 		assertThat("There should be 1 error", details, hasSize(1));
-		assertThat("There should be an error", details.get(0), validationErrorTextMatches(ERROR_MESSAGE));
+		assertThat("There should be an error",
+				details.iterator().next(), validationErrorTextMatches(ERROR_MESSAGE));
 	}
 	@Test
 	public void testHappyValueIsEmptyAsNull() throws Exception {
@@ -530,7 +536,8 @@ public class CheckerTest {
 		Node testNode = makeTestNode(key, value);
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIsEmpty(ERROR_MESSAGE, key);
-		assertThat("There should be no errors", details.get(0).getMessage(), is(ERROR_MESSAGE));
+		assertThat("There should be no errors",
+				details.iterator().next().getMessage(), is(ERROR_MESSAGE));
 	}
 
 	private Node makeTestNode(String key, String value) {

@@ -34,18 +34,19 @@ public class MarkupManipulator {
 
 	private DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	private Document document;
+	private String pathname;
 
-	private MarkupManipulator(String pathname, boolean nsAware) throws ParserConfigurationException, IOException, SAXException {
+	private MarkupManipulator(String path, boolean nsAware) {
 		if (nsAware) {
 			dbf.setNamespaceAware(true);
 		}
-		document = dbf.newDocumentBuilder().parse(
-				new File(pathname));
+		pathname = path;
 	}
 
 	public InputStream upsetTheNorm(String xPath, boolean remove) {
 		try {
-
+			document = dbf.newDocumentBuilder().parse(
+					new File(pathname));
 			XPath xpath = xpf.newXPath();
 			XPathExpression expression = xpath.compile(xPath);
 
@@ -77,7 +78,8 @@ public class MarkupManipulator {
 			Result result = new StreamResult(os);
 			t.transform(new DOMSource(document), result);
 			return new ByteArrayInputStream(os.toByteArray());
-		} catch (XPathExpressionException | TransformerException ex) {
+		} catch (ParserConfigurationException | IOException | SAXException |
+				XPathExpressionException | TransformerException ex) {
 			throw new RuntimeException(ex);
 		}
 	}

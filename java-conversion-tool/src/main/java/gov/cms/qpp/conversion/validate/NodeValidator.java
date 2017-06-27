@@ -2,13 +2,13 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.Detail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * The parent class that all validators must inherit from.
@@ -17,7 +17,7 @@ public abstract class NodeValidator {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(NodeValidator.class);
 
-	private List<Detail> details = new ArrayList<>();
+	private Set<Detail> details = new LinkedHashSet<>();
 
 	/**
 	 * Validates a single {@link gov.cms.qpp.conversion.model.Node} and returns the list
@@ -27,7 +27,7 @@ public abstract class NodeValidator {
 	 * @return List of errors determined for the node paramter.
 	 * @see #internalValidateSingleNode(Node)
 	 */
-	public List<Detail> validateSingleNode(final Node node) {
+	public Set<Detail> validateSingleNode(final Node node) {
 		internalValidateSingleNode(node);
 		return getDetails();
 	}
@@ -37,7 +37,7 @@ public abstract class NodeValidator {
 	 *
 	 * @return The current list of validation errors.
 	 */
-	protected List<Detail> getDetails() {
+	protected Set<Detail> getDetails() {
 		return details;
 	}
 

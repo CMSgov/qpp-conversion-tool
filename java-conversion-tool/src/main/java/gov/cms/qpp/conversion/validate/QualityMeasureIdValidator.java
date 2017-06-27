@@ -29,9 +29,9 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	protected static final String MEASURE_ID = "measureId";
 
 	protected static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
-	protected static final String SINGLE_MEASURE_POPULATION =
+	public static final String SINGLE_MEASURE_POPULATION =
 			"The measure reference results must have a single measure population";
-	protected static final String SINGLE_MEASURE_TYPE =
+	public static final String SINGLE_MEASURE_TYPE =
 			"The measure reference results must have a single measure type";
 	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";

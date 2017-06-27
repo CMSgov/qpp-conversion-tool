@@ -6,7 +6,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import org.hamcrest.core.Is;
 import org.junit.Test;
 
-import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.Assert.assertThat;
@@ -28,7 +28,7 @@ public class MeasurePerformedValidatorTest {
 		measurePerformedNode.putValue("measurePerformed", "Y");
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
-		List<Detail> errors = validator.validateSingleNode(measurePerformedNode);
+		Set<Detail> errors = validator.validateSingleNode(measurePerformedNode);
 		assertThat("no errors should be present", errors, empty());
 	}
 
@@ -38,7 +38,7 @@ public class MeasurePerformedValidatorTest {
 		measurePerformedNode.putValue("measurePerformed", "N");
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
-		List<Detail> errors = validator.validateSingleNode(measurePerformedNode);
+		Set<Detail> errors = validator.validateSingleNode(measurePerformedNode);
 		assertThat("no errors should be present", errors, empty());
 	}
 
@@ -48,7 +48,7 @@ public class MeasurePerformedValidatorTest {
 		measurePerformedNode.putValue("measurePerformed", "wrong value");
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
-		List<Detail> errors = validator.validateSingleNode(measurePerformedNode);
+		Set<Detail> errors = validator.validateSingleNode(measurePerformedNode);
 		assertThat("no errors should be present", errors.size(), Is.is(1));
 	}
 }
