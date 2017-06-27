@@ -56,8 +56,14 @@ public class JsonHelper {
 	 * @return Object of specified type
 	 * @throws IOException if problems arise while attempting to parse the json input stream
 	 */
-	public static <T> T readJson(InputStream json, Class<T> valueType) throws IOException {
-		return new ObjectMapper().readValue(json, valueType);
+	public static <T> T readJson(InputStream json, Class<T> valueType) {
+		T returnValue;
+		try {
+			returnValue = new ObjectMapper().readValue(json, valueType);
+		} catch (IOException ex) {
+			throw new JsonReadException("Problem parsing json string", ex);
+		}
+		return returnValue;
 	}
 
 	/**

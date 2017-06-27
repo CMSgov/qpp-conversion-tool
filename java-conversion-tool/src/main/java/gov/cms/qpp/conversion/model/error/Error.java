@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion.model.error;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +12,14 @@ import java.util.List;
  *
  * The source could be a file, a stream, or some other entity.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Error implements Serializable {
 	private static final long serialVersionUID = 1596644641404778774L;
 	private String sourceIdentifier;
 	private String type;
 	private String message;
-	private List<Detail> details;
+	@JsonProperty("details")
+	private List<Detail> details = new ArrayList<Detail>();
 
 	/**
 	 * Constructs an empty {@code Error}.
@@ -94,6 +99,7 @@ public class Error implements Serializable {
 	 *
 	 * @return A list of ValidationErrors.
 	 */
+	@JsonProperty("details")
 	public List<Detail> getDetails() {
 		return details;
 	}
@@ -103,6 +109,7 @@ public class Error implements Serializable {
 	 *
 	 * @param details A list of ValidationErrors.
 	 */
+	@JsonProperty("details")
 	public void setDetails(final List<Detail> details) {
 		this.details = details;
 	}

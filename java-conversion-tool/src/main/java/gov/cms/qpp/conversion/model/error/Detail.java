@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.model.error;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -7,9 +9,13 @@ import java.io.Serializable;
  */
 public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552590676L;
+	@JsonProperty("message")
 	private String message;
+	@JsonProperty("path")
 	private String path = "";
+	@JsonProperty("value")
 	private String value;
+	@JsonProperty("type")
 	private String type;
 
 	/**
@@ -59,8 +65,14 @@ public class Detail implements Serializable {
 	 *
 	 * @return An error description.
 	 */
+	@JsonProperty("message")
 	public String getMessage() {
 		return message;
+	}
+
+	@JsonProperty("message")
+	public void setMessage(String newMessage) {
+		message = newMessage;
 	}
 
 	/**
@@ -73,12 +85,26 @@ public class Detail implements Serializable {
 	}
 
 	/**
+	 * Sets the path that this error references.
+	 *
+	 * @param newPath The path that this error references.
+	 */
+	public void setPath(String newPath) {
+		path = newPath;
+	}
+
+	/**
 	 * Gets the value that this error references.
 	 *
 	 * @return The value that this error references.
 	 */
+	@JsonProperty("value")
 	public String getValue() {
 		return value;
+	}
+
+	public void setValue(String newValue) {
+		value = newValue;
 	}
 
 	/**
@@ -86,10 +112,14 @@ public class Detail implements Serializable {
 	 *
 	 * @return The type that this error references.
 	 */
+	@JsonProperty("type")
 	public String getType() {
 		return type;
 	}
 
+	public void setType(String newType) {
+		type = newType;
+	}
 	/**
 	 * @return A string representation.
 	 */
@@ -133,7 +163,7 @@ public class Detail implements Serializable {
 		if (value != null ? !value.equals(detail.value) : detail.value != null) {
 			return false;
 		}
-		
+
 		return type != null ? type.equals(detail.type) : detail.type == null;
 	}
 
