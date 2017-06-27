@@ -29,13 +29,16 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	protected static final String MEASURE_ID = "measureId";
 
 	protected static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
+	public static final String SINGLE_MEASURE_POPULATION =
+			"The measure reference results must have a single measure population";
+	public static final String SINGLE_MEASURE_TYPE =
+			"The measure reference results must have a single measure type";
 	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
-	protected static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
+	public static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
 	protected static final String DENEX = "denominator exclusion";
 	protected static final String DENEXCEP = "eligiblePopulationExclusion";
-	protected static final String IPOP = "eligible population";
 	protected static final String NUMER = "performanceMet";
-	protected static final String DENOM = "eligiblePopulation";
+	public static final String DENOM = "eligiblePopulation";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -56,7 +59,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		//This should not be an error
 
 		thoroughlyCheck(node)
-			.value(MEASURE_GUID_MISSING, MEASURE_ID)
+			.singleValue(MEASURE_GUID_MISSING, MEASURE_ID)
 			.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
@@ -120,15 +123,15 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * Method template for measure validations.
 	 *
 	 * @param check a property existence check
-	 * @param keys that identify measures
+	 * @param key that identify measures
 	 * @param label a short measure description
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	private Consumer<Node> makeValidator(Supplier<Object> check, String label, String... keys) {
+	private Consumer<Node> makeValidator(Supplier<Object> check, String label, String key) {
 		return node -> {
 			if (check.get() != null) {
-				Predicate<Node> childFinder = makeChildFinder(check, keys);
+				Predicate<Node> childFinder = makeChildFinder(check, key);
 				List<Node> childMeasureNodes = node.getChildNodes(childFinder).collect(Collectors.toList());
 				if (childMeasureNodes.isEmpty()) {
 					String message = String.format(REQUIRED_CHILD_MEASURE, label);
@@ -142,14 +145,15 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * Search filter for child measure nodes.
 	 *
 	 * @param check provides sub population specific measure id
-	 * @param keys that identify measures
+	 * @param key that identifies measure
 	 * @return search filter
 	 */
-	private Predicate<Node> makeChildFinder(Supplier<Object> check, String... keys) {
+	private Predicate<Node> makeChildFinder(Supplier<Object> check, String key) {
 		return thisNode -> {
-			boolean validMeasureType = (keys.length > 1)
-				? Arrays.stream(keys).anyMatch(key -> key.equals(thisNode.getValue(MEASURE_TYPE)))
-				: keys[0].equals(thisNode.getValue(MEASURE_TYPE));
+			thoroughlyCheck(thisNode)
+				.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE)
+				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
+			boolean validMeasureType = key.equals(thisNode.getValue(MEASURE_TYPE));
 			return validMeasureType && check.get().equals(thisNode.getValue(MEASURE_POPULATION));
 		};
 	}

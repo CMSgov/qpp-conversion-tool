@@ -22,6 +22,7 @@ import java.util.stream.Stream;
  * Maintains associations between QPP json paths and their pre-transformation xpaths.
  */
 public class PathCorrelator {
+	public static final String KEY_DELIMITER = "#";
 	private static final String ENCODE_LABEL = "encodeLabel";
 	@SuppressWarnings("FieldCanBeLocal")
 	private static String config = "pathing/path-correlation.json";
@@ -89,7 +90,7 @@ public class PathCorrelator {
 	 * @return concatenated key value
 	 */
 	private static String getKey(String template, String attribute) {
-		return template + "_" + attribute;
+		return template + KEY_DELIMITER + attribute;
 	}
 
 	/**

@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.Test;
 
-import java.util.List;
+import java.util.Set;
 
 import static gov.cms.qpp.conversion.validate.MeasureDataValidator.MISSING_AGGREGATE_COUNT;
 import static org.hamcrest.CoreMatchers.is;
@@ -27,7 +27,7 @@ public class MeasureDataValidatorTest extends BaseTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		List<Detail> errors = validator.getDetails();
+		Set<Detail> errors = validator.getDetails();
 		assertThat("Expect no errors on the happy path ", errors.isEmpty(), is(true));
 	}
 
@@ -37,9 +37,9 @@ public class MeasureDataValidatorTest extends BaseTest {
 		MeasureDataValidator validator = new MeasureDataValidator();
 		validator.internalValidateSingleNode(testNode);
 
-		List<Detail> errors = validator.getDetails();
+		Set<Detail> errors = validator.getDetails();
 		assertThat(errors.isEmpty(), is(false));
-		assertEquals(errors.get(0).getMessage(), MISSING_AGGREGATE_COUNT);
+		assertEquals(errors.iterator().next().getMessage(), MISSING_AGGREGATE_COUNT);
 	}
 
 }

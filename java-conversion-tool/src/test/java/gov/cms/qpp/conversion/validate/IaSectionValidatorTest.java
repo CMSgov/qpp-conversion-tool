@@ -6,7 +6,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -28,7 +28,7 @@ public class IaSectionValidatorTest {
 	public void testCorrectIaSectionPassesValidation() {
 		iaSectionNode.addChildNodes(iaMeasureNode, reportingParamActNode);
 
-		List<Detail> errors = validatorIaSection();
+		Set<Detail> errors = validatorIaSection();
 
 		assertThat("Must contain no errors", errors, hasSize(0));
 	}
@@ -37,9 +37,9 @@ public class IaSectionValidatorTest {
 	public void testValidatesMissingIAMeasure() {
 		iaSectionNode.addChildNodes(reportingParamActNode);
 		
-		List<Detail> errors = validatorIaSection();
+		Set<Detail> errors = validatorIaSection();
 
-		assertThat("Must be missing the correct child", errors.get(0).getMessage(),
+		assertThat("Must be missing the correct child", errors.iterator().next().getMessage(),
 				is(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR));
 	}
 
@@ -48,9 +48,9 @@ public class IaSectionValidatorTest {
 		Node incorrectAggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		iaSectionNode.addChildNodes(iaMeasureNode, reportingParamActNode, incorrectAggregateCountNode);
 
-		List<Detail> errors = validatorIaSection();
+		Set<Detail> errors = validatorIaSection();
 
-		assertThat("Must contain correct children", errors.get(0).getMessage(),
+		assertThat("Must contain correct children", errors.iterator().next().getMessage(),
 				is(IaSectionValidator.WRONG_CHILD_ERROR));
 	}
 
@@ -58,9 +58,9 @@ public class IaSectionValidatorTest {
 	public void testMissingReportingParameter() {
 		iaSectionNode.addChildNodes(iaMeasureNode);
 
-		List<Detail> errors = validatorIaSection();
+		Set<Detail> errors = validatorIaSection();
 
-		assertThat("Must contain correct children", errors.get(0).getMessage(),
+		assertThat("Must contain correct children", errors.iterator().next().getMessage(),
 				is(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR));
 	}
 
@@ -69,13 +69,13 @@ public class IaSectionValidatorTest {
 		Node invalidParamActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		iaSectionNode.addChildNodes(iaMeasureNode, reportingParamActNode, invalidParamActNode);
 
-		List<Detail> errors = validatorIaSection();
+		Set<Detail> errors = validatorIaSection();
 
-		assertThat("Must contain correct children", errors.get(0).getMessage(),
+		assertThat("Must contain correct children", errors.iterator().next().getMessage(),
 				is(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR));
 	}
 
-	private List<Detail> validatorIaSection() {
+	private Set<Detail> validatorIaSection() {
 		IaSectionValidator iaValidator = new IaSectionValidator();
 
 		iaValidator.internalValidateSingleNode(iaSectionNode);

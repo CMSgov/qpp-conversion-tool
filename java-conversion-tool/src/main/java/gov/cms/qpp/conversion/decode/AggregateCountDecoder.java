@@ -41,7 +41,8 @@ public class AggregateCountDecoder extends QppXmlDecoder {
 	 */
 	protected void setSciNumeratorDenominatorOnNode(Element element, Node thisnode) {
 		String expressionStr = getXpath(AGGREGATE_COUNT);
-		Consumer<? super Attribute> consumer = p -> thisnode.putValue(AGGREGATE_COUNT, p.getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+		Consumer<? super Attribute> consumer = p ->
+				thisnode.putValue(AGGREGATE_COUNT, p.getValue(), false);
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), false);
 	}
 }
