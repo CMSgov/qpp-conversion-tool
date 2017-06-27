@@ -82,7 +82,7 @@ public class ValidationServiceImplTest {
 	public void testNoValidationUrl() {
 		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn(null);
 
-		objectUnderTest.validateQpp(null, null);
+		objectUnderTest.validateQpp(null);
 
 		verifyZeroInteractions(restTemplate);
 	}
@@ -95,7 +95,7 @@ public class ValidationServiceImplTest {
 		ResponseEntity<String> spiedResponseEntity = spy(new ResponseEntity<>(HttpStatus.OK));
 		when(restTemplate.postForEntity(eq(validationUrl), any(HttpEntity.class), eq(String.class))).thenReturn(spiedResponseEntity);
 
-		objectUnderTest.validateQpp(new JsonWrapper(), null);
+		objectUnderTest.validateQpp(new JsonWrapper());
 
 		verify(spiedResponseEntity, never()).getBody();
 	}
@@ -111,7 +111,7 @@ public class ValidationServiceImplTest {
 		thrown.expect(TransformException.class);
 		thrown.expectMessage("Converted QPP failed validation");
 
-		objectUnderTest.validateQpp(qppWrapper, null);
+		objectUnderTest.validateQpp(qppWrapper);
 	}
 
 	@Test

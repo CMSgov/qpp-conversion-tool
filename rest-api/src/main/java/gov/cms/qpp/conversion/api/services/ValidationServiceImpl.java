@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
-import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -33,7 +32,7 @@ public class ValidationServiceImpl implements ValidationService {
 	private RestTemplate restTemplate = new RestTemplate();
 
 	@Override
-	public void validateQpp(final JsonWrapper qpp, final Converter converter) {
+	public void validateQpp(final JsonWrapper qpp) {
 		String validationUrl = environment.getProperty(VALIDATION_URL_ENV_NAME);
 
 		if (validationUrl == null || validationUrl.isEmpty()) {

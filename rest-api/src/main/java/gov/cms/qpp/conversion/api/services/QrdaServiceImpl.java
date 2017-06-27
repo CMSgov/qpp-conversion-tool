@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,9 +12,6 @@ import java.io.InputStream;
  */
 @Service
 public class QrdaServiceImpl implements QrdaService {
-
-	@Autowired
-	private ValidationService validationService;
 
 	/**
 	 * Converts a given a input stream with to conversion result content
@@ -28,8 +24,6 @@ public class QrdaServiceImpl implements QrdaService {
 	public JsonWrapper convertQrda3ToQpp(InputStream fileInputStream) {
 		Converter converter = new Converter(fileInputStream);
 		JsonWrapper qpp = converter.transform();
-
-		validationService.validateQpp(qpp, converter);
 
 		return qpp;
 	}
