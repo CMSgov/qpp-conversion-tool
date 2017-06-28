@@ -1,13 +1,10 @@
 package gov.cms.qpp.conversion.model.error;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.Test;
-import sun.plugin2.message.Serializer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
