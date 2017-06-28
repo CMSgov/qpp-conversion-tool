@@ -21,6 +21,9 @@ import org.springframework.web.client.RestTemplate;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+/**
+ * Implementation for the QPP Validation Service
+ */
 @Service
 public class ValidationServiceImpl implements ValidationService {
 
@@ -31,6 +34,11 @@ public class ValidationServiceImpl implements ValidationService {
 
 	private RestTemplate restTemplate = new RestTemplate();
 
+	/**
+	 * Validates that the given QPP is valid.
+	 *
+	 * @param qpp The QPP input.
+	 */
 	@Override
 	public void validateQpp(final JsonWrapper qpp) {
 		String validationUrl = environment.getProperty(VALIDATION_URL_ENV_NAME);
@@ -47,6 +55,13 @@ public class ValidationServiceImpl implements ValidationService {
 		}
 	}
 
+	/**
+	 * Calls the validation API end-point.
+	 *
+	 * @param url The URL of the validation API end-point.
+	 * @param qpp The QPP to validate.
+	 * @return The response from the validation API end-point.
+	 */
 	private ResponseEntity<String> callValidationEndpoint(String url, JsonWrapper qpp) {
 		restTemplate.setErrorHandler(new NoHandlingErrorHandler());
 
@@ -58,6 +73,13 @@ public class ValidationServiceImpl implements ValidationService {
 		return restTemplate.postForEntity(url, request, String.class);
 	}
 
+	/**
+	 * Converts the QPP error returned from the validation API to QRDA3 errors
+	 *
+	 * @param validationResponse The JSON response containing a QPP error.
+	 * @param wrapper The QPP that resulted in the QPP error.
+	 * @return The QRDA3 errors.
+	 */
 	AllErrors convertQppValidationErrorsToQrda(String validationResponse, JsonWrapper wrapper) {
 		AllErrors errors = new AllErrors();
 		Error error = getError(validationResponse);
@@ -72,12 +94,27 @@ public class ValidationServiceImpl implements ValidationService {
 		return errors;
 	}
 
+	/**
+	 * Deserializes the JSON QPP error into an {@link Error} object.
+	 *
+	 * @param response The JSON response containing a QPP error.
+	 * @return An Error object.
+	 */
 	private Error getError(String response) {
 		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes()), ErrorMessage.class)
 				.getError();
 	}
 
+	/**
+	 * A private class that tells the {@link RestTemplate} to not throw an exception on HTTP status 3xx and 4xx.
+	 */
 	private class NoHandlingErrorHandler extends DefaultResponseErrorHandler {
+		/**
+		 * Empty so it doesn't throw an exception.
+		 *
+		 * @param response The ClientHttpResponse.
+		 * @throws IOException An IOException.
+		 */
 		@Override
 		public void handleError(final ClientHttpResponse response) throws IOException {
 			//do nothing

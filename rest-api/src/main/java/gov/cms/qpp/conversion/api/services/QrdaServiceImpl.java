@@ -4,7 +4,6 @@ import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -18,7 +17,6 @@ public class QrdaServiceImpl implements QrdaService {
 	 *
 	 * @param fileInputStream Object to be converted
 	 * @return Results of the conversion
-	 * @throws IOException If error occurs during file upload or conversion
 	 */
 	@Override
 	public JsonWrapper convertQrda3ToQpp(InputStream fileInputStream) {
