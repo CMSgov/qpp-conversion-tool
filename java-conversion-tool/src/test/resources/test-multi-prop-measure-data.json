@@ -16,6 +16,7 @@
 		"eMeasureUuid": "test1",
 		"strata": [
 			{
+				"name": "test1strata1",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "ipop1",
 					"denominatorUuid": "denom1",
@@ -25,6 +26,7 @@
 				}
 			},
 			{
+				"name": "test1strata2",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "ipop2",
 					"denominatorUuid": "denom2",
@@ -61,6 +63,7 @@
 		"eMeasureUuid": "test2",
 		"strata": [
 			{
+				"name": null,
 				"eMeasureUuids": {
 					"initialPopulationUuid": null,
 					"denominatorUuid": null,
@@ -70,6 +73,7 @@
 				}
 			},
 			{
+				"name": null,
 				"eMeasureUuids": {
 					"initialPopulationUuid": null,
 					"denominatorUuid": null,

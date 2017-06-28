@@ -558,19 +558,19 @@
 						"eligiblePopulationExclusion" : 35,
 						"performanceNotMet" : 79,
 						"eligiblePopulation" : 600,
-						"stratum" : "B5FA6E85-0F2E-4674-A3F8-E14D834E73AB"
+						"stratum" : "4MonthsOfEnd"
 					}, {
 						"performanceMet" : 700,
 						"eligiblePopulationExclusion" : 40,
 						"performanceNotMet" : 60,
 						"eligiblePopulation" : 800,
-						"stratum" : "33538979-8425-45A4-B724-D74CC0A84EF3"
+						"stratum" : "4&8MonthsAfterStart"
 					}, {
 						"performanceMet" : 520,
 						"eligiblePopulationExclusion" : 40,
 						"performanceNotMet" : 20,
 						"eligiblePopulation" : 580,
-						"stratum" : "2D4D6446-C9CD-4661-868B-C8B9B13A8E08"
+						"stratum" : "4MonthsOfStart"
 					} ]
 				}
 			} ],
@@ -662,19 +662,19 @@
 					"eligiblePopulationExclusion" : 35,
 					"performanceNotMet" : 79,
 					"eligiblePopulation" : 600,
-					"stratum" : "B5FA6E85-0F2E-4674-A3F8-E14D834E73AB"
+					"stratum" : "4MonthsOfEnd"
 				}, {
 					"performanceMet" : 700,
 					"eligiblePopulationExclusion" : 40,
 					"performanceNotMet" : 60,
 					"eligiblePopulation" : 800,
-					"stratum" : "33538979-8425-45A4-B724-D74CC0A84EF3"
+					"stratum" : "4&8MonthsAfterStart"
 				}, {
 					"performanceMet" : 520,
 					"eligiblePopulationExclusion" : 40,
 					"performanceNotMet" : 20,
 					"eligiblePopulation" : 580,
-					"stratum" : "2D4D6446-C9CD-4661-868B-C8B9B13A8E08"
+					"stratum" : "4MonthsOfStart"
 				} ]
 			}
 		} ],
@@ -716,19 +716,19 @@
 				"eligiblePopulationExclusion" : 35,
 				"performanceNotMet" : 79,
 				"eligiblePopulation" : 600,
-				"stratum" : "B5FA6E85-0F2E-4674-A3F8-E14D834E73AB"
+				"stratum" : "4MonthsOfEnd"
 			}, {
 				"performanceMet" : 700,
 				"eligiblePopulationExclusion" : 40,
 				"performanceNotMet" : 60,
 				"eligiblePopulation" : 800,
-				"stratum" : "33538979-8425-45A4-B724-D74CC0A84EF3"
+				"stratum" : "4&8MonthsAfterStart"
 			}, {
 				"performanceMet" : 520,
 				"eligiblePopulationExclusion" : 40,
 				"performanceNotMet" : 20,
 				"eligiblePopulation" : 580,
-				"stratum" : "2D4D6446-C9CD-4661-868B-C8B9B13A8E08"
+				"stratum" : "4MonthsOfStart"
 			} ]
 		}
 	} ],
