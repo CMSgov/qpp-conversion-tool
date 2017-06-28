@@ -25,6 +25,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Converter.class, QrdaServiceImpl.class})
 public class QrdaServiceImplTest {
+
 	private static QrdaServiceImpl objectUnderTest;
 
 	private static final InputStream MOCK_SUCCESS_QRDA_INPUT_STREAM = new ByteArrayInputStream("Good Qrda".getBytes());
@@ -71,12 +72,12 @@ public class QrdaServiceImplTest {
 	public void testConvertQrda3ToQppError() {
 		try {
 			JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_ERROR_QRDA_INPUT_STREAM);
-			fail();
+			fail("An exception should have occurred.");
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
 			assertThat("", allErrors.getErrors().get(0).getSourceIdentifier(), is(MOCK_ERROR_SOURCE_IDENTIFIER));
 		} catch (Exception exception) {
-			fail();
+			fail("The wrong exception occurred.");
 		}
 	}
 }

@@ -11,8 +11,6 @@ public class Strata {
 
 	private String name;
 
-	private String description;
-
 	@JsonProperty("eMeasureUuids")
 	private SubPopulation electronicMeasureUuids;
 
@@ -26,14 +24,6 @@ public class Strata {
 
 	public void setName(final String name) {
 		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(final String description) {
-		this.description = description;
 	}
 
 	public SubPopulation getElectronicMeasureUuids() {
