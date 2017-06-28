@@ -4,15 +4,19 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import org.junit.Test;
 import org.reflections.util.ClasspathHelper;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 /**
  * Test class to increase JaCoCo code coverage
  */
@@ -38,5 +42,21 @@ public class JsonHelperTest {
 		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(measureDataFileName);
 		configurations = JsonHelper.readJsonAtJsonPath(measuresInput, "$",List.class);
 		assertThat("Expect to get a List of measureConfigs", configurations,is(not(empty())));
+	}
+
+	@Test
+	public void exceptionForReadJson() {
+		String testJson = "{ \"DogCow\": [ }";
+
+		InputStream inputStream = new ByteArrayInputStream(testJson.getBytes());
+
+		try {
+			JsonHelper.readJson(inputStream, Map.class);
+			fail("An exception should have been thrown.");
+		} catch(JsonReadException exception) {
+			assertThat("Wrong exception reason.", exception.getMessage(), is("Problem parsing json string"));
+		} catch(Exception exception) {
+			fail("Incorrect exception was thrown.");
+		}
 	}
 }
