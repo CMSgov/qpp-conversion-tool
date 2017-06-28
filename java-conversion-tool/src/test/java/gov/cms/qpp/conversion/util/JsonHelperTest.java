@@ -4,9 +4,11 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import org.junit.Test;
 import org.reflections.util.ClasspathHelper;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.empty;
@@ -38,5 +40,11 @@ public class JsonHelperTest {
 		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(measureDataFileName);
 		configurations = JsonHelper.readJsonAtJsonPath(measuresInput, "$",List.class);
 		assertThat("Expect to get a List of measureConfigs", configurations,is(not(empty())));
+	}
+
+	@Test(expected = JsonReadException.class)
+	public void readJsonError() throws Exception {
+		InputStream inStream = new ByteArrayInputStream("meep".getBytes());
+		JsonHelper.readJson(inStream, Map.class);
 	}
 }

@@ -55,9 +55,10 @@ public class DetailTest {
 	public void moreEqualsTesting() {
 		Detail detail = new Detail("meep","meeo","meep","meep");
 		Detail nullDetail = new Detail(null,null,null,null);
+
+		assertEquals("Null detail should equal Null detail", nullDetail, new Detail(nullDetail));
 		assertNotEquals("detail should not equal null", detail, null);
 		assertNotEquals("detail should not equal a non-Detail class", detail, "meep");
-
 	}
 
 	@Test
