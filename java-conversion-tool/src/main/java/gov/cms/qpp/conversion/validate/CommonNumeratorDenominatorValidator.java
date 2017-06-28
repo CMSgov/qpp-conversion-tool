@@ -49,7 +49,7 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	private void validateAggregateCount(Node aggregateCountNode) {
 		String invalidMessage = String.format(INVALID_VALUE, nodeName);
 		check(aggregateCountNode)
-				.value(invalidMessage, AGGREGATE_COUNT_FIELD)
+				.singleValue(invalidMessage, AGGREGATE_COUNT_FIELD)
 				.intValue(String.format(NOT_AN_INTEGER_VALUE, nodeName), AGGREGATE_COUNT_FIELD)
 				.greaterThan(invalidMessage, -1);
 	}

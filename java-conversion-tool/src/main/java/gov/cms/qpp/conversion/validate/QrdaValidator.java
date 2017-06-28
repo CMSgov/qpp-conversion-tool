@@ -68,7 +68,7 @@ public class QrdaValidator {
 			return;
 		}
 
-		List<Detail> nodeErrors = validatorForNode.validateSingleNode(node);
+		Set<Detail> nodeErrors = validatorForNode.validateSingleNode(node);
 		details.addAll(nodeErrors);
 	}
 

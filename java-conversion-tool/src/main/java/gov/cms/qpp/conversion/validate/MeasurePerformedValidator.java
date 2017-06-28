@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.Detail;
 
 /**
  * Validate The Measure Performed Node 2.16.840.1.113883.10.20.27.3.27
@@ -11,6 +10,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 @Validator(value = TemplateId.MEASURE_PERFORMED, required = true)
 public class MeasurePerformedValidator extends NodeValidator {
 	private static final String FIELD = "measurePerformed";
+	private static final String[] BOOLEAN_VALUES = {"Y", "N"};
 
 	/**
 	 * An string value named "measurePerformed" was decoded from the source element<
@@ -20,9 +20,8 @@ public class MeasurePerformedValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		String value = node.getValue(FIELD);
-		if (!("Y".equals(value) || "N".equals(value))) {
-			addValidationError(new Detail(IaMeasureValidator.TYPE_ERROR, node.getPath()));
-		}
+		check(node)
+			.singleValue(IaMeasureValidator.TYPE_ERROR, FIELD)
+			.valueIn(IaMeasureValidator.TYPE_ERROR, FIELD, BOOLEAN_VALUES);
 	}
 }

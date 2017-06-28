@@ -3,9 +3,10 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -25,16 +26,16 @@ public class QualityMeasureSectionValidatorTest {
 	public void validQualityMeasureSectionValidation() {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
 
-		List<Detail> errors = validateQualityMeasureSection();
+		Set<Detail> errors = validateQualityMeasureSection();
 
 		assertThat("Must not contain errors", errors, hasSize(0));
 	}
 
 	@Test
 	public void testMissingReportingParams() {
-		List<Detail> errors = validateQualityMeasureSection();
+		Set<Detail> errors = validateQualityMeasureSection();
 
-		assertThat("Must contain correct error", errors.get(0).getMessage(),
+		assertThat("Must contain correct error", errors.iterator().next().getMessage(),
 				is(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR));
 	}
 
@@ -43,13 +44,13 @@ public class QualityMeasureSectionValidatorTest {
 		Node secondReportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualityMeasureSectionNode.addChildNodes(reportingParameterNode, secondReportingParameterNode);
 
-		List<Detail> errors = validateQualityMeasureSection();
+		Set<Detail> errors = validateQualityMeasureSection();
 
-		assertThat("Must contain correct error", errors.get(0).getMessage(),
+		assertThat("Must contain correct error", errors.iterator().next().getMessage(),
 				is(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR));
 	}
 
-	private List<Detail> validateQualityMeasureSection() {
+	private Set<Detail> validateQualityMeasureSection() {
 		QualityMeasureSectionValidator validator = new QualityMeasureSectionValidator();
 		validator.internalValidateSingleNode(qualityMeasureSectionNode);
 		return validator.getDetails();
