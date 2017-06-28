@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
-import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -11,6 +10,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
@@ -21,17 +21,29 @@ import org.springframework.web.client.RestTemplate;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+/**
+ * Implementation for the QPP Validation Service
+ */
 @Service
 public class ValidationServiceImpl implements ValidationService {
+
+	static final String VALIDATION_URL_ENV_NAME = "VALIDATION_URL";
 
 	@Autowired
 	private Environment environment;
 
-	@Override
-	public void validateQpp(final JsonWrapper qpp, final Converter converter) {
-		String validationUrl = environment.getProperty("VALIDATION_URL");
+	private RestTemplate restTemplate = new RestTemplate();
 
-		if (validationUrl == null) {
+	/**
+	 * Validates that the given QPP is valid.
+	 *
+	 * @param qpp The QPP input.
+	 */
+	@Override
+	public void validateQpp(final JsonWrapper qpp) {
+		String validationUrl = environment.getProperty(VALIDATION_URL_ENV_NAME);
+
+		if (validationUrl == null || validationUrl.isEmpty()) {
 			return;
 		}
 
@@ -43,13 +55,31 @@ public class ValidationServiceImpl implements ValidationService {
 		}
 	}
 
+	/**
+	 * Calls the validation API end-point.
+	 *
+	 * @param url The URL of the validation API end-point.
+	 * @param qpp The QPP to validate.
+	 * @return The response from the validation API end-point.
+	 */
 	private ResponseEntity<String> callValidationEndpoint(String url, JsonWrapper qpp) {
-		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(new NoHandlingErrorHandler());
-		HttpEntity<String> request = new HttpEntity<>(qpp.toString());
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+		headers.add(HttpHeaders.ACCEPT, "application/json");
+
+		HttpEntity<String> request = new HttpEntity<>(qpp.toString(), headers);
 		return restTemplate.postForEntity(url, request, String.class);
 	}
 
+	/**
+	 * Converts the QPP error returned from the validation API to QRDA3 errors
+	 *
+	 * @param validationResponse The JSON response containing a QPP error.
+	 * @param wrapper The QPP that resulted in the QPP error.
+	 * @return The QRDA3 errors.
+	 */
 	AllErrors convertQppValidationErrorsToQrda(String validationResponse, JsonWrapper wrapper) {
 		AllErrors errors = new AllErrors();
 		Error error = getError(validationResponse);
@@ -64,12 +94,27 @@ public class ValidationServiceImpl implements ValidationService {
 		return errors;
 	}
 
-	Error getError(String response) {
+	/**
+	 * Deserializes the JSON QPP error into an {@link Error} object.
+	 *
+	 * @param response The JSON response containing a QPP error.
+	 * @return An Error object.
+	 */
+	private Error getError(String response) {
 		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes()), ErrorMessage.class)
 				.getError();
 	}
 
+	/**
+	 * A private class that tells the {@link RestTemplate} to not throw an exception on HTTP status 3xx and 4xx.
+	 */
 	private class NoHandlingErrorHandler extends DefaultResponseErrorHandler {
+		/**
+		 * Empty so it doesn't throw an exception.
+		 *
+		 * @param response The ClientHttpResponse.
+		 * @throws IOException An IOException.
+		 */
 		@Override
 		public void handleError(final ClientHttpResponse response) throws IOException {
 			//do nothing

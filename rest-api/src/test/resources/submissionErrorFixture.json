@@ -1,16 +1,14 @@
 {
-	"invalidMeasureId": {
-		"error": {
-			"type": "ValidationError",
-			"message": "Found errors while validating Submission object",
-			"details": [
-				{
-					"path": "measurementSets[0].measurements[0].measureId",
-					"value": "IA_EPA_00",
-					"type": "InvalidValue",
-					"message": "invalid measureId, see mips-data-format for list of valid measureIds."
-				}
-			]
-		}
+	"error": {
+		"type": "ValidationError",
+		"message": "Found errors while validating Submission object",
+		"details": [
+			{
+				"path": "measurementSets[0].measurements[0].measureId",
+				"value": "IA_EPA_00",
+				"type": "InvalidValue",
+				"message": "invalid measureId, see mips-data-format for list of valid measureIds."
+			}
+		]
 	}
 }

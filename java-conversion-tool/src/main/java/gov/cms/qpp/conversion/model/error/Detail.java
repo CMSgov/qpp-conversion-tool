@@ -127,6 +127,7 @@ public class Detail implements Serializable {
 	public void setType(String newType) {
 		type = newType;
 	}
+
 	/**
 	 * @return A string representation.
 	 */

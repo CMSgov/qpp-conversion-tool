@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.model.error;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import gov.cms.qpp.conversion.correlation.model.Template;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class Error implements Serializable {
 	private String type;
 	private String message;
 	@JsonProperty("details")
-	private List<Detail> details = new ArrayList<Detail>();
+	private List<Detail> details = new ArrayList<>();
 
 	/**
 	 * Constructs an empty {@code Error}.
