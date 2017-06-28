@@ -26,6 +26,13 @@ public class Detail implements Serializable {
 	}
 
 	/**
+	 * Copy constructor
+	 */
+	public Detail(Detail detail) {
+		this(detail.getMessage(), detail.getPath(), detail.getValue(), detail.getType());
+	}
+
+	/**
 	 * Constructs a {@code Detail} with just a description.
 	 *
 	 * @param text A description of the error.
@@ -170,7 +177,7 @@ public class Detail implements Serializable {
 	/**
 	 * get object hash code
 	 *
-	 * @return
+	 * @return hash code
 	 */
 	@Override
 	public int hashCode() {
