@@ -7,11 +7,13 @@ import org.reflections.util.ClasspathHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
 
 public class MeasureConfigTest {
@@ -46,5 +48,31 @@ public class MeasureConfigTest {
 		assertThat("measureSet should be null", theConfig.getMeasureSet(), is(nullValue()));
 		assertThat("isBonus should be false", theConfig.isBonus(), is(false));
 		assertThat("objective should be electronicPrescribing", theConfig.getObjective(), is("electronicPrescribing"));
+	}
+
+	@Test
+	public void testSubPopulations() {
+		SubPopulation subPopulation1 = new SubPopulation();
+		subPopulation1.setNumeratorUuid("subPopulation1");
+
+		SubPopulation subPopulation2 = new SubPopulation();
+		subPopulation1.setNumeratorUuid("subPopulation2");
+
+		SubPopulation subPopulation3 = new SubPopulation();
+		subPopulation1.setNumeratorUuid("subPopulation3");
+
+		Strata strata1 = new Strata();
+		strata1.setElectronicMeasureUuids(subPopulation1);
+		Strata strata2 = new Strata();
+		strata2.setElectronicMeasureUuids(subPopulation2);
+		Strata strata3 = new Strata();
+		strata3.setElectronicMeasureUuids(subPopulation3);
+
+		MeasureConfig measureConfig = new MeasureConfig();
+		measureConfig.setStrata(Arrays.asList(strata1, strata2, strata3));
+
+		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
+
+		assertThat("The subpopulations are incorrect.", subPopulations, containsInAnyOrder(subPopulation1, subPopulation2, subPopulation3));
 	}
 }

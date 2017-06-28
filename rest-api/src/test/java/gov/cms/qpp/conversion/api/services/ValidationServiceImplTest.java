@@ -79,8 +79,17 @@ public class ValidationServiceImplTest {
 	}
 
 	@Test
-	public void testNoValidationUrl() {
+	public void testNullValidationUrl() {
 		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn(null);
+
+		objectUnderTest.validateQpp(null);
+
+		verifyZeroInteractions(restTemplate);
+	}
+
+	@Test
+	public void testEmptyValidationUrl() {
+		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn("");
 
 		objectUnderTest.validateQpp(null);
 
