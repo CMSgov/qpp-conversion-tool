@@ -21,8 +21,6 @@ public class QrdaServiceImpl implements QrdaService {
 	@Override
 	public JsonWrapper convertQrda3ToQpp(InputStream fileInputStream) {
 		Converter converter = new Converter(fileInputStream);
-		JsonWrapper qpp = converter.transform();
-
-		return qpp;
+		return converter.transform();
 	}
 }

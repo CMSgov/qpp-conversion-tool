@@ -19,7 +19,7 @@ public class Error implements Serializable {
 	private String type;
 	private String message;
 	@JsonProperty("details")
-	private List<Detail> details = new ArrayList<Detail>();
+	private List<Detail> details = new ArrayList<>();
 
 	/**
 	 * Constructs an empty {@code Error}.
