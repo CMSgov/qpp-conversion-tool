@@ -20,8 +20,7 @@ public class QualityMeasureIdMultiEncoderTest {
 	private final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
 	private final String REQUIRE_ELIGIBLE_POPULATION_EXCEP = "Must have a required eligiblePopulationException";
 	private final String REQUIRE_ELIGIBLE_POPULATION_EXCLUS = "Must have a required eligiblePopulationExclusion";
-	private final String REQUIRE_DENOM = "Must have a required denominator";
-	private final String REQUIRE_NUMER = "Must have a required numerator";
+	private final String REQUIRE_STRATUM = "The stratum is incorrect.";
 	private final String ELIGIBLE_POPULATION = "eligiblePopulation";
 	private final String PERFORMANCE_MET = "performanceMet";
 	private final String ELIGIBLE_POPULATION_EXCEPTION = "eligiblePopulationException";
@@ -29,6 +28,7 @@ public class QualityMeasureIdMultiEncoderTest {
 	private final String TYPE = "type";
 	private final String POPULATION_ID = "populationId";
 	private final String MEASURE_ID = "measureId";
+	private final String STRATUM = "stratum";
 
 	private Node qualityMeasureId;
 	private Node eligiblePopulationNode;
@@ -134,8 +134,8 @@ public class QualityMeasureIdMultiEncoderTest {
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
 		LinkedHashMap<String, Object> childValues = getChildValues();
-		List<LinkedHashMap<String, Integer>> subPopulations =
-				(List<LinkedHashMap<String, Integer>>)childValues.get("strata");
+		List<LinkedHashMap<String, ?>> subPopulations =
+				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
 		assertFirstSubPopulation(subPopulations);
 		assertSecondSubPopulation(subPopulations);
 	}
@@ -150,8 +150,8 @@ public class QualityMeasureIdMultiEncoderTest {
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
 		LinkedHashMap<String, Object> childValues = getChildValues();
-		List<LinkedHashMap<String, Integer>> subPopulations =
-				(List<LinkedHashMap<String, Integer>>)childValues.get("strata");
+		List<LinkedHashMap<String, ?>> subPopulations =
+				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
 
 		assertThat("Must have zero sub populations encoded", subPopulations, is(empty()));
 	}
@@ -160,21 +160,23 @@ public class QualityMeasureIdMultiEncoderTest {
 		return (LinkedHashMap<String, Object>)((LinkedHashMap<String, Object>) wrapper.getObject()).get("value");
 	}
 
-	private void assertFirstSubPopulation(List<LinkedHashMap<String, Integer>> strata) {
-		LinkedHashMap<String, Integer> firstSubPopulation = strata.get(0);
+	private void assertFirstSubPopulation(List<LinkedHashMap<String, ?>> strata) {
+		LinkedHashMap<String, ?> firstSubPopulation = strata.get(0);
 
 		assertThat(REQUIRE_POPULATION_TOTAL, firstSubPopulation.get(ELIGIBLE_POPULATION), is(600));
 		assertThat(REQUIRE_PERFORMANCE_MET, firstSubPopulation.get(PERFORMANCE_MET), is(600));
 		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, firstSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, firstSubPopulation.get("eligiblePopulationExclusion"), is(600));
+		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, firstSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION), is(600));
+		assertThat(REQUIRE_STRATUM, firstSubPopulation.get(STRATUM), is("test1strata1"));
 	}
 
-	private void assertSecondSubPopulation(List<LinkedHashMap<String, Integer>> strata) {
-		LinkedHashMap<String, Integer> secondSubPopulation = strata.get(1);
+	private void assertSecondSubPopulation(List<LinkedHashMap<String, ?>> strata) {
+		LinkedHashMap<String, ?> secondSubPopulation = strata.get(1);
 
 		assertThat(REQUIRE_POPULATION_TOTAL, secondSubPopulation.get(ELIGIBLE_POPULATION), is(600));
 		assertThat(REQUIRE_PERFORMANCE_MET, secondSubPopulation.get(PERFORMANCE_MET), is(600));
 		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
 		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION), is(600));
+		assertThat(REQUIRE_STRATUM, secondSubPopulation.get(STRATUM), is("test1strata2"));
 	}
 }
