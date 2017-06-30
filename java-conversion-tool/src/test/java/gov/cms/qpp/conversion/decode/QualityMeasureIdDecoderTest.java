@@ -68,28 +68,11 @@ public class QualityMeasureIdDecoderTest {
 	}
 
 	@Test
-	public void ignoreStratumMeasure1() throws XmlException {
-		ignoreStratumMeasure(getXmlFragmentWithMeasureGuid("40280381-528a-60ff-0152-8e089ed20376"));
-	}
-
-	@Test
-	public void ignoreStratumMeasure2() throws XmlException {
-		ignoreStratumMeasure(getXmlFragmentWithMeasureGuid("40280381-51f0-825b-0152-22b52da917ba"));
-	}
-
-	@Test
-	public void ignoreStratumMeasure3() throws XmlException {
-		ignoreStratumMeasure(getXmlFragmentWithMeasureGuid("40280381-51f0-825b-0152-22b695b217dc"));
-	}
-
-	@Test
-	public void ignoreStratumMeasure4() throws XmlException {
-		ignoreStratumMeasure(getXmlFragmentWithMeasureGuid("40280381-52fc-3a32-0153-1f6962df0f9c"));
-	}
-
-	private void ignoreStratumMeasure(String xmlFragment) throws XmlException {
+	public void dontIgnoreStratumMeasure() throws XmlException {
 		//set-up
-		Element qualityMeasureIdElement = XmlUtils.stringToDom(xmlFragment);
+		String nonIgnorableGuid = "40280381-528a-60ff-0152-8e089ed20376";
+		Element qualityMeasureIdElement = XmlUtils.stringToDom(getXmlFragmentWithMeasureGuid(nonIgnorableGuid));
+
 		Node qualityMeasureIdNode = new Node();
 
 		objectUnderTest.setNamespace(qualityMeasureIdElement, objectUnderTest);
@@ -98,8 +81,9 @@ public class QualityMeasureIdDecoderTest {
 		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		//assert
-		assertThat("The incorrect DecodeResult was returned.", decodeResult, is(DecodeResult.TREE_ESCAPED));
-		assertThat("The node should not have a value.", qualityMeasureIdNode.getValue("measureId"), is(nullValue()));
+		assertThat("The incorrect DecodeResult was returned.", decodeResult, is(DecodeResult.TREE_CONTINUE));
+		String value = qualityMeasureIdNode.getValue("measureId");
+		assertThat("Expect to have a value.", value, is(nonIgnorableGuid));
 	}
 
 	private String getXmlFragmentWithMeasureGuid(String measureGuid) {
