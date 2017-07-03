@@ -13,16 +13,14 @@ import java.util.stream.Collectors;
 public class MeasureConfigs {
 	public static final String DEFAULT_MEASURE_DATA_FILE_NAME = "measures-data.json";
 
-	private static List<MeasureConfig> configurations;
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
-
 	private static Map<String, MeasureConfig> configurationMap;
 
 	/**
 	 * Static initialization
 	 */
 	static {
-		configurationMap = initMeasureConfigs(measureDataFileName);
+		initMeasureConfigs();
 	}
 
 	/**
@@ -35,27 +33,23 @@ public class MeasureConfigs {
 	/**
 	 * Initialize all measure configurations
 	 */
-	public static Map<String, MeasureConfig> initMeasureConfigs(String measureDataFileName) {
+	private static void initMeasureConfigs() {
+		configurationMap = grabConfiguration(measureDataFileName);
+	}
 
+	public static Map<String, MeasureConfig> grabConfiguration(String fileName) {
 		ObjectMapper mapper = new ObjectMapper();
 
-		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(measureDataFileName);
+		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(fileName);
 
 		try {
 			TypeReference<List<MeasureConfig>> measureConfigType = new TypeReference<List<MeasureConfig>>() {};
-			configurations = mapper.readValue(measuresInput, measureConfigType);
+			List<MeasureConfig> configurations = mapper.readValue(measuresInput, measureConfigType);
+			return configurations.stream()
+					.collect(Collectors.toMap(MeasureConfigs::getMeasureId, Function.identity()));
 		} catch (IOException e) {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}
-
-		return initConfigurationMap();
-	}
-
-	/**
-	 * Initialize a configuration mapping of measure configurations
-	 */
-	private static Map<String, MeasureConfig> initConfigurationMap() {
-		return configurations.stream().collect(Collectors.toMap(MeasureConfigs::getMeasureId, Function.identity()));
 	}
 
 	/**
@@ -78,11 +72,11 @@ public class MeasureConfigs {
 	 */
 	public static void setMeasureDataFile(String fileName) {
 		measureDataFileName = fileName;
-		initMeasureConfigs(measureDataFileName);
+		initMeasureConfigs();
 	}
 
 	public static List<MeasureConfig> getMeasureConfigs() {
-		return configurations;
+		return configurationMap.values().stream().collect(Collectors.toList());
 	}
 
 	/**
@@ -102,7 +96,7 @@ public class MeasureConfigs {
 	 */
 	public static List<String> requiredMeasuresForSection(String section) {
 
-		return configurations.stream()
+		return configurationMap.values().stream()
 			.filter(measureConfig -> measureConfig.isRequired() && section.equals(measureConfig.getCategory()))
 			.map(MeasureConfigs::getMeasureId)
 			.collect(Collectors.toList());
