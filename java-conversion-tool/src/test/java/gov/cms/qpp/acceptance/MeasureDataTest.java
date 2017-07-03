@@ -39,10 +39,11 @@ public class MeasureDataTest {
 			assertEquals("Should have the same amount of sub populations",
 					config.getStrata().size(), value.getStrata().size());
 
+			List<SubPopulation> pops = config.getStrata().stream()
+					.map(Strata::getElectronicMeasureUuids)
+					.collect(Collectors.toList());
+
 			value.getStrata().forEach(stratum -> {
-				List<SubPopulation> pops = config.getStrata().stream()
-						.map(Strata::getElectronicMeasureUuids)
-						.collect(Collectors.toList());
 				assertThat("Required sub population was not present",
 						pops, hasItem(stratum.getElectronicMeasureUuids()));
 			});
