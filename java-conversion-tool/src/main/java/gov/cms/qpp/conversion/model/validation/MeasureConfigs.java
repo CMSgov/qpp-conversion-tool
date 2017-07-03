@@ -22,7 +22,7 @@ public class MeasureConfigs {
 	 * Static initialization
 	 */
 	static {
-		initMeasureConfigs();
+		configurationMap = initMeasureConfigs(measureDataFileName);
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class MeasureConfigs {
 	/**
 	 * Initialize all measure configurations
 	 */
-	private static void initMeasureConfigs() {
+	public static Map<String, MeasureConfig> initMeasureConfigs(String measureDataFileName) {
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -48,14 +48,14 @@ public class MeasureConfigs {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}
 
-		initConfigurationMap();
+		return initConfigurationMap();
 	}
 
 	/**
 	 * Initialize a configuration mapping of measure configurations
 	 */
-	private static void initConfigurationMap() {
-		configurationMap = configurations.stream().collect(Collectors.toMap(MeasureConfigs::getMeasureId, Function.identity()));
+	private static Map<String, MeasureConfig> initConfigurationMap() {
+		return configurations.stream().collect(Collectors.toMap(MeasureConfigs::getMeasureId, Function.identity()));
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class MeasureConfigs {
 	 */
 	public static void setMeasureDataFile(String fileName) {
 		measureDataFileName = fileName;
-		initMeasureConfigs();
+		initMeasureConfigs(measureDataFileName);
 	}
 
 	public static List<MeasureConfig> getMeasureConfigs() {

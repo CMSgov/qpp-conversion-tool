@@ -86,4 +86,32 @@ public class SubPopulation {
 	public void setStrata2(String strata2) {
 		this.strata2 = strata2;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		SubPopulation that = (SubPopulation) o;
+
+		if (initialPopulationUuid != null ? !initialPopulationUuid.equals(that.initialPopulationUuid) : that.initialPopulationUuid != null)
+			return false;
+		if (denominatorUuid != null ? !denominatorUuid.equals(that.denominatorUuid) : that.denominatorUuid != null)
+			return false;
+		if (denominatorExclusionsUuid != null ? !denominatorExclusionsUuid.equals(that.denominatorExclusionsUuid) : that.denominatorExclusionsUuid != null)
+			return false;
+		if (numeratorUuid != null ? !numeratorUuid.equals(that.numeratorUuid) : that.numeratorUuid != null)
+			return false;
+		return denominatorExceptionsUuid != null ? denominatorExceptionsUuid.equals(that.denominatorExceptionsUuid) : that.denominatorExceptionsUuid == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = initialPopulationUuid != null ? initialPopulationUuid.hashCode() : 0;
+		result = 31 * result + (denominatorUuid != null ? denominatorUuid.hashCode() : 0);
+		result = 31 * result + (denominatorExclusionsUuid != null ? denominatorExclusionsUuid.hashCode() : 0);
+		result = 31 * result + (numeratorUuid != null ? numeratorUuid.hashCode() : 0);
+		result = 31 * result + (denominatorExceptionsUuid != null ? denominatorExceptionsUuid.hashCode() : 0);
+		return result;
+	}
 }
