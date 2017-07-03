@@ -31,6 +31,16 @@ public class SubPopulation {
 		//Empty Constructor for Jackson
 	}
 
+	public SubPopulation(SubPopulation subPop) {
+		initialPopulationUuid = subPop.getInitialPopulationUuid();
+		denominatorUuid = subPop.getDenominatorUuid();
+		denominatorExclusionsUuid = subPop.getDenominatorExclusionsUuid();
+		numeratorUuid = subPop.getNumeratorUuid();
+		denominatorExceptionsUuid = subPop.getDenominatorExceptionsUuid();
+		strata1 = subPop.getStrata1();
+		strata2 = subPop.getStrata2();
+	}
+
 	public String getInitialPopulationUuid() {
 		return initialPopulationUuid;
 	}
@@ -102,7 +112,10 @@ public class SubPopulation {
 			return false;
 		if (numeratorUuid != null ? !numeratorUuid.equals(that.numeratorUuid) : that.numeratorUuid != null)
 			return false;
-		return denominatorExceptionsUuid != null ? denominatorExceptionsUuid.equals(that.denominatorExceptionsUuid) : that.denominatorExceptionsUuid == null;
+		if (denominatorExceptionsUuid != null ? !denominatorExceptionsUuid.equals(that.denominatorExceptionsUuid) : that.denominatorExceptionsUuid != null)
+			return false;
+		if (strata1 != null ? !strata1.equals(that.strata1) : that.strata1 != null) return false;
+		return strata2 != null ? strata2.equals(that.strata2) : that.strata2 == null;
 	}
 
 	@Override
@@ -112,6 +125,8 @@ public class SubPopulation {
 		result = 31 * result + (denominatorExclusionsUuid != null ? denominatorExclusionsUuid.hashCode() : 0);
 		result = 31 * result + (numeratorUuid != null ? numeratorUuid.hashCode() : 0);
 		result = 31 * result + (denominatorExceptionsUuid != null ? denominatorExceptionsUuid.hashCode() : 0);
+		result = 31 * result + (strata1 != null ? strata1.hashCode() : 0);
+		result = 31 * result + (strata2 != null ? strata2.hashCode() : 0);
 		return result;
 	}
 }
