@@ -4,12 +4,10 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.text.MessageFormat;
 import java.util.Set;
 
 import static org.hamcrest.core.Is.is;
@@ -34,37 +32,6 @@ public class AciSectionValidatorTest {
 
 		aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
-	}
-
-	@Test
-	@Ignore
-	public void testNoMeasurePresent() {
-		aciSectionNode.addChildNodes(reportingParamNode, aciNumeratorDenominatorNode);
-
-		AciSectionValidator aciSectionValidator = new AciSectionValidator();
-
-		Set<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
-
-		assertThat("error should be about missing required Measure",
-			errors.iterator().next().getMessage(),
-			is(MessageFormat.format(AciSectionValidator.NO_REQUIRED_MEASURE, VALID_ACI_MEASURE)));
-	}
-
-	@Test
-	@Ignore
-	public void testWrongMeasurePresent() {
-		Node invalidAciNumerDenomNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
-		invalidAciNumerDenomNode.putValue("measureId", "INVALID_ACI_MEASURE");
-
-		aciSectionNode.addChildNodes(reportingParamNode, invalidAciNumerDenomNode, invalidAciNumerDenomNode);
-		aciSectionNode.addChildNode(invalidAciNumerDenomNode);
-
-		AciSectionValidator aciSectionValidator = new AciSectionValidator();
-		Set<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
-
-		assertThat("error should be about the required measure not present",
-			errors.iterator().next().getMessage(),
-			is(MessageFormat.format(AciSectionValidator.NO_REQUIRED_MEASURE, VALID_ACI_MEASURE)));
 	}
 
 	@Test
