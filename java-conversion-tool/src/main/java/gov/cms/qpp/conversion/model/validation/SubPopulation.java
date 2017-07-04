@@ -99,23 +99,55 @@ public class SubPopulation {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
 		SubPopulation that = (SubPopulation) o;
 
-		if (initialPopulationUuid != null ? !initialPopulationUuid.equals(that.initialPopulationUuid) : that.initialPopulationUuid != null)
+		if (initialPopulationUuid != null ?
+				!initialPopulationUuid.equals(that.initialPopulationUuid) :
+				that.initialPopulationUuid != null) {
 			return false;
-		if (denominatorUuid != null ? !denominatorUuid.equals(that.denominatorUuid) : that.denominatorUuid != null)
+		}
+		if (numeratorUuid != null ?
+				!numeratorUuid.equals(that.numeratorUuid) :
+				that.numeratorUuid != null) {
 			return false;
-		if (denominatorExclusionsUuid != null ? !denominatorExclusionsUuid.equals(that.denominatorExclusionsUuid) : that.denominatorExclusionsUuid != null)
+		}
+		if (strata1 != null ? !strata1.equals(that.strata1) : that.strata1 != null) {
 			return false;
-		if (numeratorUuid != null ? !numeratorUuid.equals(that.numeratorUuid) : that.numeratorUuid != null)
-			return false;
-		if (denominatorExceptionsUuid != null ? !denominatorExceptionsUuid.equals(that.denominatorExceptionsUuid) : that.denominatorExceptionsUuid != null)
-			return false;
-		if (strata1 != null ? !strata1.equals(that.strata1) : that.strata1 != null) return false;
-		return strata2 != null ? strata2.equals(that.strata2) : that.strata2 == null;
+		}
+		boolean isCool = reduceCognitiveComplexity(that);
+		if (isCool) {
+			return strata2 != null ? strata2.equals(that.strata2) : that.strata2 == null;
+		} else {
+			return isCool;
+		}
+
+	}
+
+	private boolean reduceCognitiveComplexity(SubPopulation that) {
+		boolean isCool = true;
+		if (denominatorUuid != null ?
+				!denominatorUuid.equals(that.denominatorUuid) :
+				that.denominatorUuid != null) {
+			isCool = false;
+		}
+		if (denominatorExclusionsUuid != null ?
+				!denominatorExclusionsUuid.equals(that.denominatorExclusionsUuid) :
+				that.denominatorExclusionsUuid != null) {
+			isCool = false;
+		}
+		if (denominatorExceptionsUuid != null ?
+				!denominatorExceptionsUuid.equals(that.denominatorExceptionsUuid) :
+				that.denominatorExceptionsUuid != null) {
+			isCool = false;
+		}
+		return isCool;
 	}
 
 	@Override
