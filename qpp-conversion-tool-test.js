@@ -58,12 +58,12 @@ env.configureLayers = function() {
     // };
 
     // Self-administered VPC example:
-    // return {
-    //     app: rootRequire('./layers/app/api'),
-    //     jump: rootRequire('./layers/jump/jump'),
-    //     nat: rootRequire('./layers/nat/nat'),
-    //     net: rootRequire('./layers/net/vpc')
-    // };
+     return {
+         app: rootRequire('./layers/app/api'),
+         jump: rootRequire('./layers/jump/jump'),
+         nat: rootRequire('./layers/nat/nat'),
+         net: rootRequire('./layers/net/vpc')
+     };
 
 };
 
