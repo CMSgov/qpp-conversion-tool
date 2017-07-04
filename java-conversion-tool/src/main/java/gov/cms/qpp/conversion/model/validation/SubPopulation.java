@@ -108,13 +108,13 @@ public class SubPopulation {
 
 		SubPopulation that = (SubPopulation) o;
 
-		if (initialPopulationUuid != null ?
-				!initialPopulationUuid.equals(that.initialPopulationUuid) :
+		if (initialPopulationUuid != null
+				? !initialPopulationUuid.equals(that.initialPopulationUuid) :
 				that.initialPopulationUuid != null) {
 			return false;
 		}
-		if (numeratorUuid != null ?
-				!numeratorUuid.equals(that.numeratorUuid) :
+		if (numeratorUuid != null
+				? !numeratorUuid.equals(that.numeratorUuid) :
 				that.numeratorUuid != null) {
 			return false;
 		}
@@ -132,18 +132,18 @@ public class SubPopulation {
 
 	private boolean reduceCognitiveComplexity(SubPopulation that) {
 		boolean isCool = true;
-		if (denominatorUuid != null ?
-				!denominatorUuid.equals(that.denominatorUuid) :
+		if (denominatorUuid != null
+				? !denominatorUuid.equals(that.denominatorUuid) :
 				that.denominatorUuid != null) {
 			isCool = false;
 		}
-		if (denominatorExclusionsUuid != null ?
-				!denominatorExclusionsUuid.equals(that.denominatorExclusionsUuid) :
+		if (denominatorExclusionsUuid != null
+				? !denominatorExclusionsUuid.equals(that.denominatorExclusionsUuid) :
 				that.denominatorExclusionsUuid != null) {
 			isCool = false;
 		}
-		if (denominatorExceptionsUuid != null ?
-				!denominatorExceptionsUuid.equals(that.denominatorExceptionsUuid) :
+		if (denominatorExceptionsUuid != null
+				? !denominatorExceptionsUuid.equals(that.denominatorExceptionsUuid) :
 				that.denominatorExceptionsUuid != null) {
 			isCool = false;
 		}
