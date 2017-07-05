@@ -5,6 +5,7 @@ import com.jayway.jsonpath.ReadContext;
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class MultipleTinRoundTripTest {
 	}
 
 	@Test
+	@Ignore
 	public void hasMultipleNpiTinCombo() {
 		List<Map<String, Object>> topLevel = ctx.read("$");
 		assertThat("There should be five", topLevel.size(), is(5));
