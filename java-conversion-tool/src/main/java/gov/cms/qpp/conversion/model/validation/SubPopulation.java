@@ -31,6 +31,16 @@ public class SubPopulation {
 		//Empty Constructor for Jackson
 	}
 
+	public SubPopulation(SubPopulation subPop) {
+		initialPopulationUuid = subPop.getInitialPopulationUuid();
+		denominatorUuid = subPop.getDenominatorUuid();
+		denominatorExclusionsUuid = subPop.getDenominatorExclusionsUuid();
+		numeratorUuid = subPop.getNumeratorUuid();
+		denominatorExceptionsUuid = subPop.getDenominatorExceptionsUuid();
+		strata1 = subPop.getStrata1();
+		strata2 = subPop.getStrata2();
+	}
+
 	public String getInitialPopulationUuid() {
 		return initialPopulationUuid;
 	}
@@ -85,5 +95,70 @@ public class SubPopulation {
 
 	public void setStrata2(String strata2) {
 		this.strata2 = strata2;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		SubPopulation that = (SubPopulation) o;
+
+		if (initialPopulationUuid != null
+				? !initialPopulationUuid.equals(that.initialPopulationUuid) :
+				that.initialPopulationUuid != null) {
+			return false;
+		}
+		if (numeratorUuid != null
+				? !numeratorUuid.equals(that.numeratorUuid) :
+				that.numeratorUuid != null) {
+			return false;
+		}
+		if (strata1 != null ? !strata1.equals(that.strata1) : that.strata1 != null) {
+			return false;
+		}
+		boolean isCool = reduceCognitiveComplexity(that);
+		if (isCool) {
+			return strata2 != null ? strata2.equals(that.strata2) : that.strata2 == null;
+		} else {
+			return isCool;
+		}
+
+	}
+
+	private boolean reduceCognitiveComplexity(SubPopulation that) {
+		boolean isCool = true;
+		if (denominatorUuid != null
+				? !denominatorUuid.equals(that.denominatorUuid) :
+				that.denominatorUuid != null) {
+			isCool = false;
+		}
+		if (denominatorExclusionsUuid != null
+				? !denominatorExclusionsUuid.equals(that.denominatorExclusionsUuid) :
+				that.denominatorExclusionsUuid != null) {
+			isCool = false;
+		}
+		if (denominatorExceptionsUuid != null
+				? !denominatorExceptionsUuid.equals(that.denominatorExceptionsUuid) :
+				that.denominatorExceptionsUuid != null) {
+			isCool = false;
+		}
+		return isCool;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = initialPopulationUuid != null ? initialPopulationUuid.hashCode() : 0;
+		result = 31 * result + (denominatorUuid != null ? denominatorUuid.hashCode() : 0);
+		result = 31 * result + (denominatorExclusionsUuid != null ? denominatorExclusionsUuid.hashCode() : 0);
+		result = 31 * result + (numeratorUuid != null ? numeratorUuid.hashCode() : 0);
+		result = 31 * result + (denominatorExceptionsUuid != null ? denominatorExceptionsUuid.hashCode() : 0);
+		result = 31 * result + (strata1 != null ? strata1.hashCode() : 0);
+		result = 31 * result + (strata2 != null ? strata2.hashCode() : 0);
+		return result;
 	}
 }
