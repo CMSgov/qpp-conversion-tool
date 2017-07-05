@@ -2,7 +2,7 @@
 var env = {
     //organization: 'Example',
     organization: 'Flexion',
-    application: 'qpp-conversion-tool',
+    application: 'qppConversionTool',
     environment: 'Test',
     //region: 'us-west-2',
     region: 'us-east-1',
@@ -75,7 +75,7 @@ env.preformScript =
      '$CORE_BASE_DIR/tools/build-amis.sh service-docker ' +
      env.application + ' ' +
      env.region + ' ' +
-     '--var-file $APP_BASE_DIR/packer-common.json ' +
-     '--var-file $APP_BASE_DIR/packer-app.json';
+     '--var-file $APP_BASE_DIR/corevpc/packer-common.json ' +
+     '--var-file $APP_BASE_DIR/corevpc/packer-app.json';
 
 module.exports = env;
