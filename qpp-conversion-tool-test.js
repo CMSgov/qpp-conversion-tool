@@ -2,7 +2,7 @@
 var env = {
     //organization: 'Example',
     organization: 'Flexion',
-    application: 'App',
+    application: 'qpp-conversion-tool',
     environment: 'Test',
     //region: 'us-west-2',
     region: 'us-east-1',
@@ -71,10 +71,11 @@ env.configureLayers = function() {
  * Run the AMI build script and other checks before cloudforming.
  */
 env.preformScript =
-    'cd $APP_BASE_DIR; ' +
-    '$CORE_BASE_DIR/tools/build-amis.sh service-docker qpp-conversion-tool ' +
-    env.region + ' ' +
-    '--var-file $APP_BASE_DIR/packer-common.json ' +
-    '--var-file $APP_BASE_DIR/packer-app.json';
+     'cd $APP_BASE_DIR; ' +
+     '$CORE_BASE_DIR/tools/build-amis.sh service-docker ' +
+     env.application + ' ' +
+     env.region + ' ' +
+     '--var-file $APP_BASE_DIR/packer-common.json ' +
+     '--var-file $APP_BASE_DIR/packer-app.json';
 
 module.exports = env;
