@@ -7,6 +7,8 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
 /**
@@ -27,6 +29,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	public static final String ENTITY_GROUP = "group";
 	public static final String ENTITY_INDIVIDUAL = "individual";
 	public static final String CPCPLUS = "CPCPLUS";
+	public static final String PERFORMANCE_YEAR = "performanceYear";
 
 	/**
 	 * internalDecode parses the xml fragment into thisNode
@@ -37,12 +40,29 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
+		setPerformanceYear(element, thisNode);
 		setProgramNameOnNode(element, thisNode);
 		setEntityIdOnNode(element, thisNode);
 		setNationalProviderIdOnNode(element, thisNode);
 		setTaxProviderTaxIdOnNode(element, thisNode);
 		processComponentElement(element, thisNode);
 		return DecodeResult.TREE_FINISHED;
+	}
+
+	/**
+	 * Retrieves the top level effectiveTime year
+	 *
+	 * @param element Xml fragment being parsed.
+	 * @param thisNode The output internal representation of the document
+	 */
+	private void setPerformanceYear(Element element, Node thisNode) {
+		Consumer<Attribute> consumer = datetime -> {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+			LocalDate localDate = LocalDate.parse("20170311061231", formatter);
+			thisNode.putValue(PERFORMANCE_YEAR,
+					String.valueOf(localDate.getYear()), false);
+		};
+		setOnNode(element, getXpath(PERFORMANCE_YEAR), consumer, Filters.attribute(), false);
 	}
 
 	/**

@@ -95,6 +95,15 @@
 						"relativeXPath": "./*[local-name() = 'component' and namespace-uri() = '<nsuri>']/*[local-name() = 'structuredBody' and namespace-uri() = '<nsuri>']/*[local-name() = 'component' and namespace-uri() = '<nsuri>']",
 						"xmltype": "element"
 					}
+				},{
+					"decodeLabel": "performanceYear",
+					"encodeLabels": [
+						"performanceYear"
+					],
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/@value",
+						"xmltype": "attribute"
+					}
 				}
 			]
 		},
