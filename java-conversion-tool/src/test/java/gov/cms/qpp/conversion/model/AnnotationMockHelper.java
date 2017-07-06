@@ -92,7 +92,6 @@ public class AnnotationMockHelper {
 	                                      Class<? extends NodeValidator> validator, boolean required)
 		throws Exception {
 		PowerMockito.doReturn(required).when(spy, METHOD_IS_VALIDATION_REQUIRED, Matchers.isA(validator));
-		PowerMockito.doReturn(templateId).when(spy, METHOD_GET_TEMPLATE_ID, Matchers.isA(validator));
 	}
 
 	/**

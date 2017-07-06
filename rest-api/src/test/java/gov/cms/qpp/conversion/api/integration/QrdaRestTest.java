@@ -39,7 +39,7 @@ public class QrdaRestTest {
 
 	@Test
 	public void testValidQpp() throws Exception {
-		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/valid-QRDA-III.xml")));
+		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		mockMvc.perform(MockMvcRequestBuilders
 			.fileUpload("/v1/qrda3").file(qrda3File))
 			.andExpect(status().is(201))

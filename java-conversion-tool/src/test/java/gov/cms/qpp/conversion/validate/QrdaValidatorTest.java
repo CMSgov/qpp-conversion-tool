@@ -4,7 +4,6 @@ import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,10 +16,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 
@@ -30,35 +28,20 @@ import static org.hamcrest.core.IsNull.nullValue;
 public class QrdaValidatorTest {
 
 	private QrdaValidator objectUnderTest;
-	private static boolean activated = false;
 	private static List<Node> nodesPassedIntoValidateSingleNode;
 
-	private static List<Node> nodesPassedIntoRequiredValidateTemplateIdNodes;
-
 	private static final TemplateId TEST_REQUIRED_TEMPLATE_ID = TemplateId.ACI_NUMERATOR_DENOMINATOR;
-	//private static final TemplateId TEST_OPTIONAL_TEMPLATE_ID = TemplateId.CMS_AGGREGATE_COUNT;
+	private static final TemplateId TEST_OPTIONAL_TEMPLATE_ID = TemplateId.PLACEHOLDER;
 
 	private static final Detail TEST_VALIDATION_ERROR_FOR_SINGLE_NODE =
 		new Detail("single node validation error");
-	private static final Detail TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES =
-		new Detail("list of nodes required validation error");
-	private static final Detail TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES =
-		new Detail("list of nodes optional validation error");
 
 	@Before
 	public void beforeEachTest() throws Exception {
 		nodesPassedIntoValidateSingleNode = new ArrayList<>();
-		nodesPassedIntoRequiredValidateTemplateIdNodes = null;
 
 		objectUnderTest = AnnotationMockHelper.mockValidator(TEST_REQUIRED_TEMPLATE_ID, RequiredTestValidator.class, true);
-		objectUnderTest = AnnotationMockHelper.mockValidator(TemplateId.PLACEHOLDER, OptionalTestValidator.class, false, objectUnderTest);
-
-		activated = true;
-	}
-
-	@After
-	public void afterEachTest() {
-		activated = false;
+		objectUnderTest = AnnotationMockHelper.mockValidator(TEST_OPTIONAL_TEMPLATE_ID, OptionalTestValidator.class, false, objectUnderTest);
 	}
 
 	@Test
@@ -76,10 +59,7 @@ public class QrdaValidatorTest {
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 1, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
 		assertThat("The validation errors is missing items from the expected templateId",
-				details, hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE,
-		                                      TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES));
-		assertThat("The validation errors (incorrectly) has an error from the optional templateId",
-				details, not(hasItem(TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES)));
+				details, hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE));
 	}
 
 	@Test
@@ -103,13 +83,8 @@ public class QrdaValidatorTest {
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 2, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
-		assertNodeList(nodesPassedIntoRequiredValidateTemplateIdNodes, 2, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
 		assertThat("The validation errors is missing the specific number of single node errors",
 		           Collections.frequency(details, TEST_VALIDATION_ERROR_FOR_SINGLE_NODE), is(2));
-		assertThat("The validation errors is missing the specific number of required templateId errors",
-		           Collections.frequency(details, TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES), is(1));
-		assertThat("The validation errors (incorrectly) has an error from the optional templateId",
-				details, not(hasItem(TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES)));
 	}
 
 	@Test
@@ -123,12 +98,8 @@ public class QrdaValidatorTest {
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 0, null, null, null);
-		assertThat("The list of nodes has an incorrect size", nodesPassedIntoRequiredValidateTemplateIdNodes, hasSize(0));
-		assertThat("The validation errors is missing an item from the expected templateId",
-				details, hasItem(TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES));
 		assertThat("The validation errors (incorrectly) has a single node error and an error from the  and optional templateId",
-				details, not(hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE,
-		                                          TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES)));
+				details, not(hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE)));
 
 	}
 
@@ -137,7 +108,7 @@ public class QrdaValidatorTest {
 
 		//set-up
 		Node testRootNode = new Node();
-		testRootNode.setType(TemplateId.PLACEHOLDER);
+		testRootNode.setType(TEST_OPTIONAL_TEMPLATE_ID);
 		final String testKey = "testKey";
 		final String testValue = "testValue";
 		testRootNode.putValue(testKey, testValue);
@@ -147,12 +118,8 @@ public class QrdaValidatorTest {
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 0, null, null, null);
-		assertThat("The list of nodes has an incorrect size", nodesPassedIntoRequiredValidateTemplateIdNodes, hasSize(0));
-		assertThat("The validation errors is missing an item from the expected templateId",
-				details, hasItem(TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES));
 		assertThat("The validation errors (incorrectly) has a single node error and an error from the  and optional templateId",
-				details, not(hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE,
-		                                          TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES)));
+				details, not(hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE)));
 	}
 
 	private void assertNodeList(List<Node> nodeList, int expectedSize, TemplateId expectedTemplateId,
@@ -182,14 +149,6 @@ public class QrdaValidatorTest {
 			nodesPassedIntoValidateSingleNode.add(node);
 			addValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 		}
-
-		@Override
-		public void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
-			nodesPassedIntoRequiredValidateTemplateIdNodes = nodes;
-			if ( activated ) {
-				addValidationError(TEST_VALIDATION_ERROR_FOR_REQUIRED_TEMPLATE_ID_NODES);
-			}
-		}
 	}
 
 	public static class OptionalTestValidator extends NodeValidator {
@@ -198,11 +157,6 @@ public class QrdaValidatorTest {
 		public void internalValidateSingleNode(final Node node) {
 			nodesPassedIntoValidateSingleNode.add(node);
 			addValidationError(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
-		}
-
-		@Override
-		public void internalValidateSameTemplateIdNodes(final List<Node> nodes) {
-			addValidationError(TEST_VALIDATION_ERROR_FOR_OPTIONAL_TEMPLATE_ID_NODES);
 		}
 	}
 }

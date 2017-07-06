@@ -44,7 +44,7 @@ public class ConverterTest {
 
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppFile() {
-		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
+		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Converter converter = new Converter(path);
 
 		JsonWrapper qpp = converter.transform();
@@ -53,7 +53,7 @@ public class ConverterTest {
 
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppStream() throws IOException {
-		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
+		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		NamedInputStream inputStream = new NamedInputStream(XmlUtils.fileToStream(path), path.toString());
 		Converter converter = new Converter(inputStream);
 

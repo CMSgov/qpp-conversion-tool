@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.model.error;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -7,9 +9,13 @@ import java.io.Serializable;
  */
 public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552590676L;
+	@JsonProperty("message")
 	private String message;
+	@JsonProperty("path")
 	private String path = "";
+	@JsonProperty("value")
 	private String value;
+	@JsonProperty("type")
 	private String type;
 
 	/**
@@ -17,6 +23,13 @@ public class Detail implements Serializable {
 	 */
 	public Detail() {
 		//Dummy constructor for jackson mapping
+	}
+
+	/**
+	 * Copy constructor
+	 */
+	public Detail(Detail detail) {
+		this(detail.getMessage(), detail.getPath(), detail.getValue(), detail.getType());
 	}
 
 	/**
@@ -59,8 +72,14 @@ public class Detail implements Serializable {
 	 *
 	 * @return An error description.
 	 */
+	@JsonProperty("message")
 	public String getMessage() {
 		return message;
+	}
+
+	@JsonProperty("message")
+	public void setMessage(String newMessage) {
+		message = newMessage;
 	}
 
 	/**
@@ -73,12 +92,26 @@ public class Detail implements Serializable {
 	}
 
 	/**
+	 * Sets the path that this error references.
+	 *
+	 * @param newPath The path that this error references.
+	 */
+	public void setPath(String newPath) {
+		path = newPath;
+	}
+
+	/**
 	 * Gets the value that this error references.
 	 *
 	 * @return The value that this error references.
 	 */
+	@JsonProperty("value")
 	public String getValue() {
 		return value;
+	}
+
+	public void setValue(String newValue) {
+		value = newValue;
 	}
 
 	/**
@@ -86,8 +119,13 @@ public class Detail implements Serializable {
 	 *
 	 * @return The type that this error references.
 	 */
+	@JsonProperty("type")
 	public String getType() {
 		return type;
+	}
+
+	public void setType(String newType) {
+		type = newType;
 	}
 
 	/**
@@ -102,5 +140,52 @@ public class Detail implements Serializable {
 		sb.append(", type='").append(type).append('\'');
 		sb.append('}');
 		return sb.toString();
+	}
+
+	/**
+	 * Evaluate equality of state.
+	 *
+	 * @param o Object to compare against
+	 * @return evaluation
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		Detail detail = (Detail) o;
+
+		if (message != null ? !message.equals(detail.message) : detail.message != null) {
+			return false;
+		}
+
+		if (path != null ? !path.equals(detail.path) : detail.path != null) {
+			return false;
+		}
+
+		if (value != null ? !value.equals(detail.value) : detail.value != null) {
+			return false;
+		}
+
+		return type != null ? type.equals(detail.type) : detail.type == null;
+	}
+
+	/**
+	 * get object hash code
+	 *
+	 * @return hash code
+	 */
+	@Override
+	public int hashCode() {
+		int result = message != null ? message.hashCode() : 0;
+		result = 31 * result + (path != null ? path.hashCode() : 0);
+		result = 31 * result + (value != null ? value.hashCode() : 0);
+		result = 31 * result + (type != null ? type.hashCode() : 0);
+		return result;
 	}
 }

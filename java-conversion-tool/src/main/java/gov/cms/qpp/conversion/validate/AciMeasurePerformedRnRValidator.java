@@ -4,8 +4,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
-import java.util.List;
-
 /**
  * This Validator checks that the Measure ID is present.
  */
@@ -13,7 +11,7 @@ import java.util.List;
 public class AciMeasurePerformedRnRValidator extends NodeValidator {
 
 	private static final String MEASURE_ID_IS_REQUIRED =
-			"The ACI Measure Performed RnR's Measure ID is required";
+			"An ACI Measure Performed RnR's requires a single Measure ID";
 	private static final String MEASURE_PERFORMED_IS_REQUIRED =
 			"The ACI Measure Performed RnR's Measure Performed is required";
 	private static final String MEASURE_PERFORMED_CAN_ONLY_BE_PRESENT_ONCE =
@@ -30,11 +28,6 @@ public class AciMeasurePerformedRnRValidator extends NodeValidator {
 			.hasChildren(MEASURE_PERFORMED_IS_REQUIRED)
 			.childMinimum(MEASURE_PERFORMED_IS_REQUIRED, 1, TemplateId.MEASURE_PERFORMED)
 			.childMaximum(MEASURE_PERFORMED_CAN_ONLY_BE_PRESENT_ONCE, 1, TemplateId.MEASURE_PERFORMED)
-			.value(MEASURE_ID_IS_REQUIRED, "measureId");
-	}
-
-	@Override
-	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
-		// nothing
+			.singleValue(MEASURE_ID_IS_REQUIRED, "measureId");
 	}
 }

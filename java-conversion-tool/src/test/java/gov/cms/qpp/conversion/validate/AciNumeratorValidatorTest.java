@@ -5,8 +5,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.Is.is;
@@ -34,8 +33,7 @@ public class AciNumeratorValidatorTest {
 		aciNumeratorNode.addChildNode(aggregateCountNode);
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
-		List<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
-		errors.addAll(validator.validateSameTemplateIdNodes(Arrays.asList(aciNumeratorNode)));
+		Set<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
 
 		assertThat("no errors should be present", errors, empty());
 	}
@@ -46,10 +44,10 @@ public class AciNumeratorValidatorTest {
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
-		List<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
+		Set<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
 		assertThat("No Children Validation Error not issued",
-				errors.get(0).getMessage(), is(String.format(AciNumeratorValidator.NO_CHILDREN,
+				errors.iterator().next().getMessage(), is(String.format(AciNumeratorValidator.NO_CHILDREN,
 					AciNumeratorValidator.NUMERATOR_NAME)));
 
 	}
@@ -63,9 +61,10 @@ public class AciNumeratorValidatorTest {
 		aciNumeratorNode.addChildNode(aggregateCountNode);
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
-		List<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
+		Set<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
-		assertThat("Incorrect child Validation Error not issued", errors.get(0).getMessage(),
+		assertThat("Incorrect child Validation Error not issued",
+				errors.iterator().next().getMessage(),
 				is(String.format(AciNumeratorValidator.INCORRECT_CHILD, AciNumeratorValidator.NUMERATOR_NAME)));
 
 	}
@@ -84,9 +83,10 @@ public class AciNumeratorValidatorTest {
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
 
-		List<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
+		Set<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
-		assertThat("Too many children Validation Error not issued", errors.get(0).getMessage(),
+		assertThat("Too many children Validation Error not issued",
+				errors.iterator().next().getMessage(),
 				is(String.format(AciNumeratorValidator.TOO_MANY_CHILDREN, AciNumeratorValidator.NUMERATOR_NAME)));
 	}
 
@@ -100,7 +100,7 @@ public class AciNumeratorValidatorTest {
 		aciNumeratorNode.addChildNode(aggregateCountNode);
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
-		List<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
+		Set<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
 		assertThat("Validation error size should be 1 because this will be caught by the aggregate count validator.",
 			errors.size(), is(1));
 	}
@@ -115,10 +115,9 @@ public class AciNumeratorValidatorTest {
 		aciNumeratorNode.addChildNode(aggregateCountNode);
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
-		List<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
+		Set<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
 		assertThat("Validation error size should be 1", errors.size(), is(1));
-		assertThat("Invalid Value Validation Error not issued", errors.get(0).getMessage(),
+		assertThat("Invalid Value Validation Error not issued",
+				errors.iterator().next().getMessage(),
 				is(String.format(AciNumeratorValidator.INVALID_VALUE, AciNumeratorValidator.NUMERATOR_NAME)));
-
-
 	}}

@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.api.services.QrdaService;
+import gov.cms.qpp.conversion.api.services.ValidationService;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.NamedInputStream;
 
@@ -27,6 +28,9 @@ public class QrdaControllerV1 {
 	@Autowired
 	private QrdaService qrdaService;
 
+	@Autowired
+	private ValidationService validationService;
+
 	/**
 	 * Endpoint to transform an uploaded file into a valid or error json response
 	 *
@@ -38,6 +42,9 @@ public class QrdaControllerV1 {
 	@ResponseStatus(HttpStatus.CREATED)
 	public String uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
 		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(new NamedInputStream(file.getInputStream(), file.getName()));
+
+		validationService.validateQpp(qpp);
+
 		return qpp.toString();
 	}
 }

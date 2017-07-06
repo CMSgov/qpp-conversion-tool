@@ -4,8 +4,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.validate.NodeValidator;
 
-import java.util.List;
-
 
 public class TestDefaultValidator extends NodeValidator {
 	@Override
@@ -14,7 +12,4 @@ public class TestDefaultValidator extends NodeValidator {
 			this.addValidationError( new Detail("Test validation error for Jenny"));
 		}
 	}
-
-	@Override
-	protected void internalValidateSameTemplateIdNodes(final List<Node> nodes) {}
 }

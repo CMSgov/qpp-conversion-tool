@@ -4,8 +4,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
-import java.util.List;
-
 /**
  * Validates Measure Data - an Aggregate Count child
  */
@@ -36,19 +34,9 @@ public class MeasureDataValidator extends NodeValidator {
 		if (getDetails().isEmpty()) {
 			Node child = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 			check(child)
-					.value(AggregateCountValidator.VALUE_ERROR, "aggregateCount")
+					.singleValue(AggregateCountValidator.VALUE_ERROR, "aggregateCount")
 					.intValue(AggregateCountValidator.TYPE_ERROR, "aggregateCount")
 					.greaterThan(INVALID_VALUE, -1);
 		}
-	}
-
-	/**
-	 * Checks the interdependancy of nodes in the parsed tree.
-	 * IA Measure Performed has no dependencies on other nodes in the document.
-	 * @param nodes The list of nodes to validate.
-	 */
-	@Override
-	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
-		// No current cross node Aggregate Count validations
 	}
 }

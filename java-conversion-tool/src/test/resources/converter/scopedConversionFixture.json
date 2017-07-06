@@ -516,96 +516,97 @@
 		}
 	],
 	"CLINICAL_DOCUMENT": {
-		"measurementSets": [
-			{
-				"category": "quality",
-				"submissionMethod": "cmsWebInterface",
-				"measurements": [
-					{
-						"measureId": "CMS165v5",
-						"value": {
-							"isEndToEndReported": true,
-							"performanceMet": 800,
-							"eligiblePopulationExclusion": 50,
-							"performanceNotMet": 150,
-							"eligiblePopulation": 1000
-						}
-					},
-					{
-						"measureId": "CMS122v5",
-						"value": {
-							"isEndToEndReported": true,
-							"performanceMet": 900,
-							"performanceNotMet": 50,
-							"eligiblePopulation": 950
-						}
-					},
-					{
-						"measureId": "CMS68v6",
-						"value": {
-							"isEndToEndReported": true,
-							"performanceMet": 800,
-							"eligiblePopulationException": 20,
-							"performanceNotMet": 180,
-							"eligiblePopulation": 1000
-						}
-					},
-					{
-						"measureId": "CMS160v5",
-						"value": {
-							"isEndToEndReported": true,
-							"performanceMet": 520,
-							"performanceNotMet": 114,
-							"eligiblePopulation": 40
-						}
-					}
-				],
-				"performanceStart": "2017-01-01",
-				"performanceEnd": "2017-12-31"
-			},
-			{
-				"category": "aci",
-				"submissionMethod": "electronicHealthRecord",
-				"measurements": [
-					{
-						"measureId": "ACI_PEA_1",
-						"value": {
-							"numerator": 600,
-							"denominator": 800
-						}
-					},
-					{
-						"measureId": "ACI_EP_1",
-						"value": {
-							"numerator": 400,
-							"denominator": 600
-						}
-					}
-				],
-				"performanceStart": "2017-02-01",
-				"performanceEnd": "2017-05-31"
-			},
-			{
-				"category": "ia",
-				"submissionMethod": "electronicHealthRecord",
-				"measurements": [
-					{
-						"measureId": "IA_EPA_3",
-						"value": true
-					},
-					{
-						"measureId": "IA_CC_10",
-						"value": true
-					}
-				],
-				"performanceStart": "2017-01-01",
-				"performanceEnd": "2017-04-30"
-			}
-		],
-		"programName": "mips",
-		"entityType": "individual",
-		"nationalProviderIdentifier": "2567891421",
-		"taxpayerIdentificationNumber": "123456789"
+		"programName" : "mips",
+		"entityType" : "individual",
+		"taxpayerIdentificationNumber" : "123456789",
+		"nationalProviderIdentifier" : "2567891421",
+		"measurementSets" : [ {
+			"category" : "quality",
+			"submissionMethod" : "electronicHealthRecord",
+			"measurements" : [ {
+				"measureId" : "CMS165v5",
+				"value" : {
+					"isEndToEndReported" : true,
+					"performanceMet" : 800,
+					"eligiblePopulationExclusion" : 50,
+					"performanceNotMet" : 150,
+					"eligiblePopulation" : 1000
+				}
+			}, {
+				"measureId" : "CMS122v5",
+				"value" : {
+					"isEndToEndReported" : true,
+					"performanceMet" : 900,
+					"performanceNotMet" : 50,
+					"eligiblePopulation" : 950
+				}
+			}, {
+				"measureId" : "CMS68v6",
+				"value" : {
+					"isEndToEndReported" : true,
+					"performanceMet" : 800,
+					"eligiblePopulationException" : 20,
+					"performanceNotMet" : 180,
+					"eligiblePopulation" : 1000
+				}
+			}, {
+				"measureId" : "CMS160v5",
+				"value" : {
+					"isEndToEndReported" : true,
+					"strata" : [ {
+						"performanceMet" : 486,
+						"eligiblePopulationExclusion" : 35,
+						"performanceNotMet" : 79,
+						"eligiblePopulation" : 600,
+						"stratum" : "4MonthsOfEnd"
+					}, {
+						"performanceMet" : 700,
+						"eligiblePopulationExclusion" : 40,
+						"performanceNotMet" : 60,
+						"eligiblePopulation" : 800,
+						"stratum" : "4&8MonthsAfterStart"
+					}, {
+						"performanceMet" : 520,
+						"eligiblePopulationExclusion" : 40,
+						"performanceNotMet" : 20,
+						"eligiblePopulation" : 580,
+						"stratum" : "4MonthsOfStart"
+					} ]
+				}
+			} ],
+			"performanceStart" : "2017-01-01",
+			"performanceEnd" : "2017-12-31"
+		}, {
+			"category" : "aci",
+			"submissionMethod" : "electronicHealthRecord",
+			"measurements" : [ {
+				"measureId" : "ACI_PEA_1",
+				"value" : {
+					"numerator" : 600,
+					"denominator" : 800
+				}
+			}, {
+				"measureId" : "ACI_EP_1",
+				"value" : {
+					"numerator" : 400,
+					"denominator" : 600
+				}
+			} ],
+			"performanceStart" : "2017-02-01",
+			"performanceEnd" : "2017-05-31"
+		}, {
+			"category" : "ia",
+			"submissionMethod" : "electronicHealthRecord",
+			"measurements" : [ {
+				"measureId" : "IA_EPA_3",
+				"value" : true
+			}, {
+				"measureId" : "IA_CC_10",
+				"value" : true
+			} ],
+			"performanceStart" : "2017-01-01",
+			"performanceEnd" : "2017-04-30"
+		} ]
 	},
 	"ACI_DENOMINATOR": [
 		{
@@ -624,54 +625,9 @@
 		}
 	],
 	"MEASURE_SECTION_V2": {
-		"category": "quality",
-		"submissionMethod": "cmsWebInterface",
-		"measurements": [
-			{
-				"measureId": "CMS165v5",
-				"value": {
-					"isEndToEndReported": true,
-					"performanceMet": 800,
-					"eligiblePopulationExclusion": 50,
-					"performanceNotMet": 150,
-					"eligiblePopulation": 1000
-				}
-			},
-			{
-				"measureId": "CMS122v5",
-				"value": {
-					"isEndToEndReported": true,
-					"performanceMet": 900,
-					"performanceNotMet": 50,
-					"eligiblePopulation": 950
-				}
-			},
-			{
-				"measureId": "CMS68v6",
-				"value": {
-					"isEndToEndReported": true,
-					"performanceMet": 800,
-					"eligiblePopulationException": 20,
-					"performanceNotMet": 180,
-					"eligiblePopulation": 1000
-				}
-			},
-			{
-				"measureId": "CMS160v5",
-				"value": {
-					"isEndToEndReported": true,
-					"performanceMet": 520,
-					"performanceNotMet": 114,
-					"eligiblePopulation": 40
-				}
-			}
-		],
-		"performanceStart": "2017-01-01",
-		"performanceEnd": "2017-12-31"
-
-	},
-	"MEASURE_REFERENCE_RESULTS_CMS_V2": [
-		{
+		"category" : "quality",
+		"submissionMethod" : "electronicHealthRecord",
+		"measurements" : [ {
 			"measureId" : "CMS165v5",
 			"value" : {
 				"isEndToEndReported" : true,
@@ -701,12 +657,81 @@
 			"measureId" : "CMS160v5",
 			"value" : {
 				"isEndToEndReported" : true,
-				"performanceMet" : 520,
-				"performanceNotMet" : 114,
-				"eligiblePopulation" : 40
+				"strata" : [ {
+					"performanceMet" : 486,
+					"eligiblePopulationExclusion" : 35,
+					"performanceNotMet" : 79,
+					"eligiblePopulation" : 600,
+					"stratum" : "4MonthsOfEnd"
+				}, {
+					"performanceMet" : 700,
+					"eligiblePopulationExclusion" : 40,
+					"performanceNotMet" : 60,
+					"eligiblePopulation" : 800,
+					"stratum" : "4&8MonthsAfterStart"
+				}, {
+					"performanceMet" : 520,
+					"eligiblePopulationExclusion" : 40,
+					"performanceNotMet" : 20,
+					"eligiblePopulation" : 580,
+					"stratum" : "4MonthsOfStart"
+				} ]
 			}
+		} ],
+		"performanceStart" : "2017-01-01",
+		"performanceEnd" : "2017-12-31"
+	},
+	"MEASURE_REFERENCE_RESULTS_CMS_V2": [ {
+		"measureId" : "CMS165v5",
+		"value" : {
+			"isEndToEndReported" : true,
+			"performanceMet" : 800,
+			"eligiblePopulationExclusion" : 50,
+			"performanceNotMet" : 150,
+			"eligiblePopulation" : 1000
 		}
-	],
+	}, {
+		"measureId" : "CMS122v5",
+		"value" : {
+			"isEndToEndReported" : true,
+			"performanceMet" : 900,
+			"performanceNotMet" : 50,
+			"eligiblePopulation" : 950
+		}
+	}, {
+		"measureId" : "CMS68v6",
+		"value" : {
+			"isEndToEndReported" : true,
+			"performanceMet" : 800,
+			"eligiblePopulationException" : 20,
+			"performanceNotMet" : 180,
+			"eligiblePopulation" : 1000
+		}
+	}, {
+		"measureId" : "CMS160v5",
+		"value" : {
+			"isEndToEndReported" : true,
+			"strata" : [ {
+				"performanceMet" : 486,
+				"eligiblePopulationExclusion" : 35,
+				"performanceNotMet" : 79,
+				"eligiblePopulation" : 600,
+				"stratum" : "4MonthsOfEnd"
+			}, {
+				"performanceMet" : 700,
+				"eligiblePopulationExclusion" : 40,
+				"performanceNotMet" : 60,
+				"eligiblePopulation" : 800,
+				"stratum" : "4&8MonthsAfterStart"
+			}, {
+				"performanceMet" : 520,
+				"eligiblePopulationExclusion" : 40,
+				"performanceNotMet" : 20,
+				"eligiblePopulation" : 580,
+				"stratum" : "4MonthsOfStart"
+			} ]
+		}
+	} ],
 	"ACI_NUMERATOR_DENOMINATOR": [
 		{
 			"measureId": "ACI_PEA_1",
@@ -723,41 +748,39 @@
 			}
 		}
 	],
-	"MEASURE_DATA_CMS_V2": [
-		{
-			"eligiblePopulationExclusion" : 50
-		}, {
-			"eligiblePopulation" : 1000
-		}, {
-			"performanceMet" : 800
-		}, {
-			"eligiblePopulation" : 950
-		}, {
-			"performanceMet" : 900
-		}, {
-			"eligiblePopulationException" : 20
-		}, {
-			"eligiblePopulation" : 1000
-		}, {
-			"performanceMet" : 800
-		}, {
-			"eligiblePopulation" : 600
-		}, {
-			"eligiblePopulation" : 35
-		}, {
-			"performanceMet" : 486
-		}, {
-			"eligiblePopulation" : 800
-		}, {
-			"eligiblePopulation" : 40
-		}, {
-			"performanceMet" : 700
-		}, {
-			"eligiblePopulation" : 580
-		}, {
-			"eligiblePopulation" : 40
-		}, {
-			"performanceMet" : 520
-		}
-	]
+	"MEASURE_DATA_CMS_V2": [ {
+		"eligiblePopulationExclusion" : 50
+	}, {
+		"eligiblePopulation" : 1000
+	}, {
+		"performanceMet" : 800
+	}, {
+		"eligiblePopulation" : 950
+	}, {
+		"performanceMet" : 900
+	}, {
+		"eligiblePopulationException" : 20
+	}, {
+		"eligiblePopulation" : 1000
+	}, {
+		"performanceMet" : 800
+	}, {
+		"eligiblePopulation" : 600
+	}, {
+		"eligiblePopulationExclusion" : 35
+	}, {
+		"performanceMet" : 486
+	}, {
+		"eligiblePopulation" : 800
+	}, {
+		"eligiblePopulationExclusion" : 40
+	}, {
+		"performanceMet" : 700
+	}, {
+		"eligiblePopulation" : 580
+	}, {
+		"eligiblePopulationExclusion" : 40
+	}, {
+		"performanceMet" : 520
+	} ]
 }

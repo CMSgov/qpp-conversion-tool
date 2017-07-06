@@ -1,12 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import gov.cms.qpp.conversion.ConversionEntry;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
@@ -16,6 +9,10 @@ import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 /**
  * The engine that executes the VALIDATORS on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
  */
@@ -23,7 +20,6 @@ public class QrdaValidator {
 
 	private static final Registry<NodeValidator> VALIDATORS = new Registry<>(Validator.class);
 
-	private final Map<TemplateId, List<Node>> nodesForTemplateIds = new EnumMap<>(TemplateId.class);
 	private final List<Detail> details = new ArrayList<>();
 	private Set<TemplateId> scope;
 
@@ -45,9 +41,6 @@ public class QrdaValidator {
 
 		//validate each node while traversing the tree
 		validateTree(rootNode);
-
-		//validate lists of nodes grouped by templateId
-		validateTemplateIds();
 
 		return details;
 	}
@@ -75,8 +68,7 @@ public class QrdaValidator {
 			return;
 		}
 
-		addNodeToTemplateMap(node);
-		List<Detail> nodeErrors = validatorForNode.validateSingleNode(node);
+		Set<Detail> nodeErrors = validatorForNode.validateSingleNode(node);
 		details.addAll(nodeErrors);
 	}
 
@@ -118,18 +110,6 @@ public class QrdaValidator {
 	}
 
 	/**
-	 * Adds the node to a map of template IDs to {@link gov.cms.qpp.conversion.model.Node}s that are of that
-	 * template ID.
-	 *
-	 * @param node The node to add to the map.
-	 */
-	private void addNodeToTemplateMap(final Node node) {
-		nodesForTemplateIds.putIfAbsent(node.getType(), new ArrayList<>());
-
-		nodesForTemplateIds.get(node.getType()).add(node);
-	}
-
-	/**
 	 * Validates all the children of the passed in {@link gov.cms.qpp.conversion.model.Node}.
 	 *
 	 * @param parentNode The children of this node are validated.
@@ -138,47 +118,5 @@ public class QrdaValidator {
 		parentNode.getChildNodes().stream()
 				.filter(n -> !n.isValidated())
 				.forEach(this::validateTree);
-	}
-
-	/**
-	 * Iterates over all the VALIDATORS to have them validate similar nodes.
-	 */
-	private void validateTemplateIds() {
-		Converter.CLIENT_LOG.info("Validating all nodes by templateId");
-
-		for (TemplateId validatorKey : VALIDATORS.getKeys()) {
-			validateSingleTemplateId(getValidator(validatorKey));
-		}
-	}
-
-	/**
-	 * Validates all the disparate nodes of the same template ID given the
-	 * {@link gov.cms.qpp.conversion.validate.NodeValidator}.
-	 *
-	 * @param validator The validator that should be called.
-	 */
-	private void validateSingleTemplateId(final NodeValidator validator) {
-		if (null == validator || !isValidationRequired(validator)) {
-			return;
-		}
-
-		final TemplateId templateId = getTemplateId(validator);
-
-		Converter.CLIENT_LOG.debug("Validating nodes associated with templateId {}", templateId);
-
-		List<Node> nodesForTemplateId = nodesForTemplateIds.getOrDefault(templateId, Collections.emptyList());
-
-		List<Detail> nodesErrors = validator.validateSameTemplateIdNodes(nodesForTemplateId);
-		details.addAll(nodesErrors);
-	}
-
-	/**
-	 * Gets the template ID that the {@link gov.cms.qpp.conversion.validate.NodeValidator} validates.
-	 *
-	 * @param validatorForNode The NodeValidator that has the @Validator annotation
-	 * @return The templateId that the NodeValidator will validate
-	 */
-	private TemplateId getTemplateId(final NodeValidator validatorForNode) {
-		return getAnnotation(validatorForNode).value();
 	}
 }

@@ -2,7 +2,7 @@
 <?xml-stylesheet type="text/xsl" href="qrda.xsl"?>
 <!-- 
 	Title: Comprehensive Primary Care (CPC) Initiative Sample QRDA-III Report 
-	Filename: ComprehensivePrimaryCare_Sample_QRDA_III.xml
+	FilenaComprehensivePrimaryCare_Sample_QRDA_III-latest.xml.xml
 	Version: 1.0
 	Revision History:  7/6/2015 Created; 9/23/2015 Updated 
 	Description: 1) This QRDA-III sample file is valid ONLY for the CPC program and for the 2016 measurement year reporting. 
@@ -4028,7 +4028,7 @@ QRDA Category III Measure Section (CMS EP)
 							<reference typeCode="REFR">
                         <externalDocument classCode="DOC" moodCode="EVN">
                            <id root="2.16.840.1.113883.4.738"
-                               extension="40280381-503f-a1fc-0150-d33f5b0a1b8c"/>
+                               extension="40280381-503f-a1fc-0150-d33f5b0a1b8cP"/>
                            <code code="57024-2"
                                  codeSystem="2.16.840.1.113883.6.1"
                                  codeSystemName="LOINC"
@@ -8140,7 +8140,7 @@ QRDA Category III Measure Section (CMS EP)
 							<reference typeCode="REFR">
                         <externalDocument classCode="DOC" moodCode="EVN">
                            <id root="2.16.840.1.113883.4.738"
-                               extension="40280381-51f0-825b-0152-22a1e7e81737"/>
+                               extension="40280381-51f0-825b-0152-22a1e7e81737P"/>
                            <code code="57024-2"
                                  codeSystem="2.16.840.1.113883.6.1"
                                  codeSystemName="LOINC"
@@ -10196,7 +10196,7 @@ QRDA Category III Measure Section (CMS EP)
 							<reference typeCode="REFR">
                         <externalDocument classCode="DOC" moodCode="EVN">
                            <id root="2.16.840.1.113883.4.738"
-                               extension="40280381-52fc-3a32-0153-395ce63513af"/>
+                               extension="40280381-52fc-3a32-0153-395ce63513afP"/>
                            <code code="57024-2"
                                  codeSystem="2.16.840.1.113883.6.1"
                                  codeSystemName="LOINC"
@@ -12252,7 +12252,7 @@ QRDA Category III Measure Section (CMS EP)
 							<reference typeCode="REFR">
                         <externalDocument classCode="DOC" moodCode="EVN">
                            <id root="2.16.840.1.113883.4.738"
-                               extension="40280381-52fc-3a32-0153-1a646a2a0bfa"/>
+                               extension="40280381-52fc-3a32-0153-1a646a2a0bfaP"/>
                            <code code="57024-2"
                                  codeSystem="2.16.840.1.113883.6.1"
                                  codeSystemName="LOINC"
@@ -13805,7 +13805,7 @@ QRDA Category III Measure Section (CMS EP)
 							<reference typeCode="REFR">
                         <externalDocument classCode="DOC" moodCode="EVN">
                            <id root="2.16.840.1.113883.4.738"
-                               extension="40280381-51f0-825b-0152-229afff616ee"/>
+                               extension="40280381-51f0-825b-0152-229afff616eeP"/>
                            <code code="57024-2"
                                  codeSystem="2.16.840.1.113883.6.1"
                                  codeSystemName="LOINC"
@@ -19995,7 +19995,7 @@ QRDA Category III Measure Section (CMS EP)
 							<reference typeCode="REFR">
                         <externalDocument classCode="DOC" moodCode="EVN">
                            <id root="2.16.840.1.113883.4.738"
-                               extension="40280381-52fc-3a32-0153-1a3981870b45"/>
+                               extension="40280381-52fc-3a32-0153-1a3981870b45P"/>
                            <code code="57024-2"
                                  codeSystem="2.16.840.1.113883.6.1"
                                  codeSystemName="LOINC"
@@ -22051,7 +22051,7 @@ QRDA Category III Measure Section (CMS EP)
 							<reference typeCode="REFR">
                         <externalDocument classCode="DOC" moodCode="EVN">
                            <id root="2.16.840.1.113883.4.738"
-                               extension="40280381-51f0-825b-0152-22aae8a21778"/>
+                               extension="40280381-51f0-825b-0152-22aae8a21778P"/>
                            <code code="57024-2"
                                  codeSystem="2.16.840.1.113883.6.1"
                                  codeSystemName="LOINC"
@@ -24107,7 +24107,7 @@ QRDA Category III Measure Section (CMS EP)
 							<reference typeCode="REFR">
                         <externalDocument classCode="DOC" moodCode="EVN">
                            <id root="2.16.840.1.113883.4.738"
-                               extension="40280381-537c-f767-0153-c378bd7207a5"/>
+                               extension="40280381-537c-f767-0153-c378bd7207a5P"/>
                            <code code="57024-2"
                                  codeSystem="2.16.840.1.113883.6.1"
                                  codeSystemName="LOINC"

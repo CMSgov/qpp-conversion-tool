@@ -48,7 +48,7 @@ public class JsonWrapper {
 		if (wrapper.isObject()) {
 			this.initAsObject();
 			this.object = new LinkedHashMap<>(wrapper.object);
-		} else if (wrapper.isArray()) {
+		} else {
 			this.initAsList();
 			this.list = new LinkedList<>(wrapper.list);
 		}
@@ -467,15 +467,6 @@ public class JsonWrapper {
 		if (check != null) {
 			throw new IllegalStateException("Current state may not change (from list to object or reverse).");
 		}
-	}
-
-	/**
-	 * Identifies whether or not the {@link JsonWrapper}'s content is an array.
-	 *
-	 * @return boolean is this a JSON array
-	 */
-	public boolean isArray() {
-		return list != null;
 	}
 
 	/**

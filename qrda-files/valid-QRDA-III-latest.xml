@@ -3632,7 +3632,7 @@ CDA Header
 									<!--DENOM Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="3D52925B-0D9B-466D-A181-68E984FA0634"/>
+											<id root="D346DA74-F16E-4159-BEDF-331BA28837FB"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -6222,7 +6222,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENOM"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->
@@ -6364,7 +6364,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENOM"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->
@@ -6506,7 +6506,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENOM"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->

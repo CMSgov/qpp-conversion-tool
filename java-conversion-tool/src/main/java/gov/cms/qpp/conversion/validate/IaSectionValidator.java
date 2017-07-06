@@ -4,8 +4,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
-import java.util.List;
-
 /**
  * Validates Improvement Activity Section Node - expects at least one Improvement Activity Measure
  */
@@ -32,16 +30,5 @@ public class IaSectionValidator extends NodeValidator {
 				.childMaximum(REPORTING_PARAM_REQUIREMENT_ERROR, 1,
 						TemplateId.REPORTING_PARAMETERS_ACT)
 				.onlyHasChildren(WRONG_CHILD_ERROR, TemplateId.IA_MEASURE, TemplateId.REPORTING_PARAMETERS_ACT);
-	}
-
-	/**
-	 * Checks the interdependency of nodes in the parsed tree.
-	 * IA Section has no dependencies on other nodes in the document.
-	 *
-	 * @param nodes The list of nodes to validate.
-	 */
-	@Override
-	protected void internalValidateSameTemplateIdNodes(List<Node> nodes) {
-		// No current cross node IA section validations
 	}
 }

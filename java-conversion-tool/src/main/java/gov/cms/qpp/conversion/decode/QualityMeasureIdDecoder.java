@@ -10,10 +10,8 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Decoder to read XML Data for an Quality Measure Identifier (eCQM).
@@ -22,9 +20,6 @@ import java.util.Set;
 public class QualityMeasureIdDecoder extends QppXmlDecoder {
 
 	private static final String MEASURE_ID = "measureId";
-	private static final Set<String> MEASURE_ID_CONTAINING_STRATUM = new HashSet<>(Arrays.asList(
-		"40280381-528a-60ff-0152-8e089ed20376", "40280381-51f0-825b-0152-22b52da917ba",
-		"40280381-51f0-825b-0152-22b695b217dc", "40280381-52fc-3a32-0153-1f6962df0f9c"));
 
 	/**
 	 * Decodes an Quality Measure Identifier into the intermediate Node format.
@@ -37,17 +32,12 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
-		String measureGuid = getMeasureGuid(element);
+		List<String> measureGuids = getMeasureGuid(element);
 
-		DecodeResult decodeResult = DecodeResult.TREE_CONTINUE;
+		measureGuids.forEach(measureGuid ->
+			thisNode.putValue(MEASURE_ID, measureGuid, false));
 
-		if (MEASURE_ID_CONTAINING_STRATUM.contains(measureGuid)) {
-			decodeResult = DecodeResult.TREE_ESCAPED;
-		} else {
-			thisNode.putValue(MEASURE_ID, measureGuid);
-		}
-
-		return decodeResult;
+		return DecodeResult.TREE_CONTINUE;
 	}
 
 	/**
@@ -56,12 +46,13 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 	 * @param element XML element that represents the Quality Measure Identifier
 	 * @return The measure GUID in the Quality Measure Identifier
 	 */
-	private String getMeasureGuid(final Element element) {
+	private List<String> getMeasureGuid(final Element element) {
 		String expressionStr = getXpath(MEASURE_ID);
 
-		XPathExpression<Attribute> expression = XPathFactory.instance().compile(expressionStr, Filters.attribute(), null,
-			xpathNs);
-		return Optional.ofNullable(expression.evaluateFirst(element)).map(Attribute::getValue)
-			.orElse(null);
+		XPathExpression<Attribute> expression = XPathFactory.instance()
+			.compile(expressionStr, Filters.attribute(), null, xpathNs);
+		return expression.evaluate(element).stream()
+			.map(Attribute::getValue)
+			.collect(Collectors.toList());
 	}
 }

@@ -4,9 +4,11 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
@@ -23,10 +25,10 @@ public class NpiTinCombinationValidationTest {
 	private Node npiTinCombinationNode;
 	private NpiTinCombinationValidation validator;
 
-	final static String NPI1 = "187654321";
-	final static String TIN1 = "123456781";
-	final static String NPI2 = "233222112";
-	final static String TIN2 = "211222332";
+	private final static String NPI1 = "187654321";
+	private final static String TIN1 = "123456781";
+	private final static String NPI2 = "233222112";
+	private final static String TIN2 = "211222332";
 
 	@Before
 	public void setUpNpiTinCombinations() {
@@ -71,7 +73,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().get(0).getMessage(),
+		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().iterator().next().getMessage(),
 				is(NpiTinCombinationValidation.ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED));
 	}
 
@@ -112,7 +114,8 @@ public class NpiTinCombinationValidationTest {
 		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage(),
+		assertThat("Must validate with the correct error",
+				validator.getDetails().iterator().next().getMessage(),
 				is(NpiTinCombinationValidation.AT_LEAST_ONE_NPI_TIN_COMBINATION));
 	}
 
@@ -129,7 +132,8 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage(),
+		assertThat("Must validate with the correct error",
+				validator.getDetails().iterator().next().getMessage(),
 				is(NpiTinCombinationValidation.ONLY_ONE_APM_ALLOWED));
 	}
 
@@ -144,7 +148,8 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with the correct error", validator.getDetails().get(0).getMessage(),
+		assertThat("Must validate with the correct error",
+				validator.getDetails().iterator().next().getMessage(),
 				is(NpiTinCombinationValidation.ONLY_ONE_APM_ALLOWED));
 	}
 
@@ -189,7 +194,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().get(0).getMessage(),
+		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().iterator().next().getMessage(),
 				is(NpiTinCombinationValidation.ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED));
 	}
 
@@ -204,7 +209,7 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().get(0).getMessage(),
+		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().iterator().next().getMessage(),
 				is(NpiTinCombinationValidation.NO_NPI_ALLOWED));
 	}
 
@@ -219,8 +224,32 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().get(0).getMessage(),
+		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().iterator().next().getMessage(),
 				is(NpiTinCombinationValidation.CONTAINS_TAXPAYER_IDENTIFICATION_NUMBER));
+	}
+
+	@Test
+	public void testClinicalDocumentNotPresent() {
+		Node rootWithoutClinicalDocument = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
+		validator.internalValidateSingleNode(rootWithoutClinicalDocument);
+
+		Assert.assertThat("there should be one error", validator.getDetails(), hasSize(1));
+		Assert.assertThat("error should be about missing Clinical Document node", validator.getDetails(),
+			hasValidationErrorsIgnoringPath(NpiTinCombinationValidation.CLINICAL_DOCUMENT_REQUIRED));
+	}
+
+	@Test
+	public void testTooManyClinicalDocumentNodes() {
+		Node rootWithTwoClinicalDocument = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
+		Node clinicalDocumentNode2 = new Node(TemplateId.CLINICAL_DOCUMENT);
+		rootWithTwoClinicalDocument.addChildNodes(clinicalDocumentNode, clinicalDocumentNode2);
+
+		validator.internalValidateSingleNode(rootWithTwoClinicalDocument);
+
+		Assert.assertThat("there should be one error", validator.getDetails(), hasSize(1));
+		Assert.assertThat("error should be about too many Clinical Document nodes", validator.getDetails(),
+			hasValidationErrorsIgnoringPath(NpiTinCombinationValidation.EXACTLY_ONE_DOCUMENT_ALLOWED));
 	}
 
 	private void createClinicalDocumentWithProgramType(final String programName, final String entityType,

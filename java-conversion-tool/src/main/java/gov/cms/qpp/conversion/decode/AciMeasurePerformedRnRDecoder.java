@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  */
 @Decoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 public class AciMeasurePerformedRnRDecoder extends QppXmlDecoder {
-	private static final String MEASURE_ID = "measureId";
+	public static final String MEASURE_ID = "measureId";
 
 	/**
 	 * Decodes an ACI Measure Performed Reference and Results into an intermediate node
@@ -37,7 +37,8 @@ public class AciMeasurePerformedRnRDecoder extends QppXmlDecoder {
 	 */
 	private void setMeasureIdOnNode(Element element, Node thisNode) {
 		String expressionStr = getXpath(MEASURE_ID);
-		Consumer<? super Attribute> consumer = p -> thisNode.putValue(MEASURE_ID, p.getValue());
-		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
+		Consumer<? super Attribute> consumer = p ->
+				thisNode.putValue(MEASURE_ID, p.getValue(), false);
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), false);
 	}
 }

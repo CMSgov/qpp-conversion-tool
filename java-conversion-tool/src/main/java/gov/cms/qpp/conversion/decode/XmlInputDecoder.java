@@ -112,7 +112,9 @@ public abstract class XmlInputDecoder implements InputDecoder {
 		if (selectOne) {
 			Optional.ofNullable(expression.evaluateFirst(element)).ifPresent(consumer);
 		} else {
-			Optional.ofNullable(expression.evaluate(element)).ifPresent(consumer);
+			List<?> elems = expression.evaluate(element);
+			Optional.ofNullable(elems)
+					.ifPresent(notNullElems -> notNullElems.forEach(consumer));
 		}
 	}
 

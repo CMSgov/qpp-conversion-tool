@@ -8,8 +8,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
@@ -66,14 +65,14 @@ public class QualityMeasureIdValidatorTest {
 
 	@AfterClass
 	public static void resetMeasuresData() {
-		MeasureConfigs.setMeasureDataFile("measures-data-short.json");
+		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@Test
 	public void validateHappyPath() {
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode();
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertThat("There must not be any validation errors.", details, hasSize(0));
 	}
@@ -82,7 +81,7 @@ public class QualityMeasureIdValidatorTest {
 	public void validateMissingMeasureId() {
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, true);
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertThat("There must be only one validation error.", details, hasSize(1));
 		assertThat("Incorrect validation error.", details,
@@ -93,7 +92,7 @@ public class QualityMeasureIdValidatorTest {
 	public void validateMissingMeasure() {
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(true, false);
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertThat("There must be only one validation error.", details, hasSize(1));
 		assertThat("Incorrect validation error.", details,
@@ -104,7 +103,7 @@ public class QualityMeasureIdValidatorTest {
 	public void validateMissingMeasureIdAndMeasure() {
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, false);
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertThat("There must be only two validation errors.", details, hasSize(2));
 		assertThat("Incorrect validation error.", details,
@@ -122,7 +121,7 @@ public class QualityMeasureIdValidatorTest {
 			.addSubPopulationMeasureData(DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID)
 			.build();
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must be zero validation errors.", details, empty());
 	}
 
@@ -136,7 +135,7 @@ public class QualityMeasureIdValidatorTest {
 				.addSubPopulationMeasureData(DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID)
 				.build();
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must be one validation errors.", details, hasSize(1));
 	}
 
@@ -150,20 +149,12 @@ public class QualityMeasureIdValidatorTest {
 			.addSubPopulationMeasureData(NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID)
 			.build();
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must be a validation error.", details, hasSize(1));
 		assertThat("Incorrect validation error.", details,
 			hasValidationErrorsIgnoringPath(
 				String.format(QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE,
 				QualityMeasureIdValidator.DENEX)));
-	}
-
-	@Test
-	public void testInternalValidateSameTemplateIdNodes() {
-		List<Detail> details = objectUnderTest.validateSameTemplateIdNodes(
-				Arrays.asList(createMeasureReferenceResultsNode(), createMeasureReferenceResultsNode()));
-
-		assertThat("There must not be any validation errors.", details, hasSize(0));
 	}
 
 	@Test
@@ -176,7 +167,7 @@ public class QualityMeasureIdValidatorTest {
 			.addSubPopulationMeasureData(NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID)
 			.build();
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must not be any validation errors.", details, hasSize(0));
 	}
 
@@ -190,7 +181,7 @@ public class QualityMeasureIdValidatorTest {
 			.addSubPopulationMeasureData(NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID)
 			.build();
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must not be any validation errors.", details, hasSize(0));
 	}
 
@@ -204,7 +195,7 @@ public class QualityMeasureIdValidatorTest {
 			.addSubPopulationMeasureData(DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID)
 			.build();
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(message));
 	}
 
@@ -227,7 +218,7 @@ public class QualityMeasureIdValidatorTest {
 			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID)
 			.build();
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("There must not be any validation errors.", details, hasSize(0));
 	}
 
@@ -251,7 +242,7 @@ public class QualityMeasureIdValidatorTest {
 			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID)
 			.build();
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(message));
 
 	}
@@ -275,7 +266,7 @@ public class QualityMeasureIdValidatorTest {
 			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID)
 			.build();
 
-		List<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(message));
 
 

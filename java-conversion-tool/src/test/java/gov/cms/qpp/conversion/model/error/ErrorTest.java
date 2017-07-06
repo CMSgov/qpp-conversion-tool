@@ -15,7 +15,7 @@ public class ErrorTest {
 	public void addValidationError() {
 		Error objectUnderTest = new Error();
 
-		assertThat("The validation errors should have been null at first", objectUnderTest.getDetails(), is(nullValue()));
+		assertThat("The validation errors should have been empty at first", objectUnderTest.getDetails(), hasSize(0));
 
 		objectUnderTest.addValidationError(new Detail("description", "path"));
 		objectUnderTest.addValidationError(new Detail("description", "path"));
