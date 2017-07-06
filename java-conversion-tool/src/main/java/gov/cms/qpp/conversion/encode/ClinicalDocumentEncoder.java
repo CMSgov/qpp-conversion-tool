@@ -44,6 +44,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @param thisNode holds the decoded node sections of clinical document
 	 */
 	private void encodeToplevel(JsonWrapper wrapper, Node thisNode) {
+		wrapper.putString(ClinicalDocumentDecoder.PERFORMANCE_YEAR,
+				thisNode.getValue(ClinicalDocumentDecoder.PERFORMANCE_YEAR));
 		wrapper.putString(ClinicalDocumentDecoder.PROGRAM_NAME,
 				thisNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
 		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE,

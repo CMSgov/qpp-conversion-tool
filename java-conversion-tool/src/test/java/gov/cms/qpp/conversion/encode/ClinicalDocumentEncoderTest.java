@@ -122,6 +122,17 @@ public class ClinicalDocumentEncoderTest {
 	}
 
 	@Test
+	public void testPerformanceYear() {
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PERFORMANCE_YEAR, "2017");
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+		Object meep = testJsonWrapper.getValue(ClinicalDocumentDecoder.PERFORMANCE_YEAR);
+
+		assertThat("", (String) meep, is("2017"));
+	}
+
+	@Test
 	public void testInternalEncode() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
