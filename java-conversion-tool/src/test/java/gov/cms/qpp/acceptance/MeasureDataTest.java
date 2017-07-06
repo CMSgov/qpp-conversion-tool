@@ -44,7 +44,7 @@ public class MeasureDataTest {
 					.collect(Collectors.toList());
 
 			value.getStrata().forEach(stratum -> {
-				assertThat("Required sub population was not present",
+				assertThat("Required sub population was not present within: " + config.getElectronicMeasureId(),
 						pops, hasItem(stratum.getElectronicMeasureUuids()));
 			});
 		});
