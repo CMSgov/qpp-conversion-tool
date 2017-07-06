@@ -7,7 +7,6 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import gov.cms.qpp.conversion.validate.ClinicalDocumentValidator;
 import gov.cms.qpp.conversion.validate.QualityMeasureIdValidator;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
@@ -66,10 +65,10 @@ public class QualityMeasureIdMultiRoundTripTest {
 				"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
 
 		List<Map<String, Integer>> subPopulation = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
-				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='CMS52v5')].value.strata[*]", List.class);
+				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='160')].value.strata[*]", List.class);
 
 		assertThat("The measureId in the quality measure should still populate given the junk stuff in the measure.",
-				qualityMeasures.get(0).get("measureId"), is("CMS52v5"));
+				qualityMeasures.get(0).get("measureId"), is("160"));
 
 		assertFirstSubPopulation(subPopulation);
 

@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
-import gov.cms.qpp.conversion.encode.helper.QualityMeasuresLookup;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -45,14 +44,13 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
-		String measureId = QualityMeasuresLookup.getMeasureId(node.getValue(MEASURE_ID));
 		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_ID));
+		String measureId = measureConfig.getMeasureId();
+		wrapper.putString(MEASURE_ID, measureId);
 
 		if (isASinglePerformanceRate(measureConfig, measureId)) {
-			wrapper.putString(MEASURE_ID, measureId);
 			encodeChildren(wrapper, node, measureConfig);
 		} else {
-			wrapper.putString(MEASURE_ID, measureId);
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
 		}
 	}
