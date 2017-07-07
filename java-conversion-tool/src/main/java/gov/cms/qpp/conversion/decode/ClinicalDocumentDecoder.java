@@ -7,8 +7,6 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
 /**
@@ -29,7 +27,6 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	public static final String ENTITY_GROUP = "group";
 	public static final String ENTITY_INDIVIDUAL = "individual";
 	public static final String CPCPLUS = "CPCPLUS";
-	public static final String PERFORMANCE_YEAR = "performanceYear";
 
 	/**
 	 * internalDecode parses the xml fragment into thisNode
