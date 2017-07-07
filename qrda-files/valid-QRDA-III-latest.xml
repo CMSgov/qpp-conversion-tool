@@ -162,7 +162,7 @@ CDA Header
 				<assignedEntity>
 					<id root="2.16.840.1.113883.4.6" extension="2567891421"/>
 					<representedOrganization>
-						<id root="2.16.840.1.113883.4.2" extension="123456789"/>
+						<id root="2.16.840.1.113883.4.2" extension="000123456"/>
 						<name>Good Health Clinic</name>
 					</representedOrganization>
 				</assignedEntity>
