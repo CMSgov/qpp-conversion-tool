@@ -79,12 +79,19 @@ public class MultipleTinsDecoderTest extends BaseTest {
 	public void testNullTINID() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingTINID();
 		List<Node> children = getTestChildren(multipleTinsElement);
-		assertThat("Expect that there are three children", children, hasSize(3));
+		assertThat("Expect that there are four children", children, hasSize(4));
 	}
 
 	@Test
 	public void testNullNPIID() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingNPIID();
+		List<Node> children = getTestChildren(multipleTinsElement);
+		assertThat("Expect that there are four children", children, hasSize(4));
+	}
+
+	@Test
+	public void testNullTINIDAndNPIID() throws Exception {
+		Element multipleTinsElement = makeTestElementMissingTINIDAndNPIID();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertThat("Expect that there are three children", children, hasSize(3));
 	}
@@ -153,6 +160,14 @@ public class MultipleTinsDecoderTest extends BaseTest {
 
 	private Element makeTestElementMissingTINID() throws IOException, XmlException {
 		String xmlFragment = getFixture("multiTinMinimal.xml");
+		xmlFragment = xmlFragment.replace("extension=\"TIN-1\"", "");
+		Element ele = XmlUtils.stringToDom(xmlFragment);
+		return ele;
+	}
+
+	private Element makeTestElementMissingTINIDAndNPIID() throws IOException, XmlException {
+		String xmlFragment = getFixture("multiTinMinimal.xml");
+		xmlFragment = xmlFragment.replace("extension=\"NPI-1\"", "");
 		xmlFragment = xmlFragment.replace("extension=\"TIN-1\"", "");
 		Element ele = XmlUtils.stringToDom(xmlFragment);
 		return ele;
