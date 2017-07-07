@@ -63,7 +63,7 @@ public class SingularAttributeTest {
 				//There are no validations currently for entity type
 				ClinicalDocumentDecoder.ENTITY_ID,
 				//There are no validations for performanceYear
-				ClinicalDocumentEncoder.PERFORMANCE_YEAR,
+				ReportingParametersActDecoder.PERFORMANCE_YEAR,
 				//stratum is not currently mapped
 				"stratum")
 		);

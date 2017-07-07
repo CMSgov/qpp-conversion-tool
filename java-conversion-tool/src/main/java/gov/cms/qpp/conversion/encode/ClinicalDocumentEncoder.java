@@ -21,7 +21,6 @@ import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
 @Encoder(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	private static final String MEASUREMENT_SETS = "measurementSets";
-	public static final String PERFORMANCE_YEAR = "performanceYear";
 
 	/**
 	 * internalEncode encodes nodes into Json Wrapper.
@@ -71,10 +70,9 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 			CLIENT_LOG.error("Missing Reporting Parameters in node hierarchy");
 			return;
 		}
-		String start = reportingDescendant.getValue(ReportingParametersActDecoder.PERFORMANCE_START);
-		//start is formatted as follows: yyyyMMddHHmmss
-		wrapper.putInteger(PERFORMANCE_YEAR, start.substring(0, 4));
-		maintainContinuity(wrapper, reportingDescendant, PERFORMANCE_YEAR);
+		String start = reportingDescendant.getValue(ReportingParametersActDecoder.PERFORMANCE_YEAR);
+		wrapper.putInteger(ReportingParametersActDecoder.PERFORMANCE_YEAR, start);
+		maintainContinuity(wrapper, reportingDescendant, ReportingParametersActDecoder.PERFORMANCE_YEAR);
 	}
 
 

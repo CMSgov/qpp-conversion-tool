@@ -105,6 +105,7 @@ public class ClinicalDocumentEncoderTest {
 		aciSectionNode.addChildNode(aciProportionMeasureNode3);
 
 		aciReportingPerformanceNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		aciReportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_YEAR, "2017");
 		aciReportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
 		aciReportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
 		aciSectionNode.addChildNode(aciReportingPerformanceNode);
@@ -126,7 +127,7 @@ public class ClinicalDocumentEncoderTest {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
-		Object performanceYear = testJsonWrapper.getValue(ClinicalDocumentEncoder.PERFORMANCE_YEAR);
+		Object performanceYear = testJsonWrapper.getValue(ReportingParametersActDecoder.PERFORMANCE_YEAR);
 
 		assertThat("performance year should be 2017", performanceYear, is(2017));
 	}

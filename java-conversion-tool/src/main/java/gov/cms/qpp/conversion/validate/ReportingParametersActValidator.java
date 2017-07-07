@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.model.Validator;
 
 @Validator(value = TemplateId.REPORTING_PARAMETERS_ACT, required = true)
 public class ReportingParametersActValidator extends NodeValidator {
+	public static final String SINGLE_PERFORMANCE_YEAR = "Must have one and only one performance year";
 	public static final String SINGLE_PERFORMANCE_START = "Must have one and only one performance start";
 	private static final String SINGLE_PERFORMANCE_END = "Must have one and only one performance end";
 
@@ -15,6 +16,7 @@ public class ReportingParametersActValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
 				.singleValue(SINGLE_PERFORMANCE_START, ReportingParametersActDecoder.PERFORMANCE_START)
-				.singleValue(SINGLE_PERFORMANCE_END, ReportingParametersActDecoder.PERFORMANCE_END);
+				.singleValue(SINGLE_PERFORMANCE_END, ReportingParametersActDecoder.PERFORMANCE_END)
+				.value(SINGLE_PERFORMANCE_YEAR, ReportingParametersActDecoder.PERFORMANCE_YEAR);
 	}
 }

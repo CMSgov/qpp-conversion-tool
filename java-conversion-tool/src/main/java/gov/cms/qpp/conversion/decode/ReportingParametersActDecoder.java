@@ -16,6 +16,7 @@ import java.util.function.Consumer;
 public class ReportingParametersActDecoder extends QppXmlDecoder {
 	public static final String PERFORMANCE_START = "performanceStart";
 	public static final String PERFORMANCE_END = "performanceEnd";
+	public static final String PERFORMANCE_YEAR = "performanceYear";
 
 	/**
 	 * Decodes a given element for a reporting parameter into a specified node
@@ -42,7 +43,12 @@ public class ReportingParametersActDecoder extends QppXmlDecoder {
 		String performanceEndExprStr = getXpath(PERFORMANCE_END);
 
 		Consumer<? super Attribute> performanceStartConsumer =
-				p -> thisNode.putValue(PERFORMANCE_START, p.getValue(), false);
+				p -> {
+					String start = p.getValue();
+					thisNode.putValue(PERFORMANCE_START, start, false);
+					//start is formatted as follows: yyyyMMddHHmmss
+					thisNode.putValue(PERFORMANCE_YEAR, start.substring(0, 4));
+				};
 		Consumer<? super Attribute> performanceEndConsumer =
 				p -> thisNode.putValue(PERFORMANCE_END, p.getValue(), false);
 
