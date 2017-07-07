@@ -525,7 +525,7 @@
 			"category" : "quality",
 			"submissionMethod" : "electronicHealthRecord",
 			"measurements" : [ {
-				"measureId" : "CMS165v5",
+				"measureId" : "236",
 				"value" : {
 					"isEndToEndReported" : true,
 					"performanceMet" : 800,
@@ -534,7 +534,7 @@
 					"eligiblePopulation" : 1000
 				}
 			}, {
-				"measureId" : "CMS122v5",
+				"measureId" : "001",
 				"value" : {
 					"isEndToEndReported" : true,
 					"performanceMet" : 900,
@@ -542,7 +542,7 @@
 					"eligiblePopulation" : 950
 				}
 			}, {
-				"measureId" : "CMS68v6",
+				"measureId" : "130",
 				"value" : {
 					"isEndToEndReported" : true,
 					"performanceMet" : 800,
@@ -551,7 +551,7 @@
 					"eligiblePopulation" : 1000
 				}
 			}, {
-				"measureId" : "CMS160v5",
+				"measureId" : "371",
 				"value" : {
 					"isEndToEndReported" : true,
 					"strata" : [ {
@@ -629,7 +629,7 @@
 		"category" : "quality",
 		"submissionMethod" : "electronicHealthRecord",
 		"measurements" : [ {
-			"measureId" : "CMS165v5",
+			"measureId" : "236",
 			"value" : {
 				"isEndToEndReported" : true,
 				"performanceMet" : 800,
@@ -638,7 +638,7 @@
 				"eligiblePopulation" : 1000
 			}
 		}, {
-			"measureId" : "CMS122v5",
+			"measureId" : "001",
 			"value" : {
 				"isEndToEndReported" : true,
 				"performanceMet" : 900,
@@ -646,7 +646,7 @@
 				"eligiblePopulation" : 950
 			}
 		}, {
-			"measureId" : "CMS68v6",
+			"measureId" : "130",
 			"value" : {
 				"isEndToEndReported" : true,
 				"performanceMet" : 800,
@@ -655,7 +655,7 @@
 				"eligiblePopulation" : 1000
 			}
 		}, {
-			"measureId" : "CMS160v5",
+			"measureId" : "371",
 			"value" : {
 				"isEndToEndReported" : true,
 				"strata" : [ {
@@ -683,7 +683,7 @@
 		"performanceEnd" : "2017-12-31"
 	},
 	"MEASURE_REFERENCE_RESULTS_CMS_V2": [ {
-		"measureId" : "CMS165v5",
+		"measureId" : "236",
 		"value" : {
 			"isEndToEndReported" : true,
 			"performanceMet" : 800,
@@ -692,7 +692,7 @@
 			"eligiblePopulation" : 1000
 		}
 	}, {
-		"measureId" : "CMS122v5",
+		"measureId" : "001",
 		"value" : {
 			"isEndToEndReported" : true,
 			"performanceMet" : 900,
@@ -700,7 +700,7 @@
 			"eligiblePopulation" : 950
 		}
 	}, {
-		"measureId" : "CMS68v6",
+		"measureId" : "130",
 		"value" : {
 			"isEndToEndReported" : true,
 			"performanceMet" : 800,
@@ -709,7 +709,7 @@
 			"eligiblePopulation" : 1000
 		}
 	}, {
-		"measureId" : "CMS160v5",
+		"measureId" : "371",
 		"value" : {
 			"isEndToEndReported" : true,
 			"strata" : [ {
