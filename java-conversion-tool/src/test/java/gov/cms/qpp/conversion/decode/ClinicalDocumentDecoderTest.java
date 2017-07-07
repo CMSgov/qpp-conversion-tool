@@ -48,12 +48,6 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void testPerformanceYear() {
-		assertThat("performance year is correct",
-				clinicalDocument.getValue(ClinicalDocumentDecoder.PERFORMANCE_YEAR), is("2017"));
-	}
-
-	@Test
 	public void testRootProgramName() {
 		assertThat("programName is correct", clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME),
 			is(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME));

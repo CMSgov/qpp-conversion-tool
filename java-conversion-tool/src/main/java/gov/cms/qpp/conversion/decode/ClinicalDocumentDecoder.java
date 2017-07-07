@@ -40,29 +40,12 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
-		setPerformanceYear(element, thisNode);
 		setProgramNameOnNode(element, thisNode);
 		setEntityIdOnNode(element, thisNode);
 		setNationalProviderIdOnNode(element, thisNode);
 		setTaxProviderTaxIdOnNode(element, thisNode);
 		processComponentElement(element, thisNode);
 		return DecodeResult.TREE_FINISHED;
-	}
-
-	/**
-	 * Retrieves the top level effectiveTime year
-	 *
-	 * @param element Xml fragment being parsed.
-	 * @param thisNode The output internal representation of the document
-	 */
-	private void setPerformanceYear(Element element, Node thisNode) {
-		Consumer<Attribute> consumer = datetime -> {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-			LocalDate localDate = LocalDate.parse("20170311061231", formatter);
-			thisNode.putValue(PERFORMANCE_YEAR,
-					String.valueOf(localDate.getYear()), false);
-		};
-		setOnNode(element, getXpath(PERFORMANCE_YEAR), consumer, Filters.attribute(), false);
 	}
 
 	/**
