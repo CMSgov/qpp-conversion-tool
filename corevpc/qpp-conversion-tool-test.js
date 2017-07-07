@@ -2,7 +2,7 @@
 var env = {
     //organization: 'Example',
     organization: 'Flexion',
-    application: 'qppConversionTool',
+    application: 'qppCnvTl',
     environment: 'Test',
     //region: 'us-west-2',
     region: 'us-east-1',
@@ -16,7 +16,7 @@ var env = {
     keyName: 'qpp-conversion-deployment',
     sslCertificateId: 'arn:aws:acm:us-east-1:684212469706:certificate/6ded07c6-54c2-4678-a0f0-24360905861e',
     defaultIamInstanceProfile: 'server-nonprod', // or use your own
-    alarmEmail: 'sfradkin@flexion.us', // for cloudwatch alarms
+    alarmEmail: 'nobody@flexion.us', // for cloudwatch alarms
     machineImageOwners: ['self'],
     externalSecurityGroupRefs: [{ 'Ref': 'OpenHttpSecurityGroup' }]
 };
@@ -61,7 +61,7 @@ env.configureLayers = function() {
      return {
          app: rootRequire('./layers/app/api'),
          jump: rootRequire('./layers/jump/jump'),
-         nat: rootRequire('./layers/nat/nat'),
+//         nat: rootRequire('./layers/nat/nat'),
          net: rootRequire('./layers/net/vpc')
      };
 
