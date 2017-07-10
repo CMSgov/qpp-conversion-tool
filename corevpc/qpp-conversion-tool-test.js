@@ -58,10 +58,20 @@ env.configureLayers = function() {
     // };
 
     // Self-administered VPC example:
+     var nat = rootRequire('./layers/nat/nat');
+     var nat1 = nat['Resources']['Nat0aBcdb96d4Instance2'];
+     var nat2 = nat['Resources']['Nat0cBcdb96d4Instance2'];
+     var nat3 = nat['Resources']['Nat0dBcdb96d4Instance2'];
+     nat1['Properties']['ImageId'] = 'ami-d4c5efc2';
+     nat1['Properties']['InstanceType'] = 'm4.large';
+     nat2['Properties']['ImageId'] = 'ami-d4c5efc2';
+     nat2['Properties']['InstanceType'] = 'm4.large';
+     nat3['Properties']['ImageId'] = 'ami-d4c5efc2';
+     nat3['Properties']['InstanceType'] = 'm4.large';
      return {
          app: rootRequire('./layers/app/api'),
          jump: rootRequire('./layers/jump/jump'),
-//         nat: rootRequire('./layers/nat/nat'),
+         nat,
          net: rootRequire('./layers/net/vpc')
      };
 
