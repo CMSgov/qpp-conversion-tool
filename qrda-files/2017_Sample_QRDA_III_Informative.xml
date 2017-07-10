@@ -24800,7 +24800,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="125"/>
+											<value xsi:type="INT" value="130"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
