@@ -40,7 +40,11 @@ test:
     - cd frontend; yarn run test:ci
     - cd frontend; yarn run e2e:ci
   post:
-    - pwd && ls -al . && cp benchmark/target/benchmarks.jar apache-jmeter/lib/ext && cp benchmark/src/test/jmeter/ apache-jmeter/bin
+    - pwd && ls -al .
+    - cp benchmark/target/benchmarks.jar apache-jmeter/lib/ext
+    - cp -r benchmark/src/test/jmeter/ apache-jmeter/bin
+    - ls -al apache-jmeter
+    - ls -al apache-jmeter/bin
     - apache-jmeter/bin/jmeter.sh -j logs/QPPConversion.jmx.log -l results/QPPConversion.jtl -n
     - ./bin/docker_deploy.sh
     - cp java-conversion-tool/target/java-conversion-tool.jar $CIRCLE_ARTIFACTS
