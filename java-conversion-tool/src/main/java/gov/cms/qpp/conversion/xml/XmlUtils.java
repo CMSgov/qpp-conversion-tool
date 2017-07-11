@@ -17,6 +17,10 @@ import java.util.stream.Collectors;
  * Utility for parsing various input types into a JDom Element.
  */
 public class XmlUtils {
+	private static final String DISALLOW_DTD = "http://apache.org/xml/features/disallow-doctype-decl";
+	private static final String EXT_GENERAL_ENTITIES = "http://xml.org/sax/features/external-general-entities";
+	private static final String EXT_PARAM_ENTITIES = "http://xml.org/sax/features/external-parameter-entities";
+
 	/**
 	 * Private constructor so utility class cannot be instantiated.
 	 */
@@ -60,6 +64,10 @@ public class XmlUtils {
 	public static Element parseXmlStream(InputStream xmlStream) throws XmlException {
 		try {
 			SAXBuilder saxBuilder = new SAXBuilder();
+			saxBuilder.setFeature(DISALLOW_DTD,true);
+			saxBuilder.setFeature(EXT_GENERAL_ENTITIES , false);
+			saxBuilder.setFeature(EXT_PARAM_ENTITIES, false);
+
 			Document dom = saxBuilder.build(xmlStream);
 			return dom.getRootElement();
 		} catch (JDOMException | IOException e) {
