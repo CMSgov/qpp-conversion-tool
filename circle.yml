@@ -12,8 +12,8 @@ machine:
 
 dependencies:
   pre:
-    - curl -L -o apache-jmeter.tgz http://www-us.apache.org/dist//jmeter/binaries/apache-jmeter-3.2.tgz
-    - tar zxvf apache-jmeter.tgz
+    - curl -L -o apache-jmeter.tgz http://www-us.apache.org/dist/jmeter/binaries/apache-jmeter-3.2.tgz
+    - mkdir apache-jmeter && tar zxf apache-jmeter.tgz -C apache-jmeter --strip-components 1
     - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     - sudo dpkg -i google-chrome.deb
     - sudo apt-get install jq
