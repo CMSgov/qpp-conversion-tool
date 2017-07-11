@@ -68,9 +68,13 @@ env.configureLayers = function() {
      nat2['Properties']['InstanceType'] = 'm4.large';
      nat3['Properties']['ImageId'] = 'ami-d4c5efc2';
      nat3['Properties']['InstanceType'] = 'm4.large';
+
+     var jump = rootRequire('./layers/jump/jump')
+     console.log(jump['Resources']['Properties']);
+
      return {
          app: rootRequire('./layers/app/api'),
-         jump: rootRequire('./layers/jump/jump'),
+         jump,
          nat,
          net: rootRequire('./layers/net/vpc')
      };
