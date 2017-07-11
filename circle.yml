@@ -42,7 +42,7 @@ test:
   post:
     - pwd && ls -al .
     - cp benchmark/target/benchmarks.jar apache-jmeter/lib/ext
-    - cp -r benchmark/src/test/jmeter/ apache-jmeter/bin
+    - cp benchmark/src/test/jmeter/* apache-jmeter/bin
     - ls -al apache-jmeter
     - ls -al apache-jmeter/bin
     - apache-jmeter/bin/jmeter.sh -j logs/QPPConversion.jmx.log -l results/QPPConversion.jtl -n
