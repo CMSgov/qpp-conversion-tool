@@ -22,7 +22,7 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class ClinicalDocumentRoundTripTest extends BaseTest {
 
-	private static final String EXPECTED = "{\n  \"programName\" : \"mips\",\n  \"entityType\" : \"individual\",\n  "
+	private static final String EXPECTED = "{\n  \"performanceYear\" : 2017,\n  \"programName\" : \"mips\",\n  \"entityType\" : \"individual\",\n  "
 			+ "\"taxpayerIdentificationNumber\" : \"123456789\",\n  \"nationalProviderIdentifier\" : \"2567891421\",\n  "
 			+ "\"measurementSets\" : [ {\n    \"category\" : \"aci\",\n    "
 			+ "\"submissionMethod\" : \"electronicHealthRecord\",\n    "

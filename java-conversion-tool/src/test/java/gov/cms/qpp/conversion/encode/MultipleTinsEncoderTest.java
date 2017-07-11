@@ -70,6 +70,7 @@ public class MultipleTinsEncoderTest {
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 
 		reportingPerformanceNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		reportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_YEAR, "2017");
 		reportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
 		reportingPerformanceNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
 		aciSectionNode.addChildNode(reportingPerformanceNode);

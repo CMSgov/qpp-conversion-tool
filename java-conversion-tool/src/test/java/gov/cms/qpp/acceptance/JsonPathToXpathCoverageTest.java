@@ -17,9 +17,6 @@ import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 
 public class JsonPathToXpathCoverageTest {
-
-	private static JsonWrapper metaWrapper = new JsonWrapper(false);
-
 	private static JsonPathToXpathHelper helper;
 	private ObjectMapper om = new ObjectMapper();
 
@@ -33,6 +30,7 @@ public class JsonPathToXpathCoverageTest {
 
 	private void checkCoverage(Path path) {
 		try {
+			JsonWrapper metaWrapper = new JsonWrapper(false);
 			helper = new JsonPathToXpathHelper(path, metaWrapper, false);
 			JsonWrapper wrapper = new JsonWrapper(metaWrapper, true);
 			JsonNode root = om.readTree(wrapper.toString());

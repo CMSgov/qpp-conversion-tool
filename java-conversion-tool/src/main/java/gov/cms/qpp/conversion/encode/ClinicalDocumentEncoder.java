@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -10,6 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
 
 /**
  * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
@@ -44,6 +47,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @param thisNode holds the decoded node sections of clinical document
 	 */
 	private void encodeToplevel(JsonWrapper wrapper, Node thisNode) {
+		encodePerformanceYear(wrapper, thisNode);
 		wrapper.putString(ClinicalDocumentDecoder.PROGRAM_NAME,
 				thisNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
 		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE,
@@ -53,6 +57,24 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		wrapper.putString(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
 				thisNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
 	}
+
+	/**
+	 * Extracts performance year from the first found reporting parameters act node.
+	 *
+	 * @param wrapper wrapper that holds the section
+	 * @param node clinical document node
+	 */
+	protected void encodePerformanceYear(JsonWrapper wrapper, Node node) {
+		Node reportingDescendant = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		if (reportingDescendant == null) {
+			CLIENT_LOG.error("Missing Reporting Parameters in node hierarchy");
+			return;
+		}
+		String start = reportingDescendant.getValue(ReportingParametersActDecoder.PERFORMANCE_YEAR);
+		wrapper.putInteger(ReportingParametersActDecoder.PERFORMANCE_YEAR, start);
+		maintainContinuity(wrapper, reportingDescendant, ReportingParametersActDecoder.PERFORMANCE_YEAR);
+	}
+
 
 	/**
 	 * This will add the entityId from the Clinical Document Node
