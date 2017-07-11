@@ -516,6 +516,7 @@
 		}
 	],
 	"CLINICAL_DOCUMENT": {
+		"performanceYear": 2017,
 		"programName" : "mips",
 		"entityType" : "individual",
 		"taxpayerIdentificationNumber" : "123456789",
