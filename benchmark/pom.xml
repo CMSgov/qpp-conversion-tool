@@ -119,24 +119,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>com.lazerycode.jmeter</groupId>
-				<artifactId>jmeter-maven-plugin</artifactId>
-				<version>2.2.0</version>
-				<executions>
-					<execution>
-						<id>jmeter-tests</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jmeter</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<resultsFileNameDateFormat>yyyyMMMMdd.HHmmss</resultsFileNameDateFormat>
-					<skipTests>${skipTests}</skipTests>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 </project>
