@@ -11,6 +11,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -26,15 +27,20 @@ import static org.junit.Assert.assertThat;
 public class SubmissionIntegrationTest {
 	private static HttpClient client;
 	private static String serviceUrl = "https://qpp-submissions-sandbox.navapbc.com/v1/submissions";
+	private JsonWrapper qpp;
 
 	@BeforeClass
 	public static void setup() {
 		client = HttpClientBuilder.create().build();
 	}
 
+	@Before
+	public void setupTest() {
+		qpp = loadQpp();
+	}
+
 	@Test
 	public void testSubmissionApiPostSuccess() throws IOException {
-		JsonWrapper qpp = loadQpp("../qrda-files/valid-QRDA-III-latest.xml");
 		HttpResponse httpResponse = servicePost(qpp);
 		cleanUp(httpResponse);
 
@@ -44,7 +50,6 @@ public class SubmissionIntegrationTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSubmissionApiPostFailure() throws IOException {
-		JsonWrapper qpp = loadQpp("../qrda-files/valid-QRDA-III-latest.xml");
 		Map<String, Object> obj = (Map<String, Object>) qpp.getObject();
 		obj.remove("performanceYear");
 		HttpResponse httpResponse = servicePost(qpp);
@@ -52,11 +57,10 @@ public class SubmissionIntegrationTest {
 		assertThat("QPP submission should succeed", getStatus(httpResponse), is(422));
 	}
 
-	private JsonWrapper loadQpp(String qrdaPath) {
-		Path path = Paths.get(qrdaPath);
+	private JsonWrapper loadQpp() {
+		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Converter converter = new Converter(path);
-		JsonWrapper qpp = converter.transform();
-		return qpp;
+		return converter.transform();
 	}
 
 	private HttpResponse servicePost(JsonWrapper qpp) throws IOException {
