@@ -30,8 +30,8 @@ public class SubmissionIntegrationTest {
 
 		int npi = new Random().nextInt(999999999);
 		int tin = new Random().nextInt(999999);
-		qppJson = qpp.toString().replace("2567891421", "0" + npi);
-		qppJson = qppJson.replace("000123456", "000" + tin);
+		qppJson = qpp.toString().replace("0567891421", "0" + npi);
+		qppJson = qppJson.replace("000456789", "000" + tin);
 	}
 
 	@Test
