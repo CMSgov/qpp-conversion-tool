@@ -516,10 +516,11 @@
 		}
 	],
 	"CLINICAL_DOCUMENT": {
+		"performanceYear": 2017,
 		"programName" : "mips",
 		"entityType" : "individual",
-		"taxpayerIdentificationNumber" : "123456789",
-		"nationalProviderIdentifier" : "2567891421",
+		"taxpayerIdentificationNumber" : "000456789",
+		"nationalProviderIdentifier" : "0567891421",
 		"measurementSets" : [ {
 			"category" : "quality",
 			"submissionMethod" : "electronicHealthRecord",
