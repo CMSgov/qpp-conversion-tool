@@ -48,7 +48,6 @@ public class SubmissionIntegrationTest {
 		Map<String, Object> obj = (Map<String, Object>) qpp.getObject();
 		obj.remove("performanceYear");
 		HttpResponse httpResponse = servicePost(qpp);
-		cleanUp(httpResponse);
 
 		assertThat("QPP submission should succeed", getStatus(httpResponse), is(422));
 	}
