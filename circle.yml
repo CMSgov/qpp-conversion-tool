@@ -12,8 +12,6 @@ machine:
 
 dependencies:
   pre:
-    - curl -L -o apache-jmeter.tgz http://www-us.apache.org/dist/jmeter/binaries/apache-jmeter-3.2.tgz
-    - mkdir apache-jmeter && tar zxf apache-jmeter.tgz -C apache-jmeter --strip-components 1
     - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     - sudo dpkg -i google-chrome.deb
     - sudo apt-get install jq
@@ -41,11 +39,6 @@ test:
     - cd frontend; yarn run e2e:ci
   post:
     - pwd && ls -al .
-    - cp benchmark/target/benchmarks.jar apache-jmeter/lib/ext
-    - cp benchmark/src/test/jmeter/* apache-jmeter/bin
-    - ls -al apache-jmeter
-    - ls -al apache-jmeter/bin
-    - apache-jmeter/bin/jmeter.sh -j logs/QPPConversion.jmx.log -l results/QPPConversion.jtl -n
     - ./bin/docker_deploy.sh
     - cp java-conversion-tool/target/java-conversion-tool.jar $CIRCLE_ARTIFACTS
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/java-conversion-tool && cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/java-conversion-tool
