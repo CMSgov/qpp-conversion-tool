@@ -37,13 +37,13 @@ public class XpathJsonPathComparisonTest {
 	@Test
 	public void compareTopLevelAttributeTin() throws XmlException, IOException {
 		String jsonPath = "taxpayerIdentificationNumber";
-		helper.executeAttributeTest(jsonPath, EXTENSION, "123456789");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "000456789");
 	}
 
 	@Test
 	public void compareTopLevelAttributeNpi() throws XmlException, IOException {
 		String jsonPath = "nationalProviderIdentifier";
-		helper.executeAttributeTest(jsonPath, EXTENSION, "2567891421");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "0567891421");
 	}
 
 	@Test
