@@ -50,6 +50,8 @@ public class ConverterLoad {
 		httpSampler.setPostBodyRaw(true);
 		httpSampler.setDoMultipartPost(true);
 		httpSampler.setHTTPFiles(new HTTPFileArg[] {getFileArg()});
+		httpSampler.setConnectTimeout("1000");
+		httpSampler.setResponseTimeout("2000");
 		return httpSampler;
 	}
 
@@ -63,23 +65,23 @@ public class ConverterLoad {
 	}
 
 	@Test
-	public void converterLoad30Test() throws IOException {
-		Map<String, String> results = executePlan(3, 10, 5);
+	public void converterLoad10Test() throws IOException {
+		Map<String, String> results = executePlan(1, 10, 5);
 		assertThat(Long.valueOf(results.get("Average")), Matchers.lessThan(3000l));
 		assertThat(Long.valueOf(results.get("ErrorCount")), Matchers.equalTo(0l));
 	}
 
 	@Test
 	public void converterFindBreakingPoint() throws IOException {
-		int errorCount;
-		int numThreads = 30;
-		do {
-			Map<String, String> results = executePlan(1, numThreads, 2);
-			errorCount = Integer.valueOf(results.get("ErrorCount"));
+		int errorCount = 0;
+		int numThreads = 0;
+		while (errorCount < 1) {
 			numThreads += 10;
-		} while(errorCount < 1);
+			Map<String, String> results = executePlan(1, numThreads, 5);
+			errorCount = Integer.valueOf(results.get("ErrorCount"));
+		}
 
-		assertThat(numThreads, Matchers.greaterThan(100));
+		assertThat(numThreads, Matchers.greaterThan(20));
 	}
 
 	private Map<String, String> executePlan(int numLoops, int numThreads, int rampUp) throws IOException {
