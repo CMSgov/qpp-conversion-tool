@@ -1,104 +1,146 @@
 package gov.cms.qpp.conversion;
 
 
-import org.apache.jmeter.config.Argument;
-import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.config.ConfigElement;
-import org.apache.jmeter.reporters.ResultCollector;
-import org.apache.jmeter.reporters.Summariser;
-import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.control.LoopController;
 import org.apache.jmeter.engine.StandardJMeterEngine;
-import org.apache.jmeter.protocol.http.sampler.HTTPSampler;
-import org.apache.jmeter.samplers.SampleSaveConfiguration;
+import org.apache.jmeter.protocol.http.sampler.HTTPSamplerProxy;
+import org.apache.jmeter.protocol.http.util.HTTPFileArg;
+import org.apache.jmeter.reporters.ResultCollector;
+import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.testelement.TestPlan;
 import org.apache.jmeter.threads.ThreadGroup;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
+import org.hamcrest.Matchers;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertThat;
+
 public class ConverterLoad {
-	@Test
-	public void converterLoad100Test() {
-		StandardJMeterEngine jmeter = new StandardJMeterEngine();
+	private static StandardJMeterEngine jmeter;
+
+	@BeforeClass
+	public static void setupClass() throws IOException {
+		jmeter = new StandardJMeterEngine();
 
 		//JMeter initialization (properties, log levels, locale, etc)
 		JMeterUtils.setJMeterHome("src/test/resources/");
 		JMeterUtils.loadJMeterProperties("src/test/resources/jmeter.properties");
-		//JMeterUtils.loadJMeterProperties("src/test/resources/saveservice.properties");
-		JMeterUtils.initLogging();
 		JMeterUtils.initLocale();
-		HashTree testPlanTree = new HashTree();
+	}
 
-		Arguments args = new Arguments();
-		args.addArgument("", "qrda", "=");
-
-		HTTPSampler httpSampler = new HTTPSampler();
+	private static HTTPSamplerProxy makeSampler() throws IOException {
+		HTTPSamplerProxy httpSampler = new HTTPSamplerProxy();
+		httpSampler.setContentEncoding("UTF-8");
+		httpSampler.setProtocol("http");
 		httpSampler.setDomain("184.73.24.93");
 		httpSampler.setPort(2680);
 		httpSampler.setPath("v1/qrda3");
 		httpSampler.setMethod("POST");
 		httpSampler.setPostBodyRaw(true);
 		httpSampler.setDoMultipartPost(true);
-		httpSampler.setArguments(args);
-//		<boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-//          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-//            <collectionProp name="Arguments.arguments">
-//              <elementProp name="" elementType="HTTPArgument">
-//                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-//                <stringProp name="Argument.value">meep</stringProp>
-//                <stringProp name="Argument.metadata">=</stringProp>
-//              </elementProp>
-//            </collectionProp>
-//          </elementProp>
+		httpSampler.setHTTPFiles(new HTTPFileArg[] {getFileArg()});
+		return httpSampler;
+	}
 
+	private static HTTPFileArg getFileArg() throws IOException {
+		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+		HTTPFileArg fileArg = new HTTPFileArg();
+		fileArg.setPath(path.toFile().getCanonicalPath());
+		fileArg.setMimeType("text/xml");
+		fileArg.setParamName("file");
+		return fileArg;
+	}
 
-				//http://184.73.24.93:2680/v1/qrda3
+	@Test
+	public void converterLoad30Test() throws IOException {
+		Map<String, String> results = executePlan(3, 10, 5);
+		assertThat(Long.valueOf(results.get("Average")), Matchers.lessThan(3000l));
+		assertThat(Long.valueOf(results.get("ErrorCount")), Matchers.equalTo(0l));
+	}
+
+	@Test
+	public void converterFindBreakingPoint() throws IOException {
+		int errorCount;
+		int numThreads = 30;
+		do {
+			Map<String, String> results = executePlan(1, numThreads, 2);
+			errorCount = Integer.valueOf(results.get("ErrorCount"));
+			numThreads += 10;
+		} while(errorCount < 1);
+
+		assertThat(numThreads, Matchers.greaterThan(100));
+	}
+
+	private Map<String, String> executePlan(int numLoops, int numThreads, int rampUp) throws IOException {
+		HashTree testPlanTree = new HashTree();
+		HTTPSamplerProxy httpSampler = makeSampler();
 
 		LoopController loopController = new LoopController();
-		loopController.setLoops(10);
+		loopController.setLoops(numLoops);
 		loopController.addTestElement(httpSampler);
 		loopController.setFirst(true);
 		loopController.initialize();
 
 		ThreadGroup threadGroup = new ThreadGroup();
-		threadGroup.setNumThreads(1);
-		threadGroup.setRampUp(5);
+		threadGroup.setNumThreads(numThreads);
+		threadGroup.setRampUp(rampUp);
 		threadGroup.setSamplerController(loopController);
 
-//		ResultCollector resultCollector = new ResultCollector();
-//		resultCollector.setFilename("../target/jmeter/report.jtl");
-//		SampleSaveConfiguration saveConfiguration = new SampleSaveConfiguration();
-//		saveConfiguration.setAsXml(true);
-//		saveConfiguration.setCode(true);
-//		saveConfiguration.setLatency(true);
-//		saveConfiguration.setTime(true);
-//		saveConfiguration.setTimestamp(true);
-//		resultCollector.setSaveConfig(saveConfiguration);
-
 		TestPlan testPlan = new TestPlan("JMeter regression test");
-
-		//testPlanTree.add("resultCollector", resultCollector);
-		testPlanTree.add("testPlan", testPlan);
-		testPlanTree.add("loopController", loopController);
-		testPlanTree.add("threadGroup", threadGroup);
-		testPlanTree.add("httpSampler", httpSampler);
+		HashTree tpConfig = testPlanTree.add(testPlan);
+		HashTree tgConfig = tpConfig.add(threadGroup);
+		HashTree samplerConfig = tgConfig.add(httpSampler);
 
 		//Summarizer
 		Summariser summer = null;
-		String summariserName = JMeterUtils.getPropDefault("summariser.name", "summary");//$NON-NLS-1$
+		String summariserName = JMeterUtils.getPropDefault("summariser.name", "summary");
 		if (summariserName.length() > 0) {
 			summer = new Summariser(summariserName);
 		}
 
-		String logFile = "report.jtl";
+		//String logFile = "report.jtl";
 		ResultCollector logger = new ResultCollector(summer);
-		logger.setFilename(logFile);
+		//logger.setFilename(logFile);
 
-		testPlanTree.add(testPlanTree.getArray()[0], logger);
+		tgConfig.add(logger);
+		//SaveService.saveTree(testPlanTree, new FileOutputStream("jmeter_api_sample.jmx"));
 
 		jmeter.configure(testPlanTree);
 		jmeter.run();
-		System.out.println("done");
+		//return extractTotals(summer);
+		return extractTotals(summer);
+	}
+
+	private Map<String, String> extractTotals(Summariser summer) {
+		Map<String, String> values = new HashMap<>();
+		try {
+			Field gross = Summariser.class.getDeclaredField("myTotals");
+			gross.setAccessible(true);
+			Object obj = gross.get(summer);
+			Field total = obj.getClass().getDeclaredField("total");
+			total.setAccessible(true);
+			Object totalObj = total.get(obj);
+			Method[] methods = totalObj.getClass().getDeclaredMethods();
+			for(Method method : methods) {
+				if (method.getName().startsWith("get")){
+					method.setAccessible(true);
+					values.put(method.getName().replace("get", ""), "" + method.invoke(totalObj));
+				}
+			}
+		} catch (NoSuchFieldException | IllegalAccessException | InvocationTargetException ex) {
+			ex.printStackTrace(System.out);
+		}
+		return values;
 	}
 }
