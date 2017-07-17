@@ -136,7 +136,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				List<Node> childMeasureNodes = node.getChildNodes(childFinder).collect(Collectors.toList());
 				if (childMeasureNodes.isEmpty()) {
 					MeasureConfig config =
-							MeasureConfigs.getConfigurationMap().get(node.getValue("measureId"));
+							MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 					String message = String.format(REQUIRED_CHILD_MEASURE,
 							config.getMeasureId(), config.getElectronicMeasureId(), label);
 					this.getDetails().add(new Detail(message, node.getPath()));
