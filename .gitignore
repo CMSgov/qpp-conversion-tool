@@ -8,6 +8,7 @@ target/
 .project
 *.iml
 .idea/
+qrdaToQppAssociations.txt
 
 # package directories
 node_modules
