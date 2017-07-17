@@ -67,8 +67,10 @@ public class ConverterLoad {
 	@Test
 	public void converterLoad10Test() throws IOException {
 		Map<String, String> results = executePlan(1, 10, 5);
-		assertThat(Long.valueOf(results.get("Average")), Matchers.lessThan(3000l));
-		assertThat(Long.valueOf(results.get("ErrorCount")), Matchers.equalTo(0l));
+		assertThat("Average response was in excess of 3 seconds",
+				Long.valueOf(results.get("Average")), Matchers.lessThan(3000L));
+		assertThat("At least one error occurred",
+				Long.valueOf(results.get("ErrorCount")), Matchers.equalTo(0L));
 	}
 
 	@Test
@@ -81,7 +83,8 @@ public class ConverterLoad {
 			errorCount = Integer.valueOf(results.get("ErrorCount"));
 		}
 
-		assertThat(numThreads, Matchers.greaterThan(20));
+		assertThat("Endpoint could not support up to 20 or more concurrent requests",
+				numThreads, Matchers.greaterThan(20));
 	}
 
 	private Map<String, String> executePlan(int numLoops, int numThreads, int rampUp) throws IOException {
@@ -102,25 +105,15 @@ public class ConverterLoad {
 		TestPlan testPlan = new TestPlan("JMeter regression test");
 		HashTree tpConfig = testPlanTree.add(testPlan);
 		HashTree tgConfig = tpConfig.add(threadGroup);
-		HashTree samplerConfig = tgConfig.add(httpSampler);
+		tgConfig.add(httpSampler);
 
-		//Summarizer
-		Summariser summer = null;
-		String summariserName = JMeterUtils.getPropDefault("summariser.name", "summary");
-		if (summariserName.length() > 0) {
-			summer = new Summariser(summariserName);
-		}
-
-		//String logFile = "report.jtl";
+		Summariser summer = new Summariser("summary");
 		ResultCollector logger = new ResultCollector(summer);
-		//logger.setFilename(logFile);
-
 		tgConfig.add(logger);
-		//SaveService.saveTree(testPlanTree, new FileOutputStream("jmeter_api_sample.jmx"));
 
 		jmeter.configure(testPlanTree);
 		jmeter.run();
-		//return extractTotals(summer);
+
 		return extractTotals(summer);
 	}
 
@@ -137,7 +130,8 @@ public class ConverterLoad {
 			for(Method method : methods) {
 				if (method.getName().startsWith("get")){
 					method.setAccessible(true);
-					values.put(method.getName().replace("get", ""), "" + method.invoke(totalObj));
+					values.put(method.getName().replace("get", ""),
+							method.invoke(totalObj).toString());
 				}
 			}
 		} catch (NoSuchFieldException | IllegalAccessException | InvocationTargetException ex) {
