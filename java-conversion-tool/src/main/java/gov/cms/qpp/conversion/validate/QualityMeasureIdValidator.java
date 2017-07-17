@@ -28,13 +28,14 @@ public class QualityMeasureIdValidator extends NodeValidator {
 
 	protected static final String MEASURE_ID = "measureId";
 
-	protected static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
+	static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	public static final String SINGLE_MEASURE_POPULATION =
 			"The measure reference results must have a single measure population";
 	public static final String SINGLE_MEASURE_TYPE =
 			"The measure reference results must have a single measure type";
-	protected static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
-	public static final String REQUIRED_CHILD_MEASURE = "The eCQM measure requires a %s";
+	static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
+	public static final String REQUIRED_CHILD_MEASURE =
+			"The eCQM (measure id: %s; electronic measure id: %s) requires a %s";
 	protected static final String DENEX = "denominator exclusion";
 	protected static final String DENEXCEP = "eligiblePopulationExclusion";
 	protected static final String NUMER = "performanceMet";
@@ -134,7 +135,10 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				Predicate<Node> childFinder = makeChildFinder(check, key);
 				List<Node> childMeasureNodes = node.getChildNodes(childFinder).collect(Collectors.toList());
 				if (childMeasureNodes.isEmpty()) {
-					String message = String.format(REQUIRED_CHILD_MEASURE, label);
+					MeasureConfig config =
+							MeasureConfigs.getConfigurationMap().get(node.getValue("measureId"));
+					String message = String.format(REQUIRED_CHILD_MEASURE,
+							config.getMeasureId(), config.getElectronicMeasureId(), label);
 					this.getDetails().add(new Detail(message, node.getPath()));
 				}
 			}
