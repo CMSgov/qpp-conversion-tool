@@ -28,7 +28,7 @@ dependencies:
 
 test:
   pre:
-    - cd frontend; npm install -g protractor
+    - cd frontend; npm install -g protractor; npm install
     - cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
   override:
     - mvn clean verify -Djacoco.skip.instrument=false
