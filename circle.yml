@@ -22,7 +22,7 @@ dependencies:
     - wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
     - unzip -d . sonarscanner.zip
     - pip install ansible
-    - cd frontend; yarn
+    - cd frontend; rm -f yarn.lock && yarn
   cache_directories:
     - ~/.cache/yarn
 
