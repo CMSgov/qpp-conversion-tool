@@ -102,8 +102,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	@Test
 	public void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
 		String message = String.format(
-				QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE,
-				"160", "CMS52v5", QualityMeasureIdValidator.DENOM);
+				QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE, "CMS52v5", QualityMeasureIdValidator.DENOM);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 

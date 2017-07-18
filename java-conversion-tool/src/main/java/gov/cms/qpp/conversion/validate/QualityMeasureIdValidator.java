@@ -35,7 +35,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			"The measure reference results must have a single measure type";
 	static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	public static final String REQUIRED_CHILD_MEASURE =
-			"The eCQM (measure id: %s; electronic measure id: %s) requires a %s";
+			"The eCQM (electronic measure id: %s) requires a %s";
 	protected static final String DENEX = "denominator exclusion";
 	protected static final String DENEXCEP = "eligiblePopulationExclusion";
 	protected static final String NUMER = "performanceMet";
@@ -137,8 +137,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				if (childMeasureNodes.isEmpty()) {
 					MeasureConfig config =
 							MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-					String message = String.format(REQUIRED_CHILD_MEASURE,
-							config.getMeasureId(), config.getElectronicMeasureId(), label);
+					String message = String.format(REQUIRED_CHILD_MEASURE, config.getElectronicMeasureId(), label);
 					this.getDetails().add(new Detail(message, node.getPath()));
 				}
 			}

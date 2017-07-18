@@ -154,7 +154,7 @@ public class QualityMeasureIdValidatorTest {
 		assertThat("Incorrect validation error.", details,
 			hasValidationErrorsIgnoringPath(
 				String.format(QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE,
-						"236", "CMS165v5", QualityMeasureIdValidator.DENEX)));
+						"CMS165v5", QualityMeasureIdValidator.DENEX)));
 	}
 
 	@Test
@@ -187,7 +187,7 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testInternalMissingDenexcepMeasure() {
-		String message = String.format(REQUIRED_CHILD_MEASURE, "130", "CMS68v6", QualityMeasureIdValidator.DENEXCEP);
+		String message = String.format(REQUIRED_CHILD_MEASURE, "CMS68v6", QualityMeasureIdValidator.DENEXCEP);
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 			.addMeasureId(REQUIRES_DENOM_EXCEPTION_GUID)
 			.addSubPopulationMeasureData(IPOP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID)
@@ -224,7 +224,7 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testInternalDenexcepMultipleSupPopulationsInvalidMeasureId() {
-		String message = String.format(REQUIRED_CHILD_MEASURE, "160", "CMS52v5", QualityMeasureIdValidator.DENEXCEP);
+		String message = String.format(REQUIRED_CHILD_MEASURE, "CMS52v5", QualityMeasureIdValidator.DENEXCEP);
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 			.addMeasureId(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
 			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID)
@@ -249,7 +249,7 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testInternalDenexcepMultipleSupPopulationsMissingMeasureId() {
-		String message = String.format(REQUIRED_CHILD_MEASURE, "160", "CMS52v5", QualityMeasureIdValidator.DENEXCEP);
+		String message = String.format(REQUIRED_CHILD_MEASURE, "CMS52v5", QualityMeasureIdValidator.DENEXCEP);
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 			.addMeasureId(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
 			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID)
