@@ -31,8 +31,8 @@ class ValueOriginMapper {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void map(String base, Map<String, Object> toMap) {
-		for (Map.Entry entry : toMap.entrySet()) {
+	private void map(String base, Map<String, Object> toAssociate) {
+		for (Map.Entry<String, Object> entry : toAssociate.entrySet()) {
 			if (entry.getKey().equals("metadata_holder")) {
 				continue;
 			}
@@ -41,40 +41,41 @@ class ValueOriginMapper {
 			if (entry.getValue() instanceof Map || entry.getValue() instanceof List) {
 				mapIt(newBase, entry.getValue());
 			} else {
-				Set<Map<String, String>> metadataSet = ((Set<Map<String, String>>)toMap.get("metadata_holder"));
-				if (metadataSet != null) {
-					String xPath = null;
-					Map<String, String> metadata = null;
-					for (Map<String, String> metaMap : metadataSet) {
-						String label = metaMap.get("encodeLabel");
-						if (label.equals(entry.getKey())) {
-							String relative = PathCorrelator.getXpath(metaMap.get("template"),
-									label, metaMap.get("nsuri"));
-							xPath = (relative == null) ? metaMap.get("path") : metaMap.get("path") + "/" + relative;
-							break;
-						} else {
-							if (metadata == null) {
-								metadata = metaMap;
-								xPath = metaMap.get("path");
-								continue;
-							}
-							if (metaMap.get("path").length() < metadata.get("path").length()) {
-								metadata = metaMap;
-								xPath = metaMap.get("path");
-							}
-						}
-					}
+				Set<Map<String, String>> metadataSet = ((Set<Map<String, String>>)toAssociate.get("metadata_holder"));
+				String xPath = getXpath(metadataSet, entry.getKey());
+				if (xPath != null) {
 					associations.add(
 							new Association(xPath, base + "." + entry.getKey(),
-									entry.getValue() + ""));
+									entry.getValue().toString()));
 				}
 			}
 		}
 	}
 
-	private void map(String base, List<Object> toMap) {
+	private String getXpath(Set<Map<String, String>> metadataSet, String key) {
+		String xPath = null;
+		Map<String, String> current = null;
+		if (metadataSet == null) {
+			return xPath;
+		}
+		for (Map<String, String> metaMap : metadataSet) {
+			String label = metaMap.get("encodeLabel");
+			if (label.equals(key)) {
+				String relative = PathCorrelator.getXpath(metaMap.get("template"), label, metaMap.get("nsuri"));
+				xPath = (relative == null) ? metaMap.get("path") : metaMap.get("path") + "/" + relative;
+				break;
+			}
+			if (current == null || metaMap.get("path").length() < current.get("path").length()) {
+				current = metaMap;
+				xPath = metaMap.get("path");
+			}
+		}
+		return xPath;
+	}
+
+	private void map(String base, List<Object> toAssociate) {
 		int index = 0;
-		for (Object obj : toMap) {
+		for (Object obj : toAssociate) {
 			String newBase = base + "[" + index++ + "]";
 			mapIt(newBase, obj);
 		}
