@@ -22,7 +22,7 @@ dependencies:
     - wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
     - unzip -d . sonarscanner.zip
     - pip install ansible
-    - cd frontend; yarn
+    - cd frontend; rm -f yarn.lock && yarn
   cache_directories:
     - ~/.cache/yarn
 
@@ -38,6 +38,7 @@ test:
     - cd frontend; yarn run test:ci
     - cd frontend; yarn run e2e:ci
   post:
+    - pwd && ls -al .
     - ./bin/docker_deploy.sh
     - cp java-conversion-tool/target/java-conversion-tool.jar $CIRCLE_ARTIFACTS
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/java-conversion-tool && cp -R java-conversion-tool/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/java-conversion-tool
