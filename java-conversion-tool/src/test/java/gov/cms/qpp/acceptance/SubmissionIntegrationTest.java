@@ -27,7 +27,7 @@ import static org.junit.Assert.assertThat;
 
 public class SubmissionIntegrationTest {
 	private static HttpClient client;
-	private static String serviceUrl = "https://qpp-submissions-sandbox.navapbc.com/v1/submissions";
+	private static String serviceUrl = "https://qpp-submissions-sandbox.navapbc.com/submissions";
 	private JsonWrapper qpp;
 
 	@BeforeClass
@@ -41,7 +41,6 @@ public class SubmissionIntegrationTest {
 	}
 
 	@Test
-	@Ignore
 	public void testSubmissionApiPostSuccess() throws IOException {
 		HttpResponse httpResponse = servicePost(qpp);
 		cleanUp(httpResponse);
@@ -50,7 +49,6 @@ public class SubmissionIntegrationTest {
 	}
 
 	@Test
-	@Ignore
 	@SuppressWarnings("unchecked")
 	public void testSubmissionApiPostFailure() throws IOException {
 		Map<String, Object> obj = (Map<String, Object>) qpp.getObject();
