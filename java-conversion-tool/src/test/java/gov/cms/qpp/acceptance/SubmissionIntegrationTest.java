@@ -13,6 +13,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ import static org.junit.Assert.assertThat;
 
 public class SubmissionIntegrationTest {
 	private static HttpClient client;
-	private static String serviceUrl = "https://qpp-submissions-sandbox.navapbc.com/v1/submissions";
+	private static String serviceUrl = "https://qpp-submissions-sandbox.navapbc.com/submissions";
 	private JsonWrapper qpp;
 
 	@BeforeClass
