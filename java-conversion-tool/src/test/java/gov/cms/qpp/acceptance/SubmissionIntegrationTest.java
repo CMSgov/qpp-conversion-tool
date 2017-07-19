@@ -13,6 +13,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class SubmissionIntegrationTest {
 	}
 
 	@Test
+	@Ignore
 	public void testSubmissionApiPostSuccess() throws IOException {
 		HttpResponse httpResponse = servicePost(qpp);
 		cleanUp(httpResponse);
@@ -48,6 +50,7 @@ public class SubmissionIntegrationTest {
 	}
 
 	@Test
+	@Ignore
 	@SuppressWarnings("unchecked")
 	public void testSubmissionApiPostFailure() throws IOException {
 		Map<String, Object> obj = (Map<String, Object>) qpp.getObject();
