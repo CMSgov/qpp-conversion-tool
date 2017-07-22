@@ -24,9 +24,9 @@ env.fqdn = env.name.toDash() + '.qpp.internal';
 env.vpcId = 'vpc-0ef66577';
 env.gditSubnets = {
   application: ['subnet-913b76d9', 'subnet-2d23a177', 'subnet-d59f7ab1'],
-  management: ['subnet-303c7178', 'subnet-f027a5aa', 'subnet-d49f7ab0'],
-  data: ['subnet-5b3c7113', 'subnet-741d9f2e', 'subnet-43917427'],
-  dmz: ['subnet-923b76da', 'subnet-9721a3cd', 'subnet-1a94717e']
+  management:  ['subnet-303c7178', 'subnet-f027a5aa', 'subnet-d49f7ab0'],
+  private:     ['subnet-5b3c7113', 'subnet-741d9f2e', 'subnet-43917427'],
+  public:      ['subnet-923b76da', 'subnet-9721a3cd', 'subnet-1a94717e']
 };
 
 env.configureLayers = function() {
