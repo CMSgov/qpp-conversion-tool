@@ -104,7 +104,7 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 					.getChild(REPRESENTED_ORGANIZATION, ns)
 					.getChild(ID, ns)
 					.getAttributeValue(EXTENSION);
-			if (npi != null && tin != null) { //Only create the child if both values are available
+			if (npi != null || tin != null) {
 				Node child = new Node(TemplateId.NPI_TIN_ID);
 				child.putValue(NATIONAL_PROVIDER_IDENTIFIER, npi);
 				child.putValue(TAX_PAYER_IDENTIFICATION_NUMBER, tin);

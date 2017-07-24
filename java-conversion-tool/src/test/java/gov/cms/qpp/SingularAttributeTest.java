@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
+import gov.cms.qpp.conversion.encode.ClinicalDocumentEncoder;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -61,9 +62,8 @@ public class SingularAttributeTest {
 				MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
 				//There are no validations currently for entity type
 				ClinicalDocumentDecoder.ENTITY_ID,
-				//There are no validations currently for performanceEnd / performanceStart
-				ReportingParametersActDecoder.PERFORMANCE_END,
-				ReportingParametersActDecoder.PERFORMANCE_START,
+				//There are no validations for performanceYear
+				ReportingParametersActDecoder.PERFORMANCE_YEAR,
 				//stratum is not currently mapped
 				"stratum")
 		);

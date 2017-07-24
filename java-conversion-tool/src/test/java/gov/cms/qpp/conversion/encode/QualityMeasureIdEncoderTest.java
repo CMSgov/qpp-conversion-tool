@@ -57,7 +57,7 @@ public class QualityMeasureIdEncoderTest {
 		executeInternalEncode();
 
 		assertThat("expected encoder to return a single value",
-				wrapper.getString("measureId"), is("CMS165v5"));
+				wrapper.getString("measureId"), is("236"));
 	}
 
 	@Test
