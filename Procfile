@@ -1,1 +1,1 @@
-api: docker-compose -f /var/core/app/docker-compose.yaml up -d
+api: docker-compose -f /var/core/app/docker-compose.yaml up
