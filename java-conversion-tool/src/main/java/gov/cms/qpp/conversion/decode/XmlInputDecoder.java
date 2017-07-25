@@ -20,8 +20,8 @@ import java.util.function.Consumer;
  */
 public abstract class XmlInputDecoder implements InputDecoder {
 
-	protected Namespace defaultNs;
-	protected Namespace xpathNs;
+	Namespace defaultNs;
+	Namespace xpathNs;
 
 	/**
 	 * decodeXml Determines what formats of xml we accept and decode to
@@ -38,7 +38,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 			}
 		}
 
-		Converter.CLIENT_LOG.error("The XML file is an unknown document");
+		Converter.DEV_LOG.error("The XML file is an unknown document");
 
 		return null;
 	}
@@ -81,7 +81,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	 * @param element Element that hold the namespace
 	 * @param decoder Decoder to configure
 	 */
-	protected void setNamespace(Element element, XmlInputDecoder decoder) {
+	void setNamespace(Element element, XmlInputDecoder decoder) {
 		decoder.defaultNs = element.getNamespace();
 
 		// this handle the case where there is no URI for a default namespace (test)
@@ -105,7 +105,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	 * @param selectOne Whether to execute for the first match or multiple matches
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void setOnNode(Element element, String expressionStr,
+	void setOnNode(Element element, String expressionStr,
 					Consumer consumer, Filter<?> filter, boolean selectOne) {
 		XPathExpression<?> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
 

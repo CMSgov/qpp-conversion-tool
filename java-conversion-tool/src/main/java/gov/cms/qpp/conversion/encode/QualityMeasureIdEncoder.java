@@ -65,7 +65,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private boolean isASinglePerformanceRate(MeasureConfig measureConfig, String measureId) {
 		if (measureConfig == null) {
-			Converter.CLIENT_LOG.info("Measure Configuration for {} is missing", measureId);
+			Converter.DEV_LOG.info("Measure Configuration for {} is missing", measureId);
 			return true;
 		}
 		return SINGLE_PERFORMANCE_RATE.equalsIgnoreCase(measureConfig.getMetricType());

@@ -37,7 +37,7 @@ public class QrdaValidator {
 	 * @return The list of validation errors for the entire tree of nodes.
 	 */
 	public List<Detail> validate(Node rootNode) {
-		Converter.CLIENT_LOG.info("Validating all nodes in the tree");
+		Converter.DEV_LOG.info("Validating all nodes in the tree");
 
 		//validate each node while traversing the tree
 		validateTree(rootNode);

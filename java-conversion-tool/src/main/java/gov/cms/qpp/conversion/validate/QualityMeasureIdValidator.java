@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -16,7 +17,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
@@ -79,7 +79,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			validateAllSubPopulations(node, measureConfig);
 		} else {
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
-				CLIENT_LOG.error("MEASURE_GUID_MISSING " + value);
+				Converter.DEV_LOG.error("MEASURE_GUID_MISSING " + value);
 				this.addValidationError(new Detail(MEASURE_GUID_MISSING, node.getPath()));
 			}
 		}

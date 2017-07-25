@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
@@ -11,8 +12,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
 
 /**
  * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
@@ -64,10 +63,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @param wrapper wrapper that holds the section
 	 * @param node clinical document node
 	 */
-	protected void encodePerformanceYear(JsonWrapper wrapper, Node node) {
+	private void encodePerformanceYear(JsonWrapper wrapper, Node node) {
 		Node reportingDescendant = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingDescendant == null) {
-			CLIENT_LOG.error("Missing Reporting Parameters in node hierarchy");
+			Converter.DEV_LOG.error("Missing Reporting Parameters in node hierarchy");
 			return;
 		}
 		String start = reportingDescendant.getValue(ReportingParametersActDecoder.PERFORMANCE_YEAR);

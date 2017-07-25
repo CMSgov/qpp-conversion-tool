@@ -38,11 +38,10 @@ import java.util.List;
  */
 public class Converter {
 
-	public static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
+	public static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
 
-	protected static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
-	protected static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
+	static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
+	static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
 
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
@@ -92,7 +91,7 @@ public class Converter {
 	 * @param doIt toggle value
 	 * @return this for chaining
 	 */
-	public Converter doValidation(boolean doIt) {
+	Converter doValidation(boolean doIt) {
 		this.doValidation = doIt;
 		return this;
 	}
@@ -112,7 +111,6 @@ public class Converter {
 				qpp = transform(xmlStream);
 			}
 		} catch (XmlInputFileException | XmlException xe) {
-			CLIENT_LOG.error(NOT_VALID_XML_DOCUMENT);
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
 			details.add(new Detail(NOT_VALID_XML_DOCUMENT));
 		} catch (Exception exception) {
@@ -151,7 +149,7 @@ public class Converter {
 		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
 		JsonWrapper qpp = null;
 		if (null != decoded) {
-			CLIENT_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), inStream);
+			DEV_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), inStream);
 
 			if (!doDefaults) {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
@@ -214,7 +212,7 @@ public class Converter {
 	 */
 	private JsonWrapper encode() {
 		JsonOutputEncoder encoder = getEncoder();
-		CLIENT_LOG.info("Decoded template ID {}", decoded.getType());
+		DEV_LOG.info("Decoded template ID {}", decoded.getType());
 
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));

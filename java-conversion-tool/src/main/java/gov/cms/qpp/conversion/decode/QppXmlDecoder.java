@@ -78,14 +78,14 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				String root = childEl.getAttributeValue(ROOT_STRING);
 				String extension = childEl.getAttributeValue(EXTENSION_STRING);
 				TemplateId templateId = TemplateId.getTemplateId(root, extension);
-				Converter.CLIENT_LOG.debug("templateIdFound:{}", templateId);
+				Converter.DEV_LOG.debug("templateIdFound:{}", templateId);
 
 				QppXmlDecoder childDecoder = getDecoder(templateId);
 
 				if (null == childDecoder) {
 					continue;
 				}
-				Converter.CLIENT_LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
+				Converter.DEV_LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
 				Node childNode = new Node(templateId, parentNode);
 
 				childNode.setDefaultNsUri(defaultNs.getURI());
@@ -151,9 +151,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		} else if (result == DecodeResult.TREE_CONTINUE) {
 			decode(childElement, childNode);
 		} else if (result == DecodeResult.ERROR) {
-			Converter.CLIENT_LOG.error("Failed to decode templateId {} ", childNode.getType());
+			Converter.DEV_LOG.error("Failed to decode templateId {} ", childNode.getType());
 		} else {
-			Converter.CLIENT_LOG.error("We need to define a default case. Could be TreeContinue?");
+			Converter.DEV_LOG.error("We need to define a default case. Could be TreeContinue?");
 		}
 
 		return null;
@@ -211,7 +211,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 									&& containsClinicalDocumentTemplateId(rootElement);
 
 		if (!isValidQrdaFile) {
-			Converter.CLIENT_LOG.error(NOT_VALID_QRDA_III_FORMAT);
+			Converter.DEV_LOG.error(NOT_VALID_QRDA_III_FORMAT);
 		}
 		
 		return isValidQrdaFile;
