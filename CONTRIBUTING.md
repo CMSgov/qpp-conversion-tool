@@ -9,11 +9,11 @@ We would love for you to contribute to the QPP Conversion Tool. As a contributor
  - [Coding Rules](#rules)
 
 ## <a name="question"></a> Got a Question or Problem?
-If you have a question or problem, please [submit an issue](#submit-issue) to our [GitHub Repository][github].
+If you have a question or problem, please [submit an issue](#submit-issue) to our [GitHub Repository](https://github.com/CMSgov/qpp-conversion-tool).
 
 ## <a name="issue"></a> Found a Bug?
 If you find a bug in the source code, you can help us by
-[submitting an issue](#submit-issue) to our [GitHub Repository][github]. Even better, you can
+[submitting an issue](#submit-issue) to our [GitHub Repository](https://github.com/CMSgov/qpp-conversion-tool). Even better, you can
 [submit a Pull Request](#submit-pr) with a fix.
 
 ## <a name="feature"></a> Missing a Feature?
@@ -35,19 +35,16 @@ We want to fix all issues as soon as possible, but before fixing a bug we need t
 
 To be respectful of maintainer's time and ultimately fix more bugs, we will require a **minimal reproduce scenario**.
 
-You can file new issues by filling out our [new issue form](https://github.com/flexion/adele-bpa-qpp-conversion-tool/issues/new).
+You can file new issues by filling out our [new issue form](https://github.com/CMSgov/qpp-conversion-tool/issues/new).
+
+All new issues will be triaged by the maintainer. If needed, the maintainer will comment with questions.  Issues that are accepted will be labelled accordingly in GitHub.
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
 
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-* Search [GitHub](https://github.com/flexion/adele-bpa-qpp-conversion-tool/pulls) for an open or closed PR that relates to your submission. You don't want to duplicate effort.
-* Make your changes in a new git branch:
-
-     ```shell
-     git checkout -b my-fix-branch master
-     ```
-
+* Search [GitHub](https://github.com/CMSgov/qpp-conversion-tool/pulls) for an open or closed PR that relates to your submission. You don't want to duplicate effort.
+* Make your changes in a personal fork of the repository. See [GitHub](https://help.github.com/articles/fork-a-repo/) for help on creating a fork.
 * Create your patch, **including appropriate test cases**.
 * Follow our [Coding Rules](#rules).
 * Run the full test suite, as described in the [developer documentation][dev-doc], and ensure that all tests pass.
@@ -58,13 +55,13 @@ Before you submit your Pull Request (PR) consider the following guidelines:
      ```
   Note: the optional commit `-a` command line option will automatically "add" and "rm" edited files.
 
-* Push your branch to GitHub:
+* Push your changes on your fork to GitHub:
 
     ```shell
-    git push origin my-fix-branch
+    git push
     ```
 
-* In GitHub, send a pull request to `adele-bpa-qpp-conversion-tool:master`.
+* In GitHub, send a pull request from your fork to `CMSgov/qpp-conversion-tool:master`.
 * If we suggest changes then:
   * Make the required updates.
   * Re-run the full test suites to ensure tests are still passing.
@@ -109,8 +106,8 @@ from the main (upstream) repository:
 ## <a name="rules"></a> Coding Rules
 To ensure consistency throughout the source code, please keep these rules in mind as you are working:
 
-* All features or bug fixes **must be tested** by one or more unit-tests.
+* All features or bug fixes **must be tested** by one or more unit-tests. All new code must have 95% or higher code coverage.
 * All public API methods **must be documented**.
 
-[github]: https://github.com/flexion/adele-bpa-qpp-conversion-tool 
-[dev-doc]: https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/DEVELOPER.md
+[github]: https://github.com/CMSgov/qpp-conversion-tool
+[dev-doc]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
