@@ -3,6 +3,9 @@ package gov.cms.qpp.conversion.model.validation;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.reflections.util.ClasspathHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -11,6 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MeasureConfigs {
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(MeasureConfigs.class);
 	public static final String DEFAULT_MEASURE_DATA_FILE_NAME = "measures-data.json";
 
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
@@ -48,7 +52,9 @@ public class MeasureConfigs {
 			return configurations.stream()
 					.collect(Collectors.toMap(MeasureConfigs::getMeasureId, Function.identity()));
 		} catch (IOException e) {
-			throw new IllegalArgumentException("failure to correctly read measures config json", e);
+			String message = "failure to correctly read measures config json";
+			DEV_LOG.error(message);
+			throw new IllegalArgumentException(message, e);
 		}
 	}
 

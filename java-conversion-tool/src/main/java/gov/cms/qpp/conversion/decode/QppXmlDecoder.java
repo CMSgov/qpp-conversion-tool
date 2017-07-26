@@ -1,9 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
+import gov.cms.qpp.conversion.correlation.model.Template;
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import org.jdom2.Element;
 import org.jdom2.xpath.XPathHelper;
 
@@ -14,12 +18,14 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Top level Decoder for parsing into QPP format.
  */
 public class QppXmlDecoder extends XmlInputDecoder {
-
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
 	private static final Registry<QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
@@ -47,7 +53,6 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 */
 	@Override
 	public DecodeResult decode(Element element, Node parentNode) {
-
 		if (null == element) {
 			return DecodeResult.ERROR;
 		}
@@ -67,7 +72,6 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * @return status of current decode
 	 */
 	private DecodeResult decodeChildren(final Element element, final Node parentNode) {
-
 		Node currentNode = parentNode;
 
 		List<Element> childElements = element.getChildren();

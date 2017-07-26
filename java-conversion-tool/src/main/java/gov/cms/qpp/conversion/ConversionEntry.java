@@ -179,7 +179,7 @@ public class ConversionEntry {
 	 */
 	private static Collection<Path> checkArgs(CommandLine line) {
 		Collection<Path> validFiles = new LinkedList<>();
-
+		
 		for (String arg : checkFlags(line).getArgs()) {
 			validFiles.addAll(checkPath(arg));
 		}

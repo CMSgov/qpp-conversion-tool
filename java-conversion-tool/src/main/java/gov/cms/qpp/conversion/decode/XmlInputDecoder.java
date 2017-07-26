@@ -91,7 +91,8 @@ public abstract class XmlInputDecoder implements InputDecoder {
 			decoder.xpathNs = constructor.newInstance("ns", decoder.defaultNs.getURI());
 		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException e) {
-			throw new IllegalArgumentException("Cannot construct special Xpath namespace", e);
+			String message = "Cannot construct special Xpath namespace";
+			throw new IllegalArgumentException(message, e);
 		}
 	}
 

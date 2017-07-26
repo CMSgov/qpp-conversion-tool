@@ -2,12 +2,15 @@ package gov.cms.qpp.conversion.correlation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.correlation.model.Config;
 import gov.cms.qpp.conversion.correlation.model.Correlation;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import org.reflections.util.ClasspathHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +25,7 @@ import java.util.stream.Stream;
  * Maintains associations between QPP json paths and their pre-transformation xpaths.
  */
 public class PathCorrelator {
+	public static final Logger DEV_LOG = LoggerFactory.getLogger(PathCorrelator.class);
 	public static final String KEY_DELIMITER = "#";
 	private static final String ENCODE_LABEL = "encodeLabel";
 	@SuppressWarnings("FieldCanBeLocal")
@@ -45,7 +49,9 @@ public class PathCorrelator {
 			pathCorrelation = mapper.readValue(input, PathCorrelation.class);
 			flattenCorrelations(pathCorrelation);
 		} catch (IOException ioe) {
-			throw new PathCorrelationException("Problem loading path correlation configuration", ioe);
+			String message = "Problem loading path correlation configuration";
+			DEV_LOG.error(message, ioe);
+			throw new PathCorrelationException(message, ioe);
 		}
 	}
 
