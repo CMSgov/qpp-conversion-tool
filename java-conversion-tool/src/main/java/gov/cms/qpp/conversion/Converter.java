@@ -212,7 +212,7 @@ public class Converter {
 	 */
 	private JsonWrapper encode() {
 		JsonOutputEncoder encoder = getEncoder();
-		DEV_LOG.info("Decoded template ID {}", decoded.getType());
+		DEV_LOG.info("Encoding template ID {}", decoded.getType());
 
 		try {
 			encoder.setNodes(Collections.singletonList(decoded));
