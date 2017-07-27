@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class Converter {
 
-	public static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
 
 	static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
 	static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
