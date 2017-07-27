@@ -5,7 +5,25 @@
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
 		</encoder>
 	</appender>
-	<root level="INFO">
+	<appender name="REST_API" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>rest-api-log.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>rest-api-log.%i.log</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>3</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>10MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder name="enc" class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+			<layout class="gov.cms.qpp.conversion.api.helper.ThreadRequestPartContext">
+				<param name="Pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+			</layout>
+		</encoder>
+	</appender>
+	<root name="API_LOG" level="INFO">
 		<appender-ref ref="STDOUT_DETAIL"/>
+		<appender-ref ref="REST_API"/>
 	</root>
 </configuration>
