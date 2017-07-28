@@ -1,8 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.ConversionEntry;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -20,6 +18,7 @@ import java.util.Set;
  * The engine that executes the VALIDATORS on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
  */
 public class QrdaValidator {
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaValidator.class);
 	private static final Registry<NodeValidator> VALIDATORS = new Registry<>(Validator.class);
 
 	private final List<Detail> details = new ArrayList<>();
@@ -39,7 +38,7 @@ public class QrdaValidator {
 	 * @return The list of validation errors for the entire tree of nodes.
 	 */
 	public List<Detail> validate(Node rootNode) {
-		Converter.DEV_LOG.info("Validating all nodes in the tree");
+		DEV_LOG.info("Validating all nodes in the tree");
 
 		//validate each node while traversing the tree
 		validateTree(rootNode);

@@ -1,11 +1,12 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @Encoder(TemplateId.ACI_SECTION)
 public class AciSectionEncoder extends QppOutputEncoder {
-
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(AciSectionEncoder.class);
 	public static final String SUBMISSION_METHOD = "submissionMethod";
 
 	/**
@@ -77,7 +78,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 		JsonOutputEncoder reportingParamEncoder = ENCODERS.get(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingChild == null) {
-			Converter.DEV_LOG.error("Missing Reporting Parameters from ACI Section");
+			DEV_LOG.error("Missing Reporting Parameters from ACI Section");
 			return;
 		}
 		reportingParamEncoder.encode(wrapper, reportingChild);

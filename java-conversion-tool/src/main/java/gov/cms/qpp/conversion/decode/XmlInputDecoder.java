@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filter;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -19,7 +20,7 @@ import java.util.function.Consumer;
  * Abstraction to parse XML files within the decoder structure.
  */
 public abstract class XmlInputDecoder implements InputDecoder {
-
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(XmlInputDecoder.class);
 	Namespace defaultNs;
 	Namespace xpathNs;
 
@@ -38,7 +39,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 			}
 		}
 
-		Converter.DEV_LOG.error("The XML file is an unknown document");
+		DEV_LOG.error("The XML file is an unknown document");
 
 		return null;
 	}
