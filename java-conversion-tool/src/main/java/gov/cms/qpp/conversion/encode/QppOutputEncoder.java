@@ -3,14 +3,29 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.TemplateId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Top level Encoder for serializing into QPP format.
  */
 public class QppOutputEncoder extends JsonOutputEncoder {
-
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(QppOutputEncoder.class);
 	public static final String VALUE = "value";
 	protected static final Registry<JsonOutputEncoder> ENCODERS = new Registry<>(Encoder.class);
+	private final TemplateId template;
+
+	public QppOutputEncoder() {
+		Encoder enc = this.getClass().getAnnotation(Encoder.class);
+		template = (enc != null) ? enc.value() : TemplateId.DEFAULT;
+	}
+
+	@Override
+	public final void encode(JsonWrapper wrapper, Node node) {
+		DEV_LOG.debug("Using " + template + " encoder to encode " + node);
+		super.encode(wrapper, node);
+	}
 
 	/**
 	 * Top level internalEncode that calls it's children from the registry.

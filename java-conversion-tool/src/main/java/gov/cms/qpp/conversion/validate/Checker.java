@@ -3,6 +3,8 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -18,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Node checker DSL to help abbreviate / simplify single node validations
  */
 class Checker {
-
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(Checker.class);
 	private Node node;
 	private Set<Detail> details;
 	private boolean anded;
@@ -164,6 +166,7 @@ class Checker {
 			try {
 				lastAppraised = Integer.parseInt(node.getValue(name));
 			} catch (NumberFormatException ex) {
+				DEV_LOG.warn("Problem with non int value: " + node.getValue(name), ex);
 				details.add(new Detail(message, node.getPath()));
 			}
 		}

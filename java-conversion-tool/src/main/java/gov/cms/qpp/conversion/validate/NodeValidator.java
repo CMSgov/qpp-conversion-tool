@@ -16,8 +16,13 @@ import java.util.Set;
 public abstract class NodeValidator {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(NodeValidator.class);
-
+	private final TemplateId template;
 	private Set<Detail> details = new LinkedHashSet<>();
+
+	public NodeValidator() {
+		Validator val = this.getClass().getAnnotation(Validator.class);
+		template = (val != null) ? val.value() : TemplateId.DEFAULT;
+	}
 
 	/**
 	 * Validates a single {@link gov.cms.qpp.conversion.model.Node} and returns the list
@@ -28,6 +33,7 @@ public abstract class NodeValidator {
 	 * @see #internalValidateSingleNode(Node)
 	 */
 	public Set<Detail> validateSingleNode(final Node node) {
+		DEV_LOG.debug("Using " + template + " validator to validate " + node);
 		internalValidateSingleNode(node);
 		return getDetails();
 	}
@@ -83,7 +89,7 @@ public abstract class NodeValidator {
 		return Checker.check(node, this.getDetails());
 	}
 
-	protected Checker thoroughlyCheck(Node node) {
+	Checker thoroughlyCheck(Node node) {
 		return Checker.thoroughlyCheck(node, this.getDetails());
 	}
 }

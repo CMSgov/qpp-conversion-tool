@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filter;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -19,9 +20,9 @@ import java.util.function.Consumer;
  * Abstraction to parse XML files within the decoder structure.
  */
 public abstract class XmlInputDecoder implements InputDecoder {
-
-	protected Namespace defaultNs;
-	protected Namespace xpathNs;
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(XmlInputDecoder.class);
+	Namespace defaultNs;
+	Namespace xpathNs;
 
 	/**
 	 * decodeXml Determines what formats of xml we accept and decode to
@@ -38,7 +39,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 			}
 		}
 
-		Converter.CLIENT_LOG.error("The XML file is an unknown document");
+		DEV_LOG.error("The XML file is an unknown document");
 
 		return null;
 	}
@@ -81,7 +82,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	 * @param element Element that hold the namespace
 	 * @param decoder Decoder to configure
 	 */
-	protected void setNamespace(Element element, XmlInputDecoder decoder) {
+	void setNamespace(Element element, XmlInputDecoder decoder) {
 		decoder.defaultNs = element.getNamespace();
 
 		// this handle the case where there is no URI for a default namespace (test)
@@ -91,7 +92,8 @@ public abstract class XmlInputDecoder implements InputDecoder {
 			decoder.xpathNs = constructor.newInstance("ns", decoder.defaultNs.getURI());
 		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException e) {
-			throw new IllegalArgumentException("Cannot construct special Xpath namespace", e);
+			String message = "Cannot construct special Xpath namespace";
+			throw new IllegalArgumentException(message, e);
 		}
 	}
 
@@ -105,7 +107,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	 * @param selectOne Whether to execute for the first match or multiple matches
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void setOnNode(Element element, String expressionStr,
+	void setOnNode(Element element, String expressionStr,
 					Consumer consumer, Filter<?> filter, boolean selectOne) {
 		XPathExpression<?> expression = XPathFactory.instance().compile(expressionStr, filter, null,  xpathNs);
 
