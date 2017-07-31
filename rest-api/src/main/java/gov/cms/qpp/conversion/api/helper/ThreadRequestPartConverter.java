@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.api.helper;
 
 import ch.qos.logback.classic.pattern.ThreadConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import org.apache.catalina.connector.RequestFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -23,7 +22,7 @@ public class ThreadRequestPartConverter extends ThreadConverter {
 		try {
 			threadId = appendPart(threadId);
 		} catch (Exception e) {
-			DEV_LOG.trace("No part to associate with log output.");
+			DEV_LOG.trace("No part to associate with log output.", e);
 		}
 
 		return threadId;
