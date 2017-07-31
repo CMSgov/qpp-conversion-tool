@@ -21,7 +21,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 	}
 
 	@Bean
-	public RequestContextListener requestContextListener(){
+	public RequestContextListener requestContextListener() {
 		return new RequestContextListener();
 	}
 }

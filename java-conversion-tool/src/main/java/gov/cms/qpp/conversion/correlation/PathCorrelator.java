@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.correlation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.correlation.model.Config;
 import gov.cms.qpp.conversion.correlation.model.Correlation;
 import gov.cms.qpp.conversion.correlation.model.Goods;

@@ -7,8 +7,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Writer;
-
 /**
  * Top level Encoder for serializing into QPP format.
  */
@@ -42,7 +40,6 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 		JsonOutputEncoder encoder = ENCODERS.get(node.getType());
 
 		if (null != encoder) {
-			TemplateId template = encoder.getClass().getAnnotation(Encoder.class).value();
 			encoder.encode(wrapper, node);
 		}
 	}
