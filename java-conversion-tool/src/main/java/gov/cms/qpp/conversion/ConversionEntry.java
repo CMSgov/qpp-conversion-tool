@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
  * Entry point for the conversion process.
  */
 public class ConversionEntry {
-	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionEntry.class);
 
 	private static final String DIR_EXTRACTION = "[\\/\\\\]";
@@ -43,7 +42,7 @@ public class ConversionEntry {
 	private static final String FILE_DOES_NOT_EXIST = "{} does not exist.";
 	private static final String CANNOT_LOCATE_FILE_PATH = "Cannot locate file path {0} {1}";
 
-	static final String BYGONE = "bygone";
+	private static final String BYGONE = "bygone";
 	static final String SKIP_VALIDATION = "skipValidation";
 	static final String SKIP_DEFAULTS = "skipDefaults";
 	static final String TEMPLATE_SCOPE = "templateScope";
@@ -96,7 +95,6 @@ public class ConversionEntry {
 			}
 		} catch (ParseException pe) {
 			DEV_LOG.error(CLI_PROBLEM, pe);
-			CLIENT_LOG.error(CLI_PROBLEM);
 		}
 
 		return returnValue;
@@ -111,7 +109,7 @@ public class ConversionEntry {
 	static boolean shouldContinue(CommandLine line) {
 		boolean shouldContinue = !line.hasOption(HELP) && validatedScope(line);
 		if (shouldContinue && line.getArgList().isEmpty()) {
-			CLIENT_LOG.error(NO_INPUT_FILE_SPECIFIED);
+			DEV_LOG.error(NO_INPUT_FILE_SPECIFIED);
 			shouldContinue = false;
 		}
 		return shouldContinue;
@@ -123,7 +121,7 @@ public class ConversionEntry {
 	 * @param line command line arguments
 	 * @return determination of validity
 	 */
-	static boolean validatedScope(CommandLine line) {
+	private static boolean validatedScope(CommandLine line) {
 		boolean isItValid = true;
 		if (line.hasOption(TEMPLATE_SCOPE)) {
 			String[] templateScope = line.getOptionValue(TEMPLATE_SCOPE).split(",");
@@ -133,7 +131,7 @@ public class ConversionEntry {
 					.collect(Collectors.toSet());
 
 			if (scope.size() != templateScope.length) {
-				CLIENT_LOG.error(INVALID_TEMPLATE_SCOPE);
+				DEV_LOG.error(INVALID_TEMPLATE_SCOPE);
 				isItValid = false;
 			}
 		}
@@ -181,7 +179,7 @@ public class ConversionEntry {
 	 */
 	private static Collection<Path> checkArgs(CommandLine line) {
 		Collection<Path> validFiles = new LinkedList<>();
-
+		
 		for (String arg : checkFlags(line).getArgs()) {
 			validFiles.addAll(checkPath(arg));
 		}
@@ -194,7 +192,7 @@ public class ConversionEntry {
 	 *
 	 * @param line parsed representation of the command line
 	 */
-	static CommandLine checkFlags(CommandLine line) {
+	private static CommandLine checkFlags(CommandLine line) {
 		doValidation = !line.hasOption(SKIP_VALIDATION);
 		doDefaults = !line.hasOption(SKIP_DEFAULTS);
 		historical = line.hasOption(BYGONE);
@@ -230,7 +228,7 @@ public class ConversionEntry {
 		if (Files.exists(file)) {
 			existingFiles.add(file);
 		} else {
-			CLIENT_LOG.error(FILE_DOES_NOT_EXIST, path);
+			DEV_LOG.error(FILE_DOES_NOT_EXIST, path);
 		}
 		return existingFiles;
 	}
@@ -296,7 +294,7 @@ public class ConversionEntry {
 		String[] parts = wild.split(DIR_EXTRACTION);
 
 		if (parts.length > 2) {
-			CLIENT_LOG.error(TOO_MANY_WILD_CARDS, path);
+			DEV_LOG.error(TOO_MANY_WILD_CARDS, path);
 			return Pattern.compile("");
 		}
 		String lastPart = parts[parts.length - 1];

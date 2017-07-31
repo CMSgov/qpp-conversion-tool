@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @ControllerAdvice
 public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler {
+	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 
 	/**
 	 * "Catch" the {@link TransformException}.
@@ -28,6 +31,7 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	@ResponseBody
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	protected AllErrors handleTransformException(TransformException exception, WebRequest request) {
+		API_LOG.error("Problem during conversion: ", exception);
 		return exception.getDetails();
 	}
 }

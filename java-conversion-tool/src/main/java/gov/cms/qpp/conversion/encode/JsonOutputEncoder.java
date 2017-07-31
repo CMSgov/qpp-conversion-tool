@@ -36,7 +36,7 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 		}
 	}
 
-	public final void encode(JsonWrapper wrapper, Node node) {
+	public void encode(JsonWrapper wrapper, Node node) {
 		try {
 			internalEncode(wrapper, node);
 			if (wrapper.isObject()) {

@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.format.DateTimeParseException;
 
-import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
-
 /**
  * Encoder to serialize reporting paramters
  */
@@ -25,7 +23,6 @@ public class ReportingParametersActEncoder extends QppOutputEncoder {
 	 *
 	 * @param wrapper JsonWrapper
 	 * @param node Node
-	 * @throws EncodeException
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
@@ -45,7 +42,6 @@ public class ReportingParametersActEncoder extends QppOutputEncoder {
 			wrapper.putDate(key, date);
 		} catch (EncodeException | NullPointerException | DateTimeParseException dtpe) {
 			final String message = "Error parsing reporting parameter " + key;
-			CLIENT_LOG.error(message);
 			DEV_LOG.error(message, dtpe);
 			wrapper.putString(key, date);
 		}

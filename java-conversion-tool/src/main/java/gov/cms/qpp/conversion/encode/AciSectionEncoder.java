@@ -5,17 +5,17 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
-
-import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
 
 /**
  * Encoder to serialize ACI Section and it's measures
  */
 @Encoder(TemplateId.ACI_SECTION)
 public class AciSectionEncoder extends QppOutputEncoder {
-
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(AciSectionEncoder.class);
 	public static final String SUBMISSION_METHOD = "submissionMethod";
 
 	/**
@@ -38,7 +38,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 		encodeReportingParameter(wrapper, node);
 	}
 
-	protected void encodeTopLevelValues(JsonWrapper wrapper, Node node) {
+	private void encodeTopLevelValues(JsonWrapper wrapper, Node node) {
 		wrapper.putString("category", node.getValue("category"));
 		wrapper.putString(SUBMISSION_METHOD, "electronicHealthRecord");
 	}
@@ -49,7 +49,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	 * @param children child nodes of the given section
 	 * @param measurementsWrapper wrapper that holds the measurements of a section
 	 */
-	protected void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) {
+	private void encodeChildren(List<Node> children, JsonWrapper measurementsWrapper) {
 		JsonWrapper childWrapper;
 		for (Node currentChild : children) {
 			childWrapper = new JsonWrapper();
@@ -74,11 +74,11 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	 * @param wrapper wrapper that holds the section
 	 * @param node ACI Section Node
 	 */
-	protected void encodeReportingParameter(JsonWrapper wrapper, Node node) {
+	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
 		JsonOutputEncoder reportingParamEncoder = ENCODERS.get(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingChild == null) {
-			CLIENT_LOG.error("Missing Reporting Parameters from ACI Section");
+			DEV_LOG.error("Missing Reporting Parameters from ACI Section");
 			return;
 		}
 		reportingParamEncoder.encode(wrapper, reportingChild);
