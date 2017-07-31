@@ -2,8 +2,6 @@ package gov.cms.qpp.conversion.api;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.context.request.RequestContextListener;
 
 /**
  * Initialize the servlet container for application configuration
