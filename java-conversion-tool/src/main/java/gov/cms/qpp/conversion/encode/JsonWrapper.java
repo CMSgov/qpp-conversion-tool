@@ -16,8 +16,8 @@ import gov.cms.qpp.conversion.model.Node;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -580,7 +580,7 @@ public class JsonWrapper {
 	private Set<Map<String, String>> getMetadataHolder() {
 		Set<Map<String, String>> returnValue = this.getValue(METADATA_HOLDER);
 		if (returnValue == null) {
-			returnValue = new HashSet<>();
+			returnValue = new LinkedHashSet<>();
 			this.putObject(METADATA_HOLDER, returnValue);
 		}
 		return returnValue;

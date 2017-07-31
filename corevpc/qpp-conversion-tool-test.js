@@ -1,12 +1,9 @@
 // Specify the base variables of your environment here.
 var env = {
-    //organization: 'Example',
     organization: 'Flexion',
     application: 'qppCnvTl',
     environment: 'Test',
-    //region: 'us-west-2',
     region: 'us-east-1',
-    //bucket: '<YOUR AWS ACCOUNT>-corevpc-deploy-us-west-2',
     bucket: 'qpp-conversion-deployment-corevpc-deploy-us-east-1',
     // Make it match with the GDIT VPC if using GDIT VPC. Otherwise you can
     // make one up, like 10.255.0.0/20.
@@ -58,38 +55,37 @@ env.configureLayers = function() {
     // };
 
     // Self-administered VPC example:
-     var nat = rootRequire('./layers/nat/nat');
-     var nat1 = nat['Resources']['Nat0aBcdb96d4Instance2'];
-     var nat2 = nat['Resources']['Nat0cBcdb96d4Instance2'];
-     var nat3 = nat['Resources']['Nat0dBcdb96d4Instance2'];
-     nat1['Properties']['ImageId'] = 'ami-d4c5efc2';
-     nat1['Properties']['InstanceType'] = 'm4.large';
-     nat2['Properties']['ImageId'] = 'ami-d4c5efc2';
-     nat2['Properties']['InstanceType'] = 'm4.large';
-     nat3['Properties']['ImageId'] = 'ami-d4c5efc2';
-     nat3['Properties']['InstanceType'] = 'm4.large';
+    var nat = rootRequire('./layers/nat/nat');
+    var nat1 = nat['Resources']['Nat0aBcdb96d4Instance2'];
+    var nat2 = nat['Resources']['Nat0cBcdb96d4Instance2'];
+    var nat3 = nat['Resources']['Nat0dBcdb96d4Instance2'];
+    nat1['Properties']['ImageId'] = 'ami-d4c5efc2';
+    nat1['Properties']['InstanceType'] = 'm4.large';
+    nat2['Properties']['ImageId'] = 'ami-d4c5efc2';
+    nat2['Properties']['InstanceType'] = 'm4.large';
+    nat3['Properties']['ImageId'] = 'ami-d4c5efc2';
+    nat3['Properties']['InstanceType'] = 'm4.large';
 
-     var jump = rootRequire('./layers/jump/jump')
-     console.log(jump['Resources']['Properties']);
+    var jump = rootRequire('./layers/jump/jump');
+    jump['Resources']['JumpInstance']['Properties']['InstanceType'] = 'm4.large';
 
-     return {
-         app: rootRequire('./layers/app/api'),
-         jump,
-         nat,
-         net: rootRequire('./layers/net/vpc')
-     };
-
+    return {
+        app: rootRequire('./layers/app/api'),
+        jump,
+        nat,
+        net: rootRequire('./layers/net/vpc')
+    };
 };
 
 /**
  * Run the AMI build script and other checks before cloudforming.
  */
 env.preformScript =
-     'cd $APP_BASE_DIR; ' +
-     '$CORE_BASE_DIR/tools/build-amis.sh service-docker ' +
-     env.application + ' ' +
-     env.region + ' ' +
-     '--var-file $APP_BASE_DIR/corevpc/packer-common.json ' +
-     '--var-file $APP_BASE_DIR/corevpc/packer-app.json';
+    'cd $APP_BASE_DIR; ' +
+    '$CORE_BASE_DIR/tools/build-amis.sh service-docker ' +
+    env.application + ' ' +
+    env.region + ' ' +
+    '--var-file $APP_BASE_DIR/corevpc/packer-common.json ' +
+    '--var-file $APP_BASE_DIR/corevpc/packer-app.json';
 
 module.exports = env;
