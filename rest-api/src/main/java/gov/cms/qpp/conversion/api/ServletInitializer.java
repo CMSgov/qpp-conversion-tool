@@ -19,9 +19,4 @@ public class ServletInitializer extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(RestApiApplication.class);
 	}
-
-	@Bean
-	public RequestContextListener requestContextListener() {
-		return new RequestContextListener();
-	}
 }
