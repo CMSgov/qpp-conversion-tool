@@ -45,7 +45,7 @@ env.preformScript =
   '$CORE_BASE_DIR/tools/build-amis.sh service-docker ' +
   env.application + ' ' +
   env.region + ' ' +
-  '--var-file $APP_BASE_DIR/corevpc-nava/packer-common.json ' +
-  '--var-file $APP_BASE_DIR/corevpc-nava/packer-app.json';
+  '--var-file $APP_BASE_DIR/vpcs/packer-common.json ' +
+  '--var-file $APP_BASE_DIR/vpcs/packer-app.json';
 
 module.exports = env;
