@@ -1,0 +1,7 @@
+{
+  "iam_instance_profile": "deploy-nonprod",
+  "instance_type": "m4.large",
+  "region": "us-east-1",
+  "subnet_id": "subnet-f14bb1b9",
+  "vpc_id": "vpc-138aa375"
+}

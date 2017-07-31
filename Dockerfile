@@ -7,9 +7,8 @@ COPY ./ /usr/src/app/
 
 WORKDIR /usr/src/app/
 
-RUN mvn install -DskipTests
+RUN mvn install -DskipTests > /dev/null
 RUN cp ./rest-api/target/rest-api.jar /usr/src/run/
-RUN rm -rf /usr/src/app/
 
 WORKDIR /usr/src/run/
 

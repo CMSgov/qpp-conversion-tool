@@ -12,6 +12,7 @@ import org.apache.jmeter.threads.ThreadGroup;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -62,6 +63,11 @@ public class ConverterLoad {
 		fileArg.setMimeType("text/xml");
 		fileArg.setParamName("file");
 		return fileArg;
+	}
+
+	@Before
+	public void rampup() throws IOException {
+		executePlan(1, 5, 3);
 	}
 
 	@Test
