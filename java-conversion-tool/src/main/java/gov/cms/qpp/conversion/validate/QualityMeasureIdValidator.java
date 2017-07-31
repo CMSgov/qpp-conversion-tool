@@ -7,6 +7,8 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +18,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static gov.cms.qpp.conversion.Converter.CLIENT_LOG;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
@@ -25,7 +26,7 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
  */
 @Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, required = true)
 public class QualityMeasureIdValidator extends NodeValidator {
-
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
 	protected static final String MEASURE_ID = "measureId";
 
 	static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
@@ -79,7 +80,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			validateAllSubPopulations(node, measureConfig);
 		} else {
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
-				CLIENT_LOG.error("MEASURE_GUID_MISSING " + value);
+				DEV_LOG.error("MEASURE_GUID_MISSING " + value);
 				this.addValidationError(new Detail(MEASURE_GUID_MISSING, node.getPath()));
 			}
 		}

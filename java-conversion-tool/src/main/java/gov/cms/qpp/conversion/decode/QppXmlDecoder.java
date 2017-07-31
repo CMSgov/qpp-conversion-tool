@@ -1,25 +1,25 @@
 package gov.cms.qpp.conversion.decode;
 
-import java.util.List;
-import java.util.Set;
-
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
-import org.jdom2.Element;
-import org.jdom2.xpath.XPathHelper;
-
 import gov.cms.qpp.conversion.ConversionEntry;
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import org.jdom2.Element;
+import org.jdom2.xpath.XPathHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * Top level Decoder for parsing into QPP format.
  */
 public class QppXmlDecoder extends XmlInputDecoder {
-
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
 	private static final Registry<QppXmlDecoder> DECODERS = new Registry<>(Decoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
@@ -47,7 +47,6 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 */
 	@Override
 	public DecodeResult decode(Element element, Node parentNode) {
-
 		if (null == element) {
 			return DecodeResult.ERROR;
 		}
@@ -67,7 +66,6 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * @return status of current decode
 	 */
 	private DecodeResult decodeChildren(final Element element, final Node parentNode) {
-
 		Node currentNode = parentNode;
 
 		List<Element> childElements = element.getChildren();
@@ -78,14 +76,14 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				String root = childEl.getAttributeValue(ROOT_STRING);
 				String extension = childEl.getAttributeValue(EXTENSION_STRING);
 				TemplateId templateId = TemplateId.getTemplateId(root, extension);
-				Converter.CLIENT_LOG.debug("templateIdFound:{}", templateId);
+				DEV_LOG.debug("templateIdFound:{}", templateId);
 
 				QppXmlDecoder childDecoder = getDecoder(templateId);
 
 				if (null == childDecoder) {
 					continue;
 				}
-				Converter.CLIENT_LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
+				DEV_LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
 				Node childNode = new Node(templateId, parentNode);
 
 				childNode.setDefaultNsUri(defaultNs.getURI());
@@ -151,9 +149,9 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		} else if (result == DecodeResult.TREE_CONTINUE) {
 			decode(childElement, childNode);
 		} else if (result == DecodeResult.ERROR) {
-			Converter.CLIENT_LOG.error("Failed to decode templateId {} ", childNode.getType());
+			DEV_LOG.error("Failed to decode templateId {} ", childNode.getType());
 		} else {
-			Converter.CLIENT_LOG.error("We need to define a default case. Could be TreeContinue?");
+			DEV_LOG.error("We need to define a default case. Could be TreeContinue?");
 		}
 
 		return null;
@@ -211,7 +209,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 									&& containsClinicalDocumentTemplateId(rootElement);
 
 		if (!isValidQrdaFile) {
-			Converter.CLIENT_LOG.error(NOT_VALID_QRDA_III_FORMAT);
+			DEV_LOG.error(NOT_VALID_QRDA_III_FORMAT);
 		}
 		
 		return isValidQrdaFile;

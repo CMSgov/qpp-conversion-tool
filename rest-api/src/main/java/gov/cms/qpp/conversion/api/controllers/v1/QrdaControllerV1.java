@@ -5,6 +5,8 @@ import gov.cms.qpp.conversion.api.services.ValidationService;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.NamedInputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +27,8 @@ import java.io.IOException;
 @RequestMapping("/v1/qrda3")
 @CrossOrigin
 public class QrdaControllerV1 {
+	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
+
 	@Autowired
 	private QrdaService qrdaService;
 
@@ -41,10 +45,11 @@ public class QrdaControllerV1 {
 	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public String uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
+		API_LOG.info("Request received " + file.getName());
 		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(new NamedInputStream(file.getInputStream(), file.getName()));
 
 		validationService.validateQpp(qpp);
-
+		API_LOG.info("Conversion success " + file.getName());
 		return qpp.toString();
 	}
 }
