@@ -9,10 +9,10 @@ WORKDIR /usr/src/app/
 
 RUN mvn install -DskipTests > /dev/null
 RUN cp ./rest-api/target/rest-api.jar /usr/src/run/
-RUN cp -r ./docker-artifacts/newrelic /usr/src/run/newrelic
-RUN sed -i -e "s/NEWRELIC_API_KEY/$NEWRELIC_API_KEY/g" /usr/src/run/newrelic/newrelic.yml
+RUN cp -r ./docker-artifacts/* /usr/src/run/
+RUN chmod +x /usr/src/run/qppConverter.sh
 
 WORKDIR /usr/src/run/
 
 EXPOSE 8080
-CMD ["java", "-javaagent:/usr/src/run/newrelic/newrelic.jar", "-jar", "./rest-api.jar"]
+CMD ["/usr/src/run/qppConverter.sh"]
