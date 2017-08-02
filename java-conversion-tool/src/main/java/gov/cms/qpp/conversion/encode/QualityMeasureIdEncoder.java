@@ -49,7 +49,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		String measureId = measureConfig.getMeasureId();
 		wrapper.putString(MEASURE_ID, measureId);
 
-		if (isASinglePerformanceRate(measureConfig, measureId)) {
+		if (isASinglePerformanceRate(measureConfig)) {
 			encodeChildren(wrapper, node, measureConfig);
 		} else {
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
@@ -61,14 +61,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * Defaults to single performance rate for missing configuration mappings
 	 *
 	 * @param measureConfig configuration in check
-	 * @param measureId variable to show when the mapping is non existent
 	 * @return SINGLE_PERFORMANCE_RATE == measureConfig.getMetricType()
 	 */
-	private boolean isASinglePerformanceRate(MeasureConfig measureConfig, String measureId) {
-		if (measureConfig == null) {
-			DEV_LOG.info("Measure Configuration for {} is missing", measureId);
-			return true;
-		}
+	private boolean isASinglePerformanceRate(MeasureConfig measureConfig) {
 		return SINGLE_PERFORMANCE_RATE.equalsIgnoreCase(measureConfig.getMetricType());
 	}
 
