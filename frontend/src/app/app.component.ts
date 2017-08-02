@@ -4,7 +4,7 @@ import 'rxjs/Rx' ;
 import { DomSanitizer } from '@angular/platform-browser';
 
 
-const URL  = 'http://184.73.24.93:2680/v1/qrda3';
+const URL  = 'https://qpp-qrda3-converter-impl-app-elb-1442516738.us-east-1.elb.amazonaws.com/v1/qrda3';
 
 @Component({
 	selector: 'app-root',
