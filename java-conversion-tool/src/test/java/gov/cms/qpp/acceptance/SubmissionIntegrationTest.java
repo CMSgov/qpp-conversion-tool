@@ -52,7 +52,6 @@ public class SubmissionIntegrationTest {
 	}
 
 	@Test
-	@Ignore
 	public void testSubmissionApiPostSuccess() throws IOException {
 		HttpResponse httpResponse = servicePost(qpp);
 		cleanUp(httpResponse);
