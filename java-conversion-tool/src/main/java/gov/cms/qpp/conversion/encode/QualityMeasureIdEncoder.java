@@ -8,8 +8,6 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,7 +24,6 @@ import java.util.stream.IntStream;
  */
 @Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdEncoder.class);
 	private static final String MEASURE_ID = "measureId";
 	private static final String AGGREGATE_COUNT = "aggregateCount";
 	private static final String TYPE = "type";
