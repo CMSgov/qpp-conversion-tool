@@ -7,6 +7,8 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
@@ -26,7 +28,7 @@ import java.io.IOException;
  */
 @Service
 public class ValidationServiceImpl implements ValidationService {
-
+	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 	static final String VALIDATION_URL_ENV_NAME = "VALIDATION_URL";
 
 	@Autowired
@@ -47,6 +49,7 @@ public class ValidationServiceImpl implements ValidationService {
 			return;
 		}
 
+		API_LOG.info("Calling QPP validation");
 		ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, qpp);
 
 		if (HttpStatus.UNPROCESSABLE_ENTITY.equals(validationResponse.getStatusCode())) {

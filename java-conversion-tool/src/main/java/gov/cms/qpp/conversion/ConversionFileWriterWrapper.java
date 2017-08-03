@@ -19,7 +19,6 @@ import java.nio.file.Paths;
  * Calls the {@link Converter} and writes the results to a file.
  */
 public class ConversionFileWriterWrapper {
-	private static final Logger CLIENT_LOG = LoggerFactory.getLogger("CLIENT-LOG");
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionFileWriterWrapper.class);
 
 	private Path inFile;
@@ -36,7 +35,7 @@ public class ConversionFileWriterWrapper {
 	 * @param doIt toggle value
 	 * @return this for chaining
 	 */
-	public ConversionFileWriterWrapper doDefaults(boolean doIt) {
+	ConversionFileWriterWrapper doDefaults(boolean doIt) {
 		this.doDefaults = doIt;
 		return this;
 	}
@@ -47,7 +46,7 @@ public class ConversionFileWriterWrapper {
 	 * @param doIt toggle value
 	 * @return this for chaining
 	 */
-	public ConversionFileWriterWrapper doValidation(boolean doIt) {
+	ConversionFileWriterWrapper doValidation(boolean doIt) {
 		this.doValidation = doIt;
 		return this;
 	}
@@ -72,16 +71,14 @@ public class ConversionFileWriterWrapper {
 		try {
 			JsonWrapper jsonWrapper = converter.transform();
 			Path outFile = getOutputFile(inFile.getFileName().toString(), true);
-			CLIENT_LOG.info("Successful conversion.  Writing out QPP to {}",
+			DEV_LOG.info("Successful conversion.  Writing out QPP to {}",
 				outFile.toString());
-			DEV_LOG.info("Successful conversion.");
 			writeOutQpp(jsonWrapper, outFile);
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
 			Path outFile = getOutputFile(inFile.getFileName().toString(), false);
-			CLIENT_LOG.warn("There were errors during conversion.  Writing out errors to {}",
-				outFile.toString());
-			DEV_LOG.warn("There were errors during conversion.", exception);
+			DEV_LOG.warn("There were errors during conversion.  Writing out errors to {} " + outFile.toString(),
+					exception);
 			writeOutErrors(allErrors, outFile);
 		}
 	}
@@ -97,7 +94,6 @@ public class ConversionFileWriterWrapper {
 			writer.write(jsonWrapper.toString());
 			writer.flush();
 		} catch (IOException exception) {
-			CLIENT_LOG.error("Could not write out QPP JSON to file");
 			DEV_LOG.error("Could not write out QPP JSON to file", exception);
 		}
 	}
@@ -116,7 +112,6 @@ public class ConversionFileWriterWrapper {
 					.withDefaultPrettyPrinter();
 			jsonObjectWriter.writeValue(writer, allErrors);
 		} catch (IOException exception) {
-			CLIENT_LOG.error("Could not write out error JSON to file");
 			DEV_LOG.error("Could not write out error JSON to file", exception);
 		}
 	}

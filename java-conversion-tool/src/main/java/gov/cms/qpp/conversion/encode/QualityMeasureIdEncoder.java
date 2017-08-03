@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -25,7 +24,6 @@ import java.util.stream.IntStream;
  */
 @Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
-
 	private static final String MEASURE_ID = "measureId";
 	private static final String AGGREGATE_COUNT = "aggregateCount";
 	private static final String TYPE = "type";
@@ -48,7 +46,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		String measureId = measureConfig.getMeasureId();
 		wrapper.putString(MEASURE_ID, measureId);
 
-		if (isASinglePerformanceRate(measureConfig, measureId)) {
+		if (isASinglePerformanceRate(measureConfig)) {
 			encodeChildren(wrapper, node, measureConfig);
 		} else {
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
@@ -60,14 +58,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * Defaults to single performance rate for missing configuration mappings
 	 *
 	 * @param measureConfig configuration in check
-	 * @param measureId variable to show when the mapping is non existent
 	 * @return SINGLE_PERFORMANCE_RATE == measureConfig.getMetricType()
 	 */
-	private boolean isASinglePerformanceRate(MeasureConfig measureConfig, String measureId) {
-		if (measureConfig == null) {
-			Converter.CLIENT_LOG.info("Measure Configuration for {} is missing", measureId);
-			return true;
-		}
+	private boolean isASinglePerformanceRate(MeasureConfig measureConfig) {
 		return SINGLE_PERFORMANCE_RATE.equalsIgnoreCase(measureConfig.getMetricType());
 	}
 

@@ -21,9 +21,7 @@
 		</encoder>
 	</appender>
 	<logger name="gov.cms" level="INFO">
-		<appender-ref ref="DEV"/>
-	</logger>
-	<logger name="CLIENT-LOG" level="INFO">
 		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="DEV"/>
 	</logger>
 </configuration>
