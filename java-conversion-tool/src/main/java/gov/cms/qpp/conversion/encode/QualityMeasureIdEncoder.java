@@ -8,8 +8,6 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,7 +24,6 @@ import java.util.stream.IntStream;
  */
 @Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdEncoder.class);
 	private static final String MEASURE_ID = "measureId";
 	private static final String AGGREGATE_COUNT = "aggregateCount";
 	private static final String TYPE = "type";
@@ -49,7 +46,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		String measureId = measureConfig.getMeasureId();
 		wrapper.putString(MEASURE_ID, measureId);
 
-		if (isASinglePerformanceRate(measureConfig, measureId)) {
+		if (isASinglePerformanceRate(measureConfig)) {
 			encodeChildren(wrapper, node, measureConfig);
 		} else {
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
@@ -61,14 +58,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * Defaults to single performance rate for missing configuration mappings
 	 *
 	 * @param measureConfig configuration in check
-	 * @param measureId variable to show when the mapping is non existent
 	 * @return SINGLE_PERFORMANCE_RATE == measureConfig.getMetricType()
 	 */
-	private boolean isASinglePerformanceRate(MeasureConfig measureConfig, String measureId) {
-		if (measureConfig == null) {
-			DEV_LOG.info("Measure Configuration for {} is missing", measureId);
-			return true;
-		}
+	private boolean isASinglePerformanceRate(MeasureConfig measureConfig) {
 		return SINGLE_PERFORMANCE_RATE.equalsIgnoreCase(measureConfig.getMetricType());
 	}
 
