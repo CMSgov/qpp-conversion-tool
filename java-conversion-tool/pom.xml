@@ -10,6 +10,7 @@
 
 	<artifactId>java-conversion-tool</artifactId>
 	<name>java-conversion-tool</name>
+	<description>Java Conversion Prototype</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -201,5 +202,4 @@
 			<version>2.2.0</version>
 		</dependency>
 	</dependencies>
-	<description>Java Conversion Prototype</description>
 </project>
