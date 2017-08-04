@@ -11,7 +11,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jacoco.skip.instrument>true</jacoco.skip.instrument>
-		<pit.skip>true</pit.skip>
 	</properties>
 
 	<modules>
@@ -97,39 +96,6 @@
 							<version>7.6.1</version>
 						</dependency>
 					</dependencies>
-				</plugin>
-
-				<plugin>
-					<groupId>org.pitest</groupId>
-					<artifactId>pitest-maven</artifactId>
-					<version>1.2.0</version>
-					<executions>
-						<execution>
-							<id>mutationCoverage</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>mutationCoverage</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<skip>${pit.skip}</skip>
-						<maxDependencyDistance>1</maxDependencyDistance>
-						<timeoutFactor>1.0</timeoutFactor>
-						<timeoutConstant>2500</timeoutConstant>
-						<threads>4</threads>
-						<mutationThreshold>85</mutationThreshold>
-						<coverageThreshold>85</coverageThreshold>
-						<targetClasses>
-							<param>gov.cms.qpp.conversion.*</param>
-						</targetClasses>
-						<targetTests>
-							<param>gov.cms.qpp.conversion.*</param>
-						</targetTests>
-						<excludedMethods>
-							<param>transform</param>
-						</excludedMethods>
-					</configuration>
 				</plugin>
 
 				<plugin>
