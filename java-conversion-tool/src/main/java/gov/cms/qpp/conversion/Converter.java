@@ -45,7 +45,7 @@ public class Converter {
 	static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
 	static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
 
-	private static boolean isHistorical = false;
+	private static boolean historical = false;
 	private static Set<QrdaScope> scope = new HashSet<>();
 
 	private boolean doDefaults = true;
@@ -81,11 +81,11 @@ public class Converter {
 	 * @return determination of whether or not the conversion is enacted on historical submissions.
 	 */
 	public static boolean isHistorical() {
-		return isHistorical;
+		return historical;
 	}
 
-	public static void isHistorical(boolean historical) {
-		isHistorical = historical;
+	public static void isHistorical(boolean isHistorical) {
+		Converter.historical = isHistorical;
 	}
 
 	/**

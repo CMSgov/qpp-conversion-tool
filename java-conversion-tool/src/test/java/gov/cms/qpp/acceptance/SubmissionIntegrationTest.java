@@ -50,6 +50,7 @@ public class SubmissionIntegrationTest {
 	}
 
 	@Test
+	@Ignore
 	@SuppressWarnings("unchecked")
 	public void testSubmissionApiPostFailure() throws IOException {
 		Map<String, Object> obj = (Map<String, Object>) qpp.getObject();

@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.ConversionEntry;
+import gov.cms.qpp.conversion.Converter;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -66,13 +66,13 @@ public class TemplateIdTest {
 
 	@Test //This test explores more paths through TemplateId for Circle CI coverage.
 	public void getTypeByIdHistorical() throws Exception {
-		boolean isLegacy = ConversionEntry.isHistorical();
+		boolean isLegacy = Converter.isHistorical();
 		assertThat("Legacy data is false", isLegacy, is(false));
 
-		Field field = ConversionEntry.class.getDeclaredField("historical");
+		Field field = Converter.class.getDeclaredField("historical");
 		field.setAccessible(true);
 		field.set(null, true);
-		isLegacy = ConversionEntry.isHistorical();
+		isLegacy = Converter.isHistorical();
 		assertThat("Legacy data is false", isLegacy, is(true));
 
 		String value = TemplateId.getTemplateId(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId(), "").getTemplateId();

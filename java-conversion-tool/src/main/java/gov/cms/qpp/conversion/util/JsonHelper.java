@@ -67,6 +67,25 @@ public class JsonHelper {
 	}
 
 	/**
+	 * Read json and return object type specified
+	 *
+	 * @param json content
+	 * @param valueType object type representation
+	 * @param <T> generic class type
+	 * @return Object of specified type
+	 * @throws JsonReadException if problems arise while attempting to parse the json input stream
+	 */
+	public static <T> T readJsonString(String json, Class<T> valueType) {
+		T returnValue;
+		try {
+			returnValue = new ObjectMapper().readValue(json, valueType);
+		} catch (IOException ex) {
+			throw new JsonReadException("Problem parsing json string", ex);
+		}
+		return returnValue;
+	}
+
+	/**
 	 * Reads JSON from the {@code InputStream} and returns a subset based on the provided JSONPath.
 	 *
 	 * See http://goessner.net/articles/JsonPath/
@@ -79,6 +98,21 @@ public class JsonHelper {
 	 */
 	public static <T> T readJsonAtJsonPath(InputStream jsonStream, String jsonPath, Class<T> returnType) {
 		return JsonPath.parse(jsonStream).read(jsonPath, returnType);
+	}
+
+	/**
+	 * Reads JSON in the passed in {@code String} and returns a subset based on the provided JSONPath.
+	 *
+	 * See http://goessner.net/articles/JsonPath/
+	 *
+	 * @param json A String containing JSON.
+	 * @param jsonPath A JSONPath as specified at http://goessner.net/articles/JsonPath/
+	 * @param returnType The requested return type as a class.
+	 * @param <T> The return type that you want.
+	 * @return The requested return type.
+	 */
+	public static <T> T readJsonAtJsonPath(String json, String jsonPath, Class<T> returnType) {
+		return JsonPath.parse(json).read(jsonPath, returnType);
 	}
 
 	/**

@@ -1,11 +1,10 @@
 package gov.cms.qpp;
 
-import gov.cms.qpp.conversion.ConversionEntry;
+import gov.cms.qpp.conversion.Converter;
 import org.junit.AfterClass;
 import org.junit.Before;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +26,7 @@ public class BaseTest {
 	@Before
 	public void preCleanup() throws NoSuchFieldException, IllegalAccessException {
 		resetScope();
+		resetHistorical();
 	}
 
 	/**
@@ -40,6 +40,7 @@ public class BaseTest {
 	@AfterClass
 	public static void postSuiteCleanup() throws NoSuchFieldException, IllegalAccessException {
 		resetScope();
+		resetHistorical();
 	}
 
 	/**
@@ -56,13 +57,18 @@ public class BaseTest {
 
 	/**
 	 * Sets the scope to be empty.
-	 *
-	 * @throws NoSuchFieldException if scope field can't be located
-	 * @throws IllegalAccessException should scope not be accessible
 	 */
-	private static void resetScope() throws NoSuchFieldException, IllegalAccessException {
-		Field scope = ConversionEntry.class.getDeclaredField("scope");
-		scope.setAccessible(true);
-		scope.set(null, new HashSet<>());
+	private static void resetScope() {
+//		Field scope = Converter.class.getDeclaredField("scope");
+//		scope.setAccessible(true);
+//		scope.set(null, new HashSet<>());
+		Converter.setScope(new HashSet<>());
+	}
+
+	/**
+	 * Sets the conversion to not be historical.
+	 */
+	private static void resetHistorical() {
+		Converter.isHistorical(false);
 	}
 }

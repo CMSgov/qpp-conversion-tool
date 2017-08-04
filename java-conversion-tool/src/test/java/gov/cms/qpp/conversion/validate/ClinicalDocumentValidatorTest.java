@@ -1,11 +1,12 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.TransformException;
 import org.junit.After;
 import org.junit.Test;
 
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static gov.cms.qpp.conversion.util.JsonHelper.readJson;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
@@ -236,8 +236,14 @@ public class ClinicalDocumentValidatorTest {
 		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
 
 		//execute
-		new ConversionFileWriterWrapper(path).transform();
-		AllErrors allErrors = readJson(CLINICAL_DOCUMENT_ERROR_FILE, AllErrors.class);
+		Converter converter = new Converter(path);
+		AllErrors allErrors = new AllErrors();
+		try {
+			converter.transform();
+		} catch(TransformException exception) {
+			allErrors = exception.getDetails();
+		}
+
 		List<Detail> errors = getErrors(allErrors);
 
 		assertThat("Must have 6 errors", errors, hasSize(6));
