@@ -18,7 +18,6 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -76,6 +75,7 @@ public class ConversionEntry {
 							.doValidation(doValidation)
 							.doDefaults(doDefaults)
 							.isHistorical(historical)
+							.setScope(scope)
 							.transform());
 	}
 
@@ -300,14 +300,5 @@ public class ConversionEntry {
 		}
 
 		return Pattern.compile(regex);
-	}
-
-	/**
-	 * Get the scope that determines which data may be transformed.
-	 *
-	 * @return scope
-	 */
-	public static Collection<QrdaScope> getScope() {
-		return Collections.unmodifiableSet(scope);
 	}
 }

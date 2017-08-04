@@ -28,7 +28,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -44,6 +46,7 @@ public class Converter {
 	static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
 
 	private static boolean isHistorical = false;
+	private static Set<QrdaScope> scope = new HashSet<>();
 
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
@@ -83,6 +86,19 @@ public class Converter {
 
 	public static void isHistorical(boolean historical) {
 		isHistorical = historical;
+	}
+
+	/**
+	 * Get the scope that determines which data may be transformed.
+	 *
+	 * @return scope
+	 */
+	public static Collection<QrdaScope> getScope() {
+		return Collections.unmodifiableSet(scope);
+	}
+
+	public static void setScope(Set<QrdaScope> newScope) {
+		scope = newScope;
 	}
 
 	public Node getDecoded() {
@@ -246,8 +262,7 @@ public class Converter {
 	 * @return an encoder
 	 */
 	protected JsonOutputEncoder getEncoder() {
-		Collection<QrdaScope> scope = ConversionEntry.getScope();
-		return (!scope.isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
+		return (!getScope().isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
 	}
 
 	/**
