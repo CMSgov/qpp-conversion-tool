@@ -9,8 +9,9 @@ WORKDIR /usr/src/app/
 
 RUN mvn install -DskipTests > /dev/null
 RUN cp ./rest-api/target/rest-api.jar /usr/src/run/
+RUN cp -r ./docker-artifacts/* /usr/src/run/
 
 WORKDIR /usr/src/run/
 
 EXPOSE 8080
-CMD ["java", "-jar", "./rest-api.jar"]
+CMD ["/usr/src/run/qppConverter.sh"]
