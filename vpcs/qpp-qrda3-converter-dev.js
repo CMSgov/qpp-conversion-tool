@@ -12,7 +12,8 @@ var env = {
   defaultIamInstanceProfile: 'server-nonprod',
   alarmEmail: 'devops@navahq.com',
   machineImageOwners: ['self'],
-  externalSecurityGroupRefs: [{ Ref: 'OpenHttpSecurityGroup' }]
+  externalSecurityGroupRefs: [{ Ref: 'OpenHttpSecurityGroup' }],
+  awsProfile: 'aws-hhs-cms-ccsq-qpp-navadevops'
 };
 
 // Boilerplate dependent variables.
