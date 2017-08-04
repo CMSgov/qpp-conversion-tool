@@ -24,6 +24,7 @@ public class ConversionFileWriterWrapper {
 	private Path inFile;
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
+	private boolean isHistorical = false;
 
 	public ConversionFileWriterWrapper(Path inFile) {
 		this.inFile = inFile;
@@ -52,12 +53,24 @@ public class ConversionFileWriterWrapper {
 	}
 
 	/**
+	 * Switch for enabling or disabling this will be a historical submission.
+	 *
+	 * @param historical toggle value
+	 * @return this for chaining
+	 */
+	ConversionFileWriterWrapper isHistorical(boolean historical) {
+		this.isHistorical = historical;
+		return this;
+	}
+
+	/**
 	 * Execute the conversion.
 	 */
 	public void transform() {
 		Converter converter = new Converter(inFile)
 			.doDefaults(doDefaults)
 			.doValidation(doValidation);
+		Converter.isHistorical(isHistorical);
 
 		executeConverter(converter);
 	}

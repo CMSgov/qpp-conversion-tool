@@ -75,6 +75,7 @@ public class ConversionEntry {
 				filename -> new gov.cms.qpp.conversion.ConversionFileWriterWrapper(filename)
 							.doValidation(doValidation)
 							.doDefaults(doDefaults)
+							.isHistorical(historical)
 							.transform());
 	}
 
@@ -197,15 +198,6 @@ public class ConversionEntry {
 		doDefaults = !line.hasOption(SKIP_DEFAULTS);
 		historical = line.hasOption(BYGONE);
 		return line;
-	}
-
-	/**
-	 * Is this a conversion of historical submissions.
-	 *
-	 * @return determination of whether or not the conversion is enacted on historical submissions.
-	 */
-	public static boolean isHistorical() {
-		return historical;
 	}
 
 	/**

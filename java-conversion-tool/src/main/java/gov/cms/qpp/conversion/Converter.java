@@ -43,6 +43,8 @@ public class Converter {
 	static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
 	static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
 
+	private static boolean isHistorical = false;
+
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
 	private List<Detail> details = new ArrayList<>();
@@ -68,6 +70,19 @@ public class Converter {
 	public Converter(InputStream xmlStream) {
 		this.xmlStream = xmlStream;
 		this.inFile = null;
+	}
+
+	/**
+	 * Is this a conversion of historical submissions.
+	 *
+	 * @return determination of whether or not the conversion is enacted on historical submissions.
+	 */
+	public static boolean isHistorical() {
+		return isHistorical;
+	}
+
+	public static void isHistorical(boolean historical) {
+		isHistorical = historical;
 	}
 
 	public Node getDecoded() {
