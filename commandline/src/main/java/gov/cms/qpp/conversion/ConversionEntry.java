@@ -72,7 +72,7 @@ public class ConversionEntry {
 	public static void main(String... args) {
 		Collection<Path> filenames = validArgs(args);
 		filenames.parallelStream().forEach(
-				filename -> new ConversionFileWriterWrapper(filename)
+				filename -> new gov.cms.qpp.conversion.ConversionFileWriterWrapper(filename)
 							.doValidation(doValidation)
 							.doDefaults(doDefaults)
 							.transform());
