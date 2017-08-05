@@ -13,7 +13,7 @@ var env = {
   alarmEmail: 'devops@navahq.com',
   machineImageOwners: ['self'],
   externalSecurityGroupRefs: [{ Ref: 'OpenHttpSecurityGroup' }],
-  awsProfile: 'aws-hhs-cms-ccsq-qpp-navadevops'
+  awsAccount: 'aws-hhs-cms-ccsq-qpp-navadevops'
 };
 
 // Boilerplate dependent variables.
