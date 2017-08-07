@@ -9,4 +9,4 @@ if [ ! -f java-conversion-tool/target/java-conversion-tool.jar ]; then
     fi
 fi
 
-java -jar java-conversion-tool/target/java-conversion-tool.jar $@
+java -jar commandline/target/commandline.jar $@
