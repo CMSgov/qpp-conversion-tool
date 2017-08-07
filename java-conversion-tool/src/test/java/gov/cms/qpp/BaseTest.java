@@ -19,12 +19,9 @@ public class BaseTest {
 	 * Runs before each test.
 	 *
 	 * Ensure empty scope before each test.
-	 *
-	 * @throws NoSuchFieldException if scope field can't be located
-	 * @throws IllegalAccessException should scope not be accessible
 	 */
 	@Before
-	public void preCleanup() throws NoSuchFieldException, IllegalAccessException {
+	public void preCleanup() {
 		resetScope();
 		resetHistorical();
 	}
@@ -33,12 +30,9 @@ public class BaseTest {
 	 * Does clean-up after an entire test suite.
 	 *
 	 * Ensures an empty scope after each test suite so different scopes do not leak into another test suite.
-	 *
-	 * @throws NoSuchFieldException if scope field can't be located
-	 * @throws IllegalAccessException should scope not be accessible
 	 */
 	@AfterClass
-	public static void postSuiteCleanup() throws NoSuchFieldException, IllegalAccessException {
+	public static void postSuiteCleanup() {
 		resetScope();
 		resetHistorical();
 	}
@@ -59,9 +53,6 @@ public class BaseTest {
 	 * Sets the scope to be empty.
 	 */
 	private static void resetScope() {
-//		Field scope = Converter.class.getDeclaredField("scope");
-//		scope.setAccessible(true);
-//		scope.set(null, new HashSet<>());
 		Converter.setScope(new HashSet<>());
 	}
 

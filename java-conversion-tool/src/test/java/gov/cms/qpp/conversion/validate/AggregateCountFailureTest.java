@@ -19,13 +19,7 @@ public class AggregateCountFailureTest {
 
 	@Test
 	public void testInvalidAggregateCounts() throws IOException {
-		//set-up
-//		final String errorFileName = "angerTheConverter.err.json";
-//		File errorFile = new File(errorFileName);
-//		errorFile.delete();
-
 		//execute
-		//ConversionEntry.main("src/test/resources/negative/angerTheConverter.xml");
 		Converter converter = new Converter(Paths.get("src/test/resources/negative/angerTheConverter.xml"));
 
 		String errorContent = "";

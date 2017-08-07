@@ -42,7 +42,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
-public class ConversionEntryTest /*extends BaseTest*/ {
+public class ConversionEntryTest {
 
 	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 	private static final String SKIP_DEFAULTS = "--" + ConversionEntry.SKIP_DEFAULTS;

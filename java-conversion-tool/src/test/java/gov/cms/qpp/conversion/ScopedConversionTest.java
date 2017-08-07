@@ -10,12 +10,10 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
@@ -31,10 +29,7 @@ public class ScopedConversionTest extends BaseTest {
 
 	private static final String SUCCESS_MAKER = "../qrda-files/valid-QRDA-III-latest.xml";
 	private static final String ERROR_MAKER = "src/test/resources/negative/angerTheConverter.xml";
-	private static final String SUCCESS_FILE = "valid-QRDA-III-latest.qpp.json";
-	private static final String ERROR_FILE = "angerTheConverter.err.json";
 
-	//private static final String TEMPLATE_SCOPE = "--" + ConversionEntry.TEMPLATE_SCOPE;
 	private static Map<String, Object> fixtures;
 
 	/**
@@ -48,17 +43,6 @@ public class ScopedConversionTest extends BaseTest {
 	}
 
 	/**
-	 * Clean up conversion output files.
-	 *
-	 * @throws IOException
-	 */
-	@After
-	public void cleanup() throws IOException {
-		Files.deleteIfExists(Paths.get("valid-QRDA-III-latest.qpp.json"));
-		Files.deleteIfExists(Paths.get("angerTheConverter.err.json"));
-	}
-
-	/**
 	 * Verify CMS V2 Measure Section conversion
 	 *
 	 * @throws IOException
@@ -66,11 +50,9 @@ public class ScopedConversionTest extends BaseTest {
 	@Test
 	public void testScopedV2MeasureSectionConversion() throws IOException {
 		//setup
-		//String testSection = TemplateId.MEASURE_SECTION_V2.name();
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_SECTION_V2.name());
 
 		//when
-		//ConversionEntry.main(TEMPLATE_SCOPE, testSection, SUCCESS_MAKER);
 		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();

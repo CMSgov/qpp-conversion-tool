@@ -40,7 +40,6 @@ public class CpcTest extends BaseTest {
 	}
 
 	private void run(String type) {
-		//ConversionEntry.main("-t", type, "-b", CPC_FILE);
 		Converter converter = new Converter(Paths.get(CPC_FILE));
 		Converter.isHistorical(true);
 		Converter.setScope(Sets.newHashSet(QrdaScope.getInstanceByName(type)));

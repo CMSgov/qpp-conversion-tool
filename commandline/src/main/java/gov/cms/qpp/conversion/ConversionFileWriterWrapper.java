@@ -40,7 +40,7 @@ public class ConversionFileWriterWrapper {
 	 * @param doIt toggle value
 	 * @return this for chaining
 	 */
-	ConversionFileWriterWrapper doDefaults(boolean doIt) {
+	public ConversionFileWriterWrapper doDefaults(boolean doIt) {
 		this.doDefaults = doIt;
 		return this;
 	}
@@ -51,7 +51,7 @@ public class ConversionFileWriterWrapper {
 	 * @param doIt toggle value
 	 * @return this for chaining
 	 */
-	ConversionFileWriterWrapper doValidation(boolean doIt) {
+	public ConversionFileWriterWrapper doValidation(boolean doIt) {
 		this.doValidation = doIt;
 		return this;
 	}
@@ -62,7 +62,7 @@ public class ConversionFileWriterWrapper {
 	 * @param historical toggle value
 	 * @return this for chaining
 	 */
-	ConversionFileWriterWrapper isHistorical(boolean historical) {
+	public ConversionFileWriterWrapper isHistorical(boolean historical) {
 		this.isHistorical = historical;
 		return this;
 	}
@@ -73,7 +73,7 @@ public class ConversionFileWriterWrapper {
 	 * @param newScope the scope
 	 * @return this for chaining
 	 */
-	ConversionFileWriterWrapper setScope(Set<QrdaScope> newScope) {
+	public ConversionFileWriterWrapper setScope(Set<QrdaScope> newScope) {
 		this.scope = newScope;
 		return this;
 	}

@@ -84,6 +84,11 @@ public class Converter {
 		return historical;
 	}
 
+	/**
+	 * Sets whether conversions are historical or not.
+	 *
+	 * @param isHistorical Flag indicating whether conversions are historical or not.
+	 */
 	public static void isHistorical(boolean isHistorical) {
 		Converter.historical = isHistorical;
 	}
@@ -91,12 +96,17 @@ public class Converter {
 	/**
 	 * Get the scope that determines which data may be transformed.
 	 *
-	 * @return scope
+	 * @return scope The scope.
 	 */
 	public static Collection<QrdaScope> getScope() {
 		return Collections.unmodifiableSet(scope);
 	}
 
+	/**
+	 * Sets the scope of the converter.
+	 *
+	 * @param newScope The new scope.
+	 */
 	public static void setScope(Set<QrdaScope> newScope) {
 		scope = newScope;
 	}

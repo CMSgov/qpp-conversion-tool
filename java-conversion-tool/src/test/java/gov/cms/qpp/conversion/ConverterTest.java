@@ -205,8 +205,6 @@ public class ConverterTest {
 		Converter converter = new Converter(Paths.get("src/test/resources/converter/defaultedNode.xml")).doValidation(false);
 		JsonWrapper qpp = converter.transform();
 
-//		Path jennyJson = Paths.get("defaultedNode.qpp.json");
-//		String content = new String(Files.readAllBytes(jennyJson));
 		String content = qpp.toString();
 
 		assertTrue(content.contains("Jenny"));
@@ -217,8 +215,6 @@ public class ConverterTest {
 		Converter converter = new Converter(Paths.get("src/test/resources/converter/defaultedNode.xml")).doValidation(false).doDefaults(false);
 		JsonWrapper qpp = converter.transform();
 
-//		Path jennyJson = Paths.get("defaultedNode.qpp.json");
-//		String content = new String(Files.readAllBytes(jennyJson));
 		String content = qpp.toString();
 
 		assertFalse(content.contains("Jenny"));
