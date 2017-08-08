@@ -133,7 +133,7 @@ public enum TemplateId {
 			return TemplateId.DEFAULT;
 		}
 
-		if (Converter.isHistorical()) {
+		if (Converter.setHistorical()) {
 			return extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
 		}
 
@@ -150,7 +150,7 @@ public enum TemplateId {
 	static String generateTemplateIdString(String root, String extension) {
 		String templateId = root;
 
-		if (!Converter.isHistorical() && extension != null && !extension.isEmpty()) {
+		if (!Converter.setHistorical() && extension != null && !extension.isEmpty()) {
 			templateId += (":" + extension);
 		}
 		return templateId;

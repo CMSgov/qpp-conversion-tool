@@ -60,6 +60,6 @@ public class BaseTest {
 	 * Sets the conversion to not be historical.
 	 */
 	private static void resetHistorical() {
-		Converter.isHistorical(false);
+		Converter.setHistorical(false);
 	}
 }

@@ -86,7 +86,7 @@ public class ConversionFileWriterWrapper {
 			.doDefaults(doDefaults)
 			.doValidation(doValidation);
 
-		Converter.isHistorical(isHistorical);
+		Converter.setHistorical(isHistorical);
 		Converter.setScope(scope);
 
 		executeConverter(converter);

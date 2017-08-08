@@ -66,13 +66,13 @@ public class TemplateIdTest {
 
 	@Test //This test explores more paths through TemplateId for Circle CI coverage.
 	public void getTypeByIdHistorical() throws Exception {
-		boolean isLegacy = Converter.isHistorical();
+		boolean isLegacy = Converter.setHistorical();
 		assertThat("Legacy data is false", isLegacy, is(false));
 
 		Field field = Converter.class.getDeclaredField("historical");
 		field.setAccessible(true);
 		field.set(null, true);
-		isLegacy = Converter.isHistorical();
+		isLegacy = Converter.setHistorical();
 		assertThat("Legacy data is false", isLegacy, is(true));
 
 		String value = TemplateId.getTemplateId(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId(), "").getTemplateId();

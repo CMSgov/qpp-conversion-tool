@@ -80,7 +80,7 @@ public class Converter {
 	 *
 	 * @return determination of whether or not the conversion is enacted on historical submissions.
 	 */
-	public static boolean isHistorical() {
+	public static boolean setHistorical() {
 		return historical;
 	}
 
@@ -89,7 +89,7 @@ public class Converter {
 	 *
 	 * @param isHistorical Flag indicating whether conversions are historical or not.
 	 */
-	public static void isHistorical(boolean isHistorical) {
+	public static void setHistorical(boolean isHistorical) {
 		Converter.historical = isHistorical;
 	}
 
