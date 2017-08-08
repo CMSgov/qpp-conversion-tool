@@ -111,17 +111,18 @@ public class SubPopulation {
 
 		SubPopulation that = (SubPopulation) o;
 
-		return Objects.equals(initialPopulationUuid, that.initialPopulationUuid) &&
-				Objects.equals(denominatorUuid, that.denominatorUuid) &&
-				Objects.equals(denominatorExclusionsUuid, that.denominatorExclusionsUuid) &&
-				Objects.equals(denominatorExceptionsUuid, that.denominatorExceptionsUuid) &&
-				Objects.equals(numeratorUuid, that.numeratorUuid) &&
-				Objects.equals(strata1, that.strata1) &&
-				Objects.equals(strata2, that.strata2);
+		return Objects.equals(initialPopulationUuid, that.initialPopulationUuid)
+				&& Objects.equals(denominatorUuid, that.denominatorUuid)
+				&& Objects.equals(denominatorExclusionsUuid, that.denominatorExclusionsUuid)
+				&& Objects.equals(denominatorExceptionsUuid, that.denominatorExceptionsUuid)
+				&& Objects.equals(numeratorUuid, that.numeratorUuid)
+				&& Objects.equals(strata1, that.strata1)
+				&& Objects.equals(strata2, that.strata2);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(initialPopulationUuid, denominatorUuid, denominatorExclusionsUuid, denominatorExceptionsUuid, numeratorUuid, strata1, strata2);
+		return Objects.hash(initialPopulationUuid, denominatorUuid, denominatorExclusionsUuid,
+				denominatorExceptionsUuid, numeratorUuid, strata1, strata2);
 	}
 }

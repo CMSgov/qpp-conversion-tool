@@ -160,10 +160,10 @@ public class Detail {
 
 		Detail detail = (Detail) o;
 
-		return Objects.equals(message, detail.message) &&
-				Objects.equals(path, detail.path) &&
-				Objects.equals(value, detail.value) &&
-				Objects.equals(type, detail.type);
+		return Objects.equals(message, detail.message)
+				&& Objects.equals(path, detail.path)
+				&& Objects.equals(value, detail.value)
+				&& Objects.equals(type, detail.type);
 	}
 
 	/**
