@@ -60,9 +60,8 @@ public class Node {
 	 * @param name String key for the value
 	 * @return String
 	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getValue(String name) {
-		return (T) data.get(name);
+	public String getValue(String name) {
+		return data.get(name);
 	}
 
 	/**
@@ -71,9 +70,8 @@ public class Node {
 	 * @param name String key for the value
 	 * @return mapped duplicates of target value
 	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getDuplicateValues(String name) {
-		return (T) duplicateData.get(name);
+	public List<String> getDuplicateValues(String name) {
+		return duplicateData.get(name);
 	}
 
 	/**
