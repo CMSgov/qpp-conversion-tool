@@ -111,13 +111,14 @@ public class SubPopulation {
 
 		SubPopulation that = (SubPopulation) o;
 
-		return Objects.equals(initialPopulationUuid, that.initialPopulationUuid)
-				&& Objects.equals(denominatorUuid, that.denominatorUuid)
-				&& Objects.equals(denominatorExclusionsUuid, that.denominatorExclusionsUuid)
-				&& Objects.equals(denominatorExceptionsUuid, that.denominatorExceptionsUuid)
-				&& Objects.equals(numeratorUuid, that.numeratorUuid)
-				&& Objects.equals(strata1, that.strata1)
-				&& Objects.equals(strata2, that.strata2);
+		boolean equals = Objects.equals(initialPopulationUuid, that.initialPopulationUuid);
+		equals &= Objects.equals(denominatorUuid, that.denominatorUuid);
+		equals &= Objects.equals(denominatorExclusionsUuid, that.denominatorExclusionsUuid);
+		equals &= Objects.equals(denominatorExceptionsUuid, that.denominatorExceptionsUuid);
+		equals &= Objects.equals(numeratorUuid, that.numeratorUuid);
+		equals &= Objects.equals(strata1, that.strata1);
+		equals &= Objects.equals(strata2, that.strata2);
+		return equals;
 	}
 
 	@Override
