@@ -1,8 +1,12 @@
 package gov.cms.qpp.conversion.util;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
-public class JsonReadException extends RuntimeException {
-	public JsonReadException(String message, Throwable thrown) {
+public class JsonReadException extends UncheckedIOException {
+
+	public JsonReadException(String message, IOException thrown) {
 		super(message, thrown);
 	}
+
 }
