@@ -4,7 +4,7 @@ package gov.cms.qpp.conversion.model.error;
  * An {@link Exception} that is thrown from the {@link gov.cms.qpp.conversion.Converter} on error.
  */
 public class TransformException extends RuntimeException {
-	private final AllErrors details;
+	private final transient AllErrors details; // transient to make sonar happy. This is never serialized.
 
 	/**
 	 * Construct a new {@code TransformException} exception.
