@@ -27,7 +27,6 @@ public class PathCorrelator {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(PathCorrelator.class);
 	public static final String KEY_DELIMITER = "#";
 	private static final String ENCODE_LABEL = "encodeLabel";
-	@SuppressWarnings("FieldCanBeLocal")
 	private static String config = "pathing/path-correlation.json";
 	private static PathCorrelation pathCorrelation;
 	private static Map<String, Goods> pathCorrelationMap = new HashMap<>();
@@ -120,7 +119,6 @@ public class PathCorrelator {
 	 * @param wrapper object representation of QPP json
 	 * @return xpath that correlates to supplied json path
 	 */
-	@SuppressWarnings("unchecked")
 	public static String prepPath(String jsonPath, JsonWrapper wrapper) {
 		String base = "$";
 		String leaf = jsonPath;
