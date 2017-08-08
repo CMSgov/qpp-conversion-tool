@@ -55,7 +55,7 @@ public class QrdaServiceImplTest {
 		whenNew(Converter.class).withArguments(MOCK_ERROR_QRDA_INPUT_STREAM).thenAnswer(invocationOnMock -> {
 			AllErrors allErrors = new AllErrors();
 			allErrors.addError(new Error(MOCK_ERROR_SOURCE_IDENTIFIER, null));
-			TransformException transformException = new TransformException("mock problem", new NullPointerException(), allErrors);
+			TransformException transformException = new TransformException("mock problem", allErrors);
 			when(mockConverter.transform()).thenThrow(transformException);
 
 			return mockConverter;
@@ -71,8 +71,8 @@ public class QrdaServiceImplTest {
 	@Test
 	public void testConvertQrda3ToQppError() {
 		try {
-			JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_ERROR_QRDA_INPUT_STREAM);
-			fail("An exception should have occurred.");
+			JsonWrapper converted = objectUnderTest.convertQrda3ToQpp(MOCK_ERROR_QRDA_INPUT_STREAM);
+			fail("An exception should have occurred, but was: " + converted);
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
 			assertThat("", allErrors.getErrors().get(0).getSourceIdentifier(), is(MOCK_ERROR_SOURCE_IDENTIFIER));

@@ -10,11 +10,10 @@ public class TransformException extends RuntimeException {
 	 * Construct a new {@code TransformException} exception.
 	 *
 	 * @param message The detail message
-	 * @param cause A Throwable that caused this exception to occur.
 	 * @param details The {@link AllErrors} that detail what went wrong.
 	 */
-	public TransformException(String message, Throwable cause, AllErrors details) {
-		super(message, cause);
+	public TransformException(String message, AllErrors details) {
+		super(message);
 		this.details = details;
 	}
 

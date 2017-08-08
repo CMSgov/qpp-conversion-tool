@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.model.error;
 
-
 import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,6 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 public class DetailTest {
+
 	@Test
 	public void stringRepresentation() {
 		Detail objectUnderTest = new Detail("text", "path");
@@ -63,9 +63,8 @@ public class DetailTest {
 
 	@Test
 	public void testHashCode() {
-		Detail emptyValues = new Detail("meep","meeo","meep","meep");
-		Detail nullDetail = new Detail(null,null,null,null);
-		assertEquals(emptyValues.hashCode(), -29068033);
-		assertEquals(nullDetail.hashCode(), 0);
+		Detail emptyValues = new Detail("meep", "meeo", "meep", "meep");
+		Detail nullDetail = new Detail(null, null, null, null);
+		assertNotEquals(emptyValues.hashCode(), nullDetail.hashCode());
 	}
 }

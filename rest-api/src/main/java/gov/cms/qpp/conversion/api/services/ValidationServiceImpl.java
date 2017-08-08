@@ -54,7 +54,7 @@ public class ValidationServiceImpl implements ValidationService {
 
 		if (HttpStatus.UNPROCESSABLE_ENTITY.equals(validationResponse.getStatusCode())) {
 			AllErrors convertedErrors = convertQppValidationErrorsToQrda(validationResponse.getBody(), qpp);
-			throw new TransformException("Converted QPP failed validation", null, convertedErrors);
+			throw new TransformException("Converted QPP failed validation", convertedErrors);
 		}
 	}
 

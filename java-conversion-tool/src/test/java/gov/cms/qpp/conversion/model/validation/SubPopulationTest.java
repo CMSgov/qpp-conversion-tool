@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -95,8 +94,7 @@ public class SubPopulationTest {
 		initWith(subPop, "meep");
 		initWith(nullSubPop, null);
 
-		assertEquals(675374883, subPop.hashCode());
-		assertEquals(0, nullSubPop.hashCode());
+		assertNotEquals(subPop.hashCode(), nullSubPop.hashCode());
 	}
 
 }

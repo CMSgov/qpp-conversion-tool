@@ -25,11 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
@@ -119,8 +117,7 @@ public class Converter {
 		}
 
 		if (!details.isEmpty()) {
-			throw new TransformException("Validation errors exist", null,
-				constructErrorHierarchy(sourceIdentifier(), details));
+			throw new TransformException("Validation errors exist", constructErrorHierarchy(sourceIdentifier(), details));
 		}
 
 		return qpp;
@@ -191,7 +188,7 @@ public class Converter {
 	 * @return All the errors.
 	 */
 	private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
-		return new AllErrors(Arrays.asList(constructErrorSource(inputIdentifier, details)));
+		return new AllErrors(Collections.singletonList(constructErrorSource(inputIdentifier, details)));
 	}
 
 	/**
