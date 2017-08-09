@@ -1,13 +1,12 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.BaseTest;
-import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.After;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -21,17 +20,13 @@ public class AciMeasurePerformedRoundTripTest extends BaseTest {
 
 	public static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/AciMeasurePerformedGarbage.xml");
 
-	@After
-	public void deleteJsonFile() throws IOException {
-		Files.deleteIfExists(Paths.get("AciMeasurePerformedGarbage.qpp.json"));
-	}
-
 	@Test
 	public void testGarbage() throws IOException {
-		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(JUNK_QRDA3_FILE);
-		converterWrapper.transform();
 
-		List<Map<String, ?>> aciMeasures = JsonHelper.readJsonAtJsonPath(Paths.get("AciMeasurePerformedGarbage.qpp.json"),
+		Converter converter = new Converter(JUNK_QRDA3_FILE);
+		JsonWrapper qpp = converter.transform();
+
+		List<Map<String, ?>> aciMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='aci')].measurements[?(@.measureId=='TEST_MEASURE_ID')]", List.class);
 
 		assertThat("There should still be an ACI measure even with the junk stuff in ACI measure.",

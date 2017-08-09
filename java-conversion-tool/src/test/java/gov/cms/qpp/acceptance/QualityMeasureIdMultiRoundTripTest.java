@@ -1,15 +1,14 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
-import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.QualityMeasureIdValidator;
 import org.hamcrest.CoreMatchers;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,7 +17,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -43,28 +41,22 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 	private static MarkupManipulator manipulator;
 
-	private final String SUCCESS_JSON = "multiPerformanceRatePropMeasure.qpp.json";
-
 	@BeforeClass
 	public static void setup() throws ParserConfigurationException, SAXException, IOException {
 		manipulator = new MarkupManipulator.MarkupManipulatorBuilder()
 			.setPathname(JUNK_QRDA3_FILE).build();
 	}
 
-	@After
-	public void deleteJsonFile() throws IOException {
-		Files.deleteIfExists(Paths.get(SUCCESS_JSON));
-	}
-
 	@Test
 	public void testRoundTripForQualityMeasureId() throws IOException {
-		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(JUNK_QRDA3_FILE);
-		converterWrapper.transform();
+		Converter converter = new Converter(JUNK_QRDA3_FILE);
+		JsonWrapper qpp = converter.transform();
+		String json = qpp.toString();
 
-		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
+		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
 
-		List<Map<String, Integer>> subPopulation = JsonHelper.readJsonAtJsonPath(Paths.get(SUCCESS_JSON),
+		List<Map<String, Integer>> subPopulation = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='160')].value.strata[*]", List.class);
 
 		assertThat("The measureId in the quality measure should still populate given the junk stuff in the measure.",

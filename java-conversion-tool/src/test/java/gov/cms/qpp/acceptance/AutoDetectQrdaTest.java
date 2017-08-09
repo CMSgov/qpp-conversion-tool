@@ -17,28 +17,28 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
 
 public class AutoDetectQrdaTest {
 
-	private PrintStream stdout;
+	private static final String EXPECTED_ERROR_1 = "The file is not a QRDA-III XML document";
+	private static final String EXPECTED_ERROR_2 = "The XML file is an unknown document";
 
-	private static final String EXPECTED_ERROR =
-		"ERROR - The file is not a QRDA-III XML document" + System.lineSeparator()+
-		 "ERROR - The XML file is an unknown document" +System.lineSeparator();
+	private PrintStream stderr;
 	
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
 	@Before
 	public void setup() throws Exception {
-		stdout = System.out;
+		stderr = System.err;
 	}
 
 	@After
 	public void teardown() throws Exception {
-		System.setOut(stdout);
+		System.setErr(stderr);
 	}
 
 	@Test
@@ -48,13 +48,13 @@ public class AutoDetectQrdaTest {
 		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III"), Charset.defaultCharset());
 
 		ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(baos1));
+		System.setErr(new PrintStream(baos1));
 
 		//execute
 		XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment));
 
 		//assert
-		assertThat("Incorrect error message", baos1.toString(), is(EXPECTED_ERROR));
+		assertThat("Incorrect error message", baos1.toString(), allOf(containsString(EXPECTED_ERROR_1), containsString(EXPECTED_ERROR_2)));
 	}
 
 	@Test
@@ -64,13 +64,13 @@ public class AutoDetectQrdaTest {
 		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III-root"), Charset.defaultCharset());
 
 		ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(baos2));
+		System.setErr(new PrintStream(baos2));
 
 		//execute
 		XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment));
 
 		//assert
-		assertThat("Incorrect error message", baos2.toString(), is(EXPECTED_ERROR));
+		assertThat("Incorrect error message", baos2.toString(), allOf(containsString(EXPECTED_ERROR_1), containsString(EXPECTED_ERROR_2)));
 	}
 
 	private InputStream getStream(String path) {
