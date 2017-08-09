@@ -9,6 +9,7 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.util.NamedInputStream;
@@ -29,7 +30,9 @@ import java.util.List;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
@@ -176,7 +179,6 @@ public class ConverterTest {
 
 		mockStatic(XmlUtils.class);
 		when(XmlUtils.fileToStream(any(Path.class))).thenReturn(null);
-		//when(Files.readAllBytes(any(Path.class))).thenCallRealMethod();
 
 		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
 		Converter converter = new Converter(path);
@@ -193,5 +195,28 @@ public class ConverterTest {
 			Detail detail = details.get(0);
 			assertThat("The validation error was incorrect", detail, validationErrorTextMatches(Converter.UNEXPECTED_ERROR));
 		}
+	}
+
+	@Test
+	public void testDefaults() throws Exception {
+		AnnotationMockHelper.mockDecoder(TemplateId.DEFAULT, JennyDecoder.class);
+		AnnotationMockHelper.mockEncoder(TemplateId.DEFAULT, Jenncoder.class);
+
+		Converter converter = new Converter(Paths.get("src/test/resources/converter/defaultedNode.xml")).doValidation(false);
+		JsonWrapper qpp = converter.transform();
+
+		String content = qpp.toString();
+
+		assertTrue(content.contains("Jenny"));
+	}
+
+	@Test
+	public void testSkipDefaults() throws Exception {
+		Converter converter = new Converter(Paths.get("src/test/resources/converter/defaultedNode.xml")).doValidation(false).doDefaults(false);
+		JsonWrapper qpp = converter.transform();
+
+		String content = qpp.toString();
+
+		assertFalse(content.contains("Jenny"));
 	}
 }

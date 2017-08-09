@@ -1,13 +1,12 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -23,15 +22,11 @@ public class IaSectionRoundTripTest {
 		file = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 	}
 
-	@After
-	public void cleanUp() throws IOException {
-		Files.deleteIfExists(Paths.get("valid-QRDA-III-latest.qpp.json"));
-	}
-
 	@Test
 	public void testIaSectionConvertsIaCategory() throws IOException {
-		new ConversionFileWriterWrapper(file).transform();
-		String iaCategory = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III-latest.qpp.json"),
+		Converter converter = new Converter(file);
+		JsonWrapper qpp = converter.transform();
+		String iaCategory = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].category", String.class);
 
 		assertThat("Must contain a category", iaCategory, is("ia"));
@@ -39,8 +34,9 @@ public class IaSectionRoundTripTest {
 
 	@Test
 	public void testIaSectionConvertsIaMeasureId() throws IOException {
-		new ConversionFileWriterWrapper(file).transform();
-		String iaMeasureId = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III-latest.qpp.json"),
+		Converter converter = new Converter(file);
+		JsonWrapper qpp = converter.transform();
+		String iaMeasureId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].measurements[0].measureId", String.class);
 
 		assertThat("Must contain measure id", iaMeasureId, is("IA_EPA_3"));
@@ -48,8 +44,9 @@ public class IaSectionRoundTripTest {
 
 	@Test
 	public void testIaSectionConvertsMeasurePerformed() throws IOException {
-		new ConversionFileWriterWrapper(file).transform();
-		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(Paths.get("valid-QRDA-III-latest.qpp.json"),
+		Converter converter = new Converter(file);
+		JsonWrapper qpp = converter.transform();
+		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].measurements[0].value", Boolean.class);
 
 		assertTrue("Must contain a measure performed", measurePerformed);

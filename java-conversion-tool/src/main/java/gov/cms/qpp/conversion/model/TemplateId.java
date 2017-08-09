@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.ConversionEntry;
+import gov.cms.qpp.conversion.Converter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -133,7 +133,7 @@ public enum TemplateId {
 			return TemplateId.DEFAULT;
 		}
 
-		if (ConversionEntry.isHistorical()) {
+		if (Converter.setHistorical()) {
 			return extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
 		}
 
@@ -150,7 +150,7 @@ public enum TemplateId {
 	static String generateTemplateIdString(String root, String extension) {
 		String templateId = root;
 
-		if (!ConversionEntry.isHistorical() && extension != null && !extension.isEmpty()) {
+		if (!Converter.setHistorical() && extension != null && !extension.isEmpty()) {
 			templateId += (":" + extension);
 		}
 		return templateId;

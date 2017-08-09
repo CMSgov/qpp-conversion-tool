@@ -21,7 +21,7 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 
 	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
 	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
-	private static final String NPI_TIN = "npiTin";
+	public static final String NPI_TIN = "npiTin";
 	private static final String ID = "id";
 	private static final String EXTENSION = "extension";
 	private static final String REPRESENTED_ORGANIZATION = "representedOrganization";
