@@ -1,6 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 
+import com.jayway.jsonpath.PathNotFoundException;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
@@ -23,6 +24,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assume.assumeTrue;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -39,11 +41,22 @@ public class SubmissionIntegrationTest {
 		request.setHeader("qpp-taxpayer-identification-number", "000777777");
 		request.setHeader("Content-Type", "application/json");
 		HttpResponse response = client.execute(request);
-		List<Map> subs = JsonHelper.readJsonAtJsonPath(response.getEntity().getContent(), "$.data.submissions", List.class);
-		subs.forEach( sub -> {
-			String subId = sub.get("id").toString();
-			deleteSubmission(subId);
-		});
+		assumeTrue("Submissions api is down", endpointIsUp(response));
+
+		try {
+			List<Map> subs = JsonHelper.readJsonAtJsonPath(response.getEntity().getContent(),
+					"$.data.submissions", List.class);
+			subs.forEach( sub -> {
+				String subId = sub.get("id").toString();
+				deleteSubmission(subId);
+			});
+		} catch (PathNotFoundException ex) {
+			System.out.println("No existing submissions to delete.");
+		}
+	}
+
+	private static boolean endpointIsUp(final HttpResponse response) {
+		return response.getStatusLine().getStatusCode() < 500;
 	}
 
 	@Before
@@ -54,6 +67,7 @@ public class SubmissionIntegrationTest {
 	@Test
 	public void testSubmissionApiPostSuccess() throws IOException {
 		HttpResponse httpResponse = servicePost(qpp);
+		assumeTrue("Submissions api is down", endpointIsUp(httpResponse));
 		cleanUp(httpResponse);
 
 		assertThat("QPP submission should succeed", getStatus(httpResponse), is(201));
@@ -65,6 +79,7 @@ public class SubmissionIntegrationTest {
 		Map<String, Object> obj = (Map<String, Object>) qpp.getObject();
 		obj.remove("performanceYear");
 		HttpResponse httpResponse = servicePost(qpp);
+		assumeTrue("Submissions api is down", endpointIsUp(httpResponse));
 
 		assertThat("QPP submission should succeed", getStatus(httpResponse), is(422));
 	}
