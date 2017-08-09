@@ -137,9 +137,7 @@ public class ClinicalDocumentValidatorTest {
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
-		assertThat("there should be one error", errors, hasSize(1));
-		assertThat("error should be about missing section node", errors,
-			hasValidationErrorsIgnoringPath(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
+		assertThat("there should NOT be an error", errors, hasSize(0));
 	}
 
 	@Test
@@ -240,13 +238,12 @@ public class ClinicalDocumentValidatorTest {
 		AllErrors allErrors = readJson(CLINICAL_DOCUMENT_ERROR_FILE, AllErrors.class);
 		List<Detail> errors = getErrors(allErrors);
 
-		assertThat("Must have 6 errors", errors, hasSize(6));
+		assertThat("Must have 5 errors", errors, hasSize(5));
 
 		assertThat("Must contain the error", errors,
 			hasValidationErrorsIgnoringPath(
 				ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
 				ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME,
-				ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER,
 				ReportingParametersActValidator.SINGLE_PERFORMANCE_START));
 	}
 

@@ -16,7 +16,6 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			+ "or IA or eCQM Section Node as a child";
 	public static final String CONTAINS_PROGRAM_NAME = "Clinical Document must have one and only one program name";
 	public static final String INCORRECT_PROGRAM_NAME = "Clinical Document program name is not recognized";
-	public static final String CONTAINS_TAX_ID_NUMBER = "Clinical Document must have a Tax Id Number (TIN)";
 	protected static final String CONTAINS_DUPLICATE_ACI_SECTIONS = "Clinical Document contains duplicate ACI sections";
 	protected static final String CONTAINS_DUPLICATE_IA_SECTIONS = "Clinical Document contains duplicate IA sections";
 	protected static final String CONTAINS_DUPLICATE_ECQM_SECTIONS = "Clinical Document contains duplicate eCQM sections";
@@ -44,7 +43,6 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			.childMaximum(CONTAINS_DUPLICATE_ECQM_SECTIONS, 1, TemplateId.MEASURE_SECTION_V2)
 			.singleValue(CONTAINS_PROGRAM_NAME, ClinicalDocumentDecoder.PROGRAM_NAME)
 			.valueIn(INCORRECT_PROGRAM_NAME, ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
-				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME)
-			.value(CONTAINS_TAX_ID_NUMBER, MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
+				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 	}
 }
