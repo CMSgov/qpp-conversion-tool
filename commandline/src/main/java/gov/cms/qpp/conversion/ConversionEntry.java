@@ -17,7 +17,6 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -74,6 +73,8 @@ public class ConversionEntry {
 				filename -> new ConversionFileWriterWrapper(filename)
 							.doValidation(doValidation)
 							.doDefaults(doDefaults)
+							.isHistorical(historical)
+							.setScope(scope)
 							.transform());
 	}
 
@@ -199,15 +200,6 @@ public class ConversionEntry {
 	}
 
 	/**
-	 * Is this a conversion of historical submissions.
-	 *
-	 * @return determination of whether or not the conversion is enacted on historical submissions.
-	 */
-	public static boolean isHistorical() {
-		return historical;
-	}
-
-	/**
 	 * Produce collection of files found within the given path
 	 *
 	 * @param path A file location.
@@ -307,14 +299,5 @@ public class ConversionEntry {
 		}
 
 		return Pattern.compile(regex);
-	}
-
-	/**
-	 * Get the scope that determines which data may be transformed.
-	 *
-	 * @return scope
-	 */
-	public static Collection<QrdaScope> getScope() {
-		return Collections.unmodifiableSet(scope);
 	}
 }

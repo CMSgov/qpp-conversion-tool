@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>java-conversion-tool</module>
+		<module>commandline</module>
 		<module>rest-api</module>
 		<module>benchmark</module>
 	</modules>

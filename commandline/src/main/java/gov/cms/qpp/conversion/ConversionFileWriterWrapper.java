@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,8 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Calls the {@link Converter} and writes the results to a file.
@@ -24,6 +27,8 @@ public class ConversionFileWriterWrapper {
 	private Path inFile;
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
+	private boolean isHistorical = false;
+	private Set<QrdaScope> scope = new HashSet<>();
 
 	public ConversionFileWriterWrapper(Path inFile) {
 		this.inFile = inFile;
@@ -35,7 +40,7 @@ public class ConversionFileWriterWrapper {
 	 * @param doIt toggle value
 	 * @return this for chaining
 	 */
-	ConversionFileWriterWrapper doDefaults(boolean doIt) {
+	public ConversionFileWriterWrapper doDefaults(boolean doIt) {
 		this.doDefaults = doIt;
 		return this;
 	}
@@ -46,8 +51,30 @@ public class ConversionFileWriterWrapper {
 	 * @param doIt toggle value
 	 * @return this for chaining
 	 */
-	ConversionFileWriterWrapper doValidation(boolean doIt) {
+	public ConversionFileWriterWrapper doValidation(boolean doIt) {
 		this.doValidation = doIt;
+		return this;
+	}
+
+	/**
+	 * Switch for enabling or disabling this will be a historical submission.
+	 *
+	 * @param historical toggle value
+	 * @return this for chaining
+	 */
+	public ConversionFileWriterWrapper isHistorical(boolean historical) {
+		this.isHistorical = historical;
+		return this;
+	}
+
+	/**
+	 * Switch for setting the scope to limit template IDs are enabled for the submission.
+	 *
+	 * @param newScope the scope
+	 * @return this for chaining
+	 */
+	public ConversionFileWriterWrapper setScope(Set<QrdaScope> newScope) {
+		this.scope = newScope;
 		return this;
 	}
 
@@ -58,6 +85,9 @@ public class ConversionFileWriterWrapper {
 		Converter converter = new Converter(inFile)
 			.doDefaults(doDefaults)
 			.doValidation(doValidation);
+
+		Converter.setHistorical(isHistorical);
+		Converter.setScope(scope);
 
 		executeConverter(converter);
 	}
