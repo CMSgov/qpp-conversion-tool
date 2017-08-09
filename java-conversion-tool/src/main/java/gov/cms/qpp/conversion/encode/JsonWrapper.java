@@ -42,7 +42,6 @@ public class JsonWrapper {
 		ow = getObjectWriter(filterMeta);
 	}
 
-	@SuppressWarnings("unchecked")
 	public JsonWrapper(JsonWrapper wrapper, boolean filterMeta) {
 		this(filterMeta);
 		if (wrapper.isObject()) {

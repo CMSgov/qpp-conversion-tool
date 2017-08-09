@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion;
 
-
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -18,7 +17,7 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Set;
@@ -50,7 +49,7 @@ public class ConversionEntry {
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
 	private static boolean historical;
-	private static Set<QrdaScope> scope = new HashSet<>();
+	private static Set<QrdaScope> scope = EnumSet.noneOf(QrdaScope.class);
 	private static Options options;
 	private static HelpFormatter formatter;
 
@@ -129,7 +128,7 @@ public class ConversionEntry {
 			scope = Arrays.stream(templateScope)
 					.map(QrdaScope::getInstanceByName)
 					.filter(Objects::nonNull)
-					.collect(Collectors.toSet());
+					.collect(Collectors.toCollection(() -> EnumSet.noneOf(QrdaScope.class)));
 
 			if (scope.size() != templateScope.length) {
 				DEV_LOG.error(INVALID_TEMPLATE_SCOPE);

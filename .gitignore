@@ -1,12 +1,13 @@
 .DS_Store
 jacoco.exec
-dev-log.log
 *.orig
 target/
 .settings/
+benchmark/*.json
 .classpath
 .project
 *.iml
+*.log
 .idea/
 qrdaToQppAssociations.txt
 
