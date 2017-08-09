@@ -9,7 +9,6 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>rest-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<description>API end-point for the QRDA3 to QPP conversion</description>
@@ -59,12 +58,6 @@
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>java-conversion-tool</artifactId>
 			<version>${conversion-tools.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>

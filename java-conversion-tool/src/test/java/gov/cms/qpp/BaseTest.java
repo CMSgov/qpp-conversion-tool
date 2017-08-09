@@ -1,11 +1,10 @@
 package gov.cms.qpp;
 
-import gov.cms.qpp.conversion.ConversionEntry;
+import gov.cms.qpp.conversion.Converter;
 import org.junit.AfterClass;
 import org.junit.Before;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,26 +19,22 @@ public class BaseTest {
 	 * Runs before each test.
 	 *
 	 * Ensure empty scope before each test.
-	 *
-	 * @throws NoSuchFieldException if scope field can't be located
-	 * @throws IllegalAccessException should scope not be accessible
 	 */
 	@Before
-	public void preCleanup() throws NoSuchFieldException, IllegalAccessException {
+	public void preCleanup() {
 		resetScope();
+		resetHistorical();
 	}
 
 	/**
 	 * Does clean-up after an entire test suite.
 	 *
 	 * Ensures an empty scope after each test suite so different scopes do not leak into another test suite.
-	 *
-	 * @throws NoSuchFieldException if scope field can't be located
-	 * @throws IllegalAccessException should scope not be accessible
 	 */
 	@AfterClass
-	public static void postSuiteCleanup() throws NoSuchFieldException, IllegalAccessException {
+	public static void postSuiteCleanup() {
 		resetScope();
+		resetHistorical();
 	}
 
 	/**
@@ -56,13 +51,15 @@ public class BaseTest {
 
 	/**
 	 * Sets the scope to be empty.
-	 *
-	 * @throws NoSuchFieldException if scope field can't be located
-	 * @throws IllegalAccessException should scope not be accessible
 	 */
-	private static void resetScope() throws NoSuchFieldException, IllegalAccessException {
-		Field scope = ConversionEntry.class.getDeclaredField("scope");
-		scope.setAccessible(true);
-		scope.set(null, new HashSet<>());
+	private static void resetScope() {
+		Converter.setScope(new HashSet<>());
+	}
+
+	/**
+	 * Sets the conversion to not be historical.
+	 */
+	private static void resetHistorical() {
+		Converter.setHistorical(false);
 	}
 }

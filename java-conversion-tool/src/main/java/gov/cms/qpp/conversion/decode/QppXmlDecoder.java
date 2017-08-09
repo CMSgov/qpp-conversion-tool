@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.ConversionEntry;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -31,7 +31,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * Initialize a qpp xml decoder
 	 */
 	public QppXmlDecoder() {
-		Set<TemplateId> theScope = QrdaScope.getTemplates(ConversionEntry.getScope());
+		Set<TemplateId> theScope = QrdaScope.getTemplates(Converter.getScope());
 		if (!theScope.isEmpty()) {
 			this.scope = theScope;
 		}
