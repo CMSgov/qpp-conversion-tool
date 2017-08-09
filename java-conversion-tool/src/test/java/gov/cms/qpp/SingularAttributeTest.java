@@ -60,6 +60,7 @@ public class SingularAttributeTest {
 				//MultipleTinsDecoder maps multiple tin/npi combination
 				MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
 				MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+				MultipleTinsDecoder.NPI_TIN,
 				//There are no validations currently for entity type
 				ClinicalDocumentDecoder.ENTITY_ID,
 				//There are no validations for performanceYear

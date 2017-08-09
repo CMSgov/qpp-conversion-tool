@@ -62,22 +62,6 @@ public class NpiTinCombinationValidationTest {
 	}
 
 	@Test
-	public void testInvalidMipsIndividualNpiTinCombination() {
-		createClinicalDocumentWithProgramType(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
-				ClinicalDocumentDecoder.ENTITY_INDIVIDUAL);
-
-		npiTinCombinationNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
-		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
-		npiTinCombinationNode.addChildNode(firstValidNpiTinNode);
-		npiTinCombinationNode.addChildNode(secondValidNpiTinNode);
-
-		validator.internalValidateSingleNode(npiTinCombinationNode);
-
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().iterator().next().getMessage(),
-				is(NpiTinCombinationValidation.ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED));
-	}
-
-	@Test
 	public void testValidCpcPlusMultipleNpiTinCombination() {
 		createClinicalDocumentWithProgramType(
 				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, "", "AR00000");
@@ -180,52 +164,6 @@ public class NpiTinCombinationValidationTest {
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
 		assertThat("Must validate with no errors", validator.getDetails() , empty());
-	}
-
-	@Test
-	public void testMipsGroupMultipleNpiTinCombinationFails() {
-		createClinicalDocumentWithProgramType(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
-				ClinicalDocumentDecoder.ENTITY_GROUP);
-
-		npiTinCombinationNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
-		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
-		npiTinCombinationNode.addChildNode(firstValidNpiTinNode);
-		npiTinCombinationNode.addChildNode(validMipsGroupNpiTinNode);
-
-		validator.internalValidateSingleNode(npiTinCombinationNode);
-
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().iterator().next().getMessage(),
-				is(NpiTinCombinationValidation.ONLY_ONE_NPI_TIN_COMBINATION_ALLOWED));
-	}
-
-	@Test
-	public void testMipsGroupContainsNpiFails() {
-		createClinicalDocumentWithProgramType(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
-				ClinicalDocumentDecoder.ENTITY_GROUP);
-
-		npiTinCombinationNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
-		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
-		npiTinCombinationNode.addChildNode(firstValidNpiTinNode);
-
-		validator.internalValidateSingleNode(npiTinCombinationNode);
-
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().iterator().next().getMessage(),
-				is(NpiTinCombinationValidation.NO_NPI_ALLOWED));
-	}
-
-	@Test
-	public void testMipsGroupMissingTinFails() {
-		createClinicalDocumentWithProgramType(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
-				ClinicalDocumentDecoder.ENTITY_GROUP);
-
-		npiTinCombinationNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
-		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
-		npiTinCombinationNode.addChildNode(missingTinNode);
-
-		validator.internalValidateSingleNode(npiTinCombinationNode);
-
-		assertThat(CONTAINS_CORRECT_ERROR, validator.getDetails().iterator().next().getMessage(),
-				is(NpiTinCombinationValidation.CONTAINS_TAXPAYER_IDENTIFICATION_NUMBER));
 	}
 
 	@Test
