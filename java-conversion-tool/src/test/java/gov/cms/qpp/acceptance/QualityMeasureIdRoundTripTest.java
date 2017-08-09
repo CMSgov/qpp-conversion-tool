@@ -1,12 +1,11 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.After;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -19,17 +18,12 @@ import static org.hamcrest.core.Is.is;
 public class QualityMeasureIdRoundTripTest {
 	public static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/junk_in_quality_measure.xml");
 
-	@After
-	public void deleteJsonFile() throws IOException {
-		Files.deleteIfExists(Paths.get("junk_in_quality_measure.qpp.json"));
-	}
-
 	@Test
 	public void testRoundTripForQualityMeasureId() throws IOException {
-		ConversionFileWriterWrapper converter = new ConversionFileWriterWrapper(JUNK_QRDA3_FILE);
-		converter.transform();
+		Converter converter = new Converter(JUNK_QRDA3_FILE);
+		JsonWrapper qpp = converter.transform();
 
-		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(Paths.get("junk_in_quality_measure.qpp.json"),
+		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
 
 		assertThat("There should still be a quality measure even with the junk stuff in quality measure.",

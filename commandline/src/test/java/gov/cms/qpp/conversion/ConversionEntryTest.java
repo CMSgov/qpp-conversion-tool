@@ -1,11 +1,6 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.BaseTest;
-import gov.cms.qpp.conversion.model.AnnotationMockHelper;
-import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.conversion.stubs.Jenncoder;
-import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.MissingArgumentException;
@@ -16,6 +11,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.api.support.membermodification.MemberMatcher;
+import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -33,23 +32,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
-import static org.powermock.api.support.membermodification.MemberMatcher.method;
-import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
-public class ConversionEntryTest extends BaseTest {
+public class ConversionEntryTest {
 
 	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 	private static final String SKIP_DEFAULTS = "--" + ConversionEntry.SKIP_DEFAULTS;
@@ -174,7 +167,7 @@ public class ConversionEntryTest extends BaseTest {
 	public void testManyPathDir() {
 		String pathTest = "src/test/resources/pathTest";
 		// ensure a directory
-		stub(method(ConversionEntry.class, "wildCardToRegex", String.class)).toReturn( Pattern.compile(pathTest) );
+		MemberModifier.stub(MemberMatcher.method(ConversionEntry.class, "wildCardToRegex", String.class)).toReturn( Pattern.compile(pathTest) );
 
 		Collection<Path> files = ConversionEntry.manyPath(pathTest);
 		assertNotNull(files);
@@ -291,9 +284,9 @@ public class ConversionEntryTest extends BaseTest {
 	@PrepareForTest({DefaultParser.class, ConversionEntry.class})
 	public void testValidArgsParseException() throws Exception {
 		//setup
-		DefaultParser mockParser = mock(DefaultParser.class);
-		when(mockParser.parse(any(Options.class), any(String[].class))).thenThrow(new ParseException("mock error"));
-		whenNew(DefaultParser.class).withNoArguments().thenReturn(mockParser);
+		DefaultParser mockParser = PowerMockito.mock(DefaultParser.class);
+		PowerMockito.when(mockParser.parse(Matchers.any(Options.class), Matchers.any(String[].class))).thenThrow(new ParseException("mock error"));
+		PowerMockito.whenNew(DefaultParser.class).withNoArguments().thenReturn(mockParser);
 
 		ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(baos1));
@@ -303,32 +296,6 @@ public class ConversionEntryTest extends BaseTest {
 
 		//then
 		assertThat(baos1.toString(), containsString(ConversionEntry.CLI_PROBLEM));
-	}
-
-	@Test
-	public void testDefaults() throws Exception {
-		AnnotationMockHelper.mockDecoder(TemplateId.DEFAULT, JennyDecoder.class);
-		AnnotationMockHelper.mockEncoder(TemplateId.DEFAULT, Jenncoder.class);
-
-		ConversionEntry.main(SKIP_VALIDATION,
-				"src/test/resources/converter/defaultedNode.xml");
-
-		Path jennyJson = Paths.get("defaultedNode.qpp.json");
-		String content = new String(Files.readAllBytes(jennyJson));
-
-		assertTrue(content.contains("Jenny"));
-	}
-
-	@Test
-	public void testSkipDefaults() throws Exception {
-		ConversionEntry.main(SKIP_VALIDATION,
-				SKIP_DEFAULTS,
-				"src/test/resources/converter/defaultedNode.xml");
-
-		Path jennyJson = Paths.get("defaultedNode.qpp.json");
-		String content = new String(Files.readAllBytes(jennyJson));
-
-		assertFalse(content.contains("Jenny"));
 	}
 
 	//cli

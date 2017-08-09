@@ -1,5 +1,5 @@
 @echo off
-IF NOT EXIST java-conversion-tool\target\java-conversion-tool.jar (
+IF NOT EXIST commandline\target\commandline (
     rem file doesn't exist
     echo .
     echo "Jar not found. Building..."
@@ -9,12 +9,12 @@ IF NOT EXIST java-conversion-tool\target\java-conversion-tool.jar (
    
 )
 
-IF NOT EXIST java-conversion-tool\target\java-conversion-tool.jar (
+IF NOT EXIST commandline\target\commandline.jar (
 	echo ""
 	echo "Build failed. Aborting."
 
 )
 
 echo ""
-start /b /wait cmd /C "java -jar java-conversion-tool/target/java-conversion-tool.jar %*"
+start /b /wait cmd /C "java -jar commandline/target/commandline.jar %*"
 

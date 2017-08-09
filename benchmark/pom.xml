@@ -7,7 +7,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>benchmark</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
@@ -31,7 +30,7 @@
 		</dependency>
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
-			<artifactId>java-conversion-tool</artifactId>
+			<artifactId>commandline</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

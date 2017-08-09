@@ -1,11 +1,12 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.ConversionFileWriterWrapper;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.TransformException;
 import org.junit.After;
 import org.junit.Test;
 
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static gov.cms.qpp.conversion.util.JsonHelper.readJson;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
@@ -137,9 +137,7 @@ public class ClinicalDocumentValidatorTest {
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
-		assertThat("there should be one error", errors, hasSize(1));
-		assertThat("error should be about missing section node", errors,
-			hasValidationErrorsIgnoringPath(ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER));
+		assertThat("there should NOT be an error", errors, hasSize(0));
 	}
 
 	@Test
@@ -236,17 +234,22 @@ public class ClinicalDocumentValidatorTest {
 		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
 
 		//execute
-		new ConversionFileWriterWrapper(path).transform();
-		AllErrors allErrors = readJson(CLINICAL_DOCUMENT_ERROR_FILE, AllErrors.class);
+		Converter converter = new Converter(path);
+		AllErrors allErrors = new AllErrors();
+		try {
+			converter.transform();
+		} catch(TransformException exception) {
+			allErrors = exception.getDetails();
+		}
+
 		List<Detail> errors = getErrors(allErrors);
 
-		assertThat("Must have 6 errors", errors, hasSize(6));
+		assertThat("Must have 5 errors", errors, hasSize(5));
 
 		assertThat("Must contain the error", errors,
 			hasValidationErrorsIgnoringPath(
 				ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
 				ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME,
-				ClinicalDocumentValidator.CONTAINS_TAX_ID_NUMBER,
 				ReportingParametersActValidator.SINGLE_PERFORMANCE_START));
 	}
 

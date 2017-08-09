@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.ConversionEntry;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
@@ -15,7 +15,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 
 	/**
 	 * Encode the decoded node. If a {@link TemplateId#PLACEHOLDER} node is detected then assume
-	 * the {@link ConversionEntry#scope} has been set to a level lower than {@link QrdaScope#CLINICAL_DOCUMENT}.
+	 * the {@link Converter#scope} has been set to a level lower than {@link QrdaScope#CLINICAL_DOCUMENT}.
 	 *
 	 * @param wrapper object to encode into
 	 * @param node object to encode
@@ -59,7 +59,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 	 */
 	private boolean inSpecifiedScope(Node node) {
 		String type = node.getType().name();
-		Collection<QrdaScope> scope = ConversionEntry.getScope();
+		Collection<QrdaScope> scope = Converter.getScope();
 		return scope.contains(QrdaScope.getInstanceByName(type));
 	}
 
