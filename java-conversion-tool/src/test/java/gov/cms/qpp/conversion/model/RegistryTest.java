@@ -40,7 +40,7 @@ public class RegistryTest {
 	@Test
 	public void testRegistryExistsByDefault() throws Exception {
 		try {
-			registry.register(TemplateId.PLACEHOLDER, Placeholder.class);
+			registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		} catch (NullPointerException e) {
 			fail("Registry should always exist.");
 		}
@@ -49,7 +49,7 @@ public class RegistryTest {
 
 	@Test
 	public void testRegistryInit() throws Exception {
-		registry.register(TemplateId.PLACEHOLDER, Placeholder.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.init();
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertTrue("Registry should have been reset.", decoder == null);
@@ -57,7 +57,7 @@ public class RegistryTest {
 
 	@Test
 	public void testRegistryGetConverterHandler() throws Exception {
-		registry.register(TemplateId.PLACEHOLDER, Placeholder.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertTrue("Registry should have been reset.", decoder instanceof Placeholder);
 	}
@@ -66,10 +66,10 @@ public class RegistryTest {
 	// registry
 	@Test
 	public void testRegistry_placeAndFetch() throws Exception {
-		Set<TemplateId> templateIds = registry.getTemplateIds(AggregateCountDecoder.class);
-		assertThat(templateIds, hasSize(1));
-		for (TemplateId templateId : templateIds) {
-			InputDecoder decoder = registry.get(templateId);
+		Set<ComponentKey> componentKeys = registry.getComponentKeys(AggregateCountDecoder.class);
+		assertThat(componentKeys, hasSize(1));
+		for (ComponentKey componentKey : componentKeys) {
+			InputDecoder decoder = registry.get(componentKey.getTemplate());
 
 			assertNotNull("A handler is expected", decoder);
 			assertEquals("Handler should be an instance of the handler for the given XPATH", AggregateCountDecoder.class,
@@ -79,36 +79,38 @@ public class RegistryTest {
 
 	@Test
 	public void testRegistry_getTemplateIds() throws Exception {
-		Set<TemplateId> templateIds = registry.getTemplateIds(AggregateCountDecoder.class);
-		assertThat("A templateId is expected", templateIds, hasSize(1));
-		for (TemplateId templateId : templateIds) {
-			assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT, templateId);
+		Set<ComponentKey> componentKeys = registry.getComponentKeys(AggregateCountDecoder.class);
+		assertThat("A componentKey is expected", componentKeys, hasSize(1));
+		for (ComponentKey componentKey : componentKeys) {
+			assertEquals("The templateId should be",
+					TemplateId.ACI_AGGREGATE_COUNT, componentKey.getTemplate());
 		}
 
-		templateIds = new Registry<>(Encoder.class).getTemplateIds(AggregateCountEncoder.class);
-		assertThat("A templateId is expected", templateIds, hasSize(1));
-		for (TemplateId templateId : templateIds) {
-			assertEquals("The templateId should be", TemplateId.ACI_AGGREGATE_COUNT, templateId);
+		componentKeys = new Registry<>(Encoder.class).getComponentKeys(AggregateCountEncoder.class);
+		assertThat("A componentKey is expected", componentKeys, hasSize(1));
+		for (ComponentKey componentKey : componentKeys) {
+			assertEquals("The templateId should be",
+					TemplateId.ACI_AGGREGATE_COUNT, componentKey.getTemplate());
 		}
 	}
 
 	@Test
 	public void testRegistry_getTemplateIds_NullReturn() throws Exception {
-		Set<TemplateId> templateIds = new Registry<Encoder>(SuppressWarnings.class).getTemplateIds(Placeholder.class);
-		assertThat("A templateId is not expected", templateIds, empty());
+		Set<ComponentKey> componentKeys = new Registry<Encoder>(SuppressWarnings.class).getComponentKeys(Placeholder.class);
+		assertThat("A componentKey is not expected", componentKeys, empty());
 	}
 
 	@Test
 	public void testRegistryGetHandlerThatFailsConstruction() throws Exception {
-		registry.register(TemplateId.PLACEHOLDER, PrivateConstructor.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), PrivateConstructor.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
-		assertThat("Registry should return null for faile construction not an exception.", decoder, is(nullValue()));
+		assertThat("Registry should return null for failed construction not an exception.", decoder, is(nullValue()));
 	}
 
 	@Test
 	public void testRegistryAddDuplicate() throws Exception {
-		registry.register(TemplateId.PLACEHOLDER, Placeholder.class);
-		registry.register(TemplateId.PLACEHOLDER, AnotherPlaceholder.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), AnotherPlaceholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertTrue("Registry should have overwritten id with the second one.", decoder instanceof AnotherPlaceholder);
 	}

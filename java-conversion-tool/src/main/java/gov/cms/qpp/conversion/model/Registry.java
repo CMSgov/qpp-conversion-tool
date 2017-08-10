@@ -1,14 +1,14 @@
 package gov.cms.qpp.conversion.model;
 
-import java.lang.annotation.Annotation;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class manages the available transformation handlers. Currently it takes
@@ -28,7 +28,7 @@ public class Registry<R extends Object> {
 	 * This will be an XPATH string to converter handler registration Since
 	 * Converter was taken for the main stub, I chose Handler for now.
 	 */
-	private Map<TemplateId, Class<? extends R>> registryMap;
+	private Map<ComponentKey, Class<? extends R>> registryMap;
 
 	private Class<? extends Annotation> annotationClass;
 
@@ -54,7 +54,7 @@ public class Registry<R extends Object> {
 	 * classes in the same package, like tests, have access.
 	 */
 	void init() {
-		registryMap = new EnumMap<>(TemplateId.class);
+		registryMap = new HashMap<>();
 	}
 
 	/**
@@ -67,27 +67,27 @@ public class Registry<R extends Object> {
 		Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(annotationClass);
 
 		for (Class<?> annotatedClass : annotatedClasses) {
-			for (TemplateId key : getTemplateIds(annotatedClass)) {
+			for (ComponentKey key : getComponentKeys(annotatedClass)) {
 				register(key, (Class<R>) annotatedClass);
 			}
 		}
 	}
 
-	public Set<TemplateId> getTemplateIds(Class<?> annotatedClass) {
+	public Set<ComponentKey> getComponentKeys(Class<?> annotatedClass) {
 		Annotation annotation = annotatedClass.getAnnotation(annotationClass);
-		Set<TemplateId> values = EnumSet.noneOf(TemplateId.class);
+		Set<ComponentKey> values = new HashSet<>();
 
 		if (annotation instanceof Decoder) {
 			Decoder decoder = (Decoder) annotation;
-			values.add(decoder.value());
+			values.add(new ComponentKey(decoder.value(), decoder.program()));
 		}
 		if (annotation instanceof Encoder) {
 			Encoder encoder = (Encoder) annotation;
-			values.add(encoder.value());
+			values.add(new ComponentKey(encoder.value(), encoder.program()));
 		}
 		if (annotation instanceof Validator) {
 			Validator validator = (Validator) annotation;
-			values.add(validator.value());
+			values.add(new ComponentKey(validator.value(), validator.program()));
 		}
 		return values;
 	}
@@ -100,8 +100,9 @@ public class Registry<R extends Object> {
 	 * @param registryKey String
 	 */
 	public R get(TemplateId registryKey) {
+		ComponentKey key = getComponentKey(registryKey);
 		try {
-			Class<? extends R> handlerClass = registryMap.get(registryKey);
+			Class<? extends R> handlerClass = registryMap.get(key);
 			if (handlerClass == null) {
 				return null;
 			}
@@ -112,13 +113,17 @@ public class Registry<R extends Object> {
 		}
 	}
 
+	private ComponentKey getComponentKey(TemplateId registryKey) {
+		return new ComponentKey(registryKey, Program.ALL);
+	}
+
 	/**
 	 * Means ot register a new transformation handler
 	 *
-	 * @param registryKey String
+	 * @param registryKey key that identifies a component i.e. a {@link Validator}, {@link Decoder} or {@link Encoder}
 	 * @param handler
 	 */
-	public void register(TemplateId registryKey, Class<? extends R> handler) {
+	public void register(ComponentKey registryKey, Class<? extends R> handler) {
 		DEV_LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
 				+ annotationClass.getSimpleName() + ".");
 		// This could be a class or class name and instantiated on lookup
@@ -130,11 +135,6 @@ public class Registry<R extends Object> {
 		
 		registryMap.put(registryKey, handler);
 	}
-
-	public Set<TemplateId> getKeys() {
-		return registryMap.keySet();
-	}
-
 
 	public int size() {
 		return registryMap.size();

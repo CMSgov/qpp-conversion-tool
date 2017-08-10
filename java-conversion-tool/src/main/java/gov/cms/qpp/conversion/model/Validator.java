@@ -15,8 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(TYPE)
 @Retention(RUNTIME)
 public @interface Validator {
-
 	TemplateId value();
-
+	Program program() default Program.ALL;
 	boolean required() default false;
 }

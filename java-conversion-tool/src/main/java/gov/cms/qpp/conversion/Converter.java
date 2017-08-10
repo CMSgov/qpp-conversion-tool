@@ -15,9 +15,11 @@ import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.NamedInputStream;
+import gov.cms.qpp.conversion.util.ProgramContext;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -157,6 +159,8 @@ public class Converter {
 		} catch (Exception exception) {
 			DEV_LOG.error(UNEXPECTED_ERROR, exception);
 			details.add(new Detail(UNEXPECTED_ERROR));
+		} finally {
+			ProgramContext.remove();
 		}
 
 		if (!details.isEmpty()) {
@@ -187,7 +191,8 @@ public class Converter {
 	 */
 	private JsonWrapper transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
-		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
+		Element doc = XmlUtils.parseXmlStream(inStream);
+		decoded = XmlInputDecoder.decodeXml(doc);
 		JsonWrapper qpp = null;
 		if (null != decoded) {
 			DEV_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), inStream);

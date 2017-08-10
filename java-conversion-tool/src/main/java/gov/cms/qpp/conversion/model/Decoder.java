@@ -19,4 +19,5 @@ public @interface Decoder {
 	 * @return The template ID that can be decoded.
 	 */
 	TemplateId value();
+	Program program() default Program.ALL;
 }

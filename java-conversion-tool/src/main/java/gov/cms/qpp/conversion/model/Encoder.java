@@ -23,5 +23,5 @@ public @interface Encoder {
 	 * @return
 	 */
 	TemplateId value();
-
+	Program program() default Program.ALL;
 }
