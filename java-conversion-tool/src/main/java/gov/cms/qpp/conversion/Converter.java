@@ -55,7 +55,7 @@ public class Converter {
 	/**
 	 * Constructor for the CLI Converter application
 	 *
-	 * @param inFile File
+	 * @param source QrdaSource to use for the conversion
 	 */
 	public Converter(QrdaSource source) {
 		Objects.requireNonNull(source, "source");
