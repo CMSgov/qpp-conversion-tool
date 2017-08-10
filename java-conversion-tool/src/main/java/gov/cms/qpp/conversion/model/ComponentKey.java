@@ -15,14 +15,14 @@ public class ComponentKey {
 		return template;
 	}
 
-	public Program getProgram() {
-		return program;
-	}
-
 	@Override
 	public boolean equals(Object o) {
-		if (this == o || !(o instanceof ComponentKey)) {
+		if (this == o) {
 			return true;
+		}
+
+		if (!(o instanceof ComponentKey)) {
+			return false;
 		}
 
 		ComponentKey that = (ComponentKey) o;
