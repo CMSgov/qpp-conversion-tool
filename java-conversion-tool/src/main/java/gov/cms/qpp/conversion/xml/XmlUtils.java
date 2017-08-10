@@ -68,8 +68,7 @@ public class XmlUtils {
 			saxBuilder.setFeature(EXT_GENERAL_ENTITIES , false);
 			saxBuilder.setFeature(EXT_PARAM_ENTITIES, false);
 
-		    Element elem = saxBuilder.build(xmlStream).getRootElement();
-			return elem;
+			return saxBuilder.build(xmlStream).getRootElement();
 		} catch (JDOMException | IOException e) {
 			throw new XmlException("Failed to process XML String into DOM Element", e);
 		}

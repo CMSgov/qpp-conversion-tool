@@ -21,8 +21,9 @@ public class ComponentKey {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof ComponentKey)) return false;
+		if (this == o || !(o instanceof ComponentKey)) {
+			return true;
+		}
 
 		ComponentKey that = (ComponentKey) o;
 		return Objects.equals(template, that.template)

@@ -8,6 +8,8 @@ import java.util.Optional;
 public class ProgramContext {
 	private static ThreadLocal<Program> context = new ThreadLocal<>();
 
+	private ProgramContext(){}
+
 	public static void set(Program value) {
 		remove();
 		context.set(value);
