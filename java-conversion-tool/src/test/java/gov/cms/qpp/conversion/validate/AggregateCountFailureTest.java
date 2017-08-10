@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import org.junit.Test;
@@ -20,7 +21,7 @@ public class AggregateCountFailureTest {
 	@Test
 	public void testInvalidAggregateCounts() throws IOException {
 		//execute
-		Converter converter = new Converter(Paths.get("src/test/resources/negative/angerTheConverter.xml"));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/negative/angerTheConverter.xml")));
 
 		String errorContent = "";
 		try {
