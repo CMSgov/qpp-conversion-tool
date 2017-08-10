@@ -1,6 +1,7 @@
 package gov.cms.qpp.acceptance.helper;
 
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.InputStreamQrdaSource;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -36,7 +37,7 @@ public class JsonPathToXpathHelper {
 		path = inPath;
 		wrapper = inWrapper;
 		InputStream xmlStream = new NamedInputStream(XmlUtils.fileToStream(path), path.toString());
-		Converter converter = new Converter(xmlStream).doDefaults(doDefaults);
+		Converter converter = new Converter(new InputStreamQrdaSource(path.toString(), xmlStream)).doDefaults(doDefaults);
 		converter.transform();
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		encoder.encode(wrapper, converter.getDecoded());

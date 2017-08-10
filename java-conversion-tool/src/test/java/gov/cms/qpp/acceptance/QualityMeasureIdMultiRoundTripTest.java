@@ -2,6 +2,8 @@ package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.InputStreamQrdaSource;
+import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -49,7 +51,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 	@Test
 	public void testRoundTripForQualityMeasureId() throws IOException {
-		Converter converter = new Converter(JUNK_QRDA3_FILE);
+		Converter converter = new Converter(new PathQrdaSource(JUNK_QRDA3_FILE));
 		JsonWrapper qpp = converter.transform();
 		String json = qpp.toString();
 
@@ -131,7 +133,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 	private List<Detail> executeScenario(String path, boolean remove) {
 		InputStream modified = manipulator.upsetTheNorm(path, remove);
-		Converter converter = new Converter(modified);
+		Converter converter = new Converter(new InputStreamQrdaSource(path, modified));
 		List<Detail> details = new ArrayList<>();
 		try {
 			converter.transform();

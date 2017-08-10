@@ -24,14 +24,14 @@ import java.util.Set;
 public class ConversionFileWriterWrapper {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionFileWriterWrapper.class);
 
-	private Path inFile;
+	private final QrdaSource source;
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
 	private boolean isHistorical = false;
 	private Set<QrdaScope> scope = new HashSet<>();
 
 	public ConversionFileWriterWrapper(Path inFile) {
-		this.inFile = inFile;
+		this.source = new PathQrdaSource(inFile);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class ConversionFileWriterWrapper {
 	 * Execute the conversion.
 	 */
 	public void transform() {
-		Converter converter = new Converter(inFile)
+		Converter converter = new Converter(source)
 			.doDefaults(doDefaults)
 			.doValidation(doValidation);
 
@@ -100,13 +100,13 @@ public class ConversionFileWriterWrapper {
 	private void executeConverter(Converter converter) {
 		try {
 			JsonWrapper jsonWrapper = converter.transform();
-			Path outFile = getOutputFile(inFile.getFileName().toString(), true);
+			Path outFile = getOutputFile(source.getName(), true);
 			DEV_LOG.info("Successful conversion.  Writing out QPP to {}",
 				outFile.toString());
 			writeOutQpp(jsonWrapper, outFile);
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
-			Path outFile = getOutputFile(inFile.getFileName().toString(), false);
+			Path outFile = getOutputFile(source.getName(), false);
 			DEV_LOG.warn("There were errors during conversion.  Writing out errors to {} " + outFile.toString(),
 					exception);
 			writeOutErrors(allErrors, outFile);

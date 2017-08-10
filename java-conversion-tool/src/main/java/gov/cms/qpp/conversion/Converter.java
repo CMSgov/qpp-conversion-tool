@@ -14,22 +14,20 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -51,28 +49,18 @@ public class Converter {
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
 	private List<Detail> details = new ArrayList<>();
-	private InputStream xmlStream;
-	private Path inFile;
 	private Node decoded;
+	private final QrdaSource source;
 
 	/**
 	 * Constructor for the CLI Converter application
 	 *
 	 * @param inFile File
 	 */
-	public Converter(Path inFile) {
-		this.xmlStream = null;
-		this.inFile = inFile;
-	}
+	public Converter(QrdaSource source) {
+		Objects.requireNonNull(source, "source");
 
-	/**
-	 * Constructor for the CLI Converter application
-	 *
-	 * @param xmlStream input stream for xml content
-	 */
-	public Converter(InputStream xmlStream) {
-		this.xmlStream = xmlStream;
-		this.inFile = null;
+		this.source = source;
 	}
 
 	/**
@@ -143,14 +131,10 @@ public class Converter {
 	 * @return status of conversion
 	 */
 	public JsonWrapper transform() {
-		DEV_LOG.info("Transform invoked with file {}", getName());
+		DEV_LOG.info("Transform invoked with file {}", source.getName());
 		JsonWrapper qpp = null;
 		try {
-			if (!usingStream()) {
-				qpp = transform(inFile);
-			} else {
-				qpp = transform(xmlStream);
-			}
+			qpp = transform(source.toInputStream());
 		} catch (XmlInputFileException | XmlException xe) {
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
 			details.add(new Detail(NOT_VALID_XML_DOCUMENT));
@@ -161,21 +145,10 @@ public class Converter {
 
 		if (!details.isEmpty()) {
 			throw new TransformException("Validation errors exist", null,
-				constructErrorHierarchy(sourceIdentifier(), details));
+				constructErrorHierarchy(source.getName(), details));
 		}
 
 		return qpp;
-	}
-
-	/**
-	 * Transform a source a given file.
-	 *
-	 * @param inFile a source file
-	 * @throws XmlException when transforming
-	 * @throws IOException when writing to given file
-	 */
-	private JsonWrapper transform(Path inFile) throws XmlException, IOException {
-		return transform(new NamedInputStream(XmlUtils.fileToStream(inFile), inFile.toString()));
 	}
 
 	/**
@@ -207,19 +180,6 @@ public class Converter {
 		}
 
 		return qpp;
-	}
-
-	private String getName() {
-		return (inFile == null ? xmlStream : inFile).toString();
-	}
-
-	/**
-	 * Returns true if we are not using a file but using a stream.  False otherwise.
-	 *
-	 * @return Whether or not a stream is used in lieu of a file
-	 */
-	private boolean usingStream() {
-		return inFile == null && xmlStream != null;
 	}
 
 	/**
@@ -275,16 +235,4 @@ public class Converter {
 		return (!getScope().isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
 	}
 
-	/**
-	 * Returns an identifier for either the file or stream depending on what is being used.
-	 *
-	 * @return An identifier.
-	 */
-	private String sourceIdentifier() {
-		if (usingStream()) {
-			return xmlStream.toString();
-		} else {
-			return inFile.getFileName().toString();
-		}
-	}
 }
