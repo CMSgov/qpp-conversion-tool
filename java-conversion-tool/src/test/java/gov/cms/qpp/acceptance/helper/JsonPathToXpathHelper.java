@@ -1,11 +1,10 @@
 package gov.cms.qpp.acceptance.helper;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamQrdaSource;
+import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Attribute;
@@ -16,15 +15,14 @@ import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
 
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-
 public class JsonPathToXpathHelper {
+
 	private static XPathFactory xpf = XPathFactory.instance();
 	private Path path;
 	private JsonWrapper wrapper;
@@ -36,8 +34,7 @@ public class JsonPathToXpathHelper {
 	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper, boolean doDefaults) throws IOException {
 		path = inPath;
 		wrapper = inWrapper;
-		InputStream xmlStream = new NamedInputStream(XmlUtils.fileToStream(path), path.toString());
-		Converter converter = new Converter(new InputStreamQrdaSource(path.toString(), xmlStream)).doDefaults(doDefaults);
+		Converter converter = new Converter(new PathQrdaSource(inPath)).doDefaults(doDefaults);
 		converter.transform();
 		QppOutputEncoder encoder = new QppOutputEncoder();
 		encoder.encode(wrapper, converter.getDecoded());
