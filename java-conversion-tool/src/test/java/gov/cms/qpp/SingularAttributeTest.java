@@ -1,14 +1,13 @@
 package gov.cms.qpp;
 
-
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.InputStreamQrdaSource;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
-import gov.cms.qpp.conversion.encode.ClinicalDocumentEncoder;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -137,7 +136,7 @@ public class SingularAttributeTest {
 	private List<Detail> executeScenario(String templateId, String attribute, boolean remove) {
 		String xPath = getPath(templateId, attribute);
 		InputStream inStream = manipulator.upsetTheNorm(xPath, remove);
-		Converter converter = new Converter(inStream);
+		Converter converter = new Converter(new InputStreamQrdaSource(xPath, inStream));
 		List<Detail> details = new ArrayList<>();
 		try {
 			converter.transform();

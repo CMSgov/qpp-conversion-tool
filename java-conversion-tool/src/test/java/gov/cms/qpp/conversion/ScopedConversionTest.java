@@ -53,7 +53,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_SECTION_V2.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
@@ -74,7 +74,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
@@ -95,7 +95,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_DATA_CMS_V2.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
@@ -116,7 +116,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_SECTION.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
@@ -138,7 +138,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.IA_SECTION.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
@@ -159,7 +159,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_AGGREGATE_COUNT.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
@@ -180,7 +180,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
@@ -201,7 +201,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_DENOMINATOR.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
@@ -222,7 +222,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR_DENOMINATOR.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
@@ -243,7 +243,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.CLINICAL_DOCUMENT.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
@@ -266,7 +266,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.CLINICAL_DOCUMENT.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(ERROR_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		String errors = "";
 		try {
@@ -296,7 +296,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR_DENOMINATOR.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(ERROR_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		String errors = "";
 		try {
@@ -326,7 +326,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.IA_SECTION.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(ERROR_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		String errors = "";
 		try {
@@ -356,7 +356,7 @@ public class ScopedConversionTest extends BaseTest {
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_AGGREGATE_COUNT.name());
 
 		//when
-		Converter converter = new Converter(Paths.get(ERROR_MAKER));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
 		Converter.setScope(Sets.newHashSet(testSection));
 		String errors = "";
 		try {
