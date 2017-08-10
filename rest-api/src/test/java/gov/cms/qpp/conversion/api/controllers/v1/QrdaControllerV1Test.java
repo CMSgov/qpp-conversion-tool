@@ -68,12 +68,12 @@ public class QrdaControllerV1Test {
 	public void testFailedQppValidation() {
 		String transformationErrorMessage = "Test failed QPP validation";
 
-		Mockito.doThrow(new TransformException(transformationErrorMessage, null, null))
+		Mockito.doThrow(new TransformException(transformationErrorMessage, null))
 			.when(validationService).validateQpp(any(JsonWrapper.class));
 
 		try {
 			String qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
-			fail("An exception should have occurred.");
+			fail("An exception should have occurred, but was " + qppResponse);
 		} catch(TransformException exception) {
 			assertThat("A different exception occurred.", exception.getMessage(), is(transformationErrorMessage));
 		} catch (Exception exception) {

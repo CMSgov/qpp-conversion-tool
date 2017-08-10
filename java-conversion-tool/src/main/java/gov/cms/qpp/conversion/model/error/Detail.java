@@ -1,14 +1,14 @@
 package gov.cms.qpp.conversion.model.error;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Holds the error information from Validators.
  */
-public class Detail implements Serializable {
-	private static final long serialVersionUID = 8818544157552590676L;
+public class Detail {
+
 	@JsonProperty("message")
 	private String message;
 	@JsonProperty("path")
@@ -160,19 +160,10 @@ public class Detail implements Serializable {
 
 		Detail detail = (Detail) o;
 
-		if (message != null ? !message.equals(detail.message) : detail.message != null) {
-			return false;
-		}
-
-		if (path != null ? !path.equals(detail.path) : detail.path != null) {
-			return false;
-		}
-
-		if (value != null ? !value.equals(detail.value) : detail.value != null) {
-			return false;
-		}
-
-		return type != null ? type.equals(detail.type) : detail.type == null;
+		return Objects.equals(message, detail.message)
+				&& Objects.equals(path, detail.path)
+				&& Objects.equals(value, detail.value)
+				&& Objects.equals(type, detail.type);
 	}
 
 	/**
@@ -182,10 +173,6 @@ public class Detail implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		int result = message != null ? message.hashCode() : 0;
-		result = 31 * result + (path != null ? path.hashCode() : 0);
-		result = 31 * result + (value != null ? value.hashCode() : 0);
-		result = 31 * result + (type != null ? type.hashCode() : 0);
-		return result;
+		return Objects.hash(message, path, value, type);
 	}
 }

@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.model.validation;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -102,63 +104,26 @@ public class SubPopulation {
 		if (this == o) {
 			return true;
 		}
+
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
 
 		SubPopulation that = (SubPopulation) o;
 
-		if (initialPopulationUuid != null
-				? !initialPopulationUuid.equals(that.initialPopulationUuid) :
-				that.initialPopulationUuid != null) {
-			return false;
-		}
-		if (numeratorUuid != null
-				? !numeratorUuid.equals(that.numeratorUuid) :
-				that.numeratorUuid != null) {
-			return false;
-		}
-		if (strata1 != null ? !strata1.equals(that.strata1) : that.strata1 != null) {
-			return false;
-		}
-		boolean isCool = reduceCognitiveComplexity(that);
-		if (isCool) {
-			return strata2 != null ? strata2.equals(that.strata2) : that.strata2 == null;
-		} else {
-			return isCool;
-		}
-
-	}
-
-	private boolean reduceCognitiveComplexity(SubPopulation that) {
-		boolean isCool = true;
-		if (denominatorUuid != null
-				? !denominatorUuid.equals(that.denominatorUuid) :
-				that.denominatorUuid != null) {
-			isCool = false;
-		}
-		if (denominatorExclusionsUuid != null
-				? !denominatorExclusionsUuid.equals(that.denominatorExclusionsUuid) :
-				that.denominatorExclusionsUuid != null) {
-			isCool = false;
-		}
-		if (denominatorExceptionsUuid != null
-				? !denominatorExceptionsUuid.equals(that.denominatorExceptionsUuid) :
-				that.denominatorExceptionsUuid != null) {
-			isCool = false;
-		}
-		return isCool;
+		boolean equals = Objects.equals(initialPopulationUuid, that.initialPopulationUuid);
+		equals &= Objects.equals(denominatorUuid, that.denominatorUuid);
+		equals &= Objects.equals(denominatorExclusionsUuid, that.denominatorExclusionsUuid);
+		equals &= Objects.equals(denominatorExceptionsUuid, that.denominatorExceptionsUuid);
+		equals &= Objects.equals(numeratorUuid, that.numeratorUuid);
+		equals &= Objects.equals(strata1, that.strata1);
+		equals &= Objects.equals(strata2, that.strata2);
+		return equals;
 	}
 
 	@Override
 	public int hashCode() {
-		int result = initialPopulationUuid != null ? initialPopulationUuid.hashCode() : 0;
-		result = 31 * result + (denominatorUuid != null ? denominatorUuid.hashCode() : 0);
-		result = 31 * result + (denominatorExclusionsUuid != null ? denominatorExclusionsUuid.hashCode() : 0);
-		result = 31 * result + (numeratorUuid != null ? numeratorUuid.hashCode() : 0);
-		result = 31 * result + (denominatorExceptionsUuid != null ? denominatorExceptionsUuid.hashCode() : 0);
-		result = 31 * result + (strata1 != null ? strata1.hashCode() : 0);
-		result = 31 * result + (strata2 != null ? strata2.hashCode() : 0);
-		return result;
+		return Objects.hash(initialPopulationUuid, denominatorUuid, denominatorExclusionsUuid,
+				denominatorExceptionsUuid, numeratorUuid, strata1, strata2);
 	}
 }

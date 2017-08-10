@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.model.error;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +12,13 @@ import java.util.List;
  * The source could be a file, a stream, or some other entity.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Error implements Serializable {
-	private static final long serialVersionUID = 1596644641404778774L;
+public class Error {
+
 	private String sourceIdentifier;
 	private String type;
 	private String message;
 	@JsonProperty("details")
-	private List<Detail> details = new ArrayList<>();
+	private List<Detail> details;
 
 	/**
 	 * Constructs an empty {@code Error}.

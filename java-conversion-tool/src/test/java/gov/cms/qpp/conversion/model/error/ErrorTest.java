@@ -11,11 +11,12 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 
 public class ErrorTest {
+
 	@Test
 	public void addValidationError() {
 		Error objectUnderTest = new Error();
 
-		assertThat("The validation errors should have been empty at first", objectUnderTest.getDetails(), hasSize(0));
+		assertThat("The validation errors should have been null at first", objectUnderTest.getDetails(), is(nullValue()));
 
 		objectUnderTest.addValidationError(new Detail("description", "path"));
 		objectUnderTest.addValidationError(new Detail("description", "path"));
