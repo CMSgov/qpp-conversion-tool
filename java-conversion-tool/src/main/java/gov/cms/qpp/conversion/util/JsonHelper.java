@@ -6,7 +6,6 @@ import com.jayway.jsonpath.JsonPath;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Help with json comparisons
@@ -21,17 +20,22 @@ public class JsonHelper {
 	}
 
 	/**
-	 * Read json file and return object type specified
+	 * Read json and return object type specified
 	 *
-	 * @param filePath json file path
+	 * @param json content
 	 * @param valueType object type representation
 	 * @param <T> generic class type
 	 * @return Object of specified type
-	 * @throws IOException if problems arise while attempting to parse the resource at the given filePath
+	 * @throws JsonReadException if problems arise while attempting to parse the json string
 	 */
-	public static <T> T readJson(String filePath, Class<T> valueType) throws IOException {
-		Path path = Paths.get(filePath);
-		return readJson(path, valueType);
+	public static <T> T readJson(String json, Class<T> valueType) {
+		T returnValue;
+		try {
+			returnValue = new ObjectMapper().readValue(json, valueType);
+		} catch (IOException ex) {
+			throw new JsonReadException("Problem parsing json string", ex);
+		}
+		return returnValue;
 	}
 
 	/**
@@ -57,25 +61,6 @@ public class JsonHelper {
 	 * @throws IOException if problems arise while attempting to parse the json input stream
 	 */
 	public static <T> T readJson(InputStream json, Class<T> valueType) {
-		T returnValue;
-		try {
-			returnValue = new ObjectMapper().readValue(json, valueType);
-		} catch (IOException ex) {
-			throw new JsonReadException("Problem parsing json string", ex);
-		}
-		return returnValue;
-	}
-
-	/**
-	 * Read json and return object type specified
-	 *
-	 * @param json content
-	 * @param valueType object type representation
-	 * @param <T> generic class type
-	 * @return Object of specified type
-	 * @throws JsonReadException if problems arise while attempting to parse the json input stream
-	 */
-	public static <T> T readJsonString(String json, Class<T> valueType) {
 		T returnValue;
 		try {
 			returnValue = new ObjectMapper().readValue(json, valueType);
