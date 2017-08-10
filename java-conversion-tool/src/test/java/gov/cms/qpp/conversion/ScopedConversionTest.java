@@ -39,7 +39,7 @@ public class ScopedConversionTest extends BaseTest {
 	 */
 	@BeforeClass
 	public static void loadFixtures() throws IOException {
-		fixtures = readJson("src/test/resources/converter/scopedConversionFixture.json", HashMap.class);
+		fixtures = readJson(Paths.get("src/test/resources/converter/scopedConversionFixture.json"), HashMap.class);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class ScopedConversionTest extends BaseTest {
 		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJsonString(qpp.toString(), HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -77,7 +77,7 @@ public class ScopedConversionTest extends BaseTest {
 		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJsonString(qpp.toString(), HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -98,7 +98,7 @@ public class ScopedConversionTest extends BaseTest {
 		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJsonString(qpp.toString(), HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -119,7 +119,7 @@ public class ScopedConversionTest extends BaseTest {
 		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJsonString(qpp.toString(), HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -141,7 +141,7 @@ public class ScopedConversionTest extends BaseTest {
 		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJsonString(qpp.toString(), HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -162,7 +162,7 @@ public class ScopedConversionTest extends BaseTest {
 		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJsonString(qpp.toString(), HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -183,7 +183,7 @@ public class ScopedConversionTest extends BaseTest {
 		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJsonString(qpp.toString(), HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -204,7 +204,7 @@ public class ScopedConversionTest extends BaseTest {
 		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJsonString(qpp.toString(), HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -225,7 +225,7 @@ public class ScopedConversionTest extends BaseTest {
 		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJsonString(qpp.toString(), HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -246,7 +246,7 @@ public class ScopedConversionTest extends BaseTest {
 		Converter converter = new Converter(Paths.get(SUCCESS_MAKER));
 		Converter.setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJsonString(qpp.toString(), HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -278,7 +278,7 @@ public class ScopedConversionTest extends BaseTest {
 				.withDefaultPrettyPrinter();
 			errors = jsonObjectWriter.writeValueAsString(exception.getDetails());
 		}
-		Map<String, Object> content = JsonHelper.readJsonString(errors, HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(errors, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -308,7 +308,7 @@ public class ScopedConversionTest extends BaseTest {
 				.withDefaultPrettyPrinter();
 			errors = jsonObjectWriter.writeValueAsString(exception.getDetails());
 		}
-		Map<String, Object> content = JsonHelper.readJsonString(errors, HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(errors, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -338,7 +338,7 @@ public class ScopedConversionTest extends BaseTest {
 				.withDefaultPrettyPrinter();
 			errors = jsonObjectWriter.writeValueAsString(exception.getDetails());
 		}
-		Map<String, Object> content = JsonHelper.readJsonString(errors, HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(errors, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -368,7 +368,7 @@ public class ScopedConversionTest extends BaseTest {
 				.withDefaultPrettyPrinter();
 			errors = jsonObjectWriter.writeValueAsString(exception.getDetails());
 		}
-		Map<String, Object> content = JsonHelper.readJsonString(errors, HashMap.class);
+		Map<String, Object> content = JsonHelper.readJson(errors, HashMap.class);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",

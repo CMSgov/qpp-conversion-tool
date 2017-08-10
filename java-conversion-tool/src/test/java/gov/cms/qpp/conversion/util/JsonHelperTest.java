@@ -45,13 +45,27 @@ public class JsonHelperTest {
 	}
 
 	@Test
-	public void exceptionForReadJson() {
+	public void exceptionForReadJsonInputStream() {
 		String testJson = "{ \"DogCow\": [ }";
 
 		InputStream inputStream = new ByteArrayInputStream(testJson.getBytes());
 
 		try {
 			JsonHelper.readJson(inputStream, Map.class);
+			fail("An exception should have been thrown.");
+		} catch(JsonReadException exception) {
+			assertThat("Wrong exception reason.", exception.getMessage(), is("Problem parsing json string"));
+		} catch(Exception exception) {
+			fail("Incorrect exception was thrown.");
+		}
+	}
+
+	@Test
+	public void exceptionForReadJsonString() {
+		String testJson = "{ \"DogCow\": [ }";
+
+		try {
+			JsonHelper.readJson(testJson, Map.class);
 			fail("An exception should have been thrown.");
 		} catch(JsonReadException exception) {
 			assertThat("Wrong exception reason.", exception.getMessage(), is("Problem parsing json string"));
