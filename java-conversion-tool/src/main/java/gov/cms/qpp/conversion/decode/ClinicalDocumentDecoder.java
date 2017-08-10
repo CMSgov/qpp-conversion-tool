@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.decode;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.util.ProgramContext;
 import org.jdom2.Attribute;
@@ -75,7 +76,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 			thisNode.putValue(ENTITY_TYPE, nameEntityPair[1], false);
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
-		ProgramContext.set(thisNode.getValue(PROGRAM_NAME));
+		ProgramContext.set(Program.getInstance(thisNode.getValue(PROGRAM_NAME)));
 	}
 
 

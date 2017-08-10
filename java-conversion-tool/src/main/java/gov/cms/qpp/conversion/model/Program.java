@@ -10,9 +10,16 @@ public enum Program {
 	CPC("CPCPLUS"),
 	ALL();
 
-	private Set<String> values;
+	private Set<String> aliases;
 
 	Program(String... value) {
-		this.values = Arrays.stream(value).collect(Collectors.toSet());
+		this.aliases = Arrays.stream(value).collect(Collectors.toSet());
+	}
+
+	public static Program getInstance(String name) {
+		return Arrays.stream(Program.values())
+				.filter(program -> program.aliases.contains(name))
+				.findFirst()
+				.orElse(Program.ALL);
 	}
 }

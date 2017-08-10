@@ -1,12 +1,20 @@
 package gov.cms.qpp.conversion.util;
 
 
-public class ProgramContext {
-	private static ThreadLocal<String> context = new ThreadLocal<>();
+import gov.cms.qpp.conversion.model.Program;
 
-	public static void set(String value) {
+import java.util.Optional;
+
+public class ProgramContext {
+	private static ThreadLocal<Program> context = new ThreadLocal<>();
+
+	public static void set(Program value) {
 		remove();
 		context.set(value);
+	}
+
+	public static Program get() {
+		return Optional.ofNullable(context.get()).orElse(Program.ALL);
 	}
 
 	public static void remove() {

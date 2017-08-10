@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
+import gov.cms.qpp.conversion.util.ProgramContext;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -114,7 +116,8 @@ public class Registry<R extends Object> {
 	}
 
 	private ComponentKey getComponentKey(TemplateId registryKey) {
-		return new ComponentKey(registryKey, Program.ALL);
+		Program program = ProgramContext.get();
+		return new ComponentKey(registryKey, program);
 	}
 
 	/**
