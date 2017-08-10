@@ -22,7 +22,7 @@ public class ComponentKey {
 			return true;
 		}
 
-		if (!(o.getClass().equals(ComponentKey.class))) {
+		if (o == null || !(o.getClass().equals(ComponentKey.class))) {
 			return false;
 		}
 

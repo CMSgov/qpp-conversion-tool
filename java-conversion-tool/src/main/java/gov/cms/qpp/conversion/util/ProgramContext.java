@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.model.Program;
 
 public class ProgramContext {
 	private static ThreadLocal<Program> context = ThreadLocal.withInitial(() -> Program.ALL);
+	
 	private ProgramContext(){}
 
 	public static void set(Program value) {
