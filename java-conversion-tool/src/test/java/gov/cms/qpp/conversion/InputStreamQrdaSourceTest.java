@@ -19,7 +19,7 @@ public class InputStreamQrdaSourceTest extends QrdaSourceTestSuite {
 
 	private static InputStream stream(String path) {
 		try {
-			return Files.newInputStream(Paths.get("src/test/resources/arbitrary.txt"));
+			return Files.newInputStream(Paths.get(path));
 		} catch (IOException exception) {
 			throw new UncheckedIOException(exception);
 		}
