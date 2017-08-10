@@ -3,8 +3,9 @@ package gov.cms.qpp.conversion.model;
 import java.util.Objects;
 
 public class ComponentKey {
-	private TemplateId template;
-	private Program program;
+	private final TemplateId template;
+	private final Program program;
+	private volatile int hashCode;
 
 	public ComponentKey(TemplateId templateId, Program programName) {
 		template = templateId;
@@ -21,7 +22,7 @@ public class ComponentKey {
 			return true;
 		}
 
-		if (!(o instanceof ComponentKey)) {
+		if (!(o.getClass().equals(ComponentKey.class))) {
 			return false;
 		}
 
@@ -32,6 +33,10 @@ public class ComponentKey {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(template, program);
+		int hash = hashCode;
+		if (hash == 0) {
+			hashCode = Objects.hash(template, program);
+		}
+		return hashCode;
 	}
 }

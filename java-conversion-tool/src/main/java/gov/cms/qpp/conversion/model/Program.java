@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 public enum Program {
 	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS"),
 	CPC("CPCPLUS"),
-	ALL();
+	ALL;
 
-	private Set<String> aliases;
+	private final Set<String> aliases;
 
 	Program(String... value) {
 		this.aliases = Arrays.stream(value).collect(Collectors.toSet());

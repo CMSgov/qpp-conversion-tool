@@ -17,6 +17,7 @@ import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -52,7 +53,7 @@ public class RegistryTest {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.init();
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
-		assertTrue("Registry should have been reset.", decoder == null);
+		assertNull("Registry should have been reset.", decoder);
 	}
 
 	@Test
