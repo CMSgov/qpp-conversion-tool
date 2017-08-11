@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -234,7 +235,7 @@ public class ClinicalDocumentValidatorTest {
 		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
 
 		//execute
-		Converter converter = new Converter(path);
+		Converter converter = new Converter(new PathQrdaSource(path));
 		AllErrors allErrors = new AllErrors();
 		try {
 			converter.transform();
