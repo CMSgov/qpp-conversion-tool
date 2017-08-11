@@ -33,8 +33,7 @@ public class ComponentKey {
 
 	@Override
 	public int hashCode() {
-		int hash = hashCode;
-		if (hash == 0) {
+		if (hashCode == 0) {
 			hashCode = Objects.hash(template, program);
 		}
 		return hashCode;
