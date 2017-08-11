@@ -1,16 +1,26 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import org.junit.After;
 import org.junit.Test;
 
 import java.util.Set;
 
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.validate.MeasureDataValidator.MISSING_AGGREGATE_COUNT;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
@@ -20,6 +30,14 @@ import static org.junit.Assert.assertThat;
  * Test the MeasureData Validator
  */
 public class MeasureDataValidatorTest extends BaseTest {
+
+	private static final String MEASURE_DATA_ERROR_FILE = "angerMeasureDataValidations.err.json";
+
+	@After
+	public void cleanup() throws IOException {
+		Files.deleteIfExists(Paths.get(MEASURE_DATA_ERROR_FILE));
+	}
+
 	@Test
 	public void internalValidateSingleNode() throws Exception {
 		String happy = getFixture("measureDataHappy.xml");
@@ -81,6 +99,34 @@ public class MeasureDataValidatorTest extends BaseTest {
 
 		Set<Detail> errors = validator.getDetails();
 		assertThat(errors.iterator().next().getMessage(), is(MeasureDataValidator.INVALID_VALUE));
+	}
+
+	@Test
+	public void multipleNegativeMeasureDataTest() throws Exception {
+		//setup
+		Path path = Paths.get("src/test/resources/negative/angerMeasureDataValidations.xml");
+
+		//execute
+		Converter converter = new Converter(path);
+		AllErrors allErrors = new AllErrors();
+		try {
+			converter.transform();
+		} catch(TransformException exception) {
+			allErrors = exception.getDetails();
+		}
+
+		List<Detail> errors = getErrors(allErrors);
+
+		assertThat("Must contain the error", errors,
+				hasValidationErrorsIgnoringPath(
+						AggregateCountValidator.TYPE_ERROR,
+						AggregateCountValidator.VALUE_ERROR,
+						MeasureDataValidator.INVALID_VALUE
+						));
+	}
+
+	private List<Detail> getErrors(AllErrors content) {
+		return content.getErrors().get(0).getDetails();
 	}
 
 }
