@@ -12,7 +12,6 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
-import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.Test;
@@ -57,8 +56,7 @@ public class ConverterTest {
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppStream() throws IOException {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		NamedInputStream inputStream = new NamedInputStream(XmlUtils.fileToStream(path), path.toString());
-		Converter converter = new Converter(new InputStreamQrdaSource("testValidQppStream", inputStream));
+		Converter converter = new Converter(new InputStreamQrdaSource(path.toString(), XmlUtils.fileToStream(path)));
 
 		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
