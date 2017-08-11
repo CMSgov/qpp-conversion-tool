@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
