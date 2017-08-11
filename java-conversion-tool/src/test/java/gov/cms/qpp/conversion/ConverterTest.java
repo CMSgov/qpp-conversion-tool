@@ -34,7 +34,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -50,7 +50,7 @@ public class ConverterTest {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Converter converter = new Converter(new PathQrdaSource(path));
 
-		JsonWrapper qpp = converter.transform();
+		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
 	}
 
@@ -60,7 +60,7 @@ public class ConverterTest {
 		NamedInputStream inputStream = new NamedInputStream(XmlUtils.fileToStream(path), path.toString());
 		Converter converter = new Converter(new InputStreamQrdaSource("testValidQppStream", inputStream));
 
-		JsonWrapper qpp = converter.transform();
+		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
 	}
 

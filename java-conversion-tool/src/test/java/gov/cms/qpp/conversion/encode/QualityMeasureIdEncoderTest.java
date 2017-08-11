@@ -22,7 +22,7 @@ public class QualityMeasureIdEncoderTest {
 	private JsonWrapper wrapper;
 	private QualityMeasureIdEncoder encoder;
 	private String type = "type";
-	private final String ELIGIBLE_POPULATION = "eligiblePopulation";
+	private static final String ELIGIBLE_POPULATION = "eligiblePopulation";
 
 	@Before
 	public void setUp() {

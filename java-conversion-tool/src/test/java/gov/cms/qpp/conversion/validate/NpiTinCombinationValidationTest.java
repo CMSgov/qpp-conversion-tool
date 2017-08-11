@@ -15,12 +15,9 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 public class NpiTinCombinationValidationTest {
-	private static final String CONTAINS_CORRECT_ERROR = "Must validate with the correct error";
-
 	private Node firstValidNpiTinNode;
 	private Node secondValidNpiTinNode;
 	private Node validMipsGroupNpiTinNode;
-	private Node missingTinNode;
 	private Node clinicalDocumentNode;
 	private Node npiTinCombinationNode;
 	private NpiTinCombinationValidation validator;
@@ -36,7 +33,6 @@ public class NpiTinCombinationValidationTest {
 		firstValidNpiTinNode = createNpiTinNode(NPI1, TIN1);
 		secondValidNpiTinNode = createNpiTinNode(NPI2, TIN2);
 		validMipsGroupNpiTinNode = createNpiTinNode(null , TIN1);
-		missingTinNode = createNpiTinNode(NPI1, null);
 	}
 
 	private Node createNpiTinNode(String npi, String tin) {

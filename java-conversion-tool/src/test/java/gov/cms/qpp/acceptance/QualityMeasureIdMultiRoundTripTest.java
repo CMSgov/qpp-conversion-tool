@@ -31,12 +31,12 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 
 public class QualityMeasureIdMultiRoundTripTest {
-	private final String REQUIRE_ELIGIBLE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
-	private final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
-	private final String REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS = "Must have a required eligiblePopulationException";
-	private final String ELIGIBLE_POPULATION = "eligiblePopulation";
-	private final String PERFORMANCE_MET = "performanceMet";
-	private final String ELIGIBLE_POPULATION_EXCEPTION = "eligiblePopulationException";
+	private static final String REQUIRE_ELIGIBLE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
+	private static final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
+	private static final String REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS = "Must have a required eligiblePopulationException";
+	private static final String ELIGIBLE_POPULATION = "eligiblePopulation";
+	private static final String PERFORMANCE_MET = "performanceMet";
+	private static final String ELIGIBLE_POPULATION_EXCEPTION = "eligiblePopulationException";
 
 	private static final Path JUNK_QRDA3_FILE =
 			Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");

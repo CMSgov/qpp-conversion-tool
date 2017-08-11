@@ -1,6 +1,5 @@
 package gov.cms.qpp.acceptance.helper;
 
-
 import com.sun.org.apache.xerces.internal.dom.AttrImpl;
 import com.sun.org.apache.xerces.internal.dom.ElementImpl;
 import org.w3c.dom.Document;
@@ -85,8 +84,6 @@ public class MarkupManipulator {
 	}
 
 	public static final class MarkupManipulatorBuilder {
-		private TransformerFactory tf = TransformerFactory.newInstance();
-		private XPathFactory xpf = XPathFactory.newInstance();
 		private String pathname;
 		private boolean nsAware;
 

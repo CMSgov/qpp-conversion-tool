@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +21,8 @@ import java.io.IOException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -68,11 +69,11 @@ public class QrdaControllerV1Test {
 		String transformationErrorMessage = "Test failed QPP validation";
 
 		Mockito.doThrow(new TransformException(transformationErrorMessage, null, null))
-			.when(validationService).validateQpp(any(JsonWrapper.class));
+			.when(validationService).validateQpp(isNull());
 
 		try {
 			String qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
-			fail("An exception should have occurred.");
+			fail("An exception should have occurred. Instead was " + qppResponse);
 		} catch(TransformException exception) {
 			assertThat("A different exception occurred.", exception.getMessage(), is(transformationErrorMessage));
 		} catch (Exception exception) {

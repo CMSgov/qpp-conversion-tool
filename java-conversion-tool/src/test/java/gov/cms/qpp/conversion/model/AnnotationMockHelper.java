@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.reflect.Whitebox;
 
@@ -15,7 +15,6 @@ import org.powermock.reflect.Whitebox;
 public class AnnotationMockHelper {
 
 	private static final String METHOD_IS_VALIDATION_REQUIRED = "isValidationRequired";
-	private static final String METHOD_GET_TEMPLATE_ID = "getTemplateId";
 
 	/**
 	 * Private and empty because we do not want this class instantiated.
@@ -91,7 +90,7 @@ public class AnnotationMockHelper {
 	private static void mockQrdaValidator(QrdaValidator spy, TemplateId templateId,
 	                                      Class<? extends NodeValidator> validator, boolean required)
 		throws Exception {
-		PowerMockito.doReturn(required).when(spy, METHOD_IS_VALIDATION_REQUIRED, Matchers.isA(validator));
+		PowerMockito.doReturn(required).when(spy, METHOD_IS_VALIDATION_REQUIRED, ArgumentMatchers.isA(validator));
 	}
 
 	/**
