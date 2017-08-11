@@ -44,7 +44,6 @@ public class XmlUtils {
 		return parseXmlStream(new ByteArrayInputStream(xml.getBytes()));
 	}
 
-
 	/**
 	 * Returns an InputStream sourced by the given path.
 	 *

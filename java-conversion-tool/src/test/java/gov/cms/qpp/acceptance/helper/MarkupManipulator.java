@@ -1,6 +1,5 @@
 package gov.cms.qpp.acceptance.helper;
 
-
 import com.sun.org.apache.xerces.internal.dom.AttrImpl;
 import com.sun.org.apache.xerces.internal.dom.ElementImpl;
 import org.w3c.dom.Document;
