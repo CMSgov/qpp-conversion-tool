@@ -1,9 +1,9 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
+import gov.cms.qpp.conversion.InputStreamQrdaSource;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.util.NamedInputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class QrdaControllerV1 {
 	@ResponseStatus(HttpStatus.CREATED)
 	public String uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
 		API_LOG.info("Request received " + file.getName());
-		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(new NamedInputStream(file.getInputStream(), file.getName()));
+		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(new InputStreamQrdaSource(file.getName(), file.getInputStream()));
 
 		validationService.validateQpp(qpp);
 		API_LOG.info("Conversion success " + file.getName());

@@ -1,6 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.Before;
@@ -24,7 +25,7 @@ public class IaSectionRoundTripTest {
 
 	@Test
 	public void testIaSectionConvertsIaCategory() throws IOException {
-		Converter converter = new Converter(file);
+		Converter converter = new Converter(new PathQrdaSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaCategory = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].category", String.class);
@@ -34,7 +35,7 @@ public class IaSectionRoundTripTest {
 
 	@Test
 	public void testIaSectionConvertsIaMeasureId() throws IOException {
-		Converter converter = new Converter(file);
+		Converter converter = new Converter(new PathQrdaSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaMeasureId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].measurements[0].measureId", String.class);
@@ -44,7 +45,7 @@ public class IaSectionRoundTripTest {
 
 	@Test
 	public void testIaSectionConvertsMeasurePerformed() throws IOException {
-		Converter converter = new Converter(file);
+		Converter converter = new Converter(new PathQrdaSource(file));
 		JsonWrapper qpp = converter.transform();
 		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].measurements[0].value", Boolean.class);
