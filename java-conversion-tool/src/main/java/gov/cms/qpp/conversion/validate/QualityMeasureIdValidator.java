@@ -158,6 +158,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE)
 				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
 			boolean validMeasureType = key.equals(thisNode.getValue(MEASURE_TYPE));
+			thisNode.setValidated(false);
 			return validMeasureType && check.get().equals(thisNode.getValue(MEASURE_POPULATION));
 		};
 	}

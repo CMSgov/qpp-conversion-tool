@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -40,6 +41,46 @@ public class MeasureDataValidatorTest extends BaseTest {
 		Set<Detail> errors = validator.getDetails();
 		assertThat(errors.isEmpty(), is(false));
 		assertEquals(errors.iterator().next().getMessage(), MISSING_AGGREGATE_COUNT);
+	}
+
+	@Test
+	public void invalidAggregateCount() throws Exception {
+		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		testNode.addChildNode(aggregateCount);
+		aggregateCount.putValue("aggregateCount", "error");
+		MeasureDataValidator validator = new MeasureDataValidator();
+		validator.internalValidateSingleNode(testNode);
+
+		Set<Detail> errors = validator.getDetails();
+		assertThat(errors.iterator().next().getMessage(), is(AggregateCountValidator.TYPE_ERROR));
+	}
+
+	@Test
+	public void duplicateAggregateCountsFails() throws Exception {
+		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		aggregateCount.putValue("aggregateCount", "100");
+		aggregateCount.putValue("aggregateCount", "200", false);
+		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		testNode.addChildNodes(aggregateCount);
+		MeasureDataValidator validator = new MeasureDataValidator();
+		validator.internalValidateSingleNode(testNode);
+
+		Set<Detail> errors = validator.getDetails();
+		assertThat(errors.iterator().next().getMessage(), is(AggregateCountValidator.VALUE_ERROR));
+	}
+
+	@Test
+	public void negativeAggregateCountsFails() throws Exception {
+		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		aggregateCount.putValue("aggregateCount", "-1");
+		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+		testNode.addChildNodes(aggregateCount);
+		MeasureDataValidator validator = new MeasureDataValidator();
+		validator.internalValidateSingleNode(testNode);
+
+		Set<Detail> errors = validator.getDetails();
+		assertThat(errors.iterator().next().getMessage(), is(MeasureDataValidator.INVALID_VALUE));
 	}
 
 }
