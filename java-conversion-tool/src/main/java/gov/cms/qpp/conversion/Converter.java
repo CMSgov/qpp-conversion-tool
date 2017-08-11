@@ -167,7 +167,7 @@ public class Converter {
 		decoded = XmlInputDecoder.decodeXml(doc);
 		JsonWrapper qpp = null;
 		if (null != decoded) {
-			DEV_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), inStream);
+			DEV_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), source.getName());
 
 			if (!doDefaults) {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
