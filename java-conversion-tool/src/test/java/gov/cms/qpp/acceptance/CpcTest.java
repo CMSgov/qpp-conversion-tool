@@ -3,6 +3,7 @@ package gov.cms.qpp.acceptance;
 import com.google.common.collect.Sets;
 import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.junit.Rule;
@@ -40,7 +41,7 @@ public class CpcTest extends BaseTest {
 	}
 
 	private void run(String type) {
-		Converter converter = new Converter(Paths.get(CPC_FILE));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(CPC_FILE)));
 		Converter.setHistorical(true);
 		Converter.setScope(Sets.newHashSet(QrdaScope.getInstanceByName(type)));
 		converter.transform();
