@@ -335,18 +335,33 @@ public class Node {
 	 * Used to control the recursion of nested validations
 	 *
 	 * @param validated boolean
+	 * @see Node#isValidated()
+	 * @see Node#isNotValidated()
 	 */
 	public void setValidated(boolean validated) {
 		this.validated = validated;
 	}
 
 	/**
-	 * isValidated returns the state of this Node validation
+	 * The state of this Node validation
 	 *
-	 * @return boolean
+	 * @return boolean if the node has been validated
+	 * @see Node#isNotValidated()
+	 * @see Node#setValidated(boolean)
 	 */
 	public boolean isValidated() {
 		return validated;
+	}
+
+	/**
+	 * The state of this Node validation
+	 *
+	 * @return boolean if the node has NOT been validated
+	 * @see Node#isValidated()
+	 * @see Node#setValidated(boolean)
+	 */
+	public boolean isNotValidated() {
+		return !isValidated();
 	}
 
 	/**
