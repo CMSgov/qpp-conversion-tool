@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -9,11 +10,9 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import org.junit.After;
 import org.junit.Test;
 
 import java.util.Set;
@@ -97,7 +96,7 @@ public class MeasureDataValidatorTest extends BaseTest {
 		Path path = Paths.get("src/test/resources/negative/angerMeasureDataValidations.xml");
 
 		//execute
-		Converter converter = new Converter(path);
+		Converter converter = new Converter(new PathQrdaSource(path));
 		AllErrors allErrors = new AllErrors();
 		try {
 			converter.transform();
