@@ -10,7 +10,6 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -22,20 +21,12 @@ import java.util.Set;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.validate.MeasureDataValidator.MISSING_AGGREGATE_COUNT;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 /**
  * Test the MeasureData Validator
  */
 public class MeasureDataValidatorTest extends BaseTest {
-
-	private static final String MEASURE_DATA_ERROR_FILE = "angerMeasureDataValidations.err.json";
-
-	@After
-	public void cleanup() throws IOException {
-		Files.deleteIfExists(Paths.get(MEASURE_DATA_ERROR_FILE));
-	}
 
 	@Test
 	public void internalValidateSingleNode() throws Exception {
@@ -57,7 +48,7 @@ public class MeasureDataValidatorTest extends BaseTest {
 
 		Set<Detail> errors = validator.getDetails();
 		assertThat(errors.isEmpty(), is(false));
-		assertEquals(errors.iterator().next().getMessage(), MISSING_AGGREGATE_COUNT);
+		assertThat("missing error", errors, hasValidationErrorsIgnoringPath(MISSING_AGGREGATE_COUNT));
 	}
 
 	@Test
@@ -84,7 +75,7 @@ public class MeasureDataValidatorTest extends BaseTest {
 		validator.internalValidateSingleNode(testNode);
 
 		Set<Detail> errors = validator.getDetails();
-		assertThat(errors.iterator().next().getMessage(), is(AggregateCountValidator.VALUE_ERROR));
+		assertThat("missing error", errors, hasValidationErrorsIgnoringPath(AggregateCountValidator.VALUE_ERROR));
 	}
 
 	@Test
@@ -97,7 +88,7 @@ public class MeasureDataValidatorTest extends BaseTest {
 		validator.internalValidateSingleNode(testNode);
 
 		Set<Detail> errors = validator.getDetails();
-		assertThat(errors.iterator().next().getMessage(), is(MeasureDataValidator.INVALID_VALUE));
+		assertThat("missing error", errors, hasValidationErrorsIgnoringPath(MeasureDataValidator.INVALID_VALUE));
 	}
 
 	@Test

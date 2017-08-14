@@ -155,10 +155,10 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private Predicate<Node> makeChildFinder(Supplier<Object> check, String key) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
+				.incompleteValidation()
 				.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE)
 				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
 			boolean validMeasureType = key.equals(thisNode.getValue(MEASURE_TYPE));
-			thisNode.setValidated(false);
 			return validMeasureType && check.get().equals(thisNode.getValue(MEASURE_POPULATION));
 		};
 	}
