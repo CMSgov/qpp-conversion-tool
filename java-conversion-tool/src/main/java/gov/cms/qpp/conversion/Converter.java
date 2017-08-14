@@ -71,7 +71,7 @@ public class Converter {
 	 *
 	 * @return determination of whether or not the conversion is enacted on historical submissions.
 	 */
-	public static boolean setHistorical() {
+	public static boolean getHistorical() {
 		return historical;
 	}
 
