@@ -9,20 +9,22 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import gov.cms.qpp.conversion.util.ProgramContext;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -59,6 +61,7 @@ public class Converter {
 	 */
 	public Converter(QrdaSource source) {
 		Objects.requireNonNull(source, "source");
+		ProgramContext.set(Program.ALL);
 
 		this.source = source;
 	}
@@ -141,6 +144,8 @@ public class Converter {
 		} catch (Exception exception) {
 			DEV_LOG.error(UNEXPECTED_ERROR, exception);
 			details.add(new Detail(UNEXPECTED_ERROR));
+		} finally {
+			ProgramContext.remove();
 		}
 
 		if (!details.isEmpty()) {
@@ -160,7 +165,8 @@ public class Converter {
 	 */
 	private JsonWrapper transform(InputStream inStream) throws XmlException {
 		QrdaValidator validator = new QrdaValidator();
-		decoded = XmlInputDecoder.decodeXml(XmlUtils.parseXmlStream(inStream));
+		Element doc = XmlUtils.parseXmlStream(inStream);
+		decoded = XmlInputDecoder.decodeXml(doc);
 		JsonWrapper qpp = null;
 		if (null != decoded) {
 			DEV_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), source.getName());
@@ -192,7 +198,9 @@ public class Converter {
 	 * @return All the errors.
 	 */
 	private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
-		return new AllErrors(Arrays.asList(constructErrorSource(inputIdentifier, details)));
+		AllErrors errors = new AllErrors();
+		errors.addError(constructErrorSource(inputIdentifier, details));
+		return errors;
 	}
 
 	/**

@@ -15,8 +15,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(TYPE)
 @Retention(RUNTIME)
 public @interface Validator {
-
 	TemplateId value();
 
+	/**
+	 * The program with which this validator is associated. {@link Program#ALL} by default.
+	 *
+	 * @return Program
+	 */
+	Program program() default Program.ALL;
 	boolean required() default false;
 }
