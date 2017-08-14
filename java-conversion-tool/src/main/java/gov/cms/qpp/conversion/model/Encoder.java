@@ -23,5 +23,11 @@ public @interface Encoder {
 	 * @return
 	 */
 	TemplateId value();
+
+	/**
+	 * The program with which this encoder is associated. {@link Program#ALL} by default.
+	 *
+	 * @return Program
+	 */
 	Program program() default Program.ALL;
 }

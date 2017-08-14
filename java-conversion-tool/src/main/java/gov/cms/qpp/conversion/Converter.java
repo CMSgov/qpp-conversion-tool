@@ -9,6 +9,7 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
@@ -60,6 +61,7 @@ public class Converter {
 	 */
 	public Converter(QrdaSource source) {
 		Objects.requireNonNull(source, "source");
+		ProgramContext.set(Program.ALL);
 
 		this.source = source;
 	}

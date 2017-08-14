@@ -114,6 +114,12 @@ public class Registry<R extends Object> {
 		}
 	}
 
+	/**
+	 * Create a ComponentKey using templateId and stashed Program.
+	 *
+	 * @param registryKey a template id
+	 * @return a component key
+	 */
 	private ComponentKey getComponentKey(TemplateId registryKey) {
 		Program program = ProgramContext.get();
 		return new ComponentKey(registryKey, program);
