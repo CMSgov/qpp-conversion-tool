@@ -1,8 +1,6 @@
 package gov.cms.qpp.acceptance.helper;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.google.common.collect.Sets;
 import gov.cms.qpp.conversion.decode.QualitySectionDecoder;
 import gov.cms.qpp.conversion.encode.AciSectionEncoder;
@@ -26,8 +24,6 @@ public class JsonPathAggregator {
 	}
 
 	private void aggregatePaths(String context, JsonNode node) {
-		JsonNodeType type = node.getNodeType();
-		//disregard JsonNodeType.MISSING for the moment
 		if (node.isArray()) {
 			int index = 0;
 			for(JsonNode child : node) {
