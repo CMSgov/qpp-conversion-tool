@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
+import gov.cms.qpp.conversion.QrdaSource;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -17,8 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.fail;
@@ -56,11 +55,11 @@ public class QrdaControllerV1Test {
 
 	@Test
 	public void uploadQrdaFile() throws IOException {
-		when(qrdaService.convertQrda3ToQpp(any(InputStream.class))).thenReturn(qppResult);
+		when(qrdaService.convertQrda3ToQpp(any(QrdaSource.class))).thenReturn(qppResult);
 
 		String qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
 
-		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(InputStream.class));
+		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(QrdaSource.class));
 		assertThat("The QPP response body is incorrect.", qppResponse, is(qppResult.toString()));
 	}
 

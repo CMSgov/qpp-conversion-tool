@@ -1,12 +1,11 @@
 package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.QrdaSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.io.InputStream;
 
 /**
  * Implementation of the QRDA-III to QPP conversion service
@@ -22,8 +21,8 @@ public class QrdaServiceImpl implements QrdaService {
 	 * @return Results of the conversion
 	 */
 	@Override
-	public JsonWrapper convertQrda3ToQpp(InputStream fileInputStream) {
-		Converter converter = new Converter(fileInputStream);
+	public JsonWrapper convertQrda3ToQpp(QrdaSource source) {
+		Converter converter = new Converter(source);
 		API_LOG.info("Performing QRDA3 to QPP conversion");
 		return converter.transform();
 	}

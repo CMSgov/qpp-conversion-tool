@@ -12,7 +12,6 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
-import gov.cms.qpp.conversion.util.NamedInputStream;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.Test;
@@ -48,7 +47,7 @@ public class ConverterTest {
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppFile() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		Converter converter = new Converter(path);
+		Converter converter = new Converter(new PathQrdaSource(path));
 
 		JsonWrapper qpp = converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
@@ -57,8 +56,7 @@ public class ConverterTest {
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppStream() throws IOException {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		NamedInputStream inputStream = new NamedInputStream(XmlUtils.fileToStream(path), path.toString());
-		Converter converter = new Converter(inputStream);
+		Converter converter = new Converter(new InputStreamQrdaSource(path.toString(), XmlUtils.fileToStream(path)));
 
 		JsonWrapper qpp = converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
@@ -74,7 +72,7 @@ public class ConverterTest {
 		PowerMockito.whenNew(QrdaValidator.class).withNoArguments().thenReturn(mockQrdaValidator);
 
 		Path path = Paths.get("src/test/resources/converter/errantDefaultedNode.xml");
-		Converter converter = new Converter(path);
+		Converter converter = new Converter(new PathQrdaSource(path));
 
 		try {
 			converter.transform();
@@ -91,7 +89,7 @@ public class ConverterTest {
 	@Test
 	public void testInvalidXml() throws IOException {
 		Path path = Paths.get("src/test/resources/non-xml-file.xml");
-		Converter converter = new Converter(path);
+		Converter converter = new Converter(new PathQrdaSource(path));
 
 		try {
 			converter.transform();
@@ -116,7 +114,7 @@ public class ConverterTest {
 		doThrow(ex).when(encoder).encode();
 
 		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
-		Converter converter = new Converter(path)
+		Converter converter = new Converter(new PathQrdaSource(path))
 				.doDefaults(false)
 				.doValidation(false);
 
@@ -136,7 +134,7 @@ public class ConverterTest {
 
 	@Test
 	public void testInvalidXmlFile() {
-		Converter converter = new Converter(Paths.get("src/test/resources/not-a-QRDA-III-file.xml"));
+		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/not-a-QRDA-III-file.xml")));
 		
 		try {
 			converter.transform();
@@ -155,7 +153,7 @@ public class ConverterTest {
 	@Test
 	public void testNotAValidQrdaIIIFile() throws IOException {
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
-		Converter converter = new Converter(path)
+		Converter converter = new Converter(new PathQrdaSource(path))
 				.doDefaults(false)
 				.doValidation(false);
 
@@ -181,7 +179,7 @@ public class ConverterTest {
 		when(XmlUtils.fileToStream(any(Path.class))).thenReturn(null);
 
 		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
-		Converter converter = new Converter(path);
+		Converter converter = new Converter(new PathQrdaSource(path));
 
 		try {
 			converter.transform();
@@ -202,7 +200,7 @@ public class ConverterTest {
 		AnnotationMockHelper.mockDecoder(TemplateId.DEFAULT, JennyDecoder.class);
 		AnnotationMockHelper.mockEncoder(TemplateId.DEFAULT, Jenncoder.class);
 
-		Converter converter = new Converter(Paths.get("src/test/resources/converter/defaultedNode.xml")).doValidation(false);
+		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml"))).doValidation(false);
 		JsonWrapper qpp = converter.transform();
 
 		String content = qpp.toString();
@@ -212,7 +210,7 @@ public class ConverterTest {
 
 	@Test
 	public void testSkipDefaults() throws Exception {
-		Converter converter = new Converter(Paths.get("src/test/resources/converter/defaultedNode.xml")).doValidation(false).doDefaults(false);
+		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml"))).doValidation(false).doDefaults(false);
 		JsonWrapper qpp = converter.transform();
 
 		String content = qpp.toString();

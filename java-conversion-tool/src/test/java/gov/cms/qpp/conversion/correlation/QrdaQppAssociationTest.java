@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.correlation;
 
-
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,7 +19,7 @@ public class QrdaQppAssociationTest {
 	@BeforeClass
 	public static void setup() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		Converter converter = new Converter(path);
+		Converter converter = new Converter(new PathQrdaSource(path));
 
 		qpp = converter.transform();
 	}
