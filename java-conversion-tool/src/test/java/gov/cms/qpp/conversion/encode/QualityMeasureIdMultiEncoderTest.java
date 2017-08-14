@@ -16,19 +16,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 
 public class QualityMeasureIdMultiEncoderTest {
-	private final String REQUIRE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
-	private final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
-	private final String REQUIRE_ELIGIBLE_POPULATION_EXCEP = "Must have a required eligiblePopulationException";
-	private final String REQUIRE_ELIGIBLE_POPULATION_EXCLUS = "Must have a required eligiblePopulationExclusion";
-	private final String REQUIRE_STRATUM = "The stratum is incorrect.";
-	private final String ELIGIBLE_POPULATION = "eligiblePopulation";
-	private final String PERFORMANCE_MET = "performanceMet";
-	private final String ELIGIBLE_POPULATION_EXCEPTION = "eligiblePopulationException";
-	private final String ELIGIBLE_POPULATION_EXCLUSION = "eligiblePopulationExclusion";
-	private final String TYPE = "type";
-	private final String POPULATION_ID = "populationId";
-	private final String MEASURE_ID = "measureId";
-	private final String STRATUM = "stratum";
+	private static final String REQUIRE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
+	private static final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
+	private static final String REQUIRE_ELIGIBLE_POPULATION_EXCEP = "Must have a required eligiblePopulationException";
+	private static final String REQUIRE_ELIGIBLE_POPULATION_EXCLUS = "Must have a required eligiblePopulationExclusion";
+	private static final String REQUIRE_STRATUM = "The stratum is incorrect.";
+	private static final String ELIGIBLE_POPULATION = "eligiblePopulation";
+	private static final String PERFORMANCE_MET = "performanceMet";
+	private static final String ELIGIBLE_POPULATION_EXCEPTION = "eligiblePopulationException";
+	private static final String ELIGIBLE_POPULATION_EXCLUSION = "eligiblePopulationExclusion";
+	private static final String TYPE = "type";
+	private static final String POPULATION_ID = "populationId";
+	private static final String MEASURE_ID = "measureId";
+	private static final String STRATUM = "stratum";
 
 	private Node qualityMeasureId;
 	private Node eligiblePopulationNode;

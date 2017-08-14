@@ -84,8 +84,6 @@ public class MarkupManipulator {
 	}
 
 	public static final class MarkupManipulatorBuilder {
-		private TransformerFactory tf = TransformerFactory.newInstance();
-		private XPathFactory xpf = XPathFactory.newInstance();
 		private String pathname;
 		private boolean nsAware;
 

@@ -4,7 +4,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -66,7 +66,7 @@ public class ConversionFileWriterWrapperTest {
 	@PrepareForTest({Files.class, ConversionFileWriterWrapper.class})
 	public void testFailureToWriteQpp() throws IOException {
 		PowerMockito.mockStatic(Files.class);
-		PowerMockito.when(Files.newBufferedWriter(Matchers.any(Path.class))).thenThrow(new IOException());
+		PowerMockito.when(Files.newBufferedWriter(ArgumentMatchers.any(Path.class))).thenThrow(new IOException());
 
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
@@ -80,7 +80,7 @@ public class ConversionFileWriterWrapperTest {
 	@PrepareForTest({Files.class, ConversionFileWriterWrapper.class})
 	public void testFailureToWriteErrors() throws IOException {
 		PowerMockito.mockStatic(Files.class);
-		PowerMockito.when(Files.newBufferedWriter(Matchers.any(Path.class))).thenThrow(new IOException());
+		PowerMockito.when(Files.newBufferedWriter(ArgumentMatchers.any(Path.class))).thenThrow(new IOException());
 
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);

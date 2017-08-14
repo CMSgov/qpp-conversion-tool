@@ -8,8 +8,7 @@ import org.junit.Test;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -53,7 +52,7 @@ public class QualitySectionEncoderTest {
 		mock.internalEncode(jsonWrapper, qualitySectionNode);
 
 		verify(mock, never())
-				.maintainContinuity(anyObject(), any(JsonWrapper.class), anyObject());
+				.maintainContinuity(any(), any(JsonWrapper.class), any());
 	}
 
 	/**

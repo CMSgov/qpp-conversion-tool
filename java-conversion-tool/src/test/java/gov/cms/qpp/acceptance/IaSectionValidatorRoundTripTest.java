@@ -2,7 +2,6 @@ package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.validate.IaSectionValidator;
@@ -24,7 +23,7 @@ public class IaSectionValidatorRoundTripTest {
 
 		AllErrors errors = new AllErrors();
 		try {
-			JsonWrapper qpp = converter.transform();
+			converter.transform();
 		} catch (TransformException exception) {
 			errors = exception.getDetails();
 		}
@@ -42,7 +41,7 @@ public class IaSectionValidatorRoundTripTest {
 
 		AllErrors errors = new AllErrors();
 		try {
-			JsonWrapper qpp = converter.transform();
+			converter.transform();
 		} catch (TransformException exception) {
 			errors = exception.getDetails();
 		}
@@ -60,7 +59,7 @@ public class IaSectionValidatorRoundTripTest {
 
 		AllErrors errors = new AllErrors();
 		try {
-			JsonWrapper qpp = converter.transform();
+			converter.transform();
 		} catch (TransformException exception) {
 			errors = exception.getDetails();
 		}
