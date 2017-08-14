@@ -2,7 +2,9 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.util.ProgramContext;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
@@ -73,7 +75,10 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 			thisNode.putValue(ENTITY_TYPE, nameEntityPair[1], false);
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
+		ProgramContext.set(Program.getInstance(thisNode.getValue(PROGRAM_NAME)));
 	}
+
+
 
 	/**
 	 * Will decode the NPI from the xml

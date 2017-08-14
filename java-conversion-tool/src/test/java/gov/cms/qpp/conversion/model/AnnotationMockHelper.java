@@ -75,7 +75,7 @@ public class AnnotationMockHelper {
 	 */
 	private static void registerValidator(TemplateId templateId, Class<? extends NodeValidator> validator) {
 		Registry<NodeValidator> registry = Whitebox.getInternalState(QrdaValidator.class, Registry.class);
-		registry.register(templateId, validator);
+		registry.register(new ComponentKey(templateId, Program.ALL), validator);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class AnnotationMockHelper {
 	 */
 	public static void mockDecoder(final TemplateId templateId, final Class<? extends QppXmlDecoder> decoder) {
 		final Registry<QppXmlDecoder> registry = Whitebox.getInternalState(QppXmlDecoder.class, Registry.class);
-		registry.register(templateId, decoder);
+		registry.register(new ComponentKey(templateId, Program.ALL), decoder);
 	}
 
 	/**
@@ -115,6 +115,6 @@ public class AnnotationMockHelper {
 	 */
 	public static void mockEncoder(final TemplateId templateId, final Class<? extends JsonOutputEncoder> encoder) {
 		final Registry<JsonOutputEncoder> registry = Whitebox.getInternalState(QppOutputEncoder.class, Registry.class);
-		registry.register(templateId, encoder);
+		registry.register(new ComponentKey(templateId, Program.ALL), encoder);
 	}
 }

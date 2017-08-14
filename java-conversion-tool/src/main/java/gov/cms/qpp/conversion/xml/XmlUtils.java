@@ -1,7 +1,6 @@
 
 package gov.cms.qpp.conversion.xml;
 
-import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
@@ -69,8 +68,7 @@ public class XmlUtils {
 			saxBuilder.setFeature(EXT_GENERAL_ENTITIES , false);
 			saxBuilder.setFeature(EXT_PARAM_ENTITIES, false);
 
-			Document dom = saxBuilder.build(xmlStream);
-			return dom.getRootElement();
+			return saxBuilder.build(xmlStream).getRootElement();
 		} catch (JDOMException | IOException e) {
 			throw new XmlException("Failed to process XML String into DOM Element", e);
 		}
