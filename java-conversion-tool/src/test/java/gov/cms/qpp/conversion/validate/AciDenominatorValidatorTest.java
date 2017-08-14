@@ -5,8 +5,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.Test;
 
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.collection.IsEmptyCollection.empty;

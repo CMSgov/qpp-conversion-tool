@@ -11,7 +11,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.api.support.membermodification.MemberMatcher;
 import org.powermock.api.support.membermodification.MemberModifier;
@@ -285,7 +285,7 @@ public class ConversionEntryTest {
 	public void testValidArgsParseException() throws Exception {
 		//setup
 		DefaultParser mockParser = PowerMockito.mock(DefaultParser.class);
-		PowerMockito.when(mockParser.parse(Matchers.any(Options.class), Matchers.any(String[].class))).thenThrow(new ParseException("mock error"));
+		PowerMockito.when(mockParser.parse(ArgumentMatchers.any(Options.class), ArgumentMatchers.any(String[].class))).thenThrow(new ParseException("mock error"));
 		PowerMockito.whenNew(DefaultParser.class).withNoArguments().thenReturn(mockParser);
 
 		ByteArrayOutputStream baos1 = new ByteArrayOutputStream();

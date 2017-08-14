@@ -4,9 +4,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -25,7 +23,6 @@ public class MeasureDataTest {
 	private static Map<String, MeasureConfig> configMap;
 
 	@BeforeClass
-	@SuppressWarnings("unchecked")
 	public static void setup() throws IOException {
 		glossaryMap = MeasureConfigs.grabConfiguration("measureGlossary.json");
 		configMap = MeasureConfigs.getConfigurationMap();

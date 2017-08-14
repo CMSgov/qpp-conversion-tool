@@ -45,7 +45,7 @@ public class SubmissionIntegrationTest {
 		assumeTrue("Submissions api is down", endpointIsUp(response));
 
 		try {
-			List<Map> subs = JsonHelper.readJsonAtJsonPath(response.getEntity().getContent(),
+			List<Map<?, ?>> subs = JsonHelper.readJsonAtJsonPath(response.getEntity().getContent(),
 					"$.data.submissions", List.class);
 			subs.forEach( sub -> {
 				String subId = sub.get("id").toString();
@@ -103,8 +103,8 @@ public class SubmissionIntegrationTest {
 		int statusCode = getStatus(httpResponse);
 		if (statusCode == 201) {
 			InputStream inStream = httpResponse.getEntity().getContent();
-			Map json = JsonHelper.readJson(inStream, Map.class);
-			String subId = (String) ((Map)((Map) json.get("data")).get("submission")).get("id");
+			Map<?, ?> json = JsonHelper.readJson(inStream, Map.class);
+			String subId = (String) ((Map<?, ?>)((Map<?, ?>) json.get("data")).get("submission")).get("id");
 			deleteSubmission(subId);
 		}
 	}

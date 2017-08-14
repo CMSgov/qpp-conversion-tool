@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import gov.cms.qpp.conversion.model.error.Detail;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
