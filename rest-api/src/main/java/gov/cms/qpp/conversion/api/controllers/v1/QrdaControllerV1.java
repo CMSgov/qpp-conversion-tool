@@ -8,8 +8,10 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,14 +44,18 @@ public class QrdaControllerV1 {
 	 * @return Valid json or error json content
 	 * @throws IOException If errors occur during file upload or conversion
 	 */
-	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.POST, headers = {"Accept=application/vnd.qpp.cms.gov.v1+json"})
 	@ResponseStatus(HttpStatus.CREATED)
-	public String uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
+	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
 		API_LOG.info("Request received " + file.getName());
 		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(new InputStreamQrdaSource(file.getName(), file.getInputStream()));
 
 		validationService.validateQpp(qpp);
 		API_LOG.info("Conversion success " + file.getName());
-		return qpp.toString();
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+		ResponseEntity<String> response = new ResponseEntity<>(qpp.toString(), httpHeaders, HttpStatus.CREATED);
+		return response;
 	}
 }
