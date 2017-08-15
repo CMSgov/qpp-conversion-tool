@@ -45,7 +45,6 @@ public class QrdaControllerV1 {
 	 * @throws IOException If errors occur during file upload or conversion
 	 */
 	@RequestMapping(method = RequestMethod.POST, headers = {"Accept=application/vnd.qpp.cms.gov.v1+json"})
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
 		API_LOG.info("Request received " + file.getName());
 		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(new InputStreamQrdaSource(file.getName(), file.getInputStream()));

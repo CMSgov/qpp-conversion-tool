@@ -4,7 +4,10 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,9 +32,13 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	 */
 	@ExceptionHandler(TransformException.class)
 	@ResponseBody
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-	protected AllErrors handleTransformException(TransformException exception, WebRequest request) {
+	protected ResponseEntity<AllErrors> handleTransformException(TransformException exception, WebRequest request) {
 		API_LOG.error("Problem during conversion: ", exception);
-		return exception.getDetails();
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+		ResponseEntity<AllErrors> response = new ResponseEntity<>(exception.getDetails(), httpHeaders,
+				HttpStatus.UNPROCESSABLE_ENTITY);
+		return response;
 	}
 }
