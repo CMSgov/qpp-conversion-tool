@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.model;
 
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
  */
 public enum Program {
 	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS"),
-	CPC("CPCPLUS"),
+	CPC("CPCPLUS", "CPC"),
 	ALL;
 
 	private final Set<String> aliases;
@@ -32,7 +33,8 @@ public enum Program {
 	 */
 	public static Program getInstance(String name) {
 		return Arrays.stream(Program.values())
-				.filter(program -> program.aliases.contains(name))
+				.filter(program -> program.aliases.contains(
+						Optional.ofNullable(name).orElse("").toUpperCase()))
 				.findFirst()
 				.orElse(Program.ALL);
 	}

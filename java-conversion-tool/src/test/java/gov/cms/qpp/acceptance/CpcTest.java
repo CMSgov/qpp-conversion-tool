@@ -40,6 +40,15 @@ public class CpcTest extends BaseTest {
 		run("CLINICAL_DOCUMENT");
 	}
 
+	@Test
+	public void historicalFull() {
+		thrown.expect(TransformException.class);
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(CPC_FILE)));
+//		Converter.setHistorical(true);
+//		Converter.setScope(Sets.newHashSet(QrdaScope.getInstanceByName(type)));
+		converter.transform();
+	}
+
 	private void run(String type) {
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(CPC_FILE)));
 		Converter.setHistorical(true);

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
+import com.google.common.base.Optional;
 import gov.cms.qpp.conversion.util.ProgramContext;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -101,9 +102,8 @@ public class Registry<R extends Object> {
 	 * @param registryKey String
 	 */
 	public R get(TemplateId registryKey) {
-		ComponentKey key = getComponentKey(registryKey);
 		try {
-			Class<? extends R> handlerClass = registryMap.get(key);
+			Class<? extends R> handlerClass = findHandler(registryKey);
 			if (handlerClass == null) {
 				return null;
 			}
@@ -114,14 +114,19 @@ public class Registry<R extends Object> {
 		}
 	}
 
+	private Class<? extends R> findHandler(TemplateId registryKey) {
+		Class<? extends R> handler = registryMap.get(
+				getComponentKey(registryKey, ProgramContext.get()));
+		return (handler != null) ? handler : registryMap.get(getComponentKey(registryKey, Program.ALL));
+	}
+
 	/**
 	 * Create a ComponentKey using templateId and stashed Program.
 	 *
 	 * @param registryKey a template id
 	 * @return a component key
 	 */
-	private ComponentKey getComponentKey(TemplateId registryKey) {
-		Program program = ProgramContext.get();
+	private ComponentKey getComponentKey(TemplateId registryKey, Program program) {
 		return new ComponentKey(registryKey, program);
 	}
 
