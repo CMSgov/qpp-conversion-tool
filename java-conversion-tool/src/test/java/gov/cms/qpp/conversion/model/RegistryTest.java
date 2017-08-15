@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.model;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.InputDecoder;
 import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
+import gov.cms.qpp.conversion.util.ProgramContext;
 import org.jdom2.Element;
 import org.junit.After;
 import org.junit.Before;
@@ -57,10 +58,22 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testRegistryGetConverterHandler() throws Exception {
+	public void testRegistryGetDefaultConverterHandler() throws Exception {
+		ProgramContext.set(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
-		assertTrue("Registry should have been reset.", decoder instanceof Placeholder);
+		assertTrue("Registry should return " + Placeholder.class.getName() + " instance.",
+				decoder instanceof Placeholder);
+	}
+
+	@Test
+	public void testRegistryGetProgramSpecificConverterHandler() throws Exception {
+		ProgramContext.set(Program.CPC);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
+		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		assertTrue("Registry should return " + AnotherPlaceholder.class.getName() + " instance.",
+				decoder instanceof AnotherPlaceholder);
 	}
 
 	// This test must reside here in order to call the protected methods on the

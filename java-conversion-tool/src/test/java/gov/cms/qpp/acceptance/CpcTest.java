@@ -44,8 +44,6 @@ public class CpcTest extends BaseTest {
 	public void historicalFull() {
 		thrown.expect(TransformException.class);
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(CPC_FILE)));
-//		Converter.setHistorical(true);
-//		Converter.setScope(Sets.newHashSet(QrdaScope.getInstanceByName(type)));
 		converter.transform();
 	}
 

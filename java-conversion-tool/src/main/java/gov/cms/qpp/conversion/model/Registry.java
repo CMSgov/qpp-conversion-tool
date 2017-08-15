@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.model;
 
-import com.google.common.base.Optional;
 import gov.cms.qpp.conversion.util.ProgramContext;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -21,7 +20,7 @@ import java.util.Set;
  *
  * @author David Uselmann
  */
-public class Registry<R extends Object> {
+public class Registry<R> {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Registry.class);
 
 	// For now this is static and can be refactored into an instance
@@ -45,7 +44,7 @@ public class Registry<R extends Object> {
 	/**
 	 * load or reload registry contents
 	 */
-	public void load() {
+	private void load() {
 		init();
 		registerAnnotatedHandlers();
 	}
@@ -64,7 +63,7 @@ public class Registry<R extends Object> {
 	 * TransformHandlers that need registration.
 	 */
 	@SuppressWarnings("unchecked")
-	void registerAnnotatedHandlers() {
+	private void registerAnnotatedHandlers() {
 		Reflections reflections = new Reflections("gov.cms");
 		Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(annotationClass);
 
@@ -75,7 +74,7 @@ public class Registry<R extends Object> {
 		}
 	}
 
-	public Set<ComponentKey> getComponentKeys(Class<?> annotatedClass) {
+	Set<ComponentKey> getComponentKeys(Class<?> annotatedClass) {
 		Annotation annotation = annotatedClass.getAnnotation(annotationClass);
 		Set<ComponentKey> values = new HashSet<>();
 
@@ -114,29 +113,26 @@ public class Registry<R extends Object> {
 		}
 	}
 
+	/**
+	 * Retrieve a handler for the given template id
+	 *
+	 * @param registryKey template id
+	 * @return handler i.e. {@link Validator}, {@link Decoder} or {@link Encoder}
+	 */
 	private Class<? extends R> findHandler(TemplateId registryKey) {
 		Class<? extends R> handler = registryMap.get(
-				getComponentKey(registryKey, ProgramContext.get()));
-		return (handler != null) ? handler : registryMap.get(getComponentKey(registryKey, Program.ALL));
-	}
-
-	/**
-	 * Create a ComponentKey using templateId and stashed Program.
-	 *
-	 * @param registryKey a template id
-	 * @return a component key
-	 */
-	private ComponentKey getComponentKey(TemplateId registryKey, Program program) {
-		return new ComponentKey(registryKey, program);
+				new ComponentKey(registryKey, ProgramContext.get()));
+		return (handler != null) ? handler : registryMap.get(
+				new ComponentKey(registryKey, Program.ALL));
 	}
 
 	/**
 	 * Means ot register a new transformation handler
 	 *
 	 * @param registryKey key that identifies a component i.e. a {@link Validator}, {@link Decoder} or {@link Encoder}
-	 * @param handler
+	 * @param handler the keyed {@link Validator}, {@link Decoder} or {@link Encoder}
 	 */
-	public void register(ComponentKey registryKey, Class<? extends R> handler) {
+	void register(ComponentKey registryKey, Class<? extends R> handler) {
 		DEV_LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
 				+ annotationClass.getSimpleName() + ".");
 		// This could be a class or class name and instantiated on lookup

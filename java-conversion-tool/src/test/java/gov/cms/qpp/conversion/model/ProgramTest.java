@@ -27,4 +27,10 @@ public class ProgramTest {
 		assertThat("Program other than " + Program.ALL + " was returned",
 				Program.getInstance("meep"), is(Program.ALL));
 	}
+
+	@Test
+	public void instanceRetrievalNullProgramName() {
+		assertThat("Program other than " + Program.ALL + " was returned",
+				Program.getInstance(null), is(Program.ALL));
+	}
 }

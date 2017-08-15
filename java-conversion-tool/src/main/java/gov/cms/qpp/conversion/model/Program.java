@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  */
 public enum Program {
 	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS"),
-	CPC("CPCPLUS", "CPC"),
+	CPC("CPCPLUS"),
 	ALL;
 
 	private final Set<String> aliases;
