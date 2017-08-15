@@ -117,7 +117,7 @@ public class QrdaValidator {
 	 */
 	private void validateChildren(final Node parentNode) {
 		parentNode.getChildNodes().stream()
-				.filter(n -> !n.isValidated())
+				.filter(Node::isNotValidated)
 				.forEach(this::validateTree);
 	}
 }
