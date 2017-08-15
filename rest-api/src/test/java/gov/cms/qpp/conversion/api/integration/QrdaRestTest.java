@@ -41,7 +41,7 @@ public class QrdaRestTest {
 	public void testValidQpp() throws Exception {
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		mockMvc.perform(MockMvcRequestBuilders
-			.fileUpload("/v1/qrda3").file(qrda3File))
+			.fileUpload("/qrda3").file(qrda3File))
 			.andExpect(status().is(201))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$.taxpayerIdentificationNumber").exists());
@@ -51,7 +51,7 @@ public class QrdaRestTest {
 	public void testInvalidQpp() throws Exception {
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/not-a-QDRA-III-file.xml")));
 		mockMvc.perform(MockMvcRequestBuilders
-			.fileUpload("/v1/qrda3").file(qrda3File))
+			.fileUpload("/qrda3").file(qrda3File))
 			.andExpect(status().is(422))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$.errors").exists());
