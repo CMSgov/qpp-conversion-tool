@@ -67,6 +67,12 @@ public class NodeTest {
 	}
 
 	@Test
+	public void testNotValidatedMember() {
+		Node node = new Node();
+		assertTrue(node.isNotValidated());
+	}
+
+	@Test
 	public void testParentMember() {
 		Node child = new Node();
 		Node parent = new Node();
