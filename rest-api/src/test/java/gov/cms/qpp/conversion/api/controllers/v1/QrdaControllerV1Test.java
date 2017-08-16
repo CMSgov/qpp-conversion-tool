@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,10 +59,10 @@ public class QrdaControllerV1Test {
 	public void uploadQrdaFile() throws IOException {
 		when(qrdaService.convertQrda3ToQpp(any(QrdaSource.class))).thenReturn(qppResult);
 
-		String qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
+		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
 
 		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(QrdaSource.class));
-		assertThat("The QPP response body is incorrect.", qppResponse, is(qppResult.toString()));
+		assertThat("The QPP response body is incorrect.", qppResponse.getBody(), is(qppResult.toString()));
 	}
 
 	@Test
@@ -72,7 +73,7 @@ public class QrdaControllerV1Test {
 			.when(validationService).validateQpp(isNull());
 
 		try {
-			String qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
+			ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
 			fail("An exception should have occurred. Instead was " + qppResponse);
 		} catch(TransformException exception) {
 			assertThat("A different exception occurred.", exception.getMessage(), is(transformationErrorMessage));

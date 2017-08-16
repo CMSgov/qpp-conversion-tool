@@ -11,7 +11,7 @@ public interface QrdaService {
 	/**
 	 * Converts a given a input stream with to conversion result content
 	 *
-	 * @param fileInputStream Object to be converted
+	 * @param source Object to be converted
 	 * @return Results of the conversion
 	 */
 	JsonWrapper convertQrda3ToQpp(QrdaSource source);
