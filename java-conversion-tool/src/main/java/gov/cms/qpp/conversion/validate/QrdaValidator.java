@@ -67,7 +67,7 @@ public class QrdaValidator {
 		Set<NodeValidator> validatorsForNode = getValidators(node.getType());
 
 		validatorsForNode.forEach(validatorForNode -> {
-			if (isValidationRequired(validatorForNode)) {
+			if (validatorForNode != null && isValidationRequired(validatorForNode)) {
 				Set<Detail> nodeErrors = validatorForNode.validateSingleNode(node);
 				details.addAll(nodeErrors);
 			}
@@ -84,6 +84,9 @@ public class QrdaValidator {
 		Set<NodeValidator> nodeValidators = VALIDATORS.inclusiveGet(templateId);
 		return nodeValidators.stream()
 				.filter(nodeValidator -> {
+					if (nodeValidator == null) {
+						return false;
+					}
 					Validator validator = nodeValidator.getClass().getAnnotation(Validator.class);
 					return scope == null || scope.contains(validator.value());
 				})
