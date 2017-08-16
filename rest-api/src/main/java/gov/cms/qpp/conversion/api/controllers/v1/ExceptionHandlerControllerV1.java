@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -37,8 +36,7 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
-		ResponseEntity<AllErrors> response = new ResponseEntity<>(exception.getDetails(), httpHeaders,
+		return new ResponseEntity<>(exception.getDetails(), httpHeaders,
 				HttpStatus.UNPROCESSABLE_ENTITY);
-		return response;
 	}
 }

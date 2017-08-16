@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,7 +53,6 @@ public class QrdaControllerV1 {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
-		ResponseEntity<String> response = new ResponseEntity<>(qpp.toString(), httpHeaders, HttpStatus.CREATED);
-		return response;
+		return new ResponseEntity<>(qpp.toString(), httpHeaders, HttpStatus.CREATED);
 	}
 }
