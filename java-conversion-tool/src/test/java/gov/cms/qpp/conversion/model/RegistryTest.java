@@ -95,9 +95,9 @@ public class RegistryTest {
 		Iterator<InputDecoder> iterator = decoders.iterator();
 
 		assertThat("Should return two decoders", decoders.size(), is(2));
-		assertTrue("Second Registry entry should be a " + Placeholder.class.getName() + " instance.",
+		assertTrue("First Registry entry should be a " + Placeholder.class.getName() + " instance.",
 				iterator.next() instanceof Placeholder);
-		assertTrue("First Registry entry should be a " + AnotherPlaceholder.class.getName() + " instance.",
+		assertTrue("Second Registry entry should be a " + AnotherPlaceholder.class.getName() + " instance.",
 				iterator.next() instanceof AnotherPlaceholder);
 	}
 

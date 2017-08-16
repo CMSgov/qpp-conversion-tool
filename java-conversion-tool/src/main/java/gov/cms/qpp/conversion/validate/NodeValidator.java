@@ -33,7 +33,7 @@ public abstract class NodeValidator {
 	 * @see #internalValidateSingleNode(Node)
 	 */
 	public Set<Detail> validateSingleNode(final Node node) {
-		DEV_LOG.debug("Using " + template + " validator to validate " + node);
+		DEV_LOG.debug("Using " + template + " validator (class: " + this.getClass().getName() + ") to validate " + node);
 		internalValidateSingleNode(node);
 		return getDetails();
 	}
