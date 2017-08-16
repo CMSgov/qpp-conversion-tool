@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
 /**
- * Validates the QRDA Category II Report Node's national provide identifier/taxpayer identification number combinations
+ * Validates the QRDA Category III Report Node's national provide identifier/taxpayer identification number combinations
  * for the given programs: MIPS individual, MIPS group, CPC+.
  */
 @Validator(value = TemplateId.QRDA_CATEGORY_III_REPORT_V3, required = true)

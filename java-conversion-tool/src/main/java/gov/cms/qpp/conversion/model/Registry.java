@@ -7,13 +7,14 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * This class manages the available transformation handlers. Currently it takes
@@ -121,9 +122,19 @@ public class Registry<R> {
 	}
 
 	public Set<R> inclusiveGet(TemplateId registryKey) {
-		return findHandlers(registryKey).stream()
+		return findHandlers(getKeys(registryKey, true)).stream()
 				.map(this::instantiateHandler)
 				.collect(Collectors.toSet());
+	}
+
+	private List<ComponentKey> getKeys(TemplateId registryKey, boolean generalPriority) {
+		List<ComponentKey> returnValue = Arrays.asList(
+				new ComponentKey(registryKey, ProgramContext.get()),
+				new ComponentKey(registryKey, Program.ALL));
+		if (generalPriority) {
+			Collections.reverse(returnValue);
+		}
+		return returnValue;
 	}
 
 	/**
@@ -133,16 +144,14 @@ public class Registry<R> {
 	 * @return handler i.e. {@link Validator}, {@link Decoder} or {@link Encoder}
 	 */
 	private Class<? extends R> findHandler(TemplateId registryKey) {
-		return findHandlers(registryKey).stream()
+		return findHandlers(getKeys(registryKey, false)).stream()
 				.findFirst()
 				.orElse(null);
 	}
 
-	private Set<Class<? extends R>> findHandlers(TemplateId registryKey) {
+	private Set<Class<? extends R>> findHandlers(List<ComponentKey> keys) {
 		Set<Class<? extends R>> handlers = new LinkedHashSet<>();
-		ComponentKey program = new ComponentKey(registryKey, ProgramContext.get());
-		ComponentKey general = new ComponentKey(registryKey, Program.ALL);
-		Stream.of(program, general).forEach(key -> {
+		keys.forEach(key -> {
 			Class<? extends R> handler = registryMap.get(key);
 			if (handler != null) {
 				handlers.add(handler);

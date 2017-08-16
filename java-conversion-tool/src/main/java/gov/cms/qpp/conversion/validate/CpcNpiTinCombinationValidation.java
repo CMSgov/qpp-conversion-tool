@@ -7,11 +7,11 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
 /**
- * Validates the QRDA Category II Report Node's national provide identifier/taxpayer identification number combinations
+ * Validates the QRDA Category III Report Node's national provide identifier/taxpayer identification number combinations
  * for the given programs: MIPS individual, MIPS group, CPC+.
  */
 @Validator(value = TemplateId.QRDA_CATEGORY_III_REPORT_V3, program = Program.CPC, required = true)
-public class CpcNpiTinCombinationValidation extends NpiTinCombinationValidation {
+public class CpcNpiTinCombinationValidation extends NodeValidator {
 
 	static final String AT_LEAST_ONE_NPI_TIN_COMBINATION = "Must have at least one NPI/TIN combination";
 	static final String ONLY_ONE_APM_ALLOWED =
@@ -24,8 +24,6 @@ public class CpcNpiTinCombinationValidation extends NpiTinCombinationValidation 
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		super.internalValidateSingleNode(node);
-
 		if (!getDetails().isEmpty()) {
 			return;
 		}
@@ -40,6 +38,5 @@ public class CpcNpiTinCombinationValidation extends NpiTinCombinationValidation 
 				.incompleteValidation()
 				.singleValue(ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.ENTITY_ID);
 		}
-
 	}
 }

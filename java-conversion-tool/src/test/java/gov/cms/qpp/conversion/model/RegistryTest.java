@@ -93,12 +93,12 @@ public class RegistryTest {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
 		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
 		Iterator<InputDecoder> iterator = decoders.iterator();
-		
+
 		assertThat("Should return two decoders", decoders.size(), is(2));
-		assertTrue("First Registry entry should be a " + AnotherPlaceholder.class.getName() + " instance.",
-				iterator.next() instanceof AnotherPlaceholder);
 		assertTrue("Second Registry entry should be a " + Placeholder.class.getName() + " instance.",
 				iterator.next() instanceof Placeholder);
+		assertTrue("First Registry entry should be a " + AnotherPlaceholder.class.getName() + " instance.",
+				iterator.next() instanceof AnotherPlaceholder);
 	}
 
 	// This test must reside here in order to call the protected methods on the
