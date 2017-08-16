@@ -6,10 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This class manages the available transformation handlers. Currently it takes
@@ -101,8 +105,11 @@ public class Registry<R> {
 	 * @param registryKey String
 	 */
 	public R get(TemplateId registryKey) {
+		return instantiateHandler(findHandler(registryKey));
+	}
+
+	private R instantiateHandler(Class<? extends R> handlerClass) {
 		try {
-			Class<? extends R> handlerClass = findHandler(registryKey);
 			if (handlerClass == null) {
 				return null;
 			}
@@ -113,6 +120,12 @@ public class Registry<R> {
 		}
 	}
 
+	public Set<R> inclusiveGet(TemplateId registryKey) {
+		return findHandlers(registryKey).stream()
+				.map(this::instantiateHandler)
+				.collect(Collectors.toSet());
+	}
+
 	/**
 	 * Retrieve a handler for the given template id
 	 *
@@ -120,10 +133,22 @@ public class Registry<R> {
 	 * @return handler i.e. {@link Validator}, {@link Decoder} or {@link Encoder}
 	 */
 	private Class<? extends R> findHandler(TemplateId registryKey) {
-		Class<? extends R> handler = registryMap.get(
-				new ComponentKey(registryKey, ProgramContext.get()));
-		return (handler != null) ? handler : registryMap.get(
-				new ComponentKey(registryKey, Program.ALL));
+		return findHandlers(registryKey).stream()
+				.findFirst()
+				.orElse(null);
+	}
+
+	private Set<Class<? extends R>> findHandlers(TemplateId registryKey) {
+		Set<Class<? extends R>> handlers = new LinkedHashSet<>();
+		ComponentKey program = new ComponentKey(registryKey, ProgramContext.get());
+		ComponentKey general = new ComponentKey(registryKey, Program.ALL);
+		Stream.of(program, general).forEach(key -> {
+			Class<? extends R> handler = registryMap.get(key);
+			if (handler != null) {
+				handlers.add(handler);
+			}
+		});
+		return handlers;
 	}
 
 	/**
