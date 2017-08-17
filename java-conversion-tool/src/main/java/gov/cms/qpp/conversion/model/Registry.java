@@ -109,6 +109,12 @@ public class Registry<R> {
 		return instantiateHandler(findHandler(registryKey));
 	}
 
+	/**
+	 * Instantiate a given handler class.
+	 *
+	 * @param handlerClass the class to instantiate
+	 * @return an instance of the given class
+	 */
 	private R instantiateHandler(Class<? extends R> handlerClass) {
 		try {
 			if (handlerClass == null) {
@@ -121,12 +127,25 @@ public class Registry<R> {
 		}
 	}
 
+	/**
+	 * Retrieve handlers that apply generally and specifically to the given template. The
+	 *
+	 * @param registryKey the template for which handlers will be searched
+	 * @return all applicable handlers
+	 */
 	public Set<R> inclusiveGet(TemplateId registryKey) {
 		return findHandlers(getKeys(registryKey, true)).stream()
 				.map(this::instantiateHandler)
-				.collect(Collectors.toSet());
+				.collect(Collectors.toCollection(LinkedHashSet<R>::new));
 	}
 
+	/**
+	 * Get a template specific list that specifies the order in which handler classes will be searched.
+	 *
+	 * @param registryKey a template id
+	 * @param generalPriority specify the order of specificity i.e. general first or program specific first.
+	 * @return list of component keys
+	 */
 	private List<ComponentKey> getKeys(TemplateId registryKey, boolean generalPriority) {
 		List<ComponentKey> returnValue = Arrays.asList(
 				new ComponentKey(registryKey, ProgramContext.get()),
@@ -149,6 +168,12 @@ public class Registry<R> {
 				.orElse(null);
 	}
 
+	/**
+	 * Find and return handler classes that correspond to the given component keys.
+	 *
+	 * @param keys a list of potential {@link Registry#registryMap} keys
+	 * @return ordered set of handler classes
+	 */
 	private Set<Class<? extends R>> findHandlers(List<ComponentKey> keys) {
 		Set<Class<? extends R>> handlers = new LinkedHashSet<>();
 		keys.forEach(key -> {
