@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.model;
 
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,9 +31,10 @@ public enum Program {
 	 * @param name used to find the corresponding program
 	 * @return the corresponding program or {@link Program#ALL} if none found.
 	 */
-	public static Program getInstance(String name) {
+	public static Program getInstance(final String name) {
+		String upperName = Optional.ofNullable(name).map(String::toUpperCase).orElse("");
 		return Arrays.stream(Program.values())
-				.filter(program -> program.aliases.contains(name))
+				.filter(program -> program.aliases.contains(upperName))
 				.findFirst()
 				.orElse(Program.ALL);
 	}

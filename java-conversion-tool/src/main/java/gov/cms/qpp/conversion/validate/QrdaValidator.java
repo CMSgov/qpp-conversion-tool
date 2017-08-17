@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The engine that executes the VALIDATORS on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
@@ -63,30 +64,33 @@ public class QrdaValidator {
 	 * @param node The node to validate.
 	 */
 	private void validateSingleNode(final Node node) {
-		NodeValidator validatorForNode = getValidator(node.getType());
+		Set<NodeValidator> validatorsForNode = getValidators(node.getType());
 
-		if (null == validatorForNode || !isValidationRequired(validatorForNode)) {
-			return;
-		}
-
-		Set<Detail> nodeErrors = validatorForNode.validateSingleNode(node);
-		details.addAll(nodeErrors);
+		validatorsForNode.forEach(validatorForNode -> {
+			if (validatorForNode != null && isValidationRequired(validatorForNode)) {
+				Set<Detail> nodeErrors = validatorForNode.validateSingleNode(node);
+				details.addAll(nodeErrors);
+			}
+		});
 	}
 
 	/**
-	 * Retrieve a permitted {@link Validator}. {@link #scope} is used to determine which VALIDATORS are allowable.
+	 * Retrieve permitted {@link Validator}s. {@link #scope} is used to determine which VALIDATORS are allowable.
 	 *
 	 * @param templateId string representation of a would be validator's template id
-	 * @return validator that corresponds to the given template id
+	 * @return validators that correspond to the given template id
 	 */
-	private NodeValidator getValidator(TemplateId templateId) {
-		NodeValidator nodeValidator = VALIDATORS.get(templateId);
-		if (nodeValidator != null) {
-			Validator validator = nodeValidator.getClass().getAnnotation(Validator.class);
-			return (scope != null && !scope.contains(validator.value())) ? null : nodeValidator;
-		}
-
-		return null;
+	private Set<NodeValidator> getValidators(TemplateId templateId) {
+		Set<NodeValidator> nodeValidators = VALIDATORS.inclusiveGet(templateId);
+		return nodeValidators.stream()
+				.filter(nodeValidator -> {
+					if (nodeValidator == null) {
+						return false;
+					}
+					Validator validator = nodeValidator.getClass().getAnnotation(Validator.class);
+					return scope == null || scope.contains(validator.value());
+				})
+				.collect(Collectors.toSet());
 	}
 
 	/**
