@@ -58,30 +58,10 @@ public class TemplateIdTest {
 		assertThat("TemplateId#generateTemplateIdString() is not working",
 		           TemplateId.generateTemplateIdString(root, extension), is(root + ":" + extension));
 	}
+
 	@Test
 	public void valueOfTest() {
 		String value = TemplateId.valueOf("DEFAULT").getTemplateId();
 		assertThat("Expect value of to return a TemplateId", value, is("default"));
 	}
-
-	@Test //This test explores more paths through TemplateId for Circle CI coverage.
-	public void getTypeByIdHistorical() throws Exception {
-		boolean isLegacy = Converter.getHistorical();
-		assertThat("Legacy data is false", isLegacy, is(false));
-
-		Field field = Converter.class.getDeclaredField("historical");
-		field.setAccessible(true);
-		field.set(null, true);
-		isLegacy = Converter.getHistorical();
-		assertThat("Legacy data is false", isLegacy, is(true));
-
-		String value = TemplateId.getTemplateId(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId(), "").getTemplateId();
-		assertThat("Expect value of to return a TemplateId", value, is(TemplateId.QRDA_CATEGORY_III_REPORT_V3.getTemplateId()));
-
-		value = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getTemplateId(),"").getTemplateId();
-		assertThat("Expect value of to return a TemplateId", value, is(TemplateId.CLINICAL_DOCUMENT.getTemplateId()));
-
-		field.set(null, false);
-	}
-
 }

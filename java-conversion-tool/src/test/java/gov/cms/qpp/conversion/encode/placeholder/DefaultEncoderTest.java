@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.encode.placeholder;
 
+import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -22,12 +24,13 @@ public class DefaultEncoderTest {
 		InputStream stream = XmlUtils.fileToStream(Paths.get("../qrda-files/valid-QRDA-III.xml"));
 		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
 
-		Node node = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Converter converter = ConverterTestHelper.newMockConverter();
+		Node node = new QppXmlDecoder(converter).decode(XmlUtils.stringToDom(xmlFragment));
 
 		Node placeHolder = new Node(TemplateId.DEFAULT, node);
 		node.addChildNode(placeHolder);
 		JsonWrapper wrapper = new JsonWrapper();
-		new QppOutputEncoder().encode(wrapper, node);
+		new QppOutputEncoder(converter).encode(wrapper, node);
 
 		Assert.assertTrue(wrapper.toString().length() > 10);
 	}

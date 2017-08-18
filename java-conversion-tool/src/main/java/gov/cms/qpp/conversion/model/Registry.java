@@ -1,20 +1,28 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.util.ProgramContext;
-import org.reflections.Reflections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.annotation.Annotation;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import gov.cms.qpp.conversion.Converter;
 
 /**
  * This class manages the available transformation handlers. Currently it takes
@@ -26,57 +34,52 @@ import java.util.stream.Collectors;
  * @author David Uselmann
  */
 public class Registry<R> {
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(Registry.class);
 
-	// For now this is static and can be refactored into an instance
-	// variable when/if we have an orchestrator that instantiates an registry
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(Registry.class);
+	private static final Map<Class<?>, Function<Converter, Object>> CONSTRUCTORS = new IdentityHashMap<>();
+	private static final Map<Class<? extends Annotation>, Map<ComponentKey, Class<?>>> SHARED_REGISTRY_MAP = new ConcurrentHashMap<>(); // TODO - may want to decrease the concurrency level for memory usage
+
+	static {
+		
+	}
+
+	private final Converter converter;
 	/**
 	 * This will be an XPATH string to converter handler registration Since
 	 * Converter was taken for the main stub, I chose Handler for now.
 	 */
-	private Map<ComponentKey, Class<? extends R>> registryMap;
-
+	private Map<ComponentKey, Class<?>> registryMap;
 	private Class<? extends Annotation> annotationClass;
 
 	/**
 	 * initialize and configure the registry
 	 */
-	public Registry(Class<? extends Annotation> annotationClass) {
+	public Registry(Converter converter, Class<? extends Annotation> annotationClass) {
+		this.converter = converter;
 		this.annotationClass = annotationClass;
-		load();
-	}
-
-	/**
-	 * load or reload registry contents
-	 */
-	private void load() {
-		init();
 		registerAnnotatedHandlers();
-	}
-
-	/**
-	 * This is a helper method used for testing. Singletons have trouble in
-	 * testing if they cannot be reset. It is package access to only allow
-	 * classes in the same package, like tests, have access.
-	 */
-	void init() {
-		registryMap = new HashMap<>();
 	}
 
 	/**
 	 * This method will scan all classes for the annotation for
 	 * TransformHandlers that need registration.
 	 */
-	@SuppressWarnings("unchecked")
 	private void registerAnnotatedHandlers() {
+		registryMap = SHARED_REGISTRY_MAP.computeIfAbsent(annotationClass, this::lookupAnnotatedClasses);
+	}
+
+	private Map<ComponentKey, Class<?>> lookupAnnotatedClasses(Class<? extends Annotation> annotationClass) {
 		Reflections reflections = new Reflections("gov.cms");
 		Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(annotationClass);
+		Map<ComponentKey, Class<?>> registry = new HashMap<>();
 
 		for (Class<?> annotatedClass : annotatedClasses) {
 			for (ComponentKey key : getComponentKeys(annotatedClass)) {
-				register(key, (Class<R>) annotatedClass);
+				registry.put(key, annotatedClass);
 			}
 		}
+
+		return registry;
 	}
 
 	Set<ComponentKey> getComponentKeys(Class<?> annotatedClass) {
@@ -116,14 +119,44 @@ public class Registry<R> {
 	 * @return an instance of the given class
 	 */
 	private R instantiateHandler(Class<? extends R> handlerClass) {
-		try {
-			if (handlerClass == null) {
-				return null;
-			}
-			return handlerClass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			DEV_LOG.warn("Unable to instantiate the class", e);
+		if (handlerClass == null) {
 			return null;
+		}
+
+		return handlerClass.cast(CONSTRUCTORS.computeIfAbsent(handlerClass, this::createHandlerConstructor).apply(converter));
+	}
+
+	private Function<Converter, Object> createHandlerConstructor(Class<?> handlerClass) {
+		try {
+			try {
+				Constructor<?> constructor = handlerClass.getConstructor(Converter.class);
+				MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
+						.asType(MethodType.methodType(Object.class, Converter.class));
+				return converter -> {
+					try {
+						return handle.invokeExact(converter);
+					} catch (Throwable e) {
+						DEV_LOG.warn("Unable to invoke constructor handle", e);
+						return null;
+					}
+				};
+			} catch (NoSuchMethodException thatsOk) {
+				Constructor<?> constructor = handlerClass.getConstructor();
+				MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
+						.asType(MethodType.methodType(Object.class));
+
+				return ignore -> {
+					try {
+						return handle.invokeExact();
+					} catch (Throwable e) {
+						DEV_LOG.warn("Unable to invoke no-args constructor handle", e);
+						return null;
+					}
+				};
+			}
+		} catch (NoSuchMethodException | IllegalAccessException e) {
+			DEV_LOG.warn("Unable to create constructor handle", e);
+			return ignore -> null;
 		}
 	}
 
@@ -148,7 +181,7 @@ public class Registry<R> {
 	 */
 	private List<ComponentKey> getKeys(TemplateId registryKey, boolean generalPriority) {
 		List<ComponentKey> returnValue = Arrays.asList(
-				new ComponentKey(registryKey, ProgramContext.get()),
+				new ComponentKey(registryKey, converter.getProgram()),
 				new ComponentKey(registryKey, Program.ALL));
 		if (generalPriority) {
 			Collections.reverse(returnValue);
@@ -177,31 +210,13 @@ public class Registry<R> {
 	private Set<Class<? extends R>> findHandlers(List<ComponentKey> keys) {
 		Set<Class<? extends R>> handlers = new LinkedHashSet<>();
 		keys.forEach(key -> {
-			Class<? extends R> handler = registryMap.get(key);
+			@SuppressWarnings("unchecked")
+			Class<? extends R> handler = (Class<? extends R>) registryMap.get(key);
 			if (handler != null) {
 				handlers.add(handler);
 			}
 		});
 		return handlers;
-	}
-
-	/**
-	 * Means ot register a new transformation handler
-	 *
-	 * @param registryKey key that identifies a component i.e. a {@link Validator}, {@link Decoder} or {@link Encoder}
-	 * @param handler the keyed {@link Validator}, {@link Decoder} or {@link Encoder}
-	 */
-	void register(ComponentKey registryKey, Class<? extends R> handler) {
-		DEV_LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
-				+ annotationClass.getSimpleName() + ".");
-		// This could be a class or class name and instantiated on lookup
-		if (registryMap.containsKey(registryKey)) {
-			DEV_LOG.error("Duplicate registered handler for " + registryKey
-						+ " both " + registryMap.get(registryKey).getName()
-						+ " and " + handler.getName());
-		}
-		
-		registryMap.put(registryKey, handler);
 	}
 
 	public int size() {

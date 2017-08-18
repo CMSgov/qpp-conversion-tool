@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -11,7 +12,12 @@ import java.util.List;
  */
 @Encoder(TemplateId.ACI_NUMERATOR)
 public class AciProportionNumeratorEncoder extends QppOutputEncoder {
+
 	private static final String ENCODE_LABEL = "numerator";
+
+	public AciProportionNumeratorEncoder(Converter converter) {
+		super(converter);
+	}
 
 	/**
 	 *  Encodes an ACI Numerator Measure into the QPP format
@@ -36,7 +42,7 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 	}
 
 	private JsonWrapper encodeChild(Node numeratorValueNode) {
-		JsonOutputEncoder numeratorValueEncoder = ENCODERS.get(numeratorValueNode.getType());
+		JsonOutputEncoder numeratorValueEncoder = encoders.get(numeratorValueNode.getType());
 
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		numeratorValueEncoder.encode(jsonWrapper, numeratorValueNode);

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -86,7 +87,7 @@ public class MultipleTinsEncoderTest {
 		multipleTinsNode.addChildNode(npiTinNodeTwo);
 
 		testWrapper = new JsonWrapper();
-		JsonOutputEncoder multipleTinsEncoder = new MultipleTinsEncoder();
+		JsonOutputEncoder multipleTinsEncoder = new MultipleTinsEncoder(ConverterTestHelper.newMockConverter());
 		multipleTinsEncoder.internalEncode(testWrapper, multipleTinsNode);
 	}
 

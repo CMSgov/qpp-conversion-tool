@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -48,7 +49,7 @@ public class EncoderTest {
 	 */
 	@Test
 	public void decodeTemplateIds() throws Exception {
-		Registry<OutputEncoder> registry = new Registry<>(Encoder.class);
+		Registry<OutputEncoder> registry = new Registry<>(ConverterTestHelper.newMockConverter(), Encoder.class);
 		for (TemplateId templateId : templateIds) {
 			OutputEncoder encoder = registry.get(templateId);
 			assertThat(templateId + " returned node should not be null", encoder, is(not(nullValue())));

@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -11,7 +12,12 @@ import org.jdom2.Element;
  */
 @Decoder(TemplateId.MEASURE_SECTION_V2)
 public class QualitySectionDecoder extends QppXmlDecoder {
+
 	public static final String CATEGORY = "category";
+
+	public QualitySectionDecoder(Converter converter) {
+		super(converter);
+	}
 
 	/**
 	 * Decodes an Quality Measure Section into the intermediate Node format

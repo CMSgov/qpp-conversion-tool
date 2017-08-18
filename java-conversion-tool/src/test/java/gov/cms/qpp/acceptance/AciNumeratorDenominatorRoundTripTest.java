@@ -1,11 +1,15 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.QrdaSource;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
@@ -90,7 +94,8 @@ public class AciNumeratorDenominatorRoundTripTest {
 				+ "				</entryRelationship>\n" + "			</observation>\n" + "		</component>\n"
 				+ "	</organizer>\n" + "</entry>";
 
-		Node numeratorDenominatorNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Converter converter = ConverterTestHelper.newMockConverter();
+		Node numeratorDenominatorNode = new QppXmlDecoder(converter).decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(numeratorDenominatorNode.getChildNodes());
 
@@ -99,7 +104,7 @@ public class AciNumeratorDenominatorRoundTripTest {
 		assertThat("The XPath of the numerator denominator node is incorrect",
 		           numeratorDenominatorNode.getChildNodes().get(0).getPath(), is(xPathExpected));
 
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(converter);
 		List<Node> nodes = new ArrayList<>();
 		nodes.add(numeratorDenominatorNode);
 		encoder.setNodes(nodes);

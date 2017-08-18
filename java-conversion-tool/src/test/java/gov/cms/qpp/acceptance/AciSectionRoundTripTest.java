@@ -1,6 +1,7 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
@@ -20,7 +21,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-public class AciSectionRoundTripTest extends BaseTest {
+public class AciSectionRoundTripTest {
 
 	@Test
 	public void parseSparseAciSectionAsNode() throws XmlException {
@@ -54,7 +55,7 @@ public class AciSectionRoundTripTest extends BaseTest {
 		                     + "</component>";
 
 		//execute
-		Node parentNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node parentNode = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
@@ -96,7 +97,7 @@ public class AciSectionRoundTripTest extends BaseTest {
 		                     + "</component>";
 
 		//execute
-		Node parentNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node parentNode = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
@@ -135,13 +136,14 @@ public class AciSectionRoundTripTest extends BaseTest {
 
 		String expected = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ {\n    \"measure\" : \"measure1\"\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-04-30\"\n}";
 
+		Converter converter = ConverterTestHelper.newMockConverter();
 		//Decode
-		Node measureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node measureNode = new QppXmlDecoder(converter).decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(measureNode.getChildNodes());
 
 		//Encode
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(converter);
 		List<Node> nodes = new ArrayList<>();
 		nodes.add(measureNode);
 		encoder.setNodes(nodes);

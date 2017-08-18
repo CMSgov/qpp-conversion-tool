@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
@@ -10,6 +10,9 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -25,12 +28,12 @@ import static org.junit.Assert.assertThat;
 /**
  * Test the MeasureData Validator
  */
-public class MeasureDataValidatorTest extends BaseTest {
+public class MeasureDataValidatorTest {
 
 	@Test
 	public void internalValidateSingleNode() throws Exception {
 		String happy = getFixture("measureDataHappy.xml");
-		Node placeholder = new QppXmlDecoder().decode(XmlUtils.stringToDom(happy));
+		Node placeholder = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(happy));
 		MeasureDataValidator validator = new MeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -116,6 +119,20 @@ public class MeasureDataValidatorTest extends BaseTest {
 
 	private List<Detail> getErrors(AllErrors content) {
 		return content.getErrors().get(0).getDetails();
+	}
+
+
+
+	/**
+	 * Retrieve fixture file content using "src/test/resources/fixtures/" as a base directory
+	 *
+	 * @param name file name
+	 * @return file content
+	 * @throws IOException when it can't locate / read the file
+	 */
+	protected static String getFixture(final String name) throws IOException {
+		Path path = Paths.get("src/test/resources/fixtures/" + name);
+		return new String(Files.readAllBytes(path));
 	}
 
 }

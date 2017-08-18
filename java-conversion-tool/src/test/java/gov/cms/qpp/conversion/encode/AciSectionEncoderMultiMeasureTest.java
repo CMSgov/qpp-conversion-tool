@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -115,7 +116,7 @@ public class AciSectionEncoderMultiMeasureTest {
 
 	@Test
 	public void testEncoder() {
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(ConverterTestHelper.newMockConverter());
 
 		encoder.setNodes(nodes);
 

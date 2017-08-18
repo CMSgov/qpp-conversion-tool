@@ -15,7 +15,6 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.conversion.util.ProgramContext;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -32,7 +31,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
  * Expects a list of file names as CLI parameters to be processed
@@ -45,14 +43,14 @@ public class Converter {
 	static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
 	static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
 
-	private static boolean historical = false;
-	private static Set<QrdaScope> scope = new HashSet<>();
-
+	private final QrdaSource source;
+	private boolean historical;
+	private Set<QrdaScope> scope = new HashSet<>();
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
 	private List<Detail> details = new ArrayList<>();
 	private Node decoded;
-	private final QrdaSource source;
+	private Program program = Program.ALL;
 
 	/**
 	 * Constructor for the CLI Converter application
@@ -61,7 +59,6 @@ public class Converter {
 	 */
 	public Converter(QrdaSource source) {
 		Objects.requireNonNull(source, "source");
-		ProgramContext.set(Program.ALL);
 
 		this.source = source;
 	}
@@ -71,7 +68,7 @@ public class Converter {
 	 *
 	 * @return determination of whether or not the conversion is enacted on historical submissions.
 	 */
-	public static boolean getHistorical() {
+	public boolean getHistorical() {
 		return historical;
 	}
 
@@ -80,8 +77,8 @@ public class Converter {
 	 *
 	 * @param isHistorical Flag indicating whether conversions are historical or not.
 	 */
-	public static void setHistorical(boolean isHistorical) {
-		Converter.historical = isHistorical;
+	public void setHistorical(boolean historical) {
+		this.historical = historical;
 	}
 
 	/**
@@ -89,7 +86,7 @@ public class Converter {
 	 *
 	 * @return scope The scope.
 	 */
-	public static Collection<QrdaScope> getScope() {
+	public Collection<QrdaScope> getScope() {
 		return Collections.unmodifiableSet(scope);
 	}
 
@@ -98,12 +95,20 @@ public class Converter {
 	 *
 	 * @param newScope The new scope.
 	 */
-	public static void setScope(Set<QrdaScope> newScope) {
-		scope = newScope;
+	public void setScope(Set<QrdaScope> scope) {
+		this.scope = scope;
 	}
 
 	public Node getDecoded() {
 		return decoded;
+	}
+
+	public Program getProgram() {
+		return program;
+	}
+
+	public void setProgram(Program program) {
+		this.program = program;
 	}
 
 	/**
@@ -144,8 +149,6 @@ public class Converter {
 		} catch (Exception exception) {
 			DEV_LOG.error(UNEXPECTED_ERROR, exception);
 			details.add(new Detail(UNEXPECTED_ERROR));
-		} finally {
-			ProgramContext.remove();
 		}
 
 		if (!details.isEmpty()) {
@@ -164,9 +167,9 @@ public class Converter {
 	 * @throws XmlException during transform
 	 */
 	private JsonWrapper transform(InputStream inStream) throws XmlException {
-		QrdaValidator validator = new QrdaValidator();
+		QrdaValidator validator = new QrdaValidator(this);
 		Element doc = XmlUtils.parseXmlStream(inStream);
-		decoded = XmlInputDecoder.decodeXml(doc);
+		decoded = XmlInputDecoder.decodeXml(this, doc);
 		JsonWrapper qpp = null;
 		if (null != decoded) {
 			DEV_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), source.getName());
@@ -240,7 +243,7 @@ public class Converter {
 	 * @return an encoder
 	 */
 	protected JsonOutputEncoder getEncoder() {
-		return (!getScope().isEmpty()) ? new ScopedQppOutputEncoder() : new QppOutputEncoder();
+		return (!getScope().isEmpty()) ? new ScopedQppOutputEncoder(this) : new QppOutputEncoder(this);
 	}
 
 }

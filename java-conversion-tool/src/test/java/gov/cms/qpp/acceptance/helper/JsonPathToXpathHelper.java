@@ -1,5 +1,6 @@
 package gov.cms.qpp.acceptance.helper;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
@@ -36,7 +37,7 @@ public class JsonPathToXpathHelper {
 		wrapper = inWrapper;
 		Converter converter = new Converter(new PathQrdaSource(inPath)).doDefaults(doDefaults);
 		converter.transform();
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(ConverterTestHelper.newMockConverter());
 		encoder.encode(wrapper, converter.getDecoded());
 	}
 

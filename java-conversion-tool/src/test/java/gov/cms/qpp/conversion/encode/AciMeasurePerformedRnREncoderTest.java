@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.util.JsonHelper;
@@ -45,7 +46,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testEncoder() throws IOException {
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(ConverterTestHelper.newMockConverter());
 		encoder.setNodes(nodes);
 
 		StringWriter sw = new StringWriter();
@@ -65,7 +66,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	public void testInternalEncode() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder();
+		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(ConverterTestHelper.newMockConverter());
 
 		//execute
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
@@ -79,7 +80,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	public void testInternalEncodeNoChildNoValue(){
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder();
+		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(ConverterTestHelper.newMockConverter());
 		aciMeasurePerformedRnR.setChildNodes();
 
 		//execute
@@ -95,7 +96,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	public void testInternalEncodeBooleanTrueValue() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder();
+		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(ConverterTestHelper.newMockConverter());
 		aciMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed", "Y");
 		//execute
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
@@ -110,7 +111,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	public void testInternalEncodeBooleanFalseValue() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder();
+		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(ConverterTestHelper.newMockConverter());
 		aciMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed","N");
 		//execute
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
@@ -125,7 +126,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	public void testInternalEncodeBooleanStringValue() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder();
+		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(ConverterTestHelper.newMockConverter());
 		String unknownValue = "Some unknown value";
 		aciMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed",unknownValue);
 		//execute

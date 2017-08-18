@@ -13,13 +13,14 @@ import java.util.List;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Test;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.model.Node;
 
 public class EncoderNegativeConditionsTest {
 
 	@Test
 	public void testNullEncoder() {
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(ConverterTestHelper.newMockConverter());
 
 		Node aNode = new Node();
 		aNode.putValue("something", "600");
@@ -54,7 +55,7 @@ public class EncoderNegativeConditionsTest {
 		nodes = new ArrayList<>();
 		nodes.add(numeratorDenominatorNode);
 
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(ConverterTestHelper.newMockConverter());
 
 		encoder.setNodes(nodes);
 

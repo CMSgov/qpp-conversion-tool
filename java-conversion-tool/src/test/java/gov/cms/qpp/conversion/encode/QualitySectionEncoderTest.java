@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -20,7 +21,7 @@ public class QualitySectionEncoderTest {
 	@Test
 	public void internalEncode() throws EncodeException {
 		Node qualitySectionNode = getQualitySectionNode();
-		QualitySectionEncoder encoder = new QualitySectionEncoder();
+		QualitySectionEncoder encoder = new QualitySectionEncoder(ConverterTestHelper.newMockConverter());
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 
@@ -33,7 +34,7 @@ public class QualitySectionEncoderTest {
 		Node qualitySectionNode = getQualitySectionNode();
 		qualitySectionNode.addChildNode(new Node());
 
-		QualitySectionEncoder encoder = new QualitySectionEncoder();
+		QualitySectionEncoder encoder = new QualitySectionEncoder(ConverterTestHelper.newMockConverter());
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 

@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
@@ -16,13 +16,13 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
-public class AciMeasurePerformedRnRDecoderTest extends BaseTest {
+public class AciMeasurePerformedRnRDecoderTest {
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
 
 	@Test
 	public void internalDecodeReturnsTreeContinue() {
 		//set-up
-		AciMeasurePerformedRnRDecoder objectUnderTest = new AciMeasurePerformedRnRDecoder();
+		AciMeasurePerformedRnRDecoder objectUnderTest = new AciMeasurePerformedRnRDecoder(ConverterTestHelper.newMockConverter());
 		
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -58,7 +58,7 @@ public class AciMeasurePerformedRnRDecoderTest extends BaseTest {
 	public void testUpperLevel() throws XmlException, IOException {
 		String needsFormattingXml = getFixture("AciMeasurePerformedIsolated.xml");
 		String xml = String.format(needsFormattingXml, MEASURE_ID);
-		Node wrapperNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xml));
+		Node wrapperNode = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(xml));
 		Node aciMeasurePerformedNode = wrapperNode.getChildNodes().get(0);
 
 		String actualMeasureId = aciMeasurePerformedNode.getValue("measureId");

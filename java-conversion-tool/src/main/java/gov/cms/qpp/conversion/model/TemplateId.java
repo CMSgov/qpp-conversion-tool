@@ -115,8 +115,8 @@ public enum TemplateId {
 	 * @return The complete template ID which includes a concatenation of the root followed by a colon followed by the
 	 * extension.
 	 */
-	public String getTemplateId() {
-		return generateTemplateIdString(root, getExtension());
+	public String getTemplateId(Converter converter) {
+		return generateTemplateIdString(converter, root, getExtension());
 	}
 
 	/**
@@ -126,14 +126,14 @@ public enum TemplateId {
 	 * @param extension The extension part of the templateId.
 	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
 	 */
-	public static TemplateId getTemplateId(String root, String extension) {
+	public static TemplateId getTemplateId(Converter converter, String root, String extension) {
 		Map<String, TemplateId> extensionsToTemplateId = ROOT_AND_TO_TEMPLATE_ID.get(root);
 
 		if (extensionsToTemplateId == null) {
 			return TemplateId.DEFAULT;
 		}
 
-		if (Converter.getHistorical()) {
+		if (converter.getHistorical()) {
 			return extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
 		}
 
@@ -147,10 +147,10 @@ public enum TemplateId {
 	 * @param extension The extension part of the templateId.
 	 * @return A string that concatenates the arguments the same way the enumeration does.
 	 */
-	static String generateTemplateIdString(String root, String extension) {
+	static String generateTemplateIdString(Converter converter, String root, String extension) {
 		String templateId = root;
 
-		if (!Converter.getHistorical() && extension != null && !extension.isEmpty()) {
+		if (!converter.getHistorical() && extension != null && !extension.isEmpty()) {
 			templateId += (":" + extension);
 		}
 		return templateId;

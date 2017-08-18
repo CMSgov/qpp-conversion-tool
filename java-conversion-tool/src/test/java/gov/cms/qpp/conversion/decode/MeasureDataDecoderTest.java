@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
@@ -17,8 +18,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertNotNull;
 
-public class MeasureDataDecoderTest extends BaseTest {
+public class MeasureDataDecoderTest {
+
 	private static String happy;
+
+	private Converter converter;
 	private Node placeholder;
 
 	@BeforeClass
@@ -28,7 +32,8 @@ public class MeasureDataDecoderTest extends BaseTest {
 
 	@Before
 	public void before() throws XmlException {
-		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder();
+		converter = ConverterTestHelper.newMockConverter();
+		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder(converter);
 		placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
 	}
 
@@ -63,7 +68,7 @@ public class MeasureDataDecoderTest extends BaseTest {
 
 	@Test
 	public void testIgnoreOfUnmappedMeasureData() throws XmlException {
-		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder();
+		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder(converter);
 		Node placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
 
 		assertThat("Should have four children", placeholder.getChildNodes(), hasSize(4));

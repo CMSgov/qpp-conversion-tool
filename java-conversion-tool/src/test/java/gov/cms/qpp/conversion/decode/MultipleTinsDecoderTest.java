@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Element;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -18,13 +20,21 @@ import static org.junit.Assert.assertThat;
 /**
  * Test class for MultipleTinsDecoder
  */
-public class MultipleTinsDecoderTest extends BaseTest {
-	private final String TEST_NPI1 = "NPI-1";
-	private final String TEST_NPI2 = "NPI-2";
-	private final String TEST_NPI3 = "NPI-3";
-	private final String TEST_TIN1 = "TIN-1";
-	private final String TEST_TIN2 = "TIN-2";
-	private final String TEST_TIN3 = "TIN-3";
+public class MultipleTinsDecoderTest {
+
+	private static final String TEST_NPI1 = "NPI-1";
+	private static final String TEST_NPI2 = "NPI-2";
+	private static final String TEST_NPI3 = "NPI-3";
+	private static final String TEST_TIN1 = "TIN-1";
+	private static final String TEST_TIN2 = "TIN-2";
+	private static final String TEST_TIN3 = "TIN-3";
+
+	private Converter converter;
+
+	@Before
+	public void setup() {
+		converter = ConverterTestHelper.newMockConverter();
+	}
 
 	@Test
 	public void internalDecode() throws Exception {
@@ -117,7 +127,7 @@ public class MultipleTinsDecoderTest extends BaseTest {
 
 	private List<Node> getTestChildren(Element multipleTinsElement) {
 		Node mulipleTinsNode = new Node();
-		MultipleTinsDecoder decoder = new MultipleTinsDecoder();
+		MultipleTinsDecoder decoder = new MultipleTinsDecoder(converter);
 		decoder.setNamespace(multipleTinsElement, decoder);
 		decoder.internalDecode(multipleTinsElement, mulipleTinsNode);
 		return mulipleTinsNode.getChildNodes();

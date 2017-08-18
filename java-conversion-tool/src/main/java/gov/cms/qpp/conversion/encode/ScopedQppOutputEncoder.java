@@ -13,6 +13,10 @@ import java.util.stream.Stream;
  */
 public class ScopedQppOutputEncoder extends QppOutputEncoder {
 
+	public ScopedQppOutputEncoder(Converter converter) {
+		super(converter);
+	}
+
 	/**
 	 * Encode the decoded node. If a {@link TemplateId#PLACEHOLDER} node is detected then assume
 	 * the {@link Converter#scope} has been set to a level lower than {@link QrdaScope#CLINICAL_DOCUMENT}.
@@ -30,7 +34,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 					.filter(this::inSpecifiedScope)
 					.forEach(child -> {
 				JsonWrapper childWrapper = new JsonWrapper();
-				JsonOutputEncoder encoder = ENCODERS.get(child.getType());
+				JsonOutputEncoder encoder = encoders.get(child.getType());
 				encoder.encode(childWrapper, child);
 				scoped.putObject(childWrapper);
 			});
@@ -59,7 +63,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 	 */
 	private boolean inSpecifiedScope(Node node) {
 		String type = node.getType().name();
-		Collection<QrdaScope> scope = Converter.getScope();
+		Collection<QrdaScope> scope = converter.getScope();
 		return scope.contains(QrdaScope.getInstanceByName(type));
 	}
 

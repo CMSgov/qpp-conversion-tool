@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode.placeholder;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.decode.DecodeResult;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -26,7 +27,9 @@ public class DefaultDecoder extends QppXmlDecoder {
 
 	final String description;
 
-	public DefaultDecoder(String description) {
+	public DefaultDecoder(Converter converter, String description) {
+		super(converter);
+
 		this.description = description;
 	}
 
@@ -52,16 +55,16 @@ public class DefaultDecoder extends QppXmlDecoder {
 	@Decoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS)
 	public static class ContinuousVariableMeasureValueCmsDecoder extends DefaultDecoder {
 
-		public ContinuousVariableMeasureValueCmsDecoder() {
-			super("Continuous Variable Measure Value - CMS");
+		public ContinuousVariableMeasureValueCmsDecoder(Converter converter) {
+			super(converter, "Continuous Variable Measure Value - CMS");
 		}
 	}
 
 	@Decoder(TemplateId.REPORTING_STRATUM_CMS)
 	public static class ReportingStratumCmsDataDecoder extends DefaultDecoder {
 
-		public ReportingStratumCmsDataDecoder() {
-			super("Reporting Stratum - CMS");
+		public ReportingStratumCmsDataDecoder(Converter converter) {
+			super(converter, "Reporting Stratum - CMS");
 		}
 	}
 }

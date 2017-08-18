@@ -20,16 +20,14 @@ import java.util.stream.Collectors;
  */
 public class QrdaValidator {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaValidator.class);
-	private static final Registry<NodeValidator> VALIDATORS = new Registry<>(Validator.class);
 
 	private final List<Detail> details = new ArrayList<>();
-	private Set<TemplateId> scope;
+	private final Set<TemplateId> scope;
+	private final Registry<NodeValidator> validators;
 
-	public QrdaValidator() {
-		Set<TemplateId> theScope = QrdaScope.getTemplates(Converter.getScope());
-		if (!theScope.isEmpty()) {
-			this.scope = theScope;
-		}
+	public QrdaValidator(Converter converter) {
+		this.validators = new Registry<>(converter, Validator.class);
+		this.scope = QrdaScope.getTemplates(converter.getScope());;
 	}
 
 	/**
@@ -81,14 +79,14 @@ public class QrdaValidator {
 	 * @return validators that correspond to the given template id
 	 */
 	private Set<NodeValidator> getValidators(TemplateId templateId) {
-		Set<NodeValidator> nodeValidators = VALIDATORS.inclusiveGet(templateId);
+		Set<NodeValidator> nodeValidators = validators.inclusiveGet(templateId);
 		return nodeValidators.stream()
 				.filter(nodeValidator -> {
 					if (nodeValidator == null) {
 						return false;
 					}
 					Validator validator = nodeValidator.getClass().getAnnotation(Validator.class);
-					return scope == null || scope.contains(validator.value());
+					return scope.contains(validator.value());
 				})
 				.collect(Collectors.toSet());
 	}

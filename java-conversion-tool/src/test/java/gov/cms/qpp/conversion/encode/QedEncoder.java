@@ -1,4 +1,5 @@
 package gov.cms.qpp.conversion.encode;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -11,7 +12,11 @@ import java.util.Set;
 @Encoder(TemplateId.QED)
 public class QedEncoder extends QppOutputEncoder {
 
-    /**
+    public QedEncoder(Converter converter) {
+		super(converter);
+	}
+
+	/**
      * internal encode for QED placeholder nodes
      *
      * @param wrapper object to encode into

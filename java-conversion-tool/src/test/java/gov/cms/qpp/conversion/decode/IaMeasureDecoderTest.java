@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 /**
  * Test class for the IaMeasureDecoder
  */
-public class IaMeasureDecoderTest extends BaseTest {
+public class IaMeasureDecoderTest {
 	String xmlFragment;
 
 	@Before
@@ -25,7 +25,7 @@ public class IaMeasureDecoderTest extends BaseTest {
 
 	@Test
 	public void internalDecode() throws Exception {
-		IaMeasureDecoder decoder = new IaMeasureDecoder();
+		IaMeasureDecoder decoder = new IaMeasureDecoder(ConverterTestHelper.newMockConverter());
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 
 		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
@@ -42,7 +42,7 @@ public class IaMeasureDecoderTest extends BaseTest {
 	@Test
 	public void missingChildTest() throws Exception {
 		xmlFragment = removeChildFragment(xmlFragment);
-		IaMeasureDecoder decoder = new IaMeasureDecoder();
+		IaMeasureDecoder decoder = new IaMeasureDecoder(ConverterTestHelper.newMockConverter());
 
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
@@ -54,7 +54,7 @@ public class IaMeasureDecoderTest extends BaseTest {
 
 	@Test
 	public void internalDecodeWithExtraXmlPasses() throws Exception {
-		IaMeasureDecoder decoder = new IaMeasureDecoder();
+		IaMeasureDecoder decoder = new IaMeasureDecoder(ConverterTestHelper.newMockConverter());
 		xmlFragment = addExtraXml(xmlFragment);
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 

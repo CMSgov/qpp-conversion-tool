@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
@@ -22,7 +23,7 @@ public class QedDecoderTest {
 				+ "</root>";
 	
 		// Get the root wrapper node
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(xmlFragment));
 		assertThat("root node should not be null", root, is(not(nullValue())));
 		// Make sure we get have target
 		assertThat("root node should have one child node", root.getChildNodes().size(), is(1));

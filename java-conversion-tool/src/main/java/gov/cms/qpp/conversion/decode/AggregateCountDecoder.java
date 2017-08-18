@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -19,6 +20,10 @@ import java.util.function.Consumer;
 public class AggregateCountDecoder extends QppXmlDecoder {
 
 	public static final String AGGREGATE_COUNT = "aggregateCount";
+
+	public AggregateCountDecoder(Converter converter) {
+		super(converter);
+	}
 
 	/**
 	 * Parses out the aggregateCount value from the xml fragment

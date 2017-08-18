@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -20,6 +21,10 @@ import java.util.stream.Collectors;
 public class QualityMeasureIdDecoder extends QppXmlDecoder {
 
 	private static final String MEASURE_ID = "measureId";
+
+	public QualityMeasureIdDecoder(Converter converter) {
+		super(converter);
+	}
 
 	/**
 	 * Decodes an Quality Measure Identifier into the intermediate Node format.

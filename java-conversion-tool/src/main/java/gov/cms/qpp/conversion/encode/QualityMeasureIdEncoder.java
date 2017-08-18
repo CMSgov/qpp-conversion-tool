@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -24,6 +25,7 @@ import java.util.stream.IntStream;
  */
 @Encoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
+
 	private static final String MEASURE_ID = "measureId";
 	private static final String AGGREGATE_COUNT = "aggregateCount";
 	private static final String TYPE = "type";
@@ -31,6 +33,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
 	private static final String NUMER = "NUMER";
+
+	public QualityMeasureIdEncoder(Converter converter) {
+		super(converter);
+	}
 
 	/**
 	 * Encodes an Quality Measure Id into the QPP format
@@ -179,7 +185,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		this.encodePerformanceNotMet(childWrapper, parentNode);
 
 		for (Node childNode : parentNode.getChildNodes()) {
-			JsonOutputEncoder measureDataEncoder = ENCODERS.get(childNode.getType());
+			JsonOutputEncoder measureDataEncoder = encoders.get(childNode.getType());
 			measureDataEncoder.encode(childWrapper, childNode);
 		}
 		if (isMultiRate) {

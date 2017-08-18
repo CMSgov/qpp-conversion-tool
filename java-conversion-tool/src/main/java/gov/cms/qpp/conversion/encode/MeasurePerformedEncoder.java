@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -9,6 +10,10 @@ import gov.cms.qpp.conversion.model.TemplateId;
  */
 @Encoder(TemplateId.MEASURE_PERFORMED)
 public class MeasurePerformedEncoder extends QppOutputEncoder {
+
+	public MeasurePerformedEncoder(Converter converter) {
+		super(converter);
+	}
 
 	/**
 	 * internalEncode for measures performed

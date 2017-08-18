@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -26,6 +27,10 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 	private static final String EXTENSION = "extension";
 	private static final String REPRESENTED_ORGANIZATION = "representedOrganization";
 
+	public MultipleTinsDecoder(Converter converter) {
+		super(converter);
+	}
+
 	/**
 	 * internalDecode parses the xml fragment into thisNode
 	 *
@@ -38,7 +43,7 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 		setNationalProviderIdOnNode(element, thisNode);
 
 		Node child = new Node(TemplateId.CLINICAL_DOCUMENT);
-		ClinicalDocumentDecoder clinicalDocument = new ClinicalDocumentDecoder();
+		ClinicalDocumentDecoder clinicalDocument = new ClinicalDocumentDecoder(converter);
 		clinicalDocument.setNamespace(element, clinicalDocument);
 		clinicalDocument.internalDecode(element, child);
 		thisNode.addChildNode(child);

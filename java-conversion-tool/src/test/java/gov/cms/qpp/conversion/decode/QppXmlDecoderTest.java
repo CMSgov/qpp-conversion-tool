@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.AnnotationMockHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -15,18 +17,24 @@ import static org.junit.Assert.assertThat;
 
 public class QppXmlDecoderTest extends QppXmlDecoder {
 
+	public QppXmlDecoderTest() {
+		super(ConverterTestHelper.newMockConverter());
+	}
+
 	private static boolean errorDecode = false;
 
 	@Test
 	public void decodeResultNoAction() throws Exception {
-		assertThat("DecodeResult is incorrect", new QppXmlDecoder().internalDecode(null, null),
+		assertThat("DecodeResult is incorrect",
+				new QppXmlDecoder(ConverterTestHelper.newMockConverter()).internalDecode(null, null),
 				is(DecodeResult.NO_ACTION));
 	}
 
 	@Test
 	public void nullElementDecodeReturnsError() {
-		//Element nullElement = null;
-		assertThat("DecodeResult is incorrect", new QppXmlDecoder().decode((Element)null, null),
+		// Element nullElement = null;
+		assertThat("DecodeResult is incorrect",
+				new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode((Element) null, null),
 				is(DecodeResult.ERROR));
 	}
 
@@ -44,26 +52,27 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 		QppXmlDecoder objectUnderTest = new QppXmlDecoderTest();
 		objectUnderTest.decode(testElement, testNode);
-		
-		assertThat("Child Node was not encountered" , errorDecode, is(true));
+
+		assertThat("Child Node was not encountered", errorDecode, is(true));
 	}
 
 	@Test
 	public void testChildDecodeErrorResultTest() throws Exception {
 		DecodeResult result = DecodeResult.ERROR;
 		DecodeResult returnValue = runTestChildDecodeResult(result);
-		assertThat("Should get an invalid Decode Result", returnValue, is( nullValue()));
+		assertThat("Should get an invalid Decode Result", returnValue, is(nullValue()));
 
 	}
+
 	@Test
 	public void testChildDecodeInvalidResultTest() throws Exception {
 		DecodeResult result = DecodeResult.NO_ACTION;
 		DecodeResult returnValue = runTestChildDecodeResult(result);
-		assertThat("Should get an invalid Decode Result", returnValue, is( nullValue()));
+		assertThat("Should get an invalid Decode Result", returnValue, is(nullValue()));
 	}
 
 	private DecodeResult runTestChildDecodeResult(DecodeResult code) throws Exception {
-		QppXmlDecoder objectUnderTest = new QppXmlDecoder();
+		QppXmlDecoder objectUnderTest = new QppXmlDecoder(ConverterTestHelper.newMockConverter());
 		Element childElement = new Element("childElement");
 		Node childNode = new Node();
 		String methodName = "testChildDecodeResult";
@@ -77,12 +86,16 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 		}
 
 		testChildDecodeResult.setAccessible(true);
-		DecodeResult returnValue = (DecodeResult) testChildDecodeResult.
-				invoke(objectUnderTest, code, childElement, childNode);
+		DecodeResult returnValue = (DecodeResult) testChildDecodeResult.invoke(objectUnderTest, code, childElement,
+				childNode);
 		return returnValue;
 	}
 
-		public static class TestChildDecodeError extends QppXmlDecoder {
+	public static class TestChildDecodeError extends QppXmlDecoder {
+
+		public TestChildDecodeError(Converter converter) {
+			super(converter);
+		}
 
 		@Override
 		public DecodeResult internalDecode(Element element, Node childNode) {
@@ -92,6 +105,10 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 	}
 
 	public static class TestChildNoAction extends QppXmlDecoder {
+
+		public TestChildNoAction(Converter converter) {
+			super(converter);
+		}
 
 		@Override
 		public DecodeResult internalDecode(Element element, Node childNode) {

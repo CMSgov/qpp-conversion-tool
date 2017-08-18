@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Before;
@@ -48,7 +49,7 @@ public class QualityMeasureIdEncoderTest {
 		denominatorNode.putValue(type, "DENOM");
 		denominatorNode.addChildNode(aggregateCountNode);
 
-		encoder = new QualityMeasureIdEncoder();
+		encoder = new QualityMeasureIdEncoder(ConverterTestHelper.newMockConverter());
 		wrapper = new JsonWrapper();
 	}
 

@@ -3,19 +3,19 @@ package gov.cms.qpp.conversion.decode;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import org.junit.Before;
 import org.junit.Test;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
 import java.io.IOException;
 
-public class IaSectionDecoderTest extends BaseTest {
+public class IaSectionDecoderTest {
 	private String xmlFragment;
 
 	@Before
@@ -45,7 +45,7 @@ public class IaSectionDecoderTest extends BaseTest {
 	}
 
 	private Node executeDecoderWithoutDefaults() throws XmlException {
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(root.getChildNodes());
 		return root;
 	}

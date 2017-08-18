@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 import org.jdom2.Element;
 import org.junit.Test;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.model.Node;
 
 public class AciSectionDecoderTest {
@@ -15,7 +16,7 @@ public class AciSectionDecoderTest {
 		Element element = new Element("testElement");
 		Node node = new Node();
 
-		AciSectionDecoder aciSectionDecoder = new AciSectionDecoder();
+		AciSectionDecoder aciSectionDecoder = new AciSectionDecoder(ConverterTestHelper.newMockConverter());
 		aciSectionDecoder.internalDecode(element, node);
 
 		assertThat("Node Category must be aci", node.getValue("category"), is("aci"));

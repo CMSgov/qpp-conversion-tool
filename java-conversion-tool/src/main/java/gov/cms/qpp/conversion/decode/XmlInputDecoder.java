@@ -1,6 +1,11 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.model.Node;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filter;
@@ -9,12 +14,8 @@ import org.jdom2.xpath.XPathFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.model.Node;
 
 /**
  * Abstraction to parse XML files within the decoder structure.
@@ -30,13 +31,10 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	 * @param xmlDoc XML document whose format is to be determined
 	 * @return Root intermediate format node
 	 */
-	public static Node decodeXml(Element xmlDoc) {
-		List<XmlInputDecoder> xmlDecoders = Arrays.asList(new QppXmlDecoder());
-
-		for (XmlInputDecoder decoder : xmlDecoders) {
-			if (decoder.accepts(xmlDoc)) {
-				return decoder.decode(xmlDoc);
-			}
+	public static Node decodeXml(Converter converter, Element xmlDoc) {
+		XmlInputDecoder decoder = new QppXmlDecoder(converter);
+		if (decoder.accepts(xmlDoc)) {
+			return decoder.decode(xmlDoc);
 		}
 
 		DEV_LOG.error("The XML file is an unknown document");

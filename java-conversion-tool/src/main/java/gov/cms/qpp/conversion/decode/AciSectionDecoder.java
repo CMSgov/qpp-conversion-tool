@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Decoder;
 import org.jdom2.Element;
 
@@ -11,6 +12,10 @@ import org.jdom2.Element;
  */
 @Decoder(TemplateId.ACI_SECTION)
 public class AciSectionDecoder extends QppXmlDecoder {
+
+	public AciSectionDecoder(Converter converter) {
+		super(converter);
+	}
 
 	/**
 	 * Decodes an ACI Section into the intermediate Node format

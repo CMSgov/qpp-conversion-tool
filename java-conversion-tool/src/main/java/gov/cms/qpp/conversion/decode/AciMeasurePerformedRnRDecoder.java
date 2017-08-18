@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -14,7 +15,12 @@ import java.util.function.Consumer;
  */
 @Decoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 public class AciMeasurePerformedRnRDecoder extends QppXmlDecoder {
+
 	public static final String MEASURE_ID = "measureId";
+
+	public AciMeasurePerformedRnRDecoder(Converter converter) {
+		super(converter);
+	}
 
 	/**
 	 * Decodes an ACI Measure Performed Reference and Results into an intermediate node

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.ConverterTestHelper;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -36,7 +37,7 @@ public class ClinicalDocumentDecoderTest {
 
 	@Before
 	public void setupTest() throws XmlException {
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(xmlFragment));
 		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(clinicalDocument.getChildNodes());
@@ -108,7 +109,7 @@ public class ClinicalDocumentDecoderTest {
 				ClasspathHelper.contextClassLoader().getResourceAsStream("QRDA-III-with-extra-elements.xml");
 		String xmlWithGarbage = IOUtils.toString(stream, Charset.defaultCharset());
 
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlWithGarbage));
+		Node root = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(xmlWithGarbage));
 		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 
 		assertThat("Should contain a program name",
@@ -131,7 +132,7 @@ public class ClinicalDocumentDecoderTest {
 
 		Element clinicalDocument = makeClinicalDocument("MIPS");
 		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(ConverterTestHelper.newMockConverter());
 		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
 		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
 		Node testChildNode = testParentNode.getChildNodes().get(0);
@@ -154,7 +155,7 @@ public class ClinicalDocumentDecoderTest {
 
 		Element clinicalDocument = makeClinicalDocument("MIPS_INDIV");
 		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(ConverterTestHelper.newMockConverter());
 		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
 		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
 		Node testChildNode = testParentNode.getChildNodes().get(0);
@@ -177,7 +178,7 @@ public class ClinicalDocumentDecoderTest {
 
 		Element clinicalDocument = makeClinicalDocument("MIPS_GROUP");
 		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(ConverterTestHelper.newMockConverter());
 		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
 		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
 		Node testChildNode = testParentNode.getChildNodes().get(0);
@@ -199,7 +200,7 @@ public class ClinicalDocumentDecoderTest {
 
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS);
 		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(ConverterTestHelper.newMockConverter());
 		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
 		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
 		Node testChildNode = testParentNode.getChildNodes().get(0);
@@ -222,7 +223,7 @@ public class ClinicalDocumentDecoderTest {
 
 		Element clinicalDocument = makeClinicalDocument("Unknown");
 		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(ConverterTestHelper.newMockConverter());
 		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
 		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
 		Node testChildNode = testParentNode.getChildNodes().get(0);
@@ -245,7 +246,7 @@ public class ClinicalDocumentDecoderTest {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
 		Node testParentNode = new Node();
-		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(ConverterTestHelper.newMockConverter());
 		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
 		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
 		assertThat("Clinical Document contains the Entity Id",
