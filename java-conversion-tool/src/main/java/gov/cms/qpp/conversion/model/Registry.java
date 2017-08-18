@@ -6,10 +6,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This class manages the available transformation handlers. Currently it takes
@@ -20,7 +25,7 @@ import java.util.Set;
  *
  * @author David Uselmann
  */
-public class Registry<R extends Object> {
+public class Registry<R> {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Registry.class);
 
 	// For now this is static and can be refactored into an instance
@@ -44,7 +49,7 @@ public class Registry<R extends Object> {
 	/**
 	 * load or reload registry contents
 	 */
-	public void load() {
+	private void load() {
 		init();
 		registerAnnotatedHandlers();
 	}
@@ -63,7 +68,7 @@ public class Registry<R extends Object> {
 	 * TransformHandlers that need registration.
 	 */
 	@SuppressWarnings("unchecked")
-	void registerAnnotatedHandlers() {
+	private void registerAnnotatedHandlers() {
 		Reflections reflections = new Reflections("gov.cms");
 		Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(annotationClass);
 
@@ -74,7 +79,7 @@ public class Registry<R extends Object> {
 		}
 	}
 
-	public Set<ComponentKey> getComponentKeys(Class<?> annotatedClass) {
+	Set<ComponentKey> getComponentKeys(Class<?> annotatedClass) {
 		Annotation annotation = annotatedClass.getAnnotation(annotationClass);
 		Set<ComponentKey> values = new HashSet<>();
 
@@ -101,9 +106,17 @@ public class Registry<R extends Object> {
 	 * @param registryKey String
 	 */
 	public R get(TemplateId registryKey) {
-		ComponentKey key = getComponentKey(registryKey);
+		return instantiateHandler(findHandler(registryKey));
+	}
+
+	/**
+	 * Instantiate a given handler class.
+	 *
+	 * @param handlerClass the class to instantiate
+	 * @return an instance of the given class
+	 */
+	private R instantiateHandler(Class<? extends R> handlerClass) {
 		try {
-			Class<? extends R> handlerClass = registryMap.get(key);
 			if (handlerClass == null) {
 				return null;
 			}
@@ -115,23 +128,70 @@ public class Registry<R extends Object> {
 	}
 
 	/**
-	 * Create a ComponentKey using templateId and stashed Program.
+	 * Retrieve handlers that apply generally and specifically to the given template. The
+	 *
+	 * @param registryKey the template for which handlers will be searched
+	 * @return all applicable handlers
+	 */
+	public Set<R> inclusiveGet(TemplateId registryKey) {
+		return findHandlers(getKeys(registryKey, true)).stream()
+				.map(this::instantiateHandler)
+				.collect(Collectors.toCollection(LinkedHashSet<R>::new));
+	}
+
+	/**
+	 * Get a template specific list that specifies the order in which handler classes will be searched.
 	 *
 	 * @param registryKey a template id
-	 * @return a component key
+	 * @param generalPriority specify the order of specificity i.e. general first or program specific first.
+	 * @return list of component keys
 	 */
-	private ComponentKey getComponentKey(TemplateId registryKey) {
-		Program program = ProgramContext.get();
-		return new ComponentKey(registryKey, program);
+	private List<ComponentKey> getKeys(TemplateId registryKey, boolean generalPriority) {
+		List<ComponentKey> returnValue = Arrays.asList(
+				new ComponentKey(registryKey, ProgramContext.get()),
+				new ComponentKey(registryKey, Program.ALL));
+		if (generalPriority) {
+			Collections.reverse(returnValue);
+		}
+		return returnValue;
+	}
+
+	/**
+	 * Retrieve a handler for the given template id
+	 *
+	 * @param registryKey template id
+	 * @return handler i.e. {@link Validator}, {@link Decoder} or {@link Encoder}
+	 */
+	private Class<? extends R> findHandler(TemplateId registryKey) {
+		return findHandlers(getKeys(registryKey, false)).stream()
+				.findFirst()
+				.orElse(null);
+	}
+
+	/**
+	 * Find and return handler classes that correspond to the given component keys.
+	 *
+	 * @param keys a list of potential {@link Registry#registryMap} keys
+	 * @return ordered set of handler classes
+	 */
+	private Set<Class<? extends R>> findHandlers(List<ComponentKey> keys) {
+		Set<Class<? extends R>> handlers = new LinkedHashSet<>();
+		keys.forEach(key -> {
+			Class<? extends R> handler = registryMap.get(key);
+			if (handler != null) {
+				handlers.add(handler);
+			}
+		});
+		return handlers;
 	}
 
 	/**
 	 * Means ot register a new transformation handler
 	 *
 	 * @param registryKey key that identifies a component i.e. a {@link Validator}, {@link Decoder} or {@link Encoder}
-	 * @param handler
+	 * @param handler the keyed {@link Validator}, {@link Decoder} or {@link Encoder}
 	 */
-	public void register(ComponentKey registryKey, Class<? extends R> handler) {
+	void register(ComponentKey registryKey, Class<? extends R> handler) {
 		DEV_LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
 				+ annotationClass.getSimpleName() + ".");
 		// This could be a class or class name and instantiated on lookup
