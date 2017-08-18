@@ -3,7 +3,9 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.util.ProgramContext;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +22,9 @@ public class NpiTinCombinationValidationTest {
 	private Node validMipsGroupNpiTinNode;
 	private Node clinicalDocumentNode;
 	private Node npiTinCombinationNode;
+	private Node cpcNpiTinCombinationNode;
 	private NpiTinCombinationValidation validator;
+	private CpcNpiTinCombinationValidation cpcValidator;
 
 	private final static String NPI1 = "187654321";
 	private final static String TIN1 = "123456781";
@@ -30,6 +34,7 @@ public class NpiTinCombinationValidationTest {
 	@Before
 	public void setUpNpiTinCombinations() {
 		validator = new NpiTinCombinationValidation();
+		cpcValidator = new CpcNpiTinCombinationValidation();
 		firstValidNpiTinNode = createNpiTinNode(NPI1, TIN1);
 		secondValidNpiTinNode = createNpiTinNode(NPI2, TIN2);
 		validMipsGroupNpiTinNode = createNpiTinNode(null , TIN1);
@@ -88,15 +93,16 @@ public class NpiTinCombinationValidationTest {
 
 	@Test
 	public void testValidCpcPlusNoNpiTinCombination() {
+		ProgramContext.set(Program.CPC);
 		createClinicalDocumentWithProgramType(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME, "");
 
 		npiTinCombinationNode = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
 		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
-		validator.internalValidateSingleNode(npiTinCombinationNode);
+		cpcValidator.internalValidateSingleNode(npiTinCombinationNode);
 
 		assertThat("Must validate with the correct error",
-				validator.getDetails().iterator().next().getMessage(),
-				is(NpiTinCombinationValidation.AT_LEAST_ONE_NPI_TIN_COMBINATION));
+				cpcValidator.getDetails().iterator().next().getMessage(),
+				is(CpcNpiTinCombinationValidation.AT_LEAST_ONE_NPI_TIN_COMBINATION));
 	}
 
 	@Test
@@ -110,11 +116,11 @@ public class NpiTinCombinationValidationTest {
 		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
 		npiTinCombinationNode.addChildNode(firstValidNpiTinNode);
 
-		validator.internalValidateSingleNode(npiTinCombinationNode);
+		cpcValidator.internalValidateSingleNode(npiTinCombinationNode);
 
 		assertThat("Must validate with the correct error",
-				validator.getDetails().iterator().next().getMessage(),
-				is(NpiTinCombinationValidation.ONLY_ONE_APM_ALLOWED));
+				cpcValidator.getDetails().iterator().next().getMessage(),
+				is(CpcNpiTinCombinationValidation.ONLY_ONE_APM_ALLOWED));
 	}
 
 	@Test
@@ -126,11 +132,11 @@ public class NpiTinCombinationValidationTest {
 		npiTinCombinationNode.addChildNode(clinicalDocumentNode);
 		npiTinCombinationNode.addChildNode(firstValidNpiTinNode);
 
-		validator.internalValidateSingleNode(npiTinCombinationNode);
+		cpcValidator.internalValidateSingleNode(npiTinCombinationNode);
 
 		assertThat("Must validate with the correct error",
-				validator.getDetails().iterator().next().getMessage(),
-				is(NpiTinCombinationValidation.ONLY_ONE_APM_ALLOWED));
+				cpcValidator.getDetails().iterator().next().getMessage(),
+				is(CpcNpiTinCombinationValidation.ONLY_ONE_APM_ALLOWED));
 	}
 
 	@Test

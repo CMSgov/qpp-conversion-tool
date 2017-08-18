@@ -3,12 +3,14 @@ package gov.cms.qpp.conversion.model;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.InputDecoder;
 import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
+import gov.cms.qpp.conversion.util.ProgramContext;
 import org.jdom2.Element;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.PrintStream;
+import java.util.Iterator;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -57,10 +59,46 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testRegistryGetConverterHandler() throws Exception {
+	public void testRegistryGetDefaultConverterHandler() throws Exception {
+		ProgramContext.set(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
-		assertTrue("Registry should have been reset.", decoder instanceof Placeholder);
+		assertTrue("Registry should return " + Placeholder.class.getName() + " instance.",
+				decoder instanceof Placeholder);
+	}
+
+	@Test
+	public void testRegistryGetProgramSpecificConverterHandler() throws Exception {
+		ProgramContext.set(Program.CPC);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
+		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		assertTrue("Registry should return " + AnotherPlaceholder.class.getName() + " instance.",
+				decoder instanceof AnotherPlaceholder);
+	}
+
+	@Test
+	public void testRegistryInclusiveGetDefaultConverterHandler() throws Exception {
+		ProgramContext.set(Program.CPC);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
+		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
+		assertTrue("Registry should return " + Placeholder.class.getName() + " instance.",
+				decoders.iterator().next() instanceof Placeholder);
+	}
+
+	@Test
+	public void testRegistryInclusiveGetProgramSpecificConverterHandler() throws Exception {
+		ProgramContext.set(Program.CPC);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
+		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
+		Iterator<InputDecoder> iterator = decoders.iterator();
+
+		assertThat("Should return two decoders", decoders.size(), is(2));
+		assertTrue("First Registry entry should be a " + Placeholder.class.getName() + " instance.",
+				iterator.next() instanceof Placeholder);
+		assertTrue("Second Registry entry should be a " + AnotherPlaceholder.class.getName() + " instance.",
+				iterator.next() instanceof AnotherPlaceholder);
 	}
 
 	// This test must reside here in order to call the protected methods on the
