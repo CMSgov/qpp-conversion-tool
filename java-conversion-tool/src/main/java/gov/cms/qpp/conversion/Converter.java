@@ -1,5 +1,15 @@
 package gov.cms.qpp.conversion;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
@@ -9,27 +19,13 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.jdom2.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
@@ -44,13 +40,9 @@ public class Converter {
 	static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
 
 	private final QrdaSource source;
-	private boolean historical;
-	private Set<QrdaScope> scope = new HashSet<>();
-	private boolean doDefaults = true;
-	private boolean doValidation = true;
+	private final Context context;
 	private List<Detail> details = new ArrayList<>();
 	private Node decoded;
-	private Program program = Program.ALL;
 
 	/**
 	 * Constructor for the CLI Converter application
@@ -58,79 +50,29 @@ public class Converter {
 	 * @param source QrdaSource to use for the conversion
 	 */
 	public Converter(QrdaSource source) {
+		this(source, new Context());
+	}
+
+	/**
+	 * Constructor for the CLI Converter application
+	 *
+	 * @param source QrdaSource to use for the conversion
+	 * @param context Context to use for the conversion
+	 */
+	public Converter(QrdaSource source, Context context) {
 		Objects.requireNonNull(source, "source");
+		Objects.requireNonNull(context, "context");
 
 		this.source = source;
+		this.context = context;
 	}
 
-	/**
-	 * Is this a conversion of historical submissions.
-	 *
-	 * @return determination of whether or not the conversion is enacted on historical submissions.
-	 */
-	public boolean getHistorical() {
-		return historical;
-	}
-
-	/**
-	 * Sets whether conversions are historical or not.
-	 *
-	 * @param isHistorical Flag indicating whether conversions are historical or not.
-	 */
-	public void setHistorical(boolean historical) {
-		this.historical = historical;
-	}
-
-	/**
-	 * Get the scope that determines which data may be transformed.
-	 *
-	 * @return scope The scope.
-	 */
-	public Collection<QrdaScope> getScope() {
-		return Collections.unmodifiableSet(scope);
-	}
-
-	/**
-	 * Sets the scope of the converter.
-	 *
-	 * @param newScope The new scope.
-	 */
-	public void setScope(Set<QrdaScope> scope) {
-		this.scope = scope;
+	public Context getContext() {
+		return context;
 	}
 
 	public Node getDecoded() {
 		return decoded;
-	}
-
-	public Program getProgram() {
-		return program;
-	}
-
-	public void setProgram(Program program) {
-		this.program = program;
-	}
-
-	/**
-	 * Switch for enabling or disabling inclusion of default nodes.
-	 *
-	 * @param doIt toggle value
-	 * @return this for chaining
-	 */
-	public Converter doDefaults(boolean doIt) {
-		this.doDefaults = doIt;
-		return this;
-	}
-
-	/**
-	 * Switch for enabling or disabling validation.
-	 *
-	 * @param doIt toggle value
-	 * @return this for chaining
-	 */
-	Converter doValidation(boolean doIt) {
-		this.doValidation = doIt;
-		return this;
 	}
 
 	/**
@@ -167,17 +109,17 @@ public class Converter {
 	 * @throws XmlException during transform
 	 */
 	private JsonWrapper transform(InputStream inStream) throws XmlException {
-		QrdaValidator validator = new QrdaValidator(this);
+		QrdaValidator validator = new QrdaValidator(context);
 		Element doc = XmlUtils.parseXmlStream(inStream);
-		decoded = XmlInputDecoder.decodeXml(this, doc);
+		decoded = XmlInputDecoder.decodeXml(context, doc);
 		JsonWrapper qpp = null;
 		if (null != decoded) {
 			DEV_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), source.getName());
 
-			if (!doDefaults) {
+			if (!context.isDoDefaults()) {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
 			}
-			if (doValidation) {
+			if (context.isDoValidation()) {
 				details.addAll(validator.validate(decoded));
 			}
 
@@ -243,7 +185,7 @@ public class Converter {
 	 * @return an encoder
 	 */
 	protected JsonOutputEncoder getEncoder() {
-		return (!getScope().isEmpty()) ? new ScopedQppOutputEncoder(this) : new QppOutputEncoder(this);
+		return (!context.getScope().isEmpty()) ? new ScopedQppOutputEncoder(context) : new QppOutputEncoder(context);
 	}
 
 }

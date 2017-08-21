@@ -1,6 +1,7 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -30,7 +31,7 @@ public class MeasureDataRoundTripTest {
 
 	@BeforeClass
 	public static void setup() throws IOException {
-		happy = getFixture("measureDataHappy.xml");
+		happy = TestHelper.getFixture("measureDataHappy.xml");
 	}
 
 	@Test
@@ -55,7 +56,7 @@ public class MeasureDataRoundTripTest {
 
 	private void test(String type) throws Exception {
 		//setup
-		Node placeholder = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(happy));
+		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(happy));
 		Node measure =  placeholder.findChildNode(n -> n.getValue(MEASURE_TYPE).equals(type));
 		String message = String.format("Should have a %s measure", type);
 
@@ -70,7 +71,7 @@ public class MeasureDataRoundTripTest {
 	}
 
 	private StringWriter encode(Node placeholder) throws EncodeException {
-		QppOutputEncoder encoder = new QppOutputEncoder(ConverterTestHelper.newMockConverter());
+		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 		List<Node> nodes = new ArrayList<>();
 		nodes.add(placeholder);
 		encoder.setNodes(nodes);

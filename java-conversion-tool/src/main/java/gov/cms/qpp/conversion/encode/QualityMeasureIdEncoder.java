@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -34,8 +34,8 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String TRUE = "true";
 	private static final String NUMER = "NUMER";
 
-	public QualityMeasureIdEncoder(Converter converter) {
-		super(converter);
+	public QualityMeasureIdEncoder(Context context) {
+		super(context);
 	}
 
 	/**

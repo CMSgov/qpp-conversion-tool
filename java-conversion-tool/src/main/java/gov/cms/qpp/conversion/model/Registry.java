@@ -22,7 +22,7 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 
 /**
  * This class manages the available transformation handlers. Currently it takes
@@ -36,14 +36,14 @@ import gov.cms.qpp.conversion.Converter;
 public class Registry<R> {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Registry.class);
-	private static final Map<Class<?>, Function<Converter, Object>> CONSTRUCTORS = new IdentityHashMap<>();
+	private static final Map<Class<?>, Function<Context, Object>> CONSTRUCTORS = new IdentityHashMap<>();
 	private static final Map<Class<? extends Annotation>, Map<ComponentKey, Class<?>>> SHARED_REGISTRY_MAP = new ConcurrentHashMap<>(); // TODO - may want to decrease the concurrency level for memory usage
 
 	static {
 		
 	}
 
-	private final Converter converter;
+	private final Context context;
 	/**
 	 * This will be an XPATH string to converter handler registration Since
 	 * Converter was taken for the main stub, I chose Handler for now.
@@ -54,8 +54,8 @@ public class Registry<R> {
 	/**
 	 * initialize and configure the registry
 	 */
-	public Registry(Converter converter, Class<? extends Annotation> annotationClass) {
-		this.converter = converter;
+	public Registry(Context context, Class<? extends Annotation> annotationClass) {
+		this.context = context;
 		this.annotationClass = annotationClass;
 		registerAnnotatedHandlers();
 	}
@@ -123,15 +123,15 @@ public class Registry<R> {
 			return null;
 		}
 
-		return handlerClass.cast(CONSTRUCTORS.computeIfAbsent(handlerClass, this::createHandlerConstructor).apply(converter));
+		return handlerClass.cast(CONSTRUCTORS.computeIfAbsent(handlerClass, this::createHandlerConstructor).apply(context));
 	}
 
-	private Function<Converter, Object> createHandlerConstructor(Class<?> handlerClass) {
+	private Function<Context, Object> createHandlerConstructor(Class<?> handlerClass) {
 		try {
 			try {
-				Constructor<?> constructor = handlerClass.getConstructor(Converter.class);
+				Constructor<?> constructor = handlerClass.getConstructor(Context.class);
 				MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
-						.asType(MethodType.methodType(Object.class, Converter.class));
+						.asType(MethodType.methodType(Object.class, Context.class));
 				return converter -> {
 					try {
 						return handle.invokeExact(converter);
@@ -181,7 +181,7 @@ public class Registry<R> {
 	 */
 	private List<ComponentKey> getKeys(TemplateId registryKey, boolean generalPriority) {
 		List<ComponentKey> returnValue = Arrays.asList(
-				new ComponentKey(registryKey, converter.getProgram()),
+				new ComponentKey(registryKey, context.getProgram()),
 				new ComponentKey(registryKey, Program.ALL));
 		if (generalPriority) {
 			Collections.reverse(returnValue);
@@ -217,6 +217,25 @@ public class Registry<R> {
 			}
 		});
 		return handlers;
+	}
+
+	/**
+	 * Means ot register a new transformation handler
+	 *
+	 * @param registryKey key that identifies a component i.e. a {@link Validator}, {@link Decoder} or {@link Encoder}
+	 * @param handler the keyed {@link Validator}, {@link Decoder} or {@link Encoder}
+	 */
+	void register(ComponentKey registryKey, Class<? extends R> handler) {
+		DEV_LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
+				+ annotationClass.getSimpleName() + ".");
+		// This could be a class or class name and instantiated on lookup
+		if (registryMap.containsKey(registryKey)) {
+			DEV_LOG.error("Duplicate registered handler for " + registryKey
+						+ " both " + registryMap.get(registryKey).getName()
+						+ " and " + handler.getName());
+		}
+		
+		registryMap.put(registryKey, handler);
 	}
 
 	public int size() {

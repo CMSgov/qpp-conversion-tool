@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -13,8 +13,8 @@ import java.util.List;
 @Encoder(TemplateId.IA_MEASURE)
 public class IaMeasureEncoder extends QppOutputEncoder {
 
-	public IaMeasureEncoder(Converter converter) {
-		super(converter);
+	public IaMeasureEncoder(Context context) {
+		super(context);
 	}
 
 	/**

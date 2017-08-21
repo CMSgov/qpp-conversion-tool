@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -34,9 +35,9 @@ public class AnnotationMockHelper {
 	 * @return A spied QrdaValidator that has all the appropriate hooks in place to validate a test validator
 	 * @throws Exception If the mocking fails.
 	 */
-	public static QrdaValidator mockValidator(final TemplateId templateId, final Class<? extends NodeValidator> validator,
-	                                          final boolean required) throws Exception {
-		return mockValidator(templateId, validator, required, null);
+	public static QrdaValidator mockValidator(Context context, TemplateId templateId, Class<? extends NodeValidator> validator,
+	                                          boolean required) throws Exception {
+		return mockValidator(context, templateId, validator, required, null);
 	}
 
 	/**
@@ -52,12 +53,12 @@ public class AnnotationMockHelper {
 	 * @return A spied QrdaValidator that has all the appropriate hooks in place to validate a test validator
 	 * @throws Exception If the mocking fails.
 	 */
-	public static QrdaValidator mockValidator(final TemplateId templateId, final Class<? extends NodeValidator> validator,
-	                                          final boolean required,  QrdaValidator spy) throws Exception {
+	public static QrdaValidator mockValidator(Context context, TemplateId templateId, Class<? extends NodeValidator> validator,
+	                                          boolean required,  QrdaValidator spy) throws Exception {
 		registerValidator(templateId, validator);
 
 		if(null == spy) {
-			spy = PowerMockito.spy(new QrdaValidator());
+			spy = PowerMockito.spy(new QrdaValidator(context));
 		}
 
 		mockQrdaValidator(spy, templateId, validator, required);
@@ -100,7 +101,7 @@ public class AnnotationMockHelper {
 	 * @param templateId The templateId string that you want the decoder to decode.
 	 * @param decoder The decoder to be stored in the registry.
 	 */
-	public static void mockDecoder(final TemplateId templateId, final Class<? extends QppXmlDecoder> decoder) {
+	public static void mockDecoder(TemplateId templateId, Class<? extends QppXmlDecoder> decoder) {
 		final Registry<QppXmlDecoder> registry = Whitebox.getInternalState(QppXmlDecoder.class, Registry.class);
 		registry.register(new ComponentKey(templateId, Program.ALL), decoder);
 	}
@@ -112,7 +113,7 @@ public class AnnotationMockHelper {
 	 * @param templateId The templateId string that you want the decoder to decode.
 	 * @param encoder The decoder to be stored in the registry.
 	 */
-	public static void mockEncoder(final TemplateId templateId, final Class<? extends JsonOutputEncoder> encoder) {
+	public static void mockEncoder(TemplateId templateId, Class<? extends JsonOutputEncoder> encoder) {
 		final Registry<JsonOutputEncoder> registry = Whitebox.getInternalState(QppOutputEncoder.class, Registry.class);
 		registry.register(new ComponentKey(templateId, Program.ALL), encoder);
 	}

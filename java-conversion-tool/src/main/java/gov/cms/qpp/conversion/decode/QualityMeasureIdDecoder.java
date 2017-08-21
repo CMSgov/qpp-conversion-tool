@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -22,8 +21,8 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 
 	private static final String MEASURE_ID = "measureId";
 
-	public QualityMeasureIdDecoder(Converter converter) {
-		super(converter);
+	public QualityMeasureIdDecoder(Context context) {
+		super(context);
 	}
 
 	/**

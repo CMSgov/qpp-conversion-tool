@@ -8,7 +8,8 @@ import gov.cms.qpp.conversion.xml.XmlException;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -20,7 +21,7 @@ public class IaSectionDecoderTest {
 
 	@Before
 	public void setUp() throws IOException {
-		xmlFragment = getFixture("IaSection.xml");
+		xmlFragment = TestHelper.getFixture("IaSection.xml");
 	}
 
 	@Test
@@ -45,7 +46,7 @@ public class IaSectionDecoderTest {
 	}
 
 	private Node executeDecoderWithoutDefaults() throws XmlException {
-		Node root = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(root.getChildNodes());
 		return root;
 	}

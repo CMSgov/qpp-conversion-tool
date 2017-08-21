@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -20,8 +20,8 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(AciSectionEncoder.class);
 	public static final String SUBMISSION_METHOD = "submissionMethod";
 
-	public AciSectionEncoder(Converter converter) {
-		super(converter);
+	public AciSectionEncoder(Context context) {
+		super(context);
 	}
 
 	/**

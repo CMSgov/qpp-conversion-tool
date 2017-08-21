@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
@@ -25,8 +25,8 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ClinicalDocumentEncoder.class);
 	private static final String MEASUREMENT_SETS = "measurementSets";
 
-	public ClinicalDocumentEncoder(Converter converter) {
-		super(converter);
+	public ClinicalDocumentEncoder(Context context) {
+		super(context);
 	}
 
 	/**

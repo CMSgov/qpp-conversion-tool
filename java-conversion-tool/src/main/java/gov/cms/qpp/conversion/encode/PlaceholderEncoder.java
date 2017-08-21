@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -14,8 +14,8 @@ import gov.cms.qpp.conversion.model.error.Detail;
 @Encoder(TemplateId.PLACEHOLDER)
 public class PlaceholderEncoder extends QppOutputEncoder {
 
-	public PlaceholderEncoder(Converter converter) {
-		super(converter);
+	public PlaceholderEncoder(Context context) {
+		super(context);
 	}
 
 	/**

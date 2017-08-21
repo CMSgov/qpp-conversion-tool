@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -15,8 +15,8 @@ import java.util.List;
 @Encoder(TemplateId.QRDA_CATEGORY_III_REPORT_V3)
 public class MultipleTinsEncoder extends QppOutputEncoder {
 
-	public MultipleTinsEncoder(Converter converter) {
-		super(converter);
+	public MultipleTinsEncoder(Context context) {
+		super(context);
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -20,8 +20,8 @@ public class ReportingParametersActDecoder extends QppXmlDecoder {
 	public static final String PERFORMANCE_END = "performanceEnd";
 	public static final String PERFORMANCE_YEAR = "performanceYear";
 
-	public ReportingParametersActDecoder(Converter converter) {
-		super(converter);
+	public ReportingParametersActDecoder(Context context) {
+		super(context);
 	}
 
 	/**

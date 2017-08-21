@@ -14,7 +14,7 @@ import org.jdom2.xpath.XPathFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 
 /**
@@ -31,8 +31,8 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	 * @param xmlDoc XML document whose format is to be determined
 	 * @return Root intermediate format node
 	 */
-	public static Node decodeXml(Converter converter, Element xmlDoc) {
-		XmlInputDecoder decoder = new QppXmlDecoder(converter);
+	public static Node decodeXml(Context context, Element xmlDoc) {
+		XmlInputDecoder decoder = new QppXmlDecoder(context);
 		if (decoder.accepts(xmlDoc)) {
 			return decoder.decode(xmlDoc);
 		}

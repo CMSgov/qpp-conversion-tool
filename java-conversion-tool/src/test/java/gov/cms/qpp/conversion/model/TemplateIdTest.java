@@ -1,9 +1,7 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import org.junit.Test;
-
-import java.lang.reflect.Field;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -24,7 +22,7 @@ public class TemplateIdTest {
 
 	@Test
 	public void testGetTemplateId() {
-		assertThat("TemplateId#getTemplateId() is not working", TemplateId.CLINICAL_DOCUMENT.getTemplateId(),
+		assertThat("TemplateId#getTemplateId() is not working", TemplateId.CLINICAL_DOCUMENT.getTemplateId(new Context()),
 		           is(TemplateId.CLINICAL_DOCUMENT.getRoot() + ":" +
 		              TemplateId.CLINICAL_DOCUMENT.getExtension()));
 	}
@@ -33,21 +31,21 @@ public class TemplateIdTest {
 	public void testFindByTypeId2() {
 		TemplateId clinicalDocument = TemplateId.CLINICAL_DOCUMENT;
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTemplateId(clinicalDocument.getRoot(), clinicalDocument.getExtension()),
+		           TemplateId.getTemplateId(clinicalDocument.getRoot(), clinicalDocument.getExtension(), new Context()),
 		           is(clinicalDocument));
 	}
 
 	@Test
 	public void testFindByTypeId2NotExist() {
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(), "nonExistingExtension"),
+		           TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(), "nonExistingExtension", new Context()),
 		           is(TemplateId.DEFAULT));
 	}
 
 	@Test
 	public void testFindByTypeId2NotExistAgain() {
 		assertThat("TemplateId#getTypeById(String, String) is not working",
-		           TemplateId.getTemplateId("nonExistingRoot", TemplateId.CLINICAL_DOCUMENT.getExtension()),
+		           TemplateId.getTemplateId("nonExistingRoot", TemplateId.CLINICAL_DOCUMENT.getExtension(), new Context()),
 		           is(TemplateId.DEFAULT));
 	}
 
@@ -56,12 +54,12 @@ public class TemplateIdTest {
 		final String root = "asdf";
 		final String extension = "jkl;";
 		assertThat("TemplateId#generateTemplateIdString() is not working",
-		           TemplateId.generateTemplateIdString(root, extension), is(root + ":" + extension));
+		           TemplateId.generateTemplateIdString(root, extension, new Context()), is(root + ":" + extension));
 	}
 
 	@Test
 	public void valueOfTest() {
-		String value = TemplateId.valueOf("DEFAULT").getTemplateId();
+		String value = TemplateId.valueOf("DEFAULT").getTemplateId(new Context());
 		assertThat("Expect value of to return a TemplateId", value, is("default"));
 	}
 }

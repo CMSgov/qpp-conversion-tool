@@ -68,11 +68,12 @@ public class ConverterTest {
 
 		//mocking
 		AnnotationMockHelper.mockDecoder(TemplateId.DEFAULT, JennyDecoder.class);
-		QrdaValidator mockQrdaValidator = AnnotationMockHelper.mockValidator(TemplateId.DEFAULT, TestDefaultValidator.class, true);
+		Context context = new Context();
+		QrdaValidator mockQrdaValidator = AnnotationMockHelper.mockValidator(context, TemplateId.DEFAULT, TestDefaultValidator.class, true);
 		PowerMockito.whenNew(QrdaValidator.class).withNoArguments().thenReturn(mockQrdaValidator);
 
 		Path path = Paths.get("src/test/resources/converter/errantDefaultedNode.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathQrdaSource(path), context);
 
 		try {
 			converter.transform();
@@ -114,9 +115,9 @@ public class ConverterTest {
 		doThrow(ex).when(encoder).encode();
 
 		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
-		Converter converter = new Converter(new PathQrdaSource(path))
-				.doDefaults(false)
-				.doValidation(false);
+		Converter converter = new Converter(new PathQrdaSource(path));
+		converter.getContext().setDoDefaults(false);
+		converter.getContext().setDoValidation(false);
 
 		try {
 			converter.transform();
@@ -153,9 +154,9 @@ public class ConverterTest {
 	@Test
 	public void testNotAValidQrdaIIIFile() throws IOException {
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
-		Converter converter = new Converter(new PathQrdaSource(path))
-				.doDefaults(false)
-				.doValidation(false);
+		Converter converter = new Converter(new PathQrdaSource(path));
+		converter.getContext().setDoDefaults(false);
+		converter.getContext().setDoValidation(false);
 
 		try {
 			converter.transform();
@@ -200,7 +201,8 @@ public class ConverterTest {
 		AnnotationMockHelper.mockDecoder(TemplateId.DEFAULT, JennyDecoder.class);
 		AnnotationMockHelper.mockEncoder(TemplateId.DEFAULT, Jenncoder.class);
 
-		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml"))).doValidation(false);
+		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml")));
+		converter.getContext().setDoDefaults(false);
 		JsonWrapper qpp = converter.transform();
 
 		String content = qpp.toString();
@@ -210,7 +212,9 @@ public class ConverterTest {
 
 	@Test
 	public void testSkipDefaults() throws Exception {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml"))).doValidation(false).doDefaults(false);
+		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml")));
+		converter.getContext().setDoDefaults(false);
+		converter.getContext().setDoValidation(false);
 		JsonWrapper qpp = converter.transform();
 
 		String content = qpp.toString();

@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -15,8 +15,8 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 
 	private static final String ENCODE_LABEL = "numerator";
 
-	public AciProportionNumeratorEncoder(Converter converter) {
-		super(converter);
+	public AciProportionNumeratorEncoder(Context context) {
+		super(context);
 	}
 
 	/**

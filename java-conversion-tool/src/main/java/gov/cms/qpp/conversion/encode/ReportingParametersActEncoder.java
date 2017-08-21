@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -19,8 +19,8 @@ public class ReportingParametersActEncoder extends QppOutputEncoder {
 	public static final String PERFORMANCE_END = "performanceEnd";
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ReportingParametersActEncoder.class);
 
-	public ReportingParametersActEncoder(Converter converter) {
-		super(converter);
+	public ReportingParametersActEncoder(Context context) {
+		super(context);
 	}
 
 	/**

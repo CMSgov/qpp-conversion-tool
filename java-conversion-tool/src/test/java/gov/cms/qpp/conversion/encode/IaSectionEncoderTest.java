@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -57,7 +57,7 @@ public class IaSectionEncoderTest {
 
 	@Test
 	public void testEncoder() {
-		QppOutputEncoder encoder = new QppOutputEncoder(ConverterTestHelper.newMockConverter());
+		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
 		encoder.setNodes(nodes);
 
@@ -76,7 +76,7 @@ public class IaSectionEncoderTest {
 	@Test
 	public void testEncoderWithoutMeasure() {
 		iaSectionNode.getChildNodes().remove(iaMeasureNode);
-		QppOutputEncoder encoder = new QppOutputEncoder(ConverterTestHelper.newMockConverter());
+		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
 		encoder.setNodes(nodes);
 
@@ -95,7 +95,7 @@ public class IaSectionEncoderTest {
 	@Test
 	public void testEncoderWithoutMeasureValue1() {
 		iaMeasureNode.getChildNodes().remove(iaMeasurePerformedNode);
-		QppOutputEncoder encoder = new QppOutputEncoder(ConverterTestHelper.newMockConverter());
+		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
 		encoder.setNodes(nodes);
 
@@ -114,7 +114,7 @@ public class IaSectionEncoderTest {
 	@Test
 	public void testEncoderWithoutMeasureValue2() {
 		iaMeasurePerformedNode.putValue("measurePerformed", null);
-		QppOutputEncoder encoder = new QppOutputEncoder(ConverterTestHelper.newMockConverter());
+		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
 		encoder.setNodes(nodes);
 

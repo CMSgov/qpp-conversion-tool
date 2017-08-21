@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 
-import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class PlaceholderEncoderTest {
 		Node placeHolder = new Node(TemplateId.PLACEHOLDER);
 		placeHolder.addChildNode(new Node());
 		JsonWrapper wrapper = new JsonWrapper();
-		PlaceholderEncoder encoder = new PlaceholderEncoder(ConverterTestHelper.newMockConverter());
+		PlaceholderEncoder encoder = new PlaceholderEncoder(new Context());
 
 		//when
 		encoder.internalEncode(wrapper, placeHolder);

@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -18,8 +18,8 @@ public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
 
 	private static final String MEASURE_ID = "measureId";
 
-	public AciNumeratorDenominatorDecoder(Converter converter) {
-		super(converter);
+	public AciNumeratorDenominatorDecoder(Context context) {
+		super(context);
 	}
 
 	/**

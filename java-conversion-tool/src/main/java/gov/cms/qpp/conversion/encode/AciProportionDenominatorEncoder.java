@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 
@@ -17,8 +17,8 @@ public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 
 	private static final String ENCODE_LABEL = "denominator";
 
-	public AciProportionDenominatorEncoder(Converter converter) {
-		super(converter);
+	public AciProportionDenominatorEncoder(Context context) {
+		super(context);
 	}
 
 	@Override

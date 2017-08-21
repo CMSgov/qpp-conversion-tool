@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Before;
@@ -35,7 +35,7 @@ public class AciProportionNumeratorEncoderTest {
 
 	@Test
 	public void testInternalEncode() throws EncodeException {
-		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(ConverterTestHelper.newMockConverter());
+		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(new Context());
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
 		assertThat("Must have a numerator value of 600", 600, is(jsonWrapper.getInteger("numerator")));
@@ -45,7 +45,7 @@ public class AciProportionNumeratorEncoderTest {
 	public void testEncoderWithoutChild() throws EncodeException {
 		aciProportionNumeratorNode.getChildNodes().remove(numeratorDenominatorValueNode);
 
-		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(ConverterTestHelper.newMockConverter());
+		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(new Context());
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
 		assertThat("Must have a null numerator", null, is(jsonWrapper.getInteger("numerator")));
@@ -55,7 +55,7 @@ public class AciProportionNumeratorEncoderTest {
 	public void testEncoderWithoutValue() throws EncodeException {
 		numeratorDenominatorValueNode.putValue("aggregateCount", null);
 
-		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(ConverterTestHelper.newMockConverter());
+		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(new Context());
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
 		assertThat("Must have a numerator value of null", null, is(jsonWrapper.getInteger("numerator")));

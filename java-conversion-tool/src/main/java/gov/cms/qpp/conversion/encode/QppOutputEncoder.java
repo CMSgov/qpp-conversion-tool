@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
@@ -16,12 +16,12 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	public static final String VALUE = "value";
 	protected final Registry<JsonOutputEncoder> encoders;
 
-	protected final Converter converter;
+	protected final Context context;
 	private final TemplateId template;
 
-	public QppOutputEncoder(Converter converter) {
-		this.converter = converter;
-		this.encoders = new Registry<>(converter, Encoder.class);
+	public QppOutputEncoder(Context context) {
+		this.context = context;
+		this.encoders = context.getRegistry(Encoder.class, JsonOutputEncoder.class);
 		Encoder enc = this.getClass().getAnnotation(Encoder.class);
 		template = (enc != null) ? enc.value() : TemplateId.DEFAULT;
 	}

@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -25,9 +25,9 @@ public class QrdaValidator {
 	private final Set<TemplateId> scope;
 	private final Registry<NodeValidator> validators;
 
-	public QrdaValidator(Converter converter) {
-		this.validators = new Registry<>(converter, Validator.class);
-		this.scope = QrdaScope.getTemplates(converter.getScope());;
+	public QrdaValidator(Context context) {
+		this.validators = context.getRegistry(Validator.class, NodeValidator.class);
+		this.scope = QrdaScope.getTemplates(context.getScope());
 	}
 
 	/**

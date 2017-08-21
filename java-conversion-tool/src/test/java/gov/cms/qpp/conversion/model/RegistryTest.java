@@ -1,9 +1,9 @@
 package gov.cms.qpp.conversion.model;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.InputDecoder;
 import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
-import gov.cms.qpp.conversion.util.ProgramContext;
 import org.jdom2.Element;
 import org.junit.After;
 import org.junit.Before;
@@ -19,19 +19,20 @@ import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class RegistryTest {
 
+	private Context context;
 	private Registry<InputDecoder> registry;
 	private PrintStream err;
 
 	@Before
 	public void before() {
-		registry = new Registry<>(Decoder.class);
+		context = new Context();
+		registry = context.getRegistry(Decoder.class, InputDecoder.class);
 		err = System.err;
 	}
 
@@ -51,17 +52,9 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testRegistryInit() throws Exception {
-		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
-		registry.init();
-		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
-		assertNull("Registry should have been reset.", decoder);
-	}
-
-	@Test
 	public void testRegistryGetDefaultConverterHandler() throws Exception {
-		ProgramContext.set(Program.CPC);
-		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
+		context.setProgram(Program.CPC);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), Placeholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertTrue("Registry should return " + Placeholder.class.getName() + " instance.",
 				decoder instanceof Placeholder);
@@ -69,7 +62,7 @@ public class RegistryTest {
 
 	@Test
 	public void testRegistryGetProgramSpecificConverterHandler() throws Exception {
-		ProgramContext.set(Program.CPC);
+		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
@@ -79,7 +72,7 @@ public class RegistryTest {
 
 	@Test
 	public void testRegistryInclusiveGetDefaultConverterHandler() throws Exception {
-		ProgramContext.set(Program.CPC);
+		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
 		assertTrue("Registry should return " + Placeholder.class.getName() + " instance.",
@@ -88,7 +81,7 @@ public class RegistryTest {
 
 	@Test
 	public void testRegistryInclusiveGetProgramSpecificConverterHandler() throws Exception {
-		ProgramContext.set(Program.CPC);
+		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
 		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
@@ -125,7 +118,7 @@ public class RegistryTest {
 					TemplateId.ACI_AGGREGATE_COUNT, componentKey.getTemplate());
 		}
 
-		componentKeys = new Registry<>(Encoder.class).getComponentKeys(AggregateCountEncoder.class);
+		componentKeys = context.getRegistry(Encoder.class, Encoder.class).getComponentKeys(AggregateCountEncoder.class);
 		assertThat("A componentKey is expected", componentKeys, hasSize(1));
 		for (ComponentKey componentKey : componentKeys) {
 			assertEquals("The templateId should be",
@@ -135,7 +128,7 @@ public class RegistryTest {
 
 	@Test
 	public void testRegistry_getTemplateIds_NullReturn() throws Exception {
-		Set<ComponentKey> componentKeys = new Registry<Encoder>(SuppressWarnings.class).getComponentKeys(Placeholder.class);
+		Set<ComponentKey> componentKeys = context.getRegistry(SuppressWarnings.class, Encoder.class).getComponentKeys(Placeholder.class);
 		assertThat("A componentKey is not expected", componentKeys, empty());
 	}
 

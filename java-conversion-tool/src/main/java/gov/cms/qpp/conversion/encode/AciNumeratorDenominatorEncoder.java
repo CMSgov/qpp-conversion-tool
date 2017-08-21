@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 @Encoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
 public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 
-	public AciNumeratorDenominatorEncoder(Converter converter) {
-		super(converter);
+	public AciNumeratorDenominatorEncoder(Context context) {
+		super(context);
 	}
 
 	/**

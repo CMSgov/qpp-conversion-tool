@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
@@ -30,8 +30,8 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	public static final String ENTITY_INDIVIDUAL = "individual";
 	public static final String CPCPLUS = "CPCPLUS";
 
-	public ClinicalDocumentDecoder(Converter converter) {
-		super(converter);
+	public ClinicalDocumentDecoder(Context context) {
+		super(context);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 			thisNode.putValue(ENTITY_TYPE, nameEntityPair[1], false);
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
-		converter.setProgram(Program.getInstance(thisNode.getValue(PROGRAM_NAME)));
+		context.setProgram(Program.getInstance(thisNode.getValue(PROGRAM_NAME)));
 	}
 
 	/**

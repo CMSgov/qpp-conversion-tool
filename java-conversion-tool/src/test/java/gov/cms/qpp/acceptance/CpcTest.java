@@ -48,8 +48,8 @@ public class CpcTest {
 
 	private void run(String type) {
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(CPC_FILE)));
-		converter.setHistorical(true);
-		converter.setScope(Collections.singleton(QrdaScope.getInstanceByName(type)));
+		converter.getContext().setHistorical(true);
+		converter.getContext().setScope(Collections.singleton(QrdaScope.getInstanceByName(type)));
 		converter.transform();
 	}
 }

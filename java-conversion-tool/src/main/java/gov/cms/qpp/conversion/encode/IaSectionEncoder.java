@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.TemplateId;
 
@@ -11,8 +11,8 @@ import gov.cms.qpp.conversion.model.TemplateId;
 @Encoder(TemplateId.IA_SECTION)
 public class IaSectionEncoder extends AciSectionEncoder {
 
-	public IaSectionEncoder(Converter converter) {
-		super(converter);
+	public IaSectionEncoder(Context context) {
+		super(context);
 	}
 
 	//empty as it does the exact same thing as its parent class

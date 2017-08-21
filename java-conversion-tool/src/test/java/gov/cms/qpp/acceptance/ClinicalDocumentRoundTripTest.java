@@ -13,8 +13,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.reflections.util.ClasspathHelper;
 
-import gov.cms.qpp.ConverterTestHelper;
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -43,13 +42,13 @@ public class ClinicalDocumentRoundTripTest {
 				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
 		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
 
-		Converter converter = ConverterTestHelper.newMockConverter();
-		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(converter, XmlUtils.stringToDom(xmlFragment));
+		Context context = new Context();
+		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(context, XmlUtils.stringToDom(xmlFragment));
 
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(clinicalDocumentNode.getChildNodes());
 
-		QppOutputEncoder encoder = new QppOutputEncoder(converter);
+		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		encoder.setNodes(Collections.singletonList(clinicalDocumentNode));
 
 		StringWriter sw = new StringWriter();

@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -26,19 +26,19 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	private static final String ROOT_STRING = "root";
 	private static final String EXTENSION_STRING = "extension";
 
-	protected final Converter converter;
+	protected final Context context;
 	private final Set<TemplateId> scope;
 	private final Registry<QppXmlDecoder> decoders;
 
 	/**
 	 * Initialize a qpp xml decoder
 	 */
-	public QppXmlDecoder(Converter converter) {
-		Objects.requireNonNull(converter, "converter");
+	public QppXmlDecoder(Context context) {
+		Objects.requireNonNull(context, "converter");
 
-		this.converter = converter;
-		this.scope = QrdaScope.getTemplates(converter.getScope());
-		this.decoders = new Registry<>(converter, Decoder.class);
+		this.context = context;
+		this.scope = QrdaScope.getTemplates(context.getScope());
+		this.decoders = context.getRegistry(Decoder.class, QppXmlDecoder.class);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			if (TEMPLATE_ID.equals(childEl.getName())) {
 				String root = childEl.getAttributeValue(ROOT_STRING);
 				String extension = childEl.getAttributeValue(EXTENSION_STRING);
-				TemplateId templateId = TemplateId.getTemplateId(converter, root, extension);
+				TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
 				DEV_LOG.debug("templateIdFound:{}", templateId);
 
 				QppXmlDecoder childDecoder = getDecoder(templateId);
@@ -176,7 +176,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		for (Element e : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
 			String root = e.getAttributeValue(ROOT_STRING);
 			String extension = e.getAttributeValue(EXTENSION_STRING);
-			TemplateId templateId = TemplateId.getTemplateId(converter, root, extension);
+			TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
 			rootDecoder = getDecoder(templateId);
 			if (null != rootDecoder) {
 				rootNode.setType(templateId);
@@ -233,7 +233,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			final String root = currentChild.getAttributeValue(ROOT_STRING);
 			final String extension = currentChild.getAttributeValue(EXTENSION_STRING);
 
-			if (TemplateId.getTemplateId(converter, root, extension) == TemplateId.CLINICAL_DOCUMENT) {
+			if (TemplateId.getTemplateId(root, extension, context) == TemplateId.CLINICAL_DOCUMENT) {
 				containsTemplateId = true;
 				break;
 			}

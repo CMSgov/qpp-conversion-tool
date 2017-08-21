@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -16,8 +16,8 @@ import java.util.function.Consumer;
 @Decoder(TemplateId.MEASURE_PERFORMED)
 public class MeasurePerformedDecoder extends QppXmlDecoder {
 
-	public MeasurePerformedDecoder(Converter converter) {
-		super(converter);
+	public MeasurePerformedDecoder(Context context) {
+		super(context);
 	}
 
 	/**

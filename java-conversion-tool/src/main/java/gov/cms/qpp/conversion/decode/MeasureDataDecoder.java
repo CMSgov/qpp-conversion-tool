@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -25,8 +25,8 @@ public class MeasureDataDecoder extends QppXmlDecoder {
 	public static final String MEASURE_TYPE = "type";
 	public static final String MEASURE_POPULATION = "populationId";
 
-	public MeasureDataDecoder(Converter converter) {
-		super(converter);
+	public MeasureDataDecoder(Context context) {
+		super(context);
 	}
 
 	/**

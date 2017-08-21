@@ -1,24 +1,23 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.ConverterTestHelper;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.model.AnnotationMockHelper;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-
-import org.jdom2.Element;
-import org.junit.Test;
-
-import java.lang.reflect.Method;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.lang.reflect.Method;
+
+import org.jdom2.Element;
+import org.junit.Test;
+
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+
 public class QppXmlDecoderTest extends QppXmlDecoder {
 
 	public QppXmlDecoderTest() {
-		super(ConverterTestHelper.newMockConverter());
+		super(new Context());
 	}
 
 	private static boolean errorDecode = false;
@@ -26,7 +25,7 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 	@Test
 	public void decodeResultNoAction() throws Exception {
 		assertThat("DecodeResult is incorrect",
-				new QppXmlDecoder(ConverterTestHelper.newMockConverter()).internalDecode(null, null),
+				new QppXmlDecoder(new Context()).internalDecode(null, null),
 				is(DecodeResult.NO_ACTION));
 	}
 
@@ -34,7 +33,7 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 	public void nullElementDecodeReturnsError() {
 		// Element nullElement = null;
 		assertThat("DecodeResult is incorrect",
-				new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode((Element) null, null),
+				new QppXmlDecoder(new Context()).decode((Element) null, null),
 				is(DecodeResult.ERROR));
 	}
 
@@ -72,7 +71,7 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 	}
 
 	private DecodeResult runTestChildDecodeResult(DecodeResult code) throws Exception {
-		QppXmlDecoder objectUnderTest = new QppXmlDecoder(ConverterTestHelper.newMockConverter());
+		QppXmlDecoder objectUnderTest = new QppXmlDecoder(new Context());
 		Element childElement = new Element("childElement");
 		Node childNode = new Node();
 		String methodName = "testChildDecodeResult";
@@ -93,8 +92,8 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 	public static class TestChildDecodeError extends QppXmlDecoder {
 
-		public TestChildDecodeError(Converter converter) {
-			super(converter);
+		public TestChildDecodeError(Context context) {
+			super(context);
 		}
 
 		@Override
@@ -106,8 +105,8 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 	public static class TestChildNoAction extends QppXmlDecoder {
 
-		public TestChildNoAction(Converter converter) {
-			super(converter);
+		public TestChildNoAction(Context context) {
+			super(context);
 		}
 
 		@Override

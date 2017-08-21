@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.ConverterTestHelper;
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -20,12 +21,12 @@ public class IaMeasureDecoderTest {
 
 	@Before
 	public void setUp() throws IOException {
-		xmlFragment = getFixture("IaSection.xml");
+		xmlFragment = TestHelper.getFixture("IaSection.xml");
 	}
 
 	@Test
 	public void internalDecode() throws Exception {
-		IaMeasureDecoder decoder = new IaMeasureDecoder(ConverterTestHelper.newMockConverter());
+		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 
 		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
@@ -42,7 +43,7 @@ public class IaMeasureDecoderTest {
 	@Test
 	public void missingChildTest() throws Exception {
 		xmlFragment = removeChildFragment(xmlFragment);
-		IaMeasureDecoder decoder = new IaMeasureDecoder(ConverterTestHelper.newMockConverter());
+		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
 
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
@@ -54,7 +55,7 @@ public class IaMeasureDecoderTest {
 
 	@Test
 	public void internalDecodeWithExtraXmlPasses() throws Exception {
-		IaMeasureDecoder decoder = new IaMeasureDecoder(ConverterTestHelper.newMockConverter());
+		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
 		xmlFragment = addExtraXml(xmlFragment);
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 

@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.ConverterTestHelper;
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
@@ -29,11 +29,11 @@ public class MultipleTinsDecoderTest {
 	private static final String TEST_TIN2 = "TIN-2";
 	private static final String TEST_TIN3 = "TIN-3";
 
-	private Converter converter;
+	private Context context;
 
 	@Before
 	public void setup() {
-		converter = ConverterTestHelper.newMockConverter();
+		context = new Context();
 	}
 
 	@Test
@@ -127,34 +127,34 @@ public class MultipleTinsDecoderTest {
 
 	private List<Node> getTestChildren(Element multipleTinsElement) {
 		Node mulipleTinsNode = new Node();
-		MultipleTinsDecoder decoder = new MultipleTinsDecoder(converter);
+		MultipleTinsDecoder decoder = new MultipleTinsDecoder(context);
 		decoder.setNamespace(multipleTinsElement, decoder);
 		decoder.internalDecode(multipleTinsElement, mulipleTinsNode);
 		return mulipleTinsNode.getChildNodes();
 	}
 
 	private Element makeTestElement() throws IOException, XmlException {
-		String xmlFragment = getFixture("multiTinMinimal.xml");
+		String xmlFragment = TestHelper.getFixture("multiTinMinimal.xml");
 		Element ele = XmlUtils.stringToDom(xmlFragment);
 		return ele;
 	}
 
 	private Element makeTestElementMissingNPI() throws IOException, XmlException {
-		String xmlFragment = getFixture("multiTinMinimal.xml");
+		String xmlFragment = TestHelper.getFixture("multiTinMinimal.xml");
 		xmlFragment = xmlFragment.replace("<id root=\"2.16.840.1.113883.4.6\" extension=\"NPI-1\"/>", "");
 		Element ele = XmlUtils.stringToDom(xmlFragment);
 		return ele;
 	}
 
 	private Element makeTestElementMissingTIN() throws IOException, XmlException {
-		String xmlFragment = getFixture("multiTinMinimal.xml");
+		String xmlFragment = TestHelper.getFixture("multiTinMinimal.xml");
 		xmlFragment = xmlFragment.replace("<id root=\"2.16.840.1.113883.4.2\" extension=\"TIN-1\"/>", "");
 		Element ele = XmlUtils.stringToDom(xmlFragment);
 		return ele;
 	}
 
 	private Element makeTestElementMissingTaxEl() throws IOException, XmlException {
-		String xmlFragment = getFixture("multiTinMinimal.xml");
+		String xmlFragment = TestHelper.getFixture("multiTinMinimal.xml");
 		xmlFragment = xmlFragment.replaceFirst("<representedOrganization>", "")
 				.replaceFirst("</representedOrganization>", "");
 		Element ele = XmlUtils.stringToDom(xmlFragment);
@@ -162,21 +162,21 @@ public class MultipleTinsDecoderTest {
 	}
 
 	private Element makeTestElementMissingNPIID() throws IOException, XmlException {
-		String xmlFragment = getFixture("multiTinMinimal.xml");
+		String xmlFragment = TestHelper.getFixture("multiTinMinimal.xml");
 		xmlFragment = xmlFragment.replace("extension=\"NPI-1\"", "");
 		Element ele = XmlUtils.stringToDom(xmlFragment);
 		return ele;
 	}
 
 	private Element makeTestElementMissingTINID() throws IOException, XmlException {
-		String xmlFragment = getFixture("multiTinMinimal.xml");
+		String xmlFragment = TestHelper.getFixture("multiTinMinimal.xml");
 		xmlFragment = xmlFragment.replace("extension=\"TIN-1\"", "");
 		Element ele = XmlUtils.stringToDom(xmlFragment);
 		return ele;
 	}
 
 	private Element makeTestElementMissingTINIDAndNPIID() throws IOException, XmlException {
-		String xmlFragment = getFixture("multiTinMinimal.xml");
+		String xmlFragment = TestHelper.getFixture("multiTinMinimal.xml");
 		xmlFragment = xmlFragment.replace("extension=\"NPI-1\"", "");
 		xmlFragment = xmlFragment.replace("extension=\"TIN-1\"", "");
 		Element ele = XmlUtils.stringToDom(xmlFragment);

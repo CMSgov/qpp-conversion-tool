@@ -1,7 +1,6 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.ConverterTestHelper;
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
@@ -55,7 +54,7 @@ public class AciSectionRoundTripTest {
 		                     + "</component>";
 
 		//execute
-		Node parentNode = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node parentNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
@@ -97,7 +96,7 @@ public class AciSectionRoundTripTest {
 		                     + "</component>";
 
 		//execute
-		Node parentNode = new QppXmlDecoder(ConverterTestHelper.newMockConverter()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node parentNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
@@ -136,14 +135,14 @@ public class AciSectionRoundTripTest {
 
 		String expected = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ {\n    \"measure\" : \"measure1\"\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-04-30\"\n}";
 
-		Converter converter = ConverterTestHelper.newMockConverter();
+		Context context = new Context();
 		//Decode
-		Node measureNode = new QppXmlDecoder(converter).decode(XmlUtils.stringToDom(xmlFragment));
+		Node measureNode = new QppXmlDecoder(context).decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(measureNode.getChildNodes());
 
 		//Encode
-		QppOutputEncoder encoder = new QppOutputEncoder(converter);
+		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		List<Node> nodes = new ArrayList<>();
 		nodes.add(measureNode);
 		encoder.setNodes(nodes);

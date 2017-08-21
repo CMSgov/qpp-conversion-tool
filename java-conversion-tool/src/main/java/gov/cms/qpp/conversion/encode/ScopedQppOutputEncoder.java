@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -13,8 +14,8 @@ import java.util.stream.Stream;
  */
 public class ScopedQppOutputEncoder extends QppOutputEncoder {
 
-	public ScopedQppOutputEncoder(Converter converter) {
-		super(converter);
+	public ScopedQppOutputEncoder(Context context) {
+		super(context);
 	}
 
 	/**
@@ -63,7 +64,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 	 */
 	private boolean inSpecifiedScope(Node node) {
 		String type = node.getType().name();
-		Collection<QrdaScope> scope = converter.getScope();
+		Collection<QrdaScope> scope = context.getScope();
 		return scope.contains(QrdaScope.getInstanceByName(type));
 	}
 
