@@ -108,6 +108,9 @@ To ensure consistency throughout the source code, please keep these rules in min
 
 * All features or bug fixes **must be tested** by one or more unit-tests. All new code must have 95% or higher code coverage.
 * All public API methods **must be documented**.
-
+* Please consider installing the following [git hooks][truffle-hooks] after cloning the repo. They will help prevent unintentional introduction of secrets into history. Look [here][git-hooks] for a primer on git hooks.
+  
+[git-hooks]: https://git-scm.com/book/gr/v2/Customizing-Git-Git-Hooks
+[truffle-hooks]: https://github.com/clydet/truffleHog/tree/master/truffleHooks
 [github]: https://github.com/CMSgov/qpp-conversion-tool
 [dev-doc]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
