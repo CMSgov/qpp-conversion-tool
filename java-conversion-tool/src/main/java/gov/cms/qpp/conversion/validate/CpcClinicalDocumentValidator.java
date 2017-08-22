@@ -12,7 +12,7 @@ import gov.cms.qpp.conversion.model.Validator;
 public class CpcClinicalDocumentValidator extends NodeValidator {
 
 	public static final String MISSING_PRACTICE_SITE_ADDRESS = "Must contain a practice site address "
-			+ c"for CPC+ conversions";
+			+ "for CPC+ conversions";
 
 	/**
 	 * Validates a single clinical document node
