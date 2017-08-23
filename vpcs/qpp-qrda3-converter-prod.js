@@ -12,7 +12,7 @@ var env = {
   defaultIamInstanceProfile: 'server-prod',
   alarmEmail: 'devops@navahq.com',
   machineImageOwners: ['self'],
-  externalSecurityGroupRefs: [{ Ref: 'OpenHttpSecurityGroup' }],
+  internalSecurityGroupRefs: [{ Ref: 'OpenHttpSecurityGroup' }],
   awsAccount: 'aws-hhs-cms-ccsq-qpp-navadevops'
 };
 
