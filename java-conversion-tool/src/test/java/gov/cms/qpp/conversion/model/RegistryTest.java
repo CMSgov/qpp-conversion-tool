@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -136,7 +137,7 @@ public class RegistryTest {
 	public void testRegistryGetHandlerThatFailsConstruction() throws Exception {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), PrivateConstructor.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
-		assertThat("Registry should return null for failed construction not an exception.", decoder, is(nullValue()));
+		assertThat("Registry with a private constructor should be constructable", decoder, is(not(nullValue())));
 	}
 
 	@Test

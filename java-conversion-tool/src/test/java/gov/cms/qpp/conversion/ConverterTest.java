@@ -212,7 +212,6 @@ public class ConverterTest {
 	}
 
 	@Test
-	@PrepareForTest(Converter.class)
 	public void testSkipDefaults() throws Exception {
 		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml")));
 		converter.getContext().setDoDefaults(false);
@@ -225,7 +224,6 @@ public class ConverterTest {
 	}
 
 	@Test
-	@PrepareForTest(Converter.class)
 	public void testDefaults() throws Exception {
 		Context context = new Context();
 		context.setDoValidation(false);

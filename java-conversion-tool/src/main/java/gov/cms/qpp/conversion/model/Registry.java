@@ -118,7 +118,7 @@ public class Registry<R> {
 	}
 
 	private Function<Context, Object> createHandlerConstructor(Class<?> handlerClass)
-			throws IllegalAccessException, NoSuchMethodException {
+			throws NoSuchMethodException, IllegalAccessException {
 		try {
 			Constructor<?> constructor = handlerClass.getConstructor(Context.class);
 			MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
@@ -126,12 +126,37 @@ public class Registry<R> {
 
 			return constructorContextArgument(handle);
 		} catch (NoSuchMethodException thatsOk) {
-			Constructor<?> constructor = handlerClass.getConstructor();
+			Constructor<?> constructor = getNoArgsConstructor(handlerClass);
 			MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
 					.asType(MethodType.methodType(Object.class));
 
 			return constructorNoArgs(handle);
 		}
+	}
+
+	private Constructor<?> getNoArgsConstructor(Class<?> type) throws NoSuchMethodException {
+		Constructor<?> constructor = getNoArgsConstructor(type.getConstructors());
+		if (constructor == null) {
+			constructor = getNoArgsConstructor(type.getDeclaredConstructors());
+
+			if (constructor == null) {
+				throw new NoSuchMethodException(type + " does not have a no-args constructor (public OR private)");
+			}
+
+		}
+
+		constructor.setAccessible(true);
+		return constructor;
+	}
+
+	private Constructor<?> getNoArgsConstructor(Constructor<?>[] constructors) {
+		for (Constructor<?> constructor : constructors) {
+			if (constructor.getParameterCount() == 0) {
+				return constructor;
+			}
+		}
+
+		return null;
 	}
 
 	private Function<Context, Object> constructorContextArgument(MethodHandle handle) {

@@ -5,8 +5,6 @@ import static gov.cms.qpp.conversion.validate.MeasureDataValidator.MISSING_AGGRE
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -14,6 +12,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
@@ -32,7 +31,7 @@ public class MeasureDataValidatorTest {
 
 	@Test
 	public void internalValidateSingleNode() throws Exception {
-		String happy = getFixture("measureDataHappy.xml");
+		String happy = TestHelper.getFixture("measureDataHappy.xml");
 		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(happy));
 		MeasureDataValidator validator = new MeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
@@ -119,20 +118,6 @@ public class MeasureDataValidatorTest {
 
 	private List<Detail> getErrors(AllErrors content) {
 		return content.getErrors().get(0).getDetails();
-	}
-
-
-
-	/**
-	 * Retrieve fixture file content using "src/test/resources/fixtures/" as a base directory
-	 *
-	 * @param name file name
-	 * @return file content
-	 * @throws IOException when it can't locate / read the file
-	 */
-	protected static String getFixture(final String name) throws IOException {
-		Path path = Paths.get("src/test/resources/fixtures/" + name);
-		return new String(Files.readAllBytes(path));
 	}
 
 }
