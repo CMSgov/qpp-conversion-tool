@@ -105,27 +105,32 @@ public class Registry<R> {
 			return null;
 		}
 
-		return handlerClass.cast(CONSTRUCTORS.computeIfAbsent(handlerClass, this::createHandlerConstructor).apply(context));
+		return handlerClass.cast(CONSTRUCTORS.computeIfAbsent(handlerClass, this::createHandler).apply(context));
 	}
 
-	private Function<Context, Object> createHandlerConstructor(Class<?> handlerClass) {
+	private Function<Context, Object> createHandler(Class<?> handlerClass) {
 		try {
-			try {
-				Constructor<?> constructor = handlerClass.getConstructor(Context.class);
-				MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
-						.asType(MethodType.methodType(Object.class, Context.class));
-
-				return constructor(handle);
-			} catch (NoSuchMethodException thatsOk) {
-				Constructor<?> constructor = handlerClass.getConstructor();
-				MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
-						.asType(MethodType.methodType(Object.class));
-
-				return constructor(handle);
-			}
+			return createHandlerConstructor(handlerClass);
 		} catch (NoSuchMethodException | IllegalAccessException e) {
 			DEV_LOG.warn("Unable to create constructor handle", e);
 			return ignore -> null;
+		}
+	}
+
+	private Function<Context, Object> createHandlerConstructor(Class<?> handlerClass)
+			throws IllegalAccessException, NoSuchMethodException {
+		try {
+			Constructor<?> constructor = handlerClass.getConstructor(Context.class);
+			MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
+					.asType(MethodType.methodType(Object.class, Context.class));
+
+			return constructor(handle);
+		} catch (NoSuchMethodException thatsOk) {
+			Constructor<?> constructor = handlerClass.getConstructor();
+			MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
+					.asType(MethodType.methodType(Object.class));
+
+			return constructor(handle);
 		}
 	}
 
