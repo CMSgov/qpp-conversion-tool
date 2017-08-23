@@ -12,8 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The engine that executes the VALIDATORS on the entire hierarchy of {@link gov.cms.qpp.conversion.model.Node}s.
@@ -66,14 +67,12 @@ public class QrdaValidator {
 	 * @param node The node to validate.
 	 */
 	private void validateSingleNode(final Node node) {
-		Set<NodeValidator> validatorsForNode = getValidators(node.getType());
-
-		validatorsForNode.forEach(validatorForNode -> {
-			if (validatorForNode != null && isValidationRequired(validatorForNode)) {
+		getValidators(node.getType())
+			.filter(this::isValidationRequired)
+			.forEach(validatorForNode -> {
 				Set<Detail> nodeErrors = validatorForNode.validateSingleNode(node);
 				details.addAll(nodeErrors);
-			}
-		});
+			});
 	}
 
 	/**
@@ -82,18 +81,16 @@ public class QrdaValidator {
 	 * @param templateId string representation of a would be validator's template id
 	 * @return validators that correspond to the given template id
 	 */
-	private Set<NodeValidator> getValidators(TemplateId templateId) {
+	private Stream<NodeValidator> getValidators(TemplateId templateId) {
 		Set<NodeValidator> nodeValidators = validators.inclusiveGet(templateId);
 		return nodeValidators.stream()
+				.filter(Objects::nonNull)
 				.filter(nodeValidator -> {
-					if (nodeValidator == null) {
-						return false;
-					}
 					Validator validator = nodeValidator.getClass().getAnnotation(Validator.class);
 					TemplateId template = validator == null ? TemplateId.DEFAULT : validator.value();
 					return scope == null || scope.contains(template);
 				})
-				.collect(Collectors.toSet());
+				.distinct();
 	}
 
 	/**
