@@ -12,7 +12,7 @@ var env = {
   defaultIamInstanceProfile: 'server-nonprod',
   alarmEmail: 'devops@navahq.com',
   machineImageOwners: ['self'],
-  externalSecurityGroupRefs: [{ Ref: 'OpenHttpSecurityGroup' }],
+  internalSecurityGroupRefs: [{ Ref: 'OpenHttpSecurityGroup' }],
   awsAccount: 'aws-hhs-cms-ccsq-qpp-navadevops'
 };
 
@@ -49,6 +49,9 @@ env.configureLayers = function() {
   internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['LoadBalancerPort'] = 443;
   internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['Protocol'] = 'HTTPS';
   internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['InstanceProtocol'] = 'HTTP';
+  // ACM certificate for dev.qpp-qrda3-converter.navapbc.com
+  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['SSLCertificateId'] =
+    'arn:aws:acm:us-east-1:003384571330:certificate/f1b98858-6b1c-4557-b26b-d2259f5b53e4';
 
   return {
     app: rootRequire('./layers/app/api'),

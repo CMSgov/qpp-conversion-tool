@@ -31,6 +31,28 @@ env.gditSubnets = {
 };
 
 env.configureLayers = function() {
+   // Replaces external ELB with an internal ELB
+  const virtualEnvironment = rootRequire('./virtual_environment_defs');
+  const internalBalancer = rootRequire('./layers/app/balancers/internal_balancer');
+  internalBalancer['Resources']['AppElb']['Properties']['Subnets'] = [
+    {
+      'Ref': virtualEnvironment.zones.private[0].Name
+    },
+    {
+      'Ref': virtualEnvironment.zones.private[1].Name
+    },
+    {
+      'Ref': virtualEnvironment.zones.private[2].Name
+    }
+  ];
+  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['InstancePort'] = 3000;
+  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['LoadBalancerPort'] = 443;
+  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['Protocol'] = 'HTTPS';
+  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['InstanceProtocol'] = 'HTTP';
+  // ACM certificate for impl.qpp-qrda3-converter.navapbc.com
+  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['SSLCertificateId'] =
+    'impl.qpp-qrda3-converter.navapbc.com';
+
   return {
     app: rootRequire('./layers/app/api'),
     jump: rootRequire('./layers/jump/jump'),
