@@ -135,14 +135,14 @@ public class Registry<R> {
 	}
 
 	private Function<Context, Object> constructorContextArgument(MethodHandle handle) {
-		return context -> {
+		return passedContext -> {
 			try {
-				return handle.invokeExact(context);
+				return handle.invokeExact(passedContext);
 			} catch (Exception codeProblem) {
 				DEV_LOG.warn("Unable to invoke constructor handle", codeProblem);
 				return null;
 			} catch (Throwable severeRuntimeError) {
-				throw new RuntimeException(severeRuntimeError);
+				throw new SevereRuntimeException(severeRuntimeError);
 			}
 		};
 	}
@@ -155,7 +155,7 @@ public class Registry<R> {
 				DEV_LOG.warn("Unable to invoke no-args constructor handle", codeProblem);
 				return null;
 			} catch (Throwable severeRuntimeError) {
-				throw new RuntimeException(severeRuntimeError);
+				throw new SevereRuntimeException(severeRuntimeError);
 			}
 		};
 	}
