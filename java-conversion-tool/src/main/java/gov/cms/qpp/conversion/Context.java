@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion;
 
 import java.lang.annotation.Annotation;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +18,7 @@ public class Context {
 
 	private final Map<Class<? extends Annotation>, Registry<?>> registries = new IdentityHashMap<>();
 	private Program program = Program.ALL;
-	private Set<QrdaScope> scope = new HashSet<>();
+	private Set<QrdaScope> scope = EnumSet.noneOf(QrdaScope.class);
 	private boolean historical;
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
