@@ -41,6 +41,9 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		setProgramNameOnNode(element, thisNode);
 		setEntityIdOnNode(element, thisNode);
+		if (thisNode.getValue(PROGRAM_NAME).equalsIgnoreCase(CPCPLUS)) {
+			setPracticeSiteAddress(element, thisNode);
+		}
 		setNationalProviderIdOnNode(element, thisNode);
 		setTaxProviderTaxIdOnNode(element, thisNode);
 		processComponentElement(element, thisNode);
@@ -60,6 +63,10 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 				thisNode.putValue(ENTITY_ID, id.getValue(), false);
 			setOnNode(element, getXpath(ENTITY_ID), consumer, Filters.attribute(), false);
 		}
+	}
+
+	private void setPracticeSiteAddress(Element element, Node thisNode) {
+
 	}
 
 	/**
