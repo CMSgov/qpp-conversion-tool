@@ -124,22 +124,35 @@ public class Registry<R> {
 			MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
 					.asType(MethodType.methodType(Object.class, Context.class));
 
-			return constructor(handle);
+			return constructorContextArgument(handle);
 		} catch (NoSuchMethodException thatsOk) {
 			Constructor<?> constructor = handlerClass.getConstructor();
 			MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
 					.asType(MethodType.methodType(Object.class));
 
-			return constructor(handle);
+			return constructorNoArgs(handle);
 		}
 	}
 
-	private Function<Context, Object> constructor(MethodHandle handle) {
+	private Function<Context, Object> constructorContextArgument(MethodHandle handle) {
+		return context -> {
+			try {
+				return handle.invokeExact(context);
+			} catch (Exception codeProblem) {
+				DEV_LOG.warn("Unable to invoke constructor handle", codeProblem);
+				return null;
+			} catch (Throwable severeRuntimeError) {
+				throw new RuntimeException(severeRuntimeError);
+			}
+		};
+	}
+
+	private Function<Context, Object> constructorNoArgs(MethodHandle handle) {
 		return ignore -> {
 			try {
 				return handle.invokeExact();
 			} catch (Exception codeProblem) {
-				DEV_LOG.warn("Unable to invoke constructor handle {}", handle.type(), codeProblem);
+				DEV_LOG.warn("Unable to invoke no-args constructor handle", codeProblem);
 				return null;
 			} catch (Throwable severeRuntimeError) {
 				throw new RuntimeException(severeRuntimeError);
