@@ -29,10 +29,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import gov.cms.qpp.TestHelper;
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
-import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.ComponentKey;
@@ -49,7 +46,6 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
-import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
@@ -81,8 +77,8 @@ public class ConverterTest {
 
 		//mocking
 		Context context = new Context();
-		context.getRegistry(Decoder.class, QppXmlDecoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), JennyDecoder.class);
-		context.getRegistry(Validator.class, NodeValidator.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), TestDefaultValidator.class);
+		context.getRegistry(Decoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), JennyDecoder.class);
+		context.getRegistry(Validator.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), TestDefaultValidator.class);
 		QrdaValidator mockQrdaValidator = TestHelper.mockValidator(context, TestDefaultValidator.class, true, null);
 		PowerMockito.doReturn(Arrays.asList(new Detail("Test validation error for Jenny")))
 			.when(mockQrdaValidator)
@@ -233,8 +229,8 @@ public class ConverterTest {
 	public void testDefaults() throws Exception {
 		Context context = new Context();
 		context.setDoValidation(false);
-		context.getRegistry(Decoder.class, XmlInputDecoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), JennyDecoder.class);
-		context.getRegistry(Encoder.class, JsonOutputEncoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), Jenncoder.class);
+		context.getRegistry(Decoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), JennyDecoder.class);
+		context.getRegistry(Encoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), Jenncoder.class);
 
 		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml")), context);
 		JsonWrapper qpp = converter.transform();

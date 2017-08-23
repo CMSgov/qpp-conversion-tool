@@ -21,7 +21,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 
 	public QppOutputEncoder(Context context) {
 		this.context = context;
-		this.encoders = context.getRegistry(Encoder.class, JsonOutputEncoder.class);
+		this.encoders = context.getRegistry(Encoder.class);
 		Encoder enc = this.getClass().getAnnotation(Encoder.class);
 		template = (enc != null) ? enc.value() : TemplateId.DEFAULT;
 	}

@@ -32,7 +32,7 @@ public class RegistryTest {
 	@Before
 	public void before() {
 		context = new Context();
-		registry = context.getRegistry(Decoder.class, InputDecoder.class);
+		registry = context.getRegistry(Decoder.class);
 		err = System.err;
 	}
 
@@ -118,7 +118,7 @@ public class RegistryTest {
 					TemplateId.ACI_AGGREGATE_COUNT, componentKey.getTemplate());
 		}
 
-		componentKeys = context.getRegistry(Encoder.class, Encoder.class).getComponentKeys(AggregateCountEncoder.class);
+		componentKeys = context.getRegistry(Encoder.class).getComponentKeys(AggregateCountEncoder.class);
 		assertThat("A componentKey is expected", componentKeys, hasSize(1));
 		for (ComponentKey componentKey : componentKeys) {
 			assertEquals("The templateId should be",
@@ -128,7 +128,7 @@ public class RegistryTest {
 
 	@Test
 	public void testRegistry_getTemplateIds_NullReturn() throws Exception {
-		Set<ComponentKey> componentKeys = context.getRegistry(SuppressWarnings.class, Encoder.class).getComponentKeys(Placeholder.class);
+		Set<ComponentKey> componentKeys = context.getRegistry(SuppressWarnings.class).getComponentKeys(Placeholder.class);
 		assertThat("A componentKey is not expected", componentKeys, empty());
 	}
 

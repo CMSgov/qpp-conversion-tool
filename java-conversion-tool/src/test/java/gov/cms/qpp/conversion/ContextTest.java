@@ -7,7 +7,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Program;
 
@@ -68,14 +67,14 @@ public class ContextTest {
 
 	@Test
 	public void testGetRegistryReturnsValid() {
-		assertNotNull(new Context().getRegistry(Decoder.class, XmlInputDecoder.class));
+		assertNotNull(new Context().getRegistry(Decoder.class));
 	}
 
 	@Test
 	public void testGetRegistryIdentity() {
 		Context context = new Context();
-		assertSame(context.getRegistry(Decoder.class, XmlInputDecoder.class),
-				context.getRegistry(Decoder.class, XmlInputDecoder.class));
+		assertSame(context.getRegistry(Decoder.class),
+				context.getRegistry(Decoder.class));
 	}
 
 }

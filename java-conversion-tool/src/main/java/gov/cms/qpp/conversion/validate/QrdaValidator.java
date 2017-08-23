@@ -26,7 +26,7 @@ public class QrdaValidator {
 	private final Registry<NodeValidator> validators;
 
 	public QrdaValidator(Context context) {
-		this.validators = context.getRegistry(Validator.class, NodeValidator.class);
+		this.validators = context.getRegistry(Validator.class);
 		this.scope = hasScope(context) ? QrdaScope.getTemplates(context.getScope()) : null;
 	}
 

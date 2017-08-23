@@ -38,7 +38,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 		this.context = context;
 		this.scope = hasScope(context) ? QrdaScope.getTemplates(context.getScope()) : null;
-		this.decoders = context.getRegistry(Decoder.class, XmlInputDecoder.class);
+		this.decoders = context.getRegistry(Decoder.class);
 	}
 
 	private boolean hasScope(Context context) {

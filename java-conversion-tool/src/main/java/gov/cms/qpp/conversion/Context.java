@@ -94,7 +94,7 @@ public class Context {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <A extends Annotation, R> Registry<R> getRegistry(Class<A> annotation, Class<R> registry) {
+	public <A extends Annotation, R> Registry<R> getRegistry(Class<A> annotation) {
 		return (Registry<R>) registries.computeIfAbsent(annotation, key -> new Registry<>(this, key));
 	}
 

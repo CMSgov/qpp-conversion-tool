@@ -48,8 +48,8 @@ public class QrdaValidatorTest {
 		nodesPassedIntoValidateSingleNode = new ArrayList<>();
 
 		context = new Context();
-		context.getRegistry(Validator.class, NodeValidator.class).register(new ComponentKey(TEST_REQUIRED_TEMPLATE_ID, Program.ALL), RequiredTestValidator.class);
-		context.getRegistry(Validator.class, NodeValidator.class).register(new ComponentKey(TEST_OPTIONAL_TEMPLATE_ID, Program.ALL), OptionalTestValidator.class);
+		context.getRegistry(Validator.class).register(new ComponentKey(TEST_REQUIRED_TEMPLATE_ID, Program.ALL), RequiredTestValidator.class);
+		context.getRegistry(Validator.class).register(new ComponentKey(TEST_OPTIONAL_TEMPLATE_ID, Program.ALL), OptionalTestValidator.class);
 		objectUnderTest = TestHelper.mockValidator(context, RequiredTestValidator.class, true);
 		objectUnderTest = TestHelper.mockValidator(context, OptionalTestValidator.class, false, objectUnderTest);
 	}

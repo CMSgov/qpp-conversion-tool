@@ -38,8 +38,8 @@ public class QppXmlDecoderTest {
 	@Test
 	public void decodeInvalidChildReturnsError() {
 		Context context = new Context();
-		context.getRegistry(Decoder.class, XmlInputDecoder.class).register(new ComponentKey(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS, Program.ALL), TestChildDecodeError.class);
-		context.getRegistry(Decoder.class, XmlInputDecoder.class).register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), TestChildNoAction.class);
+		context.getRegistry(Decoder.class).register(new ComponentKey(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS, Program.ALL), TestChildDecodeError.class);
+		context.getRegistry(Decoder.class).register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), TestChildNoAction.class);
 
 		Element testElement = new Element("testElement");
 		Element testChildElement = new Element("templateId");
