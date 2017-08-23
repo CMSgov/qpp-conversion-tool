@@ -60,6 +60,7 @@ public class IaSectionValidatorRoundTripTest {
 		AllErrors errors = new AllErrors();
 		try {
 			converter.transform();
+			throw new RuntimeException("Should not reach");
 		} catch (TransformException exception) {
 			errors = exception.getDetails();
 		}

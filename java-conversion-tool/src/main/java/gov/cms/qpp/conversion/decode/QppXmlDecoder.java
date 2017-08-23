@@ -28,7 +28,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 	protected final Context context;
 	private final Set<TemplateId> scope;
-	private final Registry<QppXmlDecoder> decoders;
+	private final Registry<XmlInputDecoder> decoders;
 
 	/**
 	 * Initialize a qpp xml decoder
@@ -37,8 +37,12 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		Objects.requireNonNull(context, "converter");
 
 		this.context = context;
-		this.scope = QrdaScope.getTemplates(context.getScope());
-		this.decoders = context.getRegistry(Decoder.class, QppXmlDecoder.class);
+		this.scope = hasScope(context) ? QrdaScope.getTemplates(context.getScope()) : null;
+		this.decoders = context.getRegistry(Decoder.class, XmlInputDecoder.class);
+	}
+
+	private boolean hasScope(Context context) {
+		return context.getScope() != null && !context.getScope().isEmpty();
 	}
 
 	/**
@@ -82,7 +86,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
 				DEV_LOG.debug("templateIdFound:{}", templateId);
 
-				QppXmlDecoder childDecoder = getDecoder(templateId);
+				XmlInputDecoder childDecoder = getDecoder(templateId);
 
 				if (null == childDecoder) {
 					continue;
@@ -122,12 +126,12 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * @param templateId string representation of a would be decoder's template id
 	 * @return decoder that corresponds to the given template id
 	 */
-	private QppXmlDecoder getDecoder(TemplateId templateId) {
-
-		QppXmlDecoder qppDecoder = decoders.get(templateId);
+	private XmlInputDecoder getDecoder(TemplateId templateId) {
+		XmlInputDecoder qppDecoder = decoders.get(templateId);
 		if (qppDecoder != null) {
 			Decoder decoder = qppDecoder.getClass().getAnnotation(Decoder.class);
-			return !scope.contains(decoder.value()) ? null : qppDecoder;
+			TemplateId template = decoder == null ? TemplateId.DEFAULT : decoder.value();
+			return scope != null && !scope.contains(template) ? null : qppDecoder;
 		}
 
 		return null;
@@ -172,19 +176,19 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		Node rootNode = new Node();
 		Element rootElement = xmlDoc.getDocument().getRootElement();
 		
-		QppXmlDecoder rootDecoder = null;
-		for (Element e : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
-			String root = e.getAttributeValue(ROOT_STRING);
-			String extension = e.getAttributeValue(EXTENSION_STRING);
+		XmlInputDecoder rootDecoder = null;
+		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
+			String root = element.getAttributeValue(ROOT_STRING);
+			String extension = element.getAttributeValue(EXTENSION_STRING);
 			TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
 			rootDecoder = getDecoder(templateId);
-			if (null != rootDecoder) {
+			if (rootDecoder != null) {
 				rootNode.setType(templateId);
 				break;
 			}
 		}
 		
-		if (null != rootDecoder) {
+		if (rootDecoder != null) {
 			rootDecoder.setNamespace(rootElement, rootDecoder);
 			rootNode.setDefaultNsUri(rootDecoder.defaultNs.getURI());
 			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));

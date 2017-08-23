@@ -1,10 +1,14 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.ComponentKey;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,8 +48,10 @@ public class QrdaValidatorTest {
 		nodesPassedIntoValidateSingleNode = new ArrayList<>();
 
 		context = new Context();
-		objectUnderTest = AnnotationMockHelper.mockValidator(context, TEST_REQUIRED_TEMPLATE_ID, RequiredTestValidator.class, true);
-		objectUnderTest = AnnotationMockHelper.mockValidator(context, TEST_OPTIONAL_TEMPLATE_ID, OptionalTestValidator.class, false, objectUnderTest);
+		context.getRegistry(Validator.class, NodeValidator.class).register(new ComponentKey(TEST_REQUIRED_TEMPLATE_ID, Program.ALL), RequiredTestValidator.class);
+		context.getRegistry(Validator.class, NodeValidator.class).register(new ComponentKey(TEST_OPTIONAL_TEMPLATE_ID, Program.ALL), OptionalTestValidator.class);
+		objectUnderTest = TestHelper.mockValidator(context, RequiredTestValidator.class, true);
+		objectUnderTest = TestHelper.mockValidator(context, OptionalTestValidator.class, false, objectUnderTest);
 	}
 
 	@Test

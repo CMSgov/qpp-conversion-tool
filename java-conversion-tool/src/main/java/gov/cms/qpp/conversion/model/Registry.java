@@ -39,33 +39,14 @@ public class Registry<R> {
 	private static final Map<Class<?>, Function<Context, Object>> CONSTRUCTORS = new IdentityHashMap<>();
 	private static final Map<Class<? extends Annotation>, Map<ComponentKey, Class<?>>> SHARED_REGISTRY_MAP = new ConcurrentHashMap<>(); // TODO - may want to decrease the concurrency level for memory usage
 
-	static {
-		
-	}
-
 	private final Context context;
-	/**
-	 * This will be an XPATH string to converter handler registration Since
-	 * Converter was taken for the main stub, I chose Handler for now.
-	 */
-	private Map<ComponentKey, Class<?>> registryMap;
-	private Class<? extends Annotation> annotationClass;
+	private final Map<ComponentKey, Class<?>> registryMap;
+	private final Class<? extends Annotation> annotationClass;
 
-	/**
-	 * initialize and configure the registry
-	 */
 	public Registry(Context context, Class<? extends Annotation> annotationClass) {
 		this.context = context;
 		this.annotationClass = annotationClass;
-		registerAnnotatedHandlers();
-	}
-
-	/**
-	 * This method will scan all classes for the annotation for
-	 * TransformHandlers that need registration.
-	 */
-	private void registerAnnotatedHandlers() {
-		registryMap = SHARED_REGISTRY_MAP.computeIfAbsent(annotationClass, this::lookupAnnotatedClasses);
+		this.registryMap = new HashMap<>(SHARED_REGISTRY_MAP.computeIfAbsent(annotationClass, this::lookupAnnotatedClasses));
 	}
 
 	private Map<ComponentKey, Class<?>> lookupAnnotatedClasses(Class<? extends Annotation> annotationClass) {
@@ -180,8 +161,13 @@ public class Registry<R> {
 	 * @return list of component keys
 	 */
 	private List<ComponentKey> getKeys(TemplateId registryKey, boolean generalPriority) {
+		Program contextProgram = context.getProgram();
+		if (contextProgram == Program.ALL) {
+			return Collections.singletonList(new ComponentKey(registryKey, contextProgram));
+		}
+
 		List<ComponentKey> returnValue = Arrays.asList(
-				new ComponentKey(registryKey, context.getProgram()),
+				new ComponentKey(registryKey, contextProgram),
 				new ComponentKey(registryKey, Program.ALL));
 		if (generalPriority) {
 			Collections.reverse(returnValue);
@@ -196,7 +182,8 @@ public class Registry<R> {
 	 * @return handler i.e. {@link Validator}, {@link Decoder} or {@link Encoder}
 	 */
 	private Class<? extends R> findHandler(TemplateId registryKey) {
-		return findHandlers(getKeys(registryKey, false)).stream()
+		return findHandlers(getKeys(registryKey, false))
+				.stream()
 				.findFirst()
 				.orElse(null);
 	}
@@ -220,12 +207,12 @@ public class Registry<R> {
 	}
 
 	/**
-	 * Means ot register a new transformation handler
+	 * Means to register a new transformation handler
 	 *
 	 * @param registryKey key that identifies a component i.e. a {@link Validator}, {@link Decoder} or {@link Encoder}
 	 * @param handler the keyed {@link Validator}, {@link Decoder} or {@link Encoder}
 	 */
-	void register(ComponentKey registryKey, Class<? extends R> handler) {
+	public void register(ComponentKey registryKey, Class<? extends R> handler) {
 		DEV_LOG.debug("Registering " + handler.getName() + " to '" + registryKey + "' for "
 				+ annotationClass.getSimpleName() + ".");
 		// This could be a class or class name and instantiated on lookup

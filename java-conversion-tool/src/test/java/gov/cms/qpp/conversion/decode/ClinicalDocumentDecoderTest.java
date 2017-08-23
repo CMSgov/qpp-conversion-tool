@@ -24,9 +24,9 @@ import static org.junit.Assert.assertThat;
 
 public class ClinicalDocumentDecoderTest {
 
+	private static final String ENTITY_ID_VALUE = "AR000000";
 	private static String xmlFragment;
 	private Node clinicalDocument;
-	private final String ENTITY_ID_VALUE = "AR000000";
 
 	@BeforeClass
 	public static void init() throws IOException {

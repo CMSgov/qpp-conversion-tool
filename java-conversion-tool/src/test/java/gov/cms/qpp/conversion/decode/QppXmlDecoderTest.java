@@ -10,15 +10,13 @@ import org.jdom2.Element;
 import org.junit.Test;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.conversion.model.ComponentKey;
+import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 
-public class QppXmlDecoderTest extends QppXmlDecoder {
-
-	public QppXmlDecoderTest() {
-		super(new Context());
-	}
+public class QppXmlDecoderTest {
 
 	private static boolean errorDecode = false;
 
@@ -39,8 +37,9 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 
 	@Test
 	public void decodeInvalidChildReturnsError() {
-		AnnotationMockHelper.mockDecoder(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS, TestChildDecodeError.class);
-		AnnotationMockHelper.mockDecoder(TemplateId.PLACEHOLDER, TestChildNoAction.class);
+		Context context = new Context();
+		context.getRegistry(Decoder.class, XmlInputDecoder.class).register(new ComponentKey(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS, Program.ALL), TestChildDecodeError.class);
+		context.getRegistry(Decoder.class, XmlInputDecoder.class).register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), TestChildNoAction.class);
 
 		Element testElement = new Element("testElement");
 		Element testChildElement = new Element("templateId");
@@ -49,7 +48,7 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 		testElement.getChildren().add(testChildElement);
 		Node testNode = new Node();
 
-		QppXmlDecoder objectUnderTest = new QppXmlDecoderTest();
+		QppXmlDecoder objectUnderTest = new DefaultQppXmlDecoder(context);
 		objectUnderTest.decode(testElement, testNode);
 
 		assertThat("Child Node was not encountered", errorDecode, is(true));
@@ -88,6 +87,12 @@ public class QppXmlDecoderTest extends QppXmlDecoder {
 		DecodeResult returnValue = (DecodeResult) testChildDecodeResult.invoke(objectUnderTest, code, childElement,
 				childNode);
 		return returnValue;
+	}
+
+	public static class DefaultQppXmlDecoder extends QppXmlDecoder {
+		public DefaultQppXmlDecoder(Context context) {
+			super(context);
+		}
 	}
 
 	public static class TestChildDecodeError extends QppXmlDecoder {

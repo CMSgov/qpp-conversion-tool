@@ -109,7 +109,6 @@ public class Converter {
 	 * @throws XmlException during transform
 	 */
 	private JsonWrapper transform(InputStream inStream) throws XmlException {
-		QrdaValidator validator = new QrdaValidator(context);
 		Element doc = XmlUtils.parseXmlStream(inStream);
 		decoded = XmlInputDecoder.decodeXml(context, doc);
 		JsonWrapper qpp = null;
@@ -119,7 +118,9 @@ public class Converter {
 			if (!context.isDoDefaults()) {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
 			}
+
 			if (context.isDoValidation()) {
+				QrdaValidator validator = new QrdaValidator(context);
 				details.addAll(validator.validate(decoded));
 			}
 

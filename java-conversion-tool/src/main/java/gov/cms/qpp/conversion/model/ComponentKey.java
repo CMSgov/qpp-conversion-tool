@@ -2,6 +2,9 @@ package gov.cms.qpp.conversion.model;
 
 import java.util.Objects;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.MoreObjects.ToStringHelper;
+
 /**
  * A key used for identifying "components" i.e. {@link Encoder}'s, {@link Decoder}'s and {@link Validator}'s.
  */
@@ -62,5 +65,14 @@ public class ComponentKey {
 			hashCode = Objects.hash(template, program);
 		}
 		return hashCode;
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.omitNullValues()
+				.add("template", template)
+				.add("program", program)
+				.toString();
 	}
 }

@@ -27,7 +27,11 @@ public class QrdaValidator {
 
 	public QrdaValidator(Context context) {
 		this.validators = context.getRegistry(Validator.class, NodeValidator.class);
-		this.scope = QrdaScope.getTemplates(context.getScope());
+		this.scope = hasScope(context) ? QrdaScope.getTemplates(context.getScope()) : null;
+	}
+
+	private boolean hasScope(Context context) {
+		return context.getScope() != null && !context.getScope().isEmpty();
 	}
 
 	/**
@@ -86,7 +90,8 @@ public class QrdaValidator {
 						return false;
 					}
 					Validator validator = nodeValidator.getClass().getAnnotation(Validator.class);
-					return scope.contains(validator.value());
+					TemplateId template = validator == null ? TemplateId.DEFAULT : validator.value();
+					return scope == null || scope.contains(template);
 				})
 				.collect(Collectors.toSet());
 	}
@@ -97,8 +102,9 @@ public class QrdaValidator {
 	 * @param validatorForNode The NodeValidator
 	 * @return Whether the validation the NodeValidator does is required.
 	 */
-	private boolean isValidationRequired(final NodeValidator validatorForNode) {
-		return getAnnotation(validatorForNode).required();
+	private boolean isValidationRequired(NodeValidator validatorForNode) {
+		Validator validator = getAnnotation(validatorForNode);
+		return validator != null && validator.required();
 	}
 
 	/**
