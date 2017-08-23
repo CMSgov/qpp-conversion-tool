@@ -37,7 +37,8 @@ public class Registry<R> {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Registry.class);
 	private static final Map<Class<?>, Function<Context, Object>> CONSTRUCTORS = new IdentityHashMap<>();
-	private static final Map<Class<? extends Annotation>, Map<ComponentKey, Class<?>>> SHARED_REGISTRY_MAP = new ConcurrentHashMap<>(); // TODO - may want to decrease the concurrency level for memory usage
+	private static final Map<Class<? extends Annotation>, Map<ComponentKey, Class<?>>> SHARED_REGISTRY_MAP
+		= new ConcurrentHashMap<>();
 
 	private final Context context;
 	private final Map<ComponentKey, Class<?>> registryMap;
@@ -113,32 +114,32 @@ public class Registry<R> {
 				Constructor<?> constructor = handlerClass.getConstructor(Context.class);
 				MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
 						.asType(MethodType.methodType(Object.class, Context.class));
-				return converter -> {
-					try {
-						return handle.invokeExact(converter);
-					} catch (Throwable e) {
-						DEV_LOG.warn("Unable to invoke constructor handle", e);
-						return null;
-					}
-				};
+
+				return constructor(handle);
 			} catch (NoSuchMethodException thatsOk) {
 				Constructor<?> constructor = handlerClass.getConstructor();
 				MethodHandle handle = MethodHandles.lookup().unreflectConstructor(constructor)
 						.asType(MethodType.methodType(Object.class));
 
-				return ignore -> {
-					try {
-						return handle.invokeExact();
-					} catch (Throwable e) {
-						DEV_LOG.warn("Unable to invoke no-args constructor handle", e);
-						return null;
-					}
-				};
+				return constructor(handle);
 			}
 		} catch (NoSuchMethodException | IllegalAccessException e) {
 			DEV_LOG.warn("Unable to create constructor handle", e);
 			return ignore -> null;
 		}
+	}
+
+	private Function<Context, Object> constructor(MethodHandle handle) {
+		return ignore -> {
+			try {
+				return handle.invokeExact();
+			} catch (Exception codeProblem) {
+				DEV_LOG.warn("Unable to invoke constructor handle {}", handle.type(), codeProblem);
+				return null;
+			} catch (Throwable severeRuntimeError) {
+				throw new RuntimeException(severeRuntimeError);
+			}
+		};
 	}
 
 	/**
