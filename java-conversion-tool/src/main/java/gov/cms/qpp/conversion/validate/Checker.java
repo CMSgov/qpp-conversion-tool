@@ -77,7 +77,7 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	Checker value(String message, String name) {
+	public Checker value(String message, String name) {
 		lastAppraised = node.getValue(name);
 		if (!shouldShortcut() && lastAppraised == null) {
 			details.add(new Detail(message, node.getPath()));
@@ -88,13 +88,28 @@ class Checker {
 	/**
 	 * checks target node to ensure no value is retrieved with given name key
 	 *
-	 * @param message error message if searched value is not found
+	 * @param message error message if value is not empty
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	Checker valueIsEmpty(String message, String name) {
+	public Checker valueIsEmpty(String message, String name) {
 		lastAppraised = node.getValue(name);
-		if (!shouldShortcut() && (lastAppraised != null && lastAppraised != "")) {
+		if (!shouldShortcut() && (lastAppraised != null && !lastAppraised.equals(""))) {
+			details.add(new Detail(message, node.getPath()));
+		}
+		return this;
+	}
+
+	/**
+	 * checks target node to ensure a value is retrieved with given name key
+	 *
+	 * @param message error message if value is empty
+	 * @param name key of expected value
+	 * @return The checker, for chaining method calls.
+	 */
+	public Checker valueIsNotEmpty(String message, String name) {
+		lastAppraised = node.getValue(name);
+		if (!shouldShortcut() && (lastAppraised == null || lastAppraised.equals(""))) {
 			details.add(new Detail(message, node.getPath()));
 		}
 		return this;
@@ -107,7 +122,7 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	Checker singleValue(String message, String name) {
+	public Checker singleValue(String message, String name) {
 		value(message, name);
 		List<String> duplicates = node.getDuplicateValues(name);
 		if (duplicates != null && !duplicates.isEmpty()) {
@@ -125,7 +140,7 @@ class Checker {
 	 * @param values List of strings to check for the existence of.
 	 * @return The checker, for chaining method calls.
 	 */
-	Checker valueIn(String message, String name, String ... values) {
+	public Checker valueIn(String message, String name, String ... values) {
 		boolean contains = false;
 		if (name == null) {
 			setErrorMessage(message);

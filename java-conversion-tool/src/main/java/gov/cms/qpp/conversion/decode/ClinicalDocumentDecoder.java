@@ -76,20 +76,8 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 */
 	private void setPracticeSiteAddress(Element element, Node thisNode) {
 		if (CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(thisNode.getValue(PROGRAM_NAME))) {
-			Consumer<Element> consumer = p -> {
-				if (p.getChildren().size() > 0) {
-					String address = "";
-					for(Element childElement : p.getChildren()) {
-						address+= childElement.getValue() + "\n";
-					}
-					System.out.println("practice site address1 : " + address);
-					thisNode.putValue(PRACTICE_SITE_ADDR, address, false);
-				} else {
-					System.out.println("practice site address2 : " + p.getValue());
-					thisNode.putValue(PRACTICE_SITE_ADDR, p.getValue(), false);
-				}
-
-			};
+			Consumer<Element> consumer = p ->
+					thisNode.putValue(PRACTICE_SITE_ADDR, p.getValue().trim(), false);
 			setOnNode(element, getXpath(PRACTICE_SITE_ADDR), consumer, Filters.element(), false);
 		}
 	}

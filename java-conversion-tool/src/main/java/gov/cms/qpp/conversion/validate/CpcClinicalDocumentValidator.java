@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -22,7 +23,6 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 			check(node)
-					.incompleteValidation()
-					.value(MISSING_PRACTICE_SITE_ADDRESS,"practiceSiteAddr");
+					.valueIsNotEmpty(MISSING_PRACTICE_SITE_ADDRESS, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR);
 	}
 }

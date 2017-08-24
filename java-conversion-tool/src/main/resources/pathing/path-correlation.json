@@ -91,9 +91,6 @@
 				},
 				{
 					"decodeLabel": "practiceSiteAddr",
-					"encodeLabels": [
-						"practiceSiteAddr"
-					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'addr' and namespace-uri() = '<nsuri>']",
 						"xmltype": "element"
