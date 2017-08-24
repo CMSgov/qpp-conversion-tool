@@ -1,6 +1,5 @@
 package gov.cms.qpp.acceptance.cpc;
 
-
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.model.error.TransformException;
@@ -14,15 +13,17 @@ import java.nio.file.Paths;
 import static junit.framework.TestCase.fail;
 
 public class CpcProgramNameTest {
-	private static final String DIR = "src/test/resources/cpc_plus/";
+
+	private static final Path DIR =
+			Paths.get("src/test/resources/cpc_plus/");
 	private static final Path FAILURE =
-			Paths.get(DIR + "CPCPlus_CMSPrgrm_DiffCode_SampleQRDA-III.xml");
+			DIR.resolve("CPCPlus_CMSPrgrm_DiffCode_SampleQRDA-III.xml");
 	private static final Path LOWER =
-			Paths.get(DIR + "CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III.xml");
+			DIR.resolve("CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III.xml");
 	private static final Path UPPER =
-			Paths.get(DIR + "CPCPlus_CMSPrgrm_UpperCase_SampleQRDA-III.xml");
+			DIR.resolve("CPCPlus_CMSPrgrm_UpperCase_SampleQRDA-III.xml");
 	private static final Path MIXED =
-			Paths.get(DIR + "CPCPlus_CMSPrgrm_MixedCase_SampleQRDA-III.xml");
+			DIR.resolve("CPCPlus_CMSPrgrm_MixedCase_SampleQRDA-III.xml");
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
