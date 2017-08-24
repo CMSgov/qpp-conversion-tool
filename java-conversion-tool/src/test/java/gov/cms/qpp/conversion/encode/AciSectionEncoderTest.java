@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -69,7 +70,7 @@ public class AciSectionEncoderTest {
 	@Test
 	public void testInternalEncode() {
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder();
+		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder(new Context());
 		aciSectionEncoder.internalEncode(jsonWrapper, aciSectionNode);
 
 		Map<?, ?> testMapObject = (Map<?, ?>) jsonWrapper.getObject();
@@ -91,7 +92,7 @@ public class AciSectionEncoderTest {
 		aciSectionNode.addChildNode(invalidAciNumeratorDenominatorNode);
 		aciSectionNode.addChildNode(reportingParametersNode);
 
-		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder();
+		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder(new Context());
 		aciSectionEncoder.internalEncode(testWrapper, aciSectionNode);
 
 		assertThat("Must have validation error.", aciSectionEncoder.getDetails(), is(not(nullValue())));
@@ -104,7 +105,7 @@ public class AciSectionEncoderTest {
 
 		aciSectionNode.getChildNodes().remove(reportingParametersNode);
 
-		AciSectionEncoder encoder = spy(new AciSectionEncoder());
+		AciSectionEncoder encoder = spy(new AciSectionEncoder(new Context()));
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, aciSectionNode);
 

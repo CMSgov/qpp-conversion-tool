@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -13,6 +14,10 @@ import gov.cms.qpp.conversion.model.error.Detail;
 @Encoder(TemplateId.PLACEHOLDER)
 public class PlaceholderEncoder extends QppOutputEncoder {
 
+	public PlaceholderEncoder(Context context) {
+		super(context);
+	}
+
 	/**
 	 * Encodes placeholder nodes into the wrapper
 	 *
@@ -24,7 +29,7 @@ public class PlaceholderEncoder extends QppOutputEncoder {
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 
 		for (Node child : node.getChildNodes()) {
-			JsonOutputEncoder encoder = ENCODERS.get(child.getType());
+			JsonOutputEncoder encoder = encoders.get(child.getType());
 			if (encoder != null) {
 				encoder.encode(wrapper, child);
 			} else {

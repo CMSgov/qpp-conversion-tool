@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -40,7 +41,7 @@ public class DecoderTest {
 
 	@Test
 	public void decodeTemplateIds() throws Exception {
-		Registry<InputDecoder> registry = new Registry<>(Decoder.class);
+		Registry<InputDecoder> registry = new Registry<>(new Context(), Decoder.class);
 
 		for (TemplateId templateId : templateIds) {
 			InputDecoder decoder = registry.get(templateId);

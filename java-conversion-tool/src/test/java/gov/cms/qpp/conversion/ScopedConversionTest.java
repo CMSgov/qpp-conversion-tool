@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.Sets;
-import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.TransformException;
@@ -25,7 +24,7 @@ import static junit.framework.TestCase.assertEquals;
 /**
  * Verify scoped conversions
  */
-public class ScopedConversionTest extends BaseTest {
+public class ScopedConversionTest {
 
 	private static final String SUCCESS_MAKER = "../qrda-files/valid-QRDA-III-latest.xml";
 	private static final String ERROR_MAKER = "src/test/resources/negative/angerTheConverter.xml";
@@ -54,7 +53,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
@@ -75,7 +74,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
@@ -96,7 +95,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
@@ -117,7 +116,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
@@ -139,7 +138,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
@@ -160,7 +159,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
@@ -181,7 +180,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
@@ -202,7 +201,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
@@ -223,7 +222,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
@@ -244,7 +243,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
 
@@ -267,7 +266,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		String errors = "";
 		try {
 			JsonWrapper qpp = converter.transform();
@@ -297,7 +296,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		String errors = "";
 		try {
 			JsonWrapper qpp = converter.transform();
@@ -327,7 +326,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		String errors = "";
 		try {
 			JsonWrapper qpp = converter.transform();
@@ -357,7 +356,7 @@ public class ScopedConversionTest extends BaseTest {
 
 		//when
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
-		Converter.setScope(Sets.newHashSet(testSection));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
 		String errors = "";
 		try {
 			JsonWrapper qpp = converter.transform();

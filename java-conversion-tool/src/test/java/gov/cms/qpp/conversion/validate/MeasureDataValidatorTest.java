@@ -1,6 +1,19 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.BaseTest;
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
+import static gov.cms.qpp.conversion.validate.MeasureDataValidator.MISSING_AGGREGATE_COUNT;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.Test;
+
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
@@ -10,27 +23,16 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import org.junit.Test;
-
-import java.util.Set;
-
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static gov.cms.qpp.conversion.validate.MeasureDataValidator.MISSING_AGGREGATE_COUNT;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * Test the MeasureData Validator
  */
-public class MeasureDataValidatorTest extends BaseTest {
+public class MeasureDataValidatorTest {
 
 	@Test
 	public void internalValidateSingleNode() throws Exception {
-		String happy = getFixture("measureDataHappy.xml");
-		Node placeholder = new QppXmlDecoder().decode(XmlUtils.stringToDom(happy));
+		String happy = TestHelper.getFixture("measureDataHappy.xml");
+		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(happy));
 		MeasureDataValidator validator = new MeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);

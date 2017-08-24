@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
@@ -17,18 +18,22 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertNotNull;
 
-public class MeasureDataDecoderTest extends BaseTest {
+public class MeasureDataDecoderTest {
+
 	private static String happy;
+
+	private Context context;
 	private Node placeholder;
 
 	@BeforeClass
 	public static void setup() throws IOException {
-		happy = getFixture("measureDataHappy.xml");
+		happy = TestHelper.getFixture("measureDataHappy.xml");
 	}
 
 	@Before
 	public void before() throws XmlException {
-		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder();
+		context = new Context();
+		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder(context);
 		placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
 	}
 
@@ -53,7 +58,7 @@ public class MeasureDataDecoderTest extends BaseTest {
 	}
 
 	private void sharedTest(String type) {
-		Node measure =  placeholder.findChildNode( node -> node.getValue(MEASURE_TYPE).equals(type));
+		Node measure =  placeholder.findChildNode(node -> node.getValue(MEASURE_TYPE).equals(type));
 
 		String message = String.format("Should have a %s value", type);
 		assertNotNull(message, measure);
@@ -63,7 +68,7 @@ public class MeasureDataDecoderTest extends BaseTest {
 
 	@Test
 	public void testIgnoreOfUnmappedMeasureData() throws XmlException {
-		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder();
+		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder(context);
 		Node placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
 
 		assertThat("Should have four children", placeholder.getChildNodes(), hasSize(4));

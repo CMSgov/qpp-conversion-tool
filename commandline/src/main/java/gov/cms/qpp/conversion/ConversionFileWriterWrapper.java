@@ -82,14 +82,17 @@ public class ConversionFileWriterWrapper {
 	 * Execute the conversion.
 	 */
 	public void transform() {
-		Converter converter = new Converter(source)
-			.doDefaults(doDefaults)
-			.doValidation(doValidation);
-
-		Converter.setHistorical(isHistorical);
-		Converter.setScope(scope);
+		Converter converter = new Converter(source);
+		setupContext(converter.getContext());
 
 		executeConverter(converter);
+	}
+
+	private void setupContext(Context context) {
+		context.setDoDefaults(doDefaults);
+		context.setDoValidation(doValidation);
+		context.setHistorical(isHistorical);
+		context.setScope(scope);
 	}
 
 	/**

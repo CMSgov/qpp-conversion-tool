@@ -1,31 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.conversion.encode.EncodeException;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.encode.QppOutputEncoder;
-import gov.cms.qpp.conversion.model.AnnotationMockHelper;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.Error;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.stubs.Jenncoder;
-import gov.cms.qpp.conversion.stubs.JennyDecoder;
-import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
-import gov.cms.qpp.conversion.validate.QrdaValidator;
-import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -39,6 +13,38 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.encode.EncodeException;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
+import gov.cms.qpp.conversion.model.ComponentKey;
+import gov.cms.qpp.conversion.model.Decoder;
+import gov.cms.qpp.conversion.model.Encoder;
+import gov.cms.qpp.conversion.model.Program;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.Error;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.stubs.Jenncoder;
+import gov.cms.qpp.conversion.stubs.JennyDecoder;
+import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
+import gov.cms.qpp.conversion.validate.QrdaValidator;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
@@ -65,14 +71,16 @@ public class ConverterTest {
 	@Test
 	@PrepareForTest({Converter.class, QrdaValidator.class})
 	public void testValidationErrors() throws Exception {
-
-		//mocking
-		AnnotationMockHelper.mockDecoder(TemplateId.DEFAULT, JennyDecoder.class);
-		QrdaValidator mockQrdaValidator = AnnotationMockHelper.mockValidator(TemplateId.DEFAULT, TestDefaultValidator.class, true);
-		PowerMockito.whenNew(QrdaValidator.class).withNoArguments().thenReturn(mockQrdaValidator);
+		Context context = new Context();
+		context.getRegistry(Decoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), JennyDecoder.class);
+		context.getRegistry(Validator.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), TestDefaultValidator.class);
+		QrdaValidator mockQrdaValidator = TestHelper.mockValidator(context, TestDefaultValidator.class, true, null);
+		PowerMockito.whenNew(QrdaValidator.class)
+			.withAnyArguments()
+			.thenReturn(mockQrdaValidator);
 
 		Path path = Paths.get("src/test/resources/converter/errantDefaultedNode.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathQrdaSource(path), context);
 
 		try {
 			converter.transform();
@@ -109,14 +117,14 @@ public class ConverterTest {
 	@PrepareForTest({Converter.class, QppOutputEncoder.class})
 	public void testEncodingExceptions() throws Exception {
 		QppOutputEncoder encoder = mock(QppOutputEncoder.class);
-		whenNew(QppOutputEncoder.class).withNoArguments().thenReturn(encoder);
+		whenNew(QppOutputEncoder.class).withAnyArguments().thenReturn(encoder);
 		EncodeException ex = new EncodeException("mocked", new RuntimeException());
 		doThrow(ex).when(encoder).encode();
 
 		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
-		Converter converter = new Converter(new PathQrdaSource(path))
-				.doDefaults(false)
-				.doValidation(false);
+		Converter converter = new Converter(new PathQrdaSource(path));
+		converter.getContext().setDoDefaults(false);
+		converter.getContext().setDoValidation(false);
 
 		try {
 			converter.transform();
@@ -153,9 +161,9 @@ public class ConverterTest {
 	@Test
 	public void testNotAValidQrdaIIIFile() throws IOException {
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
-		Converter converter = new Converter(new PathQrdaSource(path))
-				.doDefaults(false)
-				.doValidation(false);
+		Converter converter = new Converter(new PathQrdaSource(path));
+		converter.getContext().setDoDefaults(false);
+		converter.getContext().setDoValidation(false);
 
 		try {
 			converter.transform();
@@ -196,25 +204,29 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testDefaults() throws Exception {
-		AnnotationMockHelper.mockDecoder(TemplateId.DEFAULT, JennyDecoder.class);
-		AnnotationMockHelper.mockEncoder(TemplateId.DEFAULT, Jenncoder.class);
-
-		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml"))).doValidation(false);
-		JsonWrapper qpp = converter.transform();
-
-		String content = qpp.toString();
-
-		assertTrue(content.contains("Jenny"));
-	}
-
-	@Test
 	public void testSkipDefaults() throws Exception {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml"))).doValidation(false).doDefaults(false);
+		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml")));
+		converter.getContext().setDoDefaults(false);
+		converter.getContext().setDoValidation(false);
 		JsonWrapper qpp = converter.transform();
 
 		String content = qpp.toString();
 
 		assertFalse(content.contains("Jenny"));
+	}
+
+	@Test
+	public void testDefaults() throws Exception {
+		Context context = new Context();
+		context.setDoValidation(false);
+		context.getRegistry(Decoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), JennyDecoder.class);
+		context.getRegistry(Encoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), Jenncoder.class);
+
+		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml")), context);
+		JsonWrapper qpp = converter.transform();
+
+		String content = qpp.toString();
+
+		assertTrue(content.contains("Jenny"));
 	}
 }

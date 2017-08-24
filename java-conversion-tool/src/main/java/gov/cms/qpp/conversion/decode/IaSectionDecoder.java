@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import org.jdom2.Element;
 
@@ -10,6 +11,10 @@ import org.jdom2.Element;
  */
 @Decoder(TemplateId.IA_SECTION)
 public class IaSectionDecoder extends QppXmlDecoder {
+
+	public IaSectionDecoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 * DecodeResult reads the xml elements and stores them into the internal Node structure

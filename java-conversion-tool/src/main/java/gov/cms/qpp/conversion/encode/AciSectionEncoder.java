@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -15,8 +16,13 @@ import java.util.List;
  */
 @Encoder(TemplateId.ACI_SECTION)
 public class AciSectionEncoder extends QppOutputEncoder {
+
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(AciSectionEncoder.class);
 	public static final String SUBMISSION_METHOD = "submissionMethod";
+
+	public AciSectionEncoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 *  Encodes an ACI Section into the QPP format
@@ -55,7 +61,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 			childWrapper = new JsonWrapper();
 			TemplateId templateId = currentChild.getType();
 			if (TemplateId.REPORTING_PARAMETERS_ACT != templateId) {
-				JsonOutputEncoder childEncoder = ENCODERS.get(templateId);
+				JsonOutputEncoder childEncoder = encoders.get(templateId);
 
 				if (childEncoder != null) {
 					childEncoder.encode(childWrapper, currentChild);
@@ -75,7 +81,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	 * @param node ACI Section Node
 	 */
 	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
-		JsonOutputEncoder reportingParamEncoder = ENCODERS.get(TemplateId.REPORTING_PARAMETERS_ACT);
+		JsonOutputEncoder reportingParamEncoder = encoders.get(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingChild == null) {
 			DEV_LOG.error("Missing Reporting Parameters from ACI Section");

@@ -1,5 +1,6 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -29,14 +30,15 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 				"    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>",
 				"  </observation>", "</root>");
 
-		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Context context = new Context();
+		Node numDenomNode = new QppXmlDecoder(context).decode(XmlUtils.stringToDom(xmlFragment));
 
 		String xPathExpected = "/*[local-name() = 'root' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'observation'" +
 		                       " and namespace-uri() = 'urn:hl7-org:v3']";
 		assertThat("The XPath of the aggregate count node is incorrect", numDenomNode.getChildNodes().get(0).getPath(),
 		           is(xPathExpected));
 
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		List<Node> nodes = new ArrayList<>();
 		nodes.add(numDenomNode);
 		encoder.setNodes(nodes);

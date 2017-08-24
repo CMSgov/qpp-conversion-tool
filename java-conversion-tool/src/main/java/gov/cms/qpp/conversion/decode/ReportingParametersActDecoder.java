@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -14,9 +15,14 @@ import java.util.function.Consumer;
  */
 @Decoder(TemplateId.REPORTING_PARAMETERS_ACT)
 public class ReportingParametersActDecoder extends QppXmlDecoder {
+
 	public static final String PERFORMANCE_START = "performanceStart";
 	public static final String PERFORMANCE_END = "performanceEnd";
 	public static final String PERFORMANCE_YEAR = "performanceYear";
+
+	public ReportingParametersActDecoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 * Decodes a given element for a reporting parameter into a specified node

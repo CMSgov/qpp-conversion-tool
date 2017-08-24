@@ -1,5 +1,6 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -51,7 +52,7 @@ public class AutoDetectQrdaTest {
 		System.setErr(new PrintStream(baos1));
 
 		//execute
-		XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment));
+		XmlInputDecoder.decodeXml(new Context(), XmlUtils.stringToDom(xmlFragment));
 
 		//assert
 		assertThat("Incorrect error message", baos1.toString(), allOf(containsString(EXPECTED_ERROR_1), containsString(EXPECTED_ERROR_2)));
@@ -67,7 +68,7 @@ public class AutoDetectQrdaTest {
 		System.setErr(new PrintStream(baos2));
 
 		//execute
-		XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment));
+		XmlInputDecoder.decodeXml(new Context(), XmlUtils.stringToDom(xmlFragment));
 
 		//assert
 		assertThat("Incorrect error message", baos2.toString(), allOf(containsString(EXPECTED_ERROR_1), containsString(EXPECTED_ERROR_2)));
