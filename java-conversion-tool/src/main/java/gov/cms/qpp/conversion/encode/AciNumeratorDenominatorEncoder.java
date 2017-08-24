@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -16,6 +17,10 @@ import java.util.stream.Collectors;
 
 @Encoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
 public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
+
+	public AciNumeratorDenominatorEncoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 *  Encodes an ACI Numerator Denominator Type Measure into the QPP format
@@ -50,7 +55,7 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 		JsonWrapper childWrapper = new JsonWrapper();
 		for (Node currentChild : childMapByTemplateId.values()) {
 
-			JsonOutputEncoder childEncoder = ENCODERS.get(currentChild.getType());
+			JsonOutputEncoder childEncoder = encoders.get(currentChild.getType());
 
 			if (childEncoder != null) {
 				childEncoder.encode(childWrapper, currentChild);

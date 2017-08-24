@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.TemplateId;
 
@@ -9,5 +10,10 @@ import gov.cms.qpp.conversion.model.TemplateId;
  */
 @Encoder(TemplateId.MEASURE_SECTION_V2)
 public class QualitySectionEncoder extends AciSectionEncoder {
+
+	public QualitySectionEncoder(Context context) {
+		super(context);
+	}
+
 	//empty as it does the exact same thing as its parent class
 }

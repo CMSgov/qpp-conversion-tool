@@ -1,9 +1,14 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.model.AnnotationMockHelper;
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.ComponentKey;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +32,10 @@ import static org.hamcrest.core.IsNull.nullValue;
 @PowerMockIgnore({"org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
 public class QrdaValidatorTest {
 
-	private QrdaValidator objectUnderTest;
 	private static List<Node> nodesPassedIntoValidateSingleNode;
+
+	private Context context;
+	private QrdaValidator objectUnderTest;
 
 	private static final TemplateId TEST_REQUIRED_TEMPLATE_ID = TemplateId.ACI_NUMERATOR_DENOMINATOR;
 	private static final TemplateId TEST_OPTIONAL_TEMPLATE_ID = TemplateId.PLACEHOLDER;
@@ -40,8 +47,11 @@ public class QrdaValidatorTest {
 	public void beforeEachTest() throws Exception {
 		nodesPassedIntoValidateSingleNode = new ArrayList<>();
 
-		objectUnderTest = AnnotationMockHelper.mockValidator(TEST_REQUIRED_TEMPLATE_ID, RequiredTestValidator.class, true);
-		objectUnderTest = AnnotationMockHelper.mockValidator(TEST_OPTIONAL_TEMPLATE_ID, OptionalTestValidator.class, false, objectUnderTest);
+		context = new Context();
+		context.getRegistry(Validator.class).register(new ComponentKey(TEST_REQUIRED_TEMPLATE_ID, Program.ALL), RequiredTestValidator.class);
+		context.getRegistry(Validator.class).register(new ComponentKey(TEST_OPTIONAL_TEMPLATE_ID, Program.ALL), OptionalTestValidator.class);
+		objectUnderTest = TestHelper.mockValidator(context, RequiredTestValidator.class, true);
+		objectUnderTest = TestHelper.mockValidator(context, OptionalTestValidator.class, false, objectUnderTest);
 	}
 
 	@Test

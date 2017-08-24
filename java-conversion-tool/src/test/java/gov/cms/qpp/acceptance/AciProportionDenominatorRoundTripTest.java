@@ -1,5 +1,6 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -36,9 +37,10 @@ public class AciProportionDenominatorRoundTripTest {
 				+ "				<methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\" />\n"
 				+ "			</observation>" + "		</entryRelationship>\n" + "	</observation>\n" + "</component>";
 
-		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Context context = new Context();
+		Node numDenomNode = new QppXmlDecoder(context).decode(XmlUtils.stringToDom(xmlFragment));
 
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		List<Node> nodes = new ArrayList<>();
 		nodes.add(numDenomNode);
 		encoder.setNodes(nodes);

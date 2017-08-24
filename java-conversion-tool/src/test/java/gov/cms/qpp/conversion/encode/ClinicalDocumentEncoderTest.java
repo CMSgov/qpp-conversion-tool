@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
@@ -125,7 +126,7 @@ public class ClinicalDocumentEncoderTest {
 	@Test
 	public void testPerformanceYear() {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
-		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 		Object performanceYear = testJsonWrapper.getValue(ReportingParametersActDecoder.PERFORMANCE_YEAR);
 
@@ -136,7 +137,7 @@ public class ClinicalDocumentEncoderTest {
 	public void testInternalEncode() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
-		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
@@ -158,7 +159,7 @@ public class ClinicalDocumentEncoderTest {
 	public void testInternalEncodeNegative() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
-		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentNode.addChildNode(new Node());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 	}
@@ -168,7 +169,7 @@ public class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
-		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
@@ -183,7 +184,7 @@ public class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,"");
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
-		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
@@ -197,7 +198,7 @@ public class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,null);
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
-		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder();
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());

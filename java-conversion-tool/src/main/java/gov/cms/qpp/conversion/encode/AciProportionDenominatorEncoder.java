@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 
@@ -13,7 +14,12 @@ import java.util.List;
 
 @Encoder(TemplateId.ACI_DENOMINATOR)
 public class AciProportionDenominatorEncoder extends QppOutputEncoder {
+
 	private static final String ENCODE_LABEL = "denominator";
+
+	public AciProportionDenominatorEncoder(Context context) {
+		super(context);
+	}
 
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
@@ -24,7 +30,7 @@ public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 		List<Node> children = node.getChildNodes();
 		if (!children.isEmpty()) {
 			Node denominatorValueNode = children.get(0);
-			JsonOutputEncoder denominatorValueEncoder = ENCODERS.get(denominatorValueNode.getType());
+			JsonOutputEncoder denominatorValueEncoder = encoders.get(denominatorValueNode.getType());
 
 			JsonWrapper value = new JsonWrapper();
 			denominatorValueEncoder.encode(value, denominatorValueNode);

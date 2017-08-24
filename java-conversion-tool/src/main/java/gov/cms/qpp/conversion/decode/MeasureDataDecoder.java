@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -7,21 +8,26 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Decoder for CMS V2 Measure Data eCQM
  */
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataDecoder extends QppXmlDecoder {
-	protected static final Set<String> MEASURES =
-		new HashSet<>(Arrays.asList("DENEX", "DENOM", "DENEXCEP", "NUMER"));
+
+	protected static final Set<String> MEASURES = Stream.of("DENEX", "DENOM", "DENEXCEP", "NUMER")
+			.collect(Collectors.toSet());
 
 	public static final String MEASURE_TYPE = "type";
 	public static final String MEASURE_POPULATION = "populationId";
+
+	public MeasureDataDecoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 * Decodes V2 CMS Measure Data into an intermediate node

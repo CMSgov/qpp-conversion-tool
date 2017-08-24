@@ -8,18 +8,22 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class MeasurePerformedDecoderTest extends BaseTest {
-	String xmlFragment;
+public class MeasurePerformedDecoderTest {
+
+	private Context context;
+	private String xmlFragment;
 
 	@Before
 	public void setUp() throws IOException {
-		xmlFragment = getFixture("MeasurePerformed.xml");
+		context = new Context();
+		xmlFragment = TestHelper.getFixture("MeasurePerformed.xml");
 	}
 
 	@Test
@@ -42,7 +46,7 @@ public class MeasurePerformedDecoderTest extends BaseTest {
 	}
 
 	private Node executeMeasurePerformedDecoder(String xmlFragment) throws XmlException {
-		MeasurePerformedDecoder measurePerformedDecoder = new MeasurePerformedDecoder();
+		MeasurePerformedDecoder measurePerformedDecoder = new MeasurePerformedDecoder(context);
 		return measurePerformedDecoder.decode(XmlUtils.stringToDom(xmlFragment));
 	}
 

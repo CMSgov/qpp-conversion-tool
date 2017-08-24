@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -12,6 +13,10 @@ import java.util.stream.Stream;
  * Top level Encoder for serializing into QPP format.
  */
 public class ScopedQppOutputEncoder extends QppOutputEncoder {
+
+	public ScopedQppOutputEncoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 * Encode the decoded node. If a {@link TemplateId#PLACEHOLDER} node is detected then assume
@@ -30,7 +35,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 					.filter(this::inSpecifiedScope)
 					.forEach(child -> {
 				JsonWrapper childWrapper = new JsonWrapper();
-				JsonOutputEncoder encoder = ENCODERS.get(child.getType());
+				JsonOutputEncoder encoder = encoders.get(child.getType());
 				encoder.encode(childWrapper, child);
 				scoped.putObject(childWrapper);
 			});
@@ -59,7 +64,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 	 */
 	private boolean inSpecifiedScope(Node node) {
 		String type = node.getType().name();
-		Collection<QrdaScope> scope = Converter.getScope();
+		Collection<QrdaScope> scope = context.getScope();
 		return scope.contains(QrdaScope.getInstanceByName(type));
 	}
 
