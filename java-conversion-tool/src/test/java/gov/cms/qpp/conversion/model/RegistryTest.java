@@ -55,7 +55,7 @@ public class RegistryTest {
 	@Test
 	public void testRegistryGetDefaultConverterHandler() throws Exception {
 		context.setProgram(Program.CPC);
-		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), Placeholder.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertTrue("Registry should return " + Placeholder.class.getName() + " instance.",
 				decoder instanceof Placeholder);
