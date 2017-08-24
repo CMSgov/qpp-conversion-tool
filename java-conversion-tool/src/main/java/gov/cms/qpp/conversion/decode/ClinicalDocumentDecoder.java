@@ -23,6 +23,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	public static final String MIPS_PROGRAM_NAME = "mips";
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcplus";
 	public static final String ENTITY_ID = "entityId";
+	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
 	public static final String MIPS = "MIPS";
 	public static final String MIPS_GROUP = "MIPS_GROUP";
 	public static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
@@ -41,9 +42,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		setProgramNameOnNode(element, thisNode);
 		setEntityIdOnNode(element, thisNode);
-		if (thisNode.getValue(PROGRAM_NAME).equalsIgnoreCase(CPCPLUS)) {
-			setPracticeSiteAddress(element, thisNode);
-		}
+		setPracticeSiteAddress(element, thisNode);
 		setNationalProviderIdOnNode(element, thisNode);
 		setTaxProviderTaxIdOnNode(element, thisNode);
 		processComponentElement(element, thisNode);
@@ -65,8 +64,30 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 		}
 	}
 
+	/**
+	 * Looks up the Practice Site address from the element if the program name is CPC+
+	 *
+	 * @param element Xml fragment being parsed.
+	 * @param thisNode The output internal representation of the document
+	 */
 	private void setPracticeSiteAddress(Element element, Node thisNode) {
+		if (CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(thisNode.getValue(PROGRAM_NAME))) {
+			Consumer<Element> consumer = p -> {
+				if (p.getChildren().size() > 0) {
+					String address = "";
+					for(Element childElement : p.getChildren()) {
+						address+= childElement.getValue() + "\n";
+					}
+					System.out.println("practice site address1 : " + address);
+					thisNode.putValue(PRACTICE_SITE_ADDR, address, false);
+				} else {
+					System.out.println("practice site address2 : " + p.getValue());
+					thisNode.putValue(PRACTICE_SITE_ADDR, p.getValue(), false);
+				}
 
+			};
+			setOnNode(element, getXpath(PRACTICE_SITE_ADDR), consumer, Filters.element(), false);
+		}
 	}
 
 	/**
