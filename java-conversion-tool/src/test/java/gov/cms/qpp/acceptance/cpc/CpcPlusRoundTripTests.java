@@ -16,7 +16,7 @@ public class CpcPlusRoundTripTests {
 	private static final Path DIR = Paths.get("src/test/resources/cpc_plus/");
 
 	@Test
-	public void practiceSiteAddressExampleOneFileSuccess() throws IOException {
+	public void cpcPlusFileSuccesses() throws IOException {
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-success.xml")) {
 			for (Path entry: stream) {
 				Converter converter = new Converter(new PathQrdaSource(entry));
@@ -24,6 +24,23 @@ public class CpcPlusRoundTripTests {
 			}
 		} catch (TransformException ex) {
 			Assert.fail("Should not fail conversion");
+		}
+	}
+
+	@Test
+	public void cpcPlusFileFailures() throws IOException {
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-failure.xml")) {
+			for (Path entry: stream) {
+				Converter converter = new Converter(new PathQrdaSource(entry));
+				try {
+					converter.transform();
+					Assert.fail("Should contain validation errors");
+				} catch (TransformException ex) {
+					//Good stuff
+				}
+			}
+		} catch (Exception ex) {
+			Assert.fail("Generic exception should not have been thrown");
 		}
 	}
 }
