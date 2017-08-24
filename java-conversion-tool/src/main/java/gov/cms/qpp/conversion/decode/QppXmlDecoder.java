@@ -20,6 +20,7 @@ import java.util.Set;
  * Top level Decoder for parsing into QPP format.
  */
 public class QppXmlDecoder extends XmlInputDecoder {
+
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
@@ -82,7 +83,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
 				DEV_LOG.debug("templateIdFound:{}", templateId);
 
-				XmlInputDecoder childDecoder = getDecoder(templateId);
+				QppXmlDecoder childDecoder = getDecoder(templateId);
 
 				if (null == childDecoder) {
 					continue;
@@ -122,8 +123,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * @param templateId string representation of a would be decoder's template id
 	 * @return decoder that corresponds to the given template id
 	 */
-	private XmlInputDecoder getDecoder(TemplateId templateId) {
-		XmlInputDecoder qppDecoder = decoders.get(templateId);
+	private QppXmlDecoder getDecoder(TemplateId templateId) {
+		QppXmlDecoder qppDecoder = decoders.get(templateId);
 		if (qppDecoder != null) {
 			Decoder decoder = qppDecoder.getClass().getAnnotation(Decoder.class);
 			TemplateId template = decoder == null ? TemplateId.DEFAULT : decoder.value();
@@ -172,7 +173,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		Node rootNode = new Node();
 		Element rootElement = xmlDoc.getDocument().getRootElement();
 		
-		XmlInputDecoder rootDecoder = null;
+		QppXmlDecoder rootDecoder = null;
 		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
 			String root = element.getAttributeValue(ROOT_STRING);
 			String extension = element.getAttributeValue(EXTENSION_STRING);
