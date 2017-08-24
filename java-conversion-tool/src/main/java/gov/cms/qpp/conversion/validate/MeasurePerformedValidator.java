@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.Validator;
 /**
  * Validate The Measure Performed Node 2.16.840.1.113883.10.20.27.3.27
  */
-@Validator(value = TemplateId.MEASURE_PERFORMED, required = true)
+@Validator(TemplateId.MEASURE_PERFORMED)
 public class MeasurePerformedValidator extends NodeValidator {
 	private static final String FIELD = "measurePerformed";
 	private static final String[] BOOLEAN_VALUES = {"Y", "N"};

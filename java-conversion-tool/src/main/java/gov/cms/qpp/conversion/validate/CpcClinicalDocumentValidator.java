@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.Validator;
 /**
  * Validates the Clinical Document for the CPC+ program.
  */
-@Validator(value = TemplateId.CLINICAL_DOCUMENT, program = Program.CPC, required = true)
+@Validator(value = TemplateId.CLINICAL_DOCUMENT, program = Program.CPC)
 public class CpcClinicalDocumentValidator extends NodeValidator {
 
 	static final String ONLY_ONE_APM_ALLOWED =

@@ -97,7 +97,7 @@ public class QrdaValidator {
 	 */
 	private boolean isValidationRequired(NodeValidator validatorForNode) {
 		Validator validator = getAnnotation(validatorForNode);
-		return validator != null && validator.required();
+		return validator != null && !validator.optional();
 	}
 
 	/**

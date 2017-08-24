@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.Validator;
 /**
  * Validates the Clinical Document.
  */
-@Validator(value = TemplateId.CLINICAL_DOCUMENT, required = true)
+@Validator(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentValidator extends NodeValidator {
 
 	protected static final String ONE_CHILD_REQUIRED = "Clinical Document Node must have at least one Aci "

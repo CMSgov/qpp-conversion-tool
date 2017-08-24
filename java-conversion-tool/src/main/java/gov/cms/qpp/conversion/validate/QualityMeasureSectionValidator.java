@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.Validator;
 /**
  * Validates a Quality Measure Section node.
  */
-@Validator(value = TemplateId.MEASURE_SECTION_V2, required = true)
+@Validator(TemplateId.MEASURE_SECTION_V2)
 public class QualityMeasureSectionValidator extends NodeValidator {
 	protected static final String REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR
 			= "The Quality Measure Section must have only one Reporting Parameter ACT";
