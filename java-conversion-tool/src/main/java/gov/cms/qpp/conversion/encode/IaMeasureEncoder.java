@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -11,6 +12,10 @@ import java.util.List;
  */
 @Encoder(TemplateId.IA_MEASURE)
 public class IaMeasureEncoder extends QppOutputEncoder {
+
+	public IaMeasureEncoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 * internalEncode to encode the IA Performed Measure
@@ -27,7 +32,7 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 
 		if (!children.isEmpty()) {
 			Node measurePerformedNode = children.get(0);
-			JsonOutputEncoder measurePerformedEncoder = ENCODERS.get(measurePerformedNode.getType());
+			JsonOutputEncoder measurePerformedEncoder = encoders.get(measurePerformedNode.getType());
 
 			JsonWrapper value = new JsonWrapper();
 			measurePerformedEncoder.encode(value, measurePerformedNode);

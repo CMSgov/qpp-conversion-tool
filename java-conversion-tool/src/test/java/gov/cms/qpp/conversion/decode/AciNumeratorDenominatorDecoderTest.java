@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
@@ -17,7 +17,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
-public class AciNumeratorDenominatorDecoderTest extends BaseTest {
+public class AciNumeratorDenominatorDecoderTest {
 
 	private static final String MEASURE_ID = "ACI-PEA-1";
 
@@ -33,7 +33,7 @@ public class AciNumeratorDenominatorDecoderTest extends BaseTest {
 				"  </observation>",
 				"</root>");
 
-		Node aggregateCountNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node aggregateCountNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		// the returned Node object from the snippet should be:
 		// a top level placeholder node with a single child node that has the
@@ -57,7 +57,7 @@ public class AciNumeratorDenominatorDecoderTest extends BaseTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node numDenomNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertThat("returned node should not be null", numDenomNode, is(not(nullValue())));
 
@@ -75,7 +75,7 @@ public class AciNumeratorDenominatorDecoderTest extends BaseTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node numDenomNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertThat("returned node should not be null", numDenomNode, is(not(nullValue())));
 
@@ -86,7 +86,7 @@ public class AciNumeratorDenominatorDecoderTest extends BaseTest {
 
 	@Test
 	public void decodeValidAciNumeratorDenominatorTest() throws XmlException {
-		Node aciMeasureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(getValidXmlFragment()));
+		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
 		Node numeratorDenominatorNode = aciMeasureNode.getChildNodes().get(0);
 		int numberNodes = countNodes(aciMeasureNode);
 		List<Node> nodeList = aciMeasureNode.findNode(TemplateId.ACI_NUMERATOR);
@@ -133,7 +133,7 @@ public class AciNumeratorDenominatorDecoderTest extends BaseTest {
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
 
-		Node aciMeasureNode = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		assertThat("Decoded xml fragment should contain one child node",
 				aciMeasureNode.getChildNodes().size(), is(1));
 
@@ -180,7 +180,7 @@ public class AciNumeratorDenominatorDecoderTest extends BaseTest {
 
 		Node thisNode = new Node();
 
-		AciNumeratorDenominatorDecoder objectUnderTest = new AciNumeratorDenominatorDecoder();
+		AciNumeratorDenominatorDecoder objectUnderTest = new AciNumeratorDenominatorDecoder(new Context());
 		objectUnderTest.setNamespace(element, objectUnderTest);
 
 		//execute

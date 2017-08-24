@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -14,7 +15,12 @@ import java.util.function.Consumer;
  */
 @Decoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
 public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
+
 	private static final String MEASURE_ID = "measureId";
+
+	public AciNumeratorDenominatorDecoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 * Decodes an ACI Numerator Denominator Type Measure into an intermediate node

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -13,6 +14,10 @@ import java.util.List;
  */
 @Encoder(TemplateId.QRDA_CATEGORY_III_REPORT_V3)
 public class MultipleTinsEncoder extends QppOutputEncoder {
+
+	public MultipleTinsEncoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 * Encodes the Clinical Document and repeats it if there are more than one
@@ -40,7 +45,7 @@ public class MultipleTinsEncoder extends QppOutputEncoder {
 	 * @param node object to encode from
 	 */
 	private void encodeNpiTinCombinations(JsonWrapper wrapper, List<Node> npiTinCombinations, Node node) {
-		JsonOutputEncoder clinicalDocumentEncoder = ENCODERS.get(TemplateId.CLINICAL_DOCUMENT);
+		JsonOutputEncoder clinicalDocumentEncoder = encoders.get(TemplateId.CLINICAL_DOCUMENT);
 		Node clinicalDocumentNode = node.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 
 		JsonWrapper clinicalDocWrapper = new JsonWrapper();
@@ -64,7 +69,7 @@ public class MultipleTinsEncoder extends QppOutputEncoder {
 	 */
 	private void encodeSingleNpiTinCombination(JsonWrapper wrapper, Node node) {
 		Node clinicalDocumentNode = node.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
-		JsonOutputEncoder clinicalDocumentEncoder = ENCODERS.get(TemplateId.CLINICAL_DOCUMENT);
+		JsonOutputEncoder clinicalDocumentEncoder = encoders.get(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentEncoder.internalEncode(wrapper, clinicalDocumentNode);
 	}
 }

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
@@ -20,8 +21,13 @@ import java.util.stream.Collectors;
 
 @Encoder(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentEncoder extends QppOutputEncoder {
+
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ClinicalDocumentEncoder.class);
 	private static final String MEASUREMENT_SETS = "measurementSets";
+
+	public ClinicalDocumentEncoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 * internalEncode encodes nodes into Json Wrapper.
@@ -104,7 +110,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		for (Node child : childMapByTemplateId.values()) {
 			if (TemplateId.NPI_TIN_ID != child.getType()) {
 				childWrapper = new JsonWrapper();
-				sectionEncoder = ENCODERS.get(child.getType());
+				sectionEncoder = encoders.get(child.getType());
 				try {
 					sectionEncoder.encode(childWrapper, child);
 					measurementSetsWrapper.putObject(childWrapper);

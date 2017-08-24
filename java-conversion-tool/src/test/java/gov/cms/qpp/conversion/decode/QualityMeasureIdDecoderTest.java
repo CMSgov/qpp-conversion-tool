@@ -1,9 +1,11 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Element;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -14,7 +16,12 @@ import static org.junit.Assert.assertThat;
  * Test for the QualityMeasureIdDecoder
  */
 public class QualityMeasureIdDecoderTest {
-	QualityMeasureIdDecoder objectUnderTest = new QualityMeasureIdDecoder();
+	QualityMeasureIdDecoder objectUnderTest;
+
+	@Before
+	public void setup() {
+		objectUnderTest = new QualityMeasureIdDecoder(new Context());
+	}
 
 	/**
 	 * Tests the decoder for a valid xml fragment

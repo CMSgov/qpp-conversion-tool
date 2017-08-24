@@ -1,6 +1,7 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -21,7 +22,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-public class MeasureDataRoundTripTest extends BaseTest {
+public class MeasureDataRoundTripTest {
+
 	private static String happy;
 	private static String expected =
 			"{\n  \"eligiblePopulation\" : 950,\n  \"performanceMet\" : 900,\n" +
@@ -29,7 +31,7 @@ public class MeasureDataRoundTripTest extends BaseTest {
 
 	@BeforeClass
 	public static void setup() throws IOException {
-		happy = getFixture("measureDataHappy.xml");
+		happy = TestHelper.getFixture("measureDataHappy.xml");
 	}
 
 	@Test
@@ -54,7 +56,7 @@ public class MeasureDataRoundTripTest extends BaseTest {
 
 	private void test(String type) throws Exception {
 		//setup
-		Node placeholder = new QppXmlDecoder().decode(XmlUtils.stringToDom(happy));
+		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(happy));
 		Node measure =  placeholder.findChildNode(n -> n.getValue(MEASURE_TYPE).equals(type));
 		String message = String.format("Should have a %s measure", type);
 
@@ -69,7 +71,7 @@ public class MeasureDataRoundTripTest extends BaseTest {
 	}
 
 	private StringWriter encode(Node placeholder) throws EncodeException {
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 		List<Node> nodes = new ArrayList<>();
 		nodes.add(placeholder);
 		encoder.setNodes(nodes);

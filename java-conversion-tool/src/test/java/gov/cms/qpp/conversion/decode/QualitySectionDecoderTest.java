@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -26,7 +27,7 @@ public class QualitySectionDecoderTest {
 		Element element = XmlUtils.stringToDom(validXML);
 		Node node = new Node();
 
-		QualitySectionDecoder sectionDecoder = new QualitySectionDecoder();
+		QualitySectionDecoder sectionDecoder = new QualitySectionDecoder(new Context());
 		sectionDecoder.internalDecode(element, node);
 
 		assertThat("Expect node to have property category ", node.getValue("category"), is("quality"));

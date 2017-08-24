@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -15,6 +16,10 @@ import java.util.function.Consumer;
  */
 @Decoder(TemplateId.IA_MEASURE)
 public class IaMeasureDecoder extends QppXmlDecoder {
+
+	public IaMeasureDecoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 * Parses element containing a IA Measure into a node

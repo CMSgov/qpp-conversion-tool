@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
@@ -13,10 +14,14 @@ import org.slf4j.LoggerFactory;
 public class QppOutputEncoder extends JsonOutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QppOutputEncoder.class);
 	public static final String VALUE = "value";
-	protected static final Registry<JsonOutputEncoder> ENCODERS = new Registry<>(Encoder.class);
+	protected final Registry<JsonOutputEncoder> encoders;
+
+	protected final Context context;
 	private final TemplateId template;
 
-	public QppOutputEncoder() {
+	public QppOutputEncoder(Context context) {
+		this.context = context;
+		this.encoders = context.getRegistry(Encoder.class);
 		Encoder enc = this.getClass().getAnnotation(Encoder.class);
 		template = (enc != null) ? enc.value() : TemplateId.DEFAULT;
 	}
@@ -37,7 +42,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
-		JsonOutputEncoder encoder = ENCODERS.get(node.getType());
+		JsonOutputEncoder encoder = encoders.get(node.getType());
 
 		if (null != encoder) {
 			encoder.encode(wrapper, node);
@@ -54,7 +59,7 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	 */
 	void maintainContinuity(JsonWrapper wrapper, Node node, String leafLabel) {
 		JsonWrapper throwAway = new JsonWrapper();
-		JsonOutputEncoder used = ENCODERS.get(node.getType());
+		JsonOutputEncoder used = encoders.get(node.getType());
 		used.encode(throwAway, node);
 		maintainContinuity(wrapper, throwAway, leafLabel);
 	}
