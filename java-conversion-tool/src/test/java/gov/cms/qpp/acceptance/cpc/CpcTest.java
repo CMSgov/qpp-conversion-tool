@@ -1,4 +1,4 @@
-package gov.cms.qpp.acceptance;
+package gov.cms.qpp.acceptance.cpc;
 
 import com.google.common.collect.Sets;
 import gov.cms.qpp.BaseTest;
