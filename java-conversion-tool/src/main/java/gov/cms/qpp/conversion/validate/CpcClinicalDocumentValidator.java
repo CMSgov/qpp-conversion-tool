@@ -7,22 +7,26 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
 /**
- * Validates the Clinical Document for the CPC+ program.
+ * Validates the Clinical Document level node for the given program: CPC+
  */
 @Validator(value = TemplateId.CLINICAL_DOCUMENT, program = Program.CPC, required = true)
 public class CpcClinicalDocumentValidator extends NodeValidator {
 
+	static final String MISSING_PRACTICE_SITE_ADDRESS = "Must contain a practice site address "
+			+ "for CPC+ conversions";
 	static final String ONLY_ONE_APM_ALLOWED =
-		"One and only one Alternative Payment Model (APM) Entity Identifier should be specified";
+			"One and only one Alternative Payment Model (APM) Entity Identifier should be specified";
 
 	/**
-	 * Validates the APM in the clinical document.
+	 * Validates a single clinical document node
 	 *
 	 * @param node The node to validate.
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		check(node)
-			.singleValue(ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.ENTITY_ID);
+			check(node)
+					.value(MISSING_PRACTICE_SITE_ADDRESS,"practiceSiteAddr")
+					.singleValue(ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.ENTITY_ID);
+
 	}
 }
