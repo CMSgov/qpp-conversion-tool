@@ -17,7 +17,7 @@ public class CpcClinicalDocumentValidatorTest {
 	private CpcClinicalDocumentValidator cpcValidator;
 
 	@Before
-	public void setUp () {
+	public void setup() {
 		cpcValidator = new CpcClinicalDocumentValidator();
 	}
 
