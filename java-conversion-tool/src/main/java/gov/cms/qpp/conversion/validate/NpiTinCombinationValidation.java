@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.Validator;
  * Validates the QRDA Category III Report Node's national provide identifier/taxpayer identification number combinations
  * for the given programs: MIPS individual, MIPS group, CPC+.
  */
-@Validator(value = TemplateId.QRDA_CATEGORY_III_REPORT_V3, required = true)
+@Validator(TemplateId.QRDA_CATEGORY_III_REPORT_V3)
 public class NpiTinCombinationValidation extends NodeValidator {
 
 	static final String CLINICAL_DOCUMENT_REQUIRED = "Clinical Document Node is required";

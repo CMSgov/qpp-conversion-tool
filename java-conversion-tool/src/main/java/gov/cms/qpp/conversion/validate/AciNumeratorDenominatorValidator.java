@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.Validator;
 /**
  * Validate all ACI Numerator Denominator Type Measures.
  */
-@Validator(value = TemplateId.ACI_NUMERATOR_DENOMINATOR, required = true)
+@Validator(TemplateId.ACI_NUMERATOR_DENOMINATOR)
 public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 	protected static final String NO_PARENT_SECTION =

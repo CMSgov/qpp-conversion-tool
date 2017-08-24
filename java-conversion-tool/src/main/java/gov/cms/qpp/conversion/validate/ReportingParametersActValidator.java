@@ -6,7 +6,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
-@Validator(value = TemplateId.REPORTING_PARAMETERS_ACT, required = true)
+@Validator(TemplateId.REPORTING_PARAMETERS_ACT)
 public class ReportingParametersActValidator extends NodeValidator {
 	public static final String PERFORMANCE_YEAR = "Must have a performance year";
 	public static final String SINGLE_PERFORMANCE_START = "Must have one and only one performance start";

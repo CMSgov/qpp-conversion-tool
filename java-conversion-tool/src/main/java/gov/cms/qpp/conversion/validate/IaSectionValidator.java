@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.Validator;
 /**
  * Validates Improvement Activity Section Node - expects at least one Improvement Activity Measure
  */
-@Validator(value = TemplateId.IA_SECTION, required = true)
+@Validator(TemplateId.IA_SECTION)
 public class IaSectionValidator extends NodeValidator {
 
 	public static final String MINIMUM_REQUIREMENT_ERROR = "The IA Section must have at least one IA Measure";
