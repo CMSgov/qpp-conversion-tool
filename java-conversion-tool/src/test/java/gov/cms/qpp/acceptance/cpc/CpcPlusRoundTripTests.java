@@ -11,9 +11,9 @@ import java.nio.file.Paths;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class CpcPracticeSiteAddressTest {
-	private static final Path DIR = Paths.get("src/test/resources/cpc_plus/");
+public class CpcPlusRoundTripTests {
 
+	private static final Path DIR = Paths.get("src/test/resources/cpc_plus/");
 
 	@Test
 	public void practiceSiteAddressExampleOneFileSuccess() throws IOException {
@@ -23,7 +23,7 @@ public class CpcPracticeSiteAddressTest {
 				converter.transform();
 			}
 		} catch (TransformException ex) {
-c			Assert.fail("Should not fail conversion");
+			Assert.fail("Should not fail conversion");
 		}
 	}
 }
