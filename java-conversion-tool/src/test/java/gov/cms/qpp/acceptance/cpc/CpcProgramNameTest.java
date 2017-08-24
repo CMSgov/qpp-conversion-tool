@@ -8,16 +8,21 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static junit.framework.TestCase.fail;
 
 public class CpcProgramNameTest {
 	private static final String DIR = "src/test/resources/cpc_plus/";
-	private static final String FAILURE = DIR + "CPCPlus_CMSPrgrm_DiffCode_SampleQRDA-III.xml";
-	private static final String LOWER = DIR + "CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III.xml";
-	private static final String UPPER = DIR + "CPCPlus_CMSPrgrm_UpperCase_SampleQRDA-III.xml";
-	private static final String MIXED = DIR + "CPCPlus_CMSPrgrm_MixedCase_SampleQRDA-III.xml";
+	private static final Path FAILURE =
+			Paths.get(DIR + "CPCPlus_CMSPrgrm_DiffCode_SampleQRDA-III.xml");
+	private static final Path LOWER =
+			Paths.get(DIR + "CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III.xml");
+	private static final Path UPPER =
+			Paths.get(DIR + "CPCPlus_CMSPrgrm_UpperCase_SampleQRDA-III.xml");
+	private static final Path MIXED =
+			Paths.get(DIR + "CPCPlus_CMSPrgrm_MixedCase_SampleQRDA-III.xml");
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -25,14 +30,14 @@ public class CpcProgramNameTest {
 	@Test
 	public void testProgramNameFailure() {
 		thrown.expect(TransformException.class);
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(FAILURE)));
+		Converter converter = new Converter(new PathQrdaSource(FAILURE));
 		converter.transform();
 	}
 
 	@Test
 	public void testProgramNameSuccessUpper() {
 		try {
-			Converter converter = new Converter(new PathQrdaSource(Paths.get(UPPER)));
+			Converter converter = new Converter(new PathQrdaSource(UPPER));
 			converter.transform();
 		} catch (TransformException ex) {
 			fail("Upper case name program name should not trigger a TransformException");
@@ -42,7 +47,7 @@ public class CpcProgramNameTest {
 	@Test
 	public void testProgramNameSuccessLower() {
 		try {
-			Converter converter = new Converter(new PathQrdaSource(Paths.get(LOWER)));
+			Converter converter = new Converter(new PathQrdaSource(LOWER));
 			converter.transform();
 		} catch (TransformException ex) {
 			fail("Lower case name program name should not trigger a TransformException");
@@ -52,7 +57,7 @@ public class CpcProgramNameTest {
 	@Test
 	public void testProgramNameSuccessMixed() {
 		try {
-			Converter converter = new Converter(new PathQrdaSource(Paths.get(MIXED)));
+			Converter converter = new Converter(new PathQrdaSource(MIXED));
 			converter.transform();
 		} catch (TransformException ex) {
 			fail("Mixed case name program name should not trigger a TransformException");
