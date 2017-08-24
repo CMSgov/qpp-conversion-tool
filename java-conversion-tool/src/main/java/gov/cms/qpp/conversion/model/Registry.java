@@ -13,6 +13,7 @@ import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -44,16 +45,31 @@ public class Registry<R> {
 	private final Map<ComponentKey, Class<?>> registryMap;
 	private final Class<? extends Annotation> annotationClass;
 
+	/**
+	 * Registry constructor
+	 *
+	 * @param context The context to use for this registry. Must not be null.
+	 * @param annotationClass The annotation to use for class path searching in this registry. Must not be null.
+	 */
 	public Registry(Context context, Class<? extends Annotation> annotationClass) {
+		Objects.requireNonNull(context, "context");
+		Objects.requireNonNull(annotationClass, "annotationClass");
+
 		this.context = context;
 		this.annotationClass = annotationClass;
 		this.registryMap = new HashMap<>(SHARED_REGISTRY_MAP.computeIfAbsent(annotationClass, this::lookupAnnotatedClasses));
 	}
 
+	/**
+	 * Searches the class path for types with the given annotation
+	 *
+	 * @param annotationClass The annotation for which to search
+	 * @return A map of classes with the given annotation
+	 */
 	private Map<ComponentKey, Class<?>> lookupAnnotatedClasses(Class<? extends Annotation> annotationClass) {
 		Reflections reflections = new Reflections("gov.cms");
 		Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(annotationClass);
-		Map<ComponentKey, Class<?>> registry = new HashMap<>();
+		Map<ComponentKey, Class<?>> registry = new HashMap<>(annotatedClasses.size());
 
 		for (Class<?> annotatedClass : annotatedClasses) {
 			for (ComponentKey key : getComponentKeys(annotatedClass)) {
@@ -108,6 +124,12 @@ public class Registry<R> {
 		return handlerClass.cast(CONSTRUCTORS.computeIfAbsent(handlerClass, this::createHandler).apply(context));
 	}
 
+	/**
+	 * Creates a function that will return new instances of the handlerClass
+	 *
+	 * @param handlerClass The class of which to create new instances
+	 * @return A function that returns instances of the handlerClass when supplied with a context
+	 */
 	private Function<Context, Object> createHandler(Class<?> handlerClass) {
 		try {
 			return createHandlerConstructor(handlerClass);

@@ -66,6 +66,11 @@ public class ComponentKey {
 		return hashCode;
 	}
 
+	/**
+	 * The string value of the component key.
+	 * 
+	 * @return The template and program string values
+	 */
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)

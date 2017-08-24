@@ -28,7 +28,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 	protected final Context context;
 	private final Set<TemplateId> scope;
-	private final Registry<XmlInputDecoder> decoders;
+	private final Registry<QppXmlDecoder> decoders;
 
 	/**
 	 * Initialize a qpp xml decoder
@@ -37,12 +37,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		Objects.requireNonNull(context, "converter");
 
 		this.context = context;
-		this.scope = hasScope(context) ? QrdaScope.getTemplates(context.getScope()) : null;
+		this.scope = context.hasScope() ? QrdaScope.getTemplates(context.getScope()) : null;
 		this.decoders = context.getRegistry(Decoder.class);
-	}
-
-	private boolean hasScope(Context context) {
-		return context.getScope() != null && !context.getScope().isEmpty();
 	}
 
 	/**

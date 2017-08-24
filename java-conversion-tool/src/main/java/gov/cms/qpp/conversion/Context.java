@@ -50,6 +50,15 @@ public class Context {
 	}
 
 	/**
+	 * Checks whether or not the context has a non-empty scope
+	 *
+	 * @return true if the scope is not null and contains at least one element
+	 */
+	public boolean hasScope() {
+		return scope != null && !scope.isEmpty();
+	}
+
+	/**
 	 * Is this a conversion of historical submissions.
 	 *
 	 * @return determination of whether or not the conversion is enacted on historical submissions.

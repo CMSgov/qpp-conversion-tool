@@ -28,11 +28,7 @@ public class QrdaValidator {
 
 	public QrdaValidator(Context context) {
 		this.validators = context.getRegistry(Validator.class);
-		this.scope = hasScope(context) ? QrdaScope.getTemplates(context.getScope()) : null;
-	}
-
-	private boolean hasScope(Context context) {
-		return context.getScope() != null && !context.getScope().isEmpty();
+		this.scope = context.hasScope() ? QrdaScope.getTemplates(context.getScope()) : null;
 	}
 
 	/**

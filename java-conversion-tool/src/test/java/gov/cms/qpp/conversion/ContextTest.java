@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Program;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 public class ContextTest {
 
@@ -75,6 +76,25 @@ public class ContextTest {
 		Context context = new Context();
 		assertSame(context.getRegistry(Decoder.class),
 				context.getRegistry(Decoder.class));
+	}
+
+	@Test
+	public void testHasScopeIsFalseByDefault() {
+		assertFalse(new Context().hasScope());
+	}
+
+	@Test
+	public void testHasScopeIsFalseIfScopeIsNull() {
+		Context context = new Context();
+		context.setScope(null);
+		assertFalse(context.hasScope());
+	}
+
+	@Test
+	public void testHasScopeIsTrueIfScopeIsNotEmpty() {
+		Context context = new Context();
+		context.getScope().add(QrdaScope.DEFAULTS);
+		assertTrue(context.hasScope());
 	}
 
 }
