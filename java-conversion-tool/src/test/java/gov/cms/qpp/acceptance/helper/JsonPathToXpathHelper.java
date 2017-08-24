@@ -34,9 +34,10 @@ public class JsonPathToXpathHelper {
 	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper, boolean doDefaults) throws IOException {
 		path = inPath;
 		wrapper = inWrapper;
-		Converter converter = new Converter(new PathQrdaSource(inPath)).doDefaults(doDefaults);
+		Converter converter = new Converter(new PathQrdaSource(inPath));
+		converter.getContext().setDoDefaults(false);
 		converter.transform();
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(converter.getContext());
 		encoder.encode(wrapper, converter.getDecoded());
 	}
 

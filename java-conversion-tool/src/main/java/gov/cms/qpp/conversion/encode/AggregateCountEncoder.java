@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -10,6 +11,10 @@ import gov.cms.qpp.conversion.model.TemplateId;
  */
 @Encoder(TemplateId.ACI_AGGREGATE_COUNT)
 public class AggregateCountEncoder extends QppOutputEncoder {
+
+	public AggregateCountEncoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 * Copies the aggregate count to the output

@@ -1,7 +1,5 @@
 package gov.cms.qpp.acceptance;
 
-import com.google.common.collect.Sets;
-import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.model.error.TransformException;
@@ -11,8 +9,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.nio.file.Paths;
+import java.util.Collections;
 
-public class CpcTest extends BaseTest {
+public class CpcTest {
 
 	private static final String CPC_FILE = "src/test/resources/cpc1.xml";
 
@@ -49,8 +48,8 @@ public class CpcTest extends BaseTest {
 
 	private void run(String type) {
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(CPC_FILE)));
-		Converter.setHistorical(true);
-		Converter.setScope(Sets.newHashSet(QrdaScope.getInstanceByName(type)));
+		converter.getContext().setHistorical(true);
+		converter.getContext().setScope(Collections.singleton(QrdaScope.getInstanceByName(type)));
 		converter.transform();
 	}
 }

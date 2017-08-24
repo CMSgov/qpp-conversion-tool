@@ -4,6 +4,7 @@
  */
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -67,14 +68,15 @@ public class AggregateCountDecoderTest {
         Namespace rootNs = Namespace.getNamespace("urn:hl7-org:v3");
         Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
+        Context context = new Context();
         Element element = new Element("observation", rootNs);
-        element.addContent(new Element("templateId", rootNs).setAttribute("root", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId()));
+        element.addContent(new Element("templateId", rootNs).setAttribute("root", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(context)));
         element.addContent(new Element("value", rootNs).setAttribute("value", "450").setAttribute("type", "INT", ns));
         element.addNamespaceDeclaration(ns);
 
         Node thisNode = new Node();
 
-        AggregateCountDecoder instance = new AggregateCountDecoder();
+        AggregateCountDecoder instance = new AggregateCountDecoder(context);
         instance.setNamespace(element, instance);
 
         instance.internalDecode(element, thisNode);
@@ -86,7 +88,7 @@ public class AggregateCountDecoderTest {
     @Test
     public void testAggregateCountDecoderIgnoresInvalidElements() throws Exception {
 
-        Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(XML_FRAGMENT));
+        Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
         Node node = root.getChildNodes().get(0);
 
         assertThat("Parent exists", root, is(not(nullValue())));
@@ -107,7 +109,7 @@ public class AggregateCountDecoderTest {
     @Test
     public void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws Exception {
 
-        Node root = new QppXmlDecoder().decode( XmlUtils.stringToDom( ANOTHER_XML_FRAGMENT ) );
+        Node root = new QppXmlDecoder(new Context()).decode( XmlUtils.stringToDom( ANOTHER_XML_FRAGMENT ) );
 
         assertThat("Parent exists", root, is(not(nullValue())));
 

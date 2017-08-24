@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.Converter;
-
+import gov.cms.qpp.conversion.Context;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -115,8 +114,8 @@ public enum TemplateId {
 	 * @return The complete template ID which includes a concatenation of the root followed by a colon followed by the
 	 * extension.
 	 */
-	public String getTemplateId() {
-		return generateTemplateIdString(root, getExtension());
+	public String getTemplateId(Context context) {
+		return generateTemplateIdString(root, getExtension(), context);
 	}
 
 	/**
@@ -126,14 +125,14 @@ public enum TemplateId {
 	 * @param extension The extension part of the templateId.
 	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
 	 */
-	public static TemplateId getTemplateId(String root, String extension) {
+	public static TemplateId getTemplateId(String root, String extension, Context context) {
 		Map<String, TemplateId> extensionsToTemplateId = ROOT_AND_TO_TEMPLATE_ID.get(root);
 
 		if (extensionsToTemplateId == null) {
 			return TemplateId.DEFAULT;
 		}
 
-		if (Converter.getHistorical()) {
+		if (context.isHistorical()) {
 			return extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
 		}
 
@@ -147,10 +146,10 @@ public enum TemplateId {
 	 * @param extension The extension part of the templateId.
 	 * @return A string that concatenates the arguments the same way the enumeration does.
 	 */
-	static String generateTemplateIdString(String root, String extension) {
+	static String generateTemplateIdString(String root, String extension, Context context) {
 		String templateId = root;
 
-		if (!Converter.getHistorical() && extension != null && !extension.isEmpty()) {
+		if (!context.isHistorical() && extension != null && !extension.isEmpty()) {
 			templateId += (":" + extension);
 		}
 		return templateId;

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Assert;
@@ -56,7 +57,7 @@ public class AciNumeratorDenominatorEncoderTest {
 
 	@Test
 	public void testEncoder() {
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
 		encoder.setNodes(nodes);
 
@@ -78,7 +79,7 @@ public class AciNumeratorDenominatorEncoderTest {
 
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciNumeratorDenominatorEncoder objectUnderTest = new AciNumeratorDenominatorEncoder();
+		AciNumeratorDenominatorEncoder objectUnderTest = new AciNumeratorDenominatorEncoder(new Context());
 
 		//execute
 		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
@@ -93,7 +94,7 @@ public class AciNumeratorDenominatorEncoderTest {
 	@Test
 	public void testNoChildEncoder() throws EncodeException {
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciNumeratorDenominatorEncoder objectUnderTest = new AciNumeratorDenominatorEncoder();
+		AciNumeratorDenominatorEncoder objectUnderTest = new AciNumeratorDenominatorEncoder(new Context());
 		Node unknownNode = new Node();
 		aciProportionMeasureNode.addChildNode(unknownNode);
 

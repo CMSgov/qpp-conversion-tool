@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -23,7 +24,7 @@ public class NullReturnDecoderTest {
 				+ "</root>";
 
 		// Get the root wrapper node
-		Node root = new QppXmlDecoder().decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		assertThat("root node should not be null", root, is(not(nullValue())));
 		// We get a placeholder when the decoder returns null Node
 		assertThat("root node should have one child node", root.getType(), is(TemplateId.PLACEHOLDER));
