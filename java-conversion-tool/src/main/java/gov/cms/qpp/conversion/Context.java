@@ -23,10 +23,20 @@ public class Context {
 	private boolean doDefaults = true;
 	private boolean doValidation = true;
 
+	/**
+	 * Gets the current contextual {@link Program}
+	 *
+	 * @return The current {@link Program}, which may have been changed automatically during conversion
+	 */
 	public Program getProgram() {
 		return program;
 	}
 
+	/**
+	 * Sets the current contextual {@link Program}
+	 *
+	 * @param program The new {@link Program}
+	 */
 	public void setProgram(Program program) {
 		this.program = program;
 	}
@@ -76,6 +86,11 @@ public class Context {
 		this.historical = historical;
 	}
 
+	/**
+	 * Whether this context wants default conversion performed
+	 *
+	 * @return doDefaults
+	 */
 	public boolean isDoDefaults() {
 		return doDefaults;
 	}
@@ -83,12 +98,17 @@ public class Context {
 	/**
 	 * Switch for enabling or disabling inclusion of default nodes.
 	 *
-	 * @param doIt toggle value
+	 * @param doDefaults whether the converter should perform defaults
 	 */
 	public void setDoDefaults(boolean doDefaults) {
 		this.doDefaults = doDefaults;
 	}
 
+	/**
+	 * Whether this context wants validation performed
+	 *
+	 * @return doValidation
+	 */
 	public boolean isDoValidation() {
 		return doValidation;
 	}
@@ -102,6 +122,12 @@ public class Context {
 		this.doValidation = doValidation;
 	}
 
+	/**
+	 * Looks up or creates a new {@link Registry} for the given annotation type under this context
+	 *
+	 * @param annotation The annotation type to use for class path searching in the {@link Registry}
+	 * @return The existing or new {@link Registry}
+	 */
 	@SuppressWarnings("unchecked")
 	public <A extends Annotation, R> Registry<R> getRegistry(Class<A> annotation) {
 		return (Registry<R>) registries.computeIfAbsent(annotation, key -> new Registry<>(this, key));

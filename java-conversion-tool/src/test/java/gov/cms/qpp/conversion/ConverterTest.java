@@ -17,12 +17,10 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -35,7 +33,6 @@ import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.ComponentKey;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Encoder;
-import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -74,15 +71,10 @@ public class ConverterTest {
 	@Test
 	@PrepareForTest({Converter.class, QrdaValidator.class})
 	public void testValidationErrors() throws Exception {
-
-		//mocking
 		Context context = new Context();
 		context.getRegistry(Decoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), JennyDecoder.class);
 		context.getRegistry(Validator.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), TestDefaultValidator.class);
 		QrdaValidator mockQrdaValidator = TestHelper.mockValidator(context, TestDefaultValidator.class, true, null);
-		PowerMockito.doReturn(Arrays.asList(new Detail("Test validation error for Jenny")))
-			.when(mockQrdaValidator)
-			.validate(ArgumentMatchers.any(Node.class));
 		PowerMockito.whenNew(QrdaValidator.class)
 			.withAnyArguments()
 			.thenReturn(mockQrdaValidator);
