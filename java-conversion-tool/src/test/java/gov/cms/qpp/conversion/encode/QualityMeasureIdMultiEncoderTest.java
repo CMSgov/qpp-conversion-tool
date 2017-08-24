@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
@@ -16,6 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 
 public class QualityMeasureIdMultiEncoderTest {
+
 	private static final String REQUIRE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
 	private static final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
 	private static final String REQUIRE_ELIGIBLE_POPULATION_EXCEP = "Must have a required eligiblePopulationException";
@@ -119,7 +121,7 @@ public class QualityMeasureIdMultiEncoderTest {
 		denominatorNodeTwo.putValue(POPULATION_ID, "denom2");
 		denominatorNodeTwo.addChildNode(aggregateCountNode);
 
-		encoder = new QualityMeasureIdEncoder();
+		encoder = new QualityMeasureIdEncoder(new Context());
 		wrapper = new JsonWrapper();
 	}
 

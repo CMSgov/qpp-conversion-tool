@@ -13,14 +13,14 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.reflections.util.ClasspathHelper;
 
-import gov.cms.qpp.BaseTest;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class ClinicalDocumentRoundTripTest extends BaseTest {
+public class ClinicalDocumentRoundTripTest {
 
 	private static final String EXPECTED = "{\n  \"performanceYear\" : 2017,\n  \"programName\" : \"mips\",\n  \"entityType\" : \"individual\",\n  "
 			+ "\"taxpayerIdentificationNumber\" : \"123456789\",\n  \"nationalProviderIdentifier\" : \"2567891421\",\n  "
@@ -42,12 +42,13 @@ public class ClinicalDocumentRoundTripTest extends BaseTest {
 				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
 		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
 
-		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(XmlUtils.stringToDom(xmlFragment));
+		Context context = new Context();
+		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(context, XmlUtils.stringToDom(xmlFragment));
 
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(clinicalDocumentNode.getChildNodes());
 
-		QppOutputEncoder encoder = new QppOutputEncoder();
+		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		encoder.setNodes(Collections.singletonList(clinicalDocumentNode));
 
 		StringWriter sw = new StringWriter();

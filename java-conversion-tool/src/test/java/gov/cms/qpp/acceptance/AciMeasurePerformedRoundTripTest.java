@@ -1,6 +1,5 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.BaseTest;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -17,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 
-public class AciMeasurePerformedRoundTripTest extends BaseTest {
+public class AciMeasurePerformedRoundTripTest {
 
 	public static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/AciMeasurePerformedGarbage.xml");
 

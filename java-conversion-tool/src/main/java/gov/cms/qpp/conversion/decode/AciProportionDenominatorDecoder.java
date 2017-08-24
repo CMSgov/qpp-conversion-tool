@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.decode;
 import gov.cms.qpp.conversion.model.Node;
 
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import org.jdom2.Element;
 
@@ -15,6 +16,10 @@ import org.jdom2.Element;
  */
 @Decoder(TemplateId.ACI_DENOMINATOR)
 public class AciProportionDenominatorDecoder extends QppXmlDecoder {
+
+	public AciProportionDenominatorDecoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 * internalDecode reads the xml fragment "aciProportionDenominator" parses

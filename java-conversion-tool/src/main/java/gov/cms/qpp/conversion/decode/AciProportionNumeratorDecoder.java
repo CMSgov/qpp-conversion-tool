@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -10,6 +11,10 @@ import org.jdom2.Element;
  */
 @Decoder(TemplateId.ACI_NUMERATOR)
 public class AciProportionNumeratorDecoder extends QppXmlDecoder {
+
+	public AciProportionNumeratorDecoder(Context context) {
+		super(context);
+	}
 
 	/**
 	 *  Decodes an ACI Numerator Measure into an intermediate node

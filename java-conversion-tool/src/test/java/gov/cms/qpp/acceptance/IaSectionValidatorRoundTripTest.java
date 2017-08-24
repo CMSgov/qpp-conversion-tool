@@ -5,6 +5,8 @@ import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.validate.IaSectionValidator;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -60,6 +62,7 @@ public class IaSectionValidatorRoundTripTest {
 		AllErrors errors = new AllErrors();
 		try {
 			converter.transform();
+			Assert.fail("Should not reach");
 		} catch (TransformException exception) {
 			errors = exception.getDetails();
 		}

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Test;
@@ -18,7 +19,7 @@ public class ReportingParametersActEncoderTest {
 		reportingParametersActNode.putValue(ReportingParametersActEncoder.PERFORMANCE_START,"20170101");
 		reportingParametersActNode.putValue(ReportingParametersActEncoder.PERFORMANCE_END,"20171231");
 		JsonWrapper outputWrapper = new JsonWrapper();
-		ReportingParametersActEncoder encoder = new ReportingParametersActEncoder();
+		ReportingParametersActEncoder encoder = new ReportingParametersActEncoder(new Context());
 		encoder.internalEncode(outputWrapper, reportingParametersActNode);
 		String performanceStart = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_START);
 		String performanceEnd = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_END);
@@ -32,7 +33,7 @@ public class ReportingParametersActEncoderTest {
 		Node reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 
 		JsonWrapper outputWrapper = new JsonWrapper();
-		ReportingParametersActEncoder encoder = new ReportingParametersActEncoder();
+		ReportingParametersActEncoder encoder = new ReportingParametersActEncoder(new Context());
 		encoder.internalEncode(outputWrapper, reportingParametersActNode);
 		String performanceStart = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_START);
 		String performanceEnd = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_END);

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
 import org.junit.Test;
@@ -16,7 +17,7 @@ public class AciProportionNumeratorDecoderTest {
 		Element element = new Element("testElement");
 		Node node = new Node();
 
-		AciProportionNumeratorDecoder aciProportionNumeratorDecoder = new AciProportionNumeratorDecoder();
+		AciProportionNumeratorDecoder aciProportionNumeratorDecoder = new AciProportionNumeratorDecoder(new Context());
 		DecodeResult decodeResult = aciProportionNumeratorDecoder.internalDecode(element, node);
 
 		assertThat("Must continue on tree", decodeResult, is(DecodeResult.TREE_CONTINUE));
