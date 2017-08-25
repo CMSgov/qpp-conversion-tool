@@ -29,18 +29,16 @@ public class CpcPlusRoundTripTests {
 
 	@Test
 	public void cpcPlusFileFailures() throws IOException {
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-failure.xml")) {
-			for (Path entry: stream) {
-				Converter converter = new Converter(new PathQrdaSource(entry));
-				try {
-					converter.transform();
-					Assert.fail("Should contain validation errors");
-				} catch (TransformException ex) {
-					//Good stuff
-				}
+		DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-failure.xml");
+		for (Path entry: stream) {
+			Converter converter = new Converter(new PathQrdaSource(entry));
+			try {
+				converter.transform();
+				Assert.fail("Should contain validation errors");
+			} catch (TransformException ex) {
+				//Good stuff
 			}
-		} catch (Exception ex) {
-			Assert.fail("Generic exception should not have been thrown");
 		}
+
 	}
 }
