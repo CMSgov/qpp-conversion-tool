@@ -27,7 +27,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertThat;
 
-public class ConverterLoad {
+public class ConverterLoadTest {
 	private static StandardJMeterEngine jmeter;
 
 	@BeforeClass
