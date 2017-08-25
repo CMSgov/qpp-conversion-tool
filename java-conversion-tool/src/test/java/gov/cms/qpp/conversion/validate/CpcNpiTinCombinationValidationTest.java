@@ -1,29 +1,15 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.Before;
+import org.junit.Test;
+
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.TransformException;
-
 public class CpcNpiTinCombinationValidationTest {
-
-	private static final Path DIR =
-			Paths.get("src/test/resources/cpc_plus/");
-	private static final Path TOO_LONG =
-			DIR.resolve("CPCPlus_TINs_IncorrectDigits_TooLong_SampleQRDA-III.xml");
-	private static final Path TOO_SHORT =
-			DIR.resolve("CPCPlus_TINs_IncorrectDigits_TooShort_SampleQRDA-III.xml");
 
 	private CpcNpiTinCombinationValidation cpcValidator;
 	private Node multipleTinNpiNode;
@@ -68,17 +54,4 @@ public class CpcNpiTinCombinationValidationTest {
 			cpcValidator.getDetails(),
 			hasSize(0));
 	}
-
-	@Test(expected = TransformException.class)
-	public void testTinTooShort() {
-		Converter converter = new Converter(new PathQrdaSource(TOO_SHORT));
-		converter.transform();
-	}
-
-	@Test(expected = TransformException.class)
-	public void testTinTooLong() {
-		Converter converter = new Converter(new PathQrdaSource(TOO_LONG));
-		converter.transform();
-	}
-
 }

@@ -117,6 +117,24 @@ class Checker {
 	}
 
 	/**
+	 * checks target node to ensure the string value for the given name is of length
+	 *
+	 * @param message error message if value is not empty
+	 * @param name key of expected value
+	 * @return The checker, for chaining method calls.
+	 */
+	public Checker valueIsLength(String message, String name, int length) {
+		lastAppraised = node.getValue(name);
+		if (!shouldShortcut()) {
+			String lastAppraised = (String) this.lastAppraised;
+			if (lastAppraised == null || lastAppraised.length() != length) {
+				details.add(new Detail(message, node.getPath()));
+			}
+		}
+		return this;
+	}
+
+	/**
 	 * checks target node for the existence of a single value with the given name key
 	 *
 	 * @param message error message if searched value is not found
