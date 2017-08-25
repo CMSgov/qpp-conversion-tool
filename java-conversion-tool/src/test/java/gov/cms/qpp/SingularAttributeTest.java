@@ -62,6 +62,7 @@ public class SingularAttributeTest {
 				MultipleTinsDecoder.NPI_TIN,
 				//There are no validations currently for entity type
 				ClinicalDocumentDecoder.ENTITY_ID,
+				ClinicalDocumentDecoder.PRACTICE_SITE_ADDR,
 				//There are no validations for performanceYear
 				ReportingParametersActDecoder.PERFORMANCE_YEAR,
 				//stratum is not currently mapped
