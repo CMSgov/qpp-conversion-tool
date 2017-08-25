@@ -18,7 +18,7 @@ public class AllErrorsTest {
 		assertThat("The error sources should have been null at first", objectUnderTest.getErrors(), is(nullValue()));
 	}
 
-		@Test
+	@Test
 	public void addErrorSource() {
 		AllErrors objectUnderTest = new AllErrors();
 		objectUnderTest.addError(new Error());

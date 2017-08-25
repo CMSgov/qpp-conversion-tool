@@ -5,13 +5,8 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 public class DetailTest {
 	@Test
@@ -32,12 +27,4 @@ public class DetailTest {
 	public void equalsContract() {
 		EqualsVerifier.forClass(Detail.class).usingGetClass().suppress(Warning.NONFINAL_FIELDS).verify();
 	}
-
-//	@Test
-//	public void testHashCode() {
-//		Detail emptyValues = new Detail("meep","meeo","meep","meep");
-//		Detail nullDetail = new Detail(null,null,null,null);
-//		assertEquals(emptyValues.hashCode(), -29068033);
-//		assertEquals(nullDetail.hashCode(), 0);
-//	}
 }
