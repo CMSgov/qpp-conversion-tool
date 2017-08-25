@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.Validator;
 /**
  * This Validator checks that the Measure ID is present.
  */
-@Validator(value = TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS, required = true)
+@Validator(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 public class AciMeasurePerformedRnRValidator extends NodeValidator {
 
 	private static final String MEASURE_ID_IS_REQUIRED =

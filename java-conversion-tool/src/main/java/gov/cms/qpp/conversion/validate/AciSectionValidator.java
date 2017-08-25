@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.Validator;
 /**
  * Validate the ACI Section.
  */
-@Validator(value = TemplateId.ACI_SECTION, required = true)
+@Validator(TemplateId.ACI_SECTION)
 public class AciSectionValidator extends NodeValidator {
 
 	protected static final String MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR

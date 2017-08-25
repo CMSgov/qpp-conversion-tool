@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.Validator;
 /**
  * Validates Measure Data - an Aggregate Count child
  */
-@Validator(value = TemplateId.MEASURE_DATA_CMS_V2, required = true)
+@Validator(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataValidator extends NodeValidator {
 
 	public static final String MISSING_AGGREGATE_COUNT  = "Measure performed must have exactly one Aggregate Count.";

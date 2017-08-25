@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.Validator;
 /**
  * Validates the Clinical Document level node for the given program: CPC+
  */
-@Validator(value = TemplateId.CLINICAL_DOCUMENT, program = Program.CPC, required = true)
+@Validator(value = TemplateId.CLINICAL_DOCUMENT, program = Program.CPC)
 public class CpcClinicalDocumentValidator extends NodeValidator {
 
 	static final String MISSING_PRACTICE_SITE_ADDRESS = "Must contain a practice site address "

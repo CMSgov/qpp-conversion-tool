@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.Validator;
 /**
  * Validates IaMeasure Node - expects a child MEASURE_PERFORMED with a  Y or N value
  */
-@Validator(value = TemplateId.IA_MEASURE, required = true)
+@Validator(TemplateId.IA_MEASURE)
 public class IaMeasureValidator extends NodeValidator {
 
 	public static final String TYPE_ERROR =

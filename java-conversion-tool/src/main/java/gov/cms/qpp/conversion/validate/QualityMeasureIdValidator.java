@@ -24,7 +24,7 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 /**
  * Validates a Measure Reference Results node.
  */
-@Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, required = true)
+@Validator(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdValidator extends NodeValidator {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
 	protected static final String MEASURE_ID = "measureId";
