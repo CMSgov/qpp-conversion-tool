@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import com.google.common.base.Strings;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -94,7 +95,7 @@ class Checker {
 	 */
 	public Checker valueIsEmpty(String message, String name) {
 		lastAppraised = node.getValue(name);
-		if (!shouldShortcut() && (lastAppraised != null && !lastAppraised.equals(""))) {
+		if (!shouldShortcut() && !Strings.isNullOrEmpty((String)lastAppraised)) {
 			details.add(new Detail(message, node.getPath()));
 		}
 		return this;
@@ -109,7 +110,7 @@ class Checker {
 	 */
 	public Checker valueIsNotEmpty(String message, String name) {
 		lastAppraised = node.getValue(name);
-		if (!shouldShortcut() && (lastAppraised == null || lastAppraised.equals(""))) {
+		if (!shouldShortcut() && Strings.isNullOrEmpty((String)lastAppraised)) {
 			details.add(new Detail(message, node.getPath()));
 		}
 		return this;
