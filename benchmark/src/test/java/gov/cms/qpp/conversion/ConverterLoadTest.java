@@ -27,7 +27,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertThat;
 
-public class ConverterLoad {
+public class ConverterLoadTest {
 	private static StandardJMeterEngine jmeter;
 
 	@BeforeClass
@@ -46,7 +46,7 @@ public class ConverterLoad {
 		httpSampler.setProtocol("http");
 		httpSampler.setDomain("184.73.24.93");
 		httpSampler.setPort(2680);
-		httpSampler.setPath("v1/qrda3");
+		httpSampler.setPath("qrda3");
 		httpSampler.setMethod("POST");
 		httpSampler.setPostBodyRaw(true);
 		httpSampler.setDoMultipartPost(true);
