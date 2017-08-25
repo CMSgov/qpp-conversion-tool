@@ -121,6 +121,7 @@ class Checker {
 	 *
 	 * @param message error message if value is not empty
 	 * @param name key of expected value
+	 * @param length the expected length in characters of the value
 	 * @return The checker, for chaining method calls.
 	 */
 	public Checker valueIsLength(String message, String name, int length) {
