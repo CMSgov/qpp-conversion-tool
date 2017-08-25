@@ -201,7 +201,6 @@ class Checker {
 			try {
 				lastAppraised = Integer.parseInt(node.getValue(name));
 			} catch (NumberFormatException ex) {
-				DEV_LOG.warn("Problem with non int value: " + node.getValue(name), ex);
 				details.add(new Detail(message, node.getPath()));
 			}
 		}
