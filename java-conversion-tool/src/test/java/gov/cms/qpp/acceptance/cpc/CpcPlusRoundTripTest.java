@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class CpcPlusRoundTripTests {
+public class CpcPlusRoundTripTest {
 
 	private static final Path DIR = Paths.get("src/test/resources/cpc_plus/");
 
