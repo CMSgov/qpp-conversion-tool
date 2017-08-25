@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.model.error;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -125,5 +126,15 @@ public class Error implements Serializable {
 		}
 
 		details.add(detail);
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("sourceIdentifier", sourceIdentifier)
+				.add("type", type)
+				.add("message", message)
+				.add("details", details)
+				.toString();
 	}
 }
