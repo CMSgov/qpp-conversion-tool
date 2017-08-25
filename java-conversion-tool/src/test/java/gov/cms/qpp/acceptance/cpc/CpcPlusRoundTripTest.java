@@ -1,15 +1,22 @@
 package gov.cms.qpp.acceptance.cpc;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.model.error.TransformException;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Test;
+
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.TransformException;
 
 public class CpcPlusRoundTripTest {
 
@@ -17,28 +24,41 @@ public class CpcPlusRoundTripTest {
 
 	@Test
 	public void cpcPlusFileSuccesses() throws IOException {
+		Map<Path, AllErrors> errors = new HashMap<>();
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-success.xml")) {
-			for (Path entry: stream) {
+			for (Path entry : stream) {
 				Converter converter = new Converter(new PathQrdaSource(entry));
-				converter.transform();
+
+				try {
+					converter.transform();
+				} catch (TransformException failure) {
+					errors.put(entry, failure.getDetails());
+				}
 			}
-		} catch (TransformException ex) {
-			Assert.fail("Should not fail conversion");
+		}
+
+		if (!errors.isEmpty()) {
+			Assert.fail("Failed cpc plus conversions: " + errors);
 		}
 	}
 
 	@Test
 	public void cpcPlusFileFailures() throws IOException {
-		DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-failure.xml");
-		for (Path entry: stream) {
-			Converter converter = new Converter(new PathQrdaSource(entry));
-			try {
-				converter.transform();
-				Assert.fail("Should contain validation errors");
-			} catch (TransformException ex) {
-				//Good stuff
+		List<Path> successesThatShouldBeErrors = new ArrayList<>();
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-failure.xml")) {
+			for (Path entry : stream) {
+				Converter converter = new Converter(new PathQrdaSource(entry));
+
+				try {
+					converter.transform();
+					successesThatShouldBeErrors.add(entry);
+				} catch (TransformException expected) {
+				}
 			}
 		}
 
+		if (!successesThatShouldBeErrors.isEmpty()) {
+			Assert.fail("Succeeded in cpc plus conversions that should have failed: " + successesThatShouldBeErrors);
+		}
 	}
 }
