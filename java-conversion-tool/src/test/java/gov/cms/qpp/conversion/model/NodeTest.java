@@ -52,7 +52,7 @@ public class NodeTest {
 
 		//ensure that we don't go down all the child nodes
 		assertThat("Node#toString must not recurse down its children and print the size instead.", node.toString(),
-				containsString("childNodes=size"));
+				containsString("childNodesSize="));
 		//ensure we don't recurse up the parent
 		assertThat("Node#toString must not recurse down its children and print the size instead.", childNode.toString(),
 				containsString("parent=not null"));
