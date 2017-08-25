@@ -14,7 +14,6 @@ public class CpcNpiTinCombinationValidation extends NodeValidator {
 
 	static final String AT_LEAST_ONE_NPI_TIN_COMBINATION = "Must have at least one NPI/TIN combination";
 
-
 	/**
 	 * Validates the NPI/TIN Combination within the QRDA Category III Report V3 section
 	 *
@@ -25,4 +24,5 @@ public class CpcNpiTinCombinationValidation extends NodeValidator {
 		check(node)
 			.childMinimum(AT_LEAST_ONE_NPI_TIN_COMBINATION, 1, TemplateId.NPI_TIN_ID);
 	}
+
 }
