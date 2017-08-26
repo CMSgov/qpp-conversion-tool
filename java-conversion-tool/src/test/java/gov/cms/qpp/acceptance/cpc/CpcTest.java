@@ -1,4 +1,4 @@
-package gov.cms.qpp.acceptance;
+package gov.cms.qpp.acceptance.cpc;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
