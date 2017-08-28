@@ -1,25 +1,29 @@
 var merge = rootRequire('./lib/merge_all');
 var virtualEnvironment = rootRequire('./virtual_environment_defs');
-var bucketName = (virtualEnvironment.name + "Bucket").toLowerCase();
 
-var setup = {
-    "Resources": {}
-}
+module.exports = function(env) {
+    var awsAccount = env.awsAccount || "";
+    var bucketName = (awsAccount + virtualEnvironment.name + "Bucket").toLowerCase();
+    var setup = {
+        "Resources": {}
+    }
 
-setup.Resources[bucketName] = {
-    "Type" : "AWS::S3::Bucket",
+    setup.Resources[bucketName] = {
+        "Type" : "AWS::S3::Bucket",
         "Properties" : {
-        "AccessControl" : "BucketOwnerFullControl",
+            "AccessControl" : "BucketOwnerFullControl",
             "BucketName" : bucketName,
             "VersioningConfiguration" : {
-            "Status" : "Enabled"
-        }
-    },
-    "DeletionPolicy" : "Retain"
-};
+                "Status" : "Enabled"
+            }
+        },
+        "DeletionPolicy" : "Retain"
+    };
 
-module.exports = merge([
-    setup,
-    require('./alarms')(bucketName)
-]);
+    merge([
+        setup,
+        require('./alarms')(bucketName)
+    ]);
+}
+
 
