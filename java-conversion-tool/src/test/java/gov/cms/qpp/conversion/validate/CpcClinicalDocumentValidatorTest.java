@@ -23,7 +23,7 @@ public class CpcClinicalDocumentValidatorTest {
 
 	@Test
 	public void validPracticeSiteAddress() {
-		Node clinicalDocumentNode = createsValidCpcplusClinicalDocument();
+		Node clinicalDocumentNode = createValidCpcplusClinicalDocument();
 
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
@@ -33,7 +33,7 @@ public class CpcClinicalDocumentValidatorTest {
 
 	@Test
 	public void missingPracticeSiteAddress() {
-		Node clinicalDocumentNode = createsValidCpcplusClinicalDocument();
+		Node clinicalDocumentNode = createValidCpcplusClinicalDocument();
 		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR);
 
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
@@ -45,7 +45,7 @@ public class CpcClinicalDocumentValidatorTest {
 
 	@Test
 	public void emptyPracticeSiteAddress() {
-		Node clinicalDocumentNode = createsValidCpcplusClinicalDocument();
+		Node clinicalDocumentNode = createValidCpcplusClinicalDocument();
 		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "");
 
@@ -58,7 +58,7 @@ public class CpcClinicalDocumentValidatorTest {
 
 	@Test
 	public void testCpcPlusMultipleApm() {
-		Node clinicalDocumentNode = createsValidCpcplusClinicalDocument();
+		Node clinicalDocumentNode = createValidCpcplusClinicalDocument();
 
 		// extra APM
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "1234567", false);
@@ -72,7 +72,7 @@ public class CpcClinicalDocumentValidatorTest {
 
 	@Test
 	public void testCpcPlusNoApm() {
-		Node clinicalDocumentNode = createsValidCpcplusClinicalDocument();
+		Node clinicalDocumentNode = createValidCpcplusClinicalDocument();
 		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.ENTITY_ID);
 
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
@@ -82,7 +82,32 @@ public class CpcClinicalDocumentValidatorTest {
 				hasValidationErrorsIgnoringPath(CpcClinicalDocumentValidator.ONLY_ONE_APM_ALLOWED));
 	}
 
-	private Node createsValidCpcplusClinicalDocument() {
+	@Test
+	public void testCpcPlusMissingMeasureSection() {
+		Node clinicalDocumentNode = createMissingMeasureSectionCpcplusClinicalDocument();
+
+		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
+
+		assertThat("Must validate with the correct error",
+				cpcValidator.getDetails(),
+				hasValidationErrorsIgnoringPath(CpcClinicalDocumentValidator.ONE_MEASURE_SECTION_REQUIRED));
+	}
+
+	private Node createValidCpcplusClinicalDocument() {
+		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "AR00000");
+
+		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V2);
+
+		clinicalDocumentNode.addChildNode(measureSection);
+
+		return clinicalDocumentNode;
+	}
+
+	private Node createMissingMeasureSectionCpcplusClinicalDocument() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
