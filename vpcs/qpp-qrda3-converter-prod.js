@@ -45,13 +45,17 @@ env.configureLayers = function() {
       'Ref': virtualEnvironment.zones.private[2].Name
     }
   ];
-  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['InstancePort'] = 3000;
-  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['LoadBalancerPort'] = 443;
-  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['Protocol'] = 'HTTPS';
-  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['InstanceProtocol'] = 'HTTP';
-  // ACM certificate for prod.qpp-qrda3-converter.navapbc.com
-  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0]['SSLCertificateId'] =
-    'arn:aws:acm:us-east-1:003384571330:certificate/a54f7f91-5268-4321-b2ba-f282e65a5c4e';
+
+  internalBalancerOverrides = Object.assign(internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0], {
+    InstancePort: 3000,
+    LoadBalancerPort: 443,
+    Protocol: 'HTTPS',
+    InstanceProtocol: 'HTTP',
+    // ACM certificate for prod.qpp-qrda3-converter.navapbc.com
+    SSLCertificateId: 'arn:aws:acm:us-east-1:003384571330:certificate/a54f7f91-5268-4321-b2ba-f282e65a5c4e'
+  });
+
+  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0] = internalBalancerOverrides;
 
   return {
     app: rootRequire('./layers/app/api'),
