@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 module.exports = function(configuration) {
   /*
   Example configuration object:
@@ -15,25 +17,19 @@ module.exports = function(configuration) {
   };
   */
 
-  if(configuration.tableName === null) {
+  if(!_.isString(configuration.tableName)) {
     throw new Error('tableName must be a non-null String');
   }
-  if(configuration.attributes === null) {
-    throw new Error('attributes must be a non-null array of AttributeDefinitions');
-  } else if (!Array.isArray(configuration.attributes)) {
+  if(!_.isArray(configuration.attributes)) {
     throw new Error('attributes must be a non-null array of AttributeDefinitions');
   }
-  if(configuration.partitionKey === null) {
+  if(!_.isString(configuration.partitionKey)) {
     throw new Error('partitionKey must be a non-null String');
   }
-  if(configuration.readThroughput === null) {
-    throw new Error('readThroughput must be a non-null integer');
-  } else if(configuration.readThroughput % 1 !== 0 || typeof configuration.readThroughput !== 'number') {
+  if(!_.isNumber(configuration.readThroughput)) {
     throw new Error('readThroughput must be a non-null integer');
   }
-  if(configuration.writeThroughput === null) {
-    throw new Error('writeThroughput must be a non-null integer');
-  } else if(configuration.writeThroughput % 1 !== 0 || typeof configuration.writeThroughput !== 'number') {
+  if(!_.isNumber(configuration.writeThroughput)) {
     throw new Error('writeThroughput must be a non-null integer');
   }
 
