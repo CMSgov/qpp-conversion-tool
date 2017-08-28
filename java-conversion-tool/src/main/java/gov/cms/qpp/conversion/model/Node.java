@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * Represents a node of data that should be converted. Consists of a key/value
  * Map that holds the data gleaned from an input file.
@@ -184,25 +186,6 @@ public class Node {
 	}
 
 	/**
-	 * toString will create a readable representation of this {@code Node}.
-	 *
-	 * @return A string representation
-	 */
-	@Override
-	public String toString() {
-		StringBuilder nodeToString = new StringBuilder("Node{");
-		nodeToString.append("type=").append(type);
-		nodeToString.append(", data=").append(data);
-		nodeToString.append(", childNodes=").append("size:").append(childNodes.size());
-		nodeToString.append(", parent=").append((parent == null) ? "null" : "not null");
-		nodeToString.append(", validated=").append(validated);
-		nodeToString.append(", defaultNsUri='").append(defaultNsUri).append('\'');
-		nodeToString.append(", path='").append(path).append('\'');
-		nodeToString.append('}');
-		return nodeToString.toString();
-	}
-
-	/**
 	 * getKeys gets the internal keyset for the list of Nodes
 	 *
 	 * @return The keys the value's set on this Node.
@@ -372,5 +355,23 @@ public class Node {
 	 */
 	private static boolean foundNode(List<?> nodes) {
 		return !nodes.isEmpty();
+	}
+
+	/**
+	 * creates a readable representation of this {@code Node}.
+	 *
+	 * @return A string representation
+	 */
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("type", type)
+				.add("data", data)
+				.add("childNodesSize", childNodes.size())
+				.add("parent", parent == null ? null : "not null")
+				.add("validated", validated)
+				.add("defaultNsUri", defaultNsUri)
+				.add("path", path)
+				.toString();
 	}
 }
