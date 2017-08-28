@@ -33,10 +33,9 @@ public class TestHelper {
 	 *
 	 * This can be used to simulate the @Validator annotation in a test.
 	 *
-	 * @param templateId The templateId that the test validator will validate.
+	 * @param context Holder of contextual information that qualifies the validation.
 	 * @param validator The class of the validator.
 	 * @param required Whether the validator is required.
-	 * @param spy An existing spied QrdaValidator that will be extended.
 	 * @throws Exception If the mocking fails.
 	 */
 	public static QrdaValidator mockValidator(Context context, Class<? extends NodeValidator> validator, boolean required) throws Exception {
@@ -49,7 +48,7 @@ public class TestHelper {
 	 * This can be used to simulate the @Validator annotation in a test.  Passing in a previously spied
 	 * {@link gov.cms.qpp.conversion.validate.QrdaValidator} allows additional NodeValidators.
 	 *
-	 * @param templateId The templateId that the test validator will validate.
+	 * @param context Holder of contextual information that qualifies the validation.
 	 * @param validator The class of the validator.
 	 * @param required Whether the validator is required.
 	 * @param spy An existing spied QrdaValidator that will be extended.
@@ -71,7 +70,6 @@ public class TestHelper {
 	 * simulated.
 	 *
 	 * @param spy The QrdaValidator spy.
-	 * @param templateId The templateId to be mocked.
 	 * @param validator The NodeValidator to be used to validate the templateId.
 	 * @param required Whether the validation is required.
 	 * @throws Exception If the mocking fails.
