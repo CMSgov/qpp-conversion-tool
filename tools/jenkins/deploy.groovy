@@ -1,7 +1,7 @@
 def deploy_repo_url= 'https://github.com/CMSgov/qpp-conversion-tool.git'
 
 def cfg = [
-  // TODO: is this the right credential?
+  // Github credentials: jia's personal access token
   credentials_id: '26cbfacb-ed84-45cf-b16b-3bb49681f675',
   vpc_config_path: 'vpcs/${vpc_file}.js',
   // this is the corevpc deploy branch
