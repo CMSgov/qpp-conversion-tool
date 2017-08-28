@@ -103,13 +103,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			AllErrors allErrors = exception.getDetails();
-			List<Error> errors = allErrors.getErrors();
-			assertThat("There must only be one error source.", errors, hasSize(1));
-			List<Detail> details = errors.get(0).getDetails();
-			assertThat("There must be only one validation error.", details, hasSize(1));
-			Detail detail = details.get(0);
-			assertThat("The validation error was incorrect", detail, validationErrorTextMatches(Converter.NOT_VALID_XML_DOCUMENT));
+			checkup(exception, Converter.NOT_VALID_XML_DOCUMENT);
 		}
 	}
 
@@ -130,13 +124,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			AllErrors allErrors = exception.getDetails();
-			List<Error> errors = allErrors.getErrors();
-			assertThat("There must only be one error source.", errors, hasSize(1));
-			List<Detail> details = errors.get(0).getDetails();
-			assertThat("There must be only one validation error.", details, hasSize(1));
-			Detail detail = details.get(0);
-			assertThat("The validation error was incorrect", detail, validationErrorTextMatches(Converter.NOT_VALID_XML_DOCUMENT));
+			checkup(exception, Converter.NOT_VALID_XML_DOCUMENT);
 		}
 	}
 
@@ -148,13 +136,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			AllErrors allErrors = exception.getDetails();
-			List<Error> errors = allErrors.getErrors();
-			assertThat("There must only be one error source.", errors, hasSize(1));
-			List<Detail> details = errors.get(0).getDetails();
-			assertThat("There must be only one validation error.", details, hasSize(1));
-			Detail detail = details.get(0);
-			assertThat("The validation error was incorrect", detail, validationErrorTextMatches("The file is not a QRDA-III XML document"));
+			checkup(exception, Converter.NOT_VALID_QRDA_DOCUMENT);
 		}
 	}
 
@@ -169,13 +151,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			AllErrors allErrors = exception.getDetails();
-			List<Error> errors = allErrors.getErrors();
-			assertThat("There must only be one error source.", errors, hasSize(1));
-			List<Detail> details = errors.get(0).getDetails();
-			assertThat("There must be only one validation error.", details, hasSize(1));
-			Detail detail = details.get(0);
-			assertThat("The validation error was incorrect", detail, validationErrorTextMatches("The file is not a QRDA-III XML document"));
+			checkup(exception, Converter.NOT_VALID_QRDA_DOCUMENT);
 		}
 	}
 
@@ -193,14 +169,18 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			AllErrors allErrors = exception.getDetails();
-			List<Error> errors = allErrors.getErrors();
-			assertThat("There must only be one error source.", errors, hasSize(1));
-			List<Detail> details = errors.get(0).getDetails();
-			assertThat("There must be only one validation error.", details, hasSize(1));
-			Detail detail = details.get(0);
-			assertThat("The validation error was incorrect", detail, validationErrorTextMatches(Converter.UNEXPECTED_ERROR));
+			checkup(exception, Converter.UNEXPECTED_ERROR);
 		}
+	}
+
+	private void checkup(TransformException exception, String errorText) {
+		AllErrors allErrors = exception.getDetails();
+		List<Error> errors = allErrors.getErrors();
+		assertThat("There must only be one error source.", errors, hasSize(1));
+		List<Detail> details = errors.get(0).getDetails();
+		assertThat("There must be only one validation error.", details, hasSize(1));
+		Detail detail = details.get(0);
+		assertThat("The validation error was incorrect", detail, validationErrorTextMatches(errorText));
 	}
 
 	@Test

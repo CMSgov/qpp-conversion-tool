@@ -37,6 +37,7 @@ public class Converter {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
 
 	static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
+	static final String NOT_VALID_QRDA_DOCUMENT = "The file is not a QRDA-III XML document";
 	static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
 
 	private final QrdaSource source;
@@ -128,7 +129,7 @@ public class Converter {
 				qpp = encode();
 			}
 		} else {
-			details.add(new Detail("The file is not a QRDA-III XML document"));
+			details.add(new Detail(NOT_VALID_QRDA_DOCUMENT));
 		}
 
 		return qpp;
