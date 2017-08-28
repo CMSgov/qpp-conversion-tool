@@ -84,7 +84,7 @@ public class CpcClinicalDocumentValidatorTest {
 
 	@Test
 	public void testCpcPlusMissingMeasureSection() {
-		Node clinicalDocumentNode = createMissingMeasureSectionCpcplusClinicalDocument();
+		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
 
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
@@ -94,26 +94,25 @@ public class CpcClinicalDocumentValidatorTest {
 	}
 
 	private Node createValidCpcPlusClinicalDocument() {
+		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
+		addMeasureSectionNode(clinicalDocumentNode);
+
+		return  clinicalDocumentNode;
+	}
+
+	private Node createCpcPlusClinicalDocument() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "AR00000");
-
-		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V2);
-
-		clinicalDocumentNode.addChildNode(measureSection);
 
 		return clinicalDocumentNode;
 	}
 
-	private Node createMissingMeasureSectionCpcplusClinicalDocument() {
-		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "AR00000");
-
+	private Node addMeasureSectionNode(Node clinicalDocumentNode) {
+		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V2);
+		clinicalDocumentNode.addChildNode(measureSection);
 		return clinicalDocumentNode;
 	}
 
