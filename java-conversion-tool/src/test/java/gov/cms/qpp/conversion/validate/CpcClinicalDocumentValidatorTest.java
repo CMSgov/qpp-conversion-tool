@@ -93,7 +93,7 @@ public class CpcClinicalDocumentValidatorTest {
 				hasValidationErrorsIgnoringPath(CpcClinicalDocumentValidator.ONE_MEASURE_SECTION_REQUIRED));
 	}
 
-	private Node createValidCpcPcllusClinicalDocument() {
+	private Node createValidCpcPlusClinicalDocument() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
