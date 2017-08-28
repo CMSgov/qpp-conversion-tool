@@ -182,14 +182,6 @@ public class ScopedConversionTest {
 				fixtures.get(testSection.name()), content);
 	}
 
-	@SuppressWarnings("unchecked")
-	private Map<String, Object> scopedConversion(QrdaScope testSection) {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
-		return (Map<String, Object>) JsonHelper.readJson(qpp.toString(), HashMap.class);
-	}
-
 	//negative
 
 	/**
@@ -220,27 +212,6 @@ public class ScopedConversionTest {
 				5, getErrors(content).size());
 	}
 
-	@SuppressWarnings("unchecked")
-	private Map<String, Object> errantScopedConversion(QrdaScope testSection) throws JsonProcessingException {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		Map<String, Object> content = null;
-		try {
-			converter.transform();
-		} catch (TransformException exception) {
-			content = JsonHelper.readJson(getErrors(exception), HashMap.class);
-		}
-		return content;
-	}
-
-	private String getErrors(TransformException exception) throws JsonProcessingException {
-		ObjectWriter jsonObjectWriter = new ObjectMapper()
-				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-				.writer()
-				.withDefaultPrettyPrinter();
-		return jsonObjectWriter.writeValueAsString(exception.getDetails());
-	}
-
 	/**
 	 * Verify failure for attempted invalid IA Section conversion
 	 */
@@ -267,6 +238,35 @@ public class ScopedConversionTest {
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
 				3, getErrors(content).size());
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<String, Object> scopedConversion(QrdaScope testSection) {
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
+		JsonWrapper qpp = converter.transform();
+		return (Map<String, Object>) JsonHelper.readJson(qpp.toString(), HashMap.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<String, Object> errantScopedConversion(QrdaScope testSection) throws JsonProcessingException {
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
+		Map<String, Object> content = null;
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			content = JsonHelper.readJson(getErrors(exception), HashMap.class);
+		}
+		return content;
+	}
+
+	private String getErrors(TransformException exception) throws JsonProcessingException {
+		ObjectWriter jsonObjectWriter = new ObjectMapper()
+				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+				.writer()
+				.withDefaultPrettyPrinter();
+		return jsonObjectWriter.writeValueAsString(exception.getDetails());
 	}
 
 	/**

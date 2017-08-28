@@ -23,13 +23,24 @@ public class XmlUtilsTest {
 			"  </observation>", "</root>");
 
 	@Test
-	public void stringToDom() throws Exception {
+	public void stringToDomCanParse() throws Exception {
+		Element dom = XmlUtils.stringToDom(xmlFragment);
+		assertThat("returned dom should not be null", dom, is(not(nullValue())));
+	}
+
+	@Test
+	public void stringToDomRootChild() throws Exception {
+		Element dom = XmlUtils.stringToDom(xmlFragment);
+		List<Element> childElement = dom.getChildren();
+		assertThat("test root has one child", childElement.size(), is(1));
+	}
+
+	@Test
+	public void stringToDomOtherDescendants() throws Exception {
 		Element dom = XmlUtils.stringToDom(xmlFragment);
 		List<Element> childElement = dom.getChildren();
 		List<Element> leafElements = childElement.get(0).getChildren();
 
-		assertThat("returned dom should not be null", dom, is(not(nullValue())));
-		assertThat("test root has one child", childElement.size(), is(1));
 		assertThat("test observation has five children", leafElements.size(), is(5));
 	}
 
