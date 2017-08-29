@@ -16,6 +16,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 			+ "for CPC+ conversions";
 	static final String ONLY_ONE_APM_ALLOWED =
 			"One and only one Alternative Payment Model (APM) Entity Identifier should be specified";
+	static final String ONE_MEASURE_SECTION_REQUIRED = "Must contain one Measure (eCQM) section";
 
 	/**
 	 * Validates a single clinical document node
@@ -26,6 +27,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 			check(node)
 					.valueIsNotEmpty(MISSING_PRACTICE_SITE_ADDRESS, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
-					.singleValue(ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.ENTITY_ID);
+					.singleValue(ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.ENTITY_ID)
+					.childMinimum(ONE_MEASURE_SECTION_REQUIRED, 1, TemplateId.MEASURE_SECTION_V2);
 	}
 }
