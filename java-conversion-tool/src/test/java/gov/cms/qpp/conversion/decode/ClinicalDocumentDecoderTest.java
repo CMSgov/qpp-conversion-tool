@@ -253,6 +253,18 @@ public class ClinicalDocumentDecoderTest {
 				testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID), is(ENTITY_ID_VALUE));
 	}
 
+	@Test
+	public void decodeCpcPracticeSiteAddressTest() throws Exception {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
+		Node testParentNode = new Node();
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
+		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
+		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		assertThat("Clinical Document contains the Entity Id",
+				testParentNode.getValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR), is("testing123"));
+	}
+
 	private Element makeClinicalDocument(String programName) {
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -289,7 +301,10 @@ public class ClinicalDocumentDecoderTest {
 			.setAttribute("root", "2.16.840.1.113883.3.249.5.1")
 			.setAttribute("extension", ENTITY_ID_VALUE)
 			.setAttribute("assigningAuthorityName", "CMS-CMMI");
+		Element addr = new Element("addr", rootns)
+			.setText("testing123");
 		associatedEntity.addContent(entityId);
+		associatedEntity.addContent(addr);
 		participant.addContent(associatedEntity);
 		return participant;
 	}

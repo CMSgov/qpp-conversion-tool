@@ -90,6 +90,13 @@
 					}
 				},
 				{
+					"decodeLabel": "practiceSiteAddr",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'addr' and namespace-uri() = '<nsuri>']",
+						"xmltype": "element"
+					}
+				},
+				{
 					"decodeLabel": "components",
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'component' and namespace-uri() = '<nsuri>']/*[local-name() = 'structuredBody' and namespace-uri() = '<nsuri>']/*[local-name() = 'component' and namespace-uri() = '<nsuri>']",
