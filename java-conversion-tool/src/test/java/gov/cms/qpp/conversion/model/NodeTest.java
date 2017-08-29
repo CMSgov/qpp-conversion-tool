@@ -15,31 +15,36 @@ import org.junit.Test;
 public class NodeTest {
 
 	@Test
-	public void testMembers() {
-		TemplateId randomEnumValue1 = TemplateId.PLACEHOLDER;
-		TemplateId randomEnumValue2 = TemplateId.ACI_SECTION;
-		Node node = new Node(randomEnumValue1);
-
+	public void testPut() {
+		Node node = new Node(TemplateId.PLACEHOLDER);
 		node.putValue("DEF", "GHI");
 
 		assertEquals("GHI", node.getValue("DEF"));
+	}
 
+	@Test
+	public void testChild() {
+		Node node = new Node(TemplateId.PLACEHOLDER);
 		Node childNode = new Node();
-		childNode.setType(randomEnumValue2);
+		childNode.setType(TemplateId.ACI_SECTION);
 		node.addChildNode(childNode);
 
 		assertEquals(childNode, node.getChildNodes().get(0));
-
-		String toString = node.toString();
-
-		assertTrue(toString.contains(randomEnumValue1.name()));
-		assertTrue(toString.contains("DEF"));
-		assertTrue(toString.contains("GHI"));
-		assertFalse(toString.contains(randomEnumValue2.name()));
 	}
 
 	@Test
 	public void testToString() {
+		Node node = new Node(TemplateId.PLACEHOLDER);
+		node.putValue("DEF", "GHI");
+
+		String toString = node.toString();
+
+		assertTrue(toString.contains(TemplateId.PLACEHOLDER.name()));
+		assertTrue(toString.contains("GHI"));
+	}
+
+	@Test
+	public void testToStringDepth() {
 		Node node = new Node();
 
 		Node childNode = new Node();
@@ -52,7 +57,7 @@ public class NodeTest {
 
 		//ensure that we don't go down all the child nodes
 		assertThat("Node#toString must not recurse down its children and print the size instead.", node.toString(),
-				containsString("childNodes=size"));
+				containsString("childNodesSize="));
 		//ensure we don't recurse up the parent
 		assertThat("Node#toString must not recurse down its children and print the size instead.", childNode.toString(),
 				containsString("parent=not null"));
@@ -168,8 +173,8 @@ public class NodeTest {
 	public void testRemoveValue() {
 		Node node = new Node();
 		node.putValue("test", "hello");
-		assertTrue(node.hasValue("test"));
 		node.removeValue("test");
+
 		assertFalse(node.hasValue("test"));
 	}
 }

@@ -12,7 +12,7 @@ var env = {
   defaultIamInstanceProfile: 'server-nonprod',
   alarmEmail: 'devops@navahq.com',
   machineImageOwners: ['self'],
-  externalSecurityGroupRefs: [{ Ref: 'OpenHttpSecurityGroup' }],
+  internalSecurityGroupRefs: [{ Ref: 'OpenHttpSecurityGroup' }],
   awsAccount: 'aws-hhs-cms-ccsq-qpp-navadevops'
 };
 
@@ -31,6 +31,32 @@ env.gditSubnets = {
 };
 
 env.configureLayers = function() {
+   // Replaces external ELB with an internal ELB
+  const virtualEnvironment = rootRequire('./virtual_environment_defs');
+  const internalBalancer = rootRequire('./layers/app/balancers/internal_balancer');
+  internalBalancer['Resources']['AppElb']['Properties']['Subnets'] = [
+    {
+      'Ref': virtualEnvironment.zones.private[0].Name
+    },
+    {
+      'Ref': virtualEnvironment.zones.private[1].Name
+    },
+    {
+      'Ref': virtualEnvironment.zones.private[2].Name
+    }
+  ];
+
+  internalBalancerOverrides = Object.assign(internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0], {
+    InstancePort: 3000,
+    LoadBalancerPort: 443,
+    Protocol: 'HTTPS',
+    InstanceProtocol: 'HTTP',
+    // ACM certificate for impl.qpp-qrda3-converter.navapbc.com
+    SSLCertificateId: 'arn:aws:acm:us-east-1:003384571330:certificate/0fb69207-0392-478a-8099-66fc99baa0d9'
+  });
+
+  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0] = internalBalancerOverrides;
+
   return {
     app: rootRequire('./layers/app/api'),
     jump: rootRequire('./layers/jump/jump'),

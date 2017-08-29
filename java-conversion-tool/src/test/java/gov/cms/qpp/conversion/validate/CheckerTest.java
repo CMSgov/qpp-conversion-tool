@@ -530,12 +530,41 @@ public class CheckerTest {
 		assertThat("There should be no errors", details, hasSize(0));
 	}
 	@Test
-	public void testUnhappyValueIsNull() throws Exception {
+	public void testUnhappyValueIsEmpty() throws Exception {
 		String key = "My Key";
 		String value = "Not Null Value";
 		Node testNode = makeTestNode(key, value);
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIsEmpty(ERROR_MESSAGE, key);
+		assertThat("There should be no errors",
+				details.iterator().next().getMessage(), is(ERROR_MESSAGE));
+	}
+	@Test
+	public void testHappyValueIsNotEmptyAsString() throws Exception {
+		String key = "My Key";
+		String value = "Not Empty";
+		Node testNode = makeTestNode(key, value);
+		Checker checker = Checker.check(testNode, details);
+		checker.valueIsNotEmpty(ERROR_MESSAGE, key);
+		assertThat("There should be no errors", details, hasSize(0));
+	}
+	@Test
+	public void testUnhappyValueIsNotEmptyAsString() throws Exception {
+		String key = "My Key";
+		String value = "";
+		Node testNode = makeTestNode(key, value);
+		Checker checker = Checker.check(testNode, details);
+		checker.valueIsNotEmpty(ERROR_MESSAGE, key);
+		assertThat("There should be no errors",
+				details.iterator().next().getMessage(), is(ERROR_MESSAGE));
+	}
+	@Test
+	public void testUnhappyValueIsNotEmptyAsNull() throws Exception {
+		String key = "My Key";
+		String value = null;
+		Node testNode = makeTestNode(key, value);
+		Checker checker = Checker.check(testNode, details);
+		checker.valueIsNotEmpty(ERROR_MESSAGE, key);
 		assertThat("There should be no errors",
 				details.iterator().next().getMessage(), is(ERROR_MESSAGE));
 	}

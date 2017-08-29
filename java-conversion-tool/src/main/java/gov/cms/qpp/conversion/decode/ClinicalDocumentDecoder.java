@@ -23,6 +23,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	public static final String MIPS_PROGRAM_NAME = "mips";
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcplus";
 	public static final String ENTITY_ID = "entityId";
+	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
 	public static final String MIPS = "MIPS";
 	public static final String MIPS_GROUP = "MIPS_GROUP";
 	public static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
@@ -45,6 +46,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		setProgramNameOnNode(element, thisNode);
 		setEntityIdOnNode(element, thisNode);
+		setPracticeSiteAddress(element, thisNode);
 		setNationalProviderIdOnNode(element, thisNode);
 		setTaxProviderTaxIdOnNode(element, thisNode);
 		processComponentElement(element, thisNode);
@@ -63,6 +65,20 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 			Consumer<Attribute> consumer = id ->
 				thisNode.putValue(ENTITY_ID, id.getValue(), false);
 			setOnNode(element, getXpath(ENTITY_ID), consumer, Filters.attribute(), false);
+		}
+	}
+
+	/**
+	 * Looks up the Practice Site address from the element if the program name is CPC+
+	 *
+	 * @param element Xml fragment being parsed.
+	 * @param thisNode The output internal representation of the document
+	 */
+	private void setPracticeSiteAddress(Element element, Node thisNode) {
+		if (CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(thisNode.getValue(PROGRAM_NAME))) {
+			Consumer<Element> consumer = p ->
+					thisNode.putValue(PRACTICE_SITE_ADDR, p.getValue().trim(), false);
+			setOnNode(element, getXpath(PRACTICE_SITE_ADDR), consumer, Filters.element(), false);
 		}
 	}
 

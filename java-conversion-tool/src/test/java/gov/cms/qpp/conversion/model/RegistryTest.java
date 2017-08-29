@@ -89,6 +89,16 @@ public class RegistryTest {
 		Iterator<InputDecoder> iterator = decoders.iterator();
 
 		assertThat("Should return two decoders", decoders.size(), is(2));
+	}
+
+	@Test
+	public void testRegistryInclusiveGetPrioritizesGeneral() throws Exception {
+		context.setProgram(Program.CPC);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
+		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
+		Iterator<InputDecoder> iterator = decoders.iterator();
+
 		assertTrue("First Registry entry should be a " + Placeholder.class.getName() + " instance.",
 				iterator.next() instanceof Placeholder);
 		assertTrue("Second Registry entry should be a " + AnotherPlaceholder.class.getName() + " instance.",

@@ -40,18 +40,16 @@ public class JsonHelperTest {
 		String measureDataFileName = "measures-data.json";
 		List<MeasureConfig> configurations;
 		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(measureDataFileName);
-		configurations = JsonHelper.readJsonAtJsonPath(measuresInput, "$",List.class);
-		assertThat("Expect to get a List of measureConfigs", configurations,is(not(empty())));
+		configurations = JsonHelper.readJsonAtJsonPath(measuresInput, "$", List.class);
+		assertThat("Expect to get a List of measureConfigs", configurations, is(not(empty())));
 	}
 
 	@Test
 	public void exceptionForReadJsonInputStream() {
 		String testJson = "{ \"DogCow\": [ }";
 
-		InputStream inputStream = new ByteArrayInputStream(testJson.getBytes());
-
 		try {
-			JsonHelper.readJson(inputStream, Map.class);
+			JsonHelper.readJson(new ByteArrayInputStream(testJson.getBytes()), Map.class);
 			fail("An exception should have been thrown.");
 		} catch(JsonReadException exception) {
 			assertThat("Wrong exception reason.", exception.getMessage(), is("Problem parsing json string"));
