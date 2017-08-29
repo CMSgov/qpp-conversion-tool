@@ -1,8 +1,20 @@
 <?xml version="1.0"?>
 <configuration>
+	<conversionRule conversionWord="attachment" converterClass="gov.cms.qpp.conversion.api.helper.AttachmentHashPartConverter"/>
+
+	<property name="defaultPattern"
+			  value='{"timestamp": "%d{HH:mm:ss.SSS}", "thread": "%thread", "attachment": "%attachment", "level": "%-5level", "logger": "%logger{36}", "message": "%msg"}'/>
+
 	<appender name="STDOUT_DETAIL" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<pattern>
+					<pattern>
+						${defaultPattern}
+					</pattern>
+				</pattern>
+				<stackTrace/>
+			</providers>
 		</encoder>
 	</appender>
 	<appender name="REST_API" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -18,28 +30,12 @@
 		</triggeringPolicy>
 		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
 			<providers>
-				<mdc/>
 				<pattern>
 					<pattern>
-						{
-						"timestamp": "%d{HH:mm:ss.SSS}",
-						"thread": "%thread",
-						"level": "%-5level",
-						"logger": "%logger{36}",
-						"message": "%msg%n"
-						}
+						${defaultPattern}
 					</pattern>
 				</pattern>
-				<stackTrace>
-					<throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
-						<maxDepthPerThrowable>30</maxDepthPerThrowable>
-						<maxLength>2048</maxLength>
-						<shortenedClassNameLength>20</shortenedClassNameLength>
-						<exclude>^sun\.reflect\..*\.invoke</exclude>
-						<exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
-						<rootCauseFirst>true</rootCauseFirst>
-					</throwableConverter>
-				</stackTrace>
+				<stackTrace/>
 			</providers>
 		</encoder>
 	</appender>
