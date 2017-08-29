@@ -32,9 +32,22 @@ public class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
+	public void missingPracticeSiteAddress() {
+		Node clinicalDocumentNode = createsValidCpcplusClinicalDocument();
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR);
+
+		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
+
+		Set<Detail> errors = cpcValidator.getDetails();
+		assertThat("Must contain error", errors,
+				hasValidationErrorsIgnoringPath(CpcClinicalDocumentValidator.MISSING_PRACTICE_SITE_ADDRESS));
+	}
+
+	@Test
 	public void emptyPracticeSiteAddress() {
 		Node clinicalDocumentNode = createsValidCpcplusClinicalDocument();
-		clinicalDocumentNode.removeValue("practiceSiteAddr");
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "");
 
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
@@ -73,7 +86,7 @@ public class CpcClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
-		clinicalDocumentNode.putValue("practiceSiteAddr", "test");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "AR00000");
 
 		return clinicalDocumentNode;

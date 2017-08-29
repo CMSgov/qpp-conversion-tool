@@ -9,6 +9,7 @@ benchmark/*.json
 *.iml
 *.log
 .idea/
+*.swp
 qrdaToQppAssociations.txt
 
 # package directories
