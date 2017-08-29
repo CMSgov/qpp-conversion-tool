@@ -2,11 +2,13 @@ package gov.cms.qpp.conversion.model.validation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.reflections.util.ClasspathHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,13 +20,15 @@ import static org.junit.Assert.assertThat;
 
 public class MeasureConfigTest {
 
-	@Test
-	public void testMeasureConfig() {
+	private static MeasureConfig theConfig = null;
+	private static List<MeasureConfig> measureConfigs = null;
+
+	@BeforeClass
+	public static void setup() {
 		ObjectMapper mapper = new ObjectMapper();
 
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("measures-data-aci-test.json");
-		List<MeasureConfig> measureConfigs = null;
 
 		try {
 			TypeReference<List<MeasureConfig>> measureConfigType = new TypeReference<List<MeasureConfig>>() {};
@@ -33,20 +37,67 @@ public class MeasureConfigTest {
 			throw new IllegalArgumentException("failure to correctly read measures config json", e);
 		}
 
-		assertThat("measure configs should not be empty", measureConfigs, hasSize(1));
-		MeasureConfig theConfig = measureConfigs.get(0);
+		theConfig = measureConfigs.get(0);
+	}
 
+	@Test
+	public void testConfigsDeserialization() {
+		assertThat("measure configs should not be empty", measureConfigs, hasSize(1));
+	}
+
+	@Test
+	public void verifyMeasureConfigCategory() {
 		assertThat("category should be aci", theConfig.getCategory(), is("aci"));
+	}
+
+	@Test
+	public void verifyMeasureConfigFirstPerfYear() {
 		assertThat("firstPerformanceYear should be 2017", theConfig.getFirstPerformanceYear(), is(2017));
+	}
+
+	@Test
+	public void verifyMeasureConfigLastPerfYear() {
 		assertThat("lastPerformanceYear should be 0", theConfig.getLastPerformanceYear(), is(0));
+	}
+
+	@Test
+	public void verifyMeasureConfigMetricType() {
 		assertThat("metricType should be proportion", theConfig.getMetricType(), is("proportion"));
+	}
+
+	@Test
+	public void verifyMeasureConfigMeasureId() {
 		assertThat("measureId should be ACI_EP_1", theConfig.getMeasureId(), is("ACI_EP_1"));
+	}
+
+	@Test
+	public void verifyMeasureConfigTitle() {
 		assertThat("title should be e-Prescribing", theConfig.getTitle(), is("e-Prescribing"));
+	}
+
+	@Test
+	public void verifyMeasureConfigDescription() {
 		assertThat("description should be long", theConfig.getDescription(), is(
 				"At least one permissible prescription written by the MIPS eligible clinician is queried for a drug formulary and transmitted electronically using certified EHR technology."));
+	}
+
+	@Test
+	public void verifyMeasureConfigIsRequired() {
 		assertThat("isRequired should be true", theConfig.isRequired(), is(true));
+	}
+
+	@Test
+	public void verifyMeasureConfigMeasureSet() {
 		assertThat("measureSet should be null", theConfig.getMeasureSet(), is(nullValue()));
+	}
+
+	@Test
+	public void verifyMeasureConfigIsBonus() {
 		assertThat("isBonus should be false", theConfig.isBonus(), is(false));
+	}
+
+	@Test
+	public void verifyMeasureConfigObjective() {
 		assertThat("objective should be electronicPrescribing", theConfig.getObjective(), is("electronicPrescribing"));
 	}
 
