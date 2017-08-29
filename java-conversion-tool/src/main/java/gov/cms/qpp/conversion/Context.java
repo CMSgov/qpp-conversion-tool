@@ -53,7 +53,7 @@ public class Context {
 	/**
 	 * Sets the scope of the converter.
 	 *
-	 * @param newScope The new scope.
+	 * @param scope The new scope.
 	 */
 	public void setScope(Set<QrdaScope> scope) {
 		this.scope = scope;
@@ -80,7 +80,7 @@ public class Context {
 	/**
 	 * Sets whether conversions are historical or not.
 	 *
-	 * @param isHistorical Flag indicating whether conversions are historical or not.
+	 * @param historical Flag indicating whether conversions are historical or not.
 	 */
 	public void setHistorical(boolean historical) {
 		this.historical = historical;
@@ -116,7 +116,7 @@ public class Context {
 	/**
 	 * Switch for enabling or disabling validation.
 	 *
-	 * @param doIt toggle value
+	 * @param doValidation toggle value
 	 */
 	public void setDoValidation(boolean doValidation) {
 		this.doValidation = doValidation;
