@@ -7,11 +7,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Element;
+import org.jdom2.xpath.XPathHelper;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -111,6 +113,17 @@ public class MultipleTinsDecoderTest {
 		Element multipleTinsElement = makeTestElementMissingTaxEl();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertThat("Expect that there are three children", children, hasSize(3));
+	}
+
+	@Test
+	public void testPathIsSet() throws Exception {
+		Element multipleTinsElement = makeTestElementMissingTaxEl();
+		Node child = getTestChildren(multipleTinsElement)
+				.stream()
+				.filter(node -> node.getType() == TemplateId.CLINICAL_DOCUMENT)
+				.findFirst()
+				.get();
+		assertThat("Expect that child has an xpath", child.getPath(), is(XPathHelper.getAbsolutePath(multipleTinsElement)));
 	}
 
 	private int testChildExistence(String npi, String tin) {
