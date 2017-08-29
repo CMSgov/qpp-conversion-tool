@@ -19,17 +19,9 @@ public class XmlExceptionTest {
 
 	@Test
 	public void xmlExceptionFromExceptionTest() {
-		String reason = "/ by zero";
-		int y = 0;
-		int x = 1;
-		XmlException xmlException = null;
-		try {
-			int z = x/y;
-		}
-		catch(ArithmeticException e){
-			xmlException = new XmlException(reason, e);
-		}
-		assertThat("Expect to have a Division By Zero Exception",
+		String reason = "a reason";
+		XmlException xmlException = new XmlException("meep", new Exception(reason));
+		assertThat("Expected a different reason",
 			xmlException.getCause().getMessage(), is(reason));
 	}
 }
