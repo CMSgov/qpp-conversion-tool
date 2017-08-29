@@ -21,6 +21,7 @@ public class ComponentKey {
 	public ComponentKey(TemplateId templateId, Program programName) {
 		template = templateId;
 		program = programName;
+		hashCode = calcHashCode();
 	}
 
 	/**
@@ -60,10 +61,11 @@ public class ComponentKey {
 	 */
 	@Override
 	public int hashCode() {
-		if (hashCode == 0) {
-			hashCode = Objects.hash(template, program);
-		}
 		return hashCode;
+	}
+
+	private int calcHashCode() {
+		return Objects.hash(template, program);
 	}
 
 	/**
