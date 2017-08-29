@@ -138,10 +138,23 @@ class Checker {
 	 *
 	 * @param message error message if searched value is not found
 	 * @param name key of expected value
+	 * @param expected the expected value
+	 * @return The checker, for chaining method calls.
+	 */
+	public Checker valueIs(String message, String name, String expected) {
+		return valueIn(message, name, expected);
+	}
+
+	/**
+	 * checks target node for the existence of a value with the given name key
+	 * and matches that value with one of the supplied values.
+	 *
+	 * @param message error message if searched value is not found
+	 * @param name key of expected value
 	 * @param values List of strings to check for the existence of.
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIn(String message, String name, String ... values) {
+	public Checker valueIn(String message, String name, String... values) {
 		boolean contains = false;
 		if (name == null) {
 			setErrorMessage(message);
