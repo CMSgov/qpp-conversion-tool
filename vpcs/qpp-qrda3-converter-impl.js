@@ -60,6 +60,7 @@ env.configureLayers = function() {
   return {
     app: rootRequire('./layers/app/api'),
     jump: rootRequire('./layers/jump/jump'),
+    internalBalancer,
     net: rootRequire('./layers/net/gdit')
   };
 };
