@@ -16,10 +16,31 @@
 		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
 			<maxFileSize>10MB</maxFileSize>
 		</triggeringPolicy>
-		<encoder name="enc" class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-			<layout class="gov.cms.qpp.conversion.api.helper.ThreadRequestPartContext">
-				<param name="Pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
-			</layout>
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<mdc/>
+				<pattern>
+					<pattern>
+						{
+						"timestamp": "%d{HH:mm:ss.SSS}",
+						"thread": "%thread",
+						"level": "%-5level",
+						"logger": "%logger{36}",
+						"message": "%msg%n"
+						}
+					</pattern>
+				</pattern>
+				<stackTrace>
+					<throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+						<maxDepthPerThrowable>30</maxDepthPerThrowable>
+						<maxLength>2048</maxLength>
+						<shortenedClassNameLength>20</shortenedClassNameLength>
+						<exclude>^sun\.reflect\..*\.invoke</exclude>
+						<exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+						<rootCauseFirst>true</rootCauseFirst>
+					</throwableConverter>
+				</stackTrace>
+			</providers>
 		</encoder>
 	</appender>
 	<root name="API_LOG" level="INFO">
