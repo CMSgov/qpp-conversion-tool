@@ -20,7 +20,7 @@ module.exports = function(env) {
         "DeletionPolicy" : "Retain"
     };
 
-    merge([
+    return merge([
         setup,
         require('./alarms')(bucketName)
     ]);
