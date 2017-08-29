@@ -20,16 +20,16 @@ module.exports = function(configuration) {
   if(!_.isString(configuration.tableName)) {
     throw new Error('tableName must be a non-null String');
   }
-  if(!_.isArray(configuration.attributes)) {
+  if(!Array.isArray(configuration.attributes)) {
     throw new Error('attributes must be a non-null array of AttributeDefinitions');
   }
   if(!_.isString(configuration.partitionKey)) {
     throw new Error('partitionKey must be a non-null String');
   }
-  if(!_.isNumber(configuration.readThroughput)) {
+  if(!Number.isInteger(configuration.readThroughput)) {
     throw new Error('readThroughput must be a non-null integer');
   }
-  if(!_.isNumber(configuration.writeThroughput)) {
+  if(!Number.isInteger(configuration.writeThroughput)) {
     throw new Error('writeThroughput must be a non-null integer');
   }
 
