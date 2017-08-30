@@ -1,5 +1,5 @@
 @echo off
-IF NOT EXIST commandline\target\commandline (
+IF NOT EXIST commandline\target\commandline.jar (
     rem file doesn't exist
     echo .
     echo "Jar not found. Building..."
