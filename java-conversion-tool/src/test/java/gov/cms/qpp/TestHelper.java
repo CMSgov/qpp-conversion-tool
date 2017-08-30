@@ -1,9 +1,12 @@
 package gov.cms.qpp;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.XmlInputDecoder;
+import gov.cms.qpp.conversion.decode.InputDecoder;
+import gov.cms.qpp.conversion.encode.OutputEncoder;
+import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.ComponentKey;
 import gov.cms.qpp.conversion.model.Decoder;
+import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
@@ -32,13 +35,13 @@ public class TestHelper {
 	}
 
 	/**
-	 * Registers the {@link XmlInputDecoder} in the {@link gov.cms.qpp.conversion.model.Registry}.
+	 * Registers the {@link InputDecoder} in the {@link gov.cms.qpp.conversion.model.Registry}.
 	 *
 	 * @param context The context that contains the Registry.
 	 * @param decoder The decoder to register.
 	 * @param componentKey The combination of a TemplateId and Program that the decoder will be registered for.
 	 */
-	public static void mockDecoder(Context context, Class<? extends XmlInputDecoder> decoder, ComponentKey componentKey) {
+	public static void mockDecoder(Context context, Class<? extends InputDecoder> decoder, ComponentKey componentKey) {
 		context.getRegistry(Decoder.class).register(componentKey, decoder);
 	}
 
@@ -81,6 +84,17 @@ public class TestHelper {
 		mockQrdaValidator(spy, validator, required);
 
 		return spy;
+	}
+
+	/**
+	 * Registers the {@link QppOutputEncoder} in the {@link gov.cms.qpp.conversion.model.Registry}.
+	 *
+	 * @param context The context that contains the Registry.
+	 * @param encoder The encoder to register.
+	 * @param componentKey The combination of a TemplateId and Program that the encoder will be registered for.
+	 */
+	public static void mockEncoder(Context context, Class<? extends OutputEncoder> encoder, ComponentKey componentKey) {
+		context.getRegistry(Encoder.class).register(componentKey, encoder);
 	}
 
 	/**

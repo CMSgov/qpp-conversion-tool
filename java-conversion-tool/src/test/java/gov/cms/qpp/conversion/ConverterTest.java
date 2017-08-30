@@ -5,7 +5,6 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.ComponentKey;
-import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -196,7 +195,7 @@ public class ConverterTest {
 		Context context = new Context();
 		context.setDoValidation(false);
 		TestHelper.mockDecoder(context, JennyDecoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
-		context.getRegistry(Encoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), Jenncoder.class);
+		TestHelper.mockEncoder(context, Jenncoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
 
 		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml")), context);
 		JsonWrapper qpp = converter.transform();
