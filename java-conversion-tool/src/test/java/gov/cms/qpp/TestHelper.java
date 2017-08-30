@@ -1,7 +1,9 @@
 package gov.cms.qpp;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.model.ComponentKey;
+import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
@@ -27,6 +29,17 @@ public class TestHelper {
 	public static String getFixture(final String name) throws IOException {
 		Path path = Paths.get("src/test/resources/fixtures/" + name);
 		return new String(Files.readAllBytes(path));
+	}
+
+	/**
+	 * Registers the {@link XmlInputDecoder} in the {@link gov.cms.qpp.conversion.model.Registry}.
+	 *
+	 * @param context The context that contains the Registry.
+	 * @param decoder The decoder to register.
+	 * @param componentKey The combination of a TemplateId and Program that the decoder will be registered for.
+	 */
+	public static void mockDecoder(Context context, Class<? extends XmlInputDecoder> decoder, ComponentKey componentKey) {
+		context.getRegistry(Decoder.class).register(componentKey, decoder);
 	}
 
 	/**

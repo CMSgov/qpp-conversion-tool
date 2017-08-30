@@ -5,7 +5,6 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.ComponentKey;
-import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -70,7 +69,7 @@ public class ConverterTest {
 	@PrepareForTest({Converter.class, QrdaValidator.class})
 	public void testValidationErrors() throws Exception {
 		Context context = new Context();
-		context.getRegistry(Decoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), JennyDecoder.class);
+		TestHelper.mockDecoder(context, JennyDecoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
 		QrdaValidator mockQrdaValidator = TestHelper.mockValidator(context, TestDefaultValidator.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL), true);
 		PowerMockito.whenNew(QrdaValidator.class)
 			.withAnyArguments()
@@ -196,7 +195,7 @@ public class ConverterTest {
 	public void testDefaults() throws Exception {
 		Context context = new Context();
 		context.setDoValidation(false);
-		context.getRegistry(Decoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), JennyDecoder.class);
+		TestHelper.mockDecoder(context, JennyDecoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
 		context.getRegistry(Encoder.class).register(new ComponentKey(TemplateId.DEFAULT, Program.ALL), Jenncoder.class);
 
 		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml")), context);
