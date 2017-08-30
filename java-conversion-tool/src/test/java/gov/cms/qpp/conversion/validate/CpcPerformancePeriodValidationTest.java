@@ -1,15 +1,15 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
+import static org.hamcrest.Matchers.empty;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.not;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 public class CpcPerformancePeriodValidationTest {
 
@@ -35,13 +35,15 @@ public class CpcPerformancePeriodValidationTest {
 	public void testPerformancePeriodStartIsInvalid() {
 		node.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "not what we want");
 		cpcValidator.internalValidateSingleNode(node);
-		assertThat(cpcValidator.getDetails(), not(empty()));
+		assertThat(cpcValidator.getDetails(),
+				hasValidationErrorsIgnoringPath(CpcPerformancePeriodValidation.PERFORMANCE_START_JAN12017));
 	}
 
 	@Test
 	public void testPerformancePeriodEndIsInvalid() {
 		node.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "not what we want");
 		cpcValidator.internalValidateSingleNode(node);
-		assertThat(cpcValidator.getDetails(), not(empty()));
+		assertThat(cpcValidator.getDetails(),
+				hasValidationErrorsIgnoringPath(CpcPerformancePeriodValidation.PERFORMANCE_END_DEC312017));
 	}
 }
