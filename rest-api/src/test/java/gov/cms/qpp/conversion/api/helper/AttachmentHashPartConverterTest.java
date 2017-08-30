@@ -17,13 +17,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.doReturn;
 
-public class ThreadRequestPartConverterTest {
-	ThreadRequestPartConverter converter;
+public class AttachmentHashPartConverterTest {
+	AttachmentHashPartConverter converter;
 	LoggingEvent event = new LoggingEvent();
 
 	@Before
 	public void setup() {
-		converter = spy(new ThreadRequestPartConverter());
+		converter = spy(new AttachmentHashPartConverter());
 	}
 
 	@Test
@@ -31,7 +31,7 @@ public class ThreadRequestPartConverterTest {
 		doReturn(null).when(converter).getPart();
 		String result = converter.convert(event);
 
-		assertThat("result should equal event thread name", result, is(event.getThreadName()));
+		assertThat("result should equal empty string", result, is(""));
 	}
 
 	@Test
@@ -40,8 +40,7 @@ public class ThreadRequestPartConverterTest {
 		doReturn(part).when(converter).getPart();
 		String result = converter.convert(event);
 
-		assertThat("should contain part's hash code", result,
-				allOf(containsString(event.getThreadName()), containsString(String.valueOf(part.hashCode()))));
+		assertThat("should equal part's hash code", result, is(String.valueOf(part.hashCode())));
 	}
 
 	@Test
@@ -49,8 +48,7 @@ public class ThreadRequestPartConverterTest {
 		doThrow(new IOException()).when(converter).getPart();
 		String result = converter.convert(event);
 
-		assertThat("IOException - result should equal event thread name",
-				result, is(event.getThreadName()));
+		assertThat("IOException - result should equal empty string", result, is(""));
 	}
 
 	@Test
@@ -58,8 +56,7 @@ public class ThreadRequestPartConverterTest {
 		doThrow(new ServletException()).when(converter).getPart();
 		String result = converter.convert(event);
 
-		assertThat("ServletException - result should equal event thread name",
-				result, is(event.getThreadName()));
+		assertThat("ServletException - result should equal an empty sting", result, is(""));
 	}
 
 }
