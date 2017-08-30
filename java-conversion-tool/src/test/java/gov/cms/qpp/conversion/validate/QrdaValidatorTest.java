@@ -6,9 +6,7 @@ import gov.cms.qpp.conversion.model.ComponentKey;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,10 +46,8 @@ public class QrdaValidatorTest {
 		nodesPassedIntoValidateSingleNode = new ArrayList<>();
 
 		context = new Context();
-		context.getRegistry(Validator.class).register(new ComponentKey(TEST_REQUIRED_TEMPLATE_ID, Program.ALL), RequiredTestValidator.class);
-		context.getRegistry(Validator.class).register(new ComponentKey(TEST_OPTIONAL_TEMPLATE_ID, Program.ALL), OptionalTestValidator.class);
-		objectUnderTest = TestHelper.mockValidator(context, RequiredTestValidator.class, true);
-		objectUnderTest = TestHelper.mockValidator(context, OptionalTestValidator.class, false, objectUnderTest);
+		objectUnderTest = TestHelper.mockValidator(context, RequiredTestValidator.class, new ComponentKey(TEST_REQUIRED_TEMPLATE_ID, Program.ALL), true);
+		objectUnderTest = TestHelper.mockValidator(context, OptionalTestValidator.class, new ComponentKey(TEST_OPTIONAL_TEMPLATE_ID, Program.ALL), false, objectUnderTest);
 	}
 
 	@Test

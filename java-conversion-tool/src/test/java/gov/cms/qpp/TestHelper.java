@@ -1,16 +1,17 @@
 package gov.cms.qpp;
 
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.ComponentKey;
+import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.validate.NodeValidator;
+import gov.cms.qpp.conversion.validate.QrdaValidator;
+import org.mockito.ArgumentMatchers;
+import org.powermock.api.mockito.PowerMockito;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import org.mockito.ArgumentMatchers;
-import org.powermock.api.mockito.PowerMockito;
-
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.validate.NodeValidator;
-import gov.cms.qpp.conversion.validate.QrdaValidator;
 
 public class TestHelper {
 
@@ -35,11 +36,13 @@ public class TestHelper {
 	 *
 	 * @param context Holder of contextual information that qualifies the validation.
 	 * @param validator The class of the validator.
+	 * @param componentKey The combination of TemplateId and Program that the validator validates.
 	 * @param required Whether the validator is required.
+	 * @return A spied QrdaValidator that has all the appropriate hooks in place to validate a test validator
 	 * @throws Exception If the mocking fails.
 	 */
-	public static QrdaValidator mockValidator(Context context, Class<? extends NodeValidator> validator, boolean required) throws Exception {
-		return mockValidator(context, validator, required, null);
+	public static QrdaValidator mockValidator(Context context, Class<? extends NodeValidator> validator, final ComponentKey componentKey, boolean required) throws Exception {
+		return mockValidator(context, validator, componentKey, required, null);
 	}
 
 	/**
@@ -50,19 +53,32 @@ public class TestHelper {
 	 *
 	 * @param context Holder of contextual information that qualifies the validation.
 	 * @param validator The class of the validator.
+	 * @param componentKey The combination of TemplateId and Program that the validator validates.
 	 * @param required Whether the validator is required.
 	 * @param spy An existing spied QrdaValidator that will be extended.
 	 * @return A spied QrdaValidator that has all the appropriate hooks in place to validate a test validator
 	 * @throws Exception If the mocking fails.
 	 */
-	public static QrdaValidator mockValidator(Context context, Class<? extends NodeValidator> validator, boolean required,  QrdaValidator spy) throws Exception {
+	public static QrdaValidator mockValidator(Context context, Class<? extends NodeValidator> validator, final ComponentKey componentKey, boolean required, QrdaValidator spy) throws Exception {
 		if (spy == null) {
 			spy = PowerMockito.spy(new QrdaValidator(context));
 		}
 
+		registerValidator(context, validator, componentKey);
 		mockQrdaValidator(spy, validator, required);
 
 		return spy;
+	}
+
+	/**
+	 * Registers the {@link gov.cms.qpp.conversion.validate.NodeValidator} in the {@link gov.cms.qpp.conversion.model.Registry}.
+	 *
+	 * @param context The context that contains the Registry.
+	 * @param validator The validator to register.
+	 * @param componentKey The combination of a TemplateId and Program that the validator will be registered for.
+	 */
+	private static void registerValidator(Context context, Class<? extends NodeValidator> validator, final ComponentKey componentKey) {
+		context.getRegistry(Validator.class).register(componentKey, validator);
 	}
 
 	/**
