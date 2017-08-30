@@ -9,6 +9,7 @@ import org.jdom2.Namespace;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
+import org.jdom2.xpath.XPathHelper;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -43,6 +44,7 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 		setNationalProviderIdOnNode(element, thisNode);
 
 		Node child = new Node(TemplateId.CLINICAL_DOCUMENT);
+		child.setPath(XPathHelper.getAbsolutePath(element));
 		ClinicalDocumentDecoder clinicalDocument = new ClinicalDocumentDecoder(context);
 		clinicalDocument.setNamespace(element, clinicalDocument);
 		clinicalDocument.internalDecode(element, child);
