@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.helper;
 
 
-import ch.qos.logback.classic.pattern.ThreadConverter;
+import ch.qos.logback.classic.pattern.ClassicConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,28 +12,28 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 import java.io.IOException;
 
-public class ThreadRequestPartConverter extends ThreadConverter {
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(ThreadRequestPartConverter.class);
+public class AttachmentHashPartConverter extends ClassicConverter {
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(AttachmentHashPartConverter.class);
 
 	@Override
 	public String convert(ILoggingEvent event) {
-		String threadId = super.convert(event);
+		String hashPart = "";
 
 		try {
-			threadId = appendPart(threadId);
+			hashPart = getHashPart();
 		} catch (Exception e) {
 			DEV_LOG.trace("No part to associate with log output.", e);
 		}
 
-		return threadId;
+		return hashPart;
 	}
 
-	String appendPart(String threadId) throws IOException, ServletException {
+	String getHashPart() throws IOException, ServletException {
 		Part part = getPart();
 		if (part != null) {
-			return threadId + " - AttachmentId:" + part.hashCode();
+			return String.valueOf(part.hashCode());
 		}
-		return threadId;
+		return "";
 	}
 
 	Part getPart() throws IOException, ServletException {

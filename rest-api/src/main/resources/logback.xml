@@ -1,8 +1,20 @@
 <?xml version="1.0"?>
 <configuration>
+	<conversionRule conversionWord="attachment" converterClass="gov.cms.qpp.conversion.api.helper.AttachmentHashPartConverter"/>
+
+	<property name="defaultPattern"
+			  value='{"timestamp": "%d{HH:mm:ss.SSS}", "thread": "%thread", "attachment": "%attachment", "level": "%-5level", "logger": "%logger{36}", "message": "%msg"}'/>
+
 	<appender name="STDOUT_DETAIL" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<pattern>
+					<pattern>
+						${defaultPattern}
+					</pattern>
+				</pattern>
+				<stackTrace/>
+			</providers>
 		</encoder>
 	</appender>
 	<appender name="REST_API" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -16,10 +28,15 @@
 		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
 			<maxFileSize>10MB</maxFileSize>
 		</triggeringPolicy>
-		<encoder name="enc" class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-			<layout class="gov.cms.qpp.conversion.api.helper.ThreadRequestPartContext">
-				<param name="Pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
-			</layout>
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<pattern>
+					<pattern>
+						${defaultPattern}
+					</pattern>
+				</pattern>
+				<stackTrace/>
+			</providers>
 		</encoder>
 	</appender>
 	<root name="API_LOG" level="INFO">

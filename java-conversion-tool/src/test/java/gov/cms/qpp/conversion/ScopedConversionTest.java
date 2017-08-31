@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.Sets;
@@ -33,29 +34,21 @@ public class ScopedConversionTest {
 
 	/**
 	 * Load fixture json for use as a baseline for expected scoped conversion outcomes.
-	 *
-	 * @throws IOException
 	 */
 	@BeforeClass
+	@SuppressWarnings("unchecked")
 	public static void loadFixtures() throws IOException {
 		fixtures = readJson(Paths.get("src/test/resources/converter/scopedConversionFixture.json"), HashMap.class);
 	}
 
 	/**
 	 * Verify CMS V2 Measure Section conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testScopedV2MeasureSectionConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_SECTION_V2.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_SECTION_V2.name());
+		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -64,19 +57,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify CMS V2 Measure Reference Results conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testScopedCmsV2MeasureReferenceResultsConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2.name());
+		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -85,19 +71,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify CMS V2 Measure Data conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testScopedV2MeasureDataConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_DATA_CMS_V2.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.MEASURE_DATA_CMS_V2.name());
+		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -106,19 +85,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify ACI Section conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testScopedAciSectionConversion() throws IOException {
 		//setup
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_SECTION.name());
-
-		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
+		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -128,19 +100,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify IA Section conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testScopedIaSectionConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.IA_SECTION.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.IA_SECTION.name());
+		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -149,19 +114,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify ACI Aggregate Count conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testScopedAciAggregateCountConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_AGGREGATE_COUNT.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_AGGREGATE_COUNT.name());
+		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -170,19 +128,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify ACI Numerator conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testScopedAciNumeratorConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR.name());
+		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -191,19 +142,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify ACI Denominator conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testScopedAciDenominatorConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_DENOMINATOR.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_DENOMINATOR.name());
+		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -212,19 +156,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify ACI Numerator Denominator conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testScopedAciNumeratorDenominatorConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR_DENOMINATOR.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR_DENOMINATOR.name());
+		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -233,19 +170,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify Clinical Document conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testFullScopeConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.CLINICAL_DOCUMENT.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		JsonWrapper qpp = converter.transform();
-		Map<String, Object> content = JsonHelper.readJson(qpp.toString(), HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.CLINICAL_DOCUMENT.name());
+		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -256,28 +186,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify failure for attempted invalid Clinical Document conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testNegativeFullScopeConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.CLINICAL_DOCUMENT.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		String errors = "";
-		try {
-			JsonWrapper qpp = converter.transform();
-		} catch (TransformException exception) {
-			ObjectWriter jsonObjectWriter = new ObjectMapper()
-				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-				.writer()
-				.withDefaultPrettyPrinter();
-			errors = jsonObjectWriter.writeValueAsString(exception.getDetails());
-		}
-		Map<String, Object> content = JsonHelper.readJson(errors, HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.CLINICAL_DOCUMENT.name());
+		Map<String, Object> content = errantScopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -286,28 +200,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify failure for attempted invalid ACI Numerator Denominator conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testNegativeAciNumeratorDenominatorConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR_DENOMINATOR.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		String errors = "";
-		try {
-			JsonWrapper qpp = converter.transform();
-		} catch (TransformException exception) {
-			ObjectWriter jsonObjectWriter = new ObjectMapper()
-				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-				.writer()
-				.withDefaultPrettyPrinter();
-			errors = jsonObjectWriter.writeValueAsString(exception.getDetails());
-		}
-		Map<String, Object> content = JsonHelper.readJson(errors, HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR_DENOMINATOR.name());
+		Map<String, Object> content = errantScopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -316,28 +214,12 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify failure for attempted invalid IA Section conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testNegativeIaSectionConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.IA_SECTION.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		String errors = "";
-		try {
-			JsonWrapper qpp = converter.transform();
-		} catch (TransformException exception) {
-			ObjectWriter jsonObjectWriter = new ObjectMapper()
-				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-				.writer()
-				.withDefaultPrettyPrinter();
-			errors = jsonObjectWriter.writeValueAsString(exception.getDetails());
-		}
-		Map<String, Object> content = JsonHelper.readJson(errors, HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.IA_SECTION.name());
+		Map<String, Object> content = errantScopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
@@ -346,32 +228,45 @@ public class ScopedConversionTest {
 
 	/**
 	 * Verify failure for attempted invalid ACI Aggregate Count conversion
-	 *
-	 * @throws IOException
 	 */
 	@Test
 	public void testNegativeAciAggregateCountConversion() throws IOException {
-		//setup
-		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_AGGREGATE_COUNT.name());
-
 		//when
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
-		converter.getContext().setScope(Sets.newHashSet(testSection));
-		String errors = "";
-		try {
-			JsonWrapper qpp = converter.transform();
-		} catch (TransformException exception) {
-			ObjectWriter jsonObjectWriter = new ObjectMapper()
-				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-				.writer()
-				.withDefaultPrettyPrinter();
-			errors = jsonObjectWriter.writeValueAsString(exception.getDetails());
-		}
-		Map<String, Object> content = JsonHelper.readJson(errors, HashMap.class);
+		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_AGGREGATE_COUNT.name());
+		Map<String, Object> content = errantScopedConversion(testSection);
 
 		//then
 		assertEquals("content should match valid " + testSection + " fixture",
 				3, getErrors(content).size());
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<String, Object> scopedConversion(QrdaScope testSection) {
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
+		JsonWrapper qpp = converter.transform();
+		return (Map<String, Object>) JsonHelper.readJson(qpp.toString(), HashMap.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<String, Object> errantScopedConversion(QrdaScope testSection) throws JsonProcessingException {
+		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
+		converter.getContext().setScope(Sets.newHashSet(testSection));
+		Map<String, Object> content = null;
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			content = JsonHelper.readJson(getErrors(exception), HashMap.class);
+		}
+		return content;
+	}
+
+	private String getErrors(TransformException exception) throws JsonProcessingException {
+		ObjectWriter jsonObjectWriter = new ObjectMapper()
+				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+				.writer()
+				.withDefaultPrettyPrinter();
+		return jsonObjectWriter.writeValueAsString(exception.getDetails());
 	}
 
 	/**
