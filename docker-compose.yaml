@@ -6,10 +6,3 @@ services:
       - "3000:8080"
     env_file:
       - .env
-    logging:
-      driver: "splunk"
-      options:
-        splunk-url: https://10.244.112.158:8088
-        splunk-token: ${SPLUNK_TOKEN}
-        splunk-insecureskipverify: "true"
-        splunk-format: "json"
