@@ -29,7 +29,7 @@ common: &default_settings
   # app_name: My Application;My Application 2
   # This setting is required. Up to 3 different application names can be specified.
   # The first application name must be unique.
-  app_name: QPP Conversion
+  app_name: QPP Conversion - APP_ENV
 
   # To enable high security, set this property to true. When in high
   # security mode, the agent will use SSL and obfuscated SQL. Additionally,
@@ -284,17 +284,14 @@ common: &default_settings
 # NOTE if your application has other named environments, you should
 # provide configuration settings for these environments here.
 
-development:
+dev:
   <<: *default_settings
-  app_name: My Application (Development)
+  app_name: QPP Conversion App - dev
 
-test:
+prod:
   <<: *default_settings
-  app_name: My Application (Test)
+  app_name: QPP Conversion App - prod
 
-production:
+impl:
   <<: *default_settings
-
-staging:
-  <<: *default_settings
-  app_name: My Application (Staging)
+  app_name: QPP Conversion App - impl
