@@ -46,7 +46,7 @@ env.configureLayers = function() {
     }
   ];
 
-  internalBalancerOverrides = Object.assign(internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0], {
+  Object.assign(internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0], {
     InstancePort: 3000,
     LoadBalancerPort: 443,
     Protocol: 'HTTPS',
@@ -55,11 +55,10 @@ env.configureLayers = function() {
     SSLCertificateId: 'arn:aws:acm:us-east-1:003384571330:certificate/0fb69207-0392-478a-8099-66fc99baa0d9'
   });
 
-  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0] = internalBalancerOverrides;
-
   return {
     app: rootRequire('./layers/app/api'),
     jump: rootRequire('./layers/jump/jump'),
+    internalBalancer,
     net: rootRequire('./layers/net/gdit')
   };
 };

@@ -1,20 +1,19 @@
 package gov.cms.qpp.conversion.decode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
-
-import java.lang.reflect.Method;
-
-import org.jdom2.Element;
-import org.junit.Test;
-
+import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.ComponentKey;
-import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+import org.jdom2.Element;
+import org.junit.Test;
+
+import java.lang.reflect.Method;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertThat;
 
 public class QppXmlDecoderTest {
 
@@ -38,8 +37,8 @@ public class QppXmlDecoderTest {
 	@Test
 	public void decodeInvalidChildReturnsError() {
 		Context context = new Context();
-		context.getRegistry(Decoder.class).register(new ComponentKey(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS, Program.ALL), TestChildDecodeError.class);
-		context.getRegistry(Decoder.class).register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), TestChildNoAction.class);
+		TestHelper.mockDecoder(context, TestChildDecodeError.class, new ComponentKey(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS, Program.ALL));
+		TestHelper.mockDecoder(context, TestChildNoAction.class, new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL));
 
 		Element testElement = new Element("testElement");
 		Element testChildElement = new Element("templateId");
