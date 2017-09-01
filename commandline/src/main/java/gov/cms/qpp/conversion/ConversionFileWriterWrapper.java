@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +14,6 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Calls the {@link Converter} and writes the results to a file.
@@ -25,56 +22,20 @@ public class ConversionFileWriterWrapper {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionFileWriterWrapper.class);
 
 	private final QrdaSource source;
-	private boolean doDefaults = true;
-	private boolean doValidation = true;
-	private boolean isHistorical = false;
-	private Set<QrdaScope> scope = new HashSet<>();
+	private Context context;
 
 	public ConversionFileWriterWrapper(Path inFile) {
 		this.source = new PathQrdaSource(inFile);
 	}
 
 	/**
-	 * Switch for enabling or disabling inclusion of default nodes.
+	 * Context for the conversion
 	 *
-	 * @param doIt toggle value
+	 * @param context the conversion context
 	 * @return this for chaining
 	 */
-	public ConversionFileWriterWrapper doDefaults(boolean doIt) {
-		this.doDefaults = doIt;
-		return this;
-	}
-
-	/**
-	 * Switch for enabling or disabling validation.
-	 *
-	 * @param doIt toggle value
-	 * @return this for chaining
-	 */
-	public ConversionFileWriterWrapper doValidation(boolean doIt) {
-		this.doValidation = doIt;
-		return this;
-	}
-
-	/**
-	 * Switch for enabling or disabling this will be a historical submission.
-	 *
-	 * @param historical toggle value
-	 * @return this for chaining
-	 */
-	public ConversionFileWriterWrapper isHistorical(boolean historical) {
-		this.isHistorical = historical;
-		return this;
-	}
-
-	/**
-	 * Switch for setting the scope to limit template IDs are enabled for the submission.
-	 *
-	 * @param newScope the scope
-	 * @return this for chaining
-	 */
-	public ConversionFileWriterWrapper setScope(Set<QrdaScope> newScope) {
-		this.scope = newScope;
+	public ConversionFileWriterWrapper setContext(Context context) {
+		this.context = context;
 		return this;
 	}
 
@@ -82,17 +43,9 @@ public class ConversionFileWriterWrapper {
 	 * Execute the conversion.
 	 */
 	public void transform() {
-		Converter converter = new Converter(source);
-		setupContext(converter.getContext());
+		Converter converter = context == null ? new Converter(source) : new Converter(source, context);
 
 		executeConverter(converter);
-	}
-
-	private void setupContext(Context context) {
-		context.setDoDefaults(doDefaults);
-		context.setDoValidation(doValidation);
-		context.setHistorical(isHistorical);
-		context.setScope(scope);
 	}
 
 	/**

@@ -1,56 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
-		<artifactId>java-conversion</artifactId>
+		<artifactId>qpp-conversion-tool-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>benchmark</artifactId>
-	<version>1.0</version>
-	<packaging>jar</packaging>
-
 	<name>JMH benchmarking</name>
-
-	<prerequisites>
-		<maven>3.0</maven>
-	</prerequisites>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.jmeter</groupId>
-			<artifactId>ApacheJMeter_java</artifactId>
-			<version>3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.jmeter</groupId>
-			<artifactId>ApacheJMeter_http</artifactId>
-			<version>3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>gov.cms.qpp.conversion</groupId>
-			<artifactId>commandline</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openjdk.jmh</groupId>
-			<artifactId>jmh-core</artifactId>
-			<version>${jmh.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.openjdk.jmh</groupId>
-			<artifactId>jmh-generator-annprocess</artifactId>
-			<version>${jmh.version}</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+	<packaging>jar</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -77,21 +39,12 @@
 				<directory>${basedir}/../qrda-files</directory>
 			</resource>
 		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.1</version>
-				<configuration>
-					<compilerVersion>${javac.target}</compilerVersion>
-					<source>${javac.target}</source>
-					<target>${javac.target}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -125,4 +78,43 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.jmeter</groupId>
+			<artifactId>ApacheJMeter_java</artifactId>
+			<version>3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.jmeter</groupId>
+			<artifactId>ApacheJMeter_http</artifactId>
+			<version>3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>commandline</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-core</artifactId>
+			<version>${jmh.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-generator-annprocess</artifactId>
+			<version>${jmh.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 </project>
