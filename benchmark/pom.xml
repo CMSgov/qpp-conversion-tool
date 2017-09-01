@@ -15,21 +15,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-		<!--
-			JMH version to use with this project.
-		  -->
 		<jmh.version>1.19</jmh.version>
-
-		<!--
-			Java source/target to use for compilation.
-		  -->
-		<javac.target>1.8</javac.target>
-
-		<!--
-			Name of the benchmark Uber-JAR to generate.
-		  -->
 		<uberjar.name>benchmarks</uberjar.name>
 	</properties>
 
