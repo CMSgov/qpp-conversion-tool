@@ -8,9 +8,9 @@ if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $SONAR_OTHER_BRANCH && "$CIRCLE_BRA
 	./sonar-scanner-3.0.1.733/bin/sonar-scanner -Dsonar.login=${SONAR_KEY}
 	status=$(curl -sS ${SONAR_HOST}/api/qualitygates/project_status?projectKey=gov.cms.qpp.conversion:qpp-conversion | jq '.projectStatus.status')
 	if [[ ${status} = '"ERROR"' ]]; then
-      echo "exiting with non-zero status code"
-      exit 1
-    fi
+		echo "sonar failed: " ${status}
+		exit 1
+	fi
 elif [[ ! -z $CI_PULL_REQUESTS ]]; then
 	#Do a PR preview SonarCube run
 	#This build could be on multiple PRs
