@@ -1,9 +1,9 @@
 #!/bin/sh
 
-if [ ! -f java-conversion-tool/target/java-conversion-tool.jar ]; then
+if [ ! -f converter/target/converter.jar ]; then
     echo "Jar not found. Building..."
     mvn package -Dmaven.test.skip=true
-    if [ ! -f java-conversion-tool/target/java-conversion-tool.jar ]; then
+    if [ ! -f converter/target/converter.jar ]; then
         echo "Build failed. Aborting."
         exit 1
     fi

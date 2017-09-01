@@ -55,7 +55,7 @@ public class PathCorrelator {
 
 	/**
 	 * Creates a key value store of mappings using the correlation cofiguration:
-	 * <a href="https://github.com/CMSgov/qpp-conversion-tool/blob/master/java-conversion-tool/src/main/resources/pathing/path-correlation.json">path-correlation.json</a>
+	 * <a href="https://github.com/CMSgov/qpp-conversion-tool/blob/master/jconverter/src/main/resources/pathing/path-correlation.json">path-correlation.json</a>
 	 *
 	 * @param pathCorrelation deserialized representation of the aforementioned correlation configuration
 	 */
