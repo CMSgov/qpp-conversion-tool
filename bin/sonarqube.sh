@@ -7,7 +7,7 @@ if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $SONAR_OTHER_BRANCH && "$CIRCLE_BRA
 	echo "Doing full SonarQube run"
 	./sonar-scanner-3.0.1.733/bin/sonar-scanner -Dsonar.login=${SONAR_KEY}
 	status=$(curl -sS ${SONAR_HOST}/api/qualitygates/project_status?projectKey=gov.cms.qpp.conversion:qpp-conversion | jq '.projectStatus.status')
-	if [[ ${status} = '"ERROR"' ]]; then
+	if [[ ${status} != '"OK"' ]]; then
 		echo "sonar failed: " ${status}
 		exit 1
 	fi
