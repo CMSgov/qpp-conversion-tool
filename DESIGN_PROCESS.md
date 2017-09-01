@@ -108,7 +108,7 @@ This is the bulk of the two-week sprint where the development team *develops*. T
 
 1.  **Create automated ATDD/BDD tests from the static click-through and the business model.** These tests drive production development and are integrated into the CI/CD pipeline.
 
-    We have automated tests to drive development at multiple levels. Within the ["java-conversion-tool/src/test/java/gov/cms/qpp" directory](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/java-conversion-tool/src/test/java/gov/cms/qpp)
+    We have automated tests to drive development at multiple levels. Within the ["converter/src/test/java/gov/cms/qpp" directory](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/converter/src/test/java/gov/cms/qpp)
 
 1. **The development team collaborates to fully build out the user story and its supporting unit tests.** Implementation decouples the sofware components to the greatest extent possible.
 
