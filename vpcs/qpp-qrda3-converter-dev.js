@@ -46,7 +46,7 @@ env.configureLayers = function() {
     }
   ];
 
-  internalBalancerOverrides = Object.assign(internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0], {
+  Object.assign(internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0], {
     InstancePort: 3000,
     LoadBalancerPort: 443,
     Protocol: 'HTTPS',
@@ -54,8 +54,6 @@ env.configureLayers = function() {
     // ACM certificate for dev.qpp-qrda3-converter.navapbc.com
     SSLCertificateId: 'arn:aws:acm:us-east-1:003384571330:certificate/f1b98858-6b1c-4557-b26b-d2259f5b53e4'
   });
-
-  internalBalancer['Resources']['AppElb']['Properties']['Listeners'][0] = internalBalancerOverrides;
 
   return {
     app: rootRequire('./layers/app/api'),
