@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion;
 
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
