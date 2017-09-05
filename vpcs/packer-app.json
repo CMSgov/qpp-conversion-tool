@@ -1,5 +1,3 @@
 {
-  "source_ami": "ami-bf4e66c4",
-  "splunk_client_name": "QPP-QRDA3-CONVERTER",
-  "splunk_target_uri": "10.244.112.158:8088"
+  "source_ami": "ami-bf4e66c4"
 }
