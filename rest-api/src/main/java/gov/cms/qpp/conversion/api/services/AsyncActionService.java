@@ -31,13 +31,17 @@ public abstract class AsyncActionService<T> {
 		boolean added = false;
 		do {
 			try {
-				executionQueue.put(objectToActOn);
+				putToExecutionQueue(objectToActOn);
 				added = true;
 			}
 			catch (InterruptedException exception) {
 				API_LOG.warn("Interrupting wait to add an item to the execution queue, too bad were going to try again", exception);
 			}
 		} while(!added);
+	}
+
+	private void putToExecutionQueue(T objectToActOn) throws InterruptedException {
+		executionQueue.put(objectToActOn);
 	}
 
 	private void ensureExecutionThreadRunning() {
@@ -51,13 +55,18 @@ public abstract class AsyncActionService<T> {
 		try {
 			while (true) {
 				API_LOG.info("Try to take an action off the queue");
-				asynchronousRetryOperation(executionQueue.take());
+				T objectToActOn = takeFromExecutionQueue();
+				asynchronousRetryOperation(objectToActOn);
 			}
 		} catch (InterruptedException exception) {
-			API_LOG.warn("Interrupting wait for an action on the execution queue", exception);
+			API_LOG.warn("Interrupting waiting for an action on the execution queue", exception);
 		}
 
 		return CompletableFuture.completedFuture(null);
+	}
+
+	protected T takeFromExecutionQueue() throws InterruptedException {
+		return executionQueue.take();
 	}
 
 	private void asynchronousRetryOperation(T objectToActOn) {
@@ -71,11 +80,13 @@ public abstract class AsyncActionService<T> {
 				success = false;
 			}
 
-			try {
-				Thread.sleep(5000);
-			}
-			catch (InterruptedException exception) {
-				API_LOG.warn("Interrupting sleep between retries", exception);
+			if(!success) {
+				try {
+					Thread.sleep(5000);
+				}
+				catch (InterruptedException exception) {
+					API_LOG.warn("Interrupting sleep between retries", exception);
+				}
 			}
 		} while (!success);
 	}
