@@ -1,10 +1,11 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.InputStreamQrdaSource;
+import gov.cms.qpp.conversion.api.entities.QppFileEntity;
+import gov.cms.qpp.conversion.api.services.DynamoDbService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Controller to handle uploading files for QRDA-III Conversion
@@ -36,6 +38,9 @@ public class QrdaControllerV1 {
 	@Autowired
 	private ValidationService validationService;
 
+	@Autowired
+	private DynamoDbService dynamoDbService;
+
 	/**
 	 * Endpoint to transform an uploaded file into a valid or error json response
 	 *
@@ -46,6 +51,13 @@ public class QrdaControllerV1 {
 	@RequestMapping(method = RequestMethod.POST, headers = {"Accept=application/vnd.qpp.cms.gov.v1+json"})
 	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
 		API_LOG.info("Request received " + file.getName());
+
+		API_LOG.info("Writing to DynamoDB");
+		QppFileEntity qppFileEntity = new QppFileEntity();
+		qppFileEntity.setDateTime(new Date().toString());
+		dynamoDbService.addItem(qppFileEntity);
+		API_LOG.info("Done/not-done writing to DynamoDB");
+
 		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(new InputStreamQrdaSource(file.getName(), file.getInputStream()));
 
 		validationService.validateQpp(qpp);
