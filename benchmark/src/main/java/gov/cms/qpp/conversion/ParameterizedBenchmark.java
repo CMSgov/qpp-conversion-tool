@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion;
 
-
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;

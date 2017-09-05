@@ -8,7 +8,6 @@ import org.reflections.util.ClasspathHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 

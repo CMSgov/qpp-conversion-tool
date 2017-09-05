@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.model.error;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Collections;
