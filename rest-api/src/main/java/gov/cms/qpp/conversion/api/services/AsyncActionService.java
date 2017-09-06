@@ -16,6 +16,9 @@ public abstract class AsyncActionService<T> {
 	@Autowired
 	private TaskExecutor taskExecutor;
 
+	@Autowired
+	private SleepService sleepService;
+
 	private BlockingQueue<T> executionQueue = new LinkedBlockingQueue<>();
 
 	private CompletableFuture threadFuture;
@@ -82,7 +85,7 @@ public abstract class AsyncActionService<T> {
 
 			if(!success) {
 				try {
-					Thread.sleep(5000);
+					sleepService.sleep(5000);
 				}
 				catch (InterruptedException exception) {
 					API_LOG.warn("Interrupting sleep between retries", exception);

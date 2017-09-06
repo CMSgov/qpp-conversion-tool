@@ -26,6 +26,9 @@ public class AsyncActionServiceTest {
 	@Mock
 	private TaskExecutor taskExecutor;
 
+	@Mock
+	private SleepService sleepService;
+
 	private CompletableFuture<?>[] asyncActionService;
 
 	private static boolean asynchronousActionCalled;
