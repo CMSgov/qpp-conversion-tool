@@ -115,7 +115,7 @@ public abstract class AsyncActionService<T> {
 				API_LOG.info("Try to take an action off the queue");
 				T objectToActOn = takeFromExecutionQueue();
 				asynchronousRetryOperation(objectToActOn);
-			} while (executionQueue.size() > 0);
+			} while (!executionQueue.isEmpty());
 		} catch (InterruptedException exception) {
 			API_LOG.warn("Interrupting waiting for an action on the execution queue", exception);
 		}
