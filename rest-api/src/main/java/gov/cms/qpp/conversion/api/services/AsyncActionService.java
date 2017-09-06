@@ -16,7 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * and implement {@link #asynchronousAction(Object)} to do an action given that item.  This class handles all the error handling
  * and retries so you don't need to in {@link #asynchronousAction(Object)}.  For each service that extends this class, a thread
  * is created and executes the action as items are passed in, in the order they are pass in.  If there are no active items left
- * to proccess, the thread spins down until an item is passed in again.
+ * to process, the thread spins down until an item is passed in again.
  *
  * This allows an application not to deal with distributed transactions and having to solve the problem of how to rollback a
  * distributed transaction.  In lieu of a standard transaction contract, this gives the application eventual consistency.
@@ -65,7 +65,7 @@ public abstract class AsyncActionService<T> {
 	}
 
 	/**
-	 * Continue trying to put an item onto a queue until it is added successfully.
+	 * Put an item onto a queue and block until it can be added.
 	 *
 	 * @param objectToActOn The item to do an action on.
 	 */
@@ -100,7 +100,7 @@ public abstract class AsyncActionService<T> {
 	}
 
 	/**
-	 * Waits for an object to be added to the queue.  Blocks the thread until and object is added.  Once and object is available,
+	 * Waits for an object to be added to the queue.  Blocks the thread until an object is added.  Once an object is available,
 	 * it is taken from the queue, acted upon, and the thread stops if there are no more items on the queue.
 	 * This is the top-level method executed on a separate thread.
 	 *
