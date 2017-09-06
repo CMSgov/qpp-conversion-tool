@@ -109,9 +109,9 @@ public class ValidationServiceImpl implements ValidationService {
 	}
 
 	/**
-	 * A private class that tells the {@link RestTemplate} to not throw an exception on HTTP status 3xx and 4xx.
+	 * A private static class that tells the {@link RestTemplate} to not throw an exception on HTTP status 3xx and 4xx.
 	 */
-	private class NoHandlingErrorHandler extends DefaultResponseErrorHandler {
+	private static class NoHandlingErrorHandler extends DefaultResponseErrorHandler {
 		/**
 		 * Empty so it doesn't throw an exception.
 		 *

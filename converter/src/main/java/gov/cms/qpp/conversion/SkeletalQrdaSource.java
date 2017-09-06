@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion;
 
+import java.nio.file.Path;
 import java.util.Objects;
 
 public abstract class SkeletalQrdaSource implements QrdaSource {
@@ -10,6 +11,13 @@ public abstract class SkeletalQrdaSource implements QrdaSource {
 		Objects.requireNonNull(name, "name");
 
 		this.name = name;
+	}
+
+	public SkeletalQrdaSource(Path path) {
+		String filename = !Objects.isNull(path.getFileName()) ? path.getFileName().toString() : null;
+		Objects.requireNonNull(filename, "name");
+
+		this.name = filename;
 	}
 
 	@Override
