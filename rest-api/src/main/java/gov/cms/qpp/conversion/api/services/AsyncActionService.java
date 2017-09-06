@@ -14,8 +14,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  * The main point of entry is {@link #actOnItem(Object)}.  A service extending this class would call {@link #actOnItem(Object)}
  * and implement {@link #asynchronousAction(Object)} to do an action given that item.  This class handles all the error handling
- * and retries so you don't need to in {@link #asynchronousAction(Object)}.  For each service that extends this class, a long
- * running thread is created and executes the action as items are passed in, in the order they are pass in.
+ * and retries so you don't need to in {@link #asynchronousAction(Object)}.  For each service that extends this class, a thread
+ * is created and executes the action as items are passed in, in the order they are pass in.  If there are no active items left
+ * to proccess, the thread spins down until an item is passed in again.
  *
  * This allows an application not to deal with distributed transactions and having to solve the problem of how to rollback a
  * distributed transaction.  In lieu of a standard transaction contract, this gives the application eventual consistency.
@@ -103,18 +104,18 @@ public abstract class AsyncActionService<T> {
 
 	/**
 	 * Waits for an object to be added to the queue.  Blocks the thread until and object is added.  Once and object is available,
-	 * it is taken from the queue, acted upon, and the thread goes back to waiting for another object on the queue.
+	 * it is taken from the queue, acted upon, and the thread stops if there are no more items on the queue.
 	 * This is the top-level method executed on a separate thread.
 	 *
-	 * @return A {@code CompletableFuture} to know when the thread is already executing.
+	 * @return A {@code CompletableFuture} to know when the thread has completed.
 	 */
 	private CompletableFuture<?> asynchronousExecuteQueue() {
 		try {
-			while (true) {
+			do {
 				API_LOG.info("Try to take an action off the queue");
 				T objectToActOn = takeFromExecutionQueue();
 				asynchronousRetryOperation(objectToActOn);
-			}
+			} while (executionQueue.size() > 0);
 		} catch (InterruptedException exception) {
 			API_LOG.warn("Interrupting waiting for an action on the execution queue", exception);
 		}

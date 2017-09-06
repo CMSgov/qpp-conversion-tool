@@ -201,6 +201,21 @@ public class AsyncActionServiceTest {
 		assertThat("The putToExecutionQueue method was not called as many times as it should have.", timesPutCalled, is(numberOfItemsToAdd + 2));
 	}
 
+	@Test
+	public void testThreadRestartsAfterAdditionalItems() throws ExecutionException, InterruptedException {
+		objectUnderTest.failuresUntilSuccess(0).numberOfItemsToProcess(3);
+		objectUnderTest.actOnItem(new Object());
+		objectUnderTest.actOnItem(new Object());
+
+		asyncActionService[0].get();
+
+		objectUnderTest.actOnItem(new Object());
+
+		asyncActionService[0].get();
+
+		assertThat("The asynchronousAction method was not called as many times as it should have.", timesAsynchronousActionCalled, is(3));
+	}
+
 	private static class TestService<T> extends AsyncActionService<T> {
 
 		private int failuresUntilSuccessTemplate = -1;
