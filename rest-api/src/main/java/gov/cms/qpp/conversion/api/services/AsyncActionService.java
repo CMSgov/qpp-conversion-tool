@@ -115,7 +115,7 @@ public abstract class AsyncActionService<T> {
 			} while (!executionQueue.isEmpty());
 		} catch (InterruptedException exception) {
 			Thread.currentThread().interrupt();
-			if(executionQueue.isEmpty()) {
+			if (executionQueue.isEmpty()) {
 				API_LOG.info("Interrupt waiting for an action on the execution queue", exception);
 			} else {
 				API_LOG.error("Interrupt with additional items on the queue! These items will not be completed!", exception);
@@ -136,7 +136,7 @@ public abstract class AsyncActionService<T> {
 	}
 
 	/**
-	 * Repeatedly call {@link #asynchronousAction(Object)} until it succeeds.
+	 * Repeatedly call {@link #callAsynchronousAction(Object)} until it succeeds.
 	 *
 	 * Sleeps five seconds in between retries.
 	 *
@@ -144,17 +144,13 @@ public abstract class AsyncActionService<T> {
 	 */
 	private void asynchronousRetryOperation(T objectToActOn) {
 		boolean success = false;
+
 		try {
 			do {
 				checkThreadInterrupted();
 
 				API_LOG.info("Trying to execute action");
-				try {
-					success = asynchronousAction(objectToActOn);
-				} catch (Exception exception) {
-					API_LOG.warn("Exception while trying to execute action", exception);
-					success = false;
-				}
+				success = callAsynchronousAction(objectToActOn);
 
 				if (!success) {
 					sleepService.sleep(5000);
@@ -166,8 +162,32 @@ public abstract class AsyncActionService<T> {
 		}
 	}
 
+	/**
+	 * Calls {@link #asynchronousAction(Object)} and catches any exceptions.
+	 *
+	 * @param objectToActOn The item to do an action on.
+	 * @return {@code true} on success, {@code false} on failure.
+	 */
+	private boolean callAsynchronousAction(T objectToActOn) {
+		boolean success = false;
+
+		try {
+			success = asynchronousAction(objectToActOn);
+		} catch (Exception exception) {
+			API_LOG.warn("Exception while trying to execute action", exception);
+			success = false;
+		}
+
+		return success;
+	}
+
+	/**
+	 * Throws a {@link InterruptedException} if the thread has been interrupted.
+	 *
+	 * @throws InterruptedException If the thread has been interrupted.
+	 */
 	private void checkThreadInterrupted() throws InterruptedException {
-		if(Thread.interrupted()) {
+		if (Thread.interrupted()) {
 			throw new InterruptedException();
 		}
 	}
