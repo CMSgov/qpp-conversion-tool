@@ -132,7 +132,10 @@ public class PathCorrelator {
 		JsonPath compiledPath = JsonPath.compile(base);
 		Map<String, Object> jsonMap = compiledPath.read(wrapper.toString());
 		Map<String, String> metaMap = getMetaMap(jsonMap, leaf);
-		return makePath(metaMap, leaf);
+		String preparedPath = "";
+		if (null != metaMap)
+			preparedPath = makePath(metaMap, leaf);
+		return preparedPath;
 	}
 
 	/**
