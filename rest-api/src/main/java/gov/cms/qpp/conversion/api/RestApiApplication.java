@@ -33,6 +33,11 @@ public class RestApiApplication {
 		return amazonDynamoDB;
 	}
 
+	/**
+	 * A thread pool just for the ReST API.
+	 *
+	 * @return The thread pool.
+	 */
 	@Bean
 	public TaskExecutor taskExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
