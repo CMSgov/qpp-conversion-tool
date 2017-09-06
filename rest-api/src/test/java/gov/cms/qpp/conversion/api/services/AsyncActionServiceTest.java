@@ -176,29 +176,28 @@ public class AsyncActionServiceTest {
 	@Test
 	public void testSleepServiceInterruptContinueRetries() throws InterruptedException, ExecutionException {
 		doThrow(new InterruptedException()).when(sleepService).sleep(anyLong());
-		int failuresUntilSuccess = 3;
 
-		objectUnderTest.failuresUntilSuccess(failuresUntilSuccess);
+		objectUnderTest.actOnItem(new Object());
 		objectUnderTest.actOnItem(new Object());
 
 		asyncActionService[0].get();
 
-		assertThat("The asynchronousAction method was not called as many times as it should have.", timesAsynchronousActionCalled, is(failuresUntilSuccess + 1));
+		assertThat("The asynchronousAction method was not called as many times as it should have.", timesAsynchronousActionCalled, is(1));
 	}
 
 	@Test
 	public void testStopWaitForNewItems() throws ExecutionException, InterruptedException {
-		int numberOfItemsToAdd = 3;
+		int numberOfItemsToAllow = 1;
+		int numberOfItemsToAdd = numberOfItemsToAllow + 1;
 
-		objectUnderTest.failuresUntilSuccess(0).numberOfItemsToProcess(numberOfItemsToAdd).numberOfItemsToAdd(numberOfItemsToAdd);
+		objectUnderTest.failuresUntilSuccess(0).numberOfItemsToProcess(numberOfItemsToAllow).numberOfItemsToAdd(numberOfItemsToAllow);
 
-		for(int currentItemIndex = 0; currentItemIndex < numberOfItemsToAdd + 1; currentItemIndex++) {
+		for(int currentItemIndex = 0; currentItemIndex < numberOfItemsToAdd; currentItemIndex++) {
 			objectUnderTest.actOnItem(new Object());
 		}
 
-		asyncActionService[0].get();
-
-		assertThat("The putToExecutionQueue method was not called as many times as it should have.", timesPutCalled, is(numberOfItemsToAdd + 2));
+		assertTrue("The main thread was not interrupted.", Thread.interrupted());
+		assertThat("The putToExecutionQueue method was not called as many times as it should have.", timesPutCalled, is(numberOfItemsToAdd));
 	}
 
 	@Test

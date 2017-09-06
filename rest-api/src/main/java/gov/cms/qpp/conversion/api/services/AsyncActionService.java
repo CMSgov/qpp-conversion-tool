@@ -70,16 +70,13 @@ public abstract class AsyncActionService<T> {
 	 * @param objectToActOn The item to do an action on.
 	 */
 	private void addItemToExecutionQueue(T objectToActOn) {
-		boolean added = false;
-		do {
-			try {
-				putToExecutionQueue(objectToActOn);
-				added = true;
-			} catch (InterruptedException exception) {
-				API_LOG.warn("Interrupting wait to add an item to the execution queue, too bad were going to try again",
-					exception);
-			}
-		} while (!added);
+		try {
+			putToExecutionQueue(objectToActOn);
+		} catch (InterruptedException exception) {
+			Thread.currentThread().interrupt();
+			API_LOG.error("Interrupting wait to add an item to the execution queue! This item will not be completed!",
+				exception);
+		}
 	}
 
 	/**
@@ -117,7 +114,12 @@ public abstract class AsyncActionService<T> {
 				asynchronousRetryOperation(objectToActOn);
 			} while (!executionQueue.isEmpty());
 		} catch (InterruptedException exception) {
-			API_LOG.warn("Interrupting waiting for an action on the execution queue", exception);
+			Thread.currentThread().interrupt();
+			if(executionQueue.isEmpty()) {
+				API_LOG.info("Interrupt waiting for an action on the execution queue", exception);
+			} else {
+				API_LOG.error("Interrupt with additional items on the queue! These items will not be completed!", exception);
+			}
 		}
 
 		return CompletableFuture.completedFuture(null);
@@ -142,22 +144,31 @@ public abstract class AsyncActionService<T> {
 	 */
 	private void asynchronousRetryOperation(T objectToActOn) {
 		boolean success = false;
-		do {
-			API_LOG.info("Trying to execute action");
-			try {
-				success = asynchronousAction(objectToActOn);
-			} catch (Exception exception) {
-				API_LOG.warn("Exception while trying to execute action", exception);
-				success = false;
-			}
+		try {
+			do {
+				checkThreadInterrupted();
 
-			if (!success) {
+				API_LOG.info("Trying to execute action");
 				try {
-					sleepService.sleep(5000);
-				} catch (InterruptedException exception) {
-					API_LOG.warn("Interrupting sleep between retries", exception);
+					success = asynchronousAction(objectToActOn);
+				} catch (Exception exception) {
+					API_LOG.warn("Exception while trying to execute action", exception);
+					success = false;
 				}
-			}
-		} while (!success);
+
+				if (!success) {
+					sleepService.sleep(5000);
+				}
+			} while (!success);
+		} catch (InterruptedException exception) {
+			Thread.currentThread().interrupt();
+			API_LOG.error("Interrupting retry logic! This item will not be completed!", exception);
+		}
+	}
+
+	private void checkThreadInterrupted() throws InterruptedException {
+		if(Thread.interrupted()) {
+			throw new InterruptedException();
+		}
 	}
 }
