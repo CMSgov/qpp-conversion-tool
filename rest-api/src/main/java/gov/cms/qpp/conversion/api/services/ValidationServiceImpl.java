@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import java.nio.charset.Charset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,7 +105,8 @@ public class ValidationServiceImpl implements ValidationService {
 	 * @return An Error object.
 	 */
 	private Error getError(String response) {
-		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes()), ErrorMessage.class)
+		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes(Charset.defaultCharset())),
+				ErrorMessage.class)
 				.getError();
 	}
 

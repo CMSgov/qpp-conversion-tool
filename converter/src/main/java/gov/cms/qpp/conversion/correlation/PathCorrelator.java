@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.correlation.model.Correlation;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
+import java.util.Objects;
 import org.reflections.util.ClasspathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,7 +134,7 @@ public class PathCorrelator {
 		Map<String, Object> jsonMap = compiledPath.read(wrapper.toString());
 		Map<String, String> metaMap = getMetaMap(jsonMap, leaf);
 		String preparedPath = "";
-		if (null != metaMap)
+		if (!Objects.isNull(metaMap))
 			preparedPath = makePath(metaMap, leaf);
 		return preparedPath;
 	}
