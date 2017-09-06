@@ -15,7 +15,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AsyncActionServiceTest {
@@ -35,10 +41,12 @@ public class AsyncActionServiceTest {
 
 	private static int timesAsynchronousActionCalled;
 
+	private static int timesPutCalled;
+
 	private static Object objectThatWasActedOn;
 
 	@Before
-	public void runBeforeEachTest() {
+	public void runBeforeEachTest() throws InterruptedException {
 
 		asyncActionService = new CompletableFuture<?>[1];
 
@@ -48,14 +56,17 @@ public class AsyncActionServiceTest {
 			return null;
 		}).when(taskExecutor).execute(any(Runnable.class));
 
+		doNothing().when(sleepService).sleep(anyLong());
+
 		asynchronousActionCalled = false;
 		timesAsynchronousActionCalled = 0;
+		timesPutCalled = 0;
 		objectThatWasActedOn = null;
 	}
 
 	@Test
 	public void testAsynchronousActionIsCalled() throws InterruptedException, ExecutionException {
-		objectUnderTest.setup(0, 1);
+		objectUnderTest.failuresUntilSuccess(0);
 		objectUnderTest.actOnItem(new Object());
 
 		asyncActionService[0].get();
@@ -67,7 +78,7 @@ public class AsyncActionServiceTest {
 	public void testObjectToActOnPassedDown() throws InterruptedException, ExecutionException {
 		Object objectToActOn = new Object();
 
-		objectUnderTest.setup(0, 1);
+		objectUnderTest.failuresUntilSuccess(0);
 		objectUnderTest.actOnItem(objectToActOn);
 
 		asyncActionService[0].get();
@@ -77,7 +88,7 @@ public class AsyncActionServiceTest {
 
 	@Test
 	public void testSuccessNoRetry() throws ExecutionException, InterruptedException {
-		objectUnderTest.setup(0, 1);
+		objectUnderTest.failuresUntilSuccess(0);
 		objectUnderTest.actOnItem(new Object());
 
 		asyncActionService[0].get();
@@ -86,10 +97,20 @@ public class AsyncActionServiceTest {
 	}
 
 	@Test
+	public void testNoSleepOnSuccess() throws ExecutionException, InterruptedException {
+		objectUnderTest.failuresUntilSuccess(0);
+		objectUnderTest.actOnItem(new Object());
+
+		asyncActionService[0].get();
+
+		verifyZeroInteractions(sleepService);
+	}
+
+	@Test
 	public void testFailureRetry() throws ExecutionException, InterruptedException {
 		int failuresUntilSuccess = 3;
 
-		objectUnderTest.setup(failuresUntilSuccess, 1);
+		objectUnderTest.failuresUntilSuccess(failuresUntilSuccess);
 		objectUnderTest.actOnItem(new Object());
 
 		asyncActionService[0].get();
@@ -98,34 +119,86 @@ public class AsyncActionServiceTest {
 	}
 
 	@Test
+	public void testFailureRetryWithException() throws ExecutionException, InterruptedException {
+		int failuresUntilSuccess = 3;
+
+		objectUnderTest.failuresUntilSuccess(failuresUntilSuccess).throwExceptionOnFailure(true);
+		objectUnderTest.actOnItem(new Object());
+
+		asyncActionService[0].get();
+
+		assertThat("The asynchronousAction method was not called enough times.", timesAsynchronousActionCalled, is(failuresUntilSuccess + 1));
+	}
+
+	@Test
+	public void testSleepOnFailure() throws ExecutionException, InterruptedException {
+		int failuresUntilSuccess = 2;
+
+		objectUnderTest.failuresUntilSuccess(failuresUntilSuccess);
+		objectUnderTest.actOnItem(new Object());
+
+		asyncActionService[0].get();
+
+		verify(sleepService, times(failuresUntilSuccess)).sleep(anyLong());
+	}
+
+	@Test
 	public void testMultipleActsResultInAsynchronousActionsSuccess() throws ExecutionException, InterruptedException {
-		int numberOfItemsToProccess = 3;
+		int numberOfItemsToProcess = 3;
 
-		objectUnderTest.setup(0, numberOfItemsToProccess);
+		objectUnderTest.failuresUntilSuccess(0).numberOfItemsToProcess(numberOfItemsToProcess);
 
-		for(int currentItemIndex = 0; currentItemIndex < numberOfItemsToProccess; currentItemIndex++) {
+		for(int currentItemIndex = 0; currentItemIndex < numberOfItemsToProcess; currentItemIndex++) {
 			objectUnderTest.actOnItem(new Object());
 		}
 
 		asyncActionService[0].get();
 
-		assertThat("The asynchronousAction method was not called twice.", timesAsynchronousActionCalled, is(numberOfItemsToProccess));
+		assertThat("The asynchronousAction method was not called as many times as it should have.", timesAsynchronousActionCalled, is(numberOfItemsToProcess));
 	}
 
 	@Test
 	public void testMultipleActsResultInAsynchronousActionsFailure() throws ExecutionException, InterruptedException {
 		int failuresUntilSuccess = 2;
-		int numberOfItemsToProccess = 3;
+		int numberOfItemsToProcess = 3;
 
-		objectUnderTest.setup(failuresUntilSuccess, numberOfItemsToProccess);
+		objectUnderTest.failuresUntilSuccess(failuresUntilSuccess).numberOfItemsToProcess(numberOfItemsToProcess);
 
-		for(int currentItemIndex = 0; currentItemIndex < numberOfItemsToProccess; currentItemIndex++) {
+		for(int currentItemIndex = 0; currentItemIndex < numberOfItemsToProcess; currentItemIndex++) {
 			objectUnderTest.actOnItem(new Object());
 		}
 
 		asyncActionService[0].get();
 
-		assertThat("The asynchronousAction method was not called twice.", timesAsynchronousActionCalled, is((failuresUntilSuccess + 1) * numberOfItemsToProccess));
+		assertThat("The asynchronousAction method was not called as many times as it should have.", timesAsynchronousActionCalled, is((failuresUntilSuccess + 1) * numberOfItemsToProcess));
+	}
+
+	@Test
+	public void testSleepServiceInterruptContinueRetries() throws InterruptedException, ExecutionException {
+		doThrow(new InterruptedException()).when(sleepService).sleep(anyLong());
+		int failuresUntilSuccess = 3;
+
+		objectUnderTest.failuresUntilSuccess(failuresUntilSuccess);
+		objectUnderTest.actOnItem(new Object());
+
+		asyncActionService[0].get();
+
+		assertThat("The asynchronousAction method was not called as many times as it should have.", timesAsynchronousActionCalled, is(failuresUntilSuccess + 1));
+	}
+
+	@Test
+	public void testStopWaitForNewItems() throws ExecutionException, InterruptedException {
+		int numberOfItemsToAdd = 3;
+
+		objectUnderTest.failuresUntilSuccess(0).numberOfItemsToProcess(numberOfItemsToAdd).numberOfItemsToAdd(numberOfItemsToAdd);
+
+		for(int currentItemIndex = 0; currentItemIndex < numberOfItemsToAdd + 1; currentItemIndex++) {
+			objectUnderTest.actOnItem(new Object());
+		}
+
+		asyncActionService[0].get();
+
+		assertThat("The putToExecutionQueue method was not called as many times as it should have.", timesPutCalled, is(numberOfItemsToAdd + 2));
 	}
 
 	private static class TestService<T> extends AsyncActionService<T> {
@@ -133,11 +206,28 @@ public class AsyncActionServiceTest {
 		private int failuresUntilSuccessTemplate = -1;
 		private int failuresUntilSuccess = -1;
 		private int numberOfItemsToProcess = 1;
+		private int numberOfItemsToAdd = -1;
+		private boolean throwExceptionOnFailure = false;
 
-		public void setup(int failuresUntilSuccess, int numberOfItemsToProcess) {
+		public TestService<T> failuresUntilSuccess(int failuresUntilSuccess) {
 			this.failuresUntilSuccessTemplate = failuresUntilSuccess;
 			this.failuresUntilSuccess = this.failuresUntilSuccessTemplate;
+			return this;
+		}
+
+		public TestService<T> numberOfItemsToProcess(int numberOfItemsToProcess) {
 			this.numberOfItemsToProcess = numberOfItemsToProcess;
+			return this;
+		}
+
+		public TestService<T> numberOfItemsToAdd(int numberOfItemsToAdd) {
+			this.numberOfItemsToAdd = numberOfItemsToAdd;
+			return this;
+		}
+
+		public TestService<T> throwExceptionOnFailure(boolean throwExceptionOnFailure) {
+			this.throwExceptionOnFailure = throwExceptionOnFailure;
+			return this;
 		}
 
 		@Override
@@ -146,12 +236,33 @@ public class AsyncActionServiceTest {
 			timesAsynchronousActionCalled++;
 			objectThatWasActedOn = objectToActOn;
 
-			return (failuresUntilSuccess != -1 && failuresUntilSuccess--==0);
+			if(failuresUntilSuccess != 0) {
+				if(failuresUntilSuccess != -1) {
+					failuresUntilSuccess--;
+				}
+				if(throwExceptionOnFailure) {
+					throw new RuntimeException();
+				}
+				return false;
+			}
+
+			return true;
+		}
+
+		@Override
+		protected void putToExecutionQueue(T objectToActOn) throws InterruptedException {
+			timesPutCalled++;
+
+			if(numberOfItemsToAdd-- == 0) {
+				throw new InterruptedException();
+			}
+
+			super.putToExecutionQueue(objectToActOn);
 		}
 
 		@Override
 		protected T takeFromExecutionQueue() throws InterruptedException {
-			if(numberOfItemsToProcess--==0) {
+			if(numberOfItemsToProcess-- == 0) {
 				throw new InterruptedException();
 			}
 

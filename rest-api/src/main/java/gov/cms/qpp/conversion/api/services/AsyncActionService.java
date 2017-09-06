@@ -43,7 +43,7 @@ public abstract class AsyncActionService<T> {
 		} while(!added);
 	}
 
-	private void putToExecutionQueue(T objectToActOn) throws InterruptedException {
+	protected void putToExecutionQueue(T objectToActOn) throws InterruptedException {
 		executionQueue.put(objectToActOn);
 	}
 
