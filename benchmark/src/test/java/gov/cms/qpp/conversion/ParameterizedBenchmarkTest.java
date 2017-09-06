@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.lessThan;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.FileSystem;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +42,6 @@ public class ParameterizedBenchmarkTest {
 		fileSystemField.setAccessible(true);
 		defaultFileSystem = (FileSystem) fileSystemField.get(null);
 		fileSystemField.set(null, fileSystem);
-		System.out.println(fileSystem);
-		Files.list(Files.list(fileSystem.getRootDirectories().iterator().next()).findFirst().get()).forEach(System.out::println);
 		paths = FileTestHelper.getAllQrdaFiles(fileSystem, "-latest.xml").map(Path::toString).toArray(String[]::new);
 
 		Options opt = new OptionsBuilder()

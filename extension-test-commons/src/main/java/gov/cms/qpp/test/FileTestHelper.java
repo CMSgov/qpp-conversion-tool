@@ -16,17 +16,21 @@ public class FileTestHelper {
 	public static FileSystem createMockFileSystem() {
 		FileSystem mock = Jimfs.newFileSystem(Configuration.unix());
 
-		String qrdaFiles = "../qrda-files";
-		Path source = Paths.get(qrdaFiles);
-		Path destination = mock.getPath(qrdaFiles);
+		copy("../qrda-files", mock);
+		copy("src/test/resources", mock);
+
+		return mock;
+	}
+
+	private static void copy(String path, FileSystem mock) {
+		Path source = Paths.get(path);
+		Path destination = mock.getPath(path);
 
 		try {
 			Files.walkFileTree(source, new CopyFileVisitor(destination));
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
-
-		return mock;
 	}
 
 	public static Stream<Path> getAllQrdaFiles(FileSystem fileSystem, String extension) {
