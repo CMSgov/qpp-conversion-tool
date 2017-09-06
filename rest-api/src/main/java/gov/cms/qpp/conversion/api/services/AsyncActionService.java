@@ -74,11 +74,11 @@ public abstract class AsyncActionService<T> {
 			try {
 				putToExecutionQueue(objectToActOn);
 				added = true;
+			} catch (InterruptedException exception) {
+				API_LOG.warn("Interrupting wait to add an item to the execution queue, too bad were going to try again",
+					exception);
 			}
-			catch (InterruptedException exception) {
-				API_LOG.warn("Interrupting wait to add an item to the execution queue, too bad were going to try again", exception);
-			}
-		} while(!added);
+		} while (!added);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public abstract class AsyncActionService<T> {
 	 * Ensures the separate thread is running that will execute the action.
 	 */
 	private void ensureExecutionThreadRunning() {
-		if(threadFuture == null || threadFuture.isDone()) {
+		if (threadFuture == null || threadFuture.isDone()) {
 			API_LOG.info("Start asynchronous execution of action queue");
 			threadFuture = CompletableFuture.supplyAsync(this::asynchronousExecuteQueue, taskExecutor);
 		}
@@ -145,16 +145,15 @@ public abstract class AsyncActionService<T> {
 			API_LOG.info("Trying to execute action");
 			try {
 				success = asynchronousAction(objectToActOn);
-			} catch(Exception exception) {
+			} catch (Exception exception) {
 				API_LOG.warn("Exception while trying to execute action", exception);
 				success = false;
 			}
 
-			if(!success) {
+			if (!success) {
 				try {
 					sleepService.sleep(5000);
-				}
-				catch (InterruptedException exception) {
+				} catch (InterruptedException exception) {
 					API_LOG.warn("Interrupting sleep between retries", exception);
 				}
 			}
