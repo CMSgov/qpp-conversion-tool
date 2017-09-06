@@ -1,5 +1,19 @@
 package gov.cms.qpp.conversion;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,29 +26,26 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThan;
+import gov.cms.qpp.test.FileTestHelper;
 
 public class ParameterizedBenchmarkTest {
-	private static String[] paths;
+
+	private static Field fileSystemField;
+	private static FileSystem defaultFileSystem;
+	private static FileSystem fileSystem;
 	private static List<BenchmarkResult> benchResults;
+	private static String[] paths;
 
 	@BeforeClass
-	public static void loadPaths() throws IOException, RunnerException {
-		paths = Files.walk(Paths.get("../qrda-files"))
-				.filter(Files::isRegularFile)
-				.map(path -> path.toFile().getAbsolutePath())
-				.filter(path -> path.endsWith("-latest.xml"))
-				.toArray(String[]::new);
+	public static void loadPaths() throws IOException, RunnerException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		fileSystem = FileTestHelper.createMockFileSystem();
+		fileSystemField = ConversionEntry.class.getDeclaredField("fileSystem");
+		fileSystemField.setAccessible(true);
+		defaultFileSystem = (FileSystem) fileSystemField.get(null);
+		fileSystemField.set(null, fileSystem);
+		System.out.println(fileSystem);
+		Files.list(Files.list(fileSystem.getRootDirectories().iterator().next()).findFirst().get()).forEach(System.out::println);
+		paths = FileTestHelper.getAllQrdaFiles(fileSystem, "-latest.xml").map(Path::toString).toArray(String[]::new);
 
 		Options opt = new OptionsBuilder()
 				.mode(Mode.Throughput)
@@ -51,13 +62,9 @@ public class ParameterizedBenchmarkTest {
 	}
 
 	@AfterClass
-	public static void cleanUp() throws IOException {
-		for (String path : paths) {
-			String deleteMe = path
-				.substring(path.lastIndexOf('/') + 1)
-				.replace(".xml", ".qpp.json");
-			Files.deleteIfExists(Paths.get(deleteMe));
-		}
+	public static void cleanup() throws IllegalArgumentException, IllegalAccessException, IOException {
+		fileSystemField.set(null, defaultFileSystem);
+		fileSystem.close();
 	}
 
 	@Test
