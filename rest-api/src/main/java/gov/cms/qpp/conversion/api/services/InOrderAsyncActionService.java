@@ -24,7 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  * @param <T> The type of object that will be acted upon in the asynchronous action.
  */
-public abstract class AsyncActionService<T> {
+public abstract class InOrderAsyncActionService<T> {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 

@@ -24,10 +24,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AsyncActionServiceTest {
+public class InOrderAsyncActionServiceTest {
 
 	@InjectMocks
-	private TestService<Object> objectUnderTest;
+	private TestInOrderService<Object> objectUnderTest;
 
 	@Mock
 	private TaskExecutor taskExecutor;
@@ -215,7 +215,7 @@ public class AsyncActionServiceTest {
 		assertThat("The asynchronousAction method was not called as many times as it should have.", timesAsynchronousActionCalled, is(3));
 	}
 
-	private static class TestService<T> extends AsyncActionService<T> {
+	private static class TestInOrderService<T> extends InOrderAsyncActionService<T> {
 
 		private int failuresUntilSuccessTemplate = -1;
 		private int failuresUntilSuccess = -1;
@@ -223,23 +223,23 @@ public class AsyncActionServiceTest {
 		private int numberOfItemsToAdd = -1;
 		private boolean throwExceptionOnFailure = false;
 
-		public TestService<T> failuresUntilSuccess(int failuresUntilSuccess) {
+		public TestInOrderService<T> failuresUntilSuccess(int failuresUntilSuccess) {
 			this.failuresUntilSuccessTemplate = failuresUntilSuccess;
 			this.failuresUntilSuccess = this.failuresUntilSuccessTemplate;
 			return this;
 		}
 
-		public TestService<T> numberOfItemsToProcess(int numberOfItemsToProcess) {
+		public TestInOrderService<T> numberOfItemsToProcess(int numberOfItemsToProcess) {
 			this.numberOfItemsToProcess = numberOfItemsToProcess;
 			return this;
 		}
 
-		public TestService<T> numberOfItemsToAdd(int numberOfItemsToAdd) {
+		public TestInOrderService<T> numberOfItemsToAdd(int numberOfItemsToAdd) {
 			this.numberOfItemsToAdd = numberOfItemsToAdd;
 			return this;
 		}
 
-		public TestService<T> throwExceptionOnFailure(boolean throwExceptionOnFailure) {
+		public TestInOrderService<T> throwExceptionOnFailure(boolean throwExceptionOnFailure) {
 			this.throwExceptionOnFailure = throwExceptionOnFailure;
 			return this;
 		}
