@@ -14,14 +14,10 @@ public abstract class SkeletalQrdaSource implements QrdaSource {
 	}
 
 	public SkeletalQrdaSource(Path path) {
-		String filename = isPathFileNameNull(path) ? path.getFileName().toString() : "";
+		String filename = !Objects.isNull(path.getFileName().toString()) ? path.getFileName().toString() : "";
 		Objects.requireNonNull(filename, "name");
 
 		this.name = filename;
-	}
-
-	private boolean isPathFileNameNull(Path path) {
-		return !Objects.isNull(path) && !Objects.isNull(path.getFileName());
 	}
 
 	@Override
