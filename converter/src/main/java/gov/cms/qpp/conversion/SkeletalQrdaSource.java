@@ -21,7 +21,7 @@ public abstract class SkeletalQrdaSource implements QrdaSource {
 	}
 
 	private boolean isPathFileNameNull(Path path) {
-		return !Objects.isNull(path) && !Objects.isNull(path.getFileName();
+		return !Objects.isNull(path) && !Objects.isNull(path.getFileName());
 	}
 
 	@Override
