@@ -25,7 +25,7 @@ import java.io.IOException;
  * Controller to handle uploading files for QRDA-III Conversion
  */
 @RestController
-@RequestMapping("/qrda3")
+@RequestMapping("/submissions/qrda3")
 @CrossOrigin
 public class QrdaControllerV1 {
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");

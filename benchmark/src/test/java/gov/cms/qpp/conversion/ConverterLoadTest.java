@@ -45,7 +45,7 @@ public class ConverterLoadTest {
 		httpSampler.setProtocol("http");
 		httpSampler.setDomain("184.73.24.93");
 		httpSampler.setPort(2680);
-		httpSampler.setPath("qrda3");
+		httpSampler.setPath("submissions/qrda3");
 		httpSampler.setMethod("POST");
 		httpSampler.setPostBodyRaw(true);
 		httpSampler.setDoMultipartPost(true);
