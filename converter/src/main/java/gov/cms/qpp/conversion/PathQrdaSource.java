@@ -11,7 +11,7 @@ public class PathQrdaSource extends SkeletalQrdaSource {
 	private final Path path;
 
 	public PathQrdaSource(Path path) {
-		super(path);
+		super(path != null && path.getFileName() != null ? path.getFileName().toString() : "");
 		this.path = path;
 	}
 

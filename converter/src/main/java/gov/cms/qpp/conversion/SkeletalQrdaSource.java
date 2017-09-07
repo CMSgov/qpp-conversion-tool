@@ -13,14 +13,14 @@ public abstract class SkeletalQrdaSource implements QrdaSource {
 		this.name = name;
 	}
 
-	public SkeletalQrdaSource(Path path) {
-		Path filename = path.getFileName();
-		String name = "";
-		if (filename != null) {
-			name = filename.toString();
-		}
-		this.name = name;
-	}
+//	public SkeletalQrdaSource(Path path) {
+//		Path filename = path.getFileName();
+//		String name = "";
+//		if (filename != null) {
+//			name = filename.toString();
+//		}
+//		this.name = name;
+//	}
 
 	@Override
 	public final String getName() {
