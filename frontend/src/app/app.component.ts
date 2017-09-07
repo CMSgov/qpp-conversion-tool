@@ -4,7 +4,7 @@ import 'rxjs/Rx' ;
 import { DomSanitizer } from '@angular/platform-browser';
 
 
-const URL  = 'http://184.73.24.93:2680/submissions/converter';
+const URL  = 'http://184.73.24.93:2680';
 
 @Component({
 	selector: 'app-root',

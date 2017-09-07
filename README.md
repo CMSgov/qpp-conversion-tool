@@ -168,7 +168,7 @@ errors in the provided input file.
 The Conversion Tool can be executed through a ReST API.  See [above](#getting-and-using-the-converter) for how to start the API endpoint.
 ```shell
 curl -X POST \
-  http://localhost:8080/submissions/converter \
+  http://localhost:8080 \
   -H 'cache-control: no-cache' \
   -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
   -F file=@./qrda-files/valid-QRDA-III.xml
