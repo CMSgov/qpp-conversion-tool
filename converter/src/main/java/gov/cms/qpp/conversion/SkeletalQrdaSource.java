@@ -14,7 +14,7 @@ public abstract class SkeletalQrdaSource implements QrdaSource {
 	}
 
 	public SkeletalQrdaSource(Path path) {
-		String filename = !Objects.isNull(path.getFileName()) ? path.getFileName().toString() : null;
+		String filename = !Objects.isNull(path.getFileName()) ? path.getFileName().toString() : "";
 		Objects.requireNonNull(filename, "name");
 
 		this.name = filename;

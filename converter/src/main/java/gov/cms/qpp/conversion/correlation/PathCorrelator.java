@@ -134,8 +134,9 @@ public class PathCorrelator {
 		Map<String, Object> jsonMap = compiledPath.read(wrapper.toString());
 		Map<String, String> metaMap = getMetaMap(jsonMap, leaf);
 		String preparedPath = "";
-		if (!Objects.isNull(metaMap))
+		if (!Objects.isNull(metaMap)) {
 			preparedPath = makePath(metaMap, leaf);
+		}
 		return preparedPath;
 	}
 
