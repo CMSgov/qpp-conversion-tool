@@ -15,9 +15,7 @@ public abstract class SkeletalQrdaSource implements QrdaSource {
 
 	public SkeletalQrdaSource(Path path) {
 		String filename = isValidPath(path) ? path.getFileName().toString() : null;
-		if (filename == null) {
-			throw new NullPointerException("name");
-		}
+		Objects.requireNonNull(filename, "name");
 
 		this.name = filename;
 	}
