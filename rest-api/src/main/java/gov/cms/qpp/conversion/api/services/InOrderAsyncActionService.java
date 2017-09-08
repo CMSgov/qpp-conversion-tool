@@ -4,39 +4,35 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.retry.backoff.FixedBackOffPolicy;
+import org.springframework.retry.policy.AlwaysRetryPolicy;
+import org.springframework.retry.support.RetryTemplate;
 
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * A service extends from this to help it asynchronously do something in a guaranteed fashion.
  *
  * The main point of entry is {@link #actOnItem(Object)}.  A service extending this class would call {@link #actOnItem(Object)}
  * and implement {@link #asynchronousAction(Object)} to do an action given that item.  This class handles all the error handling
- * and retries so you don't need to in {@link #asynchronousAction(Object)}.  For each service that extends this class, a thread
- * is created and executes the action as items are passed in, in the order they are pass in.  If there are no active items left
- * to process, the thread spins down until an item is passed in again.
+ * and retries so you don't need to in {@link #asynchronousAction(Object)}.  For multiple calls to {@link #actOnItem(Object)},
+ * the actions will complete in the order that they were passed in.
  *
  * This allows an application not to deal with distributed transactions and having to solve the problem of how to rollback a
  * distributed transaction.  In lieu of a standard transaction contract, this gives the application eventual consistency.
  * http://www.grahamlea.com/2016/08/distributed-transactions-microservices-icebergs/
  *
  * @param <T> The type of object that will be acted upon in the asynchronous action.
+ * @param <S> The type of object that is returned from {@link #asynchronousAction(Object)}.
  */
-public abstract class InOrderAsyncActionService<T> {
+public abstract class InOrderAsyncActionService<T, S> {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 
 	@Autowired
 	private TaskExecutor taskExecutor;
 
-	@Autowired
-	private SleepService sleepService;
-
-	private BlockingQueue<T> executionQueue = new LinkedBlockingQueue<>();
-
-	private CompletableFuture threadFuture;
+	private CompletableFuture<S> currentThreadFuture;
 
 	/**
 	 * The single action that will occur given a call to {@link #actOnItem(Object)}.
@@ -49,146 +45,52 @@ public abstract class InOrderAsyncActionService<T> {
 	 * </ul>
 	 *
 	 * @param objectToActOn An object that contains information pertinent to the execution of the action.
-	 * @return {@code true} on success or {@code false} on failure
+	 * @return An object to return that can be retrieved from a {@link CompletableFuture}.
 	 */
-	protected abstract boolean asynchronousAction(T objectToActOn);
+	protected abstract S asynchronousAction(T objectToActOn);
 
 	/**
 	 * The main point of entry into this class.  Call this with an item and {@link #asynchronousAction(Object)} will be called
 	 * with the same item to do the action asynchronously.
 	 *
-	 * @param objectToActOn The item to do an action on.
-	 */
-	protected void actOnItem(final T objectToActOn) {
-		addItemToExecutionQueue(objectToActOn);
-		ensureExecutionThreadRunning();
-	}
-
-	/**
-	 * Put an item onto a queue and block until it can be added.
+	 * Synchronized to allow different threads to call this method to preclude incorrect results.
 	 *
 	 * @param objectToActOn The item to do an action on.
+	 * @return A {@link CompletableFuture} that will complete once the action completes without failure.
 	 */
-	private void addItemToExecutionQueue(T objectToActOn) {
-		try {
-			putToExecutionQueue(objectToActOn);
-		} catch (InterruptedException exception) {
-			Thread.currentThread().interrupt();
-			API_LOG.error("Interrupting wait to add an item to the execution queue! This item will not be completed!",
-				exception);
-		}
-	}
+	protected synchronized CompletableFuture<S> actOnItem(final T objectToActOn) {
 
-	/**
-	 * Put the item on the queue.  Blocks the thread if the blocking queue is full.
-	 *
-	 * @param objectToActOn The item to do an action on.
-	 * @throws InterruptedException While waiting to add an object to the queue.
-	 */
-	protected void putToExecutionQueue(T objectToActOn) throws InterruptedException {
-		executionQueue.put(objectToActOn);
-	}
-
-	/**
-	 * Ensures the separate thread is running that will execute the action.
-	 */
-	private void ensureExecutionThreadRunning() {
-		if (threadFuture == null || threadFuture.isDone()) {
-			API_LOG.info("Start asynchronous execution of action queue");
-			threadFuture = CompletableFuture.supplyAsync(this::asynchronousExecuteQueue, taskExecutor);
-		}
-	}
-
-	/**
-	 * Waits for an object to be added to the queue.  Blocks the thread until an object is added.  Once an object is available,
-	 * it is taken from the queue, acted upon, and the thread stops if there are no more items on the queue.
-	 * This is the top-level method executed on a separate thread.
-	 *
-	 * @return A {@code CompletableFuture} to know when the thread has completed.
-	 */
-	private CompletableFuture<?> asynchronousExecuteQueue() {
-		try {
-			do {
-				API_LOG.info("Try to take an action off the queue");
-				T objectToActOn = takeFromExecutionQueue();
-				asynchronousRetryOperation(objectToActOn);
-			} while (!executionQueue.isEmpty());
-		} catch (InterruptedException exception) {
-			Thread.currentThread().interrupt();
-			if (executionQueue.isEmpty()) {
-				API_LOG.info("Interrupt waiting for an action on the execution queue", exception);
-			} else {
-				API_LOG.error("Interrupt with additional items on the queue! These items will not be completed!", exception);
-			}
+		CompletableFuture<T> start;
+		if (currentThreadFuture == null || currentThreadFuture.isDone()) {
+			start = CompletableFuture.supplyAsync(() -> objectToActOn, taskExecutor);
+		} else {
+			start = currentThreadFuture.thenApplyAsync(ignore -> objectToActOn, taskExecutor);
 		}
 
-		return CompletableFuture.completedFuture(null);
-	}
-
-	/**
-	 * Take an item from the queue.  Blocks the thread if this blocking queue is empty.
-	 *
-	 * @return The item to do an action on.
-	 * @throws InterruptedException While waiting for an object to be added to the queue.
-	 */
-	protected T takeFromExecutionQueue() throws InterruptedException {
-		return executionQueue.take();
-	}
-
-	/**
-	 * Repeatedly call {@link #callAsynchronousAction(Object)} until it succeeds.
-	 *
-	 * Sleeps five seconds in between retries.
-	 *
-	 * @param objectToActOn The item to do an action on.
-	 */
-	private void asynchronousRetryOperation(T objectToActOn) {
-		boolean success = false;
-
-		try {
-			do {
-				checkThreadInterrupted();
+		currentThreadFuture = start
+			.thenApplyAsync(lambdaObjectToActOn -> {
+				RetryTemplate retry = retryTemplate();
 
 				API_LOG.info("Trying to execute action");
-				success = callAsynchronousAction(objectToActOn);
+				return retry.execute(context -> this.asynchronousAction(lambdaObjectToActOn));
+			}, taskExecutor);
 
-				if (!success) {
-					sleepService.sleep(5000);
-				}
-			} while (!success);
-		} catch (InterruptedException exception) {
-			Thread.currentThread().interrupt();
-			API_LOG.error("Interrupting retry logic! This item will not be completed!", exception);
-		}
+		return currentThreadFuture;
 	}
 
 	/**
-	 * Calls {@link #asynchronousAction(Object)} and catches any exceptions.
+	 * Returns a retry template that always retries with five second intervals between retries.
 	 *
-	 * @param objectToActOn The item to do an action on.
-	 * @return {@code true} on success, {@code false} on failure.
+	 * @return A retry template.
 	 */
-	private boolean callAsynchronousAction(T objectToActOn) {
-		boolean success = false;
+	protected RetryTemplate retryTemplate() {
+		RetryTemplate retry = new RetryTemplate();
 
-		try {
-			success = asynchronousAction(objectToActOn);
-		} catch (Exception exception) {
-			API_LOG.warn("Exception while trying to execute action", exception);
-			success = false;
-		}
+		retry.setRetryPolicy(new AlwaysRetryPolicy());
+		FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
+		backOffPolicy.setBackOffPeriod(5000);
+		retry.setBackOffPolicy(backOffPolicy);
 
-		return success;
-	}
-
-	/**
-	 * Throws a {@link InterruptedException} if the thread has been interrupted.
-	 *
-	 * @throws InterruptedException If the thread has been interrupted.
-	 */
-	private void checkThreadInterrupted() throws InterruptedException {
-		if (Thread.interrupted()) {
-			throw new InterruptedException();
-		}
+		return retry;
 	}
 }
