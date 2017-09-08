@@ -27,7 +27,7 @@ public class PathQrdaSourceTest extends QrdaSourceTestSuite {
 	@Test
 	public void testNullPath() {
 		PathQrdaSource testSource = new PathQrdaSource(null);
-		assertThat(testSource.getName(), is(isEmptyString()));
+		assertThat(testSource.getName(), isEmptyString());
 	}
 
 }
