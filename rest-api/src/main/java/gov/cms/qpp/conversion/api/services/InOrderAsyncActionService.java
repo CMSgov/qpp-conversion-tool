@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.api.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 
@@ -24,8 +22,6 @@ import java.util.concurrent.CompletableFuture;
  */
 public abstract class InOrderAsyncActionService<T, S> extends AnyOrderAsyncActionService<T, S> {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
-
 	@Autowired
 	private TaskExecutor taskExecutor;
 
@@ -42,6 +38,7 @@ public abstract class InOrderAsyncActionService<T, S> extends AnyOrderAsyncActio
 	 * @param objectToActOn The item to do an action on.
 	 * @return A {@link CompletableFuture} that will complete once the action completes without failure.
 	 */
+	@Override
 	protected synchronized CompletableFuture<S> actOnItem(final T objectToActOn) {
 
 		if (currentThreadFuture == null || currentThreadFuture.isDone()) {

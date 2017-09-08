@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,8 +40,10 @@ public class InOrderAsyncActionServiceTest {
 
 	private static AtomicReference<Object> objectThatWasActedOn;
 
+	private static AtomicBoolean pauseAsynchronousAction;
+
 	@Before
-	public void runBeforeEachTest() throws InterruptedException {
+	public void runBeforeEachTest() {
 		doAnswer(invocationOnMock -> {
 			Runnable method = invocationOnMock.getArgument(0);
 			CompletableFuture.runAsync(method);
@@ -50,6 +53,12 @@ public class InOrderAsyncActionServiceTest {
 		asynchronousActionCalled = new AtomicBoolean(false);
 		timesAsynchronousActionCalled = new AtomicInteger(0);
 		objectThatWasActedOn = new AtomicReference<>(null);
+		pauseAsynchronousAction = new AtomicBoolean(false);
+	}
+
+	@After
+	public void runAfterEachTest() {
+		pauseAsynchronousAction.set(false);
 	}
 
 	@Test
@@ -137,10 +146,12 @@ public class InOrderAsyncActionServiceTest {
 	public void testDependencyOrder() {
 		objectUnderTest.failuresUntilSuccess(0);
 
+		pauseAsynchronousAction.set(true);
+
 		CompletableFuture<Object> completableFuture1 = objectUnderTest.actOnItem(new Object());
 		CompletableFuture<Object> completableFuture2 = objectUnderTest.actOnItem(new Object());
 
-		assertThat("One other CompletableFuture should be dependent on this one but there is.",
+		assertThat("One other CompletableFuture should be dependent on this one but there isn't.",
 			completableFuture1.getNumberOfDependents(), is(greaterThan(0)));
 		assertThat("No other CompletableFuture should be dependent on this one but there is.",
 			completableFuture2.getNumberOfDependents(), is(0));
@@ -162,6 +173,16 @@ public class InOrderAsyncActionServiceTest {
 			asynchronousActionCalled.set(true);
 			timesAsynchronousActionCalled.incrementAndGet();
 			objectThatWasActedOn.set(objectToActOn);
+
+			while (pauseAsynchronousAction.get()) {
+				try {
+					Thread.sleep(100);
+				}
+				catch (InterruptedException exception) {
+					Thread.currentThread().interrupt();
+					pauseAsynchronousAction.set(false);
+				}
+			}
 
 			if(failuresUntilSuccess.get() != 0) {
 				if(failuresUntilSuccess.get() != -1) {
