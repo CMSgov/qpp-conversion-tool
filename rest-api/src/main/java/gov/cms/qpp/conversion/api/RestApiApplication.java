@@ -28,7 +28,7 @@ public class RestApiApplication {
 	@Bean
 	public TaskExecutor taskExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(3);
+		executor.setCorePoolSize(5);
 		executor.setThreadNamePrefix("QppConversionRestApi-");
 		executor.initialize();
 		return executor;
