@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
-import org.springframework.retry.policy.AlwaysRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 import java.util.ArrayList;
@@ -178,9 +177,8 @@ public class InOrderAsyncActionServiceTest {
 
 		@Override
 		protected RetryTemplate retryTemplate() {
-			RetryTemplate retry = new RetryTemplate();
+			RetryTemplate retry = super.retryTemplate();
 
-			retry.setRetryPolicy(new AlwaysRetryPolicy());
 			FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
 			backOffPolicy.setBackOffPeriod(0);
 			retry.setBackOffPolicy(backOffPolicy);
