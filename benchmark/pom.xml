@@ -44,6 +44,42 @@
 									<mainClass>org.openjdk.jmh.Main</mainClass>
 								</transformer>
 							</transformers>
+							<artifactSet>
+								<excludes>
+									<exclude>commons-cli:commons-cli</exclude>
+									<exclude>commons-codec:commons-codec</exclude>
+									<exclude>commons-io:commons-io</exclude>
+									<exclude>commons-logging:commons-logging-api</exclude>
+									<exclude>commons-logging:commons-logging</exclude>
+									<exclude>com.google.guava:guava</exclude>
+									<exclude>org.slf4j:slf4j-api</exclude>
+									<exclude>com.google.code.findbugs:jsr305</exclude>
+									<exclude>org.ow2.asm:asm</exclude>
+									<exclude>org.powermock:powermock-module-junit4</exclude>
+									<exclude>org.apache.httpcomponents:httpclient</exclude>
+									<exclude>org.apache.httpcomponents:httpcore</exclude>
+									<exclude>com.fasterxml.jackson.core:jackson-core</exclude>
+									<exclude>org.jacoco:org.jacoco.agent</exclude>
+									<exclude>com.jayway.jsonpath:json-path</exclude>
+									<exclude>org.slf4j:jcl-over-slf4j</exclude>
+									<exclude>jaxen:jaxen</exclude>
+									<exclude>net.minidev:json-smart</exclude>
+									<exclude>com.fasterxml.jackson.core:jackson-databind</exclude>
+									<exclude>com.fasterxml.jackson.core:jackson-annotations</exclude>
+									<exclude>org.codehaus.woodstox:woodstox-core-asl</exclude>
+									<exclude>org.reflections:reflections</exclude>
+									<exclude>ch.qos.logback:logback-classic</exclude>
+									<exclude>ch.qos.logback:logback-core</exclude>
+									<exclude>org.apache.logging.log4j:log4j-slf4j-impl</exclude>
+									<exclude>org.codehaus.woodstox:stax2-api</exclude>
+									<exclude>net.minidev:accessors-smart</exclude>
+									<exclude>com.fasterxml.jackson.dataformat:jackson-dataformat-xml</exclude>
+									<exclude>org.javassist:javassist</exclude>
+									<exclude>gov.cms.qpp.conversion:java-conversion-tool</exclude>
+									<exclude>org.jdom:jdom2</exclude>
+									<exclude>xml-apis:xml-apis</exclude>
+								</excludes>
+							</artifactSet>
 							<filters>
 								<filter>
 									<!--

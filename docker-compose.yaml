@@ -13,3 +13,4 @@ services:
         splunk-token: ${SPLUNK_TOKEN}
         splunk-insecureskipverify: "true"
         splunk-format: "json"
+        splunk-verify-connection: "false"
