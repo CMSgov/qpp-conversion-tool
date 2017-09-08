@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.AlwaysRetryPolicy;
@@ -20,16 +22,17 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.number.OrderingComparison.greaterThan;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
 @RunWith(MockitoJUnitRunner.class)
-public class InOrderAsyncActionServiceTest {
+public class AnyOrderAsyncActionServiceTest {
+
+	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 
 	@InjectMocks
-	private TestInOrderService objectUnderTest;
+	private TestAnyOrderService objectUnderTest;
 
 	@Mock
 	private TaskExecutor taskExecutor;
@@ -141,18 +144,18 @@ public class InOrderAsyncActionServiceTest {
 		CompletableFuture<Object> completableFuture1 = objectUnderTest.actOnItem(new Object());
 		CompletableFuture<Object> completableFuture2 = objectUnderTest.actOnItem(new Object());
 
-		assertThat("One other CompletableFuture should be dependent on this one but there is.",
-			completableFuture1.getNumberOfDependents(), is(greaterThan(0)));
+		assertThat("No other CompletableFuture should be dependent on this one but there is.",
+			completableFuture1.getNumberOfDependents(), is(0));
 		assertThat("No other CompletableFuture should be dependent on this one but there is.",
 			completableFuture2.getNumberOfDependents(), is(0));
 	}
 
-	private static class TestInOrderService extends InOrderAsyncActionService<Object, Object> {
+	private static class TestAnyOrderService extends AnyOrderAsyncActionService<Object, Object> {
 
 		private int failuresUntilSuccessTemplate = -1;
 		private ThreadLocal<Integer> failuresUntilSuccess = ThreadLocal.withInitial(() -> -1);
 
-		public TestInOrderService failuresUntilSuccess(int failuresUntilSuccess) {
+		public TestAnyOrderService failuresUntilSuccess(int failuresUntilSuccess) {
 			this.failuresUntilSuccessTemplate = failuresUntilSuccess;
 			this.failuresUntilSuccess = ThreadLocal.withInitial(() -> this.failuresUntilSuccessTemplate);
 			return this;

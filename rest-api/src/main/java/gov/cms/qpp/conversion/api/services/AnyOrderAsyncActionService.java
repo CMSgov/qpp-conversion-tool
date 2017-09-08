@@ -48,8 +48,10 @@ public abstract class AnyOrderAsyncActionService<T, S> {
 	protected abstract S asynchronousAction(T objectToActOn);
 
 	/**
-	 * The main point of entry into this class.  Call this with an item and {@link #asynchronousAction(Object)} will be called
-	 * with the same item to do the action asynchronously.
+	 * The main point of entry into this class.
+	 *
+	 * Call this with an item and {@link #asynchronousAction(Object)} will be called with the same item to do the action
+	 * asynchronously.
 	 *
 	 * @param objectToActOn The item to do an action on.
 	 * @return A {@link CompletableFuture} that will complete once the action completes without failure.
