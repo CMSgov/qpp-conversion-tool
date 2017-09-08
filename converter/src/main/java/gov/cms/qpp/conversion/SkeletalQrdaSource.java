@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import java.nio.file.Path;
 import java.util.Objects;
 
 public abstract class SkeletalQrdaSource implements QrdaSource {
