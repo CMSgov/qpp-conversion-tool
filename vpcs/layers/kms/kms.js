@@ -1,5 +1,5 @@
 
-function template(keyName, description, enabled, roles) {
+function template(keyName, roles, options) {
     var setup = {
         "Resources": {}
     };
@@ -7,8 +7,8 @@ function template(keyName, description, enabled, roles) {
     setup.Resources[keyName] = {
         "Type" : "AWS::KMS::Key",
         "Properties" : {
-            "Description" : description,
-            "Enabled" : enabled,
+            "Description" : options.description || '',
+            "Enabled" : !!options.enabled,
             "KeyPolicy" : policy(roles)
         }
     };
