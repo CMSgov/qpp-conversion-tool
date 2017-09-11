@@ -5,6 +5,6 @@
 	},
 	"dependencies": {},
 	"scripts": {
-		"test": "mocha ./specs"
+		"test": "mocha ./test/**/*.js"
 	}
 }
