@@ -34,6 +34,9 @@
 		},{
 			"templateId": "MEASURE_DATA_CMS_V2",
 			"correlationId": "measureData"
+		},{
+			"templateId": "PERFORMANCE_RATE_PROPORTION_MEASURE",
+			"correlationId": "performanceRate"
 		}
 	],
 	"correlations": [
@@ -178,7 +181,8 @@
 					}
 				}
 			]
-		},{
+		},
+		{
 			"correlationId": "measureData",
 			"config": [
 				{
@@ -195,6 +199,18 @@
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = '<nsuri>']/*[local-name() = 'externalObservation' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>']/@root",
+						"xmltype": "attribute"
+					}
+				}
+			]
+		},
+		{
+			"correlationId": "performanceRate",
+			"config": [
+				{
+					"decodeLabel": "rate",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@value",
 						"xmltype": "attribute"
 					}
 				}
