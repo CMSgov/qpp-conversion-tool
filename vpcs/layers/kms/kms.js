@@ -2,7 +2,7 @@
 function template(keyName, description, enabled, roles) {
     var setup = {
         "Resources": {}
-    }
+    };
 
     setup.Resources[keyName] = {
         "Type" : "AWS::KMS::Key",
@@ -79,4 +79,4 @@ function policy(roles) {
     }
 }
 
-module.exports = template
+module.exports = template;

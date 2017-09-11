@@ -31,6 +31,7 @@ test:
     - cd frontend; npm install -g protractor
     - cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
   override:
+    - cd qpp-conversion-tool/vpcs; npm test
     - mvn clean verify -Djacoco.skip.instrument=false
     - mvn jacoco:report
     - ./bin/sonarqube.sh
