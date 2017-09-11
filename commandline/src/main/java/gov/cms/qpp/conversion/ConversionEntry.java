@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion;
 
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import java.util.stream.Stream;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -239,8 +240,8 @@ public class ConversionEntry {
 	static Collection<Path> manyPath(String path) {
 		Path inDir = Paths.get(extractDir(path));
 		Pattern fileRegex = wildCardToRegex(path);
-		try {
-			return Files.walk(inDir)
+		try (Stream<Path> pathStream = Files.walk(inDir)) {
+			return pathStream
 					.filter(file -> fileRegex.matcher(file.toString()).matches())
 					.filter(file -> !Files.isDirectory(file))
 					.collect(Collectors.toList());

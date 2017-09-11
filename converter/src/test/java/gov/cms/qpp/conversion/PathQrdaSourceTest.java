@@ -8,6 +8,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.isEmptyString;
+
 public class PathQrdaSourceTest extends QrdaSourceTestSuite {
 
 	public PathQrdaSourceTest() {
@@ -18,6 +21,12 @@ public class PathQrdaSourceTest extends QrdaSourceTestSuite {
 	public void testInputStream() throws IOException {
 		String content = IOUtils.toString(source.toInputStream(), StandardCharsets.UTF_8);
 		Assert.assertEquals("hello, world", content);
+	}
+
+	@Test
+	public void testNullPath() {
+		PathQrdaSource testSource = new PathQrdaSource(null);
+		assertThat(testSource.getName(), isEmptyString());
 	}
 
 }
