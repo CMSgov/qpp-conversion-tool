@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion;
 
-
 import org.apache.jmeter.control.LoopController;
 import org.apache.jmeter.engine.StandardJMeterEngine;
 import org.apache.jmeter.protocol.http.sampler.HTTPSamplerProxy;
@@ -46,7 +45,7 @@ public class ConverterLoadTest {
 		httpSampler.setProtocol("http");
 		httpSampler.setDomain("184.73.24.93");
 		httpSampler.setPort(2680);
-		httpSampler.setPath("qrda3");
+		httpSampler.setPath("");
 		httpSampler.setMethod("POST");
 		httpSampler.setPostBodyRaw(true);
 		httpSampler.setDoMultipartPost(true);
@@ -90,7 +89,7 @@ public class ConverterLoadTest {
 		}
 
 		assertThat("Endpoint could not support up to 20 or more concurrent requests",
-				numThreads, Matchers.greaterThan(20));
+				numThreads, Matchers.greaterThanOrEqualTo(20));
 	}
 
 	private Map<String, String> executePlan(int numLoops, int numThreads, int rampUp) throws IOException {

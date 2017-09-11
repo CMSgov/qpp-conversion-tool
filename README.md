@@ -55,7 +55,7 @@ cd qpp-conversion-tool
 chmod +x convert.sh
 
 # Try the convert script. If the JAR isn't built yet, the script will build it for you:
-./convert.sh java-conversion-tool/src/test/resources/valid-QRDA-III.xml
+./convert.sh converter/src/test/resources/valid-QRDA-III.xml
 ```
 
 If you are using Windows, open a command prompt (not PowerShell) and go to the directory you want the converter tool directory to be created in:
@@ -68,7 +68,7 @@ git clone https://github.com/CMSgov/qpp-conversion-tool.git
 cd qpp-conversion-tool
 
 # Try the convert script. If the JAR isn't built yet, the script will build it for you:
-convert.bat java-conversion-tool/src/test/resources/valid-QRDA-III.xml
+convert.bat converter/src/test/resources/valid-QRDA-III.xml
 ```
 
 If you are using Docker to run the conversion as a ReST API, open a terminal and go to the cloned directory:
@@ -168,7 +168,7 @@ errors in the provided input file.
 The Conversion Tool can be executed through a ReST API.  See [above](#getting-and-using-the-converter) for how to start the API endpoint.
 ```shell
 curl -X POST \
-  http://localhost:8080/v1/qrda3 \
+  http://localhost:8080 \
   -H 'cache-control: no-cache' \
   -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
   -F file=@./qrda-files/valid-QRDA-III.xml

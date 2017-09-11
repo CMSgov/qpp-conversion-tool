@@ -37,7 +37,9 @@ public class ConversionFileWriterWrapperTest {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
-		converterWrapper.doDefaults(false).transform();
+		Context context = new Context();
+		context.setDoDefaults(false);
+		converterWrapper.setContext(context).transform();
 
 		assertFileExists("valid-QRDA-III-latest.qpp.json");
 	}
@@ -57,7 +59,9 @@ public class ConversionFileWriterWrapperTest {
 		Path path = Paths.get("src/test/resources/qrda_bad_denominator.xml");
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
-		converterWrapper.doValidation(false).transform();
+		Context context = new Context();
+		context.setDoValidation(false);
+		converterWrapper.setContext(context).transform();
 
 		assertFileExists("qrda_bad_denominator.qpp.json");
 	}
