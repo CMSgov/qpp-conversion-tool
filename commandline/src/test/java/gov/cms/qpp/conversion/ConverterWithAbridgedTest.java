@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 
 import static org.junit.Assert.assertTrue;
 
-public class ConverterTestWithAbridged {
+public class ConverterWithAbridgedTest {
 
 	@Test
 	public void testWithAbridgedXml() throws IOException {
