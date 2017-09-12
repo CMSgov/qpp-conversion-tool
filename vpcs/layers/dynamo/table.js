@@ -54,7 +54,7 @@ module.exports = function(configuration) {
   };
 
   tableProperties.KeySchema = [ {'AttributeName': configuration.partitionKey, 'KeyType': 'HASH'} ];
-  if(configuration.sortKey !== null) {
+  if(!!configuration.sortKey) {
     tableProperties.KeySchema[1] = {'AttributeName': configuration.sortKey, 'KeyType': 'RANGE'}
   }
 
