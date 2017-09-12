@@ -13,21 +13,57 @@ import org.jdom2.filter.Filters;
 public class PerformanceRateProportionMeasureDecoder extends QppXmlDecoder {
 
 	public static final String PERFORMANCE_RATE = "rate";
-
+	public static final String NULL_PERFORMANCE_RATE = "nullRate";
 
 	public PerformanceRateProportionMeasureDecoder(Context context) {
 		super(context);
 	}
 
+	/**
+	 * Decodes the performance rate
+	 * Add a null check to see if the Performance rate is found.
+	 * If not then will check the secondary xpath
+	 *
+	 * @param element Top element in the XML document
+	 * @param thisNode Top node created in the XML document
+	 * @return
+	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
-		String expression = getXpath(PERFORMANCE_RATE);
+		setNameOnNode(element, thisNode, PERFORMANCE_RATE);
+
+		if (isFirstExpressionUnsuccessful(thisNode)) {
+			setNameOnNode(element, thisNode, NULL_PERFORMANCE_RATE);
+		}
+
+		return DecodeResult.TREE_FINISHED;
+	}
+
+	/**
+	 * Check if the first expression successfully found a performance rate value
+	 *
+	 * @param thisNode
+	 * @return
+	 */
+	private boolean isFirstExpressionUnsuccessful(Node thisNode) {
+		return null == thisNode.getValue(PERFORMANCE_RATE);
+	}
+
+	/**
+	 * Finds the Xpath associated with the given name and puts it in node
+	 *
+	 * @param element Object the xpath will be evaluated upon
+	 * @param node Object to hold the value found
+	 * @param name Attribute name associated with the correct xpath
+	 * @return
+	 */
+	private void setNameOnNode(Element element, Node node, final String name) {
+		String expression = getXpath(name);
 		Consumer<? super Attribute> consumer = attr -> {
 			String value = attr.getValue();
-			thisNode.putValue(PERFORMANCE_RATE, value, false);
+			node.putValue(PERFORMANCE_RATE, value);
 		};
-		setOnNode(element, expression, consumer, Filters.attribute(), true);
 
-		return DecodeResult.TREE_ESCAPED;
+		setOnNode(element, expression, consumer, Filters.attribute(), true);
 	}
 }
