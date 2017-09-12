@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
+import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -131,6 +132,15 @@ public class Node {
 	 */
 	public List<Node> getChildNodes() {
 		return childNodes;
+	}
+
+	/**
+	 * Returns a list of child Nodes for each template id specified
+	 *
+	 * @return List of matching child Nodes.
+	 */
+	public Stream<Node> getChildNodes(TemplateId... templateIds) {
+		return getChildNodes(node -> Sets.newHashSet(templateIds).contains(node.getType()));
 	}
 
 	/**
