@@ -40,6 +40,6 @@ public class PerformanceRateProportionMeasureDecoder extends QppXmlDecoder {
 		};
 		setOnNode(element, expression, consumer, Filters.attribute(), true);
 
-		return DecodeResult.TREE_FINISHED;
+		return DecodeResult.TREE_CONTINUE;
 	}
 }
