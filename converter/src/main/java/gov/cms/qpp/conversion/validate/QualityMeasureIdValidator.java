@@ -134,7 +134,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childFinder = makeChildFinder(check, key);
-				List<Node> childMeasureNodes = node.getChildNodes(childFinder).collect(Collectors.toList());
+				List<Node> childMeasureNodes = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
+						.filter(childFinder).collect(Collectors.toList());
 				if (childMeasureNodes.isEmpty()) {
 					MeasureConfig config =
 							MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
@@ -155,9 +156,9 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private Predicate<Node> makeChildFinder(Supplier<Object> check, String key) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
-				.incompleteValidation()
-				.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE)
-				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
+					.incompleteValidation()
+					.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE)
+					.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
 			boolean validMeasureType = key.equals(thisNode.getValue(MEASURE_TYPE));
 			return validMeasureType && check.get().equals(thisNode.getValue(MEASURE_POPULATION));
 		};

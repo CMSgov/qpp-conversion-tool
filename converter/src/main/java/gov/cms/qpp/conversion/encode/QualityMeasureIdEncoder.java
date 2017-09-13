@@ -186,7 +186,9 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 		for (Node childNode : parentNode.getChildNodes()) {
 			JsonOutputEncoder measureDataEncoder = encoders.get(childNode.getType());
-			measureDataEncoder.encode(childWrapper, childNode);
+			if (null != measureDataEncoder) {
+				measureDataEncoder.encode(childWrapper, childNode);
+			}
 		}
 		if (isMultiRate) {
 			this.encodeStratum(childWrapper, parentNode, measureConfig);
