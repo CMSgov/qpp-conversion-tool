@@ -241,7 +241,6 @@ class Checker {
 				details.add(new Detail(message, node.getPath()));
 			}
 		}
-		lastAppraised = null;
 		return this;
 	}
 

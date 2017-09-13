@@ -278,7 +278,7 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.intValue(ERROR_MESSAGE, VALUE).greaterThan(ERROR_MESSAGE, 124);
-		assertThat("There should be one error.", details, hasSize(1));
+		assertThat("There should be one error.", details, hasValidationErrorsIgnoringPath(ERROR_MESSAGE));
 	}
 
 	@Test
@@ -318,7 +318,7 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
-		assertThat("There should be one error.", details, hasSize(1));
+		assertThat("There should be one error.", details, hasValidationErrorsIgnoringPath(ERROR_MESSAGE));
 	}
 
 	@Test
@@ -328,7 +328,7 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
-		assertThat("There should be one error.", details, hasSize(1));
+		assertThat("There should be one error.", details, hasValidationErrorsIgnoringPath(ERROR_MESSAGE));
 	}
 
 	@Test
@@ -338,7 +338,7 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
-		assertThat("There should be one error", details, hasSize(1));
+		assertThat("There should be one error", details, hasValidationErrorsIgnoringPath(ERROR_MESSAGE));
 	}
 
 	@Test
@@ -348,7 +348,7 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
-		assertThat("There should be one error", details, hasSize(1));
+		assertThat("There should be one error", details, hasValidationErrorsIgnoringPath(ERROR_MESSAGE));
 	}
 
 	@Test
@@ -359,7 +359,7 @@ public class CheckerTest {
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
-		assertThat("There should be one error", details, hasSize(1));
+		assertThat("There should be one error", details, hasValidationErrorsIgnoringPath("test"));
 	}
 
 	// thorough checking
@@ -454,14 +454,14 @@ public class CheckerTest {
 	@Test
 	public void testCheckerHasMeasuresShortCut() {
 		Set<Detail> errors = new LinkedHashSet<>();
-		Detail err = new Detail();
+		Detail err = new Detail("test");
 		errors.add(err);
 		Node root = new Node();
 		Checker.check(root, errors)
 				.hasMeasures("Some Message", "MeasureId");
 
-		assertThat("Checker should return one validation error", errors, hasSize(1));
-
+		assertThat("Checker should return one validation error", errors,
+				hasValidationErrorsIgnoringPath("test"));
 	}
 
 	@Test
@@ -470,13 +470,13 @@ public class CheckerTest {
 
 		Node root = new Node();
 		Node measure = new Node(TemplateId.CLINICAL_DOCUMENT, root);
-		measure.putValue("NotAmeasure", "0");
+		measure.putValue("NotAMeasure", "0");
 		root.addChildNode(measure);
 		Checker checker = Checker.check(root, errors)
 				.hasMeasures("Some Message", "MeasureId");
 
-		assertThat("Checker should return one validation error", errors, hasSize(1));
-
+		assertThat("Checker should return one validation error", errors,
+				hasValidationErrorsIgnoringPath("Some Message"));
 	}
 
 	@Test
