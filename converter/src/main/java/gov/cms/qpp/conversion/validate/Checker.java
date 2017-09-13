@@ -228,7 +228,7 @@ class Checker {
 	 * @return The checker, for chaining method calls
 	 */
 	@SuppressWarnings("unchecked")
-	public Checker inDecimalRangeOf(String message, String name, Float startValue, Float endValue) {
+	public Checker inDecimalRangeOf(String message, String name, float startValue, float endValue) {
 		if (!shouldShortcut()) {
 			try {
 				lastAppraised = Float.parseFloat(node.getValue(name));
@@ -237,6 +237,7 @@ class Checker {
 					details.add(new Detail(message, node.getPath()));
 				}
 			} catch (NumberFormatException | NullPointerException exc) {
+				DEV_LOG.warn("Problem with non float value: " + node.getValue(name), exc);
 				details.add(new Detail(message, node.getPath()));
 			}
 		}

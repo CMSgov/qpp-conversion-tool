@@ -45,11 +45,11 @@ public class PerformanceRateProportionMeasureDecoder extends QppXmlDecoder {
 	/**
 	 * Check if the first expression successfully found a performance rate value
 	 *
-	 * @param thisNode
+	 * @param performanceRateNode
 	 * @return
 	 */
-	private boolean isFirstExpressionUnsuccessful(Node thisNode) {
-		return null == thisNode.getValue(PERFORMANCE_RATE);
+	private boolean isFirstExpressionUnsuccessful(Node performanceRateNode) {
+		return null == performanceRateNode.getValue(PERFORMANCE_RATE);
 	}
 
 	/**

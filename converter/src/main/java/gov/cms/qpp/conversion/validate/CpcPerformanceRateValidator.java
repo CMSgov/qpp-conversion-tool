@@ -25,7 +25,7 @@ public class CpcPerformanceRateValidator extends NodeValidator {
 		if (!NULL_ATTRIBUTE.equals(node.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE))) {
 			check(node)
 					.inDecimalRangeOf(INVALID_PERFORMANCE_RATE,
-							PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,0f, 1f);
+							PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE, 0F, 1F);
 		}
 	}
 }
