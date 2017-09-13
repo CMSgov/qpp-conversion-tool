@@ -312,6 +312,16 @@ public class CheckerTest {
 	}
 
 	@Test
+	public void testValueOutsideStartDecimalRange() {
+		Node meepNode = new Node();
+		meepNode.putValue(VALUE, "-1");
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
+		assertThat("There should be one error.", details, hasSize(1));
+	}
+
+	@Test
 	public void testValueOutsideDecimalRange() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "2");
@@ -325,6 +335,27 @@ public class CheckerTest {
 	public void testInDecimalRangeOfIncorrectType() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "String");
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
+		assertThat("There should be one error", details, hasSize(1));
+	}
+
+	@Test
+	public void testInDecimalRangeNullValue() {
+		Node meepNode = new Node();
+		meepNode.putValue(VALUE, null);
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
+		assertThat("There should be one error", details, hasSize(1));
+	}
+
+	@Test
+	public void testInDecimalRangeOfShortcut() {
+		Node meepNode = new Node();
+		meepNode.putValue(VALUE, "-1");
+		details.add(new Detail("test", "testPath"));
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);

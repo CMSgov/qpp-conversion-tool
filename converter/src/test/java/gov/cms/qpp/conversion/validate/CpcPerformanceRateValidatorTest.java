@@ -59,7 +59,7 @@ public class CpcPerformanceRateValidatorTest {
 
 	@Test
 	public void testInvalidStringValue() {
-		node.putValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE, "Invalid");
+		node.putValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE, "Inval");
 		cpcPerformanceRateValidator.internalValidateSingleNode(node);
 		assertThat("Must contain a proper value", cpcPerformanceRateValidator.getDetails(),
 				hasValidationErrorsIgnoringPath(CpcPerformanceRateValidator.INVALID_PERFORMANCE_RATE));

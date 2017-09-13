@@ -229,16 +229,17 @@ class Checker {
 	 */
 	@SuppressWarnings("unchecked")
 	public Checker inDecimalRangeOf(String message, String name, Float startValue, Float endValue) {
-		try {
-			lastAppraised = Float.parseFloat(node.getValue(name));
-			if (!shouldShortcut() && lastAppraised != null && ((Float)lastAppraised).compareTo(startValue) < 0
-					|| ((Float)lastAppraised).compareTo(endValue) > 0) {
+		if (!shouldShortcut()) {
+			try {
+				lastAppraised = Float.parseFloat(node.getValue(name));
+				if (((Float) lastAppraised).compareTo(startValue) < 0
+						|| ((Float) lastAppraised).compareTo(endValue) > 0) {
+					details.add(new Detail(message, node.getPath()));
+				}
+			} catch (NumberFormatException | NullPointerException exc) {
 				details.add(new Detail(message, node.getPath()));
 			}
-		} catch (NumberFormatException ex) {
-			details.add(new Detail(message, node.getPath()));
 		}
-
 		lastAppraised = null;
 		return this;
 	}
