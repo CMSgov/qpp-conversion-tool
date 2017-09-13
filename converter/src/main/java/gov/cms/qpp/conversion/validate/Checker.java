@@ -219,6 +219,31 @@ class Checker {
 	}
 
 	/**
+	 * Checks target node value to be between a specific range
+	 *
+	 * @param message error message should comparison fail
+	 * @param name key of expected value
+	 * @param startValue starting value for range
+	 * @param endValue ending value for range
+	 * @return The checker, for chaining method calls
+	 */
+	@SuppressWarnings("unchecked")
+	public Checker inDecimalRangeOf(String message, String name, Float startValue, Float endValue) {
+		try {
+			lastAppraised = Float.parseFloat(node.getValue(name));
+			if (!shouldShortcut() && lastAppraised != null && ((Float)lastAppraised).compareTo(startValue) < 0
+					|| ((Float)lastAppraised).compareTo(endValue) > 0) {
+				details.add(new Detail(message, node.getPath()));
+			}
+		} catch (NumberFormatException ex) {
+			details.add(new Detail(message, node.getPath()));
+		}
+
+		lastAppraised = null;
+		return this;
+	}
+
+	/**
 	 * Checks target node for the existence of a specified parent.
 	 *
 	 * @param message validation error message

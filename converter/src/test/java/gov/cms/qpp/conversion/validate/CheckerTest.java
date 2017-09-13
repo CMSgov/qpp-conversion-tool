@@ -301,6 +301,36 @@ public class CheckerTest {
 		assertThat("There should be no errors.", details, empty());
 	}
 
+	@Test
+	public void testValueWithinDecimalRange() {
+		Node meepNode = new Node();
+		meepNode.putValue(VALUE, "0.5");
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
+		assertThat("There should be no errors.", details, empty());
+	}
+
+	@Test
+	public void testValueOutsideDecimalRange() {
+		Node meepNode = new Node();
+		meepNode.putValue(VALUE, "2");
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
+		assertThat("There should be one error.", details, hasSize(1));
+	}
+
+	@Test
+	public void testInDecimalRangeOfIncorrectType() {
+		Node meepNode = new Node();
+		meepNode.putValue(VALUE, "String");
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
+		assertThat("There should be one error", details, hasSize(1));
+	}
+
 	// thorough checking
 	@Test
 	public void testIntValueChildrenChildMinChildMaxFindFailure() {

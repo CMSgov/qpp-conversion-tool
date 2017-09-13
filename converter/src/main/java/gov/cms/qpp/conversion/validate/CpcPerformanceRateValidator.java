@@ -12,7 +12,8 @@ import gov.cms.qpp.conversion.model.Validator;
 @Validator(value = TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE, program = Program.CPC)
 public class CpcPerformanceRateValidator extends NodeValidator {
 
-	protected static final String INVALID_PERFORMANCE_RATE = "Must contain a valid performance rate proportion measure";
+	protected static final String INVALID_PERFORMANCE_RATE = "Must enter a valid Performance Rate value";
+	protected static final String NULL_ATTRIBUTE = "NA";
 
 	/**
 	 * Validates that the node given contains a 0, 1, or Null value
@@ -21,8 +22,10 @@ public class CpcPerformanceRateValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		check(node)
-				.valueIn(INVALID_PERFORMANCE_RATE, PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,
-						"0", "1", "NA");
+		if (!NULL_ATTRIBUTE.equals(node.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE))) {
+			check(node)
+					.inDecimalRangeOf(INVALID_PERFORMANCE_RATE,
+							PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,0f, 1f);
+		}
 	}
 }

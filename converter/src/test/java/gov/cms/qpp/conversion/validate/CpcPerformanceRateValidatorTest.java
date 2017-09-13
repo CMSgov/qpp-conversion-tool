@@ -42,7 +42,23 @@ public class CpcPerformanceRateValidatorTest {
 	}
 
 	@Test
+	public void testNegativeValue() {
+		node.putValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE, "-1");
+		cpcPerformanceRateValidator.internalValidateSingleNode(node);
+		assertThat("Must contain a proper value", cpcPerformanceRateValidator.getDetails(),
+				hasValidationErrorsIgnoringPath(CpcPerformanceRateValidator.INVALID_PERFORMANCE_RATE));
+	}
+
+	@Test
 	public void testInvalidValue() {
+		node.putValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE, "2");
+		cpcPerformanceRateValidator.internalValidateSingleNode(node);
+		assertThat("Must contain a proper value", cpcPerformanceRateValidator.getDetails(),
+				hasValidationErrorsIgnoringPath(CpcPerformanceRateValidator.INVALID_PERFORMANCE_RATE));
+	}
+
+	@Test
+	public void testInvalidStringValue() {
 		node.putValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE, "Invalid");
 		cpcPerformanceRateValidator.internalValidateSingleNode(node);
 		assertThat("Must contain a proper value", cpcPerformanceRateValidator.getDetails(),
