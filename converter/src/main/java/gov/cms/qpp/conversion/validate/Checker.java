@@ -232,8 +232,8 @@ class Checker {
 		if (!shouldShortcut()) {
 			try {
 				lastAppraised = Float.parseFloat(node.getValue(name));
-				if (((Float) lastAppraised).compareTo(startValue) < 0
-						|| ((Float) lastAppraised).compareTo(endValue) > 0) {
+				if (((Comparable<Float>) lastAppraised).compareTo(startValue) < 0
+						|| ((Comparable<Float>) lastAppraised).compareTo(endValue) > 0) {
 					details.add(new Detail(message, node.getPath()));
 				}
 			} catch (NumberFormatException | NullPointerException exc) {
