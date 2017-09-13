@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.retry.backoff.FixedBackOffPolicy;
+import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.AlwaysRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
@@ -60,15 +60,21 @@ public abstract class AnyOrderAsyncActionService<T, S> {
 		return CompletableFuture
 			.supplyAsync(() -> objectToActOn, taskExecutor)
 			.thenApplyAsync(lambdaObjectToActOn -> {
-					RetryTemplate retry = retryTemplate();
+				RetryTemplate retry = retryTemplate();
 
-					API_LOG.info("Trying to execute action");
-					return retry.execute(context -> this.asynchronousAction(lambdaObjectToActOn));
-				}, taskExecutor);
+				API_LOG.info("Trying to execute action");
+				return retry.execute(context -> {
+					if (context.getRetryCount() > 0) {
+						API_LOG.warn("Retry {} - trying to execute action again", context.getRetryCount());
+					}
+					return this.asynchronousAction(lambdaObjectToActOn);
+				});
+			}, taskExecutor);
 	}
 
 	/**
-	 * Returns a retry template that always retries with five second intervals between retries.
+	 * Returns a retry template that always retries.  Starts with a second interval between retries and doubles that interval up
+	 * to a minute for each retry.
 	 *
 	 * @return A retry template.
 	 */
@@ -76,8 +82,11 @@ public abstract class AnyOrderAsyncActionService<T, S> {
 		RetryTemplate retry = new RetryTemplate();
 
 		retry.setRetryPolicy(new AlwaysRetryPolicy());
-		FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
-		backOffPolicy.setBackOffPeriod(5000);
+
+		ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+		backOffPolicy.setInitialInterval(1000);
+		backOffPolicy.setMultiplier(2.0);
+		backOffPolicy.setMaxInterval(60000);
 		retry.setBackOffPolicy(backOffPolicy);
 
 		return retry;
