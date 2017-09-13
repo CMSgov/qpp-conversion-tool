@@ -16,7 +16,7 @@ public class CpcPerformanceRateValidator extends NodeValidator {
 	protected static final String NULL_ATTRIBUTE = "NA";
 
 	/**
-	 * Validates that the node given contains a 0, 1, or Null value
+	 * Validates that the node given contains a value in range of 0-1 or null attribute
 	 *
 	 * @param node The node to validate.
 	 */
