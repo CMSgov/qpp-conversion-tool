@@ -7,8 +7,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
@@ -28,8 +26,6 @@ import static org.mockito.Mockito.doAnswer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AnyOrderAsyncActionServiceTest {
-
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 
 	@InjectMocks
 	private TestAnyOrderService objectUnderTest;
@@ -66,22 +62,14 @@ public class AnyOrderAsyncActionServiceTest {
 
 	@Test
 	public void testAsynchronousActionIsCalled() {
-		objectUnderTest.failuresUntilSuccess(0);
-		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(new Object());
-
-		completableFuture.join();
+		runSimpleScenario(0);
 
 		assertTrue("The asynchronousAction was not called.", asynchronousActionCalled.get());
 	}
 
 	@Test
 	public void testObjectToActOnPassedDown() {
-		Object objectToActOn = new Object();
-
-		objectUnderTest.failuresUntilSuccess(0);
-		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(objectToActOn);
-
-		completableFuture.join();
+		Object objectToActOn = runSimpleScenario(0);
 
 		assertThat("The object to act on didn't make it down to asynchronousAction.", objectThatWasActedOn.get(),
 			is(objectToActOn));
@@ -89,10 +77,7 @@ public class AnyOrderAsyncActionServiceTest {
 
 	@Test
 	public void testSuccessNoRetry() {
-		objectUnderTest.failuresUntilSuccess(0);
-		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(new Object());
-
-		completableFuture.join();
+		runSimpleScenario(0);
 
 		assertThat("The asynchronousAction method was not called once and only once.", timesAsynchronousActionCalled.get(), is(1));
 	}
@@ -101,10 +86,7 @@ public class AnyOrderAsyncActionServiceTest {
 	public void testFailureRetry() {
 		int failuresUntilSuccess = 3;
 
-		objectUnderTest.failuresUntilSuccess(failuresUntilSuccess);
-		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(new Object());
-
-		completableFuture.join();
+		runSimpleScenario(failuresUntilSuccess);
 
 		assertThat("The asynchronousAction method was not called enough times.", timesAsynchronousActionCalled.get(),
 			is(failuresUntilSuccess + 1));
@@ -112,12 +94,7 @@ public class AnyOrderAsyncActionServiceTest {
 
 	@Test
 	public void testObjectToActOnPassedDownWithFailures() {
-		Object objectToActOn = new Object();
-
-		objectUnderTest.failuresUntilSuccess(2);
-		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(objectToActOn);
-
-		completableFuture.join();
+		Object objectToActOn = runSimpleScenario(2);
 
 		assertThat("The object to act on didn't make it down to asynchronousAction.", objectThatWasActedOn.get(),
 			is(objectToActOn));
@@ -171,6 +148,17 @@ public class AnyOrderAsyncActionServiceTest {
 			completableFuture1.getNumberOfDependents(), is(0));
 		assertThat("No other CompletableFuture should be dependent on this one but there is.",
 			completableFuture2.getNumberOfDependents(), is(0));
+	}
+
+	private Object runSimpleScenario(int failuresUntilSuccess) {
+		Object objectToActOn = new Object();
+
+		objectUnderTest.failuresUntilSuccess(failuresUntilSuccess);
+		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(objectToActOn);
+
+		completableFuture.join();
+
+		return objectToActOn;
 	}
 
 	private static class TestAnyOrderService extends AnyOrderAsyncActionService<Object, Object> {

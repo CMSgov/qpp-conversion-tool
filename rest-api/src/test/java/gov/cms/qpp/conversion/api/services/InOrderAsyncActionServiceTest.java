@@ -63,22 +63,14 @@ public class InOrderAsyncActionServiceTest {
 
 	@Test
 	public void testAsynchronousActionIsCalled() {
-		objectUnderTest.failuresUntilSuccess(0);
-		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(new Object());
-
-		completableFuture.join();
+		runSimpleScenario(0);
 
 		assertTrue("The asynchronousAction was not called.", asynchronousActionCalled.get());
 	}
 
 	@Test
 	public void testObjectToActOnPassedDown() {
-		Object objectToActOn = new Object();
-
-		objectUnderTest.failuresUntilSuccess(0);
-		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(objectToActOn);
-
-		completableFuture.join();
+		Object objectToActOn = runSimpleScenario(0);
 
 		assertThat("The object to act on didn't make it down to asynchronousAction.", objectThatWasActedOn.get(),
 			is(objectToActOn));
@@ -86,10 +78,7 @@ public class InOrderAsyncActionServiceTest {
 
 	@Test
 	public void testSuccessNoRetry() {
-		objectUnderTest.failuresUntilSuccess(0);
-		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(new Object());
-
-		completableFuture.join();
+		runSimpleScenario(0);
 
 		assertThat("The asynchronousAction method was not called once and only once.", timesAsynchronousActionCalled.get(), is(1));
 	}
@@ -98,10 +87,7 @@ public class InOrderAsyncActionServiceTest {
 	public void testFailureRetry() {
 		int failuresUntilSuccess = 3;
 
-		objectUnderTest.failuresUntilSuccess(failuresUntilSuccess);
-		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(new Object());
-
-		completableFuture.join();
+		runSimpleScenario(failuresUntilSuccess);
 
 		assertThat("The asynchronousAction method was not called enough times.", timesAsynchronousActionCalled.get(),
 			is(failuresUntilSuccess + 1));
@@ -109,12 +95,7 @@ public class InOrderAsyncActionServiceTest {
 
 	@Test
 	public void testObjectToActOnPassedDownWithFailures() {
-		Object objectToActOn = new Object();
-
-		objectUnderTest.failuresUntilSuccess(2);
-		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(objectToActOn);
-
-		completableFuture.join();
+		Object objectToActOn = runSimpleScenario(2);
 
 		assertThat("The object to act on didn't make it down to asynchronousAction.", objectThatWasActedOn.get(),
 			is(objectToActOn));
@@ -168,6 +149,17 @@ public class InOrderAsyncActionServiceTest {
 			completableFuture1.getNumberOfDependents(), is(greaterThan(0)));
 		assertThat("No other CompletableFuture should be dependent on this one but there is.",
 			completableFuture2.getNumberOfDependents(), is(0));
+	}
+
+	private Object runSimpleScenario(int failuresUntilSuccess) {
+		Object objectToActOn = new Object();
+
+		objectUnderTest.failuresUntilSuccess(failuresUntilSuccess);
+		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(objectToActOn);
+
+		completableFuture.join();
+
+		return objectToActOn;
 	}
 
 	private static class TestInOrderService extends InOrderAsyncActionService<Object, Object> {
