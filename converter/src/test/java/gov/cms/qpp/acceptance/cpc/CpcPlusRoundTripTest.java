@@ -61,4 +61,15 @@ public class CpcPlusRoundTripTest {
 			Assert.fail("Succeeded in cpc plus conversions that should have failed: " + successesThatShouldBeErrors);
 		}
 	}
+
+	@Test
+	public void testCpcPlusFilesAreAllChecked() throws IOException {
+		long invalidFiles = Files.list(DIR).filter(file -> {
+			String fileName = file.toString();
+
+			return !fileName.endsWith("-failure.xml") && !fileName.endsWith("-success.xml");
+		}).count();
+
+		Assert.assertEquals(0, invalidFiles);
+	}
 }
