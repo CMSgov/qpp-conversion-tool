@@ -22,7 +22,7 @@ public class CpcPerformanceRateValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		if (!NULL_ATTRIBUTE.equals(node.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE))) {
+		if (!NULL_ATTRIBUTE.equals(node.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))) {
 			check(node)
 					.inDecimalRangeOf(INVALID_PERFORMANCE_RATE,
 							PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE, 0F, 1F);

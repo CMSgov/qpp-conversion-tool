@@ -27,7 +27,7 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 @Validator(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdValidator extends NodeValidator {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
-	protected static final String MEASURE_ID = "measureId";
+	public static final String MEASURE_ID = "measureId";
 
 	static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	public static final String SINGLE_MEASURE_POPULATION =

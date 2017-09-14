@@ -1,0 +1,32 @@
+package gov.cms.qpp.conversion.validate;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import java.util.Map;
+
+/**
+ * Validates a Measure Reference Results node.
+ */
+@Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, program = Program.CPC)
+public class CpcQualityMeasureIdValidator extends NodeValidator {
+
+	protected static final String INVALID_PERFORMANCE_RATE_COUNT = "Must contain correct number of performance rate(s)";
+
+	@Override
+	protected void internalValidateSingleNode(Node node) {
+		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
+		String value = node.getValue(QualityMeasureIdValidator.MEASURE_ID);
+		MeasureConfig measureConfig = configurationMap.get(value);
+		int requiredPerformanceRateCount = measureConfig.getStrata().size();
+
+		check(node)
+				.childMinimum(INVALID_PERFORMANCE_RATE_COUNT,
+						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
+				.childMaximum(INVALID_PERFORMANCE_RATE_COUNT,
+						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+	}
+}
