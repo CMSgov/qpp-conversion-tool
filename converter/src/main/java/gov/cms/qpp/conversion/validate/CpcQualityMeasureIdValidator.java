@@ -9,13 +9,20 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import java.util.Map;
 
 /**
- * Validates a Measure Reference Results node.
+ * Validates a Measure Reference Results for CPC Plus requirements
  */
 @Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, program = Program.CPC)
 public class CpcQualityMeasureIdValidator extends NodeValidator {
 
 	protected static final String INVALID_PERFORMANCE_RATE_COUNT = "Must contain correct number of performance rate(s)";
 
+	/**
+	 * Validates node of all criteria specified for CPC Plus
+	 * <ul>
+	 *     <li>checks that the node contains the correct number of performance rates</li>
+	 * </ul>
+	 * @param node The node to validate.
+	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();

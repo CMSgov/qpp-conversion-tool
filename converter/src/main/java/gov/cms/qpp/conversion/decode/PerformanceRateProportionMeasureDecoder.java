@@ -17,7 +17,7 @@ public class PerformanceRateProportionMeasureDecoder extends QppXmlDecoder {
 
 	public static final String PERFORMANCE_RATE = "rate";
 	public static final String NULL_PERFORMANCE_RATE = "nullRate";
-	
+
 	public PerformanceRateProportionMeasureDecoder(Context context) {
 		super(context);
 	}
