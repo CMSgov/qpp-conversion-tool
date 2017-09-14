@@ -57,19 +57,17 @@ public abstract class AnyOrderAsyncActionService<T, S> {
 	 * @return A {@link CompletableFuture} that will complete once the action completes without failure.
 	 */
 	protected CompletableFuture<S> actOnItem(final T objectToActOn) {
-		return CompletableFuture
-			.supplyAsync(() -> objectToActOn, taskExecutor)
-			.thenApplyAsync(lambdaObjectToActOn -> {
-				RetryTemplate retry = retryTemplate();
+		return CompletableFuture.supplyAsync(() -> {
+			RetryTemplate retry = retryTemplate();
 
-				API_LOG.info("Trying to execute action");
-				return retry.execute(context -> {
-					if (context.getRetryCount() > 0) {
-						API_LOG.warn("Retry {} - trying to execute action again", context.getRetryCount());
-					}
-					return this.asynchronousAction(lambdaObjectToActOn);
-				});
-			}, taskExecutor);
+			API_LOG.info("Trying to execute action");
+			return retry.execute(context -> {
+				if (context.getRetryCount() > 0) {
+					API_LOG.warn("Retry {} - trying to execute action again", context.getRetryCount());
+				}
+				return this.asynchronousAction(objectToActOn);
+			});
+		}, taskExecutor);
 	}
 
 	/**

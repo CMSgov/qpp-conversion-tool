@@ -111,6 +111,19 @@ public class AnyOrderAsyncActionServiceTest {
 	}
 
 	@Test
+	public void testObjectToActOnPassedDownWithFailures() {
+		Object objectToActOn = new Object();
+
+		objectUnderTest.failuresUntilSuccess(2);
+		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(objectToActOn);
+
+		completableFuture.join();
+
+		assertThat("The object to act on didn't make it down to asynchronousAction.", objectThatWasActedOn.get(),
+			is(objectToActOn));
+	}
+
+	@Test
 	public void testMultipleActsResultInAsynchronousActionsSuccess() {
 		int numberOfItemsToProcess = 3;
 
