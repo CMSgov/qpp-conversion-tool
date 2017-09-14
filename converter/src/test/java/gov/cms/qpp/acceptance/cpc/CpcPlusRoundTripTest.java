@@ -23,7 +23,7 @@ public class CpcPlusRoundTripTest {
 	private static final Path DIR = Paths.get("src/test/resources/cpc_plus/");
 
 	@Test
-	public void cpcPlusFileSuccesses() throws IOException {
+	public void testCpcPlusFileSuccesses() throws IOException {
 		Map<Path, AllErrors> errors = new HashMap<>();
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-success.xml")) {
 			for (Path entry : stream) {
@@ -43,7 +43,7 @@ public class CpcPlusRoundTripTest {
 	}
 
 	@Test
-	public void cpcPlusFileFailures() throws IOException {
+	public void testCpcPlusFileFailures() throws IOException {
 		List<Path> successesThatShouldBeErrors = new ArrayList<>();
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-failure.xml")) {
 			for (Path entry : stream) {
