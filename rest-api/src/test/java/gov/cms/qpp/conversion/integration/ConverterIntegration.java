@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 
@@ -30,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RestApiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(properties = {"VALIDATION_URL = https://qpp-submissions-sandbox.navapbc.com/submissions/validate"})
 public class ConverterIntegration {
 	private String urlBase;
 
@@ -62,6 +64,14 @@ public class ConverterIntegration {
 	public void shouldFailForInvalidQrda() throws Exception {
 		HttpEntity<LinkedMultiValueMap<String, Object>> entity =
 				generateEntity("../qrda-files/not-a-QDRA-III-file.xml");
+		ResponseEntity<String> response = restTemplate.exchange(urlBase, HttpMethod.POST, entity, String.class);
+		assertTrue("Valid QRDA did not fail", response.getStatusCode().is4xxClientError());
+	}
+
+	@Test
+	public void shouldFailForSubmissionApiValidation() throws Exception {
+		HttpEntity<LinkedMultiValueMap<String, Object>> entity =
+				generateEntity("../converter/src/test/resources/cpc_plus/CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III-success.xml");
 		ResponseEntity<String> response = restTemplate.exchange(urlBase, HttpMethod.POST, entity, String.class);
 		assertTrue("Valid QRDA did not fail", response.getStatusCode().is4xxClientError());
 	}

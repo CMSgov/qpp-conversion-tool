@@ -124,14 +124,16 @@ public class PathCorrelator {
 		String base = "$";
 		String leaf = jsonPath;
 		int lastIndex = jsonPath.lastIndexOf('.');
+		JsonWrapper metaWrapper = new JsonWrapper(wrapper, false);
 
 		if (lastIndex > 0) {
 			base = jsonPath.substring(0, lastIndex);
 			leaf = jsonPath.substring(lastIndex + 1);
 		}
 
+
 		JsonPath compiledPath = JsonPath.compile(base);
-		Map<String, Object> jsonMap = compiledPath.read(wrapper.toString());
+		Map<String, Object> jsonMap = compiledPath.read(metaWrapper.toString());
 		Map<String, String> metaMap = getMetaMap(jsonMap, leaf);
 		String preparedPath = "";
 		if (!Objects.isNull(metaMap)) {

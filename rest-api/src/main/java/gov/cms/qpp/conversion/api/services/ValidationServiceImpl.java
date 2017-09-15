@@ -7,7 +7,6 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import java.nio.charset.Charset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * Implementation for the QPP Validation Service
@@ -30,8 +30,9 @@ import java.io.IOException;
 @Service
 public class ValidationServiceImpl implements ValidationService {
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
+	private static final String SUBMISSION_API_TOKEN = "SUBMISSION_API_TOKEN";
 	static final String VALIDATION_URL_ENV_NAME = "VALIDATION_URL";
-	static final String SUBMISSION_API_TOKEN = "SUBMISSION_API_TOKEN";
+
 
 	@Autowired
 	private Environment environment;
@@ -52,12 +53,13 @@ public class ValidationServiceImpl implements ValidationService {
 		}
 
 		API_LOG.info("Calling QPP validation");
-		ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, qpp);
-
-		if (HttpStatus.UNPROCESSABLE_ENTITY.equals(validationResponse.getStatusCode())) {
-			AllErrors convertedErrors = convertQppValidationErrorsToQrda(validationResponse.getBody(), qpp);
-			throw new TransformException("Converted QPP failed validation", null, convertedErrors);
-		}
+		qpp.stream().forEach(wrapper -> {
+			ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper);
+			if (HttpStatus.UNPROCESSABLE_ENTITY.equals(validationResponse.getStatusCode())) {
+				AllErrors convertedErrors = convertQppValidationErrorsToQrda(validationResponse.getBody(), wrapper);
+				throw new TransformException("Converted QPP failed validation", null, convertedErrors);
+			}
+		});
 	}
 
 	/**
