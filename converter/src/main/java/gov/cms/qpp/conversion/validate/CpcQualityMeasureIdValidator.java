@@ -6,6 +6,8 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.SubPopulation;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,11 +31,25 @@ public class CpcQualityMeasureIdValidator extends NodeValidator {
 		String value = node.getValue(QualityMeasureIdValidator.MEASURE_ID);
 		MeasureConfig measureConfig = configurationMap.get(value);
 		int requiredPerformanceRateCount = measureConfig.getStrata().size();
+		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
 
 		check(node)
 				.childMinimum(INVALID_PERFORMANCE_RATE_COUNT,
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
 				.childMaximum(INVALID_PERFORMANCE_RATE_COUNT,
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+
+		if (subPopulations == null) {
+			return;
+		}
+
+		for (SubPopulation subPopulation : subPopulations) {
+			validateSubPopulation(node, subPopulation);
+		}
 	}
+
+	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
+
+	}
+
 }
