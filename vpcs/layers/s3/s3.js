@@ -5,19 +5,20 @@ module.exports = function(bucketName) {
         "Resources": {}
     }
 
-    setup.Resources[bucketName] = {
+    var bucketNameLowerCase = bucketName.toLowerCase();
+
+    setup.Resources[bucketNameLowerCase] = {
         "Type" : "AWS::S3::Bucket",
         "Properties" : {
             "AccessControl" : "BucketOwnerFullControl",
-            "BucketName" : bucketName
+            "BucketName" : bucketNameLowerCase
         },
         "DeletionPolicy" : "Retain"
     };
 
     return merge([
         setup,
-        require('./alarms')(bucketName)
+        require('./alarms')(bucketNameLowerCase),
+        require('./encryptionPolicy')(bucketNameLowerCase)
     ]);
 }
-
-
