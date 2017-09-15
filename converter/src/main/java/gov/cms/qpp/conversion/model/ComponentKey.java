@@ -45,7 +45,7 @@ public class ComponentKey {
 			return true;
 		}
 
-		if (o == null || !(o.getClass().equals(ComponentKey.class))) {
+		if (o == null || this.getClass() != o.getClass()) {
 			return false;
 		}
 

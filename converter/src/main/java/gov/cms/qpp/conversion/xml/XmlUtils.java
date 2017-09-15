@@ -1,6 +1,7 @@
 
 package gov.cms.qpp.conversion.xml;
 
+import java.nio.charset.Charset;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
@@ -40,7 +41,7 @@ public class XmlUtils {
 			return null;
 		}
 
-		return parseXmlStream(new ByteArrayInputStream(xml.getBytes()));
+		return parseXmlStream(new ByteArrayInputStream(xml.getBytes(Charset.defaultCharset())));
 	}
 
 	/**
