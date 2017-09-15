@@ -16,7 +16,7 @@ import org.jdom2.filter.Filters;
 public class PerformanceRateProportionMeasureDecoder extends QppXmlDecoder {
 
 	public static final String PERFORMANCE_RATE = "rate";
-
+	public static final String NULL_PERFORMANCE_RATE = "nullRate";
 
 	public PerformanceRateProportionMeasureDecoder(Context context) {
 		super(context);
@@ -33,13 +33,40 @@ public class PerformanceRateProportionMeasureDecoder extends QppXmlDecoder {
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
-		String expression = getXpath(PERFORMANCE_RATE);
-		Consumer<? super Attribute> consumer = attr -> {
-			String value = attr.getValue();
-			thisNode.putValue(PERFORMANCE_RATE, value, false);
-		};
-		setOnNode(element, expression, consumer, Filters.attribute(), true);
+		setNameOnNode(element, thisNode, PERFORMANCE_RATE);
+
+		if (isFirstExpressionUnsuccessful(thisNode)) {
+			setNameOnNode(element, thisNode, NULL_PERFORMANCE_RATE);
+		}
 
 		return DecodeResult.TREE_CONTINUE;
+	}
+
+	/**
+	 * Check if the first expression successfully found a performance rate value
+	 *
+	 * @param performanceRateNode
+	 * @return
+	 */
+	private boolean isFirstExpressionUnsuccessful(Node performanceRateNode) {
+		return null == performanceRateNode.getValue(PERFORMANCE_RATE);
+	}
+
+	/**
+	 * Finds the Xpath associated with the given name and puts it in node
+	 *
+	 * @param element Object the xpath will be evaluated upon
+	 * @param node Object to hold the value found
+	 * @param name Attribute name associated with the correct xpath
+	 * @return
+	 */
+	private void setNameOnNode(Element element, Node node, final String name) {
+		String expression = getXpath(name);
+		Consumer<? super Attribute> consumer = attr -> {
+			String value = attr.getValue();
+			node.putValue(PERFORMANCE_RATE, value);
+		};
+
+		setOnNode(element, expression, consumer, Filters.attribute(), true);
 	}
 }
