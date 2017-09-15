@@ -31,6 +31,7 @@ import java.io.IOException;
 public class ValidationServiceImpl implements ValidationService {
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 	static final String VALIDATION_URL_ENV_NAME = "VALIDATION_URL";
+	static final String SUBMISSION_API_TOKEN = "SUBMISSION_API_TOKEN";
 
 	@Autowired
 	private Environment environment;
@@ -72,6 +73,8 @@ public class ValidationServiceImpl implements ValidationService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
 		headers.add(HttpHeaders.ACCEPT, "application/json");
+		headers.add(HttpHeaders.AUTHORIZATION,
+				"Bearer " + environment.getProperty(SUBMISSION_API_TOKEN));
 
 		HttpEntity<String> request = new HttpEntity<>(qpp.toString(), headers);
 		return restTemplate.postForEntity(url, request, String.class);
