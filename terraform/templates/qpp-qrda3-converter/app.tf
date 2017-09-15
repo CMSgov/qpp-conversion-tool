@@ -37,7 +37,7 @@ EOF
 }
 
 module "app" {
-  source = "git@github.com:CMSgov/corevpc//terraform/modules/aws/asg/web-service?ref=1e3fc919b1f258ef15ddf7ea36e5f3ece1013e8a"
+  source = "git@github.com:CMSgov/corevpc//terraform/modules/aws/asg/web-service?ref=c90c8f8089cc9463b807602aa5057b470e7f83f4"
 
   ami_id                      = "${var.app_ami_id}"
   aws_region                  = "${var.aws_region}"
@@ -45,11 +45,13 @@ module "app" {
   count                       = "${var.app_count}"
   elb_access_logs_bucket      = "${var.elb_access_logs_bucket}"
   elb_cidr_blocks             = ["${var.data_subnet_cidr_blocks}"]
-  elb_instance_port           = "3000"
-  elb_instance_protocol       = "http"
-  elb_internal                = "true"
-  elb_port                    = "443"
-  elb_protocol                = "https"
+  elb_listeners = [{
+    instance_port = "3000"
+    instance_protocol = "http"
+    lb_port = "443"
+    lb_protocol = "https"
+    ssl_certificate_id = "${var.ssl_certificate_id"
+  }]
   elb_security_groups         = "${concat(list(module.open_http.id)}"
   elb_subnet_ids              = ["${var.data_subnet_ids}"]
   iam_instance_profile        = "${var.iam_instance_profile}"

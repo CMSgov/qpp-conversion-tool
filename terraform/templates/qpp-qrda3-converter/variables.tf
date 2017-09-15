@@ -18,12 +18,6 @@ variable "app_subnet_ids" {
   type        = "list"
 }
 
-variable "app_instance_port" {
-  description = "The port on the app instance to route to."
-  type        = "string"
-  default     = "3000"
-}
-
 variable "dmz_subnet_cidr_blocks" {
   description = "List of data subnet CIDR blocks."
   type        = "list"
@@ -53,6 +47,11 @@ variable "instance_types" {
     app   = "m3.medium"
     jump  = "m4.large"
   }
+}
+
+variable "ssl_certificate_id" {
+  description = "The SSL cert ID for the ELB"
+  type = "string"
 }
 
 variable "stack_tag" {
