@@ -55,8 +55,12 @@ env.configureLayers = function() {
     SSLCertificateId: 'arn:aws:acm:us-east-1:003384571330:certificate/f1b98858-6b1c-4557-b26b-d2259f5b53e4'
   });
 
+  var s3 = rootRequire('./vpcs/layers/s3/s3');
+  var s3BuckName = env.name + 'audit';
+
   return {
     app: rootRequire('./layers/app/api'),
+    s3: s3(s3BuckName),
     jump: rootRequire('./layers/jump/jump'),
     internalBalancer,
     net: rootRequire('./layers/net/gdit')

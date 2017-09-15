@@ -69,8 +69,13 @@ env.configureLayers = function() {
     var jump = rootRequire('./layers/jump/jump');
     jump['Resources']['JumpInstance']['Properties']['InstanceType'] = 'm4.large';
 
+    var s3 = rootRequire('./vpcs/layers/s3/s3');
+    var s3BuckName = env.name + 'audit';
+
+
     return {
         app: rootRequire('./layers/app/api'),
+        s3: s3(s3BuckName),
         jump,
         nat,
         net: rootRequire('./layers/net/vpc')
