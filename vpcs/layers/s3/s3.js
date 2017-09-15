@@ -1,6 +1,6 @@
 var merge = rootRequire('./lib/merge_all');
 
-module.exports = function(bucketName) {
+module.exports = function(bucketName, rootAccountNumberForAccess, roleUserIdForAccess) {
     var setup = {
         "Resources": {}
     }
@@ -19,6 +19,6 @@ module.exports = function(bucketName) {
     return merge([
         setup,
         require('./alarms')(bucketNameLowerCase),
-        require('./encryptionPolicy')(bucketNameLowerCase)
+        require('./bucketPolicy')(bucketNameLowerCase, rootAccountNumberForAccess, roleUserIdForAccess)
     ]);
 }

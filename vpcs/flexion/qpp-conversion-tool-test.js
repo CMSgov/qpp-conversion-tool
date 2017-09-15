@@ -71,11 +71,13 @@ env.configureLayers = function() {
 
     var s3 = rootRequire('./vpcs/layers/s3/s3');
     var s3BuckName = env.name + 'audit';
+    var rootAccountForAccess = '684212469706';
+    var roleUserIdForAccess = 'AROAICQZGCPQQ4EDO764M'; //user ID for the server-nonprod role
 
 
     return {
         app: rootRequire('./layers/app/api'),
-        s3: s3(s3BuckName),
+        s3: s3(s3BuckName, rootAccountForAccess, roleUserIdForAccess),
         jump,
         nat,
         net: rootRequire('./layers/net/vpc')
