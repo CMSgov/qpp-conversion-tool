@@ -45,22 +45,25 @@ module "app" {
   count                       = "${var.app_count}"
   elb_access_logs_bucket      = "${var.elb_access_logs_bucket}"
   elb_cidr_blocks             = ["${var.data_subnet_cidr_blocks}"]
+  elb_internal                = "${var.elb_internal}"
+
   elb_listeners = [{
-    instance_port = "3000"
-    instance_protocol = "http"
-    lb_port = "443"
-    lb_protocol = "https"
+    instance_port      = "3000"
+    instance_protocol  = "http"
+    lb_port            = "443"
+    lb_protocol        = "https"
     ssl_certificate_id = "${var.ssl_certificate_id}"
   }]
-  elb_security_groups         = "${concat(list(module.open_http.id))}"
-  elb_subnet_ids              = ["${var.data_subnet_ids}"]
-  iam_instance_profile        = "${var.iam_instance_profile}"
-  instance_type               = "${lookup(var.instance_types, "app")}"
-  jump_security_group_id      = "${module.jump.security_group_id}"
-  key_name                    = "${var.key_name}"
-  layer                       = "app"
-  route53_zone_id             = "${module.route53_hosted_zone.zone_id}"
-  subnet_ids                  = "${var.app_subnet_ids}"
+
+  elb_security_groups    = "${concat(list(module.open_http.id))}"
+  elb_subnet_ids         = ["${var.data_subnet_ids}"]
+  iam_instance_profile   = "${var.iam_instance_profile}"
+  instance_type          = "${lookup(var.instance_types, "app")}"
+  jump_security_group_id = "${module.jump.security_group_id}"
+  key_name               = "${var.key_name}"
+  layer                  = "app"
+  route53_zone_id        = "${module.route53_hosted_zone.zone_id}"
+  subnet_ids             = "${var.app_subnet_ids}"
 
   tags = [
     {
@@ -100,10 +103,10 @@ module "app" {
     },
   ]
 
-  user_data             = "${data.template_cloudinit_config.app_config.rendered}"
-  vpc_cidr              = "${var.vpc_cidr}"
-  vpc_id                = "${var.vpc_id}"
-  vpc_name              = "${var.vpc_name}"
+  user_data = "${data.template_cloudinit_config.app_config.rendered}"
+  vpc_cidr  = "${var.vpc_cidr}"
+  vpc_id    = "${var.vpc_id}"
+  vpc_name  = "${var.vpc_name}"
 
   wait_for_elb_capacity = "${var.wait_for_elb_capacity}"
 }

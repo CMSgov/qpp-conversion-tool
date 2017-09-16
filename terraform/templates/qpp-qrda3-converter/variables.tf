@@ -3,6 +3,12 @@ variable "app_ami_id" {
   type        = "string"
 }
 
+variable "app_count" {
+  description = "App Instance count."
+  type        = "string"
+  default     = "3"
+}
+
 variable "aws_region" {
   description = "EC2 Region for the VPC"
   type        = "string"
@@ -18,8 +24,23 @@ variable "app_subnet_ids" {
   type        = "list"
 }
 
-variable "dmz_subnet_cidr_blocks" {
+variable "cloudwatch_notification_arn" {
+  description = "The ARN for sending CloudWatch notifications."
+  type        = "string"
+}
+
+variable "data_subnet_cidr_blocks" {
   description = "List of data subnet CIDR blocks."
+  type        = "list"
+}
+
+variable "data_subnet_ids" {
+  description = "List fo data subnet ids."
+  type        = "list"
+}
+
+variable "dmz_subnet_cidr_blocks" {
+  description = "List of dmz subnet CIDR blocks."
   type        = "list"
 }
 
@@ -28,10 +49,14 @@ variable "dmz_subnet_ids" {
   type        = "list"
 }
 
-variable "app_count" {
-  description = "App Instance count."
+variable "elb_access_logs_bucket" {
+  description = "The S3 bucket for ELB access logs."
   type        = "string"
-  default     = "3"
+}
+
+variable "elb_internal" {
+  description = "Is the ELB internal-only."
+  type        = "string"
 }
 
 variable "iam_instance_profile" {
@@ -44,14 +69,24 @@ variable "instance_types" {
   type        = "map"
 
   default = {
-    app   = "m3.medium"
-    jump  = "m4.large"
+    app  = "m3.medium"
+    jump = "m4.large"
   }
+}
+
+variable "key_name" {
+  description = "The EC2 SSH key name."
+  type        = "string"
+}
+
+variable "s3_bucket" {
+  description = "The S3 bucket for the VPC."
+  type        = "string"
 }
 
 variable "ssl_certificate_id" {
   description = "The SSL cert ID for the ELB"
-  type = "string"
+  type        = "string"
 }
 
 variable "stack_tag" {
