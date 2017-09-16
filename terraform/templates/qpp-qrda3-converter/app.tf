@@ -52,7 +52,7 @@ module "app" {
     lb_protocol = "https"
     ssl_certificate_id = "${var.ssl_certificate_id}"
   }]
-  elb_security_groups         = "${concat(list(module.open_http.id)}"
+  elb_security_groups         = "${concat(list(module.open_http.id))}"
   elb_subnet_ids              = ["${var.data_subnet_ids}"]
   iam_instance_profile        = "${var.iam_instance_profile}"
   instance_type               = "${lookup(var.instance_types, "app")}"
