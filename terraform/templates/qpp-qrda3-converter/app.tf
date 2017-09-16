@@ -50,7 +50,7 @@ module "app" {
     instance_protocol = "http"
     lb_port = "443"
     lb_protocol = "https"
-    ssl_certificate_id = "${var.ssl_certificate_id"
+    ssl_certificate_id = "${var.ssl_certificate_id}"
   }]
   elb_security_groups         = "${concat(list(module.open_http.id)}"
   elb_subnet_ids              = ["${var.data_subnet_ids}"]
