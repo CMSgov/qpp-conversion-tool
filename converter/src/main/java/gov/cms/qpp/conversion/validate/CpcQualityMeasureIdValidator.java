@@ -35,38 +35,12 @@ public class CpcQualityMeasureIdValidator extends NodeValidator {
 		String value = node.getValue(QualityMeasureIdValidator.MEASURE_ID);
 		MeasureConfig measureConfig = configurationMap.get(value);
 		int requiredPerformanceRateCount = measureConfig.getStrata().size();
-		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
-
+		
 		check(node)
 				.childMinimum(INVALID_PERFORMANCE_RATE_COUNT,
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
 				.childMaximum(INVALID_PERFORMANCE_RATE_COUNT,
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
-
-		if (subPopulations == null) {
-			return;
-		}
-
-		for (SubPopulation subPopulation : subPopulations) {
-			validateSubPopulation(node, subPopulation);
-		}
-	}
-
-	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
-		String denomId = subPopulation.getDenominatorUuid();
-		String ipopId = subPopulation.getInitialPopulationUuid();
-		Stream<Node> nodeStream = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2);
-
-		Node denomNode = nodeStream
-				.filter(childNodes -> denomId.equals(childNodes.getValue(MeasureDataDecoder.MEASURE_POPULATION)))
-				.findFirst().orElse(null);
-
-		Node ipopNode = nodeStream
-				.filter(childNodes -> ipopId.equals(childNodes.getValue(MeasureDataDecoder.MEASURE_POPULATION)))
-				.findFirst().orElse(null);
-
-		System.out.println("Denom : " + denomNode);
-		System.out.println("Ipop : " + ipopNode);
 	}
 
 }
