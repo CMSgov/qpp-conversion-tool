@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
@@ -36,7 +35,10 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			"The measure reference results must have a single measure type";
 	static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	public static final String REQUIRED_CHILD_MEASURE =
-			"The eCQM (electronic measure id: %s) requires a %s";
+			"The eCQM (electronic measure id: %s) requires one and only one %s";
+	protected static final String INCORRECT_UUID = "The eCQM (electronic measure id: %s) requires a %s with the correct UUID";
+	protected static final String NO_CHILD_POPULATION_CRITERIA_NEEDED =
+		"The eCQM (electronic measure id: %s) does not need a %s but one was supplied";
 	protected static final String DENEX = "denominator exclusion";
 	protected static final String DENEXCEP = "eligiblePopulationExclusion";
 	protected static final String NUMER = "performanceMet";
@@ -132,17 +134,62 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	private Consumer<Node> makeValidator(Supplier<Object> check, String label, String key) {
 		return node -> {
+			Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
+
 			if (check.get() != null) {
-				Predicate<Node> childFinder = makeChildFinder(check, key);
-				List<Node> childMeasureNodes = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
-						.filter(childFinder).collect(Collectors.toList());
-				if (childMeasureNodes.isEmpty()) {
-					MeasureConfig config =
+				//we want a NUMER and a specific UUID for NUMER
+				//get the number of NUMERs, regardless of UUID
+				long childTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
+				if (childTypeCount == 1) {
+					//we have exactly 1 NUMER, good
+					//now, we need to check the UUID to see if it is correct
+					Predicate<Node> childUuidFinder = makeUuidChildFinder(check);
+					long childUuidCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).filter(childUuidFinder).count();
+
+					if (childUuidCount != 1) {
+						//we don't have the appropriate NUMER/UUID combo
+						//bad
+						MeasureConfig config =
 							MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+						String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), label);
+						this.getDetails().add(new Detail(message, node.getPath()));
+					}
+
+				} else {
+					//we either have 0 NUMERs (or whatever) or we have too many NUMERs
+					//bad, validation error
+					MeasureConfig config =
+						MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 					String message = String.format(REQUIRED_CHILD_MEASURE, config.getElectronicMeasureId(), label);
 					this.getDetails().add(new Detail(message, node.getPath()));
 				}
+			} else {
+				//we don't want a NUMER
+				boolean containsChildMeasureNode = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).anyMatch(childTypeFinder);
+				if (containsChildMeasureNode) {
+					MeasureConfig config = MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+					String message = String.format(NO_CHILD_POPULATION_CRITERIA_NEEDED, config.getElectronicMeasureId(), label);
+					this.getDetails().add(new Detail(message, node.getPath()));
+				}
 			}
+		};
+	}
+
+	private Predicate<Node> makeTypeChildFinder(String populationCriteriaType) {
+		return thisNode -> {
+			thoroughlyCheck(thisNode)
+				.incompleteValidation()
+				.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE);
+			return populationCriteriaType.equals(thisNode.getValue(MEASURE_TYPE));
+		};
+	}
+
+	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid) {
+		return thisNode -> {
+			thoroughlyCheck(thisNode)
+				.incompleteValidation()
+				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
+			return uuid.get().equals(thisNode.getValue(MEASURE_POPULATION));
 		};
 	}
 
