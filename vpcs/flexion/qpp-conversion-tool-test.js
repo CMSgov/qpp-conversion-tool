@@ -70,7 +70,7 @@ env.configureLayers = function() {
     jump['Resources']['JumpInstance']['Properties']['InstanceType'] = 'm4.large';
 
     var s3 = rootRequire('./vpcs/layers/s3/s3');
-    var s3BuckName = env.name + 'audit';
+    var s3BuckName = env.name.toLowerCase() + 'audit';
     var rootAccountForAccess = '684212469706';
     var roleUserIdForAccess = 'AROAICQZGCPQQ4EDO764M'; //user ID for the server-nonprod role
 

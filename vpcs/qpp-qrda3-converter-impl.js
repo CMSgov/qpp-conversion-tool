@@ -56,7 +56,7 @@ env.configureLayers = function() {
   });
 
   var s3 = rootRequire('./vpcs/layers/s3/s3');
-  var s3BuckName = env.name + 'audit';
+  var s3BuckName = env.name.toLowerCase() + 'audit';
 
   return {
     app: rootRequire('./layers/app/api'),
