@@ -17,7 +17,6 @@ public class SubPopulations {
 		keyToUniqueId.put("DENEX", SubPopulation::getDenominatorExclusionsUuid);
 		keyToUniqueId.put("DENOM", SubPopulation::getDenominatorUuid);
 		keyToUniqueId.put("NUMER", SubPopulation::getNumeratorUuid);
-		keyToUniqueId.put("IPOP", SubPopulation::getInitialPopulationUuid);
 		KEY_TO_UNIQUEID = Collections.unmodifiableMap(keyToUniqueId);
 	}
 

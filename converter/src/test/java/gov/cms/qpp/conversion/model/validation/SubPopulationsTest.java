@@ -1,18 +1,18 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class SubPopulationsTest {
 
 	@Test
 	public void testGetKeysContainsExpected() {
-		Assert.assertThat(SubPopulations.getKeys(), Matchers.containsInAnyOrder("DENEXCEP", "DENEX", "DENOM", "NUMER", "IPOP"));
+		Assert.assertThat(SubPopulations.getKeys(), Matchers.containsInAnyOrder("DENEXCEP", "DENEX", "DENOM", "NUMER"));
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -42,7 +42,6 @@ public class SubPopulationsTest {
 		subPopulation.setDenominatorExclusionsUuid(expected.get("DENEX"));
 		subPopulation.setDenominatorUuid(expected.get("DENOM"));
 		subPopulation.setNumeratorUuid(expected.get("NUMER"));
-		subPopulation.setInitialPopulationUuid(expected.get("IPOP"));
 
 		for (String key : SubPopulations.getKeys()) {
 			Assert.assertEquals(expected.get(key), SubPopulations.getUniqueIdForKey(key, subPopulation));

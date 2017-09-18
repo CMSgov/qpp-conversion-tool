@@ -1,21 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -24,6 +8,19 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
 /**
  * Validates a Measure Reference Results node.
@@ -39,11 +36,9 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	public static final String SINGLE_MEASURE_TYPE =
 			"The measure reference results must have a single measure type";
 	static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
-	public static final String REQUIRED_CHILD_MEASURE =
-			"The eCQM (electronic measure id: %s) requires one and only one %s";
-	protected static final String INCORRECT_UUID = "The eCQM (electronic measure id: %s) requires a %s with the correct UUID";
-	protected static final String NO_CHILD_POPULATION_CRITERIA_NEEDED =
-		"The eCQM (electronic measure id: %s) does not need a %s but one was supplied";
+	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
+			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
+	protected static final String INCORRECT_UUID = "The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -121,8 +116,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		if (expectedChildTypeCount != actualChildTypeCount) {
 			MeasureConfig config =
 					MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-				String message = String.format(REQUIRED_CHILD_MEASURE, config.getElectronicMeasureId(), key);
-				this.getDetails().add(new Detail(message, node.getPath()));
+			String message = String.format(INCORRECT_POPULATION_CRITERIA_COUNT, config.getElectronicMeasureId(), expectedChildTypeCount, key, actualChildTypeCount);
+			this.getDetails().add(new Detail(message, node.getPath()));
 		}
 	}
 
@@ -148,47 +143,24 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 *
 	 * @param check a property existence check
 	 * @param key that identify measures
-	 * @param label a short measure description
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
 	private Consumer<Node> makeValidator(Supplier<Object> check, String key) {
 		return node -> {
-			Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
-
 			if (check.get() != null) {
-				//we want a NUMER and a specific UUID for NUMER
-				//get the number of NUMERs, regardless of UUID
-				long childTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
-				if (childTypeCount == 1) {
-					//we have exactly 1 NUMER, good
-					//now, we need to check the UUID to see if it is correct
-					Predicate<Node> childUuidFinder = makeUuidChildFinder(check);
-					long childUuidCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).filter(childUuidFinder).count();
+				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
+				Predicate<Node> childUuidFinder = makeUuidChildFinder(check);
 
-					if (childUuidCount != 1) {
-						//we don't have the appropriate NUMER/UUID combo
-						//bad
-						MeasureConfig config =
-							MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-						String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key);
-						this.getDetails().add(new Detail(message, node.getPath()));
-					}
+				boolean childUuidExists = node
+					.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
+					.filter(childTypeFinder)
+					.anyMatch(childUuidFinder);
 
-				} else {
-					//we either have 0 NUMERs (or whatever) or we have too many NUMERs
-					//bad, validation error
+				if (!childUuidExists) {
 					MeasureConfig config =
 						MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-					String message = String.format(REQUIRED_CHILD_MEASURE, config.getElectronicMeasureId(), key);
-					this.getDetails().add(new Detail(message, node.getPath()));
-				}
-			} else {
-				//we don't want a NUMER
-				boolean containsChildMeasureNode = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).anyMatch(childTypeFinder);
-				if (containsChildMeasureNode) {
-					MeasureConfig config = MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-					String message = String.format(NO_CHILD_POPULATION_CRITERIA_NEEDED, config.getElectronicMeasureId(), key);
+					String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key, check.get());
 					this.getDetails().add(new Detail(message, node.getPath()));
 				}
 			}
