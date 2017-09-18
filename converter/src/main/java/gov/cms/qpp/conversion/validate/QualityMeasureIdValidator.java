@@ -1,5 +1,21 @@
 package gov.cms.qpp.conversion.validate;
 
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -7,18 +23,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 
 /**
  * Validates a Measure Reference Results node.
@@ -39,10 +44,6 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	protected static final String INCORRECT_UUID = "The eCQM (electronic measure id: %s) requires a %s with the correct UUID";
 	protected static final String NO_CHILD_POPULATION_CRITERIA_NEEDED =
 		"The eCQM (electronic measure id: %s) does not need a %s but one was supplied";
-	protected static final String DENEX = "denominator exclusion";
-	protected static final String DENEXCEP = "eligiblePopulationExclusion";
-	protected static final String NUMER = "performanceMet";
-	public static final String DENOM = "eligiblePopulation";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -101,8 +102,27 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			return;
 		}
 
+		SubPopulations.getKeys().forEach(key -> validateChildTypeCount(subPopulations, key, node));
+
 		for (SubPopulation subPopulation : subPopulations) {
 			validateSubPopulation(node, subPopulation);
+		}
+	}
+
+	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
+		long expectedChildTypeCount = subPopulations.stream()
+				.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
+				.filter(Objects::nonNull)
+				.count();
+
+		Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
+		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
+
+		if (expectedChildTypeCount != actualChildTypeCount) {
+			MeasureConfig config =
+					MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+				String message = String.format(REQUIRED_CHILD_MEASURE, config.getElectronicMeasureId(), key);
+				this.getDetails().add(new Detail(message, node.getPath()));
 		}
 	}
 
@@ -115,10 +135,10 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
 
 		List<Consumer<Node>> validations =
-			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, DENEXCEP, "DENEXCEP"),
-				makeValidator(subPopulation::getDenominatorExclusionsUuid, DENEX, "DENEX"),
-				makeValidator(subPopulation::getNumeratorUuid, NUMER, "NUMER"),
-				makeValidator(subPopulation::getDenominatorUuid, DENOM, "DENOM"));
+			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
+				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX"),
+				makeValidator(subPopulation::getNumeratorUuid, "NUMER"),
+				makeValidator(subPopulation::getDenominatorUuid, "DENOM"));
 
 		validations.forEach(validate -> validate.accept(node));
 	}
@@ -132,7 +152,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	private Consumer<Node> makeValidator(Supplier<Object> check, String label, String key) {
+	private Consumer<Node> makeValidator(Supplier<Object> check, String key) {
 		return node -> {
 			Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
 
@@ -151,7 +171,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 						//bad
 						MeasureConfig config =
 							MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-						String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), label);
+						String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key);
 						this.getDetails().add(new Detail(message, node.getPath()));
 					}
 
@@ -160,7 +180,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 					//bad, validation error
 					MeasureConfig config =
 						MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-					String message = String.format(REQUIRED_CHILD_MEASURE, config.getElectronicMeasureId(), label);
+					String message = String.format(REQUIRED_CHILD_MEASURE, config.getElectronicMeasureId(), key);
 					this.getDetails().add(new Detail(message, node.getPath()));
 				}
 			} else {
@@ -168,7 +188,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				boolean containsChildMeasureNode = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).anyMatch(childTypeFinder);
 				if (containsChildMeasureNode) {
 					MeasureConfig config = MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-					String message = String.format(NO_CHILD_POPULATION_CRITERIA_NEEDED, config.getElectronicMeasureId(), label);
+					String message = String.format(NO_CHILD_POPULATION_CRITERIA_NEEDED, config.getElectronicMeasureId(), key);
 					this.getDetails().add(new Detail(message, node.getPath()));
 				}
 			}
