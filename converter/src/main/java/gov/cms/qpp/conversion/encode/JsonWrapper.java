@@ -493,13 +493,17 @@ public class JsonWrapper {
 	 * @return Stream of wrapped object or list.
 	 */
 	public Stream<JsonWrapper> stream() {
-		return isObject() ? Stream.of(this) : list.stream()
+		Stream<JsonWrapper> returnValue = Stream.of(this);
+		if (list != null) {
+			list.stream()
 				.filter(entry -> entry instanceof Map)
 				.map(entry -> {
 					JsonWrapper wrapper = new JsonWrapper();
 					wrapper.object = (Map) entry;
 					return wrapper;
 				});
+		}
+		return returnValue;
 	}
 
 	/**
