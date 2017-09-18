@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -272,6 +273,34 @@ public class QualityMeasureIdValidatorTest {
 
 	}
 
+	@Test
+	public void testInternalDenomCountMatchesIpopCount() {
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+				.addMeasureId(REQUIRES_DENOM_EXCEPTION_GUID)
+				.addSubPopulationMeasureDataWithCounts(DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID, "100")
+				.addSubPopulationMeasureDataWithCounts(IPOP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID, "100")
+				.addSubPopulationMeasureDataWithCounts(DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID, "50")
+				.addSubPopulationMeasureDataWithCounts(NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID, "100")
+				.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		assertThat("There must not be any validation errors.", details, hasSize(0));
+	}
+
+	@Test
+	public void testInternalDenomCountMismatchesIpopCount() {
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+				.addMeasureId(REQUIRES_DENOM_EXCEPTION_GUID)
+				.addSubPopulationMeasureDataWithCounts(DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID, "100")
+				.addSubPopulationMeasureDataWithCounts(IPOP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID, "100")
+				.addSubPopulationMeasureDataWithCounts(DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID, "150")
+				.addSubPopulationMeasureDataWithCounts(NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID, "100")
+				.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		assertThat("There must not be any validation errors.", details, hasSize(0));
+	}
+
 	private Node createMeasureReferenceResultsNode() {
 		return createMeasureReferenceResultsNode(true, true);
 	}
@@ -304,6 +333,20 @@ public class QualityMeasureIdValidatorTest {
 			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 			measureNode.putValue(MEASURE_TYPE, type);
 			measureNode.putValue(MEASURE_POPULATION, populationId);
+
+			measureReferenceResultsNode.addChildNode(measureNode);
+			return this;
+		}
+
+		MeasureReferenceBuilder addSubPopulationMeasureDataWithCounts(String type, String populationId, String count) {
+			Node measureNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
+			measureNode.putValue(MEASURE_TYPE, type);
+			measureNode.putValue(MEASURE_POPULATION, populationId);
+
+			Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+			aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, count);
+
+			measureNode.addChildNode(aggregateCountNode);
 
 			measureReferenceResultsNode.addChildNode(measureNode);
 			return this;

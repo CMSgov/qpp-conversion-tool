@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -37,6 +38,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	public static final String REQUIRED_CHILD_MEASURE =
 			"The eCQM (electronic measure id: %s) requires a %s";
+	protected static final String REQUIRE_VALID_DENOMINATOR_COUNT =
+			"Denominator Measure must be less than or equal to Initial Population";
 	protected static final String DENEX = "denominator exclusion";
 	protected static final String DENEXCEP = "eligiblePopulationExclusion";
 	protected static final String NUMER = "performanceMet";
@@ -119,6 +122,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				makeValidator(subPopulation::getDenominatorUuid, DENOM, "DENOM"));
 
 		validations.forEach(validate -> validate.accept(node));
+
+		validateDenomCountToIpopCount(node, subPopulation);
 	}
 
 	/**
@@ -162,5 +167,34 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			boolean validMeasureType = key.equals(thisNode.getValue(MEASURE_TYPE));
 			return validMeasureType && check.get().equals(thisNode.getValue(MEASURE_POPULATION));
 		};
+	}
+
+	/**
+	 * Validation check for Denominator and Numerator counts of the same Sub Population
+	 *
+	 * @param node The current parent node
+	 * @param subPopulation the current sub population
+	 */
+	private void validateDenomCountToIpopCount(Node node, SubPopulation subPopulation) {
+		Node denomNode = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
+				"DENOM".equals(thisNode.getValue(MEASURE_TYPE))
+						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
+				.findFirst().orElse(null);
+		Node ipopNode = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
+				"IPOP".equals(thisNode.getValue(MEASURE_TYPE))
+						&& subPopulation.getInitialPopulationUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
+				.findFirst().orElse(null);
+
+		if (denomNode != null && ipopNode != null) {
+			Node denomCount = denomNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+			Node ipopCount = ipopNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+
+			check(denomCount)
+					.incompleteValidation()
+					.intValue(AggregateCountValidator.TYPE_ERROR,
+							AggregateCountDecoder.AGGREGATE_COUNT)
+					.lessThanOrEqualTo(REQUIRE_VALID_DENOMINATOR_COUNT,
+							Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
+		}
 	}
 }
