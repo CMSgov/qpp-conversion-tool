@@ -275,7 +275,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInternalDenomCountMatchesIpopCount() {
+	public void testInternalDenomCountLessThanIpopCount() {
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 				.addMeasureId(REQUIRES_DENOM_EXCEPTION_GUID)
 				.addSubPopulationMeasureDataWithCounts(DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID, ONE_HUNDRED)
@@ -289,7 +289,21 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInternalDenomCountMismatchesIpopCount() {
+	public void testInternalDenomCountEqualToIpopCount() {
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+				.addMeasureId(REQUIRES_DENOM_EXCEPTION_GUID)
+				.addSubPopulationMeasureDataWithCounts(DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID, ONE_HUNDRED)
+				.addSubPopulationMeasureDataWithCounts(IPOP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID, ONE_HUNDRED)
+				.addSubPopulationMeasureDataWithCounts(DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID, ONE_HUNDRED)
+				.addSubPopulationMeasureDataWithCounts(NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID, ONE_HUNDRED)
+				.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		assertThat("There must not be any validation errors.", details, hasSize(0));
+	}
+
+	@Test
+	public void testInternalDenomCountGreaterThanIpopCount() {
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 				.addMeasureId(REQUIRES_DENOM_EXCEPTION_GUID)
 				.addSubPopulationMeasureDataWithCounts(DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID, ONE_HUNDRED)
