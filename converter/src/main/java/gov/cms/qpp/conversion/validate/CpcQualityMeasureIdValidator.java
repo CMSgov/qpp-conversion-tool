@@ -35,7 +35,7 @@ public class CpcQualityMeasureIdValidator extends NodeValidator {
 		String value = node.getValue(QualityMeasureIdValidator.MEASURE_ID);
 		MeasureConfig measureConfig = configurationMap.get(value);
 		int requiredPerformanceRateCount = measureConfig.getStrata().size();
-		
+
 		check(node)
 				.childMinimum(INVALID_PERFORMANCE_RATE_COUNT,
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)

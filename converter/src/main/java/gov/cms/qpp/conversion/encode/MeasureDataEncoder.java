@@ -7,6 +7,9 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
@@ -21,6 +24,9 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 		super(context);
 	}
 
+	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
+			.collect(Collectors.toSet());
+
 	/**
 	 * internalEncode for measure data
 	 *
@@ -30,14 +36,15 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
-		Map<String, String> measureTypeMapper = initializeMeasureTypeMap();
-		String measureType = node.getValue(MEASURE_TYPE);
-		Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+		if (!IPOP.contains(node.getValue(MEASURE_TYPE))) {
+			Map<String, String> measureTypeMapper = initializeMeasureTypeMap();
+			String measureType = node.getValue(MEASURE_TYPE);
+			Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 
-		String encodeLabel = measureTypeMapper.get(measureType);
-		wrapper.putInteger(encodeLabel, aggCount.getValue(AGGREGATE_COUNT));
-		maintainContinuity(wrapper, aggCount, encodeLabel);
-
+			String encodeLabel = measureTypeMapper.get(measureType);
+			wrapper.putInteger(encodeLabel, aggCount.getValue(AGGREGATE_COUNT));
+			maintainContinuity(wrapper, aggCount, encodeLabel);
+		}
 	}
 
 	/**

@@ -77,8 +77,10 @@ public class QualityMeasureIdMultiRoundTripTest {
 				"component[4]/observation/value/@code";
 
 		List<Detail> details = executeScenario(path, false);
+		System.out.println(details.get(0).getMessage());
 
-		Assert.assertThat("Should have no error detail", details, hasSize(0));
+		Assert.assertThat("Should have no error detail", details,
+				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_TYPE));
 	}
 
 	@Test
@@ -131,7 +133,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_POPULATION));
 	}
 
-	private List<Detail> executeScenario(String path, boolean remove) {
+	private List<Detail>  executeScenario(String path, boolean remove) {
 		InputStream modified = manipulator.upsetTheNorm(path, remove);
 		Converter converter = new Converter(new InputStreamQrdaSource(JUNK_QRDA3_FILE.toString(), modified));
 		List<Detail> details = new ArrayList<>();
