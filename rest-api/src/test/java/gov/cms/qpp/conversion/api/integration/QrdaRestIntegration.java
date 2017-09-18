@@ -5,19 +5,27 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,7 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = RestApiApplication.class)
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
-public class QrdaRestTest {
+@TestPropertySource(locations = "classpath:test.properties")
+public class QrdaRestIntegration {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -35,6 +44,12 @@ public class QrdaRestTest {
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+	}
+
+	@Test
+	public void shouldBeHealthy() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/health"))
+				.andExpect(status().is(200));
 	}
 
 	@Test
@@ -75,5 +90,16 @@ public class QrdaRestTest {
 				.fileUpload("/").file(qrda3File)
 				.accept("application/vnd.qpp.cms.gov.v2+json"))
 				.andExpect(status().is(406));
+	}
+
+	@Test
+	public void shouldFailForSubmissionApiValidation() throws Exception {
+		String file = "../converter/src/test/resources/cpc_plus/CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III-success.xml";
+		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get(file)));
+		mockMvc.perform(MockMvcRequestBuilders
+				.fileUpload("/").file(qrda3File))
+			.andExpect(status().is(422))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.errors").exists());
 	}
 }
