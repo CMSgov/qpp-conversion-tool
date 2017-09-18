@@ -487,6 +487,11 @@ public class JsonWrapper {
 		return isObject() ? object : list;
 	}
 
+	/**
+	 * Stream of wrapped object or list.
+	 *
+	 * @return Stream of wrapped object or list.
+	 */
 	public Stream<JsonWrapper> stream() {
 		return isObject() ? Stream.of(this) : list.stream()
 				.filter(entry -> entry instanceof Map)
