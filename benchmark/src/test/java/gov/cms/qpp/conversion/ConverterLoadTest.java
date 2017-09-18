@@ -13,6 +13,7 @@ import org.apache.jorphan.collections.HashTree;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertThat;
 
+@Ignore
 public class ConverterLoadTest {
 	private static StandardJMeterEngine jmeter;
 
