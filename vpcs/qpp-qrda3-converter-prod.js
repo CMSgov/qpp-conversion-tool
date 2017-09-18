@@ -55,7 +55,7 @@ env.configureLayers = function() {
     SSLCertificateId: 'arn:aws:acm:us-east-1:003384571330:certificate/a54f7f91-5268-4321-b2ba-f282e65a5c4e'
   });
 
-  var s3 = rootRequire('./vpcs/layers/s3/s3');
+  var s3 = rootRequire('./vpcs/layers/s3/s3ForPii');
   var s3BuckName = env.name.toLowerCase() + 'audit';
 
   return {
