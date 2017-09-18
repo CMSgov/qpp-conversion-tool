@@ -78,20 +78,6 @@ public class ConverterLoadTest {
 				Long.valueOf(results.get("ErrorCount")), Matchers.equalTo(0L));
 	}
 
-	@Test
-	public void converterFindBreakingPoint() throws IOException {
-		int errorCount = 0;
-		int numThreads = 0;
-		while (errorCount < 1) {
-			numThreads += 10;
-			Map<String, String> results = executePlan(1, numThreads, 5);
-			errorCount = Integer.valueOf(results.get("ErrorCount"));
-		}
-
-		assertThat("Endpoint could not support up to 20 or more concurrent requests",
-				numThreads, Matchers.greaterThanOrEqualTo(20));
-	}
-
 	private Map<String, String> executePlan(int numLoops, int numThreads, int rampUp) throws IOException {
 		HashTree testPlanTree = new HashTree();
 		HTTPSamplerProxy httpSampler = makeSampler();
