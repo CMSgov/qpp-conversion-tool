@@ -97,7 +97,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig) {
 		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
 
-		if (subPopulations == null) {
+		if (subPopulations.isEmpty()) {
 			return;
 		}
 
