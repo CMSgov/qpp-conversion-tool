@@ -13,6 +13,7 @@ import org.apache.jorphan.collections.HashTree;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertThat;
 
+@Ignore
 public class ConverterLoadTest {
 	private static StandardJMeterEngine jmeter;
 
@@ -76,6 +78,20 @@ public class ConverterLoadTest {
 				Long.valueOf(results.get("Average")), Matchers.lessThan(3000L));
 		assertThat("At least one error occurred",
 				Long.valueOf(results.get("ErrorCount")), Matchers.equalTo(0L));
+	}
+
+	@Test
+	public void converterFindBreakingPoint() throws IOException {
+		int errorCount = 0;
+		int numThreads = 0;
+		while (errorCount < 1) {
+			numThreads += 10;
+			Map<String, String> results = executePlan(1, numThreads, 5);
+			errorCount = Integer.valueOf(results.get("ErrorCount"));
+		}
+
+		assertThat("Endpoint could not support up to 20 or more concurrent requests",
+				numThreads, Matchers.greaterThanOrEqualTo(20));
 	}
 
 	private Map<String, String> executePlan(int numLoops, int numThreads, int rampUp) throws IOException {
