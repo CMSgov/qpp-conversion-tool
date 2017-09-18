@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion.validate;
 
+import com.google.common.collect.Sets;
+import gov.cms.qpp.conversion.correlation.model.Template;
+import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -9,6 +12,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Validates a Measure Reference Results for CPC Plus requirements
@@ -49,7 +53,20 @@ public class CpcQualityMeasureIdValidator extends NodeValidator {
 	}
 
 	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
+		String denomId = subPopulation.getDenominatorUuid();
+		String ipopId = subPopulation.getInitialPopulationUuid();
+		Stream<Node> nodeStream = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2);
 
+		Node denomNode = nodeStream
+				.filter(childNodes -> denomId.equals(childNodes.getValue(MeasureDataDecoder.MEASURE_POPULATION)))
+				.findFirst().orElse(null);
+
+		Node ipopNode = nodeStream
+				.filter(childNodes -> ipopId.equals(childNodes.getValue(MeasureDataDecoder.MEASURE_POPULATION)))
+				.findFirst().orElse(null);
+
+		System.out.println("Denom : " + denomNode);
+		System.out.println("Ipop : " + ipopNode);
 	}
 
 }
