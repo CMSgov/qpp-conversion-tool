@@ -60,7 +60,7 @@ env.configureLayers = function() {
 
   return {
     app: rootRequire('./layers/app/api'),
-    s3: s3(s3BuckName, '003384571330', ''),
+    s3: s3(s3BuckName, '003384571330', 'AROAIL6OBZZTME7ZPAK3E'),
     jump: rootRequire('./layers/jump/jump'),
     internalBalancer,
     net: rootRequire('./layers/net/gdit')
