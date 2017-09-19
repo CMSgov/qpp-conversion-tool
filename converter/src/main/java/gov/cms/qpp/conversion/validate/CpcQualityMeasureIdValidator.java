@@ -1,18 +1,12 @@
 package gov.cms.qpp.conversion.validate;
 
-import com.google.common.collect.Sets;
-import gov.cms.qpp.conversion.correlation.model.Template;
-import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * Validates a Measure Reference Results for CPC Plus requirements
