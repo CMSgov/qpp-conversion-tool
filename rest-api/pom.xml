@@ -86,9 +86,22 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.11.197</version>
+		</dependency>
+
+		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>converter</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cloud.localstack</groupId>
+			<artifactId>localstack-utils</artifactId>
+			<version>0.1.4</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
