@@ -7,7 +7,7 @@ terraform {
     bucket     = "aws-hhs-cms-ccsq-qpp-navadevops-nonprod-us-east-1"
     key        = "qpp-qrda3converter-dev/terraform/terraform.tfstate"
     region     = "us-east-1"
-    lock_table = "tf_lock"
+    dynamodb_table = "tf_lock"
   }
 
   required_version = "~> 0.10.4"
