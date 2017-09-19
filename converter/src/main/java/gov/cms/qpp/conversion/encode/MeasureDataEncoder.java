@@ -24,7 +24,7 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 		super(context);
 	}
 
-	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
+	public static final Set<String> IPOP = Stream.of("IPP", "IPOP")
 			.collect(Collectors.toSet());
 
 	/**

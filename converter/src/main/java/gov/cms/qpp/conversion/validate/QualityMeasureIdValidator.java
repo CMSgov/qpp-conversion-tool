@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.encode.MeasureDataEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -181,7 +182,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
 		Node ipopNode = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
-				"IPOP".equals(thisNode.getValue(MEASURE_TYPE))
+				(MeasureDataEncoder.IPOP.contains(thisNode.getValue(MEASURE_TYPE)))
 						&& subPopulation.getInitialPopulationUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
 
@@ -189,7 +190,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			Node denomCount = denomNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 			Node ipopCount = ipopNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 
-			check(denomCount)
+			thoroughlyCheck(denomCount)
 					.incompleteValidation()
 					.intValue(AggregateCountValidator.TYPE_ERROR,
 							AggregateCountDecoder.AGGREGATE_COUNT)

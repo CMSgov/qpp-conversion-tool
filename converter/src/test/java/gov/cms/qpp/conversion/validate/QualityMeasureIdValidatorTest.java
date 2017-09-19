@@ -178,8 +178,8 @@ public class QualityMeasureIdValidatorTest {
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 			.addMeasureId(REQUIRES_DENOM_EXCEPTION_GUID)
 			.addSubPopulationMeasureData(DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID)
-			.addSubPopulationMeasureData(IPP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID)
-			.addSubPopulationMeasureData(DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID)
+			.addSubPopulationMeasureDataWithCounts(IPP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID, ONE_HUNDRED)
+			.addSubPopulationMeasureDataWithCounts(DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID, ONE_HUNDRED)
 			.addSubPopulationMeasureData(NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID)
 			.build();
 
