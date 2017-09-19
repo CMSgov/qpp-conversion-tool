@@ -418,13 +418,15 @@ public class Node {
 
 		final Node node = (Node)o;
 
-		return isValidated() == node.isValidated() &&
-			Objects.equal(getChildNodes(), node.getChildNodes()) &&
-			Objects.equal(data, node.data) &&
-			Objects.equal(duplicateData, node.duplicateData) &&
-			getType() == node.getType() &&
-			Objects.equal(getDefaultNsUri(), node.getDefaultNsUri()) &&
-			Objects.equal(getPath(), node.getPath());
+		boolean halfEquals = isValidated() == node.isValidated()
+			&& Objects.equal(getChildNodes(), node.getChildNodes())
+			&& Objects.equal(data, node.data)
+			&& Objects.equal(duplicateData, node.duplicateData);
+
+		return halfEquals
+			&& getType() == node.getType()
+			&& Objects.equal(getDefaultNsUri(), node.getDefaultNsUri())
+			&& Objects.equal(getPath(), node.getPath());
 	}
 
 	/**
