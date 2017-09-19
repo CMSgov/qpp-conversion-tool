@@ -495,7 +495,7 @@ public class JsonWrapper {
 	public Stream<JsonWrapper> stream() {
 		Stream<JsonWrapper> returnValue = Stream.of(this);
 		if (list != null) {
-			list.stream()
+			returnValue = list.stream()
 				.filter(entry -> entry instanceof Map)
 				.map(entry -> {
 					JsonWrapper wrapper = new JsonWrapper();
