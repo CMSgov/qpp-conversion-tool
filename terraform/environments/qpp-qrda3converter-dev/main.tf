@@ -4,9 +4,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket     = "aws-hhs-cms-ccsq-qpp-navadevops-nonprod-us-east-1"
-    key        = "qpp-qrda3converter-dev/terraform/terraform.tfstate"
-    region     = "us-east-1"
+    bucket         = "aws-hhs-cms-ccsq-qpp-navadevops-nonprod-us-east-1"
+    key            = "qpp-qrda3converter-dev/terraform/terraform.tfstate"
+    region         = "us-east-1"
     dynamodb_table = "tf_lock"
   }
 
@@ -22,9 +22,8 @@ module "network" {
 module "qpp-qrda3converter" {
   source = "../../templates/qpp-qrda3converter"
 
-  app_count = "${var.app_count}"
-
   app_ami_id                  = "${var.app_ami_id}"
+  app_count                   = "${var.app_count}"
   app_subnet_cidr_blocks      = "${module.network.app_subnet_cidr_blocks}"
   app_subnet_ids              = "${module.network.app_subnet_ids}"
   aws_region                  = "${var.aws_region}"
