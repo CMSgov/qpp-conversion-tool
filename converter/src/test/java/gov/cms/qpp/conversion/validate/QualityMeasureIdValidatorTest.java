@@ -14,7 +14,6 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATIO
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
-import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
@@ -74,7 +73,7 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
-		assertThat("There must not be any validation errors.", details, hasSize(0));
+		assertThat("There must not be any validation errors.", details, empty());
 	}
 
 	@Test
@@ -166,7 +165,7 @@ public class QualityMeasureIdValidatorTest {
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("There must not be any validation errors.", details, hasSize(0));
+		assertThat("There must not be any validation errors.", details, empty());
 	}
 
 	@Test
@@ -180,12 +179,12 @@ public class QualityMeasureIdValidatorTest {
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("There must not be any validation errors.", details, hasSize(0));
+		assertThat("There must not be any validation errors.", details, empty());
 	}
 
 	@Test
 	public void testInternalMissingDenexcepMeasure() {
-		String message = String.format(INCORRECT_POPULATION_CRITERIA_COUNT, "CMS68v6", 1, "DENEXCEP", 0);
+		String message = String.format(QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS68v6", 1, "DENEXCEP", 0);
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 			.addMeasureId(REQUIRES_DENOM_EXCEPTION_GUID)
 			.addSubPopulationMeasureData(IPOP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID)
@@ -217,7 +216,7 @@ public class QualityMeasureIdValidatorTest {
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("There must not be any validation errors.", details, hasSize(0));
+		assertThat("There must not be any validation errors.", details, empty());
 	}
 
 	@Test
@@ -247,7 +246,7 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testInternalDenexcepMultipleSupPopulationsMissingMeasureId() {
-		String message = String.format(INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 2, "DENEXCEP", 1);
+		String message = String.format(QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 2, "DENEXCEP", 1);
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 			.addMeasureId(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
 			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID)
@@ -266,8 +265,84 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(message));
+	}
 
+	@Test
+	public void testTooManyCriteriaExists() {
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+			.addMeasureId(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM1_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID)
 
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP2_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM2_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXECEP2_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID)
+
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP3_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM3_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID)
+
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID)  //extra NUMER
+
+			.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, NUMER, 4);
+		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(expectedErrorMessage));
+	}
+
+	@Test
+	public void testTooFewCriteriaExists() {
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+			.addMeasureId(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM1_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID)
+			//missing NUMER
+
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP2_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM2_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXECEP2_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID)
+
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP3_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM3_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID)
+			.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, NUMER, 2);
+		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(expectedErrorMessage));
+	}
+
+	@Test
+	public void testIncorrectUuid() {
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+			.addMeasureId(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM1_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID)
+			.addSubPopulationMeasureData(NUMER, "incorrectUUID")
+
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP2_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM2_GUID)
+			.addSubPopulationMeasureData(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXECEP2_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID)
+
+			.addSubPopulationMeasureData(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP3_GUID)
+			.addSubPopulationMeasureData(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM3_GUID)
+			.addSubPopulationMeasureData(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID)
+			.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_UUID, "CMS52v5", NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
+		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(expectedErrorMessage));
 	}
 
 	private Node createMeasureReferenceResultsNode() {
