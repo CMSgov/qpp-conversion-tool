@@ -1,5 +1,5 @@
-variable "app_ami_id" {
-  default = "ami-b0b1a2cb"
+variable "app_ami_git_hash" {
+  type = "string"
 }
 
 variable "app_count" {

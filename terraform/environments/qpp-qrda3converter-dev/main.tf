@@ -13,6 +13,20 @@ terraform {
   required_version = "~> 0.10.4"
 }
 
+data "aws_ami" "app" {
+  most_recent = true
+
+  filter {
+    name = "tag-key"
+    values = ["application_git_hash"]
+  }
+
+  filter {
+    name = "tag-value"
+    values = ["${var.app_ami_git_hash}"]
+  }
+}
+
 module "network" {
   source = "git@github.com:CMSgov/corevpc//terraform/modules/aws/network-v3?ref=6ad748bcec4adc91a3d7197db0af68d0726f6207"
 
@@ -22,7 +36,7 @@ module "network" {
 module "qpp-qrda3converter" {
   source = "../../templates/qpp-qrda3converter"
 
-  app_ami_id                  = "${var.app_ami_id}"
+  app_ami_id                  = "${data.aws_ami.app.image_id}"
   app_count                   = "${var.app_count}"
   app_subnet_cidr_blocks      = "${module.network.app_subnet_cidr_blocks}"
   app_subnet_ids              = "${module.network.app_subnet_ids}"
