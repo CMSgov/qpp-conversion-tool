@@ -12,12 +12,6 @@ import java.util.function.Function;
  */
 public class SubPopulations {
 
-	/**
-	 * Helper class, should not be instantiated.
-	 */
-	private SubPopulations() {
-	}
-
 	private static final Map<String, Function<SubPopulation, String>> KEY_TO_UNIQUEID;
 
 	static {
@@ -27,6 +21,12 @@ public class SubPopulations {
 		keyToUniqueId.put("DENOM", SubPopulation::getDenominatorUuid);
 		keyToUniqueId.put("NUMER", SubPopulation::getNumeratorUuid);
 		KEY_TO_UNIQUEID = Collections.unmodifiableMap(keyToUniqueId);
+	}
+
+	/**
+	 * Helper class, should not be instantiated.
+	 */
+	private SubPopulations() {
 	}
 
 	/**
