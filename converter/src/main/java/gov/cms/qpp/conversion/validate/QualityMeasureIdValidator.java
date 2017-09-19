@@ -51,7 +51,6 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 *
 	 * @param node The node to validate.
 	 */
-
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
 		//It is possible that we have a Measure in the input that we have not defined in
@@ -104,6 +103,13 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		}
 	}
 
+	/**
+	 * Validates that given subpopulations have the correct number of a given type
+	 *
+	 * @param subPopulations The subpopulations to test against
+	 * @param key The type to check
+	 * @param node The node in which the child nodes live
+	 */
 	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
 		long expectedChildTypeCount = subPopulations.stream()
 				.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
@@ -167,6 +173,13 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		};
 	}
 
+	/**
+	 * Creates a {@link Predicate} which takes a node and tests whether the measure type is equal to the given measure type.
+	 * Also validates that it's the only measure type in the given node.
+	 *
+	 * @param populationCriteriaType
+	 * @return
+	 */
 	private Predicate<Node> makeTypeChildFinder(String populationCriteriaType) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
@@ -176,30 +189,18 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		};
 	}
 
+	/**
+	 * Creates a {@link Predicate} which takes a node and tests whether the measure population is equal to the given unique id
+	 *
+	 * @param uuid Supplies a unique id to test against
+	 * @return
+	 */
 	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
 				.incompleteValidation()
 				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
 			return uuid.get().equals(thisNode.getValue(MEASURE_POPULATION));
-		};
-	}
-
-	/**
-	 * Search filter for child measure nodes.
-	 *
-	 * @param check provides sub population specific measure id
-	 * @param key that identifies measure
-	 * @return search filter
-	 */
-	private Predicate<Node> makeChildFinder(Supplier<Object> check, String key) {
-		return thisNode -> {
-			thoroughlyCheck(thisNode)
-					.incompleteValidation()
-					.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE)
-					.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
-			boolean validMeasureType = key.equals(thisNode.getValue(MEASURE_TYPE));
-			return validMeasureType && check.get().equals(thisNode.getValue(MEASURE_POPULATION));
 		};
 	}
 }
