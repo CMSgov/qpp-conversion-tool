@@ -35,7 +35,8 @@ public class CpcQualityMeasureIdValidatorTest {
 		validator.internalValidateSingleNode(testNode);
 
 		assertThat("Must not contain errors", validator.getDetails(),
-				hasValidationErrorsIgnoringPath(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT));
+				hasValidationErrorsIgnoringPath(
+						String.format(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT, 2)));
 	}
 
 	@Test
@@ -44,7 +45,8 @@ public class CpcQualityMeasureIdValidatorTest {
 		validator.internalValidateSingleNode(testNode);
 
 		assertThat("Must not contain errors", validator.getDetails(),
-				hasValidationErrorsIgnoringPath(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT));
+				hasValidationErrorsIgnoringPath(
+						String.format(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT, 2)));
 	}
 
 	private void addAnyNumberOfChildren(int size) {
