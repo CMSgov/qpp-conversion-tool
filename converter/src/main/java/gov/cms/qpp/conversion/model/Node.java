@@ -1,6 +1,9 @@
 package gov.cms.qpp.conversion.model;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,8 +13,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
-import com.google.common.base.MoreObjects;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -193,6 +194,20 @@ public class Node {
 			return;
 		}
 		this.childNodes.add(childNode);
+	}
+
+	/**
+	 * Delete a child {@code Node} of this {@code Node}.
+	 *
+	 * @param childNode The {@code Node} to be deleted.
+	 * @return <tt>true</tt> if a child matched such that it was deleted.
+	 */
+	public boolean removeChildNode(Node childNode) {
+		if (childNode == null || childNode == this) {
+			return false;
+		}
+
+		return this.childNodes.remove(childNode);
 	}
 
 	/**
@@ -383,5 +398,42 @@ public class Node {
 				.add("defaultNsUri", defaultNsUri)
 				.add("path", path)
 				.toString();
+	}
+
+	/**
+	 * Returns whether this object is equal to another.
+	 *
+	 * @param o The other object
+	 * @return {@code true} if this object equals {@code o}.
+	 */
+	@Override
+	public final boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (!(o instanceof Node)) {
+			return false;
+		}
+
+		final Node node = (Node)o;
+
+		return isValidated() == node.isValidated() &&
+			Objects.equal(getChildNodes(), node.getChildNodes()) &&
+			Objects.equal(data, node.data) &&
+			Objects.equal(duplicateData, node.duplicateData) &&
+			getType() == node.getType() &&
+			Objects.equal(getDefaultNsUri(), node.getDefaultNsUri()) &&
+			Objects.equal(getPath(), node.getPath());
+	}
+
+	/**
+	 * Computes and returns the hash code for this object.
+	 *
+	 * @return The hash code.
+	 */
+	@Override
+	public final int hashCode() {
+		return Objects.hashCode(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(), getPath());
 	}
 }
