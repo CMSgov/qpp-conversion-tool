@@ -8,7 +8,7 @@ module "open_http" {
 module "route53_hosted_zone" {
   source    = "git@github.com:CMSgov/corevpc//terraform/modules/aws/route53/hosted_zone?ref=732a2de09ee70785f0803c044f0906c64392463f"
   vpc_id    = "${var.vpc_id}"
-  zone_name = "${var.vpc_name}.hcgov.internal"
+  zone_name = "${var.vpc_name}.qpp.internal"
   stack_tag = "${var.stack_tag}"
 }
 
