@@ -39,7 +39,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	public static final String REQUIRED_CHILD_MEASURE =
 			"The eCQM (electronic measure id: %s) requires a %s";
-	protected static final String REQUIRE_VALID_DENOMINATOR_COUNT =
+	public static final String REQUIRE_VALID_DENOMINATOR_COUNT =
 			"Denominator Measure must be less than or equal to Initial Population";
 	protected static final String DENEX = "denominator exclusion";
 	protected static final String DENEXCEP = "eligiblePopulationExclusion";

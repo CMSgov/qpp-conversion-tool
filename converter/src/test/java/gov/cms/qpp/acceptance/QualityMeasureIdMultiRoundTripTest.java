@@ -41,6 +41,9 @@ public class QualityMeasureIdMultiRoundTripTest {
 	private static final Path JUNK_QRDA3_FILE =
 			Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");
 
+	private static final Path DENOM_GREATER_THAN_IPOP =
+			Paths.get("src/test/resources/negative/mipsDenominatorInitialPopulationFailure.xml");
+
 	private static MarkupManipulator manipulator;
 
 	@BeforeClass
@@ -131,6 +134,22 @@ public class QualityMeasureIdMultiRoundTripTest {
 		Assert.assertThat("Should only have two error details", details, hasSize(2));
 		Assert.assertThat("Error should regard the need for a single measure population", details,
 				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_POPULATION));
+	}
+
+	@Test
+	public void testRoundTripQualityMeasureIdWithDenomGreaterThanIpop() {
+		Converter converter = new Converter(new PathQrdaSource(DENOM_GREATER_THAN_IPOP));
+		List<Detail> details = new ArrayList<>();
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		assertThat("Must contain the right number of errors", details, hasSize(3));
+		assertThat("Must contain the correct error message", details,
+				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT));
 	}
 
 	private List<Detail>  executeScenario(String path, boolean remove) {
