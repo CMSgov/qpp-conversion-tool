@@ -38,7 +38,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
 			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
-	protected static final String INCORRECT_UUID = "The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
+	protected static final String INCORRECT_UUID =
+			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -122,7 +123,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		if (expectedChildTypeCount != actualChildTypeCount) {
 			MeasureConfig config =
 					MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-			String message = String.format(INCORRECT_POPULATION_CRITERIA_COUNT, config.getElectronicMeasureId(), expectedChildTypeCount, key, actualChildTypeCount);
+			String message = String.format(INCORRECT_POPULATION_CRITERIA_COUNT,
+					config.getElectronicMeasureId(), expectedChildTypeCount, key, actualChildTypeCount);
 			this.getDetails().add(new Detail(message, node.getPath()));
 		}
 	}

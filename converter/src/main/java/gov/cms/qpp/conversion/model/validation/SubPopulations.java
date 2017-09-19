@@ -12,6 +12,12 @@ import java.util.function.Function;
  */
 public class SubPopulations {
 
+	/**
+	 * Helper class, should not be instantiated.
+	 */
+	private SubPopulations() {
+	}
+
 	private static final Map<String, Function<SubPopulation, String>> KEY_TO_UNIQUEID;
 
 	static {
@@ -49,12 +55,6 @@ public class SubPopulations {
 	 */
 	public static Set<String> getKeys() {
 		return KEY_TO_UNIQUEID.keySet();
-	}
-
-	/**
-	 * Helper class, should not be instantiated.
-	 */
-	private SubPopulations() {
 	}
 
 }
