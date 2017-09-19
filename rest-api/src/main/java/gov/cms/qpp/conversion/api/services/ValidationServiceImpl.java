@@ -75,11 +75,11 @@ public class ValidationServiceImpl implements ValidationService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
 		headers.add(HttpHeaders.ACCEPT, "application/json");
-		
+
 		String submissionToken = environment.getProperty(SUBMISSION_API_TOKEN);
 		if (submissionToken == null || submissionToken.isEmpty()) {
 			headers.add(HttpHeaders.AUTHORIZATION,
-					"Bearer " + environment.getProperty(SUBMISSION_API_TOKEN));
+					"Bearer " + submissionToken);
 		}
 
 		HttpEntity<String> request = new HttpEntity<>(qpp.toString(), headers);
