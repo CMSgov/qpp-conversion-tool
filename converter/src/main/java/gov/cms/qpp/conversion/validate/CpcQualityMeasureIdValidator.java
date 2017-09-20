@@ -14,7 +14,8 @@ import java.util.Map;
 @Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, program = Program.CPC)
 public class CpcQualityMeasureIdValidator extends NodeValidator {
 
-	protected static final String INVALID_PERFORMANCE_RATE_COUNT = "Must contain correct number of performance rate(s)";
+	protected static final String INVALID_PERFORMANCE_RATE_COUNT =
+			"Must contain correct number of performance rate(s). Correct Number is %s";
 
 	/**
 	 * Validates node of all criteria specified for CPC Plus
@@ -31,9 +32,9 @@ public class CpcQualityMeasureIdValidator extends NodeValidator {
 		int requiredPerformanceRateCount = measureConfig.getStrata().size();
 
 		check(node)
-				.childMinimum(INVALID_PERFORMANCE_RATE_COUNT,
+				.childMinimum(String.format(INVALID_PERFORMANCE_RATE_COUNT, requiredPerformanceRateCount),
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-				.childMaximum(INVALID_PERFORMANCE_RATE_COUNT,
+				.childMaximum(String.format(INVALID_PERFORMANCE_RATE_COUNT, requiredPerformanceRateCount),
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 	}
 
