@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -30,7 +31,10 @@ import java.nio.file.Paths;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
@@ -122,6 +126,37 @@ public class ValidationServiceImplTest {
 		thrown.expectMessage("Converted QPP failed validation");
 
 		objectUnderTest.validateQpp(qppWrapper);
+	}
+
+	@Test
+	public void testHeaderCreation() {
+		HttpHeaders headers = objectUnderTest.getHeaders();
+		assertEquals(HttpHeaders.CONTENT_TYPE + " should be " + ValidationServiceImpl.CONTENT_TYPE,
+				headers.getFirst(HttpHeaders.CONTENT_TYPE), ValidationServiceImpl.CONTENT_TYPE);
+		assertEquals(HttpHeaders.ACCEPT + " should be " + ValidationServiceImpl.CONTENT_TYPE,
+				headers.getFirst(HttpHeaders.CONTENT_TYPE), ValidationServiceImpl.CONTENT_TYPE);
+	}
+
+	@Test
+	public void testHeaderCreationNoAuth() {
+		when(environment.getProperty(eq(ValidationServiceImpl.SUBMISSION_API_TOKEN))).thenReturn(null);
+		HttpHeaders headers = objectUnderTest.getHeaders();
+		assertNull(HttpHeaders.AUTHORIZATION + " should not be set", headers.get(HttpHeaders.AUTHORIZATION));
+	}
+
+	@Test
+	public void testHeaderCreationNoAuthEmpty() {
+		when(environment.getProperty(eq(ValidationServiceImpl.SUBMISSION_API_TOKEN))).thenReturn("");
+		HttpHeaders headers = objectUnderTest.getHeaders();
+		assertNull(HttpHeaders.AUTHORIZATION + " should not be set", headers.get(HttpHeaders.AUTHORIZATION));
+	}
+
+	@Test
+	public void testHeaderCreationAuth() {
+		when(environment.getProperty(eq(ValidationServiceImpl.SUBMISSION_API_TOKEN))).thenReturn("meep");
+		HttpHeaders headers = objectUnderTest.getHeaders();
+		assertThat(HttpHeaders.AUTHORIZATION + " should be set",
+				headers.getFirst(HttpHeaders.AUTHORIZATION), containsString("meep"));
 	}
 
 	@Test

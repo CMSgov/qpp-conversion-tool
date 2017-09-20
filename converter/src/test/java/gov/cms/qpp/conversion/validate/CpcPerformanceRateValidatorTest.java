@@ -36,7 +36,7 @@ public class CpcPerformanceRateValidatorTest {
 
 	@Test
 	public void testNAValue() {
-		node.putValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE, "NA");
+		node.putValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE, "NA");
 		cpcPerformanceRateValidator.internalValidateSingleNode(node);
 		assertThat("Must contain a proper value", cpcPerformanceRateValidator.getDetails(), empty());
 	}
