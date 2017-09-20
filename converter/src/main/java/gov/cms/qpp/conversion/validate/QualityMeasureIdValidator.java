@@ -43,7 +43,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			"The measure reference results must have a single measure type";
 	static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	public static final String REQUIRE_VALID_DENOMINATOR_COUNT =
-			"The Denominator Population count must be less than or equal to Initial Population Count for an eCQM";
+			"The Denominator count must be less than or equal to Initial Population count " +
+					"for an eCQM that is proportion measure";
 	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
 			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
 
