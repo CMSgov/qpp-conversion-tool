@@ -43,8 +43,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			"The measure reference results must have a single measure type";
 	static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
 	public static final String REQUIRE_VALID_DENOMINATOR_COUNT =
-			"The Denominator count must be less than or equal to Initial Population count " +
-					"for an eCQM that is proportion measure";
+			"The Denominator count must be less than or equal to Initial Population count "
+					+ "for an eCQM that is proportion measure";
 	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
 			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
 
@@ -229,7 +229,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 
 		Node ipopNode = getIpopNodeFromCurrentSubPopulation(node, subPopulation);
 
-		if (doesDenominatorAndInitialPopulationExist(denomNode, ipopNode)) {
+		if (denomNode != null && ipopNode != null) {
 			Node denomCount = denomNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 			Node ipopCount = ipopNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 
@@ -264,18 +264,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 						&& subPopulation.getInitialPopulationUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
 	}
-
-	/**
-	 * Checks if the nodes exist for validation
-	 *
-	 * @param denomNode The current Sub Population Denominator node
-	 * @param ipopNode The current Sub Population Initial population node
-	 * @return A True/False indicator if both nodes exist
-	 */
-	private boolean doesDenominatorAndInitialPopulationExist(Node denomNode, Node ipopNode) {
-		return denomNode != null && ipopNode != null;
-	}
-
+	
 	/**
 	 * Performs a validation on the Denominator node's aggregate count to the Initial Population node's aggregate count
 	 *
