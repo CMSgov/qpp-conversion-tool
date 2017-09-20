@@ -71,8 +71,8 @@ env.configureLayers = function() {
 
     var s3 = rootRequire('./vpcs/layers/s3/s3ForPii');
     var s3BuckName = env.name.toLowerCase() + 'audit';
-    var rootAccountForAccess = '684212469706';
-    var roleUserIdForAccess = 'AROAICQZGCPQQ4EDO764M'; //user ID for the server-nonprod role
+    var rootAccountForAccess = '684212469706'; //Flexion root account ID
+    var roleUserIdForAccess = 'AROAICQZGCPQQ4EDO764M'; //RoleID for the server-nonprod role
 
 
     return {

@@ -57,10 +57,12 @@ env.configureLayers = function() {
 
   var s3 = rootRequire('./vpcs/layers/s3/s3ForPii');
   var s3BuckName = env.name.toLowerCase() + 'audit';
+  var rootAccountForAccess = '003384571330'; //Nava root account ID
+  var roleUserIdServerProd = 'AROAJ7R72PWRRXY5MU6BO'; //RoleID for the server-prod role
 
   return {
     app: rootRequire('./layers/app/api'),
-    s3: s3(s3BuckName, '003384571330', 'AROAJ7R72PWRRXY5MU6BO'),
+    s3: s3(s3BuckName, rootAccountForAccess, roleUserIdServerProd),
     jump: rootRequire('./layers/jump/jump'),
     internalBalancer,
     net: rootRequire('./layers/net/gdit')
