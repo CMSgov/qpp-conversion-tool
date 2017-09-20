@@ -69,8 +69,15 @@ env.configureLayers = function() {
     var jump = rootRequire('./layers/jump/jump');
     jump['Resources']['JumpInstance']['Properties']['InstanceType'] = 'm4.large';
 
+    var s3 = rootRequire('./vpcs/layers/s3/s3ForPii');
+    var s3BuckName = env.name.toLowerCase() + 'audit';
+    var rootAccountForAccess = '684212469706'; //Flexion root account ID
+    var roleUserIdForAccess = 'AROAICQZGCPQQ4EDO764M'; //RoleID for the server-nonprod role
+
+
     return {
         app: rootRequire('./layers/app/api'),
+        s3: s3(s3BuckName, rootAccountForAccess, roleUserIdForAccess),
         jump,
         nat,
         net: rootRequire('./layers/net/vpc')
