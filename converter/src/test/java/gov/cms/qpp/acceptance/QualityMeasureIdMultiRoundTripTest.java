@@ -80,7 +80,6 @@ public class QualityMeasureIdMultiRoundTripTest {
 				"component[4]/observation/value/@code";
 
 		List<Detail> details = executeScenario(path, false);
-		System.out.println(details.get(0).getMessage());
 
 		Assert.assertThat("Should have no error detail", details,
 				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_TYPE));
