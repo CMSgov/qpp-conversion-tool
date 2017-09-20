@@ -20,12 +20,12 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 @Encoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataEncoder extends QppOutputEncoder {
 
+	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
+			.collect(Collectors.toSet());
+
 	public MeasureDataEncoder(Context context) {
 		super(context);
 	}
-
-	public static final Set<String> IPOP = Stream.of("IPP", "IPOP")
-			.collect(Collectors.toSet());
 
 	/**
 	 * internalEncode for measure data

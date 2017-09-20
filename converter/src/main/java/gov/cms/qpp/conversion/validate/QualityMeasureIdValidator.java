@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.encode.MeasureDataEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -10,6 +9,9 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,9 +31,11 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
  */
 @Validator(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdValidator extends NodeValidator {
+	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
+			.collect(Collectors.toSet());
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
-	public static final String MEASURE_ID = "measureId";
 
+	public static final String MEASURE_ID = "measureId";
 	static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	public static final String SINGLE_MEASURE_POPULATION =
 			"The measure reference results must have a single measure population";
@@ -42,6 +46,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			"Denominator Measure must be less than or equal to Initial Population";
 	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
 			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
+
 	protected static final String INCORRECT_UUID =
 			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
 
@@ -224,7 +229,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
 		Node ipopNode = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
-				(MeasureDataEncoder.IPOP.contains(thisNode.getValue(MEASURE_TYPE)))
+				(IPOP.contains(thisNode.getValue(MEASURE_TYPE)))
 						&& subPopulation.getInitialPopulationUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
 
