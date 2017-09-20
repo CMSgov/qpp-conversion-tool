@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Manages building a "simple" object of JSON conversion.
@@ -484,6 +485,25 @@ public class JsonWrapper {
 	 */
 	public Object getObject() {
 		return isObject() ? object : list;
+	}
+
+	/**
+	 * Stream of wrapped object or list.
+	 *
+	 * @return Stream of wrapped object or list.
+	 */
+	public Stream<JsonWrapper> stream() {
+		Stream<JsonWrapper> returnValue = Stream.of(this);
+		if (list != null) {
+			returnValue = list.stream()
+				.filter(entry -> entry instanceof Map)
+				.map(entry -> {
+					JsonWrapper wrapper = new JsonWrapper();
+					wrapper.object = (Map) entry;
+					return wrapper;
+				});
+		}
+		return returnValue;
 	}
 
 	/**

@@ -126,7 +126,27 @@
 						<systemPropertyVariables>
 							<jacoco-agent.destfile>${project.build.directory}/coverage.exec</jacoco-agent.destfile>
 						</systemPropertyVariables>
+						<excludes>
+							<exclude>**/*Integration.java</exclude>
+						</excludes>
 					</configuration>
+					<executions>
+						<execution>
+							<id>integration-test</id>
+							<goals>
+								<goal>test</goal>
+							</goals>
+							<phase>integration-test</phase>
+							<configuration>
+								<excludes>
+									<exclude>**/*Test.java</exclude>
+								</excludes>
+								<includes>
+									<include>**/*Integration.java</include>
+								</includes>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 
