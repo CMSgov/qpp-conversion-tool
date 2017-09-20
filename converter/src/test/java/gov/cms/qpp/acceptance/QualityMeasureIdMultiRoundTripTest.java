@@ -96,13 +96,12 @@ public class QualityMeasureIdMultiRoundTripTest {
 	@Test
 	public void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
 		String message = String.format(
-				QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE, "CMS52v5", QualityMeasureIdValidator.DENOM);
+				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, "DENOM", 2);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
 		List<Detail> details = executeScenario(path, true);
 
-		Assert.assertThat("Should only have one error detail", details, hasSize(1));
 		Assert.assertThat("Error should regard the need for a single measure type", details,
 				hasValidationErrorsIgnoringPath(message));
 	}

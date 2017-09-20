@@ -34,7 +34,6 @@ public class PerformanceRateProportionMeasureDecoder extends QppXmlDecoder {
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
 		setNameOnNode(element, thisNode, PERFORMANCE_RATE);
-
 		if (isFirstExpressionUnsuccessful(thisNode)) {
 			setNameOnNode(element, thisNode, NULL_PERFORMANCE_RATE);
 		}
@@ -64,7 +63,7 @@ public class PerformanceRateProportionMeasureDecoder extends QppXmlDecoder {
 		String expression = getXpath(name);
 		Consumer<? super Attribute> consumer = attr -> {
 			String value = attr.getValue();
-			node.putValue(PERFORMANCE_RATE, value);
+			node.putValue(name, value);
 		};
 
 		setOnNode(element, expression, consumer, Filters.attribute(), true);

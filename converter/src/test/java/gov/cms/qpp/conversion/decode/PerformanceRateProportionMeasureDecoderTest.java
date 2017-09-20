@@ -48,7 +48,7 @@ public class PerformanceRateProportionMeasureDecoderTest {
 		Stream<Node> performanceRateNodes = getNodeStream();
 		performanceRateNodes.forEach(node ->
 				assertThat("Must contain correct value",
-						node.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE), is("NA"))
+						node.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE), is("NA"))
 		);
 	}
 
