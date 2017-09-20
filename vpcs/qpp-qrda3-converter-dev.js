@@ -55,8 +55,14 @@ env.configureLayers = function() {
     SSLCertificateId: 'arn:aws:acm:us-east-1:003384571330:certificate/f1b98858-6b1c-4557-b26b-d2259f5b53e4'
   });
 
+  var s3 = rootRequire('./vpcs/layers/s3/s3ForPii');
+  var s3BuckName = env.name.toLowerCase() + 'audit';
+  var rootAccountForAccess = '003384571330'; //Nava root account ID
+  var roleUserIdServerNonProd = 'AROAIL6OBZZTME7ZPAK3E'; //RoleID for the server-nonprod role
+
   return {
     app: rootRequire('./layers/app/api'),
+    s3: s3(s3BuckName, rootAccountForAccess, roleUserIdServerNonProd),
     jump: rootRequire('./layers/jump/jump'),
     internalBalancer,
     net: rootRequire('./layers/net/gdit')
