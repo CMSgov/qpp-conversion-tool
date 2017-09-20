@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
