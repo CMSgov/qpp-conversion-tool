@@ -1,5 +1,12 @@
 package gov.cms.qpp.conversion.model;
 
+import com.google.common.collect.Lists;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+import org.junit.Test;
+
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
@@ -7,10 +14,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import org.junit.Test;
 
 public class NodeTest {
 
@@ -176,5 +179,22 @@ public class NodeTest {
 		node.removeValue("test");
 
 		assertFalse(node.hasValue("test"));
+	}
+
+	@Test
+	public void testEquals() {
+		Node parent = new Node(TemplateId.CLINICAL_DOCUMENT);
+		Node child1 = new Node(TemplateId.IA_SECTION);
+		child1.setParent(parent);
+		Node child2 = new Node(TemplateId.ACI_SECTION);
+		child2.setParent(parent);
+		parent.setChildNodes(child1, child2);
+
+		EqualsVerifier.forClass(Node.class)
+			.withPrefabValues(List.class, Lists.newArrayList(new Node()), Lists.newArrayList(new Node(TemplateId.CLINICAL_DOCUMENT), new Node(TemplateId.ACI_NUMERATOR)))
+			.withPrefabValues(Node.class, new Node(TemplateId.ACI_DENOMINATOR), parent)
+			.withIgnoredFields("parent")
+			.suppress(Warning.NONFINAL_FIELDS)
+			.verify();
 	}
 }
