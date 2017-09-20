@@ -1,20 +1,9 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import java.util.stream.Stream;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,6 +14,18 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 /**
  * Entry point for the conversion process.
@@ -46,6 +47,8 @@ public class ConversionEntry {
 	static final String SKIP_DEFAULTS = "skipDefaults";
 	static final String TEMPLATE_SCOPE = "templateScope";
 	private static final String HELP = "help";
+
+	private static FileSystem fileSystem = FileSystems.getDefault();
 
 	private static boolean doDefaults = true;
 	private static boolean doValidation = true;
@@ -222,7 +225,7 @@ public class ConversionEntry {
 			return manyPath(path);
 		}
 
-		Path file = Paths.get(path);
+		Path file = fileSystem.getPath(path);
 		if (Files.exists(file)) {
 			existingFiles.add(file);
 		} else {
@@ -238,7 +241,7 @@ public class ConversionEntry {
 	 * @return a collection of paths representing files to be converted
 	 */
 	static Collection<Path> manyPath(String path) {
-		Path inDir = Paths.get(extractDir(path));
+		Path inDir = fileSystem.getPath(extractDir(path));
 		Pattern fileRegex = wildCardToRegex(path);
 		try (Stream<Path> pathStream = Files.walk(inDir)) {
 			return pathStream
@@ -260,7 +263,7 @@ public class ConversionEntry {
 	static String extractDir(String path) {
 		String[] parts = path.split(DIR_EXTRACTION);
 
-		StringJoiner dirPath = new StringJoiner(FileSystems.getDefault().getSeparator());
+		StringJoiner dirPath = new StringJoiner(fileSystem.getSeparator());
 		for (String part : parts) {
 			// append until a wild card
 			if (part.contains("*")) { // append until a wild card

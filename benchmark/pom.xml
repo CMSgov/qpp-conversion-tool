@@ -121,6 +121,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>extension-test-commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.openjdk.jmh</groupId>
 			<artifactId>jmh-core</artifactId>
 			<version>${jmh.version}</version>

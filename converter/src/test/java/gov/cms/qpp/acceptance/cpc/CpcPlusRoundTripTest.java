@@ -23,7 +23,7 @@ public class CpcPlusRoundTripTest {
 	private static final Path DIR = Paths.get("src/test/resources/cpc_plus/");
 
 	@Test
-	public void cpcPlusFileSuccesses() throws IOException {
+	public void testCpcPlusFileSuccesses() throws IOException {
 		Map<Path, AllErrors> errors = new HashMap<>();
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-success.xml")) {
 			for (Path entry : stream) {
@@ -43,7 +43,7 @@ public class CpcPlusRoundTripTest {
 	}
 
 	@Test
-	public void cpcPlusFileFailures() throws IOException {
+	public void testCpcPlusFileFailures() throws IOException {
 		List<Path> successesThatShouldBeErrors = new ArrayList<>();
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-failure.xml")) {
 			for (Path entry : stream) {
@@ -60,5 +60,16 @@ public class CpcPlusRoundTripTest {
 		if (!successesThatShouldBeErrors.isEmpty()) {
 			Assert.fail("Succeeded in cpc plus conversions that should have failed: " + successesThatShouldBeErrors);
 		}
+	}
+
+	@Test
+	public void testCpcPlusFilesAreAllChecked() throws IOException {
+		long invalidFiles = Files.list(DIR).filter(file -> {
+			String fileName = file.toString();
+
+			return !fileName.endsWith("-failure.xml") && !fileName.endsWith("-success.xml");
+		}).count();
+
+		Assert.assertEquals(0, invalidFiles);
 	}
 }
