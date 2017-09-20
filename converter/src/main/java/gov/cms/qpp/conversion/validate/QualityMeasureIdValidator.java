@@ -224,25 +224,69 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * @param subPopulation the current sub population
 	 */
 	private void validateDenomCountToIpopCount(Node node, SubPopulation subPopulation) {
-		Node denomNode = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
-				"DENOM".equals(thisNode.getValue(MEASURE_TYPE))
-						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
-				.findFirst().orElse(null);
-		Node ipopNode = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
-				(IPOP.contains(thisNode.getValue(MEASURE_TYPE)))
-						&& subPopulation.getInitialPopulationUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
-				.findFirst().orElse(null);
+		Node denomNode = getDenominatorNodeFromCurrentSubPopulation(node, subPopulation);
 
-		if (denomNode != null && ipopNode != null) {
+		Node ipopNode = getIpopNodeFromCurrentSubPopulation(node, subPopulation);
+
+		if (doesDenominatorAndInitialPopulationExist(denomNode, ipopNode)) {
 			Node denomCount = denomNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 			Node ipopCount = ipopNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 
-			thoroughlyCheck(denomCount)
-					.incompleteValidation()
-					.intValue(AggregateCountValidator.TYPE_ERROR,
-							AggregateCountDecoder.AGGREGATE_COUNT)
-					.lessThanOrEqualTo(REQUIRE_VALID_DENOMINATOR_COUNT,
-							Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
+			validateDenominatorCount(denomCount, ipopCount);
 		}
+	}
+
+	/**
+	 * Retrieves the Denominator from the current Sub Population given
+	 *
+	 * @param node The current parent node
+	 * @param subPopulation The current sub population holding the denominator UUID
+	 * @return the denominator node filtered by sub population or null if not found
+	 */
+	private Node getDenominatorNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
+		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
+				"DENOM".equals(thisNode.getValue(MEASURE_TYPE))
+						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
+				.findFirst().orElse(null);
+	}
+
+	/**
+	 * Retrieves the Initial Population from the current Sub Population given
+	 *
+	 * @param node The current parent node
+	 * @param subPopulation The current sub population holding the initial population UUID
+	 * @return the initial population node filtered by sub population or null if not found
+	 */
+	private Node getIpopNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
+		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
+				(IPOP.contains(thisNode.getValue(MEASURE_TYPE)))
+						&& subPopulation.getInitialPopulationUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
+				.findFirst().orElse(null);
+	}
+
+	/**
+	 * Checks if the nodes exist for validation
+	 *
+	 * @param denomNode The current Sub Population Denominator node
+	 * @param ipopNode The current Sub Population Initial population node
+	 * @return A True/False indicator if both nodes exist
+	 */
+	private boolean doesDenominatorAndInitialPopulationExist(Node denomNode, Node ipopNode) {
+		return denomNode != null && ipopNode != null;
+	}
+
+	/**
+	 * Performs a validation on the Denominator node's aggregate count to the Initial Population node's aggregate count
+	 *
+	 * @param denomCount Aggregate Count node of denominator
+	 * @param ipopCount Aggregate Count node of initial population
+	 */
+	private void validateDenominatorCount(Node denomCount, Node ipopCount) {
+		thoroughlyCheck(denomCount)
+				.incompleteValidation()
+				.intValue(AggregateCountValidator.TYPE_ERROR,
+						AggregateCountDecoder.AGGREGATE_COUNT)
+				.lessThanOrEqualTo(REQUIRE_VALID_DENOMINATOR_COUNT,
+						Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
 	}
 }
