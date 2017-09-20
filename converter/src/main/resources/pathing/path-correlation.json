@@ -213,6 +213,13 @@
 						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@value",
 						"xmltype": "attribute"
 					}
+				},
+				{
+					"decodeLabel": "nullRate",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@nullFlavor",
+						"xmltype": "attribute"
+					}
 				}
 			]
 		},

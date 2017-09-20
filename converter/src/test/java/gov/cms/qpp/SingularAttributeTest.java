@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
+import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -63,6 +64,8 @@ public class SingularAttributeTest {
 				//There are no validations currently for entity type
 				ClinicalDocumentDecoder.ENTITY_ID,
 				ClinicalDocumentDecoder.PRACTICE_SITE_ADDR,
+				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,
+				PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE,
 				//There are no validations for performanceYear
 				ReportingParametersActDecoder.PERFORMANCE_YEAR,
 				//stratum is not currently mapped
