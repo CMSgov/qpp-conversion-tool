@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import gov.cms.qpp.test.FileTestHelper;
 
-public class ConverterTestWithAbridged {
+public class ConverterWithAbridgedTest {
 
 	private static Field fileSystemField;
 	private static FileSystem defaultFileSystem;

@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -242,8 +243,8 @@ public class ConversionEntry {
 	static Collection<Path> manyPath(String path) {
 		Path inDir = fileSystem.getPath(extractDir(path));
 		Pattern fileRegex = wildCardToRegex(path);
-		try {
-			return Files.walk(inDir)
+		try (Stream<Path> pathStream = Files.walk(inDir)) {
+			return pathStream
 					.filter(file -> fileRegex.matcher(file.toString()).matches())
 					.filter(file -> !Files.isDirectory(file))
 					.collect(Collectors.toList());

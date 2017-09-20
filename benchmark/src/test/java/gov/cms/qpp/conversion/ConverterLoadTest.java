@@ -13,6 +13,7 @@ import org.apache.jorphan.collections.HashTree;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertThat;
 
+@Ignore
 public class ConverterLoadTest {
 	private static StandardJMeterEngine jmeter;
 
@@ -45,7 +47,7 @@ public class ConverterLoadTest {
 		httpSampler.setProtocol("http");
 		httpSampler.setDomain("184.73.24.93");
 		httpSampler.setPort(2680);
-		httpSampler.setPath("qrda3");
+		httpSampler.setPath("");
 		httpSampler.setMethod("POST");
 		httpSampler.setPostBodyRaw(true);
 		httpSampler.setDoMultipartPost(true);
