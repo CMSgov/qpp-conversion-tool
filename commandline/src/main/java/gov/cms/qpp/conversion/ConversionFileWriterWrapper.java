@@ -1,19 +1,20 @@
 package gov.cms.qpp.conversion;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.TransformException;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.TransformException;
 
 /**
  * Calls the {@link Converter} and writes the results to a file.
@@ -22,10 +23,13 @@ public class ConversionFileWriterWrapper {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionFileWriterWrapper.class);
 
 	private final QrdaSource source;
+	private final FileSystem fileSystem;
 	private Context context;
 
 	public ConversionFileWriterWrapper(Path inFile) {
 		this.source = new PathQrdaSource(inFile);
+
+		fileSystem = inFile.getFileSystem();
 	}
 
 	/**
@@ -111,7 +115,7 @@ public class ConversionFileWriterWrapper {
 	 */
 	private Path getOutputFile(String name, final boolean success) {
 		String outName = name.replaceFirst("(?i)(\\.xml)?$", getFileExtension(success));
-		return Paths.get(outName);
+		return fileSystem.getPath(outName);
 	}
 
 	/**
