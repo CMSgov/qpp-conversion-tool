@@ -7,20 +7,21 @@ import java.lang.reflect.Field;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import gov.cms.qpp.test.FileTestHelper;
 
 public class ConverterWithAbridgedTest {
 
-	private static Field fileSystemField;
-	private static FileSystem defaultFileSystem;
-	private static FileSystem fileSystem;
+	private Field fileSystemField;
+	private FileSystem defaultFileSystem;
+	private FileSystem fileSystem;
 
-	@BeforeClass
-	public static void setup() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	@Before
+	public void setup() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		fileSystem = FileTestHelper.createMockFileSystem();
 		fileSystemField = ConversionEntry.class.getDeclaredField("fileSystem");
 		fileSystemField.setAccessible(true);
@@ -28,8 +29,8 @@ public class ConverterWithAbridgedTest {
 		fileSystemField.set(null, fileSystem);
 	}
 
-	@AfterClass
-	public static void teardown() throws IOException, IllegalArgumentException, IllegalAccessException {
+	@After
+	public void teardown() throws IOException, IllegalArgumentException, IllegalAccessException {
 		fileSystemField.set(null, defaultFileSystem);
 		fileSystem.close();
 	}

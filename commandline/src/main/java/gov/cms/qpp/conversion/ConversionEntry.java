@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion;
 
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -263,7 +264,7 @@ public class ConversionEntry {
 	static String extractDir(String path) {
 		String[] parts = path.split(DIR_EXTRACTION);
 
-		StringJoiner dirPath = new StringJoiner(FileSystems.getDefault().getSeparator());
+		StringJoiner dirPath = new StringJoiner(fileSystem.getSeparator());
 		for (String part : parts) {
 			// append until a wild card
 			if (part.contains("*")) { // append until a wild card
