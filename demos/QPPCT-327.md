@@ -1,12 +1,12 @@
-# QPPCT-326
+# QPPCT-327
 
-`git checkout 3aae9fb6b88070c39b44f70bc70e2b3e6897308f`
+`git checkout 83dc9891cdeddbc52ec0885a29a8bd543005aaf6`
 
 ## Changes
 - Adds new CPC+ validation testing files
 
 ## Steps
-1. Show Jira.  https://jira.cms.gov/browse/QPPCT-326
+1. Show Jira.  https://jira.cms.gov/browse/QPPCT-327
 1. Run convert.bat CPCPlus_CMS159v5IncUUID_SampleQRDA-III-failure.xml
 1. Show that it fails
 1. Run convert.bat CPCPlus_CMS165v5IncUUID_SampleQRDA-III-failure.xml
