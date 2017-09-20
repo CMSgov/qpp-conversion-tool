@@ -1,4 +1,4 @@
-Latest commit for QPPCT-296 : bec616e3fcfabb7b6a02a2ff3885a5c5217bc32b
+Latest commit for QPPCT-296 : bac0425b965c4eebedb0244bf17e8e5126fc9c61
 
 1) Go into the qpp-conversion-tool/ directory on your terminal window. (command: cd /directories_leading_to/qpp-conversion-tool/)
 2) Update your master branch using OR Go to the latest git commit for this demo by running:
@@ -6,7 +6,7 @@ Latest commit for QPPCT-296 : bec616e3fcfabb7b6a02a2ff3885a5c5217bc32b
    - git checkout master
    - git pull
    Commands to run from latest commit:
-   - git checkout bec616e3fcfabb7b6a02a2ff3885a5c5217bc32b
+   - git checkout bac0425b965c4eebedb0244bf17e8e5126fc9c61
 3) Build your branch using: mvn clean package
 4) Run: ./convert.sh converter/src/test/resources/negative/mipsDenominatorInitialPopulationFailure.xml
 5) After conversion a mipsDenominatorInitialPopulationFailure.err.json will be created, open it.
