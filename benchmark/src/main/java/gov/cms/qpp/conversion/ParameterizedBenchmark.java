@@ -19,7 +19,6 @@ public class ParameterizedBenchmark {
 	@Param({"../qrda-files/valid-QRDA-III-latest.xml"})
 	public String fileName;
 
-
 	@Benchmark
 	public void bench() {
 		ConversionEntry.main(fileName);
