@@ -87,8 +87,8 @@ docker build -t qpp_conversion .
 docker run --rm -p 8080:8080 qpp_conversion
 ```
 
-### Running performance tests
-# Build the project with maven
+## Running performance tests
+### Build the project with maven
 ```mvn clean install -DrunLoadTests```
 The ```-DrunLoadTests``` flag will enable the converter load tests as part of the build. If the converter does not meet a threshold of conversions, the tests not pass, and the build will fail.
 
