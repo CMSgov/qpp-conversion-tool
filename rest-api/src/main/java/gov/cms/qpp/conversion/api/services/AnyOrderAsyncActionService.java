@@ -62,6 +62,9 @@ public abstract class AnyOrderAsyncActionService<T, S> {
 
 			API_LOG.info("Trying to execute action");
 			return retry.execute(context -> {
+				if (context.getLastThrowable() != null) {
+					API_LOG.warn("Last try resulted in a thrown throwable", context.getLastThrowable());
+				}
 				if (context.getRetryCount() > 0) {
 					API_LOG.warn("Retry {} - trying to execute action again", context.getRetryCount());
 				}
