@@ -27,19 +27,21 @@ public class StorageServiceImpl extends InOrderAsyncActionService<PutObjectReque
 
 	@Override
 	public CompletableFuture<PutObjectResult> store(String keyName, InputStream inStream) {
-		CompletableFuture<PutObjectResult> returnValue = null;
-		try {
-			returnValue = actOnItem(new PutObjectRequest(bucketName, keyName, inStream, new ObjectMetadata()));
-		} catch (AmazonServiceException ase) {
-			API_LOG.info("Caught an AmazonServiceException: " + ase.getMessage(), ase);
-		} catch (AmazonClientException ace) {
-			API_LOG.info("Caught an AmazonClientException: " + ace.getMessage(), ace);
-		}
-		return returnValue;
+		return actOnItem(new PutObjectRequest(bucketName, keyName, inStream, new ObjectMetadata()));
 	}
 
 	@Override
 	protected PutObjectResult asynchronousAction(PutObjectRequest objectToActOn) {
-		return s3client.putObject(objectToActOn);
+		PutObjectResult returnValue = null;
+
+		try {
+			returnValue = s3client.putObject(objectToActOn);
+		} catch (AmazonServiceException ase) {
+			API_LOG.error("Caught an AmazonServiceException: " + ase.getMessage(), ase);
+		} catch (AmazonClientException ace) {
+			API_LOG.error("Caught an AmazonClientException: " + ace.getMessage(), ace);
+		}
+
+		return returnValue;
 	}
 }
