@@ -3,10 +3,10 @@ package gov.cms.qpp.conversion.api.services;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,33 +15,37 @@ import org.springframework.beans.factory.annotation.Value;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
-public class StorageServiceImpl extends InOrderAsyncActionService<PutObjectRequest, PutObjectResult>
+public class StorageServiceImpl extends InOrderAsyncActionService<PutObjectRequest, String>
 		implements StorageService {
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 
 	@Autowired
-	private AmazonS3 s3client;
+	private TransferManager s3TransferManager;
 
 	@Value("${submission.s3.bucket}")
 	private String bucketName;
 
 	@Override
-	public CompletableFuture<PutObjectResult> store(String keyName, InputStream inStream) {
+	public CompletableFuture<String> store(String keyName, InputStream inStream) {
 		return actOnItem(new PutObjectRequest(bucketName, keyName, inStream, new ObjectMetadata()));
 	}
 
 	@Override
-	protected PutObjectResult asynchronousAction(PutObjectRequest objectToActOn) {
-		PutObjectResult returnValue = null;
+	protected String asynchronousAction(PutObjectRequest objectToActOn) {
+		String returnValue;
 
 		try {
-			returnValue = s3client.putObject(objectToActOn);
+			Upload upload = s3TransferManager.upload(objectToActOn);
+			returnValue = upload.waitForUploadResult().getKey();
 		} catch (AmazonServiceException ase) {
 			API_LOG.error("Caught an AmazonServiceException: " + ase.getMessage(), ase);
 			throw ase;
 		} catch (AmazonClientException ace) {
 			API_LOG.error("Caught an AmazonClientException: " + ace.getMessage(), ace);
 			throw ace;
+		} catch (InterruptedException ie) {
+			API_LOG.error("Upload interrupted", ie);
+			throw new RuntimeException(ie);
 		} catch (Exception ex) {
 			API_LOG.error(ex.getMessage(), ex);
 			throw ex;
