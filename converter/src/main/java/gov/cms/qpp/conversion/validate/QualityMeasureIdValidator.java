@@ -264,7 +264,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 						&& subPopulation.getInitialPopulationUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
 	}
-	
+
 	/**
 	 * Performs a validation on the Denominator node's aggregate count to the Initial Population node's aggregate count
 	 *
