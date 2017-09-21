@@ -18,3 +18,7 @@ jspm_packages
 
 # Serverless directories
 .serverless
+
+# Terraform files
+terraform.tfstate.backup
+.terraform
