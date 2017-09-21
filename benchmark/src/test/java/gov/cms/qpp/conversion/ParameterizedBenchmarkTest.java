@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
 
 import java.io.IOException;
@@ -26,8 +25,9 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import gov.cms.qpp.test.FileTestHelper;
+import gov.cms.qpp.test.LoadTestSuite;
 
-public class ParameterizedBenchmarkTest {
+public class ParameterizedBenchmarkTest extends LoadTestSuite {
 
 	private static Field fileSystemField;
 	private static FileSystem defaultFileSystem;
@@ -60,13 +60,12 @@ public class ParameterizedBenchmarkTest {
 
 	@AfterClass
 	public static void cleanup() throws IllegalArgumentException, IllegalAccessException, IOException {
-		fileSystemField.set(null, defaultFileSystem);
-		fileSystem.close();
-	}
-
-	@Test
-	public void testNumPaths() {
-		assertThat("2 test files are expected", paths.length, is(2));
+		if (fileSystemField != null) {
+			fileSystemField.set(null, defaultFileSystem);
+		}
+		if (fileSystem != null) {
+			fileSystem.close();
+		}
 	}
 
 	@Test
