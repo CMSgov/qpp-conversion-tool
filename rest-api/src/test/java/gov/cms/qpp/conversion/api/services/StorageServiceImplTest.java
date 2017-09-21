@@ -7,7 +7,10 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
 import gov.cms.qpp.conversion.api.RestApiApplication;
+import net.jodah.concurrentunit.Waiter;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -21,11 +24,12 @@ import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 @SpringBootTest(classes = { StorageServiceImpl.class, RestApiApplication.class })
 @RunWith(LocalstackTestRunner.class)
@@ -43,12 +47,13 @@ public class StorageServiceImplTest {
 	@Value("${submission.s3.bucket}")
 	private String bucketName;
 
+	private AmazonS3 amazonS3Client;
+
 	@Before
 	public void setup() throws IllegalAccessException, NoSuchFieldException {
-		String bucketName = "test-bucket-https";
 		TestUtils.disableSslCertChecking();
 
-		AmazonS3 amazonS3Client = AmazonS3ClientBuilder.standard()
+		amazonS3Client = AmazonS3ClientBuilder.standard()
 				.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
 						LocalstackTestRunner.getEndpointS3(),
 						LocalstackTestRunner.getDefaultRegion()))
@@ -62,14 +67,30 @@ public class StorageServiceImplTest {
 	}
 
 	@Test
-	public void testPut() throws ExecutionException, InterruptedException {
+	public void testPut() throws TimeoutException {
+		final String content = "test file content";
+		final String key = "submission";
+		final Waiter waiter = new Waiter();
+
 		CompletableFuture<PutObjectResult> result = underTest.store(
-				"aSubmission", new ByteArrayInputStream("test file content".getBytes()));
+				key, new ByteArrayInputStream(content.getBytes()));
 
 		result.whenComplete((outcome, ex) -> {
-			assertNotNull("No outcome returned", outcome);
-			assertNotNull("No content", outcome.getContentMd5());
-			System.out.println("Result content: ===============> " + outcome.getContentMd5());
+			waiter.assertEquals(content, getObjectContent(key));
+			waiter.resume();
 		});
+
+		waiter.await(5000);
+	}
+
+	private String getObjectContent(String key) {
+		S3Object stored = amazonS3Client.getObject(bucketName, key);
+
+		try {
+			return IOUtils.toString(stored.getObjectContent(), "UTF-8");
+		} catch (IOException ioe) {
+			fail("should have content");
+		}
+		return "";
 	}
 }

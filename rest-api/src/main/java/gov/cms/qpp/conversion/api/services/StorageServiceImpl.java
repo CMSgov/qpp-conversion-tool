@@ -38,8 +38,13 @@ public class StorageServiceImpl extends InOrderAsyncActionService<PutObjectReque
 			returnValue = s3client.putObject(objectToActOn);
 		} catch (AmazonServiceException ase) {
 			API_LOG.error("Caught an AmazonServiceException: " + ase.getMessage(), ase);
+			throw ase;
 		} catch (AmazonClientException ace) {
 			API_LOG.error("Caught an AmazonClientException: " + ace.getMessage(), ace);
+			throw ace;
+		} catch (Exception ex) {
+			API_LOG.error(ex.getMessage(), ex);
+			throw ex;
 		}
 
 		return returnValue;

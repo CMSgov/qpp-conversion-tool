@@ -98,6 +98,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>net.jodah</groupId>
+			<artifactId>concurrentunit</artifactId>
+			<version>0.4.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>cloud.localstack</groupId>
 			<artifactId>localstack-utils</artifactId>
 			<version>0.1.4</version>
