@@ -32,7 +32,7 @@ test:
     - cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
   override:
     - cd vpcs; npm install; npm test
-    - mvn clean verify -Djacoco.skip.instrument=false
+    - mvn clean verify -DexclusionFilter=**/*Integration.java -Djacoco.skip.instrument=false
     - mvn jacoco:report
     - ./bin/sonarqube.sh
     - cd frontend; yarn run lint
