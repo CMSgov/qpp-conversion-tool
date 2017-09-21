@@ -30,7 +30,7 @@ variable "instance_types" {
 }
 
 variable "key_name" {
-  default = "ez-app"
+  default = "nava-sandbox"
 }
 
 variable "s3_bucket" {
