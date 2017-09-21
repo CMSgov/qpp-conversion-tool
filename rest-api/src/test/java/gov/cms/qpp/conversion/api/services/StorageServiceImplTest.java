@@ -10,15 +10,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 
 import java.io.ByteArrayInputStream;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -40,6 +44,11 @@ public class StorageServiceImplTest {
 	@Mock
 	private TaskExecutor taskExecutor;
 
+	@Mock
+	private Environment environment;
+
+	private String bucketName = "test-bucket";
+
 	@Before
 	public void before() {
 		doAnswer(invocationOnMock -> {
@@ -55,6 +64,7 @@ public class StorageServiceImplTest {
 		result.setKey("meep");
 		when(upload.waitForUploadResult()).thenReturn(result);
 		when(transferManager.upload(any(PutObjectRequest.class))).thenReturn(upload);
+		Mockito.when(environment.getProperty(eq(StorageServiceImpl.BUCKET_NAME))).thenReturn(bucketName);
 
 		CompletableFuture<String> storeResult = underTest.store(
 				"submission", new ByteArrayInputStream("test file content".getBytes()));
@@ -70,6 +80,7 @@ public class StorageServiceImplTest {
 		result.setKey("meep");
 		when(upload.waitForUploadResult()).thenThrow(InterruptedException.class).thenReturn(result);
 		when(transferManager.upload(any(PutObjectRequest.class))).thenReturn(upload);
+		Mockito.when(environment.getProperty(eq(StorageServiceImpl.BUCKET_NAME))).thenReturn(bucketName);
 
 		CompletableFuture<String> storeResult = underTest.store(
 				"submission", new ByteArrayInputStream("test file content".getBytes()));
@@ -77,5 +88,25 @@ public class StorageServiceImplTest {
 		String objKey = storeResult.join();
 		assertNotNull("key should not be null", objKey);
 		verify(transferManager, times(2)).upload(any(PutObjectRequest.class));
+	}
+
+	@Test
+	public void testPutNoBucket() throws TimeoutException, InterruptedException {
+		Mockito.when(environment.getProperty(eq(StorageServiceImpl.BUCKET_NAME))).thenReturn("");
+
+		CompletableFuture<String> storeResult = underTest.store(
+				"submission", new ByteArrayInputStream("test file content".getBytes()));
+
+		assertEquals("key should not be empty", "", storeResult.join());
+		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
+	}
+
+	@Test
+	public void testPutNoBucketSpecified() throws TimeoutException, InterruptedException {
+		CompletableFuture<String> storeResult = underTest.store(
+				"submission", new ByteArrayInputStream("test file content".getBytes()));
+
+		assertEquals("key should not be empty", "", storeResult.join());
+		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
 	}
 }

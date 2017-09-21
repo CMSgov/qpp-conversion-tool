@@ -13,6 +13,7 @@
 		<java.version>1.8</java.version>
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
+		<exclusionFilter>**/*Integration.java</exclusionFilter>
 	</properties>
 
 	<modules>

@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
 import gov.cms.qpp.conversion.api.RestApiApplication;
+import gov.cms.qpp.conversion.api.config.S3Config;
 import net.jodah.concurrentunit.Waiter;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
@@ -15,10 +16,13 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
@@ -29,25 +33,31 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = { StorageServiceImpl.class, RestApiApplication.class })
 @RunWith(LocalstackTestRunner.class)
 @PropertySource("classpath:application.properties")
 public class StorageServiceImplIntegration {
+
 	@ClassRule
 	public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();
 
 	@Rule
 	public final SpringMethodRule springMethodRule = new SpringMethodRule();
 
+	@Rule
+	public MockitoRule rule = MockitoJUnit.rule();
+
+	@Mock
+	private Environment environment;
+
 	@Autowired
 	private StorageServiceImpl underTest;
 
-	@Value("${submission.s3.bucket}")
-	private String bucketName;
-
+	private String bucketName = "test-bucket";
 	private AmazonS3 amazonS3Client;
-	private Field s3clientField;
 
 	@Before
 	public void setup() throws IllegalAccessException, NoSuchFieldException {
@@ -61,9 +71,15 @@ public class StorageServiceImplIntegration {
 				.withPathStyleAccessEnabled(true).build();
 		amazonS3Client.createBucket(bucketName);
 
-		s3clientField = StorageServiceImpl.class.getDeclaredField("s3client");
-		s3clientField.setAccessible(true); // Force to access the field
-		s3clientField.set(underTest, amazonS3Client);
+		S3Config config = new S3Config();
+
+		Field field = StorageServiceImpl.class.getDeclaredField("s3TransferManager");
+		field.setAccessible(true);
+		field.set(underTest, config.s3TransferManager(amazonS3Client));
+
+		field = StorageServiceImpl.class.getDeclaredField("environment");
+		field.setAccessible(true);
+		field.set(underTest, environment);
 	}
 
 	@Test
@@ -71,6 +87,8 @@ public class StorageServiceImplIntegration {
 		final String content = "test file content";
 		final String key = "submission";
 		final Waiter waiter = new Waiter();
+
+		when(environment.getProperty(eq(StorageServiceImpl.BUCKET_NAME))).thenReturn(bucketName);
 
 		CompletableFuture<String> result = underTest.store(
 				key, new ByteArrayInputStream(content.getBytes()));
