@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>gov.cms.qpp.conversion</groupId>
+		<artifactId>qpp-conversion-tool-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<artifactId>extension-test-commons</artifactId>
+	<name>Extension Testing Helper</name>
+	<packaging>jar</packaging>
+	<description>Utilities to help with testing extensions</description>
+
+	<properties>
+		<requiredCodeCoverage>0.00</requiredCodeCoverage>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.jimfs</groupId>
+			<artifactId>jimfs</artifactId>
+			<version>1.1</version>
+		</dependency>
+	</dependencies>
+
+</project>
