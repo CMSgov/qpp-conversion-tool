@@ -2,45 +2,33 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
-import com.amazonaws.services.s3.transfer.internal.UploadImpl;
-import gov.cms.qpp.conversion.api.RestApiApplication;
-import net.jodah.concurrentunit.Waiter;
-import org.apache.commons.io.IOUtils;
+import com.amazonaws.services.s3.transfer.model.UploadResult;
 import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.test.context.junit4.rules.SpringClassRule;
-import org.springframework.test.context.junit4.rules.SpringMethodRule;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.core.task.TaskExecutor;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 
-@SpringBootTest(classes = { StorageServiceImpl.class, RestApiApplication.class })
-@PropertySource("classpath:application.properties")
+@RunWith(MockitoJUnitRunner.class)
 public class StorageServiceImplTest {
-	@ClassRule
-	public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();
 
-	@Rule
-	public final SpringMethodRule springMethodRule = new SpringMethodRule();
-
-	@Autowired
+	@InjectMocks
 	private StorageServiceImpl underTest;
 
 	@Mock
@@ -49,34 +37,45 @@ public class StorageServiceImplTest {
 	@Mock
 	private Upload upload;
 
-	@Test
-	public void testPut() throws TimeoutException {
-		Upload upload = new UploadImpl();
-		when(transferManager.upload(any(PutObjectRequest.class))).thenReturn();
-		final String content = "test file content";
-		final String key = "submission";
-		final Waiter waiter = new Waiter();
+	@Mock
+	private TaskExecutor taskExecutor;
 
-		CompletableFuture<String> result = underTest.store(
-				key, new ByteArrayInputStream(content.getBytes()));
-
-		result.whenComplete((outcome, ex) -> {
-			System.out.println("outcome: " + outcome);
-			waiter.assertEquals(content, getObjectContent(key));
-			waiter.resume();
-		});
-
-		waiter.await(5000);
+	@Before
+	public void before() {
+		doAnswer(invocationOnMock -> {
+			Runnable method = invocationOnMock.getArgument(0);
+			CompletableFuture.runAsync(method);
+			return null;
+		}).when(taskExecutor).execute(any(Runnable.class));
 	}
 
-	private String getObjectContent(String key) {
-		S3Object stored = amazonS3Client.getObject(bucketName, key);
+	@Test
+	public void testPut() throws TimeoutException, InterruptedException {
+		UploadResult result = new UploadResult();
+		result.setKey("meep");
+		when(upload.waitForUploadResult()).thenReturn(result);
+		when(transferManager.upload(any(PutObjectRequest.class))).thenReturn(upload);
 
-		try {
-			return IOUtils.toString(stored.getObjectContent(), "UTF-8");
-		} catch (IOException ioe) {
-			fail("should have content");
-		}
-		return "";
+		CompletableFuture<String> storeResult = underTest.store(
+				"submission", new ByteArrayInputStream("test file content".getBytes()));
+
+		String objKey = storeResult.join();
+		assertNotNull("key should not be null", objKey);
+		verify(transferManager, times(1)).upload(any(PutObjectRequest.class));
+	}
+
+	@Test
+	public void testPutHiccup() throws TimeoutException, InterruptedException {
+		UploadResult result = new UploadResult();
+		result.setKey("meep");
+		when(upload.waitForUploadResult()).thenThrow(InterruptedException.class).thenReturn(result);
+		when(transferManager.upload(any(PutObjectRequest.class))).thenReturn(upload);
+
+		CompletableFuture<String> storeResult = underTest.store(
+				"submission", new ByteArrayInputStream("test file content".getBytes()));
+
+		String objKey = storeResult.join();
+		assertNotNull("key should not be null", objKey);
+		verify(transferManager, times(2)).upload(any(PutObjectRequest.class));
 	}
 }

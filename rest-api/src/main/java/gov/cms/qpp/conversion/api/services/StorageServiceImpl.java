@@ -1,8 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
@@ -37,18 +35,9 @@ public class StorageServiceImpl extends InOrderAsyncActionService<PutObjectReque
 		try {
 			Upload upload = s3TransferManager.upload(objectToActOn);
 			returnValue = upload.waitForUploadResult().getKey();
-		} catch (AmazonServiceException ase) {
-			API_LOG.error("Caught an AmazonServiceException: " + ase.getMessage(), ase);
-			throw ase;
-		} catch (AmazonClientException ace) {
-			API_LOG.error("Caught an AmazonClientException: " + ace.getMessage(), ace);
-			throw ace;
 		} catch (InterruptedException ie) {
 			API_LOG.error("Upload interrupted", ie);
 			throw new RuntimeException(ie);
-		} catch (Exception ex) {
-			API_LOG.error(ex.getMessage(), ex);
-			throw ex;
 		}
 
 		return returnValue;
