@@ -1,0 +1,6 @@
+Jeff Benton Sprint 24 Review Presentation
+QPPCT - 302
+1. Have the AWS with the Chrome Automated Test open.(Firefox and Internet Explorer were demoed in the last sprint.)
+2. Run the test.
+3. Display the log file results.
+4. Show the log file in the JIRA ticket for others to view.

@@ -15,6 +15,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import gov.cms.qpp.test.LoadTestSuite;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -26,7 +28,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertThat;
 
-public class ConverterLoadTest {
+public class ConverterLoadTest extends LoadTestSuite {
 	private static StandardJMeterEngine jmeter;
 
 	@BeforeClass
