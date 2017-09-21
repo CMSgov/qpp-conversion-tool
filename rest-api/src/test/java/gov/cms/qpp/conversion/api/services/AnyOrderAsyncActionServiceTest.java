@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,13 +15,17 @@ import org.springframework.retry.support.RetryTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.junit.internal.matchers.ThrowableCauseMatcher.hasCause;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
@@ -150,6 +155,24 @@ public class AnyOrderAsyncActionServiceTest {
 			completableFuture2.getNumberOfDependents(), is(0));
 	}
 
+	@Test
+	public void testInterruptedException() {
+
+		objectUnderTest.failuresUntilSuccess(1).failWithInterruptException();
+
+		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(new Object());
+
+		try {
+			completableFuture.join();
+			fail("A CompletionException was not thrown.");
+		} catch (CompletionException exception) {
+			assertThat("The CompletionException didn't contain a UncheckedInterruptedException.", exception, hasCause(isA(UncheckedInterruptedException.class)));
+			assertThat("The asynchronousAction method should have been called only once.", timesAsynchronousActionCalled.get(), is(1));  //not two
+		} catch (Exception exception) {
+			fail("A CompletionException was not thrown.");
+		}
+	}
+
 	private Object runSimpleScenario(int failuresUntilSuccess) {
 		Object objectToActOn = new Object();
 
@@ -165,10 +188,16 @@ public class AnyOrderAsyncActionServiceTest {
 
 		private int failuresUntilSuccessTemplate = -1;
 		private ThreadLocal<Integer> failuresUntilSuccess = ThreadLocal.withInitial(() -> -1);
+		private ThreadLocal<Boolean> failWithInterruptException = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
 		public TestAnyOrderService failuresUntilSuccess(int failuresUntilSuccess) {
 			this.failuresUntilSuccessTemplate = failuresUntilSuccess;
 			this.failuresUntilSuccess = ThreadLocal.withInitial(() -> this.failuresUntilSuccessTemplate);
+			return this;
+		}
+
+		public TestAnyOrderService failWithInterruptException() {
+			this.failWithInterruptException = ThreadLocal.withInitial(() -> Boolean.TRUE);
 			return this;
 		}
 
@@ -192,7 +221,12 @@ public class AnyOrderAsyncActionServiceTest {
 				if(failuresUntilSuccess.get() != -1) {
 					failuresUntilSuccess.set(failuresUntilSuccess.get() - 1);
 				}
-				throw new RuntimeException();
+				if(failWithInterruptException.get()) {
+					throw new UncheckedInterruptedException(new InterruptedException());
+				}
+				else {
+					throw new RuntimeException();
+				}
 			}
 
 			failuresUntilSuccess.set(failuresUntilSuccessTemplate);

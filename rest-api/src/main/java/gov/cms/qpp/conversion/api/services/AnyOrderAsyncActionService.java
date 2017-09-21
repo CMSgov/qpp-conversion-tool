@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
-import org.springframework.retry.policy.AlwaysRetryPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -82,7 +84,10 @@ public abstract class AnyOrderAsyncActionService<T, S> {
 	protected RetryTemplate retryTemplate() {
 		RetryTemplate retry = new RetryTemplate();
 
-		retry.setRetryPolicy(new AlwaysRetryPolicy());
+		Map<Class<? extends Throwable>, Boolean> stopExceptions = Collections.singletonMap(InterruptedException.class, Boolean.FALSE);
+		SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(Integer.MAX_VALUE, stopExceptions, true, true);
+
+		retry.setRetryPolicy(retryPolicy);
 
 		ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
 		backOffPolicy.setInitialInterval(1000);

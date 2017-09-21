@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
+import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +45,9 @@ public class StorageServiceImpl extends InOrderAsyncActionService<PutObjectReque
 		try {
 			Upload upload = s3TransferManager.upload(objectToActOn);
 			returnValue = upload.waitForUploadResult().getKey();
-		} catch (InterruptedException ie) {
-			API_LOG.error("Upload interrupted", ie);
-			throw new RuntimeException(ie);
+		} catch (InterruptedException exception) {
+			Thread.currentThread().interrupt();
+			throw new UncheckedInterruptedException(exception);
 		}
 
 		return returnValue;
