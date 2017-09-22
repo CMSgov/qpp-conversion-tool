@@ -170,10 +170,10 @@ errors in the provided input file.
 The Conversion Tool can be executed through a ReST API.  See [above](#getting-and-using-the-converter) for how to start the API endpoint.
 ```shell
 curl -X POST \
-  http://localhost:8080 \
+  http://localhost:3000 \
   -H 'cache-control: no-cache' \
   -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-  -F file=@./qrda-files/valid-QRDA-III.xml
+  -F file=@./qrda-files/valid-QRDA-III-latest.xml
 ```
 
 The response body will either be the QPP JSON on success or error JSON on an error.
