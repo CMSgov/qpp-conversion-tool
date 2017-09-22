@@ -302,6 +302,47 @@ public class CheckerTest {
 	}
 
 	@Test
+	public void testCompoundIntValueLessThanOrEqualToCheckSuccess() {
+		Node meepNode = new Node();
+		meepNode.putValue(VALUE, "123");
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.intValue(ERROR_MESSAGE, VALUE).lessThanOrEqualTo(ERROR_MESSAGE, 123);
+		assertThat("There should be no errors.", details, empty());
+	}
+
+	@Test
+	public void testCompoundIntValueLessThanCheckSuccess() {
+		Node meepNode = new Node();
+		meepNode.putValue(VALUE, "123");
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.intValue(ERROR_MESSAGE, VALUE).lessThanOrEqualTo(ERROR_MESSAGE, 124);
+		assertThat("There should be no errors.", details, empty());
+	}
+
+	@Test
+	public void testCompoundIntValueLessThanOrEqualToCheckFailure() {
+		Node meepNode = new Node();
+		meepNode.putValue(VALUE, "123");
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.intValue(ERROR_MESSAGE, VALUE).lessThanOrEqualTo(ERROR_MESSAGE, 122);
+		assertThat("There should be no errors.", details, hasValidationErrorsIgnoringPath(ERROR_MESSAGE));
+	}
+
+	@Test
+	public void testCompoundIntValueLessThanOrEqualToCheckFailureShortcut() {
+		Node meepNode = new Node();
+		meepNode.putValue(VALUE, "123");
+		details.add(new Detail("test", "testPath"));
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.intValue(ERROR_MESSAGE, VALUE).lessThanOrEqualTo(ERROR_MESSAGE, 122);
+		assertThat("There should be no errors.", details, hasValidationErrorsIgnoringPath("test"));
+	}
+
+	@Test
 	public void testValueWithinDecimalRange() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "0.5");
