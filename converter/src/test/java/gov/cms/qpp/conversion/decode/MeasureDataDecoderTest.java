@@ -65,13 +65,4 @@ public class MeasureDataDecoderTest {
 		assertThat("Should have an aggregate count child",
 				measure.getChildNodes().get(0).getType(), is(TemplateId.ACI_AGGREGATE_COUNT));
 	}
-
-	@Test
-	public void testIgnoreOfUnmappedMeasureData() throws XmlException {
-		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder(context);
-		Node placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
-
-		assertThat("Should have four children", placeholder.getChildNodes(), hasSize(4));
-	}
-
 }

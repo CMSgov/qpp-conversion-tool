@@ -37,4 +37,5 @@ public class CpcQualityMeasureIdValidator extends NodeValidator {
 				.childMaximum(String.format(INVALID_PERFORMANCE_RATE_COUNT, requiredPerformanceRateCount),
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 	}
+
 }
