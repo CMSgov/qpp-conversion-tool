@@ -87,6 +87,26 @@ docker build -t qpp_conversion .
 docker run --rm -p 8080:8080 qpp_conversion
 ```
 
+## Deploying
+
+Install [Terraform](terraform.io)
+
+```shell
+cd terraform/vpc/environments/qpp-qrda3converter-dev
+
+# this is the git hash of the release you are deploying, created with `build-ami`
+export DEPLOYED_GIT_HASH=<hash of the AMI you are deploying>
+
+# Initialize the Terraform state and fetch modules
+terraform init
+
+# Dry run with terraform plan
+terraform plan -var "app_ami_git_hash=$DEPLOYED_GIT_HASH"
+
+# If all looks good, run terraform apply
+terraform apply -var "app_ami_git_hash=$DEPLOYED_GIT_HASH"
+```
+∏
 ## Running performance tests
 ### Build the project with maven
 ```mvn clean install -DrunLoadTests```
@@ -206,3 +226,4 @@ All contributions to this project will be released under the CC0 dedication. By 
 ## SonarQube
 [SonarQube](http://sonar.shareddev.flexion.us:9000/dashboard?id=gov.cms.qpp.conversion%3Aqpp-conversion)
 
+###
