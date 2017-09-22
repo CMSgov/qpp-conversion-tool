@@ -6,6 +6,7 @@ This document describes how to set up your development environment to build and 
 * [Getting the Source](#getting-the-source)
 * [Building](#building)
 * [Running Tests Locally](#running-tests-locally)
+* [Third Party Extensions](#third-party-extensions)
 
 See the [contribution guidelines](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/CONTRIBUTING.md)
 if you'd like to contribute to qpp-conversion-tool.
@@ -74,3 +75,7 @@ mvn test
 You should run the test suite before submitting a PR to github.
 
 All the tests are executed on our Continuous Integration infrastructure and a PR can only be merged once the tests pass.
+
+## Third Party Extensions
+
+Finished a cool new feature or fix for the conversion tool? Please feel free submit a pull request to our repository (https://github.com/CMSgov/qpp-conversion-tool) for any changes made. We appreciate and thank you for your patronage!
