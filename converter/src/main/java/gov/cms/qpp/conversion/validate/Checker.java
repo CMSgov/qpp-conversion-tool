@@ -219,6 +219,22 @@ class Checker {
 	}
 
 	/**
+	 * Allow for compound comparisons of Node values.
+	 *
+	 * @param message error message should comparison fail
+	 * @param value to be compared against
+	 * @return The checker, for chaining method calls.
+	 */
+	@SuppressWarnings("unchecked")
+	public Checker lessThanOrEqualTo(String message, Comparable<?> value) {
+		if (!shouldShortcut() && lastAppraised != null && ((Comparable<Object>) lastAppraised).compareTo(value) > 0) {
+			details.add(new Detail(message, node.getPath()));
+		}
+		lastAppraised = null;
+		return this;
+	}
+
+	/**
 	 * Checks target node value to be between a specific range
 	 *
 	 * @param message error message should comparison fail
