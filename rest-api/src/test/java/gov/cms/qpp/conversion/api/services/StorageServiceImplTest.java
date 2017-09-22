@@ -17,6 +17,7 @@ import org.springframework.core.task.TaskExecutor;
 
 import java.io.ByteArrayInputStream;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertEquals;
@@ -48,6 +49,7 @@ public class StorageServiceImplTest {
 	private Environment environment;
 
 	private String bucketName = "test-bucket";
+	private UploadResult result;
 
 	@Before
 	public void before() {
@@ -56,37 +58,35 @@ public class StorageServiceImplTest {
 			CompletableFuture.runAsync(method);
 			return null;
 		}).when(taskExecutor).execute(any(Runnable.class));
+
+		result = new UploadResult();
+		result.setKey("meep");
+		when(transferManager.upload(any(PutObjectRequest.class))).thenReturn(upload);
 	}
 
 	@Test
 	public void testPut() throws TimeoutException, InterruptedException {
-		UploadResult result = new UploadResult();
-		result.setKey("meep");
 		when(upload.waitForUploadResult()).thenReturn(result);
-		when(transferManager.upload(any(PutObjectRequest.class))).thenReturn(upload);
 		Mockito.when(environment.getProperty(eq(StorageServiceImpl.BUCKET_NAME))).thenReturn(bucketName);
 
-		CompletableFuture<String> storeResult = underTest.store(
-				"submission", new ByteArrayInputStream("test file content".getBytes()));
-
-		String objKey = storeResult.join();
-		assertNotNull("key should not be null", objKey);
+		assertNotNull("key should not be null", storeFile());
 		verify(transferManager, times(1)).upload(any(PutObjectRequest.class));
 	}
 
-	@Test
-	public void testPutHiccup() throws TimeoutException, InterruptedException {
-		UploadResult result = new UploadResult();
-		result.setKey("meep");
-		when(upload.waitForUploadResult()).thenThrow(InterruptedException.class).thenReturn(result);
-		when(transferManager.upload(any(PutObjectRequest.class))).thenReturn(upload);
+	@Test(expected = CompletionException.class)
+	public void testPutFail() throws TimeoutException, InterruptedException {
+		when(upload.waitForUploadResult()).thenThrow(InterruptedException.class);
 		Mockito.when(environment.getProperty(eq(StorageServiceImpl.BUCKET_NAME))).thenReturn(bucketName);
 
-		CompletableFuture<String> storeResult = underTest.store(
-				"submission", new ByteArrayInputStream("test file content".getBytes()));
+		storeFile();
+	}
 
-		String objKey = storeResult.join();
-		assertNotNull("key should not be null", objKey);
+	@Test
+	public void testPutRecoverableFailure() throws TimeoutException, InterruptedException {
+		when(upload.waitForUploadResult()).thenThrow(Exception.class).thenReturn(result);
+		Mockito.when(environment.getProperty(eq(StorageServiceImpl.BUCKET_NAME))).thenReturn(bucketName);
+
+		assertNotNull("key should not be null", storeFile());
 		verify(transferManager, times(2)).upload(any(PutObjectRequest.class));
 	}
 
@@ -94,19 +94,19 @@ public class StorageServiceImplTest {
 	public void testPutNoBucket() throws TimeoutException, InterruptedException {
 		Mockito.when(environment.getProperty(eq(StorageServiceImpl.BUCKET_NAME))).thenReturn("");
 
-		CompletableFuture<String> storeResult = underTest.store(
-				"submission", new ByteArrayInputStream("test file content".getBytes()));
-
-		assertEquals("key should not be empty", "", storeResult.join());
+		assertEquals("key should not be empty", "", storeFile());
 		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
 	}
 
 	@Test
 	public void testPutNoBucketSpecified() throws TimeoutException, InterruptedException {
+		assertEquals("key should not be empty", "", storeFile());
+		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
+	}
+
+	private String storeFile() {
 		CompletableFuture<String> storeResult = underTest.store(
 				"submission", new ByteArrayInputStream("test file content".getBytes()));
-
-		assertEquals("key should not be empty", "", storeResult.join());
-		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
+		return storeResult.join();
 	}
 }

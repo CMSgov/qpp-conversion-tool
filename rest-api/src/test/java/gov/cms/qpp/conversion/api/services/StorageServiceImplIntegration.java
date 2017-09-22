@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.api.RestApiApplication;
 import gov.cms.qpp.conversion.api.config.S3Config;
 import net.jodah.concurrentunit.Waiter;
 import org.apache.commons.io.IOUtils;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -59,8 +60,10 @@ public class StorageServiceImplIntegration {
 	private String bucketName = "test-bucket";
 	private AmazonS3 amazonS3Client;
 
+
 	@Before
 	public void setup() throws IllegalAccessException, NoSuchFieldException {
+		Assume.assumeTrue(System.getProperty("skip.long") == null);
 		TestUtils.disableSslCertChecking();
 
 		amazonS3Client = AmazonS3ClientBuilder.standard()
