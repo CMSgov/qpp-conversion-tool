@@ -1,0 +1,17 @@
+FROM maven:3-jdk-8
+
+RUN mkdir -p /usr/src/app/
+RUN mkdir -p /usr/src/run/
+
+COPY ./ /usr/src/app/
+
+WORKDIR /usr/src/app/
+
+RUN mvn install -Dmaven.test.skip -Djacoco.skip=true > /dev/null
+RUN cp ./rest-api/target/rest-api.jar /usr/src/run/
+RUN cp -r ./docker-artifacts/* /usr/src/run/
+
+WORKDIR /usr/src/run/
+
+EXPOSE 8080
+ENTRYPOINT ["/usr/src/run/qppConverterTest.sh"]
