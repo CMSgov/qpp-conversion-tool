@@ -6,6 +6,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +18,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class S3Config {
+
+	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 
 	/**
 	 * Creates the S3 client {@link Bean}.
@@ -31,6 +35,7 @@ public class S3Config {
 		try {
 			client = AmazonS3ClientBuilder.defaultClient();
 		} catch (SdkClientException exception) {
+			API_LOG.info("Default S3 client failed to build, trying again with region us-east-1", exception);
 			client = AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
 		}
 
