@@ -84,8 +84,10 @@ public abstract class AnyOrderAsyncActionService<T, S> {
 	protected RetryTemplate retryTemplate() {
 		RetryTemplate retry = new RetryTemplate();
 
-		Map<Class<? extends Throwable>, Boolean> stopExceptions = Collections.singletonMap(InterruptedException.class, Boolean.FALSE);
-		SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(Integer.MAX_VALUE, stopExceptions, true, true);
+		Map<Class<? extends Throwable>, Boolean> stopExceptions =
+				Collections.singletonMap(InterruptedException.class, Boolean.FALSE);
+		SimpleRetryPolicy retryPolicy =
+				new SimpleRetryPolicy(Integer.MAX_VALUE, stopExceptions, true, true);
 
 		retry.setRetryPolicy(retryPolicy);
 
