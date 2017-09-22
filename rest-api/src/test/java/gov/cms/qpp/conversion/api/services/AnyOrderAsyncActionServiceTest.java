@@ -38,14 +38,6 @@ public class AnyOrderAsyncActionServiceTest {
 	@Mock
 	private TaskExecutor taskExecutor;
 
-	private static AtomicBoolean asynchronousActionCalled;
-
-	private static AtomicInteger timesAsynchronousActionCalled;
-
-	private static AtomicReference<Object> objectThatWasActedOn;
-
-	private static AtomicBoolean pauseAsynchronousAction;
-
 	@Before
 	public void runBeforeEachTest() throws InterruptedException {
 		doAnswer(invocationOnMock -> {
@@ -53,30 +45,21 @@ public class AnyOrderAsyncActionServiceTest {
 			CompletableFuture.runAsync(method);
 			return null;
 		}).when(taskExecutor).execute(any(Runnable.class));
-
-		asynchronousActionCalled = new AtomicBoolean(false);
-		timesAsynchronousActionCalled = new AtomicInteger(0);
-		objectThatWasActedOn = new AtomicReference<>(null);
-		pauseAsynchronousAction = new AtomicBoolean(false);
-	}
-
-	@After
-	public void runAfterEachTest() {
-		pauseAsynchronousAction.set(false);
 	}
 
 	@Test
 	public void testAsynchronousActionIsCalled() {
 		runSimpleScenario(0);
 
-		assertTrue("The asynchronousAction was not called.", asynchronousActionCalled.get());
+		assertTrue("The asynchronousAction was not called.", objectUnderTest.asynchronousActionCalled.get());
 	}
 
 	@Test
 	public void testObjectToActOnPassedDown() {
 		Object objectToActOn = runSimpleScenario(0);
 
-		assertThat("The object to act on didn't make it down to asynchronousAction.", objectThatWasActedOn.get(),
+		assertThat("The object to act on didn't make it down to asynchronousAction.",
+				objectUnderTest.objectThatWasActedOn.get(),
 			is(objectToActOn));
 	}
 
@@ -84,7 +67,8 @@ public class AnyOrderAsyncActionServiceTest {
 	public void testSuccessNoRetry() {
 		runSimpleScenario(0);
 
-		assertThat("The asynchronousAction method was not called once and only once.", timesAsynchronousActionCalled.get(), is(1));
+		assertThat("The asynchronousAction method was not called once and only once.",
+				objectUnderTest.timesAsynchronousActionCalled.get(), is(1));
 	}
 
 	@Test
@@ -93,7 +77,8 @@ public class AnyOrderAsyncActionServiceTest {
 
 		runSimpleScenario(failuresUntilSuccess);
 
-		assertThat("The asynchronousAction method was not called enough times.", timesAsynchronousActionCalled.get(),
+		assertThat("The asynchronousAction method was not called enough times.",
+				objectUnderTest.timesAsynchronousActionCalled.get(),
 			is(failuresUntilSuccess + 1));
 	}
 
@@ -101,7 +86,8 @@ public class AnyOrderAsyncActionServiceTest {
 	public void testObjectToActOnPassedDownWithFailures() {
 		Object objectToActOn = runSimpleScenario(2);
 
-		assertThat("The object to act on didn't make it down to asynchronousAction.", objectThatWasActedOn.get(),
+		assertThat("The object to act on didn't make it down to asynchronousAction.",
+				objectUnderTest.objectThatWasActedOn.get(),
 			is(objectToActOn));
 	}
 
@@ -119,7 +105,7 @@ public class AnyOrderAsyncActionServiceTest {
 		CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture<?>[0])).join();
 
 		assertThat("The asynchronousAction method was not called as many times as it should have.",
-			timesAsynchronousActionCalled.get(), is(numberOfItemsToProcess));
+				objectUnderTest.timesAsynchronousActionCalled.get(), is(numberOfItemsToProcess));
 	}
 
 	@Test
@@ -137,14 +123,13 @@ public class AnyOrderAsyncActionServiceTest {
 		CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture<?>[0])).join();
 
 		assertThat("The asynchronousAction method was not called as many times as it should have.",
-			timesAsynchronousActionCalled.get(), is((failuresUntilSuccess + 1) * numberOfItemsToProcess));
+				objectUnderTest.timesAsynchronousActionCalled.get(), is((failuresUntilSuccess + 1) * numberOfItemsToProcess));
 	}
 
 	@Test
 	public void testDependencyOrder() {
 		objectUnderTest.failuresUntilSuccess(0);
-
-		pauseAsynchronousAction.set(true);
+		objectUnderTest.pauseAsynchronousAction.set(true);
 
 		CompletableFuture<Object> completableFuture1 = objectUnderTest.actOnItem(new Object());
 		CompletableFuture<Object> completableFuture2 = objectUnderTest.actOnItem(new Object());
@@ -166,8 +151,10 @@ public class AnyOrderAsyncActionServiceTest {
 			completableFuture.join();
 			fail("A CompletionException was not thrown.");
 		} catch (CompletionException exception) {
-			assertThat("The CompletionException didn't contain a UncheckedInterruptedException.", exception, hasCause(isA(UncheckedInterruptedException.class)));
-			assertThat("The asynchronousAction method should have been called only once.", timesAsynchronousActionCalled.get(), is(1));  //not two
+			assertThat("The CompletionException didn't contain a UncheckedInterruptedException.",
+					exception, hasCause(isA(UncheckedInterruptedException.class)));
+			assertThat("The asynchronousAction method should have been called only once.",
+					objectUnderTest.timesAsynchronousActionCalled.get(), is(1));  //not two
 		} catch (Exception exception) {
 			fail("A CompletionException was not thrown.");
 		}
@@ -185,6 +172,10 @@ public class AnyOrderAsyncActionServiceTest {
 	}
 
 	private static class TestAnyOrderService extends AnyOrderAsyncActionService<Object, Object> {
+		public AtomicBoolean asynchronousActionCalled = new AtomicBoolean(false);
+		public AtomicInteger timesAsynchronousActionCalled = new AtomicInteger(0);
+		public AtomicReference<Object> objectThatWasActedOn = new AtomicReference<>(null);
+		public AtomicBoolean pauseAsynchronousAction = new AtomicBoolean(false);
 
 		private int failuresUntilSuccessTemplate = -1;
 		private ThreadLocal<Integer> failuresUntilSuccess = ThreadLocal.withInitial(() -> -1);
