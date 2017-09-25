@@ -79,3 +79,4 @@ All the tests are executed on our Continuous Integration infrastructure and a PR
 ## Third Party Extensions
 
 Finished a cool new feature or fix for the conversion tool? Please feel free submit a pull request to our repository (https://github.com/CMSgov/qpp-conversion-tool) for any changes made. We appreciate and thank you for your patronage!
+See the [contribution guidelines](https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md) on how to submit a Pull Request.
