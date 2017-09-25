@@ -8,7 +8,7 @@ This document describes how to set up your development environment to build and 
 * [Running Tests Locally](#running-tests-locally)
 * [Third Party Extensions](#third-party-extensions)
 
-See the [contribution guidelines](https://github.com/flexion/adele-bpa-qpp-conversion-tool/blob/master/CONTRIBUTING.md)
+See the [contribution guidelines](https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md)
 if you'd like to contribute to qpp-conversion-tool.
 
 ## Prerequisite Software
