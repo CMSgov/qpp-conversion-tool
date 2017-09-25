@@ -47,6 +47,11 @@ public class AnyOrderAsyncActionServiceTest {
 		}).when(taskExecutor).execute(any(Runnable.class));
 	}
 
+	@After
+	public void runAfterEachTest() {
+		objectUnderTest.pauseAsynchronousAction.set(false);
+	}
+
 	@Test
 	public void testAsynchronousActionIsCalled() {
 		runSimpleScenario(0);

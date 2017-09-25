@@ -94,13 +94,13 @@ public class StorageServiceImplTest {
 	public void testPutNoBucket() throws TimeoutException, InterruptedException {
 		Mockito.when(environment.getProperty(eq(StorageServiceImpl.BUCKET_NAME))).thenReturn("");
 
-		assertEquals("key should not be empty", "", storeFile());
+		assertEquals("key should be empty", "", storeFile());
 		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
 	}
 
 	@Test
 	public void testPutNoBucketSpecified() throws TimeoutException, InterruptedException {
-		assertEquals("key should not be empty", "", storeFile());
+		assertEquals("key should be empty", "", storeFile());
 		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
 	}
 

@@ -97,7 +97,6 @@ public class StorageServiceImplIntegration {
 				key, new ByteArrayInputStream(content.getBytes()));
 
 		result.whenComplete((outcome, ex) -> {
-			System.out.println("outcome: " + outcome);
 			waiter.assertEquals(content, getObjectContent(key));
 			waiter.resume();
 		});
