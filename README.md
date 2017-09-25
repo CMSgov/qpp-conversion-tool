@@ -63,8 +63,9 @@ cd ./qpp-conversion-tool
 
 ### ReST API via Docker
 
-The Conversion Tool can be executed through a ReST API. Using the ReST API has the added benefit of having the QPP validated if
-you so choose. For the examples below, make sure you're in the `qpp-conversion-tool` directory.
+The Conversion Tool can be executed through a ReST API. Using the ReST API has the added benefit of having the
+[QPP validated](#submission-validation) if you so choose. For the examples below, make sure you're in the `qpp-conversion-tool`
+directory.
 
 #### Starting the API Endpoint
 
@@ -85,6 +86,17 @@ curl -X POST \
 
 The response body will either be the QPP JSON on success or error JSON on an error.
 The HTTP Status will be `201 Created` on success or `422 Unprocessable entity` on an error.
+
+#### Submission Validation
+
+*The submissions validation API is currently unavailable.*
+
+While the converter will validate the format of the QRDA-III file and some basic semantics, deeper semantic checks are only
+available if you enable the submission validation API. If any errors are found by the submission validation API, error JSON will
+be returned from the ReST API like normal.
+
+To enable the submission validation API, modify the `.env` file with `VALIDATION_URL=<URL to the submissions validation API>` and
+then [restart the ReST API endpoint](#starting-the-api-endpoint).
 
 ### Command Line
 
