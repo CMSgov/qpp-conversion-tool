@@ -80,11 +80,8 @@ git clone https://github.com/CMSgov/qpp-conversion-tool.git
 # Go to the qpp-conversion-tool directory:
 cd qpp-conversion-tool
 
-# Build the Docker image
-docker build -t qpp_conversion .
-
-# Run the Docker container
-docker run --rm -p 8080:8080 qpp_conversion
+# Build the Docker image and run the container for testing using docker-compose:
+docker-compose -f docker-compose.test.yaml up
 ```
 
 ## Running performance tests
@@ -173,10 +170,10 @@ errors in the provided input file.
 The Conversion Tool can be executed through a ReST API.  See [above](#getting-and-using-the-converter) for how to start the API endpoint.
 ```shell
 curl -X POST \
-  http://localhost:8080 \
+  http://localhost:3000 \
   -H 'cache-control: no-cache' \
   -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-  -F file=@./qrda-files/valid-QRDA-III.xml
+  -F file=@./qrda-files/valid-QRDA-III-latest.xml
 ```
 
 The response body will either be the QPP JSON on success or error JSON on an error.
