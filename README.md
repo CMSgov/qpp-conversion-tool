@@ -5,9 +5,7 @@
 * [Installation Instructions](#installation-instructions)
 * [Running the Converter](#running-the-converter)
 * [Want to Contribute?](#want-to-contribute)
-* [Running Performance Tests](#running-performance-tests)
 * [Public Domain](#public-domain)
-* [SonarQube](#sonarqube)
 
 ## Installation Instructions
 
@@ -133,19 +131,11 @@ usage: convert [-b] [-d] [-h] [-t <scope1,scope2,...>] [-v]
 
 ## Want to Contribute?
 
-Want to file a bug or contribute some code? Read up on our guidelines for [contributing][contributing] and
+Want to file a bug or contribute some code? Read up on our guidelines for [contributing] and
 [developer instructions][developer].
 
 [contributing]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md
 [developer]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
-
-## Running Performance Tests
-
-### Build the Project with Maven
-
-`mvn clean install -DrunLoadTests`
-The `-DrunLoadTests` flag will enable the converter load tests as part of the build. If the converter does not meet a
-threshold of conversions, the tests not pass, and the build will fail.
 
 ## Public Domain
 This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived
@@ -155,7 +145,3 @@ All contributions to this project will be released under the CC0 dedication. By 
 comply with this waiver of copyright interest.
 
 See the [formal LICENSE file](https://github.com/CMSgov/qpp-conversion-tool/blob/master/LICENSE).
-
-## SonarQube
-[SonarQube](http://sonar.shareddev.flexion.us:9000/dashboard?id=gov.cms.qpp.conversion%3Aqpp-conversion)
-
