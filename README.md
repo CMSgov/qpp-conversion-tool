@@ -11,7 +11,7 @@
 
 ### Prerequisite Software
 
-Before you can use the qpp-conversion-tool, you must install and configure the following products on your machine:
+Before you can use the qpp-conversion-tool application, you must install and configure the following products on your machine:
 
 * [Git](http://git-scm.com) and/or the [GitHub application](https://desktop.github.com).
 
@@ -56,7 +56,7 @@ Use the GitHub application or the command line to clone this repository.
 git clone https://github.com/CMSgov/qpp-conversion-tool.git
 
 # Go to the qpp-conversion-tool directory.
-cd qpp-conversion-tool
+cd ./qpp-conversion-tool
 ```
 
 ## Running the Converter
@@ -69,7 +69,7 @@ you so choose. For the examples below, make sure you're in the `qpp-conversion-t
 #### Starting the API Endpoint
 
 ```shell
-# Build the Docker image and run the container for testing using docker-compose.
+# Build the Docker image and run the container using docker-compose.
 docker-compose -f ./docker-compose.test.yaml up
 ```
 
