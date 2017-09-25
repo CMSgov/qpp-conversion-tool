@@ -7,7 +7,6 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
-import gov.cms.qpp.conversion.api.RestApiApplication;
 import gov.cms.qpp.conversion.api.config.S3Config;
 import net.jodah.concurrentunit.Waiter;
 import org.apache.commons.io.IOUtils;
@@ -37,7 +36,7 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = { StorageServiceImpl.class, RestApiApplication.class })
+@SpringBootTest
 @RunWith(LocalstackTestRunner.class)
 @PropertySource("classpath:application.properties")
 public class StorageServiceImplIntegration {

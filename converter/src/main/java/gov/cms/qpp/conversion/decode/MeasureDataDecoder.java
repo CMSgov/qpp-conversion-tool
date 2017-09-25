@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataDecoder extends QppXmlDecoder {
 
-	protected static final Set<String> MEASURES = Stream.of("DENEX", "DENOM", "DENEXCEP", "NUMER")
+	protected static final Set<String> MEASURES = Stream.of("IPP", "IPOP", "DENEX", "DENOM", "DENEXCEP", "NUMER")
 			.collect(Collectors.toSet());
 
 	public static final String MEASURE_TYPE = "type";

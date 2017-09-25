@@ -9,14 +9,10 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -180,7 +176,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper, boolean isMultiRate,
 		final MeasureConfig measureConfig) {
-		this.encodePopulationTotal(childWrapper, parentNode);
 		this.encodePerformanceMet(childWrapper, parentNode);
 		this.encodePerformanceNotMet(childWrapper, parentNode);
 
@@ -193,25 +188,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		if (isMultiRate) {
 			this.encodeStratum(childWrapper, parentNode, measureConfig);
 		}
-	}
-
-	/**
-	 * Encodes a population total from a initial population node
-	 *
-	 * @param wrapper holder of the encoded initial population
-	 * @param parentNode holder of the initial population
-	 */
-	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
-		Set<String> accepted = new HashSet<>(Arrays.asList("IPOP", "IPP"));
-		Node populationNode = parentNode.findChildNode(n -> accepted.contains(n.getValue(TYPE)));
-
-		Optional.ofNullable(populationNode).ifPresent(
-			node -> {
-				Node aggCount = node.getChildNodes().get(0);
-				maintainContinuity(wrapper, aggCount, "populationTotal");
-				wrapper.putInteger("populationTotal", aggCount.getValue(AGGREGATE_COUNT));
-			}
-		);
 	}
 
 	/**
