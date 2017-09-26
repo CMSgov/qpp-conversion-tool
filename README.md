@@ -89,14 +89,15 @@ The HTTP Status will be `201 Created` on success or `422 Unprocessable entity` o
 
 #### Submission Validation
 
-*The submissions validation API is currently unavailable.*
+*The public submissions validation API is currently unavailable.*
 
 While the converter will validate the format of the QRDA-III file and some basic semantics, deeper semantic checks are only
-available if you enable the submission validation API. If any errors are found by the submission validation API, error JSON will
-be returned from the ReST API like normal.
+available if you enable the public  submission validation API. If any errors are found by the public submission validation API,
+error JSON will be returned from the ReST API like normal.
 
-To enable the submission validation API, modify the `.env` file with `VALIDATION_URL=<URL to the submissions validation API>` and
-then [restart the ReST API endpoint](#starting-the-api-endpoint).
+To enable the public submission validation API, modify the `.env` file with
+`VALIDATION_URL=<URL to the public submissions validation API>` and then
+[restart the ReST API endpoint](#starting-the-api-endpoint).
 
 ### Command Line
 
