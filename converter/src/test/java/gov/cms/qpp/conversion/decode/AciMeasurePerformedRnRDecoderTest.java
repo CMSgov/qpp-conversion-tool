@@ -12,10 +12,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciMeasurePerformedRnRDecoderTest {
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
@@ -49,10 +47,11 @@ public class AciMeasurePerformedRnRDecoderTest {
 		DecodeResult decodeResult = objectUnderTest.internalDecode(element, aciMeasurePerformedNode);
 
 		//assert
-		assertThat("The decode result is incorrect.", decodeResult, is(DecodeResult.TREE_CONTINUE));
+		assertWithMessage("The decode result is incorrect").that(decodeResult).isEqualTo(DecodeResult.TREE_CONTINUE);
+
 		String actualMeasureId = aciMeasurePerformedNode.getValue("measureId");
-		assertThat("measureId must not be null.", actualMeasureId, is(not(nullValue())));
-		assertThat("measureId is incorrect.", actualMeasureId, is(MEASURE_ID));
+		assertThat(actualMeasureId).isNotNull();
+		assertWithMessage("measureId is incorrect.").that(actualMeasureId).isEqualTo(MEASURE_ID);
 	}
 
 	@Test
@@ -64,10 +63,10 @@ public class AciMeasurePerformedRnRDecoderTest {
 
 		String actualMeasureId = aciMeasurePerformedNode.getValue("measureId");
 
-		assertThat("The measureId must not be null.", actualMeasureId, is(not(nullValue())));
-		assertThat("The measureId is incorrect.", actualMeasureId, is(MEASURE_ID));
+		assertThat(actualMeasureId).isNotNull();
+		assertWithMessage("The measureId is incorrect.").that(actualMeasureId).isEqualTo(MEASURE_ID);
 		long measurePerformedCount = aciMeasurePerformedNode.getChildNodes(
 			node -> node.getType() == TemplateId.MEASURE_PERFORMED).count();
-		assertThat("There must be one Measure Performed child node.", measurePerformedCount, is(1L));
+		assertWithMessage("There must be one Measure Performed child node.").that(measurePerformedCount).isEqualTo(1);
 	}
 }
