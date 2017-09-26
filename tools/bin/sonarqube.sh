@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 DIR=$(dirname "$0")
 SONAR_HOST=http://sonar.shareddev.flexion.us:9000
 
