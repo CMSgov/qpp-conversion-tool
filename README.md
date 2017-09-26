@@ -2,35 +2,40 @@
 
 # qpp-conversion-tool
 
-* [Installation Instructions](#developer-installation-instructions)
-* [User Instructions](#user-instructions)
+* [Installation Instructions](#installation-instructions)
+* [Running the Converter](#running-the-converter)
 * [Want to Contribute?](#want-to-contribute)
+* [Public Domain](#public-domain)
 
 ## Installation Instructions
 
 ### Prerequisite Software
 
-Before you can use the qpp-conversion-tool, you must install and configure the following products on your machine:
+Before you can use the qpp-conversion-tool application, you must install and configure the following products on your machine:
 
-* [Git](http://git-scm.com) and/or the **GitHub app** (for [Mac](http://mac.github.com) or
-  [Windows](http://windows.github.com)); [GitHub's Guide to Installing
-  Git](https://help.github.com/articles/set-up-git) is a good source of information.
+* [Git](http://git-scm.com) and/or the [GitHub application](https://desktop.github.com).
 
-* [Java Runtime](https://java.com/download), (version `>=1.8`)
+  [GitHub's Guide to Installing Git](https://help.github.com/articles/set-up-git) is a good source of information.
 
-  It is important that you have the right version of java on your path.
+* [Java Runtime](https://java.com/download) (version `>= 1.8`).
+
+  It is important that you have the right version of `java` on your path.
 
   ```shell
   # When you run 'java -version', you should get 1.8.XXXXX. For example:
   java -version
-  java version "1.8.0_121"
+  java version "1.8.0_144"
   ...
   ```
 
-  Sometimes the Java Runtime installer doesn't update your path. So you must do it manually. Alternatively, download and install the [Java Development Kit](http://www.oracle.com/technetwork/es/java/javase/downloads/index.html), (version `>=1.8`). The Java Development Kit is better at updating your path.
+  Sometimes the Java Runtime installer doesn't update your path. So you must do it manually. Alternatively, download and install
+  the [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 1.8`). The JDK is
+  better at updating your path.
 
-* [Maven](https://maven.apache.org), (version `>=3.3`) which is used to build the library, manage dependencies,
-  run tests, and generate distributable files. After you unzip the Maven archive, you need to add the `bin` directory to your path, as described the [Maven installation instructions](https://maven.apache.org/install.html).
+* [Maven](https://maven.apache.org) (version `>= 3.3`).
+
+  Maven is used to build the application, manage dependencies, and run tests. After you unzip the Maven archive, you need to add
+  the `bin` directory to your path, as described the [Maven installation instructions](https://maven.apache.org/install.html).
 
   ```shell
   # When you run 'mvn -v', you should get 3.3.X. For example:
@@ -38,70 +43,87 @@ Before you can use the qpp-conversion-tool, you must install and configure the f
   Apache Maven 3.3.9
   ...
   ```
-* [Docker](https://www.docker.com) is not required but is an alternative to the above requirements if all you need is to run the converter.
+* [Docker](https://www.docker.com).
 
-### Getting and using the converter
+  Docker is not required but is an alternative to the above requirements if all you need is to run the converter.
 
-If you are using a Unix-like OS like Linux or macOS, open a terminal and go to the directory you want the converter tool directory to be created in:
+### Getting the Converter
 
-```shell
-# Clone the GitHub repository:
-git clone https://github.com/CMSgov/qpp-conversion-tool.git
-
-# Go to the qpp-conversion-tool directory:
-cd qpp-conversion-tool
-
-# There is a convenient bash script wrapper. Make sure it's executable:
-chmod +x convert.sh
-
-# Try the convert script. If the JAR isn't built yet, the script will build it for you:
-./convert.sh converter/src/test/resources/valid-QRDA-III.xml
-```
-
-If you are using Windows, open a command prompt (not PowerShell) and go to the directory you want the converter tool directory to be created in:
+Use the GitHub application or the command line to clone this repository.
 
 ```shell
-# Clone the GitHub repository:
+# Clone the GitHub repository.
 git clone https://github.com/CMSgov/qpp-conversion-tool.git
 
-# Go to the qpp-conversion-tool directory:
-cd qpp-conversion-tool
-
-# Try the convert script. If the JAR isn't built yet, the script will build it for you:
-convert.bat converter/src/test/resources/valid-QRDA-III.xml
+# Go to the qpp-conversion-tool directory.
+cd ./qpp-conversion-tool
 ```
 
-If you are using Docker to run the conversion as a ReST API, open a terminal and go to the cloned directory:
+## Running the Converter
+
+### ReST API via Docker
+
+The Conversion Tool can be executed through a ReST API. Using the ReST API has the added benefit of having the
+[QPP validated](#submission-validation) if you so choose. For the examples below, make sure you're in the `qpp-conversion-tool`
+directory.
+
+#### Starting the API Endpoint
 
 ```shell
-# Clone the GitHub repository:
-git clone https://github.com/CMSgov/qpp-conversion-tool.git
-
-# Go to the qpp-conversion-tool directory:
-cd qpp-conversion-tool
-
-# Build the Docker image and run the container for testing using docker-compose:
-docker-compose -f docker-compose.test.yaml up
+# Build the Docker image and run the container using docker-compose.
+docker-compose -f ./docker-compose.test.yaml up
 ```
 
-## Running performance tests
-### Build the project with maven
-```mvn clean install -DrunLoadTests```
-The ```-DrunLoadTests``` flag will enable the converter load tests as part of the build. If the converter does not meet a threshold of conversions, the tests not pass, and the build will fail.
+#### Invoking the Endpoint
 
-## User Instructions
+```shell
+curl -X POST \
+  http://localhost:3000 \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+  -F file=@./qrda-files/valid-QRDA-III-latest.xml
+```
+
+The response body will either be the QPP JSON on success or error JSON on an error.
+The HTTP Status will be `201 Created` on success or `422 Unprocessable entity` on an error.
+
+#### Submission Validation
+
+*The public submissions validation API is currently unavailable.*
+
+While the converter will validate the format of the QRDA-III file and some basic semantics, deeper semantic checks are only
+available if you enable the public  submission validation API. If any errors are found by the public submission validation API,
+error JSON will be returned from the ReST API like normal.
+
+To enable the public submission validation API, modify the `.env` file with
+`VALIDATION_URL=<URL to the public submissions validation API>` and then
+[restart the ReST API endpoint](#starting-the-api-endpoint).
 
 ### Command Line
+
 For the examples below, make sure you're in the `qpp-conversion-tool` directory.
 
 Note: If you are using Windows, replace `./convert.sh` in the examples below with `.\convert.bat`.
 
-#### Conversion Help
+#### Convert a File
+
 ```shell
-./convert.sh -h
+# Try the convert script. If the JAR isn't built yet, the script will build it for you first.
+./convert.sh ./qrda-files/valid-QRDA-III-latest.xml
 ```
 
-```
+If a QRDA-III XML file is successfully converted, a QPP JSON file is created in the current working directory.
+The file name will have the same name as the input file but with the extension `.qpp.json`.
+For example, `valid-QRDA-III-latest.qpp.json`.
+
+When an invalid file is provided to the converter, an error JSON file is created in the current working directory.
+The file name will be the same as the input file but with the extension `.err.json`.
+For example, `not-a-QRDA-III-file.err.json`.  This error file contains descriptions and XPaths that help in identifying the
+errors in the provided input file.
+
+#### Commandline Help
+```shell
+./convert.sh -h
 usage: convert [-b] [-d] [-h] [-t <scope1,scope2,...>] [-v]
  -b,--bygone                              Signals a historical conversion
  -d,--skipDefaults                        Skip defaulted transformations
@@ -120,86 +142,19 @@ usage: convert [-b] [-d] [-h] [-t <scope1,scope2,...>] [-v]
  -v,--skipValidation                      Skip validations
 ```
 
-#### Output
-If a QRDA-III XML file is successfully converted, a QPP JSON file is created in the current working directory.
-The file name will have the same name as the input file but with the extension `.qpp.json`.
-For example, `valid-QRDA-III.qpp.json`.
+## Want to Contribute?
 
-When an invalid file is provided to the converter, an error JSON file is created in the current working directory.
-The file name will be the same as the input file but with the extension `.err.json`.
-For example, `not-a-QRDA-III-file.err.json`.  This error file contains descriptions and XPaths that help in identifying the
-errors in the provided input file.
-
-#### Convert a valid file.
-
-```shell
-./convert.sh qrda-files/valid-QRDA-III.xml
-```
-
-#### Convert a valid file but skip inserting default stubs.
-
-```shell
-./convert.sh qrda-files/valid-QRDA-III.xml --skip-defaults
-```
-
-#### Convert an file without an 'xml' extension.
-
-```shell
-./convert.sh qrda-files/valid-QRDA-III-without-xml-extension
-```
-
-#### Convert a bunch of QRDA-III files concurrently (multi-threaded).
-
-```shell
-./convert.sh qrda-files/multi/*.xml
-```
-
-#### Try to convert a QRDA-III file that doesn't contain required measures.
-
-```shell
-./convert.sh qrda-files/QRDA-III-without-required-measure.xml
-```
-
-#### Try to convert a file that is not a QRDA-III file.
-
-```shell
-./convert.sh qrda-files/not-a-QDRA-III-file.xml
-```
-
-### ReST API via Docker
-The Conversion Tool can be executed through a ReST API.  See [above](#getting-and-using-the-converter) for how to start the API endpoint.
-```shell
-curl -X POST \
-  http://localhost:3000 \
-  -H 'cache-control: no-cache' \
-  -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-  -F file=@./qrda-files/valid-QRDA-III-latest.xml
-```
-
-The response body will either be the QPP JSON on success or error JSON on an error.
-The HTTP Status will be `201 Created` on succes or `422 Unprocessable entity` on an error.
-
-### Simple UI to test converter
-
-visit [http://qrda-conversion-ui.s3-website-us-east-1.amazonaws.com/](http://qrda-conversion-ui.s3-website-us-east-1.amazonaws.com/) 
-
-Use the upload interface to add QRDA XML files to an upload queue. Click `upload` next to the file names to convert the files.
-
-#### Do not send any PII (Personally Identifiable Information) in the QRDA file.  This is not a secure system
-
-## Want to contribute?
-
-Want to file a bug or contribute some code? Read up on our
-guidelines for [contributing][contributing], and [developer instructions][developer].
+Want to file a bug or contribute some code? Read up on our guidelines for [contributing] and
+[developer instructions][developer].
 
 [contributing]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md
 [developer]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
 
 ## Public Domain
-This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the CC0 1.0 Universal public domain dedication.
+This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived
+through the CC0 1.0 Universal public domain dedication.
 
-All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.
+All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to
+comply with this waiver of copyright interest.
 
-## SonarQube
-[SonarQube](http://sonar.shareddev.flexion.us:9000/dashboard?id=gov.cms.qpp.conversion%3Aqpp-conversion)
-
+See the [formal LICENSE file](https://github.com/CMSgov/qpp-conversion-tool/blob/master/LICENSE).
