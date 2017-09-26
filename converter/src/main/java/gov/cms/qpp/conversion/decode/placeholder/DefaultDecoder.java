@@ -60,13 +60,13 @@ public class DefaultDecoder extends QppXmlDecoder {
 		}
 	}
 
-	@Decoder(TemplateId.REPORTING_STRATUM_CMS)
-	public static class ReportingStratumCmsDataDecoder extends DefaultDecoder {
-
-		public ReportingStratumCmsDataDecoder(Context context) {
-			super(context, "Reporting Stratum - CMS");
-		}
-	}
+//	@Decoder(TemplateId.REPORTING_STRATUM_CMS)
+//	public static class ReportingStratumCmsDataDecoder extends DefaultDecoder {
+//
+//		public ReportingStratumCmsDataDecoder(Context context) {
+//			super(context, "Reporting Stratum - CMS");
+//		}
+//	}
 }
 
 /**
