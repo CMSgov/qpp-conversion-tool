@@ -103,7 +103,7 @@ To enable the public submission validation API, modify the `.env` file with
 
 For the examples below, make sure you're in the `qpp-conversion-tool` directory.
 
-Note: If you are using Windows, replace `./convert.sh` in the examples below with `.\convert.bat`.
+Note: If you are using Windows, replace `./convert.sh` in the examples below with `convert.bat`.
 
 #### Convert a File
 
@@ -121,26 +121,7 @@ The file name will be the same as the input file but with the extension `.err.js
 For example, `not-a-QRDA-III-file.err.json`.  This error file contains descriptions and XPaths that help in identifying the
 errors in the provided input file.
 
-#### Commandline Help
-```shell
-./convert.sh -h
-usage: convert [-b] [-d] [-h] [-t <scope1,scope2,...>] [-v]
- -b,--bygone                              Signals a historical conversion
- -d,--skipDefaults                        Skip defaulted transformations
- -h,--help                                This help message
- -t,--templateScope <scope1,scope2,...>   Comma delimited scope values to
-                                          use for context. Valid values:
-                                          [ACI_AGGREGATE_COUNT,
-                                          ACI_NUMERATOR, ACI_DENOMINATOR,
-                                          ACI_NUMERATOR_DENOMINATOR,
-                                          ACI_SECTION, MEASURE_PERFORMED,
-                                          IA_MEASURE, IA_SECTION,
-                                          DEFAULTS, MEASURE_DATA_CMS_V2,
-                                          MEASURE_REFERENCE_RESULTS_CMS_V2
-                                          , MEASURE_SECTION_V2,
-                                          CLINICAL_DOCUMENT]
- -v,--skipValidation                      Skip validations
-```
+View all commands with `convert.sh`.
 
 ## Want to Contribute?
 
@@ -149,12 +130,3 @@ Want to file a bug or contribute some code? Read up on our guidelines for [contr
 
 [contributing]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md
 [developer]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
-
-## Public Domain
-This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived
-through the CC0 1.0 Universal public domain dedication.
-
-All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to
-comply with this waiver of copyright interest.
-
-See the [formal LICENSE file](https://github.com/CMSgov/qpp-conversion-tool/blob/master/LICENSE).
