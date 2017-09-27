@@ -10,10 +10,6 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,9 +17,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
@@ -216,8 +215,13 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			thoroughlyCheck(thisNode)
 				.incompleteValidation()
 				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
-			strataCheck(thisNode, sub);
-			return uuid.get().equals(thisNode.getValue(MEASURE_POPULATION));
+			boolean uuidMatch = uuid.get().equals(thisNode.getValue(MEASURE_POPULATION));
+
+			if (uuidMatch) {
+				strataCheck(thisNode, sub);
+			}
+
+			return uuidMatch;
 		};
 	}
 
