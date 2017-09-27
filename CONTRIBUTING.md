@@ -37,7 +37,7 @@ To be respectful of maintainer's time and ultimately fix more bugs, we will requ
 
 You can file new issues by filling out our [new issue form](https://github.com/CMSgov/qpp-conversion-tool/issues/new).
 
-All new issues will be triaged by the maintainer. If needed, the maintainer will comment with questions.  Issues that are accepted will be labelled accordingly in GitHub.
+Please see [SUPPORT](https://github.com/CMSgov/qpp-conversion-tool/SUPPORT.md) for more details on the issue submission process.
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
 
@@ -109,7 +109,7 @@ To ensure consistency throughout the source code, please keep these rules in min
 * All features or bug fixes **must be tested** by one or more unit-tests. All new code must have 95% or higher code coverage.
 * All public API methods **must be documented**.
 * Please consider installing the following [git hooks][truffle-hooks] after cloning the repo. They will help prevent unintentional introduction of secrets into history. Look [here][git-hooks] for a primer on git hooks.
-  
+
 [git-hooks]: https://git-scm.com/book/gr/v2/Customizing-Git-Git-Hooks
 [truffle-hooks]: https://github.com/clydet/truffleHog/tree/master/truffleHooks
 [github]: https://github.com/CMSgov/qpp-conversion-tool
