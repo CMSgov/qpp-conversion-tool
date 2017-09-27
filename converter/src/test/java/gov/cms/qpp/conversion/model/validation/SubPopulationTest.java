@@ -4,6 +4,8 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertNull;
 
 /**
@@ -14,15 +16,8 @@ public class SubPopulationTest {
 	@Test
 	public void getStrata1() {
 		SubPopulation sp = new SubPopulation();
-		String strata1 = sp.getStrata1();
-		assertNull(strata1);
-	}
-
-	@Test
-	public void getStrata2() {
-		SubPopulation sp = new SubPopulation();
-		String strata2 = sp.getStrata2();
-		assertNull(strata2);
+		List<String> strata = sp.getStrata();
+		assertNull(strata);
 	}
 
 	@Test

@@ -6,6 +6,7 @@ import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -310,9 +311,9 @@ public class Node {
 	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
 	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
 	 */
-	private List<Node> findNode(TemplateId templateId, Predicate<List<?>> bail) {
+	public List<Node> findNode(TemplateId templateId, Predicate<List<Node>> bail) {
 		List<Node> foundNodes = new ArrayList<>();
-		if (this.type == templateId) {
+		if (this.type == templateId && bail.test(Collections.singletonList(this))) {
 			foundNodes.add(this);
 		}
 		for (Node childNode : childNodes) {

@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.decode.StratifierDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -10,6 +11,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -148,10 +150,10 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
 
 		List<Consumer<Node>> validations =
-			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
-				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX"),
-				makeValidator(subPopulation::getNumeratorUuid, "NUMER"),
-				makeValidator(subPopulation::getDenominatorUuid, "DENOM"));
+			Arrays.asList(makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
+				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, "DENEX"),
+				makeValidator(subPopulation, subPopulation::getNumeratorUuid, "NUMER"),
+				makeValidator(subPopulation, subPopulation::getDenominatorUuid, "DENOM"));
 
 		validations.forEach(validate -> validate.accept(node));
 
@@ -166,11 +168,11 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	private Consumer<Node> makeValidator(Supplier<Object> check, String key) {
+	private Consumer<Node> makeValidator(SubPopulation sub, Supplier<Object> check, String key) {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
-				Predicate<Node> childUuidFinder = makeUuidChildFinder(check);
+				Predicate<Node> childUuidFinder = makeUuidChildFinder(check, sub);
 
 				boolean childUuidExists = node
 					.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
@@ -209,13 +211,28 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * @param uuid Supplies a unique id to test against
 	 * @return
 	 */
-	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid) {
+	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, SubPopulation sub) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
 				.incompleteValidation()
 				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
+			strataCheck(thisNode, sub);
 			return uuid.get().equals(thisNode.getValue(MEASURE_POPULATION));
 		};
+	}
+
+	private void strataCheck(Node node, SubPopulation sub) {
+		sub.getStrata().stream().forEach(strata -> {
+			Predicate<Node> seek = child ->
+					child.getType().equals(TemplateId.REPORTING_STRATUM_CMS) &&
+							child.getValue(StratifierDecoder.STRATIFIER_ID).equals(strata);
+
+			if (node.findChildNode(seek) == null) {
+				this.getDetails().add(
+						new Detail("Missing strata " + strata + " for " + node.getValue(MEASURE_ID),
+								node.getPath()));
+			}
+		});
 	}
 
 	/**
