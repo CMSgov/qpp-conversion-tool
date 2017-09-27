@@ -37,7 +37,7 @@ To be respectful of maintainer's time and ultimately fix more bugs, we will requ
 
 You can file new issues by filling out our [new issue form](https://github.com/CMSgov/qpp-conversion-tool/issues/new).
 
-Please see [SUPPORT](https://github.com/CMSgov/qpp-conversion-tool/SUPPORT.md) for more details on the issue submission process.
+Please see [SUPPORT](https://github.com/CMSgov/qpp-conversion-tool/blob/master/SUPPORT.md) for more details on the issue submission process.
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
 
