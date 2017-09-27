@@ -13,8 +13,9 @@ import org.apache.jorphan.collections.HashTree;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import gov.cms.qpp.test.LoadTestSuite;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -27,8 +28,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertThat;
 
-@Ignore
-public class ConverterLoadTest {
+public class ConverterLoadTest extends LoadTestSuite {
 	private static StandardJMeterEngine jmeter;
 
 	@BeforeClass

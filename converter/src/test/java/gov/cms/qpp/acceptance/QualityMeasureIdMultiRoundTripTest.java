@@ -41,6 +41,9 @@ public class QualityMeasureIdMultiRoundTripTest {
 	private static final Path JUNK_QRDA3_FILE =
 			Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml");
 
+	private static final Path DENOM_GREATER_THAN_IPOP =
+			Paths.get("src/test/resources/negative/mipsDenominatorInitialPopulationFailure.xml");
+
 	private static MarkupManipulator manipulator;
 
 	@BeforeClass
@@ -78,7 +81,8 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		Assert.assertThat("Should have no error detail", details, hasSize(0));
+		Assert.assertThat("Should have no error detail", details,
+				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_TYPE));
 	}
 
 	@Test
@@ -96,13 +100,12 @@ public class QualityMeasureIdMultiRoundTripTest {
 	@Test
 	public void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
 		String message = String.format(
-				QualityMeasureIdValidator.REQUIRED_CHILD_MEASURE, "CMS52v5", QualityMeasureIdValidator.DENOM);
+				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, "DENOM", 2);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
 		List<Detail> details = executeScenario(path, true);
 
-		Assert.assertThat("Should only have one error detail", details, hasSize(1));
 		Assert.assertThat("Error should regard the need for a single measure type", details,
 				hasValidationErrorsIgnoringPath(message));
 	}
@@ -131,7 +134,23 @@ public class QualityMeasureIdMultiRoundTripTest {
 				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_POPULATION));
 	}
 
-	private List<Detail> executeScenario(String path, boolean remove) {
+	@Test
+	public void testRoundTripQualityMeasureIdWithDenomGreaterThanIpop() {
+		Converter converter = new Converter(new PathQrdaSource(DENOM_GREATER_THAN_IPOP));
+		List<Detail> details = new ArrayList<>();
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		assertThat("Must contain the right number of errors", details, hasSize(3));
+		assertThat("Must contain the correct error message", details,
+				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT));
+	}
+
+	private List<Detail>  executeScenario(String path, boolean remove) {
 		InputStream modified = manipulator.upsetTheNorm(path, remove);
 		Converter converter = new Converter(new InputStreamQrdaSource(JUNK_QRDA3_FILE.toString(), modified));
 		List<Detail> details = new ArrayList<>();

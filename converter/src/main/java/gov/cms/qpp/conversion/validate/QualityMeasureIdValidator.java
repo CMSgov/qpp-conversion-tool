@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -7,16 +8,20 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
@@ -26,21 +31,25 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
  */
 @Validator(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdValidator extends NodeValidator {
+	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
+			.collect(Collectors.toSet());
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
-	protected static final String MEASURE_ID = "measureId";
 
+	public static final String MEASURE_ID = "measureId";
 	static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	public static final String SINGLE_MEASURE_POPULATION =
 			"The measure reference results must have a single measure population";
 	public static final String SINGLE_MEASURE_TYPE =
 			"The measure reference results must have a single measure type";
 	static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
-	public static final String REQUIRED_CHILD_MEASURE =
-			"The eCQM (electronic measure id: %s) requires a %s";
-	protected static final String DENEX = "denominator exclusion";
-	protected static final String DENEXCEP = "eligiblePopulationExclusion";
-	protected static final String NUMER = "performanceMet";
-	public static final String DENOM = "eligiblePopulation";
+	public static final String REQUIRE_VALID_DENOMINATOR_COUNT =
+			"The Denominator count must be less than or equal to Initial Population count "
+					+ "for an eCQM that is proportion measure";
+	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
+			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
+
+	protected static final String INCORRECT_UUID =
+			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -53,7 +62,6 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 *
 	 * @param node The node to validate.
 	 */
-
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
 		//It is possible that we have a Measure in the input that we have not defined in
@@ -95,12 +103,39 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig) {
 		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
 
-		if (subPopulations == null) {
+		if (subPopulations.isEmpty()) {
 			return;
 		}
 
+		SubPopulations.getKeys().forEach(key -> validateChildTypeCount(subPopulations, key, node));
+
 		for (SubPopulation subPopulation : subPopulations) {
 			validateSubPopulation(node, subPopulation);
+		}
+	}
+
+	/**
+	 * Validates that given subpopulations have the correct number of a given type
+	 *
+	 * @param subPopulations The subpopulations to test against
+	 * @param key The type to check
+	 * @param node The node in which the child nodes live
+	 */
+	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
+		long expectedChildTypeCount = subPopulations.stream()
+				.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
+				.filter(Objects::nonNull)
+				.count();
+
+		Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
+		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
+
+		if (expectedChildTypeCount != actualChildTypeCount) {
+			MeasureConfig config =
+					MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+			String message = String.format(INCORRECT_POPULATION_CRITERIA_COUNT,
+					config.getElectronicMeasureId(), expectedChildTypeCount, key, actualChildTypeCount);
+			this.getDetails().add(new Detail(message, node.getPath()));
 		}
 	}
 
@@ -113,12 +148,14 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
 
 		List<Consumer<Node>> validations =
-			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, DENEXCEP, "DENEXCEP"),
-				makeValidator(subPopulation::getDenominatorExclusionsUuid, DENEX, "DENEX"),
-				makeValidator(subPopulation::getNumeratorUuid, NUMER, "NUMER"),
-				makeValidator(subPopulation::getDenominatorUuid, DENOM, "DENOM"));
+			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
+				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX"),
+				makeValidator(subPopulation::getNumeratorUuid, "NUMER"),
+				makeValidator(subPopulation::getDenominatorUuid, "DENOM"));
 
 		validations.forEach(validate -> validate.accept(node));
+
+		validateDenomCountToIpopCount(node, subPopulation);
 	}
 
 	/**
@@ -126,20 +163,24 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 *
 	 * @param check a property existence check
 	 * @param key that identify measures
-	 * @param label a short measure description
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	private Consumer<Node> makeValidator(Supplier<Object> check, String label, String key) {
+	private Consumer<Node> makeValidator(Supplier<Object> check, String key) {
 		return node -> {
 			if (check.get() != null) {
-				Predicate<Node> childFinder = makeChildFinder(check, key);
-				List<Node> childMeasureNodes = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
-						.filter(childFinder).collect(Collectors.toList());
-				if (childMeasureNodes.isEmpty()) {
+				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
+				Predicate<Node> childUuidFinder = makeUuidChildFinder(check);
+
+				boolean childUuidExists = node
+					.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
+					.filter(childTypeFinder)
+					.anyMatch(childUuidFinder);
+
+				if (!childUuidExists) {
 					MeasureConfig config =
-							MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-					String message = String.format(REQUIRED_CHILD_MEASURE, config.getElectronicMeasureId(), label);
+						MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+					String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key, check.get());
 					this.getDetails().add(new Detail(message, node.getPath()));
 				}
 			}
@@ -147,20 +188,95 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	}
 
 	/**
-	 * Search filter for child measure nodes.
+	 * Creates a {@link Predicate} which takes a node and tests whether the measure type is equal to the given measure type.
+	 * Also validates that it's the only measure type in the given node.
 	 *
-	 * @param check provides sub population specific measure id
-	 * @param key that identifies measure
-	 * @return search filter
+	 * @param populationCriteriaType
+	 * @return
 	 */
-	private Predicate<Node> makeChildFinder(Supplier<Object> check, String key) {
+	private Predicate<Node> makeTypeChildFinder(String populationCriteriaType) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
-					.incompleteValidation()
-					.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE)
-					.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
-			boolean validMeasureType = key.equals(thisNode.getValue(MEASURE_TYPE));
-			return validMeasureType && check.get().equals(thisNode.getValue(MEASURE_POPULATION));
+				.incompleteValidation()
+				.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE);
+			return populationCriteriaType.equals(thisNode.getValue(MEASURE_TYPE));
 		};
+	}
+
+	/**
+	 * Creates a {@link Predicate} which takes a node and tests whether the measure population is equal to the given unique id
+	 *
+	 * @param uuid Supplies a unique id to test against
+	 * @return
+	 */
+	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid) {
+		return thisNode -> {
+			thoroughlyCheck(thisNode)
+				.incompleteValidation()
+				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
+			return uuid.get().equals(thisNode.getValue(MEASURE_POPULATION));
+		};
+	}
+
+	/**
+	 * Validation check for Denominator and Numerator counts of the same Sub Population
+	 *
+	 * @param node The current parent node
+	 * @param subPopulation the current sub population
+	 */
+	private void validateDenomCountToIpopCount(Node node, SubPopulation subPopulation) {
+		Node denomNode = getDenominatorNodeFromCurrentSubPopulation(node, subPopulation);
+
+		Node ipopNode = getIpopNodeFromCurrentSubPopulation(node, subPopulation);
+
+		if (denomNode != null && ipopNode != null) {
+			Node denomCount = denomNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+			Node ipopCount = ipopNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+
+			validateDenominatorCount(denomCount, ipopCount);
+		}
+	}
+
+	/**
+	 * Retrieves the Denominator from the current Sub Population given
+	 *
+	 * @param node The current parent node
+	 * @param subPopulation The current sub population holding the denominator UUID
+	 * @return the denominator node filtered by sub population or null if not found
+	 */
+	private Node getDenominatorNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
+		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
+				"DENOM".equals(thisNode.getValue(MEASURE_TYPE))
+						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
+				.findFirst().orElse(null);
+	}
+
+	/**
+	 * Retrieves the Initial Population from the current Sub Population given
+	 *
+	 * @param node The current parent node
+	 * @param subPopulation The current sub population holding the initial population UUID
+	 * @return the initial population node filtered by sub population or null if not found
+	 */
+	private Node getIpopNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
+		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
+				(IPOP.contains(thisNode.getValue(MEASURE_TYPE)))
+						&& subPopulation.getInitialPopulationUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
+				.findFirst().orElse(null);
+	}
+
+	/**
+	 * Performs a validation on the Denominator node's aggregate count to the Initial Population node's aggregate count
+	 *
+	 * @param denomCount Aggregate Count node of denominator
+	 * @param ipopCount Aggregate Count node of initial population
+	 */
+	private void validateDenominatorCount(Node denomCount, Node ipopCount) {
+		thoroughlyCheck(denomCount)
+				.incompleteValidation()
+				.intValue(AggregateCountValidator.TYPE_ERROR,
+						AggregateCountDecoder.AGGREGATE_COUNT)
+				.lessThanOrEqualTo(REQUIRE_VALID_DENOMINATOR_COUNT,
+						Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
 	}
 }
