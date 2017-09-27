@@ -5,7 +5,6 @@
 * [Installation Instructions](#installation-instructions)
 * [Running the Converter](#running-the-converter)
 * [Want to Contribute?](#want-to-contribute)
-* [Public Domain](#public-domain)
 
 ## Installation Instructions
 
