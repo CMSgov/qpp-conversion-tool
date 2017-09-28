@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
 
 /**
  * Validates a Measure Reference Results node.
@@ -47,9 +48,10 @@ public class QualityMeasureIdValidator extends NodeValidator {
 					+ "for an eCQM that is proportion measure";
 	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
 			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
-
 	protected static final String INCORRECT_UUID =
 			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
+	public static final String SINGLE_PERFORMANCE_RATE =
+			"A Performance Rate must contain a single Performance Rate UUID";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -151,7 +153,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
 				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX"),
 				makeValidator(subPopulation::getNumeratorUuid, "NUMER"),
-				makeValidator(subPopulation::getDenominatorUuid, "DENOM"));
+				makeValidator(subPopulation::getDenominatorUuid, "DENOM"),
+			    makeValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
 
 		validations.forEach(validate -> validate.accept(node));
 
@@ -169,13 +172,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private Consumer<Node> makeValidator(Supplier<Object> check, String key) {
 		return node -> {
 			if (check.get() != null) {
-				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
-				Predicate<Node> childUuidFinder = makeUuidChildFinder(check);
-
-				boolean childUuidExists = node
-					.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
-					.filter(childTypeFinder)
-					.anyMatch(childUuidFinder);
+				boolean childUuidExists = doesChildUuidExist(check, key, node);
 
 				if (!childUuidExists) {
 					MeasureConfig config =
@@ -185,6 +182,36 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				}
 			}
 		};
+	}
+
+	/**
+	 *  Determines if the current node contains a correct performance rate child or measure data child
+	 *
+	 * @param check a property existence check
+	 * @param key that identify measures
+	 * @param node the current node containing the child to check
+	 * @return
+	 */
+	private boolean doesChildUuidExist(Supplier<Object> check, String key, Node node) {
+		boolean childUuidExists;
+		if (PERFORMANCE_RATE_ID.equals(key)) {
+			Predicate<Node> childUuidFinder =
+					makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
+
+			childUuidExists = node
+					.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
+					.anyMatch(childUuidFinder);
+		} else {
+			Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
+			Predicate<Node> childUuidFinder =
+					makeUuidChildFinder(check, SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
+
+			childUuidExists = node
+					.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
+					.filter(childTypeFinder)
+					.anyMatch(childUuidFinder);
+		}
+		return childUuidExists;
 	}
 
 	/**
@@ -207,14 +234,16 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * Creates a {@link Predicate} which takes a node and tests whether the measure population is equal to the given unique id
 	 *
 	 * @param uuid Supplies a unique id to test against
+	 * @param message Supplies a unique error message to use
+	 * @param name Supplies a node field validate on
 	 * @return
 	 */
-	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid) {
+	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, String message, String name) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
 				.incompleteValidation()
-				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
-			return uuid.get().equals(thisNode.getValue(MEASURE_POPULATION));
+				.singleValue(message, name);
+			return uuid.get().equals(thisNode.getValue(name));
 		};
 	}
 
