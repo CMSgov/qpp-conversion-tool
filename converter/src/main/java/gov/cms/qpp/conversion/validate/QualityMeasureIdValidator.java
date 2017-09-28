@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.decode.StratifierDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -48,8 +49,11 @@ public class QualityMeasureIdValidator extends NodeValidator {
 					+ "for an eCQM that is proportion measure";
 	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
 			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
+	private static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
+	private static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d" +
+			"for %s measure (%s). Expected strata: %s";
 
-	protected static final String INCORRECT_UUID =
+	static final String INCORRECT_UUID =
 			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
 
 	/**
@@ -173,16 +177,20 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
 				Predicate<Node> childUuidFinder = makeUuidChildFinder(check, sub);
 
-				boolean childUuidExists = node
-					.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
-					.filter(childTypeFinder)
-					.anyMatch(childUuidFinder);
+				Node existingUuidChild = node
+						.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
+						.filter(childTypeFinder)
+						.filter(childUuidFinder)
+						.findFirst()
+						.orElse(null);
 
-				if (!childUuidExists) {
+				if (existingUuidChild == null) {
 					MeasureConfig config =
 						MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 					String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key, check.get());
 					this.getDetails().add(new Detail(message, node.getPath()));
+				} else {
+					strataCheck(existingUuidChild, sub);
 				}
 			}
 		};
@@ -192,8 +200,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * Creates a {@link Predicate} which takes a node and tests whether the measure type is equal to the given measure type.
 	 * Also validates that it's the only measure type in the given node.
 	 *
-	 * @param populationCriteriaType
-	 * @return
+	 * @param populationCriteriaType measure type i.e. "DENOM", "NUMER", ...
+	 * @return predicate that filters measure nodes by measure type
 	 */
 	private Predicate<Node> makeTypeChildFinder(String populationCriteriaType) {
 		return thisNode -> {
@@ -208,33 +216,46 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * Creates a {@link Predicate} which takes a node and tests whether the measure population is equal to the given unique id
 	 *
 	 * @param uuid Supplies a unique id to test against
-	 * @return
+	 * @return predicate identifying a node with matching id
 	 */
 	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, SubPopulation sub) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
 				.incompleteValidation()
 				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
-			boolean uuidMatch = uuid.get().equals(thisNode.getValue(MEASURE_POPULATION));
-
-			if (uuidMatch) {
-				strataCheck(thisNode, sub);
-			}
-
-			return uuidMatch;
+			return uuid.get().equals(thisNode.getValue(MEASURE_POPULATION));
 		};
 	}
 
+	/**
+	 * Validate measure strata
+	 *
+	 * @param node measure node
+	 * @param sub sub population constituent ids
+	 */
 	private void strataCheck(Node node, SubPopulation sub) {
-		sub.getStrata().stream().forEach(strata -> {
-			Predicate<Node> seek = child ->
-					child.getType().equals(TemplateId.REPORTING_STRATUM_CMS) &&
-							child.getValue(StratifierDecoder.STRATIFIER_ID).equals(strata);
 
-			if (node.findChildNode(seek) == null) {
-				this.getDetails().add(
-						new Detail("Missing strata " + strata + " for " + node.getValue(MEASURE_ID),
-								node.getPath()));
+		List<Node> strataNodes = node.getChildNodes(TemplateId.REPORTING_STRATUM_CMS)
+				.collect(Collectors.toList());
+
+		//TODO null checks?
+		if (strataNodes.size() != sub.getStrata().size()) {
+			String message = String.format(STRATA_MISMATCH, strataNodes.size(), sub.getStrata().size(),
+					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+					node.getValue(MeasureDataDecoder.MEASURE_POPULATION),
+					sub.getStrata());
+			this.getDetails().add(new Detail(message, node.getPath()));
+		}
+
+		sub.getStrata().forEach(strata -> {
+			Predicate<Node> seek = child ->
+					child.getValue(StratifierDecoder.STRATIFIER_ID).equals(strata);
+
+			if (strataNodes.stream().noneMatch(seek)) {
+				String message = String.format(MISSING_STRATA, strata,
+						node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+						node.getValue(MeasureDataDecoder.MEASURE_POPULATION));
+				this.getDetails().add(new Detail(message, node.getPath()));
 			}
 		});
 	}

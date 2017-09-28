@@ -6,12 +6,7 @@ import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Element;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -21,9 +16,7 @@ import static org.junit.Assert.assertThat;
  * Test for the QualityMeasureIdDecoder
  */
 public class QualityMeasureIdDecoderTest {
-	QualityMeasureIdDecoder objectUnderTest;
-	private static String location = "src/test/resources/fixtures/qppct298/cms137v5.xml";
-	private static Path path = Paths.get(location);
+	private QualityMeasureIdDecoder objectUnderTest;
 
 	@Before
 	public void setup() {
@@ -38,7 +31,6 @@ public class QualityMeasureIdDecoderTest {
 	 * @throws XmlException when parsing xml fragment fails.
 	 */
 	@Test
-	@Ignore
 	public void internalDecodeValid() throws XmlException {
 		Node qualityMeasureIdNode = new Node();
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(getXmlFragmentWithMeasureGuid("Measurement Id Value"));
@@ -55,7 +47,6 @@ public class QualityMeasureIdDecoderTest {
 	 * @throws XmlException when the xml fragment is not well formed
 	 */
 	@Test
-	@Ignore
 	public void internalDecodeMissingId() throws XmlException {
 		String xmlFragment = getXmlFragmentWithMeasureGuid("Measurement Id Value").replace("<id ", "<noid ");
 
@@ -70,7 +61,6 @@ public class QualityMeasureIdDecoderTest {
 	}
 
 	@Test
-	@Ignore
 	public void incorrectRoot() throws XmlException {
 		//set-up
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(getBadXmlFragmentWithIncorrectRoot());
@@ -87,7 +77,6 @@ public class QualityMeasureIdDecoderTest {
 	}
 
 	@Test
-	@Ignore
 	public void dontIgnoreStratumMeasure() throws XmlException {
 		//set-up
 		String nonIgnorableGuid = "40280381-528a-60ff-0152-8e089ed20376";
