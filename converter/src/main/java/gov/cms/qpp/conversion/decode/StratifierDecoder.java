@@ -11,6 +11,9 @@ import org.jdom2.filter.Filters;
 
 import java.util.function.Consumer;
 
+/**
+ * Decoder for Quality Measure Stratifiers
+ */
 @Decoder(TemplateId.REPORTING_STRATUM_CMS)
 public class StratifierDecoder extends QppXmlDecoder {
 
@@ -21,11 +24,11 @@ public class StratifierDecoder extends QppXmlDecoder {
 	}
 
 	/**
-	 * Decodes a measure performed element into a node.
+	 * Decodes a measure stratifier element into a node.
 	 *
-	 * @param element XML parsed representation of measure performed
-	 * @param thisNode Object to hold the measure performed
-	 * @return
+	 * @param element XML parsed representation of measure stratifier
+	 * @param thisNode Object to hold the measure stratifier
+	 * @return cue to caller about how to proceed after this node of the xml document is decoded
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
@@ -33,6 +36,11 @@ public class StratifierDecoder extends QppXmlDecoder {
 		return DecodeResult.TREE_FINISHED;
 	}
 
+	/**
+	 * Dig up the stratifier's id and assign it to thisNode
+	 * @param element DOM element
+	 * @param thisNode current node
+	 */
 	private void setStratifierId(Element element, Node thisNode) {
 		String expressionStr = getXpath(STRATIFIER_ID);
 		Consumer<? super Attribute> consumer = attr -> {

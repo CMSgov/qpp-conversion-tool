@@ -22,12 +22,6 @@ import static org.junit.Assert.assertEquals;
 public class QualityMeasureScopedTest {
 	private static String location = "src/test/resources/fixtures/qppct298/cms137v5.xml";
 
-	QualityMeasureIdDecoder objectUnderTest;
-
-	@Before
-	public void setup() {
-		objectUnderTest = new QualityMeasureIdDecoder(new Context());
-	}
 
 	@Test
 	public void internalDecodeValidMeasure137V5Ipop() throws IOException, XmlException {

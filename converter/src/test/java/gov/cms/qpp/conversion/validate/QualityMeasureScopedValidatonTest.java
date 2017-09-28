@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -33,7 +34,13 @@ public class QualityMeasureScopedValidatonTest {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
 		Set<Detail> details = validateNode(result);
 
+//		private static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
+//		private static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d" +
+//				"for %s measure (%s). Expected strata: %s";
+//		hasValidationErrorsIgnoringPath(NpiTinCombinationValidation.CLINICAL_DOCUMENT_REQUIRED));
+		
 		assertThat("Valid CMS137v5 markup should not result in errors", details.size(), is(0));
+
 	}
 
 	@Test
