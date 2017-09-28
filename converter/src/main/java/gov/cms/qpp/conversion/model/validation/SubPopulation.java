@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.model.validation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class SubPopulation {
 	private String denominatorExceptionsUuid;
 
 	@JsonProperty("strata")
-	private List<String> strata;
+	private List<String> strata = Collections.emptyList();
 
 	public SubPopulation() {
 		//Empty Constructor for Jackson

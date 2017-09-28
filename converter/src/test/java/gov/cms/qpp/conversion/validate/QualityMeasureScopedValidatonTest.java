@@ -64,21 +64,15 @@ public class QualityMeasureScopedValidatonTest {
 	}
 
 	private void removeMeasureStrata(Node parent, String type) {
-		Node measure = parent.findNode(TemplateId.MEASURE_DATA_CMS_V2, prepFilter(type)).get(0);
+		Node measure = parent.findNode(TemplateId.MEASURE_DATA_CMS_V2)
+				.stream().filter(prepFilter(type)).findFirst().get();
 		List<Node> strata = measure.getChildNodes(TemplateId.REPORTING_STRATUM_CMS)
 				.collect(Collectors.toList());
 		strata.forEach(measure::removeChildNode);
-
 	}
 
-	private Predicate<List<Node>> prepFilter(final String type) {
-		return (nodes) ->
-			!(nodes == null || nodes.size() == 0) &&
-			nodes.stream().allMatch(node ->
-				(node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(type)) &&
-					node.getChildNodes().stream().anyMatch(
-						child -> child.getType().equals(TemplateId.REPORTING_STRATUM_CMS))
-			);
+	private Predicate<Node> prepFilter(final String type) {
+		return (node) -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(type);
 	}
 
 	private Node scopedConversion(QrdaScope testSection, String path) {

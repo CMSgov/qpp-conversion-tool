@@ -238,7 +238,6 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		List<Node> strataNodes = node.getChildNodes(TemplateId.REPORTING_STRATUM_CMS)
 				.collect(Collectors.toList());
 
-		//TODO null checks?
 		if (strataNodes.size() != sub.getStrata().size()) {
 			String message = String.format(STRATA_MISMATCH, strataNodes.size(), sub.getStrata().size(),
 					node.getValue(MeasureDataDecoder.MEASURE_TYPE),

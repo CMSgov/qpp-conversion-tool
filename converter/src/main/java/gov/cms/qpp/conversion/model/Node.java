@@ -313,7 +313,7 @@ public class Node {
 	 */
 	public List<Node> findNode(TemplateId templateId, Predicate<List<Node>> bail) {
 		List<Node> foundNodes = new ArrayList<>();
-		if (this.type == templateId && bail.test(Collections.singletonList(this))) {
+		if (this.type == templateId) {
 			foundNodes.add(this);
 		}
 		for (Node childNode : childNodes) {

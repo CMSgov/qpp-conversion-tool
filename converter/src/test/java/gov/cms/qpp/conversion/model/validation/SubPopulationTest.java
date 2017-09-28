@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * SubPopulation Test class to increase JaCoCo Code Coverage
@@ -14,10 +14,10 @@ import static org.junit.Assert.assertNull;
 public class SubPopulationTest {
 
 	@Test
-	public void getStrata1() {
+	public void getStrata() {
 		SubPopulation sp = new SubPopulation();
 		List<String> strata = sp.getStrata();
-		assertNull(strata);
+		assertTrue(strata.isEmpty());
 	}
 
 	@Test
