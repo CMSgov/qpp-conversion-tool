@@ -3,6 +3,8 @@ package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface DbService {
-	public Metadata write(Metadata meta);
+	CompletableFuture<Metadata> write(Metadata meta);
 }

@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.CompletableFuture;
+
 @Service
 public class DbServiceImpl extends InOrderAsyncActionService<Metadata, Metadata>
 		implements DbService {
@@ -17,9 +19,9 @@ public class DbServiceImpl extends InOrderAsyncActionService<Metadata, Metadata>
 	@Autowired
 	private DynamoDBMapper mapper;
 
-	public Metadata write(Metadata meta) {
+	public CompletableFuture<Metadata> write(Metadata meta) {
 		API_LOG.info("Writing item to DynamoDB");
-		return asynchronousAction(meta);
+		return actOnItem(meta);
 	}
 
 	@Override
