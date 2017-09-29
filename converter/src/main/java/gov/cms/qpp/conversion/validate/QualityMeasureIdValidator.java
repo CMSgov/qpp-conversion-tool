@@ -154,7 +154,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX"),
 				makeValidator(subPopulation::getNumeratorUuid, "NUMER"),
 				makeValidator(subPopulation::getDenominatorUuid, "DENOM"),
-			    makeValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
+				makeValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
 
 		validations.forEach(validate -> validate.accept(node));
 
