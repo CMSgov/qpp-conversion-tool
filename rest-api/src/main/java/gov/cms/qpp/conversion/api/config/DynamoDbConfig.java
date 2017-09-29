@@ -16,14 +16,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import java.util.Optional;
+
 @Configuration
 public class DynamoDbConfig {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
-
-	private static final String DYNAMO_TABLE_NAME_ENV_VARIABLE = "DYNAMO_TABLE_NAME";
-
-	private static final String KMS_KEY_ENV_VARIABLE = "KMS_KEY";
+	static final String DYNAMO_TABLE_NAME_ENV_VARIABLE = "DYNAMO_TABLE_NAME";
+	static final String KMS_KEY_ENV_VARIABLE = "KMS_KEY";
 
 	@Autowired
 	private Environment environment;
@@ -53,28 +53,26 @@ public class DynamoDbConfig {
 	public DynamoDBMapper dynamoDBMapper(AmazonDynamoDB dynamoDbClient) {
 		DynamoDBMapper dynamoDBMapper = null;
 
-		final String tableName = environment.getProperty(DYNAMO_TABLE_NAME_ENV_VARIABLE);
-		final String kmsKey = environment.getProperty(KMS_KEY_ENV_VARIABLE);
-		final boolean tableNameSpecified = (tableName != null && !tableName.isEmpty());
-		final boolean kmsKeySpecified = (kmsKey != null && !kmsKey.isEmpty());
+		final Optional<String> kmsKey = getOptionalProperty(KMS_KEY_ENV_VARIABLE);
+		final Optional<String> tableName = getOptionalProperty(DYNAMO_TABLE_NAME_ENV_VARIABLE);
 
-		if (tableNameSpecified && kmsKeySpecified) {
+		if (tableName.isPresent() && kmsKey.isPresent()) {
 			API_LOG.info("Using DynamoDB table name {} and KMS key {}.", tableName, kmsKey);
 			dynamoDBMapper = new DynamoDBMapper(
 				dynamoDbClient,
-				tableNameOverrideConfig(tableName),
-				encryptionTransformer(kmsKey));
-		} else if (tableNameSpecified) {
+				tableNameOverrideConfig(tableName.get()),
+				encryptionTransformer(kmsKey.get()));
+		} else if (tableName.isPresent()) {
 			API_LOG.warn("Using DynamoDB table name {}, but no encryption specified.", tableName);
 			dynamoDBMapper = new DynamoDBMapper(
 				dynamoDbClient,
-				tableNameOverrideConfig(tableName));
-		} else if (kmsKeySpecified) {
+				tableNameOverrideConfig(tableName.get()));
+		} else if (kmsKey.isPresent()) {
 			API_LOG.warn("Using KMS key {}, but no DynamoDB table name specified.", tableName);
 			dynamoDBMapper = new DynamoDBMapper(
 				dynamoDbClient,
-				DynamoDBMapperConfig.builder().build(),
-				encryptionTransformer(kmsKey));
+				getDynamoDbMapperConfig(),
+				encryptionTransformer(kmsKey.get()));
 		} else {
 			API_LOG.warn("No DynamoDB table name nor encryption are specified.");
 			dynamoDBMapper = new DynamoDBMapper(dynamoDbClient);
@@ -83,12 +81,21 @@ public class DynamoDbConfig {
 		return dynamoDBMapper;
 	}
 
-	private DynamoDBMapperConfig tableNameOverrideConfig(String tableName) {
+	Optional<String> getOptionalProperty(String key) {
+		String property = environment.getProperty(key);
+		return (property != null && !property.isEmpty()) ? Optional.of(property) : Optional.empty();
+	}
+
+	DynamoDBMapperConfig tableNameOverrideConfig(String tableName) {
 		return DynamoDBMapperConfig.builder().withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(tableName))
 			.build();
 	}
 
-	private AttributeTransformer encryptionTransformer(String kmsKey) {
+	AttributeTransformer encryptionTransformer(String kmsKey) {
 		return new AttributeEncryptor(new DirectKmsMaterialProvider(awsKms, kmsKey));
+	}
+
+	DynamoDBMapperConfig getDynamoDbMapperConfig() {
+		return DynamoDBMapperConfig.builder().build();
 	}
 }
