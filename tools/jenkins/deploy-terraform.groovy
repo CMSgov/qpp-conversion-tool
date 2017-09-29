@@ -11,7 +11,7 @@ def cfg = [
 ]
 
 node('default') {
-  git branch: qpp_submissions_branch, credentialsId: cfg.credentials_id, url: deploy_repo_url
+  git branch: qpp_conversion_branch, credentialsId: cfg.credentials_id, url: deploy_repo_url
 
   deploy(cfg)
 }
