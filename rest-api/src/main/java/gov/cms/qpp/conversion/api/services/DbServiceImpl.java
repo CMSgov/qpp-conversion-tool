@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
  * Writes a {@link Metadata} object to DynamoDB.
  */
 @Service
-public class DbServiceImpl extends InOrderAsyncActionService<Metadata, Metadata>
+public class DbServiceImpl extends AnyOrderAsyncActionService<Metadata, Metadata>
 		implements DbService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
@@ -42,7 +42,7 @@ public class DbServiceImpl extends InOrderAsyncActionService<Metadata, Metadata>
 	@Override
 	protected Metadata asynchronousAction(Metadata meta) {
 		mapper.save(meta);
-		API_LOG.info("Wrote item to DynamoDB");
+		API_LOG.info("Wrote item to DynamoDB with UUID {}", meta.getUuid());
 		return meta;
 	}
 }
