@@ -1,0 +1,10 @@
+version: "2"
+services:
+  rest:
+    build:
+      context: .
+      dockerfile: DockerfileTest
+    ports:
+      - "3000:8080"
+    env_file:
+      - .env
