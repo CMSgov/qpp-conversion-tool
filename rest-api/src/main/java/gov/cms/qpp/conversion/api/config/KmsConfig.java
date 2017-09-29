@@ -8,11 +8,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Spring configuration file.
+ *
+ * Configures {@link Bean}s associated with AWS KMS.
+ */
 @Configuration
 public class KmsConfig {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 
+	/**
+	 * Creates the KMS client {@link Bean}.
+	 *
+	 * Uses the default client, but if a region is unspecified, uses {@code us-east-1}.
+	 *
+	 * @return The KMS client.
+	 */
 	@Bean
 	public AWSKMS awsKms() {
 		AWSKMS client = null;
@@ -27,6 +39,11 @@ public class KmsConfig {
 		return client;
 	}
 
+	/**
+	 * Returns the default client that uses {@code us-east-1}.
+	 *
+	 * @return The KMS client.
+	 */
 	AWSKMS planB() {
 		return AWSKMSClientBuilder.standard().withRegion("us-east-1").build();
 	}

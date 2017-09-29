@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Spring configuration file.
  *
- * Configures {@link Bean}s associated with S3.
+ * Configures {@link Bean}s associated with AWS S3.
  */
 @Configuration
 public class S3Config {
@@ -42,6 +42,11 @@ public class S3Config {
 		return client;
 	}
 
+	/**
+	 * Returns the default client that uses {@code us-east-1}.
+	 *
+	 * @return The S3 client.
+	 */
 	AmazonS3 planB() {
 		return AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
 	}
