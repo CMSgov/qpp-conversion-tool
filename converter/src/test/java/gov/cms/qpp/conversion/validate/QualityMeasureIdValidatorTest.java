@@ -276,6 +276,18 @@ public class QualityMeasureIdValidatorTest {
 				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT));
 	}
 
+	@Test
+	public void testPerformanceRateUuidFail() {
+		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
+				.replaceSubPopulationPerformanceRate(REQUIRES_DENOM_EXCEPTION_NUMER_GUID, "fail")
+				.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_UUID, "CMS68v6", PERFORMANCE_RATE_ID, REQUIRES_DENOM_EXCEPTION_NUMER_GUID);
+		assertThat("Must contain the correct error message.", details,
+				hasValidationErrorsIgnoringPath(expectedErrorMessage));
+	}
+
 	private MeasureReferenceBuilder createCorrectMeasureReference(String measureId) {
 		MeasureReferenceBuilder measureReferenceResultsNode = new MeasureReferenceBuilder();
 		measureReferenceResultsNode.addMeasureId(measureId);
@@ -342,11 +354,27 @@ public class QualityMeasureIdValidatorTest {
 			return this;
 		}
 
-		MeasureReferenceBuilder addSubPopulationPerformanceRate(String populationId) {
-			Node measureNode = new Node(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
-			measureNode.putValue(PERFORMANCE_RATE_ID, populationId);
+		MeasureReferenceBuilder addSubPopulationPerformanceRate(String id) {
+			Node performanceRateNode = new Node(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+			performanceRateNode.putValue(PERFORMANCE_RATE_ID, id);
 
-			measureReferenceResultsNode.addChildNode(measureNode);
+			measureReferenceResultsNode.addChildNode(performanceRateNode);
+
+			return this;
+		}
+
+		MeasureReferenceBuilder removeSubPopulationPerformanceRate(String id) {
+			Node performanceRateNode = new Node(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+			performanceRateNode.putValue(PERFORMANCE_RATE_ID, id);
+
+			measureReferenceResultsNode.removeChildNode(performanceRateNode);
+
+			return this;
+		}
+
+		MeasureReferenceBuilder replaceSubPopulationPerformanceRate(String oldId, String newId) {
+			removeSubPopulationPerformanceRate(oldId);
+			addSubPopulationPerformanceRate(newId);
 
 			return this;
 		}
