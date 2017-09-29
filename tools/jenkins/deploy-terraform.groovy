@@ -53,7 +53,7 @@ def deploy(cfg) {
     }
 
     // run terraform
-    dir("terraform/vpc/environments/${cfg.vpc_name}") {
+    dir("terraform/environments/${cfg.vpc_name}") {
       sshagent (credentials: [cfg.credentials_id]) {
         // remove old terraform modules if they exist
         // this resolves any issues with different terraform modules loading
