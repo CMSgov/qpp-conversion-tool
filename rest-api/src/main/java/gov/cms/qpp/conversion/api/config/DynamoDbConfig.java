@@ -39,10 +39,14 @@ public class DynamoDbConfig {
 			client = AmazonDynamoDBClientBuilder.defaultClient();
 		} catch (SdkClientException exception) {
 			API_LOG.info("Default DynamoDB client failed to build, trying again with region us-east-1", exception);
-			client = AmazonDynamoDBClientBuilder.standard().withRegion("us-east-1").build();
+			client = planB();
 		}
 
 		return client;
+	}
+
+	AmazonDynamoDB planB() {
+		return AmazonDynamoDBClientBuilder.standard().withRegion("us-east-1").build();
 	}
 
 	@Bean

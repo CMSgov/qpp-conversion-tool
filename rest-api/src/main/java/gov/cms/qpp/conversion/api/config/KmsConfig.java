@@ -21,9 +21,13 @@ public class KmsConfig {
 			client = AWSKMSClientBuilder.defaultClient();
 		} catch (SdkClientException exception) {
 			API_LOG.info("Default KMS client failed to build, trying again with region us-east-1", exception);
-			client = AWSKMSClientBuilder.standard().withRegion("us-east-1").build();
+			client = planB();
 		}
 
 		return client;
+	}
+
+	AWSKMS planB() {
+		return AWSKMSClientBuilder.standard().withRegion("us-east-1").build();
 	}
 }

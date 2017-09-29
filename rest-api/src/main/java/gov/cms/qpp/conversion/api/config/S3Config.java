@@ -36,10 +36,14 @@ public class S3Config {
 			client = AmazonS3ClientBuilder.defaultClient();
 		} catch (SdkClientException exception) {
 			API_LOG.info("Default S3 client failed to build, trying again with region us-east-1", exception);
-			client = AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
+			client = planB();
 		}
 
 		return client;
+	}
+
+	AmazonS3 planB() {
+		return AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
 	}
 
 	/**

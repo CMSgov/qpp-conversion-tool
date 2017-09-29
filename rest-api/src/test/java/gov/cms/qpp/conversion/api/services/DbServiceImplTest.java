@@ -33,10 +33,6 @@ public class DbServiceImplTest {
 	@Mock
 	private TaskExecutor taskExecutor;
 
-//	@Mock
-//	private Environment environment;
-
-
 	@Before
 	public void before() {
 		doAnswer(invocationOnMock -> {
