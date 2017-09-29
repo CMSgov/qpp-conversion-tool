@@ -7,7 +7,7 @@ import json
 
 def read_apm_entity_ids(file_to_parse_path):
     """
-    Returns a list of APM Entity IDs given a path to an APM Entity ID data file.
+    Returns a list of CPC+ APM Entity IDs given a path to an APM Entity ID data file.
 
     :param file_to_parse_path: a path to a file
     :return: a list of APM Entity IDs
@@ -22,7 +22,7 @@ def read_apm_entity_ids(file_to_parse_path):
         for row in apm_data_parser:
             apm_entity_id = row['apm_entity_id']
 
-            if row['identifier'] != 'D' or apm_entity_id is None or len(apm_entity_id) == 0:
+            if row['identifier'] != 'D' or row['apm_id'] != '22' or apm_entity_id is None or len(apm_entity_id) == 0:
                 continue
 
             apm_entity_id_list.append(apm_entity_id)
