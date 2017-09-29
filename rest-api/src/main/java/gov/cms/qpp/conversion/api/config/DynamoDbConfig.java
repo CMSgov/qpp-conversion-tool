@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.AttributeEncryptor;
 import com.amazonaws.services.dynamodbv2.datamodeling.AttributeTransformer;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
 import com.amazonaws.services.kms.AWSKMS;
 import org.slf4j.Logger;
@@ -16,6 +17,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+/**
+ * Spring configuration file.
+ *
+ * Configures {@link Bean}s associated with AWS DynamoDB.
+ */
 @Configuration
 public class DynamoDbConfig {
 
@@ -31,6 +37,13 @@ public class DynamoDbConfig {
 	@Autowired
 	private AWSKMS awsKms;
 
+	/**
+	 * Creates the DynamoDB client {@link Bean}.
+	 *
+	 * Uses the default client, but if a region is unspecified, uses {@code us-east-1}.
+	 *
+	 * @return The DynamoDB client.
+	 */
 	@Bean
 	public AmazonDynamoDB dynamoDbClient() {
 		AmazonDynamoDB client = null;
@@ -45,10 +58,31 @@ public class DynamoDbConfig {
 		return client;
 	}
 
+	/**
+	 * Returns the default client that uses {@code us-east-1}.
+	 *
+	 * @return The DynamoDB client.
+	 */
 	AmazonDynamoDB planB() {
 		return AmazonDynamoDBClientBuilder.standard().withRegion("us-east-1").build();
 	}
 
+	/**
+	 * Creates a DynamoDB object mapper {@link Bean} that interacts with {@link DynamoDBTable} annotated POJOs.
+	 * Based on an available {@link AmazonDynamoDB} and {@link AWSKMS} {@link Bean}.
+	 *
+	 * Creates a DynamoDB object that depends on two different environment variables. {@code DYNAMO_TABLE_NAME} and
+	 * {@code KMS_KEY}.
+	 *
+	 * If {@code DYNAMO_TABLE_NAME} is specified, the value will be used for all read/write from/to the table of that name
+	 * regardless of what is specified for {@link DynamoDBTable}.  Else, the table specified for {@link DynamoDBTable} will be
+	 * used like normal.
+	 *
+	 * If {@code KMS_KEY} is specified, items in the tables will be encrypted.  Else, the items will not be encrypted.
+	 *
+	 * @param dynamoDbClient The {@link AmazonDynamoDB} {@link Bean}.
+	 * @return The DynamoDB object mapper
+	 */
 	@Bean
 	public DynamoDBMapper dynamoDBMapper(AmazonDynamoDB dynamoDbClient) {
 		DynamoDBMapper dynamoDBMapper = null;
@@ -83,11 +117,23 @@ public class DynamoDbConfig {
 		return dynamoDBMapper;
 	}
 
+	/**
+	 * Creates a DynamoDB configuration that forces the table name to the parameter.
+	 *
+	 * @param tableName The name of the table.
+	 * @return A DynamoDB configuration that forces the table name.
+	 */
 	private DynamoDBMapperConfig tableNameOverrideConfig(String tableName) {
 		return DynamoDBMapperConfig.builder().withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(tableName))
 			.build();
 	}
 
+	/**
+	 * Creates a DynamoDB attribute transformer that encrypts items based on the KMS key parameter
+	 *
+	 * @param kmsKey The KMS key ARN to use to encrypt.
+	 * @return An encryption attribute transformer.
+	 */
 	private AttributeTransformer encryptionTransformer(String kmsKey) {
 		return new AttributeEncryptor(new DirectKmsMaterialProvider(awsKms, kmsKey));
 	}
