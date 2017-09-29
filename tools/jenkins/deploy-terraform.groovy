@@ -1,4 +1,4 @@
-def deploy_repo_url= 'https://github.com/CMSgov/qpp-conversion-tool.git'
+def deploy_repo_url= 'git@github.com:CMSgov/qpp-conversion-tool.git'
 
 def cfg = [
   credentials_id: '59771a5a-881e-437b-a2a3-b0f2cb740efa',
