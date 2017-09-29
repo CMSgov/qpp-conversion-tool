@@ -5,7 +5,7 @@ def cfg = [
   vpc_name: vpc_name,
   // this is the corevpc deploy branch
   // merge into this branch only when you're on a release path
-  corevpc_branch: '2fb433c54174463f210fa920726f9733c61d1a5c',
+  corevpc_branch: '113e81463a4cce25785aa0e2ffaeb167550642a4',
   aws_account: 'aws-hhs-cms-ccsq-qpp-navadevops',
   terraform_apply: terraform_apply // if true, will apply the terraform plan
 ]
