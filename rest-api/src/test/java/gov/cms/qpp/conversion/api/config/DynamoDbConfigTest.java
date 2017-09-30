@@ -23,14 +23,14 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.verifyNew;
+import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({AmazonDynamoDBClientBuilder.class, DynamoDBMapper.class, DynamoDbConfig.class})
+@PrepareForTest({AmazonDynamoDBClientBuilder.class, DynamoDbConfigFactory.class, DynamoDBMapper.class})
 public class DynamoDbConfigTest {
 
 	@Spy
@@ -44,7 +44,7 @@ public class DynamoDbConfigTest {
 	private Environment environment;
 
 	@Mock
-	private AmazonDynamoDB meep;
+	private AmazonDynamoDB amazonDynamoDB;
 
 	@Mock
 	private DynamoDBMapperConfig mapConfig;
@@ -62,6 +62,7 @@ public class DynamoDbConfigTest {
 		when(underTest.getDynamoDbMapperConfig()).thenReturn(mapConfig);
 
 		mockStatic(DynamoDBMapper.class);
+		mockStatic(DynamoDbConfigFactory.class);
 
 		MockitoAnnotations.initMocks(DynamoDbConfigTest.class);
 	}
@@ -79,45 +80,57 @@ public class DynamoDbConfigTest {
 	@Test
 	public void dbMapperInit() throws Exception {
 		when(environment.getProperty(eq(DynamoDbConfig.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn(null);
-		when(environment.getProperty(eq(DynamoDbConfig.KMS_KEY_ENV_VARIABLE))).thenReturn(null);
-		whenNew(DynamoDBMapper.class).withArguments(meep).thenReturn(dbMapper);
+		when(environment.getProperty(eq(DynamoDbConfig.KMS_KEY_ENV_VARIABLE))).thenReturn("");
 
-		underTest.dynamoDBMapper(meep);
+		mockStatic(DynamoDbConfigFactory.class);
+		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB);
 
-		verifyNew(DynamoDBMapper.class).withArguments(meep);
+		underTest.dynamoDBMapper(amazonDynamoDB);
+
+		verifyStatic(DynamoDbConfigFactory.class, times(1));
+		DynamoDbConfigFactory.createDynamoDbMapper(amazonDynamoDB);
 	}
 
 	@Test
 	public void dbMapperInitWithTableName() throws Exception {
 		when(environment.getProperty(eq(DynamoDbConfig.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn("meep");
 		when(environment.getProperty(eq(DynamoDbConfig.KMS_KEY_ENV_VARIABLE))).thenReturn(null);
-		whenNew(DynamoDBMapper.class).withArguments(meep, mapConfigNamed).thenReturn(dbMapper);
 
-		underTest.dynamoDBMapper(meep);
+		mockStatic(DynamoDbConfigFactory.class);
+		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB, mapConfigNamed);
 
-		verifyNew(DynamoDBMapper.class).withArguments(meep, mapConfigNamed);
+		underTest.dynamoDBMapper(amazonDynamoDB);
+
+		verifyStatic(DynamoDbConfigFactory.class, times(1));
+		DynamoDbConfigFactory.createDynamoDbMapper(amazonDynamoDB, mapConfigNamed);
 	}
 
 	@Test
 	public void dbMapperInitWithKmsKey() throws Exception {
 		when(environment.getProperty(eq(DynamoDbConfig.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn(null);
 		when(environment.getProperty(eq(DynamoDbConfig.KMS_KEY_ENV_VARIABLE))).thenReturn("meep");
-		whenNew(DynamoDBMapper.class).withArguments(meep, mapConfig, transformer).thenReturn(dbMapper);
 
-		underTest.dynamoDBMapper(meep);
+		mockStatic(DynamoDbConfigFactory.class);
+		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB, mapConfig, transformer);
 
-		verifyNew(DynamoDBMapper.class).withArguments(meep, mapConfig, transformer);
+		underTest.dynamoDBMapper(amazonDynamoDB);
+
+		verifyStatic(DynamoDbConfigFactory.class, times(1));
+		DynamoDbConfigFactory.createDynamoDbMapper(amazonDynamoDB, mapConfig, transformer);
 	}
 
 	@Test
 	public void dbMapperInitWithKmsKeyAndTableName() throws Exception {
 		when(environment.getProperty(eq(DynamoDbConfig.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn("meep");
 		when(environment.getProperty(eq(DynamoDbConfig.KMS_KEY_ENV_VARIABLE))).thenReturn("meep");
-		whenNew(DynamoDBMapper.class).withArguments(meep, mapConfigNamed, transformer).thenReturn(dbMapper);
 
-		underTest.dynamoDBMapper(meep);
+		mockStatic(DynamoDbConfigFactory.class);
+		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB, mapConfigNamed, transformer);
 
-		verifyNew(DynamoDBMapper.class).withArguments(meep, mapConfigNamed, transformer);
+		underTest.dynamoDBMapper(amazonDynamoDB);
+
+		verifyStatic(DynamoDbConfigFactory.class, times(1));
+		DynamoDbConfigFactory.createDynamoDbMapper(amazonDynamoDB, mapConfigNamed, transformer);
 	}
 
 }

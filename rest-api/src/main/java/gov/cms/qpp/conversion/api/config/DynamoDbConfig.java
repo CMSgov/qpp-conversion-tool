@@ -19,6 +19,8 @@ import org.springframework.core.env.Environment;
 
 import java.util.Optional;
 
+import static gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory.createDynamoDbMapper;
+
 /**
  * Spring configuration file.
  *
@@ -92,24 +94,24 @@ public class DynamoDbConfig {
 
 		if (tableName.isPresent() && kmsKey.isPresent()) {
 			API_LOG.info("Using DynamoDB table name {} and KMS key {}.", tableName, kmsKey);
-			dynamoDBMapper = new DynamoDBMapper(
+			dynamoDBMapper = createDynamoDbMapper(
 				dynamoDbClient,
 				tableNameOverrideConfig(tableName.get()),
 				encryptionTransformer(kmsKey.get()));
 		} else if (tableName.isPresent()) {
 			API_LOG.warn("Using DynamoDB table name {}, but no encryption specified.", tableName);
-			dynamoDBMapper = new DynamoDBMapper(
+			dynamoDBMapper = createDynamoDbMapper(
 				dynamoDbClient,
 				tableNameOverrideConfig(tableName.get()));
 		} else if (kmsKey.isPresent()) {
 			API_LOG.warn("Using KMS key {}, but no DynamoDB table name specified.", tableName);
-			dynamoDBMapper = new DynamoDBMapper(
+			dynamoDBMapper = createDynamoDbMapper(
 				dynamoDbClient,
 				getDynamoDbMapperConfig(),
 				encryptionTransformer(kmsKey.get()));
 		} else {
 			API_LOG.warn("No DynamoDB table name nor encryption are specified.");
-			dynamoDBMapper = new DynamoDBMapper(dynamoDbClient);
+			dynamoDBMapper = createDynamoDbMapper(dynamoDbClient);
 		}
 
 		return dynamoDBMapper;
