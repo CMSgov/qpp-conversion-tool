@@ -85,7 +85,7 @@ public class DynamoDbConfigTest {
 		mockStatic(DynamoDbConfigFactory.class);
 		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB);
 
-		underTest.dynamoDBMapper(amazonDynamoDB);
+		underTest.dynamoDbMapper(amazonDynamoDB);
 
 		verifyStatic(DynamoDbConfigFactory.class, times(1));
 		DynamoDbConfigFactory.createDynamoDbMapper(amazonDynamoDB);
@@ -99,7 +99,7 @@ public class DynamoDbConfigTest {
 		mockStatic(DynamoDbConfigFactory.class);
 		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB, mapConfigNamed);
 
-		underTest.dynamoDBMapper(amazonDynamoDB);
+		underTest.dynamoDbMapper(amazonDynamoDB);
 
 		verifyStatic(DynamoDbConfigFactory.class, times(1));
 		DynamoDbConfigFactory.createDynamoDbMapper(amazonDynamoDB, mapConfigNamed);
@@ -113,7 +113,7 @@ public class DynamoDbConfigTest {
 		mockStatic(DynamoDbConfigFactory.class);
 		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB, mapConfig, transformer);
 
-		underTest.dynamoDBMapper(amazonDynamoDB);
+		underTest.dynamoDbMapper(amazonDynamoDB);
 
 		verifyStatic(DynamoDbConfigFactory.class, times(1));
 		DynamoDbConfigFactory.createDynamoDbMapper(amazonDynamoDB, mapConfig, transformer);
@@ -127,7 +127,7 @@ public class DynamoDbConfigTest {
 		mockStatic(DynamoDbConfigFactory.class);
 		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB, mapConfigNamed, transformer);
 
-		underTest.dynamoDBMapper(amazonDynamoDB);
+		underTest.dynamoDbMapper(amazonDynamoDB);
 
 		verifyStatic(DynamoDbConfigFactory.class, times(1));
 		DynamoDbConfigFactory.createDynamoDbMapper(amazonDynamoDB, mapConfigNamed, transformer);

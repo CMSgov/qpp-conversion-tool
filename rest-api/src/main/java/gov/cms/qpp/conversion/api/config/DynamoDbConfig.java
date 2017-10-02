@@ -86,7 +86,7 @@ public class DynamoDbConfig {
 	 * @return The DynamoDB object mapper
 	 */
 	@Bean
-	public DynamoDBMapper dynamoDBMapper(AmazonDynamoDB dynamoDbClient) {
+	public DynamoDBMapper dynamoDbMapper(AmazonDynamoDB dynamoDbClient) {
 		DynamoDBMapper dynamoDbMapper;
 
 		final Optional<String> kmsKey = getOptionalProperty(KMS_KEY_ENV_VARIABLE);

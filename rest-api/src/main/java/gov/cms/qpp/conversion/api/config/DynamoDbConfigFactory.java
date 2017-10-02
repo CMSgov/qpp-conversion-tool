@@ -10,18 +10,18 @@ public class DynamoDbConfigFactory {
 
 	private DynamoDbConfigFactory(){}
 
-	public static DynamoDBMapper createDynamoDbMapper(final AmazonDynamoDB dynamoDB) {
-		return new DynamoDBMapper(dynamoDB);
+	public static DynamoDBMapper createDynamoDbMapper(final AmazonDynamoDB dynamoDb) {
+		return new DynamoDBMapper(dynamoDb);
 	}
 
-	public static DynamoDBMapper createDynamoDbMapper(final AmazonDynamoDB dynamoDB, final DynamoDBMapperConfig config) {
-		return new DynamoDBMapper(dynamoDB, config);
+	public static DynamoDBMapper createDynamoDbMapper(final AmazonDynamoDB dynamoDb, final DynamoDBMapperConfig config) {
+		return new DynamoDBMapper(dynamoDb, config);
 	}
 
 	public static DynamoDBMapper createDynamoDbMapper(
-			final AmazonDynamoDB dynamoDB,
+			final AmazonDynamoDB dynamoDb,
 			final DynamoDBMapperConfig config,
 			final AttributeTransformer transformer) {
-		return new DynamoDBMapper(dynamoDB, config, transformer);
+		return new DynamoDBMapper(dynamoDb, config, transformer);
 	}
 }
