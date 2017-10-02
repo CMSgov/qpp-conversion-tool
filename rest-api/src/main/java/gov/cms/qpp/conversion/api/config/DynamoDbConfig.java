@@ -87,34 +87,34 @@ public class DynamoDbConfig {
 	 */
 	@Bean
 	public DynamoDBMapper dynamoDBMapper(AmazonDynamoDB dynamoDbClient) {
-		DynamoDBMapper dynamoDBMapper;
+		DynamoDBMapper dynamoDbMapper;
 
 		final Optional<String> kmsKey = getOptionalProperty(KMS_KEY_ENV_VARIABLE);
 		final Optional<String> tableName = getOptionalProperty(DYNAMO_TABLE_NAME_ENV_VARIABLE);
 
 		if (tableName.isPresent() && kmsKey.isPresent()) {
 			API_LOG.info("Using DynamoDB table name {} and KMS key {}.", tableName, kmsKey);
-			dynamoDBMapper = createDynamoDbMapper(
+			dynamoDbMapper = createDynamoDbMapper(
 				dynamoDbClient,
 				tableNameOverrideConfig(tableName.get()),
 				encryptionTransformer(kmsKey.get()));
 		} else if (tableName.isPresent()) {
 			API_LOG.warn("Using DynamoDB table name {}, but no encryption specified.", tableName);
-			dynamoDBMapper = createDynamoDbMapper(
+			dynamoDbMapper = createDynamoDbMapper(
 				dynamoDbClient,
 				tableNameOverrideConfig(tableName.get()));
 		} else if (kmsKey.isPresent()) {
 			API_LOG.warn("Using KMS key {}, but no DynamoDB table name specified.", tableName);
-			dynamoDBMapper = createDynamoDbMapper(
+			dynamoDbMapper = createDynamoDbMapper(
 				dynamoDbClient,
 				getDynamoDbMapperConfig(),
 				encryptionTransformer(kmsKey.get()));
 		} else {
 			API_LOG.warn("No DynamoDB table name nor encryption are specified.");
-			dynamoDBMapper = createDynamoDbMapper(dynamoDbClient);
+			dynamoDbMapper = createDynamoDbMapper(dynamoDbClient);
 		}
 
-		return dynamoDBMapper;
+		return dynamoDbMapper;
 	}
 
 	/**

@@ -15,7 +15,7 @@ import java.util.Date;
 /**
  * Model to hold conversion metadata. Maps to a table in DynamoDB.
  */
-@DynamoDBTable(tableName="ConversionMetadata")
+@DynamoDBTable(tableName = "ConversionMetadata")
 public final class Metadata {
 	private String uuid;
 	private String tin;
@@ -327,23 +327,28 @@ public final class Metadata {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Metadata)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Metadata)) {
+			return false;
+		}
 		Metadata metadata = (Metadata) o;
-		return submissionYear == metadata.submissionYear &&
-				overallStatus == metadata.overallStatus &&
-				conversionStatus == metadata.conversionStatus &&
-				validationStatus == metadata.validationStatus &&
-				cpc == metadata.cpc &&
-				Objects.equal(uuid, metadata.uuid) &&
-				Objects.equal(tin, metadata.tin) &&
-				Objects.equal(npi, metadata.npi) &&
-				Objects.equal(createdDate, metadata.createdDate) &&
-				Objects.equal(apm, metadata.apm) &&
-				Objects.equal(submissionLocator, metadata.submissionLocator) &&
-				Objects.equal(fileName, metadata.fileName) &&
-				Objects.equal(conversionErrorLocator, metadata.conversionErrorLocator) &&
-				Objects.equal(validationErrorLocator, metadata.validationErrorLocator);
+
+		boolean weGood = submissionYear == metadata.submissionYear
+				&& overallStatus == metadata.overallStatus
+				&& conversionStatus == metadata.conversionStatus;
+		weGood = weGood && validationStatus == metadata.validationStatus
+				&& cpc == metadata.cpc;
+		weGood = weGood && Objects.equal(uuid, metadata.uuid)
+				&& Objects.equal(tin, metadata.tin);
+		weGood = weGood && Objects.equal(npi, metadata.npi)
+				&& Objects.equal(createdDate, metadata.createdDate);
+		weGood = weGood && Objects.equal(apm, metadata.apm)
+				&& Objects.equal(submissionLocator, metadata.submissionLocator);
+		weGood = weGood && Objects.equal(fileName, metadata.fileName)
+				&& Objects.equal(conversionErrorLocator, metadata.conversionErrorLocator);
+		return weGood && Objects.equal(validationErrorLocator, metadata.validationErrorLocator);
 	}
 
 	/**

@@ -8,6 +8,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 
 public class DynamoDbConfigFactory {
 
+	private DynamoDbConfigFactory(){}
+
 	public static DynamoDBMapper createDynamoDbMapper(final AmazonDynamoDB dynamoDB) {
 		return new DynamoDBMapper(dynamoDB);
 	}
