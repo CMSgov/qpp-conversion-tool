@@ -2,14 +2,12 @@ package gov.cms.qpp.test;
 
 import org.junit.Assume;
 
+import gov.cms.qpp.conversion.util.EnvironmentHelper;
+
 public class VariableDependantTestHelper {
 
-	public static boolean isPresent(String variable) {
-		return System.getenv(variable) != null || System.getProperty(variable) != null;
-	}
-
 	public static void assumeIsPresent(String variable) {
-		Assume.assumeTrue(isPresent(variable));
+		Assume.assumeTrue(EnvironmentHelper.isPresent(variable));
 	}
 
 	private VariableDependantTestHelper() {

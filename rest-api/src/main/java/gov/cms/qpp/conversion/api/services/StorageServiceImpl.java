@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.services;
 
-
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
@@ -19,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
  * Used to store an {@link InputStream} in S3.
  */
 @Service
-public class StorageServiceImpl extends InOrderAsyncActionService<PutObjectRequest, String>
+public class StorageServiceImpl extends InOrderActionService<PutObjectRequest, String>
 		implements StorageService {
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 	static final String BUCKET_NAME = "BUCKET_NAME";
