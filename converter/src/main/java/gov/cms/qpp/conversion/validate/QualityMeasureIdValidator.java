@@ -154,7 +154,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX"),
 				makeValidator(subPopulation::getNumeratorUuid, "NUMER"),
 				makeValidator(subPopulation::getDenominatorUuid, "DENOM"),
-				makeValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
+				makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
 
 		validations.forEach(validate -> validate.accept(node));
 
@@ -172,46 +172,59 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private Consumer<Node> makeValidator(Supplier<Object> check, String key) {
 		return node -> {
 			if (check.get() != null) {
-				boolean childUuidExists = doesChildUuidExist(check, key, node);
+				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
+				Predicate<Node> childUuidFinder =
+						makeUuidChildFinder(check, SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
+
+				boolean childUuidExists = node
+						.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
+						.filter(childTypeFinder)
+						.anyMatch(childUuidFinder);
 
 				if (!childUuidExists) {
-					MeasureConfig config =
-						MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-					String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key, check.get());
-					this.getDetails().add(new Detail(message, node.getPath()));
+					addMeasureConfigurationValidationMessage(check, key, node);
 				}
 			}
 		};
 	}
 
 	/**
-	 *  Determines if the current node contains a correct performance rate child or measure data child
+	 * Method for Performance Rate Uuid validations
 	 *
 	 * @param check a property existence check
 	 * @param key that identify measures
-	 * @param node the current node containing the child to check
-	 * @return
+	 * @return a callback / consumer that will perform a measure specific validation against a given
+	 * node.
 	 */
-	private boolean doesChildUuidExist(Supplier<Object> check, String key, Node node) {
-		boolean childUuidExists;
-		if (PERFORMANCE_RATE_ID.equals(key)) {
-			Predicate<Node> childUuidFinder =
-					makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
+	private Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String key) {
+		return node -> {
+			if (check.get() != null) {
+				Predicate<Node> childUuidFinder =
+						makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
 
-			childUuidExists = node
-					.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-					.anyMatch(childUuidFinder);
-		} else {
-			Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
-			Predicate<Node> childUuidFinder =
-					makeUuidChildFinder(check, SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
+				boolean childUuidExists = node
+						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
+						.anyMatch(childUuidFinder);
 
-			childUuidExists = node
-					.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
-					.filter(childTypeFinder)
-					.anyMatch(childUuidFinder);
-		}
-		return childUuidExists;
+				if (!childUuidExists) {
+					addMeasureConfigurationValidationMessage(check, key, node);
+				}
+			}
+		};
+	}
+
+	/**
+	 * Adds a valdiation error message for a specified measure configuration
+	 *
+	 * @param check Current SubPopulation to be validated
+	 * @param key Identifier for the current measures child
+	 * @param node Contains the current child nodes
+	 */
+	private void addMeasureConfigurationValidationMessage(Supplier<Object> check, String key, Node node) {
+		MeasureConfig config =
+			MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+		String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key, check.get());
+		this.getDetails().add(new Detail(message, node.getPath()));
 	}
 
 	/**
