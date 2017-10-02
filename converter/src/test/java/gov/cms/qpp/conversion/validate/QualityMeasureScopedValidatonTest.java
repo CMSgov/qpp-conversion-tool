@@ -15,13 +15,16 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static org.hamcrest.Matchers.greaterThan;
+import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MISSING_STRATA;
+import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.STRATA_MISMATCH;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -34,11 +37,6 @@ public class QualityMeasureScopedValidatonTest {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
 		Set<Detail> details = validateNode(result);
 
-//		private static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
-//		private static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d" +
-//				"for %s measure (%s). Expected strata: %s";
-//		hasValidationErrorsIgnoringPath(NpiTinCombinationValidation.CLINICAL_DOCUMENT_REQUIRED));
-		
 		assertThat("Valid CMS137v5 markup should not result in errors", details.size(), is(0));
 
 	}
@@ -49,7 +47,10 @@ public class QualityMeasureScopedValidatonTest {
 		removeMeasureStrata(result, "DENOM");
 		Set<Detail> details = validateNode(result);
 
-		assertThat("Missing CMS137v5 DENOM strata should result in errors", details.size(), greaterThan(0));
+		assertThat("Missing CMS137v5 DENOM strata should result in errors", details,
+				hasValidationErrorsIgnoringPath(getMessages("DENOM",
+						"BC948E65-B908-493B-B48B-04AC342D3E6C",
+						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051")));
 	}
 
 	@Test
@@ -58,7 +59,10 @@ public class QualityMeasureScopedValidatonTest {
 		removeMeasureStrata(result, "DENEX");
 		Set<Detail> details = validateNode(result);
 
-		assertThat("Missing CMS137v5 DENEX strata should result in errors", details.size(), greaterThan(0));
+		assertThat("Missing CMS137v5 DENEX strata should result in errors", details,
+				hasValidationErrorsIgnoringPath(getMessages("DENEX",
+						"56BC7FA2-C22A-4440-8652-2D3568852C60",
+						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051")));
 	}
 
 	@Test
@@ -67,7 +71,10 @@ public class QualityMeasureScopedValidatonTest {
 		removeMeasureStrata(result, "NUMER");
 		Set<Detail> details = validateNode(result);
 
-		assertThat("Missing CMS137v5 NUMER strata should result in errors", details.size(), greaterThan(0));
+		assertThat("Missing CMS137v5 NUMER strata should result in errors", details,
+				hasValidationErrorsIgnoringPath(getMessages("NUMER",
+						"0BBF8596-4CFE-47F4-A0D7-9BEAB94BA4CD",
+						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051")));
 	}
 
 	private void removeMeasureStrata(Node parent, String type) {
@@ -93,5 +100,14 @@ public class QualityMeasureScopedValidatonTest {
 		QualityMeasureIdValidator validator = new QualityMeasureIdValidator();
 		validator.internalValidateSingleNode(node);
 		return validator.getDetails();
+	}
+
+	private String[] getMessages(String type, String measure, String... subs) {
+		Set<String> messages = new HashSet<>();
+		final List<String> missing = Arrays.asList(subs);
+		messages.add(String.format(STRATA_MISMATCH, 0, missing.size(), type, measure, missing));
+		Arrays.stream(subs).forEach(sub ->
+				messages.add(String.format(MISSING_STRATA, missing.get(0), type, measure)));
+		return messages.toArray(new String[messages.size()]);
 	}
 }

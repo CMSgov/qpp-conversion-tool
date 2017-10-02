@@ -49,9 +49,9 @@ public class QualityMeasureIdValidator extends NodeValidator {
 					+ "for an eCQM that is proportion measure";
 	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
 			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
-	private static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
-	private static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d" +
-			"for %s measure (%s). Expected strata: %s";
+	static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
+	static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d "
+			+ "for %s measure (%s). Expected strata: %s";
 
 	static final String INCORRECT_UUID =
 			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
@@ -175,7 +175,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
-				Predicate<Node> childUuidFinder = makeUuidChildFinder(check, sub);
+				Predicate<Node> childUuidFinder = makeUuidChildFinder(check);
 
 				Node existingUuidChild = node
 						.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
@@ -218,7 +218,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * @param uuid Supplies a unique id to test against
 	 * @return predicate identifying a node with matching id
 	 */
-	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, SubPopulation sub) {
+	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
 				.incompleteValidation()
