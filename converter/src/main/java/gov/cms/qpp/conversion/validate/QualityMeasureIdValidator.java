@@ -1,6 +1,8 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
+import gov.cms.qpp.conversion.decode.StratifierDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -9,9 +11,6 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +18,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
@@ -48,7 +50,10 @@ public class QualityMeasureIdValidator extends NodeValidator {
 					+ "for an eCQM that is proportion measure";
 	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
 			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
-	protected static final String INCORRECT_UUID =
+	static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
+	static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d "
+			+ "for %s measure (%s). Expected strata: %s";
+	static final String INCORRECT_UUID =
 			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
 	public static final String SINGLE_PERFORMANCE_RATE =
 			"A Performance Rate must contain a single Performance Rate UUID";
@@ -150,10 +155,10 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
 
 		List<Consumer<Node>> validations =
-			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
-				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX"),
-				makeValidator(subPopulation::getNumeratorUuid, "NUMER"),
-				makeValidator(subPopulation::getDenominatorUuid, "DENOM"),
+			Arrays.asList(makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
+				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, "DENEX"),
+				makeValidator(subPopulation, subPopulation::getNumeratorUuid, "NUMER"),
+				makeValidator(subPopulation, subPopulation::getDenominatorUuid, "DENOM"),
 				makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
 
 		validations.forEach(validate -> validate.accept(node));
@@ -169,20 +174,24 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	private Consumer<Node> makeValidator(Supplier<Object> check, String key) {
+	private Consumer<Node> makeValidator(SubPopulation sub, Supplier<Object> check, String key) {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
 				Predicate<Node> childUuidFinder =
 						makeUuidChildFinder(check, SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
 
-				boolean childUuidExists = node
+				Node existingUuidChild = node
 						.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
 						.filter(childTypeFinder)
-						.anyMatch(childUuidFinder);
+						.filter(childUuidFinder)
+						.findFirst()
+						.orElse(null);
 
-				if (!childUuidExists) {
+				if (existingUuidChild == null) {
 					addMeasureConfigurationValidationMessage(check, key, node);
+				} else {
+					strataCheck(existingUuidChild, sub);
 				}
 			}
 		};
@@ -202,11 +211,13 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				Predicate<Node> childUuidFinder =
 						makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
 
-				boolean childUuidExists = node
+				Node existingUuidChild = node
 						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-						.anyMatch(childUuidFinder);
+						.filter(childUuidFinder)
+						.findFirst()
+						.orElse(null);
 
-				if (!childUuidExists) {
+				if (existingUuidChild == null) {
 					addMeasureConfigurationValidationMessage(check, key, node);
 				}
 			}
@@ -214,7 +225,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	}
 
 	/**
-	 * Adds a valdiation error message for a specified measure configuration
+	 * Adds a validation error message for a specified measure configuration
 	 *
 	 * @param check Current SubPopulation to be validated
 	 * @param key Identifier for the current measures child
@@ -231,8 +242,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * Creates a {@link Predicate} which takes a node and tests whether the measure type is equal to the given measure type.
 	 * Also validates that it's the only measure type in the given node.
 	 *
-	 * @param populationCriteriaType
-	 * @return
+	 * @param populationCriteriaType measure type i.e. "DENOM", "NUMER", ...
+	 * @return predicate that filters measure nodes by measure type
 	 */
 	private Predicate<Node> makeTypeChildFinder(String populationCriteriaType) {
 		return thisNode -> {
@@ -258,6 +269,38 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				.singleValue(message, name);
 			return uuid.get().equals(thisNode.getValue(name));
 		};
+	}
+
+	/**
+	 * Validate measure strata
+	 *
+	 * @param node measure node
+	 * @param sub sub population constituent ids
+	 */
+	private void strataCheck(Node node, SubPopulation sub) {
+
+		List<Node> strataNodes = node.getChildNodes(TemplateId.REPORTING_STRATUM_CMS)
+				.collect(Collectors.toList());
+
+		if (strataNodes.size() != sub.getStrata().size()) {
+			String message = String.format(STRATA_MISMATCH, strataNodes.size(), sub.getStrata().size(),
+					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+					node.getValue(MeasureDataDecoder.MEASURE_POPULATION),
+					sub.getStrata());
+			this.getDetails().add(new Detail(message, node.getPath()));
+		}
+
+		sub.getStrata().forEach(strata -> {
+			Predicate<Node> seek = child ->
+					child.getValue(StratifierDecoder.STRATIFIER_ID).equals(strata);
+
+			if (strataNodes.stream().noneMatch(seek)) {
+				String message = String.format(MISSING_STRATA, strata,
+						node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+						node.getValue(MeasureDataDecoder.MEASURE_POPULATION));
+				this.getDetails().add(new Detail(message, node.getPath()));
+			}
+		});
 	}
 
 	/**

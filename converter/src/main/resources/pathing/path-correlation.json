@@ -35,6 +35,12 @@
 			"templateId": "MEASURE_DATA_CMS_V2",
 			"correlationId": "measureData"
 		},{
+			"templateId": "MEASURE_DATA_CMS_V2",
+			"correlationId": "population"
+		},{
+			"templateId": "REPORTING_STRATUM_CMS",
+			"correlationId": "population"
+		},{
 			"templateId": "PERFORMANCE_RATE_PROPORTION_MEASURE",
 			"correlationId": "performanceRate"
 		}
@@ -191,7 +197,12 @@
 						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@code",
 						"xmltype": "attribute"
 					}
-				},
+				}
+			]
+		},
+		{
+			"correlationId": "population",
+			"config": [
 				{
 					"decodeLabel": "populationId",
 					"encodeLabels": [

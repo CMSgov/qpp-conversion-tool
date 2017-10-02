@@ -2,6 +2,10 @@ package gov.cms.qpp.conversion.model.validation;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Sub Population Identifiers Fields
@@ -24,8 +28,8 @@ public class SubPopulation {
 	@JsonProperty("denominatorExceptionUuid")
 	private String denominatorExceptionsUuid;
 
-	private String strata1;
-	private String strata2;
+	@JsonProperty("strata")
+	private List<String> strata = Collections.emptyList();
 
 	public SubPopulation() {
 		//Empty Constructor for Jackson
@@ -37,8 +41,7 @@ public class SubPopulation {
 		denominatorExclusionsUuid = subPop.getDenominatorExclusionsUuid();
 		numeratorUuid = subPop.getNumeratorUuid();
 		denominatorExceptionsUuid = subPop.getDenominatorExceptionsUuid();
-		strata1 = subPop.getStrata1();
-		strata2 = subPop.getStrata2();
+		strata = subPop.getStrata();
 	}
 
 	public String getInitialPopulationUuid() {
@@ -81,20 +84,12 @@ public class SubPopulation {
 		this.denominatorExceptionsUuid = denominatorExceptionsUuid;
 	}
 
-	public String getStrata1() {
-		return strata1;
+	public List<String> getStrata() {
+		return strata;
 	}
 
-	public void setStrata1(String strata1) {
-		this.strata1 = strata1;
-	}
-
-	public String getStrata2() {
-		return strata2;
-	}
-
-	public void setStrata2(String strata2) {
-		this.strata2 = strata2;
+	public void setStrata(List<String> strata) {
+		this.strata = strata;
 	}
 
 	@Override
@@ -118,16 +113,10 @@ public class SubPopulation {
 				that.numeratorUuid != null) {
 			return false;
 		}
-		if (strata1 != null ? !strata1.equals(that.strata1) : that.strata1 != null) {
+		if (strata != null ? !strata.equals(that.strata) : that.strata != null) {
 			return false;
 		}
-		boolean isCool = reduceCognitiveComplexity(that);
-		if (isCool) {
-			return strata2 != null ? strata2.equals(that.strata2) : that.strata2 == null;
-		} else {
-			return isCool;
-		}
-
+		return reduceCognitiveComplexity(that);
 	}
 
 	private boolean reduceCognitiveComplexity(SubPopulation that) {
@@ -152,13 +141,8 @@ public class SubPopulation {
 
 	@Override
 	public int hashCode() {
-		int result = initialPopulationUuid != null ? initialPopulationUuid.hashCode() : 0;
-		result = 31 * result + (denominatorUuid != null ? denominatorUuid.hashCode() : 0);
-		result = 31 * result + (denominatorExclusionsUuid != null ? denominatorExclusionsUuid.hashCode() : 0);
-		result = 31 * result + (numeratorUuid != null ? numeratorUuid.hashCode() : 0);
-		result = 31 * result + (denominatorExceptionsUuid != null ? denominatorExceptionsUuid.hashCode() : 0);
-		result = 31 * result + (strata1 != null ? strata1.hashCode() : 0);
-		result = 31 * result + (strata2 != null ? strata2.hashCode() : 0);
-		return result;
+		return Objects.hashCode(initialPopulationUuid, denominatorUuid, denominatorExclusionsUuid,
+				numeratorUuid, denominatorExceptionsUuid, strata);
 	}
+
 }
