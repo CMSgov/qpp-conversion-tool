@@ -10,7 +10,7 @@ function build_and_tar_converter_image() {
 
 function run_ansible() {
 	echo "Running the Ansible playbook"
-	ansible-playbook -i "$1," --extra-vars "remote_username=$2 sudoer_password=$3" ./ansible/conversion_playbook.yml
+	ansible-playbook -i "$1," --extra-vars "remote_username=$2 sudoer_password=$3" ./tools/ansible/conversion_playbook.yml
 }
 
 if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $DOCKER_DEPLOY_OTHER_BRANCH && "$CIRCLE_BRANCH" == "$DOCKER_DEPLOY_OTHER_BRANCH" ) ]]; then
