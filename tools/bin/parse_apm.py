@@ -15,7 +15,7 @@ def read_apm_entity_ids(file_to_parse_path):
 
     apm_entity_id_list = list()
 
-    with open(file_to_parse_path, encoding='mac-roman') as apm_data_file:
+    with open(file_to_parse_path, encoding='ISO-8859-1') as apm_data_file:
         apm_data_parser = csv.DictReader(apm_data_file, delimiter='|', fieldnames=['identifier', 'apm_id', 'subdivision_id',
                                                                                    'apm_entity_id', 'entity_tin', 'entity_name'])
 
