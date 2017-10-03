@@ -18,7 +18,7 @@ import java.util.Date;
 @DynamoDBTable(tableName = "ConversionMetadata")
 public final class Metadata {
 	private String uuid;
-	private String tin;
+	private String tin;  //this field is encrypted
 	private String npi;
 	private Date createdDate;
 	private String apm;
