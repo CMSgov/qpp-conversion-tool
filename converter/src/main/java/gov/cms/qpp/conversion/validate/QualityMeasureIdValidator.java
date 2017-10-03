@@ -53,7 +53,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
 	static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d "
 			+ "for %s measure (%s). Expected strata: %s";
-	static final String INCORRECT_UUID =
+	public static final String INCORRECT_UUID =
 			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
 	public static final String SINGLE_PERFORMANCE_RATE =
 			"A Performance Rate must contain a single Performance Rate UUID";
