@@ -14,11 +14,15 @@ import org.springframework.core.task.TaskExecutor;
 
 import java.util.concurrent.CompletableFuture;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -33,6 +37,9 @@ public class DbServiceImplTest {
 	@Mock
 	private TaskExecutor taskExecutor;
 
+	@Mock
+	private Environment environment;
+
 	@Before
 	public void before() {
 		doAnswer(invocationOnMock -> {
@@ -44,14 +51,46 @@ public class DbServiceImplTest {
 
 	@Test
 	public void testWrite() {
+		when(environment.getProperty("KMS_KEY")).thenReturn("demo_kms_key");
+
 		Metadata meta = writeMeta();
 
 		assertNotNull("metadata should not be null", meta);
 		verify(dbMapper, times(1)).save(any(Metadata.class));
 	}
 
+	@Test
+	public void testNoWriteBecauseEmptyKmsKey() {
+		when(environment.getProperty("KMS_KEY")).thenReturn("");
+
+		Metadata metadataIn = new Metadata();
+		metadataIn.setTin("testTin");
+
+		Metadata metadataOut = writeMeta(metadataIn);
+
+		verifyZeroInteractions(dbMapper);
+		assertThat("The returned metadata must be an empty metadata.", metadataOut, is(new Metadata()));
+	}
+
+	@Test
+	public void testNoWriteBecauseNullKmsKey() {
+		when(environment.getProperty("KMS_KEY")).thenReturn(null);
+
+		Metadata metadataIn = new Metadata();
+		metadataIn.setTin("testTin");
+
+		Metadata metadataOut = writeMeta(metadataIn);
+
+		verifyZeroInteractions(dbMapper);
+		assertThat("The returned metadata must be an empty metadata.", metadataOut, is(new Metadata()));
+	}
+
 	private Metadata writeMeta() {
-		CompletableFuture<Metadata> writeResult = underTest.write(new Metadata());
+		return writeMeta(new Metadata());
+	}
+
+	private Metadata writeMeta(Metadata metadata) {
+		CompletableFuture<Metadata> writeResult = underTest.write(metadata);
 		return writeResult.join();
 	}
 }
