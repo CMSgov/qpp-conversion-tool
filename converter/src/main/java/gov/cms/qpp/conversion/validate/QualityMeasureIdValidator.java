@@ -153,10 +153,11 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
 
 		List<Consumer<Node>> validations =
-			Arrays.asList(makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
-				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, "DENEX"),
-				makeValidator(subPopulation, subPopulation::getNumeratorUuid, "NUMER"),
-				makeValidator(subPopulation, subPopulation::getDenominatorUuid, "DENOM"));
+			Arrays.asList(
+				makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulations.DENEXCEP),
+				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulations.DENEX),
+				makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulations.NUMER),
+				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulations.DENOM));
 
 		validations.forEach(validate -> validate.accept(node));
 
@@ -287,7 +288,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	private Node getDenominatorNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
 		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
-				"DENOM".equals(thisNode.getValue(MEASURE_TYPE))
+				SubPopulations.DENOM.equals(thisNode.getValue(MEASURE_TYPE))
 						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
 	}

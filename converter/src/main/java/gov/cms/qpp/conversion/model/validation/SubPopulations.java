@@ -13,13 +13,19 @@ import java.util.function.Function;
 public class SubPopulations {
 
 	private static final Map<String, Function<SubPopulation, String>> KEY_TO_UNIQUEID;
+	public static final String DENEXCEP = "DENEXCEP";
+	public static final String DENEX = "DENEX";
+	public static final String NUMER = "NUMER";
+	public static final String DENOM = "DENOM";
+	public static final String IPOP = "IPOP";
+	public static final String IPP = "IPP";
 
 	static {
 		Map<String, Function<SubPopulation, String>> keyToUniqueId = new HashMap<>();
-		keyToUniqueId.put("DENEXCEP", SubPopulation::getDenominatorExceptionsUuid);
-		keyToUniqueId.put("DENEX", SubPopulation::getDenominatorExclusionsUuid);
-		keyToUniqueId.put("DENOM", SubPopulation::getDenominatorUuid);
-		keyToUniqueId.put("NUMER", SubPopulation::getNumeratorUuid);
+		keyToUniqueId.put(DENEXCEP, SubPopulation::getDenominatorExceptionsUuid);
+		keyToUniqueId.put(DENEX, SubPopulation::getDenominatorExclusionsUuid);
+		keyToUniqueId.put(DENOM, SubPopulation::getDenominatorUuid);
+		keyToUniqueId.put(NUMER, SubPopulation::getNumeratorUuid);
 		KEY_TO_UNIQUEID = Collections.unmodifiableMap(keyToUniqueId);
 	}
 
