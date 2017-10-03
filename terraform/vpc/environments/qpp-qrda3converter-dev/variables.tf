@@ -37,10 +37,6 @@ variable "s3_bucket" {
   default = "aws-hhs-cms-ccsq-qpp-navadevops-nonprod-us-east-1"
 }
 
-variable "ssl_certificate_id" {
-  default = "arn:aws:acm:us-east-1:003384571330:certificate/f1b98858-6b1c-4557-b26b-d2259f5b53e4"
-}
-
 variable "stack_tag" {
   default = "dev"
 }
