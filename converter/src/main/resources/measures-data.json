@@ -8589,7 +8589,10 @@
         "eMeasureUuids": {
           "initialPopulationUuid": "BCE39253-0C5F-4DFA-A5BD-0828A8B2BB22",
           "denominatorUuid": "B41B2DF9-B4BF-4B89-A483-5B0C1A9D9804",
-          "numeratorUuid": "BEF89159-5D5C-47C6-953D-63FCAEA41548"
+          "numeratorUuid": "BEF89159-5D5C-47C6-953D-63FCAEA41548",
+          "strata": ["230680FE-5EB1-4E96-8FA7-59BC615983B6",
+            "20FFE4B7-1F66-41F7-92DB-32DA81CC9D0A",
+            "790D1664-E432-48C6-A53C-ACD1A2888857"]
         },
         "name": "fluorideVarnish"
       }

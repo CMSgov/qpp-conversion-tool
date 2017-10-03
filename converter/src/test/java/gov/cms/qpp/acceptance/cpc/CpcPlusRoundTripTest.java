@@ -1,5 +1,12 @@
 package gov.cms.qpp.acceptance.cpc;
 
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -9,14 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.TransformException;
 
 public class CpcPlusRoundTripTest {
 
@@ -67,7 +66,7 @@ public class CpcPlusRoundTripTest {
 		long invalidFiles = Files.list(DIR).filter(file -> {
 			String fileName = file.toString();
 
-			return !fileName.endsWith("-failure.xml") && !fileName.endsWith("-success.xml");
+			return fileName.endsWith(".xml") && !fileName.endsWith("-failure.xml") && !fileName.endsWith("-success.xml");
 		}).count();
 
 		Assert.assertEquals(0, invalidFiles);
