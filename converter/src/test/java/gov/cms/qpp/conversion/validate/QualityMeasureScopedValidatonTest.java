@@ -77,6 +77,18 @@ public class QualityMeasureScopedValidatonTest {
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051")));
 	}
 
+	@Test
+	public void validateCms137V5FailMissingIpopStrata() throws IOException, XmlException {
+		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
+		removeMeasureStrata(result, "IPOP");
+		Set<Detail> details = validateNode(result);
+
+		assertThat("Missing CMS137v5 IPOP strata should result in errors", details,
+				hasValidationErrorsIgnoringPath(getMessages("IPOP",
+						"EC2C5F63-AF76-4D3C-85F0-5423F8C28541",
+						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051")));
+	}
+
 	private void removeMeasureStrata(Node parent, String type) {
 		Node measure = parent.findNode(TemplateId.MEASURE_DATA_CMS_V2)
 				.stream().filter(prepFilter(type)).findFirst().get();
