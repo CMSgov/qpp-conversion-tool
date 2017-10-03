@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
 
 /**
  * Validates a Measure Reference Results node.
@@ -52,9 +53,10 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
 	static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d "
 			+ "for %s measure (%s). Expected strata: %s";
-
-	static final String INCORRECT_UUID =
+	public static final String INCORRECT_UUID =
 			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
+	public static final String SINGLE_PERFORMANCE_RATE =
+			"A Performance Rate must contain a single Performance Rate UUID";
 
 	/**
 	 * Validates that the Measure Reference Results node contains...
@@ -157,7 +159,9 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulations.DENEXCEP),
 				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulations.DENEX),
 				makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulations.NUMER),
-				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulations.DENOM));
+				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulations.DENOM),
+				makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
+
 
 		validations.forEach(validate -> validate.accept(node));
 
@@ -176,7 +180,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
-				Predicate<Node> childUuidFinder = makeUuidChildFinder(check);
+				Predicate<Node> childUuidFinder =
+						makeUuidChildFinder(check, SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
 
 				Node existingUuidChild = node
 						.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
@@ -186,15 +191,53 @@ public class QualityMeasureIdValidator extends NodeValidator {
 						.orElse(null);
 
 				if (existingUuidChild == null) {
-					MeasureConfig config =
-						MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-					String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key, check.get());
-					this.getDetails().add(new Detail(message, node.getPath()));
+					addMeasureConfigurationValidationMessage(check, key, node);
 				} else {
 					strataCheck(existingUuidChild, sub);
 				}
 			}
 		};
+	}
+
+	/**
+	 * Method for Performance Rate Uuid validations
+	 *
+	 * @param check a property existence check
+	 * @param key that identify measures
+	 * @return a callback / consumer that will perform a measure specific validation against a given
+	 * node.
+	 */
+	private Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String key) {
+		return node -> {
+			if (check.get() != null) {
+				Predicate<Node> childUuidFinder =
+						makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
+
+				Node existingUuidChild = node
+						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
+						.filter(childUuidFinder)
+						.findFirst()
+						.orElse(null);
+
+				if (existingUuidChild == null) {
+					addMeasureConfigurationValidationMessage(check, key, node);
+				}
+			}
+		};
+	}
+
+	/**
+	 * Adds a validation error message for a specified measure configuration
+	 *
+	 * @param check Current SubPopulation to be validated
+	 * @param key Identifier for the current measures child
+	 * @param node Contains the current child nodes
+	 */
+	private void addMeasureConfigurationValidationMessage(Supplier<Object> check, String key, Node node) {
+		MeasureConfig config =
+			MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+		String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key, check.get());
+		this.getDetails().add(new Detail(message, node.getPath()));
 	}
 
 	/**
@@ -217,14 +260,16 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * Creates a {@link Predicate} which takes a node and tests whether the measure population is equal to the given unique id
 	 *
 	 * @param uuid Supplies a unique id to test against
-	 * @return predicate identifying a node with matching id
+	 * @param message Supplies a unique error message to use
+	 * @param name Supplies a node field validate on
+	 * @return
 	 */
-	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid) {
+	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, String message, String name) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
 				.incompleteValidation()
-				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
-			return uuid.get().equals(thisNode.getValue(MEASURE_POPULATION));
+				.singleValue(message, name);
+			return uuid.get().equals(thisNode.getValue(name));
 		};
 	}
 
