@@ -57,7 +57,7 @@ public class InOrderAsyncActionServiceTest {
 			completableFuture2.getNumberOfDependents(), is(0));
 	}
 
-	private static class TestInOrderService extends InOrderAsyncActionService<Object, Object> {
+	private static class TestInOrderService extends InOrderActionService<Object, Object> {
 
 		public AtomicBoolean pauseAsynchronousAction = new AtomicBoolean(false);
 

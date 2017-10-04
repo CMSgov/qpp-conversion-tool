@@ -1,21 +1,23 @@
 package gov.cms.qpp.conversion.api.services;
 
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import gov.cms.qpp.conversion.api.model.Metadata;
+import java.util.concurrent.CompletableFuture;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.CompletableFuture;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+
+import gov.cms.qpp.conversion.api.model.Metadata;
 
 /**
  * Writes a {@link Metadata} object to DynamoDB.
  */
 @Service
-public class DbServiceImpl extends AnyOrderAsyncActionService<Metadata, Metadata>
+public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		implements DbService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
