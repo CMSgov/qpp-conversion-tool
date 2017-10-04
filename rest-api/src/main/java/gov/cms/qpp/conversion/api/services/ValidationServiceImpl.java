@@ -31,7 +31,6 @@ import java.nio.charset.Charset;
 @Service
 public class ValidationServiceImpl implements ValidationService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
-	static final String SUBMISSION_API_TOKEN = "SUBMISSION_API_TOKEN";
 	static final String VALIDATION_URL_ENV_NAME = "VALIDATION_URL";
 	static final String CONTENT_TYPE = "application/json";
 
@@ -88,7 +87,7 @@ public class ValidationServiceImpl implements ValidationService {
 		headers.add(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE);
 		headers.add(HttpHeaders.ACCEPT, CONTENT_TYPE);
 
-		String submissionToken = environment.getProperty(SUBMISSION_API_TOKEN);
+		String submissionToken = environment.getProperty(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE);
 		if (submissionToken != null && !submissionToken.isEmpty()) {
 			headers.add(HttpHeaders.AUTHORIZATION,
 					"Bearer " + submissionToken);

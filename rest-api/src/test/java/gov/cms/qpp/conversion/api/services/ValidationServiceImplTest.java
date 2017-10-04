@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.api.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -139,21 +140,21 @@ public class ValidationServiceImplTest {
 
 	@Test
 	public void testHeaderCreationNoAuth() {
-		when(environment.getProperty(eq(ValidationServiceImpl.SUBMISSION_API_TOKEN))).thenReturn(null);
+		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn(null);
 		HttpHeaders headers = objectUnderTest.getHeaders();
 		assertNull(HttpHeaders.AUTHORIZATION + " should not be set", headers.get(HttpHeaders.AUTHORIZATION));
 	}
 
 	@Test
 	public void testHeaderCreationNoAuthEmpty() {
-		when(environment.getProperty(eq(ValidationServiceImpl.SUBMISSION_API_TOKEN))).thenReturn("");
+		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn("");
 		HttpHeaders headers = objectUnderTest.getHeaders();
 		assertNull(HttpHeaders.AUTHORIZATION + " should not be set", headers.get(HttpHeaders.AUTHORIZATION));
 	}
 
 	@Test
 	public void testHeaderCreationAuth() {
-		when(environment.getProperty(eq(ValidationServiceImpl.SUBMISSION_API_TOKEN))).thenReturn("meep");
+		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn("meep");
 		HttpHeaders headers = objectUnderTest.getHeaders();
 		assertThat(HttpHeaders.AUTHORIZATION + " should be set",
 				headers.getFirst(HttpHeaders.AUTHORIZATION), containsString("meep"));
