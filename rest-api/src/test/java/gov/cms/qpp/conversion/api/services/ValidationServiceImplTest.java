@@ -86,7 +86,7 @@ public class ValidationServiceImplTest {
 
 	@Test
 	public void testNullValidationUrl() {
-		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn(null);
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn(null);
 
 		objectUnderTest.validateQpp(null);
 
@@ -95,7 +95,7 @@ public class ValidationServiceImplTest {
 
 	@Test
 	public void testEmptyValidationUrl() {
-		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn("");
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn("");
 
 		objectUnderTest.validateQpp(null);
 
@@ -106,7 +106,7 @@ public class ValidationServiceImplTest {
 	public void testValidationPass() {
 		String validationUrl = "https://qpp.net/validate";
 
-		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn(validationUrl);
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn(validationUrl);
 		ResponseEntity<String> spiedResponseEntity = spy(new ResponseEntity<>(HttpStatus.OK));
 		when(restTemplate.postForEntity(eq(validationUrl), any(HttpEntity.class), eq(String.class))).thenReturn(spiedResponseEntity);
 
@@ -119,7 +119,7 @@ public class ValidationServiceImplTest {
 	public void testValidationFail() throws IOException {
 		String validationUrl = "https://qpp.net/validate";
 
-		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn(validationUrl);
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn(validationUrl);
 		ResponseEntity<String> spiedResponseEntity = spy(new ResponseEntity<>(FileUtils.readFileToString(pathToSubmissionError.toFile(), "UTF-8") ,HttpStatus.UNPROCESSABLE_ENTITY));
 		when(restTemplate.postForEntity(eq(validationUrl), any(HttpEntity.class), eq(String.class))).thenReturn(spiedResponseEntity);
 

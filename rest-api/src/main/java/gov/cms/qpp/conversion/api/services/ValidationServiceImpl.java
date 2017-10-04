@@ -31,7 +31,6 @@ import java.nio.charset.Charset;
 @Service
 public class ValidationServiceImpl implements ValidationService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
-	static final String VALIDATION_URL_ENV_NAME = "VALIDATION_URL";
 	static final String CONTENT_TYPE = "application/json";
 
 
@@ -47,7 +46,7 @@ public class ValidationServiceImpl implements ValidationService {
 	 */
 	@Override
 	public void validateQpp(final JsonWrapper qpp) {
-		String validationUrl = environment.getProperty(VALIDATION_URL_ENV_NAME);
+		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
 
 		if (validationUrl == null || validationUrl.isEmpty()) {
 			return;
