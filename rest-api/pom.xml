@@ -148,6 +148,13 @@
 			<artifactId>spring-retry</artifactId>
 			<version>1.2.1.RELEASE</version>
 		</dependency>
+
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>extension-test-commons</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 </project>

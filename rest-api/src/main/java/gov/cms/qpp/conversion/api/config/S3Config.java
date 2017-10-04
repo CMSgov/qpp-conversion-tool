@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.config;
 
-
 import com.amazonaws.SdkClientException;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -14,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Spring configuration file.
+ * Spring configuration file for Amazon S3.
  *
  * Configures {@link Bean}s associated with AWS S3.
  */
@@ -32,16 +31,12 @@ public class S3Config {
 	 */
 	@Bean
 	public AmazonS3 s3client() {
-		AmazonS3 client = null;
-
 		try {
-			client = AmazonS3ClientBuilder.defaultClient();
+			return AmazonS3ClientBuilder.defaultClient();
 		} catch (SdkClientException exception) {
 			API_LOG.info("Default S3 client failed to build, trying again with region us-east-1", exception);
-			client = planB();
+			return planB();
 		}
-
-		return client;
 	}
 
 	/**

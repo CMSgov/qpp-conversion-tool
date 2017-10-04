@@ -1,8 +1,5 @@
 package gov.cms.qpp.conversion.api.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.task.TaskExecutor;
-
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -20,10 +17,7 @@ import java.util.concurrent.CompletableFuture;
  * @param <T> The type of object that will be acted upon in the asynchronous action.
  * @param <S> The type of object that is returned from {@link #asynchronousAction(Object)}.
  */
-public abstract class InOrderAsyncActionService<T, S> extends AnyOrderAsyncActionService<T, S> {
-
-	@Autowired
-	private TaskExecutor taskExecutor;
+public abstract class InOrderActionService<T, S> extends AnyOrderActionService<T, S> {
 
 	private CompletableFuture<S> currentThreadFuture;
 
