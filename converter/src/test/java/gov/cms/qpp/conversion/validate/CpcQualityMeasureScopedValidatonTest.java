@@ -23,13 +23,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MISSING_STRATA;
-import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.STRATA_MISMATCH;
+import static gov.cms.qpp.conversion.validate.CpcQualityMeasureIdValidator.MISSING_STRATA;
+import static gov.cms.qpp.conversion.validate.CpcQualityMeasureIdValidator.STRATA_MISMATCH;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 
-public class QualityMeasureScopedValidatonTest {
+public class CpcQualityMeasureScopedValidatonTest {
 	private static Path baseDir = Paths.get("src/test/resources/fixtures/qppct298/");
 
 	@Test
@@ -38,7 +38,6 @@ public class QualityMeasureScopedValidatonTest {
 		Set<Detail> details = validateNode(result);
 
 		assertThat("Valid CMS137v5 markup should not result in errors", details.size(), is(0));
-
 	}
 
 	@Test
@@ -109,7 +108,7 @@ public class QualityMeasureScopedValidatonTest {
 	}
 
 	private Set<Detail> validateNode(Node node) {
-		QualityMeasureIdValidator validator = new QualityMeasureIdValidator();
+		CpcQualityMeasureIdValidator validator = new CpcQualityMeasureIdValidator();
 		validator.internalValidateSingleNode(node);
 		return validator.getDetails();
 	}
