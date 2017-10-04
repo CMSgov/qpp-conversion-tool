@@ -122,6 +122,13 @@
 	</authorization>
 	<component>
 		<structuredBody>
+			<!-- Removed the Reporting Parameters Section - CMS (V2) -->
+			<!--
+			********************************************************
+			QRDA-III Reporting Parameters Section - CMS (V2)
+			urn:hl7ii:2.16.840.1.113883.10.20.27.2.6:2016-11-01
+			********************************************************
+			-->
 			<!--
 			********************************************************
 			QRDA Category III Measure Section - CMS (V2)
@@ -139,508 +146,8 @@
 					<code code="55186-1" codeSystem="2.16.840.1.113883.6.1"
 						displayName="measure section"/>
 					<title>Measure Section</title>
-					<text>
-						<!--CMS165v5/NQF0018: Controlling High Blood Pressure -->
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>eMeasure Title</th>
-									<th>Version neutral identifier</th>
-									<th>Version specific identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Controlling High Blood Pressure</td>
-									<td>abdc37cc-bac6-4156-9b91-d1be2c8b7268</td>
-									<td>40280381-51f0-825b-0152-22b98cff181a</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Performance Rate</content>:0.842105</item>
-							<item>
-								<content styleCode="Bold">Initial Population</content>:1000<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400</item>
-									<item>
-										<content styleCode="Bold">Gender - Female</content>600</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or Latino</content>350</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or Latino</content>650</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African American</content>300</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>350</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0</item>
-									<item>
-										<content styleCode="Bold">Payer - Medicare</content>350</item>
-									<item>
-										<content styleCode="Bold">Payer - Medicaid</content>250</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health Insurance</content>350</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator Exclusions</content>:50<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>30</item>
-									<item>
-										<content styleCode="Bold">Gender - Female</content>20</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or Latino</content>40</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or Latino</content>10</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African American</content>10</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>20</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>20</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska	Native</content>0</item>
-									<item>
-										<content styleCode="Bold">Payer - Medicare</content>15</item>
-									<item>
-										<content styleCode="Bold">Payer - Medicaid</content>10</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health Insurance</content>15</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>10</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator</content>:1000<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400</item>
-									<item>
-										<content styleCode="Bold">Gender -
-										Female</content>600</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>350</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>650</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>300</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>350</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0</item>
-									<item>
-										<content styleCode="Bold">Payer -
-										Medicare</content>350</item>
-									<item>
-										<content styleCode="Bold">Payer -
-										Medicaid</content>250</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>350</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator</content>:800<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>300</item>
-									<item>
-										<content styleCode="Bold">Gender -
-										Female</content>500</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>250</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>550</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>250</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>300</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>250</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0</item>
-									<item>
-										<content styleCode="Bold">Payer -
-										Medicare</content>300</item>
-									<item>
-										<content styleCode="Bold">Payer -
-										Medicaid</content>200</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>250</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50</item>
-								</list>
-							</item>
-						</list>
 
-						<!-- CMS122v5/NQF0059: Diabetes: Hemoglobin A1c (HbA1c) Poor Control (> 9%)-->
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>eMeasure Title</th>
-									<th>Version neutral identifier</th>
-									<th>Version specific identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Diabetes: Hemoglobin A1c (HbA1c) Poor Control (> 9%)</td>
-									<td>f2986519-5a4e-4149-a8f2-af0a1dc7f6bc</td>
-									<td>40280381-51f0-825b-0152-229afff616ee</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Performance Rate</content>0.947368</item>
-							<item>
-								<content styleCode="Bold">Initial Population</content>:950<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>550</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>350</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>600</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>300</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>300</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>350</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>250</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>300</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator</content>:950<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>550</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>350</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>600</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>300</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>300</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>350</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>250</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>300</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator</content>:900<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>500</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>550</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>350</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>250</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>598</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>50</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>2</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>300</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>200</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>350</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50</item>
-								</list>
-							</item>
-						</list>
-
-						<!-- CMS68v6/NQF0419: Documentation of Current Medications in the Medical Record -->
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>eMeasure Title</th>
-									<th>Version neutral identifier</th>
-									<th>Version specific identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Documentation of Current Medications in the Medical	Record</td>
-									<td>9a032d9c-3d9b-11e1-8634-00237d5bf174</td>
-									<td>40280381-52fc-3a32-0153-3d64af97147b</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Performance Rate</content>0.816327</item>
-							<item>
-								<content styleCode="Bold">Initial Population</content>:1000
-								<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>600</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>350</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>650</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>300</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>350</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>350</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>250</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>350</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator Exceptions</content>:20<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>12</item>
-									<item>
-										<content styleCode="Bold">Gender - Female</content>8</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>18</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>2</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>3</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>15</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>2</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>10</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>3</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>5</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>2</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Denominator</content>:1000<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>400</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>600</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>350</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>650</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>300</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>350</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>350</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>350</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>250</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>350</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50</item>
-								</list>
-							</item>
-							<item>
-								<content styleCode="Bold">Numerator</content>:800<list>
-									<item>
-										<content styleCode="Bold">Gender - Male</content>300</item>
-									<item>
-										<content styleCode="Bold">Gender -
-											Female</content>500</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Not Hispanic or
-											Latino</content>250</item>
-									<item>
-										<content styleCode="Bold">Ethnicity - Hispanic or
-											Latino</content>550</item>
-									<item>
-										<content styleCode="Bold">Race - Black or African
-											American</content>250</item>
-									<item>
-										<content styleCode="Bold">Race - White</content>300</item>
-									<item>
-										<content styleCode="Bold">Race - Asian</content>250</item>
-									<item>
-										<content styleCode="Bold">Race - American Indian or Alaska
-											Native</content>0</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicare</content>300</item>
-									<item>
-										<content styleCode="Bold">Payer -
-											Medicaid</content>200</item>
-									<item>
-										<content styleCode="Bold">Payer - Private Health
-											Insurance</content>250</item>
-									<item>
-										<content styleCode="Bold">Payer - Other</content>50</item>
-								</list>
-							</item>
-						</list>
-
-
-						<!-- CMS160v5/NQF0712: Depression Utilization of the PHQ-9 Tool -->
-						<table border="1" width="100%">
-							<thead>
-								<tr>
-									<th>eMeasure Title</th>
-									<th>Version neutral identifier</th>
-									<th>Version specific identifier</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Depression Utilization of the PHQ-9 Tool</td>
-									<td>a4b9763c-847e-4e02-bb7e-acc596e90e2c</td>
-									<td>40280381-503f-a1fc-0150-afe320c01761</td>
-								</tr>
-							</tbody>
-						</table>
-						<list>
-							<item>
-								<content styleCode="Bold">Performance Rate</content>0.860177
-							</item>
-							<item>
-								<content styleCode="Bold">Initial Population</content>:600</item>
-							<item>
-								<content styleCode="Bold">Denominator Population</content>:600</item>
-							<item>
-								<content styleCode="Bold">Denominator Exclusions</content>:35</item>
-							<item>
-								<content styleCode="Bold">Numerator</content>:486</item>
-							<item>
-								<content styleCode="Bold">Performance Rate</content>0.921052</item>
-							<item>
-									<content styleCode="Bold">Initial Population</content>:800</item>
-								<item>
-									<content styleCode="Bold">Denominator Population</content>:800</item>
-								<item>
-									<content styleCode="Bold">Denominator Exclusions</content>:40</item>
-								<item>
-									<content styleCode="Bold">Numerator</content>:700</item>
-								<item>
-								<content styleCode="Bold">Performance Rate</content>0.962963</item>
-									<item>
-										<content styleCode="Bold">Initial Population</content>:580</item>
-									<item>
-										<content styleCode="Bold">Denominator Population</content>:580</item>
-									<item>
-										<content styleCode="Bold">Denominator Exclusions</content>:40</item>
-									<item>
-										<content styleCode="Bold">Numerator</content>:520</item>
-						</list>
-					</text>
-					<!-- Has 1 Invalid Denom -->
-					<!--Measure Entry for CMS68v6/NQF0419: Documentation of Current Medications in the Medical Record -->
+					<!--Measure Entry for CMS68v6/NQF0419: With Invalid Performance Rate UUID -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -659,7 +166,7 @@
 									<text>Documentation of Current Medications in the Medical Record</text>
 								</externalDocument>
 							</reference>
-							<!--Performance Rate-->
+							<!--Performance Rate With Invalid UUID-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
@@ -671,7 +178,9 @@
 									<value xsi:type="REAL" value="0.816327"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="EFFE261C-0D57-423E-992C-7141B132768C"/>
+											<!--Invalid Uuid-->
+											<id root="00000000-0000-0000-0000-1NV4L1D"/>
+											<!--Invalid Uuid-->
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -1633,7 +1142,7 @@
 									</reference>
 								</observation>
 							</component>
-							<!--DENOM Population Invalid Denom-->
+							<!--DENOM Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
@@ -1653,7 +1162,7 @@
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1001"/>
+											<value xsi:type="INT" value="1000"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -2584,7 +2093,6 @@
 						</organizer>
 					</entry>
 
-					<!-- Has 2 Invalid Denoms-->
 					<!--Measure Entry for CMS160v5/NQF0712: Depression Utilization of the PHQ-9 Tool -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -2625,7 +2133,7 @@
 									</reference>
 								</observation>
 							</component>
-							<!--Performance Rate: Population Criteria 2 -->
+							<!--Performance Rate: Population Criteria 2 With Missing UUID -->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
@@ -2638,7 +2146,7 @@
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="33538979-8425-45A4-B724-D74CC0A84EF3"/>
+											<!-- <id root="33538979-8425-45A4-B724-D74CC0A84EF3"/> Missing UUID -->
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -2703,7 +2211,7 @@
 									</reference>
 								</observation>
 							</component>
-							<!--DENOM Population Valid Denom-->
+							<!--DENOM Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
@@ -2845,7 +2353,7 @@
 									</reference>
 								</observation>
 							</component>
-							<!--DENOM Population Invalid Denom 1-->
+							<!--DENOM Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
@@ -2865,7 +2373,7 @@
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="850"/>
+											<value xsi:type="INT" value="800"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -2982,12 +2490,12 @@
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="5631A7DF-CA44-4AD4-A691-DC0CED303F6A"/>
+											<id root="2D4D6446-C9CD-4661-868B-C8B9B13A8E08"/>
 										</externalObservation>
 									</reference>
 								</observation>
 							</component>
-							<!--DENOM Population Invalid Denom 2-->
+							<!--DENOM Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
@@ -3007,7 +2515,7 @@
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="600"/>
+											<value xsi:type="INT" value="580"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
