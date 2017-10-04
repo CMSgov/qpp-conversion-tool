@@ -13,6 +13,7 @@ import java.util.Set;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -275,6 +276,18 @@ public class QualityMeasureIdValidatorTest {
 				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT));
 	}
 
+	@Test
+	public void testPerformanceRateUuidFail() {
+		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
+				.replaceSubPopulationPerformanceRate(REQUIRES_DENOM_EXCEPTION_NUMER_GUID, "fail")
+				.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_UUID, "CMS68v6", PERFORMANCE_RATE_ID, REQUIRES_DENOM_EXCEPTION_NUMER_GUID);
+		assertThat("Must contain the correct error message.", details,
+				hasValidationErrorsIgnoringPath(expectedErrorMessage));
+	}
+
 	private MeasureReferenceBuilder createCorrectMeasureReference(String measureId) {
 		MeasureReferenceBuilder measureReferenceResultsNode = new MeasureReferenceBuilder();
 		measureReferenceResultsNode.addMeasureId(measureId);
@@ -284,25 +297,30 @@ public class QualityMeasureIdValidatorTest {
 					.addSubPopulationMeasureDataWithCounts(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM1_GUID, ONE_HUNDRED)
 					.addSubPopulationMeasureDataWithCounts(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID, ONE_HUNDRED)
 					.addSubPopulationMeasureDataWithCounts(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID, ONE_HUNDRED)
+					.addSubPopulationPerformanceRate(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID)
 
 					.addSubPopulationMeasureDataWithCounts(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP2_GUID, ONE_HUNDRED)
 					.addSubPopulationMeasureDataWithCounts(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM2_GUID, ONE_HUNDRED)
 					.addSubPopulationMeasureDataWithCounts(DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXECEP2_GUID, ONE_HUNDRED)
 					.addSubPopulationMeasureDataWithCounts(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID, ONE_HUNDRED)
+					.addSubPopulationPerformanceRate(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID)
 
 					.addSubPopulationMeasureDataWithCounts(IPOP, MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP3_GUID, ONE_HUNDRED)
 					.addSubPopulationMeasureDataWithCounts(DENOM, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM3_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID, ONE_HUNDRED);
+					.addSubPopulationMeasureDataWithCounts(NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID, ONE_HUNDRED)
+					.addSubPopulationPerformanceRate(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID);
 		} else if (REQUIRES_DENOM_EXCEPTION_GUID.equals(measureId)) {
 			measureReferenceResultsNode.addSubPopulationMeasureDataWithCounts(DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID, ONE_HUNDRED)
 					.addSubPopulationMeasureDataWithCounts(IPOP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID, ONE_HUNDRED)
 					.addSubPopulationMeasureDataWithCounts(DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID, ONE_HUNDRED);
+					.addSubPopulationMeasureDataWithCounts(NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID, ONE_HUNDRED)
+					.addSubPopulationPerformanceRate(REQUIRES_DENOM_EXCEPTION_NUMER_GUID);
 		} else if (REQUIRES_DENOM_EXCLUSION_GUID.equals(measureId)) {
 			measureReferenceResultsNode.addSubPopulationMeasureDataWithCounts(IPOP, REQUIRES_DENOM_EXCLUSION_IPOP_GUID, ONE_HUNDRED)
 					.addSubPopulationMeasureDataWithCounts(DENOM, REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
 					.addSubPopulationMeasureDataWithCounts(NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED);
+					.addSubPopulationMeasureDataWithCounts(DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
+					.addSubPopulationPerformanceRate(REQUIRES_DENOM_EXCLUSION_NUMER_GUID);
 
 		}
 
@@ -333,6 +351,31 @@ public class QualityMeasureIdValidatorTest {
 
 		MeasureReferenceBuilder addMeasureId(String measureId) {
 			measureReferenceResultsNode.putValue(MEASURE_ID, measureId);
+			return this;
+		}
+
+		MeasureReferenceBuilder addSubPopulationPerformanceRate(String id) {
+			Node performanceRateNode = new Node(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+			performanceRateNode.putValue(PERFORMANCE_RATE_ID, id);
+
+			measureReferenceResultsNode.addChildNode(performanceRateNode);
+
+			return this;
+		}
+
+		MeasureReferenceBuilder removeSubPopulationPerformanceRate(String id) {
+			Node performanceRateNode = new Node(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+			performanceRateNode.putValue(PERFORMANCE_RATE_ID, id);
+
+			measureReferenceResultsNode.removeChildNode(performanceRateNode);
+
+			return this;
+		}
+
+		MeasureReferenceBuilder replaceSubPopulationPerformanceRate(String oldId, String newId) {
+			removeSubPopulationPerformanceRate(oldId);
+			addSubPopulationPerformanceRate(newId);
+
 			return this;
 		}
 

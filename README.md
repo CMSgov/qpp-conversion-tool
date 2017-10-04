@@ -4,6 +4,7 @@
 
 * [Installation Instructions](#installation-instructions)
 * [Running the Converter](#running-the-converter)
+* [Deploying](#deploying)
 * [Want to Contribute?](#want-to-contribute)
 
 ## Installation Instructions
@@ -121,6 +122,10 @@ For example, `not-a-QRDA-III-file.err.json`.  This error file contains descripti
 errors in the provided input file.
 
 View all commands with `convert.sh`.
+
+## Deploying
+
+See [terraform/README.md](terraform/README.md).
 
 ## Want to Contribute?
 
