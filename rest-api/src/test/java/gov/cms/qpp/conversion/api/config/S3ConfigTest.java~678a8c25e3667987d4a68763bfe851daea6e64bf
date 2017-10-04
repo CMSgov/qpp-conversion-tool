@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.config;
 
+
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
+
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(AmazonS3ClientBuilder.class)

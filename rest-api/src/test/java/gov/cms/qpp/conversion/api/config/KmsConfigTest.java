@@ -1,7 +1,8 @@
 package gov.cms.qpp.conversion.api.config;
 
+
 import com.amazonaws.SdkClientException;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Spy;
@@ -15,19 +16,19 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(AmazonS3ClientBuilder.class)
-public class S3ConfigTest {
+@PrepareForTest(AWSKMSClientBuilder.class)
+public class KmsConfigTest {
 
 	@Spy
-	S3Config underTest = new S3Config();
+	KmsConfig underTest = new KmsConfig();
 
 	@Test
 	public void testConfig() {
-		mockStatic(AmazonS3ClientBuilder.class);
-		when(AmazonS3ClientBuilder.defaultClient()).thenThrow(new SdkClientException("meep"));
+		mockStatic(AWSKMSClientBuilder.class);
+		when(AWSKMSClientBuilder.defaultClient()).thenThrow(new SdkClientException("meep"));
 		doAnswer(invocationOnMock -> null).when(underTest).planB();
 
-		underTest.s3client();
+		underTest.awsKms();
 		verify(underTest, times(1)).planB();
 	}
 
