@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.AttributeTransformer;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -75,7 +77,15 @@ public class DynamoDbConfigTest {
 	}
 
 	@Test
-	public void testConfig() {
+	public void testDefaultClient() {
+		mockStatic(AmazonDynamoDBClientBuilder.class);
+		when(AmazonDynamoDBClientBuilder.defaultClient()).thenReturn(Mockito.mock(AmazonDynamoDB.class));
+		Assert.assertNotNull(underTest.dynamoDbClient());
+		verify(underTest, times(0)).planB();
+	}
+
+	@Test
+	public void testRegionClient() {
 		mockStatic(AmazonDynamoDBClientBuilder.class);
 		when(AmazonDynamoDBClientBuilder.defaultClient()).thenThrow(new SdkClientException("meep"));
 		doAnswer(invocationOnMock -> null).when(underTest).planB();
