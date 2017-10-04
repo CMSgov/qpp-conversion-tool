@@ -11,7 +11,7 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 
 /**
- * Spring configuration file.
+ * Spring configuration file for Amazon S3.
  *
  * Configures {@link Bean}s associated with S3.
  */
