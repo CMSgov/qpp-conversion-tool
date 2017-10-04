@@ -4,6 +4,7 @@ import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.Before;
@@ -39,22 +40,22 @@ public class MeasureDataDecoderTest {
 
 	@Test
 	public void testDecodeOfDenomMeasureData() {
-		sharedTest("DENOM");
+		sharedTest(SubPopulations.DENOM);
 	}
 
 	@Test
 	public void testDecodeOfNumerMeasureData() {
-		sharedTest("NUMER");
+		sharedTest(SubPopulations.NUMER);
 	}
 
 	@Test
 	public void testDecodeOfDenexMeasureData() {
-		sharedTest("DENEX");
+		sharedTest(SubPopulations.DENEX);
 	}
 
 	@Test
 	public void testDecodeOfDenexcepMeasureData() {
-		sharedTest("DENEXCEP");
+		sharedTest(SubPopulations.DENEXCEP);
 	}
 
 	private void sharedTest(String type) {
@@ -65,13 +66,4 @@ public class MeasureDataDecoderTest {
 		assertThat("Should have an aggregate count child",
 				measure.getChildNodes().get(0).getType(), is(TemplateId.ACI_AGGREGATE_COUNT));
 	}
-
-	@Test
-	public void testIgnoreOfUnmappedMeasureData() throws XmlException {
-		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder(context);
-		Node placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
-
-		assertThat("Should have four children", placeholder.getChildNodes(), hasSize(4));
-	}
-
 }

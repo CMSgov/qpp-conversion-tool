@@ -14,3 +14,4 @@ services:
         splunk-insecureskipverify: "true"
         splunk-format: "json"
         splunk-verify-connection: "false"
+    restart: always

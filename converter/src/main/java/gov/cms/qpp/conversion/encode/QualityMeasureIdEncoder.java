@@ -9,14 +9,11 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-
-import java.util.Arrays;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -32,7 +29,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
 	private static final String TRUE = "true";
-	private static final String NUMER = "NUMER";
 
 	public QualityMeasureIdEncoder(Context context) {
 		super(context);
@@ -180,7 +176,6 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	private void encodeSubPopulation(Node parentNode, JsonWrapper childWrapper, boolean isMultiRate,
 		final MeasureConfig measureConfig) {
-		this.encodePopulationTotal(childWrapper, parentNode);
 		this.encodePerformanceMet(childWrapper, parentNode);
 		this.encodePerformanceNotMet(childWrapper, parentNode);
 
@@ -196,32 +191,13 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	}
 
 	/**
-	 * Encodes a population total from a initial population node
-	 *
-	 * @param wrapper holder of the encoded initial population
-	 * @param parentNode holder of the initial population
-	 */
-	private void encodePopulationTotal(JsonWrapper wrapper, Node parentNode) {
-		Set<String> accepted = new HashSet<>(Arrays.asList("IPOP", "IPP"));
-		Node populationNode = parentNode.findChildNode(n -> accepted.contains(n.getValue(TYPE)));
-
-		Optional.ofNullable(populationNode).ifPresent(
-			node -> {
-				Node aggCount = node.getChildNodes().get(0);
-				maintainContinuity(wrapper, aggCount, "populationTotal");
-				wrapper.putInteger("populationTotal", aggCount.getValue(AGGREGATE_COUNT));
-			}
-		);
-	}
-
-	/**
 	 * Encodes a performance met from a numerator node
 	 *
 	 * @param wrapper holder of the encoded numerator node
 	 * @param parentNode holder of the the numerator node
 	 */
 	private void encodePerformanceMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> NUMER.equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulations.NUMER.equals(n.getValue(TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 			node -> {
 				Node aggCount = node.getChildNodes().get(0);
@@ -239,7 +215,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param measureConfig The measure configuration for the current measure.
 	 */
 	private void encodeStratum(JsonWrapper wrapper, Node parentNode, final MeasureConfig measureConfig) {
-		Node numeratorNode = parentNode.findChildNode(n -> NUMER.equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulations.NUMER.equals(n.getValue(TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 				node -> {
 					maintainContinuity(wrapper, node, "stratum");
@@ -273,10 +249,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the denominator and denominator exclusion nodes
 	 */
 	private void encodePerformanceNotMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> NUMER.equals(n.getValue(TYPE)));
-		Node denominatorNode = parentNode.findChildNode(n -> "DENOM".equals(n.getValue(TYPE)));
-		Node denomExclusionNode = parentNode.findChildNode(n -> "DENEX".equals(n.getValue(TYPE)));
-		Node denomExceptionNode = parentNode.findChildNode(n -> "DENEXCEP".equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulations.NUMER.equals(n.getValue(TYPE)));
+		Node denominatorNode = parentNode.findChildNode(n -> SubPopulations.DENOM.equals(n.getValue(TYPE)));
+		Node denomExclusionNode = parentNode.findChildNode(n -> SubPopulations.DENEX.equals(n.getValue(TYPE)));
+		Node denomExceptionNode = parentNode.findChildNode(n -> SubPopulations.DENEXCEP.equals(n.getValue(TYPE)));
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
 				node -> {

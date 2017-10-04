@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
@@ -21,6 +22,7 @@ public class PerformanceRateProportionMeasureDecoderTest {
 
 	private Context context;
 	private Node placeholder;
+	private Node performanceRateNode;
 
 	@BeforeClass
 	public static void setup() throws IOException {
@@ -31,25 +33,28 @@ public class PerformanceRateProportionMeasureDecoderTest {
 	@Before
 	public void before() throws XmlException {
 		decodeNodeFromFile(happy);
+		performanceRateNode = getNode();
 	}
 
 	@Test
-	public void testSuccessfulPerformanceRate() {
-		Stream<Node> performanceRateNodes = getNodeStream();
-		performanceRateNodes.forEach(node ->
-				assertThat("Must contain correct value",
-						node.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE), is("0.947368"))
-		);
+	public void testPerformanceRateValueSuccess() {
+		assertThat("Must contain the correct value",
+				performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE), is("0.947368"));
+	}
+
+	@Test
+	public void testPerformanceRateUuidSuccess() {
+		final String performanceRateId = "6D01A564-58CC-4CF5-929F-B83583701BFE";
+		assertThat("Must contain the correct UUID",
+				performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID), is(performanceRateId));
 	}
 
 	@Test
 	public void testSuccessfulNullPerformanceRate() throws XmlException {
 		decodeNodeFromFile(nullHappy);
-		Stream<Node> performanceRateNodes = getNodeStream();
-		performanceRateNodes.forEach(node ->
-				assertThat("Must contain correct value",
-						node.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE), is("NA"))
-		);
+		performanceRateNode = getNode();
+		assertThat("Must contain the correct value",
+				performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE), is("NA"));
 	}
 
 	private void decodeNodeFromFile(String filename) throws XmlException {
@@ -58,8 +63,7 @@ public class PerformanceRateProportionMeasureDecoderTest {
 		placeholder = decoder.decode(XmlUtils.stringToDom(filename));
 	}
 
-	private Stream<Node> getNodeStream() {
-		return placeholder.getChildNodes(
-				node -> node.getType().equals(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE));
+	private Node getNode() {
+		return placeholder.findFirstNode(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 	}
 }
