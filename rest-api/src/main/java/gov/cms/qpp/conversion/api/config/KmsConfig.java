@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.config;
 
 import com.amazonaws.SdkClientException;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import gov.cms.qpp.conversion.api.model.Constants;
@@ -46,6 +47,6 @@ public class KmsConfig {
 	 * @return The KMS client.
 	 */
 	AWSKMS planB() {
-		return AWSKMSClientBuilder.standard().withRegion("us-east-1").build();
+		return AWSKMSClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	}
 }

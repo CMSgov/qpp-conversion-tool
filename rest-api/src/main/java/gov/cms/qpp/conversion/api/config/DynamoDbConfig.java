@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.config;
 
 import com.amazonaws.SdkClientException;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.AttributeEncryptor;
@@ -67,7 +68,7 @@ public class DynamoDbConfig {
 	 * @return The DynamoDB client.
 	 */
 	AmazonDynamoDB planB() {
-		return AmazonDynamoDBClientBuilder.standard().withRegion("us-east-1").build();
+		return AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	}
 
 	/**

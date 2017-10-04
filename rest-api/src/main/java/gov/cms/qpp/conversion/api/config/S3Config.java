@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.config;
 
 
 import com.amazonaws.SdkClientException;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.transfer.TransferManager;
@@ -49,7 +50,7 @@ public class S3Config {
 	 * @return The S3 client.
 	 */
 	AmazonS3 planB() {
-		return AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
+		return AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	}
 
 	/**
