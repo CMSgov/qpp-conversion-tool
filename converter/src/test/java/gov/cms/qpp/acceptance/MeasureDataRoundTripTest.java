@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,22 +37,22 @@ public class MeasureDataRoundTripTest {
 
 	@Test
 	public void decodeDenomMeasureDataAsNode() throws Exception {
-		test("DENOM");
+		test(SubPopulations.DENOM);
 	}
 
 	@Test
 	public void decodeNumerMeasureDataAsNode() throws Exception {
-		test("NUMER");//performanceMet
+		test(SubPopulations.NUMER);//performanceMet
 	}
 
 	@Test
 	public void decodeDenexMeasureDataAsNode() throws Exception {
-		test("DENEX");//eligiblePopulationExclusion
+		test(SubPopulations.DENEX);//eligiblePopulationExclusion
 	}
 
 	@Test
 	public void decodeDenexcepMeasureDataAsNode() throws Exception {
-		test("DENEXCEP");//eligiblePopulationException
+		test(SubPopulations.DENEXCEP);//eligiblePopulationException
 	}
 
 	private void test(String type) throws Exception {
