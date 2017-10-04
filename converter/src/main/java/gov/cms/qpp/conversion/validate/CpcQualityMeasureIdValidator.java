@@ -26,7 +26,7 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATIO
 @Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, program = Program.CPC)
 public class CpcQualityMeasureIdValidator extends NodeValidator {
 
-	protected static final String INVALID_PERFORMANCE_RATE_COUNT =
+	static final String INVALID_PERFORMANCE_RATE_COUNT =
 			"Must contain correct number of performance rate(s). Correct Number is %s";
 	static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
 	static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d "
@@ -70,6 +70,7 @@ public class CpcQualityMeasureIdValidator extends NodeValidator {
 		return suppliers;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void verifyMeasureData(Node child, Set<Map<String, Object>> subHashes) {
 		String measureDataType = child.getValue(MeasureDataDecoder.MEASURE_TYPE);
 		String measureDataUuid = child.getValue(MeasureDataDecoder.MEASURE_POPULATION);
