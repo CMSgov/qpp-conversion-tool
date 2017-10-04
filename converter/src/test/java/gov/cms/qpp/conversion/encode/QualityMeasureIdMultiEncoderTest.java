@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -59,11 +60,6 @@ public class QualityMeasureIdMultiEncoderTest {
 
 	@Before
 	public void setUp() {
-		String ipop = "IPOP";
-		String denexcep = "DENEXCEP";
-		String numer = "NUMER";
-		String denom = "DENOM";
-		String denex = "DENEX";
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue(MEASURE_ID, "test1");
 
@@ -71,53 +67,53 @@ public class QualityMeasureIdMultiEncoderTest {
 		aggregateCountNode.putValue("aggregateCount", "600");
 
 		eligiblePopulationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationNode.putValue(TYPE, ipop);
+		eligiblePopulationNode.putValue(TYPE, SubPopulations.IPOP);
 		eligiblePopulationNode.putValue(POPULATION_ID, "ipop1");
 		eligiblePopulationNode.addChildNode(aggregateCountNode);
 
 		eligiblePopulationNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationNodeTwo.putValue(TYPE, ipop);
+		eligiblePopulationNodeTwo.putValue(TYPE, SubPopulations.IPOP);
 		eligiblePopulationNodeTwo.putValue(POPULATION_ID, "ipop2");
 		eligiblePopulationNodeTwo.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExclusionNode.putValue(TYPE, denex);
+		eligiblePopulationExclusionNode.putValue(TYPE, SubPopulations.DENEX);
 		eligiblePopulationExclusionNode.putValue(POPULATION_ID, "denex1");
 		eligiblePopulationExclusionNode.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExclusionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExclusionNodeTwo.putValue(TYPE, denex);
+		eligiblePopulationExclusionNodeTwo.putValue(TYPE, SubPopulations.DENEX);
 		eligiblePopulationExclusionNodeTwo.putValue(POPULATION_ID, "denex2");
 		eligiblePopulationExclusionNodeTwo.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExceptionNode.putValue(TYPE, denexcep);
+		eligiblePopulationExceptionNode.putValue(TYPE, SubPopulations.DENEXCEP);
 		eligiblePopulationExceptionNode.putValue(POPULATION_ID, "denexcep1");
 		eligiblePopulationExceptionNode.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExceptionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExceptionNodeTwo.putValue(TYPE, denexcep);
+		eligiblePopulationExceptionNodeTwo.putValue(TYPE, SubPopulations.DENEXCEP);
 		eligiblePopulationExceptionNodeTwo.putValue(POPULATION_ID, "denexcep2");
 		eligiblePopulationExceptionNodeTwo.addChildNode(aggregateCountNode);
 
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 
-		numeratorNode.putValue(TYPE, numer);
+		numeratorNode.putValue(TYPE, SubPopulations.NUMER);
 		numeratorNode.putValue(POPULATION_ID, "numer1");
 		numeratorNode.addChildNode(aggregateCountNode);
 
 		numeratorNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		numeratorNodeTwo.putValue(TYPE, numer);
+		numeratorNodeTwo.putValue(TYPE, SubPopulations.NUMER);
 		numeratorNodeTwo.putValue(POPULATION_ID, "numer2");
 		numeratorNodeTwo.addChildNode(aggregateCountNode);
 
 		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denominatorNode.putValue(TYPE, denom);
+		denominatorNode.putValue(TYPE, SubPopulations.DENOM);
 		denominatorNode.putValue(POPULATION_ID, "denom1");
 		denominatorNode.addChildNode(aggregateCountNode);
 
 		denominatorNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denominatorNodeTwo.putValue(TYPE, denom);
+		denominatorNodeTwo.putValue(TYPE, SubPopulations.DENOM);
 		denominatorNodeTwo.putValue(POPULATION_ID, "denom2");
 		denominatorNodeTwo.addChildNode(aggregateCountNode);
 
