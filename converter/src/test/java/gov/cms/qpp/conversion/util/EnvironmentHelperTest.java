@@ -34,13 +34,4 @@ public class EnvironmentHelperTest {
 		System.setProperty(someKey, "nothing important");
 		Assert.assertTrue(EnvironmentHelper.isPresent(someKey));
 	}
-
-	@Test
-	public void testGetIntOnSystemProperty() {
-		String someKey = UUID.randomUUID().toString();
-		System.setProperty(someKey, "9");
-
-		Assert.assertEquals(9, EnvironmentHelper.getInt(someKey, -1));
-	}
-
 }

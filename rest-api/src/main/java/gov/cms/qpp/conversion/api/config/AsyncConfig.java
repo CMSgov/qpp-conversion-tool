@@ -18,7 +18,6 @@ public class AsyncConfig {
 
 	public static final String USE_SYNC_EXECUTOR = "USE_SYNC_EXECUTOR";
 	public static final String POOL_SIZE_VARIABLE = "SERVICE_THREAD_POOL_SIZE";
-	public static final int DEFAULT_POOL_SIZE = 5;
 	public static final String POOLED_THREAD_PREFIX = "QppConversionRestApi-";
 
 	/**
@@ -33,7 +32,7 @@ public class AsyncConfig {
 		}
 
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(getPoolSize());
+		executor.setCorePoolSize(5);
 		executor.setThreadNamePrefix(POOLED_THREAD_PREFIX);
 		executor.initialize();
 		return executor;
@@ -42,9 +41,4 @@ public class AsyncConfig {
 	private boolean isSync() {
 		return EnvironmentHelper.isPresent(USE_SYNC_EXECUTOR);
 	}
-
-	private int getPoolSize() {
-		return EnvironmentHelper.getInt(POOL_SIZE_VARIABLE, DEFAULT_POOL_SIZE);
-	}
-
 }
