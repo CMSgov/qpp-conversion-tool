@@ -1,0 +1,11 @@
+package gov.cms.qpp.conversion.api.model;
+
+public class Constants {
+	public static final String API_LOG = "API_LOG";
+	public static final String DYNAMO_TABLE_NAME_ENV_VARIABLE = "DYNAMO_TABLE_NAME";
+	public static final String KMS_KEY_ENV_VARIABLE = "KMS_KEY";
+	public static final String NO_AUDIT_ENV_VARIABLE = "NO_AUDIT";
+	public static final String BUCKET_NAME = "BUCKET_NAME";
+	public static final String SUBMISSION_API_TOKEN_ENV_VARIABLE = "SUBMISSION_API_TOKEN";
+	public static final String VALIDATION_URL_ENV_VARIABLE = "VALIDATION_URL";
+}

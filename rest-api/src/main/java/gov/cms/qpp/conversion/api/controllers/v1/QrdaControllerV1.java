@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.InputStreamQrdaSource;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -28,7 +29,7 @@ import java.io.IOException;
 @RequestMapping("/")
 @CrossOrigin
 public class QrdaControllerV1 {
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
+	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
 	@Autowired
 	private QrdaService qrdaService;

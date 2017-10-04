@@ -10,6 +10,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
 import com.amazonaws.services.kms.AWSKMS;
+import gov.cms.qpp.conversion.api.model.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -30,7 +31,7 @@ import static gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory.createDyna
 @Configuration
 public class DynamoDbConfig {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
+	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 	static final String DYNAMO_TABLE_NAME_ENV_VARIABLE = "DYNAMO_TABLE_NAME";
 	static final String KMS_KEY_ENV_VARIABLE = "KMS_KEY";
 	static final String NO_AUDIT_ENV_VARIABLE = "NO_AUDIT";

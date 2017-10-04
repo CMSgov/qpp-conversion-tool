@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -29,7 +30,7 @@ import java.nio.charset.Charset;
  */
 @Service
 public class ValidationServiceImpl implements ValidationService {
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
+	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 	static final String SUBMISSION_API_TOKEN = "SUBMISSION_API_TOKEN";
 	static final String VALIDATION_URL_ENV_NAME = "VALIDATION_URL";
 	static final String CONTENT_TYPE = "application/json";

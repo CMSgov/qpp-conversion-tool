@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
+import gov.cms.qpp.conversion.api.model.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class StorageServiceImpl extends InOrderAsyncActionService<PutObjectRequest, String>
 		implements StorageService {
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
+	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 	static final String BUCKET_NAME = "BUCKET_NAME";
 
 	@Autowired

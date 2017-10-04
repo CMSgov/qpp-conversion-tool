@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 public class DbServiceImpl extends AnyOrderAsyncActionService<Metadata, Metadata>
 		implements DbService {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
+	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
 	private static final String NO_AUDIT_ENV_VARIABLE = "NO_AUDIT";
 
