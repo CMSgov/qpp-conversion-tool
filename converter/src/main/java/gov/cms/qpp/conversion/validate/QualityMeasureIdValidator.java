@@ -184,10 +184,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 						.orElse(null);
 
 				if (existingUuidChild == null) {
-					MeasureConfig config =
-						MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-					String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key, check.get());
-					this.getDetails().add(new Detail(message, node.getPath()));
+					addMeasureConfigurationValidationMessage(check, key, node);
 				}
 			}
 		};

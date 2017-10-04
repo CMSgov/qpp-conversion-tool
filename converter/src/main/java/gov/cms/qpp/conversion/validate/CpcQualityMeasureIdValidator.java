@@ -19,6 +19,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.SINGLE_MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.SINGLE_MEASURE_TYPE;
 
 /**
  * Validates a Measure Reference Results for CPC Plus requirements
@@ -87,11 +90,18 @@ public class CpcQualityMeasureIdValidator extends NodeValidator {
 		String measureDataType = child.getValue(MeasureDataDecoder.MEASURE_TYPE);
 		String measureDataUuid = child.getValue(MeasureDataDecoder.MEASURE_POPULATION);
 
+		thoroughlyCheck(child)
+				.incompleteValidation()
+				.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE)
+				.singleValue(SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
+
 		subHashes.stream()
-				.filter(hash -> measureDataUuid.equals(hash.get(measureDataType)))
+				.filter(hash -> {
+
+						return measureDataUuid.equals(hash.get(measureDataType));
+				})
 				.map(hash -> (List<String>) hash.get("strata"))
-				.findFirst()
-				.ifPresent(strata -> strataCheck(child, strata));
+				.forEach(strata -> strataCheck(child, strata));
 	}
 
 	/**

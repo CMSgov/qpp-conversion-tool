@@ -52,6 +52,7 @@ public class CpcPlusRoundTripTest {
 					converter.transform();
 					successesThatShouldBeErrors.add(entry);
 				} catch (TransformException expected) {
+					System.out.println();
 				}
 			}
 		}
