@@ -17,7 +17,6 @@ import gov.cms.qpp.conversion.util.EnvironmentHelper;
 public class AsyncConfig {
 
 	public static final String USE_SYNC_EXECUTOR = "USE_SYNC_EXECUTOR";
-	public static final String POOL_SIZE_VARIABLE = "SERVICE_THREAD_POOL_SIZE";
 	public static final String POOLED_THREAD_PREFIX = "QppConversionRestApi-";
 
 	/**
