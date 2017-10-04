@@ -11,5 +11,6 @@ public class Constants {
 	public static final String BUCKET_NAME_ENV_VARIABLE = "BUCKET_NAME";
 	public static final String SUBMISSION_API_TOKEN_ENV_VARIABLE = "SUBMISSION_API_TOKEN";
 	public static final String VALIDATION_URL_ENV_VARIABLE = "VALIDATION_URL";
+	public static final String USE_SYNC_EXECUTOR = "USE_SYNC_EXECUTOR";
 	public static final String V1_API_ACCEPT = "application/vnd.qpp.cms.gov.v1+json";
 }
