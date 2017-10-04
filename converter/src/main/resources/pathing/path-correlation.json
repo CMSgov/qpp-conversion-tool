@@ -231,6 +231,13 @@
 						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@nullFlavor",
 						"xmltype": "attribute"
 					}
+				},
+				{
+					"decodeLabel": "performanceRateUuid",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'reference' and namespace-uri() = '<nsuri>']/*[local-name() = 'externalObservation' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>']/@root",
+						"xmltype": "attribute"
+					}
 				}
 			]
 		},
