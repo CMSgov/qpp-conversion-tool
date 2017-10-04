@@ -58,6 +58,12 @@ public class CpcQualityMeasureIdValidator extends NodeValidator {
 				.forEach(child -> verifyMeasureData(child, subHashes));
 	}
 
+	/**
+	 * Low order access to sub population properties.
+	 *
+	 * @param sub SubPopulation to hash
+	 * @return hash of {@link SubPopulation}
+	 */
 	private Map<String, Object> getSuppliers(SubPopulation sub) {
 		Map<String, Object> suppliers = new HashMap<>();
 		suppliers.put("DENEXCEP", sub.getDenominatorExceptionsUuid());
@@ -70,6 +76,12 @@ public class CpcQualityMeasureIdValidator extends NodeValidator {
 		return suppliers;
 	}
 
+	/**
+	 * Match measure data to appropriate sub population id and search measure data node for required strata.
+	 *
+	 * @param child measure data node
+	 * @param subHashes hash of sub population properties
+	 */
 	@SuppressWarnings("unchecked")
 	private void verifyMeasureData(Node child, Set<Map<String, Object>> subHashes) {
 		String measureDataType = child.getValue(MeasureDataDecoder.MEASURE_TYPE);
