@@ -21,8 +21,6 @@ public class DbServiceImpl extends AnyOrderAsyncActionService<Metadata, Metadata
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
-	private static final String NO_AUDIT_ENV_VARIABLE = "NO_AUDIT";
-
 	@Autowired
 	private DynamoDBMapper mapper;
 
@@ -40,7 +38,7 @@ public class DbServiceImpl extends AnyOrderAsyncActionService<Metadata, Metadata
 	 */
 	public CompletableFuture<Metadata> write(Metadata meta) {
 
-		String noAudit = environment.getProperty(NO_AUDIT_ENV_VARIABLE);
+		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 
 		if (noAudit != null && !noAudit.isEmpty()) {
 			API_LOG.info("Not writing audit information.");
