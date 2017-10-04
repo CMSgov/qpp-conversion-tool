@@ -32,7 +32,6 @@ import static gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory.createDyna
 public class DynamoDbConfig {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
-	static final String DYNAMO_TABLE_NAME_ENV_VARIABLE = "DYNAMO_TABLE_NAME";
 	static final String KMS_KEY_ENV_VARIABLE = "KMS_KEY";
 	static final String NO_AUDIT_ENV_VARIABLE = "NO_AUDIT";
 	static final String NO_KMS_KEY = "No KMS key specified!";
@@ -94,7 +93,7 @@ public class DynamoDbConfig {
 		DynamoDBMapper dynamoDbMapper;
 
 		final Optional<String> kmsKey = getOptionalProperty(KMS_KEY_ENV_VARIABLE);
-		final Optional<String> tableName = getOptionalProperty(DYNAMO_TABLE_NAME_ENV_VARIABLE);
+		final Optional<String> tableName = getOptionalProperty(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE);
 		final Optional<String> noAudit = getOptionalProperty(NO_AUDIT_ENV_VARIABLE);
 
 		if (!noAudit.isPresent()) {
