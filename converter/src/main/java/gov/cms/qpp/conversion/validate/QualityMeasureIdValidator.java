@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
@@ -30,8 +31,7 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
  */
 @Validator(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdValidator extends NodeValidator {
-	private static final  String[] IPOP_KEYS = {"IPP", "IPOP"};
-	protected static final Set<String> IPOP = Arrays.stream(IPOP_KEYS)
+	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
 			.collect(Collectors.toSet());
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
 
@@ -151,8 +151,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
 				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX"),
 				makeValidator(subPopulation::getNumeratorUuid, "NUMER"),
-				makeValidator(subPopulation::getDenominatorUuid, "DENOM"),
-				makeValidator(subPopulation::getInitialPopulationUuid, IPOP_KEYS));
+				makeValidator(subPopulation::getDenominatorUuid, "DENOM"));
 
 		validations.forEach(validate -> validate.accept(node));
 
@@ -163,14 +162,14 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * Method template for measure validations.
 	 *
 	 * @param check a property existence check
-	 * @param keys that identify measures
+	 * @param key that identifies measure
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	private Consumer<Node> makeValidator(Supplier<Object> check, String... keys) {
+	private Consumer<Node> makeValidator(Supplier<Object> check, String key) {
 		return node -> {
 			if (check.get() != null) {
-				Predicate<Node> childTypeFinder = makeTypeChildFinder(keys);
+				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
 				Predicate<Node> childUuidFinder = makeUuidChildFinder(check);
 
 				Node existingUuidChild = node
@@ -183,7 +182,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 				if (existingUuidChild == null) {
 					MeasureConfig config =
 						MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-					String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), String.join(",", keys), check.get());
+					String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key, check.get());
 					this.getDetails().add(new Detail(message, node.getPath()));
 				}
 			}
