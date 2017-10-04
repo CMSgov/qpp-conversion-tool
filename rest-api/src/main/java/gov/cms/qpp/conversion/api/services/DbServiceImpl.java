@@ -20,7 +20,7 @@ public class DbServiceImpl extends AnyOrderAsyncActionService<Metadata, Metadata
 
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 
-	private static final String KMS_KEY_ENV_VARIABLE = "KMS_KEY";
+	private static final String NO_AUDIT_ENV_VARIABLE = "NO_AUDIT";
 
 	@Autowired
 	private DynamoDBMapper mapper;
@@ -39,10 +39,10 @@ public class DbServiceImpl extends AnyOrderAsyncActionService<Metadata, Metadata
 	 */
 	public CompletableFuture<Metadata> write(Metadata meta) {
 
-		String kmsKey = environment.getProperty(KMS_KEY_ENV_VARIABLE);
+		String noAudit = environment.getProperty(NO_AUDIT_ENV_VARIABLE);
 
-		if (kmsKey == null || kmsKey.isEmpty()) {
-			API_LOG.warn("The KMS key is unspecified. Not writing to DynamoDB.");
+		if (noAudit != null && !noAudit.isEmpty()) {
+			API_LOG.info("Not writing audit information.");
 			return CompletableFuture.completedFuture(new Metadata());
 		}
 

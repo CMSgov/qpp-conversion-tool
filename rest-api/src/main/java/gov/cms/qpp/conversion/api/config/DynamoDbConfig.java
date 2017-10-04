@@ -12,6 +12,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.Direc
 import com.amazonaws.services.kms.AWSKMS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,8 @@ public class DynamoDbConfig {
 	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
 	static final String DYNAMO_TABLE_NAME_ENV_VARIABLE = "DYNAMO_TABLE_NAME";
 	static final String KMS_KEY_ENV_VARIABLE = "KMS_KEY";
+	static final String NO_AUDIT_ENV_VARIABLE = "NO_AUDIT";
+	static final String NO_KMS_KEY = "No KMS key specified!";
 
 	@Autowired
 	private Environment environment;
@@ -91,27 +94,28 @@ public class DynamoDbConfig {
 
 		final Optional<String> kmsKey = getOptionalProperty(KMS_KEY_ENV_VARIABLE);
 		final Optional<String> tableName = getOptionalProperty(DYNAMO_TABLE_NAME_ENV_VARIABLE);
+		final Optional<String> noAudit = getOptionalProperty(NO_AUDIT_ENV_VARIABLE);
 
-		if (tableName.isPresent() && kmsKey.isPresent()) {
-			API_LOG.info("Using DynamoDB table name {} and KMS key {}.", tableName, kmsKey);
-			dynamoDbMapper = createDynamoDbMapper(
-				dynamoDbClient,
-				tableNameOverrideConfig(tableName.get()),
-				encryptionTransformer(kmsKey.get()));
-		} else if (tableName.isPresent()) {
-			API_LOG.warn("Using DynamoDB table name {}, but no encryption specified.", tableName);
-			dynamoDbMapper = createDynamoDbMapper(
-				dynamoDbClient,
-				tableNameOverrideConfig(tableName.get()));
-		} else if (kmsKey.isPresent()) {
-			API_LOG.warn("Using KMS key {}, but no DynamoDB table name specified.", tableName);
-			dynamoDbMapper = createDynamoDbMapper(
-				dynamoDbClient,
-				getDynamoDbMapperConfig(),
-				encryptionTransformer(kmsKey.get()));
+		if (!noAudit.isPresent()) {
+			if (tableName.isPresent() && kmsKey.isPresent()) {
+				API_LOG.info("Using DynamoDB table name {} and KMS key {}.", tableName, kmsKey);
+				dynamoDbMapper = createDynamoDbMapper(
+					dynamoDbClient,
+					tableNameOverrideConfig(tableName.get()),
+					encryptionTransformer(kmsKey.get()));
+			} else if (kmsKey.isPresent()) {
+				API_LOG.warn("Using KMS key {}, but no DynamoDB table name specified.", tableName);
+				dynamoDbMapper = createDynamoDbMapper(
+					dynamoDbClient,
+					getDynamoDbMapperConfig(),
+					encryptionTransformer(kmsKey.get()));
+			} else {
+				API_LOG.error(NO_KMS_KEY + " This is a fatal error.");
+				throw new BeanInitializationException(NO_KMS_KEY);
+			}
 		} else {
-			API_LOG.warn("No DynamoDB table name nor encryption are specified.");
-			dynamoDbMapper = createDynamoDbMapper(dynamoDbClient);
+			API_LOG.info("Will not save any audit information.");
+			dynamoDbMapper = null;
 		}
 
 		return dynamoDbMapper;

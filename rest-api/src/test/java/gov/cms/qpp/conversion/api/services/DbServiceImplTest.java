@@ -50,8 +50,8 @@ public class DbServiceImplTest {
 	}
 
 	@Test
-	public void testWrite() {
-		when(environment.getProperty("KMS_KEY")).thenReturn("demo_kms_key");
+	public void testWriteByNull() {
+		when(environment.getProperty("NO_AUDIT")).thenReturn(null);
 
 		Metadata meta = writeMeta();
 
@@ -60,21 +60,18 @@ public class DbServiceImplTest {
 	}
 
 	@Test
-	public void testNoWriteBecauseEmptyKmsKey() {
-		when(environment.getProperty("KMS_KEY")).thenReturn("");
+	public void testWriteByEmpty() {
+		when(environment.getProperty("NO_AUDIT")).thenReturn("");
 
-		Metadata metadataIn = new Metadata();
-		metadataIn.setTin("testTin");
+		Metadata meta = writeMeta();
 
-		Metadata metadataOut = writeMeta(metadataIn);
-
-		verifyZeroInteractions(dbMapper);
-		assertThat("The returned metadata must be an empty metadata.", metadataOut, is(new Metadata()));
+		assertNotNull("metadata should not be null", meta);
+		verify(dbMapper, times(1)).save(any(Metadata.class));
 	}
 
 	@Test
-	public void testNoWriteBecauseNullKmsKey() {
-		when(environment.getProperty("KMS_KEY")).thenReturn(null);
+	public void testNoWriteBecauseNoAudit() {
+		when(environment.getProperty("NO_AUDIT")).thenReturn("trueOrSomething");
 
 		Metadata metadataIn = new Metadata();
 		metadataIn.setTin("testTin");
