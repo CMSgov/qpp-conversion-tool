@@ -23,7 +23,6 @@ import java.util.concurrent.CompletableFuture;
 public class StorageServiceImpl extends InOrderAsyncActionService<PutObjectRequest, String>
 		implements StorageService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
-	static final String BUCKET_NAME = "BUCKET_NAME";
 
 	@Autowired
 	private TransferManager s3TransferManager;
@@ -40,7 +39,7 @@ public class StorageServiceImpl extends InOrderAsyncActionService<PutObjectReque
 	 */
 	@Override
 	public CompletableFuture<String> store(String keyName, InputStream inStream) {
-		final String bucketName = environment.getProperty(BUCKET_NAME);
+		final String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
 		if (bucketName == null || bucketName.isEmpty()) {
 			API_LOG.warn("No bucket name is specified.");
 			return CompletableFuture.completedFuture("");

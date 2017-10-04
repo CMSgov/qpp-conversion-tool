@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
 import gov.cms.qpp.conversion.api.config.S3Config;
+import gov.cms.qpp.conversion.api.model.Constants;
 import net.jodah.concurrentunit.Waiter;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assume;
@@ -90,7 +91,7 @@ public class StorageServiceImplIntegration {
 		final String key = "submission";
 		final Waiter waiter = new Waiter();
 
-		when(environment.getProperty(eq(StorageServiceImpl.BUCKET_NAME))).thenReturn(bucketName);
+		when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 
 		CompletableFuture<String> result = underTest.store(
 				key, new ByteArrayInputStream(content.getBytes()));
