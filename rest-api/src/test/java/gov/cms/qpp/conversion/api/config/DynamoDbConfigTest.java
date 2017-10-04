@@ -89,7 +89,7 @@ public class DynamoDbConfigTest {
 	public void dbMapperNoAudit() {
 		when(environment.getProperty(eq(DynamoDbConfig.NO_AUDIT_ENV_VARIABLE))).thenReturn("true");
 		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn(null);
-		when(environment.getProperty(eq(DynamoDbConfig.KMS_KEY_ENV_VARIABLE))).thenReturn(null);
+		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(null);
 
 		DynamoDBMapper dynamoDBMapper = underTest.dynamoDbMapper(amazonDynamoDB);
 
@@ -100,7 +100,7 @@ public class DynamoDbConfigTest {
 	public void dbMapperInitWithNothing() throws Exception {
 		when(environment.getProperty(eq(DynamoDbConfig.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
 		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn(null);
-		when(environment.getProperty(eq(DynamoDbConfig.KMS_KEY_ENV_VARIABLE))).thenReturn("");
+		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn("");
 
 		thrown.expect(BeanInitializationException.class);
 		thrown.expectMessage(DynamoDbConfig.NO_KMS_KEY);
@@ -112,7 +112,7 @@ public class DynamoDbConfigTest {
 	public void dbMapperInitWithTableName() throws Exception {
 		when(environment.getProperty(eq(DynamoDbConfig.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
 		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn("meep");
-		when(environment.getProperty(eq(DynamoDbConfig.KMS_KEY_ENV_VARIABLE))).thenReturn(null);
+		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(null);
 
 		thrown.expect(BeanInitializationException.class);
 		thrown.expectMessage(DynamoDbConfig.NO_KMS_KEY);
@@ -124,7 +124,7 @@ public class DynamoDbConfigTest {
 	public void dbMapperInitWithKmsKey() throws Exception {
 		when(environment.getProperty(eq(DynamoDbConfig.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
 		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn(null);
-		when(environment.getProperty(eq(DynamoDbConfig.KMS_KEY_ENV_VARIABLE))).thenReturn("meep");
+		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn("meep");
 
 		mockStatic(DynamoDbConfigFactory.class);
 		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB, mapConfig, transformer);
@@ -139,7 +139,7 @@ public class DynamoDbConfigTest {
 	public void dbMapperInitWithKmsKeyAndTableName() throws Exception {
 		when(environment.getProperty(eq(DynamoDbConfig.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
 		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn("meep");
-		when(environment.getProperty(eq(DynamoDbConfig.KMS_KEY_ENV_VARIABLE))).thenReturn("meep");
+		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn("meep");
 
 		mockStatic(DynamoDbConfigFactory.class);
 		doReturn(dbMapper).when(DynamoDbConfigFactory.class, "createDynamoDbMapper", amazonDynamoDB, mapConfigNamed, transformer);
