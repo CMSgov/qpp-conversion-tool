@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion.api.model;
 
+/**
+ * Constants library for use within the ReST API.
+ */
 public class Constants {
 	public static final String API_LOG = "API_LOG";
 	public static final String DYNAMO_TABLE_NAME_ENV_VARIABLE = "DYNAMO_TABLE_NAME";
