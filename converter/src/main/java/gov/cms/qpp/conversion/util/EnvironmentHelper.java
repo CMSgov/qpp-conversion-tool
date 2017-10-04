@@ -28,7 +28,7 @@ public class EnvironmentHelper {
 			}
 		}
 
-		Integer parsed = Ints.tryParse(variable);
+		Integer parsed = Ints.tryParse(value);
 		return parsed == null ? defaultValue : parsed;
 	}
 }
