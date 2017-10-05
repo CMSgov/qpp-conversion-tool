@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.InputStreamQrdaSource;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -28,7 +29,7 @@ import java.io.IOException;
 @RequestMapping("/")
 @CrossOrigin
 public class QrdaControllerV1 {
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
+	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
 	@Autowired
 	private QrdaService qrdaService;
@@ -43,7 +44,7 @@ public class QrdaControllerV1 {
 	 * @return Valid json or error json content
 	 * @throws IOException If errors occur during file upload or conversion
 	 */
-	@RequestMapping(method = RequestMethod.POST, headers = {"Accept=application/vnd.qpp.cms.gov.v1+json"})
+	@RequestMapping(method = RequestMethod.POST, headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
 		API_LOG.info("Request received " + file.getName());
 		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(new InputStreamQrdaSource(file.getName(), file.getInputStream()));

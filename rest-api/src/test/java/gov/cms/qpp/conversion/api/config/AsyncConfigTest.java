@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.config;
 
+import gov.cms.qpp.conversion.api.model.Constants;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,7 @@ public class AsyncConfigTest extends PropertiesTestSuite {
 
 	@Test
 	public void testIsSyncIfPropertyIsPresent() {
-		System.setProperty(AsyncConfig.USE_SYNC_EXECUTOR, "anything blah blah blah");
+		System.setProperty(Constants.USE_SYNC_EXECUTOR, "anything blah blah blah");
 		TaskExecutor executor = config.taskExecutor();
 		Assert.assertTrue("Executor should be SyncExecutor, was " + executor, executor instanceof SyncTaskExecutor);
 	}
