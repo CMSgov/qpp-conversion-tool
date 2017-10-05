@@ -76,7 +76,7 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 */
 	private Node getDenominatorNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
 		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
-				"DENOM".equals(thisNode.getValue(MEASURE_TYPE))
+				SubPopulations.DENOM.equals(thisNode.getValue(MEASURE_TYPE))
 						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
 	}
