@@ -58,18 +58,15 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	}
 
 	@Override
-	protected void validateSubPopulation(Node node, SubPopulation subPopulation) {
-		List<Consumer<Node>> validations =
-				Arrays.asList(makeValidator(
-						subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulations.DENEXCEP),
-						makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulations.DENEX),
-						makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulations.NUMER),
-						makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulations.DENOM),
-						makeValidator(subPopulation, subPopulation::getInitialPopulationUuid,
-								SubPopulations.IPOP, SubPopulations.IPP),
-						makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
-
-		validations.forEach(validate -> validate.accept(node));
+	List<Consumer<Node>> prepValidations(SubPopulation subPopulation) {
+		return Arrays.asList(
+				makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulations.DENEXCEP),
+				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulations.DENEX),
+				makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulations.NUMER),
+				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulations.DENOM),
+				makeValidator(subPopulation, subPopulation::getInitialPopulationUuid,
+						SubPopulations.IPOP, SubPopulations.IPP),
+				makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
 	}
 
 	/**
