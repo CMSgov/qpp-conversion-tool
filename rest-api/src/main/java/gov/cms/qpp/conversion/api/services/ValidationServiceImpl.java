@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -29,9 +30,7 @@ import java.nio.charset.Charset;
  */
 @Service
 public class ValidationServiceImpl implements ValidationService {
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
-	static final String SUBMISSION_API_TOKEN = "SUBMISSION_API_TOKEN";
-	static final String VALIDATION_URL_ENV_NAME = "VALIDATION_URL";
+	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 	static final String CONTENT_TYPE = "application/json";
 
 
@@ -47,7 +46,7 @@ public class ValidationServiceImpl implements ValidationService {
 	 */
 	@Override
 	public void validateQpp(final JsonWrapper qpp) {
-		String validationUrl = environment.getProperty(VALIDATION_URL_ENV_NAME);
+		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
 
 		if (validationUrl == null || validationUrl.isEmpty()) {
 			return;
@@ -87,7 +86,7 @@ public class ValidationServiceImpl implements ValidationService {
 		headers.add(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE);
 		headers.add(HttpHeaders.ACCEPT, CONTENT_TYPE);
 
-		String submissionToken = environment.getProperty(SUBMISSION_API_TOKEN);
+		String submissionToken = environment.getProperty(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE);
 		if (submissionToken != null && !submissionToken.isEmpty()) {
 			headers.add(HttpHeaders.AUTHORIZATION,
 					"Bearer " + submissionToken);

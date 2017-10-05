@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.config;
 
 import com.amazonaws.SdkClientException;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.AttributeEncryptor;
@@ -10,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
 import com.amazonaws.services.kms.AWSKMS;
+import gov.cms.qpp.conversion.api.model.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -30,10 +32,7 @@ import static gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory.createDyna
 @Configuration
 public class DynamoDbConfig {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
-	static final String DYNAMO_TABLE_NAME_ENV_VARIABLE = "DYNAMO_TABLE_NAME";
-	static final String KMS_KEY_ENV_VARIABLE = "KMS_KEY";
-	static final String NO_AUDIT_ENV_VARIABLE = "NO_AUDIT";
+	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 	static final String NO_KMS_KEY = "No KMS key specified!";
 
 	@Autowired
@@ -69,7 +68,7 @@ public class DynamoDbConfig {
 	 * @return The DynamoDB client.
 	 */
 	AmazonDynamoDB planB() {
-		return AmazonDynamoDBClientBuilder.standard().withRegion("us-east-1").build();
+		return AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	}
 
 	/**
@@ -92,9 +91,9 @@ public class DynamoDbConfig {
 	public DynamoDBMapper dynamoDbMapper(AmazonDynamoDB dynamoDbClient) {
 		DynamoDBMapper dynamoDbMapper;
 
-		final Optional<String> kmsKey = getOptionalProperty(KMS_KEY_ENV_VARIABLE);
-		final Optional<String> tableName = getOptionalProperty(DYNAMO_TABLE_NAME_ENV_VARIABLE);
-		final Optional<String> noAudit = getOptionalProperty(NO_AUDIT_ENV_VARIABLE);
+		final Optional<String> kmsKey = getOptionalProperty(Constants.KMS_KEY_ENV_VARIABLE);
+		final Optional<String> tableName = getOptionalProperty(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE);
+		final Optional<String> noAudit = getOptionalProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 
 		if (!noAudit.isPresent()) {
 			if (tableName.isPresent() && kmsKey.isPresent()) {

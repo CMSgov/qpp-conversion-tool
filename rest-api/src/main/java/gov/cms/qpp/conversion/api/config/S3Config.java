@@ -1,14 +1,16 @@
 package gov.cms.qpp.conversion.api.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import com.amazonaws.SdkClientException;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
+import gov.cms.qpp.conversion.api.model.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Spring configuration file for Amazon S3.
@@ -18,7 +20,7 @@ import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 @Configuration
 public class S3Config {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
+	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
 	/**
 	 * Creates the S3 client {@link Bean}.
@@ -43,7 +45,7 @@ public class S3Config {
 	 * @return The S3 client.
 	 */
 	AmazonS3 planB() {
-		return AmazonS3ClientBuilder.standard().withRegion("us-east-1").build();
+		return AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	}
 
 	/**
