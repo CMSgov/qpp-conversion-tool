@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.hamcrest.core.IsNot.not;
+
 public class SubPopulationsTest {
 
 	@Test
@@ -16,6 +18,19 @@ public class SubPopulationsTest {
 		Assert.assertThat(SubPopulations.getKeys(),
 				Matchers.containsInAnyOrder(SubPopulations.DENEXCEP, SubPopulations.DENEX,
 						SubPopulations.DENOM, SubPopulations.NUMER, SubPopulations.IPOP));
+	}
+
+	@Test
+	public void testGetExclusiveKeysExcludesExpected() {
+		Assert.assertThat(SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulations.DENEXCEP)),
+				not(Matchers.contains(SubPopulations.DENEXCEP)));
+	}
+
+	@Test
+	public void testGetExclusiveKeysIncludesOthers() {
+		Assert.assertThat(SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulations.DENEX)),
+				Matchers.containsInAnyOrder(SubPopulations.DENEXCEP, SubPopulations.DENOM,
+						SubPopulations.NUMER, SubPopulations.IPOP));
 	}
 
 	@Test(expected = NullPointerException.class)

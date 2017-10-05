@@ -250,7 +250,15 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		};
 	}
 
-	protected void followUpHook(Node node, SubPopulation sub){}
+	/**
+	 * Validator hook to allow implementor the opportunity to perform sub population validations.
+	 *
+	 * @param node a {@link TemplateId#MEASURE_DATA_CMS_V2} node
+	 * @param sub corresponding sub population
+	 */
+	protected void followUpHook(Node node, SubPopulation sub){
+		//Default implementation
+	}
 
 	/**
 	 * Method for Performance Rate Uuid validations
