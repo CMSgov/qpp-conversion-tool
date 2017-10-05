@@ -5,13 +5,9 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.google.common.base.CharMatcher.isNot;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.validationErrorTextMatches;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertFalse;
 
 public class CpcQualityMeasureIdValidatorTest {
 	private CpcQualityMeasureIdValidator validator;

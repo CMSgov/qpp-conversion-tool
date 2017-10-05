@@ -10,7 +10,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.xml.XmlException;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
