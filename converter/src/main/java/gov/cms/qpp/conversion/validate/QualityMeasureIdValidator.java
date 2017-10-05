@@ -1,11 +1,8 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
-import gov.cms.qpp.conversion.decode.StratifierDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
@@ -15,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -32,8 +30,8 @@ import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDeco
 /**
  * Validates a Measure Reference Results node.
  */
-@Validator(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
-public class QualityMeasureIdValidator extends NodeValidator {
+abstract class QualityMeasureIdValidator extends NodeValidator {
+	Set<String> subPopulationExclusions = Collections.emptySet();
 	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
 			.collect(Collectors.toSet());
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
@@ -50,9 +48,6 @@ public class QualityMeasureIdValidator extends NodeValidator {
 					+ "for an eCQM that is proportion measure";
 	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
 			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
-	static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
-	static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d "
-			+ "for %s measure (%s). Expected strata: %s";
 	public static final String INCORRECT_UUID =
 			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
 	public static final String SINGLE_PERFORMANCE_RATE =
@@ -76,8 +71,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		//This should not be an error
 
 		thoroughlyCheck(node)
-			.singleValue(MEASURE_GUID_MISSING, MEASURE_ID)
-			.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
+				.singleValue(MEASURE_GUID_MISSING, MEASURE_ID)
+				.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
 
@@ -114,7 +109,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			return;
 		}
 
-		SubPopulations.getKeys().forEach(key -> validateChildTypeCount(subPopulations, key, node));
+		SubPopulations.getExclusiveKeys(subPopulationExclusions)
+				.forEach(key -> validateChildTypeCount(subPopulations, key, node));
 
 		for (SubPopulation subPopulation : subPopulations) {
 			validateSubPopulation(node, subPopulation);
@@ -122,188 +118,19 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	}
 
 	/**
-	 * Validates that given subpopulations have the correct number of a given type
-	 *
-	 * @param subPopulations The subpopulations to test against
-	 * @param key The type to check
-	 * @param node The node in which the child nodes live
-	 */
-	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
-		long expectedChildTypeCount = subPopulations.stream()
-				.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
-				.filter(Objects::nonNull)
-				.count();
-
-		Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
-		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
-
-		if (expectedChildTypeCount != actualChildTypeCount) {
-			MeasureConfig config =
-					MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-			String message = String.format(INCORRECT_POPULATION_CRITERIA_COUNT,
-					config.getElectronicMeasureId(), expectedChildTypeCount, key, actualChildTypeCount);
-			this.getDetails().add(new Detail(message, node.getPath()));
-		}
-	}
-
-	/**
 	 * Validate individual sub-populations.
 	 *
-	 * @param node to validate
+	 * @param node          to validate
 	 * @param subPopulation a grouping of measures
 	 */
 	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
-
-		List<Consumer<Node>> validations =
-			Arrays.asList(
-				makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulations.DENEXCEP),
-				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulations.DENEX),
-				makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulations.NUMER),
-				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulations.DENOM),
-				makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
-
-
+		List<Consumer<Node>> validations = prepValidations(subPopulation);
 		validations.forEach(validate -> validate.accept(node));
 
 		validateDenomCountToIpopCount(node, subPopulation);
 	}
 
-	/**
-	 * Method template for measure validations.
-	 *
-	 * @param check a property existence check
-	 * @param key that identify measures
-	 * @return a callback / consumer that will perform a measure specific validation against a given
-	 * node.
-	 */
-	private Consumer<Node> makeValidator(SubPopulation sub, Supplier<Object> check, String key) {
-		return node -> {
-			if (check.get() != null) {
-				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
-				Predicate<Node> childUuidFinder =
-						makeUuidChildFinder(check, SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
-
-				Node existingUuidChild = node
-						.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
-						.filter(childTypeFinder)
-						.filter(childUuidFinder)
-						.findFirst()
-						.orElse(null);
-
-				if (existingUuidChild == null) {
-					addMeasureConfigurationValidationMessage(check, key, node);
-				} else {
-					strataCheck(existingUuidChild, sub);
-				}
-			}
-		};
-	}
-
-	/**
-	 * Method for Performance Rate Uuid validations
-	 *
-	 * @param check a property existence check
-	 * @param key that identify measures
-	 * @return a callback / consumer that will perform a measure specific validation against a given
-	 * node.
-	 */
-	private Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String key) {
-		return node -> {
-			if (check.get() != null) {
-				Predicate<Node> childUuidFinder =
-						makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
-
-				Node existingUuidChild = node
-						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-						.filter(childUuidFinder)
-						.findFirst()
-						.orElse(null);
-
-				if (existingUuidChild == null) {
-					addMeasureConfigurationValidationMessage(check, key, node);
-				}
-			}
-		};
-	}
-
-	/**
-	 * Adds a validation error message for a specified measure configuration
-	 *
-	 * @param check Current SubPopulation to be validated
-	 * @param key Identifier for the current measures child
-	 * @param node Contains the current child nodes
-	 */
-	private void addMeasureConfigurationValidationMessage(Supplier<Object> check, String key, Node node) {
-		MeasureConfig config =
-			MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-		String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key, check.get());
-		this.getDetails().add(new Detail(message, node.getPath()));
-	}
-
-	/**
-	 * Creates a {@link Predicate} which takes a node and tests whether the measure type is equal to the given measure type.
-	 * Also validates that it's the only measure type in the given node.
-	 *
-	 * @param populationCriteriaType measure type i.e. "DENOM", "NUMER", ...
-	 * @return predicate that filters measure nodes by measure type
-	 */
-	private Predicate<Node> makeTypeChildFinder(String populationCriteriaType) {
-		return thisNode -> {
-			thoroughlyCheck(thisNode)
-				.incompleteValidation()
-				.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE);
-			return populationCriteriaType.equals(thisNode.getValue(MEASURE_TYPE));
-		};
-	}
-
-	/**
-	 * Creates a {@link Predicate} which takes a node and tests whether the measure population is equal to the given unique id
-	 *
-	 * @param uuid Supplies a unique id to test against
-	 * @param message Supplies a unique error message to use
-	 * @param name Supplies a node field validate on
-	 * @return
-	 */
-	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, String message, String name) {
-		return thisNode -> {
-			thoroughlyCheck(thisNode)
-				.incompleteValidation()
-				.singleValue(message, name);
-			return uuid.get().equals(thisNode.getValue(name));
-		};
-	}
-
-	/**
-	 * Validate measure strata
-	 *
-	 * @param node measure node
-	 * @param sub sub population constituent ids
-	 */
-	private void strataCheck(Node node, SubPopulation sub) {
-
-		List<Node> strataNodes = node.getChildNodes(TemplateId.REPORTING_STRATUM_CMS)
-				.collect(Collectors.toList());
-
-		if (strataNodes.size() != sub.getStrata().size()) {
-			String message = String.format(STRATA_MISMATCH, strataNodes.size(), sub.getStrata().size(),
-					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
-					node.getValue(MeasureDataDecoder.MEASURE_POPULATION),
-					sub.getStrata());
-			this.getDetails().add(new Detail(message, node.getPath()));
-		}
-
-		sub.getStrata().forEach(strata -> {
-			Predicate<Node> seek = child ->
-					child.getValue(StratifierDecoder.STRATIFIER_ID).equals(strata);
-
-			if (strataNodes.stream().noneMatch(seek)) {
-				String message = String.format(MISSING_STRATA, strata,
-						node.getValue(MeasureDataDecoder.MEASURE_TYPE),
-						node.getValue(MeasureDataDecoder.MEASURE_POPULATION));
-				this.getDetails().add(new Detail(message, node.getPath()));
-			}
-		});
-	}
+	abstract List<Consumer<Node>> prepValidations(SubPopulation subPopulation);
 
 	/**
 	 * Validation check for Denominator and Numerator counts of the same Sub Population
@@ -365,5 +192,146 @@ public class QualityMeasureIdValidator extends NodeValidator {
 						AggregateCountDecoder.AGGREGATE_COUNT)
 				.lessThanOrEqualTo(REQUIRE_VALID_DENOMINATOR_COUNT,
 						Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
+	}
+
+	/**
+	 * Validates that given subpopulations have the correct number of a given type
+	 *
+	 * @param subPopulations The subpopulations to test against
+	 * @param key The type to check
+	 * @param node The node in which the child nodes live
+	 */
+	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
+		long expectedChildTypeCount = subPopulations.stream()
+				.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
+				.filter(Objects::nonNull)
+				.count();
+
+		Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
+		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
+
+		if (expectedChildTypeCount != actualChildTypeCount) {
+			MeasureConfig config =
+					MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+			String message = String.format(INCORRECT_POPULATION_CRITERIA_COUNT,
+					config.getElectronicMeasureId(), expectedChildTypeCount, key, actualChildTypeCount);
+			this.getDetails().add(new Detail(message, node.getPath()));
+		}
+	}
+
+	/**
+	 * Method template for measure validations.
+	 *
+	 * @param check a property existence check
+	 * @param keys that identify measure
+	 * @return a callback / consumer that will perform a measure specific validation against a given
+	 * node.
+	 */
+	Consumer<Node> makeValidator(SubPopulation sub, Supplier<Object> check, String... keys) {
+		return node -> {
+			if (check.get() != null) {
+				Predicate<Node> childTypeFinder = makeTypeChildFinder(keys);
+				Predicate<Node> childUuidFinder =
+						makeUuidChildFinder(check, SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
+
+				Node existingUuidChild = node
+						.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
+						.filter(childTypeFinder)
+						.filter(childUuidFinder)
+						.findFirst()
+						.orElse(null);
+
+				if (existingUuidChild == null) {
+					addMeasureConfigurationValidationMessage(check, keys, node);
+				} else {
+					followUpHook(existingUuidChild, sub);
+				}
+			}
+		};
+	}
+
+	/**
+	 * Validator hook to allow implementor the opportunity to perform sub population validations.
+	 *
+	 * @param node a {@link TemplateId#MEASURE_DATA_CMS_V2} node
+	 * @param sub corresponding sub population
+	 */
+	protected void followUpHook(Node node, SubPopulation sub){
+		//Default implementation
+	}
+
+	/**
+	 * Method for Performance Rate Uuid validations
+	 *
+	 * @param check a property existence check
+	 * @param keys that identify measures
+	 * @return a callback / consumer that will perform a measure specific validation against a given
+	 * node.
+	 */
+	Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String... keys) {
+		return node -> {
+			if (check.get() != null) {
+				Predicate<Node> childUuidFinder =
+						makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
+
+				Node existingUuidChild = node
+						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
+						.filter(childUuidFinder)
+						.findFirst()
+						.orElse(null);
+
+				if (existingUuidChild == null) {
+					addMeasureConfigurationValidationMessage(check, keys, node);
+				}
+			}
+		};
+	}
+
+	/**
+	 * Adds a validation error message for a specified measure configuration
+	 *
+	 * @param check Current SubPopulation to be validated
+	 * @param keys Identifiers for the current measures child
+	 * @param node Contains the current child nodes
+	 */
+	private void addMeasureConfigurationValidationMessage(Supplier<Object> check, String[] keys, Node node) {
+		MeasureConfig config =
+				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+		String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(),
+				String.join(",", Arrays.asList(keys)), check.get());
+		this.getDetails().add(new Detail(message, node.getPath()));
+	}
+
+	/**
+	 * Creates a {@link Predicate} which takes a node and tests whether the measure type is equal to the given measure type.
+	 * Also validates that it's the only measure type in the given node.
+	 *
+	 * @param populationCriteriaTypes measure type i.e. "DENOM", "NUMER", ...
+	 * @return predicate that filters measure nodes by measure type
+	 */
+	private Predicate<Node> makeTypeChildFinder(String... populationCriteriaTypes) {
+		return thisNode -> {
+			thoroughlyCheck(thisNode)
+					.incompleteValidation()
+					.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE);
+			return Arrays.asList(populationCriteriaTypes).contains(thisNode.getValue(MEASURE_TYPE));
+		};
+	}
+
+	/**
+	 * Creates a {@link Predicate} which takes a node and tests whether the measure population is equal to the given unique id
+	 *
+	 * @param uuid Supplies a unique id to test against
+	 * @param message Supplies a unique error message to use
+	 * @param name Supplies a node field validate on
+	 * @return predicate seeking a matching uuid
+	 */
+	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, String message, String name) {
+		return thisNode -> {
+			thoroughlyCheck(thisNode)
+					.incompleteValidation()
+					.singleValue(message, name);
+			return uuid.get().equals(thisNode.getValue(name));
+		};
 	}
 }
