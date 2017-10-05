@@ -1,9 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
@@ -13,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -30,8 +29,9 @@ import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDeco
 /**
  * Validates a Measure Reference Results node.
  */
-@Validator(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
-public class QualityMeasureIdValidator extends NodeValidator {
+//@Validator(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
+abstract class QualityMeasureIdValidator extends NodeValidator {
+	protected Set<String> subPopulationExclusions = Collections.emptySet();
 	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
 			.collect(Collectors.toSet());
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
@@ -71,8 +71,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 		//This should not be an error
 
 		thoroughlyCheck(node)
-			.singleValue(MEASURE_GUID_MISSING, MEASURE_ID)
-			.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
+				.singleValue(MEASURE_GUID_MISSING, MEASURE_ID)
+				.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
 
@@ -81,7 +81,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 *
 	 * @param node to validate
 	 */
-	private void validateMeasureConfigs(Node node) {
+	protected void validateMeasureConfigs(Node node) {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 		String value = node.getValue(MEASURE_ID);
 		MeasureConfig measureConfig = configurationMap.get(value);
@@ -109,7 +109,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 			return;
 		}
 
-		SubPopulations.getKeys().forEach(key -> validateChildTypeCount(subPopulations, key, node));
+		SubPopulations.getExclusiveKeys(subPopulationExclusions)
+				.forEach(key -> validateChildTypeCount(subPopulations, key, node));
 
 		for (SubPopulation subPopulation : subPopulations) {
 			validateSubPopulation(node, subPopulation);
@@ -123,7 +124,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * @param key The type to check
 	 * @param node The node in which the child nodes live
 	 */
-	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
+	protected void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
 		long expectedChildTypeCount = subPopulations.stream()
 				.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
 				.filter(Objects::nonNull)
@@ -147,32 +148,20 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node to validate
 	 * @param subPopulation a grouping of measures
 	 */
-	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
-
-		List<Consumer<Node>> validations =
-			Arrays.asList(makeValidator(subPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
-				makeValidator(subPopulation::getDenominatorExclusionsUuid, "DENEX"),
-				makeValidator(subPopulation::getNumeratorUuid, "NUMER"),
-				makeValidator(subPopulation::getDenominatorUuid, "DENOM"),
-				makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
-
-		validations.forEach(validate -> validate.accept(node));
-
-		validateDenomCountToIpopCount(node, subPopulation);
-	}
+	protected abstract void validateSubPopulation(Node node, SubPopulation subPopulation);
 
 	/**
 	 * Method template for measure validations.
 	 *
 	 * @param check a property existence check
-	 * @param key that identifies measure
+	 * @param keys that identify measure
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	private Consumer<Node> makeValidator(Supplier<Object> check, String key) {
+	protected Consumer<Node> makeValidator(SubPopulation sub, Supplier<Object> check, String... keys) {
 		return node -> {
 			if (check.get() != null) {
-				Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
+				Predicate<Node> childTypeFinder = makeTypeChildFinder(keys);
 				Predicate<Node> childUuidFinder =
 						makeUuidChildFinder(check, SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
 
@@ -184,21 +173,25 @@ public class QualityMeasureIdValidator extends NodeValidator {
 						.orElse(null);
 
 				if (existingUuidChild == null) {
-					addMeasureConfigurationValidationMessage(check, key, node);
+					addMeasureConfigurationValidationMessage(check, keys, node);
+				} else {
+					followUpHook(existingUuidChild, sub);
 				}
 			}
 		};
 	}
 
+	protected void followUpHook(Node node, SubPopulation sub){}
+
 	/**
 	 * Method for Performance Rate Uuid validations
 	 *
 	 * @param check a property existence check
-	 * @param key that identify measures
+	 * @param keys that identify measures
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	private Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String key) {
+	protected Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String... keys) {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childUuidFinder =
@@ -211,7 +204,7 @@ public class QualityMeasureIdValidator extends NodeValidator {
 						.orElse(null);
 
 				if (existingUuidChild == null) {
-					addMeasureConfigurationValidationMessage(check, key, node);
+					addMeasureConfigurationValidationMessage(check, keys, node);
 				}
 			}
 		};
@@ -221,13 +214,14 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	 * Adds a validation error message for a specified measure configuration
 	 *
 	 * @param check Current SubPopulation to be validated
-	 * @param key Identifier for the current measures child
+	 * @param keys Identifiers for the current measures child
 	 * @param node Contains the current child nodes
 	 */
-	private void addMeasureConfigurationValidationMessage(Supplier<Object> check, String key, Node node) {
+	private void addMeasureConfigurationValidationMessage(Supplier<Object> check, String[] keys, Node node) {
 		MeasureConfig config =
-			MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-		String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(), key, check.get());
+				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+		String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(),
+				String.join(",", Arrays.asList(keys)), check.get());
 		this.getDetails().add(new Detail(message, node.getPath()));
 	}
 
@@ -241,8 +235,8 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private Predicate<Node> makeTypeChildFinder(String... populationCriteriaTypes) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
-				.incompleteValidation()
-				.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE);
+					.incompleteValidation()
+					.singleValue(SINGLE_MEASURE_TYPE, MEASURE_TYPE);
 			return Arrays.asList(populationCriteriaTypes).contains(thisNode.getValue(MEASURE_TYPE));
 		};
 	}
@@ -258,71 +252,9 @@ public class QualityMeasureIdValidator extends NodeValidator {
 	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, String message, String name) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
-				.incompleteValidation()
-				.singleValue(message, name);
+					.incompleteValidation()
+					.singleValue(message, name);
 			return uuid.get().equals(thisNode.getValue(name));
 		};
-	}
-
-	/**
-	 * Validation check for Denominator and Numerator counts of the same Sub Population
-	 *
-	 * @param node The current parent node
-	 * @param subPopulation the current sub population
-	 */
-	private void validateDenomCountToIpopCount(Node node, SubPopulation subPopulation) {
-		Node denomNode = getDenominatorNodeFromCurrentSubPopulation(node, subPopulation);
-
-		Node ipopNode = getIpopNodeFromCurrentSubPopulation(node, subPopulation);
-
-		if (denomNode != null && ipopNode != null) {
-			Node denomCount = denomNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
-			Node ipopCount = ipopNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
-
-			validateDenominatorCount(denomCount, ipopCount);
-		}
-	}
-
-	/**
-	 * Retrieves the Denominator from the current Sub Population given
-	 *
-	 * @param node The current parent node
-	 * @param subPopulation The current sub population holding the denominator UUID
-	 * @return the denominator node filtered by sub population or null if not found
-	 */
-	private Node getDenominatorNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
-		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
-				"DENOM".equals(thisNode.getValue(MEASURE_TYPE))
-						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
-				.findFirst().orElse(null);
-	}
-
-	/**
-	 * Retrieves the Initial Population from the current Sub Population given
-	 *
-	 * @param node The current parent node
-	 * @param subPopulation The current sub population holding the initial population UUID
-	 * @return the initial population node filtered by sub population or null if not found
-	 */
-	private Node getIpopNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
-		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
-				(IPOP.contains(thisNode.getValue(MEASURE_TYPE)))
-						&& subPopulation.getInitialPopulationUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
-				.findFirst().orElse(null);
-	}
-
-	/**
-	 * Performs a validation on the Denominator node's aggregate count to the Initial Population node's aggregate count
-	 *
-	 * @param denomCount Aggregate Count node of denominator
-	 * @param ipopCount Aggregate Count node of initial population
-	 */
-	private void validateDenominatorCount(Node denomCount, Node ipopCount) {
-		thoroughlyCheck(denomCount)
-				.incompleteValidation()
-				.intValue(AggregateCountValidator.TYPE_ERROR,
-						AggregateCountDecoder.AGGREGATE_COUNT)
-				.lessThanOrEqualTo(REQUIRE_VALID_DENOMINATOR_COUNT,
-						Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
 	}
 }

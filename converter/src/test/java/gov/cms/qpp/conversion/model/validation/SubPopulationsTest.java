@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model.validation;
 
+import com.google.common.collect.Sets;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,7 +13,8 @@ public class SubPopulationsTest {
 
 	@Test
 	public void testGetKeysContainsExpected() {
-		Assert.assertThat(SubPopulations.getKeys(), Matchers.containsInAnyOrder("DENEXCEP", "DENEX", "DENOM", "NUMER"));
+		Assert.assertThat(SubPopulations.getKeys(),
+				Matchers.containsInAnyOrder("DENEXCEP", "DENEX", "DENOM", "NUMER", "IPOP"));
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -43,7 +45,7 @@ public class SubPopulationsTest {
 		subPopulation.setDenominatorUuid(expected.get("DENOM"));
 		subPopulation.setNumeratorUuid(expected.get("NUMER"));
 
-		for (String key : SubPopulations.getKeys()) {
+		for (String key : SubPopulations.getExclusiveKeys(Sets.newHashSet("IPOP", "IPP"))) {
 			Assert.assertEquals(expected.get(key), SubPopulations.getUniqueIdForKey(key, subPopulation));
 		}
 	}

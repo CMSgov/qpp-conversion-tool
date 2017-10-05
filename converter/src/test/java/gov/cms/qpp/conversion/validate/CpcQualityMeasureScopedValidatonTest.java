@@ -10,6 +10,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.xml.XmlException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.validate.CpcQualityMeasureIdValidator.MISSING_STRATA;
 import static gov.cms.qpp.conversion.validate.CpcQualityMeasureIdValidator.STRATA_MISMATCH;
+import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.INCORRECT_UUID;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -86,6 +88,16 @@ public class CpcQualityMeasureScopedValidatonTest {
 				hasValidationErrorsIgnoringPath(getMessages("IPOP",
 						"EC2C5F63-AF76-4D3C-85F0-5423F8C28541",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051")));
+	}
+
+	@Test
+	public void validateCms137V5FailMissingMeasure() throws IOException, XmlException {
+		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5_MissingMeasure.xml");
+		Set<Detail> details = validateNode(result);
+		String message = String.format(INCORRECT_UUID, "CMS137v5", "IPOP,IPP", "EC2C5F63-AF76-4D3C-85F0-5423F8C28541");
+
+		assertThat("Missing CMS137v5 IPOP strata should result in errors", details,
+				hasValidationErrorsIgnoringPath(message));
 	}
 
 	private void removeMeasureStrata(Node parent, String type) {
