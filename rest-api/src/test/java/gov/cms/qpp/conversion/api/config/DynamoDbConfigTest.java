@@ -15,6 +15,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -22,6 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.core.env.Environment;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -76,7 +78,15 @@ public class DynamoDbConfigTest {
 	}
 
 	@Test
-	public void testConfig() {
+	public void testDefaultClient() {
+		mockStatic(AmazonDynamoDBClientBuilder.class);
+		when(AmazonDynamoDBClientBuilder.defaultClient()).thenReturn(Mockito.mock(AmazonDynamoDB.class));
+		assertNotNull(underTest.dynamoDbClient());
+		verify(underTest, times(0)).planB();
+	}
+
+	@Test
+	public void testRegionClient() {
 		mockStatic(AmazonDynamoDBClientBuilder.class);
 		when(AmazonDynamoDBClientBuilder.defaultClient()).thenThrow(new SdkClientException("meep"));
 		doAnswer(invocationOnMock -> null).when(underTest).planB();

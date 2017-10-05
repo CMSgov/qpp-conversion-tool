@@ -22,10 +22,18 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class S3ConfigTest {
 
 	@Spy
-	S3Config underTest = new S3Config();
+	private S3Config underTest = new S3Config();
 
 	@Test
-	public void testConfig() {
+	public void testDefaultClient() {
+		mockStatic(AmazonS3ClientBuilder.class);
+		when(AmazonS3ClientBuilder.defaultClient()).thenReturn(Mockito.mock(AmazonS3.class));
+		Assert.assertNotNull(underTest.s3client());
+		verify(underTest, times(0)).planB();
+	}
+
+	@Test
+	public void testRegionClient() {
 		mockStatic(AmazonS3ClientBuilder.class);
 		when(AmazonS3ClientBuilder.defaultClient()).thenThrow(new SdkClientException("meep"));
 		doAnswer(invocationOnMock -> null).when(underTest).planB();
@@ -35,15 +43,7 @@ public class S3ConfigTest {
 	}
 
 	@Test
-	public void testDefaultClientIsNotNull() {
-		mockStatic(AmazonS3ClientBuilder.class);
-		when(AmazonS3ClientBuilder.defaultClient()).thenReturn(Mockito.mock(AmazonS3.class));
-		Assert.assertNotNull(underTest.s3client());
-	}
-
-	@Test
 	public void testTransferManagerIsNotNull() {
 		Assert.assertNotNull(underTest.s3TransferManager(Mockito.mock(AmazonS3.class)));
 	}
-
 }
