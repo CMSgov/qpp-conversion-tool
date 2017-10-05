@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import org.junit.Test;
 
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
@@ -18,26 +19,26 @@ public class MeasureDataEncoderTest {
 
 	@Test
 	public void testDenominator() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode("DENOM");
+		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENOM);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION), is(900));
 	}
 	@Test
 	public void testEligiblePopulationException() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode("DENEXCEP");
+		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENEXCEP);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION_EXCEP), is(900));
 	}
 	@Test
 	public void testEligiblePopulationExclusion() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode("DENEX");
+		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENEX);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION_EX), is(900));
 	}
 
 	@Test
 	public void testPerformanceMet() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode("NUMER");
+		Node measureDataNode = setUpMeasureDataNode(SubPopulations.NUMER);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertThat("Must return correct encoded result", jsonWrapper.getInteger(PERFORMANCE_MET), is(900));
 	}

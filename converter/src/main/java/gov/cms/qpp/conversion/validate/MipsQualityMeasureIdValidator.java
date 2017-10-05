@@ -7,8 +7,7 @@ import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +22,6 @@ import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDeco
  */
 @Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, program = Program.MIPS)
 public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(MipsQualityMeasureIdValidator.class);
 
 	MipsQualityMeasureIdValidator() {
 		subPopulationExclusions = Sets.newHashSet("IPOP", "IPP");
@@ -39,10 +37,10 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	protected void validateSubPopulation(Node node, SubPopulation subPopulation) {
 
 		List<Consumer<Node>> validations =
-			Arrays.asList(makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, "DENEXCEP"),
-				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, "DENEX"),
-				makeValidator(subPopulation, subPopulation::getNumeratorUuid, "NUMER"),
-				makeValidator(subPopulation, subPopulation::getDenominatorUuid, "DENOM"),
+			Arrays.asList(makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulations.DENEXCEP),
+				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulations.DENEX),
+				makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulations.NUMER),
+				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulations.DENOM),
 				makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
 
 		validations.forEach(validate -> validate.accept(node));

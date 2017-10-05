@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.xml.XmlException;
 import org.junit.Test;
@@ -44,11 +45,11 @@ public class CpcQualityMeasureScopedValidatonTest {
 	@Test
 	public void validateCms137V5FailMissingDenomStrata() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, "DENOM");
+		removeMeasureStrata(result, SubPopulations.DENOM);
 		Set<Detail> details = validateNode(result);
 
 		assertThat("Missing CMS137v5 DENOM strata should result in errors", details,
-				hasValidationErrorsIgnoringPath(getMessages("DENOM",
+				hasValidationErrorsIgnoringPath(getMessages(SubPopulations.DENOM,
 						"BC948E65-B908-493B-B48B-04AC342D3E6C",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051")));
 	}
@@ -56,11 +57,11 @@ public class CpcQualityMeasureScopedValidatonTest {
 	@Test
 	public void validateCms137V5FailMissingDenexStrata() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, "DENEX");
+		removeMeasureStrata(result, SubPopulations.DENEX);
 		Set<Detail> details = validateNode(result);
 
 		assertThat("Missing CMS137v5 DENEX strata should result in errors", details,
-				hasValidationErrorsIgnoringPath(getMessages("DENEX",
+				hasValidationErrorsIgnoringPath(getMessages(SubPopulations.DENEX,
 						"56BC7FA2-C22A-4440-8652-2D3568852C60",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051")));
 	}
@@ -68,11 +69,11 @@ public class CpcQualityMeasureScopedValidatonTest {
 	@Test
 	public void validateCms137V5FailMissingNumerStrata() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, "NUMER");
+		removeMeasureStrata(result, SubPopulations.NUMER);
 		Set<Detail> details = validateNode(result);
 
 		assertThat("Missing CMS137v5 NUMER strata should result in errors", details,
-				hasValidationErrorsIgnoringPath(getMessages("NUMER",
+				hasValidationErrorsIgnoringPath(getMessages(SubPopulations.NUMER,
 						"0BBF8596-4CFE-47F4-A0D7-9BEAB94BA4CD",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051")));
 	}

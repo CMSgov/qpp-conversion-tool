@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.MipsQualityMeasureIdValidator;
 import org.hamcrest.CoreMatchers;
@@ -100,7 +101,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	@Test
 	public void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
 		String message = String.format(
-				MipsQualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, "DENOM", 2);
+				MipsQualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, SubPopulations.DENOM, 2);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 

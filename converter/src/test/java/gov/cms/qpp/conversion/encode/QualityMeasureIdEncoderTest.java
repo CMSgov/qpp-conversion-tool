@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,19 +36,19 @@ public class QualityMeasureIdEncoderTest {
 		aggregateCountNode.putValue("aggregateCount", "600");
 
 		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		populationNode.putValue(type, "IPOP");
+		populationNode.putValue(type, SubPopulations.IPOP);
 		populationNode.addChildNode(aggregateCountNode);
 
 		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denomExclusionNode.putValue(type, "DENEX");
+		denomExclusionNode.putValue(type, SubPopulations.DENEX);
 		denomExclusionNode.addChildNode(aggregateCountNode);
 
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		numeratorNode.putValue(type, "NUMER");
+		numeratorNode.putValue(type, SubPopulations.NUMER);
 		numeratorNode.addChildNode(aggregateCountNode);
 
 		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denominatorNode.putValue(type, "DENOM");
+		denominatorNode.putValue(type, SubPopulations.DENOM);
 		denominatorNode.addChildNode(aggregateCountNode);
 
 		encoder = new QualityMeasureIdEncoder(new Context());
@@ -84,7 +85,7 @@ public class QualityMeasureIdEncoderTest {
 	@Test
 	public void testPopulationAltTotalIsEncoded() {
 		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		populationNode.putValue(type, "IPP");
+		populationNode.putValue(type, SubPopulations.IPP);
 		populationNode.addChildNode(aggregateCountNode);
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();

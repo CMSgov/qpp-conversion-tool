@@ -14,7 +14,8 @@ public class SubPopulationsTest {
 	@Test
 	public void testGetKeysContainsExpected() {
 		Assert.assertThat(SubPopulations.getKeys(),
-				Matchers.containsInAnyOrder("DENEXCEP", "DENEX", "DENOM", "NUMER", "IPOP"));
+				Matchers.containsInAnyOrder(SubPopulations.DENEXCEP, SubPopulations.DENEX,
+						SubPopulations.DENOM, SubPopulations.NUMER, SubPopulations.IPOP);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -40,10 +41,10 @@ public class SubPopulationsTest {
 		}
 
 		SubPopulation subPopulation = new SubPopulation();
-		subPopulation.setDenominatorExceptionsUuid(expected.get("DENEXCEP"));
-		subPopulation.setDenominatorExclusionsUuid(expected.get("DENEX"));
-		subPopulation.setDenominatorUuid(expected.get("DENOM"));
-		subPopulation.setNumeratorUuid(expected.get("NUMER"));
+		subPopulation.setDenominatorExceptionsUuid(expected.get(SubPopulations.DENEXCEP));
+		subPopulation.setDenominatorExclusionsUuid(expected.get(SubPopulations.DENEX));
+		subPopulation.setDenominatorUuid(expected.get(SubPopulations.DENOM));
+		subPopulation.setNumeratorUuid(expected.get(SubPopulations.NUMER));
 
 		for (String key : SubPopulations.getExclusiveKeys(Sets.newHashSet("IPOP", "IPP"))) {
 			Assert.assertEquals(expected.get(key), SubPopulations.getUniqueIdForKey(key, subPopulation));
