@@ -15,7 +15,7 @@ public class SubPopulationsTest {
 	public void testGetKeysContainsExpected() {
 		Assert.assertThat(SubPopulations.getKeys(),
 				Matchers.containsInAnyOrder(SubPopulations.DENEXCEP, SubPopulations.DENEX,
-						SubPopulations.DENOM, SubPopulations.NUMER, SubPopulations.IPOP);
+						SubPopulations.DENOM, SubPopulations.NUMER, SubPopulations.IPOP));
 	}
 
 	@Test(expected = NullPointerException.class)

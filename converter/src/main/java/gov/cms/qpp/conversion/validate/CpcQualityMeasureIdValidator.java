@@ -45,7 +45,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	protected void internalValidateSingleNode(Node node) {
 		super.internalValidateSingleNode(node);
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
-		String value = node.getValue(MipsQualityMeasureIdValidator.MEASURE_ID);
+		String value = node.getValue(MEASURE_ID);
 		MeasureConfig measureConfig = configurationMap.get(value);
 		int requiredPerformanceRateCount = measureConfig.getStrata().size();
 
