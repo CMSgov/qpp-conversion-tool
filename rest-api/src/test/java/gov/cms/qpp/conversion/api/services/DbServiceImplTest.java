@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +52,7 @@ public class DbServiceImplTest {
 
 	@Test
 	public void testWriteByNull() {
-		when(environment.getProperty("NO_AUDIT")).thenReturn(null);
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 
 		Metadata meta = writeMeta();
 
@@ -61,7 +62,7 @@ public class DbServiceImplTest {
 
 	@Test
 	public void testWriteByEmpty() {
-		when(environment.getProperty("NO_AUDIT")).thenReturn("");
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("");
 
 		Metadata meta = writeMeta();
 
@@ -71,7 +72,7 @@ public class DbServiceImplTest {
 
 	@Test
 	public void testNoWriteBecauseNoAudit() {
-		when(environment.getProperty("NO_AUDIT")).thenReturn("trueOrSomething");
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("trueOrSomething");
 
 		Metadata metadataIn = new Metadata();
 		metadataIn.setTin("testTin");
