@@ -29,7 +29,6 @@ import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDeco
 /**
  * Validates a Measure Reference Results node.
  */
-//@Validator(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 abstract class QualityMeasureIdValidator extends NodeValidator {
 	protected Set<String> subPopulationExclusions = Collections.emptySet();
 	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
