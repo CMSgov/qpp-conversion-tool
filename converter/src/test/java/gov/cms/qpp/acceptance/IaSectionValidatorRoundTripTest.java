@@ -13,8 +13,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class IaSectionValidatorRoundTripTest {
 
@@ -32,8 +31,9 @@ public class IaSectionValidatorRoundTripTest {
 
 		String error = errors.getErrors().get(0).getDetails().get(0).getMessage();
 
-		assertThat("Must contain correct error message", error,
-				is(IaSectionValidator.WRONG_CHILD_ERROR));
+		assertWithMessage("Must contain correct error message")
+				.that(error)
+				.isEqualTo(IaSectionValidator.WRONG_CHILD_ERROR);
 	}
 
 	@Test
@@ -50,8 +50,9 @@ public class IaSectionValidatorRoundTripTest {
 
 		String error = errors.getErrors().get(0).getDetails().get(0).getMessage();
 
-		assertThat("Must contain correct error message", error,
-				is(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR));
+		assertWithMessage("Must contain correct error message")
+				.that(error)
+				.isEqualTo(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR);
 	}
 
 	@Test
@@ -69,7 +70,8 @@ public class IaSectionValidatorRoundTripTest {
 
 		String error = errors.getErrors().get(0).getDetails().get(0).getMessage();
 
-		assertThat("Must contain correct error message", error,
-				is(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR));
+		assertWithMessage("Must contain correct error message")
+				.that(error)
+				.isEqualTo(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 }

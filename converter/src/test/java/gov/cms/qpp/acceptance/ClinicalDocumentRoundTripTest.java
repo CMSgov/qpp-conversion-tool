@@ -1,7 +1,6 @@
 package gov.cms.qpp.acceptance;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.BufferedWriter;
 import java.io.InputStream;
@@ -54,7 +53,9 @@ public class ClinicalDocumentRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		assertThat("expected encoder to return a representation of a clinical document", sw.toString(), is(EXPECTED));
+		assertWithMessage("expected encoder to return a representation of a clinical document")
+				.that(sw.toString())
+				.isEqualTo(EXPECTED);
 	}
 
 }

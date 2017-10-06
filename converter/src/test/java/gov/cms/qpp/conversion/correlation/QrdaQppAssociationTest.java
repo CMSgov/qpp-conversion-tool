@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -29,7 +30,7 @@ public class QrdaQppAssociationTest {
 		mapper.mapIt("$", qpp.getObject());
 		mapper.writeAssociations();
 
-		assertThat("registered associations does not match expectation",
-				mapper.getAssociations().size(), is(60));
+		assertWithMessage("registered associations does not match expectation")
+				.that(mapper.getAssociations()).hasSize(60);
 	}
 }

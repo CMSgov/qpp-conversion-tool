@@ -13,8 +13,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciNumeratorDenominatorRoundTripTest {
 
@@ -98,8 +97,6 @@ public class AciNumeratorDenominatorRoundTripTest {
 
 		String xPathExpected = "/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'organizer' " +
 		                       "and namespace-uri() = 'urn:hl7-org:v3']";
-		assertThat("The XPath of the numerator denominator node is incorrect",
-		           numeratorDenominatorNode.getChildNodes().get(0).getPath(), is(xPathExpected));
 
 		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		List<Node> nodes = new ArrayList<>();
@@ -110,6 +107,13 @@ public class AciNumeratorDenominatorRoundTripTest {
 		encoder.encode(new BufferedWriter(sw));
 
 		String jsonExpected = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : 600,\n    \"denominator\" : 800\n  }\n}";
-		assertThat("expected encoder to return a representation of a measure", sw.toString(), is(jsonExpected));
+
+		assertWithMessage("The XPath of the numerator denominator node is incorrect")
+				.that(numeratorDenominatorNode.getChildNodes().get(0).getPath())
+				.isEqualTo(xPathExpected);
+
+		assertWithMessage("expected encoder to return a representation of a measure")
+		.that(sw.toString())
+		.isEqualTo(jsonExpected);
 	}
 }

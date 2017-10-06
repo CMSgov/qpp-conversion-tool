@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -19,7 +20,7 @@ public class PathCorrelatorTest {
 	public void pathCorrelatorInitilization() {
 		String xpath = PathCorrelator.getXpath(TemplateId.CLINICAL_DOCUMENT.name(),
 				ClinicalDocumentDecoder.PROGRAM_NAME, "meep");
-		assertThat("xpath should not be null", xpath, notNullValue());
+		assertWithMessage("xpath should not be null").that(xpath).isNotNull();
 	}
 
 	@Test(expected = PathCorrelationException.class)
@@ -45,8 +46,11 @@ public class PathCorrelatorTest {
 
 		int meepCount = (path.length() - path.replace(meep, "").length()) / meep.length();
 
-		assertThat("3 substitutions were expected", meepCount, is(3));
-		assertThat("No substitution placeholders should remain",
-				path.indexOf(PathCorrelator.getUriSubstitution()), is(-1));
+		assertWithMessage("3 substitutions were expected")
+				.that(meepCount)
+				.isEqualTo(3);
+		assertWithMessage("No substitution placeholders should remain")
+				.that(path.indexOf(PathCorrelator.getUriSubstitution()))
+				.isEqualTo(-1);
 	}
 }
