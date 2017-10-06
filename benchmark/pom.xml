@@ -122,7 +122,7 @@
 
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
-			<artifactId>extension-test-commons</artifactId>
+			<artifactId>test-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
