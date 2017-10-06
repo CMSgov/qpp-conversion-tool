@@ -6,8 +6,6 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
 
 /**
  * AciProportionDenominatorDecoderTest JUnit test for
@@ -25,7 +23,6 @@ public class AciProportionDenominatorDecoderTest {
 	 */
 	@Test
 	public void decodeACIProportionDenominatorAsNode() throws Exception {
-
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 				+ " <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
@@ -41,26 +38,27 @@ public class AciProportionDenominatorDecoderTest {
 				+ "</component>";
 		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
-		// This node is the place holder around the root node
-		assertWithMessage("returned node should not be null")
-				.that(root).isNotNull();
-
 		// For all decoders this should be either a value or child node
-		assertThat("returned node should have one child node", root.getChildNodes().size(), is(1));
+		assertWithMessage("returned node should have one child node")
+				.that(root.getChildNodes())
+				.hasSize(1);
+
 		// This is the child node that is produced by the intended decoder
 		Node aciProportionDenominatorNode = root.getChildNodes().get(0);
 		// Should have a aggregate count node
-		assertThat("returned node should have one child decoder node",
-				aciProportionDenominatorNode.getChildNodes().size(), is(1));
+		assertWithMessage("returned node should have one child decoder node")
+				.that(aciProportionDenominatorNode.getChildNodes())
+				.hasSize(1);
 		// This is stubbed node with the test value
 		Node target = aciProportionDenominatorNode.getChildNodes().get(0);
 		// Get the test value
-		assertThat("test value should be mytestvalue", target.getValue("aggregateCount"), is("800"));
+		assertWithMessage("test value should be mytestvalue")
+				.that(target.getValue("aggregateCount"))
+				.isEqualTo("800");
 	}
 
 	@Test
 	public void decodeInvalidACIProportionDenominatorAsNode() throws Exception {
-
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 			+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 			+ " <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
@@ -83,20 +81,19 @@ public class AciProportionDenominatorDecoderTest {
 			+ " </component>";
 		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
-		// This node is the place holder around the root node
-		assertThat("returned node should not be null", root, is(not(nullValue())));
-
 		// For all decoders this should be either a value or child node
-		assertThat("returned node should have one child node", root.getChildNodes().size(), is(2));
+		assertWithMessage("returned node should have one child node")
+				.that(root.getChildNodes()).hasSize(2);
 		// This is the child node that is produced by the intended decoder
 		Node aciProportionDenominatorNode = root.getChildNodes().get(0);
 		// Should have a aggregate count node
-		assertThat("returned node should have one child decoder node",
-				aciProportionDenominatorNode.getChildNodes().size(), is(1));
+		assertWithMessage("returned node should have one child decoder node")
+				.that(aciProportionDenominatorNode.getChildNodes()).hasSize(1);
 		// This is stubbed node with the test value
 		Node target = aciProportionDenominatorNode.getChildNodes().get(0);
 		// Get the test value
-		assertThat("test value should be mytestvalue", target.getValue("aggregateCount"), is("800"));
-			}
-
+		assertWithMessage("test value should be mytestvalue")
+				.that(target.getValue("aggregateCount"))
+				.isEqualTo("800");
+	}
 }
