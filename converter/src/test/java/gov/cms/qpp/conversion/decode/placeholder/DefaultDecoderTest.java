@@ -4,13 +4,11 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
+import org.apache.commons.io.IOUtils;
+import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 

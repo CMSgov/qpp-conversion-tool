@@ -6,17 +6,12 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.io.IOException;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
 
 public class AciMeasurePerformedRnRDecoderTest {
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
