@@ -54,8 +54,8 @@ mvn clean verify -DrunLoadTests
 ## Integration Environment
 
 In addition to converting input files to QPP, the ReST API can do the following...
-- Calling the submission validation API to validate the QPP JSON.
-- Writing the input file and output JSON to a S3 bucket.
+- Call the submission validation API to validate the QPP JSON.
+- Write the input file and output JSON to a S3 bucket.
 - Write metadata to a DynamoDB table.
  
 This additional functionality depends on the environment variables set. See the [.env](.env) file for descriptions of what the
