@@ -6,6 +6,7 @@ This document describes how to set up your development environment to build and 
 * [Prerequisite Software](#additional-prerequisite-software)
 * [Building](#building)
 * [Running Tests Locally](#running-tests-locally)
+* [Integration Environment](#integration-environment)
 * [SonarQube](#sonarqube)
 * [Third Party Extensions](#third-party-extensions)
 
