@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
