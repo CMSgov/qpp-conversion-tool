@@ -15,7 +15,8 @@ import org.springframework.core.task.TaskExecutor;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -79,9 +80,7 @@ public class DbServiceImplTest {
 		Metadata metadataOut = writeMeta(metadataIn);
 
 		verifyZeroInteractions(dbMapper);
-		assertWithMessage("The returned metadata must be an empty metadata.")
-				.that(metadataOut)
-				.isEqualTo(new Metadata());
+		assertThat("The returned metadata must be an empty metadata.", metadataOut, is(new Metadata()));
 	}
 
 	private Metadata writeMeta() {

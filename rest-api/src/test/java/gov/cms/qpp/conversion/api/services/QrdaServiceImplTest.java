@@ -16,8 +16,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.ByteArrayInputStream;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.fail;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -66,9 +66,7 @@ public class QrdaServiceImplTest {
 	@Test
 	public void testConvertQrda3ToQppSuccess() {
 		JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_SUCCESS_QRDA_SOURCE);
-		assertWithMessage("The JSON content is incorrect.")
-				.that(qpp.getString(KEY))
-				.isEqualTo(MOCK_SUCCESS_QPP_STRING);
+		assertThat("The JSON content is incorrect.", qpp.getString(KEY), is(MOCK_SUCCESS_QPP_STRING));
 	}
 
 	@Test
@@ -78,9 +76,7 @@ public class QrdaServiceImplTest {
 			fail("An exception should have occurred. Instead was: " + qpp);
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
-
-			assertThat(allErrors.getErrors().get(0).getSourceIdentifier())
-					.isEqualTo(MOCK_ERROR_SOURCE_IDENTIFIER);
+			assertThat("", allErrors.getErrors().get(0).getSourceIdentifier(), is(MOCK_ERROR_SOURCE_IDENTIFIER));
 		} catch (Exception exception) {
 			fail("The wrong exception occurred.");
 		}

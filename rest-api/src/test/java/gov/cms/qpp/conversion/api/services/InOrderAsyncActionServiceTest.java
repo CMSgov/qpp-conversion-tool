@@ -14,7 +14,9 @@ import org.springframework.retry.support.RetryTemplate;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.number.OrderingComparison.greaterThan;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
@@ -49,12 +51,10 @@ public class InOrderAsyncActionServiceTest {
 		CompletableFuture<Object> completableFuture1 = objectUnderTest.actOnItem(new Object());
 		CompletableFuture<Object> completableFuture2 = objectUnderTest.actOnItem(new Object());
 
-		assertWithMessage("One other CompletableFuture should be dependent on this one but there isn't.")
-				.that(completableFuture1.getNumberOfDependents())
-				.isGreaterThan(0);
-		assertWithMessage("No other CompletableFuture should be dependent on this one but there is.")
-				.that(completableFuture2.getNumberOfDependents())
-				.isEqualTo(0);
+		assertThat("One other CompletableFuture should be dependent on this one but there isn't.",
+			completableFuture1.getNumberOfDependents(), is(greaterThan(0)));
+		assertThat("No other CompletableFuture should be dependent on this one but there is.",
+			completableFuture2.getNumberOfDependents(), is(0));
 	}
 
 	private static class TestInOrderService extends InOrderActionService<Object, Object> {
