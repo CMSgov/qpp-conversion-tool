@@ -53,7 +53,7 @@ public class QualityMeasureIdValidatorTest {
 	private final String MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID = "86F74F07-D593-44F6-AA12-405966400963";
 
 
-	private QualityMeasureIdValidator objectUnderTest = new QualityMeasureIdValidator();
+	private QualityMeasureIdValidator objectUnderTest = new MipsQualityMeasureIdValidator();
 
 	@BeforeClass
 	public static void setupCustomMeasuresData() {

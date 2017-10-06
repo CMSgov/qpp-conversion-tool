@@ -8,7 +8,8 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import gov.cms.qpp.conversion.validate.QualityMeasureIdValidator;
+import gov.cms.qpp.conversion.validate.MipsQualityMeasureIdValidator;
+
 import java.util.ArrayList;
 import org.junit.Test;
 
@@ -57,7 +58,7 @@ public class QualityMeasureIdRoundTripTest {
 		String measureId = "CMS68v6";
 		String numerUuid = "EFFE261C-0D57-423E-992C-7141B132768C";
 
-		String message = String.format(QualityMeasureIdValidator.INCORRECT_UUID, measureId,
+		String message = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID, measureId,
 				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, numerUuid);
 		assertThat("Must contain the correct error message", details,
 				hasValidationErrorsIgnoringPath(message));
@@ -78,10 +79,10 @@ public class QualityMeasureIdRoundTripTest {
 		String measureId = "CMS160v5";
 		String numerUuid = "33538979-8425-45A4-B724-D74CC0A84EF3";
 
-		String message = String.format(QualityMeasureIdValidator.INCORRECT_UUID, measureId,
+		String message = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID, measureId,
 				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, numerUuid);
 		assertThat("Must contain the correct error message", details,
-				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_PERFORMANCE_RATE));
+				hasValidationErrorsIgnoringPath(MipsQualityMeasureIdValidator.SINGLE_PERFORMANCE_RATE));
 		assertThat("Must contain the correct error message", details,
 				hasValidationErrorsIgnoringPath(message));
 	}
