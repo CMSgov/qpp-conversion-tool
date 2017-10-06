@@ -1,19 +1,14 @@
 package gov.cms.qpp.conversion.decode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
-import java.util.EnumSet;
-import java.util.Set;
-
-import org.junit.Test;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
+import java.util.EnumSet;
+import java.util.Set;
+import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class DecoderTest {
 
@@ -45,7 +40,9 @@ public class DecoderTest {
 
 		for (TemplateId templateId : templateIds) {
 			InputDecoder decoder = registry.get(templateId);
-			assertThat(templateId + " returned node should not be null", decoder, is(not(nullValue())));
+			assertWithMessage("%s returned node should not be null", templateId.name())
+					.that(decoder)
+					.isNotNull();
 		}
 	}
 }

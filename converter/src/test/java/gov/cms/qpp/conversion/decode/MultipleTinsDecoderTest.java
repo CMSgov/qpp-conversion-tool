@@ -6,14 +6,14 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.io.IOException;
+import java.util.List;
 import org.jdom2.Element;
 import org.jdom2.xpath.XPathHelper;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.util.List;
-
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -72,46 +72,62 @@ public class MultipleTinsDecoderTest {
 
 		Element multipleTinsElement = makeTestElementMissingNPI();
 		List<Node> children = getTestChildren(multipleTinsElement);
-		assertThat("Expect that there are three children", children, hasSize(3));
+		assertWithMessage("Expect that there are three children")
+				.that(children)
+				.hasSize(3);
 		int matches = countMatches(children);
-		assertThat("The correct children were decoded", matches, is(3));
+		assertWithMessage("The correct children were decoded")
+				.that(matches)
+				.isEqualTo(3);
 	}
 
 	@Test
 	public void testNullTIN() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingTIN();
 		List<Node> children = getTestChildren(multipleTinsElement);
-		assertThat("Expect that there are three children", children, hasSize(3));
+		assertWithMessage("Expect that there are three children")
+				.that(children)
+				.hasSize(3);
 		int matches = countMatches(children);
-		assertThat("The correct children were decoded", matches, is(3));
+		assertWithMessage("The correct children were decoded")
+				.that(matches)
+				.isEqualTo(3);
 	}
 
 	@Test
 	public void testNullTINID() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingTINID();
 		List<Node> children = getTestChildren(multipleTinsElement);
-		assertThat("Expect that there are four children", children, hasSize(4));
+		assertWithMessage("Expect that there are four children")
+				.that(children)
+				.hasSize(4);
 	}
 
 	@Test
 	public void testNullNPIID() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingNPIID();
 		List<Node> children = getTestChildren(multipleTinsElement);
-		assertThat("Expect that there are four children", children, hasSize(4));
+		assertWithMessage("Expect that there are four children")
+				.that(children)
+				.hasSize(4);
 	}
 
 	@Test
 	public void testNullTINIDAndNPIID() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingTINIDAndNPIID();
 		List<Node> children = getTestChildren(multipleTinsElement);
-		assertThat("Expect that there are three children", children, hasSize(3));
+		assertWithMessage("Expect that there are three children")
+				.that(children)
+				.hasSize(3);
 	}
 
 	@Test
 	public void testNullTaxEl() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingTaxEl();
 		List<Node> children = getTestChildren(multipleTinsElement);
-		assertThat("Expect that there are three children", children, hasSize(3));
+		assertWithMessage("Expect that there are three children")
+				.that(children)
+				.hasSize(3);
 	}
 
 	@Test
@@ -122,7 +138,9 @@ public class MultipleTinsDecoderTest {
 				.filter(node -> node.getType() == TemplateId.CLINICAL_DOCUMENT)
 				.findFirst()
 				.get();
-		assertThat("Expect that child has an xpath", child.getPath(), is(XPathHelper.getAbsolutePath(multipleTinsElement)));
+		assertWithMessage("Expect that child has an xpath")
+				.that(child.getPath())
+				.isEqualTo(XPathHelper.getAbsolutePath(multipleTinsElement));
 	}
 
 	private int testChildExistence(String npi, String tin) {
