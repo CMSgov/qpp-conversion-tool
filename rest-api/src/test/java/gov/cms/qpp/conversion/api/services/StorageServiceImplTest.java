@@ -21,8 +21,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeoutException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
@@ -70,7 +69,9 @@ public class StorageServiceImplTest {
 		when(upload.waitForUploadResult()).thenReturn(result);
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 
-		assertNotNull("key should not be null", storeFile());
+		assertWithMessage("key should not be null")
+				.that(storeFile())
+				.isNotNull();
 		verify(transferManager, times(1)).upload(any(PutObjectRequest.class));
 	}
 
@@ -87,7 +88,8 @@ public class StorageServiceImplTest {
 		when(upload.waitForUploadResult()).thenThrow(Exception.class).thenReturn(result);
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 
-		assertNotNull("key should not be null", storeFile());
+		assertWithMessage("key should not be null")
+				.that(storeFile()).isNotNull();
 		verify(transferManager, times(2)).upload(any(PutObjectRequest.class));
 	}
 
@@ -95,13 +97,15 @@ public class StorageServiceImplTest {
 	public void testPutNoBucket() throws TimeoutException, InterruptedException {
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn("");
 
-		assertEquals("key should be empty", "", storeFile());
+		assertWithMessage("key should be empty")
+				.that(storeFile()).isEmpty();
 		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
 	}
 
 	@Test
 	public void testPutNoBucketSpecified() throws TimeoutException, InterruptedException {
-		assertEquals("key should be empty", "", storeFile());
+		assertWithMessage("key should be empty")
+				.that(storeFile()).isEmpty();
 		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
 	}
 
