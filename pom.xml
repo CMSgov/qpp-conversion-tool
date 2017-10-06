@@ -18,7 +18,7 @@
 
 	<modules>
 		<module>converter</module>
-		<module>extension-test-commons</module>
+		<module>test-commons</module>
 		<module>commandline</module>
 		<module>rest-api</module>
 		<module>benchmark</module>
