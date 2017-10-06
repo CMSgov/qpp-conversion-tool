@@ -310,7 +310,7 @@ public class Node {
 	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
 	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
 	 */
-	public List<Node> findNode(TemplateId templateId, Predicate<List<Node>> bail) {
+	private List<Node> findNode(TemplateId templateId, Predicate<List<Node>> bail) {
 		List<Node> foundNodes = new ArrayList<>();
 		if (this.type == templateId) {
 			foundNodes.add(this);
