@@ -176,7 +176,7 @@ public class AnyOrderAsyncActionServiceTest {
 		return objectToActOn;
 	}
 
-	private static class TestAnyOrderService extends AnyOrderAsyncActionService<Object, Object> {
+	private static class TestAnyOrderService extends AnyOrderActionService<Object, Object> {
 		public AtomicBoolean asynchronousActionCalled = new AtomicBoolean(false);
 		public AtomicInteger timesAsynchronousActionCalled = new AtomicInteger(0);
 		public AtomicReference<Object> objectThatWasActedOn = new AtomicReference<>(null);

@@ -667,7 +667,7 @@
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="B5FA6E85-0F2E-4674-A3F8-E14D834E73AB"/>
+											<id root="631C0B49-83F4-4A54-96C4-7E0766B2407C"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -688,7 +688,7 @@
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="33538979-8425-45A4-B724-D74CC0A84EF3"/>
+											<id root="5B7AC4EC-547A-47E5-AC5E-618401175511"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -709,7 +709,7 @@
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="2D4D6446-C9CD-4661-868B-C8B9B13A8E08"/>
+											<id root="86F74F07-D593-44F6-AA12-405966400963"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>

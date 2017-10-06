@@ -4148,7 +4148,7 @@ CDA Header
 									<value xsi:type="REAL" value="0.816327"/>
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="5BE1E00A-EB11-47A4-AD45-E9AA964DB3F4"/>
+											<id root="EFFE261C-0D57-423E-992C-7141B132768C"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												codeSystemName="ActCode"
 												displayName="Numerator"/>
@@ -6458,7 +6458,7 @@ CDA Header
 									<!--IPOP Population ID from eMeasure-->
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="2D4D6446-C9CD-4661-868B-C8B9B13A8E08"/>
+											<id root="5631A7DF-CA44-4AD4-A691-DC0CED303F6A"/>
 										</externalObservation>
 									</reference>
 								</observation>

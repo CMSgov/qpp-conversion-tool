@@ -1,0 +1,8 @@
+QPPCT-368
+1. Open the Converstion Tool
+2. Send through the QRDA III file with the IPOP being Greater than the DENOM.
+3. Display the JSON File
+4. repeat Steps 2 and 3 for the IPOP being Less than the DENOM file.
+5. Show the JSON files in the JIRA ticket for others to view.
+
+Filenames for Submitting: valid-QRDA-III-latest_CPCPLUS_IPOPLessthanDenom.xml, valid-QRDA-III-latest_CPCPLUS_IPOPGreaterthanDenom.xml

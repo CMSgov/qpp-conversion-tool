@@ -16,12 +16,14 @@ import static org.junit.Assert.assertThat;
  * Test for the QualityMeasureIdDecoder
  */
 public class QualityMeasureIdDecoderTest {
-	QualityMeasureIdDecoder objectUnderTest;
+	private QualityMeasureIdDecoder objectUnderTest;
 
 	@Before
 	public void setup() {
 		objectUnderTest = new QualityMeasureIdDecoder(new Context());
 	}
+
+
 
 	/**
 	 * Tests the decoder for a valid xml fragment
@@ -92,6 +94,8 @@ public class QualityMeasureIdDecoderTest {
 		String value = qualityMeasureIdNode.getValue("measureId");
 		assertThat("Expect to have a value.", value, is(nonIgnorableGuid));
 	}
+
+
 
 	private String getXmlFragmentWithMeasureGuid(String measureGuid) {
 		return "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
