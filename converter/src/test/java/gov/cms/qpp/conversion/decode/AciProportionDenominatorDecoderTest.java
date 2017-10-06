@@ -42,7 +42,8 @@ public class AciProportionDenominatorDecoderTest {
 		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		// This node is the place holder around the root node
-		assertWithMessage("returned node should not be null", root, is(not(nullValue())));
+		assertWithMessage("returned node should not be null")
+				.that(root).isNotNull();
 
 		// For all decoders this should be either a value or child node
 		assertThat("returned node should have one child node", root.getChildNodes().size(), is(1));
