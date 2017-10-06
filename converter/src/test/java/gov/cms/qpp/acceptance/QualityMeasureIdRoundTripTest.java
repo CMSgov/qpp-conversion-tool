@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -37,10 +38,12 @@ public class QualityMeasureIdRoundTripTest {
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
 
-		assertThat("There should still be a quality measure even with the junk stuff in quality measure.",
-			qualityMeasures, hasSize(1));
-		assertThat("The measureId in the quality measure should still populate given the junk stuff in the measure.",
-			qualityMeasures.get(0).get("measureId"), is("236"));
+		assertWithMessage("There should still be a quality measure even with the junk stuff in quality measure.")
+				.that(qualityMeasures)
+				.hasSize(1);
+		assertWithMessage("The measureId in the quality measure should still populate given the junk stuff in the measure.")
+				.that(qualityMeasures.get(0).get("measureId"))
+				.isEqualTo("236");
 	}
 
 	@Test

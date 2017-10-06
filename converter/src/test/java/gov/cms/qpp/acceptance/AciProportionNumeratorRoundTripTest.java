@@ -12,8 +12,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciProportionNumeratorRoundTripTest {
 
@@ -48,7 +47,8 @@ public class AciProportionNumeratorRoundTripTest {
 		encoder.encode(new BufferedWriter(sw));
 
 		String EXPECTED = "{\n  \"numerator\" : 600\n}";
-		assertThat("expected encoder to return a representation of a performanceMet with a value", sw.toString(),
-				is(EXPECTED));
+		assertWithMessage("expected encoder to return a representation of a performanceMet with a value")
+				.that(sw.toString())
+				.isEqualTo(EXPECTED);
 	}
 }

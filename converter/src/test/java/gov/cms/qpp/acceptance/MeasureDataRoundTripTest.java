@@ -18,10 +18,9 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 public class MeasureDataRoundTripTest {
 
@@ -65,10 +64,14 @@ public class MeasureDataRoundTripTest {
 		StringWriter sw = encode(placeholder);
 
 		//then
-		assertNotNull(message, measure);
-		assertThat("Should have an aggregate count child",
-				measure.getChildNodes().get(0).getType(), is(TemplateId.ACI_AGGREGATE_COUNT));
-		assertThat("expected encoder to return a single measure data", sw.toString(), is(expected));
+		assertThat(measure)
+				.isNotNull();
+		assertWithMessage("Should have an aggregate count child")
+				.that(measure.getChildNodes().get(0).getType())
+				.isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
+		assertWithMessage("expected encoder to return a single measure data")
+				.that(sw.toString())
+				.isEqualTo(expected);
 	}
 
 	private StringWriter encode(Node placeholder) throws EncodeException {

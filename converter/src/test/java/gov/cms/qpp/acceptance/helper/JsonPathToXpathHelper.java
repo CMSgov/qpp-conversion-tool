@@ -17,6 +17,7 @@ import org.jdom2.xpath.XPathFactory;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -46,8 +47,9 @@ public class JsonPathToXpathHelper {
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 		Element element = evaluateXpath(xPath, Filters.element());
 
-		assertEquals("Element name should be: " + xmlElementName,
-				xmlElementName, element.getName());
+		assertWithMessage("Element name should be: %s", xmlElementName)
+				.that(xmlElementName)
+				.isEqualTo(element.getName());
 	}
 
 	public void executeAttributeTest(String jsonPath, String expectedValue) {
@@ -71,8 +73,8 @@ public class JsonPathToXpathHelper {
 					" ) at \n( " + xPath + " ). \nPlease investigate.");
 		}
 
-		assertNotNull("Attribute value should not be null. json value:" + expectedValue,
-				attribute.getValue());
+		assertWithMessage("Attribute value should not be null. json value: %s", expectedValue)
+				.that(attribute.getValue()).isNotNull();
 	}
 
 	public void executeAttributeTest(String jsonPath, String xmlAttributeName, String expectedValue)
@@ -80,10 +82,12 @@ public class JsonPathToXpathHelper {
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
-		assertEquals("Attribute name should be: " + xmlAttributeName,
-				xmlAttributeName, attribute.getName());
-		assertEquals("Attribute value should be: " + expectedValue,
-				expectedValue, attribute.getValue());
+		assertWithMessage("Attribute name should be: %s", xmlAttributeName)
+				.that(xmlAttributeName)
+				.isEqualTo(attribute.getName());
+		assertWithMessage("Attribute value should be: %s", expectedValue)
+				.that(expectedValue)
+				.isEqualTo(attribute.getValue());
 	}
 
 	@SuppressWarnings("unchecked")
