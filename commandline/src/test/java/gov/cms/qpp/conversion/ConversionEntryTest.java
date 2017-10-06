@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion;
 
+import com.google.common.collect.ImmutableMap;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -7,7 +8,6 @@ import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,15 +30,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
@@ -65,77 +61,77 @@ public class ConversionEntryTest {
 	public void testNonexistantFile() {
 		String regex = ConversionEntry.wildCardToRegex("*.xml").pattern();
 		String expect = ".*\\.xml";
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testWildCardToRegexSimpleFileWild() {
 		String regex = ConversionEntry.wildCardToRegex("*.xml").pattern();
 		String expect = ".*\\.xml";
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testWildCardToRegexPathFileWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*.xml").pattern();
 		String expect = ".*\\.xml";
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testWildCardToRegexPathAllWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*").pattern();
 		String expect = ".*";
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testWildCardToRegexPathExtraWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*.xm*").pattern();
 		String expect = ".*\\.xm.*";
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testWildCardToRegexDoubleStar() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/**").pattern();
 		String expect = ".";
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testWildCardToRegexTooManyWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/*/*/*.xml").pattern();
 		String expect = "";
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testExtractDirWildcard() {
 		String regex = ConversionEntry.extractDir("path/*/*.xml");
 		String expect = "path";
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testExtractDirNone() {
 		String regex = ConversionEntry.extractDir("*.xml");
 		String expect = ".";
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testExtractDirRoot() {
 		String regex = ConversionEntry.extractDir( File.separator );
 		String expect = ".";
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testExtractDirUnix() {
 		String regex = ConversionEntry.extractDir("path/to/dir/*.xml");
 		String expect = "path" + SEPARATOR + "to" + SEPARATOR + "dir";
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
@@ -145,21 +141,19 @@ public class ConversionEntryTest {
 		// this test is running on *nix so expect this path while testing
 		String expect = "path" + SEPARATOR + "to" + SEPARATOR + "dir";
 
-		assertEquals(expect, regex);
+		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testManyPathXml() {
-		Collection<Path> files = ConversionEntry.manyPath("src/test/resources/pathTest/*.xml");
-		assertNotNull(files);
-		assertEquals(3, files.size());
+		Path baseDir = Paths.get("src/test/resources/pathTest/");
+		Path aFile = baseDir.resolve("a.xml");
+		Path bFile = baseDir.resolve("b.xml");
+		Path dFile = baseDir.resolve("subdir/d.xml");
 
-		Path aFile = Paths.get("src/test/resources/pathTest/a.xml");
-		assertTrue(files.contains(aFile));
-		Path bFile = Paths.get("src/test/resources/pathTest/a.xml");
-		assertTrue(files.contains(bFile));
-		Path dFile = Paths.get("src/test/resources/pathTest/subdir/d.xml");
-		assertTrue(files.contains(dFile));
+		Collection<Path> files = ConversionEntry.manyPath("src/test/resources/pathTest/*.xml");
+		assertWithMessage("There should %s files", 3)
+				.that(files).containsExactly(aFile, bFile, dFile);
 	}
 
 	@Test
@@ -170,63 +164,64 @@ public class ConversionEntryTest {
 		MemberModifier.stub(MemberMatcher.method(ConversionEntry.class, "wildCardToRegex", String.class)).toReturn( Pattern.compile(pathTest) );
 
 		Collection<Path> files = ConversionEntry.manyPath(pathTest);
-		assertNotNull(files);
-		assertEquals(0, files.size());
+		assertWithMessage("No files should be found")
+				.that(files.size()).isEqualTo(0);
 	}
 
 	@Test
 	public void testManyPathDoubleWild() {
+		String filePath = "src/test/resources/pathTest/c.xmm";
 		Collection<Path> files = ConversionEntry.manyPath("src/test/resources/pathTest/*.xm*");
-		assertNotNull(files);
-		assertEquals(4, files.size());
 
-		Path cFile = Paths.get("src/test/resources/pathTest/c.xmm");
-		assertTrue(files.contains(cFile));
+		assertWithMessage("Should find 4 matching files")
+				.that(files.size()).isEqualTo(4);
+		assertWithMessage("Matching file %s should have been found", filePath)
+				.that(files).contains(Paths.get(filePath));
 	}
 
 	@Test
 	public void testCheckPathXml() {
+		Map<String, Integer> scenarios = ImmutableMap.of(
+				"src/test/resources/pathTest/*.xml", 3,
+				"src/test/resources/pathTest/a.xml", 1,
+				"notExist/a.xml", 0,
+				"   ", 0
+		);
+
+		scenarios.forEach((key, value) -> {
+			Collection<Path> files = ConversionEntry.checkPath(key);
+			assertWithMessage(key + " should not result in null paths")
+					.that(files).isNotNull();
+			assertWithMessage("Number of matched files does not meet expectation")
+					.that(files.size()).isEqualTo(value);
+		});
+	}
+
+	@Test
+	public void testCheckPathNull() {
 		Collection<Path> files = ConversionEntry.checkPath("src/test/resources/pathTest/*.xml");
-		assertNotNull(files);
-		assertEquals(3, files.size());
-
-		Collection<Path> file = ConversionEntry.checkPath("src/test/resources/pathTest/a.xml");
-		assertNotNull(file);
-		assertEquals(1, file.size());
-
-		Collection<Path> none = ConversionEntry.checkPath("notExist/a.xml");
-		assertNotNull(none);
-		assertEquals(0, none.size());
-
-		Collection<Path> nill = ConversionEntry.checkPath(null);
-		assertNotNull(nill);
-		assertEquals(0, nill.size());
-
-		Collection<Path> blank = ConversionEntry.checkPath("   ");
-		assertNotNull(blank);
-		assertEquals(0, blank.size());
+		assertWithMessage("Should find 3 files")
+				.that(files.size()).isEqualTo(3);
 	}
 
 	@Test
 	public void testManyPathPathNotFound() {
 		Collection<Path> files = ConversionEntry.manyPath("notExist/*.xml");
 
-		assertNotNull(files);
-		assertEquals(0, files.size());
+		assertWithMessage("Should not find any files")
+				.that(files).isEmpty();
 	}
 
 	@Test
 	public void testValidArgs() {
-		Collection<Path> files = ConversionEntry.validArgs(
-				new String[] { "src/test/resources/pathTest/a.xml", "src/test/resources/pathTest/subdir/*.xml" });
+		String[] args = { "src/test/resources/pathTest/a.xml", "src/test/resources/pathTest/subdir/*.xml" };
+		String found = "src/test/resources/pathTest/subdir/d.xml";
+		Collection<Path> files = ConversionEntry.validArgs(args);
 
-		assertNotNull(files);
-		assertEquals(2, files.size());
-
-		Path aFile = Paths.get("src/test/resources/pathTest/a.xml");
-		assertTrue(files.contains(aFile));
-		Path dFile = Paths.get("src/test/resources/pathTest/subdir/d.xml");
-		assertTrue(files.contains(dFile));
+		assertWithMessage("Should find 2 files")
+				.that(files.size()).isEqualTo(2);
+		assertWithMessage("Should find %s and %s", args[0], found)
+				.that(files).containsExactly(Paths.get(args[0]), Paths.get(found));
 	}
 
 	@Test
@@ -234,16 +229,16 @@ public class ConversionEntryTest {
 		Collection<Path> files = ConversionEntry.validArgs(
 				new String[] { "-h", "src/test/resources/pathTest/a.xml", "src/test/resources/pathTest/subdir/*.xml" });
 
-		assertNotNull(files);
-		assertTrue("help option bails and forces return of empty input collection", files.isEmpty());
+		assertWithMessage("help option bails and forces return of empty input collection")
+				.that(files).isEmpty();
 	}
 
 	@Test
 	public void testValidArgsNoFiles() {
 		Collection<Path> files = ConversionEntry.validArgs(new String[] {});
 
-		assertNotNull(files);
-		assertEquals(0, files.size());
+		assertWithMessage("files should be empty")
+				.that(files).isEmpty();
 	}
 
 	@Test
@@ -257,8 +252,10 @@ public class ConversionEntryTest {
 		boolean result = ConversionEntry.shouldContinue(line);
 
 		//then
-		assertFalse("MEEP is not a valid scope", result);
-		assertThat(baos1.toString(), containsString(ConversionEntry.INVALID_TEMPLATE_SCOPE));
+		assertWithMessage("MEEP is not a valid scope")
+				.that(result).isFalse();
+		assertWithMessage("output stream should contain " + ConversionEntry.INVALID_TEMPLATE_SCOPE)
+				.that(baos1.toString()).contains(ConversionEntry.INVALID_TEMPLATE_SCOPE);
 	}
 
 	@Test(expected = MissingArgumentException.class)
@@ -277,7 +274,8 @@ public class ConversionEntryTest {
 		boolean result = ConversionEntry.shouldContinue(line);
 
 		//then
-		assertTrue("Both should be valid scopes", result);
+		assertWithMessage("Both should be valid scopes")
+				.that(result).isTrue();
 	}
 
 	@Test
@@ -295,54 +293,77 @@ public class ConversionEntryTest {
 		ConversionEntry.validArgs(new String[] {});
 
 		//then
-		assertThat(baos1.toString(), containsString(ConversionEntry.CLI_PROBLEM));
+		assertWithMessage("output stream should contain %s", ConversionEntry.CLI_PROBLEM)
+				.that(baos1.toString()).contains(ConversionEntry.CLI_PROBLEM);
 	}
 
 	//cli
 	@Test
 	public void testHandleSkipDefaults() throws ParseException {
 		CommandLine line = ConversionEntry.cli(new String[] {SKIP_DEFAULTS});
-		assertTrue("Should have a skip default option", line.hasOption(ConversionEntry.SKIP_DEFAULTS));
+		assertWithMessage("Should have a skip default option")
+				.that(line.hasOption(ConversionEntry.SKIP_DEFAULTS))
+				.isTrue();
 	}
 
 	@Test
 	public void testHandleSkipDefaultsAbbreviated() throws ParseException {
 		CommandLine line = ConversionEntry.cli(new String[] {"-d"});
-		assertTrue("Should have a skip default option", line.hasOption(ConversionEntry.SKIP_DEFAULTS));
+		assertWithMessage("Should have a skip default option")
+				.that(line.hasOption(ConversionEntry.SKIP_DEFAULTS))
+				.isTrue();
 	}
 
 	@Test
 	public void testHandleSkipValidation() throws ParseException {
 		CommandLine line = ConversionEntry.cli(new String[] {SKIP_VALIDATION});
-		assertTrue("Should have a skip validation option", line.hasOption(ConversionEntry.SKIP_VALIDATION));
+		assertWithMessage("Should have a skip validation option")
+				.that(line.hasOption(ConversionEntry.SKIP_VALIDATION))
+				.isTrue();
 	}
 
 	@Test
 	public void testHandleSkipValidationAbbreviated() throws ParseException {
 		CommandLine line = ConversionEntry.cli(new String[] {"-v"});
-		assertTrue("Should have a skip validation option", line.hasOption(ConversionEntry.SKIP_VALIDATION));
+		assertWithMessage("Should have a skip validation option")
+				.that(line.hasOption(ConversionEntry.SKIP_VALIDATION))
+				.isTrue();
 	}
 
 	@Test
 	public void testHandleCombo() throws ParseException {
 		CommandLine line = ConversionEntry.cli(new String[] {"-dvt", "meep"});
-		assertTrue("Should have a skip validation option", line.hasOption(ConversionEntry.SKIP_VALIDATION));
-		assertTrue("Should have a skip default option", line.hasOption(ConversionEntry.SKIP_DEFAULTS));
-		assertEquals("Should be 'meep'", "meep", line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE));
+		assertWithMessage("Should have a skip validation option")
+				.that(line.hasOption(ConversionEntry.SKIP_VALIDATION)).isTrue();
+		assertWithMessage("Should have a skip default option")
+				.that(line.hasOption(ConversionEntry.SKIP_DEFAULTS)).isTrue();
+		assertWithMessage("Should be 'meep'")
+				.that(line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE))
+				.isEqualTo("meep");
 	}
 
 	@Test
 	public void testHandleTemplateScope() throws ParseException {
 		CommandLine line = ConversionEntry.cli(new String[] {TEMPLATE_SCOPE, "meep"});
-		assertTrue("Should have a template scope option", line.hasOption(ConversionEntry.TEMPLATE_SCOPE));
-		assertEquals("Should be 'meep'", "meep", line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE));
+
+		assertWithMessage("Should have a template scope option")
+				.that(line.hasOption(ConversionEntry.TEMPLATE_SCOPE))
+				.isTrue();
+		assertWithMessage("Should be 'meep'")
+				.that(line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE))
+				.isEqualTo("meep");
 	}
 
 	@Test
 	public void testHandleTemplateScopeAbbreviated() throws ParseException {
 		CommandLine line = ConversionEntry.cli(new String[] {"-t", "meep"});
-		assertTrue("Should have a template scope option", line.hasOption(ConversionEntry.TEMPLATE_SCOPE));
-		assertEquals("Should be 'meep'", "meep", line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE));
+
+		assertWithMessage("Should have a template scope option")
+				.that(line.hasOption(ConversionEntry.TEMPLATE_SCOPE))
+				.isTrue();
+		assertWithMessage("Should be 'meep'")
+				.that(line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE))
+				.isEqualTo("meep");
 	}
 
 	@Test
@@ -351,20 +372,20 @@ public class ConversionEntryTest {
 				new String[]{SKIP_VALIDATION, "file.txt", SKIP_DEFAULTS, "-t", "meep,mawp", "file2.txt"});
 		List<String> args = line.getArgList();
 
-		assertEquals("should be comprised of the 2 files", 2, args.size());
-		assertEquals("file.txt", args.get(0));
-		assertEquals("file2.txt", args.get(1));
+		assertWithMessage("should be comprised of the 2 files")
+				.that(args.size())
+				.isEqualTo(2);
+		assertThat(args).containsExactly("file.txt", "file2.txt");
 	}
+
 	@Test
 	public void privateConstructorTest() throws Exception {
-		// reflection concept to get constructor of a Singleton class.
 		Constructor<ConversionEntry> constructor = ConversionEntry.class.getDeclaredConstructor();
-		// change the accessibility of constructor for outside a class object creation.
 		constructor.setAccessible(true);
-		// creates object of a class as constructor is accessible now.
 		ConversionEntry conversionEntry = constructor.newInstance();
-		// close the accessibility of a constructor.
-		constructor.setAccessible(false);
-		Assert.assertThat("Expect to have an instance here ", conversionEntry, instanceOf(ConversionEntry.class));
+
+		assertWithMessage("Expect to have an instance here ")
+				.that(conversionEntry)
+				.isInstanceOf(ConversionEntry.class);
 	}
 }
