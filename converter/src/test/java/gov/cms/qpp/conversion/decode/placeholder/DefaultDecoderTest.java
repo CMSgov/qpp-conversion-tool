@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
 
+import static com.google.common.truth.Truth.assertThat;
+
 public class DefaultDecoderTest {
 
 	@Test
@@ -21,6 +23,6 @@ public class DefaultDecoderTest {
 
 		Node node = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
-		Assert.assertNotNull(node);
+		assertThat(node).isNotNull();
 	}
 }

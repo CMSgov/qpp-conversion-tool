@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -35,16 +36,9 @@ public class AciNumeratorDenominatorDecoderTest {
 
 		Node aggregateCountNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
-		// the returned Node object from the snippet should be:
-		// a top level placeholder node with a single child node that has the
-		// "rateAggregationDenominator" key in it
-
-		assertThat("returned node should not be null", aggregateCountNode, is(not(nullValue())));
-
-		assertThat("returned node should have one child node", aggregateCountNode.getChildNodes().size(), is(1));
-
-		assertThat("aggregate count value should be 600",
-				aggregateCountNode.getChildNodes().get(0).getValue("aggregateCount"), is("600"));
+		assertWithMessage("aggregate count value should be 600")
+				.that(aggregateCountNode.getChildNodes().get(0).getValue("aggregateCount"))
+				.isEqualTo("600");
 	}
 
 	@Test
@@ -59,11 +53,8 @@ public class AciNumeratorDenominatorDecoderTest {
 
 		Node numDenomNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
-		assertThat("returned node should not be null", numDenomNode, is(not(nullValue())));
-
-		assertThat("returned node should have one child node", numDenomNode.getChildNodes().size(), is(1));
-
-		assertThat("aci numerator/denominator value should be null", numDenomNode.getChildNodes().get(0).getValue("aggregateCount"), is(nullValue()));
+		assertWithMessage("aci numerator/denominator value should be null")
+				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
 	}
 
 	@Test
@@ -77,11 +68,8 @@ public class AciNumeratorDenominatorDecoderTest {
 
 		Node numDenomNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
-		assertThat("returned node should not be null", numDenomNode, is(not(nullValue())));
-
-		assertThat("returned node should have one child node", numDenomNode.getChildNodes().size(), is(1));
-
-		assertThat("aci numerator/denominator value should be null", numDenomNode.getChildNodes().get(0).getValue("aggregateCount"), is(nullValue()));
+		assertWithMessage("aci numerator/denominator value should be null")
+				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
 	}
 
 	@Test
@@ -91,40 +79,39 @@ public class AciNumeratorDenominatorDecoderTest {
 		int numberNodes = countNodes(aciMeasureNode);
 		List<Node> nodeList = aciMeasureNode.findNode(TemplateId.ACI_NUMERATOR);
 
-		assertThat("Decoded xml fragment should contain one child node",
-				aciMeasureNode.getChildNodes(), hasSize(1));
+		assertWithMessage("Should contain a measure id")
+				.that(numeratorDenominatorNode.getValue("measureId"))
+				.isEqualTo(MEASURE_ID);
 
-		assertThat("returned node should have two child decoder nodes", numeratorDenominatorNode.getChildNodes().size(), is(2));
+		assertWithMessage("Should have Numerator")
+				.that(numeratorDenominatorNode.getChildNodes().get(0).getType())
+				.isEqualTo(TemplateId.ACI_NUMERATOR);
 
-		assertThat("Should contain a measure id",
-				numeratorDenominatorNode.getValue("measureId"), is(MEASURE_ID));
-
-		assertThat("Should have Numerator", numeratorDenominatorNode.getChildNodes().get(0).getType(),
-				is(TemplateId.ACI_NUMERATOR));
-
-		assertThat("Should have Denominator", numeratorDenominatorNode.getChildNodes().get(1).getType(),
-				is(TemplateId.ACI_DENOMINATOR));
+		assertWithMessage("Should have Denominator")
+				.that(numeratorDenominatorNode.getChildNodes().get(1).getType())
+				.isEqualTo(TemplateId.ACI_DENOMINATOR);
 
 		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT);
 
-		assertThat("Decoded xml fragment " + TemplateId.ACI_NUMERATOR.name() +
-						" should contain " + TemplateId.ACI_AGGREGATE_COUNT.name(),
-				nodeList.size(), is(1));
+		assertWithMessage("Decoded xml fragment %s should contain %s",
+				TemplateId.ACI_NUMERATOR.name(), TemplateId.ACI_AGGREGATE_COUNT.name())
+				.that(nodeList).hasSize(1);
 
 		nodeList = aciMeasureNode.findNode(TemplateId.ACI_DENOMINATOR);
-		assertThat("Decoded xml fragment should contain " + TemplateId.ACI_DENOMINATOR.name(),
-				nodeList.size(), is(1));
+		assertWithMessage("Decoded xml fragment should contain %s", TemplateId.ACI_DENOMINATOR.name())
+				.that(nodeList).hasSize(1);
 
 		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT);
-		assertThat("Decoded xml fragment " + TemplateId.ACI_NUMERATOR.name() +
-						" should contain " + TemplateId.ACI_AGGREGATE_COUNT.name(),
-				nodeList.size(), is(1));
+		assertWithMessage("Decoded xml fragment %s should contain %s",
+				TemplateId.ACI_NUMERATOR.name(), TemplateId.ACI_AGGREGATE_COUNT.name())
+				.that(nodeList).hasSize(1);
 
-		assertThat("Decoded xml fragment " + aciMeasureNode.getType().name() +
-				" should contain 6 nodes", numberNodes, is(6));
+		assertWithMessage("Decoded xml fragment %s should contain 6 nodes", aciMeasureNode.getType().name())
+				.that(numberNodes).isEqualTo(6);
 
-		assertThat("measureId should be " + MEASURE_ID,
-				numeratorDenominatorNode.getValue("measureId"), is(MEASURE_ID));
+		assertWithMessage("measureId should be %s", MEASURE_ID)
+				.that(numeratorDenominatorNode.getValue("measureId"))
+				.isEqualTo(MEASURE_ID);
 	}
 
 	@Test
@@ -134,29 +121,30 @@ public class AciNumeratorDenominatorDecoderTest {
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
 
 		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
-		assertThat("Decoded xml fragment should contain one child node",
-				aciMeasureNode.getChildNodes().size(), is(1));
+		assertWithMessage("Decoded xml fragment should contain one child node")
+				.that(aciMeasureNode.getChildNodes())
+				.hasSize(1);
 
 		List<Node> nodeList = aciMeasureNode.findNode(TemplateId.ACI_NUMERATOR);
-		assertThat("Decoded xml fragment should contain " + TemplateId.ACI_NUMERATOR.name(),
-				nodeList.size(), is(1));
+		assertWithMessage("Decoded xml fragment should contain %s", TemplateId.ACI_NUMERATOR.name())
+				.that(nodeList).hasSize(1);
 
 		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT);
-		assertThat("Decoded xml fragment " + TemplateId.ACI_NUMERATOR.name() +
-						" should contain " + TemplateId.ACI_AGGREGATE_COUNT.name(),
-				nodeList.size(), is(1));
+		assertWithMessage("Decoded xml fragment %s should contain %s",
+				TemplateId.ACI_NUMERATOR.name(), TemplateId.ACI_AGGREGATE_COUNT.name())
+				.that(nodeList).hasSize(1);
 
 		nodeList = aciMeasureNode.findNode(TemplateId.ACI_DENOMINATOR);
-		assertThat("Decoded xml fragment should contain " + TemplateId.ACI_DENOMINATOR.name(),
-				nodeList.size(), is(1));
+		assertWithMessage("Decoded xml fragment should contain %s", TemplateId.ACI_DENOMINATOR.name())
+				.that(nodeList).hasSize(1);
 
 		nodeList = nodeList.get(0).findNode(TemplateId.ACI_AGGREGATE_COUNT);
-		assertThat("Decoded xml fragment " + TemplateId.ACI_NUMERATOR.name() +
-						" should contain " + TemplateId.ACI_AGGREGATE_COUNT.name(),
-				nodeList.size(), is(1));
+		assertWithMessage("Decoded xml fragment %s should contain %s",
+				TemplateId.ACI_NUMERATOR.name(), TemplateId.ACI_AGGREGATE_COUNT.name())
+				.that(nodeList).hasSize(1);
 		int numberNodes = countNodes(aciMeasureNode);
-		assertThat("Decoded xml fragment " + aciMeasureNode.getType().name() +
-				" should contain 6 nodes", numberNodes, is(6));
+		assertWithMessage("Decoded xml fragment %s should contain 6 nodes", aciMeasureNode.getType().name())
+				.that(numberNodes).isEqualTo(6);
 	}
 
 	@Test
@@ -187,7 +175,9 @@ public class AciNumeratorDenominatorDecoderTest {
 		objectUnderTest.internalDecode(element, thisNode);
 
 		//assert
-		assertThat("measureId should be " + MEASURE_ID, thisNode.getValue("measureId"), is(MEASURE_ID));
+		assertWithMessage("measureId should be %s", MEASURE_ID)
+				.that(thisNode.getValue("measureId"))
+				.isEqualTo(MEASURE_ID);
 	}
 
 	private int countNodes(Node parent) {
