@@ -7,8 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class ExceptionHandlerControllerV1Test {
 
@@ -20,7 +19,9 @@ public class ExceptionHandlerControllerV1Test {
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
 
-		assertThat("The response entity's status code must be 422.", responseEntity.getStatusCode(), is(HttpStatus.UNPROCESSABLE_ENTITY));
+		assertWithMessage("The response entity's status code must be 422.")
+				.that(responseEntity.getStatusCode())
+				.isEquivalentAccordingToCompareTo(HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
@@ -29,7 +30,9 @@ public class ExceptionHandlerControllerV1Test {
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
 
-		assertThat("The response entity's content type was incorrect.", responseEntity.getHeaders().getContentType(), is(MediaType.APPLICATION_JSON_UTF8));
+		assertWithMessage("The response entity's content type was incorrect.")
+				.that(responseEntity.getHeaders().getContentType())
+				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON_UTF8);
 	}
 
 	@Test
@@ -38,7 +41,8 @@ public class ExceptionHandlerControllerV1Test {
 		TransformException exception = new TransformException("test transform exception", new NullPointerException(), allErrors);
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
-
-		assertThat("The response entity's content type was incorrect.", responseEntity.getBody(), is(allErrors));
+		assertWithMessage("The response entity's content type was incorrect.")
+				.that(responseEntity.getBody())
+				.isEqualTo(allErrors);
 	}
 }
