@@ -1,7 +1,8 @@
 package gov.cms.qpp.conversion;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public abstract class QrdaSourceTestSuite {
 
@@ -15,7 +16,7 @@ public abstract class QrdaSourceTestSuite {
 
 	@Test
 	public final void testExpectedName() {
-		Assert.assertEquals(expectedName, source.getName());
+		assertThat(expectedName).isEqualTo(source.getName());
 	}
 
 }
