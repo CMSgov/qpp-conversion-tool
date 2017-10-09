@@ -4,14 +4,13 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.Assert;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasSize;
 
 public class NpiTinCombinationValidationTest {
 	private Node firstValidNpiTinNode;
@@ -53,7 +52,8 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with no errors", validator.getDetails() , empty());
+		assertWithMessage("Must validate with no errors")
+				.that(validator.getDetails()).isEmpty();
 	}
 
 	@Test
@@ -68,7 +68,8 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with no errors", validator.getDetails() , hasSize(0));
+		assertWithMessage("Must validate with no errors")
+				.that(validator.getDetails()).isEmpty();
 	}
 
 	@Test
@@ -82,7 +83,8 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with no errors", validator.getDetails() , hasSize(0));
+		assertWithMessage("Must validate with no errors")
+				.that(validator.getDetails()).isEmpty();
 	}
 
 	@Test
@@ -97,7 +99,8 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with no errors", validator.getDetails() , hasSize(0));
+		assertWithMessage("Must validate with no errors")
+				.that(validator.getDetails()).isEmpty();
 	}
 
 	@Test
@@ -112,6 +115,8 @@ public class NpiTinCombinationValidationTest {
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
 		assertThat("Must validate with no errors", validator.getDetails() , empty());
+		assertWithMessage("Must validate with no errors")
+				.that(validator.getDetails()).isEmpty();
 	}
 
 	@Test
@@ -119,9 +124,9 @@ public class NpiTinCombinationValidationTest {
 		Node rootWithoutClinicalDocument = new Node(TemplateId.QRDA_CATEGORY_III_REPORT_V3);
 		validator.internalValidateSingleNode(rootWithoutClinicalDocument);
 
-		Assert.assertThat("there should be one error", validator.getDetails(), hasSize(1));
-		Assert.assertThat("error should be about missing Clinical Document node", validator.getDetails(),
-			hasValidationErrorsIgnoringPath(NpiTinCombinationValidation.CLINICAL_DOCUMENT_REQUIRED));
+		assertWithMessage("error should be about missing Clinical Document node")
+				.that(validator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(NpiTinCombinationValidation.CLINICAL_DOCUMENT_REQUIRED);
 	}
 
 	@Test
@@ -133,9 +138,9 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(rootWithTwoClinicalDocument);
 
-		Assert.assertThat("there should be one error", validator.getDetails(), hasSize(1));
-		Assert.assertThat("error should be about too many Clinical Document nodes", validator.getDetails(),
-			hasValidationErrorsIgnoringPath(NpiTinCombinationValidation.EXACTLY_ONE_DOCUMENT_ALLOWED));
+		assertWithMessage("error should be about too many Clinical Document nodes")
+				.that(validator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(NpiTinCombinationValidation.EXACTLY_ONE_DOCUMENT_ALLOWED);
 	}
 
 	private void createClinicalDocumentWithProgramType(final String programName, final String entityType,

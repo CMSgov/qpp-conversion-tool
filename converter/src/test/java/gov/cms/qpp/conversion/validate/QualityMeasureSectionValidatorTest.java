@@ -1,20 +1,21 @@
 package gov.cms.qpp.conversion.validate;
 
+import com.google.common.truth.Correspondence;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class QualityMeasureSectionValidatorTest {
 	private Node reportingParameterNode;
 	private Node qualityMeasureSectionNode;
+	private Correspondence<Detail, String> correspondence = new DetailsMessageEquals();
 
 	@Before
 	public void setUpQualityMeasureSection() {
@@ -28,15 +29,18 @@ public class QualityMeasureSectionValidatorTest {
 
 		Set<Detail> errors = validateQualityMeasureSection();
 
-		assertThat("Must not contain errors", errors, hasSize(0));
+		assertWithMessage("Must not contain errors")
+				.that(errors).isEmpty();
 	}
 
 	@Test
 	public void testMissingReportingParams() {
 		Set<Detail> errors = validateQualityMeasureSection();
 
-		assertThat("Must contain correct error", errors.iterator().next().getMessage(),
-				is(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR));
+		assertWithMessage("Must contain correct error")
+				.that(errors)
+				.comparingElementsUsing(correspondence)
+				.containsExactly(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 
 	@Test
@@ -46,8 +50,10 @@ public class QualityMeasureSectionValidatorTest {
 
 		Set<Detail> errors = validateQualityMeasureSection();
 
-		assertThat("Must contain correct error", errors.iterator().next().getMessage(),
-				is(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR));
+		assertWithMessage("Must contain correct error")
+				.that(errors)
+				.comparingElementsUsing(correspondence)
+				.containsExactly(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 
 	private Set<Detail> validateQualityMeasureSection() {
