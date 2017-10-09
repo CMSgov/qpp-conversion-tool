@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.util;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import java.util.Properties;
 import java.util.UUID;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class EnvironmentHelperTest {
 
@@ -25,13 +26,15 @@ public class EnvironmentHelperTest {
 	@Test
 	public void testIsPresentOnRandomString() {
 		String random = UUID.randomUUID().toString();
-		Assert.assertFalse(EnvironmentHelper.isPresent(random));
+		assertWithMessage("Should not have an environment variable with randomized key")
+				.that(EnvironmentHelper.isPresent(random)).isFalse();
 	}
 
 	@Test
 	public void testIsPresentOnAdded() {
 		String someKey = UUID.randomUUID().toString();
 		System.setProperty(someKey, "nothing important");
-		Assert.assertTrue(EnvironmentHelper.isPresent(someKey));
+		assertWithMessage("%s should be set to %s", someKey, "nothing important")
+				.that(EnvironmentHelper.isPresent(someKey)).isTrue();
 	}
 }
