@@ -2,15 +2,13 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class JsonOutputEncoderTest {
 
@@ -33,22 +31,22 @@ public class JsonOutputEncoderTest {
 		joe.addValidationError(new Detail("error"));
 		joe.addValidationError(new Detail("another"));
 		List<Detail> validations = joe.getDetails();
-		assertEquals(2, validations.size());
-		assertEquals("error", validations.get(0).getMessage());
-		assertEquals("another", validations.get(1).getMessage());
+		assertThat(validations).hasSize(2);
+		assertThat(validations.get(0).getMessage()).isEqualTo("error");
+		assertThat(validations.get(1).getMessage()).isEqualTo("another");
 	}
 
 	@Test
 	public void testAddValidationAndGetValidationById() {
 		List<Detail> validations = joe.getDetails();
-		assertEquals(0, validations.size());
+		assertThat(validations).hasSize(0);
 
 		joe.addValidationError(new Detail("err"));
 
 		validations = joe.getDetails();
-		assertNotNull(validations);
-		assertEquals(1, validations.size());
-		assertEquals("err", validations.get(0).getMessage());
+		assertThat(validations).isNotNull();
+		assertThat(validations).hasSize(1);
+		assertThat(validations.get(0).getMessage()).isEqualTo("err");
 	}
 
 	@Test
@@ -56,6 +54,8 @@ public class JsonOutputEncoderTest {
 		joe.encode((JsonWrapper) null, (Node) null); // the values are not used in the test
 
 		List<Detail> details = joe.getDetails();
-		assertThat("Should have one error message", details, hasSize(1));
+		assertWithMessage("Should have one error message")
+				.that(details)
+				.hasSize(1);
 	}
 }
