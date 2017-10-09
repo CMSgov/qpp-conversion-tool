@@ -4,16 +4,14 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 public class AciSectionEncoderMultiMeasureTest {
@@ -128,8 +126,9 @@ public class AciSectionEncoderMultiMeasureTest {
 			fail("Failure to encode: " + e.getMessage());
 		}
 
-		assertThat("expected encoder to return a json representation of an ACI Section node", sw.toString(),
-				is(EXPECTED));
+		assertWithMessage("expected encoder to return a json representation of an ACI Section node")
+				.that(sw.toString())
+				.isEqualTo(EXPECTED);
 	}
 
 }
