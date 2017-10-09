@@ -19,6 +19,24 @@ public class EnvironmentHelper {
 	 * @return true if System.getenv(variable) or System.getProperty(variable) are not null
 	 */
 	public static boolean isPresent(String variable) {
-		return System.getenv(variable) != null || System.getProperty(variable) != null;
+		return valueFor(variable) != null;
+	}
+
+	/**
+	 * Looks up the value for a named variable by environment variable first and then property.s
+	 *
+	 * @param variable The variable name to look-up.
+	 * @return The value for the variable, null if it is not found.
+	 */
+	public static String valueFor(String variable) {
+		String variableValue = System.getenv(variable);
+
+		if (variableValue != null) {
+			return variableValue;
+		}
+
+		variableValue = System.getProperty(variable);
+
+		return variableValue;
 	}
 }
