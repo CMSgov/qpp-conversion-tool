@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.MipsQualityMeasureIdValidator;
 
@@ -63,8 +64,9 @@ public class QualityMeasureIdRoundTripTest {
 
 		String message = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID, measureId,
 				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, numerUuid);
-		assertThat("Must contain the correct error message", details,
-				hasValidationErrorsIgnoringPath(message));
+		assertWithMessage("Must contain the proper error")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(message);
 	}
 
 	@Test
@@ -84,9 +86,11 @@ public class QualityMeasureIdRoundTripTest {
 
 		String message = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID, measureId,
 				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, numerUuid);
-		assertThat("Must contain the correct error message", details,
-				hasValidationErrorsIgnoringPath(MipsQualityMeasureIdValidator.SINGLE_PERFORMANCE_RATE));
-		assertThat("Must contain the correct error message", details,
-				hasValidationErrorsIgnoringPath(message));
+		assertWithMessage("Must contain the proper error")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(MipsQualityMeasureIdValidator.SINGLE_PERFORMANCE_RATE);
+		assertWithMessage("Must contain the proper error")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(message);
 	}
 }
