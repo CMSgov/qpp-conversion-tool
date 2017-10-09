@@ -16,11 +16,6 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import gov.cms.qpp.conversion.validate.ClinicalDocumentValidator;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -30,10 +25,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.xml.parsers.ParserConfigurationException;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static org.junit.Assert.assertThat;
 
 public class SingularAttributeTest {
 
@@ -126,9 +123,9 @@ public class SingularAttributeTest {
 		List<Detail> details = executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
 				ClinicalDocumentDecoder.PROGRAM_NAME, false);
 
-		assertThat("error should be about missing missing program name", details,
-				hasValidationErrorsIgnoringPath(
-						ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
+		assertWithMessage("error should be about missing missing program name").that(details)
+				.comparingElementsUsing(MESSAGE_EQUALS)
+				.containsExactly(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME);
 
 		assertWithMessage("error should be about missing program name").that(details)
 				.comparingElementsUsing(MESSAGE_EQUALS)

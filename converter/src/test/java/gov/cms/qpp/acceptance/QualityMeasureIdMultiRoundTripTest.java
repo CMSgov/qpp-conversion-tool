@@ -25,8 +25,6 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class QualityMeasureIdMultiRoundTripTest {
 	private static final String REQUIRE_ELIGIBLE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
@@ -111,8 +109,10 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, true);
 
-		assertThat("Error should regard the need for a single measure type", details,
-				hasValidationErrorsIgnoringPath(message));
+		assertWithMessage("Error should regard the need for a single measure type")
+				.that(details)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(message);
 		assertWithMessage("Must contain the proper error")
 				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(message);
