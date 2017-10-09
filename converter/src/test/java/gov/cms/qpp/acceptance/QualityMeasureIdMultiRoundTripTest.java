@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.MipsQualityMeasureIdValidator;
@@ -83,8 +84,9 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		assertThat("Should have no error detail", details,
-				hasValidationErrorsIgnoringPath(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE));
+		assertWithMessage("Must contain the proper error")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
@@ -96,8 +98,9 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		assertWithMessage("Should only have one error detail")
 				.that(details).hasSize(1);
-		assertThat("Error should regard the need for a single measure type", details,
-				hasValidationErrorsIgnoringPath(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE));
+		assertWithMessage("Must contain the proper error")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
@@ -111,6 +114,9 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		assertThat("Error should regard the need for a single measure type", details,
 				hasValidationErrorsIgnoringPath(message));
+		assertWithMessage("Must contain the proper error")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(message);
 	}
 
 	@Test
@@ -123,8 +129,10 @@ public class QualityMeasureIdMultiRoundTripTest {
 		assertWithMessage("Should only have one error detail")
 				.that(details)
 				.hasSize(1);
-		assertThat("error should regard the need for a single measure population", details,
-				hasValidationErrorsIgnoringPath(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION));
+
+		assertWithMessage("Must contain the proper error")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION);
 	}
 
 	@Test
@@ -137,8 +145,9 @@ public class QualityMeasureIdMultiRoundTripTest {
 		assertWithMessage("Should only have two error details")
 				.that(details)
 				.hasSize(2);
-		assertThat("Error should regard the need for a single measure population", details,
-				hasValidationErrorsIgnoringPath(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION));
+		assertWithMessage("Must contain the proper error")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION);
 	}
 
 	@Test
@@ -155,8 +164,9 @@ public class QualityMeasureIdMultiRoundTripTest {
 		assertWithMessage("Must contain the right number of errors")
 				.that(details)
 				.hasSize(3);
-		assertThat("Must contain the correct error message", details,
-				hasValidationErrorsIgnoringPath(MipsQualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT));
+		assertWithMessage("Must contain the proper error")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(MipsQualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT);
 	}
 
 	private List<Detail>  executeScenario(String path, boolean remove) {
