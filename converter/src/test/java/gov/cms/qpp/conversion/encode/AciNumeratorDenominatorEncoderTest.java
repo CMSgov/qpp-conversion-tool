@@ -3,22 +3,17 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public class AciNumeratorDenominatorEncoderTest {
@@ -70,8 +65,9 @@ public class AciNumeratorDenominatorEncoderTest {
 		}
 
 		String EXPECTED = "{\n  \"measureId\" : \"" + MEASURE_ID + "\",\n  \"value\" : {\n    \"numerator\" : 400,\n    \"denominator\" : 600\n  }\n}";
-		Assert.assertEquals(EXPECTED, sw.toString());
-		assertThat("expected encoder to return a json representation of a measure node", sw.toString(), is(EXPECTED));
+		assertWithMessage("expected encoder to return a json representation of a measure node")
+				.that(sw.toString())
+				.isEqualTo(EXPECTED);
 	}
 
 	@Test
@@ -85,10 +81,18 @@ public class AciNumeratorDenominatorEncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
 
 		//assert
-		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
-		assertThat("The internal object of the jsonWrapper must not be null", jsonWrapper.getObject(), is(not(nullValue())));
-		assertThat("The internal object of the jsonWrapper must be a Map", jsonWrapper.getObject(), is(instanceOf(Map.class)));
-		assertThat("The internal object must have an attribute named value", ((Map<?, ?>)jsonWrapper.getObject()).get("value"), is(not(nullValue())));
+		assertWithMessage("The measureId must be " + MEASURE_ID)
+				.that(jsonWrapper.getString("measureId"))
+				.isEqualTo(MEASURE_ID);
+		assertWithMessage("The internal object of the jsonWrapper must not be null")
+				.that(jsonWrapper.getObject())
+				.isEqualTo(not(nullValue()));
+		assertWithMessage("The internal object of the jsonWrapper must be a Map")
+				.that(jsonWrapper.getObject())
+				.isInstanceOf(Map.class);
+		assertWithMessage("The internal object must have an attribute named value")
+				.that(((Map<?, ?>)jsonWrapper.getObject()).get("value"))
+				.isNotNull();
 	}
 
 	@Test
@@ -102,7 +106,11 @@ public class AciNumeratorDenominatorEncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
 
 		//assert
-		assertThat("There must be a single validation error", objectUnderTest.getDetails(), hasSize(1));
-		assertThat("The validation error must be the inability to find an encoder", objectUnderTest.getDetails().get(0).getMessage(), is("Failed to find an encoder"));
+		assertWithMessage("There must be a single validation error")
+				.that(objectUnderTest.getDetails())
+				.hasSize(1);
+		assertWithMessage("The validation error must be the inability to find an encoder")
+				.that(objectUnderTest.getDetails().get(0).getMessage())
+				.isEqualTo("Failed to find an encoder");
 	}
 }

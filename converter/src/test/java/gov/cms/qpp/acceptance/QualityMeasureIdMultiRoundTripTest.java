@@ -12,11 +12,6 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.MipsQualityMeasureIdValidator;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -24,6 +19,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.xml.parsers.ParserConfigurationException;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;

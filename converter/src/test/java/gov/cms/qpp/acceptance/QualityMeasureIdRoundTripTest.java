@@ -10,21 +10,15 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.MipsQualityMeasureIdValidator;
-
-import java.util.ArrayList;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
 
 public class QualityMeasureIdRoundTripTest {
 	public static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/junk_in_quality_measure.xml");
