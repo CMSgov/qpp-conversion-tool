@@ -250,7 +250,7 @@ public class ClinicalDocumentValidatorTest {
 				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.containsExactly(ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME);
 	}
-	
+
 	private List<Detail> getErrors(AllErrors content) {
 		return content.getErrors().get(0).getDetails();
 	}
