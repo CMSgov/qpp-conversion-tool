@@ -86,7 +86,7 @@ public class AciNumeratorDenominatorEncoderTest {
 				.isEqualTo(MEASURE_ID);
 		assertWithMessage("The internal object of the jsonWrapper must not be null")
 				.that(jsonWrapper.getObject())
-				.isEqualTo(not(nullValue()));
+				.isNotNull();
 		assertWithMessage("The internal object of the jsonWrapper must be a Map")
 				.that(jsonWrapper.getObject())
 				.isInstanceOf(Map.class);
