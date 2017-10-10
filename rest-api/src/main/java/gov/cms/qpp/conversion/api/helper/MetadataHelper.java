@@ -6,34 +6,51 @@ import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 
+/**
+ * Utilities for working with Metadata beans
+ */
 public class MetadataHelper {
 
 	private MetadataHelper() {
 	}
 
+	/**
+	 * Generates a {@link Metadata} object from a {@link Node}.
+	 * This {@link Metadata} does not contain data not found in a standard {@link Node}.
+	 *
+	 * @param node
+	 * @return
+	 */
 	public static Metadata generateMetadata(Node node) {
 		Metadata metadata = new Metadata();
 
-		metadata.setApm(getApm(node));
-		metadata.setTin(getTin(node));
-		metadata.setNpi(getNpi(node));
+		metadata.setApm(findApm(node));
+		metadata.setTin(findTin(node));
+		metadata.setNpi(findNpi(node));
 		metadata.setCpc(Program.isCpc(node));
 
 		return metadata;
 	}
 
-	private static String getApm(Node node) {
+	private static String findApm(Node node) {
 		return findValue(node, ClinicalDocumentDecoder.ENTITY_ID);
 	}
 
-	private static String getTin(Node node) {
+	private static String findTin(Node node) {
 		return findValue(node, MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER);
 	}
 
-	private static String getNpi(Node node) {
+	private static String findNpi(Node node) {
 		return findValue(node, MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER);
 	}
 
+	/**
+	 * Recursively searches a node for a value.
+	 *
+	 * @param node
+	 * @param key
+	 * @return
+	 */
 	private static String findValue(Node node, String key) {
 		String value = node.getValue(key);
 		if (value != null) {
