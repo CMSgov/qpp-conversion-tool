@@ -12,9 +12,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciMeasurePerformedRoundTripTest {
 
@@ -29,9 +28,9 @@ public class AciMeasurePerformedRoundTripTest {
 		List<Map<String, ?>> aciMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='aci')].measurements[?(@.measureId=='TEST_MEASURE_ID')]", List.class);
 
-		assertThat("There should still be an ACI measure even with the junk stuff in ACI measure.",
-			aciMeasures, hasSize(1));
-		assertThat("The measureId in the ACI measure should still be populated given the junk stuff in the measure.",
-			aciMeasures.get(0).get("measureId"), is("TEST_MEASURE_ID"));
+		assertThat(aciMeasures)
+				.hasSize(1);
+		assertThat((aciMeasures.get(0).get("measureId")))
+				.isEqualTo("TEST_MEASURE_ID");
 	}
 }

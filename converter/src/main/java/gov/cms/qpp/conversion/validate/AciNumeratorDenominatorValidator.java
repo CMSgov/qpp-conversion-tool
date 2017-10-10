@@ -16,7 +16,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 			"This ACI Numerator Denominator Node does not contain a measure name ID";
 	protected static final String NO_NUMERATOR =
 			"This ACI Numerator Denominator Node does not contain a Numerator Node child";
-	protected static final String TOO_MANY_NUMERATORS =
+	public static final String TOO_MANY_NUMERATORS =
 			"This ACI Numerator Denominator Node contains too many Numerator Node children";
 	protected static final String NO_DENOMINATOR =
 			"This ACI Numerator Denominator Node does not contain a Denominator Node child";

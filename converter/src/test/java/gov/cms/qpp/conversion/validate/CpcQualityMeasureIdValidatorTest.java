@@ -2,12 +2,11 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class CpcQualityMeasureIdValidatorTest {
 	private CpcQualityMeasureIdValidator validator;
@@ -26,9 +25,9 @@ public class CpcQualityMeasureIdValidatorTest {
 		addAnyNumberOfChildren(2);
 		validator.internalValidateSingleNode(testNode);
 
-		assertThat("Must contain 0 invalid performance rate count errors", validator.getDetails(),
-				not(hasValidationErrorsIgnoringPath(
-						String.format(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT, 2))));
+		assertWithMessage("Must contain 0 invalid performance rate count errors")
+				.that(validator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.doesNotContain(String.format(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT, 2));
 	}
 
 	@Test
@@ -36,9 +35,9 @@ public class CpcQualityMeasureIdValidatorTest {
 		addAnyNumberOfChildren(3);
 		validator.internalValidateSingleNode(testNode);
 
-		assertThat("Must contain 2 invalid performance rate count errors", validator.getDetails(),
-				hasValidationErrorsIgnoringPath(
-						String.format(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT, 2)));
+		assertWithMessage("Must contain 2 invalid performance rate count errors")
+				.that(validator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(String.format(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT, 2));
 	}
 
 	@Test
@@ -46,9 +45,9 @@ public class CpcQualityMeasureIdValidatorTest {
 		addAnyNumberOfChildren(1);
 		validator.internalValidateSingleNode(testNode);
 
-		assertThat("Must contain 2 invalid performance rate count errors", validator.getDetails(),
-				hasValidationErrorsIgnoringPath(
-						String.format(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT, 2)));
+		assertWithMessage("Must contain 2 invalid performance rate count errors")
+				.that(validator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(String.format(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT, 2));
 	}
 
 	private void addAnyNumberOfChildren(int size) {
