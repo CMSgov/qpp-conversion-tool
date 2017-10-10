@@ -1,23 +1,22 @@
 package gov.cms.qpp.conversion.api.helper;
 
+import ch.qos.logback.classic.spi.LoggingEvent;
 import org.junit.Before;
 import org.junit.Test;
-import ch.qos.logback.classic.spi.LoggingEvent;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 import java.io.IOException;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.doReturn;
 
 public class AttachmentHashPartConverterTest {
-	AttachmentHashPartConverter converter;
-	LoggingEvent event = new LoggingEvent();
+	private AttachmentHashPartConverter converter;
+	private LoggingEvent event = new LoggingEvent();
 
 	@Before
 	public void setup() {
@@ -29,7 +28,8 @@ public class AttachmentHashPartConverterTest {
 		doReturn(null).when(converter).getPart();
 		String result = converter.convert(event);
 
-		assertThat("result should equal empty string", result, is(""));
+		assertWithMessage("result should equal empty string")
+				.that(result).isEqualTo("");
 	}
 
 	@Test
@@ -38,7 +38,8 @@ public class AttachmentHashPartConverterTest {
 		doReturn(part).when(converter).getPart();
 		String result = converter.convert(event);
 
-		assertThat("should equal part's hash code", result, is(String.valueOf(part.hashCode())));
+		assertWithMessage("should equal part's hash code")
+				.that(result).isEqualTo(String.valueOf(part.hashCode()));
 	}
 
 	@Test
@@ -46,7 +47,8 @@ public class AttachmentHashPartConverterTest {
 		doThrow(new IOException()).when(converter).getPart();
 		String result = converter.convert(event);
 
-		assertThat("IOException - result should equal empty string", result, is(""));
+		assertWithMessage("IOException - result should equal empty string")
+				.that(result).isEqualTo("");
 	}
 
 	@Test
@@ -54,7 +56,8 @@ public class AttachmentHashPartConverterTest {
 		doThrow(new ServletException()).when(converter).getPart();
 		String result = converter.convert(event);
 
-		assertThat("ServletException - result should equal an empty sting", result, is(""));
+		assertWithMessage("ServletException - result should equal an empty sting")
+				.that(result).isEqualTo("");
 	}
 
 }

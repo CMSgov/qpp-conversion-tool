@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion;
 
+import gov.cms.qpp.test.LoadTestSuite;
 import org.apache.jmeter.control.LoopController;
 import org.apache.jmeter.engine.StandardJMeterEngine;
 import org.apache.jmeter.protocol.http.sampler.HTTPSamplerProxy;
@@ -10,12 +11,9 @@ import org.apache.jmeter.testelement.TestPlan;
 import org.apache.jmeter.threads.ThreadGroup;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import gov.cms.qpp.test.LoadTestSuite;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -26,7 +24,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class ConverterLoadTest extends LoadTestSuite {
 	private static StandardJMeterEngine jmeter;
@@ -74,10 +72,12 @@ public class ConverterLoadTest extends LoadTestSuite {
 	@Test
 	public void converterLoad10Test() throws IOException {
 		Map<String, String> results = executePlan(1, 10, 5);
-		assertThat("Average response was in excess of 3 seconds",
-				Long.valueOf(results.get("Average")), Matchers.lessThan(3000L));
-		assertThat("At least one error occurred",
-				Long.valueOf(results.get("ErrorCount")), Matchers.equalTo(0L));
+
+
+		assertWithMessage("Average response was in excess of 3 seconds")
+				.that(Long.valueOf(results.get("Average"))).isLessThan(3000L);
+		assertWithMessage("At least one error occurred")
+				.that(Long.valueOf(results.get("ErrorCount"))).isEqualTo(0L);
 	}
 
 	@Test
@@ -90,8 +90,8 @@ public class ConverterLoadTest extends LoadTestSuite {
 			errorCount = Integer.valueOf(results.get("ErrorCount"));
 		}
 
-		assertThat("Endpoint could not support up to 20 or more concurrent requests",
-				numThreads, Matchers.greaterThanOrEqualTo(20));
+		assertWithMessage("Endpoint could not support up to 20 or more concurrent requests")
+				.that(numThreads).isAtLeast(20);
 	}
 
 	private Map<String, String> executePlan(int numLoops, int numThreads, int rampUp) throws IOException {

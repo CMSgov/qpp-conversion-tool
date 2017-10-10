@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import static org.junit.Assert.assertNotNull;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class DynamoDbConfigFactoryTest {
 	@Test
@@ -19,6 +19,6 @@ public class DynamoDbConfigFactoryTest {
 	@Test
 	public void testFactory() {
 		DynamoDBMapper dynamoDBMapper = DynamoDbConfigFactory.createDynamoDbMapper(null, null, null);
-		assertNotNull("The DynamoDB mapper must not be null.", dynamoDBMapper);
+		assertWithMessage("The DynamoDB mapper must not be null.").that(dynamoDBMapper).isNotNull();
 	}
 }
