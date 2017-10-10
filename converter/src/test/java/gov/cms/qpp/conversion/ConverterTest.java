@@ -86,7 +86,7 @@ public class ConverterTest {
 			List<Detail> details = errors.get(0).getDetails();
 			assertWithMessage("The expected validation error was missing")
 					.that(details)
-					.comparingElementsUsing(new DetailsMessageEquals())
+					.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 					.contains("Test validation error for Jenny");
 		}
 	}
@@ -180,7 +180,7 @@ public class ConverterTest {
 				.that(details).hasSize(1);
 		assertWithMessage("The validation error was incorrect")
 				.that(details)
-				.comparingElementsUsing(new DetailsMessageEquals())
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.containsExactly(errorText);
 	}
 

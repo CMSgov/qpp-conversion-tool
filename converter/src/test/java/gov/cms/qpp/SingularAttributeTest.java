@@ -1,6 +1,5 @@
 package gov.cms.qpp;
 
-import com.google.common.truth.Correspondence;
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamQrdaSource;
@@ -16,6 +15,11 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import gov.cms.qpp.conversion.validate.ClinicalDocumentValidator;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -25,17 +29,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.xml.parsers.ParserConfigurationException;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class SingularAttributeTest {
 
 	private static final String NAMESPACE_URI = "urn:hl7-org:v3";
-	private static final Correspondence<Detail, String> MESSAGE_EQUALS = new DetailsMessageEquals();
 	private static Map<String, Goods> corrMap;
 	private static Set<String> exclusions;
 	private static int inclusionCount = 0;
@@ -124,11 +123,11 @@ public class SingularAttributeTest {
 				ClinicalDocumentDecoder.PROGRAM_NAME, false);
 
 		assertWithMessage("error should be about missing missing program name").that(details)
-				.comparingElementsUsing(MESSAGE_EQUALS)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.containsExactly(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME);
 
 		assertWithMessage("error should be about missing program name").that(details)
-				.comparingElementsUsing(MESSAGE_EQUALS)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.containsExactly(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME);
 	}
 
@@ -138,7 +137,7 @@ public class SingularAttributeTest {
 				ClinicalDocumentDecoder.PROGRAM_NAME, true);
 
 		assertWithMessage("error should be about missing program name").that(details)
-				.comparingElementsUsing(MESSAGE_EQUALS)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.containsExactly(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
 						ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME);
 	}

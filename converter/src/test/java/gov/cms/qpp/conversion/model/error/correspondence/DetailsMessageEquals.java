@@ -5,6 +5,7 @@ import com.google.common.truth.Correspondence;
 import gov.cms.qpp.conversion.model.error.Detail;
 
 public final class DetailsMessageEquals extends Correspondence<Detail, String> {
+	private DetailsMessageEquals(){}
 
 	public static DetailsMessageEquals INSTANCE = new DetailsMessageEquals();
 

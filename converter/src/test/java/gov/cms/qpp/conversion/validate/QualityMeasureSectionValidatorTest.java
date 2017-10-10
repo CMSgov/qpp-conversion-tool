@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import com.google.common.truth.Correspondence;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -15,7 +14,6 @@ import static com.google.common.truth.Truth.assertWithMessage;
 public class QualityMeasureSectionValidatorTest {
 	private Node reportingParameterNode;
 	private Node qualityMeasureSectionNode;
-	private Correspondence<Detail, String> correspondence = new DetailsMessageEquals();
 
 	@Before
 	public void setUpQualityMeasureSection() {
@@ -39,7 +37,7 @@ public class QualityMeasureSectionValidatorTest {
 
 		assertWithMessage("Must contain correct error")
 				.that(errors)
-				.comparingElementsUsing(correspondence)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.containsExactly(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 
@@ -52,7 +50,7 @@ public class QualityMeasureSectionValidatorTest {
 
 		assertWithMessage("Must contain correct error")
 				.that(errors)
-				.comparingElementsUsing(correspondence)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.containsExactly(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 
