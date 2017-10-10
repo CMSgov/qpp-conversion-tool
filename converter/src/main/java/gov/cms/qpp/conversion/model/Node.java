@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.model;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -141,7 +140,7 @@ public class Node {
 	 * @return List of matching child Nodes.
 	 */
 	public Stream<Node> getChildNodes(TemplateId... templateIds) {
-		return getChildNodes(node -> Sets.newHashSet(templateIds).contains(node.getType()));
+		return getChildNodes(node -> Arrays.asList(templateIds).contains(node.getType()));
 	}
 
 	/**
