@@ -11,6 +11,7 @@ import org.mockito.Spy;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -44,6 +45,7 @@ public class S3ConfigTest {
 
 	@Test
 	public void testTransferManagerIsNotNull() {
-		Assert.assertNotNull(underTest.s3TransferManager(Mockito.mock(AmazonS3.class)));
+		assertWithMessage("Transfer manager should not be null.")
+				.that(underTest.s3TransferManager(Mockito.mock(AmazonS3.class))).isNotNull();
 	}
 }

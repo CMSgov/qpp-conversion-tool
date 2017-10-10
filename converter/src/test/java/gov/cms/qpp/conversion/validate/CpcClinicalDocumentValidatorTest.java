@@ -4,13 +4,13 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import java.util.Set;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class CpcClinicalDocumentValidatorTest {
 
@@ -24,23 +24,23 @@ public class CpcClinicalDocumentValidatorTest {
 	@Test
 	public void validPracticeSiteAddress() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
-
 		Set<Detail> errors = cpcValidator.getDetails();
-		assertThat("Must have no errors", errors, hasSize(0));
+
+		assertWithMessage("Must have no errors")
+				.that(errors).isEmpty();
 	}
 
 	@Test
 	public void missingPracticeSiteAddress() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR);
-
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
-
 		Set<Detail> errors = cpcValidator.getDetails();
-		assertThat("Must contain error", errors,
-				hasValidationErrorsIgnoringPath(CpcClinicalDocumentValidator.MISSING_PRACTICE_SITE_ADDRESS));
+
+		assertWithMessage("Must contain error")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(CpcClinicalDocumentValidator.MISSING_PRACTICE_SITE_ADDRESS);
 	}
 
 	@Test
@@ -48,12 +48,12 @@ public class CpcClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "");
-
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
-
 		Set<Detail> errors = cpcValidator.getDetails();
-		assertThat("Must contain error", errors,
-				hasValidationErrorsIgnoringPath(CpcClinicalDocumentValidator.MISSING_PRACTICE_SITE_ADDRESS));
+
+		assertWithMessage("Must contain error")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(CpcClinicalDocumentValidator.MISSING_PRACTICE_SITE_ADDRESS);
 	}
 
 	@Test
@@ -62,42 +62,38 @@ public class CpcClinicalDocumentValidatorTest {
 
 		// extra APM
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "1234567", false);
-
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
-		assertThat("Must validate with the correct error",
-				cpcValidator.getDetails(),
-				hasValidationErrorsIgnoringPath(CpcClinicalDocumentValidator.ONLY_ONE_APM_ALLOWED));
+		assertWithMessage("Must validate with the correct error")
+				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(CpcClinicalDocumentValidator.ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
 	public void testCpcPlusNoApm() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.ENTITY_ID);
-
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
-		assertThat("Must validate with the correct error",
-				cpcValidator.getDetails(),
-				hasValidationErrorsIgnoringPath(CpcClinicalDocumentValidator.ONLY_ONE_APM_ALLOWED));
+		assertWithMessage("Must validate with the correct error")
+				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(CpcClinicalDocumentValidator.ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
 	public void testCpcPlusMissingMeasureSection() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
-
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
-		assertThat("Must validate with the correct error",
-				cpcValidator.getDetails(),
-				hasValidationErrorsIgnoringPath(CpcClinicalDocumentValidator.ONE_MEASURE_SECTION_REQUIRED));
+		assertWithMessage("Must validate with the correct error")
+				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(CpcClinicalDocumentValidator.ONE_MEASURE_SECTION_REQUIRED);
 	}
 
 	private Node createValidCpcPlusClinicalDocument() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
 		addMeasureSectionNode(clinicalDocumentNode);
-
-		return  clinicalDocumentNode;
+		return clinicalDocumentNode;
 	}
 
 	private Node createCpcPlusClinicalDocument() {
@@ -110,10 +106,9 @@ public class CpcClinicalDocumentValidatorTest {
 		return clinicalDocumentNode;
 	}
 
-	private Node addMeasureSectionNode(Node clinicalDocumentNode) {
+	private void addMeasureSectionNode(Node clinicalDocumentNode) {
 		Node measureSection = new Node(TemplateId.MEASURE_SECTION_V2);
 		clinicalDocumentNode.addChildNode(measureSection);
-		return clinicalDocumentNode;
 	}
 
 }

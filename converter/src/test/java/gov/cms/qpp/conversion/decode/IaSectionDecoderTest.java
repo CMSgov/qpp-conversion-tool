@@ -1,20 +1,17 @@
 package gov.cms.qpp.conversion.decode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.xml.XmlException;
-import org.junit.Before;
-import org.junit.Test;
-
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-
 import java.io.IOException;
+import org.junit.Before;
+import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class IaSectionDecoderTest {
 	private String xmlFragment;
@@ -30,7 +27,9 @@ public class IaSectionDecoderTest {
 
 		Node iaSectionNode = root.findFirstNode(TemplateId.IA_SECTION);
 
-		assertThat("returned category", iaSectionNode.getValue("category"), is("ia"));
+		assertWithMessage("returned category")
+				.that(iaSectionNode.getValue("category"))
+				.isEqualTo("ia");
 	}
 
 	@Test
@@ -42,7 +41,9 @@ public class IaSectionDecoderTest {
 		Node root = executeDecoderWithoutDefaults();
 		Node iaSectionNode = root.findFirstNode(TemplateId.IA_SECTION);
 
-		assertThat("returned category", iaSectionNode.getValue("category"), is("ia"));
+		assertWithMessage("returned category")
+				.that(iaSectionNode.getValue("category"))
+				.isEqualTo("ia");
 	}
 
 	private Node executeDecoderWithoutDefaults() throws XmlException {

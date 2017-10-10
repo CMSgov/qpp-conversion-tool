@@ -1,100 +1,98 @@
 package gov.cms.qpp.conversion;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
-
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class ContextTest {
 
 	@Test
 	public void testDoesDefaultsByDefault() {
-		assertTrue(new Context().isDoDefaults());
+		assertThat(new Context().isDoDefaults()).isTrue();
 	}
 
 	@Test
 	public void testDoesValidationByDefault() {
-		assertTrue(new Context().isDoValidation());
+		assertThat(new Context().isDoValidation()).isTrue();
 	}
 
 	@Test
 	public void testIsNotHistoricalByDefault() {
-		assertFalse(new Context().isHistorical());
+		assertThat(new Context().isHistorical()).isFalse();
 	}
 
 	@Test
 	public void testIsDoDefaultsSetter() {
 		Context context = new Context();
 		context.setDoDefaults(false);
-		assertFalse(context.isDoDefaults());
+		assertThat(context.isDoDefaults()).isFalse();
 	}
 
 	@Test
 	public void testIsDoValidationSetter() {
 		Context context = new Context();
 		context.setDoValidation(false);
-		assertFalse(context.isDoValidation());
+		assertThat(context.isDoValidation()).isFalse();
 	}
 
 	@Test
 	public void testIsHistoricalSetter() {
 		Context context = new Context();
 		context.setHistorical(true);
-		assertTrue(context.isHistorical());
+		assertThat(context.isHistorical()).isTrue();
 	}
 
 	@Test
 	public void testProgramIsAllByDefault() {
-		assertSame(Program.ALL, new Context().getProgram());
+		assertThat(new Context().getProgram())
+				.isSameAs(Program.ALL);
 	}
 
 	@Test
 	public void testProgramSetter() {
 		Context context = new Context();
 		context.setProgram(Program.MIPS);
-		assertSame(Program.MIPS, context.getProgram());
+		assertThat(context.getProgram())
+				.isSameAs(Program.MIPS);
 	}
 
 	@Test
 	public void testScopeIsEmptyByDefault() {
-		assertTrue(new Context().getScope().isEmpty());
+		assertThat(new Context().getScope()).isEmpty();
 	}
 
 	@Test
 	public void testGetRegistryReturnsValid() {
-		assertNotNull(new Context().getRegistry(Decoder.class));
+		assertThat(new Context().getRegistry(Decoder.class)).isNotNull();
 	}
 
 	@Test
 	public void testGetRegistryIdentity() {
 		Context context = new Context();
-		assertSame(context.getRegistry(Decoder.class),
-				context.getRegistry(Decoder.class));
+		assertThat(context.getRegistry(Decoder.class))
+				.isSameAs(context.getRegistry(Decoder.class));
 	}
 
 	@Test
 	public void testHasScopeIsFalseByDefault() {
-		assertFalse(new Context().hasScope());
+		assertThat(new Context().hasScope()).isFalse();
 	}
 
 	@Test
 	public void testHasScopeIsFalseIfScopeIsNull() {
 		Context context = new Context();
 		context.setScope(null);
-		assertFalse(context.hasScope());
+		assertThat(context.hasScope()).isFalse();
 	}
 
 	@Test
 	public void testHasScopeIsTrueIfScopeIsNotEmpty() {
 		Context context = new Context();
 		context.getScope().add(QrdaScope.DEFAULTS);
-		assertTrue(context.hasScope());
+		assertThat(context.hasScope()).isTrue();
 	}
 
 }

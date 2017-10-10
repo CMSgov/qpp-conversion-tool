@@ -1,36 +1,40 @@
 package gov.cms.qpp.conversion.model.validation;
 
 import com.google.common.collect.Sets;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
-import static org.hamcrest.core.IsNot.not;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class SubPopulationsTest {
 
 	@Test
 	public void testGetKeysContainsExpected() {
-		Assert.assertThat(SubPopulations.getKeys(),
-				Matchers.containsInAnyOrder(SubPopulations.DENEXCEP, SubPopulations.DENEX,
-						SubPopulations.DENOM, SubPopulations.NUMER, SubPopulations.IPOP));
+		assertThat(SubPopulations.getKeys())
+				.containsExactly(SubPopulations.DENEXCEP, SubPopulations.DENEX,
+						SubPopulations.DENOM, SubPopulations.NUMER, SubPopulations.IPOP);
 	}
 
 	@Test
 	public void testGetExclusiveKeysExcludesExpected() {
-		Assert.assertThat(SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulations.DENEXCEP)),
-				not(Matchers.contains(SubPopulations.DENEXCEP)));
+		Set<String> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulations.DENEXCEP));
+		assertWithMessage("Excluded key %s should be absent", SubPopulations.DENEXCEP)
+				.that(keys).doesNotContain(SubPopulations.DENEXCEP);
 	}
 
 	@Test
 	public void testGetExclusiveKeysIncludesOthers() {
-		Assert.assertThat(SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulations.DENEX)),
-				Matchers.containsInAnyOrder(SubPopulations.DENEXCEP, SubPopulations.DENOM,
-						SubPopulations.NUMER, SubPopulations.IPOP));
+		Set<String> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulations.DENEX));
+
+ 		assertWithMessage("Non excluded keys should be present")
+				.that(keys)
+				.containsExactly(SubPopulations.DENEXCEP, SubPopulations.DENOM,
+						SubPopulations.NUMER, SubPopulations.IPOP);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -62,7 +66,8 @@ public class SubPopulationsTest {
 		subPopulation.setNumeratorUuid(expected.get(SubPopulations.NUMER));
 
 		for (String key : SubPopulations.getExclusiveKeys(Sets.newHashSet("IPOP", "IPP"))) {
-			Assert.assertEquals(expected.get(key), SubPopulations.getUniqueIdForKey(key, subPopulation));
+			assertThat(SubPopulations.getUniqueIdForKey(key, subPopulation))
+					.isSameAs(expected.get(key));
 		}
 	}
 

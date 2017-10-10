@@ -3,16 +3,14 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.util.Set;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciNumeratorDenominatorValidatorTest {
 
@@ -47,7 +45,8 @@ public class AciNumeratorDenominatorValidatorTest {
 		AciNumeratorDenominatorValidator measureVal = new AciNumeratorDenominatorValidator();
 		Set<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertThat("no errors should be present", errors, empty());
+		assertWithMessage("no errors should be present")
+				.that(errors).isEmpty();
 	}
 
 	@Test
@@ -67,10 +66,9 @@ public class AciNumeratorDenominatorValidatorTest {
 
 		Set<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertThat("there should be 1 error", errors, hasSize(1));
-		assertThat("error should be about missing numerator denominator measure name",
-				errors.iterator().next().getMessage(),
-				is(AciNumeratorDenominatorValidator.NO_MEASURE_NAME));
+		assertWithMessage("error should be about missing numerator denominator measure name")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(AciNumeratorDenominatorValidator.NO_MEASURE_NAME);
 	}
 
 	@Test
@@ -96,10 +94,9 @@ public class AciNumeratorDenominatorValidatorTest {
 		AciNumeratorDenominatorValidator measureVal = new AciNumeratorDenominatorValidator();
 		Set<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertThat("there should be 1 error", errors, hasSize(1));
-		assertThat("error should be about invalid parent node",
-				errors.iterator().next().getMessage(),
-				is(AciNumeratorDenominatorValidator.NO_PARENT_SECTION));
+		assertWithMessage("error should be about invalid parent node")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(AciNumeratorDenominatorValidator.NO_PARENT_SECTION);
 	}
 
 	@Test
@@ -116,9 +113,9 @@ public class AciNumeratorDenominatorValidatorTest {
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertThat("there should be 1 error", errors, hasSize(1));
-		assertThat("error should be about no child nodes",
-				errors.iterator().next().getMessage(), is(AciNumeratorDenominatorValidator.NO_CHILDREN));
+		assertWithMessage("error should be about no child nodes")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(AciNumeratorDenominatorValidator.NO_CHILDREN);
 	}
 
 	@Test
@@ -141,10 +138,9 @@ public class AciNumeratorDenominatorValidatorTest {
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertThat("there should be 1 error", errors, hasSize(1));
-		assertThat("error should be about missing Numerator node",
-				errors.iterator().next().getMessage(),
-				is(AciNumeratorDenominatorValidator.NO_NUMERATOR));
+		assertWithMessage("error should be about missing Numerator node")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(AciNumeratorDenominatorValidator.NO_NUMERATOR);
 	}
 
 	@Test
@@ -167,10 +163,9 @@ public class AciNumeratorDenominatorValidatorTest {
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertThat("there should be 1 error", errors, hasSize(1));
-		assertThat("error should be about missing Denominator node",
-				errors.iterator().next().getMessage(),
-				is(AciNumeratorDenominatorValidator.NO_DENOMINATOR));
+		assertWithMessage("error should be about missing Denominator node")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(AciNumeratorDenominatorValidator.NO_DENOMINATOR);
 	}
 
 	@Test
@@ -195,10 +190,9 @@ public class AciNumeratorDenominatorValidatorTest {
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertThat("there should be 1 error", errors, hasSize(1));
-		assertThat("error should be about too many Numerator nodes",
-				errors.iterator().next().getMessage(),
-				is(AciNumeratorDenominatorValidator.TOO_MANY_NUMERATORS));
+		assertWithMessage("error should be about too many Numerator nodes")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(AciNumeratorDenominatorValidator.TOO_MANY_NUMERATORS);
 	}
 
 	@Test
@@ -223,9 +217,8 @@ public class AciNumeratorDenominatorValidatorTest {
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertThat("there should be 1 error", errors, hasSize(1));
-		assertThat("error should be about too many Denominator nodes",
-				errors.iterator().next().getMessage(),
-				is(AciNumeratorDenominatorValidator.TOO_MANY_DENOMINATORS));
+		assertWithMessage("error should be about too many Denominator nodes")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(AciNumeratorDenominatorValidator.TOO_MANY_DENOMINATORS);
 	}
 }

@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.truth.Truth.assertThat;
+
 public class CpcPlusRoundTripTest {
 
 	private static final Path DIR = Paths.get("src/test/resources/cpc_plus/");
@@ -70,6 +72,6 @@ public class CpcPlusRoundTripTest {
 			return fileName.endsWith(".xml") && !fileName.endsWith("-failure.xml") && !fileName.endsWith("-success.xml");
 		}).count();
 
-		Assert.assertEquals(0, invalidFiles);
+		assertThat(invalidFiles).isEqualTo(0);
 	}
 }

@@ -2,35 +2,35 @@ package gov.cms.qpp.conversion.model;
 
 
 import org.junit.Test;
+
 import java.util.stream.Stream;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class ProgramTest {
 	@Test
 	public void instanceRetrievalMips() {
-		Stream.of("MIPS_GROUP", "MIPS_INDIV", "MIPS").forEach(mip -> {
-			assertThat("Program other than " + Program.MIPS + " was returned",
-					Program.getInstance(mip), is(Program.MIPS));
-		});
+		Stream.of("MIPS_GROUP", "MIPS_INDIV", "MIPS").forEach(mip ->
+			assertWithMessage("Program other than %s was returned", Program.MIPS)
+					.that(Program.getInstance(mip)).isSameAs(Program.MIPS)
+		);
 	}
 
 	@Test
 	public void instanceRetrievalCpcPlus() {
-		assertThat("Program other than " + Program.CPC + " was returned",
-					Program.getInstance("CPCPLUS"), is(Program.CPC));
+		assertWithMessage("Program other than %s was returned", Program.CPC)
+				.that(Program.getInstance("CPCPLUS")).isSameAs(Program.CPC);
 	}
 
 	@Test
 	public void instanceRetrievalDefault() {
-		assertThat("Program other than " + Program.ALL + " was returned",
-				Program.getInstance("meep"), is(Program.ALL));
+		assertWithMessage("Program other than %s was returned", Program.ALL)
+				.that(Program.getInstance("meep")).isSameAs(Program.ALL);
 	}
 
 	@Test
 	public void instanceRetrievalNullProgramName() {
-		assertThat("Program other than " + Program.ALL + " was returned",
-				Program.getInstance(null), is(Program.ALL));
+		assertWithMessage("Program other than %s was returned", Program.ALL)
+				.that(Program.getInstance(null)).isSameAs(Program.ALL);
 	}
 }

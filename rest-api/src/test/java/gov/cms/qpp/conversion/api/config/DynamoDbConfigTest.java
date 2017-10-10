@@ -23,6 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.core.env.Environment;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -103,7 +104,7 @@ public class DynamoDbConfigTest {
 
 		DynamoDBMapper dynamoDBMapper = underTest.dynamoDbMapper(amazonDynamoDB);
 
-		assertNull("DynamoDBMapper must be null.", dynamoDBMapper);
+		assertWithMessage("DynamoDBMapper must be null.").that(dynamoDBMapper).isNull();
 	}
 
 	@Test

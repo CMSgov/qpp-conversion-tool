@@ -3,14 +3,12 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciProportionNumeratorEncoderTest {
 
@@ -38,7 +36,9 @@ public class AciProportionNumeratorEncoderTest {
 		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(new Context());
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
-		assertThat("Must have a numerator value of 600", 600, is(jsonWrapper.getInteger("numerator")));
+		assertWithMessage("Must have a numerator value of 600")
+				.that(jsonWrapper.getInteger("numerator"))
+				.isEqualTo(600);
 	}
 
 	@Test
@@ -48,7 +48,9 @@ public class AciProportionNumeratorEncoderTest {
 		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(new Context());
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
-		assertThat("Must have a null numerator", null, is(jsonWrapper.getInteger("numerator")));
+		assertWithMessage("Must have a null numerator")
+				.that(jsonWrapper.getInteger("numerator"))
+				.isNull();
 	}
 
 	@Test
@@ -58,6 +60,8 @@ public class AciProportionNumeratorEncoderTest {
 		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(new Context());
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
-		assertThat("Must have a numerator value of null", null, is(jsonWrapper.getInteger("numerator")));
+		assertWithMessage("Must have a numerator value of null")
+				.that(jsonWrapper.getInteger("numerator"))
+				.isNull();
 	}
 }
