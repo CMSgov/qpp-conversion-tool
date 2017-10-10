@@ -6,12 +6,11 @@ import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -113,7 +112,7 @@ public class AciNumeratorDenominatorRoundTripTest {
 				.isEqualTo(xPathExpected);
 
 		assertWithMessage("expected encoder to return a representation of a measure")
-		.that(sw.toString())
-		.isEqualTo(jsonExpected);
+				.that(sw.toString())
+				.isEqualTo(jsonExpected);
 	}
 }

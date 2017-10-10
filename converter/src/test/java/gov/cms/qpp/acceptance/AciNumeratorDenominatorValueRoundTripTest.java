@@ -5,13 +5,13 @@ import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Test;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciNumeratorDenominatorValueRoundTripTest {
@@ -47,8 +47,6 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 		encoder.encode(new BufferedWriter(sw));
 
 		String expected = "{\n  \"value\" : 600\n}";
-		assertWithMessage("expected encoder to return a single number numerator/denominator")
-				.that(sw.toString())
-				.isEqualTo(expected);
+		assertThat(sw.toString()).isEqualTo(expected);
 	}
 }

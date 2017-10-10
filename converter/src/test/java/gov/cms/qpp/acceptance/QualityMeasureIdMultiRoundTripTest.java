@@ -24,6 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class QualityMeasureIdMultiRoundTripTest {
@@ -81,8 +82,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		assertWithMessage("Must contain the proper error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE);
 	}
 
@@ -93,10 +93,8 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		assertWithMessage("Should only have one error detail")
-				.that(details).hasSize(1);
-		assertWithMessage("Must contain the proper error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+		assertThat(details).hasSize(1);
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE);
 	}
 
@@ -109,12 +107,11 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, true);
 
-		assertWithMessage("Error should regard the need for a single measure type")
-				.that(details)
+		assertThat(details)
 				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(message);
-		assertWithMessage("Must contain the proper error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+		assertThat(details)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(message);
 	}
 
@@ -125,12 +122,9 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		assertWithMessage("Should only have one error detail")
-				.that(details)
-				.hasSize(1);
-
-		assertWithMessage("Must contain the proper error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+		assertThat(details).hasSize(1);
+		assertThat(details)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION);
 	}
 
@@ -141,11 +135,8 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, true);
 
-		assertWithMessage("Should only have two error details")
-				.that(details)
-				.hasSize(2);
-		assertWithMessage("Must contain the proper error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+		assertThat(details).hasSize(2);
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION);
 	}
 
@@ -160,11 +151,8 @@ public class QualityMeasureIdMultiRoundTripTest {
 			details.addAll(errors.getErrors().get(0).getDetails());
 		}
 
-		assertWithMessage("Must contain the right number of errors")
-				.that(details)
-				.hasSize(3);
-		assertWithMessage("Must contain the proper error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+		assertThat(details).hasSize(3);
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(MipsQualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT);
 	}
 
@@ -194,7 +182,8 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	private void assertSecondSubPopulation(List<Map<String, Integer>> subPopulation) {
-		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL).that(subPopulation.get(1)
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
+				.that(subPopulation.get(1)
 				.get(ELIGIBLE_POPULATION))
 				.isEqualTo(800);
 		assertWithMessage(REQUIRE_PERFORMANCE_MET)

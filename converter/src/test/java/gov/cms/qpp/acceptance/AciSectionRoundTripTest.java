@@ -9,15 +9,13 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciSectionRoundTripTest {
 
@@ -150,9 +148,7 @@ public class AciSectionRoundTripTest {
 		encoder.encode(new BufferedWriter(sw));
 
 		//Test
-		assertWithMessage("expected encoder to return a representation of a measure")
-				.that(sw.toString())
-				.isEqualTo(expected);
+		assertThat(sw.toString()).isEqualTo(expected);
 	}
 
 	private void assertAciSectionHasSingleQedNode(Node aciSectionNode) {

@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciMeasurePerformedRoundTripTest {
@@ -27,11 +28,9 @@ public class AciMeasurePerformedRoundTripTest {
 		List<Map<String, ?>> aciMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='aci')].measurements[?(@.measureId=='TEST_MEASURE_ID')]", List.class);
 
-		assertWithMessage("There should still be an ACI measure even with the junk stuff in ACI measure.")
-				.that(aciMeasures)
+		assertThat(aciMeasures)
 				.hasSize(1);
-		assertWithMessage("The measureId in the ACI measure should still be populated given the junk stuff in the measure.")
-				.that(aciMeasures.get(0).get("measureId"))
+		assertThat((aciMeasures.get(0).get("measureId")))
 				.isEqualTo("TEST_MEASURE_ID");
 	}
 }

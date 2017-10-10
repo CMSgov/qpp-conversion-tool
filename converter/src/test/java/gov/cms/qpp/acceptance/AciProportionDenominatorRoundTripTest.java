@@ -5,14 +5,13 @@ import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 public class AciProportionDenominatorRoundTripTest {
 
@@ -48,8 +47,7 @@ public class AciProportionDenominatorRoundTripTest {
 		encoder.encode(new BufferedWriter(sw));
 
 		String EXPECTED = "{\n  \"denominator\" : 600\n}";
-		assertWithMessage("expected encoder to return a representation of a denominator with a value")
-				.that(sw.toString())
+		assertThat(sw.toString())
 				.isEqualTo(EXPECTED);
 	}
 }

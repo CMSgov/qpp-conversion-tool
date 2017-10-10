@@ -9,17 +9,15 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
 public class MeasureDataRoundTripTest {
@@ -64,13 +62,10 @@ public class MeasureDataRoundTripTest {
 		StringWriter sw = encode(placeholder);
 
 		//then
-		assertThat(measure)
-				.isNotNull();
-		assertWithMessage("Should have an aggregate count child")
-				.that(measure.getChildNodes().get(0).getType())
+		assertThat(measure).isNotNull();
+		assertThat(measure.getChildNodes().get(0).getType())
 				.isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
-		assertWithMessage("expected encoder to return a single measure data")
-				.that(sw.toString())
+		assertThat(sw.toString())
 				.isEqualTo(expected);
 	}
 

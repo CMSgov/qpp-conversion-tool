@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Test;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class QualityMeasureIdRoundTripTest {
@@ -33,9 +34,7 @@ public class QualityMeasureIdRoundTripTest {
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
 
-		assertWithMessage("There should still be a quality measure even with the junk stuff in quality measure.")
-				.that(qualityMeasures)
-				.hasSize(1);
+		assertThat(qualityMeasures).hasSize(1);
 		assertWithMessage("The measureId in the quality measure should still populate given the junk stuff in the measure.")
 				.that(qualityMeasures.get(0).get("measureId"))
 				.isEqualTo("236");
@@ -58,8 +57,7 @@ public class QualityMeasureIdRoundTripTest {
 
 		String message = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID, measureId,
 				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, numerUuid);
-		assertWithMessage("Must contain the proper error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(message);
 	}
 
@@ -80,11 +78,9 @@ public class QualityMeasureIdRoundTripTest {
 
 		String message = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID, measureId,
 				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, numerUuid);
-		assertWithMessage("Must contain the proper error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(MipsQualityMeasureIdValidator.SINGLE_PERFORMANCE_RATE);
-		assertWithMessage("Must contain the proper error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(message);
 	}
 }

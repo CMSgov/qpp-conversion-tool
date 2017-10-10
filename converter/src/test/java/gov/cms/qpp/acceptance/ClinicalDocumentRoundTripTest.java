@@ -1,23 +1,21 @@
 package gov.cms.qpp.acceptance;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.nio.charset.Charset;
-import java.util.Collections;
-
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
-import org.reflections.util.ClasspathHelper;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.util.Collections;
+import org.apache.commons.io.IOUtils;
+import org.junit.Test;
+import org.reflections.util.ClasspathHelper;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class ClinicalDocumentRoundTripTest {
 
@@ -53,9 +51,7 @@ public class ClinicalDocumentRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		assertWithMessage("expected encoder to return a representation of a clinical document")
-				.that(sw.toString())
-				.isEqualTo(EXPECTED);
+		assertThat(sw.toString()).isEqualTo(EXPECTED);
 	}
 
 }

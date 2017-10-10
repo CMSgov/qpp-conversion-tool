@@ -5,15 +5,13 @@ import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.validate.IaSectionValidator;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import org.junit.Assert;
+import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 public class IaSectionValidatorRoundTripTest {
 
@@ -31,8 +29,7 @@ public class IaSectionValidatorRoundTripTest {
 
 		String error = errors.getErrors().get(0).getDetails().get(0).getMessage();
 
-		assertWithMessage("Must contain correct error message")
-				.that(error)
+		assertThat(error)
 				.isEqualTo(IaSectionValidator.WRONG_CHILD_ERROR);
 	}
 
@@ -50,8 +47,7 @@ public class IaSectionValidatorRoundTripTest {
 
 		String error = errors.getErrors().get(0).getDetails().get(0).getMessage();
 
-		assertWithMessage("Must contain correct error message")
-				.that(error)
+		assertThat(error)
 				.isEqualTo(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR);
 	}
 
@@ -70,8 +66,7 @@ public class IaSectionValidatorRoundTripTest {
 
 		String error = errors.getErrors().get(0).getDetails().get(0).getMessage();
 
-		assertWithMessage("Must contain correct error message")
-				.that(error)
+		assertThat(error)
 				.isEqualTo(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 }

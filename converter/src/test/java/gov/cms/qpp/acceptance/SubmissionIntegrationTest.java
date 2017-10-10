@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assume.assumeTrue;
 
@@ -70,9 +71,7 @@ public class SubmissionIntegrationTest {
 		assumeTrue("Submissions api is down", endpointIsUp(httpResponse));
 		cleanUp(httpResponse);
 
-		assertWithMessage("QPP submission should succeed")
-				.that(getStatus(httpResponse))
-				.isEqualTo(201);
+		assertThat(getStatus(httpResponse)).isEqualTo(201);
 	}
 
 	@Test
@@ -83,7 +82,7 @@ public class SubmissionIntegrationTest {
 		HttpResponse httpResponse = servicePost(qpp);
 		assumeTrue("Submissions api is down", endpointIsUp(httpResponse));
 
-		assertWithMessage("QPP submission should succeed")
+		assertWithMessage("QPP submission should be unprocessable")
 				.that(getStatus(httpResponse))
 				.isEqualTo(422);
 	}

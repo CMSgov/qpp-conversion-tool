@@ -7,6 +7,8 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.io.IOException;
+import java.nio.file.Path;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filter;
@@ -14,13 +16,8 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class JsonPathToXpathHelper {
 
@@ -47,9 +44,7 @@ public class JsonPathToXpathHelper {
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 		Element element = evaluateXpath(xPath, Filters.element());
 
-		assertWithMessage("Element name should be: %s", xmlElementName)
-				.that(xmlElementName)
-				.isEqualTo(element.getName());
+		assertThat(xmlElementName).isEqualTo(element.getName());
 	}
 
 	public void executeAttributeTest(String jsonPath, String expectedValue) {
@@ -73,8 +68,7 @@ public class JsonPathToXpathHelper {
 					" ) at \n( " + xPath + " ). \nPlease investigate.");
 		}
 
-		assertWithMessage("Attribute value should not be null. json value: %s", expectedValue)
-				.that(attribute.getValue()).isNotNull();
+		assertThat(attribute.getValue()).isNotNull();
 	}
 
 	public void executeAttributeTest(String jsonPath, String xmlAttributeName, String expectedValue)
@@ -82,11 +76,9 @@ public class JsonPathToXpathHelper {
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
-		assertWithMessage("Attribute name should be: %s", xmlAttributeName)
-				.that(xmlAttributeName)
+		assertThat(xmlAttributeName)
 				.isEqualTo(attribute.getName());
-		assertWithMessage("Attribute value should be: %s", expectedValue)
-				.that(expectedValue)
+		assertThat(expectedValue)
 				.isEqualTo(attribute.getValue());
 	}
 
