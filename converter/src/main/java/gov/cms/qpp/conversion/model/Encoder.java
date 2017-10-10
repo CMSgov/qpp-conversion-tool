@@ -9,8 +9,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * This is the annotation to mark class implementations that should be
  * registered for encoding nodes into some output like JSON.
- *
- * @author David Uselmann
  */
 @Target(TYPE)
 @Retention(RUNTIME)
