@@ -2,7 +2,8 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
 
 public interface AuditService {
-	void audit(InputStream fileContent, InputStream qppContent);
+	CompletableFuture<Void> audit(InputStream fileContent, InputStream qppContent);
 }
