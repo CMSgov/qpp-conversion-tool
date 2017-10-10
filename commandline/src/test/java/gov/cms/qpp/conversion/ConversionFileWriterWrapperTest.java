@@ -13,13 +13,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 @RunWith(PowerMockRunner.class)
 public class ConversionFileWriterWrapperTest {
@@ -105,7 +103,8 @@ public class ConversionFileWriterWrapperTest {
 		String sourceId = JsonHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file.err.json"),
 				"$.errors[0].sourceIdentifier", String.class);
 
-		assertThat("Must contain a source identifier", sourceId, is("not-a-QRDA-III-file.xml"));
+		assertThat(sourceId)
+				.isEqualTo("not-a-QRDA-III-file.xml");
 	}
 
 	@Test
@@ -121,8 +120,10 @@ public class ConversionFileWriterWrapperTest {
 				"$.errors[0].details[0]");
 
 		//then
-		assertThat("Contains detail message", detail.get("message"), is(errorMessage));
-		assertTrue("Contains detail path", detail.get("path").isEmpty());
+		assertThat(detail.get("message"))
+				.isEqualTo(errorMessage);
+		assertThat(detail.get("path"))
+				.isEmpty();
 	}
 
 	@Test
@@ -140,20 +141,27 @@ public class ConversionFileWriterWrapperTest {
 		Map<String, String> secondDetail = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
 				"$.errors[0].details[1]");
 
+		List<Map<String, String>> details = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
+				"$.errors[0].details");
+
 		//then
-		assertThat("Contains detail message", firstDetail.get("message"), is(firstMessage));
-		assertNotNull("Contains detail path", firstDetail.get("path"));
-		assertThat("Contains detail message", secondDetail.get("message"), is(secondMessage));
-		assertNotNull("Contains detail path", secondDetail.get("path"));
+		assertThat(firstDetail.get("message")).isEqualTo(firstMessage);
+		assertThat(firstDetail.get("path")).isNotNull();
+		assertThat(secondDetail.get("message")).isEqualTo(secondMessage);
+		assertThat(secondDetail.get("path")).isNotNull();
 	}
 
 	private void assertFileExists(final String fileName) {
 		Path possibleFile = Paths.get(fileName);
-		assertTrue("The file " + fileName + " must exist.", Files.exists(possibleFile));
+		assertWithMessage("The file %s must exist.", fileName)
+				.that(Files.exists(possibleFile))
+				.isTrue();
 	}
 
 	private void assertFileDoesNotExists(final String fileName) {
 		Path possibleFile = Paths.get(fileName);
-		assertFalse("The file " + fileName + " must NOT exist.", Files.exists(possibleFile));
+		assertWithMessage("The file %s must NOT exist.", fileName)
+				.that(Files.exists(possibleFile))
+				.isFalse();
 	}
 }

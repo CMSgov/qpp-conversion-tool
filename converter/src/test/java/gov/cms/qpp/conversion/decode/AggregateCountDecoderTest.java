@@ -12,12 +12,7 @@ import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertEquals;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AggregateCountDecoderTest {
 
@@ -81,8 +76,9 @@ public class AggregateCountDecoderTest {
 
         instance.internalDecode(element, thisNode);
 
-        assertThat("Aggregate Count should be 450 ", thisNode.getValue("aggregateCount"), is("450"));
-
+        assertWithMessage("Aggregate Count should be 450 ")
+                .that(thisNode.getValue("aggregateCount"))
+                .isEqualTo("450");
     }
 
     @Test
@@ -91,34 +87,28 @@ public class AggregateCountDecoderTest {
         Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
         Node node = root.getChildNodes().get(0);
 
-        assertThat("Parent exists", root, is(not(nullValue())));
+        assertWithMessage("Node has one element")
+                .that(node.getChildNodes()).hasSize(1);
 
-        assertThat("Parent node has one child node", root.getChildNodes(), is(hasSize(1)));
+        assertWithMessage("Node has aggregate count")
+                .that(node.getChildNodes().get(0).getValue("aggregateCount"))
+                .isEqualTo("400");
 
-        assertThat("Node has one element", node.getChildNodes(), is(hasSize(1)));
-
-        assertThat("Node has aggregate count",
-                node.getChildNodes().get(0).getValue("aggregateCount"),
-                is("400"));
-
-        assertEquals("Should have template id",
-                node.getChildNodes().get(0).getType(),
-                TemplateId.ACI_AGGREGATE_COUNT);
+        assertWithMessage("Should have template id")
+                .that(node.getChildNodes().get(0).getType())
+                .isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
     }
 
     @Test
     public void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws Exception {
 
-        Node root = new QppXmlDecoder(new Context()).decode( XmlUtils.stringToDom( ANOTHER_XML_FRAGMENT ) );
+        Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(ANOTHER_XML_FRAGMENT));
 
-        assertThat("Parent exists", root, is(not(nullValue())));
+        assertWithMessage("Node has aggregate count")
+                .that(root.getValue("aggregateCount"))
+                .isEqualTo("400");
 
-        assertThat("Node has aggregate count",
-                root.getValue("aggregateCount"),
-                is("400"));
-
-        assertEquals("Should have template id",
-                root.getType(),
-                TemplateId.ACI_AGGREGATE_COUNT);
+        assertWithMessage("Should have template id")
+                .that(root.getType()).isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
     }
 }

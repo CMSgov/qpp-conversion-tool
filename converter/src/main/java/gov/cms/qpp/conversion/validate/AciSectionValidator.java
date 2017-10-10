@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.Validator;
 @Validator(TemplateId.ACI_SECTION)
 public class AciSectionValidator extends NodeValidator {
 
-	protected static final String MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR
+	public static final String MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR
 			= "The ACI Section must have one Reporting Parameter ACT";
 
 	/**

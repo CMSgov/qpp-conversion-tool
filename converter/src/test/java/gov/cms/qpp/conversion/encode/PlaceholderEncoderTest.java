@@ -6,8 +6,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static com.google.common.truth.Truth.assertThat;
 
 public class PlaceholderEncoderTest {
 
@@ -23,6 +22,6 @@ public class PlaceholderEncoderTest {
 		encoder.internalEncode(wrapper, placeHolder);
 
 		//then
-		assertThat(encoder.getDetails().size(), is(1));
+		assertThat(encoder.getDetails()).hasSize(1);
 	}
 }
