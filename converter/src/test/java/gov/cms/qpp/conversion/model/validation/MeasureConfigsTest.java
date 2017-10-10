@@ -10,12 +10,8 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.not;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.hamcrest.core.Is.isA;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThat;
 
 public class MeasureConfigsTest {
 	@Rule
@@ -64,14 +60,17 @@ public class MeasureConfigsTest {
 		MeasureConfigs measureConfigs = constructor.newInstance();
 		// close the accessibility of a constructor.
 		constructor.setAccessible(false);
-		assertThat("Expect to have an instance here ", measureConfigs, instanceOf(MeasureConfigs.class));
+
+		assertWithMessage("Expect to have an instance here")
+				.that(measureConfigs).isInstanceOf(MeasureConfigs.class);
 	}
 
 	@Test
 	public void getMeasureConfigsTest() {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		List<MeasureConfig> configurations = MeasureConfigs.getMeasureConfigs();
-		assertThat("Expect the configurations to be a not empty list", configurations, is(not(empty())));
+		assertWithMessage("Expect the configurations to be a not empty list")
+				.that(configurations).isNotEmpty();
 	}
 
 	@Test
@@ -79,7 +78,10 @@ public class MeasureConfigsTest {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		List<String>requiredMeasures = MeasureConfigs.requiredMeasuresForSection("aci");
 		List<String>notRequiredMeasures = MeasureConfigs.requiredMeasuresForSection("quality");
-		assertThat("Expect the requiredMeasures to be a not empty list", requiredMeasures, is(not(empty())));
-		assertThat("Expect the notRequiredMeasures to be a empty list", notRequiredMeasures, is(empty()));
+
+		assertWithMessage("Expect the requiredMeasures to be a not empty list")
+				.that(requiredMeasures).isNotEmpty();
+		assertWithMessage("Expect the notRequiredMeasures to be a empty list")
+				.that(notRequiredMeasures).isEmpty();
 	}
 }

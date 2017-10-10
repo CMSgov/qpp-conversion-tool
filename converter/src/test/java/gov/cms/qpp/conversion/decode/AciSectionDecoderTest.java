@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -19,6 +20,8 @@ public class AciSectionDecoderTest {
 		AciSectionDecoder aciSectionDecoder = new AciSectionDecoder(new Context());
 		aciSectionDecoder.internalDecode(element, node);
 
-		assertThat("Node Category must be aci", node.getValue("category"), is("aci"));
+		assertWithMessage("Node Category must be aci")
+				.that(node.getValue("category"))
+				.isEqualTo("aci");
 	}
 }

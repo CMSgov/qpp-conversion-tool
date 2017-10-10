@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,8 +11,7 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Set;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciSectionValidatorTest {
 	private static final String VALID_ACI_MEASURE = "ACI_EP_1";
@@ -42,9 +42,9 @@ public class AciSectionValidatorTest {
 
 		Set<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
 
-		assertThat("error should be about missing proportion node",
-				errors.iterator().next().getMessage(),
-				is(AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR));
+		assertWithMessage("error should be about missing proportion node")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 
 	@Test
@@ -56,8 +56,8 @@ public class AciSectionValidatorTest {
 
 		Set<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
 
-		assertThat("error should be about missing required Measure",
-				errors.iterator().next().getMessage(),
-				is(AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR));
+		assertWithMessage("error should be about missing required Measure")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 }

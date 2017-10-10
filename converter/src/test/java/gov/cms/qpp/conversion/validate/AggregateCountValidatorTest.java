@@ -4,17 +4,14 @@ import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Test;
 
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertWithMessage;
 
-/**
- * Created by clydetedrick on 4/6/17.
- */
+
 public class AggregateCountValidatorTest {
 
     @Test
@@ -23,7 +20,8 @@ public class AggregateCountValidatorTest {
 
         AggregateCountValidator validator = new AggregateCountValidator();
 
-        assertEquals("validator and node are compatible", validator.getTemplateId(), aggregateCountNode.getType());
+        assertWithMessage("validator and node are compatible")
+                .that(validator.getTemplateId()).isEqualTo(aggregateCountNode.getType());
     }
 
     @Test
@@ -34,8 +32,9 @@ public class AggregateCountValidatorTest {
         validator.internalValidateSingleNode( aggregateCountNode );
         Set<Detail> errors = validator.getDetails();
 
-        assertFalse("there's an error", errors.isEmpty());
-        assertEquals(AggregateCountValidator.VALUE_ERROR, errors.iterator().next().getMessage());
+        assertWithMessage("Should result in a value error")
+                .that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+                .containsExactly(AggregateCountValidator.VALUE_ERROR);
     }
 
     @Test
@@ -47,8 +46,9 @@ public class AggregateCountValidatorTest {
         validator.internalValidateSingleNode(aggregateCountNode);
         Set<Detail> errors = validator.getDetails();
 
-        assertFalse("there's an error", errors.isEmpty());
-        assertEquals(AggregateCountValidator.TYPE_ERROR, errors.iterator().next().getMessage());
+        assertWithMessage("Should result in a type error")
+                .that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+                .containsExactly(AggregateCountValidator.TYPE_ERROR);
     }
 
     @Test
@@ -60,6 +60,7 @@ public class AggregateCountValidatorTest {
         validator.internalValidateSingleNode(aggregateCountNode);
         Set<Detail> errors = validator.getDetails();
 
-        assertTrue("there are no errors", errors.isEmpty());
+        assertWithMessage("there are no errors")
+                .that(errors).isEmpty();
     }
 }

@@ -1,13 +1,5 @@
 package gov.cms.qpp.conversion.encode.placeholder;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.file.Paths;
-
-import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Test;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
@@ -16,6 +8,13 @@ import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
+import org.apache.commons.io.IOUtils;
+import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class DefaultEncoderTest {
 
@@ -31,7 +30,7 @@ public class DefaultEncoderTest {
 		JsonWrapper wrapper = new JsonWrapper();
 		new QppOutputEncoder(new Context()).encode(wrapper, node);
 
-		Assert.assertTrue(wrapper.toString().length() > 10);
+		assertThat(wrapper.toString().length() > 10).isTrue();
 	}
 
 	@Test
@@ -41,6 +40,6 @@ public class DefaultEncoderTest {
 		root.addChildNode(placeHolder);
 		JsonWrapper wrapper = new JsonWrapper();
 		new DefaultEncoder("Default Encode test").internalEncode(wrapper, root);
-		Assert.assertTrue(wrapper.toString().length() == 3);
+		assertThat(wrapper.toString()).hasLength(3);
 	}
 }
