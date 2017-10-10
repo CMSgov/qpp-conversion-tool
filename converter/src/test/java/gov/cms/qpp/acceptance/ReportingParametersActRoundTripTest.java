@@ -11,8 +11,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static com.google.common.truth.Truth.assertThat;
 
 public class ReportingParametersActRoundTripTest {
 	private static final Path VALID_QRDA_III = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
@@ -31,7 +30,7 @@ public class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 		"$.measurementSets[0].performanceStart", String.class);
 
-		assertThat("", performanceStart, is("2017-01-01"));
+		assertThat(performanceStart).isEqualTo("2017-01-01");
 	}
 
 	@Test
@@ -39,7 +38,7 @@ public class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[0].performanceEnd", String.class);
 
-		assertThat("", performanceStart, is("2017-12-31"));
+		assertThat(performanceStart).isEqualTo("2017-12-31");
 	}
 
 	@Test
@@ -47,7 +46,7 @@ public class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[1].performanceStart", String.class);
 
-		assertThat("", performanceStart, is("2017-02-01"));
+		assertThat(performanceStart).isEqualTo("2017-02-01");
 	}
 
 	@Test
@@ -55,7 +54,7 @@ public class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[1].performanceEnd", String.class);
 
-		assertThat("", performanceStart, is("2017-05-31"));
+		assertThat(performanceStart).isEqualTo("2017-05-31");
 	}
 
 	@Test
@@ -63,7 +62,7 @@ public class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[2].performanceStart", String.class);
 
-		assertThat("", performanceStart, is("2017-01-01"));
+		assertThat(performanceStart).isEqualTo("2017-01-01");
 	}
 
 	@Test
@@ -71,6 +70,6 @@ public class ReportingParametersActRoundTripTest {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[2].performanceEnd", String.class);
 
-		assertThat("", performanceStart, is("2017-04-30"));
+		assertThat(performanceStart).isEqualTo("2017-04-30");
 	}
 }

@@ -7,8 +7,7 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Element;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class QualitySectionDecoderTest {
 
@@ -30,7 +29,9 @@ public class QualitySectionDecoderTest {
 		QualitySectionDecoder sectionDecoder = new QualitySectionDecoder(new Context());
 		sectionDecoder.internalDecode(element, node);
 
-		assertThat("Expect node to have property category ", node.getValue("category"), is("quality"));
+		assertWithMessage("Expect node to have property category ")
+				.that(node.getValue("category"))
+				.isEqualTo("quality");
 		//Performance start and Performance end are parsed by ReportParameters decoder and are not children of this decoder
 	}
 

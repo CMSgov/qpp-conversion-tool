@@ -8,8 +8,6 @@ import gov.cms.qpp.conversion.model.error.Detail;
 
 /**
  * Encoder to handle placeholder nodes.
- *
- * @author Scott Fradkin
  */
 @Encoder(TemplateId.PLACEHOLDER)
 public class PlaceholderEncoder extends QppOutputEncoder {

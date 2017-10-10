@@ -6,8 +6,6 @@ import gov.cms.qpp.conversion.model.Node;
 
 /**
  * Defines a contract for all input decoders
- * @author David Uselmann
- *
  */
 public interface InputDecoder {
 	Node decode(Element xmlDoc);

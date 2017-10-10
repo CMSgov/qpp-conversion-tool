@@ -12,9 +12,6 @@ import java.util.List;
 
 /**
  * Output JSON to a Writer.
- *
- * @author Scott Fradkin
- *
  */
 public abstract class JsonOutputEncoder implements OutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(JsonOutputEncoder.class);

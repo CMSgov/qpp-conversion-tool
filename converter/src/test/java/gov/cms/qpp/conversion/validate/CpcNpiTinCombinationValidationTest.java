@@ -2,12 +2,11 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class CpcNpiTinCombinationValidationTest {
 
@@ -24,9 +23,9 @@ public class CpcNpiTinCombinationValidationTest {
 	public void testNoNpiTinCombination() {
 		cpcValidator.internalValidateSingleNode(multipleTinNpiNode);
 
-		assertThat("Must validate with the correct error",
-			cpcValidator.getDetails(),
-			hasValidationErrorsIgnoringPath(CpcNpiTinCombinationValidation.AT_LEAST_ONE_NPI_TIN_COMBINATION));
+		assertWithMessage("Must validate with the correct error")
+				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(CpcNpiTinCombinationValidation.AT_LEAST_ONE_NPI_TIN_COMBINATION);
 	}
 
 	@Test
@@ -36,9 +35,8 @@ public class CpcNpiTinCombinationValidationTest {
 
 		cpcValidator.internalValidateSingleNode(multipleTinNpiNode);
 
-		assertThat("There must be no errors",
-			cpcValidator.getDetails(),
-			hasSize(0));
+		assertWithMessage("There must be no errors")
+				.that(cpcValidator.getDetails()).isEmpty();
 	}
 
 	@Test
@@ -50,8 +48,7 @@ public class CpcNpiTinCombinationValidationTest {
 
 		cpcValidator.internalValidateSingleNode(multipleTinNpiNode);
 
-		assertThat("There must be no errors",
-			cpcValidator.getDetails(),
-			hasSize(0));
+		assertWithMessage("There must be no errors")
+				.that(cpcValidator.getDetails()).isEmpty();
 	}
 }

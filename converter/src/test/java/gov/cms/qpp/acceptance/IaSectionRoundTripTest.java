@@ -11,8 +11,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.assertTrue;
 
 public class IaSectionRoundTripTest {
@@ -30,7 +29,9 @@ public class IaSectionRoundTripTest {
 		String iaCategory = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].category", String.class);
 
-		assertThat("Must contain a category", iaCategory, is("ia"));
+		assertWithMessage("Must contain a category")
+				.that(iaCategory)
+				.isEqualTo("ia");
 	}
 
 	@Test
@@ -40,7 +41,9 @@ public class IaSectionRoundTripTest {
 		String iaMeasureId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].measurements[0].measureId", String.class);
 
-		assertThat("Must contain measure id", iaMeasureId, is("IA_EPA_3"));
+		assertWithMessage("Must contain measure id")
+				.that(iaMeasureId)
+				.isEqualTo("IA_EPA_3");
 	}
 
 	@Test
