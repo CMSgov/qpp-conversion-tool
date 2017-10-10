@@ -340,25 +340,27 @@ public final class Metadata {
 		if (this == o) {
 			return true;
 		}
-		if (!(o instanceof Metadata)) {
+
+		if (o == null || o.getClass() != getClass()) {
 			return false;
 		}
-		Metadata metadata = (Metadata) o;
 
-		boolean weGood = submissionYear == metadata.submissionYear
-				&& overallStatus == metadata.overallStatus
-				&& conversionStatus == metadata.conversionStatus;
-		weGood = weGood && validationStatus == metadata.validationStatus
-				&& cpc == metadata.cpc;
-		weGood = weGood && Objects.equal(uuid, metadata.uuid)
-				&& Objects.equal(tin, metadata.tin);
-		weGood = weGood && Objects.equal(npi, metadata.npi)
-				&& Objects.equal(createdDate, metadata.createdDate);
-		weGood = weGood && Objects.equal(apm, metadata.apm)
-				&& Objects.equal(submissionLocator, metadata.submissionLocator);
-		weGood = weGood && Objects.equal(fileName, metadata.fileName)
-				&& Objects.equal(conversionErrorLocator, metadata.conversionErrorLocator);
-		return weGood && Objects.equal(validationErrorLocator, metadata.validationErrorLocator);
+		Metadata that = (Metadata) o;
+
+		boolean equals = submissionYear == that.submissionYear
+				&& overallStatus == that.overallStatus
+				&& conversionStatus == that.conversionStatus;
+		equals = equals && validationStatus == that.validationStatus
+				&& cpc == that.cpc;
+		equals = equals && Objects.equal(uuid, that.uuid)
+				&& Objects.equal(tin, that.tin);
+		equals = equals && Objects.equal(npi, that.npi)
+				&& Objects.equal(createdDate, that.createdDate);
+		equals = equals && Objects.equal(apm, that.apm)
+				&& Objects.equal(submissionLocator, that.submissionLocator);
+		equals = equals && Objects.equal(fileName, that.fileName)
+				&& Objects.equal(conversionErrorLocator, that.conversionErrorLocator);
+		return equals && Objects.equal(validationErrorLocator, that.validationErrorLocator);
 	}
 
 	/**
