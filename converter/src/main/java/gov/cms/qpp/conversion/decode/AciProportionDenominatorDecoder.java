@@ -10,9 +10,6 @@ import org.jdom2.Element;
 /**
  * Decoder to parse Advancing Care Information Numerator Denominator Type
  * Measure Denominator Data.
- *
- * @author David Uselmann
- *
  */
 @Decoder(TemplateId.ACI_DENOMINATOR)
 public class AciProportionDenominatorDecoder extends QppXmlDecoder {
