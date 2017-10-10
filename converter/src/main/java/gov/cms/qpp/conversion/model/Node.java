@@ -5,6 +5,8 @@ import com.google.common.base.Objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,7 +142,9 @@ public class Node {
 	 * @return List of matching child Nodes.
 	 */
 	public Stream<Node> getChildNodes(TemplateId... templateIds) {
-		return getChildNodes(node -> Arrays.asList(templateIds).contains(node.getType()));
+		Set<TemplateId> lookupTemplateIds = EnumSet.noneOf(TemplateId.class);
+		Collections.addAll(lookupTemplateIds, templateIds);
+		return getChildNodes(node -> lookupTemplateIds.contains(node.getType()));
 	}
 
 	/**
