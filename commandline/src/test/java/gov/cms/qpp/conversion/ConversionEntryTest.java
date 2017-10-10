@@ -61,14 +61,14 @@ public class ConversionEntryTest {
 	public void testNonexistantFile() {
 		String regex = ConversionEntry.wildCardToRegex("*.xml").pattern();
 		String expect = ".*\\.xml";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testWildCardToRegexSimpleFileWild() {
 		String regex = ConversionEntry.wildCardToRegex("*.xml").pattern();
 		String expect = ".*\\.xml";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
@@ -82,56 +82,56 @@ public class ConversionEntryTest {
 	public void testWildCardToRegexPathAllWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*").pattern();
 		String expect = ".*";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testWildCardToRegexPathExtraWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*.xm*").pattern();
 		String expect = ".*\\.xm.*";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testWildCardToRegexDoubleStar() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/**").pattern();
 		String expect = ".";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testWildCardToRegexTooManyWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/*/*/*.xml").pattern();
 		String expect = "";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testExtractDirWildcard() {
 		String regex = ConversionEntry.extractDir("path/*/*.xml");
 		String expect = "path";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testExtractDirNone() {
 		String regex = ConversionEntry.extractDir("*.xml");
 		String expect = ".";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testExtractDirRoot() {
 		String regex = ConversionEntry.extractDir( File.separator );
 		String expect = ".";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
 	public void testExtractDirUnix() {
 		String regex = ConversionEntry.extractDir("path/to/dir/*.xml");
 		String expect = "path" + SEPARATOR + "to" + SEPARATOR + "dir";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
@@ -141,7 +141,7 @@ public class ConversionEntryTest {
 		// this test is running on *nix so expect this path while testing
 		String expect = "path" + SEPARATOR + "to" + SEPARATOR + "dir";
 
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
@@ -337,8 +337,7 @@ public class ConversionEntryTest {
 				.that(line.hasOption(ConversionEntry.SKIP_VALIDATION)).isTrue();
 		assertWithMessage("Should have a skip default option")
 				.that(line.hasOption(ConversionEntry.SKIP_DEFAULTS)).isTrue();
-		assertWithMessage("Should be 'meep'")
-				.that(line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE))
+		assertThat(line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE))
 				.isEqualTo("meep");
 	}
 
@@ -349,8 +348,7 @@ public class ConversionEntryTest {
 		assertWithMessage("Should have a template scope option")
 				.that(line.hasOption(ConversionEntry.TEMPLATE_SCOPE))
 				.isTrue();
-		assertWithMessage("Should be 'meep'")
-				.that(line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE))
+		assertThat(line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE))
 				.isEqualTo("meep");
 	}
 
@@ -361,8 +359,7 @@ public class ConversionEntryTest {
 		assertWithMessage("Should have a template scope option")
 				.that(line.hasOption(ConversionEntry.TEMPLATE_SCOPE))
 				.isTrue();
-		assertWithMessage("Should be 'meep'")
-				.that(line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE))
+		assertThat(line.getOptionValue(ConversionEntry.TEMPLATE_SCOPE))
 				.isEqualTo("meep");
 	}
 
