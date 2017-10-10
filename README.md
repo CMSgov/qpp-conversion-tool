@@ -5,6 +5,7 @@
 * [Installation Instructions](#installation-instructions)
 * [Running the Converter](#running-the-converter)
 * [Deploying](#deploying)
+* [Sample Files](#samplefiles)
 * [Want to Contribute?](#want-to-contribute)
 * [Public Domain](#public-domain)
 
@@ -128,6 +129,11 @@ View all commands with `convert.sh`.
 
 See [terraform/README.md](terraform/README.md).
 
+## Sample files
+
+Sample QRDA-III files that cover all of the eCQM, ACI, and IA measures as well as other scenarios
+can be found in the [sample-files/README.md](sample-files/README.md) folder.
+
 ## Want to Contribute?
 
 Want to file a bug or contribute some code? Read up on our guidelines for [contributing] and
@@ -137,10 +143,10 @@ Want to file a bug or contribute some code? Read up on our guidelines for [contr
 [developer]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
 
 ## Public Domain
-This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived 
+This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived
 through the CC0 1.0 Universal public domain dedication.		
- 		
-All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to 
+
+All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to
 comply with this waiver of copyright interest.		
- 		
+
 See the [formal LICENSE file](https://github.com/CMSgov/qpp-conversion-tool/blob/master/LICENSE).
