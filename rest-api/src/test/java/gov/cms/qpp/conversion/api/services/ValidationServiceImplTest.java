@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -128,30 +129,22 @@ public class ValidationServiceImplTest {
 	public void testHeaderCreation() {
 		HttpHeaders headers = objectUnderTest.getHeaders();
 
-		assertWithMessage(HttpHeaders.CONTENT_TYPE + " should be " + ValidationServiceImpl.CONTENT_TYPE)
-				.that(headers.getFirst(HttpHeaders.CONTENT_TYPE))
-				.isEqualTo(ValidationServiceImpl.CONTENT_TYPE);
-		assertWithMessage(HttpHeaders.ACCEPT + " should be " + ValidationServiceImpl.CONTENT_TYPE)
-				.that(headers.getFirst(HttpHeaders.ACCEPT))
-				.isEqualTo(ValidationServiceImpl.CONTENT_TYPE);
+		assertThat(headers.getFirst(HttpHeaders.CONTENT_TYPE)).isEqualTo(ValidationServiceImpl.CONTENT_TYPE);
+		assertThat(headers.getFirst(HttpHeaders.ACCEPT)).isEqualTo(ValidationServiceImpl.CONTENT_TYPE);
 	}
 
 	@Test
 	public void testHeaderCreationNoAuth() {
 		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn(null);
 		HttpHeaders headers = objectUnderTest.getHeaders();
-		assertWithMessage(HttpHeaders.AUTHORIZATION + " should not be set")
-				.that(headers.get(HttpHeaders.AUTHORIZATION))
-				.isNull();
+		assertThat(headers.get(HttpHeaders.AUTHORIZATION)).isNull();
 	}
 
 	@Test
 	public void testHeaderCreationNoAuthEmpty() {
 		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn("");
 		HttpHeaders headers = objectUnderTest.getHeaders();
-		assertWithMessage(HttpHeaders.AUTHORIZATION + " should not be set")
-				.that(headers.get(HttpHeaders.AUTHORIZATION))
-				.isNull();
+		assertThat(headers.get(HttpHeaders.AUTHORIZATION)).isNull();
 	}
 
 	@Test
@@ -159,9 +152,7 @@ public class ValidationServiceImplTest {
 		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn("meep");
 		HttpHeaders headers = objectUnderTest.getHeaders();
 
-		assertWithMessage(HttpHeaders.AUTHORIZATION + " should be set")
-				.that(headers.getFirst(HttpHeaders.AUTHORIZATION))
-				.contains("meep");
+		assertThat(headers.getFirst(HttpHeaders.AUTHORIZATION)).contains("meep");
 	}
 
 	@Test

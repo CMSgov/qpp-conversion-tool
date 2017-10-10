@@ -15,8 +15,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 public class AttachmentHashPartConverterTest {
-	AttachmentHashPartConverter converter;
-	LoggingEvent event = new LoggingEvent();
+	private AttachmentHashPartConverter converter;
+	private LoggingEvent event = new LoggingEvent();
 
 	@Before
 	public void setup() {

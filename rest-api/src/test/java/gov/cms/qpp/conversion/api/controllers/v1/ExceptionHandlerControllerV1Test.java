@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class ExceptionHandlerControllerV1Test {
@@ -30,8 +31,7 @@ public class ExceptionHandlerControllerV1Test {
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
 
-		assertWithMessage("The response entity's content type was incorrect.")
-				.that(responseEntity.getHeaders().getContentType())
+		assertThat(responseEntity.getHeaders().getContentType())
 				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON_UTF8);
 	}
 
@@ -41,8 +41,6 @@ public class ExceptionHandlerControllerV1Test {
 		TransformException exception = new TransformException("test transform exception", new NullPointerException(), allErrors);
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
-		assertWithMessage("The response entity's content type was incorrect.")
-				.that(responseEntity.getBody())
-				.isEqualTo(allErrors);
+		assertThat(responseEntity.getBody()).isEqualTo(allErrors);
 	}
 }
