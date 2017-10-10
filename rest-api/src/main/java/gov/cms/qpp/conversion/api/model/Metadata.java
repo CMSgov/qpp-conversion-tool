@@ -9,12 +9,14 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.DoNotEncrypt;
 import com.google.common.base.Objects;
+import org.springframework.context.annotation.Scope;
 
 import java.util.Date;
 
 /**
  * Model to hold conversion metadata. Maps to a table in DynamoDB.
  */
+@Scope("request")
 @DynamoDBTable(tableName = "ConversionMetadata")
 public final class Metadata {
 	private String uuid;
@@ -24,6 +26,7 @@ public final class Metadata {
 	private String apm;
 	private long submissionYear;
 	private String submissionLocator;
+	private String qppLocator;
 	private String fileName;
 	private boolean overallStatus;
 	private boolean conversionStatus;
@@ -183,6 +186,28 @@ public final class Metadata {
 	 */
 	public void setSubmissionLocator(String submissionLocator) {
 		this.submissionLocator = submissionLocator;
+	}
+
+	/**
+	 * A location where the submission QPP can be found.
+	 *
+	 * For example, for AWS, this could be an ARN.
+	 *
+	 * @return The location.
+	 */
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = "QPPLocator")
+	public String getQppLocator() {
+		return qppLocator;
+	}
+
+	/**
+	 * Sets a location where the submission QPP can be found.
+	 *
+	 * @param qppLocator The location to use.
+	 */
+	public void setQppLocator(String qppLocator) {
+		this.qppLocator = qppLocator;
 	}
 
 	/**

@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import gov.cms.qpp.conversion.model.Node;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -518,6 +520,10 @@ public class JsonWrapper {
 		} catch (JsonProcessingException e) {
 			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
 		}
+	}
+
+	public InputStream contentStream() {
+		return new ByteArrayInputStream(toString().getBytes());
 	}
 
 	/**

@@ -50,6 +50,7 @@ public class QrdaControllerV1 {
 		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(new InputStreamQrdaSource(file.getName(), file.getInputStream()));
 
 		validationService.validateQpp(qpp);
+		//call audit service
 		API_LOG.info("Conversion success " + file.getName());
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
