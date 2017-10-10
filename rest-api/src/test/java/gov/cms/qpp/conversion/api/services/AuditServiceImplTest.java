@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doReturn;
@@ -34,6 +35,7 @@ public class AuditServiceImplTest {
 	private AuditServiceImpl spy;
 	private InputStream fileContent;
 	private InputStream jsonContent;
+	private Metadata metadata;
 
 	@Before
 	public void before() throws NoSuchFieldException, IllegalAccessException {
@@ -42,9 +44,10 @@ public class AuditServiceImplTest {
 		json.putString("meep", "mawp");
 		jsonContent = json.contentStream();
 
+		metadata = new Metadata();
 		Field metadataField = underTest.getClass().getDeclaredField("metadata");
 		metadataField.setAccessible(true);
-		metadataField.set(underTest, new Metadata());
+		metadataField.set(underTest, metadata);
 
 		spy = spy(underTest);
 		doReturn(allGood()).when(spy).storeContent(fileContent);
@@ -55,6 +58,8 @@ public class AuditServiceImplTest {
 	public void testAuditHappyPath() {
 		spy.audit(fileContent, jsonContent);
 
+		assertThat(metadata.getQppLocator()).isSameAs(AN_ID);
+		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
 		verify(spy, times(1)).persist(isNull(), isNull());
 	}
 
@@ -64,6 +69,8 @@ public class AuditServiceImplTest {
 
 		spy.audit(fileContent, jsonContent);
 
+		assertThat(metadata.getQppLocator()).isNull();
+		assertThat(metadata.getSubmissionLocator()).isNull();
 		verify(spy, times(1)).persist(isNull(), any(CompletionException.class));
 	}
 
