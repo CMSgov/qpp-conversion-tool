@@ -6,17 +6,16 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import java.io.IOException;
-import java.util.List;
 import org.jdom2.Element;
 import org.jdom2.xpath.XPathHelper;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * Test class for MultipleTinsDecoder
@@ -41,14 +40,14 @@ public class MultipleTinsDecoderTest {
 	public void internalDecode() throws Exception {
 		Element multipleTinsElement = makeTestElement();
 		List<Node> children = getTestChildren(multipleTinsElement);
-		assertThat("Expect that there are four children", children, hasSize(4));
+		assertThat(children).hasSize(4);
 		int matches = countMatches(children);
 
 		// Assert that one child TIN is TIN-1 and NPI is NPI-1
 		// Assert that one child TIN is TIN-2 and NPI is NPI-2
 		// Assert that one child TIN is TIN-3 and NPI is NPI-3
 		// Assert that one child is ClinicalDocument
-		assertThat("The correct children were decoded", matches, is(4));
+		assertThat(matches).isEqualTo(4);
 	}
 
 	private int countMatches(List<Node> children) {

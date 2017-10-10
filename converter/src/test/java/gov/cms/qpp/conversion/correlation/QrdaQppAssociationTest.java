@@ -10,8 +10,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 public class QrdaQppAssociationTest {
 	private static JsonWrapper qpp;

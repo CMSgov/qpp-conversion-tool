@@ -14,9 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
 
 public class QualityMeasureIdMultiEncoderTest {
 

@@ -9,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
 
 public class NpiTinCombinationValidationTest {
 	private Node firstValidNpiTinNode;
@@ -114,7 +112,6 @@ public class NpiTinCombinationValidationTest {
 
 		validator.internalValidateSingleNode(npiTinCombinationNode);
 
-		assertThat("Must validate with no errors", validator.getDetails() , empty());
 		assertWithMessage("Must validate with no errors")
 				.that(validator.getDetails()).isEmpty();
 	}
