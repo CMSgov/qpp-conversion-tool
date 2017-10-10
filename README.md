@@ -5,7 +5,7 @@
 * [Installation Instructions](#installation-instructions)
 * [Running the Converter](#running-the-converter)
 * [Deploying](#deploying)
-* [Sample Files](#samplefiles)
+* [Sample Files](#sample-files)
 * [Want to Contribute?](#want-to-contribute)
 * [Public Domain](#public-domain)
 
