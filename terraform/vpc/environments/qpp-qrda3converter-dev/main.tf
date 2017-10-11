@@ -39,7 +39,9 @@ module "qpp-qrda3converter" {
   app_ami_id                  = "${data.aws_ami.app.image_id}"
   app_count                   = "${var.app_count}"
   app_subnet_cidr_blocks      = "${module.network.app_subnet_cidr_blocks}"
-  app_subnet_ids              = "${module.network.app_subnet_ids}"
+  // commenting this out for now. This enables using us-east-1c as an az, which currently has its route tables messed up
+  // app_subnet_ids              = "${module.network.app_subnet_ids}"
+  app_subnet_ids              = ["subnet-913b76d9", "subnet-2d23a177"]
   aws_region                  = "${var.aws_region}"
   cloudwatch_notification_arn = "${var.cloudwatch_notification_arn}"
   data_subnet_cidr_blocks     = "${module.network.data_subnet_cidr_blocks}"
