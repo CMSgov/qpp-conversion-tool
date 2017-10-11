@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import org.junit.AfterClass;
@@ -12,14 +13,11 @@ import org.junit.Test;
 
 import java.util.Set;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
 import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
 
 public class QualityMeasureIdValidatorTest {
 
@@ -71,7 +69,8 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
-		assertThat("There must not be any validation errors.", details, empty());
+		assertWithMessage("There must not be any validation errors.")
+				.that(details).isEmpty();
 	}
 
 	@Test
@@ -80,9 +79,9 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
-		assertThat("There must be only one validation error.", details, hasSize(1));
-		assertThat("Incorrect validation error.", details,
-			hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.MEASURE_GUID_MISSING));
+		assertWithMessage("Incorrect validation error.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(QualityMeasureIdValidator.MEASURE_GUID_MISSING);
 	}
 
 	@Test
@@ -91,9 +90,9 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
-		assertThat("There must be only one validation error.", details, hasSize(1));
-		assertThat("Incorrect validation error.", details,
-			hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.NO_CHILD_MEASURE));
+		assertWithMessage("Incorrect validation error.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(QualityMeasureIdValidator.NO_CHILD_MEASURE);
 	}
 
 	@Test
@@ -102,17 +101,18 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
-		assertThat("There must be only two validation errors.", details, hasSize(2));
-		assertThat("Incorrect validation error.", details,
-			hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.MEASURE_GUID_MISSING,
-				QualityMeasureIdValidator.NO_CHILD_MEASURE));
+		assertWithMessage("Incorrect validation error.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(QualityMeasureIdValidator.MEASURE_GUID_MISSING,
+						QualityMeasureIdValidator.NO_CHILD_MEASURE);
 	}
 
 	@Test
 	public void testDenominatorExclusionExists() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCLUSION_GUID).build();
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("There must be zero validation errors.", details, empty());
+		assertWithMessage("There must be zero validation errors.")
+				.that(details).isEmpty();
 	}
 
 	@Test
@@ -126,27 +126,35 @@ public class QualityMeasureIdValidatorTest {
 				.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("There must be one validation errors.", details, hasSize(1));
+
+		assertWithMessage("There must be one validation errors.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(QualityMeasureIdValidator.MEASURE_GUID_MISSING);
 	}
 
 	@Test
 	public void testDenominatorExclusionMissing() {
+		String incorrectCount = String.format(QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT,
+				"CMS165v5", 1, SubPopulations.DENEX, 0);
+		String incorrectUuid = String.format(QualityMeasureIdValidator.INCORRECT_UUID,
+				"CMS165v5", SubPopulations.DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID);
+
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCLUSION_GUID)
 			.removeSubPopulationMeasureData(SubPopulations.DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID)
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("Incorrect validation error.", details,
-			hasValidationErrorsIgnoringPath(
-				String.format(QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT,
-						"CMS165v5", 1, SubPopulations.DENEX, 0)));
+		assertWithMessage("Incorrect validation error.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(incorrectCount, incorrectUuid);
 	}
 
 	@Test
 	public void testInternalExistingDenexcepMeasure() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID).build();
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("There must not be any validation errors.", details, empty());
+		assertWithMessage("There must not be any validation errors.")
+				.that(details).isEmpty();
 	}
 
 	@Test
@@ -156,20 +164,26 @@ public class QualityMeasureIdValidatorTest {
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("There must not be any validation errors.", details, empty());
+		assertWithMessage("There must not be any validation errors.")
+				.that(details).isEmpty();
 	}
 
 	@Test
 	public void testInternalMissingDenexcepMeasure() {
-		String message = String.format(
+		String countMessage = String.format(
 				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS68v6", 1, SubPopulations.DENEXCEP, 0);
+		String uuidMessage = String.format(QualityMeasureIdValidator.INCORRECT_UUID,
+				"CMS68v6", SubPopulations.DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
 			.removeSubPopulationMeasureData(SubPopulations.DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID)
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(message));
+
+		assertWithMessage("Incorrect validation error.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(countMessage, uuidMessage);
 	}
 
 	@Test
@@ -177,7 +191,9 @@ public class QualityMeasureIdValidatorTest {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID).build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("There must not be any validation errors.", details, empty());
+
+		assertWithMessage("There must not be any validation errors.")
+				.that(details).isEmpty();
 	}
 
 	@Test
@@ -192,20 +208,27 @@ public class QualityMeasureIdValidatorTest {
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(message));
+		assertWithMessage("Incorrect validation error.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(message);
 	}
 
 	@Test
 	public void testInternalDenexcepMultipleSupPopulationsMissingMeasureId() {
-		String message = String.format(
+		String countMessage = String.format(
 				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 2, SubPopulations.DENEXCEP, 1);
+		String uuidMessage = String.format(
+				QualityMeasureIdValidator.INCORRECT_UUID, "CMS52v5", SubPopulations.DENEXCEP,
+				MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
 			.removeSubPopulationMeasureData(SubPopulations.DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID)
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(message));
+		assertWithMessage("Incorrect validation error.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(countMessage, uuidMessage);
 	}
 
 	@Test
@@ -219,7 +242,9 @@ public class QualityMeasureIdValidatorTest {
 
 		String expectedErrorMessage = String.format(
 				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, SubPopulations.NUMER, 4);
-		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(expectedErrorMessage));
+		assertWithMessage("Incorrect validation error.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(expectedErrorMessage);
 	}
 
 	@Test
@@ -232,7 +257,13 @@ public class QualityMeasureIdValidatorTest {
 
 		String expectedErrorMessage = String.format(
 				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, SubPopulations.NUMER, 2);
-		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(expectedErrorMessage));
+		String expectedUuidErrorMessage = String.format(
+				QualityMeasureIdValidator.INCORRECT_UUID, "CMS52v5", SubPopulations.NUMER,
+				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
+
+		assertWithMessage("Incorrect validation error.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(expectedErrorMessage, expectedUuidErrorMessage);
 	}
 
 	@Test
@@ -246,7 +277,10 @@ public class QualityMeasureIdValidatorTest {
 
 		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_UUID, "CMS52v5",
 				SubPopulations.NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
-		assertThat("Incorrect validation error.", details, hasValidationErrorsIgnoringPath(expectedErrorMessage));
+
+		assertWithMessage("Incorrect validation error.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(expectedErrorMessage);
 	}
 
 	@Test
@@ -257,7 +291,8 @@ public class QualityMeasureIdValidatorTest {
 				.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("There must not be any validation errors.", details, hasSize(0));
+		assertWithMessage("There must not be any validation errors.")
+				.that(details).isEmpty();
 	}
 
 	@Test
@@ -266,7 +301,8 @@ public class QualityMeasureIdValidatorTest {
 				.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("There must not be any validation errors.", details, hasSize(0));
+		assertWithMessage("There must not be any validation errors.")
+				.that(details).isEmpty();
 	}
 
 	@Test
@@ -277,8 +313,9 @@ public class QualityMeasureIdValidatorTest {
 				.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		assertThat("Must contain the correct error message.", details,
-				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT));
+		assertWithMessage("Must contain the correct error message.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(QualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT);
 	}
 
 	@Test
@@ -288,9 +325,11 @@ public class QualityMeasureIdValidatorTest {
 				.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_UUID, "CMS68v6", PERFORMANCE_RATE_ID, REQUIRES_DENOM_EXCEPTION_NUMER_GUID);
-		assertThat("Must contain the correct error message.", details,
-				hasValidationErrorsIgnoringPath(expectedErrorMessage));
+		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_UUID, "CMS68v6",
+				PERFORMANCE_RATE_ID, REQUIRES_DENOM_EXCEPTION_NUMER_GUID);
+		assertWithMessage("Must contain the correct error message.")
+				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(expectedErrorMessage);
 	}
 
 	private MeasureReferenceBuilder createCorrectMeasureReference(String measureId) {

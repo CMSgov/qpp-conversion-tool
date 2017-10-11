@@ -4,11 +4,10 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Test;
 
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -25,8 +24,10 @@ public class QualitySectionEncoderTest {
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 
-		assertThat("Expect to encode category", jsonWrapper.getString("category"), is("quality"));
-		assertThat("Expect to encode submissionMethod", jsonWrapper.getString("submissionMethod"), is("electronicHealthRecord"));
+		assertWithMessage("Expect to encode category")
+				.that(jsonWrapper.getString("category")).isEqualTo("quality");
+		assertWithMessage("Expect to encode submissionMethod")
+				.that(jsonWrapper.getString("submissionMethod")).isEqualTo("electronicHealthRecord");
 	}
 
 	@Test
@@ -38,8 +39,9 @@ public class QualitySectionEncoderTest {
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 
-		assertThat("An encoder for a child node should not have been found.", encoder.getDetails(), hasValidationErrorsIgnoringPath("Failed to find an encoder for child node DEFAULT"));
-
+		assertWithMessage("An encoder for a child node should not have been found.")
+				.that(encoder.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly("Failed to find an encoder for child node DEFAULT");
 	}
 
 	@Test

@@ -6,11 +6,9 @@ import org.junit.Test;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.segmentation.QrdaScope.ACI_AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.segmentation.QrdaScope.MEASURE_PERFORMED;
-import static junit.framework.TestCase.assertEquals;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 
 public class QrdaScopeTest {
 	@Test
@@ -21,25 +19,29 @@ public class QrdaScopeTest {
 		scopes.add(MEASURE_PERFORMED);
 
 		//then
-		assertEquals(2, QrdaScope.getTemplates(scopes).size());
+		assertWithMessage("Should be two scopes")
+				.that(QrdaScope.getTemplates(scopes)).hasSize(2);
 	}
 
 	@Test
 	public void testGetTemplatesNull() {
 		//expect
-		assertEquals(0, QrdaScope.getTemplates(null).size());
+		assertWithMessage("Should be no scopes")
+				.that(QrdaScope.getTemplates(null)).isEmpty();
 	}
 
 	@Test
 	public void testGetTemplatesEmpty() {
 		//expect
-		assertEquals(0, QrdaScope.getTemplates(new HashSet<>()).size());
+		assertWithMessage("Should be no scopes")
+				.that(QrdaScope.getTemplates(new HashSet<>())).isEmpty();
 	}
 
 	@Test
 	public void testValueOfString() {
 		//JaCoCo coverage test
 		QrdaScope scope = QrdaScope.valueOf("CLINICAL_DOCUMENT");
-		assertThat("QrdaScope of CLINICAL_DOCUMENT equals TemplateId", scope.name(), is("CLINICAL_DOCUMENT"));
+		assertWithMessage("QrdaScope of CLINICAL_DOCUMENT equals TemplateId")
+				.that(scope.name()).isSameAs("CLINICAL_DOCUMENT");
 	}
 }

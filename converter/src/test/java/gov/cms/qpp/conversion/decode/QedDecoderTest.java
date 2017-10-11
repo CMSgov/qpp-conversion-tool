@@ -1,15 +1,11 @@
 package gov.cms.qpp.conversion.decode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class QedDecoderTest {
 
@@ -24,13 +20,15 @@ public class QedDecoderTest {
 	
 		// Get the root wrapper node
 		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
-		assertThat("root node should not be null", root, is(not(nullValue())));
-		// Make sure we get have target
-		assertThat("root node should have one child node", root.getChildNodes().size(), is(1));
+		assertWithMessage("root node should have one child node")
+				.that(root.getChildNodes())
+				.hasSize(1);
 
 		Node target = root.getChildNodes().get(0);
 
-		assertThat("test value should be mytestvalue", target.getValue("result"), is("mytestvalue"));
+		assertWithMessage("test value should be mytestvalue")
+				.that(target.getValue("result"))
+				.isEqualTo("mytestvalue");
 	}
 
 }

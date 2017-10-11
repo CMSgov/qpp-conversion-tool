@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion;
 
+import org.apache.commons.io.IOUtils;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -7,9 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertThat;
 
 public class InputStreamQrdaSourceTest extends QrdaSourceTestSuite {
 
@@ -33,7 +34,7 @@ public class InputStreamQrdaSourceTest extends QrdaSourceTestSuite {
 	public void testInputStream() throws IOException {
 		String actual = IOUtils.toString(stream("src/test/resources/arbitrary.txt"), StandardCharsets.UTF_8);
 		String content = IOUtils.toString(source.toInputStream(), StandardCharsets.UTF_8);
-		Assert.assertEquals(actual, content);
+		assertThat(actual).isEqualTo(content);
 	}
 
 }

@@ -7,6 +7,8 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.google.common.truth.Truth;
+
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class CpcPlusAcceptanceTest {
 
@@ -39,9 +43,7 @@ public class CpcPlusAcceptanceTest {
 			}
 		}
 
-		if (!errors.isEmpty()) {
-			Assert.fail("Failed cpc plus conversions: " + errors);
-		}
+		assertThat(errors).isEmpty();
 	}
 
 	@Test
@@ -60,9 +62,7 @@ public class CpcPlusAcceptanceTest {
 			}
 		}
 
-		if (!successesThatShouldBeErrors.isEmpty()) {
-			Assert.fail("Succeeded in cpc plus conversions that should have failed: " + successesThatShouldBeErrors);
-		}
+		assertThat(successesThatShouldBeErrors).isEmpty();
 	}
 
 	@Test
@@ -73,6 +73,6 @@ public class CpcPlusAcceptanceTest {
 			return fileName.endsWith(".xml");
 		}).count();
 
-		Assert.assertEquals(0, invalidFiles);
+		assertThat(invalidFiles).isEqualTo(0);
 	}
 }

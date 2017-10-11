@@ -3,14 +3,13 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Test;
 
 import java.util.Collection;
 import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 /**
  * Test class for IaMeasureValidator
@@ -31,7 +30,8 @@ public class IaMeasureValidatorTest {
 
 		IaMeasureValidator validator = new IaMeasureValidator();
 		Collection<Detail> errors = validator.validateSingleNode(measureNode);
-		assertThat("no errors should be present", errors, empty());
+		assertWithMessage("no errors should be present")
+				.that(errors).isEmpty();
 	}
 
 	@Test
@@ -43,7 +43,8 @@ public class IaMeasureValidatorTest {
 
 		IaMeasureValidator validator = new IaMeasureValidator();
 		Collection<Detail> errors = validator.validateSingleNode(measureNode);
-		assertThat("no errors should be present", errors, empty());
+		assertWithMessage("no errors should be present")
+				.that(errors).isEmpty();
 	}
 
 
@@ -55,13 +56,12 @@ public class IaMeasureValidatorTest {
 	@Test
 	public void testMissingNode() throws Exception {
 		Node measureNode = new Node(TemplateId.IA_MEASURE);
-
 		IaMeasureValidator validator = new IaMeasureValidator();
 		Set<Detail> errors = validator.validateSingleNode(measureNode);
-		assertThat("A missing child errors should be present", errors.size(), is(1));
-		String error = errors.iterator().next().getMessage();
-		assertThat("The INCORRECT_CHILDREN_COUNT Error is expected", error,
-				is(IaMeasureValidator.INCORRECT_CHILDREN_COUNT));
+
+		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(IaMeasureValidator.INCORRECT_CHILDREN_COUNT);
 	}
 
 	/**
@@ -81,8 +81,9 @@ public class IaMeasureValidatorTest {
 
 		IaMeasureValidator validator = new IaMeasureValidator();
 		Set<Detail> errors = validator.validateSingleNode(measureNode);
-		assertThat("A Too Many children errors should be present", errors.size(), is(1));
-		String error = errors.iterator().next().getMessage();
-		assertThat("The INCORRECT_CHILDREN_COUNT Error is expected", error, is(IaMeasureValidator.INCORRECT_CHILDREN_COUNT));
+
+		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(IaMeasureValidator.INCORRECT_CHILDREN_COUNT);
 	}
 }

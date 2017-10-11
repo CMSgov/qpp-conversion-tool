@@ -7,22 +7,19 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.MipsQualityMeasureIdValidator;
-
-import java.util.ArrayList;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.junit.Test;
 
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class QualityMeasureIdRoundTripTest {
 	public static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/junk_in_quality_measure.xml");
@@ -37,10 +34,10 @@ public class QualityMeasureIdRoundTripTest {
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 			"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
 
-		assertThat("There should still be a quality measure even with the junk stuff in quality measure.",
-			qualityMeasures, hasSize(1));
-		assertThat("The measureId in the quality measure should still populate given the junk stuff in the measure.",
-			qualityMeasures.get(0).get("measureId"), is("236"));
+		assertThat(qualityMeasures).hasSize(1);
+		assertWithMessage("The measureId in the quality measure should still populate given the junk stuff in the measure.")
+				.that(qualityMeasures.get(0).get("measureId"))
+				.isEqualTo("236");
 	}
 
 	@Test
@@ -60,8 +57,8 @@ public class QualityMeasureIdRoundTripTest {
 
 		String message = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID, measureId,
 				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, numerUuid);
-		assertThat("Must contain the correct error message", details,
-				hasValidationErrorsIgnoringPath(message));
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(message);
 	}
 
 	@Test
@@ -81,9 +78,9 @@ public class QualityMeasureIdRoundTripTest {
 
 		String message = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID, measureId,
 				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, numerUuid);
-		assertThat("Must contain the correct error message", details,
-				hasValidationErrorsIgnoringPath(MipsQualityMeasureIdValidator.SINGLE_PERFORMANCE_RATE));
-		assertThat("Must contain the correct error message", details,
-				hasValidationErrorsIgnoringPath(message));
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(MipsQualityMeasureIdValidator.SINGLE_PERFORMANCE_RATE);
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(message);
 	}
 }
