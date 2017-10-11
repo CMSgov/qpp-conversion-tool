@@ -7,6 +7,8 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.google.common.truth.Truth;
+
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -19,15 +21,18 @@ import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class CpcPlusRoundTripTest {
+public class CpcPlusAcceptanceTest {
 
-	private static final Path DIR = Paths.get("src/test/resources/cpc_plus/");
+	private static final Path BASE = Paths.get("src/test/resources/cpc_plus/");
+	private static final Path SUCCESS = BASE.resolve("success");
+	private static final Path FAILURE = BASE.resolve("failure");
 
 	@Test
 	public void testCpcPlusFileSuccesses() throws IOException {
 		Map<Path, AllErrors> errors = new HashMap<>();
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-success.xml")) {
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(SUCCESS)) {
 			for (Path entry : stream) {
+				Files.move(entry, entry.resolveSibling(entry.getFileName().toString().replace("-success.xml", ".xml")));
 				Converter converter = new Converter(new PathQrdaSource(entry));
 
 				try {
@@ -38,15 +43,13 @@ public class CpcPlusRoundTripTest {
 			}
 		}
 
-		if (!errors.isEmpty()) {
-			Assert.fail("Failed cpc plus conversions: " + errors);
-		}
+		assertThat(errors).isEmpty();
 	}
 
 	@Test
 	public void testCpcPlusFileFailures() throws IOException {
 		List<Path> successesThatShouldBeErrors = new ArrayList<>();
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(DIR, "*-failure.xml")) {
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(FAILURE)) {
 			for (Path entry : stream) {
 				Converter converter = new Converter(new PathQrdaSource(entry));
 
@@ -59,17 +62,15 @@ public class CpcPlusRoundTripTest {
 			}
 		}
 
-		if (!successesThatShouldBeErrors.isEmpty()) {
-			Assert.fail("Succeeded in cpc plus conversions that should have failed: " + successesThatShouldBeErrors);
-		}
+		assertThat(successesThatShouldBeErrors).isEmpty();
 	}
 
 	@Test
 	public void testCpcPlusFilesAreAllChecked() throws IOException {
-		long invalidFiles = Files.list(DIR).filter(file -> {
+		long invalidFiles = Files.list(BASE).filter(file -> {
 			String fileName = file.toString();
 
-			return fileName.endsWith(".xml") && !fileName.endsWith("-failure.xml") && !fileName.endsWith("-success.xml");
+			return fileName.endsWith(".xml");
 		}).count();
 
 		assertThat(invalidFiles).isEqualTo(0);
