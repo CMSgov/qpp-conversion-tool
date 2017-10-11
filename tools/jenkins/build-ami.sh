@@ -14,7 +14,7 @@ export PATH="$PYENV_DIR/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-pyenv activate corevpc-converter
+pyenv activate corevpc
 
 cd $GRANDPARENT
 build-ami $VPC_PATH

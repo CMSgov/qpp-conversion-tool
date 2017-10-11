@@ -2,7 +2,7 @@
 set -ef -o pipefail
 
 # setup for corevpc
-# use the corevpc-converter virtualenv
+# use the corevpc virtualenv
 
 SCRIPTPATH=$(dirname "$(readlink -f "$0")")
 PARENT=$(dirname $SCRIPTPATH)
@@ -26,12 +26,12 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 pyenv install -s 3.5.3
-if [ ! -d "$PYENV_DIR/versions/corevpc-converter" ]
+if [ ! -d "$PYENV_DIR/versions/corevpc" ]
 then
-  pyenv virtualenv 3.5.3 corevpc-converter
+  pyenv virtualenv 3.5.3 corevpc
 fi
 
-pyenv activate corevpc-converter
+pyenv activate corevpc
 
 # corevpc should have been checked out by the jenkins script
 cd $GRANDPARENT/corevpc_checkout/requirements
