@@ -1,7 +1,7 @@
 QPPCT - 398
 1. Open up HP ALM
 2. Run through all the testing results for this Sprint 27
-3. Point out the failed and blocked tests that are still going on from QPPCT-302, QPPCT-375, and now QPPCT-390.
+3. Point out the failed and blocked tests that are still going on from QPPCT-302, QPPCT-375.
 4. Open up the HIVVS Confluence Page and go through these sub pages
 	- QPPCT Sprint 27 Kickoff to show the added QPPCT-298 and QPPCT-319 tickets.
 	- QPPCT Sprint 27 Test Results to show the totals for all the tests ran.
