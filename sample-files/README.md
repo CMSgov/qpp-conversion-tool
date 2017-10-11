@@ -1,6 +1,6 @@
 # Sample files
 
-Current sample files available are:
+Current sample files available for eCQM measures are:
 
 * quality-mips-1.xml
 * quality-mips-3.xml
@@ -22,3 +22,19 @@ These 3 files cover the following eCQM measures:
 * 236 - CMS165v5
 * 312 - CMS166v6
 * 374 - CMS50v5
+
+Sample files available for ACI and IA measures are:
+
+* MIPS_GROUP_QRDA_III_ACI_IA_Sample1.xml
+* MIPS_GROUP_QRDA_III_ACI_IA_Sample1.xml
+
+These 2 files cover all of the ACI and IA measures.
+Other information about the files:
+
+Both files contain all improvement activities for the 2017 performance period.
+Some of the advancing care information measures are mutually exclusive, such as ACI_EP_1
+(ePrescribing) and ACI_LVPP_1 (Proposed ePrescribing Exclusion). Sample1 contains all
+advancing care information measures except the exclusion identifiers (e.g.,
+include ACI_EP_1 but not ACI_LVPP_1). Sample 2 also contains all but with the
+exclusions (e.g., include ACI_LVPP_1 but not ACI_EP_1). The attestation identifiers
+are not included.
