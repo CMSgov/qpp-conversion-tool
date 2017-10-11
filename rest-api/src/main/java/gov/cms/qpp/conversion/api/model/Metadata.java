@@ -8,6 +8,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.DoNotEncrypt;
 import com.google.common.base.Objects;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 
 import java.util.Date;
@@ -15,9 +16,8 @@ import java.util.Date;
 /**
  * Model to hold conversion metadata. Maps to a table in DynamoDB.
  */
-@Scope("request")
 @DynamoDBTable(tableName = "ConversionMetadata")
-public final class Metadata {
+public class Metadata {
 	private String uuid;
 	private String tin;  //this field is encrypted
 	private String npi;
@@ -376,18 +376,13 @@ public final class Metadata {
 		equals &= Objects.equal(conversionStatus, that.conversionStatus);
 		equals &= Objects.equal(validationStatus, that.validationStatus);
 		equals &= Objects.equal(cpc, that.cpc);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
 		equals &= Objects.equal(uuid, that.uuid);
 		equals &= Objects.equal(tin, that.tin);
 		equals &= Objects.equal(npi, that.npi);
 		equals &= Objects.equal(createdDate, that.createdDate);
 		equals &= Objects.equal(apm, that.apm);
 		equals &= Objects.equal(submissionLocator, that.submissionLocator);
+		equals &= Objects.equal(qppLocator, that.qppLocator);
 		equals &= Objects.equal(fileName, that.fileName);
 		equals &= Objects.equal(conversionErrorLocator, that.conversionErrorLocator);
 		equals &= Objects.equal(validationErrorLocator, that.validationErrorLocator);
@@ -401,7 +396,7 @@ public final class Metadata {
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(uuid, tin, npi, createdDate, apm, submissionYear,
-				submissionLocator, fileName, overallStatus, conversionStatus, validationStatus,
+				submissionLocator, qppLocator, fileName, overallStatus, conversionStatus, validationStatus,
 				cpc, conversionErrorLocator, validationErrorLocator);
 	}
 }

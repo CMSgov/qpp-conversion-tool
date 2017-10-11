@@ -2,10 +2,10 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.InputStreamQrdaSource;
 import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +37,9 @@ public class QrdaControllerV1 {
 	@Autowired
 	private ValidationService validationService;
 
+	@Autowired
+	private AuditService auditService;
+
 	/**
 	 * Endpoint to transform an uploaded file into a valid or error json response
 	 *
@@ -50,8 +53,8 @@ public class QrdaControllerV1 {
 		JsonWrapper qpp = qrdaService.convertQrda3ToQpp(new InputStreamQrdaSource(file.getName(), file.getInputStream()));
 
 		validationService.validateQpp(qpp);
-		//call audit service
 		API_LOG.info("Conversion success " + file.getName());
+		auditService.success(file.getInputStream(), qpp.contentStream());
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 

@@ -63,7 +63,7 @@ public class AuditServiceImplTest {
 	@Test
 	public void testAuditHappyPath() {
 		allGood();
-		underTest.audit(fileContent, jsonContent);
+		underTest.success(fileContent, jsonContent);
 
 		assertThat(metadata.getQppLocator()).isSameAs(AN_ID);
 		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
@@ -72,7 +72,7 @@ public class AuditServiceImplTest {
 	@Test
 	public void testAuditHappyPathWrite() {
 		allGood();
-		underTest.audit(fileContent, jsonContent).join();
+		underTest.success(fileContent, jsonContent).join();
 
 		verify(dbService, times(1)).write(metadata);
 	}
@@ -81,7 +81,7 @@ public class AuditServiceImplTest {
 	public void testFileUploadFailureException() throws TimeoutException {
 		problematic();
 		final Waiter waiter = new Waiter();
-		CompletableFuture<Void> future = underTest.audit(fileContent, jsonContent);
+		CompletableFuture<Void> future = underTest.success(fileContent, jsonContent);
 
 		future.whenComplete((nada, ex) -> {
 			waiter.assertNull(metadata.getQppLocator());

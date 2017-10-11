@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.api.exceptions.QppValidationException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
@@ -57,7 +58,7 @@ public class ValidationServiceImpl implements ValidationService {
 			ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper);
 			if (HttpStatus.UNPROCESSABLE_ENTITY.equals(validationResponse.getStatusCode())) {
 				AllErrors convertedErrors = convertQppValidationErrorsToQrda(validationResponse.getBody(), wrapper);
-				throw new TransformException("Converted QPP failed validation", null, convertedErrors);
+				throw new QppValidationException("Converted QPP failed validation", convertedErrors);
 			}
 		});
 	}
