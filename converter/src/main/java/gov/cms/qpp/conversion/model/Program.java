@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+
 /**
  * Construct that helps categorize submissions by program name.
  */
@@ -23,6 +25,26 @@ public enum Program {
 	 */
 	Program(String... value) {
 		this.aliases = Arrays.stream(value).collect(Collectors.toSet());
+	}
+
+	/**
+	 * Checks if a node is using the CPC program
+	 *
+	 * @param node
+	 * @return
+	 */
+	public static boolean isCpc(Node node) {
+		return extractProgram(node) == Program.CPC;
+	}
+
+	/**
+	 * Extracts a program type from a node
+	 *
+	 * @param node
+	 * @return
+	 */
+	public static Program extractProgram(Node node) {
+		return Program.getInstance(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
 	}
 
 	/**
