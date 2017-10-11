@@ -10,6 +10,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import gov.cms.qpp.conversion.validate.AciDenominatorValidator;
+import gov.cms.qpp.conversion.validate.AciNumeratorDenominatorValidator;
+import gov.cms.qpp.conversion.validate.AciNumeratorValidator;
+import gov.cms.qpp.conversion.validate.AciSectionValidator;
+import gov.cms.qpp.conversion.validate.AggregateCountValidator;
+import gov.cms.qpp.conversion.validate.IaMeasureValidator;
+import gov.cms.qpp.conversion.validate.IaSectionValidator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,9 +25,11 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.util.JsonHelper.readJson;
-import static junit.framework.TestCase.assertEquals;
 
 /**
  * Verify scoped conversions
@@ -51,8 +60,9 @@ public class ScopedConversionTest {
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				fixtures.get(testSection.name()), getScoped(content).get(0));
+		assertWithMessage("content should match valid %s fixture", testSection)
+				.that(fixtures.get(testSection.name()))
+				.isEqualTo(getScoped(content).get(0));
 	}
 
 	/**
@@ -65,8 +75,9 @@ public class ScopedConversionTest {
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				fixtures.get(testSection.name()), getScoped(content));
+		assertWithMessage("content should match valid %s fixture", testSection)
+				.that(fixtures.get(testSection.name()))
+				.isEqualTo(getScoped(content));
 	}
 
 	/**
@@ -79,8 +90,9 @@ public class ScopedConversionTest {
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				fixtures.get(testSection.name()), getScoped(content));
+		assertWithMessage("content should match valid %s fixture", testSection)
+				.that(fixtures.get(testSection.name()))
+				.isEqualTo(getScoped(content));
 	}
 
 	/**
@@ -93,8 +105,9 @@ public class ScopedConversionTest {
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				fixtures.get(testSection.name()), getScoped(content).get(0));
+		assertWithMessage("content should match valid %s fixture", testSection)
+				.that(fixtures.get(testSection.name()))
+				.isEqualTo(getScoped(content).get(0));
 	}
 
 
@@ -108,8 +121,9 @@ public class ScopedConversionTest {
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				fixtures.get(testSection.name()), getScoped(content).get(0));
+		assertWithMessage("content should match valid %s fixture", testSection)
+				.that(fixtures.get(testSection.name()))
+				.isEqualTo(getScoped(content).get(0));
 	}
 
 	/**
@@ -122,8 +136,9 @@ public class ScopedConversionTest {
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				fixtures.get(testSection.name()), getScoped(content));
+		assertWithMessage("content should match valid %s fixture", testSection)
+				.that(fixtures.get(testSection.name()))
+				.isEqualTo(getScoped(content));
 	}
 
 	/**
@@ -136,8 +151,9 @@ public class ScopedConversionTest {
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				fixtures.get(testSection.name()), getScoped(content));
+		assertWithMessage("content should match valid %s fixture", testSection)
+				.that(fixtures.get(testSection.name()))
+				.isEqualTo(getScoped(content));
 	}
 
 	/**
@@ -150,8 +166,9 @@ public class ScopedConversionTest {
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				fixtures.get(testSection.name()), getScoped(content));
+		assertWithMessage("content should match valid %s fixture", testSection)
+				.that(fixtures.get(testSection.name()))
+				.isEqualTo(getScoped(content));
 	}
 
 	/**
@@ -164,8 +181,9 @@ public class ScopedConversionTest {
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				fixtures.get(testSection.name()), getScoped(content));
+		assertWithMessage("content should match valid %s fixture", testSection)
+				.that(fixtures.get(testSection.name()))
+				.isEqualTo(getScoped(content));
 	}
 
 	/**
@@ -178,8 +196,9 @@ public class ScopedConversionTest {
 		Map<String, Object> content = scopedConversion(testSection);
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				fixtures.get(testSection.name()), content);
+		assertWithMessage("content should match valid %s fixture", testSection)
+				.that(fixtures.get(testSection.name()))
+				.isEqualTo(content);
 	}
 
 	//negative
@@ -191,11 +210,22 @@ public class ScopedConversionTest {
 	public void testNegativeFullScopeConversion() throws IOException {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.CLINICAL_DOCUMENT.name());
-		Map<String, Object> content = errantScopedConversion(testSection);
+		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				7, getErrors(content).size());
+		assertWithMessage("Error count should be 7")
+				.that(content.size())
+				.isEqualTo(7);
+
+		assertWithMessage("Errant %s fails as expected", TemplateId.CLINICAL_DOCUMENT)
+				.that(getErrorMessages(content))
+				.containsExactly(
+						AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR,
+						AciNumeratorDenominatorValidator.TOO_MANY_NUMERATORS,
+						String.format(AciNumeratorValidator.NOT_AN_INTEGER_VALUE, AciNumeratorValidator.NUMERATOR_NAME),
+						String.format(AciDenominatorValidator.INVALID_VALUE, AciDenominatorValidator.DENOMINATOR_NAME),
+						IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR,
+						IaMeasureValidator.TYPE_ERROR);
 	}
 
 	/**
@@ -205,11 +235,20 @@ public class ScopedConversionTest {
 	public void testNegativeAciNumeratorDenominatorConversion() throws IOException {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_NUMERATOR_DENOMINATOR.name());
-		Map<String, Object> content = errantScopedConversion(testSection);
+		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				5, getErrors(content).size());
+		assertWithMessage("Error count should be 5")
+				.that(content.size())
+				.isEqualTo(5);
+
+		assertWithMessage("Errant %s fails as expected", TemplateId.ACI_NUMERATOR_DENOMINATOR)
+				.that(getErrorMessages(content))
+				.containsExactly(
+						AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR,
+						AciNumeratorDenominatorValidator.TOO_MANY_NUMERATORS,
+						String.format(AciNumeratorValidator.NOT_AN_INTEGER_VALUE, AciNumeratorValidator.NUMERATOR_NAME),
+						String.format(AciDenominatorValidator.INVALID_VALUE, AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 
 	/**
@@ -219,11 +258,18 @@ public class ScopedConversionTest {
 	public void testNegativeIaSectionConversion() throws IOException {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.IA_SECTION.name());
-		Map<String, Object> content = errantScopedConversion(testSection);
+		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				2, getErrors(content).size());
+		assertWithMessage("Error count should be 2")
+				.that(content.size())
+				.isEqualTo(2);
+
+		assertWithMessage("Errant %s fails as expected", TemplateId.IA_SECTION)
+				.that(getErrorMessages(content))
+				.containsExactly(
+						IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR,
+						IaMeasureValidator.TYPE_ERROR);
 	}
 
 	/**
@@ -233,11 +279,18 @@ public class ScopedConversionTest {
 	public void testNegativeAciAggregateCountConversion() throws IOException {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.ACI_AGGREGATE_COUNT.name());
-		Map<String, Object> content = errantScopedConversion(testSection);
+		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
 
 		//then
-		assertEquals("content should match valid " + testSection + " fixture",
-				3, getErrors(content).size());
+		assertWithMessage("Error count should be 3")
+				.that(content.size())
+				.isEqualTo(3);
+
+		assertWithMessage("Errant %s fails as expected", TemplateId.ACI_AGGREGATE_COUNT)
+				.that(getErrorMessages(content))
+				.containsExactly(
+						AggregateCountValidator.TYPE_ERROR,
+						AggregateCountValidator.VALUE_ERROR);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -269,6 +322,12 @@ public class ScopedConversionTest {
 		return jsonObjectWriter.writeValueAsString(exception.getDetails());
 	}
 
+	private Set<String> getErrorMessages(List<Map<String, String>> content) {
+		return content.stream()
+				.map(map -> map.get("message"))
+				.collect(Collectors.toSet());
+	}
+
 	/**
 	 * Helper for retrieving validation errors
 	 *
@@ -276,8 +335,8 @@ public class ScopedConversionTest {
 	 * @return list of validation errors
 	 */
 	@SuppressWarnings("unchecked")
-	private List<?> getErrors(Map<String, Object> content) {
-		return (List<?>) ((Map<String, ?>) ((List<?>) content.get("errors")).get(0)).get("details");
+	private <T> List<T> getErrors(Map<String, Object> content) {
+		return (List<T>) ((Map<String, T>) ((List<T>) content.get("errors")).get(0)).get("details");
 	}
 
 	/**
