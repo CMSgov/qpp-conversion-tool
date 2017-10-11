@@ -1,19 +1,16 @@
 package gov.cms.qpp.conversion.decode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.io.IOException;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.io.IOException;
+import org.junit.Before;
+import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class MeasurePerformedDecoderTest {
 
@@ -51,7 +48,8 @@ public class MeasurePerformedDecoderTest {
 	}
 
 	private void assertValidMeasurePerformed(Node measurePerformedNode) {
-		assertThat("Should have a measure perform",
-				measurePerformedNode.getValue("measurePerformed"), is("Y"));
+		assertWithMessage("Should have a measure perform")
+				.that(measurePerformedNode.getValue("measurePerformed"))
+				.isEqualTo("Y");
 	}
 }

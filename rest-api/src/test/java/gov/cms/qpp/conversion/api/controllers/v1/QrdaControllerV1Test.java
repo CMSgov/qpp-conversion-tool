@@ -19,11 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -62,7 +62,10 @@ public class QrdaControllerV1Test {
 		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
 
 		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(QrdaSource.class));
-		assertThat("The QPP response body is incorrect.", qppResponse.getBody(), is(qppResult.toString()));
+
+		assertWithMessage("The QPP response body is incorrect.")
+				.that(qppResponse.getBody())
+				.isEqualTo(qppResult.toString());
 	}
 
 	@Test
@@ -76,7 +79,9 @@ public class QrdaControllerV1Test {
 			ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
 			fail("An exception should have occurred. Instead was " + qppResponse);
 		} catch(TransformException exception) {
-			assertThat("A different exception occurred.", exception.getMessage(), is(transformationErrorMessage));
+			assertWithMessage("A different exception occurred.")
+					.that(exception.getMessage())
+					.isEqualTo(transformationErrorMessage);
 		} catch (Exception exception) {
 			fail("The wrong exception occurred.");
 		}

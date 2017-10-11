@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.Validator;
  */
 @Validator(TemplateId.ACI_DENOMINATOR)
 public class AciDenominatorValidator extends CommonNumeratorDenominatorValidator {
-	protected static final String DENOMINATOR_NAME = "Denominator";
+	public static final String DENOMINATOR_NAME = "Denominator";
 
 	/**
 	 * Public constructor sets the node name for this class

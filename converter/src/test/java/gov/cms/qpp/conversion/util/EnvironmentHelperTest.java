@@ -1,16 +1,14 @@
 package gov.cms.qpp.conversion.util;
 
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Properties;
 import java.util.UUID;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.nullValue;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class EnvironmentHelperTest {
 
@@ -29,14 +27,16 @@ public class EnvironmentHelperTest {
 	@Test
 	public void testIsPresentOnRandomString() {
 		String random = UUID.randomUUID().toString();
-		Assert.assertFalse(EnvironmentHelper.isPresent(random));
+		assertWithMessage("Should not have an environment variable with randomized key")
+				.that(EnvironmentHelper.isPresent(random)).isFalse();
 	}
 
 	@Test
 	public void testIsPresentOnAdded() {
 		String someKey = UUID.randomUUID().toString();
 		System.setProperty(someKey, "nothing important");
-		Assert.assertTrue(EnvironmentHelper.isPresent(someKey));
+		assertWithMessage("%s should be set to %s", someKey, "nothing important")
+				.that(EnvironmentHelper.isPresent(someKey)).isTrue();
 	}
 
 	@Test
@@ -44,13 +44,12 @@ public class EnvironmentHelperTest {
 		String someKey = UUID.randomUUID().toString();
 		String someValue = "DogCow";
 		System.setProperty(someKey, someValue);
-		assertThat("The value for the variable is incorrect.", EnvironmentHelper.valueFor(someKey), is(someValue));
+		assertThat(EnvironmentHelper.valueFor(someKey)).isEqualTo(someValue);
 	}
 
 	@Test
 	public void testValueForMotPresent() {
 		String someKey = UUID.randomUUID().toString();
-		String someValue = "Moof";
-		assertThat("The value for the variable is incorrect.", EnvironmentHelper.valueFor(someKey), is(nullValue()));
+		assertThat(EnvironmentHelper.valueFor(someKey)).isNull();
 	}
 }
