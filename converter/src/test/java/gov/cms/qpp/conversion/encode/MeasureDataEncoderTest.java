@@ -6,10 +6,9 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import org.junit.Test;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MeasureDataEncoderTest {
 	private final String PERFORMANCE_MET = "performanceMet"; //NUMER
@@ -21,26 +20,36 @@ public class MeasureDataEncoderTest {
 	public void testDenominator() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENOM);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION), is(900));
+		assertWithMessage("Must return correct encoded result")
+				.that(jsonWrapper.getInteger(ELIGIBLE_POPULATION))
+				.isEqualTo(900);
 	}
+
 	@Test
 	public void testEligiblePopulationException() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENEXCEP);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION_EXCEP), is(900));
+		assertWithMessage("Must return correct encoded result")
+				.that(jsonWrapper.getInteger(ELIGIBLE_POPULATION_EXCEP))
+				.isEqualTo(900);
 	}
+
 	@Test
 	public void testEligiblePopulationExclusion() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENEX);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger(ELIGIBLE_POPULATION_EX), is(900));
+		assertWithMessage("Must return correct encoded result")
+				.that(jsonWrapper.getInteger(ELIGIBLE_POPULATION_EX))
+				.isEqualTo(900);
 	}
 
 	@Test
 	public void testPerformanceMet() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.NUMER);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat("Must return correct encoded result", jsonWrapper.getInteger(PERFORMANCE_MET), is(900));
+		assertWithMessage("Must return correct encoded result")
+				.that(jsonWrapper.getInteger(PERFORMANCE_MET))
+				.isEqualTo(900);
 	}
 
 	private Node setUpMeasureDataNode(String measureType) {

@@ -2,10 +2,11 @@ package gov.cms.qpp.conversion.model;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,7 +142,9 @@ public class Node {
 	 * @return List of matching child Nodes.
 	 */
 	public Stream<Node> getChildNodes(TemplateId... templateIds) {
-		return getChildNodes(node -> Sets.newHashSet(templateIds).contains(node.getType()));
+		Set<TemplateId> lookupTemplateIds = EnumSet.noneOf(TemplateId.class);
+		Collections.addAll(lookupTemplateIds, templateIds);
+		return getChildNodes(node -> lookupTemplateIds.contains(node.getType()));
 	}
 
 	/**
@@ -310,7 +313,7 @@ public class Node {
 	 * @return a list of {@link gov.cms.qpp.conversion.model.Node}s in this
 	 * {@link gov.cms.qpp.conversion.model.Node}'s hierarchy that match the searched id
 	 */
-	public List<Node> findNode(TemplateId templateId, Predicate<List<Node>> bail) {
+	private List<Node> findNode(TemplateId templateId, Predicate<List<Node>> bail) {
 		List<Node> foundNodes = new ArrayList<>();
 		if (this.type == templateId) {
 			foundNodes.add(this);

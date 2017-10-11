@@ -20,12 +20,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.Is.isA;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.junit.internal.matchers.ThrowableCauseMatcher.hasCause;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
@@ -63,17 +60,14 @@ public class AnyOrderAsyncActionServiceTest {
 	public void testObjectToActOnPassedDown() {
 		Object objectToActOn = runSimpleScenario(0);
 
-		assertThat("The object to act on didn't make it down to asynchronousAction.",
-				objectUnderTest.objectThatWasActedOn.get(),
-			is(objectToActOn));
+		assertThat(objectUnderTest.objectThatWasActedOn.get()).isSameAs(objectToActOn);
 	}
 
 	@Test
 	public void testSuccessNoRetry() {
 		runSimpleScenario(0);
 
-		assertThat("The asynchronousAction method was not called once and only once.",
-				objectUnderTest.timesAsynchronousActionCalled.get(), is(1));
+		assertThat(objectUnderTest.timesAsynchronousActionCalled.get()).isEqualTo(1);
 	}
 
 	@Test
@@ -82,18 +76,14 @@ public class AnyOrderAsyncActionServiceTest {
 
 		runSimpleScenario(failuresUntilSuccess);
 
-		assertThat("The asynchronousAction method was not called enough times.",
-				objectUnderTest.timesAsynchronousActionCalled.get(),
-			is(failuresUntilSuccess + 1));
+		assertThat(objectUnderTest.timesAsynchronousActionCalled.get()).isEqualTo(failuresUntilSuccess + 1);
 	}
 
 	@Test
 	public void testObjectToActOnPassedDownWithFailures() {
 		Object objectToActOn = runSimpleScenario(2);
 
-		assertThat("The object to act on didn't make it down to asynchronousAction.",
-				objectUnderTest.objectThatWasActedOn.get(),
-			is(objectToActOn));
+		assertThat(objectUnderTest.objectThatWasActedOn.get()).isSameAs(objectToActOn);
 	}
 
 	@Test
@@ -109,8 +99,7 @@ public class AnyOrderAsyncActionServiceTest {
 
 		CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture<?>[0])).join();
 
-		assertThat("The asynchronousAction method was not called as many times as it should have.",
-				objectUnderTest.timesAsynchronousActionCalled.get(), is(numberOfItemsToProcess));
+		assertThat(objectUnderTest.timesAsynchronousActionCalled.get()).isEqualTo(numberOfItemsToProcess);
 	}
 
 	@Test
@@ -127,8 +116,8 @@ public class AnyOrderAsyncActionServiceTest {
 
 		CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture<?>[0])).join();
 
-		assertThat("The asynchronousAction method was not called as many times as it should have.",
-				objectUnderTest.timesAsynchronousActionCalled.get(), is((failuresUntilSuccess + 1) * numberOfItemsToProcess));
+		assertThat(objectUnderTest.timesAsynchronousActionCalled.get())
+				.isEqualTo((failuresUntilSuccess + 1) * numberOfItemsToProcess);
 	}
 
 	@Test
@@ -139,10 +128,8 @@ public class AnyOrderAsyncActionServiceTest {
 		CompletableFuture<Object> completableFuture1 = objectUnderTest.actOnItem(new Object());
 		CompletableFuture<Object> completableFuture2 = objectUnderTest.actOnItem(new Object());
 
-		assertThat("No other CompletableFuture should be dependent on this one but there is.",
-			completableFuture1.getNumberOfDependents(), is(0));
-		assertThat("No other CompletableFuture should be dependent on this one but there is.",
-			completableFuture2.getNumberOfDependents(), is(0));
+		assertThat(completableFuture1.getNumberOfDependents()).isEqualTo(0);
+		assertThat(completableFuture2.getNumberOfDependents()).isEqualTo(0);
 	}
 
 	@Test
@@ -156,10 +143,8 @@ public class AnyOrderAsyncActionServiceTest {
 			completableFuture.join();
 			fail("A CompletionException was not thrown.");
 		} catch (CompletionException exception) {
-			assertThat("The CompletionException didn't contain a UncheckedInterruptedException.",
-					exception, hasCause(isA(UncheckedInterruptedException.class)));
-			assertThat("The asynchronousAction method should have been called only once.",
-					objectUnderTest.timesAsynchronousActionCalled.get(), is(1));  //not two
+			assertThat(exception).hasCauseThat().isInstanceOf(UncheckedInterruptedException.class);
+			assertThat(objectUnderTest.timesAsynchronousActionCalled.get()).isEqualTo(1);  //not two
 		} catch (Exception exception) {
 			fail("A CompletionException was not thrown.");
 		}
@@ -176,25 +161,24 @@ public class AnyOrderAsyncActionServiceTest {
 		return objectToActOn;
 	}
 
-	private static class TestAnyOrderService extends AnyOrderAsyncActionService<Object, Object> {
-		public AtomicBoolean asynchronousActionCalled = new AtomicBoolean(false);
-		public AtomicInteger timesAsynchronousActionCalled = new AtomicInteger(0);
-		public AtomicReference<Object> objectThatWasActedOn = new AtomicReference<>(null);
-		public AtomicBoolean pauseAsynchronousAction = new AtomicBoolean(false);
+	private static class TestAnyOrderService extends AnyOrderActionService<Object, Object> {
+		AtomicBoolean asynchronousActionCalled = new AtomicBoolean(false);
+		AtomicInteger timesAsynchronousActionCalled = new AtomicInteger(0);
+		AtomicReference<Object> objectThatWasActedOn = new AtomicReference<>(null);
+		AtomicBoolean pauseAsynchronousAction = new AtomicBoolean(false);
 
 		private int failuresUntilSuccessTemplate = -1;
 		private ThreadLocal<Integer> failuresUntilSuccess = ThreadLocal.withInitial(() -> -1);
 		private ThreadLocal<Boolean> failWithInterruptException = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
-		public TestAnyOrderService failuresUntilSuccess(int failuresUntilSuccess) {
+		TestAnyOrderService failuresUntilSuccess(int failuresUntilSuccess) {
 			this.failuresUntilSuccessTemplate = failuresUntilSuccess;
 			this.failuresUntilSuccess = ThreadLocal.withInitial(() -> this.failuresUntilSuccessTemplate);
 			return this;
 		}
 
-		public TestAnyOrderService failWithInterruptException() {
+		void failWithInterruptException() {
 			this.failWithInterruptException = ThreadLocal.withInitial(() -> Boolean.TRUE);
-			return this;
 		}
 
 		@Override

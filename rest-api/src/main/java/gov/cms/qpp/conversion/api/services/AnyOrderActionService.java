@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.api.model.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * A service extends from this to help it asynchronously do something in a guaranteed fashion.
+ * A service extends from this to help it do something in a guaranteed fashion.
  *
  * The main point of entry is {@link #actOnItem(Object)}.  A service extending this class would call {@link #actOnItem(Object)}
  * and implement {@link #asynchronousAction(Object)} to do an action given that item.  This class handles all the error handling
@@ -27,12 +28,12 @@ import java.util.concurrent.CompletableFuture;
  * @param <T> The type of object that will be acted upon in the asynchronous action.
  * @param <S> The type of object that is returned from {@link #asynchronousAction(Object)}.
  */
-public abstract class AnyOrderAsyncActionService<T, S> {
+public abstract class AnyOrderActionService<T, S> {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
+	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
 	@Autowired
-	private TaskExecutor taskExecutor;
+	protected TaskExecutor taskExecutor;
 
 	/**
 	 * The single action that will occur given a call to {@link #actOnItem(Object)}.

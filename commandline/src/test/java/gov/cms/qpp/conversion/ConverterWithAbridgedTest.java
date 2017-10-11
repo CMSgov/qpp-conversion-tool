@@ -1,6 +1,9 @@
 package gov.cms.qpp.conversion;
 
-import static org.junit.Assert.assertTrue;
+import gov.cms.qpp.test.FileTestHelper;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -8,11 +11,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import gov.cms.qpp.test.FileTestHelper;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class ConverterWithAbridgedTest {
 
@@ -37,6 +36,7 @@ public class ConverterWithAbridgedTest {
 
 	@Test
 	public void testWithAbridgedXml() throws IOException {
+		String fileName = "valid-QRDA-III-abridged.qpp.json";
 		long start = System.currentTimeMillis();
 
 		ConversionEntry.main("--" + ConversionEntry.SKIP_VALIDATION,
@@ -44,9 +44,11 @@ public class ConverterWithAbridgedTest {
 
 		long finish = System.currentTimeMillis();
 
-		Path aJson = fileSystem.getPath("valid-QRDA-III-abridged.qpp.json");
+		Path aJson = fileSystem.getPath(fileName);
 
-		assertTrue(Files.exists(aJson));
+		assertWithMessage("File %s should exist", fileName)
+				.that(Files.exists(aJson))
+				.isTrue();
 
 		Files.delete(aJson);
 
@@ -55,6 +57,8 @@ public class ConverterWithAbridgedTest {
 
 	@Test
 	public void testMultiThreadRun_testSkipValidationToo() throws IOException {
+		String aConversion = "a.qpp.json";
+		String dConversion = "d.qpp.json";
 		long start = System.currentTimeMillis();
 
 		ConversionEntry.main("--" + ConversionEntry.SKIP_VALIDATION,
@@ -63,13 +67,15 @@ public class ConverterWithAbridgedTest {
 
 		long finish = System.currentTimeMillis();
 
-		Path aJson = fileSystem.getPath("a.qpp.json");
-		Path dJson = fileSystem.getPath("d.qpp.json");
+		Path aJson = fileSystem.getPath(aConversion);
+		Path dJson = fileSystem.getPath(dConversion);
 
 		// a.qpp.json and d.qpp.json will not exist because the a.xml and d.xml
 		// file will get validation
-		assertTrue( Files.exists(aJson) );
-		assertTrue( Files.exists(dJson) );
+		assertWithMessage("File %s should exist", aConversion)
+				.that(Files.exists(aJson)).isTrue();
+		assertWithMessage("File %s should exist", dConversion)
+				.that(Files.exists(dJson)).isTrue();
 
 		Files.delete(aJson);
 		Files.delete(dJson);

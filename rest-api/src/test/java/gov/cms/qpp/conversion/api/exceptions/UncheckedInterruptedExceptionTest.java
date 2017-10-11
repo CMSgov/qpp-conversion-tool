@@ -2,8 +2,7 @@ package gov.cms.qpp.conversion.api.exceptions;
 
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class UncheckedInterruptedExceptionTest {
 
@@ -12,6 +11,7 @@ public class UncheckedInterruptedExceptionTest {
 		InterruptedException interruptedException = new InterruptedException();
 		UncheckedInterruptedException uncheckedInterruptedException = new UncheckedInterruptedException(interruptedException);
 
-		assertThat("The cause throwable was incorrect.", uncheckedInterruptedException.getCause(), is(interruptedException));
+		assertWithMessage("The cause throwable was incorrect.")
+				.that(uncheckedInterruptedException).hasCauseThat().isEqualTo(interruptedException);
 	}
 }

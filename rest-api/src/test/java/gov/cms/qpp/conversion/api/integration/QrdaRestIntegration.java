@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.integration;
 
+import gov.cms.qpp.conversion.api.model.Constants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,7 +60,7 @@ public class QrdaRestIntegration {
 	public void testValidQpp() throws Exception {
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		mockMvc.perform(MockMvcRequestBuilders
-				.fileUpload("/").file(qrda3File).accept("application/vnd.qpp.cms.gov.v1+json"))
+				.fileUpload("/").file(qrda3File).accept(Constants.V1_API_ACCEPT))
 				.andExpect(status().is(201))
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(jsonPath("$.taxpayerIdentificationNumber").exists());

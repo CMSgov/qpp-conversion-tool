@@ -2,9 +2,7 @@ package gov.cms.qpp.conversion.model;
 
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.junit.internal.matchers.ThrowableCauseMatcher.hasCause;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class SevereRuntimeExceptionTest {
 	@Test
@@ -12,6 +10,7 @@ public class SevereRuntimeExceptionTest {
 		Throwable cause = new Throwable();
 		SevereRuntimeException exception = new SevereRuntimeException(cause);
 
-		assertThat("The exception's cause is incorrect.", exception, hasCause(is(cause)));
+		assertWithMessage("The exception's cause is incorrect.")
+				.that(exception).hasCauseThat().isSameAs(cause);
 	}
 }

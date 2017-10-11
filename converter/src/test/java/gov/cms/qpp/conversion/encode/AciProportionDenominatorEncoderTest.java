@@ -3,15 +3,12 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciProportionDenominatorEncoderTest {
 
@@ -38,7 +35,9 @@ public class AciProportionDenominatorEncoderTest {
 	public void testEncoder() {
 		runEncoder();
 
-		assertThat("denominator value must be 600", json.getInteger("denominator"), is(600));
+		assertWithMessage("denominator value must be 600")
+				.that(json.getInteger("denominator"))
+				.isEqualTo(600);
 	}
 
 	@Test
@@ -46,7 +45,9 @@ public class AciProportionDenominatorEncoderTest {
 		aciProportionDenominatorNode.getChildNodes().remove(numeratorDenominatorValueNode);
 		runEncoder();
 
-		assertNull("denominator value must be null", json.getInteger("denominator"));
+		assertWithMessage("denominator value must be null")
+				.that(json.getInteger("denominator"))
+				.isNull();
 	}
 
 	@Test
@@ -54,7 +55,9 @@ public class AciProportionDenominatorEncoderTest {
 		numeratorDenominatorValueNode.putValue("aggregateCount", null);
 		runEncoder();
 
-		assertThat("expected encoder to return null", json.toString(), is("null"));
+		assertWithMessage("expected encoder to return null")
+				.that(json.toString())
+				.isEqualTo("null");
 	}
 
 	private void runEncoder() {

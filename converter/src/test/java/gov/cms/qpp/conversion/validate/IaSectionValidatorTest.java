@@ -3,14 +3,13 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Set;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class IaSectionValidatorTest {
 	private Node iaSectionNode;
@@ -30,7 +29,8 @@ public class IaSectionValidatorTest {
 
 		Set<Detail> errors = validatorIaSection();
 
-		assertThat("Must contain no errors", errors, hasSize(0));
+		assertWithMessage("Must contain no errors")
+				.that(errors).isEmpty();
 	}
 
 	@Test
@@ -39,8 +39,9 @@ public class IaSectionValidatorTest {
 		
 		Set<Detail> errors = validatorIaSection();
 
-		assertThat("Must be missing the correct child", errors.iterator().next().getMessage(),
-				is(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR));
+		assertWithMessage("Must be missing the correct child")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR);
 	}
 
 	@Test
@@ -50,8 +51,9 @@ public class IaSectionValidatorTest {
 
 		Set<Detail> errors = validatorIaSection();
 
-		assertThat("Must contain correct children", errors.iterator().next().getMessage(),
-				is(IaSectionValidator.WRONG_CHILD_ERROR));
+		assertWithMessage("Must contain correct children")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(IaSectionValidator.WRONG_CHILD_ERROR);
 	}
 
 	@Test
@@ -60,8 +62,9 @@ public class IaSectionValidatorTest {
 
 		Set<Detail> errors = validatorIaSection();
 
-		assertThat("Must contain correct children", errors.iterator().next().getMessage(),
-				is(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR));
+		assertWithMessage("Must contain correct children")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 
 	@Test
@@ -71,8 +74,9 @@ public class IaSectionValidatorTest {
 
 		Set<Detail> errors = validatorIaSection();
 
-		assertThat("Must contain correct children", errors.iterator().next().getMessage(),
-				is(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR));
+		assertWithMessage("Must contain correct children")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 
 	private Set<Detail> validatorIaSection() {

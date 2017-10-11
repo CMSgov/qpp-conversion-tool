@@ -2,15 +2,14 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 
 /**
  * Validates the QRDA Category III Performance Rate Proportion Measure for the cpc+ program
  */
-@Validator(value = TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE, program = Program.CPC)
-public class CpcPerformanceRateValidator extends NodeValidator {
+@Validator(value = TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
+public class PerformanceRateValidator extends NodeValidator {
 
 	protected static final String INVALID_PERFORMANCE_RATE = "Must enter a valid Performance Rate value";
 	protected static final String NULL_ATTRIBUTE = "NA";

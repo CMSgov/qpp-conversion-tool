@@ -12,9 +12,6 @@ import java.util.function.Consumer;
 
 /**
  * Decoder to parse an Aggregate Count value type.
- *
- * @author Scott Fradkin
- *
  */
 @Decoder(TemplateId.ACI_AGGREGATE_COUNT)
 public class AggregateCountDecoder extends QppXmlDecoder {

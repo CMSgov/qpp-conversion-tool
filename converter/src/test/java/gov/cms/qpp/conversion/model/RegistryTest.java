@@ -13,15 +13,8 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 public class RegistryTest {
@@ -49,7 +42,6 @@ public class RegistryTest {
 		} catch (NullPointerException e) {
 			fail("Registry should always exist.");
 		}
-		assertTrue("Registry exists", true);
 	}
 
 	@Test
@@ -57,8 +49,9 @@ public class RegistryTest {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
-		assertTrue("Registry should return " + Placeholder.class.getName() + " instance.",
-				decoder instanceof Placeholder);
+
+		assertWithMessage("Registry should return %s instance.", Placeholder.class.getName())
+				.that(decoder).isInstanceOf(Placeholder.class);
 	}
 
 	@Test
@@ -67,8 +60,9 @@ public class RegistryTest {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
-		assertTrue("Registry should return " + AnotherPlaceholder.class.getName() + " instance.",
-				decoder instanceof AnotherPlaceholder);
+
+		assertWithMessage("Registry should return %s instance.", AnotherPlaceholder.class.getName())
+				.that(decoder).isInstanceOf(AnotherPlaceholder.class);
 	}
 
 	@Test
@@ -76,8 +70,9 @@ public class RegistryTest {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
-		assertTrue("Registry should return " + Placeholder.class.getName() + " instance.",
-				decoders.iterator().next() instanceof Placeholder);
+
+		assertWithMessage("Registry should return %s instance.", Placeholder.class.getName())
+				.that(decoders.iterator().next()).isInstanceOf(Placeholder.class);
 	}
 
 	@Test
@@ -86,9 +81,9 @@ public class RegistryTest {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
 		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
-		Iterator<InputDecoder> iterator = decoders.iterator();
 
-		assertThat("Should return two decoders", decoders.size(), is(2));
+		assertWithMessage("Should return two decoders")
+				.that(decoders).hasSize(2);
 	}
 
 	@Test
@@ -99,10 +94,10 @@ public class RegistryTest {
 		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
 		Iterator<InputDecoder> iterator = decoders.iterator();
 
-		assertTrue("First Registry entry should be a " + Placeholder.class.getName() + " instance.",
-				iterator.next() instanceof Placeholder);
-		assertTrue("Second Registry entry should be a " + AnotherPlaceholder.class.getName() + " instance.",
-				iterator.next() instanceof AnotherPlaceholder);
+		assertWithMessage("First Registry entry should be a %s instance.", Placeholder.class.getName())
+				.that(iterator.next()).isInstanceOf(Placeholder.class);
+		assertWithMessage("Second Registry entry should be a %s instance.", AnotherPlaceholder.class.getName())
+				.that(iterator.next()).isInstanceOf(AnotherPlaceholder.class);
 	}
 
 	// This test must reside here in order to call the protected methods on the
@@ -110,44 +105,50 @@ public class RegistryTest {
 	@Test
 	public void testRegistry_placeAndFetch() throws Exception {
 		Set<ComponentKey> componentKeys = registry.getComponentKeys(AggregateCountDecoder.class);
-		assertThat(componentKeys, hasSize(1));
+
+		assertThat(componentKeys).hasSize(1);
 		for (ComponentKey componentKey : componentKeys) {
 			InputDecoder decoder = registry.get(componentKey.getTemplate());
 
-			assertNotNull("A handler is expected", decoder);
-			assertEquals("Handler should be an instance of the handler for the given XPATH", AggregateCountDecoder.class,
-					decoder.getClass());
+			assertWithMessage("A handler is expected")
+					.that(decoder).isNotNull();
+			assertWithMessage("Handler should be an instance of the handler for the given XPATH")
+					.that(decoder).isInstanceOf(AggregateCountDecoder.class);
 		}
 	}
 
 	@Test
 	public void testRegistry_getTemplateIds() throws Exception {
 		Set<ComponentKey> componentKeys = registry.getComponentKeys(AggregateCountDecoder.class);
-		assertThat("A componentKey is expected", componentKeys, hasSize(1));
+		assertWithMessage("A componentKey is expected")
+				.that(componentKeys).hasSize(1);
 		for (ComponentKey componentKey : componentKeys) {
-			assertEquals("The templateId should be",
-					TemplateId.ACI_AGGREGATE_COUNT, componentKey.getTemplate());
+			assertWithMessage("The templateId should be")
+					.that(componentKey.getTemplate()).isSameAs(TemplateId.ACI_AGGREGATE_COUNT);
 		}
 
 		componentKeys = context.getRegistry(Encoder.class).getComponentKeys(AggregateCountEncoder.class);
-		assertThat("A componentKey is expected", componentKeys, hasSize(1));
+		assertWithMessage("A componentKey is expected")
+				.that(componentKeys).hasSize(1);
 		for (ComponentKey componentKey : componentKeys) {
-			assertEquals("The templateId should be",
-					TemplateId.ACI_AGGREGATE_COUNT, componentKey.getTemplate());
+			assertWithMessage("The templateId should be")
+					.that(componentKey.getTemplate()).isSameAs(TemplateId.ACI_AGGREGATE_COUNT);
 		}
 	}
 
 	@Test
 	public void testRegistry_getTemplateIds_NullReturn() throws Exception {
 		Set<ComponentKey> componentKeys = context.getRegistry(SuppressWarnings.class).getComponentKeys(Placeholder.class);
-		assertThat("A componentKey is not expected", componentKeys, empty());
+		assertWithMessage("A componentKey is not expected")
+				.that(componentKeys).isEmpty();
 	}
 
 	@Test
 	public void testRegistryGetHandlerThatFailsConstruction() throws Exception {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), PrivateConstructor.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
-		assertThat("Registry with a private constructor should be constructable", decoder, is(not(nullValue())));
+		assertWithMessage("Registry with a private constructor should be constructable")
+				.that(decoder).isNotNull();
 	}
 
 	@Test
@@ -155,12 +156,14 @@ public class RegistryTest {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), AnotherPlaceholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
-		assertTrue("Registry should have overwritten id with the second one.", decoder instanceof AnotherPlaceholder);
+		assertWithMessage("Registry should have overwritten id with the second one.")
+				.that(decoder).isInstanceOf(AnotherPlaceholder.class);
 	}
 
 	@Test
 	public void testSize() {
-		assertTrue("Registry does not have contents", registry.size() > 0);
+		assertWithMessage("Registry does not have contents")
+				.that(registry.size()).isGreaterThan(0);
 	}
 }
 

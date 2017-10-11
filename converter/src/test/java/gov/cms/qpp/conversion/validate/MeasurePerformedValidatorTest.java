@@ -3,13 +3,12 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import org.hamcrest.core.Is;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Test;
 
 import java.util.Set;
 
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 /**
  * Test class for MeasurePerformedValidator
@@ -29,7 +28,8 @@ public class MeasurePerformedValidatorTest {
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
 		Set<Detail> errors = validator.validateSingleNode(measurePerformedNode);
-		assertThat("no errors should be present", errors, empty());
+		assertWithMessage("no errors should be present")
+				.that(errors).isEmpty();
 	}
 
 	@Test
@@ -39,7 +39,8 @@ public class MeasurePerformedValidatorTest {
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
 		Set<Detail> errors = validator.validateSingleNode(measurePerformedNode);
-		assertThat("no errors should be present", errors, empty());
+		assertWithMessage("no errors should be present")
+				.that(errors).isEmpty();
 	}
 
 	@Test
@@ -49,6 +50,8 @@ public class MeasurePerformedValidatorTest {
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
 		Set<Detail> errors = validator.validateSingleNode(measurePerformedNode);
-		assertThat("no errors should be present", errors.size(), Is.is(1));
+		assertWithMessage("Should result in a single type error")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(IaMeasureValidator.TYPE_ERROR);
 	}
 }

@@ -5,14 +5,12 @@ import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class MultipleTinsEncoderTest {
 	private Node npiTinNodeOne;
@@ -95,20 +93,24 @@ public class MultipleTinsEncoderTest {
 	public void testFirstTinNpiCombinationConversion() {
 		LinkedHashMap<String, Object> firstMeasurementMap = getIndexedClinicalDocumentFromWrapper(0);
 
-		assertThat("Must contain the correct NPI",
-			firstMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is(NPI1));
-		assertThat("Must contain the correct TIN",
-			firstMeasurementMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is(TIN1));
+		assertWithMessage("Must contain the correct NPI")
+				.that(firstMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.isEqualTo(NPI1);
+		assertWithMessage("Must contain the correct TIN")
+				.that(firstMeasurementMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.isEqualTo(TIN1);
 	}
 
 	@Test
 	public void testSecondTinNpiCombinationConversion() {
 		LinkedHashMap<String, Object> secondMeasurementMap = getIndexedClinicalDocumentFromWrapper(1);
 
-		assertThat("Must contain the correct NPI",
-				secondMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is(NPI2));
-		assertThat("Must contain the correct TIN",
-			secondMeasurementMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is(TIN2));
+		assertWithMessage("Must contain the correct NPI")
+				.that(secondMeasurementMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.isEqualTo(NPI2);
+		assertWithMessage("Must contain the correct TIN")
+				.that(secondMeasurementMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.isEqualTo(TIN2);
 	}
 
 	@SuppressWarnings("unchecked")

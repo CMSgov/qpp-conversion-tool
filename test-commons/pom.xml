@@ -10,16 +10,22 @@
 		<relativePath>../</relativePath>
 	</parent>
 
-	<artifactId>extension-test-commons</artifactId>
-	<name>Extension Testing Helper</name>
+	<artifactId>test-commons</artifactId>
+	<name>Test Commons</name>
 	<packaging>jar</packaging>
-	<description>Utilities to help with testing extensions</description>
+	<description>Utilities to help with testing the application across modules</description>
 
 	<properties>
 		<requiredCodeCoverage>0.00</requiredCodeCoverage>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>gov.cms.qpp.conversion</groupId>
+			<artifactId>converter</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.jimfs</groupId>
 			<artifactId>jimfs</artifactId>

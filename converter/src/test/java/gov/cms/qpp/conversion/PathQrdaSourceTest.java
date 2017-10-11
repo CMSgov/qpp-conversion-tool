@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -9,8 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.isEmptyString;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,13 +21,15 @@ public class PathQrdaSourceTest extends QrdaSourceTestSuite {
 	@Test
 	public void testInputStream() throws IOException {
 		String content = IOUtils.toString(source.toInputStream(), StandardCharsets.UTF_8);
-		Assert.assertEquals("hello, world", content);
+		assertWithMessage("stream content was not as expected")
+				.that(content).isEqualTo("hello, world");
 	}
 
 	@Test
 	public void testNullPath() {
 		PathQrdaSource testSource = new PathQrdaSource(null);
-		assertThat(testSource.getName(), isEmptyString());
+		assertWithMessage("name should be empty")
+				.that(testSource.getName()).isEmpty();
 	}
 
 	@Test
@@ -37,7 +37,8 @@ public class PathQrdaSourceTest extends QrdaSourceTestSuite {
 		Path mockPath = mock(Path.class);
 		when(mockPath.getFileName()).thenReturn(null);
 		PathQrdaSource testSource = new PathQrdaSource(mockPath);
-		assertThat(testSource.getName(), isEmptyString());
+		assertWithMessage("name should be empty")
+				.that(testSource.getName()).isEmpty();
 	}
 
 }
