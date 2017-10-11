@@ -18,8 +18,6 @@ import java.util.List;
  * Once the decoders have been fully developed, the need for this class goes
  * away.
  *
- * @author David Uselmann
- *
  */
 public class DefaultDecoder extends QppXmlDecoder {
 

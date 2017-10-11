@@ -10,9 +10,9 @@ import gov.cms.qpp.conversion.model.Validator;
 @Validator(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 public class AciMeasurePerformedRnRValidator extends NodeValidator {
 
-	private static final String MEASURE_ID_IS_REQUIRED =
+	static final String MEASURE_ID_IS_REQUIRED =
 			"An ACI Measure Performed RnR's requires a single Measure ID";
-	private static final String MEASURE_PERFORMED_IS_REQUIRED =
+	static final String MEASURE_PERFORMED_IS_REQUIRED =
 			"The ACI Measure Performed RnR's Measure Performed is required";
 	private static final String MEASURE_PERFORMED_CAN_ONLY_BE_PRESENT_ONCE =
 			"The ACI Measure Performed RnR's Measure Performed can only be present once";

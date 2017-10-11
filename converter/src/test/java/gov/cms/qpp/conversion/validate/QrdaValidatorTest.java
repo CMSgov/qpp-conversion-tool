@@ -15,15 +15,9 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(QrdaValidator.class)
@@ -32,7 +26,6 @@ public class QrdaValidatorTest {
 
 	private static List<Node> nodesPassedIntoValidateSingleNode;
 
-	private Context context;
 	private QrdaValidator objectUnderTest;
 
 	private static final TemplateId TEST_REQUIRED_TEMPLATE_ID = TemplateId.ACI_NUMERATOR_DENOMINATOR;
@@ -45,7 +38,7 @@ public class QrdaValidatorTest {
 	public void beforeEachTest() throws Exception {
 		nodesPassedIntoValidateSingleNode = new ArrayList<>();
 
-		context = new Context();
+		Context context = new Context();
 		objectUnderTest = TestHelper.mockValidator(context, RequiredTestValidator.class, new ComponentKey(TEST_REQUIRED_TEMPLATE_ID, Program.ALL), true);
 		objectUnderTest = TestHelper.mockValidator(context, OptionalTestValidator.class, new ComponentKey(TEST_OPTIONAL_TEMPLATE_ID, Program.ALL), false, objectUnderTest);
 	}
@@ -64,8 +57,8 @@ public class QrdaValidatorTest {
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 1, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
-		assertThat("The validation errors is missing items from the expected templateId",
-				details, hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE));
+		assertWithMessage("The validation errors is missing items from the expected templateId")
+				.that(details).contains(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 	}
 
 	@Test
@@ -89,13 +82,13 @@ public class QrdaValidatorTest {
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 2, TEST_REQUIRED_TEMPLATE_ID, testKey, testValue);
-		assertThat("The validation errors is missing the specific number of single node errors",
-		           Collections.frequency(details, TEST_VALIDATION_ERROR_FOR_SINGLE_NODE), is(2));
+		assertWithMessage("The validation errors is missing the specific number of single node errors")
+				.that(details)
+				.containsExactly(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE, TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 	}
 
 	@Test
 	public void testNoNodes() {
-
 		//set-up
 		Node testRootNode = new Node();
 
@@ -104,9 +97,8 @@ public class QrdaValidatorTest {
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 0, null, null, null);
-		assertThat("The validation errors (incorrectly) has a single node error and an error from the  and optional templateId",
-				details, not(hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE)));
-
+		assertWithMessage("The validation errors (incorrectly) has a single node error and an error from the  and optional templateId")
+				.that(details).doesNotContain(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 	}
 
 	@Test
@@ -124,15 +116,17 @@ public class QrdaValidatorTest {
 
 		//assert
 		assertNodeList(nodesPassedIntoValidateSingleNode, 0, null, null, null);
-		assertThat("The validation errors (incorrectly) has a single node error and an error from the  and optional templateId",
-				details, not(hasItems(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE)));
+		assertWithMessage("The validation errors (incorrectly) has a single node error and an error from the  and optional templateId")
+				.that(details).doesNotContain(TEST_VALIDATION_ERROR_FOR_SINGLE_NODE);
 	}
 
 	private void assertNodeList(List<Node> nodeList, int expectedSize, TemplateId expectedTemplateId,
 			String keyToQuery, String expectedValue) {
 
-		assertThat("The list of nodes must not be null", nodeList, is(not(nullValue())));
-		assertThat("The list of nodes must have a size of " + expectedSize, nodeList, hasSize(expectedSize));
+		assertWithMessage("The list of nodes must not be null")
+				.that(nodeList).isNotNull();
+		assertWithMessage("The list of nodes must have a size of %s", expectedSize)
+				.that(nodeList).hasSize(expectedSize);
 
 		for (Node node : nodeList) {
 			assertNode(node, expectedTemplateId, keyToQuery, expectedValue);
@@ -142,10 +136,12 @@ public class QrdaValidatorTest {
 	private void assertNode(Node node, TemplateId expectedTemplateId, String keyToQuery,
 			String expectedValue) {
 
-		assertThat("The node must not be null",
-		           node, is(not(nullValue())));
-		assertThat("The node's Id is incorrect", node.getType(), is(expectedTemplateId));
-		assertThat("The node's key/value is incorrect", node.getValue(keyToQuery), is(expectedValue));
+		assertWithMessage("The node must not be null")
+				.that(node).isNotNull();
+		assertWithMessage("The node's Id is incorrect")
+				.that(node.getType()).isSameAs(expectedTemplateId);
+		assertWithMessage("The node's key/value is incorrect")
+				.that(node.getValue(keyToQuery)).isSameAs(expectedValue);
 	}
 
 	public static class RequiredTestValidator extends NodeValidator {

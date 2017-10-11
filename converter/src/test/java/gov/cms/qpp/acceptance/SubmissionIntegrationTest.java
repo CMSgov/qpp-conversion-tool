@@ -25,9 +25,9 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assume.assumeTrue;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 public class SubmissionIntegrationTest {
 	private static HttpClient client;
@@ -71,7 +71,7 @@ public class SubmissionIntegrationTest {
 		assumeTrue("Submissions api is down", endpointIsUp(httpResponse));
 		cleanUp(httpResponse);
 
-		assertThat("QPP submission should succeed", getStatus(httpResponse), is(201));
+		assertThat(getStatus(httpResponse)).isEqualTo(201);
 	}
 
 	@Test
@@ -82,7 +82,9 @@ public class SubmissionIntegrationTest {
 		HttpResponse httpResponse = servicePost(qpp);
 		assumeTrue("Submissions api is down", endpointIsUp(httpResponse));
 
-		assertThat("QPP submission should succeed", getStatus(httpResponse), is(422));
+		assertWithMessage("QPP submission should be unprocessable")
+				.that(getStatus(httpResponse))
+				.isEqualTo(422);
 	}
 
 	private JsonWrapper loadQpp() {

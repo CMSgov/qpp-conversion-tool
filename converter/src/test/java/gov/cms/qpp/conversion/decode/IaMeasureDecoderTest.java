@@ -5,13 +5,11 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 /**
  * Test class for the IaMeasureDecoder
@@ -33,11 +31,15 @@ public class IaMeasureDecoderTest {
 		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED);
 		String value = measurePerformed.getValue("measurePerformed");
 
-		assertThat("Should contain the correct value", iaMeasure.getValue("measureId"),
-				is("IA_EPA_1"));
-		assertThat("Should contain the correct template id", measurePerformed.getType(),
-				is(TemplateId.MEASURE_PERFORMED));
-		assertThat("The ACI_MEASURE_PERFORMED value should be \"Y\"" , value, is("Y"));
+		assertWithMessage("Should contain the correct value")
+				.that(iaMeasure.getValue("measureId"))
+				.isEqualTo("IA_EPA_1");
+		assertWithMessage("Should contain the correct template id")
+				.that(measurePerformed.getType())
+				.isEquivalentAccordingToCompareTo(TemplateId.MEASURE_PERFORMED);
+		assertWithMessage("The ACI_MEASURE_PERFORMED value should be \"Y\"")
+				.that(value)
+				.isEqualTo("Y");
 	}
 
 	@Test
@@ -48,9 +50,12 @@ public class IaMeasureDecoderTest {
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
 
-		assertThat("IAMeasure node should be IA_MEASURE ", iaMeasure.getType(),
-				is(TemplateId.IA_MEASURE));
-		assertThat("There should not be any child node", iaMeasure.getChildNodes().size(), is(0));
+		assertWithMessage("IAMeasure node should be IA_MEASURE ")
+				.that(iaMeasure.getType())
+				.isEquivalentAccordingToCompareTo(TemplateId.IA_MEASURE);
+		assertWithMessage("There should not be any child node")
+				.that(iaMeasure.getChildNodes())
+				.hasSize(0);
 	}
 
 	@Test
@@ -63,11 +68,15 @@ public class IaMeasureDecoderTest {
 		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED);
 		String value = measurePerformed.getValue("measurePerformed");
 
-		assertThat("Should contain the correct value", iaMeasure.getValue("measureId"),
-				is("IA_EPA_1"));
-		assertThat("Should contain the correct template id", measurePerformed.getType(),
-				is(TemplateId.MEASURE_PERFORMED));
-		assertThat("The MEASURE_PERFORMED value should be \"Y\"" , value, is("Y"));
+		assertWithMessage("Should contain the correct value")
+				.that(iaMeasure.getValue("measureId"))
+				.isEqualTo("IA_EPA_1");
+		assertWithMessage("Should contain the correct template id")
+				.that(measurePerformed.getType())
+				.isEquivalentAccordingToCompareTo(TemplateId.MEASURE_PERFORMED);
+		assertWithMessage("The MEASURE_PERFORMED value should be \"Y\"")
+				.that(value)
+				.isEqualTo("Y");
 	}
 
 	private String addExtraXml(String source) {

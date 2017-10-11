@@ -12,8 +12,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 public class AggregateCountFailureTest {
@@ -37,12 +36,13 @@ public class AggregateCountFailureTest {
 		}
 
 		//assert
-		assertThat("The error file flags a aggregate count type error",
-				errorContent,
-				containsString(String.format(CommonNumeratorDenominatorValidator.NOT_AN_INTEGER_VALUE, "Numerator")));
-		assertThat("The error file flags a aggregate count value error",
-				errorContent,
-				containsString(String.format(CommonNumeratorDenominatorValidator.INVALID_VALUE, "Denominator")));
+		assertWithMessage("The error file flags a aggregate count type error")
+				.that(errorContent)
+				.contains(String.format(CommonNumeratorDenominatorValidator.NOT_AN_INTEGER_VALUE, "Numerator"));
+
+		assertWithMessage("The error file flags a aggregate count value error")
+				.that(errorContent)
+				.contains(String.format(CommonNumeratorDenominatorValidator.INVALID_VALUE, "Denominator"));
 	}
 
 }

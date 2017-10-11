@@ -4,6 +4,11 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.nio.charset.Charset;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -12,15 +17,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.reflections.util.ClasspathHelper;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.nio.charset.Charset;
-
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 public class AutoDetectQrdaTest {
 
@@ -55,7 +52,8 @@ public class AutoDetectQrdaTest {
 		XmlInputDecoder.decodeXml(new Context(), XmlUtils.stringToDom(xmlFragment));
 
 		//assert
-		assertThat("Incorrect error message", baos1.toString(), allOf(containsString(EXPECTED_ERROR_1), containsString(EXPECTED_ERROR_2)));
+		assertThat(baos1.toString()).contains(EXPECTED_ERROR_1);
+		assertThat(baos1.toString()).contains(EXPECTED_ERROR_2);
 	}
 
 	@Test
@@ -71,7 +69,8 @@ public class AutoDetectQrdaTest {
 		XmlInputDecoder.decodeXml(new Context(), XmlUtils.stringToDom(xmlFragment));
 
 		//assert
-		assertThat("Incorrect error message", baos2.toString(), allOf(containsString(EXPECTED_ERROR_1), containsString(EXPECTED_ERROR_2)));
+		assertThat(baos2.toString()).contains(EXPECTED_ERROR_1);
+		assertThat(baos2.toString()).contains(EXPECTED_ERROR_2);
 	}
 
 	private InputStream getStream(String path) {
