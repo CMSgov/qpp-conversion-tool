@@ -65,7 +65,7 @@ public class QrdaServiceImplTest {
 
 	@Test
 	public void testConvertQrda3ToQppSuccess() {
-		JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_SUCCESS_QRDA_SOURCE);
+		JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_SUCCESS_QRDA_SOURCE).getEncoded();
 		assertWithMessage("The JSON content is incorrect.")
 				.that(qpp.getString(KEY)).isSameAs(MOCK_SUCCESS_QPP_STRING);
 	}
@@ -73,7 +73,7 @@ public class QrdaServiceImplTest {
 	@Test
 	public void testConvertQrda3ToQppError() {
 		try {
-			JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_ERROR_QRDA_SOURCE);
+			JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_ERROR_QRDA_SOURCE).getEncoded();
 			fail("An exception should have occurred. Instead was: " + qpp);
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();

@@ -3,6 +3,8 @@ package gov.cms.qpp.conversion.api.services;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.QrdaSource;
 import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.TransformResult;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,10 +23,10 @@ public class QrdaServiceImpl implements QrdaService {
 	 * @return Results of the conversion
 	 */
 	@Override
-	public Converter convertQrda3ToQpp(QrdaSource source) {
+	public TransformResult convertQrda3ToQpp(QrdaSource source) {
 		Converter converter = new Converter(source);
 		API_LOG.info("Performing QRDA3 to QPP conversion");
-		converter.transform();
-		return converter;
+		JsonWrapper wrapper = converter.transform();
+		return new TransformResult(converter.getDecoded(), wrapper);
 	}
 }

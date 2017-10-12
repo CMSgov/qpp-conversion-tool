@@ -1,6 +1,8 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.QrdaSource;
+import gov.cms.qpp.conversion.api.model.TransformResult;
+import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -12,13 +14,16 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
@@ -40,14 +45,18 @@ public class QrdaControllerV1Test {
 	@Mock
 	private ValidationService validationService;
 
+	@Mock
+	private AuditService auditService;
+
 	private static MultipartFile multipartFile;
 
-	private static JsonWrapper qppResult;
+	private static TransformResult result;
 
 	@BeforeClass
 	public static void initialization() {
-		qppResult = new JsonWrapper();
-		qppResult.putString("key", "Good Qpp");
+		JsonWrapper wrapper = new JsonWrapper();
+		wrapper.putString("key", "Good Qpp");
+		result = new TransformResult(null, wrapper);
 	}
 
 	@Before
@@ -57,7 +66,9 @@ public class QrdaControllerV1Test {
 
 	@Test
 	public void uploadQrdaFile() throws IOException {
-		when(qrdaService.convertQrda3ToQpp(any(QrdaSource.class))).thenReturn(qppResult);
+		when(qrdaService.convertQrda3ToQpp(any(QrdaSource.class))).thenReturn(result);
+		when(auditService.success(any(InputStream.class), any(TransformResult.class)))
+				.then(invocation -> null);
 
 		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
 
@@ -65,13 +76,15 @@ public class QrdaControllerV1Test {
 
 		assertWithMessage("The QPP response body is incorrect.")
 				.that(qppResponse.getBody())
-				.isEqualTo(qppResult.toString());
+				.isEqualTo(result.getEncoded().toString());
 	}
 
 	@Test
 	public void testFailedQppValidation() {
 		String transformationErrorMessage = "Test failed QPP validation";
 
+		when(qrdaService.convertQrda3ToQpp(any(QrdaSource.class)))
+				.thenReturn(new TransformResult(null, null));
 		Mockito.doThrow(new TransformException(transformationErrorMessage, null, null))
 			.when(validationService).validateQpp(isNull());
 

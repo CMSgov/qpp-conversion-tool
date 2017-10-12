@@ -1,9 +1,11 @@
 package gov.cms.qpp.conversion.api.services;
 
 
-import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
+import gov.cms.qpp.conversion.api.helper.MetadataHelper;
 import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.model.TransformResult;
+import gov.cms.qpp.conversion.model.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +23,16 @@ public class AuditServiceImpl implements AuditService {
 	private DbService dbService;
 
 	@Override
-	public CompletableFuture<Void> success(InputStream fileContent, Converter converter) {
-		Metadata metadata = new Metadata();
+	public CompletableFuture<Void> success(InputStream fileContent, TransformResult result) {
+		Metadata metadata = initMetadata(result.getDecoded());
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(fileContent).thenAccept(metadata::setSubmissionLocator),
-				storeContent(converter.getEncoded().contentStream()).thenAccept(metadata::setQppLocator));
+				storeContent(result.getEncoded().contentStream()).thenAccept(metadata::setQppLocator));
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
+	}
+
+	Metadata initMetadata(Node decoded) {
+		return MetadataHelper.generateMetadata(decoded);
 	}
 
 	@Override

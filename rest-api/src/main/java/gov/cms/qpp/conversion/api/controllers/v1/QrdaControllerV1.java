@@ -1,8 +1,8 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamQrdaSource;
 import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.TransformResult;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
@@ -50,14 +50,15 @@ public class QrdaControllerV1 {
 	@RequestMapping(method = RequestMethod.POST, headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
 		API_LOG.info("Request received " + file.getName());
-		Converter converter = qrdaService.convertQrda3ToQpp(new InputStreamQrdaSource(file.getName(), file.getInputStream()));
+		TransformResult result = qrdaService.convertQrda3ToQpp(
+				new InputStreamQrdaSource(file.getName(), file.getInputStream()));
 
-		validationService.validateQpp(converter.getEncoded());
+		validationService.validateQpp(result.getEncoded());
 		API_LOG.info("Conversion success " + file.getName());
-		auditService.success(file.getInputStream(), converter);
+		auditService.success(file.getInputStream(), result);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
-		return new ResponseEntity<>(converter.getEncoded().toString(), httpHeaders, HttpStatus.CREATED);
+		return new ResponseEntity<>(result.getEncoded().toString(), httpHeaders, HttpStatus.CREATED);
 	}
 }
