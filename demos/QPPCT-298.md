@@ -10,3 +10,4 @@
 - Review. https://jira.cms.gov/browse/QPPCT-298
 - Run through conversion of valid file
 - Demonstrate failures by addition and omission
+- Demonstrate the effect of program scoping

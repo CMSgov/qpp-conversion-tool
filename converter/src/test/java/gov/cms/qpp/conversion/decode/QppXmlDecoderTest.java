@@ -75,17 +75,12 @@ public class QppXmlDecoderTest {
 		QppXmlDecoder objectUnderTest = new QppXmlDecoder(new Context());
 		Element childElement = new Element("childElement");
 		Node childNode = new Node();
-		String methodName = "testChildDecodeResult";
-		Method testChildDecodeResult = null;
-		Method[] methods = QppXmlDecoder.class.getDeclaredMethods();
-		for (Method method : methods) {
-			if (method.getName().equals(methodName)) {
-				testChildDecodeResult = method;
-				break;
-			}
-		}
 
+		String methodName = "testChildDecodeResult";
+		Method testChildDecodeResult =
+				QppXmlDecoder.class.getDeclaredMethod(methodName, DecodeResult.class, Element.class, Node.class);
 		testChildDecodeResult.setAccessible(true);
+
 		DecodeResult returnValue = (DecodeResult) testChildDecodeResult.invoke(objectUnderTest, code, childElement,
 				childNode);
 		return returnValue;
