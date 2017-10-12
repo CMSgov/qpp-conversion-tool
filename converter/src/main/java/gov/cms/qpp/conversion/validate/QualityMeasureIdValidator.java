@@ -260,32 +260,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		//Default implementation
 	}
 
-	/**
-	 * Method for Performance Rate Uuid validations
-	 *
-	 * @param check a property existence check
-	 * @param keys that identify measures
-	 * @return a callback / consumer that will perform a measure specific validation against a given
-	 * node.
-	 */
-	Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String... keys) {
-		return node -> {
-			if (check.get() != null) {
-				Predicate<Node> childUuidFinder =
-						makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
-
-				Node existingUuidChild = node
-						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-						.filter(childUuidFinder)
-						.findFirst()
-						.orElse(null);
-
-				if (existingUuidChild == null) {
-					addMeasureConfigurationValidationMessage(check, keys, node);
-				}
-			}
-		};
-	}
+	abstract Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String... keys);
 
 	/**
 	 * Adds a validation error message for a specified measure configuration
@@ -294,7 +269,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param keys Identifiers for the current measures child
 	 * @param node Contains the current child nodes
 	 */
-	private void addMeasureConfigurationValidationMessage(Supplier<Object> check, String[] keys, Node node) {
+	protected void addMeasureConfigurationValidationMessage(Supplier<Object> check, String[] keys, Node node) {
 		MeasureConfig config =
 				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 		String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(),
@@ -326,7 +301,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param name Supplies a node field validate on
 	 * @return predicate seeking a matching uuid
 	 */
-	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, String message, String name) {
+	protected Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, String message, String name) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
 					.incompleteValidation()

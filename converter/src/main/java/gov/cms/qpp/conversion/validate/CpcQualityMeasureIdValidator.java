@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
@@ -67,6 +68,33 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				makeValidator(subPopulation, subPopulation::getInitialPopulationUuid,
 						SubPopulations.IPOP, SubPopulations.IPP),
 				makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
+	}
+
+	/**
+	 * Method for Performance Rate Uuid validations
+	 *
+	 * @param check a property existence check
+	 * @param keys that identify measures
+	 * @return a callback / consumer that will perform a measure specific validation against a given
+	 * node.
+	 */
+	Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String... keys) {
+		return node -> {
+			if (check.get() != null) {
+				Predicate<Node> childUuidFinder =
+						makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
+
+				Node existingUuidChild = node
+						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
+						.filter(childUuidFinder)
+						.findFirst()
+						.orElse(null);
+
+				if (existingUuidChild == null) {
+					addMeasureConfigurationValidationMessage(check, keys, node);
+				}
+			}
+		};
 	}
 
 	/**
