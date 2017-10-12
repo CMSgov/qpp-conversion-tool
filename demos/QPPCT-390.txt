@@ -1,0 +1,10 @@
+Jeff Benton Sprint 27 Review Presentation
+QPPCT - 390
+1. Open the Converstion Tool
+2. Display the XML File
+3. Send through the QRDA III CPC+ file with the altered measure CMS 74.
+4. Display the JSON error File
+5. repeat Steps 2 through 4 for CMS measures 137, 153, and 155.
+6. Show the JSON files in the JIRA ticket for others to view.
+
+Filenames for Submitting: valid-QRDA-III-latest_CPCPLUS_CMS74_ExtraStratifier.xml, valid-QRDA-III-latest_CPCPLUS_CMS137.xml, valid-QRDA-III-latest_CPCPLUS_CMS153_ExtraNumer.xml, valid-QRDA-III-latest_CPCPLUS_CMS155_AllExtraSections.xml
