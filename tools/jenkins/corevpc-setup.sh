@@ -34,9 +34,9 @@ fi
 pyenv activate corevpc
 
 # corevpc should have been checked out by the jenkins script
-cd $GRANDPARENT/corevpc/requirements
+pushd $GRANDPARENT/corevpc/requirements
 echo "Install python requirements"
 pip install -q -r common.txt -r dev.txt -r test.txt
-cd $GRANDPARENT/corevpc
+pushd $GRANDPARENT/corevpc
 echo "Set up CoreVPC python"
 python setup.py -q develop

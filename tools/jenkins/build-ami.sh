@@ -16,5 +16,5 @@ eval "$(pyenv virtualenv-init -)"
 
 pyenv activate corevpc
 
-cd $GRANDPARENT
+pushd $GRANDPARENT
 build-ami $VPC_PATH
