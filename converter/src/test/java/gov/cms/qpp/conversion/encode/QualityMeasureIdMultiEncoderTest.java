@@ -130,6 +130,7 @@ public class QualityMeasureIdMultiEncoderTest {
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
 		LinkedHashMap<String, Object> childValues = getChildValues();
+		@SuppressWarnings("unchecked")
 		List<LinkedHashMap<String, ?>> subPopulations =
 				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
 		assertFirstSubPopulation(subPopulations);
@@ -146,12 +147,14 @@ public class QualityMeasureIdMultiEncoderTest {
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
 		LinkedHashMap<String, Object> childValues = getChildValues();
+		@SuppressWarnings("unchecked")
 		List<LinkedHashMap<String, ?>> subPopulations =
 				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
 
 		assertWithMessage("Must have zero sub populations encoded").that(subPopulations).isEmpty();
 	}
 
+	@SuppressWarnings("unchecked")
 	private LinkedHashMap<String, Object> getChildValues() {
 		return (LinkedHashMap<String, Object>)((LinkedHashMap<String, Object>) wrapper.getObject()).get("value");
 	}

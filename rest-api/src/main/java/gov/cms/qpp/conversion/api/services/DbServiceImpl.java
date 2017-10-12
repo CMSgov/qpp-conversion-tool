@@ -35,6 +35,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @param meta The metadata to write.
 	 * @return A {@link CompletableFuture} that will hold the written Metadata.
 	 */
+	@Override
 	public CompletableFuture<Metadata> write(Metadata meta) {
 
 		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);

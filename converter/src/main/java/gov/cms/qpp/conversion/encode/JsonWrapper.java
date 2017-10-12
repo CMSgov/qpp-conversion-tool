@@ -494,6 +494,7 @@ public class JsonWrapper {
 	 *
 	 * @return Stream of wrapped object or list.
 	 */
+	@SuppressWarnings("unchecked")
 	public Stream<JsonWrapper> stream() {
 		Stream<JsonWrapper> returnValue = Stream.of(this);
 		if (list != null) {
@@ -501,7 +502,7 @@ public class JsonWrapper {
 				.filter(entry -> entry instanceof Map)
 				.map(entry -> {
 					JsonWrapper wrapper = new JsonWrapper();
-					wrapper.object = (Map) entry;
+					wrapper.object = (Map<String, Object>) entry;
 					return wrapper;
 				});
 		}
