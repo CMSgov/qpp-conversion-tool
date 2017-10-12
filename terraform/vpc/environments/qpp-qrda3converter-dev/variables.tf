@@ -3,7 +3,7 @@ variable "app_ami_git_hash" {
 }
 
 variable "app_count" {
-  default = "2"
+  default = "3"
 }
 
 variable "aws_region" {

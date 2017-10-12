@@ -29,7 +29,7 @@ def deploy(cfg) {
     Required keys for the cfg map:
       credentials_id: str, jenkins credential id for github access
       vpc_config_path: str, relative path to the corevpc config file
-    Optional cfg map keys: 
+    Optional cfg map keys:
       corevpc_branch: str, your deploy branch for corevpc
       aws_account: str, see corevpc:tools/build-amis.sh
       build_ami: bool, whether to build an ami (default true)
@@ -46,10 +46,21 @@ def deploy(cfg) {
     def msg = "${cfg.vpc_name} begin deploy ${gitCommit} with corevpc#${cfg.corevpc_branch}. Running with terraform_apply=${terraform_apply}."
     notify_slack(msg)
     // clone down corevpc
-    cloneRepo(cfg.corevpc_branch, 'git@github.com:CMSgov/corevpc.git', 'corevpc_checkout', cfg.credentials_id)
+    cloneRepo(cfg.corevpc_branch, 'git@github.com:CMSgov/corevpc.git', 'corevpc', cfg.credentials_id)
     sh "./tools/jenkins/corevpc-setup.sh"
     withEnv(['SKIP_MFA=1', 'SKIP_AWS_PROFILE=1', 'AWS_ACCOUNT=' + cfg.aws_account]) {
       sh "./tools/jenkins/build-ami.sh ./vpcs/${cfg.vpc_name}.js"
+    }
+
+    // unbundle terraform 0.10.7
+    // right now ci is on 0.10.4, this should be deprecated once we switch to tfenv
+    def terraform_version = '0.10.7'
+    def terraform_cmd = "terraform.${terraform_version}"
+    if (!fileExists("/usr/local/bin/${terraform_cmd}")) {
+      echo 'downloading terraform'
+      sh "aws s3 cp s3://nava-vpc-sandbox/${terraform_cmd} /tmp/"
+      sh "chmod 755 /tmp/${terraform_cmd}"
+      sh "sudo mv /tmp/${terraform_cmd} /usr/local/bin/"
     }
 
     // run terraform
@@ -68,17 +79,17 @@ def deploy(cfg) {
         }
 
         // run a terraform init/plan
-        sh "terraform init -input=false"
-        sh "terraform get -update"
+        sh "${terraform_cmd} init -input=false"
+        sh "${terraform_cmd} get -update"
 
         // make a plan for the web (nginx) deploy
         echo "applying new git hash ${gitCommitLong}"
 
         echo "Getting plan"
-        sh "terraform plan -input=false -var 'app_ami_git_hash=${gitCommitLong}' -out plan.out"
+        sh "${terraform_cmd} plan -input=false -var 'app_ami_git_hash=${gitCommitLong}' -out plan.out"
         if (cfg.terraform_apply == "true") {
           echo "Applying instance changes"
-          sh "terraform apply -input=false plan.out"
+          sh "${terraform_cmd} apply -input=false plan.out"
           
           postToNewrelic(gitCommit)
         }
