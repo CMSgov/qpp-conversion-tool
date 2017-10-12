@@ -7,17 +7,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.io.IOException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.IOException;
-
+import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertNotNull;
 
 public class MeasureDataDecoderTest {
 
@@ -62,8 +58,11 @@ public class MeasureDataDecoderTest {
 		Node measure =  placeholder.findChildNode(node -> node.getValue(MEASURE_TYPE).equals(type));
 
 		String message = String.format("Should have a %s value", type);
-		assertNotNull(message, measure);
-		assertThat("Should have an aggregate count child",
-				measure.getChildNodes().get(0).getType(), is(TemplateId.ACI_AGGREGATE_COUNT));
+		assertWithMessage(message)
+				.that(measure)
+				.isNotNull();
+		assertWithMessage("Should have an aggregate count child")
+				.that(measure.getChildNodes().get(0).getType())
+				.isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
 	}
 }

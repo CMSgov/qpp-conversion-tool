@@ -3,16 +3,14 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 public class AggregateCountEncoderTest {
@@ -51,7 +49,9 @@ public class AggregateCountEncoderTest {
 
 		// NOTE: This test is only relevant in that it finds the deep value but it is not actually a result
 		String EXPECTED = "{\n  \"value\" : 600\n}";
-		assertThat("expected encoder to return a single number numerator/denominator", sw.toString(), is(EXPECTED));
+		assertWithMessage("expected encoder to return a single number numerator/denominator")
+				.that(sw.toString())
+				.isEqualTo(EXPECTED);
 	}
 
 	/**
@@ -67,7 +67,9 @@ public class AggregateCountEncoderTest {
 		} catch (EncodeException e) {
 			fail("Failure to encode: " + e.getMessage());
 		}
-		assertThat("expected encoder to return a single number numerator/denominator", json.getInteger("value"), is(600));
+		assertWithMessage("expected encoder to return a single number numerator/denominator")
+				.that(json.getInteger("value"))
+				.isEqualTo(600);
 	}
 
 }

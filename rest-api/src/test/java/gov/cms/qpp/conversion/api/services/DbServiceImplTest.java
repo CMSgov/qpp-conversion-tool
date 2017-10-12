@@ -15,9 +15,8 @@ import org.springframework.core.task.TaskExecutor;
 
 import java.util.concurrent.CompletableFuture;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNotNull;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
@@ -56,7 +55,7 @@ public class DbServiceImplTest {
 
 		Metadata meta = writeMeta();
 
-		assertNotNull("metadata should not be null", meta);
+		assertThat(meta).isNotNull();
 		verify(dbMapper, times(1)).save(any(Metadata.class));
 	}
 
@@ -66,7 +65,7 @@ public class DbServiceImplTest {
 
 		Metadata meta = writeMeta();
 
-		assertNotNull("metadata should not be null", meta);
+		assertThat(meta).isNotNull();
 		verify(dbMapper, times(1)).save(any(Metadata.class));
 	}
 
@@ -80,7 +79,8 @@ public class DbServiceImplTest {
 		Metadata metadataOut = writeMeta(metadataIn);
 
 		verifyZeroInteractions(dbMapper);
-		assertThat("The returned metadata must be an empty metadata.", metadataOut, is(new Metadata()));
+		assertWithMessage("The returned metadata must be an empty metadata.")
+				.that(metadataOut).isEqualTo(new Metadata());
 	}
 
 	private Metadata writeMeta() {

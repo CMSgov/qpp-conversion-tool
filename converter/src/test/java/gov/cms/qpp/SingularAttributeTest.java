@@ -13,6 +13,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import gov.cms.qpp.conversion.validate.ClinicalDocumentValidator;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,10 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class SingularAttributeTest {
 
@@ -41,6 +39,7 @@ public class SingularAttributeTest {
 	private static Set<String> exclusions;
 	private static int inclusionCount = 0;
 	private static MarkupManipulator manipulator;
+
 
 	@BeforeClass
 	@SuppressWarnings("unchecked")
@@ -56,25 +55,25 @@ public class SingularAttributeTest {
 		corrMap = (Map<String, Goods>) corrMapField.get(null);
 
 		exclusions = new HashSet<>(
-			Arrays.asList(
-				//MultipleTinsDecoder maps multiple tin/npi combination
-				MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
-				MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
-				MultipleTinsDecoder.NPI_TIN,
-				//There are no validations currently for entity type
-				ClinicalDocumentDecoder.ENTITY_ID,
-				ClinicalDocumentDecoder.PRACTICE_SITE_ADDR,
-				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,
-				PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE,
-				//There are no validations for performanceYear
-				ReportingParametersActDecoder.PERFORMANCE_YEAR,
-				//stratum is not currently mapped
-				"stratum")
+				Arrays.asList(
+						//MultipleTinsDecoder maps multiple tin/npi combination
+						MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+						MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+						MultipleTinsDecoder.NPI_TIN,
+						//There are no validations currently for entity type
+						ClinicalDocumentDecoder.ENTITY_ID,
+						ClinicalDocumentDecoder.PRACTICE_SITE_ADDR,
+						PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE,
+						PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE,
+						//There are no validations for performanceYear
+						ReportingParametersActDecoder.PERFORMANCE_YEAR,
+						//stratum is not currently mapped
+						"stratum")
 		);
 
 		corrMap.keySet().forEach(key -> {
 			String[] components = key.split(PathCorrelator.KEY_DELIMITER);
-			if (!exclusions.contains(components[1])){
+			if (!exclusions.contains(components[1])) {
 				inclusionCount++;
 			}
 		});
@@ -88,14 +87,16 @@ public class SingularAttributeTest {
 
 	@Test
 	public void blanketDoubleUp() {
-		assertThat("failed duplication scenarios should equal the inclusion count",
-				blanketCheck(false), is(inclusionCount));
+		assertWithMessage("failed duplication scenarios should equal the inclusion count")
+				.that(blanketCheck(false))
+				.isEqualTo(inclusionCount);
 	}
 
 	@Test
 	public void blanketRemoval() {
-		assertThat("failed removal scenarios should equal the inclusion count",
-				blanketCheck(true), is(inclusionCount));
+		assertWithMessage("failed removal scenarios should equal the inclusion count")
+				.that(blanketCheck(true))
+				.isEqualTo(inclusionCount);
 	}
 
 	private int blanketCheck(boolean remove) {
@@ -108,9 +109,9 @@ public class SingularAttributeTest {
 				if (!details.isEmpty()) {
 					errorCount++;
 				}
-				assertThat("Combination of: " + components[0] + " and " +
-					components[1] + " should be unique.",
-					details.size(), greaterThan(0));
+				assertWithMessage("Combination of: " + components[0] + " and " +
+						components[1] + " should be unique.").that(details.size())
+						.isGreaterThan(0);
 			}
 		}
 		return errorCount;
@@ -121,9 +122,13 @@ public class SingularAttributeTest {
 		List<Detail> details = executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
 				ClinicalDocumentDecoder.PROGRAM_NAME, false);
 
-		assertThat("error should be about missing missing program name", details,
-				hasValidationErrorsIgnoringPath(
-						ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME));
+		assertWithMessage("error should be about missing missing program name").that(details)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME);
+
+		assertWithMessage("error should be about missing program name").that(details)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME);
 	}
 
 	@Test
@@ -131,10 +136,10 @@ public class SingularAttributeTest {
 		List<Detail> details = executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
 				ClinicalDocumentDecoder.PROGRAM_NAME, true);
 
-		assertThat("error should be about missing missing program name", details,
-				hasValidationErrorsIgnoringPath(
-						ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
-						ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME));
+		assertWithMessage("error should be about missing program name").that(details)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
+						ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME);
 	}
 
 	private List<Detail> executeScenario(String templateId, String attribute, boolean remove) {
@@ -158,4 +163,5 @@ public class SingularAttributeTest {
 		}
 		return "//" + path;
 	}
+
 }

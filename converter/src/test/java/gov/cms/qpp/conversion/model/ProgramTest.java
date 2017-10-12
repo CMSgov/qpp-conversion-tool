@@ -1,36 +1,86 @@
 package gov.cms.qpp.conversion.model;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 
-import org.junit.Test;
 import java.util.stream.Stream;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import org.junit.Test;
+
+import com.google.common.truth.Truth;
+
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 
 public class ProgramTest {
 	@Test
 	public void instanceRetrievalMips() {
-		Stream.of("MIPS_GROUP", "MIPS_INDIV", "MIPS").forEach(mip -> {
-			assertThat("Program other than " + Program.MIPS + " was returned",
-					Program.getInstance(mip), is(Program.MIPS));
-		});
+		Stream.of("MIPS_GROUP", "MIPS_INDIV", "MIPS").forEach(mip ->
+			assertWithMessage("Program other than %s was returned", Program.MIPS)
+					.that(Program.getInstance(mip)).isSameAs(Program.MIPS)
+		);
 	}
 
 	@Test
 	public void instanceRetrievalCpcPlus() {
-		assertThat("Program other than " + Program.CPC + " was returned",
-					Program.getInstance("CPCPLUS"), is(Program.CPC));
+		assertWithMessage("Program other than %s was returned", Program.CPC)
+				.that(Program.getInstance("CPCPLUS")).isSameAs(Program.CPC);
 	}
 
 	@Test
 	public void instanceRetrievalDefault() {
-		assertThat("Program other than " + Program.ALL + " was returned",
-				Program.getInstance("meep"), is(Program.ALL));
+		assertWithMessage("Program other than %s was returned", Program.ALL)
+				.that(Program.getInstance("meep")).isSameAs(Program.ALL);
 	}
 
 	@Test
 	public void instanceRetrievalNullProgramName() {
-		assertThat("Program other than " + Program.ALL + " was returned",
-				Program.getInstance(null), is(Program.ALL));
+		assertWithMessage("Program other than %s was returned", Program.ALL)
+				.that(Program.getInstance(null)).isSameAs(Program.ALL);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testIsCpcPlusForNullThrowsNullPointerException() {
+		Program.isCpc(null);
+	}
+
+	@Test
+	public void testIsCpcPlusForNullStringIsFalse() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, null);
+		Truth.assertThat(Program.isCpc(node)).isFalse();
+	}
+
+	@Test
+	public void testIsCpcPlusForRandomStringIsFalse() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "some fake mock value");
+		Truth.assertThat(Program.isCpc(node)).isFalse();
+	}
+
+	@Test
+	public void testIsCpcPlusForMipsIsFalse() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "MIPS");
+		Truth.assertThat(Program.isCpc(node)).isFalse();
+	}
+
+	@Test
+	public void testIsCpcPlusForCpcplusUppercaseIsTrue() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "CPCPLUS");
+		Truth.assertThat(Program.isCpc(node)).isTrue();
+	}
+
+	@Test
+	public void testIsCpcPlusForCpcplusLowercaseIsTrue() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "cpcplus");
+		Truth.assertThat(Program.isCpc(node)).isTrue();
+	}
+
+	@Test
+	public void testIsCpcPlusForCpcplusMixedCaseIsTrue() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "cPcPlUs");
+		Truth.assertThat(Program.isCpc(node)).isTrue();
 	}
 }

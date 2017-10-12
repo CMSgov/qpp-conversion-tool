@@ -4,9 +4,6 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -14,10 +11,10 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertNull;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 public class AciMeasurePerformedRnREncoderTest {
@@ -58,8 +55,13 @@ public class AciMeasurePerformedRnREncoderTest {
 		}
 
 		Map<String, Object> content = JsonHelper.readJson(new ByteArrayInputStream(sw.toString().getBytes()), Map.class);
-		assertThat("measureId should be " + MEASURE_ID, content.get("measureId"), is(MEASURE_ID));
-		assertThat("value should be true " , content.get("value"), is (true));
+
+		assertWithMessage("MeasureId should be %s", MEASURE_ID)
+				.that(content.get("measureId"))
+				.isEqualTo(MEASURE_ID);
+		assertWithMessage("value should be true")
+				.that(content.get("value"))
+				.isEqualTo(true);
 	}
 
 	@Test
@@ -72,8 +74,12 @@ public class AciMeasurePerformedRnREncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
 
 		//assert
-		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
-		assertThat("The value must be " + VALUE, jsonWrapper.getBoolean("value"), is(true));
+		assertWithMessage("MeasureId should be %s", MEASURE_ID)
+				.that(jsonWrapper.getString("measureId"))
+				.isEqualTo(MEASURE_ID);
+		assertWithMessage("value should be true")
+				.that(jsonWrapper.getBoolean("value"))
+				.isEqualTo(true);
 	}
 
 	@Test
@@ -85,11 +91,14 @@ public class AciMeasurePerformedRnREncoderTest {
 
 		//execute
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
-		System.out.println(aciMeasurePerformedRnR.findFirstNode(TemplateId.MEASURE_PERFORMED));
 
 		//assert
-		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
-		assertNull("There should be no " + VALUE, jsonWrapper.getString("value"));
+		assertWithMessage("MeasureId should be %s", MEASURE_ID)
+				.that(jsonWrapper.getString("measureId"))
+				.isEqualTo(MEASURE_ID);
+		assertWithMessage("Value must be null")
+				.that(jsonWrapper.getBoolean("value"))
+				.isNull();
 	}
 
 	@Test
@@ -102,9 +111,12 @@ public class AciMeasurePerformedRnREncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
 
 		//assert
-		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
-		assertThat("There value should be true " + VALUE, jsonWrapper.getBoolean("value"), is(true));
-
+		assertWithMessage("MeasureId should be %s", MEASURE_ID)
+				.that(jsonWrapper.getString("measureId"))
+				.isEqualTo(MEASURE_ID);
+		assertWithMessage("value should be true")
+				.that(jsonWrapper.getBoolean("value"))
+				.isEqualTo(true);
 	}
 
 	@Test
@@ -117,9 +129,12 @@ public class AciMeasurePerformedRnREncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
 
 		//assert
-		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
-		assertThat("There value should be false " + VALUE, jsonWrapper.getBoolean("value"), is(false));
-
+		assertWithMessage("MeasureId should be %s", MEASURE_ID)
+				.that(jsonWrapper.getString("measureId"))
+				.isEqualTo(MEASURE_ID);
+		assertWithMessage("value should be false")
+				.that(jsonWrapper.getBoolean("value"))
+				.isEqualTo(false);
 	}
 
 	@Test
@@ -133,7 +148,11 @@ public class AciMeasurePerformedRnREncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
 
 		//assert
-		assertThat("The measureId must be " + MEASURE_ID, jsonWrapper.getString("measureId"), is(MEASURE_ID));
-		assertThat("There value should be some string value ", jsonWrapper.getString("value"), is(unknownValue));
+		assertWithMessage("MeasureId should be %s", MEASURE_ID)
+				.that(jsonWrapper.getString("measureId"))
+				.isEqualTo(MEASURE_ID);
+		assertWithMessage("value should be a string value")
+				.that(jsonWrapper.getString("value"))
+				.isEqualTo(unknownValue);
 	}
 }

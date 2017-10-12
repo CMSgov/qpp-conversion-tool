@@ -54,7 +54,6 @@ module "qpp-qrda3converter" {
   instance_types              = "${var.instance_types}"
   key_name                    = "${var.key_name}"
   s3_bucket                   = "${var.s3_bucket}"
-  ssl_certificate_id          = "${var.ssl_certificate_id}"
   stack_tag                   = "${var.stack_tag}"
   vpc_cidr                    = "${module.network.vpc_cidr}"
   vpc_id                      = "${module.network.vpc_id}"

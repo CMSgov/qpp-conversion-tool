@@ -2,19 +2,16 @@ package gov.cms.qpp.conversion.decode;
 
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
-import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class PerformanceRateProportionMeasureDecoderTest {
 	private static String happy;
@@ -38,23 +35,26 @@ public class PerformanceRateProportionMeasureDecoderTest {
 
 	@Test
 	public void testPerformanceRateValueSuccess() {
-		assertThat("Must contain the correct value",
-				performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE), is("0.947368"));
+		assertWithMessage("Must contain the correct value")
+				.that(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE))
+				.isEqualTo("0.947368");
 	}
 
 	@Test
 	public void testPerformanceRateUuidSuccess() {
 		final String performanceRateId = "6D01A564-58CC-4CF5-929F-B83583701BFE";
-		assertThat("Must contain the correct UUID",
-				performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID), is(performanceRateId));
+		assertWithMessage("Must contain the correct UUID")
+				.that(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID))
+				.isEqualTo(performanceRateId);
 	}
 
 	@Test
 	public void testSuccessfulNullPerformanceRate() throws XmlException {
 		decodeNodeFromFile(nullHappy);
 		performanceRateNode = getNode();
-		assertThat("Must contain the correct value",
-				performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE), is("NA"));
+		assertWithMessage("Must contain the correct value")
+				.that(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))
+				.isEqualTo("NA");
 	}
 
 	private void decodeNodeFromFile(String filename) throws XmlException {

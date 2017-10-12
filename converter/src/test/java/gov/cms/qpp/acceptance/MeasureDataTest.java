@@ -4,18 +4,14 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class MeasureDataTest {
 
@@ -32,17 +28,22 @@ public class MeasureDataTest {
 	public void inspectMeasureData() {
 		glossaryMap.forEach((key, value) -> {
 			MeasureConfig config = configMap.get(key);
-			assertNotNull("Missing measure configuration for: " + key, config);
-			assertEquals("Should have the same amount of sub populations",
-					config.getStrata().size(), value.getStrata().size());
+			assertWithMessage("Missing measure configuration for: %s", key)
+					.that(config)
+					.isNotNull();
+
+			assertWithMessage("Should have the same amount of sub populations")
+					.that(config.getStrata())
+					.hasSize(value.getStrata().size());
 
 			List<SubPopulation> pops = config.getStrata().stream()
 					.map(Strata::getElectronicMeasureUuids)
 					.collect(Collectors.toList());
 
 			value.getStrata().forEach(stratum -> {
-				assertThat("Required sub population was not present within: " + config.getElectronicMeasureId(),
-						pops, hasItem(stratum.getElectronicMeasureUuids()));
+				assertWithMessage("Required sub population was not present within: %s", config.getElectronicMeasureId())
+						.that(pops)
+						.contains(stratum.getElectronicMeasureUuids());
 			});
 		});
 	}

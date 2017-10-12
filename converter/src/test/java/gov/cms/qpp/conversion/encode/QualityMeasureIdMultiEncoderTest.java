@@ -13,9 +13,7 @@ import org.junit.Test;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class QualityMeasureIdMultiEncoderTest {
 
@@ -132,6 +130,7 @@ public class QualityMeasureIdMultiEncoderTest {
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
 		LinkedHashMap<String, Object> childValues = getChildValues();
+		@SuppressWarnings("unchecked")
 		List<LinkedHashMap<String, ?>> subPopulations =
 				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
 		assertFirstSubPopulation(subPopulations);
@@ -148,12 +147,14 @@ public class QualityMeasureIdMultiEncoderTest {
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
 		LinkedHashMap<String, Object> childValues = getChildValues();
+		@SuppressWarnings("unchecked")
 		List<LinkedHashMap<String, ?>> subPopulations =
 				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
 
-		assertThat("Must have zero sub populations encoded", subPopulations, is(empty()));
+		assertWithMessage("Must have zero sub populations encoded").that(subPopulations).isEmpty();
 	}
 
+	@SuppressWarnings("unchecked")
 	private LinkedHashMap<String, Object> getChildValues() {
 		return (LinkedHashMap<String, Object>)((LinkedHashMap<String, Object>) wrapper.getObject()).get("value");
 	}
@@ -161,20 +162,20 @@ public class QualityMeasureIdMultiEncoderTest {
 	private void assertFirstSubPopulation(List<LinkedHashMap<String, ?>> strata) {
 		LinkedHashMap<String, ?> firstSubPopulation = strata.get(0);
 
-		assertThat(REQUIRE_POPULATION_TOTAL, firstSubPopulation.get(ELIGIBLE_POPULATION), is(600));
-		assertThat(REQUIRE_PERFORMANCE_MET, firstSubPopulation.get(PERFORMANCE_MET), is(600));
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, firstSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, firstSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION), is(600));
-		assertThat(REQUIRE_STRATUM, firstSubPopulation.get(STRATUM), is("test1strata1"));
+		assertWithMessage(REQUIRE_POPULATION_TOTAL).that(firstSubPopulation.get(ELIGIBLE_POPULATION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_PERFORMANCE_MET).that(firstSubPopulation.get(PERFORMANCE_MET)).isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEP).that(firstSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCLUS).that(firstSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_STRATUM).that(firstSubPopulation.get(STRATUM)).isEqualTo("test1strata1");
 	}
 
 	private void assertSecondSubPopulation(List<LinkedHashMap<String, ?>> strata) {
 		LinkedHashMap<String, ?> secondSubPopulation = strata.get(1);
 
-		assertThat(REQUIRE_POPULATION_TOTAL, secondSubPopulation.get(ELIGIBLE_POPULATION), is(600));
-		assertThat(REQUIRE_PERFORMANCE_MET, secondSubPopulation.get(PERFORMANCE_MET), is(600));
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION), is(600));
-		assertThat(REQUIRE_STRATUM, secondSubPopulation.get(STRATUM), is("test1strata2"));
+		assertWithMessage(REQUIRE_POPULATION_TOTAL).that(secondSubPopulation.get(ELIGIBLE_POPULATION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_PERFORMANCE_MET).that(secondSubPopulation.get(PERFORMANCE_MET)).isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEP).that(secondSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCLUS).that(secondSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_STRATUM).that(secondSubPopulation.get(STRATUM)).isEqualTo("test1strata2");
 	}
 }

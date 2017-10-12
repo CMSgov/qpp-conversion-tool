@@ -7,6 +7,8 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import java.io.IOException;
+import java.nio.file.Path;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filter;
@@ -14,12 +16,8 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
+import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class JsonPathToXpathHelper {
 
@@ -46,8 +44,7 @@ public class JsonPathToXpathHelper {
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 		Element element = evaluateXpath(xPath, Filters.element());
 
-		assertEquals("Element name should be: " + xmlElementName,
-				xmlElementName, element.getName());
+		assertThat(xmlElementName).isEqualTo(element.getName());
 	}
 
 	public void executeAttributeTest(String jsonPath, String expectedValue) {
@@ -71,8 +68,7 @@ public class JsonPathToXpathHelper {
 					" ) at \n( " + xPath + " ). \nPlease investigate.");
 		}
 
-		assertNotNull("Attribute value should not be null. json value:" + expectedValue,
-				attribute.getValue());
+		assertThat(attribute.getValue()).isNotNull();
 	}
 
 	public void executeAttributeTest(String jsonPath, String xmlAttributeName, String expectedValue)
@@ -80,10 +76,10 @@ public class JsonPathToXpathHelper {
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
-		assertEquals("Attribute name should be: " + xmlAttributeName,
-				xmlAttributeName, attribute.getName());
-		assertEquals("Attribute value should be: " + expectedValue,
-				expectedValue, attribute.getValue());
+		assertThat(xmlAttributeName)
+				.isEqualTo(attribute.getName());
+		assertThat(expectedValue)
+				.isEqualTo(attribute.getValue());
 	}
 
 	@SuppressWarnings("unchecked")
