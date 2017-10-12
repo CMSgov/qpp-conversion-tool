@@ -1,15 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
-import org.jdom2.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
@@ -26,6 +16,15 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
@@ -44,6 +43,7 @@ public class Converter {
 	private final Context context;
 	private List<Detail> details = new ArrayList<>();
 	private Node decoded;
+	private JsonWrapper encoded;
 
 	/**
 	 * Constructor for the CLI Converter application
@@ -75,6 +75,9 @@ public class Converter {
 	public Node getDecoded() {
 		return decoded;
 	}
+	public JsonWrapper getEncoded() {
+		return encoded;
+	}
 
 	/**
 	 * Perform conversion.
@@ -83,9 +86,8 @@ public class Converter {
 	 */
 	public JsonWrapper transform() {
 		DEV_LOG.info("Transform invoked with file {}", source.getName());
-		JsonWrapper qpp = null;
 		try {
-			qpp = transform(source.toInputStream());
+			encoded =  transform(source.toInputStream());
 		} catch (XmlInputFileException | XmlException xe) {
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
 			details.add(new Detail(NOT_VALID_XML_DOCUMENT));
@@ -99,7 +101,7 @@ public class Converter {
 				constructErrorHierarchy(source.getName(), details));
 		}
 
-		return qpp;
+		return encoded;
 	}
 
 	/**

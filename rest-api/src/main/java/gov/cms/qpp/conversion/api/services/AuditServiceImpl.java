@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.services;
 
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,12 @@ public class AuditServiceImpl implements AuditService {
 	@Autowired
 	private DbService dbService;
 
-	@Autowired
-	private Metadata metadata;
-
 	@Override
-	public CompletableFuture<Void> success(InputStream fileContent, InputStream qppContent) {
+	public CompletableFuture<Void> success(InputStream fileContent, Converter converter) {
+		Metadata metadata = new Metadata();
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(fileContent).thenAccept(metadata::setSubmissionLocator),
-				storeContent(qppContent).thenAccept(metadata::setQppLocator));
+				storeContent(converter.getEncoded().contentStream()).thenAccept(metadata::setQppLocator));
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
