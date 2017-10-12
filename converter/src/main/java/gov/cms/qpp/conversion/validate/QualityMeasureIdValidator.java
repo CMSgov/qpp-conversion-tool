@@ -50,6 +50,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
 	public static final String INCORRECT_UUID =
 			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
+	public static final String INCORRECT_PERFORMANCE_UUID =
+			"The eCQM (electronic measure id: %s) has a %s with an incorrect UUID of %s";
 	public static final String SINGLE_PERFORMANCE_RATE =
 			"A Performance Rate must contain a single Performance Rate UUID";
 
@@ -102,20 +104,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node The current parent node
 	 * @param measureConfig The measure configuration's sub population to use
 	 */
-	private void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig) {
-		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
-
-		if (subPopulations.isEmpty()) {
-			return;
-		}
-
-		SubPopulations.getExclusiveKeys(subPopulationExclusions)
-				.forEach(key -> validateChildTypeCount(subPopulations, key, node));
-
-		for (SubPopulation subPopulation : subPopulations) {
-			validateSubPopulation(node, subPopulation);
-		}
-	}
+	abstract void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig);
 
 	/**
 	 * Validate individual sub-populations.
@@ -123,7 +112,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node          to validate
 	 * @param subPopulation a grouping of measures
 	 */
-	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
+	protected void validateSubPopulation(Node node, SubPopulation subPopulation) {
 		List<Consumer<Node>> validations = prepValidations(subPopulation);
 		validations.forEach(validate -> validate.accept(node));
 
@@ -201,7 +190,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param key The type to check
 	 * @param node The node in which the child nodes live
 	 */
-	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
+	protected void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
 		long expectedChildTypeCount = subPopulations.stream()
 				.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
 				.filter(Objects::nonNull)
@@ -259,8 +248,6 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	protected void followUpHook(Node node, SubPopulation sub){
 		//Default implementation
 	}
-
-	abstract Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String... keys);
 
 	/**
 	 * Adds a validation error message for a specified measure configuration
