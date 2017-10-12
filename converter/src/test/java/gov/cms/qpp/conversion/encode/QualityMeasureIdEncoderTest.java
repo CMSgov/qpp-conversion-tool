@@ -133,6 +133,7 @@ public class QualityMeasureIdEncoderTest {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private LinkedHashMap<String, Object> getChildValues() {
 		return (LinkedHashMap<String, Object>)((LinkedHashMap<String, Object>) wrapper.getObject()).get("value");
 	}
