@@ -84,11 +84,6 @@ variable "s3_bucket" {
   type        = "string"
 }
 
-variable "ssl_certificate_id" {
-  description = "The SSL cert ID for the ELB"
-  type        = "string"
-}
-
 variable "stack_tag" {
   description = "Stack name e.g. dev, test or prod."
   type        = "string"

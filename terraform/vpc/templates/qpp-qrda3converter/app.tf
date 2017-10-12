@@ -50,9 +50,8 @@ module "app" {
   elb_listeners = [{
     instance_port      = "3000"
     instance_protocol  = "http"
-    lb_port            = "443"
-    lb_protocol        = "https"
-    ssl_certificate_id = "${var.ssl_certificate_id}"
+    lb_port            = "80"
+    lb_protocol        = "http"
   }]
 
   elb_security_groups    = "${concat(list(module.open_http.id))}"
