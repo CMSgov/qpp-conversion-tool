@@ -1,18 +1,40 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import org.hamcrest.Matchers;
-import org.junit.Assert;
+import com.google.common.collect.Sets;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class SubPopulationsTest {
 
 	@Test
 	public void testGetKeysContainsExpected() {
-		Assert.assertThat(SubPopulations.getKeys(), Matchers.containsInAnyOrder("DENEXCEP", "DENEX", "DENOM", "NUMER"));
+		assertThat(SubPopulations.getKeys())
+				.containsExactly(SubPopulations.DENEXCEP, SubPopulations.DENEX,
+						SubPopulations.DENOM, SubPopulations.NUMER, SubPopulations.IPOP);
+	}
+
+	@Test
+	public void testGetExclusiveKeysExcludesExpected() {
+		Set<String> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulations.DENEXCEP));
+		assertWithMessage("Excluded key %s should be absent", SubPopulations.DENEXCEP)
+				.that(keys).doesNotContain(SubPopulations.DENEXCEP);
+	}
+
+	@Test
+	public void testGetExclusiveKeysIncludesOthers() {
+		Set<String> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulations.DENEX));
+
+ 		assertWithMessage("Non excluded keys should be present")
+				.that(keys)
+				.containsExactly(SubPopulations.DENEXCEP, SubPopulations.DENOM,
+						SubPopulations.NUMER, SubPopulations.IPOP);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -38,13 +60,14 @@ public class SubPopulationsTest {
 		}
 
 		SubPopulation subPopulation = new SubPopulation();
-		subPopulation.setDenominatorExceptionsUuid(expected.get("DENEXCEP"));
-		subPopulation.setDenominatorExclusionsUuid(expected.get("DENEX"));
-		subPopulation.setDenominatorUuid(expected.get("DENOM"));
-		subPopulation.setNumeratorUuid(expected.get("NUMER"));
+		subPopulation.setDenominatorExceptionsUuid(expected.get(SubPopulations.DENEXCEP));
+		subPopulation.setDenominatorExclusionsUuid(expected.get(SubPopulations.DENEX));
+		subPopulation.setDenominatorUuid(expected.get(SubPopulations.DENOM));
+		subPopulation.setNumeratorUuid(expected.get(SubPopulations.NUMER));
 
-		for (String key : SubPopulations.getKeys()) {
-			Assert.assertEquals(expected.get(key), SubPopulations.getUniqueIdForKey(key, subPopulation));
+		for (String key : SubPopulations.getExclusiveKeys(Sets.newHashSet("IPOP", "IPP"))) {
+			assertThat(SubPopulations.getUniqueIdForKey(key, subPopulation))
+					.isSameAs(expected.get(key));
 		}
 	}
 

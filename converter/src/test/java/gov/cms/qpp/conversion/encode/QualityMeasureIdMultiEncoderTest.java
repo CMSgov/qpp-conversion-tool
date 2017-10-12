@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -12,9 +13,7 @@ import org.junit.Test;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class QualityMeasureIdMultiEncoderTest {
 
@@ -59,11 +58,6 @@ public class QualityMeasureIdMultiEncoderTest {
 
 	@Before
 	public void setUp() {
-		String ipop = "IPOP";
-		String denexcep = "DENEXCEP";
-		String numer = "NUMER";
-		String denom = "DENOM";
-		String denex = "DENEX";
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue(MEASURE_ID, "test1");
 
@@ -71,53 +65,53 @@ public class QualityMeasureIdMultiEncoderTest {
 		aggregateCountNode.putValue("aggregateCount", "600");
 
 		eligiblePopulationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationNode.putValue(TYPE, ipop);
+		eligiblePopulationNode.putValue(TYPE, SubPopulations.IPOP);
 		eligiblePopulationNode.putValue(POPULATION_ID, "ipop1");
 		eligiblePopulationNode.addChildNode(aggregateCountNode);
 
 		eligiblePopulationNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationNodeTwo.putValue(TYPE, ipop);
+		eligiblePopulationNodeTwo.putValue(TYPE, SubPopulations.IPOP);
 		eligiblePopulationNodeTwo.putValue(POPULATION_ID, "ipop2");
 		eligiblePopulationNodeTwo.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExclusionNode.putValue(TYPE, denex);
+		eligiblePopulationExclusionNode.putValue(TYPE, SubPopulations.DENEX);
 		eligiblePopulationExclusionNode.putValue(POPULATION_ID, "denex1");
 		eligiblePopulationExclusionNode.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExclusionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExclusionNodeTwo.putValue(TYPE, denex);
+		eligiblePopulationExclusionNodeTwo.putValue(TYPE, SubPopulations.DENEX);
 		eligiblePopulationExclusionNodeTwo.putValue(POPULATION_ID, "denex2");
 		eligiblePopulationExclusionNodeTwo.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExceptionNode.putValue(TYPE, denexcep);
+		eligiblePopulationExceptionNode.putValue(TYPE, SubPopulations.DENEXCEP);
 		eligiblePopulationExceptionNode.putValue(POPULATION_ID, "denexcep1");
 		eligiblePopulationExceptionNode.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExceptionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExceptionNodeTwo.putValue(TYPE, denexcep);
+		eligiblePopulationExceptionNodeTwo.putValue(TYPE, SubPopulations.DENEXCEP);
 		eligiblePopulationExceptionNodeTwo.putValue(POPULATION_ID, "denexcep2");
 		eligiblePopulationExceptionNodeTwo.addChildNode(aggregateCountNode);
 
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 
-		numeratorNode.putValue(TYPE, numer);
+		numeratorNode.putValue(TYPE, SubPopulations.NUMER);
 		numeratorNode.putValue(POPULATION_ID, "numer1");
 		numeratorNode.addChildNode(aggregateCountNode);
 
 		numeratorNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		numeratorNodeTwo.putValue(TYPE, numer);
+		numeratorNodeTwo.putValue(TYPE, SubPopulations.NUMER);
 		numeratorNodeTwo.putValue(POPULATION_ID, "numer2");
 		numeratorNodeTwo.addChildNode(aggregateCountNode);
 
 		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denominatorNode.putValue(TYPE, denom);
+		denominatorNode.putValue(TYPE, SubPopulations.DENOM);
 		denominatorNode.putValue(POPULATION_ID, "denom1");
 		denominatorNode.addChildNode(aggregateCountNode);
 
 		denominatorNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denominatorNodeTwo.putValue(TYPE, denom);
+		denominatorNodeTwo.putValue(TYPE, SubPopulations.DENOM);
 		denominatorNodeTwo.putValue(POPULATION_ID, "denom2");
 		denominatorNodeTwo.addChildNode(aggregateCountNode);
 
@@ -155,7 +149,7 @@ public class QualityMeasureIdMultiEncoderTest {
 		List<LinkedHashMap<String, ?>> subPopulations =
 				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
 
-		assertThat("Must have zero sub populations encoded", subPopulations, is(empty()));
+		assertWithMessage("Must have zero sub populations encoded").that(subPopulations).isEmpty();
 	}
 
 	private LinkedHashMap<String, Object> getChildValues() {
@@ -165,20 +159,20 @@ public class QualityMeasureIdMultiEncoderTest {
 	private void assertFirstSubPopulation(List<LinkedHashMap<String, ?>> strata) {
 		LinkedHashMap<String, ?> firstSubPopulation = strata.get(0);
 
-		assertThat(REQUIRE_POPULATION_TOTAL, firstSubPopulation.get(ELIGIBLE_POPULATION), is(600));
-		assertThat(REQUIRE_PERFORMANCE_MET, firstSubPopulation.get(PERFORMANCE_MET), is(600));
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, firstSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, firstSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION), is(600));
-		assertThat(REQUIRE_STRATUM, firstSubPopulation.get(STRATUM), is("test1strata1"));
+		assertWithMessage(REQUIRE_POPULATION_TOTAL).that(firstSubPopulation.get(ELIGIBLE_POPULATION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_PERFORMANCE_MET).that(firstSubPopulation.get(PERFORMANCE_MET)).isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEP).that(firstSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCLUS).that(firstSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_STRATUM).that(firstSubPopulation.get(STRATUM)).isEqualTo("test1strata1");
 	}
 
 	private void assertSecondSubPopulation(List<LinkedHashMap<String, ?>> strata) {
 		LinkedHashMap<String, ?> secondSubPopulation = strata.get(1);
 
-		assertThat(REQUIRE_POPULATION_TOTAL, secondSubPopulation.get(ELIGIBLE_POPULATION), is(600));
-		assertThat(REQUIRE_PERFORMANCE_MET, secondSubPopulation.get(PERFORMANCE_MET), is(600));
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEP, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION), is(600));
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCLUS, secondSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION), is(600));
-		assertThat(REQUIRE_STRATUM, secondSubPopulation.get(STRATUM), is("test1strata2"));
+		assertWithMessage(REQUIRE_POPULATION_TOTAL).that(secondSubPopulation.get(ELIGIBLE_POPULATION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_PERFORMANCE_MET).that(secondSubPopulation.get(PERFORMANCE_MET)).isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEP).that(secondSubPopulation.get(ELIGIBLE_POPULATION_EXCEPTION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCLUS).that(secondSubPopulation.get(ELIGIBLE_POPULATION_EXCLUSION)).isEqualTo(600);
+		assertWithMessage(REQUIRE_STRATUM).that(secondSubPopulation.get(STRATUM)).isEqualTo("test1strata2");
 	}
 }

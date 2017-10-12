@@ -4,15 +4,11 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Map;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
@@ -75,10 +71,11 @@ public class AciSectionEncoderTest {
 
 		Map<?, ?> testMapObject = (Map<?, ?>) jsonWrapper.getObject();
 
-		assertThat("Must have a child node", testMapObject, is(not(nullValue())));
-		assertThat("Must be category ACI", testMapObject.get(CATEGORY), is(ACI));
-		assertThat("Must have measurements", testMapObject.get(MEASUREMENTS), is(not(nullValue())));
-		assertThat("Must have submissionMethod", testMapObject.get(SUBMISSION_METHOD), is(ELECTRONIC_HEALTH_RECORD));
+		assertWithMessage("Must have a child node").that(testMapObject).isNotNull();
+		assertWithMessage("Must be category ACI").that(testMapObject.get(CATEGORY)).isEqualTo(ACI);
+		assertWithMessage("Must have measurements").that(testMapObject.get(MEASUREMENTS)).isNotNull();
+		assertWithMessage("Must have submissionMethod")
+				.that(testMapObject.get(SUBMISSION_METHOD)).isEqualTo(ELECTRONIC_HEALTH_RECORD);
 	}
 
 	@Test
@@ -95,9 +92,11 @@ public class AciSectionEncoderTest {
 		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder(new Context());
 		aciSectionEncoder.internalEncode(testWrapper, aciSectionNode);
 
-		assertThat("Must have validation error.", aciSectionEncoder.getDetails(), is(not(nullValue())));
-		assertThat("Must be correct validation error", aciSectionEncoder.getDetails().get(0).getMessage(),
-				is("Failed to find an encoder for child node DEFAULT"));
+		assertWithMessage("Must have validation error.")
+				.that(aciSectionEncoder.getDetails()).isNotNull();
+		assertWithMessage("Must be correct validation error")
+				.that(aciSectionEncoder.getDetails().get(0).getMessage())
+				.isEqualTo("Failed to find an encoder for child node DEFAULT");
 	}
 
 	@Test

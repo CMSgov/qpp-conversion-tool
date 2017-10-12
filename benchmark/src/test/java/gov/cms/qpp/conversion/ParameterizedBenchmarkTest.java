@@ -1,17 +1,7 @@
 package gov.cms.qpp.conversion;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.lessThan;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.FileSystem;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import gov.cms.qpp.test.FileTestHelper;
+import gov.cms.qpp.test.LoadTestSuite;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,8 +14,15 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import gov.cms.qpp.test.FileTestHelper;
-import gov.cms.qpp.test.LoadTestSuite;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class ParameterizedBenchmarkTest extends LoadTestSuite {
 
@@ -33,10 +30,10 @@ public class ParameterizedBenchmarkTest extends LoadTestSuite {
 	private static FileSystem defaultFileSystem;
 	private static FileSystem fileSystem;
 	private static List<BenchmarkResult> benchResults;
-	private static String[] paths;
 
 	@BeforeClass
 	public static void loadPaths() throws IOException, RunnerException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		String[] paths;
 		fileSystem = FileTestHelper.createMockFileSystem();
 		fileSystemField = ConversionEntry.class.getDeclaredField("fileSystem");
 		fileSystemField.setAccessible(true);
@@ -76,8 +73,8 @@ public class ParameterizedBenchmarkTest extends LoadTestSuite {
 				String fileName = br.getParams().getParam("fileName");
 				Result result = br.getPrimaryResult();
 
-				assertThat("Throughput should be greater than 2 for file: " + fileName,
-						result.getScore(), greaterThan(2.0));
+				assertWithMessage("Throughput should be greater than 2 for file: %s", fileName)
+						.that(result.getScore()).isAtLeast(2.0);
 			});
 	}
 
@@ -89,8 +86,9 @@ public class ParameterizedBenchmarkTest extends LoadTestSuite {
 				String fileName = br.getParams().getParam("fileName");
 				Result result = br.getPrimaryResult();
 
-				assertThat("Average time should be less than .5 seconds" + fileName,
-						result.getScore(), lessThan(0.5));
+				assertWithMessage("Average time should be less than .5 seconds %s", fileName)
+						.that(result.getScore())
+						.isLessThan(0.5);
 			});
 	}
 }

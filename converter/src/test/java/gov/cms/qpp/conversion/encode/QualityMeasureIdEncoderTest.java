@@ -3,14 +3,12 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import java.util.LinkedHashMap;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.LinkedHashMap;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 public class QualityMeasureIdEncoderTest {
@@ -35,19 +33,19 @@ public class QualityMeasureIdEncoderTest {
 		aggregateCountNode.putValue("aggregateCount", "600");
 
 		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		populationNode.putValue(type, "IPOP");
+		populationNode.putValue(type, SubPopulations.IPOP);
 		populationNode.addChildNode(aggregateCountNode);
 
 		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denomExclusionNode.putValue(type, "DENEX");
+		denomExclusionNode.putValue(type, SubPopulations.DENEX);
 		denomExclusionNode.addChildNode(aggregateCountNode);
 
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		numeratorNode.putValue(type, "NUMER");
+		numeratorNode.putValue(type, SubPopulations.NUMER);
 		numeratorNode.addChildNode(aggregateCountNode);
 
 		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denominatorNode.putValue(type, "DENOM");
+		denominatorNode.putValue(type, SubPopulations.DENOM);
 		denominatorNode.addChildNode(aggregateCountNode);
 
 		encoder = new QualityMeasureIdEncoder(new Context());
@@ -58,8 +56,9 @@ public class QualityMeasureIdEncoderTest {
 	public void testMeasureIdIsEncoded() {
 		executeInternalEncode();
 
-		assertThat("expected encoder to return a single value",
-				wrapper.getString("measureId"), is("236"));
+		assertWithMessage("expected encoder to return a single value")
+				.that(wrapper.getString("measureId"))
+				.isEqualTo("236");
 	}
 
 	@Test
@@ -67,8 +66,9 @@ public class QualityMeasureIdEncoderTest {
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
-		assertTrue("expected encoder to return a single value",
-				(Boolean) childValues.get("isEndToEndReported"));
+		assertWithMessage("expected encoder to return a single value")
+				.that((Boolean)childValues.get("isEndToEndReported"))
+				.isTrue();
 	}
 
 	@Test
@@ -77,28 +77,31 @@ public class QualityMeasureIdEncoderTest {
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
 
-		assertThat("expected encoder to return a single value",
-				childValues.get(ELIGIBLE_POPULATION), is(600));
+		assertWithMessage("expected encoder to return a single value")
+				.that(childValues.get(ELIGIBLE_POPULATION))
+				.isEqualTo(600);
 	}
 
 	@Test
 	public void testPopulationAltTotalIsEncoded() {
 		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		populationNode.putValue(type, "IPP");
+		populationNode.putValue(type, SubPopulations.IPP);
 		populationNode.addChildNode(aggregateCountNode);
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
-		assertThat("expected encoder to return a single value",
-				childValues.get(ELIGIBLE_POPULATION), is(600));
+		assertWithMessage("expected encoder to return a single value")
+				.that(childValues.get(ELIGIBLE_POPULATION))
+				.isEqualTo(600);
 	}
 
 	@Test
 	public void testPerformanceMetIsEncoded() {
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
-		assertThat("expected encoder to return a single value",
-				childValues.get("performanceMet"), is(600));
+		assertWithMessage("expected encoder to return a single value")
+				.that(childValues.get("performanceMet"))
+				.isEqualTo(600);
 	}
 
 	@Test
@@ -106,8 +109,9 @@ public class QualityMeasureIdEncoderTest {
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
-		assertThat("expected encoder to return a single value",
-				childValues.get("eligiblePopulationExclusion"), is(600));
+		assertWithMessage("expected encoder to return a single value")
+				.that(childValues.get("eligiblePopulationExclusion"))
+				.isEqualTo(600);
 	}
 
 	@Test
@@ -115,8 +119,9 @@ public class QualityMeasureIdEncoderTest {
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
-		assertThat("expected encoder to return a single value",
-				childValues.get("performanceNotMet"), is(-600));
+		assertWithMessage("expected encoder to return a single value")
+				.that(childValues.get("performanceNotMet"))
+				.isEqualTo(-600);
 	}
 
 	private void executeInternalEncode() {

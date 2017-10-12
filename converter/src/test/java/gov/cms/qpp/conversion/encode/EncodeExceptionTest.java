@@ -2,8 +2,7 @@ package gov.cms.qpp.conversion.encode;
 
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 /**
  * Test to provide Circle CI Coverage on EncodeException
  */
@@ -12,7 +11,9 @@ public class EncodeExceptionTest {
 	public void getTemplateId() throws Exception {
 		EncodeException e = new EncodeException("ErrorMessage", "templateId");
 		String value = e.getTemplateId();
-		assertThat("Expect to get out what I put in", value, is("templateId"));
+		assertWithMessage("Expect to get out what I put in")
+				.that(value)
+				.isEqualTo("templateId");
 	}
 
 }

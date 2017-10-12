@@ -5,8 +5,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class MeasurePerformedEncoderTest {
 
@@ -20,6 +19,7 @@ public class MeasurePerformedEncoderTest {
 
 		qppOutputEncoder.internalEncode(jsonWrapper, measurePerformedNode);
 
-		assertThat("Must return correct encoded result", jsonWrapper.getBoolean("value"), is(true));
+		assertWithMessage("Must return correct encoded result")
+				.that(jsonWrapper.getBoolean("value")).isTrue();
 	}
 }

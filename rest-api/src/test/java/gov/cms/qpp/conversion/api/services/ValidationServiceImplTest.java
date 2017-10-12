@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.api.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -29,12 +30,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
@@ -85,7 +82,7 @@ public class ValidationServiceImplTest {
 
 	@Test
 	public void testNullValidationUrl() {
-		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn(null);
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn(null);
 
 		objectUnderTest.validateQpp(null);
 
@@ -94,7 +91,7 @@ public class ValidationServiceImplTest {
 
 	@Test
 	public void testEmptyValidationUrl() {
-		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn("");
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn("");
 
 		objectUnderTest.validateQpp(null);
 
@@ -105,7 +102,7 @@ public class ValidationServiceImplTest {
 	public void testValidationPass() {
 		String validationUrl = "https://qpp.net/validate";
 
-		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn(validationUrl);
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn(validationUrl);
 		ResponseEntity<String> spiedResponseEntity = spy(new ResponseEntity<>(HttpStatus.OK));
 		when(restTemplate.postForEntity(eq(validationUrl), any(HttpEntity.class), eq(String.class))).thenReturn(spiedResponseEntity);
 
@@ -118,7 +115,7 @@ public class ValidationServiceImplTest {
 	public void testValidationFail() throws IOException {
 		String validationUrl = "https://qpp.net/validate";
 
-		when(environment.getProperty(eq(ValidationServiceImpl.VALIDATION_URL_ENV_NAME))).thenReturn(validationUrl);
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn(validationUrl);
 		ResponseEntity<String> spiedResponseEntity = spy(new ResponseEntity<>(FileUtils.readFileToString(pathToSubmissionError.toFile(), "UTF-8") ,HttpStatus.UNPROCESSABLE_ENTITY));
 		when(restTemplate.postForEntity(eq(validationUrl), any(HttpEntity.class), eq(String.class))).thenReturn(spiedResponseEntity);
 
@@ -131,37 +128,38 @@ public class ValidationServiceImplTest {
 	@Test
 	public void testHeaderCreation() {
 		HttpHeaders headers = objectUnderTest.getHeaders();
-		assertEquals(HttpHeaders.CONTENT_TYPE + " should be " + ValidationServiceImpl.CONTENT_TYPE,
-				headers.getFirst(HttpHeaders.CONTENT_TYPE), ValidationServiceImpl.CONTENT_TYPE);
-		assertEquals(HttpHeaders.ACCEPT + " should be " + ValidationServiceImpl.CONTENT_TYPE,
-				headers.getFirst(HttpHeaders.CONTENT_TYPE), ValidationServiceImpl.CONTENT_TYPE);
+
+		assertThat(headers.getFirst(HttpHeaders.CONTENT_TYPE)).isEqualTo(ValidationServiceImpl.CONTENT_TYPE);
+		assertThat(headers.getFirst(HttpHeaders.ACCEPT)).isEqualTo(ValidationServiceImpl.CONTENT_TYPE);
 	}
 
 	@Test
 	public void testHeaderCreationNoAuth() {
-		when(environment.getProperty(eq(ValidationServiceImpl.SUBMISSION_API_TOKEN))).thenReturn(null);
+		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn(null);
 		HttpHeaders headers = objectUnderTest.getHeaders();
-		assertNull(HttpHeaders.AUTHORIZATION + " should not be set", headers.get(HttpHeaders.AUTHORIZATION));
+		assertThat(headers.get(HttpHeaders.AUTHORIZATION)).isNull();
 	}
 
 	@Test
 	public void testHeaderCreationNoAuthEmpty() {
-		when(environment.getProperty(eq(ValidationServiceImpl.SUBMISSION_API_TOKEN))).thenReturn("");
+		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn("");
 		HttpHeaders headers = objectUnderTest.getHeaders();
-		assertNull(HttpHeaders.AUTHORIZATION + " should not be set", headers.get(HttpHeaders.AUTHORIZATION));
+		assertThat(headers.get(HttpHeaders.AUTHORIZATION)).isNull();
 	}
 
 	@Test
 	public void testHeaderCreationAuth() {
-		when(environment.getProperty(eq(ValidationServiceImpl.SUBMISSION_API_TOKEN))).thenReturn("meep");
+		when(environment.getProperty(eq(Constants.SUBMISSION_API_TOKEN_ENV_VARIABLE))).thenReturn("meep");
 		HttpHeaders headers = objectUnderTest.getHeaders();
-		assertThat(HttpHeaders.AUTHORIZATION + " should be set",
-				headers.getFirst(HttpHeaders.AUTHORIZATION), containsString("meep"));
+
+		assertThat(headers.getFirst(HttpHeaders.AUTHORIZATION)).contains("meep");
 	}
 
 	@Test
 	public void testJsonDeserialization() {
-		assertThat("Error json should map to AllErrors", convertedErrors.getErrors(), hasSize(1));
+		assertWithMessage("Error json should map to AllErrors")
+				.that(convertedErrors.getErrors())
+				.hasSize(1);
 	}
 
 	@Test
@@ -169,9 +167,8 @@ public class ValidationServiceImplTest {
 		Detail detail = submissionError.getError().getDetails().get(0);
 		Detail mappedDetails = convertedErrors.getErrors().get(0).getDetails().get(0);
 
-		System.out.println(detail.getPath());
-		System.out.println(mappedDetails.getPath());
-		assertNotEquals("Json path should be converted to xpath",
-			detail.getPath(), mappedDetails.getPath());
+		assertWithMessage("Json path should be converted to xpath")
+				.that(detail.getPath())
+				.isNotEqualTo(mappedDetails.getPath());
 	}
 }

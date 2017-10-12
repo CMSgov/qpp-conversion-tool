@@ -9,16 +9,13 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 public class AciSectionRoundTripTest {
 
@@ -151,11 +148,12 @@ public class AciSectionRoundTripTest {
 		encoder.encode(new BufferedWriter(sw));
 
 		//Test
-		assertThat("expected encoder to return a representation of a measure", sw.toString(), is(expected));
+		assertThat(sw.toString()).isEqualTo(expected);
 	}
 
 	private void assertAciSectionHasSingleQedNode(Node aciSectionNode) {
-		assertThat(aciSectionNode, is(notNullValue()));
-		assertThat(aciSectionNode.getChildNodes().get(0).getType(), is(TemplateId.QED));
+		assertThat(aciSectionNode).isNotNull();
+		assertThat(aciSectionNode.getChildNodes().get(0).getType())
+				.isEquivalentAccordingToCompareTo(TemplateId.QED);
 	}
 }

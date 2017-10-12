@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -56,10 +57,10 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 		Map<String , String> measureTypeMapper = new HashMap<>();
 		final String eligiblePopulation = "eligiblePopulation";
 
-		measureTypeMapper.put("NUMER", "performanceMet");
-		measureTypeMapper.put("DENOM", eligiblePopulation);
-		measureTypeMapper.put("DENEX", "eligiblePopulationExclusion");
-		measureTypeMapper.put("DENEXCEP", "eligiblePopulationException");
+		measureTypeMapper.put(SubPopulations.NUMER, "performanceMet");
+		measureTypeMapper.put(SubPopulations.DENOM, eligiblePopulation);
+		measureTypeMapper.put(SubPopulations.DENEX, "eligiblePopulationExclusion");
+		measureTypeMapper.put(SubPopulations.DENEXCEP, "eligiblePopulationException");
 		return measureTypeMapper;
 	}
 

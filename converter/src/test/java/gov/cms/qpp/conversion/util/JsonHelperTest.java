@@ -10,11 +10,7 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
 /**
@@ -32,7 +28,9 @@ public class JsonHelperTest {
 		JsonHelper jsonHelper = constructor.newInstance();
 		// close the accessibility of a constructor.
 		constructor.setAccessible(false);
-		assertThat("Expect to have an instance here ", jsonHelper, instanceOf(JsonHelper.class));
+
+		assertWithMessage("Expect to have an instance here ")
+				.that(jsonHelper).isInstanceOf(JsonHelper.class);
 	}
 
 	@Test
@@ -41,7 +39,9 @@ public class JsonHelperTest {
 		List<MeasureConfig> configurations;
 		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(measureDataFileName);
 		configurations = JsonHelper.readJsonAtJsonPath(measuresInput, "$", List.class);
-		assertThat("Expect to get a List of measureConfigs", configurations, is(not(empty())));
+
+		assertWithMessage("Expect to get a List of measureConfigs")
+				.that(configurations).isNotEmpty();
 	}
 
 	@Test
@@ -52,7 +52,8 @@ public class JsonHelperTest {
 			JsonHelper.readJson(new ByteArrayInputStream(testJson.getBytes()), Map.class);
 			fail("An exception should have been thrown.");
 		} catch(JsonReadException exception) {
-			assertThat("Wrong exception reason.", exception.getMessage(), is("Problem parsing json string"));
+			assertWithMessage("Wrong exception reason.")
+					.that(exception).hasMessageThat().isSameAs("Problem parsing json string");
 		} catch(Exception exception) {
 			fail("Incorrect exception was thrown.");
 		}
@@ -66,7 +67,8 @@ public class JsonHelperTest {
 			JsonHelper.readJson(testJson, Map.class);
 			fail("An exception should have been thrown.");
 		} catch(JsonReadException exception) {
-			assertThat("Wrong exception reason.", exception.getMessage(), is("Problem parsing json string"));
+			assertWithMessage("Wrong exception reason.")
+					.that(exception).hasMessageThat().isSameAs("Problem parsing json string");
 		} catch(Exception exception) {
 			fail("Incorrect exception was thrown.");
 		}

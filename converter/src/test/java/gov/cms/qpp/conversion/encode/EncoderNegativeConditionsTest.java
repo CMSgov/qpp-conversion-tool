@@ -1,20 +1,16 @@
 package gov.cms.qpp.conversion.encode;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-
-import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Test;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Node;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.Assert.fail;
 
 public class EncoderNegativeConditionsTest {
 
@@ -41,7 +37,9 @@ public class EncoderNegativeConditionsTest {
 		// NOTE: This test is only relevant in that it finds the deep value but
 		// it is not actually a result
 		String expected = "null";
-		assertThat("expected encoder to return an empty string", sw.toString(), is(expected));
+		assertWithMessage("expected encoder to return an empty string")
+				.that(sw.toString())
+				.isEqualTo(expected);
 	}
 
 	@Test
@@ -63,8 +61,9 @@ public class EncoderNegativeConditionsTest {
 
 		encoder.encode(new BufferedWriter(failWrite));
 
-		assertThat("Should contain one error", encoder.getDetails(), hasSize(1));
-		assertThat("Should have same correct message", encoder.getDetails().get(0).getMessage(),
-				is("Failure to encode"));
+		assertWithMessage("Should contain one error").that(encoder.getDetails()).hasSize(1);
+		assertWithMessage("Should have same correct message")
+				.that(encoder.getDetails().get(0).getMessage())
+				.isEqualTo("Failure to encode");
 	}
 }

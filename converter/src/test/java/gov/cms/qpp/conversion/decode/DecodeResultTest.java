@@ -2,8 +2,7 @@ package gov.cms.qpp.conversion.decode;
 
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 /**
  * Test class for DecodeResult satisfy JaCoCo code coverage
@@ -13,11 +12,16 @@ public class DecodeResultTest {
 	@Test
 	public void decodeResultTest() {
 		DecodeResult result = DecodeResult.valueOf("TREE_FINISHED");
-		assertThat("Expect Decode Result to be TREE_FINISHED", result.name(), is(DecodeResult.TREE_FINISHED.name()));
+		assertWithMessage("Expect Decode Result to be TREE_FINISHED")
+				.that(result)
+				.isEquivalentAccordingToCompareTo(DecodeResult.TREE_FINISHED);
 	}
+
 	@Test
 	public void decodeResultValuesTest() {
 		DecodeResult[] results = DecodeResult.values();
-		assertThat("Expect Decode Result to be array size 5", results.length, is(5));
+		assertWithMessage("Expect Decode Result to be array size 5")
+				.that(results)
+				.hasLength(5);
 	}
 }

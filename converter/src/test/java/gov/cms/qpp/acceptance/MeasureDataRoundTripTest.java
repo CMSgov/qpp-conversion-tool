@@ -7,20 +7,18 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
+import static com.google.common.truth.Truth.assertThat;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 public class MeasureDataRoundTripTest {
 
@@ -36,22 +34,22 @@ public class MeasureDataRoundTripTest {
 
 	@Test
 	public void decodeDenomMeasureDataAsNode() throws Exception {
-		test("DENOM");
+		test(SubPopulations.DENOM);
 	}
 
 	@Test
 	public void decodeNumerMeasureDataAsNode() throws Exception {
-		test("NUMER");//performanceMet
+		test(SubPopulations.NUMER);//performanceMet
 	}
 
 	@Test
 	public void decodeDenexMeasureDataAsNode() throws Exception {
-		test("DENEX");//eligiblePopulationExclusion
+		test(SubPopulations.DENEX);//eligiblePopulationExclusion
 	}
 
 	@Test
 	public void decodeDenexcepMeasureDataAsNode() throws Exception {
-		test("DENEXCEP");//eligiblePopulationException
+		test(SubPopulations.DENEXCEP);//eligiblePopulationException
 	}
 
 	private void test(String type) throws Exception {
@@ -64,10 +62,11 @@ public class MeasureDataRoundTripTest {
 		StringWriter sw = encode(placeholder);
 
 		//then
-		assertNotNull(message, measure);
-		assertThat("Should have an aggregate count child",
-				measure.getChildNodes().get(0).getType(), is(TemplateId.ACI_AGGREGATE_COUNT));
-		assertThat("expected encoder to return a single measure data", sw.toString(), is(expected));
+		assertThat(measure).isNotNull();
+		assertThat(measure.getChildNodes().get(0).getType())
+				.isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
+		assertThat(sw.toString())
+				.isEqualTo(expected);
 	}
 
 	private StringWriter encode(Node placeholder) throws EncodeException {

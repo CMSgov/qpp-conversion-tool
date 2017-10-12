@@ -7,13 +7,11 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
-import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class PerformanceRateProportionMeasureDecoderTest {
 	private static String happy;
@@ -21,6 +19,7 @@ public class PerformanceRateProportionMeasureDecoderTest {
 
 	private Context context;
 	private Node placeholder;
+	private Node performanceRateNode;
 
 	@BeforeClass
 	public static void setup() throws IOException {
@@ -31,25 +30,31 @@ public class PerformanceRateProportionMeasureDecoderTest {
 	@Before
 	public void before() throws XmlException {
 		decodeNodeFromFile(happy);
+		performanceRateNode = getNode();
 	}
 
 	@Test
-	public void testSuccessfulPerformanceRate() {
-		Stream<Node> performanceRateNodes = getNodeStream();
-		performanceRateNodes.forEach(node ->
-				assertThat("Must contain correct value",
-						node.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE), is("0.947368"))
-		);
+	public void testPerformanceRateValueSuccess() {
+		assertWithMessage("Must contain the correct value")
+				.that(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE))
+				.isEqualTo("0.947368");
+	}
+
+	@Test
+	public void testPerformanceRateUuidSuccess() {
+		final String performanceRateId = "6D01A564-58CC-4CF5-929F-B83583701BFE";
+		assertWithMessage("Must contain the correct UUID")
+				.that(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID))
+				.isEqualTo(performanceRateId);
 	}
 
 	@Test
 	public void testSuccessfulNullPerformanceRate() throws XmlException {
 		decodeNodeFromFile(nullHappy);
-		Stream<Node> performanceRateNodes = getNodeStream();
-		performanceRateNodes.forEach(node ->
-				assertThat("Must contain correct value",
-						node.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE), is("NA"))
-		);
+		performanceRateNode = getNode();
+		assertWithMessage("Must contain the correct value")
+				.that(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))
+				.isEqualTo("NA");
 	}
 
 	private void decodeNodeFromFile(String filename) throws XmlException {
@@ -58,8 +63,7 @@ public class PerformanceRateProportionMeasureDecoderTest {
 		placeholder = decoder.decode(XmlUtils.stringToDom(filename));
 	}
 
-	private Stream<Node> getNodeStream() {
-		return placeholder.getChildNodes(
-				node -> node.getType().equals(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE));
+	private Node getNode() {
+		return placeholder.findFirstNode(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 	}
 }

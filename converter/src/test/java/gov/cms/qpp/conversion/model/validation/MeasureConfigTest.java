@@ -11,11 +11,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class MeasureConfigTest {
 
@@ -41,63 +37,75 @@ public class MeasureConfigTest {
 
 	@Test
 	public void testConfigsDeserialization() {
-		assertThat("measure configs should not be empty", measureConfigs, hasSize(1));
+		assertWithMessage("measure configs should not be empty")
+				.that(measureConfigs).hasSize(1);
 	}
 
 	@Test
 	public void verifyMeasureConfigCategory() {
-		assertThat("category should be aci", theConfig.getCategory(), is("aci"));
+		assertWithMessage("category should be aci")
+				.that(theConfig.getCategory()).isEqualTo("aci");
 	}
 
 	@Test
 	public void verifyMeasureConfigFirstPerfYear() {
-		assertThat("firstPerformanceYear should be 2017", theConfig.getFirstPerformanceYear(), is(2017));
+		assertWithMessage("firstPerformanceYear should be 2017")
+				.that(theConfig.getFirstPerformanceYear()).isEqualTo(2017);
 	}
 
 	@Test
 	public void verifyMeasureConfigLastPerfYear() {
-		assertThat("lastPerformanceYear should be 0", theConfig.getLastPerformanceYear(), is(0));
+		assertWithMessage("lastPerformanceYear should be 0")
+				.that(theConfig.getLastPerformanceYear()).isEqualTo(0);
 	}
 
 	@Test
 	public void verifyMeasureConfigMetricType() {
-		assertThat("metricType should be proportion", theConfig.getMetricType(), is("proportion"));
+		assertWithMessage("metricType should be proportion")
+				.that(theConfig.getMetricType()).isEqualTo("proportion");
 	}
 
 	@Test
 	public void verifyMeasureConfigMeasureId() {
-		assertThat("measureId should be ACI_EP_1", theConfig.getMeasureId(), is("ACI_EP_1"));
+		assertWithMessage("measureId should be ACI_EP_1")
+				.that(theConfig.getMeasureId()).isEqualTo("ACI_EP_1");
 	}
 
 	@Test
 	public void verifyMeasureConfigTitle() {
-		assertThat("title should be e-Prescribing", theConfig.getTitle(), is("e-Prescribing"));
+		assertWithMessage("title should be e-Prescribing")
+				.that(theConfig.getTitle()).isEqualTo("e-Prescribing");
 	}
 
 	@Test
 	public void verifyMeasureConfigDescription() {
-		assertThat("description should be long", theConfig.getDescription(), is(
-				"At least one permissible prescription written by the MIPS eligible clinician is queried for a drug formulary and transmitted electronically using certified EHR technology."));
+		String expectation = "At least one permissible prescription written by the MIPS eligible clinician is queried for a drug formulary and transmitted electronically using certified EHR technology.";
+		assertWithMessage("description should be long")
+				.that(theConfig.getDescription()).isEqualTo(expectation);
 	}
 
 	@Test
 	public void verifyMeasureConfigIsRequired() {
-		assertThat("isRequired should be true", theConfig.isRequired(), is(true));
+		assertWithMessage("isRequired should be true")
+				.that(theConfig.isRequired()).isTrue();
 	}
 
 	@Test
 	public void verifyMeasureConfigMeasureSet() {
-		assertThat("measureSet should be null", theConfig.getMeasureSet(), is(nullValue()));
+		assertWithMessage("measureSet should be null")
+				.that(theConfig.getMeasureSet()).isNull();
 	}
 
 	@Test
 	public void verifyMeasureConfigIsBonus() {
-		assertThat("isBonus should be false", theConfig.isBonus(), is(false));
+		assertWithMessage("isBonus should be false")
+				.that(theConfig.isBonus()).isFalse();
 	}
 
 	@Test
 	public void verifyMeasureConfigObjective() {
-		assertThat("objective should be electronicPrescribing", theConfig.getObjective(), is("electronicPrescribing"));
+		assertWithMessage("objective should be electronicPrescribing")
+				.that(theConfig.getObjective()).isEqualTo("electronicPrescribing");
 	}
 
 	@Test
@@ -123,6 +131,7 @@ public class MeasureConfigTest {
 
 		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
 
-		assertThat("The subpopulations are incorrect.", subPopulations, containsInAnyOrder(subPopulation1, subPopulation2, subPopulation3));
+		assertWithMessage("The subpopulations are incorrect.")
+				.that(subPopulations).containsExactly(subPopulation1, subPopulation2, subPopulation3);
 	}
 }

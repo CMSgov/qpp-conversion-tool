@@ -61,7 +61,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setEntityIdOnNode(Element element, Node thisNode) {
-		if (CPCPLUS_PROGRAM_NAME.equals(thisNode.getValue(PROGRAM_NAME))) {
+		if (Program.isCpc(thisNode)) {
 			Consumer<Attribute> consumer = id ->
 				thisNode.putValue(ENTITY_ID, id.getValue(), false);
 			setOnNode(element, getXpath(ENTITY_ID), consumer, Filters.attribute(), false);
@@ -75,7 +75,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 * @param thisNode The output internal representation of the document
 	 */
 	private void setPracticeSiteAddress(Element element, Node thisNode) {
-		if (CPCPLUS_PROGRAM_NAME.equalsIgnoreCase(thisNode.getValue(PROGRAM_NAME))) {
+		if (Program.isCpc(thisNode)) {
 			Consumer<Element> consumer = p ->
 					thisNode.putValue(PRACTICE_SITE_ADDR, p.getValue().trim(), false);
 			setOnNode(element, getXpath(PRACTICE_SITE_ADDR), consumer, Filters.element(), false);
@@ -95,7 +95,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 			thisNode.putValue(ENTITY_TYPE, nameEntityPair[1], false);
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
-		context.setProgram(Program.getInstance(thisNode.getValue(PROGRAM_NAME)));
+		context.setProgram(Program.extractProgram(thisNode));
 	}
 
 	/**
