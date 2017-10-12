@@ -58,27 +58,6 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 	}
 
-	/**
-	 * Validates all the sub populations in the quality measure based on the measure configuration
-	 *
-	 * @param node The current parent node
-	 * @param measureConfig The measure configuration's sub population to use
-	 */
-	void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig) {
-		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
-
-		if (subPopulations.isEmpty()) {
-			return;
-		}
-
-		SubPopulations.getExclusiveKeys(subPopulationExclusions)
-				.forEach(key -> validateChildTypeCount(subPopulations, key, node));
-
-		for (SubPopulation subPopulation : subPopulations) {
-			validateSubPopulation(node, subPopulation);
-		}
-	}
-
 	@Override
 	List<Consumer<Node>> prepValidations(SubPopulation subPopulation) {
 		return Arrays.asList(

@@ -104,7 +104,20 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node The current parent node
 	 * @param measureConfig The measure configuration's sub population to use
 	 */
-	abstract void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig);
+	void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig) {
+		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
+
+		if (subPopulations.isEmpty()) {
+			return;
+		}
+
+		SubPopulations.getExclusiveKeys(subPopulationExclusions)
+				.forEach(key -> validateChildTypeCount(subPopulations, key, node));
+
+		for (SubPopulation subPopulation : subPopulations) {
+			validateSubPopulation(node, subPopulation);
+		}
+	}
 
 	/**
 	 * Validate individual sub-populations.
@@ -118,6 +131,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 
 		validateDenomCountToIpopCount(node, subPopulation);
 	}
+
 
 	abstract List<Consumer<Node>> prepValidations(SubPopulation subPopulation);
 
