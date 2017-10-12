@@ -142,8 +142,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * @param childNode object to decode into
 	 * @return status of current decode
 	 */
-	private DecodeResult testChildDecodeResult(final DecodeResult result, final Element childElement,
-												final Node childNode) {
+	private DecodeResult testChildDecodeResult(DecodeResult result, Element childElement,
+												Node childNode) {
 		if (result == null) {
 			Node placeholderNode = new Node(TemplateId.PLACEHOLDER, childNode.getParent());
 			return decode(childElement, placeholderNode);
