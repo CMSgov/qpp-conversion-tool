@@ -13,6 +13,7 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.util.CloneHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -73,10 +74,10 @@ public class Converter {
 	}
 
 	public Node getDecoded() {
-		return decoded;
+		return CloneHelper.deepClone(decoded);
 	}
 	public JsonWrapper getEncoded() {
-		return encoded;
+		return CloneHelper.deepClone(encoded);
 	}
 
 	/**
@@ -87,7 +88,7 @@ public class Converter {
 	public JsonWrapper transform() {
 		DEV_LOG.info("Transform invoked with file {}", source.getName());
 		try {
-			encoded =  transform(source.toInputStream());
+			encoded = transform(source.toInputStream());
 		} catch (XmlInputFileException | XmlException xe) {
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
 			details.add(new Detail(NOT_VALID_XML_DOCUMENT));
