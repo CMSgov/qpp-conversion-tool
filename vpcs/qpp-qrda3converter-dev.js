@@ -21,19 +21,4 @@ env.build = {
   }
 };
 
-/**
- * Legacy preform script to build AMIs. This script is called by the
- * `cloudform` command before running cloudform. Remove this when we've ported
- * CI over to use the python build-ami script -- at that point, `build-ami`
- * should be run first, then `cloudform` (or terraform) second,
- * as independent steps.
- */
-env.preformScript =
-  'cd $APP_BASE_DIR; ' +
-  '$CORE_BASE_DIR/tools/build-amis.sh service-docker ' +
-  env.application + ' ' +
-  env.region + ' ' +
-  '--var-file $APP_BASE_DIR/vpcs/packer-common.json ' +
-  '--var-file $APP_BASE_DIR/vpcs/packer-app.json';
-
 module.exports = env;
