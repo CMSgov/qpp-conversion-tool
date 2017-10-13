@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.util.Properties;
 import java.util.UUID;
 
-import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class EnvironmentHelperTest {
@@ -37,19 +36,5 @@ public class EnvironmentHelperTest {
 		System.setProperty(someKey, "nothing important");
 		assertWithMessage("%s should be set to %s", someKey, "nothing important")
 				.that(EnvironmentHelper.isPresent(someKey)).isTrue();
-	}
-
-	@Test
-	public void testValueForPresent() {
-		String someKey = UUID.randomUUID().toString();
-		String someValue = "DogCow";
-		System.setProperty(someKey, someValue);
-		assertThat(EnvironmentHelper.valueFor(someKey)).isEqualTo(someValue);
-	}
-
-	@Test
-	public void testValueForMotPresent() {
-		String someKey = UUID.randomUUID().toString();
-		assertThat(EnvironmentHelper.valueFor(someKey)).isNull();
 	}
 }
