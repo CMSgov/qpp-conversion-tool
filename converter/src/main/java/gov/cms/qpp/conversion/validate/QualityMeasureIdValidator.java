@@ -123,7 +123,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node          to validate
 	 * @param subPopulation a grouping of measures
 	 */
-	protected void validateSubPopulation(Node node, SubPopulation subPopulation) {
+	private void validateSubPopulation(Node node, SubPopulation subPopulation) {
 		List<Consumer<Node>> validations = prepValidations(subPopulation);
 		validations.forEach(validate -> validate.accept(node));
 
@@ -202,7 +202,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param key The type to check
 	 * @param node The node in which the child nodes live
 	 */
-	protected void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
+	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
 		long expectedChildTypeCount = subPopulations.stream()
 				.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
 				.filter(Objects::nonNull)
