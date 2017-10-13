@@ -37,6 +37,7 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * </ul>
 	 * @param node The node to validate.
 	 */
+	@Override
 	protected void internalValidateSingleNode(Node node) {
 		super.internalValidateSingleNode(node);
 
