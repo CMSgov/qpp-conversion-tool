@@ -153,6 +153,14 @@ public class QualityMeasureIdMultiRoundTripTest {
 				.contains(MipsQualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT);
 	}
 
+	@Test
+	public void testRoundTripQualityMeasureMissingOnePerformanceRateSuccess() {
+		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
+				"component[1]";
+		List<Detail> expectedOutput = executeScenario(path, true);
+		assertThat(expectedOutput).isEmpty();
+	}
+
 	private List<Detail> executeScenario(String path, boolean remove) {
 		InputStream modified = manipulator.upsetTheNorm(path, remove);
 		Converter converter = new Converter(new InputStreamQrdaSource(JUNK_QRDA3_FILE.toString(), modified));
