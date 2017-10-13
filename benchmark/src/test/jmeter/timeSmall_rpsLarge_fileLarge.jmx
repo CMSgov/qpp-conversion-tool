@@ -23,6 +23,21 @@
         <stringProp name="Unit">S</stringProp>
       </com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup>
       <hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies">
+            <elementProp name="ACA" elementType="Cookie" testname="ACA">
+              <stringProp name="Cookie.value">${__P(cookie)}</stringProp>
+              <stringProp name="Cookie.domain">${__P(host)}</stringProp>
+              <stringProp name="Cookie.path">${__P(path)}</stringProp>
+              <boolProp name="Cookie.secure">false</boolProp>
+              <longProp name="Cookie.expires">0</longProp>
+              <boolProp name="Cookie.path_specified">true</boolProp>
+              <boolProp name="Cookie.domain_specified">true</boolProp>
+            </elementProp>
+          </collectionProp>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+        </CookieManager>
+        <hashTree/>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop forever" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
           <intProp name="LoopController.loops">-1</intProp>
@@ -57,7 +72,7 @@
             <stringProp name="HTTPSampler.port">${__P(port)}</stringProp>
             <stringProp name="HTTPSampler.protocol">${__P(protocol)}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/</stringProp>
+            <stringProp name="HTTPSampler.path">${__P(path)}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -143,7 +158,7 @@ vars.put(&quot;filepath&quot;, subFiles[randomIndex].getCanonicalPath());
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">/Users/halprin/Desktop/results.xml</stringProp>
+        <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
