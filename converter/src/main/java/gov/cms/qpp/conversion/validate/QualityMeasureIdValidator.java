@@ -8,9 +8,6 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -22,10 +19,11 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
-import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
 
 /**
  * Validates a Measure Reference Results node.
@@ -50,6 +48,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
 	public static final String INCORRECT_UUID =
 			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
+	public static final String INCORRECT_PERFORMANCE_UUID =
+			"The eCQM (electronic measure id: %s) has a %s with an incorrect UUID of %s";
 	public static final String SINGLE_PERFORMANCE_RATE =
 			"A Performance Rate must contain a single Performance Rate UUID";
 
@@ -102,7 +102,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node The current parent node
 	 * @param measureConfig The measure configuration's sub population to use
 	 */
-	private void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig) {
+	void validateAllSubPopulations(final Node node, final MeasureConfig measureConfig) {
 		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
 
 		if (subPopulations.isEmpty()) {
@@ -129,6 +129,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 
 		validateDenomCountToIpopCount(node, subPopulation);
 	}
+
 
 	abstract List<Consumer<Node>> prepValidations(SubPopulation subPopulation);
 
@@ -261,40 +262,13 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	}
 
 	/**
-	 * Method for Performance Rate Uuid validations
-	 *
-	 * @param check a property existence check
-	 * @param keys that identify measures
-	 * @return a callback / consumer that will perform a measure specific validation against a given
-	 * node.
-	 */
-	Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String... keys) {
-		return node -> {
-			if (check.get() != null) {
-				Predicate<Node> childUuidFinder =
-						makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
-
-				Node existingUuidChild = node
-						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-						.filter(childUuidFinder)
-						.findFirst()
-						.orElse(null);
-
-				if (existingUuidChild == null) {
-					addMeasureConfigurationValidationMessage(check, keys, node);
-				}
-			}
-		};
-	}
-
-	/**
 	 * Adds a validation error message for a specified measure configuration
 	 *
 	 * @param check Current SubPopulation to be validated
 	 * @param keys Identifiers for the current measures child
 	 * @param node Contains the current child nodes
 	 */
-	private void addMeasureConfigurationValidationMessage(Supplier<Object> check, String[] keys, Node node) {
+	protected void addMeasureConfigurationValidationMessage(Supplier<Object> check, String[] keys, Node node) {
 		MeasureConfig config =
 				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 		String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(),
@@ -326,7 +300,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param name Supplies a node field validate on
 	 * @return predicate seeking a matching uuid
 	 */
-	private Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, String message, String name) {
+	protected Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, String message, String name) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
 					.incompleteValidation()
