@@ -69,7 +69,7 @@ public class QrdaControllerV1 {
 		return () -> {
 			try {
 				return file.getInputStream();
-			} catch(IOException ex) {
+			} catch (IOException ex) {
 				throw new UncheckedIOException(ex);
 			}
 		};

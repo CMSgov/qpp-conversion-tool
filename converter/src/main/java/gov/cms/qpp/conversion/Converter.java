@@ -100,10 +100,6 @@ public class Converter {
 		return encoded;
 	}
 
-	public ConversionReport getReport() {
-		return new ConversionReport();
-	}
-
 	/**
 	 * Transform the content in a given input stream
 	 *
@@ -164,6 +160,10 @@ public class Converter {
 	 */
 	protected JsonOutputEncoder getEncoder() {
 		return (!context.getScope().isEmpty()) ? new ScopedQppOutputEncoder(context) : new QppOutputEncoder(context);
+	}
+
+	public ConversionReport getReport() {
+		return new ConversionReport();
 	}
 
 

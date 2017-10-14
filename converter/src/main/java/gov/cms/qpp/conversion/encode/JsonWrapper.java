@@ -15,6 +15,7 @@ import gov.cms.qpp.conversion.model.Node;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -524,7 +525,7 @@ public class JsonWrapper {
 	}
 
 	public InputStream contentStream() {
-		return new ByteArrayInputStream(toString().getBytes());
+		return new ByteArrayInputStream(toString().getBytes(StandardCharsets.UTF_8));
 	}
 
 	/**
