@@ -6,7 +6,7 @@ import gov.cms.qpp.conversion.Converter.ConversionReport;
  * An {@link Exception} that is thrown from the {@link gov.cms.qpp.conversion.Converter} on error.
  */
 public class TransformException extends RuntimeException {
-	private final transient ConversionReport conversionReport;
+	protected final transient ConversionReport conversionReport;
 
 	/**
 	 * Construct a new {@code TransformException} exception.

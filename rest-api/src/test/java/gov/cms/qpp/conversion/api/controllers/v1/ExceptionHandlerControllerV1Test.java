@@ -54,7 +54,7 @@ public class ExceptionHandlerControllerV1Test {
 		TransformException exception =
 				new TransformException("test transform exception", new NullPointerException(), report);
 
-		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception);
 
 		assertWithMessage("The response entity's status code must be 422.")
 				.that(responseEntity.getStatusCode())
@@ -66,7 +66,7 @@ public class ExceptionHandlerControllerV1Test {
 		TransformException exception =
 				new TransformException("test transform exception", new NullPointerException(), report);
 
-		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception);
 
 		assertThat(responseEntity.getHeaders().getContentType())
 				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON_UTF8);
@@ -77,7 +77,7 @@ public class ExceptionHandlerControllerV1Test {
 		TransformException exception =
 				new TransformException("test transform exception", new NullPointerException(), report);
 
-		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception);
 		assertThat(responseEntity.getBody()).isEqualTo(allErrors);
 	}
 }

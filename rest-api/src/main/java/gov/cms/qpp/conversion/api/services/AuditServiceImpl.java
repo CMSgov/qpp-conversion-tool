@@ -41,8 +41,13 @@ public class AuditServiceImpl implements AuditService {
 	}
 
 	@Override
-	public CompletableFuture<Void> failValidation(InputStream fileContent, InputStream qppContent) {
-		return null;
+	public CompletableFuture<Void> failValidation(Converter.ConversionReport conversionReport) {
+		Metadata metadata = initMetadata(conversionReport.getDecoded());
+		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
+				storeContent(conversionReport.streamDetails()).thenAccept(metadata::setValidationErrorLocator),
+				storeContent(conversionReport.getEncoded().contentStream()).thenAccept(metadata::setQppLocator),
+				storeContent(conversionReport.getFileInput()).thenAccept(metadata::setSubmissionLocator));
+		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
 	private Metadata initMetadata(Node decoded) {

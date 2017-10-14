@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Error;
-import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +59,7 @@ public class ValidationServiceImpl implements ValidationService {
 			if (HttpStatus.UNPROCESSABLE_ENTITY.equals(validationResponse.getStatusCode())) {
 				AllErrors convertedErrors = convertQppValidationErrorsToQrda(validationResponse.getBody(), wrapper);
 				conversionReport.setReportDetails(convertedErrors);
-				throw new TransformException("Converted QPP failed validation", null, conversionReport);
+				throw new QppValidationException("Converted QPP failed validation", null, conversionReport);
 			}
 		});
 	}
@@ -83,7 +83,7 @@ public class ValidationServiceImpl implements ValidationService {
 	 *
 	 * @return the headers
 	 */
-	public HttpHeaders getHeaders() {
+	HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE);
 		headers.add(HttpHeaders.ACCEPT, CONTENT_TYPE);
