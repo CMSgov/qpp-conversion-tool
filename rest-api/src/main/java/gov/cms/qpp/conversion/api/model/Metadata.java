@@ -15,7 +15,7 @@ import java.util.Date;
  * Model to hold conversion metadata. Maps to a table in DynamoDB.
  */
 @DynamoDBTable(tableName = "ConversionMetadata")
-public class Metadata {
+public final class Metadata {
 	private String uuid;
 	private String tin;  //this field is encrypted
 	private String npi;
