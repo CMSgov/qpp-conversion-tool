@@ -1,8 +1,8 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.InputStreamQrdaSource;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
 import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.TransformResult;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.util.function.Supplier;
 
 /**
  * Controller to handle uploading files for QRDA-III Conversion
@@ -50,15 +53,25 @@ public class QrdaControllerV1 {
 	@RequestMapping(method = RequestMethod.POST, headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
 		API_LOG.info("Request received " + file.getName());
-		TransformResult result = qrdaService.convertQrda3ToQpp(
-				new InputStreamQrdaSource(file.getName(), file.getInputStream()));
+		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
+				new InputStreamSupplierQrdaSource(file.getName(), inputStreamSupplier(file)));
 
-		validationService.validateQpp(result.getEncoded());
+		validationService.validateQpp(conversionReport);
+		auditService.success(conversionReport);
 		API_LOG.info("Conversion success " + file.getName());
-		auditService.success(file.getInputStream(), result);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
-		return new ResponseEntity<>(result.getEncoded().toString(), httpHeaders, HttpStatus.CREATED);
+		return new ResponseEntity<>(conversionReport.getEncoded().toString(), httpHeaders, HttpStatus.CREATED);
+	}
+
+	private Supplier<InputStream> inputStreamSupplier(MultipartFile file) {
+		return () -> {
+			try {
+				return file.getInputStream();
+			} catch(IOException ex) {
+				throw new UncheckedIOException(ex);
+			}
+		};
 	}
 }

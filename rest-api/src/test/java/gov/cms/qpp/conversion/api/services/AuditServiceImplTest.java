@@ -1,10 +1,10 @@
 package gov.cms.qpp.conversion.api.services;
 
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.model.TransformResult;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.Node;
 import net.jodah.concurrentunit.Waiter;
@@ -30,12 +30,10 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 
-//@RunWith(MockitoJUnitRunner.class)
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({MetadataHelper.class})
 public class AuditServiceImplTest {
 	private static final String AN_ID = "1234567890";
-	private static TransformResult result;
 
 	@InjectMocks
 	private AuditServiceImpl underTest;
@@ -46,7 +44,9 @@ public class AuditServiceImplTest {
 	@Mock
 	private DbService dbService;
 
-	private InputStream fileContent;
+	@Mock
+	private Converter.ConversionReport report;
+
 	private Metadata metadata;
 
 	@Before
@@ -54,9 +54,15 @@ public class AuditServiceImplTest {
 		Node node = new Node();
 		node.putValue("meep", "mawp");
 
-		fileContent = new ByteArrayInputStream("Hello".getBytes());
-		result = new TransformResult(node, new JsonWrapper());
+		JsonWrapper wrapper = new JsonWrapper();
+		wrapper.putString("meep", "mawp");
+
+		InputStream fileContent = new ByteArrayInputStream("Hello".getBytes());
 		metadata = new Metadata();
+
+		when(report.getFileInput()).thenReturn(fileContent);
+		when(report.getDecoded()).thenReturn(node);
+		when(report.getEncoded()).thenReturn(wrapper);
 
 		mockStatic(MetadataHelper.class);
 		when(MetadataHelper.generateMetadata(any(Node.class)))
@@ -68,7 +74,7 @@ public class AuditServiceImplTest {
 	@Test
 	public void testAuditHappyPath() {
 		allGood();
-		underTest.success(fileContent, result);
+		underTest.success(report);
 
 		assertThat(metadata.getQppLocator()).isSameAs(AN_ID);
 		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
@@ -77,7 +83,7 @@ public class AuditServiceImplTest {
 	@Test
 	public void testAuditHappyPathWrite() {
 		allGood();
-		underTest.success(fileContent, result);
+		underTest.success(report);
 
 		verify(dbService, times(1)).write(metadata);
 	}
@@ -86,7 +92,7 @@ public class AuditServiceImplTest {
 	public void testFileUploadFailureException() throws TimeoutException {
 		problematic();
 		final Waiter waiter = new Waiter();
-		CompletableFuture<Void> future = underTest.success(fileContent, result);
+		CompletableFuture<Void> future = underTest.success(report);
 
 		future.whenComplete((nada, ex) -> {
 			waiter.assertNull(metadata.getQppLocator());

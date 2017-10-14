@@ -1,10 +1,10 @@
 package gov.cms.qpp.conversion.api.services;
 
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.model.TransformResult;
 import gov.cms.qpp.conversion.model.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,26 +23,30 @@ public class AuditServiceImpl implements AuditService {
 	private DbService dbService;
 
 	@Override
-	public CompletableFuture<Void> success(InputStream fileContent, TransformResult result) {
-		Metadata metadata = initMetadata(result.getDecoded());
+	public CompletableFuture<Void> success(Converter.ConversionReport conversionReport) {
+		Metadata metadata = initMetadata(conversionReport.getDecoded());
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
-				storeContent(fileContent).thenAccept(metadata::setSubmissionLocator),
-				storeContent(result.getEncoded().contentStream()).thenAccept(metadata::setQppLocator));
+				storeContent(conversionReport.getFileInput()).thenAccept(metadata::setSubmissionLocator),
+				storeContent(conversionReport.getEncoded().contentStream()).thenAccept(metadata::setQppLocator));
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
-	Metadata initMetadata(Node decoded) {
-		return MetadataHelper.generateMetadata(decoded);
-	}
-
 	@Override
-	public CompletableFuture<Void> failConversion(InputStream fileContent, InputStream qppContent) {
-		return null;
+	public CompletableFuture<Void> failConversion(Converter.ConversionReport conversionReport) {
+		Metadata metadata = initMetadata(conversionReport.getDecoded());
+		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
+				storeContent(conversionReport.streamDetails()).thenAccept(metadata::setConversionErrorLocator),
+				storeContent(conversionReport.getFileInput()).thenAccept(metadata::setSubmissionLocator));
+		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
 	@Override
 	public CompletableFuture<Void> failValidation(InputStream fileContent, InputStream qppContent) {
 		return null;
+	}
+
+	private Metadata initMetadata(Node decoded) {
+		return MetadataHelper.generateMetadata(decoded);
 	}
 
 	private CompletableFuture<String> storeContent(InputStream content) {

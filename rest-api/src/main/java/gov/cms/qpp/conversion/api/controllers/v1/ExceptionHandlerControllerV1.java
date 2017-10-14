@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.api.exceptions.QppValidationException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -39,29 +38,14 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	@ExceptionHandler(TransformException.class)
 	@ResponseBody
 	protected ResponseEntity<AllErrors> handleTransformException(TransformException exception, WebRequest request) {
-		return makeResponse(exception);
-	}
-
-	/**
-	 * "Catch" the {@link QppValidationException}.
-	 * Return the {@link AllErrors} with an HTTP status 422.
-	 *
-	 * @param exception The QppValidationException that was "caught".
-	 * @param request The request.
-	 * @return The AllErrors dto that details the QppValidationException.
-	 */
-	@ExceptionHandler(QppValidationException.class)
-	@ResponseBody
-	protected ResponseEntity<AllErrors> handleQppValidationException(QppValidationException exception, WebRequest request) {
-		return makeResponse(exception);
-	}
-
-	private ResponseEntity<AllErrors> makeResponse(TransformException exception) {
 		API_LOG.error("Problem during conversion: ", exception);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
+		auditService.failConversion(exception.getConversionReport());
+
 		return new ResponseEntity<>(exception.getDetails(), httpHeaders,
 				HttpStatus.UNPROCESSABLE_ENTITY);
 	}
+
 }

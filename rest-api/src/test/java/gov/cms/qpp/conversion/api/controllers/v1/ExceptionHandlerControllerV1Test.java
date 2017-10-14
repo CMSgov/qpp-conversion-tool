@@ -1,22 +1,58 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.CompletableFuture;
+
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static org.mockito.ArgumentMatchers.any;
+import static org.powermock.api.mockito.PowerMockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ExceptionHandlerControllerV1Test {
+	private static Converter.ConversionReport report;
+	private static AllErrors allErrors = new AllErrors();
 
-	private ExceptionHandlerControllerV1 objectUnderTest = new ExceptionHandlerControllerV1();
+	@InjectMocks
+	private ExceptionHandlerControllerV1 objectUnderTest;
+
+	@Mock
+	private AuditService auditService;
+
+	@BeforeClass
+	public static void setup() {
+		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+		report = new Converter(new PathQrdaSource(path)).getReport();
+		report.setReportDetails(allErrors);
+	}
+
+	@Before
+	public void before() {
+		when(auditService.failConversion(any(Converter.ConversionReport.class)))
+				.thenReturn(CompletableFuture.completedFuture(null));
+	}
 
 	@Test
 	public void testStatusCode() {
-		TransformException exception = new TransformException("test transform exception", new NullPointerException(), new AllErrors());
+		TransformException exception =
+				new TransformException("test transform exception", new NullPointerException(), report);
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
 
@@ -27,7 +63,8 @@ public class ExceptionHandlerControllerV1Test {
 
 	@Test
 	public void testHeaderContentType() {
-		TransformException exception = new TransformException("test transform exception", new NullPointerException(), new AllErrors());
+		TransformException exception =
+				new TransformException("test transform exception", new NullPointerException(), report);
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
 
@@ -37,8 +74,8 @@ public class ExceptionHandlerControllerV1Test {
 
 	@Test
 	public void testBody() {
-		AllErrors allErrors = new AllErrors();
-		TransformException exception = new TransformException("test transform exception", new NullPointerException(), allErrors);
+		TransformException exception =
+				new TransformException("test transform exception", new NullPointerException(), report);
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
 		assertThat(responseEntity.getBody()).isEqualTo(allErrors);

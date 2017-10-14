@@ -53,9 +53,10 @@ public class ConverterTest {
 	}
 
 	@Test(expected = org.junit.Test.None.class)
-	public void testValidQppStream() throws IOException {
+	public void testValidQppStream() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		Converter converter = new Converter(new InputStreamQrdaSource(path.toString(), XmlUtils.fileToStream(path)));
+		Converter converter = new Converter(
+				new InputStreamSupplierQrdaSource(path.toString(), () -> XmlUtils.fileToStream(path)));
 
 		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
@@ -154,7 +155,7 @@ public class ConverterTest {
 
 	@Test
 	@PrepareForTest({Converter.class, XmlUtils.class})
-	public void testUnexpectedError() throws IOException {
+	public void testUnexpectedError() {
 
 		mockStatic(XmlUtils.class);
 		when(XmlUtils.fileToStream(any(Path.class))).thenReturn(null);

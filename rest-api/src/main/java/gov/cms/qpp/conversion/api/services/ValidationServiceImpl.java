@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
-import gov.cms.qpp.conversion.api.exceptions.QppValidationException;
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
@@ -43,10 +43,10 @@ public class ValidationServiceImpl implements ValidationService {
 	/**
 	 * Validates that the given QPP is valid.
 	 *
-	 * @param qpp The QPP input.
+	 * @param conversionReport A report on the status of the conversion.
 	 */
 	@Override
-	public void validateQpp(final JsonWrapper qpp) {
+	public void validateQpp(final Converter.ConversionReport conversionReport) {
 		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
 
 		if (validationUrl == null || validationUrl.isEmpty()) {
@@ -54,11 +54,12 @@ public class ValidationServiceImpl implements ValidationService {
 		}
 
 		API_LOG.info("Calling QPP validation");
-		qpp.stream().forEach(wrapper -> {
+		conversionReport.getEncoded().stream().forEach(wrapper -> {
 			ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper);
 			if (HttpStatus.UNPROCESSABLE_ENTITY.equals(validationResponse.getStatusCode())) {
 				AllErrors convertedErrors = convertQppValidationErrorsToQrda(validationResponse.getBody(), wrapper);
-				throw new QppValidationException("Converted QPP failed validation", convertedErrors);
+				conversionReport.setReportDetails(convertedErrors);
+				throw new TransformException("Converted QPP failed validation", null, conversionReport);
 			}
 		});
 	}

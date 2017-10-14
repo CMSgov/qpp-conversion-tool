@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
@@ -21,6 +23,7 @@ import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,13 +76,6 @@ public class Converter {
 		return context;
 	}
 
-	public Node getDecoded() {
-		return CloneHelper.deepClone(decoded);
-	}
-	public JsonWrapper getEncoded() {
-		return CloneHelper.deepClone(encoded);
-	}
-
 	/**
 	 * Perform conversion.
 	 *
@@ -98,11 +94,14 @@ public class Converter {
 		}
 
 		if (!details.isEmpty()) {
-			throw new TransformException("Validation errors exist", null,
-				constructErrorHierarchy(source.getName(), details));
+			throw new TransformException("Validation errors exist", null, getReport());
 		}
 
 		return encoded;
+	}
+
+	public ConversionReport getReport() {
+		return new ConversionReport();
 	}
 
 	/**
@@ -139,32 +138,6 @@ public class Converter {
 	}
 
 	/**
-	 * Constructs an {@link AllErrors} from all the validation errors.
-	 *
-	 * Currently consists of only a single {@link Error}.
-	 *
-	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
-	 * @param details A list of validation errors.
-	 * @return All the errors.
-	 */
-	private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
-		AllErrors errors = new AllErrors();
-		errors.addError(constructErrorSource(inputIdentifier, details));
-		return errors;
-	}
-
-	/**
-	 * Constructs an {@link Error} for the given {@code inputIdentifier} from the passed in validation errors.
-	 *
-	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
-	 * @param details A list of validation errors.
-	 * @return A single source of validation errors.
-	 */
-	private Error constructErrorSource(final String inputIdentifier, final List<Detail> details) {
-		return new Error(inputIdentifier, details);
-	}
-
-	/**
 	 * Place transformed content into an input stream
 	 *
 	 * @return content resulting from the transformation
@@ -191,6 +164,70 @@ public class Converter {
 	 */
 	protected JsonOutputEncoder getEncoder() {
 		return (!context.getScope().isEmpty()) ? new ScopedQppOutputEncoder(context) : new QppOutputEncoder(context);
+	}
+
+
+	public class ConversionReport {
+		private final ObjectMapper mapper = new ObjectMapper();
+		private AllErrors reportDetails;
+
+		ConversionReport() {
+			reportDetails = constructErrorHierarchy(source.getName(), details);
+		}
+
+		public Node getDecoded() {
+			return CloneHelper.deepClone(decoded);
+		}
+
+		public JsonWrapper getEncoded() {
+			return CloneHelper.deepClone(encoded);
+		}
+
+		public AllErrors getReportDetails() {
+			return reportDetails;
+		}
+
+		public InputStream streamDetails() {
+			try {
+				return new ByteArrayInputStream(mapper.writeValueAsBytes(reportDetails));
+			} catch (JsonProcessingException e) {
+				throw new EncodeException("Issue serializing error report details", e);
+			}
+		}
+
+		public void setReportDetails(AllErrors details) {
+			reportDetails = details;
+		}
+
+		public InputStream getFileInput() {
+			return source.toInputStream();
+		}
+
+		/**
+		 * Constructs an {@link AllErrors} from all the validation errors.
+		 *
+		 * Currently consists of only a single {@link Error}.
+		 *
+		 * @param inputIdentifier An identifier for a source of QRDA3 XML.
+		 * @param details A list of validation errors.
+		 * @return All the errors.
+		 */
+		private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
+			AllErrors errors = new AllErrors();
+			errors.addError(constructErrorSource(inputIdentifier, details));
+			return errors;
+		}
+
+		/**
+		 * Constructs an {@link Error} for the given {@code inputIdentifier} from the passed in validation errors.
+		 *
+		 * @param inputIdentifier An identifier for a source of QRDA3 XML.
+		 * @param details A list of validation errors.
+		 * @return A single source of validation errors.
+		 */
+		private Error constructErrorSource(final String inputIdentifier, final List<Detail> details) {
+			return new Error(inputIdentifier, details);
+		}
 	}
 
 }
