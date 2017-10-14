@@ -12,8 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.ByteArrayInputStream;
 
@@ -24,8 +22,6 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-//@RunWith(PowerMockRunner.class)
-//@PrepareForTest({Converter.class})
 public class QrdaServiceImplTest {
 	private static final QrdaSource MOCK_SUCCESS_QRDA_SOURCE =
 			new InputStreamSupplierQrdaSource("Good Qrda", () -> new ByteArrayInputStream("Good Qrda".getBytes()));

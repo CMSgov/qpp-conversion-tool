@@ -48,21 +48,11 @@ public class AuditServiceImplTest {
 	private Converter.ConversionReport report;
 
 	private Metadata metadata;
+	private InputStream fileContent = new ByteArrayInputStream("Hello".getBytes());
 
 	@Before
 	public void before() throws NoSuchFieldException, IllegalAccessException {
-		Node node = new Node();
-		node.putValue("meep", "mawp");
-
-		JsonWrapper wrapper = new JsonWrapper();
-		wrapper.putString("meep", "mawp");
-
-		InputStream fileContent = new ByteArrayInputStream("Hello".getBytes());
 		metadata = new Metadata();
-
-		when(report.getFileInput()).thenReturn(fileContent);
-		when(report.getDecoded()).thenReturn(node);
-		when(report.getEncoded()).thenReturn(wrapper);
 
 		mockStatic(MetadataHelper.class);
 		when(MetadataHelper.generateMetadata(any(Node.class)))
@@ -73,6 +63,7 @@ public class AuditServiceImplTest {
 
 	@Test
 	public void testAuditHappyPath() {
+		successPrep();
 		allGood();
 		underTest.success(report);
 
@@ -82,6 +73,7 @@ public class AuditServiceImplTest {
 
 	@Test
 	public void testAuditHappyPathWrite() {
+		successPrep();
 		allGood();
 		underTest.success(report);
 
@@ -90,6 +82,7 @@ public class AuditServiceImplTest {
 
 	@Test
 	public void testFileUploadFailureException() throws TimeoutException {
+		successPrep();
 		problematic();
 		final Waiter waiter = new Waiter();
 		CompletableFuture<Void> future = underTest.success(report);
@@ -102,6 +95,38 @@ public class AuditServiceImplTest {
 		});
 
 		waiter.await(5000);
+	}
+
+	@Test
+	public void testAuditConversionFailureHappy() {
+		conversionErrorPrep();
+		allGood();
+		underTest.failConversion(report);
+
+		assertThat(metadata.getConversionErrorLocator()).isSameAs(AN_ID);
+		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
+	}
+
+	private void successPrep() {
+		prepOverlap();
+		JsonWrapper wrapper = new JsonWrapper();
+		wrapper.putString("meep", "mawp");
+
+		when(report.getEncoded()).thenReturn(wrapper);
+	}
+
+	private void conversionErrorPrep() {
+		prepOverlap();
+
+		when(report.streamDetails()).thenReturn(fileContent);
+	}
+
+	private void prepOverlap() {
+		Node node = new Node();
+		node.putValue("meep", "mawp");
+
+		when(report.getFileInput()).thenReturn(fileContent);
+		when(report.getDecoded()).thenReturn(node);
 	}
 
 	private void allGood() {
