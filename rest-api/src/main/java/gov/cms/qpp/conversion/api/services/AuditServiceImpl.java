@@ -4,6 +4,7 @@ package gov.cms.qpp.conversion.api.services;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper;
+import gov.cms.qpp.conversion.api.helper.MetadataHelper.Outcome;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.model.Node;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class AuditServiceImpl implements AuditService {
 
 	@Override
 	public CompletableFuture<Void> success(Converter.ConversionReport conversionReport) {
-		Metadata metadata = initMetadata(conversionReport.getDecoded());
+		Metadata metadata = initMetadata(conversionReport.getDecoded(), Outcome.SUCCESS);
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(conversionReport.getFileInput()).thenAccept(metadata::setSubmissionLocator),
 				storeContent(conversionReport.getEncoded().contentStream()).thenAccept(metadata::setQppLocator));
@@ -33,7 +34,7 @@ public class AuditServiceImpl implements AuditService {
 
 	@Override
 	public CompletableFuture<Void> failConversion(Converter.ConversionReport conversionReport) {
-		Metadata metadata = initMetadata(conversionReport.getDecoded());
+		Metadata metadata = initMetadata(conversionReport.getDecoded(), Outcome.CONVERSION_ERROR);
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(conversionReport.streamDetails()).thenAccept(metadata::setConversionErrorLocator),
 				storeContent(conversionReport.getFileInput()).thenAccept(metadata::setSubmissionLocator));
@@ -42,7 +43,7 @@ public class AuditServiceImpl implements AuditService {
 
 	@Override
 	public CompletableFuture<Void> failValidation(Converter.ConversionReport conversionReport) {
-		Metadata metadata = initMetadata(conversionReport.getDecoded());
+		Metadata metadata = initMetadata(conversionReport.getDecoded(), Outcome.VALIDATION_ERROR);
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(conversionReport.streamDetails()).thenAccept(metadata::setValidationErrorLocator),
 				storeContent(conversionReport.getEncoded().contentStream()).thenAccept(metadata::setQppLocator),
@@ -50,8 +51,8 @@ public class AuditServiceImpl implements AuditService {
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
-	private Metadata initMetadata(Node decoded) {
-		return MetadataHelper.generateMetadata(decoded);
+	private Metadata initMetadata(Node decoded, MetadataHelper.Outcome outcome) {
+		return MetadataHelper.generateMetadata(decoded, outcome);
 	}
 
 	private CompletableFuture<String> storeContent(InputStream content) {

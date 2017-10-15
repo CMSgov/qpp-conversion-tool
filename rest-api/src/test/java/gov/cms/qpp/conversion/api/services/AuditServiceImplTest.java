@@ -55,7 +55,7 @@ public class AuditServiceImplTest {
 		metadata = new Metadata();
 
 		mockStatic(MetadataHelper.class);
-		when(MetadataHelper.generateMetadata(any(Node.class)))
+		when(MetadataHelper.generateMetadata(any(Node.class), any(MetadataHelper.Outcome.class)))
 				.thenReturn(metadata);
 		doReturn(CompletableFuture.completedFuture(metadata))
 				.when(dbService).write(metadata);
@@ -63,7 +63,7 @@ public class AuditServiceImplTest {
 
 	@Test
 	public void testAuditHappyPath() {
-		successPrep();
+		successfulEncodingPrep();
 		allGood();
 		underTest.success(report);
 
@@ -73,7 +73,7 @@ public class AuditServiceImplTest {
 
 	@Test
 	public void testAuditHappyPathWrite() {
-		successPrep();
+		successfulEncodingPrep();
 		allGood();
 		underTest.success(report);
 
@@ -82,7 +82,7 @@ public class AuditServiceImplTest {
 
 	@Test
 	public void testFileUploadFailureException() throws TimeoutException {
-		successPrep();
+		successfulEncodingPrep();
 		problematic();
 		final Waiter waiter = new Waiter();
 		CompletableFuture<Void> future = underTest.success(report);
@@ -99,7 +99,7 @@ public class AuditServiceImplTest {
 
 	@Test
 	public void testAuditConversionFailureHappy() {
-		conversionErrorPrep();
+		errorPrep();
 		allGood();
 		underTest.failConversion(report);
 
@@ -107,7 +107,19 @@ public class AuditServiceImplTest {
 		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
 	}
 
-	private void successPrep() {
+	@Test
+	public void testAuditQppValidationFailureHappy() {
+		successfulEncodingPrep();
+		errorPrep();
+		allGood();
+		underTest.failValidation(report);
+
+		assertThat(metadata.getValidationErrorLocator()).isSameAs(AN_ID);
+		assertThat(metadata.getQppLocator()).isSameAs(AN_ID);
+		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
+	}
+
+	private void successfulEncodingPrep() {
 		prepOverlap();
 		JsonWrapper wrapper = new JsonWrapper();
 		wrapper.putString("meep", "mawp");
@@ -115,7 +127,7 @@ public class AuditServiceImplTest {
 		when(report.getEncoded()).thenReturn(wrapper);
 	}
 
-	private void conversionErrorPrep() {
+	private void errorPrep() {
 		prepOverlap();
 
 		when(report.streamDetails()).thenReturn(fileContent);

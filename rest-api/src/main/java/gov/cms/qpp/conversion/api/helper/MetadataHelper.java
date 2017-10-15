@@ -1,15 +1,15 @@
 package gov.cms.qpp.conversion.api.helper;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Utilities for working with Metadata beans
@@ -26,8 +26,9 @@ public class MetadataHelper {
 	 * @param node
 	 * @return
 	 */
-	public static Metadata generateMetadata(Node node) {
+	public static Metadata generateMetadata(Node node, Outcome outcome) {
 		Objects.requireNonNull(node, "node");
+		Objects.requireNonNull(outcome, "outcome");
 
 		Metadata metadata = new Metadata();
 
@@ -35,6 +36,7 @@ public class MetadataHelper {
 		metadata.setTin(findTin(node));
 		metadata.setNpi(findNpi(node));
 		metadata.setCpc(isCpc(node));
+		outcome.setStatus(metadata);
 
 		return metadata;
 	}
@@ -61,11 +63,7 @@ public class MetadataHelper {
 		Node found = findPossibleChildNode(node, ClinicalDocumentDecoder.PROGRAM_NAME,
 						TemplateId.CLINICAL_DOCUMENT, TemplateId.QRDA_CATEGORY_III_REPORT_V3);
 
-		if (found == null) {
-			return false;
-		}
-
-		return Program.isCpc(found);
+		return found != null && Program.isCpc(found);
 	}
 
 	/**
@@ -94,6 +92,28 @@ public class MetadataHelper {
 			.filter(child -> child.hasValue(key))
 			.findFirst()
 			.orElse(null);
+	}
+
+	public enum Outcome {
+		SUCCESS(true, true, true),
+		CONVERSION_ERROR(false, false, false),
+		VALIDATION_ERROR(false, true, false);
+
+		private boolean overall;
+		private boolean conversion;
+		private boolean validation;
+
+		Outcome(boolean overall, boolean conversion, boolean validation) {
+			this.overall = overall;
+			this.conversion = conversion;
+			this.validation = validation;
+		}
+
+		private void setStatus(Metadata metadata) {
+			metadata.setOverallStatus(overall);
+			metadata.setConversionStatus(conversion);
+			metadata.setValidationStatus(validation);
+		}
 	}
 
 }
