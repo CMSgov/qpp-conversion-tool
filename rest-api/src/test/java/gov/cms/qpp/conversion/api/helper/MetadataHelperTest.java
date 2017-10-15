@@ -1,14 +1,15 @@
 package gov.cms.qpp.conversion.api.helper;
 
-import org.junit.Test;
-
-import com.google.common.truth.Truth;
-
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.Test;
+
+import java.util.Arrays;
+
+import static com.google.common.truth.Truth.assertThat;
 
 public class MetadataHelperTest {
 
@@ -30,7 +31,7 @@ public class MetadataHelperTest {
 		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "CPCPLUS");
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getCpc()).isTrue();
+		assertThat(metadata.getCpc()).isTrue();
 	}
 
 	@Test
@@ -42,7 +43,7 @@ public class MetadataHelperTest {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getCpc()).isTrue();
+		assertThat(metadata.getCpc()).isTrue();
 	}
 
 	@Test
@@ -53,7 +54,7 @@ public class MetadataHelperTest {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getCpc()).isFalse();
+		assertThat(metadata.getCpc()).isFalse();
 	}
 
 	@Test
@@ -62,7 +63,7 @@ public class MetadataHelperTest {
 		node.putValue(ClinicalDocumentDecoder.ENTITY_ID, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getApm()).isEqualTo(MOCK_STRING);
+		assertThat(metadata.getApm()).isEqualTo(MOCK_STRING);
 	}
 
 	@Test
@@ -74,7 +75,7 @@ public class MetadataHelperTest {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getApm()).isEqualTo(MOCK_STRING);
+		assertThat(metadata.getApm()).isEqualTo(MOCK_STRING);
 	}
 
 	@Test
@@ -85,7 +86,7 @@ public class MetadataHelperTest {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getApm()).isNull();
+		assertThat(metadata.getApm()).isNull();
 	}
 
 	@Test
@@ -94,7 +95,7 @@ public class MetadataHelperTest {
 		node.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getTin()).isEqualTo(MOCK_STRING);
+		assertThat(metadata.getTin()).isEqualTo(MOCK_STRING);
 	}
 
 	@Test
@@ -106,7 +107,7 @@ public class MetadataHelperTest {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getTin()).isEqualTo(MOCK_STRING);
+		assertThat(metadata.getTin()).isEqualTo(MOCK_STRING);
 	}
 
 	@Test
@@ -117,7 +118,7 @@ public class MetadataHelperTest {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getTin()).isNull();
+		assertThat(metadata.getTin()).isNull();
 	}
 
 	@Test
@@ -126,7 +127,7 @@ public class MetadataHelperTest {
 		node.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getNpi()).isEqualTo(MOCK_STRING);
+		assertThat(metadata.getNpi()).isEqualTo(MOCK_STRING);
 	}
 
 	@Test
@@ -138,7 +139,7 @@ public class MetadataHelperTest {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getNpi()).isEqualTo(MOCK_STRING);
+		assertThat(metadata.getNpi()).isEqualTo(MOCK_STRING);
 	}
 
 	@Test
@@ -149,34 +150,42 @@ public class MetadataHelperTest {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		Truth.assertThat(metadata.getNpi()).isNull();
+		assertThat(metadata.getNpi()).isNull();
 	}
 
 	@Test
 	public void testSuccessOutcome() {
 		Metadata metadata = MetadataHelper.generateMetadata(new Node(), MetadataHelper.Outcome.SUCCESS);
 
-		Truth.assertThat(metadata.getOverallStatus()).isTrue();
-		Truth.assertThat(metadata.getConversionStatus()).isTrue();
-		Truth.assertThat(metadata.getValidationStatus()).isTrue();
+		assertThat(metadata.getOverallStatus()).isTrue();
+		assertThat(metadata.getConversionStatus()).isTrue();
+		assertThat(metadata.getValidationStatus()).isTrue();
 	}
 
 	@Test
 	public void testConversionFailureOutcome() {
 		Metadata metadata = MetadataHelper.generateMetadata(new Node(), MetadataHelper.Outcome.CONVERSION_ERROR);
 
-		Truth.assertThat(metadata.getOverallStatus()).isFalse();
-		Truth.assertThat(metadata.getConversionStatus()).isFalse();
-		Truth.assertThat(metadata.getValidationStatus()).isFalse();
+		assertThat(metadata.getOverallStatus()).isFalse();
+		assertThat(metadata.getConversionStatus()).isFalse();
+		assertThat(metadata.getValidationStatus()).isFalse();
 	}
 
 	@Test
 	public void testValidationFailureOutcome() {
 		Metadata metadata = MetadataHelper.generateMetadata(new Node(), MetadataHelper.Outcome.VALIDATION_ERROR);
 
-		Truth.assertThat(metadata.getOverallStatus()).isFalse();
-		Truth.assertThat(metadata.getConversionStatus()).isTrue();
-		Truth.assertThat(metadata.getValidationStatus()).isFalse();
+		assertThat(metadata.getOverallStatus()).isFalse();
+		assertThat(metadata.getConversionStatus()).isTrue();
+		assertThat(metadata.getValidationStatus()).isFalse();
+	}
+
+	@Test
+	public void testOutcomeValueOf() {
+		Arrays.stream(MetadataHelper.Outcome.values())
+				.forEach(outcome -> {
+					assertThat(outcome).isSameAs(MetadataHelper.Outcome.valueOf(outcome.name()));
+				});
 	}
 
 }

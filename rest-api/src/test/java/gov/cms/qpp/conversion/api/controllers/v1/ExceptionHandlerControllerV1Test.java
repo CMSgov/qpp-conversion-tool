@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -50,7 +51,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testStatusCode() {
+	public void testTransformExceptionStatusCode() {
 		TransformException exception =
 				new TransformException("test transform exception", new NullPointerException(), report);
 
@@ -62,7 +63,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testHeaderContentType() {
+	public void testTransformExceptionHeaderContentType() {
 		TransformException exception =
 				new TransformException("test transform exception", new NullPointerException(), report);
 
@@ -73,11 +74,43 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testBody() {
+	public void testTransformExceptionBody() {
 		TransformException exception =
 				new TransformException("test transform exception", new NullPointerException(), report);
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception);
+		assertThat(responseEntity.getBody()).isEqualTo(allErrors);
+	}
+
+	@Test
+	public void testQppValidationExceptionStatusCode() {
+		QppValidationException exception =
+				new QppValidationException("test transform exception", new NullPointerException(), report);
+
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
+
+		assertWithMessage("The response entity's status code must be 422.")
+				.that(responseEntity.getStatusCode())
+				.isEquivalentAccordingToCompareTo(HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	@Test
+	public void testQppValidationExceptionHeaderContentType() {
+		QppValidationException exception =
+				new QppValidationException("test transform exception", new NullPointerException(), report);
+
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
+
+		assertThat(responseEntity.getHeaders().getContentType())
+				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON_UTF8);
+	}
+
+	@Test
+	public void testQppValidationExceptionBody() {
+		QppValidationException exception =
+				new QppValidationException("test transform exception", new NullPointerException(), report);
+
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
 		assertThat(responseEntity.getBody()).isEqualTo(allErrors);
 	}
 }

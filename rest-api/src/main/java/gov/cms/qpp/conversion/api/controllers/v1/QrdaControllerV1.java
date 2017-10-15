@@ -65,7 +65,7 @@ public class QrdaControllerV1 {
 		return new ResponseEntity<>(conversionReport.getEncoded().toString(), httpHeaders, HttpStatus.CREATED);
 	}
 
-	private Supplier<InputStream> inputStreamSupplier(MultipartFile file) {
+	Supplier<InputStream> inputStreamSupplier(MultipartFile file) {
 		return () -> {
 			try {
 				return file.getInputStream();
