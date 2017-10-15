@@ -524,6 +524,11 @@ public class JsonWrapper {
 		}
 	}
 
+	/**
+	 * Convenience method to get the JsonWrapper's content as an input stream.
+	 *
+	 * @return input stream containing serialized json
+	 */
 	public InputStream contentStream() {
 		return new ByteArrayInputStream(toString().getBytes(StandardCharsets.UTF_8));
 	}

@@ -24,6 +24,7 @@ public class MetadataHelper {
 	 * This {@link Metadata} does not contain data not found in a standard {@link Node}.
 	 *
 	 * @param node
+	 * @param outcome
 	 * @return
 	 */
 	public static Metadata generateMetadata(Node node, Outcome outcome) {
@@ -94,6 +95,9 @@ public class MetadataHelper {
 			.orElse(null);
 	}
 
+	/**
+	 * Potential states of conversion outcomes.
+	 */
 	public enum Outcome {
 		SUCCESS(true, true, true),
 		CONVERSION_ERROR(false, false, false),
@@ -109,6 +113,11 @@ public class MetadataHelper {
 			this.validation = validation;
 		}
 
+		/**
+		 * Set status of conversion on {@link Metadata} instance
+		 *
+		 * @param metadata to update
+		 */
 		private void setStatus(Metadata metadata) {
 			metadata.setOverallStatus(overall);
 			metadata.setConversionStatus(conversion);

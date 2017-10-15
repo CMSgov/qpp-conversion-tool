@@ -45,12 +45,12 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	 * "Catch" the {@link QppValidationException}.
 	 * Return the {@link AllErrors} with an HTTP status 422.
 	 *
-	 * @param exception The TransformException that was "caught".
-	 * @return The AllErrors dto that details the TransformException.
+	 * @param exception The QppValidationException that was "caught".
+	 * @return The AllErrors dto that details the QppValidationException.
 	 */
 	@ExceptionHandler(QppValidationException.class)
 	@ResponseBody
-	protected ResponseEntity<AllErrors> handleQppValidationException(QppValidationException exception) {
+	ResponseEntity<AllErrors> handleQppValidationException(QppValidationException exception) {
 		auditService.failValidation(exception.getConversionReport());
 		return cope(exception);
 	}

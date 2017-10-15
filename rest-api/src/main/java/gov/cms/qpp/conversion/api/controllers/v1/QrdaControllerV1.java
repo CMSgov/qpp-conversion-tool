@@ -65,6 +65,12 @@ public class QrdaControllerV1 {
 		return new ResponseEntity<>(conversionReport.getEncoded().toString(), httpHeaders, HttpStatus.CREATED);
 	}
 
+	/**
+	 * Supplier for file input
+	 *
+	 * @param file the attachment
+	 * @return a supplier that wraps the attachment's input stream retrieval
+	 */
 	Supplier<InputStream> inputStreamSupplier(MultipartFile file) {
 		return () -> {
 			try {

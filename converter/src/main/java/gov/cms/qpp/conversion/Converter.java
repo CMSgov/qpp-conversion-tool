@@ -162,45 +162,28 @@ public class Converter {
 		return (!context.getScope().isEmpty()) ? new ScopedQppOutputEncoder(context) : new QppOutputEncoder(context);
 	}
 
+	/**
+	 * Retrieve the Converter's {@link ConversionReport}
+	 *
+	 * @return the conversion report
+	 */
 	public ConversionReport getReport() {
 		return new ConversionReport();
 	}
 
 
+	/**
+	 * Report on the stat of a conversion.
+	 */
 	public class ConversionReport {
 		private final ObjectMapper mapper = new ObjectMapper();
 		private AllErrors reportDetails;
 
+		/**
+		 * Construct a con version report
+		 */
 		ConversionReport() {
 			reportDetails = constructErrorHierarchy(source.getName(), details);
-		}
-
-		public Node getDecoded() {
-			return CloneHelper.deepClone(decoded);
-		}
-
-		public JsonWrapper getEncoded() {
-			return CloneHelper.deepClone(encoded);
-		}
-
-		public AllErrors getReportDetails() {
-			return reportDetails;
-		}
-
-		public InputStream streamDetails() {
-			try {
-				return new ByteArrayInputStream(mapper.writeValueAsBytes(reportDetails));
-			} catch (JsonProcessingException e) {
-				throw new EncodeException("Issue serializing error report details", e);
-			}
-		}
-
-		public void setReportDetails(AllErrors details) {
-			reportDetails = details;
-		}
-
-		public InputStream getFileInput() {
-			return source.toInputStream();
 		}
 
 		/**
@@ -227,6 +210,64 @@ public class Converter {
 		 */
 		private Error constructErrorSource(final String inputIdentifier, final List<Detail> details) {
 			return new Error(inputIdentifier, details);
+		}
+
+		/**
+		 * Defensive copy of decoded submission
+		 *
+		 * @return decoded {@link Node}
+		 */
+		public Node getDecoded() {
+			return CloneHelper.deepClone(decoded);
+		}
+
+		/**
+		 * Defensive copy of the result of the conversion
+		 *
+		 * @return encoded {@link JsonWrapper}
+		 */
+		public JsonWrapper getEncoded() {
+			return CloneHelper.deepClone(encoded);
+		}
+
+		/**
+		 * Retrieve information pertaining to errors generated during the conversion.
+		 *
+		 * @return all errors registered during conversion
+		 */
+		public AllErrors getReportDetails() {
+			return reportDetails;
+		}
+
+		/**
+		 * Convenience method to return conversion error information as a stream of serialized json.
+		 *
+		 * @return input stream containing error json
+		 */
+		public InputStream streamDetails() {
+			try {
+				return new ByteArrayInputStream(mapper.writeValueAsBytes(reportDetails));
+			} catch (JsonProcessingException e) {
+				throw new EncodeException("Issue serializing error report details", e);
+			}
+		}
+
+		/**
+		 * Mutator for reportDetails
+		 *
+		 * @param details updated errors
+		 */
+		public void setReportDetails(AllErrors details) {
+			reportDetails = details;
+		}
+
+		/**
+		 * Get input stream for converted content
+		 *
+		 * @return input stream for submission
+		 */
+		public InputStream getFileInput() {
+			return source.toInputStream();
 		}
 	}
 

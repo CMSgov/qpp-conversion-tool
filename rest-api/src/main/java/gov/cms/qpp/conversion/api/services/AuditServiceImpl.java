@@ -23,6 +23,12 @@ public class AuditServiceImpl implements AuditService {
 	@Autowired
 	private DbService dbService;
 
+	/**
+	 * Audit a successful conversion.
+	 *
+	 * @param conversionReport report of the conversion
+	 * @return future
+	 */
 	@Override
 	public CompletableFuture<Void> success(Converter.ConversionReport conversionReport) {
 		Metadata metadata = initMetadata(conversionReport.getDecoded(), Outcome.SUCCESS);
@@ -32,6 +38,12 @@ public class AuditServiceImpl implements AuditService {
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
+	/**
+	 * Audit a failed QPP conversion.
+	 *
+	 * @param conversionReport report of the conversion
+	 * @return future
+	 */
 	@Override
 	public CompletableFuture<Void> failConversion(Converter.ConversionReport conversionReport) {
 		Metadata metadata = initMetadata(conversionReport.getDecoded(), Outcome.CONVERSION_ERROR);
@@ -41,6 +53,12 @@ public class AuditServiceImpl implements AuditService {
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
+	/**
+	 * Audit a failed submission validation.
+	 *
+	 * @param conversionReport report of the conversion
+	 * @return future
+	 */
 	@Override
 	public CompletableFuture<Void> failValidation(Converter.ConversionReport conversionReport) {
 		Metadata metadata = initMetadata(conversionReport.getDecoded(), Outcome.VALIDATION_ERROR);
