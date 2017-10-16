@@ -110,9 +110,6 @@ public class QualityMeasureIdMultiRoundTripTest {
 		assertThat(details)
 				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(message);
-		assertThat(details)
-				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.contains(message);
 	}
 
 	@Test
@@ -156,7 +153,15 @@ public class QualityMeasureIdMultiRoundTripTest {
 				.contains(MipsQualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT);
 	}
 
-	private List<Detail>  executeScenario(String path, boolean remove) {
+	@Test
+	public void testRoundTripQualityMeasureMissingOnePerformanceRateSuccess() {
+		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
+				"component[1]";
+		List<Detail> expectedOutput = executeScenario(path, true);
+		assertThat(expectedOutput).isEmpty();
+	}
+
+	private List<Detail> executeScenario(String path, boolean remove) {
 		InputStream modified = manipulator.upsetTheNorm(path, remove);
 		Converter converter = new Converter(
 				new InputStreamSupplierQrdaSource(JUNK_QRDA3_FILE.toString(), () -> modified));
