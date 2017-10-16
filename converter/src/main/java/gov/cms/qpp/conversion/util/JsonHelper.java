@@ -58,7 +58,7 @@ public class JsonHelper {
 	 * @param valueType object type representation
 	 * @param <T> generic class type
 	 * @return Object of specified type
-	 * @throws IOException if problems arise while attempting to parse the json input stream
+	 * @throws JsonReadException if problems arise while attempting to parse the json input stream
 	 */
 	public static <T> T readJson(InputStream json, Class<T> valueType) {
 		T returnValue;
