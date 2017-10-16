@@ -52,8 +52,9 @@ mvn clean verify -DrunLoadTests
 ```
 
 In addition, there are some extreme JMeter load tests that execute only when passing in `-DskipJmeterSuite=false`.  To run these
-tests, one must fill in the `cookie` field in the [benchmark pom.xml](benchmark/pom.xml) to correctly connect to the test
-environment. Make sure you have time, the CPU performance, and network performance before deciding to run these tests.
+tests, one must fill in the `host`, `path`, `port`, and `cookie` fields in the [benchmark pom.xml](benchmark/pom.xml) to
+correctly connect to the test environment. Make sure you have time, the CPU performance, and network performance before deciding
+to run these tests.
 
 ## Integration Environment
 
