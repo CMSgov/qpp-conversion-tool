@@ -325,8 +325,8 @@ public class QualityMeasureIdValidatorTest {
 				.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_UUID, "CMS68v6",
-				PERFORMANCE_RATE_ID, REQUIRES_DENOM_EXCEPTION_NUMER_GUID);
+		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_PERFORMANCE_UUID, "CMS68v6",
+				PERFORMANCE_RATE_ID, "fail");
 		assertWithMessage("Must contain the correct error message.")
 				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.containsExactly(expectedErrorMessage);

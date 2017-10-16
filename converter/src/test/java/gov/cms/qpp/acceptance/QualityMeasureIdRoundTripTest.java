@@ -53,10 +53,10 @@ public class QualityMeasureIdRoundTripTest {
 		}
 
 		String measureId = "CMS68v6";
-		String numerUuid = "EFFE261C-0D57-423E-992C-7141B132768C";
+		String incorrectId = "00000000-0000-0000-0000-1NV4L1D";
 
-		String message = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID, measureId,
-				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, numerUuid);
+		String message = String.format(MipsQualityMeasureIdValidator.INCORRECT_PERFORMANCE_UUID, measureId,
+				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, incorrectId);
 		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(message);
 	}
@@ -73,14 +73,7 @@ public class QualityMeasureIdRoundTripTest {
 			details.addAll(errors.getErrors().get(0).getDetails());
 		}
 
-		String measureId = "CMS160v5";
-		String numerUuid = "33538979-8425-45A4-B724-D74CC0A84EF3";
-
-		String message = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID, measureId,
-				PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID, numerUuid);
 		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(MipsQualityMeasureIdValidator.SINGLE_PERFORMANCE_RATE);
-		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.contains(message);
 	}
 }
