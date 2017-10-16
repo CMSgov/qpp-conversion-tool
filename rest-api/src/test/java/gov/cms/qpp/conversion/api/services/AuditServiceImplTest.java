@@ -34,6 +34,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @PrepareForTest({MetadataHelper.class})
 public class AuditServiceImplTest {
 	private static final String AN_ID = "1234567890";
+	private static final String FILENAME = "file";
 
 	@InjectMocks
 	private AuditServiceImpl underTest;
@@ -69,6 +70,7 @@ public class AuditServiceImplTest {
 
 		assertThat(metadata.getQppLocator()).isSameAs(AN_ID);
 		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
+		assertThat(metadata.getFileName()).isSameAs(FILENAME);
 	}
 
 	@Test
@@ -139,6 +141,7 @@ public class AuditServiceImplTest {
 
 		when(report.getFileInput()).thenReturn(fileContent);
 		when(report.getDecoded()).thenReturn(node);
+		when(report.getFilename()).thenReturn(FILENAME);
 	}
 
 	private void allGood() {

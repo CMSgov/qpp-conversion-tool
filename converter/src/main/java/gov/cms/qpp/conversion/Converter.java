@@ -269,6 +269,15 @@ public class Converter {
 		public InputStream getFileInput() {
 			return source.toInputStream();
 		}
+
+		/**
+		 * Get source file name
+		 *
+		 * @return file name
+		 */
+		public String getFilename() {
+			return source.getName();
+		}
 	}
 
 }
