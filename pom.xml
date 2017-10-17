@@ -22,7 +22,6 @@
 		<module>commandline</module>
 		<module>rest-api</module>
 		<module>benchmark</module>
-        <module>generateQrda</module>
     </modules>
 
 	<build>
