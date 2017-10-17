@@ -10,7 +10,7 @@ This document describes how to set up your development environment to build and 
 * [SonarQube](#sonarqube)
 * [Third Party Extensions](#third-party-extensions)
 
-See the [contribution guidelines](https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md)
+See the [contribution guidelines](CONTRIBUTING.md)
 if you'd like to contribute to qpp-conversion-tool.
 
 ## Additional Prerequisite Software
@@ -50,6 +50,11 @@ conversions, the tests will not pass and the build will fail.
 # Run the basic tests and the load tests.
 mvn clean verify -DrunLoadTests
 ```
+
+In addition, there are some extreme JMeter load tests that execute only when passing in `-DskipJmeterSuite=false`.  To run these
+tests, one must fill in the `host`, `path`, `port`, and `cookie` fields in the [benchmark pom.xml](benchmark/pom.xml) to
+correctly connect to the test environment. Make sure you have time, the CPU performance, and network performance before deciding
+to run these tests.
 
 ## Integration Environment
 
