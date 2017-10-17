@@ -22,7 +22,8 @@
 		<module>commandline</module>
 		<module>rest-api</module>
 		<module>benchmark</module>
-	</modules>
+        <module>generateQrda</module>
+    </modules>
 
 	<build>
 		<defaultGoal>clean install</defaultGoal>
