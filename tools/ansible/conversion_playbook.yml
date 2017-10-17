@@ -1,0 +1,74 @@
+---
+- hosts: all
+  remote_user: "{{remote_username}}"
+  vars:
+    ansible_become_pass: "{{sudoer_password}}"
+  tasks:
+  - name: Install apt-transport-https
+    apt:
+      name: apt-transport-https
+    become: true
+  - name: Install ca-certificates
+    apt:
+      name: ca-certificates
+    become: true
+  - name: Install software-properties-common
+    apt:
+      name: software-properties-common
+    become: true
+  - name: Install linux-image-extra-virtual
+    apt:
+      name: linux-image-extra-virtual
+    become: true
+  - name: Install Docker's GPG key
+    apt_key:
+      url: "https://download.docker.com/linux/ubuntu/gpg"
+    become: true
+  - name: Add Docker's registry
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+      update_cache: yes
+    become: true
+  - name: Install Docker
+    apt:
+      name: docker-ce
+    become: true
+  - name: Install Python's pip
+    apt:
+      name: python-pip
+    become: true
+  - name: Install Python's Docker library
+    pip:
+      name: docker-py
+    become: true
+  - name: Transfer QPP Conversion Tools Docker image
+    copy:
+      src: ../qpp_conversion_docker_image.tar
+      dest: ~/
+    become: true
+  - name: Stop and remove QPP Conversion Tools Docker container
+    docker_container:
+      name: qpp_converter
+      state: absent
+    become: true
+  - name: Delete old QPP Conversion Tools Docker image
+    docker_image:
+      name: qpp_conversion
+      state: absent
+      force: yes
+    become: true
+  - name: Load QPP Conversion Tools Docker image
+    docker_image:
+      name: qpp_conversion
+      state: present
+      force: yes
+      load_path: ~/qpp_conversion_docker_image.tar
+    become: true
+  - name: Start QPP Conversion Tools Docker container
+    docker_container:
+      name: qpp_converter
+      image: qpp_conversion
+      recreate: yes
+      published_ports:
+        - 2680:8080
+    become: true
