@@ -709,7 +709,7 @@ CDA Header
                         </list>
                     </text>
 
-                    {{#configs}}
+                    {{#quality}}
                     <!-- Measure Entry for {{electronicMeasureId}} -->
                     <entry>
                         <organizer classCode="CLUSTER" moodCode="EVN">
@@ -722,7 +722,7 @@ CDA Header
                             <reference typeCode="REFR">
                                 <externalDocument classCode="DOC" moodCode="EVN">
                                     <id root="2.16.840.1.113883.4.738"
-                                        extension="40280381-51f0-825b-0152-22b98cff181a"/>
+                                        extension="{{electronicMeasureVerUuid}}"/>
                                     <code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
                                           codeSystemName="LOINC"
                                           displayName="Health Quality Measure Document"/>
@@ -742,7 +742,7 @@ CDA Header
                             {{/strata}}
                         </organizer>
                     </entry>
-                    {{/configs}}
+                    {{/quality}}
 
                     <!-- Reporting Parameters Act -->
                     <entry typeCode="DRIV">
@@ -818,161 +818,12 @@ CDA Header
                                 </content>Yes</item>
                         </list>
                     </text>
-                    <!-- ACI_PEA_1	Reporting Metric: Numerator/Denominator -->
-                    <!-- Advancing Care Information Numerator Denominator Type Measure Reference and Results -->
-                    <entry>
-                        <organizer classCode="CLUSTER" moodCode="EVN">
-                            <!-- Implied template Measure Reference templateId -->
-                            <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-                            <!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->
-                            <templateId root="2.16.840.1.113883.10.20.27.3.28"
-                                        extension="2017-06-01"/>
-                            <id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
-                            <statusCode code="completed"/>
-                            <reference typeCode="REFR">
-                                <!-- Reference to a particular ACI measure's unique identifier. -->
-                                <externalDocument classCode="DOC" moodCode="EVN">
-                                    <!-- This is a temporary root OID that indicates this is an ACI measure identifier -->
-                                    <id root="2.16.840.1.113883.3.7031" extension="ACI_PEA_1"/>
-                                    <!-- ACI measure title -->
-                                    <text>Provide Patient Access</text>
-                                </externalDocument>
-                            </reference>
-                            <!-- Performance Rate for ACI is optional -->
-                            <component>
-                                <observation classCode="OBS" moodCode="EVN">
-                                    <!-- Performance Rate templateId -->
-                                    <templateId root="2.16.840.1.113883.10.20.27.3.30"
-                                                extension="2016-09-01"/>
-                                    <code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
-                                          codeSystemName="LOINC" displayName="Performance Rate"/>
-                                    <statusCode code="completed"/>
-                                    <value xsi:type="REAL" value="0.75"/>
-                                </observation>
-                            </component>
-                            <component>
-                                <observation classCode="OBS" moodCode="EVN">
-                                    <!-- ACI Numerator Denominator Type Measure Numerator Data templateId -->
-                                    <templateId root="2.16.840.1.113883.10.20.27.3.31"
-                                                extension="2016-09-01"/>
-                                    <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-                                          codeSystemName="ActCode" displayName="Assertion"/>
-                                    <statusCode code="completed"/>
-                                    <value xsi:type="CD" code="NUMER"
-                                           codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-                                    <!-- Numerator Count-->
-                                    <entryRelationship typeCode="SUBJ" inversionInd="true">
-                                        <observation classCode="OBS" moodCode="EVN">
-                                            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-                                            <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
-                                                  codeSystemName="ActCode"
-                                                  displayName="rate aggregation"/>
-                                            <statusCode code="completed"/>
-                                            <value xsi:type="INT" value="600"/>
-                                            <methodCode code="COUNT"
-                                                        codeSystem="2.16.840.1.113883.5.84"
-                                                        codeSystemName="ObservationMethod"
-                                                        displayName="Count"/>
-                                        </observation>
-                                    </entryRelationship>
-                                </observation>
-                            </component>
-                            <component>
-                                <observation classCode="OBS" moodCode="EVN">
-                                    <!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->
-                                    <templateId root="2.16.840.1.113883.10.20.27.3.32"
-                                                extension="2016-09-01"/>
-                                    <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-                                          codeSystemName="ActCode" displayName="Assertion"/>
-                                    <statusCode code="completed"/>
-                                    <value xsi:type="CD" code="DENOM"
-                                           codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-                                    <!-- Denominator Count-->
-                                    <entryRelationship typeCode="SUBJ" inversionInd="true">
-                                        <observation classCode="OBS" moodCode="EVN">
-                                            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-                                            <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
-                                                  codeSystemName="ActCode"
-                                                  displayName="rate aggregation"/>
-                                            <statusCode code="completed"/>
-                                            <value xsi:type="INT" value="800"/>
-                                            <methodCode code="COUNT"
-                                                        codeSystem="2.16.840.1.113883.5.84"
-                                                        codeSystemName="ObservationMethod"
-                                                        displayName="Count"/>
-                                        </observation>
-                                    </entryRelationship>
-                                </observation>
-                            </component>
-                        </organizer>
-                    </entry>
 
-                    <!-- ACI_EP_1 -->
-                    <entry>
-                        <organizer classCode="CLUSTER" moodCode="EVN">
-                            <!-- Implied template Measure Reference templateId -->
-                            <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-                            <!-- ACI Numerator Denominator Type Measure Reference and Results templateId -->
-                            <templateId root="2.16.840.1.113883.10.20.27.3.28" extension="2017-06-01"/>
-                            <id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
-                            <statusCode code="completed"/>
-                            <reference typeCode="REFR">
-                                <!-- Reference to a particular ACI measure's unique identifier. -->
-                                <externalDocument classCode="DOC" moodCode="EVN">
-                                    <id root="2.16.840.1.113883.3.7031" extension="ACI_EP_1"/>
-                                    <!-- ACI measure title -->
-                                    <text>Flexion Test 2</text>
-                                </externalDocument>
-                            </reference>
-                            <component>
-                                <observation classCode="OBS" moodCode="EVN">
-                                    <!-- Performance Rate templateId -->
-                                    <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
-                                    <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Performance Rate"/>
-                                    <statusCode code="completed"/>
-                                    <value xsi:type="REAL" value="0.750000"/>
-                                </observation>
-                            </component>
-                            <component>
-                                <observation classCode="OBS" moodCode="EVN">
-                                    <!-- ACI Numerator Denominator Type Measure Numerator Data templateId -->
-                                    <templateId root="2.16.840.1.113883.10.20.27.3.31" extension="2016-09-01"/>
-                                    <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion"/>
-                                    <statusCode code="completed"/>
-                                    <value xsi:type="CD" code="NUMER" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-                                    <!-- Numerator Count-->
-                                    <entryRelationship typeCode="SUBJ" inversionInd="true">
-                                        <observation classCode="OBS" moodCode="EVN">
-                                            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-                                            <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
-                                            <statusCode code="completed"/>
-                                            <value xsi:type="INT" value="400"/>
-                                            <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
-                                        </observation>
-                                    </entryRelationship>
-                                </observation>
-                            </component>
-                            <component>
-                                <observation classCode="OBS" moodCode="EVN">
-                                    <!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->
-                                    <templateId root="2.16.840.1.113883.10.20.27.3.32" extension="2016-09-01"/>
-                                    <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="Assertion"/>
-                                    <statusCode code="completed"/>
-                                    <value xsi:type="CD" code="DENOM" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-                                    <!-- Denominator Count-->
-                                    <entryRelationship typeCode="SUBJ" inversionInd="true">
-                                        <observation classCode="OBS" moodCode="EVN">
-                                            <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-                                            <code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" displayName="rate aggregation"/>
-                                            <statusCode code="completed"/>
-                                            <value xsi:type="INT" value="600"/>
-                                            <methodCode code="COUNT" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" displayName="Count"/>
-                                        </observation>
-                                    </entryRelationship>
-                                </observation>
-                            </component>
-                        </organizer>
-                    </entry>
+                    {{#aci}}
+                        {{#isProportion}}
+                            {{>aci-proportion-measure-template}}
+                        {{/isProportion}}
+                    {{/aci}}
 
                     <!-- Reporting Parameters Act -->
                     <entry typeCode="DRIV">
@@ -1029,75 +880,13 @@ CDA Header
                             </tbody>
                         </table>
                     </text>
-                    <!-- Must have at least one entry with a Measure Performed Reference and Result -->
-                    <!-- IA_EPA_3 -->
-                    <entry>
-                        <organizer classCode="CLUSTER" moodCode="EVN">
-                            <!-- Implied template Measure Reference templateId -->
-                            <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-                            <!-- Improvement Activity Performed Reference and Results templateId -->
-                            <templateId root="2.16.840.1.113883.10.20.27.3.33"
-                                        extension="2016-09-01"/>
-                            <id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
-                            <statusCode code="completed"/>
-                            <reference typeCode="REFR">
-                                <!-- Reference to a particular ACI measure's unique identifier. -->
-                                <externalDocument classCode="DOC" moodCode="EVN">
-                                    <!-- This is a temporary root OID that indicates this is an improvement activity identifier -->
-                                    <id root="2.16.840.1.113883.3.7034" extension="IA_EPA_3"/>
-                                    <!-- Improvement activity narrative text (for reference) -->
-                                    <text>Collection and use of patient experience and satisfaction data on access</text>
-                                </externalDocument>
-                            </reference>
-                            <component>
-                                <observation classCode="OBS" moodCode="EVN">
-                                    <!-- Measure Performed templateId -->
-                                    <templateId root="2.16.840.1.113883.10.20.27.3.27"
-                                                extension="2016-09-01"/>
-                                    <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-                                          codeSystemName="ActCode" displayName="Assertion"/>
-                                    <statusCode code="completed"/>
-                                    <value xsi:type="CD" code="Y" displayName="Yes"
-                                           codeSystemName="Yes/no indicator (HL7 Table 0136)"
-                                           codeSystem="2.16.840.1.113883.12.136"/>
-                                </observation>
-                            </component>
-                        </organizer>
-                    </entry>
-                    <!-- IA_CC_10 -->
-                    <entry>
-                        <organizer classCode="CLUSTER" moodCode="EVN">
-                            <!-- Implied template Measure Reference templateId -->
-                            <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-                            <!-- Improvement Activity Performed Reference and Results templateId -->
-                            <templateId root="2.16.840.1.113883.10.20.27.3.33"
-                                        extension="2016-09-01"/>
-                            <id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
-                            <statusCode code="completed"/>
-                            <reference typeCode="REFR">
-                                <!-- Reference to a particular ACI measure's unique identifier. -->
-                                <externalDocument classCode="DOC" moodCode="EVN">
-                                    <!-- This is a temporary root OID that indicates this is an improvement activity identifier -->
-                                    <id root="2.16.840.1.113883.3.7034" extension="IA_CC_10"/>
-                                    <!-- Improvement activity narrative text (for reference) -->
-                                    <text>Care transition documentation practice improvements</text>
-                                </externalDocument>
-                            </reference>
-                            <component>
-                                <observation classCode="OBS" moodCode="EVN">
-                                    <!-- Measure Performed templateId -->
-                                    <templateId root="2.16.840.1.113883.10.20.27.3.27"
-                                                extension="2016-09-01"/>
-                                    <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-                                          codeSystemName="ActCode" displayName="Assertion"/>
-                                    <statusCode code="completed"/>
-                                    <value xsi:type="CD" code="Y" displayName="Yes"
-                                           codeSystemName="Yes/no indicator (HL7 Table 0136)"
-                                           codeSystem="2.16.840.1.113883.12.136"/>
-                                </observation>
-                            </component>
-                        </organizer>
-                    </entry>
+
+                    {{#ia}}
+                        {{^isProportion}}
+                            {{>ia-boolean-measure-template}}
+                        {{/isProportion}}
+                    {{/ia}}
+
                     <!-- Reporting Parameters Act -->
                     <entry typeCode="DRIV">
                         <act classCode="ACT" moodCode="EVN">
