@@ -14,8 +14,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 public class InputStreamQrdaSourceTest extends QrdaSourceTestSuite {
 
-	private static InputStreamQrdaSource source(String path) {
-		return new InputStreamQrdaSource(path, stream(path));
+	private static InputStreamSupplierQrdaSource source(String path) {
+		return new InputStreamSupplierQrdaSource(path, () -> stream(path));
 	}
 
 	private static InputStream stream(String path) {

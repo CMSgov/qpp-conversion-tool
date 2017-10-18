@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.decode;
 
 
 import com.google.common.collect.Sets;
-import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.model.Node;
@@ -10,7 +9,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.xml.XmlException;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -76,7 +74,7 @@ public class QualityMeasureScopedTest {
 		Converter converter = new Converter(new PathQrdaSource(Paths.get(path)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
 		converter.transform();
-		return converter.getDecoded();
+		return converter.getReport().getDecoded();
 	}
 
 }

@@ -3,13 +3,16 @@ package gov.cms.qpp.conversion.encode;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import gov.cms.qpp.conversion.util.JsonHelper;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -17,13 +20,12 @@ import static org.junit.Assert.fail;
 
 public class JsonWrapperTest {
 
-	ObjectWriter ow = JsonWrapper.getObjectWriter(true);
-
-	public JsonWrapper objectObjWrapper;
-	public JsonWrapper objectStrWrapper;
-	public JsonWrapper listObjWrapper;
-	public JsonWrapper listStrWrapper;
-	public JsonWrapper unfilteredMetaWrapper;
+	private ObjectWriter ow = JsonWrapper.getObjectWriter(true);
+	private JsonWrapper objectObjWrapper;
+	private JsonWrapper objectStrWrapper;
+	private JsonWrapper listObjWrapper;
+	private JsonWrapper listStrWrapper;
+	private JsonWrapper unfilteredMetaWrapper;
 
 	@Before
 	public void before() {
@@ -542,10 +544,10 @@ public class JsonWrapperTest {
 				.isEqualTo("A");
 		assertWithMessage("expect Integer")
 				.that(objectStrWrapper.getInteger("obj2"))
-				.isEqualTo(Integer.valueOf(1));
+				.isEqualTo(1);
 		assertWithMessage("expect Float")
 				.that(objectStrWrapper.getFloat("obj3"))
-				.isEqualTo(Float.valueOf(1.1F));
+				.isEqualTo(1.1F);
 		assertWithMessage("expect Boolean")
 				.that(objectStrWrapper.getBoolean("obj4"))
 				.isFalse();
@@ -595,12 +597,20 @@ public class JsonWrapperTest {
 				.isEqualTo(obj.findValue(shouldAlsoSerialize).asText());
 	}
 
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testContentStream() {
+		objectObjWrapper.putString("meep", "mawp");
+		InputStream content = objectObjWrapper.contentStream();
+		Map<String, String> contentMap = JsonHelper.readJson(content, Map.class);
+		assertThat(contentMap.get("meep")).isEqualTo("mawp");
+	}
+
 }
 
 class MockBadJsonTarget {
-	private String var = "";
 	@SuppressWarnings("unused")
 	private String getVar() {
-		return var;
+		return "";
 	}
 }
