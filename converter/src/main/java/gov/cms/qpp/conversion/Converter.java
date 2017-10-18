@@ -19,13 +19,13 @@ import gov.cms.qpp.conversion.util.CloneHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import jdk.internal.util.xml.impl.Input;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -264,10 +264,20 @@ public class Converter {
 		}
 
 
+		/**
+		 * Convenience method to retrieve QPP validation details
+		 *
+		 * @return input stream of QPP validation details
+		 */
 		public InputStream streamRawValidationDetails() {
-			return new ByteArrayInputStream(qppValidationDetails.getBytes());
+			return new ByteArrayInputStream(qppValidationDetails.getBytes(Charset.defaultCharset()));
 		}
 
+		/**
+		 * Mutator for QPP validation details
+		 *
+		 * @param details QPP validation details
+		 */
 		public void setRawValidationDetails(String details) {
 			qppValidationDetails = details;
 		}
