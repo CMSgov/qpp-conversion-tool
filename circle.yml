@@ -3,52 +3,27 @@ machine:
     version: openjdk8
   python:
     version: 3.6.1
-  node:
-    version: 7
   services:
     - docker
-  environment:
-    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/frontend/node_modules/.bin" # yarn
 
 dependencies:
-  pre:
-    - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    - sudo dpkg -i google-chrome.deb
-    - sudo apt-get install jq
-    - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
-    - rm google-chrome.deb
   override:
     - cd converter; mvn dependency:resolve
     - wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
     - unzip -d . sonarscanner.zip
     - pip install ansible
-    - cd frontend; rm -f yarn.lock && yarn
-  cache_directories:
-    - ~/.cache/yarn
 
 test:
   pre:
-    - cd frontend; npm install -g protractor
     - cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
   override:
-    - cd vpcs; npm install; npm test
-    - mvn clean verify -Djacoco.skip.instrument=false
-    - mvn jacoco:report
+    - mvn clean verify
     - ./tools/bin/sonarqube.sh
-    - cd frontend; yarn run lint
-    - cd frontend; yarn run test:ci
-    - cd frontend; yarn run e2e:ci
   post:
-    - pwd && ls -al .
     - ./tools/bin/docker_deploy.sh
     - cp converter/target/converter.jar $CIRCLE_ARTIFACTS
     - cp commandline/target/commandline.jar $CIRCLE_ARTIFACTS
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/converter && cp -R converter/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/converter
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/rest-api && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/rest-api
-    - cd ./converter/; mvn javadoc:javadoc; mkdir $CIRCLE_ARTIFACTS/JavaDocs/; cp -R ./target/site/apidocs/* $CIRCLE_ARTIFACTS/JavaDocs/
-deployment:
-  dev: 
-    branch: master
-    commands:
-      - cd frontend; yarn run build 
-      - aws s3 sync frontend/dist s3://qrda-conversion-ui --delete
+    - mkdir -p $CIRCLE_ARTIFACTS/coverage/commandline && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/commandline
+    

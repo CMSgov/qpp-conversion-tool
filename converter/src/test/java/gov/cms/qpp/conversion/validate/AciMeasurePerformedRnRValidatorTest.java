@@ -3,14 +3,13 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Set;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciMeasurePerformedRnRValidatorTest {
 
@@ -31,21 +30,26 @@ public class AciMeasurePerformedRnRValidatorTest {
 	@Test
 	public void testValidateGoodData() throws Exception {
 		Set<Detail> errors = run();
-		assertThat("no errors should be present", errors, empty());
+		assertWithMessage("no errors should be present")
+				.that(errors).isEmpty();
 	}
 
 	@Test
 	public void testWithNoMeasureId() throws Exception {
 		aciMeasurePerformedRnRNode.removeValue("measureId");
 		Set<Detail> errors = run();
-		assertThat("Validation error size should be 1", errors, hasSize(1));
+		assertWithMessage("Should result in a MEASURE_ID_IS_REQUIRED error")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(AciMeasurePerformedRnRValidator.MEASURE_ID_IS_REQUIRED);
 	}
 
 	@Test
 	public void testWithNoChildren() throws Exception {
 		aciMeasurePerformedRnRNode.getChildNodes().clear();
 		Set<Detail> errors = run();
-		assertThat("Validation error size should be 1", errors, hasSize(1));
+		assertWithMessage("Validation error size should be 1")
+				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(AciMeasurePerformedRnRValidator.MEASURE_PERFORMED_IS_REQUIRED);
 	}
 
 	private Set<Detail> run() {

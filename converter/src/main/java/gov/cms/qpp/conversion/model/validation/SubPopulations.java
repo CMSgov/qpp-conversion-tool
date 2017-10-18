@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.model.validation;
 
+import com.google.common.collect.Sets;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +28,7 @@ public class SubPopulations {
 		keyToUniqueId.put(DENEX, SubPopulation::getDenominatorExclusionsUuid);
 		keyToUniqueId.put(DENOM, SubPopulation::getDenominatorUuid);
 		keyToUniqueId.put(NUMER, SubPopulation::getNumeratorUuid);
+		keyToUniqueId.put(IPOP, SubPopulation::getNumeratorUuid);
 		KEY_TO_UNIQUEID = Collections.unmodifiableMap(keyToUniqueId);
 	}
 
@@ -55,11 +58,23 @@ public class SubPopulations {
 	}
 
 	/**
+	 * Get an exclusive key set of sub population lebels.
+	 *
+	 * @param exclusions keys to exclude
+	 * @return exclusive key set
+	 */
+	public static Set<String> getExclusiveKeys(Set<String> exclusions) {
+		Set<String> exclusive = Sets.newHashSet(KEY_TO_UNIQUEID.keySet());
+		exclusive.removeAll(exclusions);
+		return exclusive;
+	}
+
+	/**
 	 * Gets all the valid subpopulation lookup keys
 	 *
-	 * @return DENEXCEP, DENEX, DENOM, NUMER
+	 * @return DENEXCEP, DENEX, DENOM, NUMER, IPOP
 	 */
-	public static Set<String> getKeys() {
+	static Set<String> getKeys() {
 		return KEY_TO_UNIQUEID.keySet();
 	}
 

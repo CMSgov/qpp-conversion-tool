@@ -8,9 +8,7 @@ import org.jdom2.Element;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 /**
  * Test for the QualityMeasureIdDecoder
@@ -22,8 +20,6 @@ public class QualityMeasureIdDecoderTest {
 	public void setup() {
 		objectUnderTest = new QualityMeasureIdDecoder(new Context());
 	}
-
-
 
 	/**
 	 * Tests the decoder for a valid xml fragment
@@ -38,7 +34,9 @@ public class QualityMeasureIdDecoderTest {
 		objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		String value = qualityMeasureIdNode.getValue("measureId");
-		assertThat("Expect to have a value", value, is("Measurement Id Value"));
+		assertWithMessage("Expect to have a value")
+				.that(value)
+				.isEqualTo("Measurement Id Value");
 	}
 
 	/**
@@ -55,9 +53,12 @@ public class QualityMeasureIdDecoderTest {
 		objectUnderTest.setNamespace(qualityMeasureIdElement, objectUnderTest);
 		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
-		assertThat("The incorrect DecodeResult was returned.", decodeResult, is(DecodeResult.TREE_CONTINUE));
+		assertWithMessage("The incorrect DecodeResult was returned.")
+				.that(decodeResult).isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
 		String value = qualityMeasureIdNode.getValue("measureId");
-		assertThat("Expect to not have a value", value, is(nullValue()));
+		assertWithMessage("Expect to not have a value")
+				.that(value)
+				.isNull();
 	}
 
 	@Test
@@ -72,8 +73,11 @@ public class QualityMeasureIdDecoderTest {
 		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		//assert
-		assertThat("The incorrect DecodeResult was returned.", decodeResult, is(DecodeResult.TREE_CONTINUE));
-		assertThat("The node should not have a value.", qualityMeasureIdNode.getValue("measureId"), is(nullValue()));
+		assertWithMessage("The incorrect DecodeResult was returned.")
+				.that(decodeResult).isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
+		assertWithMessage("The node should not have a value.")
+				.that(qualityMeasureIdNode.getValue("measureId"))
+				.isNull();
 	}
 
 	@Test
@@ -90,9 +94,13 @@ public class QualityMeasureIdDecoderTest {
 		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		//assert
-		assertThat("The incorrect DecodeResult was returned.", decodeResult, is(DecodeResult.TREE_CONTINUE));
+		assertWithMessage("The incorrect DecodeResult was returned.")
+				.that(decodeResult)
+				.isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
 		String value = qualityMeasureIdNode.getValue("measureId");
-		assertThat("Expect to have a value.", value, is(nonIgnorableGuid));
+		assertWithMessage("Expect to have a value.")
+				.that(value)
+				.isEqualTo(nonIgnorableGuid);
 	}
 
 

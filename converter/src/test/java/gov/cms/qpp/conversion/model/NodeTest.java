@@ -7,13 +7,8 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class NodeTest {
 
@@ -22,7 +17,8 @@ public class NodeTest {
 		Node node = new Node(TemplateId.PLACEHOLDER);
 		node.putValue("DEF", "GHI");
 
-		assertEquals("GHI", node.getValue("DEF"));
+		assertWithMessage("get value should equal put value")
+				.that(node.getValue("DEF")).isSameAs("GHI");
 	}
 
 	@Test
@@ -32,7 +28,8 @@ public class NodeTest {
 		childNode.setType(TemplateId.ACI_SECTION);
 		node.addChildNode(childNode);
 
-		assertEquals(childNode, node.getChildNodes().get(0));
+		assertWithMessage("Did not retrieve expected node")
+				.that(node.getChildNodes().get(0)).isSameAs(childNode);
 	}
 
 	@Test
@@ -42,8 +39,8 @@ public class NodeTest {
 
 		String toString = node.toString();
 
-		assertTrue(toString.contains(TemplateId.PLACEHOLDER.name()));
-		assertTrue(toString.contains("GHI"));
+		assertThat(toString).contains(TemplateId.PLACEHOLDER.name());
+		assertThat(toString).contains("GHI");
 	}
 
 	@Test
@@ -59,11 +56,11 @@ public class NodeTest {
 		node.addChildNode(childNode);
 
 		//ensure that we don't go down all the child nodes
-		assertThat("Node#toString must not recurse down its children and print the size instead.", node.toString(),
-				containsString("childNodesSize="));
+		assertWithMessage("Node#toString must not recurse down its children and print the size instead.")
+				.that(node.toString()).contains("childNodesSize=");
 		//ensure we don't recurse up the parent
-		assertThat("Node#toString must not recurse down its children and print the size instead.", childNode.toString(),
-				containsString("parent=not null"));
+		assertWithMessage("Node#toString must not recurse down its children and print the size instead.")
+				.that(childNode.toString()).contains("parent=not null");
 	}
 
 	@Test
@@ -71,13 +68,13 @@ public class NodeTest {
 		Node node = new Node();
 		node.setValidated(true);
 
-		assertTrue(node.isValidated());
+		assertThat(node.isValidated()).isTrue();
 	}
 
 	@Test
 	public void testNotValidatedMember() {
 		Node node = new Node();
-		assertTrue(node.isNotValidated());
+		assertThat(node.isNotValidated()).isTrue();
 	}
 
 	@Test
@@ -86,7 +83,7 @@ public class NodeTest {
 		Node parent = new Node();
 		child.setParent(parent);
 
-		assertTrue(child.getParent() == parent);
+		assertThat(child.getParent()).isSameAs(parent);
 	}
 
 	@Test
@@ -94,7 +91,7 @@ public class NodeTest {
 		Node node = new Node();
 		node.addChildNode(null);
 
-		assertTrue(node.getChildNodes().isEmpty());
+		assertThat(node.getChildNodes()).isEmpty();
 	}
 
 	@Test
@@ -102,7 +99,7 @@ public class NodeTest {
 		Node node = new Node();
 		node.addChildNode(node);
 
-		assertTrue(node.getChildNodes().isEmpty());
+		assertThat(node.getChildNodes()).isEmpty();
 	}
 
 	@Test
@@ -115,7 +112,8 @@ public class NodeTest {
 
 		List<Node> results = parent.findNode(TemplateId.PLACEHOLDER);
 
-		assertEquals("should find first child that has the searched id", results.size(), 1);
+		assertWithMessage("should find first child that has the searched id")
+				.that(results).hasSize(1);
 	}
 
 	@Test
@@ -127,7 +125,8 @@ public class NodeTest {
 
 		List<Node> results = parent.findNode(TemplateId.PLACEHOLDER);
 
-		assertTrue("should find first child that has the searched id", results.isEmpty());
+		assertWithMessage("should find first child that has the searched id")
+				.that(results).isEmpty();
 	}
 
 	@Test
@@ -138,7 +137,8 @@ public class NodeTest {
 
 		List<Node> results = parent.findNode(TemplateId.PLACEHOLDER);
 
-		assertEquals("should find itself if it has the searched id", results.size(), 2);
+		assertWithMessage("should find itself if it has the searched id")
+				.that(results).hasSize(2);
 	}
 
 	@Test
@@ -147,7 +147,9 @@ public class NodeTest {
 		Node childOne = new Node(TemplateId.PLACEHOLDER);
 		parent.addChildNode(childOne);
 
-		assertSame("should find itself if it has the searched id", parent.findFirstNode(TemplateId.PLACEHOLDER), parent);
+		assertWithMessage("should find itself if it has the searched id")
+				.that(parent.findFirstNode(TemplateId.PLACEHOLDER))
+				.isSameAs(parent);
 	}
 
 	@Test
@@ -158,7 +160,9 @@ public class NodeTest {
 		Node childThree = new Node(TemplateId.PLACEHOLDER);
 		parent.addChildNodes(childOne, childTwo, childThree);
 
-		assertSame("should find first child that has the searched id", parent.findFirstNode(TemplateId.PLACEHOLDER), childTwo);
+		assertWithMessage("should find first child that has the searched id")
+				.that(parent.findFirstNode(TemplateId.PLACEHOLDER))
+				.isSameAs(childTwo);
 	}
 
 	@Test
@@ -169,7 +173,9 @@ public class NodeTest {
 		Node childThree = new Node();
 		parent.addChildNodes(childOne, childTwo, childThree);
 
-		assertNull("should not find a node that has the searched id", parent.findFirstNode(TemplateId.PLACEHOLDER));
+		assertWithMessage("should not find a node that has the searched id")
+				.that(parent.findFirstNode(TemplateId.PLACEHOLDER))
+				.isNull();
 	}
 
 	@Test
@@ -178,7 +184,7 @@ public class NodeTest {
 		node.putValue("test", "hello");
 		node.removeValue("test");
 
-		assertFalse(node.hasValue("test"));
+		assertThat(node.hasValue("test")).isFalse();
 	}
 
 	@Test

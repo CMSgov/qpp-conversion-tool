@@ -6,10 +6,11 @@ This document describes how to set up your development environment to build and 
 * [Prerequisite Software](#additional-prerequisite-software)
 * [Building](#building)
 * [Running Tests Locally](#running-tests-locally)
+* [Integration Environment](#integration-environment)
 * [SonarQube](#sonarqube)
 * [Third Party Extensions](#third-party-extensions)
 
-See the [contribution guidelines](https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md)
+See the [contribution guidelines](CONTRIBUTING.md)
 if you'd like to contribute to qpp-conversion-tool.
 
 ## Additional Prerequisite Software
@@ -49,6 +50,36 @@ conversions, the tests will not pass and the build will fail.
 # Run the basic tests and the load tests.
 mvn clean verify -DrunLoadTests
 ```
+
+In addition, there are some extreme JMeter load tests that execute only when passing in `-DskipJmeterSuite=false`.  To run these
+tests, one must fill in the `host`, `path`, `port`, and `cookie` fields in the [benchmark pom.xml](benchmark/pom.xml) to
+correctly connect to the test environment. Make sure you have time, the CPU performance, and network performance before deciding
+to run these tests.
+
+## Integration Environment
+
+In addition to converting input files to QPP, the ReST API can do the following...
+- Call the submission validation API to validate the QPP JSON.
+- Write the input file and output JSON to a S3 bucket.
+- Write metadata to a DynamoDB table.
+ 
+This additional functionality depends on the environment variables set. See the [.env](.env) file for descriptions of what the
+environment variables are for.
+
+### Amazon Web Services
+
+The ReST API depends on AWS for some of the additional functionality. Currently, a real account with AWS must be used.
+[Localstack](https://github.com/localstack/localstack) is used in tests.
+
+Ensure that credentials are set such that the
+[Default Credential Provider Chain](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) can find them.
+Also ensure that a region is set such that the
+[Default Region Provider Chain](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/java-dg-region-selection.html#automatically-determine-the-aws-region-from-the-environment)
+can find it.  If not, `us-east-1` is used by default.
+
+#### DynamoDB
+
+The DynamoDB table requires the partition key be named `Uuid` and of type `String`.
 
 ## SonarQube
 
