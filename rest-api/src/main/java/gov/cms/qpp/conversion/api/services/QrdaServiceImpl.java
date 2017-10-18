@@ -28,6 +28,12 @@ public class QrdaServiceImpl implements QrdaService {
 		return converter.getReport();
 	}
 
+	/**
+	 * Instantiate a {@link Converter} with a given {@link QrdaSource}
+	 *
+	 * @param source for qrda input
+	 * @return converter instance
+	 */
 	Converter initConverter(QrdaSource source) {
 		return new Converter(source);
 	}

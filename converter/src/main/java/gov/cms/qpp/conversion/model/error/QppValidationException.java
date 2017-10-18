@@ -3,6 +3,9 @@ package gov.cms.qpp.conversion.model.error;
 
 import gov.cms.qpp.conversion.Converter;
 
+/**
+ * An exception thrown when causal exceptions arise during QPP validation.
+ */
 public class QppValidationException extends TransformException {
 
 	/**
