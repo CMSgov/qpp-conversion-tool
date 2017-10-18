@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Error;
-import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +43,10 @@ public class ValidationServiceImpl implements ValidationService {
 	/**
 	 * Validates that the given QPP is valid.
 	 *
-	 * @param qpp The QPP input.
+	 * @param conversionReport A report on the status of the conversion.
 	 */
 	@Override
-	public void validateQpp(final JsonWrapper qpp) {
+	public void validateQpp(final Converter.ConversionReport conversionReport) {
 		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
 
 		if (validationUrl == null || validationUrl.isEmpty()) {
@@ -53,11 +54,13 @@ public class ValidationServiceImpl implements ValidationService {
 		}
 
 		API_LOG.info("Calling QPP validation");
-		qpp.stream().forEach(wrapper -> {
+		conversionReport.getEncoded().stream().forEach(wrapper -> {
 			ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper);
 			if (HttpStatus.UNPROCESSABLE_ENTITY.equals(validationResponse.getStatusCode())) {
 				AllErrors convertedErrors = convertQppValidationErrorsToQrda(validationResponse.getBody(), wrapper);
-				throw new TransformException("Converted QPP failed validation", null, convertedErrors);
+				conversionReport.setRawValidationDetails(validationResponse.getBody());
+				conversionReport.setReportDetails(convertedErrors);
+				throw new QppValidationException("Converted QPP failed validation", null, conversionReport);
 			}
 		});
 	}
@@ -81,7 +84,7 @@ public class ValidationServiceImpl implements ValidationService {
 	 *
 	 * @return the headers
 	 */
-	public HttpHeaders getHeaders() {
+	HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE);
 		headers.add(HttpHeaders.ACCEPT, CONTENT_TYPE);
@@ -122,7 +125,7 @@ public class ValidationServiceImpl implements ValidationService {
 	 * @param response The JSON response containing a QPP error.
 	 * @return An Error object.
 	 */
-	private Error getError(String response) {
+	Error getError(String response) {
 		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes(Charset.defaultCharset())),
 				ErrorMessage.class)
 				.getError();

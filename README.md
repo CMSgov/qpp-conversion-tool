@@ -4,7 +4,6 @@
 
 * [Installation Instructions](#installation-instructions)
 * [Running the Converter](#running-the-converter)
-* [Deploying](#deploying)
 * [Sample Files](#sample-files)
 * [Want to Contribute?](#want-to-contribute)
 * [Public Domain](#public-domain)
@@ -124,10 +123,6 @@ For example, `not-a-QRDA-III-file.err.json`.  This error file contains descripti
 errors in the provided input file.
 
 View all commands with `convert.sh`.
-
-## Deploying
-
-See [terraform/README.md](terraform/README.md).
 
 ## Sample files
 

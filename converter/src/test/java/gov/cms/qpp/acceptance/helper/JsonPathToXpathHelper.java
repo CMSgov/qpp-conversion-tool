@@ -7,14 +7,15 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import java.io.IOException;
-import java.nio.file.Path;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filter;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.fail;
@@ -33,10 +34,10 @@ public class JsonPathToXpathHelper {
 		path = inPath;
 		wrapper = inWrapper;
 		Converter converter = new Converter(new PathQrdaSource(inPath));
-		converter.getContext().setDoDefaults(false);
+		converter.getContext().setDoDefaults(doDefaults);
 		converter.transform();
 		QppOutputEncoder encoder = new QppOutputEncoder(converter.getContext());
-		encoder.encode(wrapper, converter.getDecoded());
+		encoder.encode(wrapper, converter.getReport().getDecoded());
 	}
 
 	public void executeElementTest(String jsonPath, String xmlElementName)
@@ -83,7 +84,7 @@ public class JsonPathToXpathHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T evaluateXpath(String xPath, Filter filter) throws IOException, XmlException {
+	private <T> T evaluateXpath(String xPath, Filter filter) throws IOException, XmlException {
 		XPathExpression<Attribute> xpath = xpf.compile(xPath, filter);
 		return (T) xpath.evaluateFirst(XmlUtils.parseXmlStream(XmlUtils.fileToStream(path)));
 	}

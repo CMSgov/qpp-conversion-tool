@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
-import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.Converter;
 
 /**
  * Interface for the QPP Validation Service
@@ -9,7 +9,7 @@ public interface ValidationService {
 	/**
 	 * Validates that the given QPP is valid.
 	 *
-	 * @param qpp The QPP input.
+	 * @param conversionReport A report on the state of the conversion.
 	 */
-	public void validateQpp(JsonWrapper qpp);
+	void validateQpp(Converter.ConversionReport conversionReport);
 }
