@@ -26,4 +26,3 @@ test:
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/converter && cp -R converter/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/converter
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/rest-api && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/rest-api
     - mkdir -p $CIRCLE_ARTIFACTS/coverage/commandline && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/commandline
-    
