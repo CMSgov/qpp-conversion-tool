@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model.error;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -7,6 +8,7 @@ import java.io.Serializable;
 /**
  * Holds the error information from Validators.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552590676L;
 	@JsonProperty("message")
