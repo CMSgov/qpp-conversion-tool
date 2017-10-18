@@ -65,12 +65,11 @@ public class AuditServiceImplTest {
 				.thenReturn(metadata);
 		doReturn(CompletableFuture.completedFuture(metadata))
 				.when(dbService).write(metadata);
-
-		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 	}
 
 	@Test
 	public void testAuditHappyPath() {
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 		successfulEncodingPrep();
 		allGood();
 		underTest.success(report);
@@ -81,7 +80,31 @@ public class AuditServiceImplTest {
 	}
 
 	@Test
+	public void testAuditHappyPathNoAuditIsEmpty() {
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("");
+		successfulEncodingPrep();
+		allGood();
+		underTest.success(report);
+
+		assertThat(metadata.getQppLocator()).isSameAs(AN_ID);
+		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
+		assertThat(metadata.getFileName()).isSameAs(FILENAME);
+	}
+
+	@Test
+	public void testAuditHappyPathNoAudit() {
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("yep");
+		successfulEncodingPrep();
+		allGood();
+		underTest.success(report);
+
+		verify(storageService, times(0)).store(any(String.class), any(InputStream.class));
+		verify(dbService, times(0)).write(metadata);
+	}
+
+	@Test
 	public void testAuditHappyPathWrite() {
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 		successfulEncodingPrep();
 		allGood();
 		underTest.success(report);
@@ -91,6 +114,7 @@ public class AuditServiceImplTest {
 
 	@Test
 	public void testFileUploadFailureException() throws TimeoutException {
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 		successfulEncodingPrep();
 		problematic();
 		final Waiter waiter = new Waiter();
@@ -106,8 +130,10 @@ public class AuditServiceImplTest {
 		waiter.await(5000);
 	}
 
+
 	@Test
 	public void testAuditConversionFailureHappy() {
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 		errorPrep();
 		allGood();
 		underTest.failConversion(report);
@@ -117,7 +143,19 @@ public class AuditServiceImplTest {
 	}
 
 	@Test
+	public void testAuditConversionFailureNoAudit() {
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("yep");
+		errorPrep();
+		allGood();
+		underTest.failConversion(report);
+
+		verify(storageService, times(0)).store(any(String.class), any(InputStream.class));
+		verify(dbService, times(0)).write(metadata);
+	}
+
+	@Test
 	public void testAuditQppValidationFailureHappy() {
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 		successfulEncodingPrep();
 		errorPrep();
 		allGood();
@@ -127,6 +165,18 @@ public class AuditServiceImplTest {
 		assertThat(metadata.getValidationErrorLocator()).isSameAs(AN_ID);
 		assertThat(metadata.getQppLocator()).isSameAs(AN_ID);
 		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
+	}
+
+	@Test
+	public void testAuditQppValidationFailureNoAudit() {
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("yep");
+		successfulEncodingPrep();
+		errorPrep();
+		allGood();
+		underTest.failValidation(report);
+
+		verify(storageService, times(0)).store(any(String.class), any(InputStream.class));
+		verify(dbService, times(0)).write(metadata);
 	}
 
 	private void successfulEncodingPrep() {

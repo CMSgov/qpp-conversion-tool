@@ -39,7 +39,7 @@ public class AuditServiceImpl implements AuditService {
 	@Override
 	public CompletableFuture<Void> success(Converter.ConversionReport conversionReport) {
 		if (noAudit()) {
-			CompletableFuture.completedFuture(null);
+			return CompletableFuture.completedFuture(null);
 		}
 		Metadata metadata = initMetadata(conversionReport, Outcome.SUCCESS);
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
@@ -57,7 +57,7 @@ public class AuditServiceImpl implements AuditService {
 	@Override
 	public CompletableFuture<Void> failConversion(Converter.ConversionReport conversionReport) {
 		if (noAudit()) {
-			CompletableFuture.completedFuture(null);
+			return CompletableFuture.completedFuture(null);
 		}
 		Metadata metadata = initMetadata(conversionReport, Outcome.CONVERSION_ERROR);
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
@@ -75,7 +75,7 @@ public class AuditServiceImpl implements AuditService {
 	@Override
 	public CompletableFuture<Void> failValidation(Converter.ConversionReport conversionReport) {
 		if (noAudit()) {
-			CompletableFuture.completedFuture(null);
+			return CompletableFuture.completedFuture(null);
 		}
 
 		Metadata metadata = initMetadata(conversionReport, Outcome.VALIDATION_ERROR);
