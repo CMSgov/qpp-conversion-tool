@@ -121,7 +121,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 		Converter converter = new Converter(new PathQrdaSource(baseDir.resolve(path)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
 		converter.transform();
-		return converter.getDecoded().findFirstNode(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
+		return converter.getReport().getDecoded().findFirstNode(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 	}
 
 	private Set<Detail> validateNode(Node node) {
