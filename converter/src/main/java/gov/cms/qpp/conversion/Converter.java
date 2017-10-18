@@ -1,15 +1,7 @@
 package gov.cms.qpp.conversion;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
-import org.jdom2.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
@@ -23,9 +15,21 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.util.CloneHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.jdom2.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Converter provides the command line processing for QRDA III to QPP json.
@@ -44,6 +48,7 @@ public class Converter {
 	private final Context context;
 	private List<Detail> details = new ArrayList<>();
 	private Node decoded;
+	private JsonWrapper encoded;
 
 	/**
 	 * Constructor for the CLI Converter application
@@ -72,10 +77,6 @@ public class Converter {
 		return context;
 	}
 
-	public Node getDecoded() {
-		return decoded;
-	}
-
 	/**
 	 * Perform conversion.
 	 *
@@ -83,9 +84,8 @@ public class Converter {
 	 */
 	public JsonWrapper transform() {
 		DEV_LOG.info("Transform invoked with file {}", source.getName());
-		JsonWrapper qpp = null;
 		try {
-			qpp = transform(source.toInputStream());
+			encoded = transform(source.toInputStream());
 		} catch (XmlInputFileException | XmlException xe) {
 			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
 			details.add(new Detail(NOT_VALID_XML_DOCUMENT));
@@ -95,11 +95,10 @@ public class Converter {
 		}
 
 		if (!details.isEmpty()) {
-			throw new TransformException("Validation errors exist", null,
-				constructErrorHierarchy(source.getName(), details));
+			throw new TransformException("Validation errors exist", null, getReport());
 		}
 
-		return qpp;
+		return encoded;
 	}
 
 	/**
@@ -136,32 +135,6 @@ public class Converter {
 	}
 
 	/**
-	 * Constructs an {@link AllErrors} from all the validation errors.
-	 *
-	 * Currently consists of only a single {@link Error}.
-	 *
-	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
-	 * @param details A list of validation errors.
-	 * @return All the errors.
-	 */
-	private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
-		AllErrors errors = new AllErrors();
-		errors.addError(constructErrorSource(inputIdentifier, details));
-		return errors;
-	}
-
-	/**
-	 * Constructs an {@link Error} for the given {@code inputIdentifier} from the passed in validation errors.
-	 *
-	 * @param inputIdentifier An identifier for a source of QRDA3 XML.
-	 * @param details A list of validation errors.
-	 * @return A single source of validation errors.
-	 */
-	private Error constructErrorSource(final String inputIdentifier, final List<Detail> details) {
-		return new Error(inputIdentifier, details);
-	}
-
-	/**
 	 * Place transformed content into an input stream
 	 *
 	 * @return content resulting from the transformation
@@ -188,6 +161,144 @@ public class Converter {
 	 */
 	protected JsonOutputEncoder getEncoder() {
 		return (!context.getScope().isEmpty()) ? new ScopedQppOutputEncoder(context) : new QppOutputEncoder(context);
+	}
+
+	/**
+	 * Retrieve the Converter's {@link ConversionReport}
+	 *
+	 * @return the conversion report
+	 */
+	public ConversionReport getReport() {
+		return new ConversionReport();
+	}
+
+
+	/**
+	 * Report on the stat of a conversion.
+	 */
+	public class ConversionReport {
+		private final ObjectMapper mapper = new ObjectMapper();
+		private AllErrors reportDetails;
+		private String qppValidationDetails;
+
+		/**
+		 * Construct a con version report
+		 */
+		ConversionReport() {
+			reportDetails = constructErrorHierarchy(source.getName(), details);
+		}
+
+		/**
+		 * Constructs an {@link AllErrors} from all the validation errors.
+		 *
+		 * Currently consists of only a single {@link Error}.
+		 *
+		 * @param inputIdentifier An identifier for a source of QRDA3 XML.
+		 * @param details A list of validation errors.
+		 * @return All the errors.
+		 */
+		private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
+			AllErrors errors = new AllErrors();
+			errors.addError(constructErrorSource(inputIdentifier, details));
+			return errors;
+		}
+
+		/**
+		 * Constructs an {@link Error} for the given {@code inputIdentifier} from the passed in validation errors.
+		 *
+		 * @param inputIdentifier An identifier for a source of QRDA3 XML.
+		 * @param details A list of validation errors.
+		 * @return A single source of validation errors.
+		 */
+		private Error constructErrorSource(final String inputIdentifier, final List<Detail> details) {
+			return new Error(inputIdentifier, details);
+		}
+
+		/**
+		 * Defensive copy of decoded submission
+		 *
+		 * @return decoded {@link Node}
+		 */
+		public Node getDecoded() {
+			return CloneHelper.deepClone(decoded);
+		}
+
+		/**
+		 * Defensive copy of the result of the conversion
+		 *
+		 * @return encoded {@link JsonWrapper}
+		 */
+		public JsonWrapper getEncoded() {
+			return CloneHelper.deepClone(encoded);
+		}
+
+		/**
+		 * Retrieve information pertaining to errors generated during the conversion.
+		 *
+		 * @return all errors registered during conversion
+		 */
+		public AllErrors getReportDetails() {
+			return reportDetails;
+		}
+
+		/**
+		 * Convenience method to return conversion error information as a stream of serialized json.
+		 *
+		 * @return input stream containing error json
+		 */
+		public InputStream streamDetails() {
+			try {
+				return new ByteArrayInputStream(mapper.writeValueAsBytes(reportDetails));
+			} catch (JsonProcessingException e) {
+				throw new EncodeException("Issue serializing error report details", e);
+			}
+		}
+
+		/**
+		 * Mutator for reportDetails
+		 *
+		 * @param details updated errors
+		 */
+		public void setReportDetails(AllErrors details) {
+			reportDetails = details;
+		}
+
+
+		/**
+		 * Convenience method to retrieve QPP validation details
+		 *
+		 * @return input stream of QPP validation details
+		 */
+		public InputStream streamRawValidationDetails() {
+			return new ByteArrayInputStream(qppValidationDetails.getBytes(Charset.defaultCharset()));
+		}
+
+		/**
+		 * Mutator for QPP validation details
+		 *
+		 * @param details QPP validation details
+		 */
+		public void setRawValidationDetails(String details) {
+			qppValidationDetails = details;
+		}
+
+		/**
+		 * Get input stream for converted content
+		 *
+		 * @return input stream for submission
+		 */
+		public InputStream getFileInput() {
+			return source.toInputStream();
+		}
+
+		/**
+		 * Get source file name
+		 *
+		 * @return file name
+		 */
+		public String getFilename() {
+			return source.getName();
+		}
 	}
 
 }

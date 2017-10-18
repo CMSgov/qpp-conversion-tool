@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.apache.commons.io.FileUtils;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,6 +35,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -51,6 +53,9 @@ public class ValidationServiceImplTest {
 
 	@Mock
 	private RestTemplate restTemplate;
+
+	@Mock
+	private Converter converter;
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -80,6 +85,13 @@ public class ValidationServiceImplTest {
 		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
 	}
 
+	@Before
+	public void before() {
+		Converter.ConversionReport report = mock(Converter.ConversionReport.class);
+		when(report.getEncoded()).thenReturn(qppWrapper);
+		when(converter.getReport()).thenReturn(report);
+	}
+
 	@Test
 	public void testNullValidationUrl() {
 		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn(null);
@@ -106,7 +118,7 @@ public class ValidationServiceImplTest {
 		ResponseEntity<String> spiedResponseEntity = spy(new ResponseEntity<>(HttpStatus.OK));
 		when(restTemplate.postForEntity(eq(validationUrl), any(HttpEntity.class), eq(String.class))).thenReturn(spiedResponseEntity);
 
-		objectUnderTest.validateQpp(new JsonWrapper());
+		objectUnderTest.validateQpp(converter.getReport());
 
 		verify(spiedResponseEntity, never()).getBody();
 	}
@@ -122,7 +134,7 @@ public class ValidationServiceImplTest {
 		thrown.expect(TransformException.class);
 		thrown.expectMessage("Converted QPP failed validation");
 
-		objectUnderTest.validateQpp(qppWrapper);
+		objectUnderTest.validateQpp(converter.getReport());
 	}
 
 	@Test
