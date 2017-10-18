@@ -125,7 +125,7 @@ public class ValidationServiceImpl implements ValidationService {
 	 * @param response The JSON response containing a QPP error.
 	 * @return An Error object.
 	 */
-	private Error getError(String response) {
+	Error getError(String response) {
 		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes(Charset.defaultCharset())),
 				ErrorMessage.class)
 				.getError();
