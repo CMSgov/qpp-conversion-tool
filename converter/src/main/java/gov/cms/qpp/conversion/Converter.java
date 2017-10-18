@@ -19,6 +19,7 @@ import gov.cms.qpp.conversion.util.CloneHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import jdk.internal.util.xml.impl.Input;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -178,6 +179,7 @@ public class Converter {
 	public class ConversionReport {
 		private final ObjectMapper mapper = new ObjectMapper();
 		private AllErrors reportDetails;
+		private String qppValidationDetails;
 
 		/**
 		 * Construct a con version report
@@ -259,6 +261,15 @@ public class Converter {
 		 */
 		public void setReportDetails(AllErrors details) {
 			reportDetails = details;
+		}
+
+
+		public InputStream streamRawValidationDetails() {
+			return new ByteArrayInputStream(qppValidationDetails.getBytes());
+		}
+
+		public void setRawValidationDetails(String details) {
+			qppValidationDetails = details;
 		}
 
 		/**

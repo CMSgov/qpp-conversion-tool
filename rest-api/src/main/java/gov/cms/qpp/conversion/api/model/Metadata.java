@@ -31,6 +31,7 @@ public final class Metadata {
 	private Boolean cpc;
 	private String conversionErrorLocator;
 	private String validationErrorLocator;
+	private String rawValidationErrorLocator;
 
 
 	/**
@@ -352,6 +353,28 @@ public final class Metadata {
 	}
 
 	/**
+	 * A location to where the raw submission validation error response can be found.
+	 *
+	 * For example, for AWS, this could be an ARN.
+	 *
+	 * @return The location.
+	 */
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = "RawValidationErrorLocator")
+	public String getRawValidationErrorLocator() {
+		return rawValidationErrorLocator;
+	}
+
+	/**
+	 * Sets a location to where the submission validation error JSON can be found.
+	 *
+	 * @param rawValidationErrorLocator A location.
+	 */
+	public void setRawValidationErrorLocator(String rawValidationErrorLocator) {
+		this.rawValidationErrorLocator = rawValidationErrorLocator;
+	}
+
+	/**
 	 * Determines the equality between this object and another.
 	 *
 	 * @param o The other object.
@@ -384,6 +407,7 @@ public final class Metadata {
 		equals &= Objects.equal(fileName, that.fileName);
 		equals &= Objects.equal(conversionErrorLocator, that.conversionErrorLocator);
 		equals &= Objects.equal(validationErrorLocator, that.validationErrorLocator);
+		equals &= Objects.equal(rawValidationErrorLocator, that.rawValidationErrorLocator);
 		return equals;
 	}
 
@@ -395,6 +419,6 @@ public final class Metadata {
 	public int hashCode() {
 		return Objects.hashCode(uuid, tin, npi, createdDate, apm, submissionYear,
 				submissionLocator, qppLocator, fileName, overallStatus, conversionStatus, validationStatus,
-				cpc, conversionErrorLocator, validationErrorLocator);
+				cpc, conversionErrorLocator, validationErrorLocator, rawValidationErrorLocator);
 	}
 }

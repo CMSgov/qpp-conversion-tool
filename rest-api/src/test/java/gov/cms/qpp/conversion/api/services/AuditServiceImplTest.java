@@ -4,6 +4,7 @@ package gov.cms.qpp.conversion.api.services;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.Node;
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.core.env.Environment;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -48,6 +50,9 @@ public class AuditServiceImplTest {
 	@Mock
 	private Converter.ConversionReport report;
 
+	@Mock
+	private Environment environment;
+
 	private Metadata metadata;
 	private InputStream fileContent = new ByteArrayInputStream("Hello".getBytes());
 
@@ -60,6 +65,8 @@ public class AuditServiceImplTest {
 				.thenReturn(metadata);
 		doReturn(CompletableFuture.completedFuture(metadata))
 				.when(dbService).write(metadata);
+
+		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 	}
 
 	@Test
@@ -116,6 +123,7 @@ public class AuditServiceImplTest {
 		allGood();
 		underTest.failValidation(report);
 
+		assertThat(metadata.getRawValidationErrorLocator()).isSameAs(AN_ID);
 		assertThat(metadata.getValidationErrorLocator()).isSameAs(AN_ID);
 		assertThat(metadata.getQppLocator()).isSameAs(AN_ID);
 		assertThat(metadata.getSubmissionLocator()).isSameAs(AN_ID);
@@ -132,6 +140,7 @@ public class AuditServiceImplTest {
 	private void errorPrep() {
 		prepOverlap();
 
+		when(report.streamRawValidationDetails()).thenReturn(fileContent);
 		when(report.streamDetails()).thenReturn(fileContent);
 	}
 
