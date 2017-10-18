@@ -229,7 +229,7 @@ public class ConversionEntry {
 		if (Files.exists(file)) {
 			existingFiles.add(file);
 		} else {
-			DEV_LOG.error(FILE_DOES_NOT_EXIST, path);
+			DEV_LOG.error(FILE_DOES_NOT_EXIST, file.toAbsolutePath());
 		}
 		return existingFiles;
 	}
