@@ -68,7 +68,7 @@ public class QrdaGenerator {
 		Instant instant = Instant.now();
 
 		submission.execute(
-				new FileWriter("generated-qrda-" + instant.getEpochSecond() + ".xml"),
+				new FileWriter("./qrda-files/large/comprehensive-qrda.xml"),
 				new Context(quality, aci, ia)).flush();
 	}
 
