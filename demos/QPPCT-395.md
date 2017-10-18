@@ -1,6 +1,6 @@
 # QPPCT-395
 
-`git checkout b3da0ae8adbc38779687b7ad266dadbecdf3a8e2`
+`git checkout 001255d064db234399d8f90562d973cacf8d4d89`
 
 # Steps
 1. Show JIRA. https://jira.cms.gov/browse/QPPCT-395
