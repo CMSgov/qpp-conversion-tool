@@ -50,7 +50,7 @@ Any text in the following are considered variables to be filled in:`(Example)`
 * Must be 12/31/2017 _Performance End Period_
 * Must contain correct number of performance rate(s). Correct Number is `(Number of performance rates required)`
 	* Ex. : Must contain correct number of performance rate(s). Correct Number is 3
-* Missing strata `(Reporting Stratum ID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
+* Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
 	* Ex. : Missing strata EFB5B088-CE10-43DE-ACCD-9913B7AC12A2 for DENEX measure (56BC7FA2-C22A-4440-8652-2D3568852C60) 
 * Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)`
 for `(Current subpopulation type)` measure `(Current eCQM Measure ID)`. Expected strata: `(Expected strata list)`
