@@ -2,7 +2,7 @@
 Current list of all error messages being output by the converter.
 Any text in the following are considered variables to be filled in:`(Example)`
 
-##List of errors that output to users upon decoding and encoding failures:
+## List of errors that output to users upon decoding and encoding failures:
 * Unexpected exception occurred during conversion
 * The file is not a valid XML document
 * The file is not a QRDA-III XML document
@@ -12,7 +12,7 @@ Any text in the following are considered variables to be filled in:`(Example)`
 * No encoder for decoder : `(encoder type)`
 * Error parsing reporting parameter `(performance start/end)`
 
-##List of errors that output to users upon validation failure:
+## List of errors that output to users upon validation failure:
 * This Denominator Node does not have an Aggregate Count Node
 * This Denominator Node Aggregate Value is not an integer
 * This Denominator Node Aggregate Value has an invalid value
