@@ -52,8 +52,7 @@ Any text in the following are considered variables to be filled in:`(Example)`
 	* Ex. : Must contain correct number of performance rate(s). Correct Number is 3
 * Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
 	* Ex. : Missing strata EFB5B088-CE10-43DE-ACCD-9913B7AC12A2 for DENEX measure (56BC7FA2-C22A-4440-8652-2D3568852C60) 
-* Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)`
-for `(Current subpopulation type)` measure `(Current eCQM Measure ID)`. Expected strata: `(Expected strata list)`
+* Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`
 	* Ex. : Amount of stratifications 0 does not meet expectations 2 for DENEX measure (56BC7FA2-C22A-4440-8652-2D3568852C60). Expected strata: \[EFB5B088-CE10-43DE-ACCD-9913B7AC12A2, 94B9555F-8700-45EF-B69F-433EBEDE8051\]
 * A single measure performed value is required and must be either a Y or an N.
 * Measure performed must have exactly one child.
@@ -72,11 +71,11 @@ for `(Current subpopulation type)` measure `(Current eCQM Measure ID)`. Expected
 * The Denominator count must be less than or equal to Initial Population count 
 for an eCQM that is proportion measure
 * The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
-	* Ex. :
+	* Ex. : The eCQM (electronic measure id: CMS165v5) requires 1 DENEX(s) but there are 0
 * The eCQM (electronic measure id: `(Current eMeasure ID)`) requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`
-	* Ex. :
+	* Ex. : The eCQM (electronic measure id: CMS165v5) requires a DENEX with the correct UUID of 55A6D5F3-2029-4896-B850-4C7894161D7D
 * The eCQM (electronic measure id: `(Current eMeasure ID)`) has a performanceRateId with an incorrect UUID of `(Incorrect UUID)`
-	* Ex. :
+	* Ex. : The eCQM (electronic measure id: CMS68v6) has a performanceRateUuid with an incorrect UUID of 00000000-0000-0000-0000-1NV4L1D
 * A Performance Rate must contain a single Performance Rate UUID
 * The Quality Measure Section must have only one Reporting Parameter ACT
 * Must have a performance year
