@@ -1,6 +1,6 @@
 # Error messages
 Current list of all error messages being output by the converter.
-Any text in the following are considered variables to be filled in:`(Example)`
+Any text in the following format `(Example)` are considered variables to be filled in.
 
 ## List of errors that output to users upon decoding and encoding failures:
 * Unexpected exception occurred during conversion
@@ -8,8 +8,10 @@ Any text in the following are considered variables to be filled in:`(Example)`
 * The file is not a QRDA-III XML document
 * Failure to encode
 * Failed to find an encoder
-* Failed to find an encoder for child node `(specific template id)`
-* No encoder for decoder : `(specific template id)`
+* Failed to find an encoder for child node `(specific template id name)`
+	* Ex. : Failed to find an encoder for child node AGGREGATE_COUNT
+* No encoder for decoder : `(specific template id name)`
+	* Ex. : No encoder for decoder : AGGREGATE_COUNT
 * Error parsing reporting parameter performance start
 * Error parsing reporting parameter performance end
 
