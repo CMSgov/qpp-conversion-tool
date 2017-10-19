@@ -8,9 +8,10 @@ Any text in the following are considered variables to be filled in:`(Example)`
 * The file is not a QRDA-III XML document
 * Failure to encode
 * Failed to find an encoder
-* Failed to find an encoder for child node `(encoder type)`
-* No encoder for decoder : `(encoder type)`
-* Error parsing reporting parameter `(performance start/end)`
+* Failed to find an encoder for child node `(specific template id)`
+* No encoder for decoder : `(specific template id)`
+* Error parsing reporting parameter performance start
+* Error parsing reporting parameter performance end
 
 ## List of errors that output to users upon validation failure:
 * This Denominator Node does not have an Aggregate Count Node
