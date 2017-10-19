@@ -823,6 +823,9 @@ CDA Header
                         {{#isProportion}}
                             {{>aci-proportion-measure-template}}
                         {{/isProportion}}
+                        {{^isProportion}}
+                            {{>aci-boolean-measure-template}}
+                        {{/isProportion}}
                     {{/aci}}
 
                     <!-- Reporting Parameters Act -->
