@@ -49,9 +49,12 @@ Any text in the following are considered variables to be filled in:`(Example)`
 * Must be 01/01/2017 _Performance Start Period_
 * Must be 12/31/2017 _Performance End Period_
 * Must contain correct number of performance rate(s). Correct Number is `(Number of performance rates required)`
+	* Ex. : Must contain correct number of performance rate(s). Correct Number is 3
 * Missing strata `(Reporting Stratum ID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
+	* Ex. : Missing strata EFB5B088-CE10-43DE-ACCD-9913B7AC12A2 for DENEX measure (56BC7FA2-C22A-4440-8652-2D3568852C60) 
 * Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)`
 for `(Current subpopulation type)` measure `(Current eCQM Measure ID)`. Expected strata: `(Expected strata list)`
+	* Ex. : Amount of stratifications 0 does not meet expectations 2 for DENEX measure (56BC7FA2-C22A-4440-8652-2D3568852C60). Expected strata: \[EFB5B088-CE10-43DE-ACCD-9913B7AC12A2, 94B9555F-8700-45EF-B69F-433EBEDE8051\]
 * A single measure performed value is required and must be either a Y or an N.
 * Measure performed must have exactly one child.
 * The IA Section must have at least one IA Measure
@@ -69,8 +72,11 @@ for `(Current subpopulation type)` measure `(Current eCQM Measure ID)`. Expected
 * The Denominator count must be less than or equal to Initial Population count 
 for an eCQM that is proportion measure
 * The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
+	* Ex. :
 * The eCQM (electronic measure id: `(Current eMeasure ID)`) requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`
+	* Ex. :
 * The eCQM (electronic measure id: `(Current eMeasure ID)`) has a performanceRateId with an incorrect UUID of `(Incorrect UUID)`
+	* Ex. :
 * A Performance Rate must contain a single Performance Rate UUID
 * The Quality Measure Section must have only one Reporting Parameter ACT
 * Must have a performance year
