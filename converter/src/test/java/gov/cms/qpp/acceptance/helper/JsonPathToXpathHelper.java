@@ -77,10 +77,10 @@ public class JsonPathToXpathHelper {
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
-		assertThat(xmlAttributeName)
-				.isEqualTo(attribute.getName());
-		assertThat(expectedValue)
-				.isEqualTo(attribute.getValue());
+		assertThat(attribute.getName())
+				.isEqualTo(xmlAttributeName);
+		assertThat(attribute.getValue())
+				.isEqualTo(expectedValue);
 	}
 
 	@SuppressWarnings("unchecked")
