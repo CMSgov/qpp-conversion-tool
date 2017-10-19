@@ -25,8 +25,7 @@
    CMS2v6							Community/Population Health
    CMS138v5							Community/Population Health
    CMS136v6							Effective Clinical Care (multiple rates)
-   CMS22 v5
-
+   
    ACI Measures included are:
    MeasureID						Type
    ACI_PPHI_1						Yes/No
@@ -24311,7 +24310,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="30"/>
+											<value xsi:type="INT" value="16"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -26290,7 +26289,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="12"/>
+											<value xsi:type="INT" value="14"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -27788,7 +27787,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="450"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -27799,43 +27798,6 @@ CDA Header
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<id root="008509CF-85E8-40C0-9434-65FE19EFC090"/>
-										</externalObservation>
-									</reference>
-								</observation>
-							</component>
-							<!--DENEXCEP Population-->
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<templateId root="2.16.840.1.113883.10.20.27.3.5"
-										extension="2016-09-01"/>
-									<templateId root="2.16.840.1.113883.10.20.27.3.16"
-										extension="2016-11-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
-										codeSystem="2.16.840.1.113883.5.1063"
-										codeSystemName="ObservationValue"/>
-									<!--DENEXCEP Count-->
-									<entryRelationship typeCode="SUBJ" inversionInd="true">
-										<observation classCode="OBS" moodCode="EVN">
-											<templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-											<templateId root="2.16.840.1.113883.10.20.27.3.24"/>
-											<code code="MSRAGG" codeSystem="2.16.840.1.113883.5.4"
-												codeSystemName="ActCode"
-												displayName="rate aggregation"/>
-											<statusCode code="completed"/>
-											<value xsi:type="INT" value="50"/>
-											<methodCode code="COUNT"
-												codeSystem="2.16.840.1.113883.5.84"
-												codeSystemName="ObservationMethod"
-												displayName="Count"/>
-										</observation>
-									</entryRelationship>
-									<!--DENEXCEP Population ID from eMeasure-->
-									<reference typeCode="REFR">
-										<externalObservation classCode="OBS" moodCode="EVN">
-											<id root="3C100EC4-2990-4D79-AE14-E816F5E78AC8"/>
 										</externalObservation>
 									</reference>
 								</observation>
@@ -27862,7 +27824,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="450"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -27899,7 +27861,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="380"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28395,6 +28357,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
+	
 					<!-- CMS161v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -28408,7 +28371,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="40280381-503f-a1fc-0150-67942bbc07d7"/>
+										extension="40280381-503f-a1fc-0150-de8350a220c3"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
@@ -28573,7 +28536,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="600"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28610,7 +28573,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="600"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28647,7 +28610,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="575"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28684,7 +28647,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="20"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28723,7 +28686,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="830"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28760,7 +28723,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="830"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28797,7 +28760,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="670"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28834,7 +28797,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="32"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28873,7 +28836,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="721"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28910,7 +28873,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="721"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28947,7 +28910,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="685"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -28984,7 +28947,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="23"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -30662,7 +30625,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="320"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -30699,7 +30662,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="320"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -30736,7 +30699,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="276"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -30773,7 +30736,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="11"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -30834,7 +30797,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="773"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -30871,7 +30834,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="773"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -30908,7 +30871,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="716"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -30945,7 +30908,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="23"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31006,7 +30969,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="789"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31043,7 +31006,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="789"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31080,7 +31043,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="689"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31117,7 +31080,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="32"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31313,7 +31276,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="595"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31350,7 +31313,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="595"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31387,7 +31350,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="581"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31424,7 +31387,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="9"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31485,7 +31448,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="590"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31522,7 +31485,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="590"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31559,7 +31522,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="480"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31596,7 +31559,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="68"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31657,7 +31620,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="350"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31694,7 +31657,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="350"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31731,7 +31694,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="302"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31768,7 +31731,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="5"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31829,7 +31792,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="680"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31866,7 +31829,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="680"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31903,7 +31866,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="602"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31928,7 +31891,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->
@@ -31940,7 +31903,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="36"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -31978,7 +31941,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="653"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -32015,7 +31978,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="653"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -32052,7 +32015,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="580"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -32077,7 +32040,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->
@@ -32089,7 +32052,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="35"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -32150,7 +32113,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="700"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -32187,7 +32150,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="700"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -32224,7 +32187,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="632"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -32249,7 +32212,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->
@@ -32261,7 +32224,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="25"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -32556,7 +32519,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->
@@ -32599,7 +32562,7 @@ CDA Header
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.4.738"
-										extension="40280381-52fc-3a32-0153-1a4ba57f0b8a"/>
+										extension="40280381-51f0-825b-0152-2295c55c16aa"/>
 									<code code="57024-2" codeSystem="2.16.840.1.113883.6.1"
 										codeSystemName="LOINC"
 										displayName="Health Quality Measure Document"/>
@@ -32764,7 +32727,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="582"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -32801,7 +32764,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="582"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -32838,7 +32801,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="8920"/>
+											<value xsi:type="INT" value="502"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -32998,7 +32961,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->
@@ -33182,7 +33145,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="791"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33207,7 +33170,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->
@@ -33219,7 +33182,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="50"/>
+											<value xsi:type="INT" value="65"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33280,7 +33243,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="236"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33317,7 +33280,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="236"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33354,7 +33317,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="203"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33379,7 +33342,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->
@@ -33391,7 +33354,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="50"/>
+											<value xsi:type="INT" value="16"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33551,7 +33514,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->
@@ -33624,7 +33587,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="906"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33661,7 +33624,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="906"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33698,7 +33661,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="843"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33773,7 +33736,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="989"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33810,7 +33773,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="989"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33847,7 +33810,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="900"/>
+											<value xsi:type="INT" value="875"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33884,7 +33847,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="10"/>
+											<value xsi:type="INT" value="25"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33898,7 +33861,7 @@ CDA Header
 										</externalObservation>
 									</reference>
 								</observation>
-							</component>
+							</component>						
 							<!--IPOP 3 Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
@@ -33922,7 +33885,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="854"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33959,7 +33922,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="854"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -33996,7 +33959,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="890"/>
+											<value xsi:type="INT" value="648"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -34057,7 +34020,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="897"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -34094,7 +34057,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="897"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -34156,7 +34119,7 @@ CDA Header
 									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 										codeSystemName="ActCode" displayName="Assertion"/>
 									<statusCode code="completed"/>
-									<value xsi:type="CD" code="DENEXCEP"
+									<value xsi:type="CD" code="DENEX"
 										codeSystem="2.16.840.1.113883.5.1063"
 										codeSystemName="ObservationValue"/>
 									<!--DENEX Count-->
@@ -34491,8 +34454,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20170101"/>
-								<high value="20171231"/>
+								<low value="20170501"/>
+								<high value="20170831"/>
 							</effectiveTime>
 						</act>
 					</entry>
@@ -34612,8 +34575,8 @@ CDA Header
 							<code code="252116004" codeSystem="2.16.840.1.113883.6.96"
 								displayName="Observation Parameters"/>
 							<effectiveTime>
-								<low value="20170101"/>
-								<high value="20171231"/>
+								<low value="20170301"/>
+								<high value="20170731"/>
 							</effectiveTime>
 						</act>
 					</entry>

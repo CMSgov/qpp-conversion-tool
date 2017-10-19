@@ -51,7 +51,7 @@ Large QRDA file
 
 * comprehensive-qrda.xml
 
-This is a representation of 
+This is a representation of
 * all strata bearing quality measures tracked in measures-data.json
 * all proportional ACI measures tracked in measures-data.json
 * all IA measures tracked in measures-data.json
