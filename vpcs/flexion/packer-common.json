@@ -1,7 +1,0 @@
-{
-	"iam_instance_profile": "server-nonprod",
-	"instance_type": "m4.large",
-	"region": "us-east-1",
-	"subnet_id": "subnet-eb786fc1",
-	"vpc_id": "vpc-f6e79891"
-}

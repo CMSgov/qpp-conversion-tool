@@ -23,6 +23,7 @@ public final class Metadata {
 	private String apm;
 	private Long submissionYear;
 	private String submissionLocator;
+	private String qppLocator;
 	private String fileName;
 	private Boolean overallStatus;
 	private Boolean conversionStatus;
@@ -30,6 +31,7 @@ public final class Metadata {
 	private Boolean cpc;
 	private String conversionErrorLocator;
 	private String validationErrorLocator;
+	private String rawValidationErrorLocator;
 
 
 	/**
@@ -185,6 +187,28 @@ public final class Metadata {
 	}
 
 	/**
+	 * A location where the submission QPP can be found.
+	 *
+	 * For example, for AWS, this could be an ARN.
+	 *
+	 * @return The location.
+	 */
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = "QPPLocator")
+	public String getQppLocator() {
+		return qppLocator;
+	}
+
+	/**
+	 * Sets a location where the submission QPP can be found.
+	 *
+	 * @param qppLocator The location to use.
+	 */
+	public void setQppLocator(String qppLocator) {
+		this.qppLocator = qppLocator;
+	}
+
+	/**
 	 * The file name of the file uploaded to the converter.
 	 *
 	 * @return The file name.
@@ -329,6 +353,28 @@ public final class Metadata {
 	}
 
 	/**
+	 * A location to where the raw submission validation error response can be found.
+	 *
+	 * For example, for AWS, this could be an ARN.
+	 *
+	 * @return The location.
+	 */
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = "RawValidationErrorLocator")
+	public String getRawValidationErrorLocator() {
+		return rawValidationErrorLocator;
+	}
+
+	/**
+	 * Sets a location to where the submission validation error JSON can be found.
+	 *
+	 * @param rawValidationErrorLocator A location.
+	 */
+	public void setRawValidationErrorLocator(String rawValidationErrorLocator) {
+		this.rawValidationErrorLocator = rawValidationErrorLocator;
+	}
+
+	/**
 	 * Determines the equality between this object and another.
 	 *
 	 * @param o The other object.
@@ -351,21 +397,17 @@ public final class Metadata {
 		equals &= Objects.equal(conversionStatus, that.conversionStatus);
 		equals &= Objects.equal(validationStatus, that.validationStatus);
 		equals &= Objects.equal(cpc, that.cpc);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
 		equals &= Objects.equal(uuid, that.uuid);
 		equals &= Objects.equal(tin, that.tin);
 		equals &= Objects.equal(npi, that.npi);
 		equals &= Objects.equal(createdDate, that.createdDate);
 		equals &= Objects.equal(apm, that.apm);
 		equals &= Objects.equal(submissionLocator, that.submissionLocator);
+		equals &= Objects.equal(qppLocator, that.qppLocator);
 		equals &= Objects.equal(fileName, that.fileName);
 		equals &= Objects.equal(conversionErrorLocator, that.conversionErrorLocator);
 		equals &= Objects.equal(validationErrorLocator, that.validationErrorLocator);
+		equals &= Objects.equal(rawValidationErrorLocator, that.rawValidationErrorLocator);
 		return equals;
 	}
 
@@ -376,7 +418,7 @@ public final class Metadata {
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(uuid, tin, npi, createdDate, apm, submissionYear,
-				submissionLocator, fileName, overallStatus, conversionStatus, validationStatus,
-				cpc, conversionErrorLocator, validationErrorLocator);
+				submissionLocator, qppLocator, fileName, overallStatus, conversionStatus, validationStatus,
+				cpc, conversionErrorLocator, validationErrorLocator, rawValidationErrorLocator);
 	}
 }
