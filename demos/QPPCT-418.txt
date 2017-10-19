@@ -1,0 +1,10 @@
+Sprint 28 Review Presentation - Jeff Benton
+QPPCT - 418
+1. Open up HP ALM
+2. Run through all the testing results for this Sprint 27
+3. Point out the failed and blocked tests that are still going on from QPPCT-302, QPPCT-375.
+4. Open up the HIVVS Confluence Page and go through these sub pages:
+	- QPPCT Sprint 28 Kickoff to show that there were no changes to the scope.
+	- QPPCT Sprint 28 Test Results to show the totals for all the tests ran.
+
+Ask for follow up questions and end the presentation.
