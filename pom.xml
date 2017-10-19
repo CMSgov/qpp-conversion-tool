@@ -22,7 +22,7 @@
 		<module>commandline</module>
 		<module>rest-api</module>
 		<module>benchmark</module>
-    </modules>
+	</modules>
 
 	<build>
 		<defaultGoal>clean install</defaultGoal>

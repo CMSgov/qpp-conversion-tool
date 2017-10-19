@@ -63,7 +63,7 @@ public class MeasureConfig {
 	}
 
 	public boolean isProportion() {
-		return metricType.equals("proportion");
+		return "proportion".equals(metricType);
 	}
 
 	public String getMetricType() {
