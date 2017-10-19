@@ -39,11 +39,19 @@ include ACI_EP_1 but not ACI_LVPP_1). Sample 2 also contains all but with the
 exclusions (e.g., include ACI_LVPP_1 but not ACI_EP_1). The attestation identifiers
 are not included.
 
-Large QRDA file
 
-* comprehensive-qrda.xml
+Large QRDA files
+
+    comprehensive-qrda.xml
 
 This is a representation of 
 * all strata bearing quality measures tracked in measures-data.json
 * all proportional ACI measures tracked in measures-data.json
 * all IA measures tracked in measures-data.json
+
+Error scenarios
+
+    * error-NaN-numerator-qrda.xml (ACI proportion measure with non-numeric numerator)
+    * error-invalid-uuid-qrda.xml (eCQM measure popuation with an invalid uuid)
+    * error-missing-subpopulation-qrda.xml (eCQM measure missing a required popuation)
+    * error-nonboolean-value-qrda.xml (IA boolean measure with a non-boolean value)
