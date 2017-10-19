@@ -1,6 +1,7 @@
 
 package gov.cms.qpp.conversion.xml;
 
+import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -49,10 +50,13 @@ public class XmlUtils {
 	 *
 	 * @param file An XML file.
 	 * @return InputStream for the file's content
-	 * @throws IOException When a failure to open and read the file.
 	 */
-	public static InputStream fileToStream(Path file) throws IOException {
-		return Files.newInputStream(file);
+	public static InputStream fileToStream(Path file) {
+		try {
+			return Files.newInputStream(file);
+		} catch (IOException ex) {
+			throw new UncheckedIOException(ex);
+		}
 	}
 
 	/**
