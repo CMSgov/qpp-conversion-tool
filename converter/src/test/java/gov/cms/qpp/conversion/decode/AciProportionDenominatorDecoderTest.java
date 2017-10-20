@@ -8,12 +8,11 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciProportionDenominatorDecoderTest {
 
 	@Test
-	public void decodeInvalidACIProportionDenominatorAsNode() throws XmlException {
+	public void decodeAciProportionDenominatorSetsCorrectNodeValue() throws XmlException {
 		Node aciProportionDenominatorNode = getValidAciProportionDenominatorNode();
 		String actual = aciProportionDenominatorNode.getValue("name");
 		String expected = "aciProportionDenominator";
