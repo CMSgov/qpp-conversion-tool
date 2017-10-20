@@ -59,17 +59,17 @@ public class JsonPathToXpathHelper {
 		}
 
 		if (attribute == null) {
-			System.out.println("no attribute for path: " + jsonPath
+			System.err.println("no attribute for path: " + jsonPath
 					+ "\n xpath: " + xPath);
-		}
+		} else {
+			if (!expectedValue.equals(attribute.getValue())) {
+				System.err.println("( " + jsonPath + " ) value ( " + expectedValue +
+						" ) does not equal ( " + attribute.getValue() +
+						" ) at \n( " + xPath + " ). \nPlease investigate.");
+			}
 
-		if (!expectedValue.equals(attribute.getValue())) {
-			System.err.println("( " + jsonPath + " ) value ( " + expectedValue +
-					" ) does not equal ( " + attribute.getValue() +
-					" ) at \n( " + xPath + " ). \nPlease investigate.");
+			assertThat(attribute.getValue()).isNotNull();
 		}
-
-		assertThat(attribute.getValue()).isNotNull();
 	}
 
 	public void executeAttributeTest(String jsonPath, String xmlAttributeName, String expectedValue)
