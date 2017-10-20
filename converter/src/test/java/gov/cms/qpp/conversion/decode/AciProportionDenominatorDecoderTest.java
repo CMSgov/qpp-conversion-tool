@@ -25,7 +25,7 @@ public class AciProportionDenominatorDecoderTest {
 	public void testAciProportionDenominatorDecoderContainsAnAggregateCount() throws XmlException {
 		Node aciProportionDenominatorNode = getValidAciProportionDenominatorNode();
 		Node aggregateCount = aciProportionDenominatorNode.getChildNodes().get(0);
-		
+
 		assertThat(aggregateCount.getType()).isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
 	}
 
