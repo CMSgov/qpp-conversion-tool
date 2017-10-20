@@ -62,6 +62,10 @@ public class MeasureConfig {
 		this.lastPerformanceYear = lastPerformanceYear;
 	}
 
+	public boolean isProportion() {
+		return "proportion".equals(metricType);
+	}
+
 	public String getMetricType() {
 		return metricType;
 	}
