@@ -39,7 +39,7 @@ public class AciMeasurePerformedRnRDecoderTest {
 	public void testSectionOnlyDecodesOneMeasurePerformed() throws XmlException, IOException {
 		long measurePerformedCount = aciMeasurePerformedNode.getChildNodes(
 				node -> node.getType() == TemplateId.MEASURE_PERFORMED).count();
-		
+
 		assertThat(measurePerformedCount).isEqualTo(1L);
 	}
 }
