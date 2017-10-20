@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
@@ -28,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -61,23 +63,23 @@ public class ValidationServiceImplTest {
 	public ExpectedException thrown = ExpectedException.none();
 
 	private static Path pathToSubmissionError;
-
+	private static Path pathToSubmissionDuplicateEntryError;
 	private static JsonWrapper qppWrapper;
-
 	private static AllErrors convertedErrors;
-
 	private static ErrorMessage submissionError;
+	private static ValidationServiceImpl service;
 
 	@BeforeClass
 	public static void setup() throws IOException {
+		service = new ValidationServiceImpl();
 		pathToSubmissionError = Paths.get("src/test/resources/submissionErrorFixture.json");
+		pathToSubmissionDuplicateEntryError = Paths.get("src/test/resources/submissionDuplicateEntryErrorFixture.json");
 		Path toConvert = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		qppWrapper = new JsonWrapper(new Converter(new PathQrdaSource(toConvert)).transform(), false);
 		prepAllErrors();
 	}
 
 	private static void prepAllErrors() throws IOException {
-		ValidationServiceImpl service = new ValidationServiceImpl();
 		submissionError = JsonHelper.readJsonAtJsonPath(
 			pathToSubmissionError, "$", ErrorMessage.class);
 
@@ -169,6 +171,16 @@ public class ValidationServiceImplTest {
 
 	@Test
 	public void testJsonDeserialization() {
+		assertWithMessage("Error json should map to AllErrors")
+				.that(convertedErrors.getErrors())
+				.hasSize(1);
+	}
+
+	@Test
+	public void testJsonDesrializationDuplicateEntry() throws IOException {
+		String errorJson = new String(Files.readAllBytes(pathToSubmissionDuplicateEntryError));
+		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
+
 		assertWithMessage("Error json should map to AllErrors")
 				.that(convertedErrors.getErrors())
 				.hasSize(1);
