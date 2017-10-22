@@ -592,10 +592,10 @@ public class JsonWrapper {
 	}
 
 	void attachMetadata(Node node) {
-		addMetaMap(getMetaMap(node));
+		addMetaMap(createMetaMap(node));
 	}
 
-	private Map<String,String> getMetaMap(Node node) {
+	private Map<String,String> createMetaMap(Node node) {
 		Map<String, String> metaMap = new HashMap<>();
 		metaMap.put("encodeLabel", "");
 		metaMap.put("nsuri", node.getDefaultNsUri());
