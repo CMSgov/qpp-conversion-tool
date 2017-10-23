@@ -32,7 +32,7 @@ elif [[ ! -z $CI_PULL_REQUESTS ]]; then
 		                                            -Dsonar.github.repository=CMSgov/qpp-conversion-tool \
 		                                            -Dsonar.github.oauth=${SONAR_PR_KEY} \
 																								-Dsonar.organization=${ORG_KEY} \
-		                                            -Dsonar.login=${SONAR_KEY}
+		                                            -Dsonar.login=${SONAR_KEY_NEW}
 	done
 else
 	echo "Not on master nor in a pull request."
