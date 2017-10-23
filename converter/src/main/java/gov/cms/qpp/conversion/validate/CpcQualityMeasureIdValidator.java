@@ -113,7 +113,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 					node.getValue(MEASURE_POPULATION),
 					sub.getStrata());
-			this.getDetails().add(new Detail(message, node.getPath()));
+			addValidationError(new Detail(message, node.getPath()));
 		}
 
 		sub.getStrata().forEach(stratum -> {
@@ -124,7 +124,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				String message = String.format(MISSING_STRATA, stratum,
 						node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 						node.getValue(MEASURE_POPULATION));
-				this.getDetails().add(new Detail(message, node.getPath()));
+				addValidationError(new Detail(message, node.getPath()));
 			}
 		});
 	}

@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 /**
  * Validate all ACI Numerator Denominator Type Measures.
@@ -10,8 +11,6 @@ import gov.cms.qpp.conversion.model.Validator;
 @Validator(TemplateId.ACI_NUMERATOR_DENOMINATOR)
 public class AciNumeratorDenominatorValidator extends NodeValidator {
 
-	protected static final String NO_PARENT_SECTION =
-			"This ACI Numerator Denominator Node should have an ACI Section Node as a parent";
 	protected static final String NO_MEASURE_NAME =
 			"This ACI Numerator Denominator Node does not contain a measure name ID";
 	protected static final String NO_NUMERATOR =
@@ -41,7 +40,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 
 		//the aci numerator denominator measure node must have an aci section node as parent
-		Checker nodeChecker = check(node).hasParent(NO_PARENT_SECTION, TemplateId.ACI_SECTION);
+		Checker nodeChecker = check(node).hasParent(ErrorCode.ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION, TemplateId.ACI_SECTION);
 		//the aci numerator denominator measure node must have a numerator node and a denominator node as children
 		validateChildren(nodeChecker);
 	}
@@ -53,8 +52,8 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	 */
 	private void validateChildren(Checker nodeChecker) {
 		nodeChecker
-				.singleValue(NO_MEASURE_NAME, "measureId")
-				.hasChildren(NO_CHILDREN)
+				.singleValue(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID, "measureId")
+				.hasChildren(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN)
 				.childMinimum(NO_DENOMINATOR, 1, TemplateId.ACI_DENOMINATOR)
 				.childMinimum(NO_NUMERATOR, 1, TemplateId.ACI_NUMERATOR)
 				.childMaximum(TOO_MANY_DENOMINATORS, 1, TemplateId.ACI_DENOMINATOR)

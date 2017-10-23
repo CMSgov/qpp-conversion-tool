@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
@@ -35,17 +36,10 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
 
 	public static final String MEASURE_ID = "measureId";
-	static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	public static final String SINGLE_MEASURE_POPULATION =
 			"The measure reference results must have a single measure population";
 	public static final String SINGLE_MEASURE_TYPE =
 			"The measure reference results must have a single measure type";
-	static final String NO_CHILD_MEASURE = "The measure reference results must have at least one measure";
-	public static final String REQUIRE_VALID_DENOMINATOR_COUNT =
-			"The Denominator count must be less than or equal to Initial Population count "
-					+ "for an eCQM that is proportion measure";
-	public static final String INCORRECT_POPULATION_CRITERIA_COUNT =
-			"The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d";
 	public static final String INCORRECT_UUID =
 			"The eCQM (electronic measure id: %s) requires a %s with the correct UUID of %s";
 	public static final String INCORRECT_PERFORMANCE_UUID =
@@ -71,8 +65,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		//This should not be an error
 
 		thoroughlyCheck(node)
-				.singleValue(MEASURE_GUID_MISSING, MEASURE_ID)
-				.childMinimum(NO_CHILD_MEASURE, 1, TemplateId.MEASURE_DATA_CMS_V2);
+				.singleValue(ErrorCode.MEASURE_GUID_MISSING, MEASURE_ID)
+				.childMinimum(ErrorCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
 
@@ -91,7 +85,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		} else {
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
 				DEV_LOG.error("MEASURE_GUID_MISSING " + value);
-				this.addValidationError(new Detail(MEASURE_GUID_MISSING, node.getPath()));
+				
+				addValidationError(Detail.forErrorCodeAndNode(ErrorCode.MEASURE_GUID_MISSING, node));
 			}
 		}
 	}
@@ -189,9 +184,9 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	private void validateDenominatorCount(Node denomCount, Node ipopCount) {
 		thoroughlyCheck(denomCount)
 				.incompleteValidation()
-				.intValue(AggregateCountValidator.TYPE_ERROR,
+				.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 						AggregateCountDecoder.AGGREGATE_COUNT)
-				.lessThanOrEqualTo(REQUIRE_VALID_DENOMINATOR_COUNT,
+				.lessThanOrEqualTo(ErrorCode.DENOMINATOR_COUNT_INVALID,
 						Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
 	}
 
@@ -212,11 +207,10 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
 
 		if (expectedChildTypeCount != actualChildTypeCount) {
-			MeasureConfig config =
-					MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-			String message = String.format(INCORRECT_POPULATION_CRITERIA_COUNT,
-					config.getElectronicMeasureId(), expectedChildTypeCount, key, actualChildTypeCount);
-			this.getDetails().add(new Detail(message, node.getPath()));
+			MeasureConfig config = MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+			Detail detail = Detail.forErrorCodeAndNode(ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT, node);
+			Detail.formatMessage(detail, config.getElectronicMeasureId(), expectedChildTypeCount, key, actualChildTypeCount);
+			addValidationError(detail);
 		}
 	}
 
@@ -273,7 +267,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 		String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(),
 				String.join(",", Arrays.asList(keys)), check.get());
-		this.getDetails().add(new Detail(message, node.getPath()));
+		addValidationError(new Detail(message, node.getPath()));
 	}
 
 	/**

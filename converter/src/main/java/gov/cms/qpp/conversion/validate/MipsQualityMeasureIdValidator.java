@@ -135,6 +135,6 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 		String message = String.format(INCORRECT_PERFORMANCE_UUID, config.getElectronicMeasureId(),
 				PERFORMANCE_RATE_ID, performanceUuid);
-		this.getDetails().add(new Detail(message, node.getPath()));
+		addValidationError(new Detail(message, node.getPath()));
 	}
 }

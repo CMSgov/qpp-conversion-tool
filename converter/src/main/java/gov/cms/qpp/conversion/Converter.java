@@ -14,6 +14,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.CloneHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
@@ -39,10 +40,6 @@ import java.util.Objects;
 public class Converter {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
-
-	static final String NOT_VALID_XML_DOCUMENT = "The file is not a valid XML document";
-	static final String NOT_VALID_QRDA_DOCUMENT = "The file is not a QRDA-III XML document";
-	static final String UNEXPECTED_ERROR = "Unexpected exception occurred during conversion";
 
 	private final QrdaSource source;
 	private final Context context;
@@ -87,11 +84,15 @@ public class Converter {
 		try {
 			encoded = transform(source.toInputStream());
 		} catch (XmlInputFileException | XmlException xe) {
-			DEV_LOG.error(NOT_VALID_XML_DOCUMENT, xe);
-			details.add(new Detail(NOT_VALID_XML_DOCUMENT));
+			DEV_LOG.error(ErrorCode.NOT_VALID_XML_DOCUMENT.getMessage(), xe);
+			Detail detail = new Detail();
+			detail.setErrorCode(ErrorCode.NOT_VALID_XML_DOCUMENT);
+			details.add(detail);
 		} catch (Exception exception) {
-			DEV_LOG.error(UNEXPECTED_ERROR, exception);
-			details.add(new Detail(UNEXPECTED_ERROR));
+			DEV_LOG.error(ErrorCode.UNEXPECTED_ERROR.getMessage(), exception);
+			Detail detail = new Detail();
+			detail.setErrorCode(ErrorCode.UNEXPECTED_ERROR);
+			details.add(detail);
 		}
 
 		if (!details.isEmpty()) {
@@ -128,7 +129,9 @@ public class Converter {
 				qpp = encode();
 			}
 		} else {
-			details.add(new Detail(NOT_VALID_QRDA_DOCUMENT));
+			Detail detail = new Detail();
+			detail.setErrorCode(ErrorCode.NOT_VALID_QRDA_DOCUMENT);
+			details.add(detail);
 		}
 
 		return qpp;

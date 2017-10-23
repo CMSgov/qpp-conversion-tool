@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -60,7 +61,10 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 			if (childEncoder != null) {
 				childEncoder.encode(childWrapper, currentChild);
 			} else {
-				addValidationError(new Detail("Failed to find an encoder", currentChild.getPath()));
+				Detail detail = Detail.forErrorCode(ErrorCode.ENCODER_MISSING);
+				detail.setPath(currentChild.getPath());
+				detail.setTemplateId(currentChild.getType());
+				addValidationError(detail);
 			}
 		}
 

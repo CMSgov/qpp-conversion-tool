@@ -4,6 +4,8 @@ import com.google.common.base.Strings;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,10 +80,10 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker value(String message, String name) {
+	public Checker value(ErrorCode code, String name) {
 		lastAppraised = node.getValue(name);
 		if (!shouldShortcut() && lastAppraised == null) {
-			details.add(new Detail(message, node.getPath()));
+			details.add(detail(code));
 		}
 		return this;
 	}
@@ -93,10 +95,10 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIsEmpty(String message, String name) {
+	public Checker valueIsEmpty(ErrorCode code, String name) {
 		lastAppraised = node.getValue(name);
 		if (!shouldShortcut() && !Strings.isNullOrEmpty((String)lastAppraised)) {
-			details.add(new Detail(message, node.getPath()));
+			details.add(detail(code));
 		}
 		return this;
 	}
@@ -108,10 +110,10 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIsNotEmpty(String message, String name) {
+	public Checker valueIsNotEmpty(ErrorCode code, String name) {
 		lastAppraised = node.getValue(name);
-		if (!shouldShortcut() && Strings.isNullOrEmpty((String)lastAppraised)) {
-			details.add(new Detail(message, node.getPath()));
+		if (!shouldShortcut() && Strings.isNullOrEmpty((String) lastAppraised)) {
+			details.add(detail(code));
 		}
 		return this;
 	}
@@ -123,11 +125,11 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker singleValue(String message, String name) {
-		value(message, name);
+	public Checker singleValue(ErrorCode code, String name) {
+		value(code, name);
 		List<String> duplicates = node.getDuplicateValues(name);
 		if (duplicates != null && !duplicates.isEmpty()) {
-			details.add(new Detail(message, node.getPath()));
+			details.add(detail(code));
 		}
 		return this;
 	}
@@ -141,8 +143,8 @@ class Checker {
 	 * @param expected the expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIs(String message, String name, String expected) {
-		return valueIn(message, name, expected);
+	public Checker valueIs(ErrorCode code, String name, String expected) {
+		return valueIn(code, name, expected);
 	}
 
 	/**
@@ -154,15 +156,15 @@ class Checker {
 	 * @param values List of strings to check for the existence of.
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIn(String message, String name, String... values) {
+	public Checker valueIn(ErrorCode code, String name, String... values) {
 		boolean contains = false;
 		if (name == null) {
-			setErrorMessage(message);
+			details.add(detail(code));
 			return this; //Short circuit on empty key or empty values
 		}
 		lastAppraised = node.getValue(name);
 		if (lastAppraised == null || values == null) {
-			setErrorMessage(message);
+			details.add(detail(code));
 			return this; //Short circuit on node doesn't contain key
 		}
 		for (String value : values) {
@@ -172,15 +174,9 @@ class Checker {
 			}
 		}
 		if (!contains) {
-			setErrorMessage(message);
+			details.add(detail(code));
 		}
 		return this;
-	}
-
-	private void setErrorMessage(String message) {
-		if (! shouldShortcut()) {
-			details.add(new Detail(message, node.getPath()));
-		}
 	}
 
 	/**
@@ -190,13 +186,13 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker intValue(String message, String name) {
+	public Checker intValue(ErrorCode code, String name) {
 		if (!shouldShortcut()) {
 			try {
 				lastAppraised = Integer.parseInt(node.getValue(name));
 			} catch (NumberFormatException ex) {
 				DEV_LOG.warn("Problem with non int value: " + node.getValue(name), ex);
-				details.add(new Detail(message, node.getPath()));
+				details.add(detail(code));
 			}
 		}
 		return this;
@@ -210,9 +206,9 @@ class Checker {
 	 * @return The checker, for chaining method calls.
 	 */
 	@SuppressWarnings("unchecked")
-	public Checker greaterThan(String message, Comparable<?> value) {
+	public Checker greaterThan(ErrorCode code, Comparable<?> value) {
 		if (!shouldShortcut() && lastAppraised != null && ((Comparable<Object>) lastAppraised).compareTo(value) <= 0) {
-			details.add(new Detail(message, node.getPath()));
+			details.add(detail(code));
 		}
 		lastAppraised = null;
 		return this;
@@ -226,9 +222,9 @@ class Checker {
 	 * @return The checker, for chaining method calls.
 	 */
 	@SuppressWarnings("unchecked")
-	public Checker lessThanOrEqualTo(String message, Comparable<?> value) {
+	public Checker lessThanOrEqualTo(ErrorCode code, Comparable<?> value) {
 		if (!shouldShortcut() && lastAppraised != null && ((Comparable<Object>) lastAppraised).compareTo(value) > 0) {
-			details.add(new Detail(message, node.getPath()));
+			details.add(detail(code));
 		}
 		lastAppraised = null;
 		return this;
@@ -244,17 +240,17 @@ class Checker {
 	 * @return The checker, for chaining method calls
 	 */
 	@SuppressWarnings("unchecked")
-	public Checker inDecimalRangeOf(String message, String name, float startValue, float endValue) {
+	public Checker inDecimalRangeOf(ErrorCode code, String name, float startValue, float endValue) {
 		if (!shouldShortcut()) {
 			try {
 				lastAppraised = Float.parseFloat(node.getValue(name));
 				if (((Comparable<Float>) lastAppraised).compareTo(startValue) < 0
 						|| ((Comparable<Float>) lastAppraised).compareTo(endValue) > 0) {
-					details.add(new Detail(message, node.getPath()));
+					details.add(detail(code));
 				}
 			} catch (NumberFormatException | NullPointerException exc) {
 				DEV_LOG.warn("Problem with non float value: " + node.getValue(name), exc);
-				details.add(new Detail(message, node.getPath()));
+				details.add(detail(code));
 			}
 		}
 		return this;
@@ -266,12 +262,12 @@ class Checker {
 	 * @param message validation error message
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker hasParent(String message, TemplateId type) {
+	public Checker hasParent(ErrorCode code, TemplateId type) {
 		if (!shouldShortcut()) {
 			TemplateId parentType = Optional.ofNullable(node.getParent())
 					.orElse(new Node()).getType();
 			if (parentType != type) {
-				details.add(new Detail(message, node.getPath()));
+				details.add(detail(code));
 			}
 		}
 		return this;
@@ -283,9 +279,9 @@ class Checker {
 	 * @param message validation error message
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker hasChildren(String message) {
+	public Checker hasChildren(ErrorCode code) {
 		if (!shouldShortcut() && node.getChildNodes().isEmpty()) {
-			details.add(new Detail(message, node.getPath()));
+			details.add(detail(code));
 		}
 		return this;
 	}
@@ -298,11 +294,11 @@ class Checker {
 	 * @param types types of children to filter by
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker childMinimum(String message, int minimum, TemplateId... types) {
+	public Checker childMinimum(ErrorCode code, int minimum, TemplateId... types) {
 		if (!shouldShortcut()) {
 			int count = tallyNodes(types);
 			if (count < minimum) {
-				details.add(new Detail(message, node.getPath()));
+				details.add(detail(code));
 			}
 		}
 		return this;
@@ -316,11 +312,11 @@ class Checker {
 	 * @param types types of children to filter by
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker childMaximum(String message, int maximum, TemplateId... types) {
+	public Checker childMaximum(ErrorCode code, int maximum, TemplateId... types) {
 		if (!shouldShortcut()) {
 			int count = tallyNodes(types);
 			if (count > maximum) {
-				details.add(new Detail(message, node.getPath()));
+				details.add(detail(code));
 			}
 		}
 		return this;
@@ -333,7 +329,7 @@ class Checker {
 	 * @param measureIds measures specified for given node
 	 * @return The checker, for chaining method calls
 	 */
-	public Checker hasMeasures(String message, String... measureIds) {
+	public Checker hasMeasures(ErrorCode code, String... measureIds) {
 		if (!shouldShortcut()) {
 			int numberOfMeasuresRequired = Arrays.asList(measureIds).size();
 
@@ -351,7 +347,7 @@ class Checker {
 			}).count();
 
 			if (numberOfMeasuresRequired != numNodesWithWantedMeasureIds) {
-				details.add(new Detail(message, node.getPath()));
+				details.add(detail(code));
 			}
 		}
 		return this;
@@ -364,7 +360,7 @@ class Checker {
 	 * @param types types of template ids to filter
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker onlyHasChildren(String message, TemplateId... types) {
+	public Checker onlyHasChildren(ErrorCode code, TemplateId... types) {
 		if (!shouldShortcut()) {
 			Set<TemplateId> templateIds = EnumSet.noneOf(TemplateId.class);
 			for (TemplateId templateId : types) {
@@ -375,7 +371,7 @@ class Checker {
 				.stream()
 				.allMatch(childNode -> templateIds.contains(childNode.getType()));
 			if (!valid) {
-				details.add(new Detail(message, node.getPath()));
+				details.add(detail(code));
 			}
 		}
 		return this;
@@ -403,5 +399,12 @@ class Checker {
 			.filter(Objects::nonNull)
 			.mapToInt(AtomicInteger::get)
 			.sum();
+	}
+
+	private Detail detail(ErrorCode code) {
+		if (node == null) {
+			return Detail.forErrorCode(ErrorCode.MEASURE_GUID_MISSING);
+		}
+		return Detail.forErrorCodeAndNode(ErrorCode.MEASURE_GUID_MISSING, node);
 	}
 }

@@ -6,6 +6,8 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,8 +69,10 @@ public class AciSectionEncoder extends QppOutputEncoder {
 					childEncoder.encode(childWrapper, currentChild);
 					measurementsWrapper.putObject(childWrapper);
 				} else {
-					addValidationError(new Detail("Failed to find an encoder for child node " + currentChild.getType(),
-						currentChild.getPath()));
+					Detail detail = Detail.forErrorCode(ErrorCode.ENCODER_MISSING);
+					detail.setTemplateId(currentChild.getType());
+					detail.setPath(currentChild.getPath());
+					addValidationError(detail);
 				}
 			}
 		}
