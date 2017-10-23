@@ -14,7 +14,6 @@ jobs:
       - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
       - run: sudo python get-pip.py
       - run: sudo pip install ansible
-
   test:
     docker:
       - image: circleci/openjdk:8-jdk-browsers
@@ -28,12 +27,9 @@ jobs:
       - run: mkdir -p $CIRCLE_ARTIFACTS/coverage/converter && cp -R converter/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/converter
       - run: mkdir -p $CIRCLE_ARTIFACTS/coverage/rest-api && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/rest-api
       - run: mkdir -p $CIRCLE_ARTIFACTS/coverage/commandline && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/commandline
-
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
-      - test:
-          requires:
-            - build
+      - test
