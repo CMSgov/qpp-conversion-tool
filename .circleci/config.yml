@@ -6,7 +6,6 @@ jobs:
       - image: circleci/openjdk:8-jdk-browsers
       - image: circleci/python:3.6.1
     steps:
-      #dependencies
       - checkout
       - run: cd converter; mvn dependency:resolve
       - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
@@ -14,10 +13,6 @@ jobs:
       - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
       - run: sudo python get-pip.py
       - run: sudo pip install ansible
-  test:
-    docker:
-      - image: circleci/openjdk:8-jdk-browsers
-    steps:
       - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
       - run: mvn clean verify
       - run: ./tools/bin/sonarqube.sh
@@ -32,4 +27,3 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - test
