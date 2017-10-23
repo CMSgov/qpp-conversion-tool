@@ -5,6 +5,7 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk-browsers
     steps:
+      - checkout
       - run: cd converter; mvn dependency:resolve
 
 
