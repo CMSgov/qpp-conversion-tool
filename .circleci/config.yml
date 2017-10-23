@@ -4,28 +4,27 @@ jobs:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/openjdk:8-jdk-browsers
+      - image: circleci/python:3.6.1
     steps:
+      #dependencies
       - checkout
       - run: cd converter; mvn dependency:resolve
+      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
+      - run: unzip -d . sonarscanner.zip
+      - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
+      - run: sudo python get-pip.py
+      - run: sudo pip install ansible
 
-
-#dependencies:
-#  override:
-#    - cd converter; mvn dependency:resolve
-#    - wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
-#    - unzip -d . sonarscanner.zip
-#    - pip install ansible
-#
-#test:
-#  pre:
-#    - cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
-#  override:
-#    - mvn clean verify
-#    - ./tools/bin/sonarqube.sh
-#  post:
-#    - ./tools/bin/docker_deploy.sh
-#    - cp converter/target/converter.jar $CIRCLE_ARTIFACTS
-#    - cp commandline/target/commandline.jar $CIRCLE_ARTIFACTS
-#    - mkdir -p $CIRCLE_ARTIFACTS/coverage/converter && cp -R converter/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/converter
-#    - mkdir -p $CIRCLE_ARTIFACTS/coverage/rest-api && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/rest-api
-#    - mkdir -p $CIRCLE_ARTIFACTS/coverage/commandline && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/commandline
+  test:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+    steps:
+      - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
+      - run: mvn clean verify
+      - run: ./tools/bin/sonarqube.sh
+      - run: ./tools/bin/docker_deploy.sh
+      - run: cp converter/target/converter.jar $CIRCLE_ARTIFACTS
+      - run: cp commandline/target/commandline.jar $CIRCLE_ARTIFACTS
+      - run: mkdir -p $CIRCLE_ARTIFACTS/coverage/converter && cp -R converter/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/converter
+      - run: mkdir -p $CIRCLE_ARTIFACTS/coverage/rest-api && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/rest-api
+      - run: mkdir -p $CIRCLE_ARTIFACTS/coverage/commandline && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/commandline
