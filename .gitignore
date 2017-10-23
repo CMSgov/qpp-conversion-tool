@@ -3,6 +3,7 @@ jacoco.exec
 *.orig
 target/
 .settings/
+.scannerwork/
 benchmark/*.json
 .classpath
 .project

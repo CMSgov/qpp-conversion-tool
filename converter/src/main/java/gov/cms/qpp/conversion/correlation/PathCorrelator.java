@@ -110,7 +110,7 @@ public class PathCorrelator {
 		String key = PathCorrelator.getKey(base, attribute);
 		Goods goods = pathCorrelationMap.get(key);
 		return (goods == null) ? null :
-				goods.getRelativeXPath().replaceAll(pathCorrelation.getUriSubstitution(), uri);
+				goods.getRelativeXPath().replace(pathCorrelation.getUriSubstitution(), uri);
 	}
 
 	/**
@@ -131,12 +131,12 @@ public class PathCorrelator {
 			leaf = jsonPath.substring(lastIndex + 1);
 		}
 
-
 		JsonPath compiledPath = JsonPath.compile(base);
 		Map<String, Object> jsonMap = compiledPath.read(metaWrapper.toString());
+
 		Map<String, String> metaMap = getMetaMap(jsonMap, leaf);
 		String preparedPath = "";
-		if (!Objects.isNull(metaMap)) {
+		if (metaMap != null) {
 			preparedPath = makePath(metaMap, leaf);
 		}
 		return preparedPath;
@@ -152,16 +152,17 @@ public class PathCorrelator {
 	@SuppressWarnings("unchecked")
 	private static Map<String, String> getMetaMap(Map<String, Object> jsonMap, final String leaf) {
 		List<Map<String, String>> metaHolder = (List<Map<String, String>>) jsonMap.get("metadata_holder");
-		Stream<Map<String, String>> sorted = metaHolder.stream()
-				.sorted(labeledFirst());
-		return sorted.filter(entry -> {
-			if (entry.get(ENCODE_LABEL).equals(leaf)) {
-				return leaf.isEmpty()
-						|| PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
-			} else {
-				return entry.get(ENCODE_LABEL).isEmpty();
-			}
-		}).findFirst().orElse(null);
+		return metaHolder.stream()
+				.sorted(labeledFirst())
+				.filter(entry -> {
+					String encodeLabel = entry.get(ENCODE_LABEL);
+					if (encodeLabel.equals(leaf)) {
+						return leaf.isEmpty()
+								|| PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
+					} else {
+						return encodeLabel.isEmpty();
+					}
+				}).findFirst().orElse(null);
 	}
 
 	/**
@@ -174,16 +175,8 @@ public class PathCorrelator {
 		return (Map<String, String> map1, Map<String, String> map2) -> {
 			String map1Label = map1.get(ENCODE_LABEL);
 			String map2Label = map2.get(ENCODE_LABEL);
-			int reply;
-			if ((!map1Label.isEmpty() && !map2Label.isEmpty())
-					|| (map1Label.isEmpty() && map2Label.isEmpty())) {
-				reply = 0;
-			} else if (map1Label.isEmpty()) {
-				reply = 1;
-			} else {
-				reply = -1;
-			}
-			return reply;
+			
+			return Boolean.compare(map1Label.isEmpty(), map2Label.isEmpty());
 		};
 	}
 
