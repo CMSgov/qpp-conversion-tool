@@ -33,8 +33,46 @@ jobs:
       - store_artifacts:
           path: /tmp/artifacts
 
+  ui_dependencies:
+    working_directory: ~/qpp-conversion-tool/frontend
+    docker:
+      - image: circleci/node:7.10.0
+    steps:
+      - checkout
+      - run: curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      - run: sudo dpkg -i google-chrome.deb
+      - run: sudo apt-get install jq
+      - run: sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
+      - run: rm google-chrome.deb
+      - run: cd frontend; rm -f yarn.lock && yarn
+      - save_cache:
+          key: dependency-cache
+          paths:
+            - ~/.cache/yarn
+
+  ui_deployment:
+      working_directory: ~/qpp-conversion-tool/frontend
+      docker:
+        - image: circleci/node:7.10.0
+      steps:
+      - checkout
+      - run: npm install -g protractor;
+      - run: npm install; npm test;
+      - run: yarn run build;
+      - run: aws s3 sync frontend/dist s3://qpp-conversion-tool-ui --delete
+
 workflows:
   version: 2
-  build_backend:
-    jobs:
-      - build
+  nightly_deployment:
+    triggers:
+      - schedule:
+        cron: "* * * * *"
+          filters:
+            branches:
+              only:
+                - master
+      jobs:
+        - ui_dependencies
+        - ui_deployment:
+          requires:
+            - ui_dependencies
