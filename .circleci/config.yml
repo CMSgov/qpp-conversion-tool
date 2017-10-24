@@ -66,13 +66,12 @@ workflows:
   nightly_deployment:
     triggers:
       - schedule:
-        cron: "* * * * *"
+          cron: "* * * * *"
           filters:
             branches:
-              only:
-                - master
-      jobs:
-        - ui_dependencies
-        - ui_deployment:
-          requires:
-            - ui_dependencies
+              only: master
+    jobs:
+      - ui_dependencies
+      - ui_deployment:
+        requires:
+          - ui_dependencies
