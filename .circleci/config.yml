@@ -77,5 +77,5 @@ workflows:
     jobs:
       - ui_dependencies
       - ui_deployment:
-        requires:
-          - ui_dependencies
+          requires:
+            - ui_dependencies
