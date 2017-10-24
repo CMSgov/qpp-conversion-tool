@@ -68,8 +68,8 @@ workflows:
       - build
       - ui_dependencies
       - ui_deployment:
-        requires:
-          - ui_dependencies
+          requires:
+            - ui_dependencies
   nightly_deployment:
     triggers:
       - schedule:
