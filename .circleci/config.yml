@@ -63,13 +63,17 @@ jobs:
 
 workflows:
   version: 2
+  commit:
+    jobs:
+      - build
   nightly_deployment:
     triggers:
       - schedule:
           cron: "* * * * *"
           filters:
             branches:
-              only: master
+              only:
+                - master
     jobs:
       - ui_dependencies
       - ui_deployment:
