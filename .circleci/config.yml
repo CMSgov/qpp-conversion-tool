@@ -70,10 +70,10 @@ workflows:
     triggers:
       - schedule:
           cron: "*/5 * * * *"
-#          filters:
-#            branches:
-#              only:
-#                - master
+          filters:
+            branches:
+              only:
+                - feature/QPPCT-407_simple_ui
     jobs:
       - ui_dependencies
       - ui_deployment:
