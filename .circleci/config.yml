@@ -73,7 +73,7 @@ workflows:
           filters:
             branches:
               only:
-                - feature/QPPCT-407_simple_ui
+#                - feature/QPPCT-407_simple_ui
     jobs:
       - ui_dependencies
       - ui_deployment:
