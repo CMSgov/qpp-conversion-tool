@@ -22,6 +22,18 @@ jobs:
       - run: mkdir -p $CIRCLE_ARTIFACTS/coverage/converter && cp -R converter/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/converter
       - run: mkdir -p $CIRCLE_ARTIFACTS/coverage/rest-api && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/rest-api
       - run: mkdir -p $CIRCLE_ARTIFACTS/coverage/commandline && cp -R rest-api/target/site/jacoco $CIRCLE_ARTIFACTS/coverage/commandline
+      - run:
+          name: Creating artifacts
+          command: |
+            ARTIFACT_DIR=/tmp/artifacts;
+            mkdir $ARTIFACT_DIR;
+            mkdir -p $ARTIFACT_DIR/coverage/converter && cp -R converter/target/site/jacoco $ARTIFACT_DIR/coverage/converter
+            mkdir -p $ARTIFACT_DIR/coverage/rest-api && cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/rest-api
+            mkdir -p ARTIFACT_DIR/coverage/commandline && cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/commandline
+
+      - store_artifacts:
+          path: /tmp/artifacts
+
 workflows:
   version: 2
   build_and_test:
