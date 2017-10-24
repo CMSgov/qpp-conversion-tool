@@ -62,7 +62,7 @@ In addition to converting input files to QPP, the ReST API can do the following.
 - Call the submission validation API to validate the QPP JSON.
 - Write the input file and output JSON to a S3 bucket.
 - Write metadata to a DynamoDB table.
- 
+
 This additional functionality depends on the environment variables set. See the [.env](.env) file for descriptions of what the
 environment variables are for.
 
@@ -83,7 +83,7 @@ The DynamoDB table requires the partition key be named `Uuid` and of type `Strin
 
 ## SonarQube
 
-We have a [SonarQube](http://sonar.shareddev.flexion.us:9000/dashboard?id=gov.cms.qpp.conversion%3Aqpp-conversion) server to
+We have a [SonarQube](https://sonarcloud.io/dashboard?id=gov.cms.qpp.conversion%3Aqpp-conversion) server to
 measure how clean the codebase is.
 
 ## Third Party Extensions
