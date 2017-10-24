@@ -66,14 +66,17 @@ workflows:
   commit:
     jobs:
       - build
+      - ui_dependencies
+      - ui_deployment:
+        requires:
+          - ui_dependencies
   nightly_deployment:
     triggers:
       - schedule:
-          cron: "*/5 * * * *"
+          cron: "0 0 * * *"
           filters:
             branches:
-              only:
-#                - feature/QPPCT-407_simple_ui
+              only: master
     jobs:
       - ui_dependencies
       - ui_deployment:
