@@ -118,9 +118,9 @@
 					<downloadExtensionDependencies>false</downloadExtensionDependencies>
 					<propertiesJMeter>
 						<protocol>https</protocol>
-						<host></host>
-						<path></path>
-						<port></port>
+						<host>imp.qpp.cms.gov</host>
+						<path>/api/submissions/converter</path>
+						<port>443</port>
 						<cookie></cookie>
 						<rps_micro>5</rps_micro>
 						<rps_small>300</rps_small>
