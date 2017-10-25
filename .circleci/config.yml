@@ -51,9 +51,9 @@ jobs:
       - run: cd frontend; yarn run test:ci;
       - run: cd frontend; yarn run e2e:ci;
       - save_cache:
-          key: yarned
+          key: node_modules
           paths:
-            - ~/.cache/yarn
+            - ~/frontend/node_modules
 
   ui_deployment:
       working_directory: ~/qpp-conversion-tool
@@ -62,7 +62,7 @@ jobs:
       steps:
       - checkout
       - restore_cache:
-          key: yarned
+          key: node_modules
       - run: cd frontend; yarn run build;
       - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
       - run: sudo python get-pip.py
@@ -74,18 +74,6 @@ workflows:
   commit:
     jobs:
       - build
-      - ui_test
-      - ui_deployment:
-          requires:
-            - ui_test
-  nightly_deployment:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only: master
-    jobs:
       - ui_test
       - ui_deployment:
           requires:
