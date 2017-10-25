@@ -50,10 +50,6 @@ jobs:
       - run: cd frontend; yarn run lint;
       - run: cd frontend; yarn run test:ci;
       - run: cd frontend; yarn run e2e:ci;
-      - save_cache:
-          key: node_modules
-          paths:
-            - ~/frontend/node_modules
 
   ui_deployment:
       working_directory: ~/qpp-conversion-tool
@@ -61,8 +57,7 @@ jobs:
         - image: circleci/node:7.10.0-browsers
       steps:
       - checkout
-      - restore_cache:
-          key: node_modules
+      - run: cd frontend; rm -f yarn.lock && yarn
       - run: cd frontend; yarn run build;
       - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
       - run: sudo python get-pip.py
