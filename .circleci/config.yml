@@ -72,5 +72,7 @@ workflows:
       - build
       - ui_test
       - ui_deployment:
+          branches:
+            only: master
           requires:
             - ui_test
