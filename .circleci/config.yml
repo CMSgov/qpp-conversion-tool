@@ -59,10 +59,10 @@ jobs:
       - checkout
       - run: cd frontend; rm -f yarn.lock && yarn
       - run: cd frontend; yarn run build;
-      - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
-      - run: sudo python get-pip.py
       - run: sudo apt-get install python-dev
-      - run: pip install awscli --upgrade --user
+      - run: curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+      - run: unzip awscli-bundle.zip
+      - run: sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
       - run: aws s3 sync frontend/dist s3://qpp-conversion-tool-ui --delete
 
 workflows:
