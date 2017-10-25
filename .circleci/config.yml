@@ -51,7 +51,7 @@ jobs:
       - run: cd frontend; yarn run test:ci;
       - run: cd frontend; yarn run e2e:ci;
       - save_cache:
-          key: dependency-cache
+          key: yarned
           paths:
             - ~/.cache/yarn
 
@@ -61,6 +61,8 @@ jobs:
         - image: circleci/node:7.10.0-browsers
       steps:
       - checkout
+      - restore_cache:
+          key: yarned
       - run: cd frontend; yarn run build;
       - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
       - run: sudo python get-pip.py
