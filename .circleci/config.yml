@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  dbuild:
+  build:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/openjdk:8-jdk-browsers
@@ -51,21 +51,19 @@ jobs:
       - run: cd frontend; yarn run test:ci;
       - run: cd frontend; yarn run e2e:ci;
 
-#  ui_deployment:
-  build:
+  ui_deployment:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/node:7.10.0-browsers
     steps:
-#      - checkout
-#      - run: cd frontend; rm -f yarn.lock && yarn
-#      - run: cd frontend; yarn run build;
-#      - run: sudo apt-get install python-dev
-#      - run: curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
-#      - run: unzip awscli-bundle.zip
-#      - run: sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-      - run: echo $AWS_ACCESS_KEY_ID
-#      - run: aws s3 sync frontend/dist s3://qpp-conversion-tool-ui --delete
+      - checkout
+      - run: cd frontend; rm -f yarn.lock && yarn
+      - run: cd frontend; yarn run build;
+      - run: sudo apt-get install python-dev
+      - run: curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+      - run: unzip awscli-bundle.zip
+      - run: sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+      - run: aws s3 sync frontend/dist s3://qpp-conversion-tool-ui --delete
 
 workflows:
   version: 2
