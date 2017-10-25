@@ -5,15 +5,14 @@ import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
-
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciNumeratorDenominatorValueRoundTripTest {
 
@@ -35,8 +34,9 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 
 		String xPathExpected = "/*[local-name() = 'root' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'observation'" +
 		                       " and namespace-uri() = 'urn:hl7-org:v3']";
-		assertThat("The XPath of the aggregate count node is incorrect", numDenomNode.getChildNodes().get(0).getPath(),
-		           is(xPathExpected));
+		assertWithMessage("The XPath of the aggregate count node is incorrect")
+				.that(numDenomNode.getChildNodes().get(0).getPath())
+				.isEqualTo(xPathExpected);
 
 		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		List<Node> nodes = new ArrayList<>();
@@ -47,6 +47,6 @@ public class AciNumeratorDenominatorValueRoundTripTest {
 		encoder.encode(new BufferedWriter(sw));
 
 		String expected = "{\n  \"value\" : 600\n}";
-		assertThat("expected encoder to return a single number numerator/denominator", sw.toString(), is(expected));
+		assertThat(sw.toString()).isEqualTo(expected);
 	}
 }

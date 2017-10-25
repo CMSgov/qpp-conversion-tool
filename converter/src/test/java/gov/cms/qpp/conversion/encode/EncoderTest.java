@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -52,7 +53,9 @@ public class EncoderTest {
 		Registry<OutputEncoder> registry = new Registry<>(new Context(), Encoder.class);
 		for (TemplateId templateId : templateIds) {
 			OutputEncoder encoder = registry.get(templateId);
-			assertThat(templateId + " returned node should not be null", encoder, is(not(nullValue())));
+			assertWithMessage(templateId + " returned node should not be null")
+					.that(encoder)
+					.isNotNull();
 		}
 	}
 }

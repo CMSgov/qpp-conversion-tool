@@ -6,16 +6,13 @@ import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class ClinicalDocumentEncoderTest {
 
@@ -130,7 +127,9 @@ public class ClinicalDocumentEncoderTest {
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 		Object performanceYear = testJsonWrapper.getValue(ReportingParametersActDecoder.PERFORMANCE_YEAR);
 
-		assertThat("performance year should be 2017", performanceYear, is(2017));
+		assertWithMessage("performance year should be 2017")
+				.that(performanceYear)
+				.isEqualTo(2017);
 	}
 
 	@Test
@@ -142,17 +141,21 @@ public class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertThat("Must have a correct program name", clinicalDocMap.get(ClinicalDocumentDecoder.PROGRAM_NAME), is("mips"));
-
-		assertThat("Must have a correct entityType", clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_TYPE), is("individual"));
-
-		assertThat("Must have a correct entityId", clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID), is("AR000000"));
-
-		assertThat("Must have a correct taxpayerIdentificationNumber",
-				clinicalDocMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER), is("123456789"));
-
-		assertThat("Must have a correct nationalProviderIdentifier",
-				clinicalDocMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER), is("2567891421"));
+		assertWithMessage("Must have a correct program name")
+				.that(clinicalDocMap.get(ClinicalDocumentDecoder.PROGRAM_NAME))
+				.isEqualTo("mips");
+		assertWithMessage("Must have a correct entityType")
+				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_TYPE))
+				.isEqualTo("individual");
+		assertWithMessage("Must have a correct entityId")
+				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+				.isEqualTo("AR000000");
+		assertWithMessage("Must have a correct taxpayerIdentificationNumber")
+				.that(clinicalDocMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.isEqualTo("123456789");
+		assertWithMessage("Must have a correct nationalProviderIdentifier")
+				.that(clinicalDocMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.isEqualTo("2567891421");
 	}
 
 	@Test(expected = EncodeException.class)
@@ -174,8 +177,9 @@ public class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertThat("Must not contain a measure because the measurements are missing.",
-				clinicalDocMap.get(MEASUREMENT_SETS), is(nullValue()));
+		assertWithMessage("Must not contain a measure because the measurements are missing.")
+				.that(clinicalDocMap.get(MEASUREMENT_SETS))
+				.isNull();
 	}
 
 	@Test
@@ -189,8 +193,9 @@ public class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertThat("Must not contain an Entity Id.",
-				clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID), is(nullValue()));
+		assertWithMessage("Must not contain an Entity Id.")
+				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+				.isNull();
 	}
 	@Test
 	public void testInternalEncodeNullEntityId() throws EncodeException {
@@ -203,7 +208,8 @@ public class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertThat("Must not contain an Entity Id.",
-				clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID), is(nullValue()));
+		assertWithMessage("Must not contain an Entity Id.")
+				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+				.isNull();
 	}
 }

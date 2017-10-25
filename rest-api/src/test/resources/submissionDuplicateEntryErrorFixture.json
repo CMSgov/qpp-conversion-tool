@@ -1,0 +1,9 @@
+{
+	"error": {
+		"type": "DuplicateEntryError",
+		"message": "Category/SubmissionMethod/SubmitterId/SubmitterType ia/electronicHealthRecord/1234567/organization,quality/electronicHealthRecord/1234567/organization,aci/electronicHealthRecord/1234567/organization already exists for this taxpayerIdentificationNumber/nationalProviderIdentifier/performanceYear",
+		"details": {
+			"submissionId": "29eae3a3-17eb-45e4-888b-e15e428b276a"
+		}
+	}
+}

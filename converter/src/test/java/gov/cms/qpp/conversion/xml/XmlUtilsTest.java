@@ -6,14 +6,10 @@ import org.junit.Test;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class XmlUtilsTest {
-	String xmlFragment = XmlUtils.buildString("<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
+	private String xmlFragment = XmlUtils.buildString("<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
 			"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
 			"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
 			"    <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>",
@@ -25,14 +21,17 @@ public class XmlUtilsTest {
 	@Test
 	public void stringToDomCanParse() throws Exception {
 		Element dom = XmlUtils.stringToDom(xmlFragment);
-		assertThat("returned dom should not be null", dom, is(not(nullValue())));
+		assertWithMessage("returned dom should not be null")
+				.that(dom).isNotNull();
 	}
 
 	@Test
 	public void stringToDomRootChild() throws Exception {
 		Element dom = XmlUtils.stringToDom(xmlFragment);
 		List<Element> childElement = dom.getChildren();
-		assertThat("test root has one child", childElement.size(), is(1));
+		assertWithMessage("test root has one child")
+				.that(childElement)
+				.hasSize(1);
 	}
 
 	@Test
@@ -41,21 +40,24 @@ public class XmlUtilsTest {
 		List<Element> childElement = dom.getChildren();
 		List<Element> leafElements = childElement.get(0).getChildren();
 
-		assertThat("test observation has five children", leafElements.size(), is(5));
+		assertWithMessage("test observation has five children")
+				.that(leafElements).hasSize(5);
 	}
 
 	@Test
 	public void stringToDom_null() throws Exception {
 		Element dom = XmlUtils.stringToDom(null);
 
-		assertThat("returned dom should not be null", dom, is(nullValue()));
+		assertWithMessage("returned dom should be null")
+				.that(dom).isNull();
 	}
 	
 	@Test(expected=XmlException.class)
 	public void stringToDom_emptyString() throws Exception {
 		Element dom = XmlUtils.stringToDom("");
 
-		assertThat("returned dom should not be null", dom, is(nullValue()));
+		assertWithMessage("returned dom should be null")
+				.that(dom).isNull();
 	}
 	
 
@@ -63,7 +65,8 @@ public class XmlUtilsTest {
 	public void stringToDom_invalidXML() throws Exception {
 		Element dom = XmlUtils.stringToDom("invalid XML");
 
-		assertThat("returned dom should not be null", dom, is(nullValue()));
+		assertWithMessage("returned dom should be null")
+				.that(dom).isNull();
 	}
 
 	@Test
@@ -76,6 +79,7 @@ public class XmlUtilsTest {
 		XmlUtils xmlUtils = constructor.newInstance();
 		// close the accessibility of a constructor.
 		constructor.setAccessible(false);
-		assertThat("Expect to have an instance here ", xmlUtils, instanceOf(XmlUtils.class));
+		assertWithMessage("Expect to have an instance here")
+				.that(xmlUtils).isInstanceOf(XmlUtils.class);
 	}
 }

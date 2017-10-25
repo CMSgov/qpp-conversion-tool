@@ -43,7 +43,7 @@
     become: true
   - name: Transfer QPP Conversion Tools Docker image
     copy:
-      src: ../qpp_conversion_docker_image.tar
+      src: ../../qpp_conversion_docker_image.tar
       dest: ~/
     become: true
   - name: Stop and remove QPP Conversion Tools Docker container
@@ -71,4 +71,6 @@
       recreate: yes
       published_ports:
         - 2680:8080
+      env:
+        NO_AUDIT: true
     become: true

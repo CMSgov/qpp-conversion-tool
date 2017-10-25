@@ -17,15 +17,10 @@
 	<properties>
 		<jmh.version>1.19</jmh.version>
 		<uberjar.name>benchmarks</uberjar.name>
+		<skipJmeterSuite>true</skipJmeterSuite>
 	</properties>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>${basedir}/../qrda-files</directory>
-			</resource>
-		</resources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -98,6 +93,56 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>com.lazerycode.jmeter</groupId>
+				<artifactId>jmeter-maven-plugin</artifactId>
+				<version>2.4.0</version>
+				<executions>
+					<execution>
+						<id>jmeter-tests</id>
+						<goals>
+							<goal>jmeter</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<skipTests>${skipJmeterSuite}</skipTests>
+					<jmeterExtensions>
+						<artifact>kg.apc:jmeter-plugins:pom:1.4.0</artifact>
+						<artifact>kg.apc:jmeter-plugins-cmn-jmeter:0.5</artifact>
+						<artifact>kg.apc:jmeter-plugins-casutg:2.1</artifact>
+						<artifact>kg.apc:jmeter-plugins-tst:2.1</artifact>
+						<artifact>org.apache.commons:commons-math3:jar:3.4.1</artifact>
+						<artifact>org.apache.commons:commons-pool2:jar:2.3</artifact>
+					</jmeterExtensions>
+					<downloadExtensionDependencies>false</downloadExtensionDependencies>
+					<propertiesJMeter>
+						<protocol>https</protocol>
+						<host></host>
+						<path></path>
+						<port></port>
+						<cookie></cookie>
+						<rps_micro>5</rps_micro>
+						<rps_small>300</rps_small>
+						<rps_medium>500</rps_medium>
+						<rps_large>1000</rps_large>
+						<time_small>10</time_small>
+						<time_medium>60</time_medium>
+						<time_large>600</time_large>
+						<file_base>src/test/resources/</file_base>
+						<file_small>small</file_small>
+						<file_standard>standard</file_standard>
+						<file_large>large</file_large>
+					</propertiesJMeter>
+					<jMeterProcessJVMSettings>
+						<xms>4048</xms>
+						<xmx>4048</xmx>
+					</jMeterProcessJVMSettings>
+					<testFilesExcluded>
+						<excludeJMeterTestFile>template.jmx</excludeJMeterTestFile>
+					</testFilesExcluded>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -105,13 +150,13 @@
 		<dependency>
 			<groupId>org.apache.jmeter</groupId>
 			<artifactId>ApacheJMeter_java</artifactId>
-			<version>3.2</version>
+			<version>3.3</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.jmeter</groupId>
 			<artifactId>ApacheJMeter_http</artifactId>
-			<version>3.2</version>
+			<version>3.3</version>
 		</dependency>
 
 		<dependency>
@@ -122,7 +167,7 @@
 
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
-			<artifactId>extension-test-commons</artifactId>
+			<artifactId>test-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

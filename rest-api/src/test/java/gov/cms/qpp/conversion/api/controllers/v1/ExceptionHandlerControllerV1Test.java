@@ -1,44 +1,116 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.CompletableFuture;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.mockito.ArgumentMatchers.any;
+import static org.powermock.api.mockito.PowerMockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
 public class ExceptionHandlerControllerV1Test {
+	private static Converter.ConversionReport report;
+	private static AllErrors allErrors = new AllErrors();
 
-	private ExceptionHandlerControllerV1 objectUnderTest = new ExceptionHandlerControllerV1();
+	@InjectMocks
+	private ExceptionHandlerControllerV1 objectUnderTest;
 
-	@Test
-	public void testStatusCode() {
-		TransformException exception = new TransformException("test transform exception", new NullPointerException(), new AllErrors());
+	@Mock
+	private AuditService auditService;
 
-		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
+	@BeforeClass
+	public static void setup() {
+		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
+		report = new Converter(new PathQrdaSource(path)).getReport();
+		report.setReportDetails(allErrors);
+	}
 
-		assertThat("The response entity's status code must be 422.", responseEntity.getStatusCode(), is(HttpStatus.UNPROCESSABLE_ENTITY));
+	@Before
+	public void before() {
+		when(auditService.failConversion(any(Converter.ConversionReport.class)))
+				.thenReturn(CompletableFuture.completedFuture(null));
 	}
 
 	@Test
-	public void testHeaderContentType() {
-		TransformException exception = new TransformException("test transform exception", new NullPointerException(), new AllErrors());
+	public void testTransformExceptionStatusCode() {
+		TransformException exception =
+				new TransformException("test transform exception", new NullPointerException(), report);
 
-		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception);
 
-		assertThat("The response entity's content type was incorrect.", responseEntity.getHeaders().getContentType(), is(MediaType.APPLICATION_JSON_UTF8));
+		assertWithMessage("The response entity's status code must be 422.")
+				.that(responseEntity.getStatusCode())
+				.isEquivalentAccordingToCompareTo(HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
-	public void testBody() {
-		AllErrors allErrors = new AllErrors();
-		TransformException exception = new TransformException("test transform exception", new NullPointerException(), allErrors);
+	public void testTransformExceptionHeaderContentType() {
+		TransformException exception =
+				new TransformException("test transform exception", new NullPointerException(), report);
 
-		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception, null);
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception);
 
-		assertThat("The response entity's content type was incorrect.", responseEntity.getBody(), is(allErrors));
+		assertThat(responseEntity.getHeaders().getContentType())
+				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON_UTF8);
+	}
+
+	@Test
+	public void testTransformExceptionBody() {
+		TransformException exception =
+				new TransformException("test transform exception", new NullPointerException(), report);
+
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleTransformException(exception);
+		assertThat(responseEntity.getBody()).isEqualTo(allErrors);
+	}
+
+	@Test
+	public void testQppValidationExceptionStatusCode() {
+		QppValidationException exception =
+				new QppValidationException("test transform exception", new NullPointerException(), report);
+
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
+
+		assertWithMessage("The response entity's status code must be 422.")
+				.that(responseEntity.getStatusCode())
+				.isEquivalentAccordingToCompareTo(HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	@Test
+	public void testQppValidationExceptionHeaderContentType() {
+		QppValidationException exception =
+				new QppValidationException("test transform exception", new NullPointerException(), report);
+
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
+
+		assertThat(responseEntity.getHeaders().getContentType())
+				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON_UTF8);
+	}
+
+	@Test
+	public void testQppValidationExceptionBody() {
+		QppValidationException exception =
+				new QppValidationException("test transform exception", new NullPointerException(), report);
+
+		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
+		assertThat(responseEntity.getBody()).isEqualTo(allErrors);
 	}
 }

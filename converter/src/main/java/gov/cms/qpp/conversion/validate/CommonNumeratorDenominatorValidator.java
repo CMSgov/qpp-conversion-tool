@@ -10,9 +10,9 @@ import gov.cms.qpp.conversion.model.TemplateId;
 public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	protected static final String INCORRECT_CHILD =
 			"This %s Node does not have an Aggregate Count Node";
-	static final String NOT_AN_INTEGER_VALUE =
+	public static final String NOT_AN_INTEGER_VALUE =
 			"This %s Node Aggregate Value is not an integer";
-	static final String INVALID_VALUE =
+	public static final String INVALID_VALUE =
 			"This %s Node Aggregate Value has an invalid value";
 	protected static final String NO_CHILDREN =
 			"This %s Node does not have any child Nodes";
