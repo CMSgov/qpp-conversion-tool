@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  meepbuild:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/openjdk:8-jdk-browsers
@@ -33,25 +33,34 @@ jobs:
       - store_artifacts:
           path: /tmp/artifacts
 
-  ui_dependencies:
-    working_directory: ~/qpp-conversion-tool/frontend
+#  ui_dependencies:
+  build:
+    working_directory: ~/qpp-conversion-tool
     docker:
-      - image: circleci/node:7.10.0
+#      - image: circleci/node:7.10.0
+      - image: circleci/node:7.10.0-browsers
     steps:
       - checkout
       - run: curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      - run: sudo apt-get install gconf-service libasound2 libatk1.0-0 libcups2 libdbus-1-3 libgconf-2-4 libgtk-3-0 libnspr4 libxcomposite1 lsb-release
       - run: sudo dpkg -i google-chrome.deb
       - run: sudo apt-get install jq
       - run: sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
       - run: rm google-chrome.deb
       - run: cd frontend; rm -f yarn.lock && yarn
+      - run: sudo npm install -g protractor;
+      - run: cd frontend; yarn run lint;
+      - run: cd frontend; yarn run test:ci;
+      - run: cd frontend; yarn run e2e:ci;
+      - run: cd frontend; yarn run build;
+      - run: aws s3 sync frontend/dist s3://qpp-conversion-tool-ui --delete
       - save_cache:
           key: dependency-cache
           paths:
             - ~/.cache/yarn
 
   ui_deployment:
-      working_directory: ~/qpp-conversion-tool/frontend
+      working_directory: ~/qpp-conversion-tool
       docker:
         - image: circleci/node:7.10.0
       steps:
@@ -66,10 +75,10 @@ workflows:
   commit:
     jobs:
       - build
-      - ui_dependencies
-      - ui_deployment:
-          requires:
-            - ui_dependencies
+#      - ui_dependencies
+#      - ui_deployment:
+#          requires:
+#            - ui_dependencies
   nightly_deployment:
     triggers:
       - schedule:
