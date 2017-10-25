@@ -1,0 +1,40 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/qpp-conversion-tool
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+    steps:
+      - checkout
+      - run: cd converter; mvn dependency:resolve
+      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
+      - run: unzip -d . sonarscanner.zip
+      - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
+      - run: sudo python get-pip.py
+      - run: sudo pip install ansible
+      - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
+      - run: mvn clean verify
+      - run: ./tools/bin/sonarqube.sh
+      - run: ./tools/bin/docker_deploy.sh
+      - run:
+          name: Creating artifacts
+          command: |
+            ARTIFACT_DIR=/tmp/artifacts;
+            mkdir $ARTIFACT_DIR;
+            cp converter/target/converter.jar $ARTIFACT_DIR;
+            cp commandline/target/commandline.jar $ARTIFACT_DIR;
+            mkdir -p $ARTIFACT_DIR/coverage/converter;
+            cp -R converter/target/site/jacoco $ARTIFACT_DIR/coverage/converter;
+            mkdir -p $ARTIFACT_DIR/coverage/rest-api;
+            cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/rest-api;
+            mkdir -p ARTIFACT_DIR/coverage/commandline;
+            cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/commandline;
+
+      - store_artifacts:
+          path: /tmp/artifacts
+
+workflows:
+  version: 2
+  build_backend:
+    jobs:
+      - build
