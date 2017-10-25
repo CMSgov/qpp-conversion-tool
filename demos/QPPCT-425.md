@@ -6,4 +6,3 @@
 1. Show JIRA. https://jira.cms.gov/browse/QPPCT-425
 1. Look at read me
 1. Run files through converter
-1. Demo new hierarchy utility
