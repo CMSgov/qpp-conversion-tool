@@ -79,8 +79,8 @@
             <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">true</boolProp>
             <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout">1000</stringProp>
-            <stringProp name="HTTPSampler.response_timeout">2000</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout">2000</stringProp>
+            <stringProp name="HTTPSampler.response_timeout">7000</stringProp>
           </HTTPSamplerProxy>
           <hashTree>
             <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Randomly choose file" enabled="true">
@@ -115,10 +115,10 @@ vars.put(&quot;filepath&quot;, subFiles[randomIndex].getCanonicalPath());
           </hashTree>
           <kg.apc.jmeter.timers.VariableThroughputTimer guiclass="kg.apc.jmeter.timers.VariableThroughputTimerGui" testclass="kg.apc.jmeter.timers.VariableThroughputTimer" testname="throughput_shape_timer" enabled="true">
             <collectionProp name="load_profile">
-              <collectionProp name="1736937016">
+              <collectionProp name="-540552456">
+                <stringProp name="49">1</stringProp>
                 <stringProp name="864694399">${__P(rps_small)}</stringProp>
-                <stringProp name="864694399">${__P(rps_small)}</stringProp>
-                <stringProp name="-560033242">${__jexl3(new(&quot;java.lang.Integer&quot;\, props.getProperty(&apos;time_large&apos;)).intValue() + 5)}</stringProp>
+                <stringProp name="1940439227">${__jexl3(new(&quot;java.lang.Integer&quot;\, props.getProperty(&apos;time_large&apos;)).intValue() + 5 - 60)}</stringProp>
               </collectionProp>
             </collectionProp>
           </kg.apc.jmeter.timers.VariableThroughputTimer>

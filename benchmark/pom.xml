@@ -135,8 +135,8 @@
 						<file_large>large</file_large>
 					</propertiesJMeter>
 					<jMeterProcessJVMSettings>
-						<xms>4048</xms>
-						<xmx>4048</xmx>
+						<xms>10240</xms>
+						<xmx>10240</xmx>
 					</jMeterProcessJVMSettings>
 					<testFilesExcluded>
 						<excludeJMeterTestFile>template.jmx</excludeJMeterTestFile>
