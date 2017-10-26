@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  mbuild:
+  build:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/openjdk:8-jdk-browsers
@@ -67,12 +67,11 @@ jobs:
 
 
 #  signal_success:
-  build:
-    machine: true
-    steps:
-      - run: echo "CIRCLE_SHA1 $CIRCLE_SHA1"
-      - run: printenv
-      - run: echo "CIRCLE_WORKFLOW_ID $CIRCLE_WORKFLOW_ID"
+#    machine: true
+#    steps:
+#      - run: echo "CIRCLE_SHA1 $CIRCLE_SHA1"
+#      - run: printenv
+#      - run: echo "CIRCLE_WORKFLOW_ID $CIRCLE_WORKFLOW_ID"
 
 
 workflows:
@@ -80,12 +79,12 @@ workflows:
   commit:
     jobs:
       - build
-#      - ui_test
-#      - ui_deployment:
-#          branches:
-#            only: master
-#          requires:
-#            - ui_test
+      - ui_test
+      - ui_deployment:
+          branches:
+            only: master
+          requires:
+            - ui_test
 #      - signal_success:
 #          requires:
 #            - build
