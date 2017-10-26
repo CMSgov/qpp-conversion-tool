@@ -65,9 +65,11 @@ jobs:
       - run: aws s3 sync frontend/dist s3://qpp-conversion-tool-ui --delete
 
   signal_success:
+    working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/node:7.10.0-browsers
     steps:
+      - checkout
       - run: sudo apt-get install jq
       - run: ./tools/bin/signal_success.sh
 
