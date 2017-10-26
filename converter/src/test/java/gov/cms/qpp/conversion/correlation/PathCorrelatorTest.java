@@ -1,17 +1,34 @@
 package gov.cms.qpp.conversion.correlation;
 
 
+import com.google.common.collect.Lists;
+import com.sun.xml.internal.xsom.impl.scd.Iterators;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class PathCorrelatorTest {
+
+	@Test
+	public void testPrivateConstructor() throws NoSuchMethodException, IllegalAccessException,
+			InvocationTargetException, InstantiationException {
+		Constructor<PathCorrelator> constructor = PathCorrelator.class.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		constructor.newInstance();
+	}
 
 	@Test
 	public void pathCorrelatorInitilization() {
@@ -26,7 +43,7 @@ public class PathCorrelatorTest {
 		configPath.setAccessible(true);
 		configPath.set(null, "meep.json");
 
-		Method method = PathCorrelator.class.getDeclaredMethod("initPathCorrelation");
+		Method method = PathCorrelator.class.getDeclaredMethod("loadPathCorrelation");
 		method.setAccessible(true);
 		try {
 			method.invoke(null);
@@ -49,5 +66,16 @@ public class PathCorrelatorTest {
 		assertWithMessage("No substitution placeholders should remain")
 				.that(path.indexOf(PathCorrelator.getUriSubstitution()))
 				.isEqualTo(-1);
+	}
+
+	@Test
+	public void unacknowledgedEncodedLabel() {
+		Map<String, String> map = new HashMap<>();
+		map.put("meep", "meep");
+		map.put("encodeLabel", "mawp");
+		JsonWrapper wrapper = new JsonWrapper();
+		wrapper.putObject("metadata_holder", Lists.newArrayList(map));
+
+		assertThat(PathCorrelator.prepPath("$.mawp", wrapper)).isEmpty();
 	}
 }
