@@ -81,8 +81,9 @@ workflows:
       - build
       - ui_test
       - ui_deployment:
-          branches:
-            only: master
+          filters:
+            branches:
+              only: master
           requires:
             - ui_test
 #      - signal_success:
