@@ -17,4 +17,4 @@ PAYLOAD=$(jq --arg key0   'state' \
    <<<'{}');
 
 curl -H "Content-Type: application/json" -H "Authorization: token $BUILD_STATUS_TOKEN" \
-   -d $PAYLOAD -X POST $STATUS_UPDATE
+   -d "$PAYLOAD" -X POST $STATUS_UPDATE
