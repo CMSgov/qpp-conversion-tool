@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  mbuild:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/openjdk:8-jdk-browsers
@@ -65,14 +65,28 @@ jobs:
       - run: sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
       - run: aws s3 sync frontend/dist s3://qpp-conversion-tool-ui --delete
 
+
+#  signal_success:
+  build:
+    machine: true
+    steps:
+      - run: echo "CIRCLE_SHA1 $CIRCLE_SHA1"
+      - run: printenv
+      - run: echo "CIRCLE_WORKFLOW_ID $CIRCLE_WORKFLOW_ID"
+
+
 workflows:
   version: 2
   commit:
     jobs:
       - build
-      - ui_test
-      - ui_deployment:
-          branches:
-            only: master
-          requires:
-            - ui_test
+#      - ui_test
+#      - ui_deployment:
+#          branches:
+#            only: master
+#          requires:
+#            - ui_test
+#      - signal_success:
+#          requires:
+#            - build
+#            - ui_test
