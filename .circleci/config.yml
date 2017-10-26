@@ -42,7 +42,7 @@ jobs:
       - run: curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
       - run: sudo apt-get install gconf-service libasound2 libatk1.0-0 libcups2 libdbus-1-3 libgconf-2-4 libgtk-3-0 libnspr4 libxcomposite1 lsb-release
       - run: sudo dpkg -i google-chrome.deb
-      - run: sudo apt-get install jq
+#      - run: sudo apt-get install jq
       - run: sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
       - run: rm google-chrome.deb
       - run: cd frontend; rm -f yarn.lock && yarn
@@ -66,12 +66,11 @@ jobs:
       - run: aws s3 sync frontend/dist s3://qpp-conversion-tool-ui --delete
 
 
-#  signal_success:
-#    machine: true
-#    steps:
-#      - run: echo "CIRCLE_SHA1 $CIRCLE_SHA1"
-#      - run: printenv
-#      - run: echo "CIRCLE_WORKFLOW_ID $CIRCLE_WORKFLOW_ID"
+  signal_success:
+    machine: true
+    steps:
+      - run: sudo apt-get install jq
+      - run: ./tools/bin/signal_success.sh
 
 
 workflows:
@@ -86,7 +85,7 @@ workflows:
               only: master
           requires:
             - ui_test
-#      - signal_success:
-#          requires:
-#            - build
-#            - ui_test
+      - signal_success:
+          requires:
+            - build
+            - ui_test
