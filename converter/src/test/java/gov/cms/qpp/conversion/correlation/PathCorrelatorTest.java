@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.correlation;
 
 
 import com.google.common.collect.Lists;
-import com.sun.xml.internal.xsom.impl.scd.Iterators;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -12,9 +11,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
