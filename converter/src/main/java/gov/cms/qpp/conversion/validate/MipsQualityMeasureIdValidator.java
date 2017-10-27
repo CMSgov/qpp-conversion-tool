@@ -29,7 +29,6 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		subPopulationExclusions = Sets.newHashSet("IPOP", "IPP");
 	}
 
-
 	/**
 	 * Validates node of all criteria specified for MIPS
 	 * <ul>
