@@ -270,7 +270,8 @@ public class Converter {
 		 * @return input stream of QPP validation details
 		 */
 		public InputStream streamRawValidationDetails() {
-			return new ByteArrayInputStream(qppValidationDetails.getBytes(Charset.defaultCharset()));
+			String raw = (qppValidationDetails != null) ? qppValidationDetails : "";
+			return new ByteArrayInputStream(raw.getBytes(Charset.defaultCharset()));
 		}
 
 		/**
