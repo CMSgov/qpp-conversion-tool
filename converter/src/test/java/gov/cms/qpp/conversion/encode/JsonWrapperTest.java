@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -604,6 +605,29 @@ public class JsonWrapperTest {
 		InputStream content = objectObjWrapper.contentStream();
 		Map<String, String> contentMap = JsonHelper.readJson(content, Map.class);
 		assertThat(contentMap.get("meep")).isEqualTo("mawp");
+	}
+
+	@Test
+	public void testObjectStream() {
+		assertThat(objectObjWrapper.stream().count())
+				.isEqualTo(1);
+	}
+
+	@Test
+	public void testListStreamNonMap() {
+		JsonWrapper listWrapper = new JsonWrapper();
+		listWrapper.putObject(new Object());
+		assertThat(listWrapper.stream().count())
+				.isEqualTo(0);
+	}
+
+	@Test
+	public void testListStreamMap() {
+		JsonWrapper listWrapper = new JsonWrapper();
+		listWrapper.putObject(new HashMap());
+		listWrapper.putObject(new HashMap());
+		assertThat(listWrapper.stream().count())
+				.isEqualTo(2);
 	}
 
 }

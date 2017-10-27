@@ -2,7 +2,9 @@ package gov.cms.qpp.conversion.model.error;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -52,5 +54,12 @@ public class AllErrorsTest {
 
 		assertWithMessage("Must contain formatted string")
 				.that(objectUnderTest.toString()).contains(error.toString());
+	}
+
+	@Test
+	public void testArgConstructor() {
+		List<Error> errors = new ArrayList<>();
+		errors.add(new Error());
+		new AllErrors(errors);
 	}
 }
