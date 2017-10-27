@@ -118,11 +118,11 @@
 					<downloadExtensionDependencies>false</downloadExtensionDependencies>
 					<propertiesJMeter>
 						<protocol>https</protocol>
-						<host>imp.qpp.cms.gov</host>
-						<path>/api/submissions/converter</path>
+						<host></host>
+						<path></path>
 						<port>443</port>
 						<cookie></cookie>
-						<rps_micro>5</rps_micro>
+						<rps_micro>45</rps_micro>
 						<rps_small>300</rps_small>
 						<rps_medium>500</rps_medium>
 						<rps_large>1000</rps_large>
@@ -135,8 +135,8 @@
 						<file_large>large</file_large>
 					</propertiesJMeter>
 					<jMeterProcessJVMSettings>
-						<xms>10240</xms>
-						<xmx>10240</xmx>
+						<xms>12288</xms>
+						<xmx>12288</xmx>
 					</jMeterProcessJVMSettings>
 					<testFilesExcluded>
 						<excludeJMeterTestFile>template.jmx</excludeJMeterTestFile>

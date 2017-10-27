@@ -14,7 +14,7 @@
       <com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup guiclass="com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroupGui" testclass="com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup" testname="concurentGo" enabled="true">
         <elementProp name="ThreadGroup.main_controller" elementType="com.blazemeter.jmeter.control.VirtualUserController"/>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <stringProp name="TargetLevel">${__tstFeedback(throughput_shape_timer,300,1200,0.1)}</stringProp>
+        <stringProp name="TargetLevel">${__tstFeedback(throughput_shape_timer,1500,2000,0.1)}</stringProp>
         <stringProp name="RampUp"></stringProp>
         <stringProp name="Steps"></stringProp>
         <stringProp name="Hold">${__jexl3(new(&quot;java.lang.Integer&quot;\, props.getProperty(&apos;time_large&apos;)).intValue() + 5)}</stringProp>
@@ -79,8 +79,8 @@
             <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">true</boolProp>
             <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout">1000</stringProp>
-            <stringProp name="HTTPSampler.response_timeout">2000</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout">30000</stringProp>
+            <stringProp name="HTTPSampler.response_timeout">120000</stringProp>
           </HTTPSamplerProxy>
           <hashTree>
             <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Randomly choose file" enabled="true">
@@ -115,10 +115,15 @@ vars.put(&quot;filepath&quot;, subFiles[randomIndex].getCanonicalPath());
           </hashTree>
           <kg.apc.jmeter.timers.VariableThroughputTimer guiclass="kg.apc.jmeter.timers.VariableThroughputTimerGui" testclass="kg.apc.jmeter.timers.VariableThroughputTimer" testname="throughput_shape_timer" enabled="true">
             <collectionProp name="load_profile">
-              <collectionProp name="1736937016">
-                <stringProp name="864694399">${__P(rps_small)}</stringProp>
-                <stringProp name="864694399">${__P(rps_small)}</stringProp>
-                <stringProp name="-560033242">${__jexl3(new(&quot;java.lang.Integer&quot;\, props.getProperty(&apos;time_large&apos;)).intValue() + 5)}</stringProp>
+              <collectionProp name="1173560372">
+                <stringProp name="49">1</stringProp>
+                <stringProp name="864694399">${__P(rps_micro)}</stringProp>
+                <stringProp name="1722">60</stringProp>
+              </collectionProp>
+              <collectionProp name="-1551864568">
+                <stringProp name="864694399">${__P(rps_micro)}</stringProp>
+                <stringProp name="864694399">${__P(rps_micro)}</stringProp>
+                <stringProp name="1940439227">${__jexl3(new(&quot;java.lang.Integer&quot;\, props.getProperty(&apos;time_large&apos;)).intValue() + 5 - 60)}</stringProp>
               </collectionProp>
             </collectionProp>
           </kg.apc.jmeter.timers.VariableThroughputTimer>
@@ -140,11 +145,11 @@ vars.put(&quot;filepath&quot;, subFiles[randomIndex].getCanonicalPath());
             <threadName>true</threadName>
             <dataType>true</dataType>
             <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
+            <assertions>false</assertions>
+            <subresults>false</subresults>
             <responseData>false</responseData>
             <samplerData>false</samplerData>
-            <xml>true</xml>
+            <xml>false</xml>
             <fieldNames>true</fieldNames>
             <responseHeaders>false</responseHeaders>
             <requestHeaders>false</requestHeaders>
