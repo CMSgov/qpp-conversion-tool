@@ -32,7 +32,8 @@ public enum ErrorCode {
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_eCQM_SECTIONS("Clinical Document contains duplicate eCQN sections"),
 	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START("Must have one and only one performance start"),
 	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END("Must have one and only one performance end"),
-	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR("Must have a performance year");
+	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR("Must have a performance year"),
+	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR("The Quality Measure Section must have only one Reporting Parameter ACT");
 
 	ErrorCode(String message) {
 		this(message, false);
