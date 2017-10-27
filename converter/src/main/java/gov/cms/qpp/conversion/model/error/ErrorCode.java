@@ -18,7 +18,18 @@ public enum ErrorCode {
 	POPULATION_CRITERIA_COUNT_INCORRECT("The eCQM (electronic measure id: %s) requires %d %s(s) but there are %d", true),
 	ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION("ACI Numerator Denominator Node should have an ACI Section Node as a parent"),
 	ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID("ACI Numerator Denominator Node does not contain a measure name ID"),
-	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN("ACI Numerator Denominator Node does not have any child Nodes");
+	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN("ACI Numerator Denominator Node does not have any child Nodes"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_DENOMINATOR_CHILD_NODE("This ACI Numerator Denominator Node does not contain a Denominator Node child"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_NUMERATOR_CHILD_NODE("This ACI Numerator Denominator Node does not contain a Numerator Node child"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS("This ACI Numerator Denominator Node contains too many Denominator Node children"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS("This ACI Numerator Denominator Node contains too many Numerator Node children"),
+	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT("The ACI Section must have one Reporting Parameter ACT"),
+	CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD("Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child"),
+	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME("Clinical Document must have one and only one program name"),
+	CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME("Clinical Document program name is not recognized"),
+	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS("Clinical Document contains duplicate ACI sections"),
+	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS("Clinical Document contains duplicate IA sections"),
+	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_eCQM_SECTIONS("Clinical Document contains duplicate eCQN sections");
 
 	ErrorCode(String message) {
 		this(message, false);
