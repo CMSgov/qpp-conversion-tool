@@ -29,7 +29,10 @@ public enum ErrorCode {
 	CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME("Clinical Document program name is not recognized"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS("Clinical Document contains duplicate ACI sections"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS("Clinical Document contains duplicate IA sections"),
-	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_eCQM_SECTIONS("Clinical Document contains duplicate eCQN sections");
+	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_eCQM_SECTIONS("Clinical Document contains duplicate eCQN sections"),
+	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START("Must have one and only one performance start"),
+	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END("Must have one and only one performance end"),
+	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR("Must have a performance year");
 
 	ErrorCode(String message) {
 		this(message, false);
