@@ -1,11 +1,15 @@
 package gov.cms.qpp.conversion.model.error.correspondence;
 
+import java.util.Objects;
 
 import com.google.common.truth.Correspondence;
+
 import gov.cms.qpp.conversion.model.error.Detail;
 
 public final class DetailsMessageEquals extends Correspondence<Detail, String> {
-	private DetailsMessageEquals(){}
+
+	private DetailsMessageEquals() {
+	}
 
 	public static DetailsMessageEquals INSTANCE = new DetailsMessageEquals();
 
@@ -14,7 +18,7 @@ public final class DetailsMessageEquals extends Correspondence<Detail, String> {
 		if (actual == null) {
 			return expected == null;
 		}
-		return actual.getMessage().equals(expected);
+		return Objects.equals(actual.getMessage(), expected);
 	}
 
 	@Override

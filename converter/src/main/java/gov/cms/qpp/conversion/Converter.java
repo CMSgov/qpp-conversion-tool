@@ -85,13 +85,11 @@ public class Converter {
 			encoded = transform(source.toInputStream());
 		} catch (XmlInputFileException | XmlException xe) {
 			DEV_LOG.error(ErrorCode.NOT_VALID_XML_DOCUMENT.getMessage(), xe);
-			Detail detail = new Detail();
-			detail.setErrorCode(ErrorCode.NOT_VALID_XML_DOCUMENT);
+			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_XML_DOCUMENT);
 			details.add(detail);
 		} catch (Exception exception) {
 			DEV_LOG.error(ErrorCode.UNEXPECTED_ERROR.getMessage(), exception);
-			Detail detail = new Detail();
-			detail.setErrorCode(ErrorCode.UNEXPECTED_ERROR);
+			Detail detail = Detail.forErrorCode(ErrorCode.UNEXPECTED_ERROR);
 			details.add(detail);
 		}
 
@@ -129,8 +127,7 @@ public class Converter {
 				qpp = encode();
 			}
 		} else {
-			Detail detail = new Detail();
-			detail.setErrorCode(ErrorCode.NOT_VALID_QRDA_DOCUMENT);
+			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_QRDA_DOCUMENT);
 			details.add(detail);
 		}
 

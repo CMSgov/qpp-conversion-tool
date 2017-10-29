@@ -72,41 +72,6 @@ public class Detail implements Serializable {
 	}
 
 	/**
-	 * Constructs a {@code Detail} with just a description.
-	 *
-	 * @param text A description of the error.
-	 */
-	private Detail(String text) {
-		this.message = text;
-	}
-
-	/**
-	 * Constructs a {@code Detail} with a description and an path to point where the error is in the original document.
-	 *
-	 * @param text A description of the error.
-	 * @param path A path to where the error is.
-	 */
-	private Detail(String text, String path) {
-		this.message = text;
-		this.path = path;
-	}
-
-	/**
-	 * Constructs a {@code Detail} with a description and an path to point where the error is in the original document
-	 * as well as stating the offending value and a classification {@link Detail#type}.
-	 *
-	 * @param text A description of the error.
-	 * @param path A path to where the error is.
-	 * @param value The offending value.
-	 * @param type A classification of the error.
-	 */
-	private Detail(String text, String path, String value, String type) {
-		this(text, path);
-		this.value = value;
-		this.type = type;
-	}
-
-	/**
 	 * The code for the error
 	 *
 	 * @return An {@link ErrorCode}
@@ -132,8 +97,8 @@ public class Detail implements Serializable {
 	}
 
 	@JsonProperty("message")
-	public void setMessage(String newMessage) {
-		message = newMessage;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	/**
@@ -152,8 +117,8 @@ public class Detail implements Serializable {
 	 * @param newPath The path that this error references.
 	 */
 	@JsonProperty("path")
-	public void setPath(String newPath) {
-		path = newPath;
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	/**
@@ -167,8 +132,8 @@ public class Detail implements Serializable {
 	}
 
 	@JsonProperty("valiue")
-	public void setValue(String newValue) {
-		value = newValue;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	/**
@@ -182,8 +147,8 @@ public class Detail implements Serializable {
 	}
 
 	@JsonProperty("type")
-	public void setType(String newType) {
-		type = newType;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	@JsonProperty("templateId")
@@ -228,7 +193,7 @@ public class Detail implements Serializable {
 		}
 
 		Detail that = (Detail) o;
-		boolean equals = false; // doing equals this way to avoid making jacoco/sonar unhappy
+		boolean equals = true; // doing equals this way to avoid making jacoco/sonar unhappy
 		equals &= Objects.equals(errorCode, that.errorCode);
 		equals &= Objects.equals(message, that.message);
 		equals &= Objects.equals(path, that.path);

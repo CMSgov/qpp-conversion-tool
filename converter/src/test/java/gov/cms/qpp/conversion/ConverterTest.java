@@ -10,7 +10,10 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
@@ -101,7 +104,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, Converter.NOT_VALID_XML_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_XML_DOCUMENT);
 		}
 	}
 
@@ -122,7 +125,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, Converter.NOT_VALID_XML_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_XML_DOCUMENT);
 		}
 	}
 
@@ -134,7 +137,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, Converter.NOT_VALID_QRDA_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT);
 		}
 	}
 
@@ -149,7 +152,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, Converter.NOT_VALID_QRDA_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT);
 		}
 	}
 
@@ -167,22 +170,8 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, Converter.UNEXPECTED_ERROR);
+			checkup(exception, ErrorCode.UNEXPECTED_ERROR);
 		}
-	}
-
-	private void checkup(TransformException exception, String errorText) {
-		AllErrors allErrors = exception.getDetails();
-		List<Error> errors = allErrors.getErrors();
-		assertWithMessage("There must only be one error source.")
-				.that(errors).hasSize(1);
-		List<Detail> details = errors.get(0).getDetails();
-		assertWithMessage("There must be only one validation error.")
-				.that(details).hasSize(1);
-		assertWithMessage("The validation error was incorrect")
-				.that(details)
-				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(errorText);
 	}
 
 	@Test
@@ -210,5 +199,19 @@ public class ConverterTest {
 		String content = qpp.toString();
 
 		assertThat(content).contains("Jenny");
+	}
+
+	private void checkup(TransformException exception, LocalizedError error) {
+		AllErrors allErrors = exception.getDetails();
+		List<Error> errors = allErrors.getErrors();
+		assertWithMessage("There must only be one error source.")
+				.that(errors).hasSize(1);
+		List<Detail> details = errors.get(0).getDetails();
+		assertWithMessage("There must be only one validation error.")
+				.that(details).hasSize(1);
+		assertWithMessage("The validation error was incorrect")
+				.that(details)
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(error);
 	}
 }
