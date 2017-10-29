@@ -1,17 +1,20 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.validate.IaSectionValidator;
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import org.junit.Assert;
 import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertThat;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.validate.IaSectionValidator;
 
 public class IaSectionValidatorRoundTripTest {
 
@@ -27,10 +30,10 @@ public class IaSectionValidatorRoundTripTest {
 			errors = exception.getDetails();
 		}
 
-		String error = errors.getErrors().get(0).getDetails().get(0).getMessage();
+		ErrorCode error = errors.getErrors().get(0).getDetails().get(0).getErrorCode();
 
 		assertThat(error)
-				.isEqualTo(IaSectionValidator.WRONG_CHILD_ERROR);
+				.isEqualTo(ErrorCode.IA_SECTION_WRONG_CHILD);
 	}
 
 	@Test
@@ -45,10 +48,10 @@ public class IaSectionValidatorRoundTripTest {
 			errors = exception.getDetails();
 		}
 
-		String error = errors.getErrors().get(0).getDetails().get(0).getMessage();
+		ErrorCode error = errors.getErrors().get(0).getDetails().get(0).getErrorCode();
 
 		assertThat(error)
-				.isEqualTo(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR);
+				.isEqualTo(ErrorCode.IA_SECTION_MISSING_IA_MEASURE);
 	}
 
 	@Test
@@ -64,9 +67,9 @@ public class IaSectionValidatorRoundTripTest {
 			errors = exception.getDetails();
 		}
 
-		String error = errors.getErrors().get(0).getDetails().get(0).getMessage();
+		ErrorCode error = errors.getErrors().get(0).getDetails().get(0).getErrorCode();
 
 		assertThat(error)
-				.isEqualTo(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR);
+				.isEqualTo(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 }
