@@ -405,8 +405,8 @@ class Checker {
 
 	private Detail detail(LocalizedError code) {
 		if (node == null) {
-			return Detail.forErrorCode(ErrorCode.MEASURE_GUID_MISSING);
+			return Detail.forErrorCode(code);
 		}
-		return Detail.forErrorCodeAndNode(ErrorCode.MEASURE_GUID_MISSING, node);
+		return Detail.forErrorCodeAndNode(code, node);
 	}
 }
