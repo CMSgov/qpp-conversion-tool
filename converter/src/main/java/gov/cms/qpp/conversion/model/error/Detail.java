@@ -17,7 +17,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552590676L;
 
-	public static Detail forErrorCodeAndNode(ErrorCode code, Node node) {
+	public static Detail forErrorCodeAndNode(LocalizedError code, Node node) {
 		Objects.requireNonNull(node, "node");
 
 		Detail detail = forErrorCode(code);
@@ -26,11 +26,11 @@ public class Detail implements Serializable {
 		return detail;
 	}
 
-	public static Detail forErrorCode(ErrorCode code) {
+	public static Detail forErrorCode(LocalizedError code) {
 		Objects.requireNonNull(code, "code");
 
 		Detail detail = new Detail();
-		detail.setErrorCode(code);
+		detail.setErrorCode(code.getErrorCode());
 		detail.setMessage(code.getMessage());
 		return detail;
 	}

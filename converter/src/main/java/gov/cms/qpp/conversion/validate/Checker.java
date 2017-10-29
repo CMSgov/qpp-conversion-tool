@@ -1,14 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import com.google.common.base.Strings;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -18,6 +9,17 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations
@@ -80,7 +82,7 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker value(ErrorCode code, String name) {
+	public Checker value(LocalizedError code, String name) {
 		lastAppraised = node.getValue(name);
 		if (!shouldShortcut() && lastAppraised == null) {
 			details.add(detail(code));
@@ -95,7 +97,7 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIsEmpty(ErrorCode code, String name) {
+	public Checker valueIsEmpty(LocalizedError code, String name) {
 		lastAppraised = node.getValue(name);
 		if (!shouldShortcut() && !Strings.isNullOrEmpty((String)lastAppraised)) {
 			details.add(detail(code));
@@ -110,7 +112,7 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIsNotEmpty(ErrorCode code, String name) {
+	public Checker valueIsNotEmpty(LocalizedError code, String name) {
 		lastAppraised = node.getValue(name);
 		if (!shouldShortcut() && Strings.isNullOrEmpty((String) lastAppraised)) {
 			details.add(detail(code));
@@ -125,7 +127,7 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker singleValue(ErrorCode code, String name) {
+	public Checker singleValue(LocalizedError code, String name) {
 		value(code, name);
 		List<String> duplicates = node.getDuplicateValues(name);
 		if (duplicates != null && !duplicates.isEmpty()) {
@@ -143,7 +145,7 @@ class Checker {
 	 * @param expected the expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIs(ErrorCode code, String name, String expected) {
+	public Checker valueIs(LocalizedError code, String name, String expected) {
 		return valueIn(code, name, expected);
 	}
 
@@ -156,7 +158,7 @@ class Checker {
 	 * @param values List of strings to check for the existence of.
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIn(ErrorCode code, String name, String... values) {
+	public Checker valueIn(LocalizedError code, String name, String... values) {
 		boolean contains = false;
 		if (name == null) {
 			details.add(detail(code));
@@ -186,7 +188,7 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker intValue(ErrorCode code, String name) {
+	public Checker intValue(LocalizedError code, String name) {
 		if (!shouldShortcut()) {
 			try {
 				lastAppraised = Integer.parseInt(node.getValue(name));
@@ -206,7 +208,7 @@ class Checker {
 	 * @return The checker, for chaining method calls.
 	 */
 	@SuppressWarnings("unchecked")
-	public Checker greaterThan(ErrorCode code, Comparable<?> value) {
+	public Checker greaterThan(LocalizedError code, Comparable<?> value) {
 		if (!shouldShortcut() && lastAppraised != null && ((Comparable<Object>) lastAppraised).compareTo(value) <= 0) {
 			details.add(detail(code));
 		}
@@ -222,7 +224,7 @@ class Checker {
 	 * @return The checker, for chaining method calls.
 	 */
 	@SuppressWarnings("unchecked")
-	public Checker lessThanOrEqualTo(ErrorCode code, Comparable<?> value) {
+	public Checker lessThanOrEqualTo(LocalizedError code, Comparable<?> value) {
 		if (!shouldShortcut() && lastAppraised != null && ((Comparable<Object>) lastAppraised).compareTo(value) > 0) {
 			details.add(detail(code));
 		}
@@ -240,7 +242,7 @@ class Checker {
 	 * @return The checker, for chaining method calls
 	 */
 	@SuppressWarnings("unchecked")
-	public Checker inDecimalRangeOf(ErrorCode code, String name, float startValue, float endValue) {
+	public Checker inDecimalRangeOf(LocalizedError code, String name, float startValue, float endValue) {
 		if (!shouldShortcut()) {
 			try {
 				lastAppraised = Float.parseFloat(node.getValue(name));
@@ -262,7 +264,7 @@ class Checker {
 	 * @param message validation error message
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker hasParent(ErrorCode code, TemplateId type) {
+	public Checker hasParent(LocalizedError code, TemplateId type) {
 		if (!shouldShortcut()) {
 			TemplateId parentType = Optional.ofNullable(node.getParent())
 					.orElse(new Node()).getType();
@@ -279,7 +281,7 @@ class Checker {
 	 * @param message validation error message
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker hasChildren(ErrorCode code) {
+	public Checker hasChildren(LocalizedError code) {
 		if (!shouldShortcut() && node.getChildNodes().isEmpty()) {
 			details.add(detail(code));
 		}
@@ -294,7 +296,7 @@ class Checker {
 	 * @param types types of children to filter by
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker childMinimum(ErrorCode code, int minimum, TemplateId... types) {
+	public Checker childMinimum(LocalizedError code, int minimum, TemplateId... types) {
 		if (!shouldShortcut()) {
 			int count = tallyNodes(types);
 			if (count < minimum) {
@@ -312,7 +314,7 @@ class Checker {
 	 * @param types types of children to filter by
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker childMaximum(ErrorCode code, int maximum, TemplateId... types) {
+	public Checker childMaximum(LocalizedError code, int maximum, TemplateId... types) {
 		if (!shouldShortcut()) {
 			int count = tallyNodes(types);
 			if (count > maximum) {
@@ -329,7 +331,7 @@ class Checker {
 	 * @param measureIds measures specified for given node
 	 * @return The checker, for chaining method calls
 	 */
-	public Checker hasMeasures(ErrorCode code, String... measureIds) {
+	public Checker hasMeasures(LocalizedError code, String... measureIds) {
 		if (!shouldShortcut()) {
 			int numberOfMeasuresRequired = Arrays.asList(measureIds).size();
 
@@ -360,7 +362,7 @@ class Checker {
 	 * @param types types of template ids to filter
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker onlyHasChildren(ErrorCode code, TemplateId... types) {
+	public Checker onlyHasChildren(LocalizedError code, TemplateId... types) {
 		if (!shouldShortcut()) {
 			Set<TemplateId> templateIds = EnumSet.noneOf(TemplateId.class);
 			for (TemplateId templateId : types) {
@@ -401,7 +403,7 @@ class Checker {
 			.sum();
 	}
 
-	private Detail detail(ErrorCode code) {
+	private Detail detail(LocalizedError code) {
 		if (node == null) {
 			return Detail.forErrorCode(ErrorCode.MEASURE_GUID_MISSING);
 		}
