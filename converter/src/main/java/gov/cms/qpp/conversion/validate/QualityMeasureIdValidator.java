@@ -305,7 +305,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			thoroughlyCheck(thisNode)
 					.incompleteValidation()
 					.singleValue(message, name);
-			return uuid.get().equals(thisNode.getValue(name));
+			return uuid.get().toString().equalsIgnoreCase(thisNode.getValue(name));
 		};
 	}
 }

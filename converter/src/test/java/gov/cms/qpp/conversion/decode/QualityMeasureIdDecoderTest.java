@@ -36,7 +36,7 @@ public class QualityMeasureIdDecoderTest {
 		String value = qualityMeasureIdNode.getValue("measureId");
 		assertWithMessage("Expect to have a value")
 				.that(value)
-				.isEqualTo("Measurement Id Value");
+				.isEqualTo("measurement id value");
 	}
 
 	/**

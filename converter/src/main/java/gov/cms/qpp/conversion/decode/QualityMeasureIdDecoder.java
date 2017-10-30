@@ -39,7 +39,7 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 		List<String> measureGuids = getMeasureGuid(element);
 
 		measureGuids.forEach(measureGuid ->
-			thisNode.putValue(MEASURE_ID, measureGuid, false));
+			thisNode.putValue(MEASURE_ID, measureGuid.toLowerCase(), false));
 
 		return DecodeResult.TREE_CONTINUE;
 	}
