@@ -10,25 +10,26 @@ import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.apache.commons.io.IOUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ConversionReportTest {
+class ConversionReportTest {
 	private static Converter.ConversionReport report;
 	private static Converter.ConversionReport errorReport;
 	private static JsonWrapper wrapper;
 
-	@BeforeClass
-	public static void setup() {
+	@BeforeAll
+	static void setup() {
 		Converter converter = new Converter(
 				new PathQrdaSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		wrapper = converter.transform();
@@ -45,18 +46,18 @@ public class ConversionReportTest {
 	}
 
 	@Test
-	public void testReportRetrieval() {
+	void testReportRetrieval() {
 		assertThat(report).isNotNull();
 	}
 
 	@Test
-	public void testGetEncoded() {
+	void testGetEncoded() {
 		assertThat(report.getEncoded().toString())
 				.isEqualTo(wrapper.toString());
 	}
 
 	@Test
-	public void validationErrorDetails() throws IOException {
+	void validationErrorDetails() throws IOException {
 		Converter converter = new Converter(
 				new PathQrdaSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		Converter.ConversionReport aReport = converter.getReport();
@@ -67,20 +68,20 @@ public class ConversionReportTest {
 	}
 
 	@Test
-	public void emptyValidationErrorDetails() throws IOException {
+	void emptyValidationErrorDetails() throws IOException {
 		String details = IOUtils.toString(errorReport.streamRawValidationDetails(), "UTF-8");
 
 		assertThat(details).isEmpty();
 	}
 
 	@Test
-	public void getReportDetails() {
+	void getReportDetails() {
 		assertThat(errorReport.getReportDetails())
 				.isNotNull();
 	}
 
-	@Test(expected = EncodeException.class)
-	public void getBadReportDetails() throws NoSuchFieldException, IllegalAccessException, JsonProcessingException {
+	@Test
+	void getBadReportDetails() throws NoSuchFieldException, IllegalAccessException, JsonProcessingException {
 		ObjectMapper mockMapper = mock(ObjectMapper.class);
 		when(mockMapper.writeValueAsBytes(any(AllErrors.class)))
 				.thenThrow(new JsonMappingException("meep"));
@@ -93,16 +94,16 @@ public class ConversionReportTest {
 		field.setAccessible(true);
 		field.set(badReport, mockMapper);
 
-		badReport.streamDetails();
+		assertThrows(EncodeException.class, badReport::streamDetails);
 	}
 
 	@Test
-	public void getGoodReportDetails() throws NoSuchFieldException, IllegalAccessException, JsonProcessingException {
+	void getGoodReportDetails() throws NoSuchFieldException, IllegalAccessException, JsonProcessingException {
 		assertThat(errorReport.streamDetails()).isNotNull();
 	}
 
 	@Test
-	public void getErrorStream() throws IOException {
+	void getErrorStream() throws IOException {
 		Converter converter = new Converter(
 				new PathQrdaSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		Converter.ConversionReport badReport = converter.getReport();
@@ -117,12 +118,12 @@ public class ConversionReportTest {
 	}
 
 	@Test
-	public void getFilename() {
+	void getFilename() {
 		assertThat(report.getFilename()).isEqualTo("valid-QRDA-III-latest.xml");
 	}
 
 	@Test
-	public void getFileInput() {
+	void getFileInput() {
 		assertThat(report.getFileInput()).isNotNull();
 	}
 }
