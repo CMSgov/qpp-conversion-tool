@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AllErrorsTest {
@@ -61,5 +62,7 @@ public class AllErrorsTest {
 		List<Error> errors = new ArrayList<>();
 		errors.add(new Error());
 		new AllErrors(errors);
+		assertThat(new AllErrors(errors).getErrors())
+				.containsAllIn(errors);
 	}
 }
