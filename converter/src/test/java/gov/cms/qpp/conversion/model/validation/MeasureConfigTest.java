@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class MeasureConfigTest {
@@ -106,6 +107,11 @@ public class MeasureConfigTest {
 	public void verifyMeasureConfigObjective() {
 		assertWithMessage("objective should be electronicPrescribing")
 				.that(theConfig.getObjective()).isEqualTo("electronicPrescribing");
+	}
+
+	@Test
+	public void verifyMeasureConfigProportion() {
+		assertThat(theConfig.isProportion()).isTrue();
 	}
 
 	@Test
