@@ -34,7 +34,7 @@ public class MeasureDataValidator extends NodeValidator {
 			check(child)
 					.singleValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR, "aggregateCount")
 					.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, "aggregateCount")
-					.greaterThan(ErrorCode.MEASURE_DATA_INVALID_VALUE, -1);
+					.greaterThan(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER, -1);
 		}
 	}
 }

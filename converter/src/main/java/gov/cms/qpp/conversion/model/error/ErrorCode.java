@@ -58,7 +58,7 @@ public enum ErrorCode implements LocalizedError {
 	IA_MEASURE_INCORRECT_CHILDREN_COUNT("Measure performed must have exactly one child."),
 	IA_MEASURE_INVALID_TYPE("A single measure performed value is required and must be either a Y or an N."),
 	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT("Measure performed must have exactly one Aggregate Count."),
-	MEASURE_DATA_INVALID_VALUE("Measure data must be a positive integer value"),
+	MEASURE_DATA_VALUE_NOT_INTEGER("Measure data must be a positive integer value"),
 	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION("Must have at least one NPI/TIN combination"),
 	CPC_PERFORMANCE_PERIOD_START_JAN12017("Must be 01/01/2017"),
 	CPC_PERFORMANCE_PERIOD_END_DEC312017("Must be 12/31/2017"),

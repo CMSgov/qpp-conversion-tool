@@ -1,5 +1,14 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.Test;
+
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
@@ -9,18 +18,10 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Set;
-
-import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.validate.MeasureDataValidator.MISSING_AGGREGATE_COUNT;
 
 /**
  * Test the MeasureData Validator
@@ -49,7 +50,7 @@ public class MeasureDataValidatorTest {
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(MISSING_AGGREGATE_COUNT);
+				.containsExactly(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT);
 	}
 
 	@Test
@@ -95,7 +96,7 @@ public class MeasureDataValidatorTest {
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(MeasureDataValidator.INVALID_VALUE);
+				.containsExactly(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER);
 	}
 
 	@Test
@@ -118,7 +119,7 @@ public class MeasureDataValidatorTest {
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsAllOf(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR,
-						MeasureDataValidator.INVALID_VALUE);
+						ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER);
 	}
 
 	private List<Detail> getErrors(AllErrors content) {
