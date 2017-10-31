@@ -7,6 +7,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -17,10 +18,9 @@ import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class JsonWrapperTest {
+class JsonWrapperTest {
 
 	private ObjectWriter ow = JsonWrapper.getObjectWriter(true);
 	private JsonWrapper objectObjWrapper;
@@ -300,27 +300,23 @@ public class JsonWrapperTest {
 	void testBadKeyedPutDate_exception() {
 		assertThrows(EncodeException.class,
 				() -> objectObjWrapper.putDate("A date which will live in infamy", "December 7, 1941"));
-		fail("should not get here, expecting runtime encode exception");
 	}
 
 	@Test
 	void testBadPutDate_exception() {
 		assertThrows(EncodeException.class, () -> objectObjWrapper.putDate("December 7, 1941"));
-		fail("should not get here, expecting runtime encode exception");
 	}
 
 	@Test
 	void testToString_exception() {
 		objectObjWrapper.putObject("name", new MockBadJsonTarget());
 		assertThrows(RuntimeException.class, () -> objectObjWrapper.toString());
-		fail("should not get here, expecting runtime parse exception");
 	}
 
 	@Test
 	void testCheckState_objectThenList() {
 		objectStrWrapper.putString("name", "value");
 		assertThrows(IllegalStateException.class, () -> objectStrWrapper.putString("value"));
-		fail("should not make it here, prior line should throw exception");
 	}
 
 	@Test
@@ -328,44 +324,37 @@ public class JsonWrapperTest {
 		listStrWrapper.putString("value");
 		assertThrows(IllegalStateException.class,
 				() -> listStrWrapper.putString("name", "value"));
-		fail("should not make it here, prior line should throw exception");
 	}
 
 	@Test
 	void testToString_integerParseExcpetion() {
 		assertThrows(EncodeException.class,
 				() -> objectStrWrapper.putInteger("name2", "nope"));
-		fail("Should not make it here because of integer parse exception");
 	}
 
 	@Test
 	void testToString_integerParseExcpetion2() {
 		assertThrows(EncodeException.class, () -> objectStrWrapper.putInteger("nope"));
-		fail("Should not make it here because of integer parse exception");
 	}
 
 	@Test
 	void testToString_floatParseExcpetion() {
 		assertThrows(EncodeException.class, () -> objectStrWrapper.putFloat("nope"));
-		fail("Should not make it here because of float parse exception");
 	}
 
 	@Test
 	void testToString_floatParseExcpetion2() {
 		assertThrows(EncodeException.class, () -> objectStrWrapper.putFloat("name","nope"));
-		fail("Should not make it here because of float parse exception");
 	}
 
 	@Test
 	void testToString_booleanParseExcpetion() {
 		assertThrows(EncodeException.class, () -> objectStrWrapper.putBoolean("nope"));
-		fail("Should not make it here because of float parse exception");
 	}
 
 	@Test
 	void testToString_booleanParseExcpetion2() {
 		assertThrows(EncodeException.class, () -> objectStrWrapper.putBoolean("name","nope"));
-		fail("Should not make it here because of float parse exception");
 	}
 
 	@Test

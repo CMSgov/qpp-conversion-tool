@@ -124,15 +124,19 @@
 
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.20</version>
+					<version>2.19.1</version>
 					<configuration>
-						<systemPropertyVariables>
-							<jacoco-agent.destfile>${project.build.directory}/coverage.exec</jacoco-agent.destfile>
-						</systemPropertyVariables>
 						<excludes>
 							<exclude>${exclusionFilter}</exclude>
 						</excludes>
 					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.junit.platform</groupId>
+							<artifactId>junit-platform-surefire-provider</artifactId>
+							<version>1.0.0</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 			</plugins>
 
@@ -164,13 +168,6 @@
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<version>5.0.1</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-launcher</artifactId>
-			<version>1.0.1</version>
 			<scope>test</scope>
 		</dependency>
 
