@@ -64,6 +64,6 @@ public class EncoderNegativeConditionsTest {
 		assertWithMessage("Should contain one error").that(encoder.getDetails()).hasSize(1);
 		assertWithMessage("Should have same correct message")
 				.that(encoder.getDetails().get(0).getMessage())
-				.isEqualTo("Failure to encode");
+				.isEqualTo("Fake IOException");
 	}
 }
