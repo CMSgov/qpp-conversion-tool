@@ -22,16 +22,20 @@ if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $SONAR_OTHER_BRANCH && "$CIRCLE_BRA
 elif [[ ! -z $CI_PULL_REQUESTS ]]; then
 	#Do a PR preview SonarCube run
 	#This build could be on multiple PRs
+	echo "Verifying PR"
+	echo "CI_PULL_REQUESTS $CI_PULL_REQUESTS"
 	IFS=","
 	for PULL_REQUEST_URL in $CI_PULL_REQUESTS
 	do
+        echo "Verifying PULL_REQUEST_URL"
+        echo "PULL_REQUEST_URL $PULL_REQUEST_URL"
 		PR_NUMBER=${PULL_REQUEST_URL##*/}
 		echo "Doing preview SonarQube run on PR $PR_NUMBER"
 		./sonar-scanner-3.0.1.733/bin/sonar-scanner -Dsonar.analysis.mode=preview \
 		                                            -Dsonar.github.pullRequest=${PR_NUMBER} \
 		                                            -Dsonar.github.repository=CMSgov/qpp-conversion-tool \
 		                                            -Dsonar.github.oauth=${SONAR_PR_KEY} \
-																								-Dsonar.organization=${ORG_KEY} \
+													-Dsonar.organization=${ORG_KEY} \
 		                                            -Dsonar.login=${SONAR_KEY_NEW}
 	done
 else

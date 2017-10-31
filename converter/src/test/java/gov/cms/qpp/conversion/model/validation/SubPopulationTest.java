@@ -22,6 +22,14 @@ public class SubPopulationTest {
 	}
 
 	@Test
+	public void copyConstructor() {
+		SubPopulation sp = new SubPopulation();
+		SubPopulation otherSp = new SubPopulation(sp);
+		
+		assertThat(sp).isEqualTo(otherSp);
+	}
+
+	@Test
 	public void equalsContract() {
 		EqualsVerifier.forClass(SubPopulation.class)
 				.usingGetClass()
