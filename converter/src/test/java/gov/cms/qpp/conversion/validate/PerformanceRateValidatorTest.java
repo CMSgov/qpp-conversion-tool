@@ -1,13 +1,15 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import static com.google.common.truth.Truth.assertWithMessage;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 public class PerformanceRateValidatorTest {
 	private PerformanceRateValidator performanceRateValidator;
@@ -49,7 +51,7 @@ public class PerformanceRateValidatorTest {
 		performanceRateValidator.internalValidateSingleNode(node);
 		assertWithMessage("Must contain a proper value")
 				.that(performanceRateValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(PerformanceRateValidator.INVALID_PERFORMANCE_RATE);
+				.containsExactly(ErrorCode.PERFORMANCE_RATE_INVALID_VALUE);
 	}
 
 	@Test
@@ -58,7 +60,7 @@ public class PerformanceRateValidatorTest {
 		performanceRateValidator.internalValidateSingleNode(node);
 		assertWithMessage("Must contain a proper value")
 				.that(performanceRateValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(PerformanceRateValidator.INVALID_PERFORMANCE_RATE);
+				.containsExactly(ErrorCode.PERFORMANCE_RATE_INVALID_VALUE);
 	}
 
 	@Test
@@ -67,6 +69,6 @@ public class PerformanceRateValidatorTest {
 		performanceRateValidator.internalValidateSingleNode(node);
 		assertWithMessage("Must contain a proper value")
 				.that(performanceRateValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(PerformanceRateValidator.INVALID_PERFORMANCE_RATE);
+				.containsExactly(ErrorCode.PERFORMANCE_RATE_INVALID_VALUE);
 	}
 }
