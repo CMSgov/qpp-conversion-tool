@@ -4,6 +4,7 @@ jobs:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/openjdk:8-jdk-browsers
+      - image: circleci/node:7.10.0-browsers
     steps:
       - checkout
       - run: cd converter; mvn dependency:resolve

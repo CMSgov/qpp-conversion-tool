@@ -8,8 +8,8 @@ if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $SONAR_OTHER_BRANCH && "$CIRCLE_BRA
 	#Do a full SonarQube run
 	echo "Doing full SonarQube run"
 	./sonar-scanner-3.0.1.733/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST} \
-    																					-Dsonar.organization=${ORG_KEY} \
-    																					-Dsonar.login=${SONAR_KEY_NEW}
+        -Dsonar.organization=${ORG_KEY} \
+        -Dsonar.login=${SONAR_KEY_NEW}
 	sleep 3
 	project_status=$(curl -sS ${SONAR_HOST}/api/qualitygates/project_status?projectKey=gov.cms.qpp.conversion:qpp-conversion)
 	status=$(echo ${project_status} | jq '.projectStatus.status')
