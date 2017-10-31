@@ -192,7 +192,7 @@ public class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about too many Numerator nodes")
 				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciNumeratorDenominatorValidator.TOO_MANY_NUMERATORS);
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS);
 	}
 
 	@Test

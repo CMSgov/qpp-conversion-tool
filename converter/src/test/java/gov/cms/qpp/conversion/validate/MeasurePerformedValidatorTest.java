@@ -52,6 +52,6 @@ public class MeasurePerformedValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(measurePerformedNode);
 		assertWithMessage("Should result in a single type error")
 				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(IaMeasureValidator.TYPE_ERROR);
+				.containsExactly(ErrorCode.IA_MEASURE_INVALID_TYPE);
 	}
 }

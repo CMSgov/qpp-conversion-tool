@@ -1,15 +1,16 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.Set;
+
+import org.junit.Test;
+
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Test;
-
-import java.util.Set;
-
-import static com.google.common.truth.Truth.assertWithMessage;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 
 public class AggregateCountValidatorTest {
@@ -33,8 +34,8 @@ public class AggregateCountValidatorTest {
         Set<Detail> errors = validator.getDetails();
 
         assertWithMessage("Should result in a value error")
-                .that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-                .containsExactly(AggregateCountValidator.VALUE_ERROR);
+                .that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+                .containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR);
     }
 
     @Test
@@ -47,8 +48,8 @@ public class AggregateCountValidatorTest {
         Set<Detail> errors = validator.getDetails();
 
         assertWithMessage("Should result in a type error")
-                .that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-                .containsExactly(AggregateCountValidator.TYPE_ERROR);
+                .that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+                .containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER);
     }
 
     @Test

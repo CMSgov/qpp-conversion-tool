@@ -1,5 +1,9 @@
 package gov.cms.qpp.conversion.model.error;
 
+import java.util.Objects;
+
+import com.google.common.base.MoreObjects;
+
 public enum ErrorCode implements LocalizedError {
 
 	ENCODER_MISSING("Failed to find an encoder"),
@@ -110,6 +114,37 @@ public enum ErrorCode implements LocalizedError {
 		@Override
 		public String getMessage() {
 			return message;
+		}
+
+		@Override
+		public String toString() {
+			return MoreObjects.toStringHelper(this)
+					.add("errorCode", ErrorCode.this)
+					.add("message", message)
+					.toString();
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (o == this) {
+				return true;
+			}
+
+			if (o == null) {
+				return false;
+			}
+
+			if (o instanceof FormattedErrorCode) {
+				FormattedErrorCode that = (FormattedErrorCode) o;
+				return that.getErrorCode() == ErrorCode.this && Objects.equals(that.message, message);
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(ErrorCode.this, message);
 		}
 	}
 

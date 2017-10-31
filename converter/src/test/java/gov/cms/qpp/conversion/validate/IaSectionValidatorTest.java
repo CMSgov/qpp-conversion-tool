@@ -64,7 +64,7 @@ public class IaSectionValidatorTest {
 
 		assertWithMessage("Must contain correct children")
 				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR);
+				.containsExactly(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class IaSectionValidatorTest {
 
 		assertWithMessage("Must contain correct children")
 				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR);
+				.containsExactly(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 
 	private Set<Detail> validatorIaSection() {

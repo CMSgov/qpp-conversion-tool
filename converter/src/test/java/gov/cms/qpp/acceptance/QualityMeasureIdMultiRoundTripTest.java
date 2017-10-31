@@ -1,17 +1,8 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.acceptance.helper.MarkupManipulator;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
-import gov.cms.qpp.conversion.util.JsonHelper;
-import gov.cms.qpp.conversion.validate.MipsQualityMeasureIdValidator;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -19,13 +10,26 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import gov.cms.qpp.acceptance.helper.MarkupManipulator;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
+import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.util.JsonHelper;
 
 public class QualityMeasureIdMultiRoundTripTest {
 	private static final String REQUIRE_ELIGIBLE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
@@ -82,8 +86,8 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
@@ -94,22 +98,21 @@ public class QualityMeasureIdMultiRoundTripTest {
 		List<Detail> details = executeScenario(path, false);
 
 		assertThat(details).hasSize(1);
-		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
 	public void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
-		String message = String.format(
-				MipsQualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, SubPopulations.DENOM, 2);
+		LocalizedError error = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulations.DENOM, 2);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
 		List<Detail> details = executeScenario(path, true);
 
 		assertThat(details)
-				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.contains(message);
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.contains(error);
 	}
 
 	@Test
@@ -121,8 +124,8 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		assertThat(details).hasSize(1);
 		assertThat(details)
-				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION);
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION);
 	}
 
 	@Test
@@ -133,8 +136,8 @@ public class QualityMeasureIdMultiRoundTripTest {
 		List<Detail> details = executeScenario(path, true);
 
 		assertThat(details).hasSize(2);
-		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.contains(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.contains(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION);
 	}
 
 	@Test
@@ -149,8 +152,8 @@ public class QualityMeasureIdMultiRoundTripTest {
 		}
 
 		assertThat(details).hasSize(3);
-		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.contains(MipsQualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.contains(ErrorCode.DENOMINATOR_COUNT_INVALID);
 	}
 
 	@Test

@@ -1,16 +1,20 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Before;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.Before;
+import org.junit.Test;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.MockLocalizedError;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 /**
  * This will test the Checker functionality
@@ -18,8 +22,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 public class CheckerTest {
 
 	private static final String VALUE = "value";
-	private static final String ERROR_MESSAGE = "error message";
-	private static final String OTHER_ERROR_MESSAGE = "some other error message";
+	private static final LocalizedError ERROR_MESSAGE = new MockLocalizedError(ErrorCode.UNEXPECTED_ERROR, "the checker failed");
+	private static final LocalizedError OTHER_ERROR_MESSAGE = new MockLocalizedError(ErrorCode.UNEXPECTED_ERROR, "some other error message");
 
 	private Set<Detail> details;
 
@@ -36,7 +40,7 @@ public class CheckerTest {
 		checker.value(ERROR_MESSAGE, VALUE);
 
 		assertWithMessage("There's an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -49,7 +53,7 @@ public class CheckerTest {
 				.hasParent(ERROR_MESSAGE, TemplateId.ACI_DENOMINATOR); //shortcuts
 
 		assertWithMessage("message applied is the message given")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -173,7 +177,7 @@ public class CheckerTest {
 		checker.value(ERROR_MESSAGE, VALUE).hasChildren(OTHER_ERROR_MESSAGE);
 
 		assertWithMessage("message applied is other error message")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(OTHER_ERROR_MESSAGE);
 	}
 
@@ -200,7 +204,7 @@ public class CheckerTest {
 				.hasChildren(OTHER_ERROR_MESSAGE);
 
 		assertWithMessage("message applied is other error message")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -219,7 +223,7 @@ public class CheckerTest {
 				.childMaximum(OTHER_ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER);
 
 		assertWithMessage("message applied is other error message")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(OTHER_ERROR_MESSAGE);
 	}
 
@@ -232,11 +236,11 @@ public class CheckerTest {
 				new Node(TemplateId.DEFAULT));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.childMaximum("too many children", 2, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
+		checker.childMaximum(error("too many children"), 2, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
 
 		assertWithMessage("message applied is other error message")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("too many children");
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(error("too many children"));
 	}
 
 	@Test
@@ -249,7 +253,7 @@ public class CheckerTest {
 				new Node(TemplateId.ACI_AGGREGATE_COUNT));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.childMaximum("too many children", 3, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
+		checker.childMaximum(error("too many children"), 3, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
 
 		assertWithMessage("There should be no errors.")
 				.that(details).isEmpty();
@@ -293,7 +297,7 @@ public class CheckerTest {
 		checker.intValue(ERROR_MESSAGE, VALUE).greaterThan(ERROR_MESSAGE, 124);
 
 		assertWithMessage("There should be one error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -351,7 +355,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, details);
 		checker.intValue(ERROR_MESSAGE, VALUE).lessThanOrEqualTo(ERROR_MESSAGE, 122);
 		assertWithMessage("There should be no errors.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -359,13 +363,13 @@ public class CheckerTest {
 	public void testCompoundIntValueLessThanOrEqualToCheckFailureShortcut() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
-		details.add(new Detail("test", "testPath"));
+		details.add(Detail.forErrorCode(error("test")));
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.intValue(ERROR_MESSAGE, VALUE).lessThanOrEqualTo(ERROR_MESSAGE, 122);
 		assertWithMessage("There should be no errors.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("test");
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(error("test"));
 	}
 
 	@Test
@@ -387,7 +391,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
 		assertWithMessage("There should be one error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -399,7 +403,7 @@ public class CheckerTest {
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
 
 		assertWithMessage("There should be one error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -411,7 +415,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
 		assertWithMessage("There should be one error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -423,7 +427,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
 		assertWithMessage("There should be one error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -431,13 +435,13 @@ public class CheckerTest {
 	public void testInDecimalRangeOfShortcut() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "-1");
-		details.add(new Detail("test", "testPath"));
+		details.add(Detail.forErrorCode(error("test")));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
+		checker.inDecimalRangeOf(ERROR_MESSAGE, VALUE, 0f,  1f);
 		assertWithMessage("There should be one error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("test");
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(error("test"));
 	}
 
 	// thorough checking
@@ -450,14 +454,14 @@ public class CheckerTest {
 				new Node(TemplateId.PLACEHOLDER));
 
 		Checker checker = Checker.thoroughlyCheck(meepNode, details);
-		checker.intValue("int failure", VALUE)
+		checker.intValue(error("int failure"), VALUE)
 				.hasChildren(ERROR_MESSAGE)
 				.childMinimum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
-				.childMaximum("maximum failure", 1, TemplateId.PLACEHOLDER);
+				.childMaximum(error("maximum failure"), 1, TemplateId.PLACEHOLDER);
 
 		assertWithMessage("int validation error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("int failure" ,"maximum failure");
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(error("int failure"), error("maximum failure"));
 	}
 
 	@Test
@@ -469,10 +473,10 @@ public class CheckerTest {
 				new Node(TemplateId.PLACEHOLDER));
 
 		Checker checker = Checker.thoroughlyCheck(meepNode, details);
-		checker.intValue("int failure", VALUE)
+		checker.intValue(error("int failure"), VALUE)
 				.hasChildren(ERROR_MESSAGE)
 				.childMinimum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
-				.childMaximum("maximum failure", 2, TemplateId.PLACEHOLDER);
+				.childMaximum(error("maximum failure"), 2, TemplateId.PLACEHOLDER);
 
 		assertWithMessage("There should be no errors.")
 				.that(details).isEmpty();
@@ -496,7 +500,7 @@ public class CheckerTest {
 		section.addChildNodes(measure1, measure2, measure3);
 
 		Checker checker = Checker.check(section, details);
-		checker.hasMeasures("measure failure", expectedMeasure1, expectedMeasure2);
+		checker.hasMeasures(error("measure failure"), expectedMeasure1, expectedMeasure2);
 
 		assertWithMessage("All the measures should have been found.")
 				.that(details).isEmpty();
@@ -509,7 +513,7 @@ public class CheckerTest {
 		String anotherMeausure1 = "asdf";
 		String anotherMeausure2 = "jkl;";
 		String anotherMeausure3 = "qwerty";
-		String validationError = "measure failure";
+		LocalizedError validationError = error("measure failure");
 
 		Node section = new Node();
 		Node measure1 = new Node();
@@ -526,22 +530,23 @@ public class CheckerTest {
 		checker.hasMeasures(validationError, expectedMeasure);
 
 		assertWithMessage("The validation error string did not match up.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(validationError);
 	}
 
 	@Test
 	public void testCheckerHasMeasuresShortCut() {
 		Set<Detail> errors = new LinkedHashSet<>();
-		Detail err = new Detail("test");
+		Detail err = new Detail();
+		err.setMessage("test");
 		errors.add(err);
 		Node root = new Node();
 		Checker.check(root, errors)
-				.hasMeasures("Some Message", "MeasureId");
+				.hasMeasures(ERROR_MESSAGE, "MeasureId");
 
 		assertWithMessage("Checker should return one validation error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("test");
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(new MockLocalizedError(null, "test"));
 	}
 
 	@Test
@@ -553,11 +558,11 @@ public class CheckerTest {
 		measure.putValue("NotAMeasure", "0");
 		root.addChildNode(measure);
 		Checker.check(root, errors)
-				.hasMeasures("Some Message", "MeasureId");
+				.hasMeasures(ERROR_MESSAGE, "MeasureId");
 
 		assertWithMessage("Checker should return one validation error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("Some Message");
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
@@ -586,7 +591,7 @@ public class CheckerTest {
 		checker.onlyHasChildren(ERROR_MESSAGE, TemplateId.IA_MEASURE);
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -611,7 +616,7 @@ public class CheckerTest {
 		checker.valueIn(ERROR_MESSAGE, key, "No Value" , "Some Value", "My Value");
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 	@Test
@@ -622,7 +627,7 @@ public class CheckerTest {
 		checker.valueIn(ERROR_MESSAGE, key, null);
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 	@Test
@@ -634,7 +639,7 @@ public class CheckerTest {
 		checker.valueIn(ERROR_MESSAGE, null, null);
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -647,7 +652,7 @@ public class CheckerTest {
 		checker.valueIn(ERROR_MESSAGE, key, null);
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -655,13 +660,13 @@ public class CheckerTest {
 	public void testValueInShouldShortCut() throws Exception {
 		String key = "My Key";
 		Node testNode = makeTestNode(key, null);
-		details.add(new Detail(ERROR_MESSAGE));
+		details.add(Detail.forErrorCode(ERROR_MESSAGE));
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIn(ERROR_MESSAGE, key, null , "Some Value", "My Value");
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(ERROR_MESSAGE);
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.contains(ERROR_MESSAGE);
 	}
 
 	@Test
@@ -695,7 +700,7 @@ public class CheckerTest {
 		checker.valueIsEmpty(ERROR_MESSAGE, key);
 
 		assertWithMessage("There should be no errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -719,7 +724,7 @@ public class CheckerTest {
 		checker.valueIsNotEmpty(ERROR_MESSAGE, key);
 
 		assertWithMessage("There should be no errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -731,7 +736,7 @@ public class CheckerTest {
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIsNotEmpty(ERROR_MESSAGE, key);
 		assertWithMessage("There should be no errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -739,6 +744,10 @@ public class CheckerTest {
 		Node testNode = new Node();
 		testNode.putValue(key, value);
 		return testNode;
+	}
+
+	private LocalizedError error(String message) {
+		return new MockLocalizedError(ErrorCode.UNEXPECTED_ERROR, message);
 	}
 
 }
