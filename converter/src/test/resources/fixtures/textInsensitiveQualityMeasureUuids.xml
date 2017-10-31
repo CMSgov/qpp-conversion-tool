@@ -195,7 +195,7 @@
 									</reference>
 								</observation>
 							</component>
-							<!--Performance Rate: Population Criteria 3 -->
+							<!--Performance Rate: Population Criteria 3 Lowercase Performance Rate UUID-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
@@ -208,7 +208,7 @@
 									<reference typeCode="REFR">
 										<externalObservation classCode="OBS" moodCode="EVN">
 											<!-- The root contains the UUID for the Numerator population -->
-											<id root="86F74F07-D593-44F6-AA12-405966400963"/>
+											<id root="86f74f07-d593-44f6-aa12-405966400963"/>
 											<code code="NUMER" codeSystem="2.16.840.1.113883.5.4"
 												  codeSystemName="ActCode"
 												  displayName="Numerator"/>
