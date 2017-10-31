@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import java.util.Locale;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
@@ -39,7 +40,7 @@ public class QualityMeasureIdDecoder extends QppXmlDecoder {
 		List<String> measureGuids = getMeasureGuid(element);
 
 		measureGuids.forEach(measureGuid ->
-			thisNode.putValue(MEASURE_ID, measureGuid.toLowerCase(), false));
+			thisNode.putValue(MEASURE_ID, measureGuid.toLowerCase(Locale.ENGLISH), false));
 
 		return DecodeResult.TREE_CONTINUE;
 	}
