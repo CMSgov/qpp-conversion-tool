@@ -1,5 +1,6 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
@@ -25,6 +26,8 @@ public class QualityMeasureIdRoundTripTest {
 	public static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/junk_in_quality_measure.xml");
 	public static final Path INVALID_PERFORMANCE_UUID_FILE =
 			Paths.get("src/test/resources/negative/mipsInvalidPerformanceRateUuid.xml");
+	public static final Path INSENSITIVE_TEXT_FILE =
+			Paths.get("src/test/resources/fixtures/textInsensitiveQualityMeasureUuids.xml");
 
 	@Test
 	public void testRoundTripForQualityMeasureId() throws IOException {
@@ -75,5 +78,20 @@ public class QualityMeasureIdRoundTripTest {
 
 		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(MipsQualityMeasureIdValidator.SINGLE_PERFORMANCE_RATE);
+	}
+
+	@Test
+	public void testMeasureCMS52v5WithInsensitiveTextUuid() throws IOException {
+		Converter converter = new Converter(new PathQrdaSource(INSENSITIVE_TEXT_FILE));
+		List<Detail> details = new ArrayList<>();
+
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		assertThat(details).isEmpty();
 	}
 }
