@@ -228,7 +228,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	Consumer<Node> makeValidator(SubPopulation sub, Supplier<Object> check, String... keys) {
+	Consumer<Node> makeValidator(SubPopulation sub, Supplier<String> check, String... keys) {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childTypeFinder = makeTypeChildFinder(keys);
@@ -268,7 +268,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param keys Identifiers for the current measures child
 	 * @param node Contains the current child nodes
 	 */
-	protected void addMeasureConfigurationValidationMessage(Supplier<Object> check, String[] keys, Node node) {
+	protected void addMeasureConfigurationValidationMessage(Supplier<String> check, String[] keys, Node node) {
 		MeasureConfig config =
 				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 		String message = String.format(INCORRECT_UUID, config.getElectronicMeasureId(),
@@ -300,12 +300,12 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param name Supplies a node field validate on
 	 * @return predicate seeking a matching uuid
 	 */
-	protected Predicate<Node> makeUuidChildFinder(Supplier<Object> uuid, String message, String name) {
+	protected Predicate<Node> makeUuidChildFinder(Supplier<String> uuid, String message, String name) {
 		return thisNode -> {
 			thoroughlyCheck(thisNode)
 					.incompleteValidation()
 					.singleValue(message, name);
-			return uuid.get().toString().equalsIgnoreCase(thisNode.getValue(name));
+			return uuid.get().equalsIgnoreCase(thisNode.getValue(name));
 		};
 	}
 }
