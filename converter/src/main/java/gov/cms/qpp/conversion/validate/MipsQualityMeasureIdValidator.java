@@ -121,7 +121,7 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * @return
 	 */
 	private Predicate<SubPopulation> makePerformanceRateUuidFinder(String uuid) {
-		return subPopulation -> uuid.toString().equalsIgnoreCase(subPopulation.getNumeratorUuid());
+		return subPopulation -> uuid.equalsIgnoreCase(subPopulation.getNumeratorUuid());
 	}
 
 	/**
