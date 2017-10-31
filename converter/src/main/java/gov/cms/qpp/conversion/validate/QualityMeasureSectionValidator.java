@@ -19,9 +19,9 @@ public class QualityMeasureSectionValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-			.childMinimum(ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
+			.childMinimum(ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT, 1,
 					TemplateId.REPORTING_PARAMETERS_ACT)
-			.childMaximum(ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
+			.childMaximum(ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT, 1,
 					TemplateId.REPORTING_PARAMETERS_ACT);
 	}
 }

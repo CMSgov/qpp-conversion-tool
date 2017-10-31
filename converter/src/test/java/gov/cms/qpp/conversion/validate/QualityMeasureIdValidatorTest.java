@@ -1,23 +1,26 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import java.util.Set;
-
 import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
 import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
+
+import java.util.Set;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.ErrorCode.FormattedErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 
 public class QualityMeasureIdValidatorTest {
 
@@ -81,7 +84,7 @@ public class QualityMeasureIdValidatorTest {
 
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(QualityMeasureIdValidator.MEASURE_GUID_MISSING);
+				.containsExactly(ErrorCode.MEASURE_GUID_MISSING);
 	}
 
 	@Test
@@ -92,7 +95,7 @@ public class QualityMeasureIdValidatorTest {
 
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(QualityMeasureIdValidator.NO_CHILD_MEASURE);
+				.containsExactly(ErrorCode.CHILD_MEASURE_MISSING);
 	}
 
 	@Test
@@ -103,8 +106,8 @@ public class QualityMeasureIdValidatorTest {
 
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(QualityMeasureIdValidator.MEASURE_GUID_MISSING,
-						QualityMeasureIdValidator.NO_CHILD_MEASURE);
+				.containsExactly(ErrorCode.MEASURE_GUID_MISSING,
+						ErrorCode.CHILD_MEASURE_MISSING);
 	}
 
 	@Test
@@ -129,14 +132,14 @@ public class QualityMeasureIdValidatorTest {
 
 		assertWithMessage("There must be one validation errors.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(QualityMeasureIdValidator.MEASURE_GUID_MISSING);
+				.containsExactly(ErrorCode.MEASURE_GUID_MISSING);
 	}
 
 	@Test
 	public void testDenominatorExclusionMissing() {
-		String incorrectCount = String.format(QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT,
+		FormattedErrorCode incorrectCount = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(
 				"CMS165v5", 1, SubPopulations.DENEX, 0);
-		String incorrectUuid = String.format(QualityMeasureIdValidator.INCORRECT_UUID,
+		FormattedErrorCode incorrectUuid = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
 				"CMS165v5", SubPopulations.DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCLUSION_GUID)
@@ -170,9 +173,8 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testInternalMissingDenexcepMeasure() {
-		String countMessage = String.format(
-				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS68v6", 1, SubPopulations.DENEXCEP, 0);
-		String uuidMessage = String.format(QualityMeasureIdValidator.INCORRECT_UUID,
+		FormattedErrorCode countMessage = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS68v6", 1, SubPopulations.DENEXCEP, 0);
+		FormattedErrorCode uuidMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
 				"CMS68v6", SubPopulations.DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
@@ -198,8 +200,7 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testInternalDenexcepMultipleSupPopulationsInvalidMeasureId() {
-		String message = String.format(
-				QualityMeasureIdValidator.INCORRECT_UUID, "CMS52v5", SubPopulations.DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID);
+		FormattedErrorCode message = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulations.DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
 			.replaceSubPopulationMeasureData(
@@ -215,10 +216,8 @@ public class QualityMeasureIdValidatorTest {
 
 	@Test
 	public void testInternalDenexcepMultipleSupPopulationsMissingMeasureId() {
-		String countMessage = String.format(
-				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 2, SubPopulations.DENEXCEP, 1);
-		String uuidMessage = String.format(
-				QualityMeasureIdValidator.INCORRECT_UUID, "CMS52v5", SubPopulations.DENEXCEP,
+		FormattedErrorCode countMessage = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 2, SubPopulations.DENEXCEP, 1);
+		FormattedErrorCode uuidMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulations.DENEXCEP,
 				MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
@@ -240,8 +239,7 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
-		String expectedErrorMessage = String.format(
-				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, SubPopulations.NUMER, 4);
+		FormattedErrorCode expectedErrorMessage = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulations.NUMER, 4);
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(expectedErrorMessage);
@@ -255,10 +253,8 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
-		String expectedErrorMessage = String.format(
-				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, SubPopulations.NUMER, 2);
-		String expectedUuidErrorMessage = String.format(
-				QualityMeasureIdValidator.INCORRECT_UUID, "CMS52v5", SubPopulations.NUMER,
+		FormattedErrorCode expectedErrorMessage = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulations.NUMER, 2);
+		FormattedErrorCode expectedUuidErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulations.NUMER,
 				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
 
 		assertWithMessage("Incorrect validation error.")
@@ -275,7 +271,7 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
-		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_UUID, "CMS52v5",
+		FormattedErrorCode expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
 				SubPopulations.NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
 
 		assertWithMessage("Incorrect validation error.")
@@ -315,7 +311,7 @@ public class QualityMeasureIdValidatorTest {
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertWithMessage("Must contain the correct error message.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(QualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT);
+				.containsExactly(ErrorCode.DENOMINATOR_COUNT_INVALID);
 	}
 
 	@Test
@@ -325,7 +321,7 @@ public class QualityMeasureIdValidatorTest {
 				.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_PERFORMANCE_UUID, "CMS68v6",
+		FormattedErrorCode expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS68v6",
 				PERFORMANCE_RATE_ID, "fail");
 		assertWithMessage("Must contain the correct error message.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)

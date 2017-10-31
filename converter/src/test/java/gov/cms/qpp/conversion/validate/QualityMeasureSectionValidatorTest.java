@@ -1,15 +1,17 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import org.junit.Before;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Set;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.Before;
+import org.junit.Test;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 public class QualityMeasureSectionValidatorTest {
 	private Node reportingParameterNode;
@@ -38,7 +40,7 @@ public class QualityMeasureSectionValidatorTest {
 		assertWithMessage("Must contain correct error")
 				.that(errors)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR);
+				.containsExactly(ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT);
 	}
 
 	@Test
@@ -51,7 +53,7 @@ public class QualityMeasureSectionValidatorTest {
 		assertWithMessage("Must contain correct error")
 				.that(errors)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR);
+				.containsExactly(ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT);
 	}
 
 	private Set<Detail> validateQualityMeasureSection() {

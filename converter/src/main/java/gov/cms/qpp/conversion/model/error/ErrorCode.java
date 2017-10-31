@@ -37,7 +37,7 @@ public enum ErrorCode implements LocalizedError {
 	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START("Must have one and only one performance start"),
 	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END("Must have one and only one performance end"),
 	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR("Must have a performance year"),
-	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR("The Quality Measure Section must have only one Reporting Parameter ACT"),
+	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT("The Quality Measure Section must have only one Reporting Parameter ACT"),
 	PERFORMANCE_RATE_INVALID_VALUE("Must enter a valid Performance Rate value"),
 	CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS("Must contain a practice site address for CPC+ conversions"),
 	CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED("One and only one Alternative Payment Model (APM) Entity Identifier should be specified"),
