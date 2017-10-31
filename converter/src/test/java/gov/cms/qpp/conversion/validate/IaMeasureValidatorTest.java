@@ -1,15 +1,17 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Collection;
 import java.util.Set;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.Test;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 /**
  * Test class for IaMeasureValidator
@@ -61,7 +63,7 @@ public class IaMeasureValidatorTest {
 
 		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(IaMeasureValidator.INCORRECT_CHILDREN_COUNT);
+				.containsExactly(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT);
 	}
 
 	/**
@@ -84,6 +86,6 @@ public class IaMeasureValidatorTest {
 
 		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(IaMeasureValidator.INCORRECT_CHILDREN_COUNT);
+				.containsExactly(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT);
 	}
 }
