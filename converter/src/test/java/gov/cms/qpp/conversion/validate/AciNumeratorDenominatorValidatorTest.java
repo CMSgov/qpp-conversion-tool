@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -67,7 +67,7 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about missing numerator denominator measure name")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(AciNumeratorDenominatorValidator.NO_MEASURE_NAME);
 	}
 
@@ -95,7 +95,7 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about invalid parent node")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(AciNumeratorDenominatorValidator.NO_PARENT_SECTION);
 	}
 
@@ -114,7 +114,7 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about no child nodes")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(AciNumeratorDenominatorValidator.NO_CHILDREN);
 	}
 
@@ -139,7 +139,7 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about missing Numerator node")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(AciNumeratorDenominatorValidator.NO_NUMERATOR);
 	}
 
@@ -164,7 +164,7 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about missing Denominator node")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(AciNumeratorDenominatorValidator.NO_DENOMINATOR);
 	}
 
@@ -191,7 +191,7 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about too many Numerator nodes")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS);
 	}
 
@@ -218,7 +218,7 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about too many Denominator nodes")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(AciNumeratorDenominatorValidator.TOO_MANY_DENOMINATORS);
 	}
 }

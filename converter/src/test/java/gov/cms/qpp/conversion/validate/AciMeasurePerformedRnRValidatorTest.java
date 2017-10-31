@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,7 +39,7 @@ public class AciMeasurePerformedRnRValidatorTest {
 		aciMeasurePerformedRnRNode.removeValue("measureId");
 		Set<Detail> errors = run();
 		assertWithMessage("Should result in a MEASURE_ID_IS_REQUIRED error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(AciMeasurePerformedRnRValidator.MEASURE_ID_IS_REQUIRED);
 	}
 
@@ -48,7 +48,7 @@ public class AciMeasurePerformedRnRValidatorTest {
 		aciMeasurePerformedRnRNode.getChildNodes().clear();
 		Set<Detail> errors = run();
 		assertWithMessage("Validation error size should be 1")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(AciMeasurePerformedRnRValidator.MEASURE_PERFORMED_IS_REQUIRED);
 	}
 

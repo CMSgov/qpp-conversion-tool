@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,7 +37,7 @@ public class QualityMeasureSectionValidatorTest {
 
 		assertWithMessage("Must contain correct error")
 				.that(errors)
-				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 
@@ -50,7 +50,7 @@ public class QualityMeasureSectionValidatorTest {
 
 		assertWithMessage("Must contain correct error")
 				.that(errors)
-				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(QualityMeasureSectionValidator.REQUIRED_REPORTING_PARAM_REQUIREMENT_ERROR);
 	}
 

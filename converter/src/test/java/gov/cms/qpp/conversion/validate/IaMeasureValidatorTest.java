@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -60,7 +60,7 @@ public class IaMeasureValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(measureNode);
 
 		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(IaMeasureValidator.INCORRECT_CHILDREN_COUNT);
 	}
 
@@ -83,7 +83,7 @@ public class IaMeasureValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(measureNode);
 
 		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(IaMeasureValidator.INCORRECT_CHILDREN_COUNT);
 	}
 }

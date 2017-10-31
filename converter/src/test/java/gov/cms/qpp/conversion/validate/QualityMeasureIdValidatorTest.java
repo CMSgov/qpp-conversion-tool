@@ -4,7 +4,7 @@ import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import org.junit.AfterClass;
@@ -80,7 +80,7 @@ public class QualityMeasureIdValidatorTest {
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertWithMessage("Incorrect validation error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(QualityMeasureIdValidator.MEASURE_GUID_MISSING);
 	}
 
@@ -91,7 +91,7 @@ public class QualityMeasureIdValidatorTest {
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertWithMessage("Incorrect validation error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(QualityMeasureIdValidator.NO_CHILD_MEASURE);
 	}
 
@@ -102,7 +102,7 @@ public class QualityMeasureIdValidatorTest {
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertWithMessage("Incorrect validation error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(QualityMeasureIdValidator.MEASURE_GUID_MISSING,
 						QualityMeasureIdValidator.NO_CHILD_MEASURE);
 	}
@@ -128,7 +128,7 @@ public class QualityMeasureIdValidatorTest {
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertWithMessage("There must be one validation errors.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(QualityMeasureIdValidator.MEASURE_GUID_MISSING);
 	}
 
@@ -145,7 +145,7 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertWithMessage("Incorrect validation error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(incorrectCount, incorrectUuid);
 	}
 
@@ -182,7 +182,7 @@ public class QualityMeasureIdValidatorTest {
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertWithMessage("Incorrect validation error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(countMessage, uuidMessage);
 	}
 
@@ -209,7 +209,7 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertWithMessage("Incorrect validation error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(message);
 	}
 
@@ -227,7 +227,7 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertWithMessage("Incorrect validation error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(countMessage, uuidMessage);
 	}
 
@@ -243,7 +243,7 @@ public class QualityMeasureIdValidatorTest {
 		String expectedErrorMessage = String.format(
 				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, SubPopulations.NUMER, 4);
 		assertWithMessage("Incorrect validation error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(expectedErrorMessage);
 	}
 
@@ -262,7 +262,7 @@ public class QualityMeasureIdValidatorTest {
 				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
 
 		assertWithMessage("Incorrect validation error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(expectedErrorMessage, expectedUuidErrorMessage);
 	}
 
@@ -279,7 +279,7 @@ public class QualityMeasureIdValidatorTest {
 				SubPopulations.NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
 
 		assertWithMessage("Incorrect validation error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(expectedErrorMessage);
 	}
 
@@ -314,7 +314,7 @@ public class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertWithMessage("Must contain the correct error message.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(QualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT);
 	}
 
@@ -328,7 +328,7 @@ public class QualityMeasureIdValidatorTest {
 		String expectedErrorMessage = String.format(QualityMeasureIdValidator.INCORRECT_PERFORMANCE_UUID, "CMS68v6",
 				PERFORMANCE_RATE_ID, "fail");
 		assertWithMessage("Must contain the correct error message.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(expectedErrorMessage);
 	}
 

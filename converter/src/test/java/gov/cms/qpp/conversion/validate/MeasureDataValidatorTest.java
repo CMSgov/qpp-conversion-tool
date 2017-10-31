@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.Test;
 
@@ -48,7 +48,7 @@ public class MeasureDataValidatorTest {
 
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("missing error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(MISSING_AGGREGATE_COUNT);
 	}
 
@@ -63,7 +63,7 @@ public class MeasureDataValidatorTest {
 
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("Should result in a type error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER);
 	}
 
@@ -79,7 +79,7 @@ public class MeasureDataValidatorTest {
 
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("missing error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR);
 	}
 
@@ -94,7 +94,7 @@ public class MeasureDataValidatorTest {
 
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("missing error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(MeasureDataValidator.INVALID_VALUE);
 	}
 
@@ -115,7 +115,7 @@ public class MeasureDataValidatorTest {
 		List<Detail> errors = getErrors(allErrors);
 
 		assertWithMessage("Must contain the error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsAllOf(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR,
 						MeasureDataValidator.INVALID_VALUE);

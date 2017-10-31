@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +26,7 @@ public class CpcQualityMeasureIdValidatorTest {
 		validator.internalValidateSingleNode(testNode);
 
 		assertWithMessage("Must contain 0 invalid performance rate count errors")
-				.that(validator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.doesNotContain(String.format(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT, 2));
 	}
 
@@ -36,7 +36,7 @@ public class CpcQualityMeasureIdValidatorTest {
 		validator.internalValidateSingleNode(testNode);
 
 		assertWithMessage("Must contain 2 invalid performance rate count errors")
-				.that(validator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(String.format(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT, 2));
 	}
 
@@ -46,7 +46,7 @@ public class CpcQualityMeasureIdValidatorTest {
 		validator.internalValidateSingleNode(testNode);
 
 		assertWithMessage("Must contain 2 invalid performance rate count errors")
-				.that(validator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(String.format(CpcQualityMeasureIdValidator.INVALID_PERFORMANCE_RATE_COUNT, 2));
 	}
 

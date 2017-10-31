@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.xml.XmlException;
@@ -49,7 +49,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Missing CMS137v5 DENOM strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(getMessages(SubPopulations.DENOM,
 						"BC948E65-B908-493B-B48B-04AC342D3E6C",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
@@ -62,7 +62,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Missing CMS137v5 DENEX strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(getMessages(SubPopulations.DENEX,
 						"56BC7FA2-C22A-4440-8652-2D3568852C60",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
@@ -75,7 +75,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Missing CMS137v5 NUMER strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(getMessages(SubPopulations.NUMER,
 						"0BBF8596-4CFE-47F4-A0D7-9BEAB94BA4CD",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
@@ -88,7 +88,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Missing CMS137v5 IPOP strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(getMessages("IPOP",
 						"EC2C5F63-AF76-4D3C-85F0-5423F8C28541",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
@@ -101,7 +101,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 		String message = String.format(INCORRECT_UUID, "CMS137v5", "IPOP,IPP", "EC2C5F63-AF76-4D3C-85F0-5423F8C28541");
 
 		assertWithMessage("Missing CMS137v5 IPOP strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(message);
 	}
 

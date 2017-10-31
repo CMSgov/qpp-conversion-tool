@@ -3,7 +3,8 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,8 +41,8 @@ public class IaSectionValidatorTest {
 		Set<Detail> errors = validatorIaSection();
 
 		assertWithMessage("Must be missing the correct child")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(IaSectionValidator.MINIMUM_REQUIREMENT_ERROR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.IA_SECTION_MISSING_IA_MEASURE);
 	}
 
 	@Test
@@ -52,8 +53,8 @@ public class IaSectionValidatorTest {
 		Set<Detail> errors = validatorIaSection();
 
 		assertWithMessage("Must contain correct children")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(IaSectionValidator.WRONG_CHILD_ERROR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.IA_SECTION_WRONG_CHILD);
 	}
 
 	@Test
@@ -63,7 +64,7 @@ public class IaSectionValidatorTest {
 		Set<Detail> errors = validatorIaSection();
 
 		assertWithMessage("Must contain correct children")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 
@@ -75,7 +76,7 @@ public class IaSectionValidatorTest {
 		Set<Detail> errors = validatorIaSection();
 
 		assertWithMessage("Must contain correct children")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 
