@@ -152,6 +152,40 @@ public class RegistryTest {
 	}
 
 	@Test
+	public void testRegistryGetHandlerWithNoDefaultConstructor() throws Exception {
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), NoDefaultConstructor.class);
+		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		assertWithMessage("Registry without a default constructor should not be constructable")
+				.that(decoder).isNull();
+	}
+
+	@Test
+	public void testRegistryGetHandlerWithMalcontentedConstructor() throws Exception {
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), MalcontentedConstructor.class);
+		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		assertThat(decoder).isNull();
+	}
+
+	@Test(expected = SevereRuntimeException.class)
+	public void testRegistryGetHandlerWithThrowableConstructor() throws Exception {
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), ThrowableConstructor.class);
+		registry.get(TemplateId.PLACEHOLDER);
+	}
+
+	@Test
+	public void testRegistryGetHandlerWithNoArgMalcontentedConstructor() throws Exception {
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), NoArgMalcontentedConstructor.class);
+		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		assertThat(decoder).isNull();
+	}
+
+	@Test(expected = SevereRuntimeException.class)
+	public void testRegistryGetHandlerWithNoArgThrowableConstructor() throws Exception {
+		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), NoArgThrowableConstructor.class);
+		registry.get(TemplateId.PLACEHOLDER);
+	}
+
+	@Test
 	public void testRegistryAddDuplicate() throws Exception {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), AnotherPlaceholder.class);
@@ -205,3 +239,64 @@ class PrivateConstructor implements InputDecoder {
 		return null;
 	}
 }
+
+class NoDefaultConstructor implements InputDecoder {
+
+	public NoDefaultConstructor(String meep) {
+	}
+
+	@Override
+	public Node decode(Element xmlDoc) {
+		return null;
+	}
+}
+
+class MalcontentedConstructor implements InputDecoder {
+
+	public MalcontentedConstructor(Context meep) {
+		throw new RuntimeException("just cause");
+	}
+
+	@Override
+	public Node decode(Element xmlDoc) {
+		return null;
+	}
+}
+
+class ThrowableConstructor implements InputDecoder {
+
+	public ThrowableConstructor(Context meep) throws Throwable{
+		throw new Throwable("just cause");
+	}
+
+	@Override
+	public Node decode(Element xmlDoc) {
+		return null;
+	}
+}
+
+class NoArgMalcontentedConstructor implements InputDecoder {
+
+	public NoArgMalcontentedConstructor() {
+		throw new RuntimeException("just cause");
+	}
+
+	@Override
+	public Node decode(Element xmlDoc) {
+		return null;
+	}
+}
+
+class NoArgThrowableConstructor implements InputDecoder {
+
+	public NoArgThrowableConstructor() throws Throwable{
+		throw new Throwable("just cause");
+	}
+
+	@Override
+	public Node decode(Element xmlDoc) {
+		return null;
+	}
+}
+
+
