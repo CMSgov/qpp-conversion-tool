@@ -27,6 +27,16 @@ public class ErrorTest {
 	}
 
 	@Test
+	public void initializesDetailsWhenNull() {
+		Error objectUnderTest = new Error();
+		objectUnderTest.setDetails(null);
+		objectUnderTest.addValidationError(new Detail());
+
+		assertWithMessage("The list should have zero items")
+				.that(objectUnderTest.getDetails()).hasSize(1);
+	}
+
+	@Test
 	public void mutability() {
 		Error objectUnderTest = new Error();
 
