@@ -1,6 +1,5 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
@@ -92,6 +91,26 @@ public class QualityMeasureIdRoundTripTest {
 			details.addAll(errors.getErrors().get(0).getDetails());
 		}
 
-		assertThat(details).isEmpty();
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.doesNotContain(MipsQualityMeasureIdValidator.MEASURE_GUID_MISSING);
+	}
+
+	@Test
+	public void testMeasureCMS52v5InsensitiveMeasureDataUuid() throws IOException {
+		Converter converter = new Converter(new PathQrdaSource(INSENSITIVE_TEXT_FILE));
+		List<Detail> details = new ArrayList<>();
+
+		String errorMessage = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID,
+				"CMS52v5", "DENOM", "04BF53CE-6993-4EA2-BFE5-66E36172B388");
+
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.doesNotContain(errorMessage);
 	}
 }

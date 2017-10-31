@@ -35,7 +35,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
 
 	public static final String MEASURE_ID = "measureId";
-	static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
+	public static final String MEASURE_GUID_MISSING = "The measure reference results must have a measure GUID";
 	public static final String SINGLE_MEASURE_POPULATION =
 			"The measure reference results must have a single measure population";
 	public static final String SINGLE_MEASURE_TYPE =
