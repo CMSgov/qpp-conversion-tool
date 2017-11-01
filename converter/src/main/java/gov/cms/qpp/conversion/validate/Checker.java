@@ -404,9 +404,6 @@ class Checker {
 	}
 
 	private Detail detail(LocalizedError code) {
-		if (node == null) {
-			return Detail.forErrorCode(code);
-		}
 		return Detail.forErrorCodeAndNode(code, node);
 	}
 }
