@@ -22,8 +22,11 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 			check(node)
-					.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
-					.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, ClinicalDocumentDecoder.ENTITY_ID)
-					.childMinimum(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED, 1, TemplateId.MEASURE_SECTION_V2);
+					.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS, 
+							ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
+					.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED, 
+							ClinicalDocumentDecoder.ENTITY_ID)
+					.childMinimum(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED, 
+							1, TemplateId.MEASURE_SECTION_V2);
 	}
 }
