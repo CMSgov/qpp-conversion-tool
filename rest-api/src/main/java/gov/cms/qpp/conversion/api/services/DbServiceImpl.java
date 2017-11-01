@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.services;
 
-
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +15,10 @@ import java.util.concurrent.CompletableFuture;
  * Writes a {@link Metadata} object to DynamoDB.
  */
 @Service
-public class DbServiceImpl extends AnyOrderAsyncActionService<Metadata, Metadata>
+public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		implements DbService {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger("API_LOG");
-
-	private static final String NO_AUDIT_ENV_VARIABLE = "NO_AUDIT";
+	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
 	@Autowired
 	private DynamoDBMapper mapper;
@@ -37,9 +35,10 @@ public class DbServiceImpl extends AnyOrderAsyncActionService<Metadata, Metadata
 	 * @param meta The metadata to write.
 	 * @return A {@link CompletableFuture} that will hold the written Metadata.
 	 */
+	@Override
 	public CompletableFuture<Metadata> write(Metadata meta) {
 
-		String noAudit = environment.getProperty(NO_AUDIT_ENV_VARIABLE);
+		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 
 		if (noAudit != null && !noAudit.isEmpty()) {
 			API_LOG.info("Not writing audit information.");

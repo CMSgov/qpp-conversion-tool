@@ -5,8 +5,7 @@ import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AciProportionNumeratorDecoderTest {
 
@@ -20,7 +19,10 @@ public class AciProportionNumeratorDecoderTest {
 		AciProportionNumeratorDecoder aciProportionNumeratorDecoder = new AciProportionNumeratorDecoder(new Context());
 		DecodeResult decodeResult = aciProportionNumeratorDecoder.internalDecode(element, node);
 
-		assertThat("Must continue on tree", decodeResult, is(DecodeResult.TREE_CONTINUE));
-		assertThat("The node name must be " + NUMERATOR_NODE_NAME, node.getValue("name"), is(NUMERATOR_NODE_NAME));
+		assertWithMessage("Must continue on tree")
+				.that(decodeResult)
+				.isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
+		assertWithMessage("The node name must be %s", NUMERATOR_NODE_NAME)
+				.that(node.getValue("name")).isEqualTo(NUMERATOR_NODE_NAME);
 	}
 }

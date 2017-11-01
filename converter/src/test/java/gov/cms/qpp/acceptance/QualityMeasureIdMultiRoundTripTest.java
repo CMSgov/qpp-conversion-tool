@@ -2,22 +2,16 @@ package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamQrdaSource;
+import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import gov.cms.qpp.conversion.validate.QualityMeasureIdValidator;
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
+import gov.cms.qpp.conversion.validate.MipsQualityMeasureIdValidator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -25,11 +19,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.xml.parsers.ParserConfigurationException;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.xml.sax.SAXException;
 
-import static gov.cms.qpp.conversion.model.error.ValidationErrorMatcher.hasValidationErrorsIgnoringPath;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class QualityMeasureIdMultiRoundTripTest {
 	private static final String REQUIRE_ELIGIBLE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
@@ -65,8 +61,12 @@ public class QualityMeasureIdMultiRoundTripTest {
 		List<Map<String, Integer>> subPopulation = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='160')].value.strata[*]", List.class);
 
-		assertThat("The measureId in the quality measure should still populate given the junk stuff in the measure.",
-				qualityMeasures.get(0).get("measureId"), is("160"));
+		String message =
+				"The measureId in the quality measure should still populate given the junk stuff in the measure.";
+
+		assertWithMessage(message)
+				.that(qualityMeasures.get(0).get("measureId"))
+				.isEqualTo("160");
 
 		assertFirstSubPopulation(subPopulation);
 
@@ -82,8 +82,8 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		Assert.assertThat("Should have no error detail", details,
-				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_TYPE));
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
@@ -93,22 +93,23 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		Assert.assertThat("Should only have one error detail", details, hasSize(1));
-		Assert.assertThat("Error should regard the need for a single measure type", details,
-				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_TYPE));
+		assertThat(details).hasSize(1);
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_TYPE);
 	}
 
 	@Test
 	public void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
 		String message = String.format(
-				QualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, SubPopulations.DENOM, 2);
+				MipsQualityMeasureIdValidator.INCORRECT_POPULATION_CRITERIA_COUNT, "CMS52v5", 3, SubPopulations.DENOM, 2);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
 		List<Detail> details = executeScenario(path, true);
 
-		Assert.assertThat("Error should regard the need for a single measure type", details,
-				hasValidationErrorsIgnoringPath(message));
+		assertThat(details)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(message);
 	}
 
 	@Test
@@ -118,9 +119,10 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, false);
 
-		Assert.assertThat("Should only have one error detail", details, hasSize(1));
-		Assert.assertThat("error should regard the need for a single measure population", details,
-				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_POPULATION));
+		assertThat(details).hasSize(1);
+		assertThat(details)
+				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.containsExactly(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION);
 	}
 
 	@Test
@@ -130,9 +132,9 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 		List<Detail> details = executeScenario(path, true);
 
-		Assert.assertThat("Should only have two error details", details, hasSize(2));
-		Assert.assertThat("Error should regard the need for a single measure population", details,
-				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.SINGLE_MEASURE_POPULATION));
+		assertThat(details).hasSize(2);
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(MipsQualityMeasureIdValidator.SINGLE_MEASURE_POPULATION);
 	}
 
 	@Test
@@ -146,14 +148,23 @@ public class QualityMeasureIdMultiRoundTripTest {
 			details.addAll(errors.getErrors().get(0).getDetails());
 		}
 
-		assertThat("Must contain the right number of errors", details, hasSize(3));
-		assertThat("Must contain the correct error message", details,
-				hasValidationErrorsIgnoringPath(QualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT));
+		assertThat(details).hasSize(3);
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.contains(MipsQualityMeasureIdValidator.REQUIRE_VALID_DENOMINATOR_COUNT);
 	}
 
-	private List<Detail>  executeScenario(String path, boolean remove) {
+	@Test
+	public void testRoundTripQualityMeasureMissingOnePerformanceRateSuccess() {
+		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
+				"component[1]";
+		List<Detail> expectedOutput = executeScenario(path, true);
+		assertThat(expectedOutput).isEmpty();
+	}
+
+	private List<Detail> executeScenario(String path, boolean remove) {
 		InputStream modified = manipulator.upsetTheNorm(path, remove);
-		Converter converter = new Converter(new InputStreamQrdaSource(JUNK_QRDA3_FILE.toString(), modified));
+		Converter converter = new Converter(
+				new InputStreamSupplierQrdaSource(JUNK_QRDA3_FILE.toString(), () -> modified));
 		List<Detail> details = new ArrayList<>();
 		try {
 			converter.transform();
@@ -165,19 +176,36 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	private void assertFirstSubPopulation(List<Map<String, Integer>> subPopulation) {
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_TOTAL, subPopulation.get(0).get(ELIGIBLE_POPULATION), CoreMatchers.is(600));
-		assertThat(REQUIRE_PERFORMANCE_MET, subPopulation.get(0).get(PERFORMANCE_MET), CoreMatchers.is(486));
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS, subPopulation.get(0).get(ELIGIBLE_POPULATION_EXCEPTION), CoreMatchers.is(35));
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
+				.that(subPopulation.get(0).get(ELIGIBLE_POPULATION))
+				.isEqualTo(600);
+		assertWithMessage(REQUIRE_PERFORMANCE_MET)
+				.that(subPopulation.get(0).get(PERFORMANCE_MET))
+				.isEqualTo(486);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS)
+				.that(subPopulation.get(0).get(ELIGIBLE_POPULATION_EXCEPTION))
+				.isEqualTo(35);
 	}
 
 	private void assertSecondSubPopulation(List<Map<String, Integer>> subPopulation) {
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_TOTAL, subPopulation.get(1).get(ELIGIBLE_POPULATION), CoreMatchers.is(800));
-		assertThat(REQUIRE_PERFORMANCE_MET, subPopulation.get(1).get(PERFORMANCE_MET), CoreMatchers.is(700));
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS, subPopulation.get(1).get(ELIGIBLE_POPULATION_EXCEPTION), CoreMatchers.is(40));
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
+				.that(subPopulation.get(1)
+				.get(ELIGIBLE_POPULATION))
+				.isEqualTo(800);
+		assertWithMessage(REQUIRE_PERFORMANCE_MET)
+				.that(subPopulation.get(1).get(PERFORMANCE_MET))
+				.isEqualTo(700);
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS)
+				.that(subPopulation.get(1).get(ELIGIBLE_POPULATION_EXCEPTION))
+				.isEqualTo(40);
 	}
 
 	private void assertThirdSubPopulation(List<Map<String, Integer>> subPopulation) {
-		assertThat(REQUIRE_ELIGIBLE_POPULATION_TOTAL, subPopulation.get(2).get(ELIGIBLE_POPULATION), CoreMatchers.is(580));
-		assertThat(REQUIRE_PERFORMANCE_MET, subPopulation.get(2).get(PERFORMANCE_MET), CoreMatchers.is(520));
+		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
+				.that(subPopulation.get(2).get(ELIGIBLE_POPULATION))
+				.isEqualTo(580);
+		assertWithMessage(REQUIRE_PERFORMANCE_MET)
+				.that(subPopulation.get(2).get(PERFORMANCE_MET))
+				.isEqualTo(520);
 	}
 }

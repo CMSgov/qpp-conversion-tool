@@ -17,9 +17,8 @@ import org.jdom2.xpath.XPathFactory;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class JsonPathToXpathHelper {
 
@@ -35,10 +34,10 @@ public class JsonPathToXpathHelper {
 		path = inPath;
 		wrapper = inWrapper;
 		Converter converter = new Converter(new PathQrdaSource(inPath));
-		converter.getContext().setDoDefaults(false);
+		converter.getContext().setDoDefaults(doDefaults);
 		converter.transform();
 		QppOutputEncoder encoder = new QppOutputEncoder(converter.getContext());
-		encoder.encode(wrapper, converter.getDecoded());
+		encoder.encode(wrapper, converter.getReport().getDecoded());
 	}
 
 	public void executeElementTest(String jsonPath, String xmlElementName)
@@ -46,8 +45,7 @@ public class JsonPathToXpathHelper {
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 		Element element = evaluateXpath(xPath, Filters.element());
 
-		assertEquals("Element name should be: " + xmlElementName,
-				xmlElementName, element.getName());
+		assertThat(xmlElementName).isEqualTo(element.getName());
 	}
 
 	public void executeAttributeTest(String jsonPath, String expectedValue) {
@@ -71,8 +69,7 @@ public class JsonPathToXpathHelper {
 					" ) at \n( " + xPath + " ). \nPlease investigate.");
 		}
 
-		assertNotNull("Attribute value should not be null. json value:" + expectedValue,
-				attribute.getValue());
+		assertThat(attribute.getValue()).isNotNull();
 	}
 
 	public void executeAttributeTest(String jsonPath, String xmlAttributeName, String expectedValue)
@@ -80,14 +77,14 @@ public class JsonPathToXpathHelper {
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
-		assertEquals("Attribute name should be: " + xmlAttributeName,
-				xmlAttributeName, attribute.getName());
-		assertEquals("Attribute value should be: " + expectedValue,
-				expectedValue, attribute.getValue());
+		assertThat(attribute.getName())
+				.isEqualTo(xmlAttributeName);
+		assertThat(attribute.getValue())
+				.isEqualTo(expectedValue);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T evaluateXpath(String xPath, Filter filter) throws IOException, XmlException {
+	private <T> T evaluateXpath(String xPath, Filter filter) throws IOException, XmlException {
 		XPathExpression<Attribute> xpath = xpf.compile(xPath, filter);
 		return (T) xpath.evaluateFirst(XmlUtils.parseXmlStream(XmlUtils.fileToStream(path)));
 	}

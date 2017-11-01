@@ -2,21 +2,21 @@ package gov.cms.qpp.conversion.model.error;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.hamcrest.core.StringContains.containsString;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class AllErrorsTest {
 
 	@Test
 	public void errorSourceInit() {
 		AllErrors objectUnderTest = new AllErrors();
-		assertThat("The error sources should have been null at first", objectUnderTest.getErrors(), is(nullValue()));
+		assertWithMessage("The error sources should have been null at first")
+				.that(objectUnderTest.getErrors())
+				.isNull();
 	}
 
 	@Test
@@ -24,8 +24,8 @@ public class AllErrorsTest {
 		AllErrors objectUnderTest = new AllErrors();
 		objectUnderTest.addError(new Error());
 
-		assertThat("The error sources should no longer be null", objectUnderTest.getErrors(), is(not(nullValue())));
-		assertThat("The list should be one", objectUnderTest.getErrors(), hasSize(1));
+		assertWithMessage("The list should be one")
+				.that(objectUnderTest.getErrors()).hasSize(1);
 	}
 
 	@Test
@@ -34,8 +34,8 @@ public class AllErrorsTest {
 		objectUnderTest.addError(new Error());
 		objectUnderTest.addError(new Error());
 
-		assertThat("The error sources should no longer be null", objectUnderTest.getErrors(), is(not(nullValue())));
-		assertThat("The list should be two", objectUnderTest.getErrors(), hasSize(2));
+		assertWithMessage("The list should be two")
+				.that(objectUnderTest.getErrors()).hasSize(2);
 	}
 
 	@Test
@@ -43,8 +43,8 @@ public class AllErrorsTest {
 		AllErrors objectUnderTest = new AllErrors();
 		objectUnderTest.setErrors(Collections.singletonList(new Error()));
 
-		assertThat("The error sources should no longer be null", objectUnderTest.getErrors(), is(not(nullValue())));
-		assertThat("The list should be one", objectUnderTest.getErrors(), hasSize(1));
+		assertWithMessage("The list should be one")
+				.that(objectUnderTest.getErrors()).hasSize(1);
 	}
 
 	@Test
@@ -53,6 +53,16 @@ public class AllErrorsTest {
 		Error error = new Error();
 		objectUnderTest.addError(error);
 
-		assertThat("Must contain formatted string", objectUnderTest.toString(), containsString(error.toString()));
+		assertWithMessage("Must contain formatted string")
+				.that(objectUnderTest.toString()).contains(error.toString());
+	}
+
+	@Test
+	public void testArgConstructor() {
+		List<Error> errors = new ArrayList<>();
+		errors.add(new Error());
+		new AllErrors(errors);
+		assertThat(new AllErrors(errors).getErrors())
+				.containsAllIn(errors);
 	}
 }

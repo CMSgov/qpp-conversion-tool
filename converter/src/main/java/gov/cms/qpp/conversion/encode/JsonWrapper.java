@@ -13,6 +13,9 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import gov.cms.qpp.conversion.model.Node;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -492,6 +495,7 @@ public class JsonWrapper {
 	 *
 	 * @return Stream of wrapped object or list.
 	 */
+	@SuppressWarnings("unchecked")
 	public Stream<JsonWrapper> stream() {
 		Stream<JsonWrapper> returnValue = Stream.of(this);
 		if (list != null) {
@@ -499,7 +503,7 @@ public class JsonWrapper {
 				.filter(entry -> entry instanceof Map)
 				.map(entry -> {
 					JsonWrapper wrapper = new JsonWrapper();
-					wrapper.object = (Map) entry;
+					wrapper.object = (Map<String, Object>) entry;
 					return wrapper;
 				});
 		}
@@ -518,6 +522,15 @@ public class JsonWrapper {
 		} catch (JsonProcessingException e) {
 			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
 		}
+	}
+
+	/**
+	 * Convenience method to get the JsonWrapper's content as an input stream.
+	 *
+	 * @return input stream containing serialized json
+	 */
+	public InputStream contentStream() {
+		return new ByteArrayInputStream(toString().getBytes(StandardCharsets.UTF_8));
 	}
 
 	/**
@@ -579,10 +592,10 @@ public class JsonWrapper {
 	}
 
 	void attachMetadata(Node node) {
-		addMetaMap(getMetaMap(node));
+		addMetaMap(createMetaMap(node));
 	}
 
-	private Map<String,String> getMetaMap(Node node) {
+	private Map<String,String> createMetaMap(Node node) {
 		Map<String, String> metaMap = new HashMap<>();
 		metaMap.put("encodeLabel", "");
 		metaMap.put("nsuri", node.getDefaultNsUri());

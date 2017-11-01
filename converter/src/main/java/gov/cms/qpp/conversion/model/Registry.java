@@ -31,8 +31,6 @@ import gov.cms.qpp.conversion.Context;
  * <p>
  * R is the stored and return interface type.
  * V is the key type to access the registered values.
- *
- * @author David Uselmann
  */
 public class Registry<R> {
 

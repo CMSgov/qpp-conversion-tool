@@ -14,8 +14,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 public class MultipleTinRoundTripTest {
 	private static JsonWrapper wrapper = new JsonWrapper();
@@ -32,7 +31,8 @@ public class MultipleTinRoundTripTest {
 	@Ignore
 	public void hasMultipleNpiTinCombo() {
 		List<Map<String, Object>> topLevel = ctx.read("$");
-		assertThat("There should be five", topLevel.size(), is(5));
+		assertThat(topLevel)
+				.hasSize(5);
 	}
 
 }

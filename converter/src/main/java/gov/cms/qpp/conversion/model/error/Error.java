@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.model.error;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,6 +20,7 @@ public class Error implements Serializable {
 	private String sourceIdentifier;
 	private String type;
 	private String message;
+	@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
 	@JsonProperty("details")
 	private List<Detail> details = new ArrayList<>();
 

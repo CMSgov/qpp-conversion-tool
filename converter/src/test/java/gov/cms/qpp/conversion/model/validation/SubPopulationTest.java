@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * SubPopulation Test class to increase JaCoCo Code Coverage
@@ -17,7 +17,16 @@ public class SubPopulationTest {
 	public void getStrata() {
 		SubPopulation sp = new SubPopulation();
 		List<String> strata = sp.getStrata();
-		assertTrue(strata.isEmpty());
+
+		assertThat(strata).isEmpty();
+	}
+
+	@Test
+	public void copyConstructor() {
+		SubPopulation sp = new SubPopulation();
+		SubPopulation otherSp = new SubPopulation(sp);
+		
+		assertThat(sp).isEqualTo(otherSp);
 	}
 
 	@Test
