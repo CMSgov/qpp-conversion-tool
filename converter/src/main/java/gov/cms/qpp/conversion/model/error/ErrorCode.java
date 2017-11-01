@@ -117,6 +117,7 @@ public enum ErrorCode implements LocalizedError {
 
 	/**
 	 * Self returning
+	 * @deprecated
 	 */
 	@Override
 	@Deprecated // no use calling this
