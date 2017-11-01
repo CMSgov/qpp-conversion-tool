@@ -25,7 +25,6 @@ public class Detail implements Serializable {
 
 		Detail detail = forErrorCode(error);
 		detail.setPath(node.getPath());
-		detail.setTemplateId(node.getType());
 		return detail;
 	}
 
@@ -53,8 +52,6 @@ public class Detail implements Serializable {
 	private String value;
 	@JsonProperty("type")
 	private String type;
-	@JsonProperty("templateId")
-	private TemplateId templateId;
 
 	/**
 	 * Dummy constructor for ORM
@@ -72,7 +69,6 @@ public class Detail implements Serializable {
 		setPath(detail.getPath());
 		setValue(detail.getValue());
 		setType(detail.getType());
-		setTemplateId(detail.getTemplateId());
 	}
 
 	/**
@@ -135,7 +131,7 @@ public class Detail implements Serializable {
 		return value;
 	}
 
-	@JsonProperty("valiue")
+	@JsonProperty("value")
 	public void setValue(String value) {
 		this.value = value;
 	}
@@ -155,16 +151,6 @@ public class Detail implements Serializable {
 		this.type = type;
 	}
 
-	@JsonProperty("templateId")
-	public TemplateId getTemplateId() {
-		return templateId;
-	}
-
-	@JsonProperty("templateId")
-	public void setTemplateId(TemplateId templateId) {
-		this.templateId = templateId;
-	}
-
 	/**
 	 * @return A string representation.
 	 */
@@ -176,7 +162,6 @@ public class Detail implements Serializable {
 				.add("path", path)
 				.add("value", value)
 				.add("type", type)
-				.add("templateId", templateId)
 				.toString();
 	}
 
@@ -203,7 +188,6 @@ public class Detail implements Serializable {
 		equals &= Objects.equals(path, that.path);
 		equals &= Objects.equals(value, that.value);
 		equals &= Objects.equals(type, that.type);
-		equals &= Objects.equals(templateId, that.templateId);
 		return equals;
 	}
 
@@ -214,6 +198,6 @@ public class Detail implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(errorCode, message, path, value, type, templateId);
+		return Objects.hash(errorCode, message, path, value, type);
 	}
 }

@@ -70,7 +70,6 @@ public class AciSectionEncoder extends QppOutputEncoder {
 					measurementsWrapper.putObject(childWrapper);
 				} else {
 					Detail detail = Detail.forErrorCode(ErrorCode.ENCODER_MISSING);
-					detail.setTemplateId(currentChild.getType());
 					detail.setPath(currentChild.getPath());
 					addValidationError(detail);
 				}
