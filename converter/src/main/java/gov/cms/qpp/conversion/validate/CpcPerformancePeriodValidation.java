@@ -22,7 +22,9 @@ public class CpcPerformancePeriodValidation extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-			.valueIs(ErrorCode.CPC_PERFORMANCE_PERIOD_START_JAN12017, ReportingParametersActDecoder.PERFORMANCE_START, "20170101")
-			.valueIs(ErrorCode.CPC_PERFORMANCE_PERIOD_END_DEC312017, ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
+			.valueIs(ErrorCode.CPC_PERFORMANCE_PERIOD_START_JAN12017, 
+					ReportingParametersActDecoder.PERFORMANCE_START, "20170101")
+			.valueIs(ErrorCode.CPC_PERFORMANCE_PERIOD_END_DEC312017, 
+					ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
 	}
 }
