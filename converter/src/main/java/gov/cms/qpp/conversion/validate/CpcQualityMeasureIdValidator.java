@@ -110,7 +110,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 					node.getValue(MEASURE_POPULATION),
 					sub.getStrata());
-			addValidationError(Detail.forErrorCodeAndNode(error, node));
+			addValidationError(Detail.forErrorAndNode(error, node));
 		}
 
 		sub.getStrata().forEach(stratum -> {
@@ -121,7 +121,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				LocalizedError error = ErrorCode.CPC_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,
 						node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 						node.getValue(MEASURE_POPULATION));
-				addValidationError(Detail.forErrorCodeAndNode(error, node));
+				addValidationError(Detail.forErrorAndNode(error, node));
 			}
 		});
 	}

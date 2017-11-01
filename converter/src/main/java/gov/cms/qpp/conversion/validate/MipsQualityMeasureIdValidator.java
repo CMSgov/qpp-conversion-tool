@@ -138,6 +138,6 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(config.getElectronicMeasureId(),
 				PERFORMANCE_RATE_ID, performanceUuid);
-		addValidationError(Detail.forErrorCodeAndNode(error, node));
+		addValidationError(Detail.forErrorAndNode(error, node));
 	}
 }

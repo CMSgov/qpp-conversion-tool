@@ -17,26 +17,30 @@ import gov.cms.qpp.conversion.model.TemplateId;
 public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552590676L;
 
-	public static Detail forErrorCodeAndNode(LocalizedError code, Node node) {
+	/**
+	 * Creates a mutable Detail based on the given error and node
+	 */
+	public static Detail forErrorAndNode(LocalizedError error, Node node) {
 		Objects.requireNonNull(node, "node");
 
-		Detail detail = forErrorCode(code);
+		Detail detail = forErrorCode(error);
 		detail.setPath(node.getPath());
 		detail.setTemplateId(node.getType());
 		return detail;
 	}
 
-	public static Detail forErrorCode(LocalizedError code) {
-		Objects.requireNonNull(code, "code");
+	/**
+	 * Creates a mutable Detail based on the given error
+	 * @param code
+	 * @return
+	 */
+	public static Detail forErrorCode(LocalizedError error) {
+		Objects.requireNonNull(error, "error");
 
 		Detail detail = new Detail();
-		detail.setErrorCode(code.getErrorCode());
-		detail.setMessage(code.getMessage());
+		detail.setErrorCode(error.getErrorCode());
+		detail.setMessage(error.getMessage());
 		return detail;
-	}
-
-	public static void formatMessage(Detail detail, Object... args) {
-		detail.setMessage(String.format(detail.getMessage(), args));
 	}
 
 	@JsonProperty("errorCode")

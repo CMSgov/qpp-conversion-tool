@@ -79,7 +79,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
 				DEV_LOG.error("MEASURE_GUID_MISSING " + value);
 				
-				addValidationError(Detail.forErrorCodeAndNode(ErrorCode.MEASURE_GUID_MISSING, node));
+				addValidationError(Detail.forErrorAndNode(ErrorCode.MEASURE_GUID_MISSING, node));
 			}
 		}
 	}
@@ -201,8 +201,10 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 
 		if (expectedChildTypeCount != actualChildTypeCount) {
 			MeasureConfig config = MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-			Detail detail = Detail.forErrorCodeAndNode(ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT, node);
-			Detail.formatMessage(detail, config.getElectronicMeasureId(), expectedChildTypeCount, key, actualChildTypeCount);
+			LocalizedError error =
+					ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(config.getElectronicMeasureId(),
+							expectedChildTypeCount, key, actualChildTypeCount);
+			Detail detail = Detail.forErrorAndNode(error, node);
 			addValidationError(detail);
 		}
 	}
@@ -260,7 +262,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(config.getElectronicMeasureId(),
 				String.join(",", keys), check.get());
-		addValidationError(Detail.forErrorCodeAndNode(error, node));
+		addValidationError(Detail.forErrorAndNode(error, node));
 	}
 
 	/**

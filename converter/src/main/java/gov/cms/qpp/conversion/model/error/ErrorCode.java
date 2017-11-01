@@ -4,6 +4,9 @@ import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
 
+/**
+ * Error codes that may be returned by the converter
+ */
 public enum ErrorCode implements LocalizedError {
 
 	ENCODER_MISSING("Failed to find an encoder"),
@@ -80,17 +83,29 @@ public enum ErrorCode implements LocalizedError {
 		this.hasFormat = hasFormat;
 	}
 
+	/**
+	 * Gets the message associated with this error code
+	 */
 	public final String getMessage() {
 		return message;
 	}
 
+	/**
+	 * Self returning
+	 */
 	@Override
 	@Deprecated // no use calling this
 	public ErrorCode getErrorCode() {
 		return this;
 	}
 
-	public FormattedErrorCode format(Object... arguments) {
+	/**
+	 * Creates a formatted version of this error code, or throws an exception
+	 *
+	 * @param arguments arguments to format with
+	 * @return the formatted version of this error code, or throws an exception if formatting is not supported.
+	 */
+	public LocalizedError format(Object... arguments) {
 		if (hasFormat) {
 			String formatted = String.format(message, arguments);
 			return new FormattedErrorCode(formatted);
@@ -99,7 +114,7 @@ public enum ErrorCode implements LocalizedError {
 		throw new IllegalStateException(this + " does not support formatting");
 	}
 
-	public final class FormattedErrorCode implements LocalizedError {
+	private final class FormattedErrorCode implements LocalizedError {
 		private final String message;
 
 		FormattedErrorCode(String message) {

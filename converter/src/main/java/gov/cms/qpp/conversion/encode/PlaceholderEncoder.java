@@ -32,7 +32,7 @@ public class PlaceholderEncoder extends QppOutputEncoder {
 			if (encoder != null) {
 				encoder.encode(wrapper, child);
 			} else {
-				addValidationError(Detail.forErrorCodeAndNode(ErrorCode.ENCODER_MISSING, child));
+				addValidationError(Detail.forErrorAndNode(ErrorCode.ENCODER_MISSING, child));
 			}
 		}
 	}
