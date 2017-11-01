@@ -2,14 +2,14 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import gov.cms.qpp.conversion.api.helper.MockitoExtension;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 
@@ -25,8 +25,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(MockitoJUnitRunner.class)
-public class DbServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+class DbServiceImplTest {
 
 	@InjectMocks
 	private DbServiceImpl underTest;
@@ -40,8 +40,8 @@ public class DbServiceImplTest {
 	@Mock
 	private Environment environment;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		doAnswer(invocationOnMock -> {
 			Runnable method = invocationOnMock.getArgument(0);
 			CompletableFuture.runAsync(method);
@@ -50,7 +50,7 @@ public class DbServiceImplTest {
 	}
 
 	@Test
-	public void testWriteByNull() {
+	void testWriteByNull() {
 		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn(null);
 
 		Metadata meta = writeMeta();
@@ -60,7 +60,7 @@ public class DbServiceImplTest {
 	}
 
 	@Test
-	public void testWriteByEmpty() {
+	void testWriteByEmpty() {
 		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("");
 
 		Metadata meta = writeMeta();
@@ -70,7 +70,7 @@ public class DbServiceImplTest {
 	}
 
 	@Test
-	public void testNoWriteBecauseNoAudit() {
+	void testNoWriteBecauseNoAudit() {
 		when(environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE)).thenReturn("trueOrSomething");
 
 		Metadata metadataIn = new Metadata();

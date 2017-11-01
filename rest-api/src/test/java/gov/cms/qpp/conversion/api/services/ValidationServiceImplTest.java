@@ -44,7 +44,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-public class ValidationServiceImplTest {
+class ValidationServiceImplTest {
 
 	@InjectMocks
 	private ValidationServiceImpl objectUnderTest;

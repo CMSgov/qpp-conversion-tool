@@ -3,26 +3,26 @@ package gov.cms.qpp.conversion.api.services;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
 import gov.cms.qpp.conversion.QrdaSource;
+import gov.cms.qpp.conversion.api.helper.MockitoExtension;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.ByteArrayInputStream;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class QrdaServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+class QrdaServiceImplTest {
 	private static final QrdaSource MOCK_SUCCESS_QRDA_SOURCE =
 			new InputStreamSupplierQrdaSource("Good Qrda", () -> new ByteArrayInputStream("Good Qrda".getBytes()));
 	private static final QrdaSource MOCK_ERROR_QRDA_SOURCE =
@@ -35,8 +35,8 @@ public class QrdaServiceImplTest {
 	@Spy
 	private QrdaServiceImpl objectUnderTest;
 
-	@Before
-	public void mockConverter() throws Exception {
+	@BeforeEach
+	void mockConverter() throws Exception {
 		Converter success = successConverter();
 		when(objectUnderTest.initConverter(MOCK_SUCCESS_QRDA_SOURCE))
 				.thenReturn(success);
@@ -47,23 +47,18 @@ public class QrdaServiceImplTest {
 	}
 
 	@Test
-	public void testConvertQrda3ToQppSuccess() {
+	void testConvertQrda3ToQppSuccess() {
 		JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_SUCCESS_QRDA_SOURCE).getEncoded();
 		assertWithMessage("The JSON content is incorrect.")
 				.that(qpp.getString(KEY)).isSameAs(MOCK_SUCCESS_QPP_STRING);
 	}
 
 	@Test
-	public void testConvertQrda3ToQppError() {
-		try {
-			objectUnderTest.convertQrda3ToQpp(MOCK_ERROR_QRDA_SOURCE);
-			fail("An exception should have occurred.");
-		} catch (TransformException exception) {
-			AllErrors allErrors = exception.getDetails();
-			assertThat(allErrors.getErrors().get(0).getSourceIdentifier()).isSameAs(MOCK_ERROR_SOURCE_IDENTIFIER);
-		} catch (Exception exception) {
-			fail("The wrong exception occurred.");
-		}
+	void testConvertQrda3ToQppError() {
+		TransformException exception = assertThrows(TransformException.class,
+				() -> objectUnderTest.convertQrda3ToQpp(MOCK_ERROR_QRDA_SOURCE));
+		AllErrors allErrors = exception.getDetails();
+		assertThat(allErrors.getErrors().get(0).getSourceIdentifier()).isSameAs(MOCK_ERROR_SOURCE_IDENTIFIER);
 	}
 
 	private Converter successConverter() {
