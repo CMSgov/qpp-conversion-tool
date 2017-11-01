@@ -123,7 +123,7 @@ public class ConversionFileWriterWrapperTest {
 		assertThat(detail.get("message"))
 				.isEqualTo(errorMessage);
 		assertThat(detail.get("path"))
-				.isNull();
+				.isEmpty();
 	}
 
 	@Test
