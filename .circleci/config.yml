@@ -14,6 +14,8 @@ jobs:
       - run: sudo pip install ansible
       - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
       - run: mvn clean verify
+      - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+      - run: sudo apt-get install -y nodejs
       - run: ./tools/bin/sonarqube.sh
       - run: ./tools/bin/docker_deploy.sh
       - run:
