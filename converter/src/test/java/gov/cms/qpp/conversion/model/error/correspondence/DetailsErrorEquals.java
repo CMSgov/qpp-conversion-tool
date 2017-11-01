@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.google.common.truth.Correspondence;
 
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 
 public final class DetailsErrorEquals extends Correspondence<Detail, LocalizedError> {
@@ -19,8 +20,9 @@ public final class DetailsErrorEquals extends Correspondence<Detail, LocalizedEr
 		if (actual == null) {
 			return expected == null;
 		}
+		ErrorCode error = ErrorCode.values()[actual.getErrorCode()];
 		return Objects.equals(actual.getMessage(), expected.getMessage()) &&
-				actual.getErrorCode() == expected.getErrorCode();
+				error == expected.getErrorCode();
 	}
 
 	@Override

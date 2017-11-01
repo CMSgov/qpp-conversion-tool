@@ -18,7 +18,7 @@ public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552590676L;
 
 	@JsonProperty("errorCode")
-	private ErrorCode errorCode;
+	private Integer errorCode;
 	@JsonProperty("message")
 	private String message;
 	@JsonProperty("path")
@@ -66,7 +66,7 @@ public class Detail implements Serializable {
 		Objects.requireNonNull(error, "error");
 
 		Detail detail = new Detail();
-		detail.setErrorCode(error.getErrorCode());
+		detail.setErrorCode(error.getErrorCode().ordinal());
 		detail.setMessage(error.getMessage());
 		return detail;
 	}
@@ -77,12 +77,12 @@ public class Detail implements Serializable {
 	 * @return An {@link ErrorCode}
 	 */
 	@JsonProperty("errorCode")
-	public ErrorCode getErrorCode() {
+	public Integer getErrorCode() {
 		return errorCode;
 	}
 
 	@JsonProperty("errorCode")
-	public void setErrorCode(ErrorCode errorCode) {
+	public void setErrorCode(Integer errorCode) {
 		this.errorCode = errorCode;
 	}
 
