@@ -40,8 +40,17 @@ class ErrorCodeTest {
 		Truth.assertThat(formatted("mock")).isNotEqualTo(formatted("mock2"));
 	}
 
+	@Test
+	void testFormattedEqualsFormattedWithDifferentErrorCode() {
+		Truth.assertThat(formatted("mock")).isNotEqualTo(formattedAlt("mock2"));
+	}
+
 	private LocalizedError formatted(String salt) {
 		return ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(salt);
+	}
+
+	private LocalizedError formattedAlt(String salt) {
+		return ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(salt);
 	}
 
 }
