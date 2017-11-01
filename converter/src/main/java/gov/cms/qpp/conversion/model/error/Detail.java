@@ -17,31 +17,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552590676L;
 
-	/**
-	 * Creates a mutable Detail based on the given error and node
-	 */
-	public static Detail forErrorAndNode(LocalizedError error, Node node) {
-		Objects.requireNonNull(node, "node");
-
-		Detail detail = forErrorCode(error);
-		detail.setPath(node.getPath());
-		return detail;
-	}
-
-	/**
-	 * Creates a mutable Detail based on the given error
-	 * @param code
-	 * @return
-	 */
-	public static Detail forErrorCode(LocalizedError error) {
-		Objects.requireNonNull(error, "error");
-
-		Detail detail = new Detail();
-		detail.setErrorCode(error.getErrorCode());
-		detail.setMessage(error.getMessage());
-		return detail;
-	}
-
 	@JsonProperty("errorCode")
 	private ErrorCode errorCode;
 	@JsonProperty("message")
@@ -69,6 +44,31 @@ public class Detail implements Serializable {
 		setPath(detail.getPath());
 		setValue(detail.getValue());
 		setType(detail.getType());
+	}
+
+	/**
+	 * Creates a mutable Detail based on the given error and node
+	 */
+	public static Detail forErrorAndNode(LocalizedError error, Node node) {
+		Objects.requireNonNull(node, "node");
+
+		Detail detail = forErrorCode(error);
+		detail.setPath(node.getPath());
+		return detail;
+	}
+
+	/**
+	 * Creates a mutable Detail based on the given error
+	 * @param code
+	 * @return
+	 */
+	public static Detail forErrorCode(LocalizedError error) {
+		Objects.requireNonNull(error, "error");
+
+		Detail detail = new Detail();
+		detail.setErrorCode(error.getErrorCode());
+		detail.setMessage(error.getMessage());
+		return detail;
 	}
 
 	/**
