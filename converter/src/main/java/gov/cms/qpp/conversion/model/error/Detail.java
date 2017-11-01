@@ -47,7 +47,7 @@ public class Detail implements Serializable {
 	@JsonProperty("message")
 	private String message;
 	@JsonProperty("path")
-	private String path;
+	private String path = "";
 	@JsonProperty("value")
 	private String value;
 	@JsonProperty("type")
