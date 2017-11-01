@@ -27,7 +27,8 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 
 		//the aci numerator denominator measure node must have an aci section node as parent
-		Checker nodeChecker = check(node).hasParent(ErrorCode.ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION, TemplateId.ACI_SECTION);
+		Checker nodeChecker = check(node).hasParent(
+				ErrorCode.ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION, TemplateId.ACI_SECTION);
 		//the aci numerator denominator measure node must have a numerator node and a denominator node as children
 		validateChildren(nodeChecker);
 	}
@@ -41,9 +42,15 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 		nodeChecker
 				.singleValue(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID, "measureId")
 				.hasChildren(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN)
-				.childMinimum(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_DENOMINATOR_CHILD_NODE, 1, TemplateId.ACI_DENOMINATOR)
-				.childMinimum(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_NUMERATOR_CHILD_NODE, 1, TemplateId.ACI_NUMERATOR)
-				.childMaximum(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS, 1, TemplateId.ACI_DENOMINATOR)
-				.childMaximum(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS, 1, TemplateId.ACI_NUMERATOR);
+				.childMinimum(
+						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_DENOMINATOR_CHILD_NODE, 1,
+						TemplateId.ACI_DENOMINATOR)
+				.childMinimum(
+						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_NUMERATOR_CHILD_NODE, 1,
+						TemplateId.ACI_NUMERATOR)
+				.childMaximum(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS, 1,
+						TemplateId.ACI_DENOMINATOR)
+				.childMaximum(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS, 1,
+						TemplateId.ACI_NUMERATOR);
 	}
 }
