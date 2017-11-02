@@ -1,9 +1,0 @@
-QPPCT - 381
-1. Open up HP ALM
-2. Run through all the testing results for this Sprint 26
-3. Point out the failed and blocked tests that are still going on from QPPCT-302 as well as the new blocked test from QPPCT-375.
-4. Open up the HIVVS Confluence Page and go through these sub pages
-	- QPPCT Sprint 26 Kickoff to show the added QPPCT-315 ticket.
-	- QPPCT Sprint 26 Test Results to show the totals for all the tests ran.
-
-Ask for follow up questions and end the presentation.

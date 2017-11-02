@@ -1,8 +1,0 @@
-Sprint 30 Review Presentation - Jeff Benton
-QPPCT - 259
-1. Open up Visual Studio and Run the HITS solution.
-2. Execute the automated test for hitting the endpoint in IMPL with the latest valid QRDA III file submission
-3. Show that when the test runs the API driver is receiving a 201 success status code.
-4. Show the Test Results file with the passed status.
-5. Show the file is on JIRA.
-6. Explain the next steps for future automation.
