@@ -1,6 +1,0 @@
-Jeff Benton Sprint 26 Review Presentation
-QPPCT - 375
-1. Have the AWS with the Chrome Automated Test open.(Firefox and Internet Explorer were demoed in the last sprint.)
-2. Run the test.
-3. Display the log file results.
-4. Show that the test does not run as expected.
