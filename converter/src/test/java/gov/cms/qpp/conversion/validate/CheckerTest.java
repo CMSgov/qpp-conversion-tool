@@ -5,8 +5,9 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -19,7 +20,7 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 /**
  * This will test the Checker functionality
  */
-public class CheckerTest {
+class CheckerTest {
 
 	private static final String VALUE = "value";
 	private static final LocalizedError ERROR_MESSAGE = new MockLocalizedError(ErrorCode.UNEXPECTED_ERROR, "the checker failed");
@@ -27,13 +28,13 @@ public class CheckerTest {
 
 	private Set<Detail> details;
 
-	@Before
-	public void beforeEach() {
+	@BeforeEach
+	void beforeEach() {
 		details = new LinkedHashSet<>();
 	}
 
 	@Test
-	public void testValueFindFailure() {
+	void testValueFindFailure() {
 		Node meepNode = new Node();
 
 		Checker checker = Checker.check(meepNode, details);
@@ -45,7 +46,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testParentFailure() {
+	void testParentFailure() {
 		Node meepNode = new Node();
 
 		Checker checker = Checker.check(meepNode, details);
@@ -58,7 +59,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueFindSuccess() {
+	void testValueFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "Bob");
 
@@ -70,7 +71,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testIntValueFindFailure() {
+	void testIntValueFindFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "Bob");
 
@@ -82,7 +83,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testIntValueFindSuccess() {
+	void testIntValueFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -94,7 +95,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenFindFailure() {
+	void testChildrenFindFailure() {
 		Node meepNode = new Node();
 
 		Checker checker = Checker.check(meepNode, details);
@@ -105,7 +106,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenFindSuccess() {
+	void testChildrenFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.addChildNode(new Node(TemplateId.PLACEHOLDER));
 
@@ -117,7 +118,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenMinimumFailure() {
+	void testChildrenMinimumFailure() {
 		Node meepNode = new Node();
 		meepNode.addChildNode(new Node(TemplateId.PLACEHOLDER));
 
@@ -129,7 +130,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenMinimumSuccess() {
+	void testChildrenMinimumSuccess() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER), new Node(TemplateId.PLACEHOLDER));
 
@@ -141,7 +142,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenMaximumFailure() {
+	void testChildrenMaximumFailure() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER),
 				new Node(TemplateId.PLACEHOLDER),
@@ -155,7 +156,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenMaximumSuccess() {
+	void testChildrenMaximumSuccess() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER),
 				new Node(TemplateId.PLACEHOLDER));
@@ -169,7 +170,7 @@ public class CheckerTest {
 
 	//chaining
 	@Test
-	public void testValueChildrenFindFailure() {
+	void testValueChildrenFindFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -182,7 +183,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueChildrenFindSuccess() {
+	void testValueChildrenFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 		meepNode.addChildNode(new Node(TemplateId.PLACEHOLDER));
@@ -195,7 +196,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildValueChildrenFindFailure() {
+	void testChildValueChildrenFindFailure() {
 		Node meepNode = new Node();
 		Checker checker = Checker.check(meepNode, details);
 		checker.intValue(ERROR_MESSAGE, VALUE)
@@ -209,7 +210,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueChildrenChildMinChildMaxFindFailure() {
+	void testValueChildrenChildMinChildMaxFindFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 		meepNode.addChildNodes(
@@ -228,7 +229,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testMaxFindMultipleTemplateIdsFailure() {
+	void testMaxFindMultipleTemplateIdsFailure() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(
 				new Node(TemplateId.PLACEHOLDER),
@@ -244,7 +245,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testMaxFindMultipleTemplateIdsSuccess() {
+	void testMaxFindMultipleTemplateIdsSuccess() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(
 				new Node(TemplateId.PLACEHOLDER),
@@ -260,7 +261,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueChildrenChildMinChildMaxFindSuccess() {
+	void testValueChildrenChildMinChildMaxFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 		meepNode.addChildNode(new Node(TemplateId.PLACEHOLDER));
@@ -277,7 +278,7 @@ public class CheckerTest {
 
 	// compound checking
 	@Test
-	public void compoundIntValueCheckSuccess() {
+	void compoundIntValueCheckSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -289,7 +290,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void compoundIntValueCheckFailure() {
+	void compoundIntValueCheckFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -302,7 +303,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void compoundIntValueCheckNoContext() {
+	void compoundIntValueCheckNoContext() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -313,20 +314,22 @@ public class CheckerTest {
 				.that(details).isEmpty();
 	}
 
-	@Test(expected = ClassCastException.class)
-	public void compoundIntValueCheckCastException() {
-		Node meepNode = new Node();
-		meepNode.putValue(VALUE, "123");
+	@Test
+	void compoundIntValueCheckCastException() {
+		Assertions.assertThrows(ClassCastException.class, () -> {
+			Node meepNode = new Node();
+			meepNode.putValue(VALUE, "123");
 
-		Checker checker = Checker.check(meepNode, details);
-		checker.intValue(ERROR_MESSAGE, VALUE).greaterThan(ERROR_MESSAGE, "not an Integer");
+			Checker checker = Checker.check(meepNode, details);
+			checker.intValue(ERROR_MESSAGE, VALUE).greaterThan(ERROR_MESSAGE, "not an Integer");
 
-		assertWithMessage("There should be no errors.")
-				.that(details).isEmpty();
+			assertWithMessage("There should be no errors.")
+					.that(details).isEmpty();
+		});
 	}
 
 	@Test
-	public void testCompoundIntValueLessThanOrEqualToCheckSuccess() {
+	void testCompoundIntValueLessThanOrEqualToCheckSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -337,7 +340,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testCompoundIntValueLessThanCheckSuccess() {
+	void testCompoundIntValueLessThanCheckSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -348,7 +351,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testCompoundIntValueLessThanOrEqualToCheckFailure() {
+	void testCompoundIntValueLessThanOrEqualToCheckFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -360,7 +363,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testCompoundIntValueLessThanOrEqualToCheckFailureShortcut() {
+	void testCompoundIntValueLessThanOrEqualToCheckFailureShortcut() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 		details.add(Detail.forErrorCode(error("test")));
@@ -373,7 +376,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueWithinDecimalRange() {
+	void testValueWithinDecimalRange() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "0.5");
 
@@ -384,7 +387,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueOutsideStartDecimalRange() {
+	void testValueOutsideStartDecimalRange() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "-1");
 
@@ -396,7 +399,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueOutsideDecimalRange() {
+	void testValueOutsideDecimalRange() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "2");
 		Checker checker = Checker.check(meepNode, details);
@@ -408,7 +411,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testInDecimalRangeOfIncorrectType() {
+	void testInDecimalRangeOfIncorrectType() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "String");
 
@@ -420,7 +423,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testInDecimalRangeNullValue() {
+	void testInDecimalRangeNullValue() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, null);
 
@@ -432,7 +435,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testInDecimalRangeOfShortcut() {
+	void testInDecimalRangeOfShortcut() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "-1");
 		details.add(Detail.forErrorCode(error("test")));
@@ -446,7 +449,7 @@ public class CheckerTest {
 
 	// thorough checking
 	@Test
-	public void testIntValueChildrenChildMinChildMaxFindFailure() {
+	void testIntValueChildrenChildMinChildMaxFindFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "Bob");
 		meepNode.addChildNodes(
@@ -465,7 +468,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testIntValueChildrenChildMinChildMaxFindSuccess() {
+	void testIntValueChildrenChildMinChildMaxFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 		meepNode.addChildNodes(
@@ -483,7 +486,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testHasMeasuresSuccess() {
+	void testHasMeasuresSuccess() {
 		String measureId = "measureId";
 		String expectedMeasure1 = "asdf";
 		String expectedMeasure2 = "jkl;";
@@ -507,7 +510,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testHasMeasuresFailure() {
+	void testHasMeasuresFailure() {
 		String measureId = "measureId";
 		String expectedMeasure = "DogCow";
 		String anotherMeausure1 = "asdf";
@@ -535,7 +538,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testCheckerHasMeasuresShortCut() {
+	void testCheckerHasMeasuresShortCut() {
 		Set<Detail> errors = new LinkedHashSet<>();
 		Detail err = new Detail();
 		err.setMessage("test");
@@ -550,7 +553,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testCheckerHasInvalidMeasure() {
+	void testCheckerHasInvalidMeasure() {
 		Set<Detail> errors = new LinkedHashSet<>();
 
 		Node root = new Node();
@@ -566,7 +569,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testHasChildrenWithTemplateIdSuccess() {
+	void testHasChildrenWithTemplateIdSuccess() {
 		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		iaSectionNode.addChildNode(iaMeasureNode);
@@ -579,7 +582,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testHasChildrenWithTemplateIdFailure() {
+	void testHasChildrenWithTemplateIdFailure() {
 		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		iaSectionNode.addChildNode(iaMeasureNode);
@@ -596,7 +599,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueIn() throws Exception {
+	void testValueIn() throws Exception {
 		String key = "My Key";
 		String value = "My Value";
 		Node testNode = makeTestNode(key, value);
@@ -608,7 +611,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueInNot() throws Exception {
+	void testValueInNot() throws Exception {
 		String key = "My Key";
 		String value = "My Value Not";
 		Node testNode = makeTestNode(key, value);
@@ -620,7 +623,7 @@ public class CheckerTest {
 				.containsExactly(ERROR_MESSAGE);
 	}
 	@Test
-	public void testValueInNull() throws Exception {
+	void testValueInNull() throws Exception {
 		String key = "My Key";
 		Node testNode = makeTestNode(key, null);
 		Checker checker = Checker.check(testNode, details);
@@ -631,7 +634,7 @@ public class CheckerTest {
 				.containsExactly(ERROR_MESSAGE);
 	}
 	@Test
-	public void testValueInKeyNull() throws Exception {
+	void testValueInKeyNull() throws Exception {
 		String key = "My Key";
 		String value = "My Value";
 		Node testNode = makeTestNode(key, value);
@@ -644,7 +647,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueInNulls() throws Exception {
+	void testValueInNulls() throws Exception {
 		String key = "My Key";
 		String value = "My Value";
 		Node testNode = makeTestNode(key, value);
@@ -657,7 +660,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueInShouldShortCut() throws Exception {
+	void testValueInShouldShortCut() throws Exception {
 		String key = "My Key";
 		Node testNode = makeTestNode(key, null);
 		details.add(Detail.forErrorCode(ERROR_MESSAGE));
@@ -670,7 +673,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testHappyValueIsEmptyAsNull() throws Exception {
+	void testHappyValueIsEmptyAsNull() throws Exception {
 		String key = "My Key";
 		Node testNode = makeTestNode(key, null);
 		Checker checker = Checker.check(testNode, details);
@@ -680,7 +683,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testHappyValueIsEmptyAsString() throws Exception {
+	void testHappyValueIsEmptyAsString() throws Exception {
 		String key = "My Key";
 		String value = "";
 		Node testNode = makeTestNode(key, value);
@@ -692,7 +695,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testUnhappyValueIsEmpty() throws Exception {
+	void testUnhappyValueIsEmpty() throws Exception {
 		String key = "My Key";
 		String value = "Not Null Value";
 		Node testNode = makeTestNode(key, value);
@@ -705,7 +708,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testHappyValueIsNotEmptyAsString() throws Exception {
+	void testHappyValueIsNotEmptyAsString() throws Exception {
 		String key = "My Key";
 		String value = "Not Empty";
 		Node testNode = makeTestNode(key, value);
@@ -716,7 +719,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testUnhappyValueIsNotEmptyAsString() throws Exception {
+	void testUnhappyValueIsNotEmptyAsString() throws Exception {
 		String key = "My Key";
 		String value = "";
 		Node testNode = makeTestNode(key, value);
@@ -729,7 +732,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testUnhappyValueIsNotEmptyAsNull() throws Exception {
+	void testUnhappyValueIsNotEmptyAsNull() throws Exception {
 		String key = "My Key";
 		String value = null;
 		Node testNode = makeTestNode(key, value);
