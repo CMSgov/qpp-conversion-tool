@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
  * Holds the error information from Validators.
