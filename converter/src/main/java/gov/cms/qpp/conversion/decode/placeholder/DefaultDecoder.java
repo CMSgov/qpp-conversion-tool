@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.decode.placeholder;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.jdom2.Element;
 import org.slf4j.Logger;
@@ -41,7 +40,7 @@ public class DefaultDecoder extends QppXmlDecoder {
 		return DecodeResult.TREE_CONTINUE;
 	}
 
-	public static void removeDefaultNode(List<Node> nodes) {
+	public static void removeDefaultNode(Iterable<Node> nodes) {
 		Iterator<Node> iterator = nodes.iterator();
 		while (iterator.hasNext()) {
 			Node node = iterator.next();
