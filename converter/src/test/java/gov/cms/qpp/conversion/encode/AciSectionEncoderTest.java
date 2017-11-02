@@ -96,7 +96,7 @@ public class AciSectionEncoderTest {
 				.that(aciSectionEncoder.getDetails()).isNotNull();
 		assertWithMessage("Must be correct validation error")
 				.that(aciSectionEncoder.getDetails().get(0).getMessage())
-				.isEqualTo("Failed to find an encoder for child node DEFAULT");
+				.isEqualTo("Failed to find an encoder");
 	}
 
 	@Test

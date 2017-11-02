@@ -54,7 +54,7 @@ public abstract class NodeValidator {
 	 */
 	protected void addValidationError(final Detail newError) {
 		logValidationError(newError);
-		details.add(newError);
+		getDetails().add(newError);
 	}
 
 	/**

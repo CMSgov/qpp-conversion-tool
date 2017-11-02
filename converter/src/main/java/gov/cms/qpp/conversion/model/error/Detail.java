@@ -1,9 +1,13 @@
 package gov.cms.qpp.conversion.model.error;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
-import java.io.Serializable;
+import gov.cms.qpp.conversion.model.Node;
 
 /**
  * Holds the error information from Validators.
@@ -11,6 +15,9 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552590676L;
+
+	@JsonProperty("errorCode")
+	private Integer errorCode;
 	@JsonProperty("message")
 	private String message;
 	@JsonProperty("path")
@@ -21,7 +28,7 @@ public class Detail implements Serializable {
 	private String type;
 
 	/**
-	 * Dummy constructor for Jackson mapping
+	 * Dummy constructor for ORM
 	 */
 	public Detail() {
 		//Dummy constructor for jackson mapping
@@ -31,42 +38,51 @@ public class Detail implements Serializable {
 	 * Copy constructor
 	 */
 	public Detail(Detail detail) {
-		this(detail.getMessage(), detail.getPath(), detail.getValue(), detail.getType());
+		errorCode = detail.errorCode;
+		message = detail.message;
+		path = detail.path;
+		value = detail.value;
+		type = detail.type;
 	}
 
 	/**
-	 * Constructs a {@code Detail} with just a description.
-	 *
-	 * @param text A description of the error.
+	 * Creates a mutable Detail based on the given error and node
 	 */
-	public Detail(String text) {
-		this.message = text;
+	public static Detail forErrorAndNode(LocalizedError error, Node node) {
+		Objects.requireNonNull(node, "node");
+
+		Detail detail = forErrorCode(error);
+		detail.setPath(node.getPath());
+		return detail;
 	}
 
 	/**
-	 * Constructs a {@code Detail} with a description and an path to point where the error is in the original document.
-	 *
-	 * @param text A description of the error.
-	 * @param path A path to where the error is.
+	 * Creates a mutable Detail based on the given error
+	 * @param code
+	 * @return
 	 */
-	public Detail(String text, String path) {
-		this.message = text;
-		this.path = path;
+	public static Detail forErrorCode(LocalizedError error) {
+		Objects.requireNonNull(error, "error");
+
+		Detail detail = new Detail();
+		detail.setErrorCode(error.getErrorCode().getCode());
+		detail.setMessage(error.getMessage());
+		return detail;
 	}
 
 	/**
-	 * Constructs a {@code Detail} with a description and an path to point where the error is in the original document
-	 * as well as stating the offending value and a classification {@link Detail#type}.
+	 * The code for the error
 	 *
-	 * @param text A description of the error.
-	 * @param path A path to where the error is.
-	 * @param value The offending value.
-	 * @param type A classification of the error.
+	 * @return An {@link ErrorCode}
 	 */
-	public Detail(String text, String path, String value, String type) {
-		this(text, path);
-		this.value = value;
-		this.type = type;
+	@JsonProperty("errorCode")
+	public Integer getErrorCode() {
+		return errorCode;
+	}
+
+	@JsonProperty("errorCode")
+	public void setErrorCode(Integer errorCode) {
+		this.errorCode = errorCode;
 	}
 
 	/**
@@ -80,8 +96,8 @@ public class Detail implements Serializable {
 	}
 
 	@JsonProperty("message")
-	public void setMessage(String newMessage) {
-		message = newMessage;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	/**
@@ -89,6 +105,7 @@ public class Detail implements Serializable {
 	 *
 	 * @return The path that this error references.
 	 */
+	@JsonProperty("path")
 	public String getPath() {
 		return path;
 	}
@@ -98,8 +115,9 @@ public class Detail implements Serializable {
 	 *
 	 * @param newPath The path that this error references.
 	 */
-	public void setPath(String newPath) {
-		path = newPath;
+	@JsonProperty("path")
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	/**
@@ -112,8 +130,9 @@ public class Detail implements Serializable {
 		return value;
 	}
 
-	public void setValue(String newValue) {
-		value = newValue;
+	@JsonProperty("value")
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	/**
@@ -126,8 +145,9 @@ public class Detail implements Serializable {
 		return type;
 	}
 
-	public void setType(String newType) {
-		type = newType;
+	@JsonProperty("type")
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	/**
@@ -135,13 +155,13 @@ public class Detail implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("Detail{");
-		sb.append("message='").append(message).append('\'');
-		sb.append(", path='").append(path).append('\'');
-		sb.append(", value='").append(value).append('\'');
-		sb.append(", type='").append(type).append('\'');
-		sb.append('}');
-		return sb.toString();
+		return MoreObjects.toStringHelper(this)
+				.add("errorCode", errorCode)
+				.add("message", message)
+				.add("path", path)
+				.add("value", value)
+				.add("type", type)
+				.toString();
 	}
 
 	/**
@@ -160,21 +180,14 @@ public class Detail implements Serializable {
 			return false;
 		}
 
-		Detail detail = (Detail) o;
-
-		if (message != null ? !message.equals(detail.message) : detail.message != null) {
-			return false;
-		}
-
-		if (path != null ? !path.equals(detail.path) : detail.path != null) {
-			return false;
-		}
-
-		if (value != null ? !value.equals(detail.value) : detail.value != null) {
-			return false;
-		}
-
-		return type != null ? type.equals(detail.type) : detail.type == null;
+		Detail that = (Detail) o;
+		boolean equals = true; // doing equals this way to avoid making jacoco/sonar unhappy
+		equals &= Objects.equals(errorCode, that.errorCode);
+		equals &= Objects.equals(message, that.message);
+		equals &= Objects.equals(path, that.path);
+		equals &= Objects.equals(value, that.value);
+		equals &= Objects.equals(type, that.type);
+		return equals;
 	}
 
 	/**
@@ -184,10 +197,6 @@ public class Detail implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		int result = message != null ? message.hashCode() : 0;
-		result = 31 * result + (path != null ? path.hashCode() : 0);
-		result = 31 * result + (value != null ? value.hashCode() : 0);
-		result = 31 * result + (type != null ? type.hashCode() : 0);
-		return result;
+		return Objects.hash(errorCode, message, path, value, type);
 	}
 }
