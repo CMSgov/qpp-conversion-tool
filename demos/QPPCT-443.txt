@@ -1,0 +1,6 @@
+Sprint 30 Review Presentation - Jeff Benton
+QPPCT - 443
+1. Open up the Simple UI and show that it is now up and running in Internet Explorer.
+2. Go over the new issues found when attempting to upload a file in Internet Explorer as well as issues that are occurring across the other browsers as well.
+
+Ask for follow up questions and end the presentation.

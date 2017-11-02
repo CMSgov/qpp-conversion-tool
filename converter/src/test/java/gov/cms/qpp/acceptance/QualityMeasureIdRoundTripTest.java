@@ -25,6 +25,8 @@ public class QualityMeasureIdRoundTripTest {
 	public static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/junk_in_quality_measure.xml");
 	public static final Path INVALID_PERFORMANCE_UUID_FILE =
 			Paths.get("src/test/resources/negative/mipsInvalidPerformanceRateUuid.xml");
+	public static final Path INSENSITIVE_TEXT_FILE =
+			Paths.get("src/test/resources/fixtures/textInsensitiveQualityMeasureUuids.xml");
 
 	@Test
 	public void testRoundTripForQualityMeasureId() throws IOException {
@@ -75,5 +77,40 @@ public class QualityMeasureIdRoundTripTest {
 
 		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
 				.contains(MipsQualityMeasureIdValidator.SINGLE_PERFORMANCE_RATE);
+	}
+
+	@Test
+	public void testMeasureCMS52v5WithInsensitiveTextUuid() throws IOException {
+		Converter converter = new Converter(new PathQrdaSource(INSENSITIVE_TEXT_FILE));
+		List<Detail> details = new ArrayList<>();
+
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.doesNotContain(MipsQualityMeasureIdValidator.MEASURE_GUID_MISSING);
+	}
+
+	@Test
+	public void testMeasureCMS52v5InsensitiveMeasureDataUuid() throws IOException {
+		Converter converter = new Converter(new PathQrdaSource(INSENSITIVE_TEXT_FILE));
+		List<Detail> details = new ArrayList<>();
+
+		String errorMessage = String.format(MipsQualityMeasureIdValidator.INCORRECT_UUID,
+				"CMS52v5", "DENOM", "04BF53CE-6993-4EA2-BFE5-66E36172B388");
+
+		try {
+			converter.transform();
+		} catch (TransformException exception) {
+			AllErrors errors = exception.getDetails();
+			details.addAll(errors.getErrors().get(0).getDetails());
+		}
+
+		assertThat(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.doesNotContain(errorMessage);
 	}
 }
