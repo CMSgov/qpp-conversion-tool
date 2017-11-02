@@ -117,10 +117,8 @@ public enum ErrorCode implements LocalizedError {
 
 	/**
 	 * Self returning
-	 * @deprecated
 	 */
 	@Override
-	@Deprecated // no use calling this
 	public ErrorCode getErrorCode() {
 		return this;
 	}
@@ -135,55 +133,10 @@ public enum ErrorCode implements LocalizedError {
 	public LocalizedError format(Object... arguments) {
 		if (hasFormat) {
 			String formatted = String.format(message, arguments);
-			return new FormattedErrorCode(formatted);
+			return new FormattedErrorCode(this, formatted);
 		}
 
 		throw new IllegalStateException(this + " does not support formatting");
-	}
-
-	private final class FormattedErrorCode implements LocalizedError {
-		private final String message;
-
-		FormattedErrorCode(String message) {
-			this.message = message;
-		}
-
-		@Override
-		public ErrorCode getErrorCode() {
-			return ErrorCode.this;
-		}
-
-		@Override
-		public String getMessage() {
-			return message;
-		}
-
-		@Override
-		public String toString() {
-			return MoreObjects.toStringHelper(this)
-					.add("errorCode", ErrorCode.this)
-					.add("message", message)
-					.toString();
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (o == null) {
-				return false;
-			}
-
-			if (o instanceof FormattedErrorCode) {
-				FormattedErrorCode that = (FormattedErrorCode) o;
-				return that.getErrorCode() == ErrorCode.this && Objects.equals(that.message, message);
-			}
-
-			return false;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(ErrorCode.this, message);
-		}
 	}
 
 }

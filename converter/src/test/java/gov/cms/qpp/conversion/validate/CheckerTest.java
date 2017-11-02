@@ -13,8 +13,8 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.FormattedErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
-import gov.cms.qpp.conversion.model.error.MockLocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 /**
@@ -23,8 +23,8 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 class CheckerTest {
 
 	private static final String VALUE = "value";
-	private static final LocalizedError ERROR_MESSAGE = new MockLocalizedError(ErrorCode.UNEXPECTED_ERROR, "the checker failed");
-	private static final LocalizedError OTHER_ERROR_MESSAGE = new MockLocalizedError(ErrorCode.UNEXPECTED_ERROR, "some other error message");
+	private static final LocalizedError ERROR_MESSAGE = new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "the checker failed");
+	private static final LocalizedError OTHER_ERROR_MESSAGE = new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "some other error message");
 
 	private Set<Detail> details;
 
@@ -550,7 +550,7 @@ class CheckerTest {
 		assertWithMessage("Checker should return one validation error")
 				.that(errors)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(new MockLocalizedError("test"));
+				.containsExactly(new FormattedErrorCode(null, "test"));
 	}
 
 	@Test
@@ -716,7 +716,7 @@ class CheckerTest {
 	}
 
 	private LocalizedError error(String message) {
-		return new MockLocalizedError(ErrorCode.UNEXPECTED_ERROR, message);
+		return new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, message);
 	}
 
 }
