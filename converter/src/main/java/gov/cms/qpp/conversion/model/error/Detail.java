@@ -39,11 +39,11 @@ public class Detail implements Serializable {
 	 * Copy constructor
 	 */
 	public Detail(Detail detail) {
-		setErrorCode(detail.getErrorCode());
-		setMessage(detail.getMessage());
-		setPath(detail.getPath());
-		setValue(detail.getValue());
-		setType(detail.getType());
+		errorCode = detail.errorCode;
+		message = detail.message;
+		path = detail.path;
+		value = detail.value;
+		type = detail.type;
 	}
 
 	/**
