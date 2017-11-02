@@ -33,7 +33,6 @@ class CheckerTest {
 		details = new LinkedHashSet<>();
 	}
 
-	/*
 	@Test
 	void testValueFindFailure() {
 		Node meepNode = new Node();
@@ -537,7 +536,6 @@ class CheckerTest {
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(validationError);
 	}
-	*/
 
 	@Test
 	void testCheckerHasMeasuresShortCut() {
@@ -555,7 +553,6 @@ class CheckerTest {
 				.containsExactly(new MockLocalizedError("test"));
 	}
 
-	/*
 	@Test
 	void testCheckerHasInvalidMeasure() {
 		Set<Detail> errors = new LinkedHashSet<>();
@@ -677,41 +674,6 @@ class CheckerTest {
 	}
 
 	@Test
-	void testHappyValueIsEmptyAsNull() throws Exception {
-		String key = "My Key";
-		Node testNode = makeTestNode(key, null);
-		Checker checker = Checker.check(testNode, details);
-		checker.valueIsEmpty(ERROR_MESSAGE, key);
-		assertWithMessage("There should be no errors")
-				.that(details).isEmpty();
-	}
-
-	@Test
-	void testHappyValueIsEmptyAsString() throws Exception {
-		String key = "My Key";
-		String value = "";
-		Node testNode = makeTestNode(key, value);
-		Checker checker = Checker.check(testNode, details);
-		checker.valueIsEmpty(ERROR_MESSAGE, key);
-
-		assertWithMessage("There should be no errors")
-				.that(details).isEmpty();
-	}
-
-	@Test
-	void testUnhappyValueIsEmpty() throws Exception {
-		String key = "My Key";
-		String value = "Not Null Value";
-		Node testNode = makeTestNode(key, value);
-		Checker checker = Checker.check(testNode, details);
-		checker.valueIsEmpty(ERROR_MESSAGE, key);
-
-		assertWithMessage("There should be no errors")
-				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ERROR_MESSAGE);
-	}
-
-	@Test
 	void testHappyValueIsNotEmptyAsString() throws Exception {
 		String key = "My Key";
 		String value = "Not Empty";
@@ -746,7 +708,6 @@ class CheckerTest {
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
-	*/
 
 	private Node makeTestNode(String key, String value) {
 		Node testNode = new Node();
