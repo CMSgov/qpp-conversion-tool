@@ -6,7 +6,7 @@ public class MockLocalizedError implements LocalizedError {
 	private final String message;
 
 	public MockLocalizedError(String message) {
-		this(ErrorCode.UNEXPECTED_ERROR, message);
+		this(null, message);
 	}
 
 	public MockLocalizedError(ErrorCode errorCode, String message) {
