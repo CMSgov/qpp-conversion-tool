@@ -38,7 +38,7 @@ public class FormattedErrorCode implements LocalizedError {
 			return false;
 		}
 
-		if (o instanceof FormattedErrorCode) {
+		if (o.getClass() == getClass()) {
 			FormattedErrorCode that = (FormattedErrorCode) o;
 			return that.getErrorCode() == errorCode && Objects.equals(that.message, message);
 		}

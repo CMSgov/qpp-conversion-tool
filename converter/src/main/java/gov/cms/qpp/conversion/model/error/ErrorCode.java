@@ -1,9 +1,5 @@
 package gov.cms.qpp.conversion.model.error;
 
-import java.util.Objects;
-
-import com.google.common.base.MoreObjects;
-
 /**
  * Error codes that may be returned by the converter
  */
