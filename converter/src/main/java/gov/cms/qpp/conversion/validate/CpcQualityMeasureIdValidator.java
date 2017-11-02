@@ -78,7 +78,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	private Consumer<Node> makePerformanceRateUuidValidator(Supplier<Object> check, String... keys) {
+	private Consumer<Node> makePerformanceRateUuidValidator(Supplier<String> check, String... keys) {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childUuidFinder =
