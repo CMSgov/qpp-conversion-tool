@@ -5,7 +5,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.s3.transfer.model.UploadResult;
-import gov.cms.qpp.conversion.api.helper.MockitoExtension;
+import gov.cms.qpp.test.MockitoExtension;
 import gov.cms.qpp.conversion.api.model.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

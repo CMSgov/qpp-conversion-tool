@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import gov.cms.qpp.conversion.api.helper.MockitoExtension;
+import gov.cms.qpp.test.MockitoExtension;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import org.junit.jupiter.api.BeforeEach;

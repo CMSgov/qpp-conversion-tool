@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
-import gov.cms.qpp.conversion.api.helper.MockitoExtension;
+import gov.cms.qpp.test.MockitoExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

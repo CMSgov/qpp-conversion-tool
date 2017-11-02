@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.api.services;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
 import gov.cms.qpp.conversion.QrdaSource;
-import gov.cms.qpp.conversion.api.helper.MockitoExtension;
+import gov.cms.qpp.test.MockitoExtension;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Error;

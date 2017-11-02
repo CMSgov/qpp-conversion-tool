@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.api.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.api.helper.MockitoExtension;
+import gov.cms.qpp.test.MockitoExtension;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
