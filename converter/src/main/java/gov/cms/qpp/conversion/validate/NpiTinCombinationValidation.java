@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 /**
  * Validates the QRDA Category III Report Node's national provide identifier/taxpayer identification number combinations
@@ -11,9 +12,6 @@ import gov.cms.qpp.conversion.model.Validator;
 @Validator(TemplateId.QRDA_CATEGORY_III_REPORT_V3)
 public class NpiTinCombinationValidation extends NodeValidator {
 
-	static final String CLINICAL_DOCUMENT_REQUIRED = "Clinical Document Node is required";
-	static final String EXACTLY_ONE_DOCUMENT_ALLOWED = "Only one Clinical Document Node is allowed";
-
 	/**
 	 * Validates the NPI/TIN Combination within the QRDA Category III Report V3 section
 	 *
@@ -21,7 +19,7 @@ public class NpiTinCombinationValidation extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		check(node).childMinimum(CLINICAL_DOCUMENT_REQUIRED, 1, TemplateId.CLINICAL_DOCUMENT)
-			.childMaximum(EXACTLY_ONE_DOCUMENT_ALLOWED, 1, TemplateId.CLINICAL_DOCUMENT);
+		check(node).childMinimum(ErrorCode.NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT, 1, TemplateId.CLINICAL_DOCUMENT)
+			.childMaximum(ErrorCode.NPI_TIN_COMBINATION_EXACTLY_ONE_DOCUMENT_ALLOWED, 1, TemplateId.CLINICAL_DOCUMENT);
 	}
 }

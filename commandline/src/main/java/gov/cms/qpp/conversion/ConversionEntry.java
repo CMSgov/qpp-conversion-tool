@@ -25,6 +25,8 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Strings;
+
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 /**
@@ -218,7 +220,7 @@ public class ConversionEntry {
 	static Collection<Path> checkPath(String path) {
 		Collection<Path> existingFiles = new LinkedList<>();
 
-		if (path == null || path.trim().isEmpty()) {
+		if (Strings.isNullOrEmpty(path)) {
 			return existingFiles;
 		}
 		if (path.contains("*")) {

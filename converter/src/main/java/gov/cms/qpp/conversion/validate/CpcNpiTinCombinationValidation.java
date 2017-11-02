@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 /**
  * Validates the QRDA Category III Report Node's national provide identifier/taxpayer identification number combinations
@@ -11,8 +12,6 @@ import gov.cms.qpp.conversion.model.Validator;
  */
 @Validator(value = TemplateId.QRDA_CATEGORY_III_REPORT_V3, program = Program.CPC)
 public class CpcNpiTinCombinationValidation extends NodeValidator {
-
-	static final String AT_LEAST_ONE_NPI_TIN_COMBINATION = "Must have at least one NPI/TIN combination";
 
 
 	/**
@@ -23,6 +22,6 @@ public class CpcNpiTinCombinationValidation extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-			.childMinimum(AT_LEAST_ONE_NPI_TIN_COMBINATION, 1, TemplateId.NPI_TIN_ID);
+			.childMinimum(ErrorCode.CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION, 1, TemplateId.NPI_TIN_ID);
 	}
 }

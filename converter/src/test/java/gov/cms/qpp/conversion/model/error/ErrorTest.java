@@ -20,8 +20,8 @@ class ErrorTest {
 	@Test
 	void testAddValidationError() {
 		Error objectUnderTest = new Error();
-		objectUnderTest.addValidationError(new Detail("description", "path"));
-		objectUnderTest.addValidationError(new Detail("description", "path"));
+		objectUnderTest.addValidationError(new Detail());
+		objectUnderTest.addValidationError(new Detail());
 
 		assertWithMessage("The list should have two items")
 				.that(objectUnderTest.getDetails()).hasSize(2);
@@ -42,7 +42,7 @@ class ErrorTest {
 		Error objectUnderTest = new Error();
 
 		objectUnderTest.setSourceIdentifier("meep");
-		objectUnderTest.setDetails(Collections.singletonList(new Detail("description", "path")));
+		objectUnderTest.setDetails(Collections.singletonList(new Detail()));
 
 		assertWithMessage("The list should be one")
 				.that(objectUnderTest.getDetails()).hasSize(1);
@@ -54,7 +54,7 @@ class ErrorTest {
 	void testToString() {
 		Error objectUnderTest = new Error();
 		objectUnderTest.setSourceIdentifier("sourceID");
-		objectUnderTest.setDetails(Collections.singletonList(new Detail("description", "path")));
+		objectUnderTest.setDetails(Collections.singletonList(Detail.forErrorCode(ErrorCode.UNEXPECTED_ERROR)));
 		objectUnderTest.setType("aType");
 		objectUnderTest.setMessage("coolMessage");
 
