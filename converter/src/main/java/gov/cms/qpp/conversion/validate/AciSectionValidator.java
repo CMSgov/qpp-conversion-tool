@@ -3,15 +3,13 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 /**
  * Validate the ACI Section.
  */
 @Validator(TemplateId.ACI_SECTION)
 public class AciSectionValidator extends NodeValidator {
-
-	public static final String MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR
-			= "The ACI Section must have one Reporting Parameter ACT";
 
 	/**
 	 * Validates the ACI Section.
@@ -26,9 +24,9 @@ public class AciSectionValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
 		thoroughlyCheck(node)
-				.childMinimum(MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
+				.childMinimum(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT, 1,
 						TemplateId.REPORTING_PARAMETERS_ACT)
-				.childMaximum(MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR, 1,
+				.childMaximum(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT, 1,
 						TemplateId.REPORTING_PARAMETERS_ACT);
 	}
 }

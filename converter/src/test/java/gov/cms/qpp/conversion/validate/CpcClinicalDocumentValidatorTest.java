@@ -1,16 +1,18 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Set;
-
-import static com.google.common.truth.Truth.assertWithMessage;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 public class CpcClinicalDocumentValidatorTest {
 
@@ -39,8 +41,8 @@ public class CpcClinicalDocumentValidatorTest {
 		Set<Detail> errors = cpcValidator.getDetails();
 
 		assertWithMessage("Must contain error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(CpcClinicalDocumentValidator.MISSING_PRACTICE_SITE_ADDRESS);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS);
 	}
 
 	@Test
@@ -52,8 +54,8 @@ public class CpcClinicalDocumentValidatorTest {
 		Set<Detail> errors = cpcValidator.getDetails();
 
 		assertWithMessage("Must contain error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(CpcClinicalDocumentValidator.MISSING_PRACTICE_SITE_ADDRESS);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS);
 	}
 
 	@Test
@@ -65,8 +67,8 @@ public class CpcClinicalDocumentValidatorTest {
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must validate with the correct error")
-				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(CpcClinicalDocumentValidator.ONLY_ONE_APM_ALLOWED);
+				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
@@ -76,8 +78,8 @@ public class CpcClinicalDocumentValidatorTest {
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must validate with the correct error")
-				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(CpcClinicalDocumentValidator.ONLY_ONE_APM_ALLOWED);
+				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED);
 	}
 
 	@Test
@@ -86,8 +88,8 @@ public class CpcClinicalDocumentValidatorTest {
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must validate with the correct error")
-				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(CpcClinicalDocumentValidator.ONE_MEASURE_SECTION_REQUIRED);
+				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED);
 	}
 
 	private Node createValidCpcPlusClinicalDocument() {

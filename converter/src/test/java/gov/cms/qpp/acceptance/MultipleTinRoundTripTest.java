@@ -16,6 +16,7 @@ import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 
+@Ignore
 public class MultipleTinRoundTripTest {
 	private static JsonWrapper wrapper = new JsonWrapper();
 	private static ReadContext ctx;
@@ -28,7 +29,6 @@ public class MultipleTinRoundTripTest {
 	}
 
 	@Test
-	@Ignore
 	public void hasMultipleNpiTinCombo() {
 		List<Map<String, Object>> topLevel = ctx.read("$");
 		assertThat(topLevel)

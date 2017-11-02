@@ -4,20 +4,13 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 /**
  * Validates the Clinical Document.
  */
 @Validator(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentValidator extends NodeValidator {
-
-	protected static final String ONE_CHILD_REQUIRED = "Clinical Document Node must have at least one Aci "
-			+ "or IA or eCQM Section Node as a child";
-	public static final String CONTAINS_PROGRAM_NAME = "Clinical Document must have one and only one program name";
-	public static final String INCORRECT_PROGRAM_NAME = "Clinical Document program name is not recognized";
-	protected static final String CONTAINS_DUPLICATE_ACI_SECTIONS = "Clinical Document contains duplicate ACI sections";
-	protected static final String CONTAINS_DUPLICATE_IA_SECTIONS = "Clinical Document contains duplicate IA sections";
-	protected static final String CONTAINS_DUPLICATE_ECQM_SECTIONS = "Clinical Document contains duplicate eCQM sections";
 
 	/**
 	 * Validates a single Clinical Document Node.
@@ -36,12 +29,18 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
 		thoroughlyCheck(node)
-			.childMinimum(ONE_CHILD_REQUIRED, 1, TemplateId.ACI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)
-			.childMaximum(CONTAINS_DUPLICATE_ACI_SECTIONS, 1, TemplateId.ACI_SECTION)
-			.childMaximum(CONTAINS_DUPLICATE_IA_SECTIONS, 1, TemplateId.IA_SECTION)
-			.childMaximum(CONTAINS_DUPLICATE_ECQM_SECTIONS, 1, TemplateId.MEASURE_SECTION_V2)
-			.singleValue(CONTAINS_PROGRAM_NAME, ClinicalDocumentDecoder.PROGRAM_NAME)
-			.valueIn(INCORRECT_PROGRAM_NAME, ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
+			.childMinimum(ErrorCode.CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD, 1, 
+					TemplateId.ACI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)
+			.childMaximum(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS, 1, 
+					TemplateId.ACI_SECTION)
+			.childMaximum(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS, 1, 
+					TemplateId.IA_SECTION)
+			.childMaximum(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS, 1, 
+					TemplateId.MEASURE_SECTION_V2)
+			.singleValue(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME, 
+					ClinicalDocumentDecoder.PROGRAM_NAME)
+			.valueIn(ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME, 
+					ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
 				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 	}
 }

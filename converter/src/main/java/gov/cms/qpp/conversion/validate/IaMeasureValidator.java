@@ -3,16 +3,13 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 /**
  * Validates IaMeasure Node - expects a child MEASURE_PERFORMED with a  Y or N value
  */
 @Validator(TemplateId.IA_MEASURE)
 public class IaMeasureValidator extends NodeValidator {
-
-	public static final String TYPE_ERROR =
-			"A single measure performed value is required and must be either a Y or an N.";
-	public static final String INCORRECT_CHILDREN_COUNT = "Measure performed must have exactly one child.";
 
 	/**
 	 * Validates a single IA Measure Performed Value {@link Node}.
@@ -28,7 +25,7 @@ public class IaMeasureValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		Checker.check(node, getDetails())
-				.childMinimum(INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED)
-				.childMaximum(INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED);
+				.childMinimum(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED)
+				.childMaximum(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED);
 	}
 }

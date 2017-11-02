@@ -10,6 +10,8 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Strings;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -91,7 +93,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 */
 	private void encodeEntityId(JsonWrapper wrapper, Node thisNode) {
 		String entityId = thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID);
-		if (entityId != null && !entityId.isEmpty()) {
+		if (!Strings.isNullOrEmpty(entityId)) {
 			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID, entityId);
 		}
 	}
