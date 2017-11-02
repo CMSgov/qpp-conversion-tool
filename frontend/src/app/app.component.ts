@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FileSelectDirective, FileDropDirective, FileUploader } from '../../node_modules/ng2-file-upload/ng2-file-upload';
 import 'rxjs/Rx' ;
-import { DomSanitizer } from '@angular/platform-browser';
-
 
 const URL  = 'http://184.73.24.93:2680';
 
@@ -17,16 +15,16 @@ export class AppComponent {
 	hasBaseDropZoneOver: boolean;
 	hasAnotherDropZoneOver: boolean;
 	response: string;
-	downloadJsonHref: any;
+	responseJson: string;
 	fileName: string;
 	status: number;
 	error: boolean;
 
-	constructor (private sanitizer: DomSanitizer) {
+	constructor () {
 		this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
 			console.log('Endpoint Response:', response);
 			this.status = status;
-			this.generateDownloadJsonUri(response);
+			this.responseJson = response;
 			this.response = JSON.parse(response);
 			if (item.isError) {
 				this.error = true;
@@ -45,9 +43,29 @@ export class AppComponent {
 		this.hasAnotherDropZoneOver = e;
 	}
 
-	generateDownloadJsonUri(response) {
-		const theJSON = response;
-		const uri = this.sanitizer.bypassSecurityTrustUrl('data:text/json;charset=UTF-8,' + encodeURIComponent(theJSON));
-		this.downloadJsonHref = uri;
-	}
+    saveBlob(response, contentType, filename) {
+        let blob = new Blob([response], { type: contentType });
+        if (typeof window.navigator.msSaveBlob !== 'undefined') {
+            // IE workaround
+            window.navigator.msSaveBlob(blob, filename);
+        } else {
+            let URL = window.URL;
+            let downloadUrl = URL.createObjectURL(blob);
+            if (filename) {
+                let a = document.createElement('a');
+                if (typeof a.download === 'undefined') {
+                    window.location.href = downloadUrl;
+                } else {
+                    a.href = downloadUrl;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                }
+            } else {
+                window.location.href = downloadUrl;
+            }
+            // cleanup
+            setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100);
+        }
+    }
 }
