@@ -1,5 +1,11 @@
 package gov.cms.qpp.conversion.model.error;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 /**
  * Error codes that may be returned by the converter
  */
@@ -92,6 +98,9 @@ public enum ErrorCode implements LocalizedError {
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID");
 
+	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
+			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
+
 	private final int code;
 	private final String message;
 	private final boolean hasFormat;
@@ -139,6 +148,10 @@ public enum ErrorCode implements LocalizedError {
 		}
 
 		throw new IllegalStateException(this + " does not support formatting");
+	}
+
+	public static ErrorCode getByCode(int code) {
+		return CODE_TO_VALUE.get(code);
 	}
 
 }

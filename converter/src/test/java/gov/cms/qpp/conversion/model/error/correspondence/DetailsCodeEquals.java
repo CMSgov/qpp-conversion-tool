@@ -17,7 +17,7 @@ public final class DetailsCodeEquals extends Correspondence<Detail, ErrorCode> {
 		if (actual == null) {
 			return expected == null;
 		}
-		ErrorCode error = ErrorCode.values()[actual.getErrorCode()];
+		ErrorCode error = ErrorCode.getByCode(actual.getErrorCode());
 		return error == expected;
 	}
 
