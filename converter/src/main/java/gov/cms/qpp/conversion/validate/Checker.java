@@ -90,21 +90,6 @@ class Checker {
 	}
 
 	/**
-	 * checks target node to ensure no value is retrieved with given name key
-	 *
-	 * @param message error message if value is not empty
-	 * @param name key of expected value
-	 * @return The checker, for chaining method calls.
-	 */
-	public Checker valueIsEmpty(LocalizedError code, String name) {
-		lastAppraised = node.getValue(name);
-		if (!shouldShortcut() && !Strings.isNullOrEmpty((String)lastAppraised)) {
-			details.add(detail(code));
-		}
-		return this;
-	}
-
-	/**
 	 * checks target node to ensure a value is retrieved with given name key
 	 *
 	 * @param message error message if value is empty
