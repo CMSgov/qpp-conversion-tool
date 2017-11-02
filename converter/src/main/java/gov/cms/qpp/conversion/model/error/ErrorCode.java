@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.model.error;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
