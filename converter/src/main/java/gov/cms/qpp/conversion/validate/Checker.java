@@ -387,6 +387,11 @@ class Checker {
 			.sum();
 	}
 
+	/**
+	 * Creates a detail for the given error, and the present node
+	 * @param code LocalizedError to use when generating details
+	 * @return details for the given error and present node
+	 */
 	private Detail detail(LocalizedError code) {
 		return Detail.forErrorAndNode(code, node);
 	}
