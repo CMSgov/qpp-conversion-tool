@@ -43,29 +43,28 @@ export class AppComponent {
 		this.hasAnotherDropZoneOver = e;
 	}
 
-    saveBlob(response, contentType, filename) {
-        let blob = new Blob([response], { type: contentType });
-        if (typeof window.navigator.msSaveBlob !== 'undefined') {
-            // IE workaround
-            window.navigator.msSaveBlob(blob, filename);
-        } else {
-            let URL = window.URL;
-            let downloadUrl = URL.createObjectURL(blob);
-            if (filename) {
-                let a = document.createElement('a');
-                if (typeof a.download === 'undefined') {
-                    window.location.href = downloadUrl;
-                } else {
-                    a.href = downloadUrl;
-                    a.download = filename;
-                    document.body.appendChild(a);
-                    a.click();
-                }
-            } else {
-                window.location.href = downloadUrl;
-            }
-            // cleanup
-            setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100);
-        }
-    }
+	saveBlob(response, contentType, filename) {
+		const blob = new Blob([response], { type: contentType });
+		if (typeof window.navigator.msSaveBlob !== 'undefined') {
+			// IE workaround
+			window.navigator.msSaveBlob(blob, filename);
+		} else {
+			const downloadUrl = window.URL.createObjectURL(blob);
+			if (filename) {
+				const a = document.createElement('a');
+				if (typeof a.download === 'undefined') {
+					window.location.href = downloadUrl;
+				} else {
+					a.href = downloadUrl;
+					a.download = filename;
+					document.body.appendChild(a);
+					a.click();
+				}
+			} else {
+				window.location.href = downloadUrl;
+			}
+			// cleanup
+			setTimeout(function () { window.URL.revokeObjectURL(downloadUrl); }, 100);
+		}
+	}
 }
