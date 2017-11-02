@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.api.services;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,11 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 public class QrdaServiceImpl implements QrdaService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
-	public QrdaServiceImpl() {
+	/**
+	 * Preloads the measure configs data
+	 */
+	@PostConstruct
+	public void preloadMeasureConfigs() {
 		MeasureConfigs.class.getSimpleName(); // run the MeasureConfigs static block on startup
 	}
 
