@@ -1,0 +1,10 @@
+Sprint 30 Review Presentation - Jeff Benton
+QPPCT - 444
+1. Open up HP ALM
+2. Run through all the testing results for this Sprint and show the failed test cases for the Simple UI.
+3. Point out the new failed tests for .
+4. Open up the HIVVS Confluence Page and go through these sub pages:
+	- QPPCT Sprint 30 Kickoff to show that there was a new ticket added to scope.
+	- QPPCT Sprint 30 Test Results to show the totals for all the tests ran.
+
+Ask for follow up questions and end the presentation.

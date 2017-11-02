@@ -12,6 +12,7 @@ import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -106,7 +107,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				.filter(childNode -> TemplateId.MEASURE_DATA_CMS_V2 == childNode.getType())
 				.forEach(childNode -> {
 					String populationId = childNode.getValue(MeasureDataDecoder.MEASURE_POPULATION);
-					Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId);
+					Integer subPopIndex = mapPopulationIdToSubPopIndex.get(populationId.toUpperCase(Locale.ENGLISH));
 					if (subPopIndex != null) {
 						Node newParentNode = subPopNodes.get(subPopIndex);
 						newParentNode.addChildNode(childNode);
@@ -219,7 +220,8 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		Optional.ofNullable(numeratorNode).ifPresent(
 				node -> {
 					maintainContinuity(wrapper, node, "stratum");
-					String numeratorPopulationId = node.getValue(MeasureDataDecoder.MEASURE_POPULATION);
+					String numeratorPopulationId =
+							node.getValue(MeasureDataDecoder.MEASURE_POPULATION).toUpperCase(Locale.ENGLISH);
 					String stratum = stratumForNumeratorUuid(numeratorPopulationId, measureConfig);
 					wrapper.putString("stratum", stratum);
 				});
