@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion.model.error;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -43,6 +46,15 @@ class ErrorCodeTest {
 	@Test
 	void testFormattedEqualsFormattedWithDifferentErrorCode() {
 		Truth.assertThat(formatted("mock")).isNotEqualTo(formattedAlt("mock2"));
+	}
+
+	@Test
+	void testAllValuesHaveUniqueCodes() {
+		Set<Integer> codes = new HashSet<>();
+		for (ErrorCode error : ErrorCode.values()) {
+			Truth.assertThat(codes).doesNotContain(error.getCode());
+			codes.add(error.getCode());
+		}
 	}
 
 	private LocalizedError formatted(String salt) {

@@ -65,7 +65,7 @@ public class Detail implements Serializable {
 		Objects.requireNonNull(error, "error");
 
 		Detail detail = new Detail();
-		detail.setErrorCode(error.getErrorCode().ordinal());
+		detail.setErrorCode(error.getErrorCode().getCode());
 		detail.setMessage(error.getMessage());
 		return detail;
 	}
