@@ -1,5 +1,27 @@
 package gov.cms.qpp.conversion;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.powermock.api.mockito.PowerMockito.doThrow;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -10,34 +32,16 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.FormattedErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.stubs.Jenncoder;
 import gov.cms.qpp.conversion.stubs.JennyDecoder;
 import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.powermock.api.mockito.PowerMockito.doThrow;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
@@ -87,8 +91,8 @@ public class ConverterTest {
 			List<Detail> details = errors.get(0).getDetails();
 			assertWithMessage("The expected validation error was missing")
 					.that(details)
-					.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-					.contains("Test validation error for Jenny");
+					.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+					.contains(new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "Test validation error for Jenny"));
 		}
 	}
 
@@ -101,7 +105,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, Converter.NOT_VALID_XML_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_XML_DOCUMENT);
 		}
 	}
 
@@ -122,7 +126,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, Converter.NOT_VALID_XML_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_XML_DOCUMENT);
 		}
 	}
 
@@ -134,7 +138,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, Converter.NOT_VALID_QRDA_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT);
 		}
 	}
 
@@ -149,7 +153,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, Converter.NOT_VALID_QRDA_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT);
 		}
 	}
 
@@ -167,22 +171,8 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, Converter.UNEXPECTED_ERROR);
+			checkup(exception, ErrorCode.UNEXPECTED_ERROR);
 		}
-	}
-
-	private void checkup(TransformException exception, String errorText) {
-		AllErrors allErrors = exception.getDetails();
-		List<Error> errors = allErrors.getErrors();
-		assertWithMessage("There must only be one error source.")
-				.that(errors).hasSize(1);
-		List<Detail> details = errors.get(0).getDetails();
-		assertWithMessage("There must be only one validation error.")
-				.that(details).hasSize(1);
-		assertWithMessage("The validation error was incorrect")
-				.that(details)
-				.comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(errorText);
 	}
 
 	@Test
@@ -210,5 +200,19 @@ public class ConverterTest {
 		String content = qpp.toString();
 
 		assertThat(content).contains("Jenny");
+	}
+
+	private void checkup(TransformException exception, LocalizedError error) {
+		AllErrors allErrors = exception.getDetails();
+		List<Error> errors = allErrors.getErrors();
+		assertWithMessage("There must only be one error source.")
+				.that(errors).hasSize(1);
+		List<Detail> details = errors.get(0).getDetails();
+		assertWithMessage("There must be only one validation error.")
+				.that(details).hasSize(1);
+		assertWithMessage("The validation error was incorrect")
+				.that(details)
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(error);
 	}
 }
