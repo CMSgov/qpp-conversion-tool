@@ -38,7 +38,7 @@ public class Error implements Serializable {
 	 * @param sourceIdentifier The identifier of a source that contains the validation errors
 	 * @param details The list of {@code Detail}s.
 	 */
-	public Error(final String sourceIdentifier, final List<Detail> details) {
+	public Error(String sourceIdentifier, List<Detail> details) {
 		this.sourceIdentifier = sourceIdentifier;
 		this.details = details;
 	}

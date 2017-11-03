@@ -4,6 +4,8 @@ import gov.cms.qpp.conversion.Context;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Strings;
+
 /**
  * An enumeration of known templates IDs.
  */
@@ -150,7 +152,7 @@ public enum TemplateId {
 	static String generateTemplateIdString(String root, String extension, Context context) {
 		String templateId = root;
 
-		if (!context.isHistorical() && extension != null && !extension.isEmpty()) {
+		if (!context.isHistorical() && !Strings.isNullOrEmpty(extension)) {
 			templateId += (":" + extension);
 		}
 		return templateId;

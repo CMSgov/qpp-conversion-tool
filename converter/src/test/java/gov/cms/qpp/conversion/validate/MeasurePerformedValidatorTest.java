@@ -3,7 +3,8 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.Test;
 
 import java.util.Set;
@@ -51,7 +52,7 @@ public class MeasurePerformedValidatorTest {
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
 		Set<Detail> errors = validator.validateSingleNode(measurePerformedNode);
 		assertWithMessage("Should result in a single type error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(IaMeasureValidator.TYPE_ERROR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.IA_MEASURE_INVALID_TYPE);
 	}
 }

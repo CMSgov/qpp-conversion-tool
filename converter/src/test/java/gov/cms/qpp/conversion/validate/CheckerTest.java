@@ -1,47 +1,52 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Before;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.FormattedErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 /**
  * This will test the Checker functionality
  */
-public class CheckerTest {
+class CheckerTest {
 
 	private static final String VALUE = "value";
-	private static final String ERROR_MESSAGE = "error message";
-	private static final String OTHER_ERROR_MESSAGE = "some other error message";
+	private static final LocalizedError ERROR_MESSAGE = new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "the checker failed");
+	private static final LocalizedError OTHER_ERROR_MESSAGE = new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "some other error message");
 
 	private Set<Detail> details;
 
-	@Before
-	public void beforeEach() {
+	@BeforeEach
+	void beforeEach() {
 		details = new LinkedHashSet<>();
 	}
 
 	@Test
-	public void testValueFindFailure() {
+	void testValueFindFailure() {
 		Node meepNode = new Node();
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.value(ERROR_MESSAGE, VALUE);
 
 		assertWithMessage("There's an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testParentFailure() {
+	void testParentFailure() {
 		Node meepNode = new Node();
 
 		Checker checker = Checker.check(meepNode, details);
@@ -49,12 +54,12 @@ public class CheckerTest {
 				.hasParent(ERROR_MESSAGE, TemplateId.ACI_DENOMINATOR); //shortcuts
 
 		assertWithMessage("message applied is the message given")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testValueFindSuccess() {
+	void testValueFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "Bob");
 
@@ -66,7 +71,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testIntValueFindFailure() {
+	void testIntValueFindFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "Bob");
 
@@ -78,7 +83,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testIntValueFindSuccess() {
+	void testIntValueFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -90,7 +95,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenFindFailure() {
+	void testChildrenFindFailure() {
 		Node meepNode = new Node();
 
 		Checker checker = Checker.check(meepNode, details);
@@ -101,7 +106,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenFindSuccess() {
+	void testChildrenFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.addChildNode(new Node(TemplateId.PLACEHOLDER));
 
@@ -113,7 +118,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenMinimumFailure() {
+	void testChildrenMinimumFailure() {
 		Node meepNode = new Node();
 		meepNode.addChildNode(new Node(TemplateId.PLACEHOLDER));
 
@@ -125,7 +130,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenMinimumSuccess() {
+	void testChildrenMinimumSuccess() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER), new Node(TemplateId.PLACEHOLDER));
 
@@ -137,7 +142,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenMaximumFailure() {
+	void testChildrenMaximumFailure() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER),
 				new Node(TemplateId.PLACEHOLDER),
@@ -151,7 +156,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildrenMaximumSuccess() {
+	void testChildrenMaximumSuccess() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER),
 				new Node(TemplateId.PLACEHOLDER));
@@ -165,7 +170,7 @@ public class CheckerTest {
 
 	//chaining
 	@Test
-	public void testValueChildrenFindFailure() {
+	void testValueChildrenFindFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -173,12 +178,12 @@ public class CheckerTest {
 		checker.value(ERROR_MESSAGE, VALUE).hasChildren(OTHER_ERROR_MESSAGE);
 
 		assertWithMessage("message applied is other error message")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(OTHER_ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testValueChildrenFindSuccess() {
+	void testValueChildrenFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 		meepNode.addChildNode(new Node(TemplateId.PLACEHOLDER));
@@ -191,7 +196,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testChildValueChildrenFindFailure() {
+	void testChildValueChildrenFindFailure() {
 		Node meepNode = new Node();
 		Checker checker = Checker.check(meepNode, details);
 		checker.intValue(ERROR_MESSAGE, VALUE)
@@ -200,12 +205,12 @@ public class CheckerTest {
 				.hasChildren(OTHER_ERROR_MESSAGE);
 
 		assertWithMessage("message applied is other error message")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testValueChildrenChildMinChildMaxFindFailure() {
+	void testValueChildrenChildMinChildMaxFindFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 		meepNode.addChildNodes(
@@ -219,12 +224,12 @@ public class CheckerTest {
 				.childMaximum(OTHER_ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER);
 
 		assertWithMessage("message applied is other error message")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(OTHER_ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testMaxFindMultipleTemplateIdsFailure() {
+	void testMaxFindMultipleTemplateIdsFailure() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(
 				new Node(TemplateId.PLACEHOLDER),
@@ -232,15 +237,15 @@ public class CheckerTest {
 				new Node(TemplateId.DEFAULT));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.childMaximum("too many children", 2, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
+		checker.childMaximum(error("too many children"), 2, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
 
 		assertWithMessage("message applied is other error message")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("too many children");
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(error("too many children"));
 	}
 
 	@Test
-	public void testMaxFindMultipleTemplateIdsSuccess() {
+	void testMaxFindMultipleTemplateIdsSuccess() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(
 				new Node(TemplateId.PLACEHOLDER),
@@ -249,14 +254,14 @@ public class CheckerTest {
 				new Node(TemplateId.ACI_AGGREGATE_COUNT));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.childMaximum("too many children", 3, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
+		checker.childMaximum(error("too many children"), 3, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
 
 		assertWithMessage("There should be no errors.")
 				.that(details).isEmpty();
 	}
 
 	@Test
-	public void testValueChildrenChildMinChildMaxFindSuccess() {
+	void testValueChildrenChildMinChildMaxFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 		meepNode.addChildNode(new Node(TemplateId.PLACEHOLDER));
@@ -273,7 +278,7 @@ public class CheckerTest {
 
 	// compound checking
 	@Test
-	public void compoundIntValueCheckSuccess() {
+	void compoundIntValueCheckSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -285,7 +290,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void compoundIntValueCheckFailure() {
+	void compoundIntValueCheckFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -293,12 +298,12 @@ public class CheckerTest {
 		checker.intValue(ERROR_MESSAGE, VALUE).greaterThan(ERROR_MESSAGE, 124);
 
 		assertWithMessage("There should be one error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void compoundIntValueCheckNoContext() {
+	void compoundIntValueCheckNoContext() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -309,20 +314,22 @@ public class CheckerTest {
 				.that(details).isEmpty();
 	}
 
-	@Test(expected = ClassCastException.class)
-	public void compoundIntValueCheckCastException() {
-		Node meepNode = new Node();
-		meepNode.putValue(VALUE, "123");
+	@Test
+	void compoundIntValueCheckCastException() {
+		Assertions.assertThrows(ClassCastException.class, () -> {
+			Node meepNode = new Node();
+			meepNode.putValue(VALUE, "123");
 
-		Checker checker = Checker.check(meepNode, details);
-		checker.intValue(ERROR_MESSAGE, VALUE).greaterThan(ERROR_MESSAGE, "not an Integer");
+			Checker checker = Checker.check(meepNode, details);
+			checker.intValue(ERROR_MESSAGE, VALUE).greaterThan(ERROR_MESSAGE, "not an Integer");
 
-		assertWithMessage("There should be no errors.")
-				.that(details).isEmpty();
+			assertWithMessage("There should be no errors.")
+					.that(details).isEmpty();
+		});
 	}
 
 	@Test
-	public void testCompoundIntValueLessThanOrEqualToCheckSuccess() {
+	void testCompoundIntValueLessThanOrEqualToCheckSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -333,7 +340,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testCompoundIntValueLessThanCheckSuccess() {
+	void testCompoundIntValueLessThanCheckSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
@@ -344,32 +351,32 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testCompoundIntValueLessThanOrEqualToCheckFailure() {
+	void testCompoundIntValueLessThanOrEqualToCheckFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.intValue(ERROR_MESSAGE, VALUE).lessThanOrEqualTo(ERROR_MESSAGE, 122);
 		assertWithMessage("There should be no errors.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testCompoundIntValueLessThanOrEqualToCheckFailureShortcut() {
+	void testCompoundIntValueLessThanOrEqualToCheckFailureShortcut() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
-		details.add(new Detail("test", "testPath"));
+		details.add(Detail.forErrorCode(error("test")));
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.intValue(ERROR_MESSAGE, VALUE).lessThanOrEqualTo(ERROR_MESSAGE, 122);
 		assertWithMessage("There should be no errors.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("test");
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(error("test"));
 	}
 
 	@Test
-	public void testValueWithinDecimalRange() {
+	void testValueWithinDecimalRange() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "0.5");
 
@@ -380,69 +387,69 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueOutsideStartDecimalRange() {
+	void testValueOutsideStartDecimalRange() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "-1");
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
 		assertWithMessage("There should be one error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testValueOutsideDecimalRange() {
+	void testValueOutsideDecimalRange() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "2");
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
 
 		assertWithMessage("There should be one error.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testInDecimalRangeOfIncorrectType() {
+	void testInDecimalRangeOfIncorrectType() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "String");
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
 		assertWithMessage("There should be one error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testInDecimalRangeNullValue() {
+	void testInDecimalRangeNullValue() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, null);
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
 		assertWithMessage("There should be one error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testInDecimalRangeOfShortcut() {
+	void testInDecimalRangeOfShortcut() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "-1");
-		details.add(new Detail("test", "testPath"));
+		details.add(Detail.forErrorCode(error("test")));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.inDecimalRangeOf(ERROR_MESSAGE,VALUE, 0f,  1f);
+		checker.inDecimalRangeOf(ERROR_MESSAGE, VALUE, 0f,  1f);
 		assertWithMessage("There should be one error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("test");
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(error("test"));
 	}
 
 	// thorough checking
 	@Test
-	public void testIntValueChildrenChildMinChildMaxFindFailure() {
+	void testIntValueChildrenChildMinChildMaxFindFailure() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "Bob");
 		meepNode.addChildNodes(
@@ -450,18 +457,18 @@ public class CheckerTest {
 				new Node(TemplateId.PLACEHOLDER));
 
 		Checker checker = Checker.thoroughlyCheck(meepNode, details);
-		checker.intValue("int failure", VALUE)
+		checker.intValue(error("int failure"), VALUE)
 				.hasChildren(ERROR_MESSAGE)
 				.childMinimum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
-				.childMaximum("maximum failure", 1, TemplateId.PLACEHOLDER);
+				.childMaximum(error("maximum failure"), 1, TemplateId.PLACEHOLDER);
 
 		assertWithMessage("int validation error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("int failure" ,"maximum failure");
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(error("int failure"), error("maximum failure"));
 	}
 
 	@Test
-	public void testIntValueChildrenChildMinChildMaxFindSuccess() {
+	void testIntValueChildrenChildMinChildMaxFindSuccess() {
 		Node meepNode = new Node();
 		meepNode.putValue(VALUE, "123");
 		meepNode.addChildNodes(
@@ -469,17 +476,17 @@ public class CheckerTest {
 				new Node(TemplateId.PLACEHOLDER));
 
 		Checker checker = Checker.thoroughlyCheck(meepNode, details);
-		checker.intValue("int failure", VALUE)
+		checker.intValue(error("int failure"), VALUE)
 				.hasChildren(ERROR_MESSAGE)
 				.childMinimum(ERROR_MESSAGE, 1, TemplateId.PLACEHOLDER)
-				.childMaximum("maximum failure", 2, TemplateId.PLACEHOLDER);
+				.childMaximum(error("maximum failure"), 2, TemplateId.PLACEHOLDER);
 
 		assertWithMessage("There should be no errors.")
 				.that(details).isEmpty();
 	}
 
 	@Test
-	public void testHasMeasuresSuccess() {
+	void testHasMeasuresSuccess() {
 		String measureId = "measureId";
 		String expectedMeasure1 = "asdf";
 		String expectedMeasure2 = "jkl;";
@@ -496,20 +503,20 @@ public class CheckerTest {
 		section.addChildNodes(measure1, measure2, measure3);
 
 		Checker checker = Checker.check(section, details);
-		checker.hasMeasures("measure failure", expectedMeasure1, expectedMeasure2);
+		checker.hasMeasures(error("measure failure"), expectedMeasure1, expectedMeasure2);
 
 		assertWithMessage("All the measures should have been found.")
 				.that(details).isEmpty();
 	}
 
 	@Test
-	public void testHasMeasuresFailure() {
+	void testHasMeasuresFailure() {
 		String measureId = "measureId";
 		String expectedMeasure = "DogCow";
 		String anotherMeausure1 = "asdf";
 		String anotherMeausure2 = "jkl;";
 		String anotherMeausure3 = "qwerty";
-		String validationError = "measure failure";
+		LocalizedError validationError = error("measure failure");
 
 		Node section = new Node();
 		Node measure1 = new Node();
@@ -526,26 +533,28 @@ public class CheckerTest {
 		checker.hasMeasures(validationError, expectedMeasure);
 
 		assertWithMessage("The validation error string did not match up.")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(validationError);
 	}
 
 	@Test
-	public void testCheckerHasMeasuresShortCut() {
+	void testCheckerHasMeasuresShortCut() {
 		Set<Detail> errors = new LinkedHashSet<>();
-		Detail err = new Detail("test");
+		Detail err = new Detail();
+		err.setMessage("test");
 		errors.add(err);
 		Node root = new Node();
 		Checker.check(root, errors)
-				.hasMeasures("Some Message", "MeasureId");
+				.hasMeasures(ERROR_MESSAGE, "MeasureId");
 
 		assertWithMessage("Checker should return one validation error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("test");
+				.that(errors)
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(new FormattedErrorCode(null, "test"));
 	}
 
 	@Test
-	public void testCheckerHasInvalidMeasure() {
+	void testCheckerHasInvalidMeasure() {
 		Set<Detail> errors = new LinkedHashSet<>();
 
 		Node root = new Node();
@@ -553,15 +562,15 @@ public class CheckerTest {
 		measure.putValue("NotAMeasure", "0");
 		root.addChildNode(measure);
 		Checker.check(root, errors)
-				.hasMeasures("Some Message", "MeasureId");
+				.hasMeasures(ERROR_MESSAGE, "MeasureId");
 
 		assertWithMessage("Checker should return one validation error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("Some Message");
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testHasChildrenWithTemplateIdSuccess() {
+	void testHasChildrenWithTemplateIdSuccess() {
 		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		iaSectionNode.addChildNode(iaMeasureNode);
@@ -574,7 +583,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testHasChildrenWithTemplateIdFailure() {
+	void testHasChildrenWithTemplateIdFailure() {
 		Node iaSectionNode = new Node(TemplateId.IA_SECTION);
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		iaSectionNode.addChildNode(iaMeasureNode);
@@ -586,12 +595,12 @@ public class CheckerTest {
 		checker.onlyHasChildren(ERROR_MESSAGE, TemplateId.IA_MEASURE);
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testValueIn() throws Exception {
+	void testValueIn() throws Exception {
 		String key = "My Key";
 		String value = "My Value";
 		Node testNode = makeTestNode(key, value);
@@ -603,7 +612,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testValueInNot() throws Exception {
+	void testValueInNot() throws Exception {
 		String key = "My Key";
 		String value = "My Value Not";
 		Node testNode = makeTestNode(key, value);
@@ -611,22 +620,22 @@ public class CheckerTest {
 		checker.valueIn(ERROR_MESSAGE, key, "No Value" , "Some Value", "My Value");
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 	@Test
-	public void testValueInNull() throws Exception {
+	void testValueInNull() throws Exception {
 		String key = "My Key";
 		Node testNode = makeTestNode(key, null);
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIn(ERROR_MESSAGE, key, null);
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 	@Test
-	public void testValueInKeyNull() throws Exception {
+	void testValueInKeyNull() throws Exception {
 		String key = "My Key";
 		String value = "My Value";
 		Node testNode = makeTestNode(key, value);
@@ -634,12 +643,12 @@ public class CheckerTest {
 		checker.valueIn(ERROR_MESSAGE, null, null);
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testValueInNulls() throws Exception {
+	void testValueInNulls() throws Exception {
 		String key = "My Key";
 		String value = "My Value";
 		Node testNode = makeTestNode(key, value);
@@ -647,60 +656,25 @@ public class CheckerTest {
 		checker.valueIn(ERROR_MESSAGE, key, null);
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testValueInShouldShortCut() throws Exception {
+	void testValueInShouldShortCut() throws Exception {
 		String key = "My Key";
 		Node testNode = makeTestNode(key, null);
-		details.add(new Detail(ERROR_MESSAGE));
+		details.add(Detail.forErrorCode(ERROR_MESSAGE));
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIn(ERROR_MESSAGE, key, null , "Some Value", "My Value");
 
 		assertWithMessage("There should be an error")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(ERROR_MESSAGE);
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.contains(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testHappyValueIsEmptyAsNull() throws Exception {
-		String key = "My Key";
-		Node testNode = makeTestNode(key, null);
-		Checker checker = Checker.check(testNode, details);
-		checker.valueIsEmpty(ERROR_MESSAGE, key);
-		assertWithMessage("There should be no errors")
-				.that(details).isEmpty();
-	}
-
-	@Test
-	public void testHappyValueIsEmptyAsString() throws Exception {
-		String key = "My Key";
-		String value = "";
-		Node testNode = makeTestNode(key, value);
-		Checker checker = Checker.check(testNode, details);
-		checker.valueIsEmpty(ERROR_MESSAGE, key);
-
-		assertWithMessage("There should be no errors")
-				.that(details).isEmpty();
-	}
-
-	@Test
-	public void testUnhappyValueIsEmpty() throws Exception {
-		String key = "My Key";
-		String value = "Not Null Value";
-		Node testNode = makeTestNode(key, value);
-		Checker checker = Checker.check(testNode, details);
-		checker.valueIsEmpty(ERROR_MESSAGE, key);
-
-		assertWithMessage("There should be no errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(ERROR_MESSAGE);
-	}
-
-	@Test
-	public void testHappyValueIsNotEmptyAsString() throws Exception {
+	void testHappyValueIsNotEmptyAsString() throws Exception {
 		String key = "My Key";
 		String value = "Not Empty";
 		Node testNode = makeTestNode(key, value);
@@ -711,7 +685,7 @@ public class CheckerTest {
 	}
 
 	@Test
-	public void testUnhappyValueIsNotEmptyAsString() throws Exception {
+	void testUnhappyValueIsNotEmptyAsString() throws Exception {
 		String key = "My Key";
 		String value = "";
 		Node testNode = makeTestNode(key, value);
@@ -719,19 +693,19 @@ public class CheckerTest {
 		checker.valueIsNotEmpty(ERROR_MESSAGE, key);
 
 		assertWithMessage("There should be no errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
-	public void testUnhappyValueIsNotEmptyAsNull() throws Exception {
+	void testUnhappyValueIsNotEmptyAsNull() throws Exception {
 		String key = "My Key";
 		String value = null;
 		Node testNode = makeTestNode(key, value);
 		Checker checker = Checker.check(testNode, details);
 		checker.valueIsNotEmpty(ERROR_MESSAGE, key);
 		assertWithMessage("There should be no errors")
-				.that(details).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
+				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
 	}
 
@@ -739,6 +713,10 @@ public class CheckerTest {
 		Node testNode = new Node();
 		testNode.putValue(key, value);
 		return testNode;
+	}
+
+	private LocalizedError error(String message) {
+		return new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, message);
 	}
 
 }

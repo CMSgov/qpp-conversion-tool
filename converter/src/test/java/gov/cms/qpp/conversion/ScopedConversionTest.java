@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.Sets;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.JsonHelper;
@@ -220,12 +221,12 @@ public class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.CLINICAL_DOCUMENT)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR,
-						AciNumeratorDenominatorValidator.TOO_MANY_NUMERATORS,
-						String.format(AciNumeratorValidator.NOT_AN_INTEGER_VALUE, AciNumeratorValidator.NUMERATOR_NAME),
-						String.format(AciDenominatorValidator.INVALID_VALUE, AciDenominatorValidator.DENOMINATOR_NAME),
-						IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR,
-						IaMeasureValidator.TYPE_ERROR);
+						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
+						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS.getMessage(),
+						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
+						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME).getMessage(),
+						ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM.getMessage(),
+						ErrorCode.IA_MEASURE_INVALID_TYPE.getMessage());
 	}
 
 	/**
@@ -245,10 +246,10 @@ public class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.ACI_NUMERATOR_DENOMINATOR)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR,
-						AciNumeratorDenominatorValidator.TOO_MANY_NUMERATORS,
-						String.format(AciNumeratorValidator.NOT_AN_INTEGER_VALUE, AciNumeratorValidator.NUMERATOR_NAME),
-						String.format(AciDenominatorValidator.INVALID_VALUE, AciDenominatorValidator.DENOMINATOR_NAME));
+						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
+						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS.getMessage(),
+						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
+						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME).getMessage());
 	}
 
 	/**
@@ -268,8 +269,8 @@ public class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.IA_SECTION)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						IaSectionValidator.REPORTING_PARAM_REQUIREMENT_ERROR,
-						IaMeasureValidator.TYPE_ERROR);
+						ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM.getMessage(),
+						ErrorCode.IA_MEASURE_INVALID_TYPE.getMessage());
 	}
 
 	/**
@@ -289,8 +290,8 @@ public class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.ACI_AGGREGATE_COUNT)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						AggregateCountValidator.TYPE_ERROR,
-						AggregateCountValidator.VALUE_ERROR);
+						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER.getMessage(),
+						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.getMessage());
 	}
 
 	@SuppressWarnings("unchecked")

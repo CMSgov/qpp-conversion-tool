@@ -4,7 +4,8 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -122,8 +123,8 @@ public class NpiTinCombinationValidationTest {
 		validator.internalValidateSingleNode(rootWithoutClinicalDocument);
 
 		assertWithMessage("error should be about missing Clinical Document node")
-				.that(validator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(NpiTinCombinationValidation.CLINICAL_DOCUMENT_REQUIRED);
+				.that(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT);
 	}
 
 	@Test
@@ -136,8 +137,8 @@ public class NpiTinCombinationValidationTest {
 		validator.internalValidateSingleNode(rootWithTwoClinicalDocument);
 
 		assertWithMessage("error should be about too many Clinical Document nodes")
-				.that(validator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(NpiTinCombinationValidation.EXACTLY_ONE_DOCUMENT_ALLOWED);
+				.that(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.NPI_TIN_COMBINATION_EXACTLY_ONE_DOCUMENT_ALLOWED);
 	}
 
 	private void createClinicalDocumentWithProgramType(final String programName, final String entityType,
