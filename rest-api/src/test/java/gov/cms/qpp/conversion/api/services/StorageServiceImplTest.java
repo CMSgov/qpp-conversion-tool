@@ -5,14 +5,14 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.s3.transfer.model.UploadResult;
+import gov.cms.qpp.test.MockitoExtension;
 import gov.cms.qpp.conversion.api.model.Constants;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 
@@ -22,6 +22,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeoutException;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
@@ -30,8 +31,8 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 
-@RunWith(MockitoJUnitRunner.class)
-public class StorageServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+class StorageServiceImplTest {
 
 	@InjectMocks
 	private StorageServiceImpl underTest;
@@ -51,8 +52,8 @@ public class StorageServiceImplTest {
 	private String bucketName = "test-bucket";
 	private UploadResult result;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		doAnswer(invocationOnMock -> {
 			Runnable method = invocationOnMock.getArgument(0);
 			CompletableFuture.runAsync(method);
@@ -65,7 +66,7 @@ public class StorageServiceImplTest {
 	}
 
 	@Test
-	public void testPut() throws TimeoutException, InterruptedException {
+	void testPut() throws TimeoutException, InterruptedException {
 		when(upload.waitForUploadResult()).thenReturn(result);
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 
@@ -73,16 +74,16 @@ public class StorageServiceImplTest {
 		verify(transferManager, times(1)).upload(any(PutObjectRequest.class));
 	}
 
-	@Test(expected = CompletionException.class)
-	public void testPutFail() throws TimeoutException, InterruptedException {
+	@Test
+	void testPutFail() throws TimeoutException, InterruptedException {
 		when(upload.waitForUploadResult()).thenThrow(InterruptedException.class);
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 
-		storeFile();
+		assertThrows(CompletionException.class, this::storeFile);
 	}
 
 	@Test
-	public void testPutRecoverableFailure() throws TimeoutException, InterruptedException {
+	void testPutRecoverableFailure() throws TimeoutException, InterruptedException {
 		when(upload.waitForUploadResult()).thenThrow(Exception.class).thenReturn(result);
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 
@@ -91,7 +92,7 @@ public class StorageServiceImplTest {
 	}
 
 	@Test
-	public void testPutNoBucket() throws TimeoutException, InterruptedException {
+	void testPutNoBucket() throws TimeoutException, InterruptedException {
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn("");
 
 		assertThat(storeFile()).isEmpty();
@@ -99,7 +100,7 @@ public class StorageServiceImplTest {
 	}
 
 	@Test
-	public void testPutNoBucketSpecified() throws TimeoutException, InterruptedException {
+	void testPutNoBucketSpecified() throws TimeoutException, InterruptedException {
 		assertThat(storeFile()).isEmpty();
 		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
 	}
