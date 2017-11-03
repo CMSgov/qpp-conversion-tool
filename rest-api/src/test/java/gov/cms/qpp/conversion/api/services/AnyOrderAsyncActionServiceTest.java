@@ -1,13 +1,13 @@
 package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import gov.cms.qpp.test.MockitoExtension;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
@@ -22,12 +22,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AnyOrderAsyncActionServiceTest {
+@ExtendWith(MockitoExtension.class)
+class AnyOrderAsyncActionServiceTest {
 
 	@InjectMocks
 	private TestAnyOrderService objectUnderTest;
@@ -35,8 +35,8 @@ public class AnyOrderAsyncActionServiceTest {
 	@Mock
 	private TaskExecutor taskExecutor;
 
-	@Before
-	public void runBeforeEachTest() throws InterruptedException {
+	@BeforeEach
+	void runBeforeEachTest() throws InterruptedException {
 		doAnswer(invocationOnMock -> {
 			Runnable method = invocationOnMock.getArgument(0);
 			CompletableFuture.runAsync(method);
@@ -44,34 +44,34 @@ public class AnyOrderAsyncActionServiceTest {
 		}).when(taskExecutor).execute(any(Runnable.class));
 	}
 
-	@After
-	public void runAfterEachTest() {
+	@AfterEach
+	void runAfterEachTest() {
 		objectUnderTest.pauseAsynchronousAction.set(false);
 	}
 
 	@Test
-	public void testAsynchronousActionIsCalled() {
+	void testAsynchronousActionIsCalled() {
 		runSimpleScenario(0);
 
 		assertTrue("The asynchronousAction was not called.", objectUnderTest.asynchronousActionCalled.get());
 	}
 
 	@Test
-	public void testObjectToActOnPassedDown() {
+	void testObjectToActOnPassedDown() {
 		Object objectToActOn = runSimpleScenario(0);
 
 		assertThat(objectUnderTest.objectThatWasActedOn.get()).isSameAs(objectToActOn);
 	}
 
 	@Test
-	public void testSuccessNoRetry() {
+	void testSuccessNoRetry() {
 		runSimpleScenario(0);
 
 		assertThat(objectUnderTest.timesAsynchronousActionCalled.get()).isEqualTo(1);
 	}
 
 	@Test
-	public void testFailureRetry() {
+	void testFailureRetry() {
 		int failuresUntilSuccess = 3;
 
 		runSimpleScenario(failuresUntilSuccess);
@@ -80,14 +80,14 @@ public class AnyOrderAsyncActionServiceTest {
 	}
 
 	@Test
-	public void testObjectToActOnPassedDownWithFailures() {
+	void testObjectToActOnPassedDownWithFailures() {
 		Object objectToActOn = runSimpleScenario(2);
 
 		assertThat(objectUnderTest.objectThatWasActedOn.get()).isSameAs(objectToActOn);
 	}
 
 	@Test
-	public void testMultipleActsResultInAsynchronousActionsSuccess() {
+	void testMultipleActsResultInAsynchronousActionsSuccess() {
 		int numberOfItemsToProcess = 3;
 
 		objectUnderTest.failuresUntilSuccess(0);
@@ -103,7 +103,7 @@ public class AnyOrderAsyncActionServiceTest {
 	}
 
 	@Test
-	public void testMultipleActsResultInAsynchronousActionsFailure() {
+	void testMultipleActsResultInAsynchronousActionsFailure() {
 		int failuresUntilSuccess = 2;
 		int numberOfItemsToProcess = 3;
 
@@ -121,7 +121,7 @@ public class AnyOrderAsyncActionServiceTest {
 	}
 
 	@Test
-	public void testDependencyOrder() {
+	void testDependencyOrder() {
 		objectUnderTest.failuresUntilSuccess(0);
 		objectUnderTest.pauseAsynchronousAction.set(true);
 
@@ -133,21 +133,13 @@ public class AnyOrderAsyncActionServiceTest {
 	}
 
 	@Test
-	public void testInterruptedException() {
-
+	void testInterruptedException() {
 		objectUnderTest.failuresUntilSuccess(1).failWithInterruptException();
 
 		CompletableFuture<Object> completableFuture = objectUnderTest.actOnItem(new Object());
-
-		try {
-			completableFuture.join();
-			fail("A CompletionException was not thrown.");
-		} catch (CompletionException exception) {
-			assertThat(exception).hasCauseThat().isInstanceOf(UncheckedInterruptedException.class);
-			assertThat(objectUnderTest.timesAsynchronousActionCalled.get()).isEqualTo(1);  //not two
-		} catch (Exception exception) {
-			fail("A CompletionException was not thrown.");
-		}
+		CompletionException exception = assertThrows(CompletionException.class, completableFuture::join);
+		assertThat(exception).hasCauseThat().isInstanceOf(UncheckedInterruptedException.class);
+		assertThat(objectUnderTest.timesAsynchronousActionCalled.get()).isEqualTo(1);  //not two
 	}
 
 	private Object runSimpleScenario(int failuresUntilSuccess) {
