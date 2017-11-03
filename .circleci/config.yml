@@ -82,7 +82,7 @@ workflows:
       - ui_deployment:
           filters:
             branches:
-              only: master
+              only: ui_deployment
           requires:
             - ui_test
       - signal_success:
