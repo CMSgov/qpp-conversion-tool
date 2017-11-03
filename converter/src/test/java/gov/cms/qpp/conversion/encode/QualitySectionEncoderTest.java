@@ -4,7 +4,9 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+
 import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -40,8 +42,8 @@ public class QualitySectionEncoderTest {
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 
 		assertWithMessage("An encoder for a child node should not have been found.")
-				.that(encoder.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("Failed to find an encoder for child node DEFAULT");
+				.that(encoder.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ENCODER_MISSING);
 	}
 
 	@Test

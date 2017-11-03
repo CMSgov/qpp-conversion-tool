@@ -1,15 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
-import com.google.common.collect.Sets;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Program;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +9,19 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
+import com.google.common.collect.Sets;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.SubPopulation;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
 
 /**
  * Validates a Measure Reference Results node.
@@ -28,7 +32,6 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	MipsQualityMeasureIdValidator() {
 		subPopulationExclusions = Sets.newHashSet("IPOP", "IPP");
 	}
-
 
 	/**
 	 * Validates node of all criteria specified for MIPS
@@ -110,7 +113,7 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	private void validatePerformanceRateUuidExists(Node performanceRateNode) {
 		thoroughlyCheck(performanceRateNode)
 				.incompleteValidation()
-				.singleValue(SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
+				.singleValue(ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
 	}
 
 	/**
@@ -121,7 +124,7 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * @return
 	 */
 	private Predicate<SubPopulation> makePerformanceRateUuidFinder(String uuid) {
-		return subPopulation -> uuid.equals(subPopulation.getNumeratorUuid());
+		return subPopulation -> uuid.equalsIgnoreCase(subPopulation.getNumeratorUuid());
 	}
 
 	/**
@@ -133,8 +136,8 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	private void addPerformanceRateValidationMessage(Node node, String performanceUuid) {
 		MeasureConfig config =
 				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-		String message = String.format(INCORRECT_PERFORMANCE_UUID, config.getElectronicMeasureId(),
+		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(config.getElectronicMeasureId(),
 				PERFORMANCE_RATE_ID, performanceUuid);
-		this.getDetails().add(new Detail(message, node.getPath()));
+		addValidationError(Detail.forErrorAndNode(error, node));
 	}
 }

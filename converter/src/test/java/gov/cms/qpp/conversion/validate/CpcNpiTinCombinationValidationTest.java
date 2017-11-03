@@ -2,7 +2,8 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,8 +25,8 @@ public class CpcNpiTinCombinationValidationTest {
 		cpcValidator.internalValidateSingleNode(multipleTinNpiNode);
 
 		assertWithMessage("Must validate with the correct error")
-				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(CpcNpiTinCombinationValidation.AT_LEAST_ONE_NPI_TIN_COMBINATION);
+				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION);
 	}
 
 	@Test

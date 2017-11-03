@@ -28,8 +28,12 @@ public class JsonOutputEncoderTest {
 	@Test
 	public void testAddValidationAndGetValidations() {
 		assertEquals(0, joe.getDetails().size());
-		joe.addValidationError(new Detail("error"));
-		joe.addValidationError(new Detail("another"));
+		Detail detail1 = new Detail();
+		detail1.setMessage("error");
+		Detail detail2 = new Detail();
+		detail2.setMessage("another");
+		joe.addValidationError(detail1);
+		joe.addValidationError(detail2);
 		List<Detail> validations = joe.getDetails();
 		assertThat(validations).hasSize(2);
 		assertThat(validations.get(0).getMessage()).isEqualTo("error");
@@ -41,7 +45,9 @@ public class JsonOutputEncoderTest {
 		List<Detail> validations = joe.getDetails();
 		assertThat(validations).hasSize(0);
 
-		joe.addValidationError(new Detail("err"));
+		Detail detail = new Detail();
+		detail.setMessage("err");
+		joe.addValidationError(detail);
 
 		validations = joe.getDetails();
 		assertThat(validations).isNotNull();

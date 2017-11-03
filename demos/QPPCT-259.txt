@@ -1,6 +1,0 @@
-Sprint 29 Review Presentation - Jeff Benton
-QPPCT - 259
-1. Open up Visual Studio and Run the HITS solution.
-2. Execute the automated test for hitting the endpoint in IMPL with the latest valid QRDA III file submission
-3. Show that when the test runs the API driver is receiving a 422 error.
-4. Explain the next steps for finishing the automation of this ticket.
