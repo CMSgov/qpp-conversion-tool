@@ -1,16 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.After;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,11 +9,22 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.After;
+import org.junit.Test;
+
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 public class ClinicalDocumentValidatorTest {
 
-	private static final String EXPECTED_NO_SECTION = "Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child";
 	private static final String CLINICAL_DOCUMENT_ERROR_FILE = "angerClinicalDocumentValidations.err.json";
 
 	@After
@@ -75,8 +76,8 @@ public class ClinicalDocumentValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("error should be about missing section node")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(EXPECTED_NO_SECTION);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD);
 	}
 
 	@Test
@@ -90,8 +91,8 @@ public class ClinicalDocumentValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("error should be about missing section node")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(EXPECTED_NO_SECTION);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD);
 	}
 
 	@Test
@@ -108,9 +109,9 @@ public class ClinicalDocumentValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("error should be about missing missing program name")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
-						ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME,
+						ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME);
 	}
 
 	@Test
@@ -159,8 +160,8 @@ public class ClinicalDocumentValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Should contain one error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ACI_SECTIONS);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS);
 	}
 
 	@Test
@@ -175,8 +176,8 @@ public class ClinicalDocumentValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Should contain one error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(ClinicalDocumentValidator.CONTAINS_DUPLICATE_IA_SECTIONS);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS);
 	}
 
 	@Test
@@ -191,8 +192,8 @@ public class ClinicalDocumentValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Should contain one error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(ClinicalDocumentValidator.CONTAINS_DUPLICATE_ECQM_SECTIONS);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS);
 	}
 
 	@Test
@@ -231,10 +232,10 @@ public class ClinicalDocumentValidatorTest {
 				.that(errors).hasSize(5);
 
 		assertWithMessage("Must contain the correct errors")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsAllOf(ClinicalDocumentValidator.CONTAINS_PROGRAM_NAME,
-						ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME,
-						ReportingParametersActValidator.SINGLE_PERFORMANCE_START);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsAllOf(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME,
+						ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME,
+						ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START);
 	}
 
 	@Test
@@ -247,8 +248,8 @@ public class ClinicalDocumentValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must contain the error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(ClinicalDocumentValidator.INCORRECT_PROGRAM_NAME);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME);
 	}
 
 	private List<Detail> getErrors(AllErrors content) {

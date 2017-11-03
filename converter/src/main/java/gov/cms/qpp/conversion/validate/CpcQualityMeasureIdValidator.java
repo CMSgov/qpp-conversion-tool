@@ -7,6 +7,8 @@ import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
@@ -29,12 +31,6 @@ import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDeco
 @Validator(value = TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, program = Program.CPC)
 public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
-	static final String INVALID_PERFORMANCE_RATE_COUNT =
-			"Must contain correct number of performance rate(s). Correct Number is %s";
-	static final String MISSING_STRATA = "Missing strata %s for %s measure (%s)";
-	static final String STRATA_MISMATCH = "Amount of stratifications %d does not meet expectations %d "
-			+ "for %s measure (%s). Expected strata: %s";
-
 	/**
 	 * Validates node of all criteria specified for CPC Plus
 	 * <ul>
@@ -51,9 +47,9 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		int requiredPerformanceRateCount = measureConfig.getStrata().size();
 
 		thoroughlyCheck(node)
-				.childMinimum(String.format(INVALID_PERFORMANCE_RATE_COUNT, requiredPerformanceRateCount),
+				.childMinimum(ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-				.childMaximum(String.format(INVALID_PERFORMANCE_RATE_COUNT, requiredPerformanceRateCount),
+				.childMaximum(ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 
 	}
@@ -82,7 +78,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childUuidFinder =
-						makeUuidChildFinder(check, SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
+						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
 
 				Node existingUuidChild = node
 						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
@@ -109,11 +105,12 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				.collect(Collectors.toList());
 
 		if (strataNodes.size() != sub.getStrata().size()) {
-			String message = String.format(STRATA_MISMATCH, strataNodes.size(), sub.getStrata().size(),
+			LocalizedError error = ErrorCode.CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH.format(strataNodes.size(),
+					sub.getStrata().size(),
 					node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 					node.getValue(MEASURE_POPULATION),
 					sub.getStrata());
-			this.getDetails().add(new Detail(message, node.getPath()));
+			addValidationError(Detail.forErrorAndNode(error, node));
 		}
 
 		sub.getStrata().forEach(stratum -> {
@@ -121,10 +118,10 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					child.getValue(StratifierDecoder.STRATIFIER_ID).equals(stratum);
 
 			if (strataNodes.stream().noneMatch(seek)) {
-				String message = String.format(MISSING_STRATA, stratum,
+				LocalizedError error = ErrorCode.CPC_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,
 						node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 						node.getValue(MEASURE_POPULATION));
-				this.getDetails().add(new Detail(message, node.getPath()));
+				addValidationError(Detail.forErrorAndNode(error, node));
 			}
 		});
 	}
