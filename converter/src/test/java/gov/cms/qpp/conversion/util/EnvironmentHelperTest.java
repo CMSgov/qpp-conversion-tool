@@ -1,37 +1,37 @@
 package gov.cms.qpp.conversion.util;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Properties;
 import java.util.UUID;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-public class EnvironmentHelperTest {
+class EnvironmentHelperTest {
 
 	private static Properties properties;
 
-	@BeforeClass
-	public static void saveProperties() {
+	@BeforeAll
+	static void saveProperties() {
 		properties = new Properties(System.getProperties());
 	}
 
-	@AfterClass
-	public static void teardown() {
+	@AfterAll
+	static void teardown() {
 		System.setProperties(properties);
 	}
 
 	@Test
-	public void testIsPresentOnRandomString() {
+	void testIsPresentOnRandomString() {
 		String random = UUID.randomUUID().toString();
 		assertWithMessage("Should not have an environment variable with randomized key")
 				.that(EnvironmentHelper.isPresent(random)).isFalse();
 	}
 
 	@Test
-	public void testIsPresentOnAdded() {
+	void testIsPresentOnAdded() {
 		String someKey = UUID.randomUUID().toString();
 		System.setProperty(someKey, "nothing important");
 		assertWithMessage("%s should be set to %s", someKey, "nothing important")
