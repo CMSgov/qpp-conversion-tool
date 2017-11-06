@@ -1,6 +1,5 @@
 package gov.cms.qpp.acceptance;
 
-
 import com.jayway.jsonpath.PathNotFoundException;
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -13,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class XpathJsonPathComparisonTest {
+
 	private static JsonWrapper wrapper = new JsonWrapper(false);
 	private static Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 	private static JsonPathToXpathHelper helper;
