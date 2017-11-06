@@ -5,7 +5,6 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,8 +15,8 @@ import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
@@ -31,13 +30,13 @@ import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
-public class SingularAttributeTest {
+class SingularAttributeTest {
 
 	private static final String NAMESPACE_URI = "urn:hl7-org:v3";
 	private static Map<String, Goods> corrMap;
@@ -46,9 +45,9 @@ public class SingularAttributeTest {
 	private static MarkupManipulator manipulator;
 
 
-	@BeforeClass
+	@BeforeAll
 	@SuppressWarnings("unchecked")
-	public static void before() throws NoSuchFieldException, IllegalAccessException,
+	static void before() throws NoSuchFieldException, IllegalAccessException,
 			IOException, SAXException, ParserConfigurationException {
 		manipulator = new MarkupManipulator.MarkupManipulatorBuilder()
 				.setPathname("../qrda-files/valid-QRDA-III-latest.xml")
@@ -91,14 +90,14 @@ public class SingularAttributeTest {
 	// due to ugliness with multiple tin decoding
 
 	@Test
-	public void blanketDoubleUp() {
+	void blanketDoubleUp() {
 		assertWithMessage("failed duplication scenarios should equal the inclusion count")
 				.that(blanketCheck(false))
 				.isEqualTo(inclusionCount);
 	}
 
 	@Test
-	public void blanketRemoval() {
+	void blanketRemoval() {
 		assertWithMessage("failed removal scenarios should equal the inclusion count")
 				.that(blanketCheck(true))
 				.isEqualTo(inclusionCount);
@@ -123,7 +122,7 @@ public class SingularAttributeTest {
 	}
 
 	@Test
-	public void doubleUpProgramName() {
+	void doubleUpProgramName() {
 		List<Detail> details = executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
 				ClinicalDocumentDecoder.PROGRAM_NAME, false);
 
@@ -137,7 +136,7 @@ public class SingularAttributeTest {
 	}
 
 	@Test
-	public void noProgramName() {
+	void noProgramName() {
 		List<Detail> details = executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
 				ClinicalDocumentDecoder.PROGRAM_NAME, true);
 
