@@ -1,14 +1,5 @@
 package gov.cms.qpp.acceptance.cpc;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.google.common.truth.Truth;
-
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -19,16 +10,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.TransformException;
+
 import static com.google.common.truth.Truth.assertThat;
 
-public class CpcPlusAcceptanceTest {
+class CpcPlusAcceptanceTest {
 
 	private static final Path BASE = Paths.get("src/test/resources/cpc_plus/");
 	private static final Path SUCCESS = BASE.resolve("success");
 	private static final Path FAILURE = BASE.resolve("failure");
 
 	@Test
-	public void testCpcPlusFileSuccesses() throws IOException {
+	void testCpcPlusFileSuccesses() throws IOException {
 		Map<Path, AllErrors> errors = new HashMap<>();
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(SUCCESS)) {
 			for (Path entry : stream) {
@@ -47,7 +45,7 @@ public class CpcPlusAcceptanceTest {
 	}
 
 	@Test
-	public void testCpcPlusFileFailures() throws IOException {
+	void testCpcPlusFileFailures() throws IOException {
 		List<Path> successesThatShouldBeErrors = new ArrayList<>();
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(FAILURE)) {
 			for (Path entry : stream) {
@@ -66,7 +64,7 @@ public class CpcPlusAcceptanceTest {
 	}
 
 	@Test
-	public void testCpcPlusFilesAreAllChecked() throws IOException {
+	void testCpcPlusFilesAreAllChecked() throws IOException {
 		long invalidFiles = Files.list(BASE).filter(file -> {
 			String fileName = file.toString();
 
