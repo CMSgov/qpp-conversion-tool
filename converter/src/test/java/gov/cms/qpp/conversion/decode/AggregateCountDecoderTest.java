@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AggregateCountDecoderTest {
+class AggregateCountDecoderTest {
 
     private static final String XML_FRAGMENT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
             + "<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"

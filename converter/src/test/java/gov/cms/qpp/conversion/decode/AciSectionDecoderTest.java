@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 
-public class AciSectionDecoderTest {
+class AciSectionDecoderTest {
 
 	@Test
 	void testInternalDecode() {

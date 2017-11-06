@@ -20,7 +20,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 /**
  * Test class for MultipleTinsDecoder
  */
-public class MultipleTinsDecoderTest {
+class MultipleTinsDecoderTest {
 
 	private static final String TEST_NPI1 = "NPI-1";
 	private static final String TEST_NPI2 = "NPI-2";

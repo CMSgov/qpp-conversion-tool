@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class DecoderTest {
+class DecoderTest {
 
 	private final Set<TemplateId> templateIds = EnumSet.of(
 			TemplateId.CLINICAL_DOCUMENT,

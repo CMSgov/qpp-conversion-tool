@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.Decoder;
 import org.jdom2.Element;
 
 @Decoder(TemplateId.QED)
-public class QedDecoder extends QppXmlDecoder {
+class QedDecoder extends QppXmlDecoder {
 
 	public QedDecoder(Context context) {
 		super(context);

@@ -14,7 +14,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 /**
  * Test class for the IaMeasureDecoder
  */
-public class IaMeasureDecoderTest {
+class IaMeasureDecoderTest {
 	String xmlFragment;
 
 	@BeforeEach

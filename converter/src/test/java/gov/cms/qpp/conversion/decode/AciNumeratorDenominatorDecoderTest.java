@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AciNumeratorDenominatorDecoderTest {
+class AciNumeratorDenominatorDecoderTest {
 
 	private static final String MEASURE_ID = "ACI-PEA-1";
 

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AciMeasurePerformedRnRDecoderTest {
+class AciMeasurePerformedRnRDecoderTest {
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
 
 	@Test

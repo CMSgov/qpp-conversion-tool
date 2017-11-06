@@ -11,7 +11,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
  * AciProportionDenominatorDecoderTest JUnit test for
  * AciProportionDenominatorDecoder
  */
-public class AciProportionDenominatorDecoderTest {
+class AciProportionDenominatorDecoderTest {
 
 	/**
 	 * decodeACIProportionDenominatorAsNode given a well formed xml fragment

@@ -7,7 +7,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 /**
  * Test class for DecodeResult satisfy JaCoCo code coverage
  */
-public class DecodeResultTest {
+class DecodeResultTest {
 
 	@Test
 	void decodeResultTest() {

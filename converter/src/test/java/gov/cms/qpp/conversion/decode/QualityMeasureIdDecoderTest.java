@@ -13,7 +13,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 /**
  * Test for the QualityMeasureIdDecoder
  */
-public class QualityMeasureIdDecoderTest {
+class QualityMeasureIdDecoderTest {
 	private QualityMeasureIdDecoder objectUnderTest;
 
 	@BeforeEach

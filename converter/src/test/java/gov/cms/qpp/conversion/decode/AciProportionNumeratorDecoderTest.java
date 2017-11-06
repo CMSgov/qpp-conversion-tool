@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AciProportionNumeratorDecoderTest {
+class AciProportionNumeratorDecoderTest {
 
 	private static final String NUMERATOR_NODE_NAME = "aciProportionNumerator";
 

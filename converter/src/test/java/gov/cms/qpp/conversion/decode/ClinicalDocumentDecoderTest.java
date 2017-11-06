@@ -19,7 +19,7 @@ import org.reflections.util.ClasspathHelper;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class ClinicalDocumentDecoderTest {
+class ClinicalDocumentDecoderTest {
 
 	private static final String ENTITY_ID_VALUE = "AR000000";
 	private static String xmlFragment;

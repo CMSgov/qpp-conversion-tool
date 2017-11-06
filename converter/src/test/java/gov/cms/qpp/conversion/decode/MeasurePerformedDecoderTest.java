@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class MeasurePerformedDecoderTest {
+class MeasurePerformedDecoderTest {
 
 	private Context context;
 	private String xmlFragment;

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
-public class MeasureDataDecoderTest {
+class MeasureDataDecoderTest {
 
 	private static String happy;
 

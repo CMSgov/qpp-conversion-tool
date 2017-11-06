@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class QualityMeasureScopedTest {
+class QualityMeasureScopedTest {
 	private static String location = "src/test/resources/fixtures/qppct298/cms137v5.xml";
 
 
