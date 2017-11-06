@@ -15,7 +15,7 @@ import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
-public class IaSectionRoundTripTest {
+class IaSectionRoundTripTest {
 
 	Path file;
 

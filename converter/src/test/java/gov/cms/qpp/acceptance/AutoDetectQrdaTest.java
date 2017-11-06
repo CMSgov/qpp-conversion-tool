@@ -19,7 +19,7 @@ import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
-public class AutoDetectQrdaTest {
+class AutoDetectQrdaTest {
 
 	private static final String EXPECTED_ERROR_1 = "The file is not a QRDA-III XML document";
 	private static final String EXPECTED_ERROR_2 = "The XML file is an unknown document";
