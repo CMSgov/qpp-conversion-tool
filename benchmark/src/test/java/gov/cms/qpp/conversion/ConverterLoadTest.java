@@ -11,9 +11,9 @@ import org.apache.jmeter.testelement.TestPlan;
 import org.apache.jmeter.threads.ThreadGroup;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -27,10 +27,11 @@ import java.util.Map;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class ConverterLoadTest extends LoadTestSuite {
+
 	private static StandardJMeterEngine jmeter;
 
-	@BeforeClass
-	public static void setupClass() throws IOException {
+	@BeforeAll
+	static void setupClass() throws IOException {
 		jmeter = new StandardJMeterEngine();
 
 		//JMeter initialization (properties, log levels, locale, etc)
@@ -64,13 +65,13 @@ public class ConverterLoadTest extends LoadTestSuite {
 		return fileArg;
 	}
 
-	@Before
-	public void rampup() throws IOException {
+	@BeforeEach
+	void rampup() throws IOException {
 		executePlan(1, 5, 3);
 	}
 
 	@Test
-	public void converterLoad10Test() throws IOException {
+	void converterLoad10Test() throws IOException {
 		Map<String, String> results = executePlan(1, 10, 5);
 
 
@@ -81,7 +82,7 @@ public class ConverterLoadTest extends LoadTestSuite {
 	}
 
 	@Test
-	public void converterFindBreakingPoint() throws IOException {
+	void converterFindBreakingPoint() throws IOException {
 		int errorCount = 0;
 		int numThreads = 0;
 		while (errorCount < 1) {
