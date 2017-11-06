@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -59,7 +59,7 @@ public class AggregateCountDecoderTest {
             + "</observation>";
 
     @Test
-    public void testInternalDecode() throws Exception {
+    void testInternalDecode() throws Exception {
         Namespace rootNs = Namespace.getNamespace("urn:hl7-org:v3");
         Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
@@ -82,7 +82,7 @@ public class AggregateCountDecoderTest {
     }
 
     @Test
-    public void testAggregateCountDecoderIgnoresInvalidElements() throws Exception {
+    void testAggregateCountDecoderIgnoresInvalidElements() throws Exception {
 
         Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
         Node node = root.getChildNodes().get(0);
@@ -100,7 +100,7 @@ public class AggregateCountDecoderTest {
     }
 
     @Test
-    public void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws Exception {
+    void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws Exception {
 
         Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(ANOTHER_XML_FRAGMENT));
 

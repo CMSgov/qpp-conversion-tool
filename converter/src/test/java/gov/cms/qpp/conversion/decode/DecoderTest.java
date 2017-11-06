@@ -6,7 +6,7 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.EnumSet;
 import java.util.Set;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -35,7 +35,7 @@ public class DecoderTest {
 			TemplateId.IA_MEASURE);
 
 	@Test
-	public void decodeTemplateIds() throws Exception {
+	void decodeTemplateIds() throws Exception {
 		Registry<InputDecoder> registry = new Registry<>(new Context(), Decoder.class);
 
 		for (TemplateId templateId : templateIds) {

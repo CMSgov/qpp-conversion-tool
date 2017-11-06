@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Element;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -19,7 +19,7 @@ public class QualitySectionDecoderTest {
 	 * @throws XmlException when parsing invalid xml fragment
 	 */
 	@Test
-	public void testInternalDecodeValidXml() throws XmlException {
+	void testInternalDecodeValidXml() throws XmlException {
 
 		String validXML = getValidXML();
 

@@ -8,9 +8,9 @@ import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
@@ -22,35 +22,35 @@ public class MeasureDataDecoderTest {
 	private Context context;
 	private Node placeholder;
 
-	@BeforeClass
-	public static void setup() throws IOException {
+	@BeforeAll
+	static void setup() throws IOException {
 		happy = TestHelper.getFixture("measureDataHappy.xml");
 	}
 
-	@Before
-	public void before() throws XmlException {
+	@BeforeEach
+	void before() throws XmlException {
 		context = new Context();
 		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder(context);
 		placeholder = measureDataDecoder.decode(XmlUtils.stringToDom(happy));
 	}
 
 	@Test
-	public void testDecodeOfDenomMeasureData() {
+	void testDecodeOfDenomMeasureData() {
 		sharedTest(SubPopulations.DENOM);
 	}
 
 	@Test
-	public void testDecodeOfNumerMeasureData() {
+	void testDecodeOfNumerMeasureData() {
 		sharedTest(SubPopulations.NUMER);
 	}
 
 	@Test
-	public void testDecodeOfDenexMeasureData() {
+	void testDecodeOfDenexMeasureData() {
 		sharedTest(SubPopulations.DENEX);
 	}
 
 	@Test
-	public void testDecodeOfDenexcepMeasureData() {
+	void testDecodeOfDenexcepMeasureData() {
 		sharedTest(SubPopulations.DENEXCEP);
 	}
 

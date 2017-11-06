@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -17,7 +17,7 @@ public class AciMeasurePerformedRnRDecoderTest {
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
 
 	@Test
-	public void internalDecodeReturnsTreeContinue() {
+	void internalDecodeReturnsTreeContinue() {
 		//set-up
 		AciMeasurePerformedRnRDecoder objectUnderTest = new AciMeasurePerformedRnRDecoder(new Context());
 		
@@ -55,7 +55,7 @@ public class AciMeasurePerformedRnRDecoderTest {
 	}
 
 	@Test
-	public void testUpperLevel() throws XmlException, IOException {
+	void testUpperLevel() throws XmlException, IOException {
 		String needsFormattingXml = TestHelper.getFixture("AciMeasurePerformedIsolated.xml");
 		String xml = String.format(needsFormattingXml, MEASURE_ID);
 		Node wrapperNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xml));

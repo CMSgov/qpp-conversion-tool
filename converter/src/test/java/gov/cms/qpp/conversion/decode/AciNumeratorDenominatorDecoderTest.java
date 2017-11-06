@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.util.List;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -17,7 +17,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	private static final String MEASURE_ID = "ACI-PEA-1";
 
 	@Test
-	public void decodeAggregateCountAsNode() throws Exception {
+	void decodeAggregateCountAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString(
 				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
@@ -36,7 +36,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void decodeAciNumeratorDenominatorNullValueAsNode() throws Exception {
+	void decodeAciNumeratorDenominatorNullValueAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString(
 				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\" >",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
@@ -52,7 +52,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void decodeAciNumeratorDenominatorNullElementAsNode() throws Exception {
+	void decodeAciNumeratorDenominatorNullElementAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString(
 				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
@@ -67,7 +67,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void decodeValidAciNumeratorDenominatorTest() throws XmlException {
+	void decodeValidAciNumeratorDenominatorTest() throws XmlException {
 		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
 		Node numeratorDenominatorNode = aciMeasureNode.getChildNodes().get(0);
 		int numberNodes = countNodes(aciMeasureNode);
@@ -109,7 +109,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void decodeAciNumeratorDenominatorExtraneousXMLTest() throws XmlException {
+	void decodeAciNumeratorDenominatorExtraneousXMLTest() throws XmlException {
 		String xmlFragment = getValidXmlFragment();
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
@@ -142,7 +142,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void testInternalDecode() throws Exception {
+	void testInternalDecode() throws Exception {
 		//set-up
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
