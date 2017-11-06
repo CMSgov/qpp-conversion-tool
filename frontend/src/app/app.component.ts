@@ -25,6 +25,9 @@ export class AppComponent {
 			console.log('Endpoint Response:', response);
 			this.status = status;
 			this.responseJson = response;
+			if (item.isCancel) {
+				return;
+			}
 			this.response = JSON.parse(response);
 			if (item.isError) {
 				this.error = true;
