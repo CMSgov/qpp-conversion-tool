@@ -1,26 +1,27 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.reflections.util.ClasspathHelper;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.reflections.util.ClasspathHelper;
 
-public class MeasureConfigTest {
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+class MeasureConfigTest {
 
 	private static MeasureConfig theConfig = null;
 	private static List<MeasureConfig> measureConfigs = null;
 
-	@BeforeClass
-	public static void setup() {
+	@BeforeAll
+	static void setup() {
 		ObjectMapper mapper = new ObjectMapper();
 
 		InputStream stream =
@@ -37,85 +38,85 @@ public class MeasureConfigTest {
 	}
 
 	@Test
-	public void testConfigsDeserialization() {
+	void testConfigsDeserialization() {
 		assertWithMessage("measure configs should not be empty")
 				.that(measureConfigs).hasSize(1);
 	}
 
 	@Test
-	public void verifyMeasureConfigCategory() {
+	void verifyMeasureConfigCategory() {
 		assertWithMessage("category should be aci")
 				.that(theConfig.getCategory()).isEqualTo("aci");
 	}
 
 	@Test
-	public void verifyMeasureConfigFirstPerfYear() {
+	void verifyMeasureConfigFirstPerfYear() {
 		assertWithMessage("firstPerformanceYear should be 2017")
 				.that(theConfig.getFirstPerformanceYear()).isEqualTo(2017);
 	}
 
 	@Test
-	public void verifyMeasureConfigLastPerfYear() {
+	void verifyMeasureConfigLastPerfYear() {
 		assertWithMessage("lastPerformanceYear should be 0")
 				.that(theConfig.getLastPerformanceYear()).isEqualTo(0);
 	}
 
 	@Test
-	public void verifyMeasureConfigMetricType() {
+	void verifyMeasureConfigMetricType() {
 		assertWithMessage("metricType should be proportion")
 				.that(theConfig.getMetricType()).isEqualTo("proportion");
 	}
 
 	@Test
-	public void verifyMeasureConfigMeasureId() {
+	void verifyMeasureConfigMeasureId() {
 		assertWithMessage("measureId should be ACI_EP_1")
 				.that(theConfig.getMeasureId()).isEqualTo("ACI_EP_1");
 	}
 
 	@Test
-	public void verifyMeasureConfigTitle() {
+	void verifyMeasureConfigTitle() {
 		assertWithMessage("title should be e-Prescribing")
 				.that(theConfig.getTitle()).isEqualTo("e-Prescribing");
 	}
 
 	@Test
-	public void verifyMeasureConfigDescription() {
+	void verifyMeasureConfigDescription() {
 		String expectation = "At least one permissible prescription written by the MIPS eligible clinician is queried for a drug formulary and transmitted electronically using certified EHR technology.";
 		assertWithMessage("description should be long")
 				.that(theConfig.getDescription()).isEqualTo(expectation);
 	}
 
 	@Test
-	public void verifyMeasureConfigIsRequired() {
+	void verifyMeasureConfigIsRequired() {
 		assertWithMessage("isRequired should be true")
 				.that(theConfig.isRequired()).isTrue();
 	}
 
 	@Test
-	public void verifyMeasureConfigMeasureSet() {
+	void verifyMeasureConfigMeasureSet() {
 		assertWithMessage("measureSet should be null")
 				.that(theConfig.getMeasureSet()).isNull();
 	}
 
 	@Test
-	public void verifyMeasureConfigIsBonus() {
+	void verifyMeasureConfigIsBonus() {
 		assertWithMessage("isBonus should be false")
 				.that(theConfig.isBonus()).isFalse();
 	}
 
 	@Test
-	public void verifyMeasureConfigObjective() {
+	void verifyMeasureConfigObjective() {
 		assertWithMessage("objective should be electronicPrescribing")
 				.that(theConfig.getObjective()).isEqualTo("electronicPrescribing");
 	}
 
 	@Test
-	public void verifyMeasureConfigProportion() {
+	void verifyMeasureConfigProportion() {
 		assertThat(theConfig.isProportion()).isTrue();
 	}
 
 	@Test
-	public void testSubPopulations() {
+	void testSubPopulations() {
 		SubPopulation subPopulation1 = new SubPopulation();
 		subPopulation1.setNumeratorUuid("subPopulation1");
 
