@@ -1,6 +1,5 @@
 package gov.cms.qpp.test;
 
-
 import org.junit.jupiter.api.BeforeAll;
 
 /**
