@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.correlation;
 
-
 import com.google.common.collect.Lists;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -18,7 +17,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class PathCorrelatorTest {
+class PathCorrelatorTest {
 
 	@Test
 	void testPrivateConstructor() throws NoSuchMethodException, IllegalAccessException,
