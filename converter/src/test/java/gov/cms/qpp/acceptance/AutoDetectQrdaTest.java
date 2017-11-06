@@ -1,23 +1,23 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.XmlInputDecoder;
-import gov.cms.qpp.conversion.xml.XmlException;
-import gov.cms.qpp.conversion.xml.XmlUtils;
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
 
-import static com.google.common.truth.Truth.assertThat;
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.XmlInputDecoder;
+import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
 public class AutoDetectQrdaTest {
 
@@ -25,23 +25,19 @@ public class AutoDetectQrdaTest {
 	private static final String EXPECTED_ERROR_2 = "The XML file is an unknown document";
 
 	private PrintStream stderr;
-	
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
 
-	@Before
-	public void setup() throws Exception {
+	@BeforeEach
+	void setup() throws Exception {
 		stderr = System.err;
 	}
 
-	@After
-	public void teardown() throws Exception {
+	@AfterEach
+	void teardown() throws Exception {
 		System.setErr(stderr);
 	}
 
 	@Test
-	public void testNoTemplateId() throws IOException, XmlException {
-
+	void testNoTemplateId() throws IOException, XmlException {
 		//set-up
 		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III"), Charset.defaultCharset());
 
@@ -57,7 +53,7 @@ public class AutoDetectQrdaTest {
 	}
 
 	@Test
-	public void testNoClinicalDocumentElement() throws IOException, XmlException {
+	void testNoClinicalDocumentElement() throws IOException, XmlException {
 
 		//set-up
 		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III-root"), Charset.defaultCharset());
