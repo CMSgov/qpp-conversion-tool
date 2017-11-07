@@ -1,13 +1,17 @@
 package gov.cms.qpp.conversion.model.validation;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 class MeasureConfigsTest {
 
@@ -24,14 +28,18 @@ class MeasureConfigsTest {
 
 	@Test
 	void testNonExistingMeasureDataFile() {
-		Assertions.assertThrows(IllegalArgumentException.class, () ->
+		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () ->
 			MeasureConfigs.setMeasureDataFile("Bogus file name"));
+
+		assertThat(thrown).hasCauseThat().isInstanceOf(IOException.class);
 	}
 
 	@Test
 	void testBadFormattedMeasureDataFile() {
-		Assertions.assertThrows(IllegalArgumentException.class, () ->
+		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () ->
 			MeasureConfigs.setMeasureDataFile("bad_formatted_measures_data.json"));
+
+		assertThat(thrown).hasCauseThat().isInstanceOf(JsonMappingException.class);
 	}
 
 	@Test

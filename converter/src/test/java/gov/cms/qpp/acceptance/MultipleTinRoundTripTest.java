@@ -19,7 +19,7 @@ import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 
 @Disabled
-public class MultipleTinRoundTripTest {
+class MultipleTinRoundTripTest {
 
 	private static JsonWrapper wrapper = new JsonWrapper();
 	private static ReadContext ctx;

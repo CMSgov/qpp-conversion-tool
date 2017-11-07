@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
-public class PathQrdaSourceTest extends QrdaSourceTestSuite {
+class PathQrdaSourceTest extends QrdaSourceTestSuite {
 
 	PathQrdaSourceTest() {
 		super("arbitrary.txt", new PathQrdaSource(Paths.get("src/test/resources/arbitrary.txt")));

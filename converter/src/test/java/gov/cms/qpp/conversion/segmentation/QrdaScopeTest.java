@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-public class QrdaScopeTest {
+class QrdaScopeTest {
 
 	@Test
 	void testGetTemplates() {
