@@ -1,14 +1,16 @@
 package gov.cms.qpp.conversion.xml;
 
-import org.jdom2.Element;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.jdom2.Element;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class XmlUtilsTest {
+class XmlUtilsTest {
+
 	private String xmlFragment = XmlUtils.buildString("<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
 			"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
 			"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
@@ -19,14 +21,14 @@ public class XmlUtilsTest {
 			"  </observation>", "</root>");
 
 	@Test
-	public void stringToDomCanParse() throws Exception {
+	void stringToDomCanParse() throws Exception {
 		Element dom = XmlUtils.stringToDom(xmlFragment);
 		assertWithMessage("returned dom should not be null")
 				.that(dom).isNotNull();
 	}
 
 	@Test
-	public void stringToDomRootChild() throws Exception {
+	void stringToDomRootChild() throws Exception {
 		Element dom = XmlUtils.stringToDom(xmlFragment);
 		List<Element> childElement = dom.getChildren();
 		assertWithMessage("test root has one child")
@@ -35,7 +37,7 @@ public class XmlUtilsTest {
 	}
 
 	@Test
-	public void stringToDomOtherDescendants() throws Exception {
+	void stringToDomOtherDescendants() throws Exception {
 		Element dom = XmlUtils.stringToDom(xmlFragment);
 		List<Element> childElement = dom.getChildren();
 		List<Element> leafElements = childElement.get(0).getChildren();
@@ -45,32 +47,26 @@ public class XmlUtilsTest {
 	}
 
 	@Test
-	public void stringToDom_null() throws Exception {
+	void stringToDom_null() throws Exception {
 		Element dom = XmlUtils.stringToDom(null);
 
 		assertWithMessage("returned dom should be null")
 				.that(dom).isNull();
 	}
 	
-	@Test(expected=XmlException.class)
-	public void stringToDom_emptyString() throws Exception {
-		Element dom = XmlUtils.stringToDom("");
-
-		assertWithMessage("returned dom should be null")
-				.that(dom).isNull();
+	@Test
+	void stringToDom_emptyString() throws Exception {
+		Assertions.assertThrows(XmlException.class, () -> XmlUtils.stringToDom(""));
 	}
 	
 
-	@Test(expected=XmlException.class)
-	public void stringToDom_invalidXML() throws Exception {
-		Element dom = XmlUtils.stringToDom("invalid XML");
-
-		assertWithMessage("returned dom should be null")
-				.that(dom).isNull();
+	@Test
+	void stringToDom_invalidXML() throws Exception {
+		Assertions.assertThrows(XmlException.class, () -> XmlUtils.stringToDom("invalid XML"));
 	}
 
 	@Test
-	public void privateConstructorTest() throws Exception {
+	void privateConstructorTest() throws Exception {
 		// reflection concept to get constructor of a Singleton class.
 		Constructor<XmlUtils> constructor = XmlUtils.class.getDeclaredConstructor();
 		// change the accessibility of constructor for outside a class object creation.

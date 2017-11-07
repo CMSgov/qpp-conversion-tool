@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class InputStreamQrdaSourceTest extends QrdaSourceTestSuite {
+class InputStreamQrdaSourceTest extends QrdaSourceTestSuite {
 
 	private static InputStreamSupplierQrdaSource source(String path) {
 		return new InputStreamSupplierQrdaSource(path, () -> stream(path));
@@ -26,12 +26,12 @@ public class InputStreamQrdaSourceTest extends QrdaSourceTestSuite {
 		}
 	}
 
-	public InputStreamQrdaSourceTest() {
+	InputStreamQrdaSourceTest() {
 		super("src/test/resources/arbitrary.txt", source("src/test/resources/arbitrary.txt"));
 	}
 
 	@Test
-	public void testInputStream() throws IOException {
+	void testInputStream() throws IOException {
 		String actual = IOUtils.toString(stream("src/test/resources/arbitrary.txt"), StandardCharsets.UTF_8);
 		String content = IOUtils.toString(source.toInputStream(), StandardCharsets.UTF_8);
 		assertThat(actual).isEqualTo(content);
