@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FileSelectDirective, FileDropDirective, FileUploader } from '../../node_modules/ng2-file-upload/ng2-file-upload';
 import 'rxjs/Rx' ;
 
-const URL  = 'http://184.73.24.93:2680';
+const URL  = 'https://qpp.cms.gov/api/submissions/converter';
 
 @Component({
 	selector: 'app-root',
@@ -25,6 +25,9 @@ export class AppComponent {
 			console.log('Endpoint Response:', response);
 			this.status = status;
 			this.responseJson = response;
+			if (item.isCancel) {
+				return;
+			}
 			this.response = JSON.parse(response);
 			if (item.isError) {
 				this.error = true;
