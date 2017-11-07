@@ -8,11 +8,11 @@ import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Element;
 import org.jdom2.xpath.XPathHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -20,7 +20,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 /**
  * Test class for MultipleTinsDecoder
  */
-public class MultipleTinsDecoderTest {
+class MultipleTinsDecoderTest {
 
 	private static final String TEST_NPI1 = "NPI-1";
 	private static final String TEST_NPI2 = "NPI-2";
@@ -31,13 +31,13 @@ public class MultipleTinsDecoderTest {
 
 	private Context context;
 
-	@Before
-	public void setup() {
+	@BeforeEach
+	void setup() {
 		context = new Context();
 	}
 
 	@Test
-	public void internalDecode() throws Exception {
+	void internalDecode() throws Exception {
 		Element multipleTinsElement = makeTestElement();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertThat(children).hasSize(4);
@@ -67,7 +67,7 @@ public class MultipleTinsDecoderTest {
 	}
 
 	@Test
-	public void testNullNPI() throws Exception {
+	void testNullNPI() throws Exception {
 
 		Element multipleTinsElement = makeTestElementMissingNPI();
 		List<Node> children = getTestChildren(multipleTinsElement);
@@ -81,7 +81,7 @@ public class MultipleTinsDecoderTest {
 	}
 
 	@Test
-	public void testNullTIN() throws Exception {
+	void testNullTIN() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingTIN();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertWithMessage("Expect that there are three children")
@@ -94,7 +94,7 @@ public class MultipleTinsDecoderTest {
 	}
 
 	@Test
-	public void testNullTINID() throws Exception {
+	void testNullTINID() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingTINID();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertWithMessage("Expect that there are four children")
@@ -103,7 +103,7 @@ public class MultipleTinsDecoderTest {
 	}
 
 	@Test
-	public void testNullNPIID() throws Exception {
+	void testNullNPIID() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingNPIID();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertWithMessage("Expect that there are four children")
@@ -112,7 +112,7 @@ public class MultipleTinsDecoderTest {
 	}
 
 	@Test
-	public void testNullTINIDAndNPIID() throws Exception {
+	void testNullTINIDAndNPIID() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingTINIDAndNPIID();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertWithMessage("Expect that there are three children")
@@ -121,7 +121,7 @@ public class MultipleTinsDecoderTest {
 	}
 
 	@Test
-	public void testNullTaxEl() throws Exception {
+	void testNullTaxEl() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingTaxEl();
 		List<Node> children = getTestChildren(multipleTinsElement);
 		assertWithMessage("Expect that there are three children")
@@ -130,7 +130,7 @@ public class MultipleTinsDecoderTest {
 	}
 
 	@Test
-	public void testPathIsSet() throws Exception {
+	void testPathIsSet() throws Exception {
 		Element multipleTinsElement = makeTestElementMissingTaxEl();
 		Node child = getTestChildren(multipleTinsElement)
 				.stream()

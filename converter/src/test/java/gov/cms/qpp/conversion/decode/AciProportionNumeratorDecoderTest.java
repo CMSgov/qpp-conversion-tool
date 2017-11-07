@@ -3,16 +3,16 @@ package gov.cms.qpp.conversion.decode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AciProportionNumeratorDecoderTest {
+class AciProportionNumeratorDecoderTest {
 
 	private static final String NUMERATOR_NODE_NAME = "aciProportionNumerator";
 
 	@Test
-	public void testInternalDecode() {
+	void testInternalDecode() {
 		Element element = new Element("testElement");
 		Node node = new Node();
 
