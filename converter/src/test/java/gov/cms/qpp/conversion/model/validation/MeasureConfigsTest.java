@@ -1,57 +1,49 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import org.junit.AfterClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.hamcrest.core.Is.isA;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class MeasureConfigsTest {
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+import com.fasterxml.jackson.databind.JsonMappingException;
 
-	@AfterClass
-	public static void resetMeasureConfiguration() {
+class MeasureConfigsTest {
+
+	@AfterAll
+	static void resetMeasureConfiguration() {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
 	@Test
-	public void testGoodMeasureDataFile() {
+	void testGoodMeasureDataFile() {
 		MeasureConfigs.setMeasureDataFile("reduced-test-measures-data.json");
 		//no exception thrown
 	}
 
 	@Test
-	public void testNonExistingMeasureDataFile() {
+	void testNonExistingMeasureDataFile() {
+		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () ->
+			MeasureConfigs.setMeasureDataFile("Bogus file name"));
 
-		//set-up
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectCause(isA(IOException.class));
-
-		//execute
-		MeasureConfigs.setMeasureDataFile("Bogus file name");
+		assertThat(thrown).hasCauseThat().isInstanceOf(IOException.class);
 	}
 
 	@Test
-	public void testBadFormattedMeasureDataFile() {
+	void testBadFormattedMeasureDataFile() {
+		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () ->
+			MeasureConfigs.setMeasureDataFile("bad_formatted_measures_data.json"));
 
-		//set-up
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectCause(isA(JsonMappingException.class));
-
-		//execute
-		MeasureConfigs.setMeasureDataFile("bad_formatted_measures_data.json");
+		assertThat(thrown).hasCauseThat().isInstanceOf(JsonMappingException.class);
 	}
 
 	@Test
-	public void privateConstructorTest() throws Exception {
+	void privateConstructorTest() throws Exception {
 		// reflection concept to get constructor of a Singleton class.
 		Constructor<MeasureConfigs> constructor = MeasureConfigs.class.getDeclaredConstructor();
 		// change the accessibility of constructor for outside a class object creation.
@@ -66,7 +58,7 @@ public class MeasureConfigsTest {
 	}
 
 	@Test
-	public void getMeasureConfigsTest() {
+	void getMeasureConfigsTest() {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		List<MeasureConfig> configurations = MeasureConfigs.getMeasureConfigs();
 		assertWithMessage("Expect the configurations to be a not empty list")
@@ -74,7 +66,7 @@ public class MeasureConfigsTest {
 	}
 
 	@Test
-	public void requiredMeasuresForSectionTest() {
+	void requiredMeasuresForSectionTest() {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		List<String>requiredMeasures = MeasureConfigs.requiredMeasuresForSection("aci");
 		List<String>notRequiredMeasures = MeasureConfigs.requiredMeasuresForSection("quality");

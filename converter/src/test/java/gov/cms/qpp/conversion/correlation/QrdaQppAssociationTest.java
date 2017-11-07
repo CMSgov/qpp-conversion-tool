@@ -1,22 +1,24 @@
 package gov.cms.qpp.conversion.correlation;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-public class QrdaQppAssociationTest {
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+
+class QrdaQppAssociationTest {
+
 	private static JsonWrapper qpp;
 	private static ValueOriginMapper mapper = new ValueOriginMapper();
 
-	@BeforeClass
-	public static void setup() {
+	@BeforeAll
+	static void setup() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Converter converter = new Converter(new PathQrdaSource(path));
 
@@ -24,11 +26,12 @@ public class QrdaQppAssociationTest {
 	}
 
 	@Test
-	public void testAssociation() {
+	void testAssociation() {
 		mapper.mapIt("$", qpp.getObject());
 		mapper.writeAssociations();
 
 		assertWithMessage("registered associations does not match expectation")
 				.that(mapper.getAssociations()).hasSize(60);
 	}
+
 }
