@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.google.common.truth.Truth.assertThat;
 
 class QualityMeasureScopedTest {
 	private static String location = "src/test/resources/fixtures/qppct298/cms137v5.xml";
@@ -29,7 +29,7 @@ class QualityMeasureScopedTest {
 				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulations.IPOP))
 				.count();
 
-		assertEquals(ipops, 2);
+		assertThat(ipops).isEqualTo(2);
 	}
 
 	@Test
@@ -39,7 +39,7 @@ class QualityMeasureScopedTest {
 				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulations.DENOM))
 				.count();
 
-		assertEquals(denom, 2);
+		assertThat(denom).isEqualTo(2);
 	}
 
 	@Test
@@ -49,7 +49,7 @@ class QualityMeasureScopedTest {
 				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulations.DENEX))
 				.count();
 
-		assertEquals(denex, 2);
+		assertThat(denex).isEqualTo(2);
 	}
 
 	@Test
@@ -59,7 +59,7 @@ class QualityMeasureScopedTest {
 				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulations.NUMER))
 				.count();
 
-		assertEquals(numer, 2);
+		assertThat(numer).isEqualTo(2);
 	}
 
 	private Stream<Node> pluckDescendants(Node parent, TemplateId... path) {

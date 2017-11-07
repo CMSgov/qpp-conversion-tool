@@ -17,7 +17,7 @@ class QualityMeasureIdDecoderTest {
 	private QualityMeasureIdDecoder objectUnderTest;
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		objectUnderTest = new QualityMeasureIdDecoder(new Context());
 	}
 
