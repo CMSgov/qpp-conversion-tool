@@ -2,8 +2,10 @@ package gov.cms.qpp.conversion.api.services;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.SSEAwsKeyManagementParams;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
+import com.google.common.base.Strings;
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import org.slf4j.Logger;
@@ -39,12 +41,16 @@ public class StorageServiceImpl extends InOrderActionService<PutObjectRequest, S
 	@Override
 	public CompletableFuture<String> store(String keyName, InputStream inStream) {
 		final String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
-		if (bucketName == null || bucketName.isEmpty()) {
-			API_LOG.warn("No bucket name is specified.");
+		final String kmsKey = environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE);
+		if (Strings.isNullOrEmpty(bucketName) || Strings.isNullOrEmpty(kmsKey)) {
+			API_LOG.warn("No bucket name is specified or no KMS key specified.");
 			return CompletableFuture.completedFuture("");
 		}
 
-		return actOnItem(new PutObjectRequest(bucketName, keyName, inStream, new ObjectMetadata()));
+		PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, inStream, new ObjectMetadata())
+			.withSSEAwsKeyManagementParams(new SSEAwsKeyManagementParams(kmsKey));
+
+		return actOnItem(putObjectRequest);
 	}
 
 	/**

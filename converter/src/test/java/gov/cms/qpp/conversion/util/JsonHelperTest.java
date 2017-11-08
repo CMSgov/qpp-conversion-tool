@@ -1,8 +1,7 @@
 package gov.cms.qpp.conversion.util;
 
-import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import org.junit.Test;
-import org.reflections.util.ClasspathHelper;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -10,16 +9,18 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
+import org.reflections.util.ClasspathHelper;
+
+import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 
 /**
  * Test class to increase JaCoCo code coverage
  */
-public class JsonHelperTest {
+class JsonHelperTest {
 
 	@Test
-	public void privateConstructorTest() throws Exception {
+	void privateConstructorTest() throws Exception {
 		// reflection concept to get constructor of a Singleton class.
 		Constructor<JsonHelper> constructor = JsonHelper.class.getDeclaredConstructor();
 		// change the accessibility of constructor for outside a class object creation.
@@ -34,7 +35,7 @@ public class JsonHelperTest {
 	}
 
 	@Test
-	public void readJsonAtJsonPath() throws Exception {
+	void readJsonAtJsonPath() throws Exception {
 		String measureDataFileName = "measures-data.json";
 		List<MeasureConfig> configurations;
 		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(measureDataFileName);
@@ -45,7 +46,7 @@ public class JsonHelperTest {
 	}
 
 	@Test
-	public void exceptionForReadJsonInputStream() {
+	void exceptionForReadJsonInputStream() {
 		String testJson = "{ \"DogCow\": [ }";
 
 		try {
@@ -60,7 +61,7 @@ public class JsonHelperTest {
 	}
 
 	@Test
-	public void exceptionForReadJsonString() {
+	void exceptionForReadJsonString() {
 		String testJson = "{ \"DogCow\": [ }";
 
 		try {

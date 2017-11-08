@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.decode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -11,7 +11,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
  * AciProportionDenominatorDecoderTest JUnit test for
  * AciProportionDenominatorDecoder
  */
-public class AciProportionDenominatorDecoderTest {
+class AciProportionDenominatorDecoderTest {
 
 	/**
 	 * decodeACIProportionDenominatorAsNode given a well formed xml fragment
@@ -22,7 +22,7 @@ public class AciProportionDenominatorDecoderTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void decodeACIProportionDenominatorAsNode() throws Exception {
+	void decodeACIProportionDenominatorAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 				+ " <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
@@ -58,7 +58,7 @@ public class AciProportionDenominatorDecoderTest {
 	}
 
 	@Test
-	public void decodeInvalidACIProportionDenominatorAsNode() throws Exception {
+	void decodeInvalidACIProportionDenominatorAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 			+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 			+ " <observation classCode=\"OBS\" moodCode=\"EVN\">\n"

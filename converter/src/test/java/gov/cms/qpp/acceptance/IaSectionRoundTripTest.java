@@ -1,29 +1,31 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.Before;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class IaSectionRoundTripTest {
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.util.JsonHelper;
+
+class IaSectionRoundTripTest {
+
 	Path file;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		file = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 	}
 
 	@Test
-	public void testIaSectionConvertsIaCategory() throws IOException {
+	void testIaSectionConvertsIaCategory() throws IOException {
 		Converter converter = new Converter(new PathQrdaSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaCategory = JsonHelper.readJsonAtJsonPath(qpp.toString(),
@@ -35,7 +37,7 @@ public class IaSectionRoundTripTest {
 	}
 
 	@Test
-	public void testIaSectionConvertsIaMeasureId() throws IOException {
+	void testIaSectionConvertsIaMeasureId() throws IOException {
 		Converter converter = new Converter(new PathQrdaSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaMeasureId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
@@ -47,7 +49,7 @@ public class IaSectionRoundTripTest {
 	}
 
 	@Test
-	public void testIaSectionConvertsMeasurePerformed() throws IOException {
+	void testIaSectionConvertsMeasurePerformed() throws IOException {
 		Converter converter = new Converter(new PathQrdaSource(file));
 		JsonWrapper qpp = converter.transform();
 		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(qpp.toString(),
