@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.util;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 
@@ -61,6 +62,25 @@ public class JsonHelper {
 	 * @throws JsonReadException if problems arise while attempting to parse the json input stream
 	 */
 	public static <T> T readJson(InputStream json, Class<T> valueType) {
+		T returnValue;
+		try {
+			returnValue = new ObjectMapper().readValue(json, valueType);
+		} catch (IOException ex) {
+			throw new JsonReadException("Problem parsing json string", ex);
+		}
+		return returnValue;
+	}
+
+	/**
+	 * Read json file and return object type specified
+	 *
+	 * @param json content
+	 * @param valueType object type representation
+	 * @param <T> generic class type
+	 * @return Object of specified type
+	 * @throws JsonReadException if problems arise while attempting to parse the json input stream
+	 */
+	public static <T> T readJson(InputStream json, TypeReference<T> valueType) {
 		T returnValue;
 		try {
 			returnValue = new ObjectMapper().readValue(json, valueType);
