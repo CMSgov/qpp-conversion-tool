@@ -35,6 +35,13 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 			validateApmEntityId(node);
 	}
 
+	/**
+	 * Validates the APM Entity ID in the given node is valid.
+	 *
+	 * A validation error is created if the APM Entity ID is invalid.
+	 *
+	 * @param node The node to validate
+	 */
 	private void validateApmEntityId(final Node node) {
 		String apmEntityId = node.getValue(ClinicalDocumentDecoder.ENTITY_ID);
 

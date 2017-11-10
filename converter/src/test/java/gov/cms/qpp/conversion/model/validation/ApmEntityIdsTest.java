@@ -16,12 +16,12 @@ class ApmEntityIdsTest {
 
 	@BeforeAll
 	static void setUp() {
-		ApmEntityIds.setMeasureDataFile("test_apm_entity_ids.json");
+		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
 	}
 
 	@AfterAll
 	static void tearDown() {
-		ApmEntityIds.setMeasureDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
+		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
 
 	@Test
@@ -41,7 +41,7 @@ class ApmEntityIdsTest {
 
 	@Test
 	void testNonExistentFileNotLooseData() {
-		assertThrows(JsonReadException.class, () -> ApmEntityIds.setMeasureDataFile("file_does_not_exist.json"));
+		assertThrows(JsonReadException.class, () -> ApmEntityIds.setApmDataFile("file_does_not_exist.json"));
 		assertThat(ApmEntityIds.idExists(APM_ID_THAT_EXISTS)).isTrue();
 	}
 }

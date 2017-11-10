@@ -22,12 +22,12 @@ class CpcClinicalDocumentValidatorTest {
 
 	@BeforeAll
 	static void initApmIds() {
-		ApmEntityIds.setMeasureDataFile("test_apm_entity_ids.json");
+		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
 	}
 
 	@AfterAll
 	static void defaultApmIds() {
-		ApmEntityIds.setMeasureDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
+		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
 
 	@BeforeEach
