@@ -1,30 +1,29 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class CpcClinicalDocumentValidatorTest {
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertWithMessage;
+
+class CpcClinicalDocumentValidatorTest {
 
 	private CpcClinicalDocumentValidator cpcValidator;
 
-	@Before
-	public void setup() {
+	@BeforeEach
+	void setup() {
 		cpcValidator = new CpcClinicalDocumentValidator();
 	}
 
 	@Test
-	public void validPracticeSiteAddress() {
+	void validPracticeSiteAddress() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 		Set<Detail> errors = cpcValidator.getDetails();
@@ -34,7 +33,7 @@ public class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void missingPracticeSiteAddress() {
+	void missingPracticeSiteAddress() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR);
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
@@ -46,7 +45,7 @@ public class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void emptyPracticeSiteAddress() {
+	void emptyPracticeSiteAddress() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "");
@@ -59,7 +58,7 @@ public class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testCpcPlusMultipleApm() {
+	void testCpcPlusMultipleApm() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 
 		// extra APM
@@ -72,7 +71,7 @@ public class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testCpcPlusNoApm() {
+	void testCpcPlusNoApm() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.ENTITY_ID);
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
@@ -83,7 +82,7 @@ public class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testCpcPlusMissingMeasureSection() {
+	void testCpcPlusMissingMeasureSection() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
