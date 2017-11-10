@@ -6,6 +6,9 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,8 +20,18 @@ class CpcClinicalDocumentValidatorTest {
 
 	private CpcClinicalDocumentValidator cpcValidator;
 
+	@BeforeAll
+	static void initApmIds() {
+		ApmEntityIds.setMeasureDataFile("test_apm_entity_ids.json");
+	}
+
+	@AfterAll
+	static void defaultApmIds() {
+		ApmEntityIds.setMeasureDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
+	}
+
 	@BeforeEach
-	void setup() {
+	void createNewValidator() {
 		cpcValidator = new CpcClinicalDocumentValidator();
 	}
 
@@ -82,6 +95,28 @@ class CpcClinicalDocumentValidatorTest {
 	}
 
 	@Test
+	void testCpcPlusEmptyApm() {
+		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "");
+		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
+
+		assertWithMessage("Must validate with the correct error")
+			.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM);
+	}
+
+	@Test
+	void testCpcPlusInvalidApm() {
+		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "PropertyTaxes");
+		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
+
+		assertWithMessage("Must validate with the correct error")
+			.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_INVALID_APM);
+	}
+
+	@Test
 	void testCpcPlusMissingMeasureSection() {
 		Node clinicalDocumentNode = createCpcPlusClinicalDocument();
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
@@ -102,7 +137,7 @@ class CpcClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "AR00000");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "DogCow");
 
 		return clinicalDocumentNode;
 	}
