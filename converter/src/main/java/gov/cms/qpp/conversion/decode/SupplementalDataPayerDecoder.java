@@ -16,15 +16,18 @@ import org.jdom2.filter.Filters;
 @Decoder(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 public class SupplementalDataPayerDecoder extends QppXmlDecoder {
 
+	public static final String SUPPLEMENTAL_DATA_PAYER_CODE = "payerCode";
+
 	public SupplementalDataPayerDecoder(Context context) {
 		super(context);
 	}
 
 	/**
+	 * Decodes Supplemental Payer data into the current node
 	 *
 	 * @param element Top element in the XML document
 	 * @param thisNode Top node created in the XML document
-	 * @return
+	 * @return Continuation of tree traversal
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
@@ -39,7 +42,7 @@ public class SupplementalDataPayerDecoder extends QppXmlDecoder {
 	 * @param thisNode Current Node to decode into
 	 */
 	private void setPayerOnNode(Element element, Node thisNode) {
-		String expressionStr = getXpath(SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE);
+		String expressionStr = getXpath(SUPPLEMENTAL_DATA_PAYER_CODE);
 		Consumer<? super Attribute> consumer = attr -> {
 			String code = attr.getValue();
 			thisNode.putValue(SupplementalData.getCategoryNameByCode(code), code, false);

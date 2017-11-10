@@ -2,6 +2,8 @@ package gov.cms.qpp;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
+import gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder;
+import gov.cms.qpp.conversion.decode.SupplementalDataPayerDecoder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -71,6 +73,8 @@ class SingularAttributeTest {
 						PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE,
 						//There are no validations for performanceYear
 						ReportingParametersActDecoder.PERFORMANCE_YEAR,
+						SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE,
+						SupplementalDataPayerDecoder.SUPPLEMENTAL_DATA_PAYER_CODE,
 						//stratum is not currently mapped
 						"stratum")
 		);

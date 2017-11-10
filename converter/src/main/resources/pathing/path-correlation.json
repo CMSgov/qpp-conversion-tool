@@ -259,7 +259,14 @@
 				{
 					"decodeLabel": "code",
 					"goods": {
-						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@rcode",
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@code",
+						"xmltype": "attribute"
+					}
+				},
+				{
+					"decodeLabel": "payerCode",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/*[local-name() = 'translation' and namespace-uri() = '<nsuri>']/@code",
 						"xmltype": "attribute"
 					}
 				}

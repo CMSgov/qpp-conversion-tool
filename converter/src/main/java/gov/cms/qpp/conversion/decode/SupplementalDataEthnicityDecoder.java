@@ -27,7 +27,7 @@ public class SupplementalDataEthnicityDecoder extends QppXmlDecoder{
 	 *
 	 * @param element Top element in the XML document
 	 * @param thisNode Top node created in the XML document
-	 * @return
+	 * @return Continuation of tree traversal
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {

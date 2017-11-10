@@ -28,7 +28,8 @@ public class SupplementalDataRaceDecoder extends QppXmlDecoder {
 	 */
 	@Override
 	protected DecodeResult internalDecode(Element element, Node thisNode) {
-		return super.internalDecode(element, thisNode);
+		setRaceOnNode(element, thisNode);
+		return DecodeResult.TREE_CONTINUE;
 	}
 
 	/**

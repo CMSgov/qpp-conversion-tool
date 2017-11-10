@@ -37,4 +37,8 @@ public enum SupplementalData {
 	}
 
 	private final String code;
+
+	public String getCode() {
+		return code;
+	}
 }
