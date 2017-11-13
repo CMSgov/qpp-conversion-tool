@@ -15,7 +15,7 @@ public enum ErrorCode implements LocalizedError {
 	UNEXPECTED_ERROR(3, "Unexpected exception occurred during conversion"),
 	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occured during encoding"),
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document"),
-	MEASURE_GUID_MISSING(6, "The measure reference results must have a measure GUID"),
+	MEASURE_GUID_MISSING(6, "The measure reference results must have a recognized measure GUID"),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
