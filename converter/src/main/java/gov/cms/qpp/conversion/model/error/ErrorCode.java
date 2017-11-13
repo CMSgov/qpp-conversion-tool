@@ -95,7 +95,8 @@ public enum ErrorCode implements LocalizedError {
 	QUALITY_MEASURE_ID_INCORRECT_PERFORMANCE_UUID(60, "The eCQM (electronic measure id: %s) has a %s with an "
 			+ "incorrect UUID of %s", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
-			+ "Performance Rate UUID");
+			+ "Performance Rate UUID"),
+	CPC_PLUS_MISSING_RACE_CODE(62, "Missing the Race Code %s for measure %s");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));

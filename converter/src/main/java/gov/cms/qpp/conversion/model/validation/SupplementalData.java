@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public enum SupplementalData {
@@ -46,11 +47,11 @@ public enum SupplementalData {
 		this.type = type;
 	}
 
-	private static final Map<String, String> SUPPLEMENTAL_DATA_MAP = new HashMap<>();
+	private static final Map<String, SupplementalData> SUPPLEMENTAL_DATA_MAP = new HashMap<>();
 
 	static {
 		for (SupplementalData supplementalData : SupplementalData.values()) {
-			SUPPLEMENTAL_DATA_MAP.put(supplementalData.code, supplementalData.name());
+			SUPPLEMENTAL_DATA_MAP.put(supplementalData.code, supplementalData);
 		}
 	}
 
@@ -65,19 +66,15 @@ public enum SupplementalData {
 		return type.toString();
 	}
 
-	public static String getCategoryNameByCode(String code) {
-		return SUPPLEMENTAL_DATA_MAP.get(code);
-	}
-
 	public static List<SupplementalData> getSupplementalDataListByType(String type) {
 		return Arrays.stream(SupplementalData.values())
 				.filter(s -> type.equalsIgnoreCase(s.getType()))
 				.collect(Collectors.toList());
 	}
 
-//	public static Map<String, String> getSupplementalDataListByType(String type) {
-//		return Arrays.stream(SupplementalData.values())
-//				.filter(s -> type.equalsIgnoreCase(s.getType()))
-//				.collect(Collectors.toMap(SupplementalData::getCode, SupplementalData::));
-//	}
+	public static Map<String, SupplementalData> mapSupplementalDataByType(String type) {
+		return Arrays.stream(SupplementalData.values())
+				.filter(s -> type.equalsIgnoreCase(s.getType()))
+				.collect(Collectors.toMap(SupplementalData::getCode, Function.identity()));
+	}
 }
