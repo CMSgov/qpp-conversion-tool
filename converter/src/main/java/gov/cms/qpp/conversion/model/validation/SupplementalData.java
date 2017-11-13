@@ -1,7 +1,11 @@
 package gov.cms.qpp.conversion.model.validation;
 
+import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public enum SupplementalData {
@@ -23,15 +27,24 @@ public enum SupplementalData {
 
 	private final String code;
 	private final SupplementalType type;
+
+	protected static final Map<String, TemplateId> SUPPLEMENTAL_TYPES = new HashMap<>();
+
+	static {
+		SUPPLEMENTAL_TYPES.put(SupplementalType.RACE.toString(),TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
+		SUPPLEMENTAL_TYPES.put(SupplementalType.SEX.toString(),TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
+		SUPPLEMENTAL_TYPES.put(SupplementalType.ETHNICITY.toString(),
+				TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
+		SUPPLEMENTAL_TYPES.put(SupplementalType.PAYER.toString(),TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
+	}
 	
-	private enum SupplementalType {
+	public enum SupplementalType {
 		RACE("R"),
 		SEX("S"),
 		ETHNICITY("E"),
 		PAYER("P");
 
 		private final String type;
-
 
 		SupplementalType(String type) {
 			this.type = type;
@@ -60,5 +73,9 @@ public enum SupplementalData {
 		return Arrays.stream(SupplementalData.values())
 				.filter(s -> type.equalsIgnoreCase(s.getType()))
 				.collect(Collectors.toList());
+	}
+
+	public static Map<String, TemplateId> getSupplementalTypeMapToTemplateId(){
+		return SUPPLEMENTAL_TYPES;
 	}
 }

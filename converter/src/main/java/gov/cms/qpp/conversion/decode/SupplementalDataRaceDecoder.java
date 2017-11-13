@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
 import java.util.function.Consumer;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
@@ -14,8 +15,6 @@ import org.jdom2.filter.Filters;
  */
 @Decoder(TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 public class SupplementalDataRaceDecoder extends QppXmlDecoder {
-
-	public static final String RACE_NAME = "race";
 
 	public SupplementalDataRaceDecoder(Context context) {
 		super(context);
@@ -43,7 +42,7 @@ public class SupplementalDataRaceDecoder extends QppXmlDecoder {
 		String expressionStr = getXpath(SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE);
 		Consumer<? super Attribute> consumer = attr -> {
 			String code = attr.getValue();
-			thisNode.putValue(RACE_NAME, code, false);
+			thisNode.putValue(SupplementalType.RACE.toString(), code, false);
 		};
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), false);
 	}
