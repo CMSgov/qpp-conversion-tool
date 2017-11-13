@@ -1,0 +1,9 @@
+{
+	"CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"message": "The measure reference results must have a recognized measure GUID",
+			"path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][2]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']"
+		}
+	]
+}
