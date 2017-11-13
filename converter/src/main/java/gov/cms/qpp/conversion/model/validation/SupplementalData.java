@@ -1,10 +1,7 @@
 package gov.cms.qpp.conversion.model.validation;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public enum SupplementalData {
@@ -24,6 +21,9 @@ public enum SupplementalData {
 	PRIVATE_HEALTH_INSURANCE("C", SupplementalType.PAYER),
 	OTHER_PAYER("D", SupplementalType.PAYER);
 
+	private final String code;
+	private final SupplementalType type;
+	
 	private enum SupplementalType {
 		RACE("R"),
 		SEX("S"),
@@ -32,31 +32,21 @@ public enum SupplementalData {
 
 		private final String type;
 
+
 		SupplementalType(String type) {
 			this.type = type;
 		}
-
 		@Override
 		public String toString() {
 			return this.type;
 		}
+
 	}
 
 	SupplementalData(String code, SupplementalType type) {
 		this.code = code;
 		this.type = type;
 	}
-
-	private static final Map<String, SupplementalData> SUPPLEMENTAL_DATA_MAP = new HashMap<>();
-
-	static {
-		for (SupplementalData supplementalData : SupplementalData.values()) {
-			SUPPLEMENTAL_DATA_MAP.put(supplementalData.code, supplementalData);
-		}
-	}
-
-	private final String code;
-	private final SupplementalType type;
 
 	public String getCode() {
 		return code;
@@ -70,11 +60,5 @@ public enum SupplementalData {
 		return Arrays.stream(SupplementalData.values())
 				.filter(s -> type.equalsIgnoreCase(s.getType()))
 				.collect(Collectors.toList());
-	}
-
-	public static Map<String, SupplementalData> mapSupplementalDataByType(String type) {
-		return Arrays.stream(SupplementalData.values())
-				.filter(s -> type.equalsIgnoreCase(s.getType()))
-				.collect(Collectors.toMap(SupplementalData::getCode, Function.identity()));
 	}
 }

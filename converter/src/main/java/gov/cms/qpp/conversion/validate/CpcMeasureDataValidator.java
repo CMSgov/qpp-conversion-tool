@@ -1,6 +1,10 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
+import gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder;
+import gov.cms.qpp.conversion.decode.SupplementalDataPayerDecoder;
 import gov.cms.qpp.conversion.decode.SupplementalDataRaceDecoder;
+import gov.cms.qpp.conversion.decode.SupplementalDataSexDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -12,7 +16,6 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -39,7 +42,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 
 		for(SupplementalData raceData : raceTypes) {
 			Node validateRaceNode = raceDataNodes.stream()
-					.filter(makeRaceValidatorByCode(raceData.getCode()))
+					.filter(makeValidatorByCategoryAndCode(SupplementalDataRaceDecoder.RACE_NAME, raceData.getCode()))
 					.findFirst()
 					.orElse(null);
 
@@ -47,59 +50,63 @@ public class CpcMeasureDataValidator extends NodeValidator {
 				MeasureConfig config =
 						MeasureConfigs.getConfigurationMap()
 								.get(node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
-				LocalizedError error = ErrorCode.CPC_PLUS_MISSING_RACE_CODE.format(raceData.getCode(),
-						config.getElectronicMeasureId());
+				LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(raceData.getCode(),
+						config.getElectronicMeasureId(), node.getValue(MeasureDataDecoder.MEASURE_TYPE));
 				addValidationError(Detail.forErrorAndNode(error, node));
 			}
 		}
 
 		for(SupplementalData sexData : sexTypes) {
-			Node validateRaceNode = sexDataNodes.stream()
-					.filter(makeRaceValidatorByCode(sexData.getCode()))
+			Node validateSexNode = sexDataNodes.stream()
+					.filter(makeValidatorByCategoryAndCode(SupplementalDataSexDecoder.SEX_NAME, sexData.getCode()))
 					.findFirst()
 					.orElse(null);
-			if (validateRaceNode == null) {
+			if (validateSexNode == null) {
 				MeasureConfig config =
 						MeasureConfigs.getConfigurationMap()
 								.get(node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
-				LocalizedError error = ErrorCode.CPC_PLUS_MISSING_RACE_CODE.format(sexData.getCode(),
-						config.getElectronicMeasureId());
+				LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(sexData.getCode(),
+						config.getElectronicMeasureId(), node.getValue(MeasureDataDecoder.MEASURE_TYPE));
 				addValidationError(Detail.forErrorAndNode(error, node));
 			}
 		}
 
 		for(SupplementalData ethnicityData : ethnicityTypes) {
 			Node validateRaceNode = ethnicityDataNodes.stream()
-					.filter(makeRaceValidatorByCode(ethnicityData.getCode()))
+					.filter(makeValidatorByCategoryAndCode(SupplementalDataEthnicityDecoder.ETHNICITY_NAME,
+							ethnicityData.getCode()))
 					.findFirst()
 					.orElse(null);
 			if (validateRaceNode == null) {
 				MeasureConfig config =
 						MeasureConfigs.getConfigurationMap()
 								.get(node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
-				LocalizedError error = ErrorCode.CPC_PLUS_MISSING_RACE_CODE.format(ethnicityData.getCode(),
-						config.getElectronicMeasureId());
+				LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(ethnicityData.getCode(),
+						config.getElectronicMeasureId(), node.getValue(MeasureDataDecoder.MEASURE_TYPE));
 				addValidationError(Detail.forErrorAndNode(error, node));
 			}
 		}
 
 		for(SupplementalData payerData : payerTypes) {
 			Node validateRaceNode = payerDataNodes.stream()
-					.filter(makeRaceValidatorByCode(payerData.getCode()))
+					.filter(makeValidatorByCategoryAndCode(SupplementalDataPayerDecoder.PAYER_NAME,
+							payerData.getCode()))
 					.findFirst()
 					.orElse(null);
 			if (validateRaceNode == null) {
 				MeasureConfig config =
 						MeasureConfigs.getConfigurationMap()
 								.get(node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
-				LocalizedError error = ErrorCode.CPC_PLUS_MISSING_RACE_CODE.format(payerData.getCode(),
-						config.getElectronicMeasureId());
+				LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(payerData.getCode(),
+						config.getElectronicMeasureId(), node.getValue(MeasureDataDecoder.MEASURE_TYPE));
 				addValidationError(Detail.forErrorAndNode(error, node));
 			}
 		}
 	}
 
-	private Predicate<Node> makeRaceValidatorByCode(String code) {
-		return thisNode -> code.equalsIgnoreCase(thisNode.getValue(SupplementalDataRaceDecoder.RACE_NAME));
+	private Predicate<Node> makeValidatorByCategoryAndCode(String category, String code) {
+		return thisNode -> {
+				return code.equalsIgnoreCase(thisNode.getValue(category));
+		};
 	}
 }
