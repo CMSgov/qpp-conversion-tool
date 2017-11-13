@@ -31,6 +31,7 @@ public class MeasureConfig {
 
 	@JsonProperty("eMeasureUuid")
 	private String electronicMeasureVerUuid;
+	private String cpcPlusGroup;
 
 	private List<Strata> strata;
 
@@ -136,6 +137,14 @@ public class MeasureConfig {
 
 	public void setElectronicMeasureId(String electronicMeasureId) {
 		this.electronicMeasureId = electronicMeasureId;
+	}
+
+	public String getCpcPlusGroup() {
+		return cpcPlusGroup;
+	}
+
+	public void setCpcPlusGroup(String cpcPlusGroup) {
+		this.cpcPlusGroup = cpcPlusGroup;
 	}
 
 	public String getElectronicMeasureVerUuid() {

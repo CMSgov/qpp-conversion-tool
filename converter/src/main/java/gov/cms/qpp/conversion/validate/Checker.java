@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -315,9 +316,12 @@ class Checker {
 	 * @param measureIds measures specified for given node
 	 * @return The checker, for chaining method calls
 	 */
-	public Checker hasMeasures(LocalizedError code, String... measureIds) {
+	Checker hasMeasures(LocalizedError code, String... measureIds) {
+		return hasMeasures(code, Arrays.asList(measureIds).size(), measureIds);
+	}
+
+	Checker hasMeasures(LocalizedError code, int numberOfMeasuresRequired, String... measureIds) {
 		if (!shouldShortcut()) {
-			int numberOfMeasuresRequired = Arrays.asList(measureIds).size();
 
 			long numNodesWithWantedMeasureIds = node.getChildNodes(currentNode -> {
 				String measureIdOfNode = currentNode.getValue("measureId");
@@ -332,7 +336,7 @@ class Checker {
 				return false;
 			}).count();
 
-			if (numberOfMeasuresRequired != numNodesWithWantedMeasureIds) {
+			if (!(numNodesWithWantedMeasureIds >= numberOfMeasuresRequired)) {
 				details.add(detail(code));
 			}
 		}
