@@ -17,6 +17,7 @@ import org.jdom2.filter.Filters;
 public class SupplementalDataEthnicityDecoder extends QppXmlDecoder{
 
 	public static final String SUPPLEMENTAL_DATA_CODE = "code";
+	public static final String ETHNICITY_NAME = "ethnicity";
 
 	public SupplementalDataEthnicityDecoder(Context context) {
 		super(context);
@@ -46,7 +47,7 @@ public class SupplementalDataEthnicityDecoder extends QppXmlDecoder{
 		String expressionStr = getXpath(SUPPLEMENTAL_DATA_CODE);
 		Consumer<? super Attribute> consumer = attr -> {
 			String code = attr.getValue();
-			thisNode.putValue(SupplementalData.getCategoryNameByCode(code), code, false);
+			thisNode.putValue(ETHNICITY_NAME, code, false);
 		};
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), false);
 	}

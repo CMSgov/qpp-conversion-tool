@@ -17,6 +17,7 @@ import org.jdom2.filter.Filters;
 public class SupplementalDataPayerDecoder extends QppXmlDecoder {
 
 	public static final String SUPPLEMENTAL_DATA_PAYER_CODE = "payerCode";
+	public static final String PAYER_NAME = "payer";
 
 	public SupplementalDataPayerDecoder(Context context) {
 		super(context);
@@ -45,7 +46,7 @@ public class SupplementalDataPayerDecoder extends QppXmlDecoder {
 		String expressionStr = getXpath(SUPPLEMENTAL_DATA_PAYER_CODE);
 		Consumer<? super Attribute> consumer = attr -> {
 			String code = attr.getValue();
-			thisNode.putValue(SupplementalData.getCategoryNameByCode(code), code, false);
+			thisNode.putValue(PAYER_NAME, code, false);
 		};
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), false);
 	}

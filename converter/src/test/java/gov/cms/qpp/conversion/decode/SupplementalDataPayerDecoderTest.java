@@ -36,28 +36,28 @@ public class SupplementalDataPayerDecoderTest {
 	@Test
 	void testDecodePayerMedicareSuccess() {
 		supplementalDataNode = getNodeByIndex(0);
-		assertThat(supplementalDataNode.getValue(SupplementalData.MEDICARE.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataPayerDecoder.PAYER_NAME))
 				.isEqualTo(SupplementalData.MEDICARE.getCode());
 	}
 
 	@Test
 	void testDecodePayerMedicaidSuccess() {
 		supplementalDataNode = getNodeByIndex(1);
-		assertThat(supplementalDataNode.getValue(SupplementalData.MEDICAID.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataPayerDecoder.PAYER_NAME))
 				.isEqualTo(SupplementalData.MEDICAID.getCode());
 	}
 
 	@Test
 	void testDecodePayerPrivateHealthSuccess() {
 		supplementalDataNode = getNodeByIndex(2);
-		assertThat(supplementalDataNode.getValue(SupplementalData.PRIVATE_HEALTH_INSURANCE.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataPayerDecoder.PAYER_NAME))
 				.isEqualTo(SupplementalData.PRIVATE_HEALTH_INSURANCE.getCode());
 	}
 
 	@Test
 	void testDecodePayerOtherSuccess() {
 		supplementalDataNode = getNodeByIndex(3);
-		assertThat(supplementalDataNode.getValue(SupplementalData.OTHER_PAYER.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataPayerDecoder.PAYER_NAME))
 				.isEqualTo(SupplementalData.OTHER_PAYER.getCode());
 	}
 

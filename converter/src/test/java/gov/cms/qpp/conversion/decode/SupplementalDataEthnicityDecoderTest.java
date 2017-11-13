@@ -37,14 +37,14 @@ public class SupplementalDataEthnicityDecoderTest {
 	@Test
 	void testDecodeEthnicityNotHispanicSuccess() {
 		supplementalDataNode = getNodeByIndex(0);
-		assertThat(supplementalDataNode.getValue(SupplementalData.NOT_HISPANIC_LATINO.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataEthnicityDecoder.ETHNICITY_NAME))
 				.isEqualTo(SupplementalData.NOT_HISPANIC_LATINO.getCode());
 	}
 
 	@Test
 	void testDecodeEthnicityHispanicSuccess() {
 		supplementalDataNode = getNodeByIndex(1);
-		assertThat(supplementalDataNode.getValue(SupplementalData.HISPANIC_LATINO.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataEthnicityDecoder.ETHNICITY_NAME))
 				.isEqualTo(SupplementalData.HISPANIC_LATINO.getCode());
 	}
 

@@ -37,42 +37,42 @@ public class SupplementalDataRaceDecoderTest {
 	@Test
 	void testDecodeRaceAlaskanNativeAmericanIndianSuccess() {
 		supplementalDataNode = getNodeByIndex(3);
-		assertThat(supplementalDataNode.getValue(SupplementalData.ALASKAN_NATIVE_AMERICAN_INDIAN.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataRaceDecoder.RACE_NAME))
 				.isEqualTo(SupplementalData.ALASKAN_NATIVE_AMERICAN_INDIAN.getCode());
 	}
 
 	@Test
 	void testDecodeRaceAsianSuccess() {
 		supplementalDataNode = getNodeByIndex(2);
-		assertThat(supplementalDataNode.getValue(SupplementalData.ASIAN.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataRaceDecoder.RACE_NAME))
 				.isEqualTo(SupplementalData.ASIAN.getCode());
 	}
 
 	@Test
 	void testDecodeRaceAfricanAmericanSuccess() {
 		supplementalDataNode = getNodeByIndex(0);
-		assertThat(supplementalDataNode.getValue(SupplementalData.AFRICAN_AMERICAN.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataRaceDecoder.RACE_NAME))
 				.isEqualTo(SupplementalData.AFRICAN_AMERICAN.getCode());
 	}
 
 	@Test
 	void testDecodeRaceHawaiianPacificIslanderSuccess() {
 		supplementalDataNode = getNodeByIndex(4);
-		assertThat(supplementalDataNode.getValue(SupplementalData.HAWAIIAN_PACIFIC_ISLANDER.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataRaceDecoder.RACE_NAME))
 				.isEqualTo(SupplementalData.HAWAIIAN_PACIFIC_ISLANDER.getCode());
 	}
 
 	@Test
 	void testDecodeRaceWhiteSuccess() {
 		supplementalDataNode = getNodeByIndex(1);
-		assertThat(supplementalDataNode.getValue(SupplementalData.WHITE.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataRaceDecoder.RACE_NAME))
 				.isEqualTo(SupplementalData.WHITE.getCode());
 	}
 
 	@Test
 	void testDecodeRaceOtherSuccess() {
 		supplementalDataNode = getNodeByIndex(5);
-		assertThat(supplementalDataNode.getValue(SupplementalData.OTHER_RACE.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataRaceDecoder.RACE_NAME))
 				.isEqualTo(SupplementalData.OTHER_RACE.getCode());
 	}
 

@@ -37,14 +37,14 @@ public class SupplementalDataSexDecoderTest {
 	@Test
 	void testDecodeSexMaleSuccess() {
 		supplementalDataNode = getNodeByIndex(0);
-		assertThat(supplementalDataNode.getValue(SupplementalData.MALE.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataSexDecoder.SEX_NAME))
 				.isEqualTo(SupplementalData.MALE.getCode());
 	}
 
 	@Test
 	void testDecodeSexFemaleSuccess() {
 		supplementalDataNode = getNodeByIndex(1);
-		assertThat(supplementalDataNode.getValue(SupplementalData.FEMALE.name()))
+		assertThat(supplementalDataNode.getValue(SupplementalDataSexDecoder.SEX_NAME))
 				.isEqualTo(SupplementalData.FEMALE.getCode());
 	}
 

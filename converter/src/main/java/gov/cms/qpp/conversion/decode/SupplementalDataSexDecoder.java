@@ -16,6 +16,8 @@ import org.jdom2.filter.Filters;
 @Decoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
 public class SupplementalDataSexDecoder extends QppXmlDecoder {
 
+	public static final String SEX_NAME = "sex";
+
 	public SupplementalDataSexDecoder(Context context) {
 		super(context);
 	}
@@ -43,7 +45,7 @@ public class SupplementalDataSexDecoder extends QppXmlDecoder {
 		String expressionStr = getXpath(SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE);
 		Consumer<? super Attribute> consumer = attr -> {
 			String code = attr.getValue();
-			thisNode.putValue(SupplementalData.getCategoryNameByCode(code), code, false);
+			thisNode.putValue(SEX_NAME, code, false);
 		};
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), false);
 	}
