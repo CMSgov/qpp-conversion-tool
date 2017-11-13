@@ -43,7 +43,8 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 		Map<String, List<MeasureConfig>> cpcPlusGroups = MeasureConfigs.getCpcPlusGroups();
 
 		return cpcPlusGroups.get(groupMinimum.name()).stream()
-				.map(MeasureConfig::getMeasureId)
+//				.map(MeasureConfig::getMeasureId)
+				.map(MeasureConfig::getElectronicMeasureVerUuid)
 				.toArray(String[]::new);
 	}
 
@@ -51,7 +52,8 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 		String[] measureIds = MeasureConfigs.getCpcPlusGroups()
 				.values().stream()
 				.flatMap(List::stream)
-				.map(MeasureConfig::getMeasureId)
+//				.map(MeasureConfig::getMeasureId)
+				.map(MeasureConfig::getElectronicMeasureVerUuid)
 				.toArray(String[]::new);
 
 		checker.hasMeasures(

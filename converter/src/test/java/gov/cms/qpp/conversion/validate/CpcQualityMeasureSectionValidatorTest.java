@@ -10,16 +10,31 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 
 class CpcQualityMeasureSectionValidatorTest {
 
 	private CpcQualityMeasureSectionValidator validator;
-	private String[] groupAmeasures = {"236", "001", "370"};
-	private String[] groupBmeasures = {"318", "281", "305", "238"};
-	private String[] overallMeasures = {"236", "001", "370", "318", "281", "305",
-			"238", "312", "374", "113", "112", "117", "309", "226"};
+	private String[] groupAmeasures = {"40280381-51f0-825b-0152-22b98cff181a",
+			"40280381-51f0-825b-0152-229afff616ee",
+			"40280381-5118-2f4e-0151-3a9382cd09ba"};
+	private String[] groupBmeasures = {"40280381-51f0-825b-0152-22aae8a21778",
+			"40280381-52fc-3a32-0153-1a401cc10b57",
+			"40280381-528a-60ff-0152-8e089ed20376",
+			"40280381-52fc-3a32-0153-56d2b4f01ae5"};
+	private String[] groupCmeasures = {"40280381-51f0-825b-0152-22ba7621182e",
+			"40280381-5118-2f4e-0151-59fb81bf1055",
+			"40280381-51f0-825b-0152-22a1e7e81737",
+			"40280381-51f0-825b-0152-229c4ea3170c",
+			"40280381-51f0-825b-0152-22a24cdd1740",
+			"40280381-51f0-825b-0152-229bdcab1702",
+			"40280381-503f-a1fc-0150-d33f5b0a1b8c"};
+
+	private String[] overallMeasures =
+			Stream.of(groupAmeasures, groupBmeasures, groupCmeasures).flatMap(Stream::of)
+					.toArray(String[]::new);
 
 	@BeforeAll
 	static void setup() {
@@ -42,7 +57,7 @@ class CpcQualityMeasureSectionValidatorTest {
 
 	@Test
 	void tooFewGroupAmeasures() {
-		Node node = setupMeasures(new String[] {"236"});
+		Node node = setupMeasures(new String[] {"40280381-51f0-825b-0152-22b98cff181a"});
 		LocalizedError message = CpcGroupMinimum.A.makeError(groupAmeasures);
 		validator.internalValidateSingleNode(node);
 		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
