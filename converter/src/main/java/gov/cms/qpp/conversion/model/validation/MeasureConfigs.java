@@ -22,7 +22,7 @@ public class MeasureConfigs {
 
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
 	private static Map<String, MeasureConfig> configurationMap;
-	private static Map<String, List<MeasureConfig>> cpcPlusGroups = new HashMap<>();
+	private static Map<String, List<MeasureConfig>> cpcPlusGroups;
 
 	/**
 	 * Static initialization
@@ -43,6 +43,7 @@ public class MeasureConfigs {
 	 */
 	private static void initMeasureConfigs() {
 		configurationMap = grabConfiguration(measureDataFileName);
+		cpcPlusGroups = new HashMap<>();
 		getMeasureConfigs().stream()
 				.filter(config -> config.getCpcPlusGroup() != null)
 				.forEach(config -> cpcPlusGroups.computeIfAbsent(

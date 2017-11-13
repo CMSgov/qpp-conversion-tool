@@ -3,7 +3,9 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.validate.CpcQualityMeasureSectionValidator.CpcGroupMinimum;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +21,13 @@ class CpcQualityMeasureSectionValidatorTest {
 	private String[] overallMeasures = {"236", "001", "370", "318", "281", "305",
 			"238", "312", "374", "113", "112", "117", "309", "226"};
 
+	@BeforeAll
+	static void setup() {
+		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+	}
+
 	@BeforeEach
-	void setup() {
+	void setupTest() {
 		validator = new CpcQualityMeasureSectionValidator();
 	}
 
