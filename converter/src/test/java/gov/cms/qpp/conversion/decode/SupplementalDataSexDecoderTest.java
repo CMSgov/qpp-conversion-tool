@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
+import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
@@ -37,14 +38,14 @@ public class SupplementalDataSexDecoderTest {
 	@Test
 	void testDecodeSexMaleSuccess() {
 		supplementalDataNode = getNodeByIndex(0);
-		assertThat(supplementalDataNode.getValue(SupplementalDataSexDecoder.SEX_NAME))
+		assertThat(supplementalDataNode.getValue(SupplementalType.SEX.toString()))
 				.isEqualTo(SupplementalData.MALE.getCode());
 	}
 
 	@Test
 	void testDecodeSexFemaleSuccess() {
 		supplementalDataNode = getNodeByIndex(1);
-		assertThat(supplementalDataNode.getValue(SupplementalDataSexDecoder.SEX_NAME))
+		assertThat(supplementalDataNode.getValue(SupplementalType.SEX.toString()))
 				.isEqualTo(SupplementalData.FEMALE.getCode());
 	}
 

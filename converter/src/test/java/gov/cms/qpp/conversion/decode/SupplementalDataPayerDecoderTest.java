@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
+import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
@@ -36,28 +37,28 @@ public class SupplementalDataPayerDecoderTest {
 	@Test
 	void testDecodePayerMedicareSuccess() {
 		supplementalDataNode = getNodeByIndex(0);
-		assertThat(supplementalDataNode.getValue(SupplementalDataPayerDecoder.PAYER_NAME))
+		assertThat(supplementalDataNode.getValue(SupplementalType.PAYER.toString()))
 				.isEqualTo(SupplementalData.MEDICARE.getCode());
 	}
 
 	@Test
 	void testDecodePayerMedicaidSuccess() {
 		supplementalDataNode = getNodeByIndex(1);
-		assertThat(supplementalDataNode.getValue(SupplementalDataPayerDecoder.PAYER_NAME))
+		assertThat(supplementalDataNode.getValue(SupplementalType.PAYER.toString()))
 				.isEqualTo(SupplementalData.MEDICAID.getCode());
 	}
 
 	@Test
 	void testDecodePayerPrivateHealthSuccess() {
 		supplementalDataNode = getNodeByIndex(2);
-		assertThat(supplementalDataNode.getValue(SupplementalDataPayerDecoder.PAYER_NAME))
+		assertThat(supplementalDataNode.getValue(SupplementalType.PAYER.toString()))
 				.isEqualTo(SupplementalData.PRIVATE_HEALTH_INSURANCE.getCode());
 	}
 
 	@Test
 	void testDecodePayerOtherSuccess() {
 		supplementalDataNode = getNodeByIndex(3);
-		assertThat(supplementalDataNode.getValue(SupplementalDataPayerDecoder.PAYER_NAME))
+		assertThat(supplementalDataNode.getValue(SupplementalType.PAYER.toString()))
 				.isEqualTo(SupplementalData.OTHER_PAYER.getCode());
 	}
 

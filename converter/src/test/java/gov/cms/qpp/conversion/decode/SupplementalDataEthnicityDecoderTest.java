@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
+import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
@@ -37,14 +38,14 @@ public class SupplementalDataEthnicityDecoderTest {
 	@Test
 	void testDecodeEthnicityNotHispanicSuccess() {
 		supplementalDataNode = getNodeByIndex(0);
-		assertThat(supplementalDataNode.getValue(SupplementalDataEthnicityDecoder.ETHNICITY_NAME))
+		assertThat(supplementalDataNode.getValue(SupplementalType.ETHNICITY.toString()))
 				.isEqualTo(SupplementalData.NOT_HISPANIC_LATINO.getCode());
 	}
 
 	@Test
 	void testDecodeEthnicityHispanicSuccess() {
 		supplementalDataNode = getNodeByIndex(1);
-		assertThat(supplementalDataNode.getValue(SupplementalDataEthnicityDecoder.ETHNICITY_NAME))
+		assertThat(supplementalDataNode.getValue(SupplementalType.ETHNICITY.toString()))
 				.isEqualTo(SupplementalData.HISPANIC_LATINO.getCode());
 	}
 
