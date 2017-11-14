@@ -1,5 +1,6 @@
 package gov.cms.qpp.acceptance.cpc;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -32,12 +34,14 @@ class CpcPlusAcceptanceTest {
 	private static final Path SUCCESS = BASE.resolve("success");
 	private static final Path FAILURE = BASE.resolve("failure");
 	private static final Path FAILURE_FIXTURE = FAILURE.resolve("fixture.json");
-	private static Map fixtureValues;
+	private static Map<String, List<CPCAcceptanceFixture>> fixtureValues;
 
 	@BeforeAll
 	static void initMockApmIds() throws IOException {
 		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
-		fixtureValues = JsonHelper.readJson(FAILURE_FIXTURE, Map.class);
+		TypeReference<Map<String, List<CPCAcceptanceFixture>>> ref =
+				new TypeReference<Map<String, List<CPCAcceptanceFixture>>>() { };
+		fixtureValues = JsonHelper.readJson(FAILURE_FIXTURE, ref);
 	}
 
 	@AfterAll
@@ -64,18 +68,12 @@ class CpcPlusAcceptanceTest {
 
 	@Test
 	void testCpcPlusFileFailures() throws IOException {
-//<<<<<<< HEAD
-//		List<Path> successesThatShouldBeErrors = new ArrayList<>();
-//		try (DirectoryStream<Path> stream = Files.newDirectoryStream(FAILURE)) {
-//			for (Path entry : stream) {
-//				if (!entry.toAbsolutePath().endsWith("CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml")) {
-//					continue;
-//				}
-//=======
 		List<Path> successesThatShouldBeErrors = getXml(FAILURE)
 			.filter(entry -> {
 				Converter converter = new Converter(new PathQrdaSource(entry));
-
+				if (!"CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml".equals(entry.toFile().getName())) {
+					return false;
+				}
 				try {
 					converter.transform();
 					return true;
@@ -92,18 +90,24 @@ class CpcPlusAcceptanceTest {
 	}
 
 	private void verifyOutcome(String filename, List<Detail> details) {
+		List<CPCAcceptanceFixture> expectedErrors = fixtureValues.get(filename);
+		Map<String, CPCAcceptanceFixture> errorMap =
+				expectedErrors.stream().collect(
+						Collectors.toMap(CPCAcceptanceFixture::getMessage, Function.identity()));
 
-		List<Map<String, Object>> expectedErrors = (List<Map<String, Object>>) fixtureValues.get(filename);
-		assertThat(details).hasSize(expectedErrors.size());
+		details.forEach(detail -> {
+			String message = detail.getMessage();
+			CPCAcceptanceFixture fixture = errorMap.get(message);
+			assertThat(fixture).isNotNull();
+			assertThat(detail.getErrorCode()).isEqualTo(fixture.getErrorCode());
 
-		Map<String, Detail> detailMap = details.stream()
-				.collect(Collectors.toMap(Detail::getPath, Function.identity()));
-		expectedErrors.forEach(expectedError -> {
-			Detail deet = detailMap.get(expectedError.get("path"));
-			assertThat(deet).isNotNull();
-			assertThat(deet.getMessage()).isEqualTo(expectedError.get("message"));
-			assertThat(deet.getErrorCode()).isEqualTo(expectedError.get("errorCode"));
+			fixture.decrementOccurrances();
+			if (fixture.getOccurrences() <= 0) {
+				errorMap.remove(message);
+			}
 		});
+
+		assertThat(errorMap).hasSize(0);
 	}
 
 	private Stream<Path> getXml(Path directory) {
