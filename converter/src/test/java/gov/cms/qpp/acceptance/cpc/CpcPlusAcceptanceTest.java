@@ -1,14 +1,17 @@
 package gov.cms.qpp.acceptance.cpc;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +19,6 @@ import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
-
-import static com.google.common.truth.Truth.assertThat;
 
 class CpcPlusAcceptanceTest {
 
@@ -28,9 +29,8 @@ class CpcPlusAcceptanceTest {
 	@Test
 	void testCpcPlusFileSuccesses() throws IOException {
 		Map<Path, AllErrors> errors = new HashMap<>();
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(SUCCESS)) {
-			for (Path entry : stream) {
-				Files.move(entry, entry.resolveSibling(entry.getFileName().toString().replace("-success.xml", ".xml")));
+		getXml(SUCCESS)
+			.forEach(entry -> {
 				Converter converter = new Converter(new PathQrdaSource(entry));
 
 				try {
@@ -38,39 +38,37 @@ class CpcPlusAcceptanceTest {
 				} catch (TransformException failure) {
 					errors.put(entry, failure.getDetails());
 				}
-			}
-		}
+			});
 
 		assertThat(errors).isEmpty();
 	}
 
 	@Test
 	void testCpcPlusFileFailures() throws IOException {
-		List<Path> successesThatShouldBeErrors = new ArrayList<>();
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(FAILURE)) {
-			for (Path entry : stream) {
+		List<Path> successesThatShouldBeErrors = getXml(FAILURE)
+			.filter(entry -> {
 				Converter converter = new Converter(new PathQrdaSource(entry));
 
 				try {
 					converter.transform();
-					successesThatShouldBeErrors.add(entry);
+					return true;
 				} catch (TransformException expected) {
-					System.out.println();
+					return false;
 				}
-			}
-		}
+			}).collect(Collectors.toList());
 
 		assertThat(successesThatShouldBeErrors).isEmpty();
 	}
 
-	@Test
-	void testCpcPlusFilesAreAllChecked() throws IOException {
-		long invalidFiles = Files.list(BASE).filter(file -> {
-			String fileName = file.toString();
+	private Stream<Path> getXml(Path directory) {
+		try {
+			return Files.list(directory).filter(this::isXml);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
 
-			return fileName.endsWith(".xml");
-		}).count();
-
-		assertThat(invalidFiles).isEqualTo(0);
+	private boolean isXml(Path path) {
+		return path.toString().endsWith(".xml");
 	}
 }
