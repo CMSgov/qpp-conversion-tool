@@ -13,6 +13,8 @@ import java.nio.file.Path;
  */
 public class JsonHelper {
 
+	private static final String PROBLEM_PARSING_JSON = "Problem parsing json string";
+
 	/**
 	 * Constructor that is private and empty because this is a utility class.
 	 */
@@ -34,7 +36,7 @@ public class JsonHelper {
 		try {
 			returnValue = new ObjectMapper().readValue(json, valueType);
 		} catch (IOException ex) {
-			throw new JsonReadException("Problem parsing json string", ex);
+			throw new JsonReadException(PROBLEM_PARSING_JSON, ex);
 		}
 		return returnValue;
 	}
@@ -66,7 +68,7 @@ public class JsonHelper {
 		try {
 			returnValue = new ObjectMapper().readValue(json, valueType);
 		} catch (IOException ex) {
-			throw new JsonReadException("Problem parsing json string", ex);
+			throw new JsonReadException(PROBLEM_PARSING_JSON, ex);
 		}
 		return returnValue;
 	}
@@ -85,7 +87,7 @@ public class JsonHelper {
 		try {
 			returnValue = new ObjectMapper().readValue(json, valueType);
 		} catch (IOException ex) {
-			throw new JsonReadException("Problem parsing json string", ex);
+			throw new JsonReadException(PROBLEM_PARSING_JSON, ex);
 		}
 		return returnValue;
 	}
