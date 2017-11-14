@@ -19,13 +19,13 @@ if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $SONAR_OTHER_BRANCH && "$CIRCLE_BRA
 		echo ${project_status} | jq .
 		exit 1
 	fi
-elif [[ ! -z $CI_PULL_REQUESTS ]]; then
+elif [[ ! -z $CIRCLE_PULL_REQUESTS ]]; then
 	#Do a PR preview SonarCube run
 	#This build could be on multiple PRs
 	echo "Verifying PR"
-	echo "CI_PULL_REQUESTS $CI_PULL_REQUESTS"
+	echo "CIRCLE_PULL_REQUESTS $CIRCLE_PULL_REQUESTS"
 	IFS=","
-	for PULL_REQUEST_URL in $CI_PULL_REQUESTS
+	for PULL_REQUEST_URL in $CIRCLE_PULL_REQUESTS
 	do
         echo "Verifying PULL_REQUEST_URL"
         echo "PULL_REQUEST_URL $PULL_REQUEST_URL"
