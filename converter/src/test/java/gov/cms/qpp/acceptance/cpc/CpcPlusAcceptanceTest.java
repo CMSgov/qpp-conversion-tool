@@ -5,23 +5,26 @@ import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
+
 
 class CpcPlusAcceptanceTest {
 
@@ -32,16 +35,21 @@ class CpcPlusAcceptanceTest {
 	private static Map fixtureValues;
 
 	@BeforeAll
-	static void setup() throws IOException {
+	static void initMockApmIds() throws IOException {
+		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
 		fixtureValues = JsonHelper.readJson(FAILURE_FIXTURE, Map.class);
+	}
+
+	@AfterAll
+	static void resetApmIds() {
+		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
 
 	@Test
 	void testCpcPlusFileSuccesses() throws IOException {
 		Map<Path, AllErrors> errors = new HashMap<>();
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(SUCCESS)) {
-			for (Path entry : stream) {
-				Files.move(entry, entry.resolveSibling(entry.getFileName().toString().replace("-success.xml", ".xml")));
+		getXml(SUCCESS)
+			.forEach(entry -> {
 				Converter converter = new Converter(new PathQrdaSource(entry));
 
 				try {
@@ -49,33 +57,36 @@ class CpcPlusAcceptanceTest {
 				} catch (TransformException failure) {
 					errors.put(entry, failure.getDetails());
 				}
-			}
-		}
+			});
 
 		assertThat(errors).isEmpty();
 	}
 
 	@Test
 	void testCpcPlusFileFailures() throws IOException {
-		List<Path> successesThatShouldBeErrors = new ArrayList<>();
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(FAILURE)) {
-			for (Path entry : stream) {
-				if (!entry.toAbsolutePath().endsWith("CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml")) {
-					continue;
-				}
+//<<<<<<< HEAD
+//		List<Path> successesThatShouldBeErrors = new ArrayList<>();
+//		try (DirectoryStream<Path> stream = Files.newDirectoryStream(FAILURE)) {
+//			for (Path entry : stream) {
+//				if (!entry.toAbsolutePath().endsWith("CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml")) {
+//					continue;
+//				}
+//=======
+		List<Path> successesThatShouldBeErrors = getXml(FAILURE)
+			.filter(entry -> {
 				Converter converter = new Converter(new PathQrdaSource(entry));
 
 				try {
 					converter.transform();
-					successesThatShouldBeErrors.add(entry);
+					return true;
 				} catch (TransformException expected) {
 					//runnning conversions on individual files
 					List<Detail> details = expected.getDetails().getErrors().get(0).getDetails();
 					verifyOutcome(entry.toFile().getName(), details);
 					System.out.println();
+					return false;
 				}
-			}
-		}
+			}).collect(Collectors.toList());
 
 		assertThat(successesThatShouldBeErrors).isEmpty();
 	}
@@ -95,14 +106,15 @@ class CpcPlusAcceptanceTest {
 		});
 	}
 
-	@Test
-	void testCpcPlusFilesAreAllChecked() throws IOException {
-		long invalidFiles = Files.list(BASE).filter(file -> {
-			String fileName = file.toString();
+	private Stream<Path> getXml(Path directory) {
+		try {
+			return Files.list(directory).filter(this::isXml);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
 
-			return fileName.endsWith(".xml");
-		}).count();
-
-		assertThat(invalidFiles).isEqualTo(0);
+	private boolean isXml(Path path) {
+		return path.toString().endsWith(".xml");
 	}
 }
