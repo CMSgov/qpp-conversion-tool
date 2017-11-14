@@ -97,7 +97,9 @@ public enum ErrorCode implements LocalizedError {
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID"),
 	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(62,
-			"Missing the Supplemental Code %s for eCQM measure %s's Sub-population %s", true);
+			"Missing the Supplemental Code %s for eCQM measure %s's Sub-population %s", true),
+	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(63,
+			"Must have one count for Supplemental Data %s on Sub-population %s for eCQM measure %s", true);
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));

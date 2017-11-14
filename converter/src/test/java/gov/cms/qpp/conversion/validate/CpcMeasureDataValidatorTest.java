@@ -270,4 +270,21 @@ class CpcMeasureDataValidatorTest {
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(error);
 	}
+
+	@Test
+	void validateFailureSupplementalDataMissingCountTest() throws Exception {
+		String failurePayerFile = TestHelper.getFixture("failureSupplementalDataCountFile.xml");
+		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
+		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
+		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
+		validator.internalValidateSingleNode(underTest);
+
+		LocalizedError error = ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
+				 SupplementalData.MALE.getCode(), SubPopulations.IPOP, MEASURE_ID);
+
+		Set<Detail> errors = validator.getDetails();
+
+		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.contains(error);
+	}
 }

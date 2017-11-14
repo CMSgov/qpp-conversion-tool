@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * Validates a Sub population's Measure Data for the CPC Plus program entity
+ * Validates a Sub Population's Measure Data for the CPC Plus program entity
  */
 @Validator(value = TemplateId.MEASURE_DATA_CMS_V2, program = Program.CPC)
 public class CpcMeasureDataValidator extends NodeValidator {
@@ -48,25 +48,26 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	/**
 	 * Validates all of the nodes under one specified Supplemental Type
 	 *
-	 * @param node
-	 * @param currentTemplateId
-	 * @param supplementalDataType
+	 * @param node Parent node of the nodes to be validated
+	 * @param currSupplementalDataTemplateId Template Id of the nodes to be validated
+	 * @param supplementalDataType current data type to be validated
 	 */
 	private void validateAllSupplementalNodesOfSpecifiedType(Node node,
-															 TemplateId currentTemplateId,
+															 TemplateId currSupplementalDataTemplateId,
 															 String supplementalDataType) {
 		List<Node> supplementalDataNodes =
-				node.getChildNodes(currentTemplateId).collect(Collectors.toList());
+				node.getChildNodes(currSupplementalDataTemplateId).collect(Collectors.toList());
 		List<SupplementalData> codes = SupplementalData.getSupplementalDataListByType(supplementalDataType);
 
 		for (SupplementalData supplementalData : codes) {
-			Node validateSupplementalNode = filterCorrectNode(
+			Node validatedSupplementalNode = filterCorrectNode(
 					supplementalDataType, supplementalDataNodes, supplementalData);
 
-			if (validateSupplementalNode == null) {
+			if (validatedSupplementalNode == null) {
 				addSupplementalValidationError(node, supplementalData);
 			}
 		}
+		validateSupplementalDataNodeCounts(node, supplementalDataType, supplementalDataNodes);
 	}
 
 	/**
@@ -81,7 +82,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 								   List<Node> supplementalDataNodes,
 								   SupplementalData supplementalData) {
 		return supplementalDataNodes.stream()
-				.filter(makeValidatorBySupplementalTypeAndCode(supplementalDataType, supplementalData.getCode()))
+				.filter(filterDataBySupplementalCode(supplementalDataType, supplementalData.getCode()))
 				.findFirst()
 				.orElse(null);
 	}
@@ -93,7 +94,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * @param code Required code to be validate against
 	 * @return
 	 */
-	private Predicate<Node> makeValidatorBySupplementalTypeAndCode(String nodeValueName, String code) {
+	private Predicate<Node> filterDataBySupplementalCode(String nodeValueName, String code) {
 		return thisNode -> code.equalsIgnoreCase(thisNode.getValue(nodeValueName));
 	}
 
@@ -111,5 +112,38 @@ public class CpcMeasureDataValidator extends NodeValidator {
 				ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(supplementalData.getCode(),
 						config.getElectronicMeasureId(), node.getValue(MeasureDataDecoder.MEASURE_TYPE));
 		addValidationError(Detail.forErrorAndNode(error, node));
+	}
+
+	/**
+	 * Validates all Supplemental Data nodes for an Aggregate count
+	 *
+	 * @param node parent node
+	 * @param supplementalDataType type of supplemental nodes
+	 * @param supplementalDataNodes supplemental nodes to be validated
+	 */
+	private void validateSupplementalDataNodeCounts(Node node,
+													String supplementalDataType, List<Node> supplementalDataNodes) {
+		supplementalDataNodes.forEach(thisNode -> {
+			LocalizedError error = makeIncorrectCountSizeLocalizedError(node, supplementalDataType, thisNode);
+			check(thisNode).childMinimum(error, 1, TemplateId.ACI_AGGREGATE_COUNT)
+					.childMaximum(error, 1, TemplateId.ACI_AGGREGATE_COUNT);
+		});
+	}
+
+	/**
+	 * Creates a localized error for an invalid number of aggregate counts
+	 *
+	 * @param node parent node
+	 * @param supplementalDataType type of supplemental nodes
+	 * @param thisNode current supplemental node to be validated
+	 * @return
+	 */
+	private LocalizedError makeIncorrectCountSizeLocalizedError(Node node, String supplementalDataType, Node thisNode) {
+		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(
+				node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
+
+		return ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
+				thisNode.getValue(supplementalDataType), node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+				config.getElectronicMeasureId());
 	}
 }
