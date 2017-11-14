@@ -71,7 +71,8 @@ class CpcPlusAcceptanceTest {
 		List<Path> successesThatShouldBeErrors = getXml(FAILURE)
 			.filter(entry -> {
 				Converter converter = new Converter(new PathQrdaSource(entry));
-				if (!"CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml".equals(entry.toFile().getName())) {
+				//TODO remove this once all error scenarios are validated
+				if (fixtureValues.get(entry.toFile().getName()) == null) {
 					return false;
 				}
 				try {
