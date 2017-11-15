@@ -10,10 +10,6 @@ public class CPCAcceptanceFixture {
 	private String message;
 	private List<Object> subs;
 
-	public void decrementOccurrances() {
-		occurrences -= occurrences;
-	}
-
 	public int getErrorCode() {
 		return errorCode;
 	}
@@ -41,7 +37,7 @@ public class CPCAcceptanceFixture {
 	public String getMessage() {
 		if (message == null) {
 			ErrorCode ec = ErrorCode.getByCode(errorCode);
-			message = (subs != null) ? ec.format(subs).getMessage() : ec.getMessage();
+			message = (subs != null) ? ec.format(subs.toArray()).getMessage() : ec.getMessage();
 		}
 		return message;
 	}

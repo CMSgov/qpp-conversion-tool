@@ -12,7 +12,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -21,11 +20,12 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 
 class CpcPlusAcceptanceTest {
@@ -34,13 +34,13 @@ class CpcPlusAcceptanceTest {
 	private static final Path SUCCESS = BASE.resolve("success");
 	private static final Path FAILURE = BASE.resolve("failure");
 	private static final Path FAILURE_FIXTURE = FAILURE.resolve("fixture.json");
-	private static Map<String, List<CPCAcceptanceFixture>> fixtureValues;
+	private static Map<String, Set<CPCAcceptanceFixture>> fixtureValues;
 
 	@BeforeAll
 	static void initMockApmIds() throws IOException {
 		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
-		TypeReference<Map<String, List<CPCAcceptanceFixture>>> ref =
-				new TypeReference<Map<String, List<CPCAcceptanceFixture>>>() { };
+		TypeReference<Map<String, Set<CPCAcceptanceFixture>>> ref =
+				new TypeReference<Map<String, Set<CPCAcceptanceFixture>>>() { };
 		fixtureValues = JsonHelper.readJson(FAILURE_FIXTURE, ref);
 	}
 
@@ -82,7 +82,6 @@ class CpcPlusAcceptanceTest {
 					//runnning conversions on individual files
 					List<Detail> details = expected.getDetails().getErrors().get(0).getDetails();
 					verifyOutcome(entry.toFile().getName(), details);
-					System.out.println();
 					return false;
 				}
 			}).collect(Collectors.toList());
@@ -91,24 +90,24 @@ class CpcPlusAcceptanceTest {
 	}
 
 	private void verifyOutcome(String filename, List<Detail> details) {
-		List<CPCAcceptanceFixture> expectedErrors = fixtureValues.get(filename);
-		Map<String, CPCAcceptanceFixture> errorMap =
-				expectedErrors.stream().collect(
-						Collectors.toMap(CPCAcceptanceFixture::getMessage, Function.identity()));
+		Set<CPCAcceptanceFixture> expectedErrors = fixtureValues.get(filename);
 
-		details.forEach(detail -> {
-			String message = detail.getMessage();
-			CPCAcceptanceFixture fixture = errorMap.get(message);
-			assertThat(fixture).isNotNull();
-			assertThat(detail.getErrorCode()).isEqualTo(fixture.getErrorCode());
+		System.out.println("Verifying expected errors match the following actual errors. " + details);
 
-			fixture.decrementOccurrances();
-			if (fixture.getOccurrences() <= 0) {
-				errorMap.remove(message);
-			}
+		expectedErrors.stream().forEach(expectedError -> {
+			Integer expectedErrorCode = expectedError.getErrorCode();
+			String expectedErrorMessage = expectedError.getMessage();
+
+			long matchingActualErrors = details.stream()
+				.filter(actualError -> actualError.getErrorCode() == expectedErrorCode)
+				.filter(actualError -> actualError.getMessage().equals(expectedErrorMessage))
+				.count();
+
+			assertWithMessage("The actual number of occurrences for the error code %s and substitutions %s did not match",
+					expectedError.getErrorCode(),
+					expectedError.getSubs())
+				.that(matchingActualErrors).isEqualTo(expectedError.getOccurrences());
 		});
-
-		assertThat(errorMap).hasSize(0);
 	}
 
 	private Stream<Path> getXml(Path directory) {
