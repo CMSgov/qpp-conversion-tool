@@ -64,7 +64,7 @@
    <!--Program for which data is being submitted-->
 	  <informationRecipient>
       <intendedRecipient>
-         <id root="2.16.840.1.113883.3.249.7" extension="CPCplus"/>
+         <id root="2.16.840.1.113883.3.249.7" extension="CPCPLUS"/>
       </intendedRecipient>
    </informationRecipient>
    <legalAuthenticator>
@@ -92,7 +92,7 @@
 	  <participant typeCode="LOC">
       <associatedEntity classCode="SDLOC">
          <id root="2.16.840.1.113883.3.249.5.1"
-            extension="TestApmEntityId"
+            extension="AnInvalidApmEntityId"
              assigningAuthorityName="CMS-CMMI"/>
          <code code="394730007"
                displayName="healthcare related organization"
