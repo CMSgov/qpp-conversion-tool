@@ -33,26 +33,38 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 		verifyOverallCount(checker);
 	}
 
+	/**
+	 * Verify that CPC+ measurement group minimums are met.
+	 * @param checker node validator helper
+	 * @param groupMinimum group minimum config
+	 */
 	private void checkGroupMinimum(Checker checker, CpcGroupMinimum groupMinimum) {
 		String[] measureIds = grabGroupMeasures(groupMinimum);
 		checker.hasMeasures(
 				groupMinimum.makeError(measureIds), groupMinimum.minimum, measureIds);
 	}
 
+	/**
+	 * Retrieve measure ids for group specific measures.
+	 * @param groupMinimum group config
+	 * @return measure id array
+	 */
 	String[] grabGroupMeasures(CpcGroupMinimum groupMinimum) {
 		Map<String, List<MeasureConfig>> cpcPlusGroups = MeasureConfigs.getCpcPlusGroups();
 
 		return cpcPlusGroups.get(groupMinimum.name()).stream()
-//				.map(MeasureConfig::getMeasureId)
 				.map(MeasureConfig::getElectronicMeasureVerUuid)
 				.toArray(String[]::new);
 	}
 
+	/**
+	 * Verify minimum across all groups.
+	 * @param checker node validator helper
+	 */
 	private void verifyOverallCount(Checker checker) {
 		String[] measureIds = MeasureConfigs.getCpcPlusGroups()
 				.values().stream()
 				.flatMap(List::stream)
-//				.map(MeasureConfig::getMeasureId)
 				.map(MeasureConfig::getElectronicMeasureVerUuid)
 				.toArray(String[]::new);
 
@@ -60,6 +72,9 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 				CpcGroupMinimum.makeOverallError(measureIds), CpcGroupMinimum.NUMBER_OF_MEASURES_REQUIRED, measureIds);
 	}
 
+	/**
+	 * A holder of CPC+ group specific configuration information.
+	 */
 	enum CpcGroupMinimum {
 		A("outcome", 2),
 		B("complex process", 2);

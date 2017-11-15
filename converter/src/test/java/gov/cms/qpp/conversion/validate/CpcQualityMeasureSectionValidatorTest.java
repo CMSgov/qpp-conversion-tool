@@ -91,6 +91,13 @@ class CpcQualityMeasureSectionValidatorTest {
 				.containsExactly(message);
 	}
 
+	@Test
+	void justRight() {
+		Node node = setupMeasures(groupAmeasures, groupBmeasures, new String[]{groupCmeasures[0], groupCmeasures[1]});
+		validator.internalValidateSingleNode(node);
+		assertThat(validator.getDetails()).hasSize(0);
+	}
+
 	private Node setupMeasures(String[]... measureGroups) {
 		Node[] nodes = Arrays.stream(measureGroups)
 				.flatMap(Arrays::stream)

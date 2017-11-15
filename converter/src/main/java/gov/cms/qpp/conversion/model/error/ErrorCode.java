@@ -97,9 +97,9 @@ public enum ErrorCode implements LocalizedError {
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID"),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(62,
-			"CPCPLUS Submissions must have at least %d of the following %s measures: %s.", true),
+			"CPC+ Submissions must have at least %d of the following %s measures: %s.", true),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(63,
-			"CPCPLUS Submissions must have at least %d of the following measures: %s.", true);
+			"CPC+ Submissions must have at least %d of the following measures: %s.", true);
 
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())

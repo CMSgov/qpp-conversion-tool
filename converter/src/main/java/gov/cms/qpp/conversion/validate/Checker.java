@@ -317,7 +317,7 @@ class Checker {
 	 * @return The checker, for chaining method calls
 	 */
 	Checker hasMeasures(LocalizedError code, String... measureIds) {
-		return hasMeasures(code, Arrays.asList(measureIds).size(), measureIds);
+		return hasMeasures(code, measureIds.length, measureIds);
 	}
 
 	Checker hasMeasures(LocalizedError code, int numberOfMeasuresRequired, String... measureIds) {
