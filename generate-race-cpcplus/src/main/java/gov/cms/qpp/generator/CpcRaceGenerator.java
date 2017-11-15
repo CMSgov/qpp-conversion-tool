@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -22,9 +21,8 @@ import org.jdom2.output.XMLOutputter;
 
 public class CpcRaceGenerator {
 	private static FileSystem fileSystem = FileSystems.getDefault();
-	private DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-	public void main(String... args) {
+	public static void main(String... args) {
 		Collection<Path> filenames = getFiles(args);
 		filenames.forEach(file -> {
 			Document document = addSupplementalRaceData(file);
@@ -32,7 +30,7 @@ public class CpcRaceGenerator {
 		});
 	}
 
-	private Collection<Path> getFiles(String[] args) {
+	static Collection<Path> getFiles(String[] args) {
 		Collection<Path> validFiles = new LinkedList<>();
 		for (String arg : args) {
 			validFiles.addAll(checkFiles(arg));
@@ -41,7 +39,7 @@ public class CpcRaceGenerator {
 
 	}
 
-	Collection<Path> checkFiles(String path) {
+	static Collection<Path> checkFiles(String path) {
 		Collection<Path> existingFiles = new LinkedList<>();
 
 		if (Strings.isNullOrEmpty(path)) {
@@ -56,16 +54,21 @@ public class CpcRaceGenerator {
 		return existingFiles;
 	}
 
-	Document addSupplementalRaceData(Path path) {
+	static Document addSupplementalRaceData(Path path) {
 		try {
 			SAXBuilder saxBuilder = new SAXBuilder();
 			InputStream inputStream = Files.newInputStream(path);
 			Document document = saxBuilder.build(inputStream);
 
 			Element rootElement = document.getDocument().getRootElement();
+
+			for (Element element: rootElement.getChildren()) {
+				System.out.println(element.getName());
+			}
+
 			Element measureSection =
-					rootElement.getChild("component")
-							.getChild("structuredBody").getChild("component").getChild("section");
+					rootElement.getChild("component").getChild("structuredBody")
+							.getChild("component").getChild("section");
 			List<Element> measureEntries = measureSection.getChildren("entry");
 			measureEntries.remove(0);
 			for (Element measureEntry : measureEntries) {
@@ -86,7 +89,7 @@ public class CpcRaceGenerator {
 		return null;
 	}
 
-	private Element createRaceElement() {
+	static Element createRaceElement() {
 		Element entryRelationship =  new Element("entryRelationship");
 		Element observation =  new Element("observation");
 		addOuterObservationChildren(observation);
@@ -96,7 +99,7 @@ public class CpcRaceGenerator {
 		return entryRelationship;
 	}
 
-	private void addOuterObservationChildren(Element observation) {
+	static void addOuterObservationChildren(Element observation) {
 		Element templateId =  new Element("templateId");
 		templateId.setAttribute("root", "2.16.840.1.113883.10.20.27.3.8");
 		templateId.setAttribute("extension", "2016-09-01");
@@ -143,7 +146,7 @@ public class CpcRaceGenerator {
 		observation.setContent(createAggregateCountEntry());
 	}
 
-	private Element createAggregateCountEntry() {
+	static Element createAggregateCountEntry() {
 		Element aggregateCountEntry =  new Element("entryRelationship");
 		aggregateCountEntry.setAttribute("typeCode","SUBJ"); //typeCode="SUBJ" inversionInd="true"
 		aggregateCountEntry.setAttribute("inversionInd","true");
@@ -186,7 +189,7 @@ public class CpcRaceGenerator {
 		return aggregateCountEntry;
 	}
 
-	private void writeFile(Document document) {
+	static void writeFile(Document document) {
 		try {
 			FileWriter writer = new FileWriter("test.xml");
 			XMLOutputter output = new XMLOutputter();
