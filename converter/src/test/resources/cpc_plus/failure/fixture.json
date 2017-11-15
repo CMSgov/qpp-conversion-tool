@@ -1,134 +1,227 @@
 {
-	"CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS124v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS125v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS130v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS131v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS137v5IncUUID_SampleQRDA-III.xml":  [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS138v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS139v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS149v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS156v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS159v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS165v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS166v6IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMS50v5IncUUID_SampleQRDA-III.xml": [
-		{
-			"errorCode": 6,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_CMSPrgrm_DiffCode_SampleQRDA-III.xml": [
-		{
-			"errorCode": 25,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_InvalidPerformancePeriod_SampleQRDA-III.xml": [
-		{
-			"errorCode": 55,
-			"occurrences": 1
-		}
-	],
-	"CPCPLUS_Performance_Rate_Number.xml": [
-		{
-			"errorCode": 37,
-			"subs": [1],
-			"occurrences": 2
-		},
-		{
-			"errorCode": 37,
-			"subs": [2],
-			"occurrences": 1
-		}
-	],
-	"CPCPLUS_Performance_Rate_Sample.xml": [
-		{
-			"errorCode": 33,
-			"occurrences": 2
-		}
-	],
-	"CPCPlus_AddressEx1_SampleQRDA-III.xml": [
-		{
-			"errorCode": 34,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_PracID_Null_SampleQRDA-III.xml": [
-		{
-			"errorCode": 35,
-			"occurrences": 1
-		}
-	],
-	"CPCPlus_InvalidApmId.xml": [
-		{
-			"errorCode": 63,
-			"occurrences": 1
-		}
-	]
+	"CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS124v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS125v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS130v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS131v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS137v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS138v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS139v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS149v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS156v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS159v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS165v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS166v6IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS50v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMSPrgrm_DiffCode_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 25,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_InvalidPerformancePeriod_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 55,
+				"occurrences": 1
+			},
+			{
+				"errorCode": 56,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_Measure_Section.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 36,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPLUS_Performance_Rate_Number.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 59,
+				"subs": [
+					"CMS\\d{2,3}v\\d{1}",
+					".*",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 2
+			},
+			{
+				"errorCode": 37,
+				"subs": [1],
+				"occurrences": 2
+			},
+			{
+				"errorCode": 37,
+				"subs": [2],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPLUS_Performance_Rate_Sample.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 33,
+				"occurrences": 2
+			}
+		]
+	},
+	"CPCPlus_AddressEx1_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 34,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_PracID_Null_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 35,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_InvalidApmId.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 63,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_PracID_Not_Provided_ SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 63,
+				"occurrences": 1
+			}
+		]
+	}
 }
