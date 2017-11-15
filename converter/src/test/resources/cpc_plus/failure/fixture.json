@@ -5,6 +5,96 @@
 			"occurrences": 1
 		}
 	],
+	"CPCPlus_CMS124v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS125v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS130v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS131v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS137v5IncUUID_SampleQRDA-III.xml":  [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS138v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS139v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS149v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS156v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS159v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS165v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS166v6IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMS50v5IncUUID_SampleQRDA-III.xml": [
+		{
+			"errorCode": 6,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_CMSPrgrm_DiffCode_SampleQRDA-III.xml": [
+		{
+			"errorCode": 25,
+			"occurrences": 1
+		}
+	],
+	"CPCPlus_InvalidPerformancePeriod_SampleQRDA-III.xml": [
+		{
+			"errorCode": 55,
+			"occurrences": 1
+		}
+	],
 	"CPCPLUS_Performance_Rate_Number.xml": [
 		{
 			"errorCode": 37,

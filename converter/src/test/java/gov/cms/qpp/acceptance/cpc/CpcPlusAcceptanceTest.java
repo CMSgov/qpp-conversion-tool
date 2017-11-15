@@ -10,6 +10,7 @@ import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -49,6 +50,7 @@ class CpcPlusAcceptanceTest {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
 
+	@Disabled
 	@Test
 	void testCpcPlusFileSuccesses() throws IOException {
 		Map<Path, AllErrors> errors = new HashMap<>();
@@ -86,13 +88,17 @@ class CpcPlusAcceptanceTest {
 				}
 			}).collect(Collectors.toList());
 
+		assertWithMessage("The fixture file is not representative of the failures directory")
+				.that(getXml(FAILURE).count())
+				.isEqualTo(fixtureValues.size());
 		assertThat(successesThatShouldBeErrors).isEmpty();
 	}
 
 	private void verifyOutcome(String filename, List<Detail> details) {
 		Set<CPCAcceptanceFixture> expectedErrors = fixtureValues.get(filename);
 
-		System.out.println("Verifying expected errors match the following actual errors. " + details);
+		System.out.println("Verifying scenario " + filename +
+				", expected errors match the following actual errors. " + details);
 
 		expectedErrors.stream().forEach(expectedError -> {
 			Integer expectedErrorCode = expectedError.getErrorCode();
