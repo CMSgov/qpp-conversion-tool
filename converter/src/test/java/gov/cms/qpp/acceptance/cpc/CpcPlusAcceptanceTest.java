@@ -21,7 +21,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -88,9 +87,9 @@ class CpcPlusAcceptanceTest {
 				}
 			}).collect(Collectors.toList());
 
-//		assertWithMessage("The fixture file is not representative of the failures directory")
-//				.that(getXml(FAILURE).count())
-//				.isEqualTo(fixtureValues.size());
+		assertWithMessage("The fixture file is not representative of the failures directory")
+				.that(getXml(FAILURE).count())
+				.isEqualTo(fixtureValues.size());
 		assertThat(successesThatShouldBeErrors).isEmpty();
 	}
 
@@ -127,7 +126,7 @@ class CpcPlusAcceptanceTest {
 
 	private boolean messageComparison(String actual, String expected) {
 		return actual.equals(expected) ||
-				actual.replaceAll("[()]", "")
+				actual.replaceAll("[\\[()\\]]", "")
 						.matches(expected.replaceAll("[()]", ""));
 	}
 

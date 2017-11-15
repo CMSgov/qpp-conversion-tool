@@ -223,5 +223,244 @@
 				"occurrences": 1
 			}
 		]
+	},
+	"CPCPlus_QualityWithDupNumOfDenomPops_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 14,
+				"subs": ["CMS\\d{2,3}v\\d{1}", 1, "DENOM", 2],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_QualityWithIncNumOfNumerPops_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 14,
+				"subs": ["CMS\\d{2,3}v\\d{1}", 1, "NUMER", 2],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithOnlyACI_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 36,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithOnlyACIandIA_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 36,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithOnlyIA_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 36,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQualityIncorrectEndDate_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 56,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQualityIncorrectStartDate_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 55,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_122_IPOPLessThanDenom_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 13,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_130_IPOPLessThanDenom_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 13,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_137OnlyOnePerfRateSampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 33,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_137_IncNumerator_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}",
+					"performanceRateUuid",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_137_IncStrata_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 57,
+				"occurrences": 1
+			},
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}",
+					"IPOP,IPP",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_149PerfRateOver1_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 33,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_156OnlyOnePerfRate_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 37,
+				"subs": [2],
+				"occurrences": 1
+			},
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}",
+					"performanceRateUuid",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_156_IncNumberator_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}",
+					"performanceRateUuid",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_165NegativePerfRate_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 33,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_CMS138_AlphCharInPerfRate_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 33,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_ExtraPopulationForCMS149_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 14,
+				"subs": ["CMS\\d{2,3}v\\d{1}", 0, "DENEX", 1],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_PerfRateNotPresent_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 37,
+				"subs": [1],
+				"occurrences": 1
+			},
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}",
+					"performanceRateUuid",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"QRDAIII_CMS153_NonCPCPlusMsr_IncStrata.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 49,
+				"subs": [1, 2, "[A-Z]{3,8}",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}",
+				    ".*"],
+				"occurrences": 3
+			},
+			{
+				"errorCode": 48,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[A-Z]{3,8}",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 3
+			}
+		]
+	},
+	"QRDAIII_CMS74_NonCPCPlusMsr_IncStrata.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 49,
+				"subs": [2, 3, "[A-Z]{3,8}",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}",
+					".*"],
+				"occurrences": 2
+			},
+			{
+				"errorCode": 48,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[A-Z]{3,8}",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 2
+			}
+		]
 	}
 }
