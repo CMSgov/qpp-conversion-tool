@@ -10,7 +10,6 @@ import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -70,25 +69,22 @@ class CpcPlusAcceptanceTest {
 	void testCpcPlusFileFailures() throws IOException {
 		List<Path> successesThatShouldBeErrors = getXml(FAILURE)
 			.filter(entry -> {
+				String fileName = entry.getFileName().toString();
+				assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues.containsKey(fileName)).isTrue();
+
 				Converter converter = new Converter(new PathQrdaSource(entry));
-				//TODO remove this once all error scenarios are validated
-				if (fixtureValues.get(entry.toFile().getName()) == null) {
-					return false;
-				}
+
 				try {
 					converter.transform();
 					return true;
 				} catch (TransformException expected) {
 					//runnning conversions on individual files
 					List<Detail> details = expected.getDetails().getErrors().get(0).getDetails();
-					verifyOutcome(entry.toFile().getName(), details);
+					verifyOutcome(fileName, details);
 					return false;
 				}
 			}).collect(Collectors.toList());
 
-		assertWithMessage("The fixture file is not representative of the failures directory")
-				.that(getXml(FAILURE).count())
-				.isEqualTo(fixtureValues.size());
 		assertThat(successesThatShouldBeErrors).isEmpty();
 	}
 
