@@ -157,7 +157,7 @@
 		]
 	},
 	"CPCPLUS_Performance_Rate_Number.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 59,
@@ -460,6 +460,36 @@
 				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[A-Z]{3,8}",
 					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
 				"occurrences": 2
+			}
+		]
+	},
+	"CPCPlus_IncNumofGroup1Measures_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 64,
+				"subs": [2, "outcome", "40280381-51f0-825b-0152-22b98cff181a,40280381-51f0-825b-0152-229afff616ee,40280381-5118-2f4e-0151-3a9382cd09ba"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_IncNumofGroup2Measures_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 64,
+				"subs": [2, "complex process", "40280381-51f0-825b-0152-22aae8a21778,40280381-52fc-3a32-0153-1a401cc10b57,40280381-528a-60ff-0152-8e089ed20376,40280381-52fc-3a32-0153-56d2b4f01ae5"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_IncNumTotalMeasures_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 65,
+				"subs": [9, "40280381-51f0-825b-0152-22b98cff181a,40280381-51f0-825b-0152-229afff616ee,40280381-5118-2f4e-0151-3a9382cd09ba,40280381-51f0-825b-0152-22aae8a21778,40280381-52fc-3a32-0153-1a401cc10b57,40280381-528a-60ff-0152-8e089ed20376,40280381-52fc-3a32-0153-56d2b4f01ae5,40280381-51f0-825b-0152-22ba7621182e,40280381-5118-2f4e-0151-59fb81bf1055,40280381-51f0-825b-0152-22a1e7e81737,40280381-51f0-825b-0152-229c4ea3170c,40280381-51f0-825b-0152-22a24cdd1740,40280381-51f0-825b-0152-229bdcab1702,40280381-503f-a1fc-0150-d33f5b0a1b8c"],
+				"occurrences": 1
 			}
 		]
 	}
