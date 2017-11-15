@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -118,7 +117,7 @@ public class MeasureConfigs {
 	 * @param section Specified section for measures required
 	 * @return The list of required measures
 	 */
-	public static List<String> requiredMeasuresForSection(String section) {
+	static List<String> requiredMeasuresForSection(String section) {
 
 		return configurationMap.values().stream()
 			.filter(measureConfig -> measureConfig.isRequired() && section.equals(measureConfig.getCategory()))

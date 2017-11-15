@@ -79,7 +79,7 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 		A("outcome", 2),
 		B("complex process", 2);
 
-		private static int NUMBER_OF_MEASURES_REQUIRED = 9;
+		private static final int NUMBER_OF_MEASURES_REQUIRED = 9;
 		private String label;
 		private int minimum;
 

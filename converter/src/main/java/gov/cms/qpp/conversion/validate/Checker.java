@@ -1,5 +1,13 @@
 package gov.cms.qpp.conversion.validate;
 
+import com.google.common.base.Strings;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -9,17 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Strings;
-
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations
@@ -97,7 +94,7 @@ class Checker {
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIsNotEmpty(LocalizedError code, String name) {
+	Checker valueIsNotEmpty(LocalizedError code, String name) {
 		lastAppraised = node.getValue(name);
 		if (!shouldShortcut() && Strings.isNullOrEmpty((String) lastAppraised)) {
 			details.add(detail(code));
@@ -336,7 +333,7 @@ class Checker {
 				return false;
 			}).count();
 
-			if (!(numNodesWithWantedMeasureIds >= numberOfMeasuresRequired)) {
+			if (numNodesWithWantedMeasureIds < numberOfMeasuresRequired) {
 				details.add(detail(code));
 			}
 		}
