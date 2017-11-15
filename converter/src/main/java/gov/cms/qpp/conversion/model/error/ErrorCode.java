@@ -98,9 +98,9 @@ public enum ErrorCode implements LocalizedError {
 			+ "incorrect UUID of %s", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID"),
-	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(62,
+	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64,
 			"CPC+ Submissions must have at least %d of the following %s measures: %s.", true),
-	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(63,
+	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65,
 			"CPC+ Submissions must have at least %d of the following measures: %s.", true);
 
 

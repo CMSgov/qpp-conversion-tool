@@ -57,7 +57,7 @@ class CpcQualityMeasureSectionValidatorTest {
 
 	@Test
 	void tooFewGroupAmeasures() {
-		Node node = setupMeasures(new String[] {"40280381-51f0-825b-0152-22b98cff181a"});
+		Node node = setupMeasures(new String[] {groupAmeasures[0]});
 		LocalizedError message = CpcGroupMinimum.A.makeError(groupAmeasures);
 		validator.internalValidateSingleNode(node);
 		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -75,7 +75,7 @@ class CpcQualityMeasureSectionValidatorTest {
 
 	@Test
 	void tooFewBmeasures() {
-		Node node = setupMeasures(groupAmeasures, new String[] {"318"});
+		Node node = setupMeasures(groupAmeasures, new String[] {groupBmeasures[0]});
 		LocalizedError message = CpcGroupMinimum.B.makeError(groupBmeasures);
 		validator.internalValidateSingleNode(node);
 		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
