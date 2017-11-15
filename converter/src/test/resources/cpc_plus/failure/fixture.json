@@ -215,11 +215,11 @@
 			}
 		]
 	},
-	"CPCPlus_PracID_Not_Provided_ SampleQRDA-III.xml": {
-		"strict": false,
+	"CPCPlus_PracID_Not_Provided_SampleQRDA-III.xml": {
+		"strict": true,
 		"errorData": [
 			{
-				"errorCode": 63,
+				"errorCode": 35,
 				"occurrences": 1
 			}
 		]
