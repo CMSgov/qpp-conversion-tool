@@ -50,6 +50,7 @@ public class StorageServiceImpl extends InOrderActionService<PutObjectRequest, S
 		PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, inStream, new ObjectMetadata())
 			.withSSEAwsKeyManagementParams(new SSEAwsKeyManagementParams(kmsKey));
 
+		API_LOG.info("Writing object {} to S3 bucket {}", keyName, bucketName);
 		return actOnItem(putObjectRequest);
 	}
 
@@ -70,6 +71,8 @@ public class StorageServiceImpl extends InOrderActionService<PutObjectRequest, S
 			Thread.currentThread().interrupt();
 			throw new UncheckedInterruptedException(exception);
 		}
+
+		API_LOG.info("Successfully wrote object {} to S3 bucket {}", returnValue, objectToActOn.getBucketName());
 
 		return returnValue;
 	}
