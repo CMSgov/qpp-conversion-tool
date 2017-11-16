@@ -10,7 +10,7 @@
 	             2) This sample file correctly validates against the conformance statements specified in the 
 	             2017 CMS Implementation Guide for Quality Reporting Document Architecture Category III
 	             Eligible Clinicians and Eligible Professionals Programs, Version 1.0, 7/7/2017
-	10/9/2017 (V2): 
+	10/9/2017: 
 	Description: 1) Added the all improvement activities for the 2017 performance period for testing purpose.
 				 2) Added the advancing care information measures for the 2017 performance period for testing purpose. 
 				 Included the exclusion identifiers: ACI_LVPP_1, ACI_TRANS_LVPP_1, ACI_LVOTC_1, ACI_LVITC_1, ACI_TRANS_LVPP_1, 
@@ -18,7 +18,9 @@
 				 Did not include the attestation identifiers. 				 
 				 3) Removed comments of conformance statements
 				 3) Removed the person author from the header 
-
+	11/9/2017:
+	Description: Added the ACI Attestation Statements Identifiers:ACI_INFBLO_1, ACI_ONCDIR_1, ACI_ONCACB_1
+	
    THIS SAMPLE FILE IS INFORMATIVE ONLY.  
    eCQMs included are:
    MeasureID						Type
@@ -35,7 +37,7 @@
    CMS138v5							Community/Population Health
    CMS136v6							Effective Clinical Care (multiple rates)
    
-   Advancing care information measures included are: all except ACI_EP_1, ACI_HIE_1, ACI_HIE_2, ACI_TRANS_EP_1, ACI_TRANS_HIE_1 and the attestation identifiers.   
+   Advancing care information measures included are: all except ACI_EP_1, ACI_HIE_1, ACI_HIE_2, ACI_TRANS_EP_1, ACI_TRANS_HIE_1.   
    Improvement Activities included are: all improvement activities for the 2017 performance period
 -->
 <ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -29187,7 +29189,7 @@ CDA Header
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<!-- Implied template Measure Reference templateId -->
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<!-- ACI Numerator Measure Performed Measure Reference and Results templateId -->
+							<!-- ACI Measure Performed Measure Reference and Results templateId -->
 							<templateId root="2.16.840.1.113883.10.20.27.3.29"
 								extension="2016-09-01"/>
 							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
@@ -29288,7 +29290,7 @@ CDA Header
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<!-- Implied template Measure Reference templateId -->
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<!-- ACI Numerator Measure Performed Measure Reference and Results templateId -->
+							<!-- ACI Measure Performed Measure Reference and Results templateId -->
 							<templateId root="2.16.840.1.113883.10.20.27.3.29"
 								extension="2016-09-01"/>
 							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
@@ -29317,7 +29319,7 @@ CDA Header
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<!-- Implied template Measure Reference templateId -->
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<!-- ACI Numerator Measure Performed Measure Reference and Results templateId -->
+							<!-- ACI Measure Performed Measure Reference and Results templateId -->
 							<templateId root="2.16.840.1.113883.10.20.27.3.29"
 								extension="2016-09-01"/>
 							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
@@ -29346,7 +29348,7 @@ CDA Header
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<!-- Implied template Measure Reference templateId -->
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<!-- ACI Numerator Measure Performed Measure Reference and Results templateId -->
+							<!-- ACI Measure Performed Measure Reference and Results templateId -->
 							<templateId root="2.16.840.1.113883.10.20.27.3.29"
 								extension="2016-09-01"/>
 							<id root="ac575aef-7062-4ea2-b723-df517cfa470a"/>
@@ -29370,6 +29372,88 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
+					<!-- Attestation Statement Identifiers -->
+					<!-- ACI_INFBLO_1 -->
+					<entry>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.29"
+								extension="2016-09-01"/>
+							<id root="c2ae3b90-a066-4212-a70b-80e6fea13c96"/>
+							<statusCode code="completed"/>
+							<reference typeCode="REFR">
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<id root="2.16.840.1.113883.3.7031" extension="ACI_INFBLO_1"/>
+									<text>Prevention of Information Blocking Attestation</text>
+								</externalDocument>
+							</reference>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.27"
+										extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="Y" codeSystem="2.16.840.1.113883.12.136"
+										codeSystemName="Yes/no indicator (HL7 Table 0136)" displayName="Yes"/>
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+					<!-- ACI_ONCDIR_1 -->
+					<entry>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.29"
+								extension="2016-09-01"/>
+							<id root="82b3d114-0596-43ee-9260-2518898ac75f"/>
+							<statusCode code="completed"/>
+							<reference typeCode="REFR">
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<id root="2.16.840.1.113883.3.7031" extension="ACI_ONCDIR_1"/>
+									<text>ONC Direct Review Attestation</text>
+								</externalDocument>
+							</reference>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.27"
+										extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="Y" codeSystem="2.16.840.1.113883.12.136"
+										codeSystemName="Yes/no indicator (HL7 Table 0136)" displayName="Yes"/>
+								</observation>
+							</component>
+						</organizer>
+					</entry>	
+					<!-- ACI_ONCACB_1 -->
+					<entry>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.29"
+								extension="2016-09-01"/>
+							<id root="58846c99-c388-4ca5-9a36-c4ce69dad8ec"/>
+							<statusCode code="completed"/>
+							<reference typeCode="REFR">
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<id root="2.16.840.1.113883.3.7031" extension="ACI_ONCACB_1"/>
+									<text>ONC-ACB Surveillance Attestation (Optional)</text>
+								</externalDocument>
+							</reference>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.27"
+										extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="Y" codeSystem="2.16.840.1.113883.12.136"
+										codeSystemName="Yes/no indicator (HL7 Table 0136)" displayName="Yes"/>
+								</observation>
+							</component>
+						</organizer>
+					</entry>						
 					<!-- Performance Period -->
 					<entry typeCode="DRIV">
 						<act classCode="ACT" moodCode="EVN">

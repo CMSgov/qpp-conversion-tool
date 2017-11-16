@@ -8,181 +8,198 @@ Revision History:
 Description:
     		1) This QRDA-III sample file is valid ONLY for CPC+ and for the Performance Period 2017 (01/01/2017 - 12/31/2017 measurement period) reporting.
     	    2) This sample file correctly validates against the conformance statements specified in the CMS Implementation Guide for Quality Reporting Document Architecture Category III Eligible Clinicians and Eligible Professionals Programs, 7/7/2017-->
-<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <realmCode code="US" />
-  <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040" />
-  <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01" />
-  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01" />
-  <id root="D5E68223-5760-11E7-1256-09173F13E4C5" />
-  <code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Quality Reporting Document Architecture Calculated Summary Report" />
-  <title>Comprehensive Primary Care Plus (CPC+) Sample QRDA-III Report</title>
-  <effectiveTime value="20170311061231" />
-  <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25" />
-  <languageCode code="en" />
-  <setId root="D5E68223-5760-11E7-1256-09173F13E4C5" />
-  <versionNumber value="1" />
-  <recordTarget>
-    <patientRole>
-      <id nullFlavor="NA" />
-    </patientRole>
-  </recordTarget>
-  <!--Device Author Example-->
-  <author>
-    <time value="20170311061231" />
-    <assignedAuthor>
-      <id root="D5E68225-5760-11E7-1256-09173F13E4C5" />
-      <assignedAuthoringDevice>
-        <softwareName>SOME Data Aggregator Transform Tool AS00016dev</softwareName>
-      </assignedAuthoringDevice>
-      <representedOrganization>
-        <id root="2.16.840.1.113883.19.5" extension="223344" />
-        <name>Good Health Clinic</name>
-      </representedOrganization>
-    </assignedAuthor>
-  </author>
-  <!--Person Author Example-->
-  <author>
-    <time value="20180311061231" />
-    <assignedAuthor>
-      <id root="2.16.840.1.113883.4.6" extension="2567891421" assigningAuthorityName="NPI" />
-      <assignedPerson>
-        <name>
-          <given>Trevor</given>
-          <family>Phillips</family>
-        </name>
-      </assignedPerson>
-      <representedOrganization>
-        <id root="2.16.840.1.113883.19.5" extension="223344" />
-        <name>Good Health Clinic</name>
-      </representedOrganization>
-    </assignedAuthor>
-  </author>
-  <custodian>
-    <assignedCustodian>
-      <representedCustodianOrganization>
-        <id root="2.16.840.1.113883.19.5" extension="223344" />
-        <name>Good Health Clinic</name>
-      </representedCustodianOrganization>
-    </assignedCustodian>
-  </custodian>
-  <!--Program for which data is being submitted-->
-  <informationRecipient>
-    <intendedRecipient>
-      <id root="2.16.840.1.113883.3.249.7" extension="CPCPLUS" />
-    </intendedRecipient>
-  </informationRecipient>
-  <legalAuthenticator>
-    <time value="20170312153222" />
-    <signatureCode code="S" />
-    <assignedEntity>
-      <id root="D5E68226-5760-11E7-1256-09173F13E4C5" />
-      <representedOrganization>
-        <id root="2.16.840.1.113883.19.5" extension="223344" />
-        <name>Good Health Clinic</name>
-      </representedOrganization>
-    </assignedEntity>
-  </legalAuthenticator>
-  <participant typeCode="DEV">
-    <associatedEntity classCode="RGPR">
-      <id root="2.16.840.1.113883.3.2074.1" extension="CMS_EHR_Certification_Identification_Number_Goes_Here" />
-      <code code="129465004" displayName="medical record, device" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
-    </associatedEntity>
-  </participant>
-  <!--Practice Site-->
-  <participant typeCode="LOC">
-    <associatedEntity classCode="SDLOC">
-      <id root="2.16.840.1.113883.3.249.5.1" extension="T2OR1234" assigningAuthorityName="CMS-CMMI" />
-      <code code="394730007" displayName="healthcare related organization" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
-      <addr>
-        <streetAddressLine>123 Healthcare St</streetAddressLine>
-        <city>Norman</city>
-        <state>OK</state>
-        <postalCode>73019</postalCode>
-      </addr>
-    </associatedEntity>
-  </participant>
-  <!--Providers in Practice Site for which data is being submitted-->
-  <documentationOf typeCode="DOC">
-    <serviceEvent classCode="PCPR">
-      <effectiveTime>
-        <low value="20170101" />
-        <high value="20171231" />
-      </effectiveTime>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20170101" />
-          <high value="20171231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2567891421" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20170101" />
-          <high value="20171231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2589654740" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20170101" />
-          <high value="20171231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2345872354" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20170101" />
-          <high value="20171231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2365987421" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-      <performer typeCode="PRF">
-        <time>
-          <low value="20170101" />
-          <high value="20171231" />
-        </time>
-        <assignedEntity>
-          <id root="2.16.840.1.113883.4.6" extension="2357943549" />
-          <representedOrganization>
-            <id root="2.16.840.1.113883.4.2" extension="990000099" />
-            <name>Good Health Clinic</name>
-          </representedOrganization>
-        </assignedEntity>
-      </performer>
-    </serviceEvent>
-  </documentationOf>
-  <authorization>
-    <consent>
-      <id root="D5E68227-5760-11E7-1256-09173F13E4C5" />
-      <code code="425691002" displayName="consent given for electronic record sharing" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
-      <statusCode code="completed" />
-    </consent>
-  </authorization>
-  <!--
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
+	<realmCode code="US"/>
+	<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
+	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01"/>
+	<id root="D5E68223-5760-11E7-1256-09173F13E4C5"/>
+	<code code="55184-6"
+		  codeSystem="2.16.840.1.113883.6.1"
+		  codeSystemName="LOINC"
+		  displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
+	<title>Comprehensive Primary Care Plus (CPC+) Sample QRDA-III Report</title>
+	<effectiveTime value="20170311061231"/>
+	<confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+	<languageCode code="en"/>
+	<setId root="D5E68223-5760-11E7-1256-09173F13E4C5"/>
+	<versionNumber value="1"/>
+	<recordTarget>
+		<patientRole>
+			<id nullFlavor="NA"/>
+		</patientRole>
+	</recordTarget>
+	<!--Device Author Example-->
+	<author>
+		<time value="20170311061231"/>
+		<assignedAuthor>
+			<id root="D5E68225-5760-11E7-1256-09173F13E4C5"/>
+			<assignedAuthoringDevice>
+				<softwareName>SOME Data Aggregator Transform Tool AS00016dev</softwareName>
+			</assignedAuthoringDevice>
+			<representedOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+	<!--Person Author Example-->
+	<author>
+		<time value="20180311061231"/>
+		<assignedAuthor>
+			<id root="2.16.840.1.113883.4.6"
+				extension="2567891421"
+				assigningAuthorityName="NPI"/>
+			<assignedPerson>
+				<name>
+					<given>Trevor</given>
+					<family>Phillips</family>
+				</name>
+			</assignedPerson>
+			<representedOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+	<custodian>
+		<assignedCustodian>
+			<representedCustodianOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedCustodianOrganization>
+		</assignedCustodian>
+	</custodian>
+	<!--Program for which data is being submitted-->
+	<informationRecipient>
+		<intendedRecipient>
+			<id root="2.16.840.1.113883.3.249.7" extension="CPCPLUS"/>
+		</intendedRecipient>
+	</informationRecipient>
+	<legalAuthenticator>
+		<time value="20170312153222"/>
+		<signatureCode code="S"/>
+		<assignedEntity>
+			<id root="D5E68226-5760-11E7-1256-09173F13E4C5"/>
+			<representedOrganization>
+				<id root="2.16.840.1.113883.19.5" extension="223344"/>
+				<name>Good Health Clinic</name>
+			</representedOrganization>
+		</assignedEntity>
+	</legalAuthenticator>
+	<participant typeCode="DEV">
+		<associatedEntity classCode="RGPR">
+			<id root="2.16.840.1.113883.3.2074.1"
+				extension="CMS_EHR_Certification_Identification_Number_Goes_Here"/>
+			<code code="129465004"
+				  displayName="medical record, device"
+				  codeSystem="2.16.840.1.113883.6.96"
+				  codeSystemName="SNOMED-CT"/>
+		</associatedEntity>
+	</participant>
+	<!--Practice Site-->
+	<participant typeCode="LOC">
+		<associatedEntity classCode="SDLOC">
+			<id root="2.16.840.1.113883.3.249.5.1"
+				extension="TestApmEntityId"
+				assigningAuthorityName="CMS-CMMI"/>
+			<code code="394730007"
+				  displayName="healthcare related organization"
+				  codeSystem="2.16.840.1.113883.6.96"
+				  codeSystemName="SNOMED-CT"/>
+			<addr>
+				<streetAddressLine>123 Healthcare St</streetAddressLine>
+				<city>Norman</city>
+				<state>OK</state>
+				<postalCode>73019</postalCode>
+			</addr>
+		</associatedEntity>
+	</participant>
+	<!--Providers in Practice Site for which data is being submitted-->
+	<documentationOf typeCode="DOC">
+		<serviceEvent classCode="PCPR">
+			<effectiveTime>
+				<low value="20170101"/>
+				<high value="20171231"/>
+			</effectiveTime>
+			<performer typeCode="PRF">
+				<time>
+					<low value="20170101"/>
+					<high value="20171231"/>
+				</time>
+				<assignedEntity>
+					<id root="2.16.840.1.113883.4.6" extension="2567891421"/>
+					<representedOrganization>
+						<id root="2.16.840.1.113883.4.2" extension="990000099"/>
+						<name>Good Health Clinic</name>
+					</representedOrganization>
+				</assignedEntity>
+			</performer>
+			<performer typeCode="PRF">
+				<time>
+					<low value="20170101"/>
+					<high value="20171231"/>
+				</time>
+				<assignedEntity>
+					<id root="2.16.840.1.113883.4.6" extension="2589654740"/>
+					<representedOrganization>
+						<id root="2.16.840.1.113883.4.2" extension="990000099"/>
+						<name>Good Health Clinic</name>
+					</representedOrganization>
+				</assignedEntity>
+			</performer>
+			<performer typeCode="PRF">
+				<time>
+					<low value="20170101"/>
+					<high value="20171231"/>
+				</time>
+				<assignedEntity>
+					<id root="2.16.840.1.113883.4.6" extension="2345872354"/>
+					<representedOrganization>
+						<id root="2.16.840.1.113883.4.2" extension="990000099"/>
+						<name>Good Health Clinic</name>
+					</representedOrganization>
+				</assignedEntity>
+			</performer>
+			<performer typeCode="PRF">
+				<time>
+					<low value="20170101"/>
+					<high value="20171231"/>
+				</time>
+				<assignedEntity>
+					<id root="2.16.840.1.113883.4.6" extension="2365987421"/>
+					<representedOrganization>
+						<id root="2.16.840.1.113883.4.2" extension="990000099"/>
+						<name>Good Health Clinic</name>
+					</representedOrganization>
+				</assignedEntity>
+			</performer>
+			<performer typeCode="PRF">
+				<time>
+					<low value="20170101"/>
+					<high value="20171231"/>
+				</time>
+				<assignedEntity>
+					<id root="2.16.840.1.113883.4.6" extension="2357943549"/>
+					<representedOrganization>
+						<id root="2.16.840.1.113883.4.2" extension="990000099"/>
+						<name>Good Health Clinic</name>
+					</representedOrganization>
+				</assignedEntity>
+			</performer>
+		</serviceEvent>
+	</documentationOf>
+	<authorization>
+		<consent>
+			<id root="D5E68227-5760-11E7-1256-09173F13E4C5"/>
+			<code code="425691002"
+				  displayName="consent given for electronic record sharing"
+				  codeSystem="2.16.840.1.113883.6.96"
+				  codeSystemName="SNOMED-CT"/>
+			<statusCode code="completed"/>
+		</consent>
+	</authorization>
+	<!--
 ********************************************************
 CDA Body
 ********************************************************

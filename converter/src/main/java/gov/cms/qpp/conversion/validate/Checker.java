@@ -1,5 +1,13 @@
 package gov.cms.qpp.conversion.validate;
 
+import com.google.common.base.Strings;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -9,16 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Strings;
-
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations
@@ -77,7 +75,7 @@ class Checker {
 	/**
 	 * checks target node for the existence of a value with the given name key
 	 *
-	 * @param message error message if searched value is not found
+	 * @param code that identifies the error
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
@@ -92,11 +90,11 @@ class Checker {
 	/**
 	 * checks target node to ensure a value is retrieved with given name key
 	 *
-	 * @param message error message if value is empty
+	 * @param code that identifies the error
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIsNotEmpty(LocalizedError code, String name) {
+	Checker valueIsNotEmpty(LocalizedError code, String name) {
 		lastAppraised = node.getValue(name);
 		if (!shouldShortcut() && Strings.isNullOrEmpty((String) lastAppraised)) {
 			details.add(detail(code));
@@ -107,7 +105,7 @@ class Checker {
 	/**
 	 * checks target node for the existence of a single value with the given name key
 	 *
-	 * @param message error message if searched value is not found
+	 * @param code that identifies the error
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
@@ -124,12 +122,12 @@ class Checker {
 	 * checks target node for the existence of a value with the given name key
 	 * and matches that value with one of the supplied values.
 	 *
-	 * @param message error message if searched value is not found
+	 * @param code that identifies the error
 	 * @param name key of expected value
 	 * @param expected the expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIs(LocalizedError code, String name, String expected) {
+	Checker valueIs(LocalizedError code, String name, String expected) {
 		return valueIn(code, name, expected);
 	}
 
@@ -137,12 +135,12 @@ class Checker {
 	 * checks target node for the existence of a value with the given name key
 	 * and matches that value with one of the supplied values.
 	 *
-	 * @param message error message if searched value is not found
+	 * @param code that identifies the error
 	 * @param name key of expected value
 	 * @param values List of strings to check for the existence of.
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker valueIn(LocalizedError code, String name, String... values) {
+	Checker valueIn(LocalizedError code, String name, String... values) {
 		boolean contains = false;
 		if (name == null) {
 			details.add(detail(code));
@@ -168,11 +166,11 @@ class Checker {
 	/**
 	 * Checks target node for the existence of an integer value with the given name key.
 	 *
-	 * @param message error message if searched value is not found or is not appropriately typed
+	 * @param code that identifies the error
 	 * @param name key of expected value
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker intValue(LocalizedError code, String name) {
+	Checker intValue(LocalizedError code, String name) {
 		if (!shouldShortcut()) {
 			try {
 				lastAppraised = Integer.parseInt(node.getValue(name));
@@ -187,12 +185,12 @@ class Checker {
 	/**
 	 * Allow for compound comparisons of Node values.
 	 *
-	 * @param message error message should comparison fail
+	 * @param code that identifies the error
 	 * @param value to be compared against
 	 * @return The checker, for chaining method calls.
 	 */
 	@SuppressWarnings("unchecked")
-	public Checker greaterThan(LocalizedError code, Comparable<?> value) {
+	Checker greaterThan(LocalizedError code, Comparable<?> value) {
 		if (!shouldShortcut() && lastAppraised != null && ((Comparable<Object>) lastAppraised).compareTo(value) <= 0) {
 			details.add(detail(code));
 		}
@@ -203,12 +201,12 @@ class Checker {
 	/**
 	 * Allow for compound comparisons of Node values.
 	 *
-	 * @param message error message should comparison fail
+	 * @param code that identifies the error
 	 * @param value to be compared against
 	 * @return The checker, for chaining method calls.
 	 */
 	@SuppressWarnings("unchecked")
-	public Checker lessThanOrEqualTo(LocalizedError code, Comparable<?> value) {
+	Checker lessThanOrEqualTo(LocalizedError code, Comparable<?> value) {
 		if (!shouldShortcut() && lastAppraised != null && ((Comparable<Object>) lastAppraised).compareTo(value) > 0) {
 			details.add(detail(code));
 		}
@@ -219,14 +217,14 @@ class Checker {
 	/**
 	 * Checks target node value to be between a specific range
 	 *
-	 * @param message error message should comparison fail
+	 * @param code that identifies the error
 	 * @param name key of expected value
 	 * @param startValue starting value for range
 	 * @param endValue ending value for range
 	 * @return The checker, for chaining method calls
 	 */
 	@SuppressWarnings("unchecked")
-	public Checker inDecimalRangeOf(LocalizedError code, String name, float startValue, float endValue) {
+	Checker inDecimalRangeOf(LocalizedError code, String name, float startValue, float endValue) {
 		if (!shouldShortcut()) {
 			try {
 				lastAppraised = Float.parseFloat(node.getValue(name));
@@ -245,10 +243,10 @@ class Checker {
 	/**
 	 * Checks target node for the existence of a specified parent.
 	 *
-	 * @param message validation error message
+	 * @param code that identifies the error
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker hasParent(LocalizedError code, TemplateId type) {
+	Checker hasParent(LocalizedError code, TemplateId type) {
 		if (!shouldShortcut()) {
 			TemplateId parentType = Optional.ofNullable(node.getParent())
 					.orElse(new Node()).getType();
@@ -262,10 +260,10 @@ class Checker {
 	/**
 	 * Checks target node for the existence of any child nodes.
 	 *
-	 * @param message validation error message
+	 * @param code that identifies the error
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker hasChildren(LocalizedError code) {
+	Checker hasChildren(LocalizedError code) {
 		if (!shouldShortcut() && node.getChildNodes().isEmpty()) {
 			details.add(detail(code));
 		}
@@ -275,7 +273,7 @@ class Checker {
 	/**
 	 * Verifies that the target node has at least the given minimum or more of the given {@link TemplateId}s.
 	 *
-	 * @param message validation error message
+	 * @param code that identifies the error
 	 * @param minimum minimum required children of specified types
 	 * @param types types of children to filter by
 	 * @return The checker, for chaining method calls.
@@ -293,7 +291,7 @@ class Checker {
 	/**
 	 * Verifies that the target node has less than the given maximum of the given {@link TemplateId}s.
 	 *
-	 * @param message validation error message
+	 * @param code that identifies the error
 	 * @param maximum maximum required children of specified types
 	 * @param types types of children to filter by
 	 * @return The checker, for chaining method calls.
@@ -311,13 +309,16 @@ class Checker {
 	/**
 	 * Verifies that the measures specified are contained within the current node's children
 	 *
-	 * @param message validation error message
+	 * @param code that identifies the error
 	 * @param measureIds measures specified for given node
 	 * @return The checker, for chaining method calls
 	 */
-	public Checker hasMeasures(LocalizedError code, String... measureIds) {
+	Checker hasMeasures(LocalizedError code, String... measureIds) {
+		return hasMeasures(code, measureIds.length, measureIds);
+	}
+
+	Checker hasMeasures(LocalizedError code, int numberOfMeasuresRequired, String... measureIds) {
 		if (!shouldShortcut()) {
-			int numberOfMeasuresRequired = Arrays.asList(measureIds).size();
 
 			long numNodesWithWantedMeasureIds = node.getChildNodes(currentNode -> {
 				String measureIdOfNode = currentNode.getValue("measureId");
@@ -332,7 +333,7 @@ class Checker {
 				return false;
 			}).count();
 
-			if (numberOfMeasuresRequired != numNodesWithWantedMeasureIds) {
+			if (numNodesWithWantedMeasureIds < numberOfMeasuresRequired) {
 				details.add(detail(code));
 			}
 		}
@@ -342,11 +343,11 @@ class Checker {
 	/**
 	 * Verifies that the target node contains only children of specified template ids
 	 *
-	 * @param message validation error message
+	 * @param code that identifies the error
 	 * @param types types of template ids to filter
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker onlyHasChildren(LocalizedError code, TemplateId... types) {
+	Checker onlyHasChildren(LocalizedError code, TemplateId... types) {
 		if (!shouldShortcut()) {
 			Set<TemplateId> templateIds = EnumSet.noneOf(TemplateId.class);
 			for (TemplateId templateId : types) {
@@ -368,7 +369,7 @@ class Checker {
 	 *
 	 * @return The checker, for chaining method calls.
 	 */
-	public Checker incompleteValidation() {
+	Checker incompleteValidation() {
 		node.setValidated(false);
 		return this;
 	}
