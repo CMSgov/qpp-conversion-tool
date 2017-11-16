@@ -98,14 +98,15 @@ public enum ErrorCode implements LocalizedError {
 			+ "incorrect UUID of %s", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID"),
-	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(62,
-			"Missing the Supplemental Code %s for eCQM measure %s's Sub-population %s", true),
-	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(63,
-			"Must have one count for Supplemental Data %s on Sub-population %s for eCQM measure %s", true),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64,
 			"CPC+ Submissions must have at least %d of the following %s measures: %s.", true),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65,
-			"CPC+ Submissions must have at least %d of the following measures: %s.", true);
+			"CPC+ Submissions must have at least %d of the following measures: %s.", true),
+	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66,
+			"Missing the Supplemental Code %s for eCQM measure %s's Sub-population %s", true),
+	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67,
+			"Must have one count for Supplemental Data %s on Sub-population %s for eCQM measure %s", true);
+
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
@@ -147,7 +148,7 @@ public enum ErrorCode implements LocalizedError {
 	 * Creates a formatted version of this error code, or throws an exception
 	 *
 	 * @param arguments arguments to format with
-	 * @return the formatted version of this error code, or throws an exception if formatting is 
+	 * @return the formatted version of this error code, or throws an exception if formatting is
 	 * not supported.
 	 */
 	public final LocalizedError format(Object... arguments) {
