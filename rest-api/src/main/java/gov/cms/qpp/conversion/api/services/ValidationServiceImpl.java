@@ -53,13 +53,18 @@ public class ValidationServiceImpl implements ValidationService {
 			return;
 		}
 
-		API_LOG.info("Calling QPP validation");
 		conversionReport.getEncoded().stream().forEach(wrapper -> {
 			ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper);
+
 			if (HttpStatus.UNPROCESSABLE_ENTITY.equals(validationResponse.getStatusCode())) {
+
+				API_LOG.warn("Failed QPP validation");
+
 				AllErrors convertedErrors = convertQppValidationErrorsToQrda(validationResponse.getBody(), wrapper);
+
 				conversionReport.setRawValidationDetails(validationResponse.getBody());
 				conversionReport.setReportDetails(convertedErrors);
+
 				throw new QppValidationException("Converted QPP failed validation", null, conversionReport);
 			}
 		});
@@ -74,8 +79,10 @@ public class ValidationServiceImpl implements ValidationService {
 	 */
 	private ResponseEntity<String> callValidationEndpoint(String url, JsonWrapper qpp) {
 		restTemplate.setErrorHandler(new NoHandlingErrorHandler());
-
 		HttpEntity<String> request = new HttpEntity<>(qpp.toString(), getHeaders());
+
+		API_LOG.info("Calling QPP validation API {}", url);
+
 		return restTemplate.postForEntity(url, request, String.class);
 	}
 
