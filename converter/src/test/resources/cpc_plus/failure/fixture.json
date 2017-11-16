@@ -308,7 +308,7 @@
 		]
 	},
 	"CPCPlus_WithQuality_137OnlyOnePerfRateSampleQRDA-III.xml": {
-		"strict": false,
+		"strict": true,
 		"errorData": [
 			{
 				"errorCode": 33,
@@ -354,7 +354,7 @@
 		]
 	},
 	"CPCPlus_WithQuality_156OnlyOnePerfRate_SampleQRDA-III.xml": {
-		"strict": false,
+		"strict": true,
 		"errorData": [
 			{
 				"errorCode": 37,
@@ -411,7 +411,7 @@
 		]
 	},
 	"CPCPlus_WithQuality_PerfRateNotPresent_SampleQRDA-III.xml": {
-		"strict": false,
+		"strict": true,
 		"errorData": [
 			{
 				"errorCode": 37,
@@ -445,6 +445,21 @@
 			}
 		]
 	},
+	"QRDAIII_CMS155_NonCPCPlusMsr_IncStrata.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 14,
+				"subs": ["CMS137v5", 2, "[A-Z]{3,8}", 3],
+				"occurrences": 4
+			},
+			{
+				"errorCode": 59,
+				"subs": ["CMS137v5", ".*", "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 10
+			}
+		]
+	},
 	"QRDAIII_CMS74_NonCPCPlusMsr_IncStrata.xml": {
 		"strict": true,
 		"errorData": [
@@ -464,7 +479,7 @@
 		]
 	},
 	"CPCPlus_IncNumofGroup1Measures_SampleQRDA-III.xml": {
-		"strict": false,
+		"strict": true,
 		"errorData": [
 			{
 				"errorCode": 64,
@@ -474,7 +489,7 @@
 		]
 	},
 	"CPCPlus_IncNumofGroup2Measures_SampleQRDA-III.xml": {
-		"strict": false,
+		"strict": true,
 		"errorData": [
 			{
 				"errorCode": 64,
@@ -484,7 +499,7 @@
 		]
 	},
 	"CPCPlus_IncNumTotalMeasures_SampleQRDA-III.xml": {
-		"strict": false,
+		"strict": true,
 		"errorData": [
 			{
 				"errorCode": 65,

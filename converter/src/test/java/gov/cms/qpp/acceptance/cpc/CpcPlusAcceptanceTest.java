@@ -10,6 +10,7 @@ import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -47,7 +48,7 @@ class CpcPlusAcceptanceTest {
 	static void resetApmIds() {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
-
+	
 	@Test
 	void testCpcPlusFileSuccesses() throws IOException {
 		Map<Path, AllErrors> errors = new HashMap<>();
