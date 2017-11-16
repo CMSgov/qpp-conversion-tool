@@ -105,7 +105,12 @@ public class CpcRaceGenerator {
 
 	static Element createRaceElement(Namespace xsiNamespace, String raceCode) {
 		Element entryRelationship =  new Element("entryRelationship");
+		entryRelationship.setAttribute("typeCode","COMP");
+
 		Element observation =  new Element("observation");
+		observation.setAttribute("classCode", "OBS");
+		observation.setAttribute("moodCode", "EVN");
+
 		addOuterObservationChildren(observation, xsiNamespace, raceCode);
 
 		entryRelationship.addContent(observation);
