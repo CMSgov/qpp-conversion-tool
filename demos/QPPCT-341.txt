@@ -1,9 +1,0 @@
-QPPCT - 341
-1. Open up HP ALM
-2. Run through all the testing results for this Sprint 24
-3. Point out the failed and blocked tests for QPPCT-302 and reiterate the issues with Firefox and Internet Explorer.
-4. Open up the HIVVS Confluence Page and go through these sub pages
-	- QPPCT Sprint 24 Kickoff to show the added QPPCT-295 ticket.
-	- QPPCT Sprint 24 Test Results to show the totals for all the tests ran.
-
-Ask for follow up questions and end the presentation.

@@ -7,13 +7,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class PerformanceRateProportionMeasureDecoderTest {
+class PerformanceRateProportionMeasureDecoderTest {
 	private static String happy;
 	private static String nullHappy;
 
@@ -21,27 +21,27 @@ public class PerformanceRateProportionMeasureDecoderTest {
 	private Node placeholder;
 	private Node performanceRateNode;
 
-	@BeforeClass
-	public static void setup() throws IOException {
+	@BeforeAll
+	static void setup() throws IOException {
 		happy = TestHelper.getFixture("measureDataWithPerformanceRate.xml");
 		nullHappy = TestHelper.getFixture("measureDataWithNullPerformanceRate.xml");
 	}
 
-	@Before
-	public void before() throws XmlException {
+	@BeforeEach
+	void before() throws XmlException {
 		decodeNodeFromFile(happy);
 		performanceRateNode = getNode();
 	}
 
 	@Test
-	public void testPerformanceRateValueSuccess() {
+	void testPerformanceRateValueSuccess() {
 		assertWithMessage("Must contain the correct value")
 				.that(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE))
 				.isEqualTo("0.947368");
 	}
 
 	@Test
-	public void testPerformanceRateUuidSuccess() {
+	void testPerformanceRateUuidSuccess() {
 		final String performanceRateId = "6D01A564-58CC-4CF5-929F-B83583701BFE";
 		assertWithMessage("Must contain the correct UUID")
 				.that(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID))
@@ -49,7 +49,7 @@ public class PerformanceRateProportionMeasureDecoderTest {
 	}
 
 	@Test
-	public void testSuccessfulNullPerformanceRate() throws XmlException {
+	void testSuccessfulNullPerformanceRate() throws XmlException {
 		decodeNodeFromFile(nullHappy);
 		performanceRateNode = getNode();
 		assertWithMessage("Must contain the correct value")

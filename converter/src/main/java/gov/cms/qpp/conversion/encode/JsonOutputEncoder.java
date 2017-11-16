@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +31,9 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 			writer.flush();
 		} catch (IOException exception) {
 			DEV_LOG.error("Couldn't write out JSON file.", exception);
-			details.add(new Detail("Failure to encode"));
+			Detail detail = Detail.forErrorCode(ErrorCode.UNEXPECTED_ENCODE_ERROR);
+			detail.setMessage(exception.getMessage());
+			details.add(detail);
 		}
 	}
 
@@ -41,7 +45,9 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 			}
 		} catch (EncodeException e) {
 			DEV_LOG.warn("Encode error when doing internalEncode, adding a new Detail", e);
-			details.add(new Detail(e.getMessage()));
+			Detail detail = Detail.forErrorCode(ErrorCode.UNEXPECTED_ENCODE_ERROR);
+			detail.setMessage(e.getMessage());
+			details.add(detail);
 		}
 	}
 

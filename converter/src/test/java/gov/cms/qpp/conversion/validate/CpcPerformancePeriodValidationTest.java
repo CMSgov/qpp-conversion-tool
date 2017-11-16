@@ -1,13 +1,15 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import static com.google.common.truth.Truth.assertWithMessage;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 public class CpcPerformancePeriodValidationTest {
 
@@ -36,8 +38,8 @@ public class CpcPerformancePeriodValidationTest {
 		cpcValidator.internalValidateSingleNode(node);
 
 		assertWithMessage("Should result in a performance start error")
-				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(CpcPerformancePeriodValidation.PERFORMANCE_START_JAN12017);
+				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CPC_PERFORMANCE_PERIOD_START_JAN12017);
 	}
 
 	@Test
@@ -45,7 +47,7 @@ public class CpcPerformancePeriodValidationTest {
 		node.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "not what we want");
 		cpcValidator.internalValidateSingleNode(node);
 		assertWithMessage("Should result in a performance end error")
-				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(CpcPerformancePeriodValidation.PERFORMANCE_END_DEC312017);
+				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.CPC_PERFORMANCE_PERIOD_END_DEC312017);
 	}
 }

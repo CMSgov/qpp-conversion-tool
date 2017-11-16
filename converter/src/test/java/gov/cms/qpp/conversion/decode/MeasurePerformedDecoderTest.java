@@ -7,24 +7,24 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class MeasurePerformedDecoderTest {
+class MeasurePerformedDecoderTest {
 
 	private Context context;
 	private String xmlFragment;
 
-	@Before
-	public void setUp() throws IOException {
+	@BeforeEach
+	void setUp() throws IOException {
 		context = new Context();
 		xmlFragment = TestHelper.getFixture("MeasurePerformed.xml");
 	}
 
 	@Test
-	public void testMeasurePerformed() throws XmlException {
+	void testMeasurePerformed() throws XmlException {
 		Node measurePerformedNode = executeMeasurePerformedDecoder(xmlFragment)
 				.findFirstNode(TemplateId.MEASURE_PERFORMED);
 
@@ -32,7 +32,7 @@ public class MeasurePerformedDecoderTest {
 	}
 
 	@Test
-	public void testGarbageXmlIsIgnore() throws XmlException {
+	void testGarbageXmlIsIgnore() throws XmlException {
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\">abc<newnode>Some extra stuff</newnode></Stuff>Unexpected text appears here\n\n<statusCode ");
 

@@ -36,7 +36,7 @@
                                 <span *ngIf="item.isError">error</span>
                             </td>
                             <td nowrap>
-                                <button type="button" class="usa-button" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                <button type="button" class="usa-button" (click)="item.upload()" [disabled]="item.isUploading">
                                     <span class="glyphicon glyphicon-upload"></span> Upload
                                 </button>
                                 <button type="button" class="usa-button-gray" (click)="item.cancel()" [disabled]="!item.isUploading">
@@ -55,7 +55,7 @@
                             <h3 class="usa-alert-heading">Success</h3>
                             <div class="usa-alert-text">
                                 <p>Your QRDA XML file was successfully converted to QPP JSON</p>
-                                <a *ngIf="downloadJsonHref" class="usa-button" title="Download JSON" [href]="downloadJsonHref" download="{{fileName}}">Download {{fileName}}</a>
+                                <a *ngIf="responseJson" class="usa-button" title="Download JSON" href="javascript:void(0)" (click)="saveBlob(responseJson, 'text/json', fileName);">Download {{fileName}}</a>
                             </div>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                             <h3 class="usa-alert-heading">Error</h3>
                             <div class="usa-alert-text">
                                 <p>{{response.errorSources[0].validationErrors[0].errorText}}</p>
-                                <a *ngIf="downloadJsonHref" class="usa-button" title="Download JSON" [href]="downloadJsonHref" download="error.json">Download full error response</a>
+                                <a *ngIf="responseJson" class="usa-button" title="Download JSON" href="javascript:void(0)" (click)="saveBlob(responseJson, 'text/json', 'error.json');">Download full error response</a>
                             </div>
                         </div>
                     </div>

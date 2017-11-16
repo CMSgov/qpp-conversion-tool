@@ -12,28 +12,28 @@ import java.nio.charset.Charset;
 import org.apache.commons.io.IOUtils;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.reflections.util.ClasspathHelper;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class ClinicalDocumentDecoderTest {
+class ClinicalDocumentDecoderTest {
 
 	private static final String ENTITY_ID_VALUE = "AR000000";
 	private static String xmlFragment;
 	private Node clinicalDocument;
 
-	@BeforeClass
-	public static void init() throws IOException {
+	@BeforeAll
+	static void init() throws IOException {
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
 		xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
 	}
 
-	@Before
-	public void setupTest() throws XmlException {
+	@BeforeEach
+	void setupTest() throws XmlException {
 		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 		// remove default nodes (will fail if defaults change)
@@ -41,35 +41,35 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void testRootId() {
+	void testRootId() {
 		assertWithMessage("Must have be the correct TemplateId")
 				.that(clinicalDocument.getType())
 				.isEquivalentAccordingToCompareTo(TemplateId.CLINICAL_DOCUMENT);
 	}
 
 	@Test
-	public void testRootProgramName() {
+	void testRootProgramName() {
 		assertWithMessage("Must be the correct Program Name")
 				.that(clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
 				.isEqualTo(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
 	}
 
 	@Test
-	public void testRootNationalProviderIdentifier() {
+	void testRootNationalProviderIdentifier() {
 		assertWithMessage("Must have the correct NPI")
 				.that(clinicalDocument.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 	}
 
 	@Test
-	public void testRootTaxpayerIdentificationNumber() {
+	void testRootTaxpayerIdentificationNumber() {
 		assertWithMessage("Must have the correct TIN")
 				.that(clinicalDocument.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 	}
 
 	@Test
-	public void testAciCategory() {
+	void testAciCategory() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertWithMessage("returned category should be aci")
 				.that(aciSectionNode.getValue("category"))
@@ -77,7 +77,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void testAciPea1MeasureId() {
+	void testAciPea1MeasureId() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertWithMessage("returned measureId ACI-PEA-1")
 				.that(aciSectionNode.getChildNodes().get(0).getValue("measureId"))
@@ -85,7 +85,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void testAciEp1MeasureId() {
+	void testAciEp1MeasureId() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertWithMessage("returned measureId ACI_EP_1")
 				.that(aciSectionNode.getChildNodes().get(1).getValue("measureId"))
@@ -93,7 +93,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void testAciCctpe3MeasureId() {
+	void testAciCctpe3MeasureId() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertWithMessage("returned measureId ACI_CCTPE_3")
 				.that(aciSectionNode.getChildNodes().get(2).getValue("measureId"))
@@ -101,7 +101,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void testIaCategory() {
+	void testIaCategory() {
 		Node iaSectionNode = clinicalDocument.getChildNodes().get(1);
 		assertWithMessage("returned category")
 				.that(iaSectionNode.getValue("category"))
@@ -109,7 +109,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void testIaMeasureId() {
+	void testIaMeasureId() {
 		Node iaSectionNode = clinicalDocument.getChildNodes().get(1);
 		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
 		assertWithMessage("returned should have measureId")
@@ -118,7 +118,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void testClinicalDocumentIgnoresGarbage() throws IOException, XmlException {
+	void testClinicalDocumentIgnoresGarbage() throws IOException, XmlException {
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("QRDA-III-with-extra-elements.xml");
 		String xmlWithGarbage = IOUtils.toString(stream, Charset.defaultCharset());
@@ -136,7 +136,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void testIaMeasurePerformed() {
+	void testIaMeasurePerformed() {
 		Node iaSectionNode = clinicalDocument.getChildNodes().get(1);
 		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
 		Node iaMeasurePerformedNode = iaMeasureNode.getChildNodes().get(0);
@@ -146,7 +146,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void decodeClinicalDocumentInternalDecode() throws Exception {
+	void decodeClinicalDocumentInternalDecode() throws Exception {
 		Element clinicalDocument = makeClinicalDocument("MIPS");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -175,7 +175,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void decodeClinicalDocumentInternalDecodeMIPSIndividual() throws Exception {
+	void decodeClinicalDocumentInternalDecodeMIPSIndividual() throws Exception {
 		Element clinicalDocument = makeClinicalDocument("MIPS_INDIV");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -204,7 +204,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void decodeClinicalDocumentInternalDecodeMIPSGroup() throws Exception {
+	void decodeClinicalDocumentInternalDecodeMIPSGroup() throws Exception {
 		Element clinicalDocument = makeClinicalDocument("MIPS_GROUP");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -233,7 +233,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void decodeClinicalDocumentInternalDecodeCPCPlus() throws Exception {
+	void decodeClinicalDocumentInternalDecodeCPCPlus() throws Exception {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS);
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -262,7 +262,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void decodeClinicalDocumentInternalDecodeUnknown() throws Exception {
+	void decodeClinicalDocumentInternalDecodeUnknown() throws Exception {
 		Element clinicalDocument = makeClinicalDocument("Unknown");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
@@ -291,7 +291,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void decodeCpcPlusEntityIdTest() throws Exception {
+	void decodeCpcPlusEntityIdTest() throws Exception {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
 		Node testParentNode = new Node();
@@ -304,7 +304,7 @@ public class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	public void decodeCpcPracticeSiteAddressTest() throws Exception {
+	void decodeCpcPracticeSiteAddressTest() throws Exception {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
 		Node testParentNode = new Node();

@@ -1,5 +1,17 @@
 package gov.cms.qpp.acceptance;
 
+import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
@@ -9,46 +21,36 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertThat;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
-
-public class MeasureDataRoundTripTest {
+class MeasureDataRoundTripTest {
 
 	private static String happy;
 	private static String expected =
 			"{\n  \"eligiblePopulation\" : 950,\n  \"performanceMet\" : 900,\n" +
 			"  \"eligiblePopulationException\" : 50,\n  \"eligiblePopulationExclusion\" : 50\n}";
 
-	@BeforeClass
-	public static void setup() throws IOException {
+	@BeforeAll
+	static void setup() throws IOException {
 		happy = TestHelper.getFixture("measureDataHappy.xml");
 	}
 
 	@Test
-	public void decodeDenomMeasureDataAsNode() throws Exception {
+	void decodeDenomMeasureDataAsNode() throws Exception {
 		test(SubPopulations.DENOM);
 	}
 
 	@Test
-	public void decodeNumerMeasureDataAsNode() throws Exception {
+	void decodeNumerMeasureDataAsNode() throws Exception {
 		test(SubPopulations.NUMER);//performanceMet
 	}
 
 	@Test
-	public void decodeDenexMeasureDataAsNode() throws Exception {
+	void decodeDenexMeasureDataAsNode() throws Exception {
 		test(SubPopulations.DENEX);//eligiblePopulationExclusion
 	}
 
 	@Test
-	public void decodeDenexcepMeasureDataAsNode() throws Exception {
+	void decodeDenexcepMeasureDataAsNode() throws Exception {
 		test(SubPopulations.DENEXCEP);//eligiblePopulationException
 	}
 

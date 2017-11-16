@@ -1,16 +1,17 @@
 package gov.cms.qpp.conversion.decode.placeholder;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.DecodeResult;
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Decoder;
+import java.util.Iterator;
+
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.DecodeResult;
+import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.model.Decoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
  * Decoder used to "fill-in" decoders where none have been implemented.
@@ -39,11 +40,12 @@ public class DefaultDecoder extends QppXmlDecoder {
 		return DecodeResult.TREE_CONTINUE;
 	}
 
-	public static void removeDefaultNode(List<Node> nodes) {
-		for (int n = nodes.size() - 1; n >= 0; n--) {
-			Node node = nodes.get(n);
+	public static void removeDefaultNode(Iterable<Node> nodes) {
+		Iterator<Node> iterator = nodes.iterator();
+		while (iterator.hasNext()) {
+			Node node = iterator.next();
 			if (node.getValue("DefaultDecoderFor") != null) {
-				nodes.remove(n);
+				iterator.remove();
 			} else {
 				removeDefaultNode(node.getChildNodes());
 			}
