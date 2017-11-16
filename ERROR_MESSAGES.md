@@ -72,4 +72,5 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 61 : A Performance Rate must contain a single Performance Rate UUID
 * 62 : The Alternative Payment Model (APM) Entity Identifier must not be empty
 * 63 : The Alternative Payment Model (APM) Entity Identifier is not valid
- 
+* 64 : CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
+* 65 : CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.

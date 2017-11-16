@@ -8,7 +8,6 @@ import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static com.google.common.truth.Truth.assertThat;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -20,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.google.common.truth.Truth.assertThat;
 
 
 class CpcPlusAcceptanceTest {
