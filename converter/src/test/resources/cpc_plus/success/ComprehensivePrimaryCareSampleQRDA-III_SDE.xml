@@ -2350,7 +2350,22 @@ QRDA Category III Measure Section (CMS EP)
                                         codeSystemName="AdministrativeGenderCode"
                                         displayName="Female"/>
                                  <!-- Count-->
-
+                                 <entryRelationship typeCode="SUBJ" inversionInd="true">
+                                    <observation classCode="OBS" moodCode="EVN">
+                                       <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
+                                       <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
+                                       <code code="MSRAGG"
+                                             codeSystem="2.16.840.1.113883.5.4"
+                                             codeSystemName="ActCode"
+                                             displayName="rate aggregation"/>
+                                       <statusCode code="completed"/>
+                                       <value xsi:type="INT" value="500"/>
+                                       <methodCode code="COUNT"
+                                                   codeSystem="2.16.840.1.113883.5.84"
+                                                   codeSystemName="ObservationMethod"
+                                                   displayName="Count"/>
+                                    </observation>
+                                 </entryRelationship>
                               </observation>
                            </entryRelationship>
                            <!--Ethnicity Supplemental Data Element - Not Hispanic or Latino-->
