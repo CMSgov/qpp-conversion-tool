@@ -8,198 +8,181 @@ Revision History:
 Description:
     		1) This QRDA-III sample file is valid ONLY for CPC+ and for the Performance Period 2017 (01/01/2017 - 12/31/2017 measurement period) reporting.
     	    2) This sample file correctly validates against the conformance statements specified in the CMS Implementation Guide for Quality Reporting Document Architecture Category III Eligible Clinicians and Eligible Professionals Programs, 7/7/2017-->
-<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
-	<realmCode code="US"/>
-	<typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
-	<templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
-	<templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01"/>
-	<id root="D5E68223-5760-11E7-1256-09173F13E4C5"/>
-	<code code="55184-6"
-		  codeSystem="2.16.840.1.113883.6.1"
-		  codeSystemName="LOINC"
-		  displayName="Quality Reporting Document Architecture Calculated Summary Report"/>
-	<title>Comprehensive Primary Care Plus (CPC+) Sample QRDA-III Report</title>
-	<effectiveTime value="20170311061231"/>
-	<confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
-	<languageCode code="en"/>
-	<setId root="D5E68223-5760-11E7-1256-09173F13E4C5"/>
-	<versionNumber value="1"/>
-	<recordTarget>
-		<patientRole>
-			<id nullFlavor="NA"/>
-		</patientRole>
-	</recordTarget>
-	<!--Device Author Example-->
-	<author>
-		<time value="20170311061231"/>
-		<assignedAuthor>
-			<id root="D5E68225-5760-11E7-1256-09173F13E4C5"/>
-			<assignedAuthoringDevice>
-				<softwareName>SOME Data Aggregator Transform Tool AS00016dev</softwareName>
-			</assignedAuthoringDevice>
-			<representedOrganization>
-				<id root="2.16.840.1.113883.19.5" extension="223344"/>
-				<name>Good Health Clinic</name>
-			</representedOrganization>
-		</assignedAuthor>
-	</author>
-	<!--Person Author Example-->
-	<author>
-		<time value="20180311061231"/>
-		<assignedAuthor>
-			<id root="2.16.840.1.113883.4.6"
-				extension="2567891421"
-				assigningAuthorityName="NPI"/>
-			<assignedPerson>
-				<name>
-					<given>Trevor</given>
-					<family>Phillips</family>
-				</name>
-			</assignedPerson>
-			<representedOrganization>
-				<id root="2.16.840.1.113883.19.5" extension="223344"/>
-				<name>Good Health Clinic</name>
-			</representedOrganization>
-		</assignedAuthor>
-	</author>
-	<custodian>
-		<assignedCustodian>
-			<representedCustodianOrganization>
-				<id root="2.16.840.1.113883.19.5" extension="223344"/>
-				<name>Good Health Clinic</name>
-			</representedCustodianOrganization>
-		</assignedCustodian>
-	</custodian>
-	<!--Program for which data is being submitted-->
-	<informationRecipient>
-		<intendedRecipient>
-			<id root="2.16.840.1.113883.3.249.7" extension="CPCPLUS"/>
-		</intendedRecipient>
-	</informationRecipient>
-	<legalAuthenticator>
-		<time value="20170312153222"/>
-		<signatureCode code="S"/>
-		<assignedEntity>
-			<id root="D5E68226-5760-11E7-1256-09173F13E4C5"/>
-			<representedOrganization>
-				<id root="2.16.840.1.113883.19.5" extension="223344"/>
-				<name>Good Health Clinic</name>
-			</representedOrganization>
-		</assignedEntity>
-	</legalAuthenticator>
-	<participant typeCode="DEV">
-		<associatedEntity classCode="RGPR">
-			<id root="2.16.840.1.113883.3.2074.1"
-				extension="CMS_EHR_Certification_Identification_Number_Goes_Here"/>
-			<code code="129465004"
-				  displayName="medical record, device"
-				  codeSystem="2.16.840.1.113883.6.96"
-				  codeSystemName="SNOMED-CT"/>
-		</associatedEntity>
-	</participant>
-	<!--Practice Site-->
-	<participant typeCode="LOC">
-		<associatedEntity classCode="SDLOC">
-			<id root="2.16.840.1.113883.3.249.5.1"
-				extension="TestApmEntityId"
-				assigningAuthorityName="CMS-CMMI"/>
-			<code code="394730007"
-				  displayName="healthcare related organization"
-				  codeSystem="2.16.840.1.113883.6.96"
-				  codeSystemName="SNOMED-CT"/>
-			<addr>
-				<streetAddressLine>123 Healthcare St</streetAddressLine>
-				<city>Norman</city>
-				<state>OK</state>
-				<postalCode>73019</postalCode>
-			</addr>
-		</associatedEntity>
-	</participant>
-	<!--Providers in Practice Site for which data is being submitted-->
-	<documentationOf typeCode="DOC">
-		<serviceEvent classCode="PCPR">
-			<effectiveTime>
-				<low value="20170101"/>
-				<high value="20171231"/>
-			</effectiveTime>
-			<performer typeCode="PRF">
-				<time>
-					<low value="20170101"/>
-					<high value="20171231"/>
-				</time>
-				<assignedEntity>
-					<id root="2.16.840.1.113883.4.6" extension="2567891421"/>
-					<representedOrganization>
-						<id root="2.16.840.1.113883.4.2" extension="990000099"/>
-						<name>Good Health Clinic</name>
-					</representedOrganization>
-				</assignedEntity>
-			</performer>
-			<performer typeCode="PRF">
-				<time>
-					<low value="20170101"/>
-					<high value="20171231"/>
-				</time>
-				<assignedEntity>
-					<id root="2.16.840.1.113883.4.6" extension="2589654740"/>
-					<representedOrganization>
-						<id root="2.16.840.1.113883.4.2" extension="990000099"/>
-						<name>Good Health Clinic</name>
-					</representedOrganization>
-				</assignedEntity>
-			</performer>
-			<performer typeCode="PRF">
-				<time>
-					<low value="20170101"/>
-					<high value="20171231"/>
-				</time>
-				<assignedEntity>
-					<id root="2.16.840.1.113883.4.6" extension="2345872354"/>
-					<representedOrganization>
-						<id root="2.16.840.1.113883.4.2" extension="990000099"/>
-						<name>Good Health Clinic</name>
-					</representedOrganization>
-				</assignedEntity>
-			</performer>
-			<performer typeCode="PRF">
-				<time>
-					<low value="20170101"/>
-					<high value="20171231"/>
-				</time>
-				<assignedEntity>
-					<id root="2.16.840.1.113883.4.6" extension="2365987421"/>
-					<representedOrganization>
-						<id root="2.16.840.1.113883.4.2" extension="990000099"/>
-						<name>Good Health Clinic</name>
-					</representedOrganization>
-				</assignedEntity>
-			</performer>
-			<performer typeCode="PRF">
-				<time>
-					<low value="20170101"/>
-					<high value="20171231"/>
-				</time>
-				<assignedEntity>
-					<id root="2.16.840.1.113883.4.6" extension="2357943549"/>
-					<representedOrganization>
-						<id root="2.16.840.1.113883.4.2" extension="990000099"/>
-						<name>Good Health Clinic</name>
-					</representedOrganization>
-				</assignedEntity>
-			</performer>
-		</serviceEvent>
-	</documentationOf>
-	<authorization>
-		<consent>
-			<id root="D5E68227-5760-11E7-1256-09173F13E4C5"/>
-			<code code="425691002"
-				  displayName="consent given for electronic record sharing"
-				  codeSystem="2.16.840.1.113883.6.96"
-				  codeSystemName="SNOMED-CT"/>
-			<statusCode code="completed"/>
-		</consent>
-	</authorization>
-	<!--
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <realmCode code="US" />
+  <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040" />
+  <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01" />
+  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01" />
+  <id root="D5E68223-5760-11E7-1256-09173F13E4C5" />
+  <code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Quality Reporting Document Architecture Calculated Summary Report" />
+  <title>Comprehensive Primary Care Plus (CPC+) Sample QRDA-III Report</title>
+  <effectiveTime value="20170311061231" />
+  <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25" />
+  <languageCode code="en" />
+  <setId root="D5E68223-5760-11E7-1256-09173F13E4C5" />
+  <versionNumber value="1" />
+  <recordTarget>
+    <patientRole>
+      <id nullFlavor="NA" />
+    </patientRole>
+  </recordTarget>
+  <!--Device Author Example-->
+  <author>
+    <time value="20170311061231" />
+    <assignedAuthor>
+      <id root="D5E68225-5760-11E7-1256-09173F13E4C5" />
+      <assignedAuthoringDevice>
+        <softwareName>SOME Data Aggregator Transform Tool AS00016dev</softwareName>
+      </assignedAuthoringDevice>
+      <representedOrganization>
+        <id root="2.16.840.1.113883.19.5" extension="223344" />
+        <name>Good Health Clinic</name>
+      </representedOrganization>
+    </assignedAuthor>
+  </author>
+  <!--Person Author Example-->
+  <author>
+    <time value="20180311061231" />
+    <assignedAuthor>
+      <id root="2.16.840.1.113883.4.6" extension="2567891421" assigningAuthorityName="NPI" />
+      <assignedPerson>
+        <name>
+          <given>Trevor</given>
+          <family>Phillips</family>
+        </name>
+      </assignedPerson>
+      <representedOrganization>
+        <id root="2.16.840.1.113883.19.5" extension="223344" />
+        <name>Good Health Clinic</name>
+      </representedOrganization>
+    </assignedAuthor>
+  </author>
+  <custodian>
+    <assignedCustodian>
+      <representedCustodianOrganization>
+        <id root="2.16.840.1.113883.19.5" extension="223344" />
+        <name>Good Health Clinic</name>
+      </representedCustodianOrganization>
+    </assignedCustodian>
+  </custodian>
+  <!--Program for which data is being submitted-->
+  <informationRecipient>
+    <intendedRecipient>
+      <id root="2.16.840.1.113883.3.249.7" extension="CPCPLUS" />
+    </intendedRecipient>
+  </informationRecipient>
+  <legalAuthenticator>
+    <time value="20170312153222" />
+    <signatureCode code="S" />
+    <assignedEntity>
+      <id root="D5E68226-5760-11E7-1256-09173F13E4C5" />
+      <representedOrganization>
+        <id root="2.16.840.1.113883.19.5" extension="223344" />
+        <name>Good Health Clinic</name>
+      </representedOrganization>
+    </assignedEntity>
+  </legalAuthenticator>
+  <participant typeCode="DEV">
+    <associatedEntity classCode="RGPR">
+      <id root="2.16.840.1.113883.3.2074.1" extension="CMS_EHR_Certification_Identification_Number_Goes_Here" />
+      <code code="129465004" displayName="medical record, device" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
+    </associatedEntity>
+  </participant>
+  <!--Practice Site-->
+  <participant typeCode="LOC">
+    <associatedEntity classCode="SDLOC">
+      <id root="2.16.840.1.113883.3.249.5.1" extension="TestApmEntityId" assigningAuthorityName="CMS-CMMI" />
+      <code code="394730007" displayName="healthcare related organization" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
+      <addr>
+        <streetAddressLine>123 Healthcare St</streetAddressLine>
+        <city>Norman</city>
+        <state>OK</state>
+        <postalCode>73019</postalCode>
+      </addr>
+    </associatedEntity>
+  </participant>
+  <!--Providers in Practice Site for which data is being submitted-->
+  <documentationOf typeCode="DOC">
+    <serviceEvent classCode="PCPR">
+      <effectiveTime>
+        <low value="20170101" />
+        <high value="20171231" />
+      </effectiveTime>
+      <performer typeCode="PRF">
+        <time>
+          <low value="20170101" />
+          <high value="20171231" />
+        </time>
+        <assignedEntity>
+          <id root="2.16.840.1.113883.4.6" extension="2567891421" />
+          <representedOrganization>
+            <id root="2.16.840.1.113883.4.2" extension="990000099" />
+            <name>Good Health Clinic</name>
+          </representedOrganization>
+        </assignedEntity>
+      </performer>
+      <performer typeCode="PRF">
+        <time>
+          <low value="20170101" />
+          <high value="20171231" />
+        </time>
+        <assignedEntity>
+          <id root="2.16.840.1.113883.4.6" extension="2589654740" />
+          <representedOrganization>
+            <id root="2.16.840.1.113883.4.2" extension="990000099" />
+            <name>Good Health Clinic</name>
+          </representedOrganization>
+        </assignedEntity>
+      </performer>
+      <performer typeCode="PRF">
+        <time>
+          <low value="20170101" />
+          <high value="20171231" />
+        </time>
+        <assignedEntity>
+          <id root="2.16.840.1.113883.4.6" extension="2345872354" />
+          <representedOrganization>
+            <id root="2.16.840.1.113883.4.2" extension="990000099" />
+            <name>Good Health Clinic</name>
+          </representedOrganization>
+        </assignedEntity>
+      </performer>
+      <performer typeCode="PRF">
+        <time>
+          <low value="20170101" />
+          <high value="20171231" />
+        </time>
+        <assignedEntity>
+          <id root="2.16.840.1.113883.4.6" extension="2365987421" />
+          <representedOrganization>
+            <id root="2.16.840.1.113883.4.2" extension="990000099" />
+            <name>Good Health Clinic</name>
+          </representedOrganization>
+        </assignedEntity>
+      </performer>
+      <performer typeCode="PRF">
+        <time>
+          <low value="20170101" />
+          <high value="20171231" />
+        </time>
+        <assignedEntity>
+          <id root="2.16.840.1.113883.4.6" extension="2357943549" />
+          <representedOrganization>
+            <id root="2.16.840.1.113883.4.2" extension="990000099" />
+            <name>Good Health Clinic</name>
+          </representedOrganization>
+        </assignedEntity>
+      </performer>
+    </serviceEvent>
+  </documentationOf>
+  <authorization>
+    <consent>
+      <id root="D5E68227-5760-11E7-1256-09173F13E4C5" />
+      <code code="425691002" displayName="consent given for electronic record sharing" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
+      <statusCode code="completed" />
+    </consent>
+  </authorization>
+  <!--
 ********************************************************
 CDA Body
 ********************************************************
@@ -4188,7 +4171,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="0739FE2E-B8DE-4A56-B064-877CC8E0977D" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -4211,7 +4194,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -4585,7 +4568,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="D346DA74-F16E-4159-BEDF-331BA28837FB" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -4608,7 +4591,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -4982,7 +4965,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="6D01A564-58CC-4CF5-929F-B83583701BFE" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -5005,7 +4988,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -5414,7 +5397,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="3A29C38D-E468-47CC-995B-B281B1B066CF" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -5437,7 +5420,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -5811,7 +5794,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="7CDA5C1B-CD31-4D16-80C4-22AE2F549D88" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -5834,7 +5817,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -6208,7 +6191,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="45A2163C-25C2-4245-A3C6-0BEE64E18B64" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -6231,7 +6214,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -6605,7 +6588,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="3854BDE6-9614-475D-8E3B-5A041C04C291" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -6628,7 +6611,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -7037,7 +7020,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="66FD640C-70BB-400F-9926-98EA1ACEBEBA" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -7060,7 +7043,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -7434,7 +7417,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="40FB2D5F-7DEF-4D41-80C4-F3FBA0ED5851" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -7457,7 +7440,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -7831,7 +7814,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="EC5CC49E-42A7-4DD8-BD40-A6258E71DCB9" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -7854,7 +7837,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -8228,7 +8211,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="0AB40D2B-08CE-4185-8A54-336C3140644D" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -8251,7 +8234,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -8660,7 +8643,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="4D1C7452-B908-4616-B9E9-36C9AA71005B" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -8683,7 +8666,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -9057,7 +9040,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="589C2FD6-6AA9-4AF8-9E1C-973170361917" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -9080,7 +9063,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -9454,7 +9437,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="93AA9C96-E1FE-435B-BA0B-FAF0C5592275" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -9477,7 +9460,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -9851,7 +9834,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="52ADE511-39D4-4CBC-84B6-A82059741359" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -9874,7 +9857,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -10283,7 +10266,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="321FB2D3-477E-41B7-8BB1-02EE94D08417" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -10306,7 +10289,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -10680,7 +10663,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="98CE7ECC-1F09-4F52-906C-E53EAB545F00" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -10703,7 +10686,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -11077,7 +11060,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="3F48A9B6-7B99-4BF4-AB1E-50DC1FFB9D1A" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -11100,7 +11083,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -11582,7 +11565,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="EC2C5F63-AF76-4D3C-85F0-5423F8C28541" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -11605,7 +11588,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -12035,7 +12018,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="BC948E65-B908-493B-B48B-04AC342D3E6C" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -12058,7 +12041,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -12488,7 +12471,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="56BC7FA2-C22A-4440-8652-2D3568852C60" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -12511,7 +12494,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -12941,7 +12924,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="0BBF8596-4CFE-47F4-A0D7-9BEAB94BA4CD" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -12964,7 +12947,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -13394,7 +13377,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="1511AD34-240C-4F3E-A87B-73511AABFC5C" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -13417,7 +13400,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -13847,7 +13830,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="4A09AB89-D9B8-4DD1-BC4E-78BCFD1C5873" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -13870,7 +13853,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -14300,7 +14283,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="206A891D-C3E1-4660-BF2C-6CDBDF9282FB" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -14323,7 +14306,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -14753,7 +14736,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="7FFA49C4-D708-491E-85FE-6855F0A725DF" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -14776,7 +14759,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -15186,7 +15169,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="CA679308-8AF3-4374-91DC-907951440D72" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -15209,7 +15192,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -15583,7 +15566,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="FFC4DDE0-C91C-4235-BF69-E3EF79457FBB" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -15606,7 +15589,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -15980,7 +15963,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="655C9F36-02F7-498B-AE18-D322EA2B3726" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -16003,7 +15986,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -16377,7 +16360,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="44BEAC3C-8402-46F0-9494-81B33C502F0A" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -16400,7 +16383,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -16809,7 +16792,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="0175F89E-9CD7-4CD8-8D7F-38CB825D2BDD" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -16832,7 +16815,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -17206,7 +17189,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="A3F77B7C-2398-470D-A359-E2A31539DF91" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -17229,7 +17212,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -17603,7 +17586,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="CF7E1913-CB4E-42F7-BAEC-0EFFF01ECB17" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -17626,7 +17609,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -18000,7 +17983,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="F0F4094E-CE53-44EE-8CEF-0555479E37B2" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -18023,7 +18006,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -18432,7 +18415,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="1D86EE69-7DA7-4A73-8611-2E71176568B6" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -18455,7 +18438,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -18829,7 +18812,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="2DA1439F-7941-411C-8885-91306F0CD9DD" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -18852,7 +18835,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -19226,7 +19209,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="2EE99933-7653-4C53-8506-2A76D0657064" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -19249,7 +19232,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -19623,7 +19606,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="2C2431A3-7DE3-4C97-80C0-4BF96D4880F0" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -19646,7 +19629,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -20072,7 +20055,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="C7BCE5A3-AC0D-440E-AA29-C98239F37A8B" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -20095,7 +20078,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -20469,7 +20452,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="07F04D61-0383-487E-942C-690BBBC6437D" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -20492,7 +20475,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -20866,7 +20849,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="7A0001AC-4BE0-4FAA-94AE-4843C9FFFCA8" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -20889,7 +20872,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -21263,7 +21246,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="BC02D7CE-7133-46C6-8592-658668B09948" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -21286,7 +21269,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -21660,7 +21643,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="00401314-1B01-4896-A9FC-E991CDF29B6B" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -21683,7 +21666,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -22057,7 +22040,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="FA7BF805-C21E-4077-B43E-C63F8D17B5CF" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -22080,7 +22063,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -22489,7 +22472,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="8AAC0F5B-DC7F-4FA3-8DE9-439C663E6B41" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -22512,7 +22495,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -22886,7 +22869,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="1C6771A4-4C26-4E2C-9E10-FF6F1A5D0907" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -22909,7 +22892,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -23283,7 +23266,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="72259A21-874C-4E51-9465-9989019193D0" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -23306,7 +23289,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -23680,7 +23663,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="52837728-F488-4BA5-9921-FFDEEC0F0803" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -23703,7 +23686,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -24112,7 +24095,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="3AD33404-E734-4F67-9144-E4B63CB3F4BE" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -24135,7 +24118,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -24509,7 +24492,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="E62FEBA3-0F98-460D-93CD-44314D7203A8" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -24532,7 +24515,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -24906,7 +24889,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="55A6D5F3-2029-4896-B850-4C7894161D7D" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -24929,7 +24912,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -25303,7 +25286,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="F9FEBF42-4B21-47A9-B03E-D2DA5CF8492B" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -25326,7 +25309,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -25735,7 +25718,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="45D3A3ED-A7D6-45B9-AC95-647BFFE7018E" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -25758,7 +25741,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -26132,7 +26115,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="0E27156C-B8EB-48E7-A588-4AB97A0914E1" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -26155,7 +26138,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -26529,7 +26512,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="0E9E3C94-6AA0-4C3C-A311-72CB0F2698B6" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -26552,7 +26535,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -26926,7 +26909,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="13C60632-9CF4-491B-82E9-A06118111C44" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -26949,7 +26932,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -27358,7 +27341,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="E7A4AE77-FC46-44F1-BF25-9E99A89CED9B" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -27381,7 +27364,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -27755,7 +27738,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="B710DA92-D4B9-4217-8D1E-94B35163BECE" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -27778,7 +27761,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -28152,7 +28135,7 @@ QRDA Category III Measure Section (CMS EP)
                       <id root="9824B759-A263-44DE-9F5E-93DA4E8F4627" />
                     </externalObservation>
                   </reference>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
@@ -28175,7 +28158,7 @@ QRDA Category III Measure Section (CMS EP)
                       </entryRelationship>
                     </observation>
                   </entryRelationship>
-                  <entryRelationship xmlns="" typeCode="COMP">
+                  <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
                       <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
