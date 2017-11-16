@@ -70,3 +70,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 60 : The eCQM (electronic measure id: `(Current eMeasure ID)`) has a performanceRateId with an incorrect UUID of `(Incorrect UUID)`
   * Ex. : The eCQM (electronic measure id: CMS68v6) has a performanceRateUuid with an incorrect UUID of 00000000-0000-0000-0000-1NV4L1D
 * 61 : A Performance Rate must contain a single Performance Rate UUID
+* 62 : The Alternative Payment Model (APM) Entity Identifier must not be empty
+* 63 : The Alternative Payment Model (APM) Entity Identifier is not valid
+* 64 : CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
+* 65 : CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.

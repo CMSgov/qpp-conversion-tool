@@ -31,10 +31,12 @@ The sample file contains CMS125v5, CMS130v5, CMS165v5, CMS122v5, CMS68v6, CMS139
 
 In the attached sample file, no supplemental data elements were provided for the following eCQMs: CMS22v5, CMS52v5, CMS56v5, CMS65v6, CMS66v5, CMS69v5, CMS74v6, CMS75v5, CMS82v4, CMS90v6, CMS117v5, CMS123v5, CMS128v5, CMS129v6, CMS132v5, CMS133v5, CMS134v5, CMS135v5, CMS142v5, CMS143v5, CMS145v5, CMS146v5, CMS153v5, CMS154v5, CMS155v5, CMS157v5, CMS158v5, CMS160v5, CMS161v5, CMS164v5, CMS167v5, CMS169v5, CMS177v5. For those eCQMs that have reporting stratifications, no reporting stratifications data are provided in the sample. Both supplemental data elements and reporting stratifications are not supported and out of scope for MIPS.
 
+The sample file does contain some ACI and IA measures including the ACI attestation measures.
+
 Sample files available for ACI and IA measures are:
 
 * MIPS_GROUP_QRDA_III_ACI_IA_Sample1.xml
-* MIPS_GROUP_QRDA_III_ACI_IA_Sample1.xml
+* MIPS_GROUP_QRDA_III_ACI_IA_Sample2.xml
 
 These 2 files cover all of the ACI and IA measures.
 Other information about the files:
@@ -44,9 +46,9 @@ Some of the advancing care information measures are mutually exclusive, such as 
 (ePrescribing) and ACI_LVPP_1 (Proposed ePrescribing Exclusion). Sample1 contains all
 advancing care information measures except the exclusion identifiers (e.g.,
 include ACI_EP_1 but not ACI_LVPP_1). Sample 2 also contains all but with the
-exclusions (e.g., include ACI_LVPP_1 but not ACI_EP_1). The attestation identifiers
-are not included.
+exclusions (e.g., include ACI_LVPP_1 but not ACI_EP_1).
 
+ACI attestation measures are included in both sample files.
 
 Large QRDA files
 
