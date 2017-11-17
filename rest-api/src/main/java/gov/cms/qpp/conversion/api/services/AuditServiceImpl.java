@@ -41,6 +41,9 @@ public class AuditServiceImpl implements AuditService {
 		if (noAudit()) {
 			return null;
 		}
+
+		API_LOG.info("Writing success audit information");
+
 		Metadata metadata = initMetadata(conversionReport, Outcome.SUCCESS);
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(conversionReport.getFileInput()).thenAccept(metadata::setSubmissionLocator),
@@ -59,6 +62,9 @@ public class AuditServiceImpl implements AuditService {
 		if (noAudit()) {
 			return null;
 		}
+
+		API_LOG.info("Writing audit information for a conversion failure scenario");
+
 		Metadata metadata = initMetadata(conversionReport, Outcome.CONVERSION_ERROR);
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(conversionReport.streamDetails()).thenAccept(metadata::setConversionErrorLocator),
@@ -78,6 +84,8 @@ public class AuditServiceImpl implements AuditService {
 			return null;
 		}
 
+		API_LOG.info("Writing audit information for a validation failure scenario");
+
 		Metadata metadata = initMetadata(conversionReport, Outcome.VALIDATION_ERROR);
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(conversionReport.streamRawValidationDetails()).thenAccept(metadata::setRawValidationErrorLocator),
@@ -92,7 +100,7 @@ public class AuditServiceImpl implements AuditService {
 		boolean returnValue = noAudit != null && !noAudit.isEmpty();
 
 		if (returnValue) {
-			API_LOG.info("Not writing audit information.");
+			API_LOG.warn("Not writing audit information.");
 		}
 
 		return returnValue;

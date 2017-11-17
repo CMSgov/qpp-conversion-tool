@@ -64,7 +64,7 @@
    <!--Program for which data is being submitted-->
 	  <informationRecipient>
       <intendedRecipient>
-         <id root="2.16.840.1.113883.3.249.7" extension="CPCplus"/>
+         <id root="2.16.840.1.113883.3.249.7" extension="CPCPLUS"/>
       </intendedRecipient>
    </informationRecipient>
    <legalAuthenticator>
@@ -92,7 +92,7 @@
 	  <participant typeCode="LOC">
       <associatedEntity classCode="SDLOC">
          <id root="2.16.840.1.113883.3.249.5.1"
-            extension="TestApmEntityId"
+            extension="T2OR1234"
              assigningAuthorityName="CMS-CMMI"/>
          <code code="394730007"
                displayName="healthcare related organization"
@@ -22817,7 +22817,7 @@ QRDA Category III Measure Section (CMS EP)
                            <text>Use of High-Risk Medications in the Elderly</text>
                         </externalDocument>
                      </reference>
-                     <!--Performance Rate-->
+                     <!--Performance Rate Performance Rate for Numerator 2 Deleted -->
                      <component>
                         <observation classCode="OBS" moodCode="EVN">
                            <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
@@ -22840,29 +22840,8 @@ QRDA Category III Measure Section (CMS EP)
                            </reference>
                         </observation>
                      </component>
-                     <!--Performance Rate-->
-                     <component>
-                        <observation classCode="OBS" moodCode="EVN">
-                           <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
-                           <templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01"/>
-                           <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01"/>
-                           <code code="72510-1"
-                                 codeSystem="2.16.840.1.113883.6.1"
-                                 codeSystemName="LOINC"
-                                 displayName="Performance Rate"/>
-                           <statusCode code="completed"/>
-                           <value xsi:type="REAL" value=".8"/>
-                           <reference typeCode="REFR">
-                              <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="FA7BF805-C21E-4077-B43E-C63F8D17B5CF"/>
-                                 <code code="NUMER"
-                                       codeSystem="2.16.840.1.113883.5.4"
-                                       codeSystemName="ActCode"
-                                       displayName="Numerator"/>
-                              </externalObservation>
-                           </reference>
-                        </observation>
-                     </component>
+                     <!--Performance Rate Deleted -->
+
                      <!--IPOP Population-->
                      <component>
                         <observation classCode="OBS" moodCode="EVN">
