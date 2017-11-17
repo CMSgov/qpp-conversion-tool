@@ -96,7 +96,7 @@
 			<plugin>
 				<groupId>com.lazerycode.jmeter</groupId>
 				<artifactId>jmeter-maven-plugin</artifactId>
-				<version>2.4.0</version>
+				<version>2.5.0</version>
 				<executions>
 					<execution>
 						<id>jmeter-tests</id>
@@ -110,10 +110,10 @@
 					<jmeterExtensions>
 						<artifact>kg.apc:jmeter-plugins:pom:1.4.0</artifact>
 						<artifact>kg.apc:jmeter-plugins-cmn-jmeter:0.5</artifact>
-						<artifact>kg.apc:jmeter-plugins-casutg:2.1</artifact>
+						<artifact>kg.apc:jmeter-plugins-casutg:2.4</artifact>
 						<artifact>kg.apc:jmeter-plugins-tst:2.1</artifact>
-						<artifact>org.apache.commons:commons-math3:jar:3.4.1</artifact>
-						<artifact>org.apache.commons:commons-pool2:jar:2.3</artifact>
+						<artifact>org.apache.commons:commons-math3:jar:3.6.1</artifact>
+						<artifact>org.apache.commons:commons-pool2:jar:2.4.3</artifact>
 					</jmeterExtensions>
 					<downloadExtensionDependencies>false</downloadExtensionDependencies>
 					<propertiesJMeter>
