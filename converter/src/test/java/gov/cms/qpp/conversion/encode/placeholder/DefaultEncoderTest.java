@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 

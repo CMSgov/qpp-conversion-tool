@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 import java.util.EnumSet;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;

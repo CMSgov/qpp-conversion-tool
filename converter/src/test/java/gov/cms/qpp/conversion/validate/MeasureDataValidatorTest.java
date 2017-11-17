@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;

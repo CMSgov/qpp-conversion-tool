@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.config;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
