@@ -4,8 +4,11 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
@@ -15,14 +18,16 @@ public class MetadataHelperTest {
 
 	private static final String MOCK_STRING = "some random mock value";
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void testGenerateMetadataForNullNodeThrowsNullPointerException() {
-		MetadataHelper.generateMetadata(null, MetadataHelper.Outcome.SUCCESS);
+		Assertions.assertThrows(NullPointerException.class, () ->
+			MetadataHelper.generateMetadata(null, MetadataHelper.Outcome.SUCCESS));
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void testGenerateMetadataForNullOutcomeThrowsNullPointerException() {
-		MetadataHelper.generateMetadata(new Node(), null);
+		Assertions.assertThrows(NullPointerException.class, () ->
+			MetadataHelper.generateMetadata(new Node(), null));
 	}
 
 	@Test

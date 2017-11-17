@@ -4,7 +4,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.stream.Stream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.truth.Truth;
 
@@ -37,9 +38,9 @@ public class ProgramTest {
 				.that(Program.getInstance(null)).isSameAs(Program.ALL);
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void testIsCpcPlusForNullThrowsNullPointerException() {
-		Program.isCpc(null);
+		Assertions.assertThrows(NullPointerException.class, () -> Program.isCpc(null));
 	}
 
 	@Test
