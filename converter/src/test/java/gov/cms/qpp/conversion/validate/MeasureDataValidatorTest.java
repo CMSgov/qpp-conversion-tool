@@ -26,10 +26,10 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 /**
  * Test the MeasureData Validator
  */
-public class MeasureDataValidatorTest {
+class MeasureDataValidatorTest {
 
 	@Test
-	public void internalValidateSingleNode() throws Exception {
+	void internalValidateSingleNode() throws Exception {
 		String happy = TestHelper.getFixture("measureDataHappy.xml");
 		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(happy));
 		MeasureDataValidator validator = new MeasureDataValidator();
@@ -42,7 +42,7 @@ public class MeasureDataValidatorTest {
 	}
 
 	@Test
-	public void missingAggregateCount() throws Exception {
+	void missingAggregateCount() throws Exception {
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		MeasureDataValidator validator = new MeasureDataValidator();
 		validator.internalValidateSingleNode(testNode);
@@ -54,7 +54,7 @@ public class MeasureDataValidatorTest {
 	}
 
 	@Test
-	public void invalidAggregateCount() throws Exception {
+	void invalidAggregateCount() throws Exception {
 		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		testNode.addChildNode(aggregateCount);
@@ -69,7 +69,7 @@ public class MeasureDataValidatorTest {
 	}
 
 	@Test
-	public void duplicateAggregateCountsFails() throws Exception {
+	void duplicateAggregateCountsFails() throws Exception {
 		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggregateCount.putValue("aggregateCount", "100");
 		aggregateCount.putValue("aggregateCount", "200", false);
@@ -85,7 +85,7 @@ public class MeasureDataValidatorTest {
 	}
 
 	@Test
-	public void negativeAggregateCountsFails() throws Exception {
+	void negativeAggregateCountsFails() throws Exception {
 		Node aggregateCount = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggregateCount.putValue("aggregateCount", "-1");
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
@@ -100,7 +100,7 @@ public class MeasureDataValidatorTest {
 	}
 
 	@Test
-	public void multipleNegativeMeasureDataTest() throws Exception {
+	void multipleNegativeMeasureDataTest() throws Exception {
 		//setup
 		Path path = Paths.get("src/test/resources/negative/angerMeasureDataValidations.xml");
 

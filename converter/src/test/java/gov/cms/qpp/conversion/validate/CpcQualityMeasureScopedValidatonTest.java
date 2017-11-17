@@ -29,11 +29,11 @@ import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.xml.XmlException;
 
-public class CpcQualityMeasureScopedValidatonTest {
+class CpcQualityMeasureScopedValidatonTest {
 	private static Path baseDir = Paths.get("src/test/resources/fixtures/qppct298/");
 
 	@Test
-	public void validateCms137V5() throws IOException, XmlException {
+	void validateCms137V5() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
 		Set<Detail> details = validateNode(result);
 
@@ -42,7 +42,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 	}
 
 	@Test
-	public void validateCms137V5FailMissingDenomStrata() throws IOException, XmlException {
+	void validateCms137V5FailMissingDenomStrata() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
 		removeMeasureStrata(result, SubPopulations.DENOM);
 		Set<Detail> details = validateNode(result);
@@ -55,7 +55,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 	}
 
 	@Test
-	public void validateCms137V5FailMissingDenexStrata() throws IOException, XmlException {
+	void validateCms137V5FailMissingDenexStrata() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
 		removeMeasureStrata(result, SubPopulations.DENEX);
 		Set<Detail> details = validateNode(result);
@@ -68,7 +68,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 	}
 
 	@Test
-	public void validateCms137V5FailMissingNumerStrata() throws IOException, XmlException {
+	void validateCms137V5FailMissingNumerStrata() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
 		removeMeasureStrata(result, SubPopulations.NUMER);
 		Set<Detail> details = validateNode(result);
@@ -81,7 +81,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 	}
 
 	@Test
-	public void validateCms137V5FailMissingIpopStrata() throws IOException, XmlException {
+	void validateCms137V5FailMissingIpopStrata() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
 		removeMeasureStrata(result, "IPOP");
 		Set<Detail> details = validateNode(result);
@@ -94,7 +94,7 @@ public class CpcQualityMeasureScopedValidatonTest {
 	}
 
 	@Test
-	public void validateCms137V5FailMissingMeasure() throws IOException, XmlException {
+	void validateCms137V5FailMissingMeasure() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5_MissingMeasure.xml");
 		Set<Detail> details = validateNode(result);
 		LocalizedError message = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS137v5", "IPOP,IPP", "EC2C5F63-AF76-4D3C-85F0-5423F8C28541");

@@ -86,15 +86,15 @@ class QppXmlDecoderTest {
 		return returnValue;
 	}
 
-	public static class DefaultQppXmlDecoder extends QppXmlDecoder {
-		public DefaultQppXmlDecoder(Context context) {
+	static class DefaultQppXmlDecoder extends QppXmlDecoder {
+		DefaultQppXmlDecoder(Context context) {
 			super(context);
 		}
 	}
 
-	public static class TestChildDecodeError extends QppXmlDecoder {
+	static class TestChildDecodeError extends QppXmlDecoder {
 
-		public TestChildDecodeError(Context context) {
+		TestChildDecodeError(Context context) {
 			super(context);
 		}
 
@@ -105,9 +105,9 @@ class QppXmlDecoderTest {
 		}
 	}
 
-	public static class TestChildNoAction extends QppXmlDecoder {
+	static class TestChildNoAction extends QppXmlDecoder {
 
-		public TestChildNoAction(Context context) {
+		TestChildNoAction(Context context) {
 			super(context);
 		}
 

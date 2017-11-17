@@ -10,14 +10,14 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
-public class MeasureDataEncoderTest {
+class MeasureDataEncoderTest {
 	private final String PERFORMANCE_MET = "performanceMet"; //NUMER
 	private final String ELIGIBLE_POPULATION = "eligiblePopulation";//DENUM
 	private final String ELIGIBLE_POPULATION_EX = "eligiblePopulationExclusion";//DENEX
 	private final String ELIGIBLE_POPULATION_EXCEP = "eligiblePopulationException";//DENEXCP
 
 	@Test
-	public void testDenominator() throws EncodeException {
+	void testDenominator() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENOM);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertWithMessage("Must return correct encoded result")
@@ -26,7 +26,7 @@ public class MeasureDataEncoderTest {
 	}
 
 	@Test
-	public void testEligiblePopulationException() throws EncodeException {
+	void testEligiblePopulationException() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENEXCEP);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertWithMessage("Must return correct encoded result")
@@ -35,7 +35,7 @@ public class MeasureDataEncoderTest {
 	}
 
 	@Test
-	public void testEligiblePopulationExclusion() throws EncodeException {
+	void testEligiblePopulationExclusion() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENEX);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertWithMessage("Must return correct encoded result")
@@ -44,7 +44,7 @@ public class MeasureDataEncoderTest {
 	}
 
 	@Test
-	public void testPerformanceMet() throws EncodeException {
+	void testPerformanceMet() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.NUMER);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertWithMessage("Must return correct encoded result")

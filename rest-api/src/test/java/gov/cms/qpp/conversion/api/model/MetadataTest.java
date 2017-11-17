@@ -13,10 +13,10 @@ import java.util.function.Consumer;
 
 import static junit.framework.TestCase.fail;
 
-public class MetadataTest {
+class MetadataTest {
 
 	@Test
-	public void equalsContract() {
+	void equalsContract() {
 		EqualsVerifier.forClass(Metadata.class)
 				.usingGetClass()
 				.suppress(Warning.NONFINAL_FIELDS)
@@ -24,7 +24,7 @@ public class MetadataTest {
 	}
 
 	@Test
-	public void plumbing() {
+	void plumbing() {
 		Consumer<Method> consumer = harness(new Metadata());
 
 		Arrays.stream(Metadata.class.getDeclaredMethods())

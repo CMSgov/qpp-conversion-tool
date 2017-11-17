@@ -13,10 +13,10 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class AciProportionNumeratorRoundTripTest {
+class AciProportionNumeratorRoundTripTest {
 
 	@Test
-	public void parseAciNumeratorDenominatorAsNode() throws Exception {
+	void parseAciNumeratorDenominatorAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 				+ "	<observation classCode=\"OBS\" moodCode=\"EVN\">\n"

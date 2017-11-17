@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class MeasurePerformedEncoderTest {
+class MeasurePerformedEncoderTest {
 
 	@Test
-	public void testMeasurePerformedEncodesIntoWrapper() throws EncodeException {
+	void testMeasurePerformedEncodesIntoWrapper() throws EncodeException {
 		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		measurePerformedNode.putValue("measurePerformed", "Y");
 

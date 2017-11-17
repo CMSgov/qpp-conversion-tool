@@ -7,15 +7,15 @@ import org.junit.jupiter.api.Test;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class DetailTest {
+class DetailTest {
 
 	@Test
-	public void equalsContract() {
+	void equalsContract() {
 		EqualsVerifier.forClass(Detail.class).usingGetClass().suppress(Warning.NONFINAL_FIELDS).verify();
 	}
 
 	@Test
-	public void testSetters() {
+	void testSetters() {
 		Detail detail = new Detail();
 		detail.setPath("path");
 		detail.setMessage("message");

@@ -16,12 +16,12 @@ import gov.cms.qpp.acceptance.helper.JsonPathAggregator;
 import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 
-public class JsonPathToXpathCoverageTest {
+class JsonPathToXpathCoverageTest {
 	private static JsonPathToXpathHelper helper;
 	private ObjectMapper om = new ObjectMapper();
 
 	@Test
-	public void coverage() {
+	void coverage() {
 		Arrays.asList(
 				Paths.get("../qrda-files/valid-QRDA-III-latest.xml"),
 				Paths.get("src/test/resources/fixtures/multiPerformanceRatePropMeasure.xml")

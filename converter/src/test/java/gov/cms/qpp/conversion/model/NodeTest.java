@@ -10,10 +10,10 @@ import java.util.List;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class NodeTest {
+class NodeTest {
 
 	@Test
-	public void testPut() {
+	void testPut() {
 		Node node = new Node(TemplateId.PLACEHOLDER);
 		node.putValue("DEF", "GHI");
 
@@ -22,7 +22,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testChild() {
+	void testChild() {
 		Node node = new Node(TemplateId.PLACEHOLDER);
 		Node childNode = new Node();
 		childNode.setType(TemplateId.ACI_SECTION);
@@ -33,7 +33,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testToString() {
+	void testToString() {
 		Node node = new Node(TemplateId.PLACEHOLDER);
 		node.putValue("DEF", "GHI");
 
@@ -44,7 +44,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testToStringDepth() {
+	void testToStringDepth() {
 		Node node = new Node();
 
 		Node childNode = new Node();
@@ -64,7 +64,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testValidatedMember() {
+	void testValidatedMember() {
 		Node node = new Node();
 		node.setValidated(true);
 
@@ -72,13 +72,13 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testNotValidatedMember() {
+	void testNotValidatedMember() {
 		Node node = new Node();
 		assertThat(node.isNotValidated()).isTrue();
 	}
 
 	@Test
-	public void testParentMember() {
+	void testParentMember() {
 		Node child = new Node();
 		Node parent = new Node();
 		child.setParent(parent);
@@ -87,7 +87,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testAddNullChild() {
+	void testAddNullChild() {
 		Node node = new Node();
 		node.addChildNode(null);
 
@@ -95,7 +95,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testAddThisChild() {
+	void testAddThisChild() {
 		Node node = new Node();
 		node.addChildNode(node);
 
@@ -103,7 +103,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindNode() {
+	void testFindNode() {
 		Node parent = new Node();
 		Node childOne = new Node();
 		Node childTwo = new Node();
@@ -117,7 +117,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindNoNode() {
+	void testFindNoNode() {
 		Node parent = new Node();
 		Node childOne = new Node();
 		Node childTwo = new Node();
@@ -130,7 +130,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindNodeSelfIncluded() {
+	void testFindNodeSelfIncluded() {
 		Node parent = new Node(TemplateId.PLACEHOLDER);
 		Node childOne = new Node(TemplateId.PLACEHOLDER);
 		parent.addChildNode(childOne);
@@ -142,7 +142,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindFirstNodeSelf() {
+	void testFindFirstNodeSelf() {
 		Node parent = new Node(TemplateId.PLACEHOLDER);
 		Node childOne = new Node(TemplateId.PLACEHOLDER);
 		parent.addChildNode(childOne);
@@ -153,7 +153,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindFirstNodeChildNode() {
+	void testFindFirstNodeChildNode() {
 		Node parent = new Node();
 		Node childOne = new Node();
 		Node childTwo = new Node(TemplateId.PLACEHOLDER);
@@ -166,7 +166,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testFindFirstNoNode() {
+	void testFindFirstNoNode() {
 		Node parent = new Node();
 		Node childOne = new Node();
 		Node childTwo = new Node();
@@ -179,7 +179,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testRemoveValue() {
+	void testRemoveValue() {
 		Node node = new Node();
 		node.putValue("test", "hello");
 		node.removeValue("test");
@@ -188,7 +188,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void testEquals() {
+	void testEquals() {
 		Node parent = new Node(TemplateId.CLINICAL_DOCUMENT);
 		Node child1 = new Node(TemplateId.IA_SECTION);
 		child1.setParent(parent);

@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class PlaceholderEncoderTest {
+class PlaceholderEncoderTest {
 
 	@Test
-	public void encodePlaceholderNodeNegative() throws EncodeException {
+	void encodePlaceholderNodeNegative() throws EncodeException {
 		//setup
 		Node placeHolder = new Node(TemplateId.PLACEHOLDER);
 		placeHolder.addChildNode(new Node());

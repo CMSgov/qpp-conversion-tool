@@ -16,10 +16,10 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.validate.IaSectionValidator;
 
-public class IaSectionValidatorRoundTripTest {
+class IaSectionValidatorRoundTripTest {
 
 	@Test
-	public void testIaSectionValidatorIncorrectChildren() throws IOException {
+	void testIaSectionValidatorIncorrectChildren() throws IOException {
 		Path path = Paths.get("src/test/resources/negative/iaSectionContainsWrongChild.xml");
 		Converter converter = new Converter(new PathQrdaSource(path));
 
@@ -37,7 +37,7 @@ public class IaSectionValidatorRoundTripTest {
 	}
 
 	@Test
-	public void testIaSectionValidatorMissingMeasures() throws IOException {
+	void testIaSectionValidatorMissingMeasures() throws IOException {
 		Path path = Paths.get("src/test/resources/negative/iaSectionMissingMeasures.xml");
 		Converter converter = new Converter(new PathQrdaSource(path));
 
@@ -55,7 +55,7 @@ public class IaSectionValidatorRoundTripTest {
 	}
 
 	@Test
-	public void testIaSectionValidatorMissingReportingParameters() throws IOException {
+	void testIaSectionValidatorMissingReportingParameters() throws IOException {
 		Path path = Paths.get("src/test/resources/negative/iaSectionMissingReportingParameter.xml");
 		Converter converter = new Converter(new PathQrdaSource(path));
 

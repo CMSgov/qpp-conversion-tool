@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class UncheckedInterruptedExceptionTest {
+class UncheckedInterruptedExceptionTest {
 
 	@Test
-	public void testConstructor() {
+	void testConstructor() {
 		InterruptedException interruptedException = new InterruptedException();
 		UncheckedInterruptedException uncheckedInterruptedException = new UncheckedInterruptedException(interruptedException);
 

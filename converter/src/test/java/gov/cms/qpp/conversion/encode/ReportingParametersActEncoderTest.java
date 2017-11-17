@@ -10,9 +10,9 @@ import static com.google.common.truth.Truth.assertWithMessage;
 /**
  * Test class for ReportingParametersActEncoder
  */
-public class ReportingParametersActEncoderTest {
+class ReportingParametersActEncoderTest {
 	@Test
-	public void internalEncode() throws Exception {
+	void internalEncode() throws Exception {
 		Node reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		reportingParametersActNode.putValue(ReportingParametersActEncoder.PERFORMANCE_START,"20170101");
 		reportingParametersActNode.putValue(ReportingParametersActEncoder.PERFORMANCE_END,"20171231");
@@ -29,7 +29,7 @@ public class ReportingParametersActEncoderTest {
 	}
 
 	@Test
-	public void missingValuesTest() throws Exception {
+	void missingValuesTest() throws Exception {
 		Node reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 
 		JsonWrapper outputWrapper = new JsonWrapper();

@@ -17,10 +17,10 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class AciSectionRoundTripTest {
+class AciSectionRoundTripTest {
 
 	@Test
-	public void parseSparseAciSectionAsNode() throws XmlException {
+	void parseSparseAciSectionAsNode() throws XmlException {
 		//set-up
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 		                     + "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
@@ -60,7 +60,7 @@ public class AciSectionRoundTripTest {
 	}
 
 	@Test
-	public void parseGarbageAciSectionAsNode() throws XmlException {
+	void parseGarbageAciSectionAsNode() throws XmlException {
 		//set-up
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 		                     + "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
@@ -102,7 +102,7 @@ public class AciSectionRoundTripTest {
 	}
 
 	@Test
-	public void parseAciSectionAsJson() throws EncodeException, XmlException {
+	void parseAciSectionAsJson() throws EncodeException, XmlException {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 				+ "	<section>\n" + "		<!-- Measure Section -->\n"

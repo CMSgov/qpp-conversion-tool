@@ -16,10 +16,10 @@ import java.nio.file.Paths;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
-public class AggregateCountFailureTest {
+class AggregateCountFailureTest {
 
 	@Test
-	public void testInvalidAggregateCounts() throws IOException {
+	void testInvalidAggregateCounts() throws IOException {
 		//execute
 		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/negative/angerTheConverter.xml")));
 

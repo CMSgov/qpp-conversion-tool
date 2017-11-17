@@ -16,10 +16,10 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class DefaultEncoderTest {
+class DefaultEncoderTest {
 
 	@Test
-	public void encodeAllNodes() throws Exception {
+	void encodeAllNodes() throws Exception {
 		InputStream stream = XmlUtils.fileToStream(Paths.get("../qrda-files/valid-QRDA-III.xml"));
 		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
 
@@ -34,7 +34,7 @@ public class DefaultEncoderTest {
 	}
 
 	@Test
-	public void encodeDefaultNode() throws EncodeException {
+	void encodeDefaultNode() throws EncodeException {
 		Node root = new Node(TemplateId.DEFAULT);
 		Node placeHolder = new Node(TemplateId.PLACEHOLDER, root);
 		root.addChildNode(placeHolder);
