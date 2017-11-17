@@ -25,7 +25,7 @@ public class CpcRaceGenerator {
 
 	public static void main(String... args) {
 		Collection<Path> filenames = getFiles(args);
-		filenames.forEach(file -> {
+		filenames.parallelStream().forEach(file -> {
 			Document document = addSupplementalRaceData(file);
 			writeFile(document);
 		});
@@ -84,12 +84,17 @@ public class CpcRaceGenerator {
 
 				for (Element component: components) {
 					Element observation = component.getChild("observation", rootNamespace);
-					String measureDataTemplateId =
-							observation.getChildren("templateId", rootNamespace).get(1)
-									.getAttributeValue("root");
-					if (TemplateId.MEASURE_DATA_CMS_V2.getRoot().equalsIgnoreCase(measureDataTemplateId)) {
-						observation.addContent(createRaceElement(rootElement.getNamespacesInScope().get(2), "2076-8"));
-						observation.addContent(createRaceElement(rootElement.getNamespacesInScope().get(2),"2131-1"));
+
+					List<Element> templateIds = observation.getChildren("templateId", rootNamespace);
+					if (templateIds.stream()
+							.map(element -> element.getAttributeValue("root"))
+							.filter(templateIdRoot ->
+									TemplateId.MEASURE_DATA_CMS_V2.getRoot().equalsIgnoreCase(templateIdRoot))
+							.count() > 0) {
+						observation.addContent(
+								createRaceElement(rootElement.getNamespacesInScope().get(2), "2076-8"));
+						observation.addContent(
+								createRaceElement(rootElement.getNamespacesInScope().get(2),"2131-1"));
 					}
 				}
 			}
@@ -104,10 +109,10 @@ public class CpcRaceGenerator {
 	}
 
 	static Element createRaceElement(Namespace xsiNamespace, String raceCode) {
-		Element entryRelationship =  new Element("entryRelationship");
+		Element entryRelationship = new Element("entryRelationship");
 		entryRelationship.setAttribute("typeCode","COMP");
 
-		Element observation =  new Element("observation");
+		Element observation = new Element("observation");
 		observation.setAttribute("classCode", "OBS");
 		observation.setAttribute("moodCode", "EVN");
 
@@ -119,37 +124,37 @@ public class CpcRaceGenerator {
 	}
 
 	static void addOuterObservationChildren(Element observation, Namespace xsiNamespace, String raceCode) {
-		Element templateId =  new Element("templateId");
+		Element templateId = new Element("templateId");
 		templateId.setAttribute("root", "2.16.840.1.113883.10.20.27.3.8");
 		templateId.setAttribute("extension", "2016-09-01");
 
-		Element raceTemplate =  new Element("templateId");
+		Element raceTemplate = new Element("templateId");
 		raceTemplate.setAttribute("root", "2.16.840.1.113883.10.20.27.3.19");
 		raceTemplate.setAttribute("extension","2016-11-01");
 
-		Element id =  new Element("id");
+		Element id = new Element("id");
 		id.setAttribute("root", "D5E68231-5760-11E7-1256-09173F13E4C5");
 
-		Element code =  new Element("code");
+		Element code = new Element("code");
 		code.setAttribute("code", "72826-1");
 		code.setAttribute("codeSystem", "2.16.840.1.113883.6.1");
 		code.setAttribute("codeSystemName", "LOINC");
 		code.setAttribute("displayName", "Race");
 
-		Element statusCode =  new Element("statusCode");
+		Element statusCode = new Element("statusCode");
 		statusCode.setAttribute("code", "completed");
 
 		Element effectiveTime = new Element("effectiveTime");
-		Element low =  new Element("low");
+		Element low = new Element("low");
 		low.setAttribute("value", "20170101");
 
-		Element high =  new Element("high");
+		Element high = new Element("high");
 		high.setAttribute("value", "20171231");
 
 		effectiveTime.addContent(low);
 		effectiveTime.addContent(high);
 
-		Element value =  new Element("value");
+		Element value = new Element("value");
 		value.setAttribute("type","CD", xsiNamespace);
 		value.setAttribute("code", raceCode);
 		value.setAttribute("codeSystem", "2.16.840.1.113883.6.238");
@@ -167,33 +172,33 @@ public class CpcRaceGenerator {
 	}
 
 	static Element createAggregateCountEntry(Namespace xsiNamespace) {
-		Element aggregateCountEntry =  new Element("entryRelationship");
+		Element aggregateCountEntry = new Element("entryRelationship");
 		aggregateCountEntry.setAttribute("typeCode","SUBJ");
 		aggregateCountEntry.setAttribute("inversionInd","true");
 
-		Element observation =  new Element("observation");
+		Element observation = new Element("observation");
 		observation.setAttribute("classCode","OBS");
 		observation.setAttribute("moodCode","EVN");
 
-		Element aggregateCountTemplateId =  new Element("templateId");
+		Element aggregateCountTemplateId = new Element("templateId");
 		aggregateCountTemplateId.setAttribute("root","2.16.840.1.113883.10.20.27.3.3");
-		Element templateId =  new Element("templateId");
+		Element templateId = new Element("templateId");
 		templateId.setAttribute("root","2.16.840.1.113883.10.20.27.3.24");
 
-		Element code =  new Element("code");
+		Element code = new Element("code");
 		code.setAttribute("code","MSRAGG");
 		code.setAttribute("codeSystem","2.16.840.1.113883.5.4");
 		code.setAttribute("codeSystemName","ActCode");
 		code.setAttribute("displayName","rate aggregation");
 
-		Element statusCode =  new Element("statusCode");
+		Element statusCode = new Element("statusCode");
 		statusCode.setAttribute("code", "completed");
 
-		Element value =  new Element("value");
+		Element value = new Element("value");
 		value.setAttribute("type", "INT", xsiNamespace);
 		value.setAttribute("value", "250");
 
-		Element methodCode =  new Element("methodCode");
+		Element methodCode = new Element("methodCode");
 		methodCode.setAttribute("code", "COUNT");
 		methodCode.setAttribute("codeSystem", "2.16.840.1.113883.5.84");
 		methodCode.setAttribute("codeSystemName", "ObservationMethod");
