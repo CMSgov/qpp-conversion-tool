@@ -63,15 +63,4 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 		Map<String, String> otherMeta = wrapper.createMetaMap(node, leafLabel);
 		wrapper.mergeMetadata(otherMeta);
 	}
-
-	/**
-	 * Convenience override for {@link QppOutputEncoder#maintainContinuity(JsonWrapper, Node, String)}
-	 *
-	 * @param wrapper parent wrapper
-	 * @param other wrapper whose metadata is to be merged with parent
-	 * @param leafLabel json attribute name
-	 */
-	void maintainContinuity(JsonWrapper wrapper, JsonWrapper other, String leafLabel) {
-		wrapper.mergeMetadata(other, leafLabel);
-	}
 }
