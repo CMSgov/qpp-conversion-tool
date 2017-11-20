@@ -1,7 +1,10 @@
 package gov.cms.qpp.conversion.model.validation;
 
+import com.google.common.collect.ImmutableMap;
+import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -30,17 +33,18 @@ public enum SupplementalData {
 	private final String code;
 	private final SupplementalType type;
 
-	protected static final Map<SupplementalType, TemplateId> SUPPLEMENTAL_TYPES = new HashMap<>();
+	protected static final EnumMap<SupplementalType, TemplateId> SUPPLEMENTAL_TYPES =
+			new EnumMap<>(SupplementalType.class);
 
 	/**
 	 * Static map creation of Supplemental Types to their designated template id's
 	 */
 	static {
-		SUPPLEMENTAL_TYPES.put(SupplementalType.RACE,TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
-		SUPPLEMENTAL_TYPES.put(SupplementalType.SEX,TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
+		SUPPLEMENTAL_TYPES.put(SupplementalType.RACE, TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
+		SUPPLEMENTAL_TYPES.put(SupplementalType.SEX, TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
 		SUPPLEMENTAL_TYPES.put(SupplementalType.ETHNICITY,
 				TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
-		SUPPLEMENTAL_TYPES.put(SupplementalType.PAYER,TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
+		SUPPLEMENTAL_TYPES.put(SupplementalType.PAYER, TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
 	}
 
 	/**
@@ -111,6 +115,6 @@ public enum SupplementalData {
 	 * @return static supplemental type map
 	 */
 	public static Map<SupplementalType, TemplateId> getSupplementalTypeMapToTemplateId(){
-		return SUPPLEMENTAL_TYPES;
+		return SUPPLEMENTAL_TYPES.clone();
 	}
 }
