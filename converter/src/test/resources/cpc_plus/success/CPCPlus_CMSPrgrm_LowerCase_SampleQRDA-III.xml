@@ -91,9 +91,9 @@
    <!--Practice Site-->
 	  <participant typeCode="LOC">
       <associatedEntity classCode="SDLOC">
-         <id root="2.16.840.1.113883.3.249.5.1"
-            extension="TestApmEntityId"
-             assigningAuthorityName="CMS-CMMI"/>
+          <id root="2.16.840.1.113883.3.249.5.1"
+              extension="DogCow"
+              assigningAuthorityName="CMS-CMMI"/>
          <code code="394730007"
                displayName="healthcare related organization"
                codeSystem="2.16.840.1.113883.6.96"
