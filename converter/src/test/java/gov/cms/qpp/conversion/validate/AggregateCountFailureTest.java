@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.PathQrdaSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -16,10 +16,10 @@ import java.nio.file.Paths;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
-public class AggregateCountFailureTest {
+class AggregateCountFailureTest {
 
 	@Test
-	public void testInvalidAggregateCounts() throws IOException {
+	void testInvalidAggregateCounts() throws IOException {
 		//execute
 		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/negative/angerTheConverter.xml")));
 

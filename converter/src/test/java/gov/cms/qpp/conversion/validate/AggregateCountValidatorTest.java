@@ -4,7 +4,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -14,10 +14,10 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 
-public class AggregateCountValidatorTest {
+class AggregateCountValidatorTest {
 
     @Test
-    public void testIsAggregateCount() {
+    void testIsAggregateCount() {
         Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 
         AggregateCountValidator validator = new AggregateCountValidator();
@@ -27,7 +27,7 @@ public class AggregateCountValidatorTest {
     }
 
     @Test
-    public void testValueAbsenceFailure() {
+    void testValueAbsenceFailure() {
         Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 
         AggregateCountValidator validator = new AggregateCountValidator();
@@ -40,7 +40,7 @@ public class AggregateCountValidatorTest {
     }
 
     @Test
-    public void testValueTypeFailure() {
+    void testValueTypeFailure() {
         Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
         aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "meep");
 
@@ -54,7 +54,7 @@ public class AggregateCountValidatorTest {
     }
 
     @Test
-    public void testValueTypeSuccess() {
+    void testValueTypeSuccess() {
         Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
         aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "7");
 
