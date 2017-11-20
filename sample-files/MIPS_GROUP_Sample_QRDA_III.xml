@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="qrda.xsl"?>
-<!-- 
+<!--
 	Title: Merit-based Incentive Payment System (MIPS) Group Reporting Sample QRDA-III (Informative)
 	Filename: MIPS_GROUP_Sample_QRDA_III_Informative.xml
 	Version: 1.0
-	Revision History:  
+	Revision History:
 	06/12/2017 Created
-	Description: 1) This QRDA-III sample file is valid for MIPS group reporting (MIPS_GROUP) and is informative only. 
-	             2) This sample file correctly validates against the conformance statements specified in the 
+	Description: 1) This QRDA-III sample file is valid for MIPS group reporting (MIPS_GROUP) and is informative only.
+	             2) This sample file correctly validates against the conformance statements specified in the
 	             2017 CMS Implementation Guide for Quality Reporting Document Architecture Category III
 	             Eligible Clinicians and Eligible Professionals Programs, Version 1.0, 7/7/2017
-   THIS SAMPLE FILE IS INFORMATIVE ONLY. 
+   THIS SAMPLE FILE IS INFORMATIVE ONLY.
    eCQMs included are:
    MeasureID						Type
    CMS125v5							Effective Clinical Care
@@ -25,26 +25,30 @@
    CMS2v6							Community/Population Health
    CMS138v5							Community/Population Health
    CMS136v6							Effective Clinical Care (multiple rates)
-   
+
    ACI Measures included are:
    MeasureID						Type
    ACI_PPHI_1						Yes/No
    ACI_EP_1							Numerator/Denominator
    ACI_PEA_1						Numerator/Denominator
-   
+
    Improvement Activities included are:
    IA_EPA_3
    IA_PM_2
 	10/12/2017: Updated
 	Description: Added new data for CMS22v5, CMS52v5, CMS56v5, CMS65v6, CMS66v5, CMS69v5, CMS74v6, CMS75v5, CMS82v4, CMS90v6, CMS117v5, CMS123v5,
-				CMS128v5, CMS129v6, CMS132v5, CMS133v5, CMS134v5, CMS135v5, CMS142v5, CMS143v5, CMS145v5, CMS146v5, CMS153v5, CMS154v5, CMS155v5, 
-				CMS157v5, CMS158v5, CMS160v5, CMS161v5, CMS164v5, CMS167v5, CMS169v5, CMS177v5. 
+				CMS128v5, CMS129v6, CMS132v5, CMS133v5, CMS134v5, CMS135v5, CMS142v5, CMS143v5, CMS145v5, CMS146v5, CMS153v5, CMS154v5, CMS155v5,
+				CMS157v5, CMS158v5, CMS160v5, CMS161v5, CMS164v5, CMS167v5, CMS169v5, CMS177v5.
 				No supplemental data elements and reporting stratification examples are provided to these eCQMs in this file.
+
+	11/9/2017:
+	Description: Added the ACI Attestation Statements Identifiers:ACI_INFBLO_1, ACI_ONCDIR_1, ACI_ONCACB_1
+
 -->
 <ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="urn:hl7-org:v3 ../CDA_Schema_Files/infrastructure/cda/CDA_SDTC.xsd"
 	xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc">
-<!-- 
+<!--
 ********************************************************
 CDA Header
 ********************************************************
@@ -67,15 +71,15 @@ CDA Header
 	<title>Eligible Clinicians (EC) Meaningful Use Group Sample QRDA-III (Informative)</title>
 	<!-- SHALL contain exactly one [1..1] effectiveTime (CONF:17237).  a. The content SHALL be a conformant US Realm Date and Time (DTM.US.FIELDED) (2.16.840.1.113883.10.20.22.5.4) (CONF:18189). -->
 	<effectiveTime value="20180111061231"/>
-	<!-- SHALL contain exactly one [1..1] confidentialityCode="N" Normal (CodeSystem: ConfidentialityCode 2.16.840.1.113883.5.25 STATIC) (CONF:711174). 
+	<!-- SHALL contain exactly one [1..1] confidentialityCode="N" Normal (CodeSystem: ConfidentialityCode 2.16.840.1.113883.5.25 STATIC) (CONF:711174).
 		a.	This confidentialityCode SHALL contain exactly one [1..1] @code="N" Normal (CodeSystem: ConfidentialityCode 2.16.840.1.113883.5.25 STATIC) (CONF:711246).-->
 	<confidentialityCode codeSystem="2.16.840.1.113883.5.25" code="N"/>
-	<!-- SHALL contain exactly one [1..1] languageCode="en" English (CodeSystem: Language 2.16.840.1.113883.6.121) (CONF:711173). 
+	<!-- SHALL contain exactly one [1..1] languageCode="en" English (CodeSystem: Language 2.16.840.1.113883.6.121) (CONF:711173).
 	     a.	This languageCode SHALL contain exactly one [1..1] @code="en" English (CodeSystem: Language 2.16.840.1.113883.6.121) (CONF:711247).-->
 	<languageCode code="en"/>
 	<setId root="356ee74e-52ee-49b2-b8bc-84092b5a54a0"/>
 	<versionNumber value="1"/>
-	<!-- ** 1.1.1	recordTarget ** 
+	<!-- ** 1.1.1	recordTarget **
 		QRDA III is an aggregate summary report. Therefore CDA's required recordTarget/id is nulled.  The recordTarget element is designed for single patient data and is required in all CDA documents
 		SHALL contain exactly one [1..1] recordTarget (CONF:17212).-->
 	<recordTarget>
@@ -109,7 +113,7 @@ CDA Header
 			</representedOrganization>
 		</assignedAuthor>
 	</author>
-	<!-- person author example - The document can be authored solely by a person or by a device, 
+	<!-- person author example - The document can be authored solely by a person or by a device,
 		or the document could be authored by a combination of one or more devices and/or one or more people.-->
 	<author>
 		<!-- SHALL contain exactly one [1..1] time (CONF:18158). -->
@@ -135,7 +139,7 @@ CDA Header
 		</assignedAuthor>
 	</author>
 	<!-- ** 1.1.3	custodian **
-			The custodian element represents the organization that is in charge of maintaining and is entrusted with the care of the document. 
+			The custodian element represents the organization that is in charge of maintaining and is entrusted with the care of the document.
             SHALL contain exactly one [1..1] custodian (CONF:17213).  -->
 	<custodian>
 		<!-- SHALL contain exactly one [1..1] assignedCustodian (CONF:17214) -->
@@ -156,7 +160,7 @@ CDA Header
 		<!-- This informationRecipient SHALL contain exactly one [1..1] intendedRecipient (CONF:711159). -->
 		<intendedRecipient>
 			<!-- i.	Such intendedRecipients SHALL contain exactly one [1..1] id (CONF:711160).
-					1.	This id SHALL contain exactly one [1..1] @root="2.16.840.1.113883.3.249.7" CMS Program (CONF:711161). 
+					1.	This id SHALL contain exactly one [1..1] @root="2.16.840.1.113883.3.249.7" CMS Program (CONF:711161).
 					2.	idsThis id SHALL contain exactly one [1..1] @extension, which SHALL be selected from ValueSet CMS Program Name 2.16.840.1.113883.3.249.14.101 (CONF:711162). -->
 			<id root="2.16.840.1.113883.3.249.7" extension="MIPS_GROUP"/>
 		</intendedRecipient>
@@ -213,22 +217,22 @@ CDA Header
 					<low value="20170101"/>
 					<high value="20171231"/>
 				</time>
-				<!-- Such performers SHALL contain exactly one [1..1] assignedEntity (CONF:18176). 
+				<!-- Such performers SHALL contain exactly one [1..1] assignedEntity (CONF:18176).
 					Note: For MIPS group reporting, must contain exactly one performer, which contains one TIN. No NPI is allowed. -->
 				<assignedEntity>
 					<!--a.	This assignedEntity SHALL contain exactly one [1..1] id (CONF:711167) such that it
 						i.	MAY contain zero or one [0..1] @nullFlavor="NA" (CONF:2233-711249).
                             Note: @nullFlavor is only present for MIPS group reporting.
 						ii. SHALL contain exactly one [1..1] @root="2.16.840.1.113883.4.6" National Provider ID (CONF:711169).
-						iii.SHOULD contain zero or one [0..1] @extension (CONF:711170).  
+						iii.SHOULD contain zero or one [0..1] @extension (CONF:711170).
 							Note: This is the provider's NPI. -->
 					<id root="2.16.840.1.113883.4.6" nullFlavor="NA"/>
 					<!-- b.	This assignedEntity MAY contain zero or more [0..*] telecom (CONF:18310). -->
 					<!-- c.  This assignedEntity SHALL contain exactly one [1..1] representedOrganization (CONF:18180). -->
 					<representedOrganization>
 						<!-- i.	This representedOrganization SHALL contain exactly one [1..1] id (CONF:711168) such that it
-								1.	SHALL contain exactly one [1..1] @root="2.16.840.1.113883.4.2" Tax ID Number (CONF:711171).  
-								Note: This value specifies that this id is the organization's Tax Identification Number (TIN). 
+								1.	SHALL contain exactly one [1..1] @root="2.16.840.1.113883.4.2" Tax ID Number (CONF:711171).
+								Note: This value specifies that this id is the organization's Tax Identification Number (TIN).
 								2.	SHALL contain exactly one [1..1] @extension (CONF:711172). Note: This is the organization's TIN. -->
 						<id root="2.16.840.1.113883.4.2" extension="123456789"/>
 						<!-- This representedOrganization SHOULD contain zero or more [0..*] name (CONF:19659).-->
@@ -239,7 +243,7 @@ CDA Header
 		</serviceEvent>
 	</documentationOf>
 	<!-- ** 1.1.9	authorization  ** -->
-	<!-- If the data is submitted through an intermediary such as a data submission vendor, this authorization represents that the eligible professional has given permission to release the report. 
+	<!-- If the data is submitted through an intermediary such as a data submission vendor, this authorization represents that the eligible professional has given permission to release the report.
 	     PQRS, MU and CPC all allow aggregation and submission by a DSV. If a DSV is used, then information about the DSV (e.g. TIN) is captured as the Legal Authenticator.-->
 	<!-- MAY contain zero or one [0..1] authorization (CONF:18344).-->
 	<authorization>
@@ -1329,7 +1333,7 @@ CDA Header
 										<content styleCode="Bold">Payer - Other</content>50</item>
 								</list>
 							</item>
-						</list>				
+						</list>
 						<!--NQF 0083/ CMS144v5 -->
 						<table border="1" width="100%">
 							<thead>
@@ -2315,7 +2319,7 @@ CDA Header
 							</item>
 						</list>
 					</text>
-					
+
 					<!-- Performanc Period -->
 					<entry typeCode="DRIV">
 						<act classCode="ACT" moodCode="EVN">
@@ -27742,7 +27746,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- supplemental data elements are not included in the sample eCQMs below -->
 					<!-- eCQM CMS177v5 -->
 					<entry>
@@ -27878,7 +27882,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- eCQM CMS169v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -28013,7 +28017,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- eCQM CMS167v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -28185,7 +28189,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS164v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -28357,7 +28361,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-	
+
 					<!-- CMS161v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -28492,7 +28496,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS160v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -28662,7 +28666,7 @@ CDA Header
 									</reference>
 								</observation>
 							</component>
-											
+
 							<!--IPOP 2 Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
@@ -28812,7 +28816,7 @@ CDA Header
 									</reference>
 								</observation>
 							</component>
-							
+
 							<!--IPOP 3 Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
@@ -28964,7 +28968,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS158v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -29136,7 +29140,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS157v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -29271,7 +29275,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS155v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -29442,7 +29446,7 @@ CDA Header
 									</reference>
 								</observation>
 							</component>
-											
+
 							<!--IPOP 2 Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
@@ -29592,7 +29596,7 @@ CDA Header
 									</reference>
 								</observation>
 							</component>
-							
+
 							<!--IPOP 3 Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
@@ -29744,7 +29748,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS154v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -29916,7 +29920,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS153v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -30088,7 +30092,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS146v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -30260,7 +30264,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS145v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -30581,7 +30585,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS143v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -30753,7 +30757,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS142v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -30925,7 +30929,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS135v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -31097,7 +31101,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS134v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -31232,7 +31236,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS133v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -31404,7 +31408,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS132v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -31576,7 +31580,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS129v6 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -31748,7 +31752,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS128v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -32069,7 +32073,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS123v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -32241,7 +32245,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS117v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -32376,7 +32380,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS90v6 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -32548,7 +32552,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS82v4 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -32683,7 +32687,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS74v6 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -32818,7 +32822,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS69v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -33027,7 +33031,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS66v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -33199,7 +33203,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					
+
 					<!-- CMS65v6 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -33371,7 +33375,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS56v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -33543,7 +33547,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS52v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -33861,7 +33865,7 @@ CDA Header
 										</externalObservation>
 									</reference>
 								</observation>
-							</component>						
+							</component>
 							<!--IPOP 3 Population-->
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
@@ -33976,7 +33980,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-				
+
 					<!-- CMS22v5 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -34187,7 +34191,7 @@ CDA Header
 					</entry>
 				</section>
 			</component>
-			<!-- 
+			<!--
 	         ********************************************************
 	         Advancing Care Information Section
 	         ********************************************************
@@ -34445,6 +34449,88 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
+					<!-- Attestation Statement Identifiers -->
+					<!-- ACI_INFBLO_1 -->
+					<entry>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.29"
+								extension="2016-09-01"/>
+							<id root="1ecdfdf7-e498-4fed-aa91-c0e53a4ae631"/>
+							<statusCode code="completed"/>
+							<reference typeCode="REFR">
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<id root="2.16.840.1.113883.3.7031" extension="ACI_INFBLO_1"/>
+									<text>Prevention of Information Blocking Attestation</text>
+								</externalDocument>
+							</reference>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.27"
+										extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="Y" codeSystem="2.16.840.1.113883.12.136"
+										codeSystemName="Yes/no indicator (HL7 Table 0136)" displayName="Yes"/>
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+					<!-- ACI_ONCDIR_1 -->
+					<entry>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.29"
+								extension="2016-09-01"/>
+							<id root="0043dded-3926-4b9a-add3-362607c42b60"/>
+							<statusCode code="completed"/>
+							<reference typeCode="REFR">
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<id root="2.16.840.1.113883.3.7031" extension="ACI_ONCDIR_1"/>
+									<text>ONC Direct Review Attestation</text>
+								</externalDocument>
+							</reference>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.27"
+										extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="Y" codeSystem="2.16.840.1.113883.12.136"
+										codeSystemName="Yes/no indicator (HL7 Table 0136)" displayName="Yes"/>
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+					<!-- ACI_ONCACB_1 -->
+					<entry>
+						<organizer classCode="CLUSTER" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+							<templateId root="2.16.840.1.113883.10.20.27.3.29"
+								extension="2016-09-01"/>
+							<id root="3676c603-fb87-4813-a2df-f098f2546d91"/>
+							<statusCode code="completed"/>
+							<reference typeCode="REFR">
+								<externalDocument classCode="DOC" moodCode="EVN">
+									<id root="2.16.840.1.113883.3.7031" extension="ACI_ONCACB_1"/>
+									<text>ONC-ACB Surveillance Attestation (Optional)</text>
+								</externalDocument>
+							</reference>
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.27.3.27"
+										extension="2016-09-01"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+										codeSystemName="ActCode" displayName="Assertion"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="Y" codeSystem="2.16.840.1.113883.12.136"
+										codeSystemName="Yes/no indicator (HL7 Table 0136)" displayName="Yes"/>
+								</observation>
+							</component>
+						</organizer>
+					</entry>
 					<!-- Performance Period -->
 					<entry typeCode="DRIV">
 						<act classCode="ACT" moodCode="EVN">
@@ -34461,7 +34547,7 @@ CDA Header
 					</entry>
 				</section>
 			</component>
-			<!-- 
+			<!--
 	         ********************************************************
 	         Improvement Activity Section
 	         ********************************************************
@@ -34494,7 +34580,7 @@ CDA Header
 									<td>Anticoagulant management improvements</td>
 									<td>IA_PM_2</td>
 									<td>Y</td>
-								</tr>								
+								</tr>
 							</tbody>
 						</table>
 					</text>
@@ -34532,7 +34618,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					<!-- improvement activity: IA_PM_2 -->					
+					<!-- improvement activity: IA_PM_2 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<!-- Implied template Measure Reference templateId -->
@@ -34565,7 +34651,7 @@ CDA Header
 								</observation>
 							</component>
 						</organizer>
-					</entry>					
+					</entry>
 					<!-- Performance period -->
 					<entry typeCode="DRIV">
 						<act classCode="ACT" moodCode="EVN">

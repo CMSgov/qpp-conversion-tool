@@ -64,7 +64,7 @@
    <!--Program for which data is being submitted-->
 	  <informationRecipient>
       <intendedRecipient>
-         <id root="2.16.840.1.113883.3.249.7" extension="CPCplus"/>
+         <id root="2.16.840.1.113883.3.249.7" extension="CPCPLUS"/>
       </intendedRecipient>
    </informationRecipient>
    <legalAuthenticator>
@@ -92,7 +92,7 @@
 	  <participant typeCode="LOC">
       <associatedEntity classCode="SDLOC">
          <id root="2.16.840.1.113883.3.249.5.1"
-            extension="TestApmEntityId"
+            extension="T2OR1234"
              assigningAuthorityName="CMS-CMMI"/>
          <code code="394730007"
                displayName="healthcare related organization"
@@ -11721,7 +11721,7 @@ QRDA Category III Measure Section (CMS EP)
                            <text>Initiation and Engagement of Alcohol and Other Drug Dependence Treatment</text>
                         </externalDocument>
                      </reference>
-                     <!--Performance Rate-->
+                     <!--Performance Rate <value> Deleted-->
                      <component>
                         <observation classCode="OBS" moodCode="EVN">
                            <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01"/>
@@ -11732,7 +11732,7 @@ QRDA Category III Measure Section (CMS EP)
                                  codeSystemName="LOINC"
                                  displayName="Performance Rate"/>
                            <statusCode code="completed"/>
-                           <value xsi:type="REAL" value=".888889"/>
+                          
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
                                  <id root="0BBF8596-4CFE-47F4-A0D7-9BEAB94BA4CD"/>
