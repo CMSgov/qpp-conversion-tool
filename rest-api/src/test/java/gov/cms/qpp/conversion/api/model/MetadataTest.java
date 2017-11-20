@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.api.model;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
@@ -13,10 +13,10 @@ import java.util.function.Consumer;
 
 import static junit.framework.TestCase.fail;
 
-public class MetadataTest {
+class MetadataTest {
 
 	@Test
-	public void equalsContract() {
+	void equalsContract() {
 		EqualsVerifier.forClass(Metadata.class)
 				.usingGetClass()
 				.suppress(Warning.NONFINAL_FIELDS)
@@ -24,7 +24,7 @@ public class MetadataTest {
 	}
 
 	@Test
-	public void plumbing() {
+	void plumbing() {
 		Consumer<Method> consumer = harness(new Metadata());
 
 		Arrays.stream(Metadata.class.getDeclaredMethods())
