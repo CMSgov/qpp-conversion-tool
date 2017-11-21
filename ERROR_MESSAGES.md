@@ -8,7 +8,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 3 : Unexpected exception occurred during conversion
 * 4 : Unexpected exception occured during encoding
 * 5 : The file is not a QRDA-III XML document
-* 6 : The measure reference results must have a measure GUID
+* 6 : The measure reference results must have a recognized measure GUID
 * 7 : The measure reference results must have at least one measure
 * 8 : A single aggregate count value is required
 * 9 : Aggregate count value must be an integer
