@@ -60,21 +60,15 @@ public class CpcRaceGenerator {
 			SAXBuilder saxBuilder = new SAXBuilder();
 			InputStream inputStream = Files.newInputStream(path);
 			Document document = saxBuilder.build(inputStream);
-
 			Element rootElement = document.getDocument().getRootElement();
-
 			rootElement.detach();
-
 			Namespace rootNamespace = rootElement.getNamespace();
-			Element initialComponent = rootElement.getChild("component", rootNamespace);
-			Element structuredBody = initialComponent.getChild("structuredBody", rootNamespace);
-			Element	innerComponent = structuredBody.getChild("component", rootNamespace);
-
-			Element measureSection = innerComponent.getChild("section", rootNamespace);
-
+			Element measureSection =
+					rootElement.getChild("component", rootNamespace)
+							.getChild("structuredBody", rootNamespace)
+							.getChild("component", rootNamespace);
 			List<Element> measureEntries = measureSection.getChildren("entry", rootNamespace);
 			Element performancePeriod = measureEntries.remove(0);
-
 			int index;
 			for (index = 0; index < measureEntries.size(); index++) {
 				Element measureEntry = measureEntries.get(index);
