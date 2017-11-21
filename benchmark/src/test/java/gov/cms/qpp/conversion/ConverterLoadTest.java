@@ -26,7 +26,7 @@ import java.util.Map;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class ConverterLoadTest extends LoadTestSuite {
+class ConverterLoadTest extends LoadTestSuite {
 
 	private static StandardJMeterEngine jmeter;
 

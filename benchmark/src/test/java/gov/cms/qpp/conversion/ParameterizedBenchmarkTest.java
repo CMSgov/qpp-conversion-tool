@@ -25,7 +25,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import gov.cms.qpp.test.FileTestHelper;
 import gov.cms.qpp.test.LoadTestSuite;
 
-public class ParameterizedBenchmarkTest extends LoadTestSuite {
+class ParameterizedBenchmarkTest extends LoadTestSuite {
 
 	private static Field fileSystemField;
 	private static FileSystem defaultFileSystem;
