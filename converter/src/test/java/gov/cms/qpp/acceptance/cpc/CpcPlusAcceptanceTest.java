@@ -27,7 +27,6 @@ import java.util.stream.Stream;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-
 class CpcPlusAcceptanceTest {
 
 	private static final Path BASE = Paths.get("src/test/resources/cpc_plus/");

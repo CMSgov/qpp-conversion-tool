@@ -4,9 +4,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Set;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -14,13 +12,10 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
-public class AciNumeratorDenominatorValidatorTest {
-
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+class AciNumeratorDenominatorValidatorTest {
 
 	@Test
-	public void testMeasurePresent() {
+	void testMeasurePresent() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -52,7 +47,7 @@ public class AciNumeratorDenominatorValidatorTest {
 	}
 
 	@Test
-	public void testNumerateDenominatorMissingMeasureId() {
+	void testNumerateDenominatorMissingMeasureId() {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
@@ -74,7 +69,7 @@ public class AciNumeratorDenominatorValidatorTest {
 	}
 
 	@Test
-	public void testMeasureNodeInvalidParent() {
+	void testMeasureNodeInvalidParent() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -102,7 +97,7 @@ public class AciNumeratorDenominatorValidatorTest {
 	}
 
 	@Test
-	public void testNoChildNodes() {
+	void testNoChildNodes() {
 
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
@@ -121,7 +116,7 @@ public class AciNumeratorDenominatorValidatorTest {
 	}
 
 	@Test
-	public void testNoNumerator() {
+	void testNoNumerator() {
 
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
@@ -146,7 +141,7 @@ public class AciNumeratorDenominatorValidatorTest {
 	}
 
 	@Test
-	public void testNoDenominator() {
+	void testNoDenominator() {
 
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
@@ -171,7 +166,7 @@ public class AciNumeratorDenominatorValidatorTest {
 	}
 
 	@Test
-	public void testTooManyNumerators() {
+	void testTooManyNumerators() {
 
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
@@ -198,7 +193,7 @@ public class AciNumeratorDenominatorValidatorTest {
 	}
 
 	@Test
-	public void testTooManyDenominators() {
+	void testTooManyDenominators() {
 
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");

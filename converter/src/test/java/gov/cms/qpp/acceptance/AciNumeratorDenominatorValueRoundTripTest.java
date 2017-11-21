@@ -9,18 +9,18 @@ import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AciNumeratorDenominatorValueRoundTripTest {
+class AciNumeratorDenominatorValueRoundTripTest {
 
 	// we currently have a root placeholder node, so the numerator/denominator
 	// is indented an extra level
 
 	@Test
-	public void decodeAggregateCountAsNode() throws Exception {
+	void decodeAggregateCountAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString("<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
 				"    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>",
