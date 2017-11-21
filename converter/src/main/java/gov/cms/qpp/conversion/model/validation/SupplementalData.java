@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.model.validation;
 import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
