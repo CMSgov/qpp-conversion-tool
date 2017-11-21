@@ -4,13 +4,13 @@
     "license": "MIT",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve",
+        "start": "ng serve --serve-path=/developers/conversion-tool-sandbox",
         "build": "ng build",
         "test": "ng test",
         "test:ci": "ng test --single-run=true --watch=false --progress=false --code-coverage --log-level=debug",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "e2e:ci": "ng e2e --watch=false --progress=false"
+        "e2e:ci": "ng e2e --watch=false --progress=false --base-href=/developers/conversion-tool-sandbox/"
     },
     "private": true,
     "dependencies": {
@@ -30,10 +30,10 @@
         "zone.js": "0.8.12"
     },
     "devDependencies": {
-        "@angular/cli": "1.0.0",
+        "@angular/cli": "1.5.3",
         "@angular/compiler-cli": "^4.0.0",
         "@types/jasmine": "2.5.38",
-        "@types/node": "~6.0.60",
+        "@types/node": "^6.0.92",
         "@types/xml2js": "0.0.33",
         "codelyzer": "~2.0.0",
         "jasmine-core": "~2.5.2",
@@ -48,6 +48,6 @@
         "ts-node": "~2.0.0",
         "tslint": "~4.5.0",
         "typescript": "~2.2.0",
-        "uswds": "^1.2.1"
+        "uswds": "^1.4.3"
     }
 }
