@@ -102,9 +102,9 @@ public enum SupplementalData {
 	 * @return {@link Set} of SupplementalData
 	 */
 	public static Set<SupplementalData> getSupplementalDataSetByType(String type) {
-		return EnumSet.copyOf(Arrays.stream(SupplementalData.values())
+		return Arrays.stream(SupplementalData.values())
 				.filter(s -> type.equalsIgnoreCase(s.getType()))
-				.collect(Collectors.toSet()));
+				.collect(Collectors.toSet());
 	}
 
 	/**

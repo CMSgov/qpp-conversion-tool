@@ -59,7 +59,8 @@ public class CpcMeasureDataValidator extends NodeValidator {
 															 String supplementalDataType) {
 		Set<Node> supplementalDataNodes =
 				node.getChildNodes(currSupplementalDataTemplateId).collect(Collectors.toSet());
-		Set<SupplementalData> codes = SupplementalData.getSupplementalDataSetByType(supplementalDataType);
+		EnumSet<SupplementalData> codes = EnumSet.copyOf(
+				 SupplementalData.getSupplementalDataSetByType(supplementalDataType));
 
 		for (SupplementalData supplementalData : codes) {
 			Node validatedSupplementalNode = filterCorrectNode(
