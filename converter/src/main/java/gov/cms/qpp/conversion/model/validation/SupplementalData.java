@@ -1,13 +1,9 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import com.google.common.collect.ImmutableMap;
-import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.EnumSet;
 import java.util.stream.Collectors;
 
 /**
@@ -98,23 +94,23 @@ public enum SupplementalData {
 	}
 
 	/**
-	 * Retrieves a {@link Set} which contains the SupplementalData values of a specific type
+	 * Retrieves an {@link EnumSet} which contains the SupplementalData values of a specific type
 	 *
 	 * @param type Supplemental Type to filter by
-	 * @return {@link Set} of SupplementalData
+	 * @return {@link EnumSet} of SupplementalData
 	 */
-	public static Set<SupplementalData> getSupplementalDataSetByType(String type) {
-		return Arrays.stream(SupplementalData.values())
+	public static EnumSet<SupplementalData> getSupplementalDataSetByType(String type) {
+		return EnumSet.copyOf(Arrays.stream(SupplementalData.values())
 				.filter(s -> type.equalsIgnoreCase(s.getType()))
-				.collect(Collectors.toSet());
+				.collect(Collectors.toSet()));
 	}
 
 	/**
-	 * Retrives the static {@link Map} of SupplementalTypes to {@link TemplateId}
+	 * Retrives the static {@link EnumMap} of SupplementalTypes to {@link TemplateId}
 	 *
 	 * @return static supplemental type map
 	 */
-	public static Map<SupplementalType, TemplateId> getSupplementalTypeMapToTemplateId(){
+	public static EnumMap<SupplementalType, TemplateId> getSupplementalTypeMapToTemplateId(){
 		return SUPPLEMENTAL_TYPES.clone();
 	}
 }

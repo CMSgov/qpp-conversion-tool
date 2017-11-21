@@ -12,6 +12,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
 import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -58,7 +59,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 															 String supplementalDataType) {
 		Set<Node> supplementalDataNodes =
 				node.getChildNodes(currSupplementalDataTemplateId).collect(Collectors.toSet());
-		Set<SupplementalData> codes = SupplementalData.getSupplementalDataSetByType(supplementalDataType);
+		EnumSet<SupplementalData> codes = SupplementalData.getSupplementalDataSetByType(supplementalDataType);
 
 		for (SupplementalData supplementalData : codes) {
 			Node validatedSupplementalNode = filterCorrectNode(
