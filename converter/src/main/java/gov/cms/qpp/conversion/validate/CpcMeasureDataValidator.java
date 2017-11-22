@@ -40,7 +40,8 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * @param node current measure data node
 	 */
 	private void validateSupplementalDataByType(Node node) {
-		Map<SupplementalType, TemplateId> nodeTypeToTemplateIdMap = SupplementalData.getSupplementalTypeMapToTemplateId();
+		Map<SupplementalType, TemplateId> nodeTypeToTemplateIdMap =
+				SupplementalData.getSupplementalTypeMapToTemplateId();
 		for (Map.Entry<SupplementalType, TemplateId> entry: nodeTypeToTemplateIdMap.entrySet()) {
 			validateAllSupplementalNodesOfSpecifiedType(
 					node, entry.getValue(), entry.getKey().toString());
@@ -54,9 +55,8 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * @param currSupplementalDataTemplateId Template Id of the nodes to be validated
 	 * @param supplementalDataType current data type to be validated
 	 */
-	private void validateAllSupplementalNodesOfSpecifiedType(Node node,
-															 TemplateId currSupplementalDataTemplateId,
-															 String supplementalDataType) {
+	private void validateAllSupplementalNodesOfSpecifiedType(
+			Node node, TemplateId currSupplementalDataTemplateId, String supplementalDataType) {
 		Set<Node> supplementalDataNodes =
 				node.getChildNodes(currSupplementalDataTemplateId).collect(Collectors.toSet());
 		EnumSet<SupplementalData> codes = EnumSet.copyOf(
@@ -81,9 +81,8 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * @param supplementalData Current Supplemental Data to validate against
 	 * @return
 	 */
-	private Node filterCorrectNode(String supplementalDataType,
-								   Set<Node> supplementalDataNodes,
-								   SupplementalData supplementalData) {
+	private Node filterCorrectNode(
+			String supplementalDataType, Set<Node> supplementalDataNodes, SupplementalData supplementalData) {
 		return supplementalDataNodes.stream()
 				.filter(filterDataBySupplementalCode(supplementalDataType, supplementalData.getCode()))
 				.findFirst()
@@ -126,8 +125,8 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * @param supplementalDataType type of supplemental nodes
 	 * @param supplementalDataNodes supplemental nodes to be validated
 	 */
-	private void validateSupplementalDataNodeCounts(Node node,
-													String supplementalDataType, Set<Node> supplementalDataNodes) {
+	private void validateSupplementalDataNodeCounts(
+			Node node, String supplementalDataType, Set<Node> supplementalDataNodes) {
 		supplementalDataNodes.forEach(thisNode -> {
 			LocalizedError error = makeIncorrectCountSizeLocalizedError(node, supplementalDataType, thisNode);
 			check(thisNode).childMinimum(error, 1, TemplateId.ACI_AGGREGATE_COUNT)
