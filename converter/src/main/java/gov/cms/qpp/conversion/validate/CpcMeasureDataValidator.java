@@ -111,10 +111,12 @@ public class CpcMeasureDataValidator extends NodeValidator {
 		MeasureConfig config =
 				MeasureConfigs.getConfigurationMap()
 						.get(node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
-		LocalizedError error =
-				ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(supplementalData.getCode(),
-						config.getElectronicMeasureId(), node.getValue(MeasureDataDecoder.MEASURE_TYPE));
-		addValidationError(Detail.forErrorAndNode(error, node));
+		if (config != null) {
+			LocalizedError error =
+					ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(supplementalData.getCode(),
+							config.getElectronicMeasureId(), node.getValue(MeasureDataDecoder.MEASURE_TYPE));
+			addValidationError(Detail.forErrorAndNode(error, node));
+		}
 	}
 
 	/**
@@ -144,6 +146,11 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	private LocalizedError makeIncorrectCountSizeLocalizedError(Node node, String supplementalDataType, Node thisNode) {
 		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(
 				node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
+		if (config == null) {
+			return ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
+					thisNode.getValue(supplementalDataType), node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+					"Unknown Measure ID");
+		}
 
 		return ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
 				thisNode.getValue(supplementalDataType), node.getValue(MeasureDataDecoder.MEASURE_TYPE),
