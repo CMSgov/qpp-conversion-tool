@@ -105,7 +105,8 @@ public enum ErrorCode implements LocalizedError {
 	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66,
 			"Missing the Supplemental Code %s for eCQM measure %s's Sub-population %s", true),
 	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67,
-			"Must have one count for Supplemental Data %s on Sub-population %s for eCQM measure %s", true);
+			"Must have one count for Supplemental Data %s on Sub-population %s for eCQM measure %s", true),
+	CPC_PLUS_SUBMISSION_ENDED(68, "CPC+ Submission is after the end date %s.", true);
 
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())

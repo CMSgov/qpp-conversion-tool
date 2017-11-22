@@ -76,3 +76,4 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 65 : CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.
 * 66 : Missing the Supplemental Code `(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`
 * 67 : Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`
+* 68 : CPC+ Submission is after the end date `(Submission end date)`
