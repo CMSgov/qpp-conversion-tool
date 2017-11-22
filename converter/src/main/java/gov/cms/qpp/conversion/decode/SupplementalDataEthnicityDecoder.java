@@ -14,6 +14,7 @@ import org.jdom2.Element;
 public class SupplementalDataEthnicityDecoder extends QppXmlDecoder {
 
 	public static final String SUPPLEMENTAL_DATA_CODE = "code";
+	public static final String SUPPLEMENTAL_DATA_KEY = "supplementalData";
 
 	public SupplementalDataEthnicityDecoder(Context context) {
 		super(context);

@@ -5,7 +5,6 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
-import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
@@ -16,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_KEY;
 
 public class SupplementalDataRaceDecoderTest {
 
@@ -38,42 +38,42 @@ public class SupplementalDataRaceDecoderTest {
 	@Test
 	void testDecodeRaceAlaskanNativeAmericanIndianSuccess() {
 		supplementalDataNode = getNodeByIndex(3);
-		assertThat(supplementalDataNode.getValue(SupplementalType.RACE.toString()))
+		assertThat(supplementalDataNode.getValue(SUPPLEMENTAL_DATA_KEY))
 				.isEqualTo(SupplementalData.ALASKAN_NATIVE_AMERICAN_INDIAN.getCode());
 	}
 
 	@Test
 	void testDecodeRaceAsianSuccess() {
 		supplementalDataNode = getNodeByIndex(2);
-		assertThat(supplementalDataNode.getValue(SupplementalType.RACE.toString()))
+		assertThat(supplementalDataNode.getValue(SUPPLEMENTAL_DATA_KEY))
 				.isEqualTo(SupplementalData.ASIAN.getCode());
 	}
 
 	@Test
 	void testDecodeRaceAfricanAmericanSuccess() {
 		supplementalDataNode = getNodeByIndex(0);
-		assertThat(supplementalDataNode.getValue(SupplementalType.RACE.toString()))
+		assertThat(supplementalDataNode.getValue(SUPPLEMENTAL_DATA_KEY))
 				.isEqualTo(SupplementalData.AFRICAN_AMERICAN.getCode());
 	}
 
 	@Test
 	void testDecodeRaceHawaiianPacificIslanderSuccess() {
 		supplementalDataNode = getNodeByIndex(4);
-		assertThat(supplementalDataNode.getValue(SupplementalType.RACE.toString()))
+		assertThat(supplementalDataNode.getValue(SUPPLEMENTAL_DATA_KEY))
 				.isEqualTo(SupplementalData.HAWAIIAN_PACIFIC_ISLANDER.getCode());
 	}
 
 	@Test
 	void testDecodeRaceWhiteSuccess() {
 		supplementalDataNode = getNodeByIndex(1);
-		assertThat(supplementalDataNode.getValue(SupplementalType.RACE.toString()))
+		assertThat(supplementalDataNode.getValue(SUPPLEMENTAL_DATA_KEY))
 				.isEqualTo(SupplementalData.WHITE.getCode());
 	}
 
 	@Test
 	void testDecodeRaceOtherSuccess() {
 		supplementalDataNode = getNodeByIndex(5);
-		assertThat(supplementalDataNode.getValue(SupplementalType.RACE.toString()))
+		assertThat(supplementalDataNode.getValue(SUPPLEMENTAL_DATA_KEY))
 				.isEqualTo(SupplementalData.OTHER_RACE.getCode());
 	}
 

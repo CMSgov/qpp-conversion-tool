@@ -48,21 +48,10 @@ public enum SupplementalData {
 	 * Defined Supplemental Data Types
 	 */
 	public enum SupplementalType {
-		RACE("R"),
-		SEX("S"),
-		ETHNICITY("E"),
-		PAYER("P");
-
-		private final String type;
-
-		SupplementalType(String type) {
-			this.type = type;
-		}
-		@Override
-		public String toString() {
-			return this.type;
-		}
-
+		RACE,
+		SEX,
+		ETHNICITY,
+		PAYER
 	}
 
 	/**
@@ -90,8 +79,8 @@ public enum SupplementalData {
 	 *
 	 * @return SuplementalType value
 	 */
-	public String getType() {
-		return type.toString();
+	public SupplementalType getType() {
+		return type;
 	}
 
 	/**
@@ -100,9 +89,9 @@ public enum SupplementalData {
 	 * @param type Supplemental Type to filter by
 	 * @return {@link Set} of SupplementalData
 	 */
-	public static Set<SupplementalData> getSupplementalDataSetByType(String type) {
+	public static Set<SupplementalData> getSupplementalDataSetByType(SupplementalType type) {
 		return Arrays.stream(SupplementalData.values())
-				.filter(s -> type.equalsIgnoreCase(s.getType()))
+				.filter(s -> type.equals(s.getType()))
 				.collect(Collectors.toSet());
 	}
 
