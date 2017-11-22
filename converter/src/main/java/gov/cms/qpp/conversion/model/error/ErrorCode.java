@@ -101,7 +101,8 @@ public enum ErrorCode implements LocalizedError {
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64,
 			"CPC+ Submissions must have at least %d of the following %s measures: %s.", true),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65,
-			"CPC+ Submissions must have at least %d of the following measures: %s.", true);
+			"CPC+ Submissions must have at least %d of the following measures: %s.", true),
+	CPC_PLUS_SUBMISSION_ENDED(66, "CPC+ Submission is after the end date %s.", true);
 
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())

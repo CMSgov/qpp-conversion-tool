@@ -1,5 +1,16 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
+
+import java.time.LocalDate;
+import java.util.Set;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -7,14 +18,6 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.Set;
-
-import static com.google.common.truth.Truth.assertWithMessage;
 
 class CpcClinicalDocumentValidatorTest {
 
@@ -124,6 +127,30 @@ class CpcClinicalDocumentValidatorTest {
 		assertWithMessage("Must validate with the correct error")
 				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED);
+	}
+
+	@Test
+	void testCpcPlusSubmissionBeforeEndDate() {
+		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE, LocalDate.now().plusYears(3).toString());
+		Node clinicalDocument = createValidCpcPlusClinicalDocument();
+		cpcValidator.internalValidateSingleNode(clinicalDocument);
+
+		assertThat(cpcValidator.getDetails())
+			.isEmpty();
+		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
+	}
+
+	@Test
+	void testCpcPlusSubmissionAfterEndDate() {
+		LocalDate endDate = LocalDate.now().minusYears(3);
+		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE, endDate.toString());
+		Node clinicalDocument = createValidCpcPlusClinicalDocument();
+		cpcValidator.internalValidateSingleNode(clinicalDocument);
+
+		assertThat(cpcValidator.getDetails())
+			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(endDate));
+		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
 	}
 
 	private Node createValidCpcPlusClinicalDocument() {
