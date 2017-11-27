@@ -4,8 +4,11 @@ import org.springframework.stereotype.Service;
 
 import com.jcabi.manifests.Manifests;
 
+/**
+ * Implementation of VersionService using META-INF/MANIFEST.mf
+ */
 @Service
-public class VersionServiceImpl implements VersionService {
+public class ManifestVersionService implements VersionService {
 
 	@Override
 	public String getImplementationVersion() {
