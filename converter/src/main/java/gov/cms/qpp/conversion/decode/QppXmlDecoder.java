@@ -59,15 +59,13 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 */
 	@Override
 	public DecodeResult decode(Element element, Node parentNode) {
-		if (null == element) {
+		if (element == null) {
 			return DecodeResult.ERROR;
 		}
 
 		setNamespace(element, this);
 
-		DecodeResult decodeResult = decodeChildren(element, parentNode);
-
-		return (decodeResult != null) ? decodeResult : DecodeResult.TREE_CONTINUE;
+		return decodeChildren(element, parentNode);
 	}
 
 	/**
@@ -82,11 +80,11 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 		List<Element> childElements = element.getChildren();
 
-		for (Element childEl : childElements) {
+		for (Element childElement : childElements) {
 
-			if (TEMPLATE_ID.equals(childEl.getName())) {
-				String root = childEl.getAttributeValue(ROOT_STRING);
-				String extension = childEl.getAttributeValue(EXTENSION_STRING);
+			if (TEMPLATE_ID.equals(childElement.getName())) {
+				String root = childElement.getAttributeValue(ROOT_STRING);
+				String extension = childElement.getAttributeValue(EXTENSION_STRING);
 				TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
 				DEV_LOG.debug("templateIdFound:{}", templateId);
 
@@ -101,7 +99,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				childNode.setDefaultNsUri(defaultNs.getURI());
 				childNode.setPath(XPathHelper.getAbsolutePath(element));
 				
-				setNamespace(childEl, childDecoder);
+				setNamespace(childElement, childDecoder);
 				
 				// the child decoder might require the entire its siblings
 				DecodeResult result = childDecoder.internalDecode(element, childNode);
@@ -112,12 +110,12 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				parentNode.addChildNode(childNode);
 				currentNode = childNode;
 
-				DecodeResult placeholderNode = testChildDecodeResult(result, childEl, childNode);
+				DecodeResult placeholderNode = testChildDecodeResult(result, childElement, childNode);
 				if (placeholderNode != null) {
 					return placeholderNode;
 				}
 			} else {
-				decode(childEl, currentNode);
+				decode(childElement, currentNode);
 			}
 		}
 
@@ -133,9 +131,13 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	private QppXmlDecoder getDecoder(TemplateId templateId) {
 		QppXmlDecoder qppDecoder = decoders.get(templateId);
 		if (qppDecoder != null) {
+			if (scope == null) {
+				return qppDecoder;
+			}
+
 			Decoder decoder = qppDecoder.getClass().getAnnotation(Decoder.class);
 			TemplateId template = decoder == null ? TemplateId.DEFAULT : decoder.value();
-			return scope != null && !scope.contains(template) ? null : qppDecoder;
+			return !scope.contains(template) ? null : qppDecoder;
 		}
 
 		return null;
@@ -156,14 +158,20 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			return decode(childElement, placeholderNode);
 		}
 
-		if (result == DecodeResult.TREE_FINISHED) {
-			return DecodeResult.TREE_FINISHED;
-		} else if (result == DecodeResult.TREE_CONTINUE) {
-			decode(childElement, childNode);
-		} else if (result == DecodeResult.ERROR) {
-			DEV_LOG.error("Failed to decode templateId {} ", childNode.getType());
-		} else {
-			DEV_LOG.error("We need to define a default case. Could be TreeContinue?");
+		switch (result) {
+			case TREE_FINISHED:
+				return DecodeResult.TREE_FINISHED;
+
+			case TREE_CONTINUE:
+				decode(childElement, childNode);
+				break;
+
+			case ERROR:
+				DEV_LOG.error("Failed to decode templateId {} ", childNode.getType());
+				break;
+
+			default:
+				DEV_LOG.error("We need to define a default case. Could be TreeContinue?");
 		}
 
 		return null;
