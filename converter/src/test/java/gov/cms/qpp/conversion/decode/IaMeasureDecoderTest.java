@@ -11,9 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-/**
- * Test class for the IaMeasureDecoder
- */
 class IaMeasureDecoderTest {
 	String xmlFragment;
 
@@ -23,60 +20,61 @@ class IaMeasureDecoderTest {
 	}
 
 	@Test
-	void internalDecode() throws Exception {
-		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
-		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
-
-		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
-		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED);
-		String value = measurePerformed.getValue("measurePerformed");
+	void testDecodeReturnsMeasureId() throws Exception {
+		Node iaMeasure = internalDecodeIaMeasure();
 
 		assertWithMessage("Should contain the correct value")
 				.that(iaMeasure.getValue("measureId"))
 				.isEqualTo("IA_EPA_1");
-		assertWithMessage("Should contain the correct template id")
-				.that(measurePerformed.getType())
-				.isEquivalentAccordingToCompareTo(TemplateId.MEASURE_PERFORMED);
-		assertWithMessage("The ACI_MEASURE_PERFORMED value should be \"Y\"")
-				.that(value)
-				.isEqualTo("Y");
 	}
 
 	@Test
-	void missingChildTest() throws Exception {
+	void testDecodeIaMeasureNodeContainsCorrectChild() throws Exception {
+		Node iaMeasure = internalDecodeIaMeasure();
+		Node measurePerformed = iaMeasure.findFirstNode(TemplateId.MEASURE_PERFORMED);
+
+		assertWithMessage("Should contain the correct child node")
+				.that(measurePerformed.getType())
+				.isEquivalentAccordingToCompareTo(TemplateId.MEASURE_PERFORMED);
+	}
+
+	@Test
+	void testMissingMeasurePerformedFromIaMeasureSuccess() throws Exception {
 		xmlFragment = removeChildFragment(xmlFragment);
-		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
+		Node iaMeasure = internalDecodeIaMeasure();
 
-		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
-		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
-
-		assertWithMessage("IAMeasure node should be IA_MEASURE ")
-				.that(iaMeasure.getType())
-				.isEquivalentAccordingToCompareTo(TemplateId.IA_MEASURE);
 		assertWithMessage("There should not be any child node")
 				.that(iaMeasure.getChildNodes())
 				.hasSize(0);
 	}
 
 	@Test
-	void internalDecodeWithExtraXmlPasses() throws Exception {
-		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
+	void testDecodeWithExtraXmlReturnsCorrectMeasureId() throws Exception {
 		xmlFragment = addExtraXml(xmlFragment);
-		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
-
-		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
-		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED);
-		String value = measurePerformed.getValue("measurePerformed");
+		Node iaMeasure = internalDecodeIaMeasure();
 
 		assertWithMessage("Should contain the correct value")
 				.that(iaMeasure.getValue("measureId"))
 				.isEqualTo("IA_EPA_1");
+	}
+
+	@Test
+	void testDecodeWithExtraXmlReturnsCorrectChildNode() throws Exception {
+		xmlFragment = addExtraXml(xmlFragment);
+		Node iaMeasure = internalDecodeIaMeasure();
+		Node measurePerformed = iaMeasure.findFirstNode(TemplateId.MEASURE_PERFORMED);
+
 		assertWithMessage("Should contain the correct template id")
 				.that(measurePerformed.getType())
 				.isEquivalentAccordingToCompareTo(TemplateId.MEASURE_PERFORMED);
-		assertWithMessage("The MEASURE_PERFORMED value should be \"Y\"")
-				.that(value)
-				.isEqualTo("Y");
+	}
+
+	private Node internalDecodeIaMeasure() throws Exception {
+		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
+		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
+		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
+
+		return iaMeasure;
 	}
 
 	private String addExtraXml(String source) {
