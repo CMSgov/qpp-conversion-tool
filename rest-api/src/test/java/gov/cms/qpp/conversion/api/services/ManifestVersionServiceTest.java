@@ -1,17 +1,10 @@
 package gov.cms.qpp.conversion.api.services;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
-
 import org.junit.jupiter.api.Test;
 
 import com.google.common.truth.Truth;
 
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.Metadata;
-
-class VersionServiceImplTest {
+class ManifestVersionServiceTest {
 
 	@Test
 	void testReadsVersionFromManifest() {
