@@ -90,7 +90,7 @@ class CpcPlusAcceptanceTest {
 	@MethodSource("failureData")
 	void testCpcPlusFileFailures(Path entry) throws IOException {
 		String fileName = entry.getFileName().toString();
-		assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues.containsKey(fileName)).isTrue();
+		assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues).containsKey(fileName);
 
 		Converter converter = new Converter(new PathQrdaSource(entry));
 
