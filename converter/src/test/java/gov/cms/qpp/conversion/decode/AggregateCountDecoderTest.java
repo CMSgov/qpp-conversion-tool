@@ -44,7 +44,9 @@ class AggregateCountDecoderTest {
             + "</component>"
             + "</entry>";
 
-    private static final String ANOTHER_XML_FRAGMENT = "<observation classCode=\"OBS\" moodCode=\"EVN\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
+    private static final String XML_FRAGMENT_WITH_GARBAGE =
+            "<observation classCode=\"OBS\" moodCode=\"EVN\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+            + " xmlns=\"urn:hl7-org:v3\">\n"
             + " Some extraneous text \n" // extraneous text element
             + "    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
             + "    <templateId root=\"R2.D2\"/>\n" // Funky templateId
@@ -76,17 +78,17 @@ class AggregateCountDecoderTest {
 
     @Test
     void testAggregateCountDecoderWithGarbageXmlDecodesValidValue() throws Exception {
-        Node root = decodeAggregateCountFromXml(ANOTHER_XML_FRAGMENT);
+        Node root = decodeAggregateCountFromXml(XML_FRAGMENT_WITH_GARBAGE);
         assertThat(root.getValue("aggregateCount")).isEqualTo("400");
     }
 
     @Test
     void testAggregateCountDecoderWithGarbageXmlDecodesValidType() throws Exception {
-        Node root = decodeAggregateCountFromXml(ANOTHER_XML_FRAGMENT);
+        Node root = decodeAggregateCountFromXml(XML_FRAGMENT_WITH_GARBAGE);
         assertThat(root.getType()).isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
     }
 
-    private Node decodeAggregateCountFromXml(String xmlFragment) throws XmlException {
+    Node decodeAggregateCountFromXml(String xmlFragment) throws XmlException {
         Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
         return root;
     }
