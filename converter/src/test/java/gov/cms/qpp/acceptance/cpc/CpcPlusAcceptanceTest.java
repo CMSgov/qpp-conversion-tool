@@ -9,9 +9,11 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -47,45 +49,55 @@ class CpcPlusAcceptanceTest {
 	static void resetApmIds() {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
-	
-	@Test
-	void testCpcPlusFileSuccesses() throws IOException {
-		Map<Path, AllErrors> errors = new HashMap<>();
-		getXml(SUCCESS)
-			.forEach(entry -> {
-				Converter converter = new Converter(new PathQrdaSource(entry));
 
-				try {
-					converter.transform();
-				} catch (TransformException failure) {
-					errors.put(entry, failure.getDetails());
-				}
-			});
-
-		assertThat(errors).isEmpty();
+	static Stream<Path> successData() {
+		return getXml(SUCCESS);
 	}
 
-	@Test
-	void testCpcPlusFileFailures() throws IOException {
-		List<Path> successesThatShouldBeErrors = getXml(FAILURE)
-			.filter(entry -> {
-				String fileName = entry.getFileName().toString();
-				assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues.containsKey(fileName)).isTrue();
+	static Stream<Path> failureData() {
+		return getXml(FAILURE);
+	}
 
-				Converter converter = new Converter(new PathQrdaSource(entry));
+	static Stream<Path> getXml(Path directory) {
+		try {
+			return Files.list(directory).filter(CpcPlusAcceptanceTest::isXml);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
 
-				try {
-					converter.transform();
-					return true;
-				} catch (TransformException expected) {
-					//runnning conversions on individual files
-					List<Detail> details = expected.getDetails().getErrors().get(0).getDetails();
-					verifyOutcome(fileName, details);
-					return false;
-				}
-			}).collect(Collectors.toList());
+	static boolean isXml(Path path) {
+		return path.toString().endsWith(".xml");
+	}
 
-		assertThat(successesThatShouldBeErrors).isEmpty();
+	@ParameterizedTest
+	@MethodSource("successData")
+	void testCpcPlusFileSuccesses(Path entry) throws IOException {
+		AllErrors errors = null;
+
+		Converter converter = new Converter(new PathQrdaSource(entry));
+
+		try {
+			converter.transform();
+		} catch (TransformException failure) {
+			errors = failure.getDetails();
+		}
+
+		assertThat(errors).isNull();
+	}
+
+	@ParameterizedTest
+	@MethodSource("failureData")
+	void testCpcPlusFileFailures(Path entry) throws IOException {
+		String fileName = entry.getFileName().toString();
+		assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues).containsKey(fileName);
+
+		Converter converter = new Converter(new PathQrdaSource(entry));
+
+		TransformException expected = Assertions.assertThrows(TransformException.class, converter::transform);
+		//runnning conversions on individual files
+		List<Detail> details = expected.getDetails().getErrors().get(0).getDetails();
+		verifyOutcome(fileName, details);
 	}
 
 	private void verifyOutcome(String filename, List<Detail> details) {
@@ -123,17 +135,5 @@ class CpcPlusAcceptanceTest {
 		return actual.equals(expected) ||
 				actual.replaceAll("[\\[()\\]]", "")
 						.matches(expected.replaceAll("[()]", ""));
-	}
-
-	private Stream<Path> getXml(Path directory) {
-		try {
-			return Files.list(directory).filter(this::isXml);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
-	}
-
-	private boolean isXml(Path path) {
-		return path.toString().endsWith(".xml");
 	}
 }
