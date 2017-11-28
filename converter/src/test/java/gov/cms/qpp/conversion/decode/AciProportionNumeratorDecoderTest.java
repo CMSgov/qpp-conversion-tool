@@ -6,7 +6,7 @@ import org.jdom2.Element;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class AciProportionNumeratorDecoderTest {
 
@@ -25,14 +25,11 @@ class AciProportionNumeratorDecoderTest {
 
 	@Test
 	void testInternalDecodeObtainsCorrectDecodeResult() {
-		assertWithMessage("Must continue on tree")
-				.that(decodeResult)
-				.isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
+		assertThat(decodeResult).isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
 	}
 
 	@Test
 	void testInternalDecodeSetsCorrectNodeValue() {
-		assertWithMessage("The node name must be %s", NUMERATOR_NODE_NAME)
-				.that(aciProportionNumeratorNode.getValue("name")).isEqualTo(NUMERATOR_NODE_NAME);
+		assertThat(aciProportionNumeratorNode.getValue("name")).isEqualTo(NUMERATOR_NODE_NAME);
 	}
 }

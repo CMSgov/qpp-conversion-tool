@@ -9,7 +9,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class IaMeasureDecoderTest {
 	String xmlFragment;
@@ -23,8 +23,7 @@ class IaMeasureDecoderTest {
 	void testDecodeReturnsMeasureId() throws Exception {
 		Node iaMeasure = internalDecodeIaMeasure();
 
-		assertWithMessage("Should contain the correct value")
-				.that(iaMeasure.getValue("measureId"))
+		assertThat(iaMeasure.getValue("measureId"))
 				.isEqualTo("IA_EPA_1");
 	}
 
@@ -33,8 +32,7 @@ class IaMeasureDecoderTest {
 		Node iaMeasure = internalDecodeIaMeasure();
 		Node measurePerformed = iaMeasure.findFirstNode(TemplateId.MEASURE_PERFORMED);
 
-		assertWithMessage("Should contain the correct child node")
-				.that(measurePerformed.getType())
+		assertThat(measurePerformed.getType())
 				.isEquivalentAccordingToCompareTo(TemplateId.MEASURE_PERFORMED);
 	}
 
@@ -43,8 +41,7 @@ class IaMeasureDecoderTest {
 		xmlFragment = removeChildFragment(xmlFragment);
 		Node iaMeasure = internalDecodeIaMeasure();
 
-		assertWithMessage("There should not be any child node")
-				.that(iaMeasure.getChildNodes())
+		assertThat(iaMeasure.getChildNodes())
 				.hasSize(0);
 	}
 
@@ -53,8 +50,7 @@ class IaMeasureDecoderTest {
 		xmlFragment = addExtraXml(xmlFragment);
 		Node iaMeasure = internalDecodeIaMeasure();
 
-		assertWithMessage("Should contain the correct value")
-				.that(iaMeasure.getValue("measureId"))
+		assertThat(iaMeasure.getValue("measureId"))
 				.isEqualTo("IA_EPA_1");
 	}
 
@@ -64,8 +60,7 @@ class IaMeasureDecoderTest {
 		Node iaMeasure = internalDecodeIaMeasure();
 		Node measurePerformed = iaMeasure.findFirstNode(TemplateId.MEASURE_PERFORMED);
 
-		assertWithMessage("Should contain the correct template id")
-				.that(measurePerformed.getType())
+		assertThat(measurePerformed.getType())
 				.isEquivalentAccordingToCompareTo(TemplateId.MEASURE_PERFORMED);
 	}
 

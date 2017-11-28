@@ -8,7 +8,6 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 class AciNumeratorDenominatorDecoderTest {
 
@@ -45,9 +44,7 @@ class AciNumeratorDenominatorDecoderTest {
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
 
 		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
-		assertWithMessage("Decoded xml fragment should contain one child node")
-				.that(aciMeasureNode.getChildNodes())
-				.hasSize(1);
+		assertThat(aciMeasureNode.getChildNodes()).hasSize(1);
 	}
 
 	@Test
@@ -62,8 +59,7 @@ class AciNumeratorDenominatorDecoderTest {
 
 		Node numDenomNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
-		assertWithMessage("aci numerator/denominator value should be null")
-				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
+		assertThat(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
 	}
 
 	@Test
@@ -77,8 +73,7 @@ class AciNumeratorDenominatorDecoderTest {
 
 		Node numDenomNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
-		assertWithMessage("aci numerator/denominator value should be null")
-				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
+		assertThat(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
 	}
 
 	private String getValidXmlFragment() {
