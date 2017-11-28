@@ -5,7 +5,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;

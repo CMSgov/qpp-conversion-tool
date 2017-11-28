@@ -12,9 +12,8 @@ import java.nio.charset.Charset;
 import org.apache.commons.io.IOUtils;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
 
 import static com.google.common.truth.Truth.assertWithMessage;
