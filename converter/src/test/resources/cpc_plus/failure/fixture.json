@@ -341,6 +341,11 @@
 					"IPOP,IPP",
 					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
 				"occurrences": 1
+			},
+			{
+				"errorCode": 66,
+				"subs": [".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
+				"occurrences": 14
 			}
 		]
 	},
@@ -509,7 +514,7 @@
 		]
 	},
 	"CPCPlus_WithQuality_137_IncStratUUID_SampleQRDA-III.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 48,
@@ -519,24 +524,43 @@
 		]
 	},
 	"CPCPlus_WithQuality_139_IncDenomExUUID_SampleQRDA-III.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 59,
-				"subs": ["CMS139v5", "DENEXCEP", "CF7E1913-CB4E-42F7-BAEC-0EFFF01ECB17"],
+				"subs": [
+					"CMS139v5",
+					"DENEXCEP",
+					"CF7E1913-CB4E-42F7-BAEC-0EFFF01ECB17"
+				],
 				"occurrences": 1
 			}
 		]
 	},
 	"CPCPlus_WithQuality_149_IncNumerUUID_SampleQRDA-III.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 59,
 				"subs": [
-					"CMS149v5", "NUMER", "2C2431A3-7DE3-4C97-80C0-4BF96D4880F0"
+					"CMS149v5",
+					"NUMER",
+					"2C2431A3-7DE3-4C97-80C0-4BF96D4880F0"
 				],
 				"occurrences": 1
+			}]
+	},
+	"CPCPlus_WithQuality_165_IncSuppData_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 63,
+				"occurrences": 1
+			},
+			{
+				"errorCode": 66,
+				"subs": [".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
+				"occurrences": 119
 			}
 		]
 	}
