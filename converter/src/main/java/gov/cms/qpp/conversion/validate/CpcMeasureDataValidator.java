@@ -11,10 +11,14 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
-import java.util.List;
+import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
+import java.util.EnumSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_KEY;
 
 /**
  * Validates a Sub Population's Measure Data for the CPC Plus program entity
@@ -38,10 +42,11 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * @param node current measure data node
 	 */
 	private void validateSupplementalDataByType(Node node) {
-		Map<String, TemplateId> nodeTypeToTemplateIdMap = SupplementalData.getSupplementalTypeMapToTemplateId();
-		for (String supplementalDataType: nodeTypeToTemplateIdMap.keySet()) {
+		Map<SupplementalType, TemplateId> nodeTypeToTemplateIdMap =
+				SupplementalData.getSupplementalTypeMapToTemplateId();
+		for (Map.Entry<SupplementalType, TemplateId> entry: nodeTypeToTemplateIdMap.entrySet()) {
 			validateAllSupplementalNodesOfSpecifiedType(
-					node, nodeTypeToTemplateIdMap.get(supplementalDataType), supplementalDataType);
+					node, entry.getValue(), entry.getKey());
 		}
 	}
 
@@ -52,37 +57,33 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * @param currSupplementalDataTemplateId Template Id of the nodes to be validated
 	 * @param supplementalDataType current data type to be validated
 	 */
-	private void validateAllSupplementalNodesOfSpecifiedType(Node node,
-															 TemplateId currSupplementalDataTemplateId,
-															 String supplementalDataType) {
-		List<Node> supplementalDataNodes =
-				node.getChildNodes(currSupplementalDataTemplateId).collect(Collectors.toList());
-		List<SupplementalData> codes = SupplementalData.getSupplementalDataListByType(supplementalDataType);
+	private void validateAllSupplementalNodesOfSpecifiedType(
+			Node node, TemplateId currSupplementalDataTemplateId, SupplementalType supplementalDataType) {
+		Set<Node> supplementalDataNodes =
+				node.getChildNodes(currSupplementalDataTemplateId).collect(Collectors.toSet());
+		EnumSet<SupplementalData> codes = EnumSet.copyOf(
+				 SupplementalData.getSupplementalDataSetByType(supplementalDataType));
 
 		for (SupplementalData supplementalData : codes) {
-			Node validatedSupplementalNode = filterCorrectNode(
-					supplementalDataType, supplementalDataNodes, supplementalData);
+			Node validatedSupplementalNode = filterCorrectNode(supplementalDataNodes, supplementalData);
 
 			if (validatedSupplementalNode == null) {
 				addSupplementalValidationError(node, supplementalData);
 			}
 		}
-		validateSupplementalDataNodeCounts(node, supplementalDataType, supplementalDataNodes);
+		validateSupplementalDataNodeCounts(node, supplementalDataNodes);
 	}
 
 	/**
 	 * Filters out the specified Supplemental Data Node to validate
 	 *
-	 * @param supplementalDataType Supplemental value name for the current Node value
 	 * @param supplementalDataNodes List of nodes to filter
 	 * @param supplementalData Current Supplemental Data to validate against
 	 * @return
 	 */
-	private Node filterCorrectNode(String supplementalDataType,
-								   List<Node> supplementalDataNodes,
-								   SupplementalData supplementalData) {
+	private Node filterCorrectNode(Set<Node> supplementalDataNodes, SupplementalData supplementalData) {
 		return supplementalDataNodes.stream()
-				.filter(filterDataBySupplementalCode(supplementalDataType, supplementalData.getCode()))
+				.filter(filterDataBySupplementalCode(supplementalData.getCode()))
 				.findFirst()
 				.orElse(null);
 	}
@@ -90,12 +91,11 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	/**
 	 * Predicate for filtering the correct Supplemental Data node.
 	 *
-	 * @param nodeValueName Object that maps to the current node value
 	 * @param code Required code to be validate against
 	 * @return
 	 */
-	private Predicate<Node> filterDataBySupplementalCode(String nodeValueName, String code) {
-		return thisNode -> code.equalsIgnoreCase(thisNode.getValue(nodeValueName));
+	private Predicate<Node> filterDataBySupplementalCode(String code) {
+		return thisNode -> code.equalsIgnoreCase(thisNode.getValue(SUPPLEMENTAL_DATA_KEY));
 	}
 
 	/**
@@ -108,23 +108,23 @@ public class CpcMeasureDataValidator extends NodeValidator {
 		MeasureConfig config =
 				MeasureConfigs.getConfigurationMap()
 						.get(node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
-		LocalizedError error =
-				ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(supplementalData.getCode(),
-						config.getElectronicMeasureId(), node.getValue(MeasureDataDecoder.MEASURE_TYPE));
-		addValidationError(Detail.forErrorAndNode(error, node));
+		if (config != null) {
+			LocalizedError error =
+					ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(supplementalData.getCode(),
+							config.getElectronicMeasureId(), node.getValue(MeasureDataDecoder.MEASURE_TYPE));
+			addValidationError(Detail.forErrorAndNode(error, node));
+		}
 	}
 
 	/**
 	 * Validates all Supplemental Data nodes for an Aggregate count
 	 *
 	 * @param node parent node
-	 * @param supplementalDataType type of supplemental nodes
 	 * @param supplementalDataNodes supplemental nodes to be validated
 	 */
-	private void validateSupplementalDataNodeCounts(Node node,
-													String supplementalDataType, List<Node> supplementalDataNodes) {
+	private void validateSupplementalDataNodeCounts(Node node, Set<Node> supplementalDataNodes) {
 		supplementalDataNodes.forEach(thisNode -> {
-			LocalizedError error = makeIncorrectCountSizeLocalizedError(node, supplementalDataType, thisNode);
+			LocalizedError error = makeIncorrectCountSizeLocalizedError(node, thisNode);
 			check(thisNode).childMinimum(error, 1, TemplateId.ACI_AGGREGATE_COUNT)
 					.childMaximum(error, 1, TemplateId.ACI_AGGREGATE_COUNT);
 		});
@@ -134,16 +134,20 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * Creates a localized error for an invalid number of aggregate counts
 	 *
 	 * @param node parent node
-	 * @param supplementalDataType type of supplemental nodes
 	 * @param thisNode current supplemental node to be validated
 	 * @return
 	 */
-	private LocalizedError makeIncorrectCountSizeLocalizedError(Node node, String supplementalDataType, Node thisNode) {
+	private LocalizedError makeIncorrectCountSizeLocalizedError(Node node, Node thisNode) {
 		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(
 				node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
+		if (config == null) {
+			return ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
+					thisNode.getValue(SUPPLEMENTAL_DATA_KEY), node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+					"Unknown Measure ID");
+		}
 
 		return ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
-				thisNode.getValue(supplementalDataType), node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+				thisNode.getValue(SUPPLEMENTAL_DATA_KEY), node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 				config.getElectronicMeasureId());
 	}
 }

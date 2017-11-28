@@ -9,7 +9,7 @@ abstract class QrdaSourceTestSuite {
 	private final String expectedName;
 	protected final QrdaSource source;
 
-	public QrdaSourceTestSuite(String expectedName, QrdaSource source) {
+	QrdaSourceTestSuite(String expectedName, QrdaSource source) {
 		this.expectedName = expectedName;
 		this.source = source;
 	}

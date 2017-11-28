@@ -5,7 +5,6 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
-import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
@@ -16,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
+import static gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_KEY;
 
 public class SupplementalDataEthnicityDecoderTest {
 
@@ -38,14 +38,14 @@ public class SupplementalDataEthnicityDecoderTest {
 	@Test
 	void testDecodeEthnicityNotHispanicSuccess() {
 		supplementalDataNode = getNodeByIndex(0);
-		assertThat(supplementalDataNode.getValue(SupplementalType.ETHNICITY.toString()))
+		assertThat(supplementalDataNode.getValue(SUPPLEMENTAL_DATA_KEY))
 				.isEqualTo(SupplementalData.NOT_HISPANIC_LATINO.getCode());
 	}
 
 	@Test
 	void testDecodeEthnicityHispanicSuccess() {
 		supplementalDataNode = getNodeByIndex(1);
-		assertThat(supplementalDataNode.getValue(SupplementalType.ETHNICITY.toString()))
+		assertThat(supplementalDataNode.getValue(SUPPLEMENTAL_DATA_KEY))
 				.isEqualTo(SupplementalData.HISPANIC_LATINO.getCode());
 	}
 

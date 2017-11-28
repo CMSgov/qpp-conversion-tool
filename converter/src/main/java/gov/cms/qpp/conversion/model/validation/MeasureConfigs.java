@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -19,6 +21,7 @@ public class MeasureConfigs {
 
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
 	private static Map<String, MeasureConfig> configurationMap;
+	private static Map<String, List<MeasureConfig>> cpcPlusGroups;
 
 	/**
 	 * Static initialization
@@ -39,6 +42,11 @@ public class MeasureConfigs {
 	 */
 	private static void initMeasureConfigs() {
 		configurationMap = grabConfiguration(measureDataFileName);
+		cpcPlusGroups = new HashMap<>();
+		getMeasureConfigs().stream()
+				.filter(config -> config.getCpcPlusGroup() != null)
+				.forEach(config -> cpcPlusGroups.computeIfAbsent(
+						config.getCpcPlusGroup(), key -> new ArrayList<>()).add(config));
 	}
 
 	public static Map<String, MeasureConfig> grabConfiguration(String fileName) {
@@ -95,12 +103,21 @@ public class MeasureConfigs {
 	}
 
 	/**
+	 * Retrieves a mapping of CPC+ measure groups
+	 *
+	 * @return mapped CPC+ measure groups
+	 */
+	public static Map<String, List<MeasureConfig>> getCpcPlusGroups() {
+		return cpcPlusGroups;
+	}
+
+	/**
 	 * Retrieves a list of required mappings for any given section
 	 *
 	 * @param section Specified section for measures required
 	 * @return The list of required measures
 	 */
-	public static List<String> requiredMeasuresForSection(String section) {
+	static List<String> requiredMeasuresForSection(String section) {
 
 		return configurationMap.values().stream()
 			.filter(measureConfig -> measureConfig.isRequired() && section.equals(measureConfig.getCategory()))

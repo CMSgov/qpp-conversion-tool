@@ -8,7 +8,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 3 : Unexpected exception occurred during conversion
 * 4 : Unexpected exception occured during encoding
 * 5 : The file is not a QRDA-III XML document
-* 6 : The measure reference results must have a measure GUID
+* 6 : The measure reference results must have a recognized measure GUID
 * 7 : The measure reference results must have at least one measure
 * 8 : A single aggregate count value is required
 * 9 : Aggregate count value must be an integer
@@ -70,3 +70,10 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 60 : The eCQM (electronic measure id: `(Current eMeasure ID)`) has a performanceRateId with an incorrect UUID of `(Incorrect UUID)`
   * Ex. : The eCQM (electronic measure id: CMS68v6) has a performanceRateUuid with an incorrect UUID of 00000000-0000-0000-0000-1NV4L1D
 * 61 : A Performance Rate must contain a single Performance Rate UUID
+* 62 : The Alternative Payment Model (APM) Entity Identifier must not be empty
+* 63 : The Alternative Payment Model (APM) Entity Identifier is not valid
+* 64 : CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
+* 65 : CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.
+* 66 : Missing the Supplemental Code `(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`
+* 67 : Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`
+* 68 : CPC+ Submission is after the end date `(Submission end date)`
