@@ -3,7 +3,8 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,8 +44,8 @@ public class AciSectionValidatorTest {
 		Set<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
 
 		assertWithMessage("error should be about missing proportion node")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
 	}
 
 	@Test
@@ -57,7 +58,7 @@ public class AciSectionValidatorTest {
 		Set<Detail> errors = aciSectionValidator.validateSingleNode(aciSectionNode);
 
 		assertWithMessage("error should be about missing required Measure")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciSectionValidator.MINIMUM_REPORTING_PARAM_REQUIREMENT_ERROR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
 	}
 }

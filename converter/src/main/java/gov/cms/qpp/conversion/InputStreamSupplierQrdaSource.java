@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-
 public class InputStreamSupplierQrdaSource extends SkeletalQrdaSource {
 
 	/**

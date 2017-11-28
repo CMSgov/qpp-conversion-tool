@@ -12,12 +12,12 @@ import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class ClinicalDocumentRoundTripTest {
+class ClinicalDocumentRoundTripTest {
 
 	private static final String EXPECTED = "{\n  \"performanceYear\" : 2017,\n  \"programName\" : \"mips\",\n  \"entityType\" : \"individual\",\n  "
 			+ "\"taxpayerIdentificationNumber\" : \"123456789\",\n  \"nationalProviderIdentifier\" : \"2567891421\",\n  "
@@ -34,7 +34,7 @@ public class ClinicalDocumentRoundTripTest {
 			+ "\"performanceStart\" : \"2017-01-01\",\n    \"performanceEnd\" : \"2017-12-31\"\n  } ]\n}";
 
 	@Test
-	public void parseClinicalDocument() throws Exception {
+	void parseClinicalDocument() throws Exception {
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
 		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());

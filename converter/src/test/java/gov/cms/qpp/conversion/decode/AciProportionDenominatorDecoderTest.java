@@ -5,23 +5,22 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class AciProportionDenominatorDecoderTest {
+class AciProportionDenominatorDecoderTest {
 
 	@Test
-	public void decodeAciProportionDenominatorSetsCorrectNodeValue() throws XmlException {
+	void decodeAciProportionDenominatorSetsCorrectNodeValue() throws XmlException {
 		Node aciProportionDenominatorNode = getValidAciProportionDenominatorNode();
 		String actual = aciProportionDenominatorNode.getValue("name");
 		String expected = "aciProportionDenominator";
-
 		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
-	public void testAciProportionDenominatorDecoderContainsAnAggregateCount() throws XmlException {
+	void testAciProportionDenominatorDecoderContainsAnAggregateCount() throws XmlException {
 		Node aciProportionDenominatorNode = getValidAciProportionDenominatorNode();
 		Node aggregateCount = aciProportionDenominatorNode.getChildNodes().get(0);
 

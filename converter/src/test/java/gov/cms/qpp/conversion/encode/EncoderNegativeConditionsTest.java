@@ -7,15 +7,15 @@ import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
 
-public class EncoderNegativeConditionsTest {
+class EncoderNegativeConditionsTest {
 
 	@Test
-	public void testNullEncoder() {
+	void testNullEncoder() {
 		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
 		Node aNode = new Node();
@@ -43,7 +43,7 @@ public class EncoderNegativeConditionsTest {
 	}
 
 	@Test
-	public void testExceptionAddsValidation() throws EncodeException {
+	void testExceptionAddsValidation() throws EncodeException {
 		Node numeratorDenominatorNode;
 		List<Node> nodes;
 
@@ -64,6 +64,6 @@ public class EncoderNegativeConditionsTest {
 		assertWithMessage("Should contain one error").that(encoder.getDetails()).hasSize(1);
 		assertWithMessage("Should have same correct message")
 				.that(encoder.getDetails().get(0).getMessage())
-				.isEqualTo("Failure to encode");
+				.isEqualTo("Fake IOException");
 	}
 }

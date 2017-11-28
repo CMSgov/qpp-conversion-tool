@@ -3,21 +3,20 @@ package gov.cms.qpp.conversion.decode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AciProportionNumeratorDecoderTest {
+class AciProportionNumeratorDecoderTest {
 
 	private static final String NUMERATOR_NODE_NAME = "aciProportionNumerator";
 	private Node aciProportionNumeratorNode;
 	private AciProportionNumeratorDecoder aciProportionNumeratorDecoder;
 	private DecodeResult decodeResult;
 
-
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		Element element = new Element("testElement");
 		aciProportionNumeratorNode = new Node();
 		aciProportionNumeratorDecoder = new AciProportionNumeratorDecoder(new Context());
@@ -25,14 +24,14 @@ public class AciProportionNumeratorDecoderTest {
 	}
 
 	@Test
-	public void testInternalDecodeObtainsCorrectDecodeResult() {
+	void testInternalDecodeObtainsCorrectDecodeResult() {
 		assertWithMessage("Must continue on tree")
 				.that(decodeResult)
 				.isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
 	}
 
 	@Test
-	public void testInternalDecodeSetsCorrectNodeValue() {
+	void testInternalDecodeSetsCorrectNodeValue() {
 		assertWithMessage("The node name must be %s", NUMERATOR_NODE_NAME)
 				.that(aciProportionNumeratorNode.getValue("name")).isEqualTo(NUMERATOR_NODE_NAME);
 	}

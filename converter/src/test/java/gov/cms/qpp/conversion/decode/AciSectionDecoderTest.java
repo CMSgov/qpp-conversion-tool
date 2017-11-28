@@ -3,14 +3,14 @@ package gov.cms.qpp.conversion.decode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class AciSectionDecoderTest {
+class AciSectionDecoderTest {
 
 	@Test
-	public void testInternalDecode() {
+	void testInternalDecode() {
 		Element element = new Element("testElement");
 		Node node = new Node();
 

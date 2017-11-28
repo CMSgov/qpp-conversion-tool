@@ -7,7 +7,6 @@ import gov.cms.qpp.conversion.correlation.model.Correlation;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
-import java.util.Objects;
 import org.reflections.util.ClasspathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Maintains associations between QPP json paths and their pre-transformation xpaths.
@@ -33,7 +31,7 @@ public class PathCorrelator {
 	private static Map<String, Goods> pathCorrelationMap = new HashMap<>();
 
 	static {
-		initPathCorrelation();
+		pathCorrelation = loadPathCorrelation();
 	}
 
 	private PathCorrelator() {}
@@ -41,7 +39,9 @@ public class PathCorrelator {
 	/**
 	 * Initializes correlations between json paths and xpaths
 	 */
-	private static void initPathCorrelation() {
+	private static PathCorrelation loadPathCorrelation() {
+		PathCorrelation pathCorrelation;
+
 		try {
 			InputStream input = ClasspathHelper.contextClassLoader().getResourceAsStream(config);
 			ObjectMapper mapper = new ObjectMapper();
@@ -52,6 +52,8 @@ public class PathCorrelator {
 			DEV_LOG.error(message, ioe);
 			throw new PathCorrelationException(message, ioe);
 		}
+
+		return pathCorrelation;
 	}
 
 	/**
@@ -70,10 +72,8 @@ public class PathCorrelator {
 					pathCorrelationMap.put(
 							getKey(template.getTemplateId(), conf.getDecodeLabel()), conf.getGoods());
 				}
-				if (null != conf.getEncodeLabels()) {
-					conf.getEncodeLabels().forEach(label ->
-						pathCorrelationMap.put(getKey(template.getTemplateId(), label), conf.getGoods()));
-				}
+				conf.getEncodeLabels().forEach(label ->
+					pathCorrelationMap.put(getKey(template.getTemplateId(), label), conf.getGoods()));
 			});
 		});
 	}
@@ -162,7 +162,9 @@ public class PathCorrelator {
 					} else {
 						return encodeLabel.isEmpty();
 					}
-				}).findFirst().orElse(null);
+				})
+				.findFirst()
+				.orElse(null);
 	}
 
 	/**
@@ -192,6 +194,6 @@ public class PathCorrelator {
 		String baseTemplate = metadata.get("template");
 		String baseXpath = metadata.get("path");
 		String relativeXpath = PathCorrelator.getXpath(baseTemplate, leaf, nsUri);
-		return (relativeXpath != null) ? baseXpath + "/" + relativeXpath : baseXpath;
+		return (relativeXpath != null) ? (baseXpath + "/" + relativeXpath) : baseXpath;
 	}
 }

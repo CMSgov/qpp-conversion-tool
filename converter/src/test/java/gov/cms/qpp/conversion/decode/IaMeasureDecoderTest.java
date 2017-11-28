@@ -6,24 +6,24 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
 /**
  * Test class for the IaMeasureDecoder
  */
-public class IaMeasureDecoderTest {
+class IaMeasureDecoderTest {
 	String xmlFragment;
 
-	@Before
-	public void setUp() throws IOException {
+	@BeforeEach
+	void setUp() throws IOException {
 		xmlFragment = TestHelper.getFixture("IaSection.xml");
 	}
 
 	@Test
-	public void internalDecode() throws Exception {
+	void internalDecode() throws Exception {
 		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 
@@ -43,7 +43,7 @@ public class IaMeasureDecoderTest {
 	}
 
 	@Test
-	public void missingChildTest() throws Exception {
+	void missingChildTest() throws Exception {
 		xmlFragment = removeChildFragment(xmlFragment);
 		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
 
@@ -59,7 +59,7 @@ public class IaMeasureDecoderTest {
 	}
 
 	@Test
-	public void internalDecodeWithExtraXmlPasses() throws Exception {
+	void internalDecodeWithExtraXmlPasses() throws Exception {
 		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
 		xmlFragment = addExtraXml(xmlFragment);
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));

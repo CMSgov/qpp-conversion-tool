@@ -1,18 +1,6 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.test.FileTestHelper;
-import gov.cms.qpp.test.LoadTestSuite;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.results.BenchmarkResult;
-import org.openjdk.jmh.results.Result;
-import org.openjdk.jmh.results.RunResult;
-import org.openjdk.jmh.runner.Runner;
-import org.openjdk.jmh.runner.RunnerException;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -22,17 +10,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.results.BenchmarkResult;
+import org.openjdk.jmh.results.Result;
+import org.openjdk.jmh.results.RunResult;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-public class ParameterizedBenchmarkTest extends LoadTestSuite {
+import gov.cms.qpp.test.FileTestHelper;
+import gov.cms.qpp.test.LoadTestSuite;
+
+class ParameterizedBenchmarkTest extends LoadTestSuite {
 
 	private static Field fileSystemField;
 	private static FileSystem defaultFileSystem;
 	private static FileSystem fileSystem;
 	private static List<BenchmarkResult> benchResults;
 
-	@BeforeClass
-	public static void loadPaths() throws IOException, RunnerException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+	@BeforeAll
+	static void loadPaths() throws IOException, RunnerException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		String[] paths;
 		fileSystem = FileTestHelper.createMockFileSystem();
 		fileSystemField = ConversionEntry.class.getDeclaredField("fileSystem");
@@ -55,8 +56,8 @@ public class ParameterizedBenchmarkTest extends LoadTestSuite {
 				.collect(Collectors.toList());
 	}
 
-	@AfterClass
-	public static void cleanup() throws IllegalArgumentException, IllegalAccessException, IOException {
+	@AfterAll
+	static void cleanup() throws IllegalArgumentException, IllegalAccessException, IOException {
 		if (fileSystemField != null) {
 			fileSystemField.set(null, defaultFileSystem);
 		}
@@ -66,7 +67,7 @@ public class ParameterizedBenchmarkTest extends LoadTestSuite {
 	}
 
 	@Test
-	public void testParameterizedBenchmarkThroughput() throws RunnerException {
+	void testParameterizedBenchmarkThroughput() throws RunnerException {
 		benchResults.stream()
 			.filter(result -> result.getParams().getMode().equals(Mode.Throughput))
 			.forEach(br -> {
@@ -79,7 +80,7 @@ public class ParameterizedBenchmarkTest extends LoadTestSuite {
 	}
 
 	@Test
-	public void testParameterizedBenchmarkAverageTime() throws RunnerException {
+	void testParameterizedBenchmarkAverageTime() throws RunnerException {
 		benchResults.stream()
 			.filter(result -> result.getParams().getMode().equals(Mode.AverageTime))
 			.forEach(br -> {

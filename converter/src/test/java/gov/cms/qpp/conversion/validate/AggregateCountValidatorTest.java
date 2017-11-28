@@ -1,21 +1,23 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.Set;
+
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Test;
-
-import java.util.Set;
-
-import static com.google.common.truth.Truth.assertWithMessage;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 
-public class AggregateCountValidatorTest {
+class AggregateCountValidatorTest {
 
     @Test
-    public void testIsAggregateCount() {
+    void testIsAggregateCount() {
         Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 
         AggregateCountValidator validator = new AggregateCountValidator();
@@ -25,7 +27,7 @@ public class AggregateCountValidatorTest {
     }
 
     @Test
-    public void testValueAbsenceFailure() {
+    void testValueAbsenceFailure() {
         Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 
         AggregateCountValidator validator = new AggregateCountValidator();
@@ -33,12 +35,12 @@ public class AggregateCountValidatorTest {
         Set<Detail> errors = validator.getDetails();
 
         assertWithMessage("Should result in a value error")
-                .that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-                .containsExactly(AggregateCountValidator.VALUE_ERROR);
+                .that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+                .containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR);
     }
 
     @Test
-    public void testValueTypeFailure() {
+    void testValueTypeFailure() {
         Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
         aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "meep");
 
@@ -47,12 +49,12 @@ public class AggregateCountValidatorTest {
         Set<Detail> errors = validator.getDetails();
 
         assertWithMessage("Should result in a type error")
-                .that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-                .containsExactly(AggregateCountValidator.TYPE_ERROR);
+                .that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+                .containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER);
     }
 
     @Test
-    public void testValueTypeSuccess() {
+    void testValueTypeSuccess() {
         Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
         aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "7");
 

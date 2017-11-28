@@ -3,8 +3,9 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Test;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
@@ -13,15 +14,15 @@ import static com.google.common.truth.Truth.assertWithMessage;
 /**
  * Class to test the AciNumeratorValidator
  */
-public class AciNumeratorValidatorTest {
+class AciNumeratorValidatorTest {
 	
 	@Test
-	public void internalValidateSingleNodeWithGreaterThanZeroValue() throws Exception {
+	void internalValidateSingleNodeWithGreaterThanZeroValue() throws Exception {
 		validateNumeratorWithValue("100");
 	}
 
 	@Test
-	public void internalValidateSingleNodeWithZeroValue() throws Exception {
+	void internalValidateSingleNodeWithZeroValue() throws Exception {
 		validateNumeratorWithValue("0");
 	}
 
@@ -38,22 +39,21 @@ public class AciNumeratorValidatorTest {
 				.that(errors).isEmpty();
 	}
 
-
 	@Test
-	public void noChildrenTest() throws Exception {
+	void noChildrenTest() throws Exception {
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
 		Set<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
 
 		assertWithMessage("Should result in Children Validation Error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(String.format(AciNumeratorValidator.NO_CHILDREN,
-						AciNumeratorValidator.NUMERATOR_NAME));
+				.that(errors)
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_MISSING_CHILDREN.format(AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
 	@Test
-	public void incorrectChildrenTest() throws Exception {
+	void incorrectChildrenTest() throws Exception {
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_SECTION);
 		aggregateCountNode.putValue("aggregateCount", "100");
@@ -64,13 +64,13 @@ public class AciNumeratorValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
 
 		assertWithMessage("Incorrect child Validation Error not issued")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(String.format(AciNumeratorValidator.INCORRECT_CHILD,
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INCORRECT_CHILD.format(
 						AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
 	@Test
-	public void tooManyChildrenTest() throws Exception {
+	void tooManyChildrenTest() throws Exception {
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		Node aggregateCountNode1 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		Node aggregateCountNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
@@ -86,13 +86,13 @@ public class AciNumeratorValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
 
 		assertWithMessage("Too many children Validation Error not issued")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(String.format(AciNumeratorValidator.TOO_MANY_CHILDREN,
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_TOO_MANY_CHILDREN.format(
 						AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
 	@Test
-	public void invalidValueNaNTest() throws Exception {
+	void invalidValueNaNTest() throws Exception {
 		//Not a number check
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
@@ -108,7 +108,7 @@ public class AciNumeratorValidatorTest {
 	}
 
 	@Test
-	public void invalidValueNegativeNumberTest() throws Exception {
+	void invalidValueNegativeNumberTest() throws Exception {
 		//Not a number check
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
@@ -120,7 +120,7 @@ public class AciNumeratorValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
 
 		assertWithMessage("Invalid Value Validation Error not issued")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(String.format(AciNumeratorValidator.INVALID_VALUE,
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
 						AciNumeratorValidator.NUMERATOR_NAME));
 	}}

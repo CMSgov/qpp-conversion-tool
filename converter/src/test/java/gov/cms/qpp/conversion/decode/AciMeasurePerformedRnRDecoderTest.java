@@ -7,17 +7,18 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class AciMeasurePerformedRnRDecoderTest {
+class AciMeasurePerformedRnRDecoderTest {
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
 	private Node aciMeasurePerformedNode;
 
-	@Before
-	public void setUp() throws IOException, XmlException {
+	@BeforeEach
+	void setUp() throws IOException, XmlException {
 		String needsFormattingXml = TestHelper.getFixture("AciMeasurePerformedIsolated.xml");
 		String xml = String.format(needsFormattingXml, MEASURE_ID);
 		Node wrapperNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xml));
@@ -26,14 +27,14 @@ public class AciMeasurePerformedRnRDecoderTest {
 
 
 	@Test
-	public void testMeasureIsDecoded() throws XmlException, IOException {
+	void testMeasureIsDecoded() throws XmlException, IOException {
 		String actualMeasureId = aciMeasurePerformedNode.getValue("measureId");
 
 		assertThat(actualMeasureId).isEqualTo(MEASURE_ID);
 	}
 
 	@Test
-	public void testSectionOnlyDecodesOneMeasurePerformed() throws XmlException, IOException {
+	void testSectionOnlyDecodesOneMeasurePerformed() throws XmlException, IOException {
 		long measurePerformedCount = aciMeasurePerformedNode.getChildNodes(
 				node -> node.getType() == TemplateId.MEASURE_PERFORMED).count();
 

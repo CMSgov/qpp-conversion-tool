@@ -1,24 +1,21 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Set;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.Test;
 
-public class AciNumeratorDenominatorValidatorTest {
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+class AciNumeratorDenominatorValidatorTest {
 
 	@Test
-	public void testMeasurePresent() {
+	void testMeasurePresent() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -50,7 +47,7 @@ public class AciNumeratorDenominatorValidatorTest {
 	}
 
 	@Test
-	public void testNumerateDenominatorMissingMeasureId() {
+	void testNumerateDenominatorMissingMeasureId() {
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
@@ -67,12 +64,12 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about missing numerator denominator measure name")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciNumeratorDenominatorValidator.NO_MEASURE_NAME);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID);
 	}
 
 	@Test
-	public void testMeasureNodeInvalidParent() {
+	void testMeasureNodeInvalidParent() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -95,12 +92,12 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureVal.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about invalid parent node")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciNumeratorDenominatorValidator.NO_PARENT_SECTION);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION);
 	}
 
 	@Test
-	public void testNoChildNodes() {
+	void testNoChildNodes() {
 
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
@@ -114,12 +111,12 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about no child nodes")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciNumeratorDenominatorValidator.NO_CHILDREN);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN);
 	}
 
 	@Test
-	public void testNoNumerator() {
+	void testNoNumerator() {
 
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
@@ -139,12 +136,12 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about missing Numerator node")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciNumeratorDenominatorValidator.NO_NUMERATOR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_NUMERATOR_CHILD_NODE);
 	}
 
 	@Test
-	public void testNoDenominator() {
+	void testNoDenominator() {
 
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
@@ -164,12 +161,12 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about missing Denominator node")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciNumeratorDenominatorValidator.NO_DENOMINATOR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_DENOMINATOR_CHILD_NODE);
 	}
 
 	@Test
-	public void testTooManyNumerators() {
+	void testTooManyNumerators() {
 
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
@@ -191,12 +188,12 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about too many Numerator nodes")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciNumeratorDenominatorValidator.TOO_MANY_NUMERATORS);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS);
 	}
 
 	@Test
-	public void testTooManyDenominators() {
+	void testTooManyDenominators() {
 
 		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
 		aciSectionNode.putValue("category", "aci");
@@ -218,7 +215,7 @@ public class AciNumeratorDenominatorValidatorTest {
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
 		assertWithMessage("error should be about too many Denominator nodes")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(AciNumeratorDenominatorValidator.TOO_MANY_DENOMINATORS);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS);
 	}
 }

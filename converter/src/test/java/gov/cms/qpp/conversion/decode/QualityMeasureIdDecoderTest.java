@@ -5,19 +5,19 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Element;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
 /**
  * Test for the QualityMeasureIdDecoder
  */
-public class QualityMeasureIdDecoderTest {
+class QualityMeasureIdDecoderTest {
 	private QualityMeasureIdDecoder objectUnderTest;
 
-	@Before
-	public void setup() {
+	@BeforeEach
+	void setup() {
 		objectUnderTest = new QualityMeasureIdDecoder(new Context());
 	}
 
@@ -27,7 +27,7 @@ public class QualityMeasureIdDecoderTest {
 	 * @throws XmlException when parsing xml fragment fails.
 	 */
 	@Test
-	public void internalDecodeValid() throws XmlException {
+	void internalDecodeValid() throws XmlException {
 		Node qualityMeasureIdNode = new Node();
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(getXmlFragmentWithMeasureGuid("Measurement Id Value"));
 		objectUnderTest.setNamespace(qualityMeasureIdElement, objectUnderTest);
@@ -36,7 +36,7 @@ public class QualityMeasureIdDecoderTest {
 		String value = qualityMeasureIdNode.getValue("measureId");
 		assertWithMessage("Expect to have a value")
 				.that(value)
-				.isEqualTo("Measurement Id Value");
+				.isEqualTo("measurement id value");
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class QualityMeasureIdDecoderTest {
 	 * @throws XmlException when the xml fragment is not well formed
 	 */
 	@Test
-	public void internalDecodeMissingId() throws XmlException {
+	void internalDecodeMissingId() throws XmlException {
 		String xmlFragment = getXmlFragmentWithMeasureGuid("Measurement Id Value").replace("<id ", "<noid ");
 
 		Node qualityMeasureIdNode = new Node();
@@ -62,7 +62,7 @@ public class QualityMeasureIdDecoderTest {
 	}
 
 	@Test
-	public void incorrectRoot() throws XmlException {
+	void incorrectRoot() throws XmlException {
 		//set-up
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(getBadXmlFragmentWithIncorrectRoot());
 		Node qualityMeasureIdNode = new Node();
@@ -81,7 +81,7 @@ public class QualityMeasureIdDecoderTest {
 	}
 
 	@Test
-	public void dontIgnoreStratumMeasure() throws XmlException {
+	void dontIgnoreStratumMeasure() throws XmlException {
 		//set-up
 		String nonIgnorableGuid = "40280381-528a-60ff-0152-8e089ed20376";
 		Element qualityMeasureIdElement = XmlUtils.stringToDom(getXmlFragmentWithMeasureGuid(nonIgnorableGuid));

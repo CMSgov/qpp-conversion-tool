@@ -8,21 +8,21 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class IaSectionDecoderTest {
+class IaSectionDecoderTest {
 	private String xmlFragment;
 
-	@Before
-	public void setUp() throws IOException {
+	@BeforeEach
+	void setUp() throws IOException {
 		xmlFragment = TestHelper.getFixture("IaSection.xml");
 	}
 
 	@Test
-	public void decodeAciSectionAsNode() throws XmlException {
+	void decodeAciSectionAsNode() throws XmlException {
 		Node root = executeDecoderWithoutDefaults();
 
 		Node iaSectionNode = root.findFirstNode(TemplateId.IA_SECTION);
@@ -33,7 +33,7 @@ public class IaSectionDecoderTest {
 	}
 
 	@Test
-	public void testDecodeIaSectionIgnoresGarbage() throws XmlException {
+	void testDecodeIaSectionIgnoresGarbage() throws XmlException {
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>" +
 						"Unexpected stuff appears here\n\n<statusCode ");

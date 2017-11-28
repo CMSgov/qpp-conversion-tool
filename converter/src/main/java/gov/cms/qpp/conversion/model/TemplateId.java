@@ -4,6 +4,8 @@ import gov.cms.qpp.conversion.Context;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Strings;
+
 /**
  * An enumeration of known templates IDs.
  */
@@ -25,13 +27,13 @@ public enum TemplateId {
 	MEASURE_REFERENCE_RESULTS_CMS_V2("2.16.840.1.113883.10.20.27.3.17", Extension.NOVEMBER_2016),
 	ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS("2.16.840.1.113883.10.20.27.3.29", Extension.SEPTEMBER_2016),
 	REPORTING_STRATUM_CMS("2.16.840.1.113883.10.20.27.3.20"),
-
-	//unimplemented
-	CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS("2.16.840.1.113883.10.20.27.3.26"),
 	ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.22", Extension.NOVEMBER_2016),
 	SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.21", Extension.NOVEMBER_2016),
 	RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.19", Extension.NOVEMBER_2016),
 	PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2("2.16.840.1.113883.10.20.27.3.18", Extension.NOVEMBER_2016),
+
+	//unimplemented
+	CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS("2.16.840.1.113883.10.20.27.3.26"),
 
 	//miscellaneous
 	NPI_TIN_ID("MultipleTins"),
@@ -150,7 +152,7 @@ public enum TemplateId {
 	static String generateTemplateIdString(String root, String extension, Context context) {
 		String templateId = root;
 
-		if (!context.isHistorical() && extension != null && !extension.isEmpty()) {
+		if (!context.isHistorical() && !Strings.isNullOrEmpty(extension)) {
 			templateId += (":" + extension);
 		}
 		return templateId;

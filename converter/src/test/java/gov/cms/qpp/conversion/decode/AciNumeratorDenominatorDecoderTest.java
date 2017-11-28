@@ -5,17 +5,18 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AciNumeratorDenominatorDecoderTest {
+class AciNumeratorDenominatorDecoderTest {
 
 	private static final String MEASURE_ID = "ACI-PEA-1";
 
 	@Test
-	public void testDecodeAciNumeratorDenominatorContainsMeasureID() throws XmlException {
+	void testDecodeAciNumeratorDenominatorContainsMeasureID() throws XmlException {
 		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
 		Node numeratorDenominatorNode = aciMeasureNode.getChildNodes().get(0);
 
@@ -23,7 +24,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void testDecodeAciNumeratorDenominatorContainsANumerator() throws XmlException {
+	void testDecodeAciNumeratorDenominatorContainsANumerator() throws XmlException {
 		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
 		Node numeratorDenominatorNode = aciMeasureNode.getChildNodes().get(0);
 
@@ -31,7 +32,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void testDecodeAciNumeratorDenominatorContainsADenominator() throws XmlException {
+	void testDecodeAciNumeratorDenominatorContainsADenominator() throws XmlException {
 		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
 		Node numeratorDenominatorNode = aciMeasureNode.getChildNodes().get(0);
 
@@ -39,7 +40,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void decodeAciNumeratorDenominatorExtraneousXMLTest() throws XmlException {
+	void decodeAciNumeratorDenominatorExtraneousXMLTest() throws XmlException {
 		String xmlFragment = getValidXmlFragment();
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
@@ -51,7 +52,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void decodeAciNumeratorDenominatorNullValueAsNode() throws Exception {
+	void decodeAciNumeratorDenominatorNullValueAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString(
 				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\" >",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",
@@ -67,7 +68,7 @@ public class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	public void decodeAciNumeratorDenominatorNullElementAsNode() throws Exception {
+	void decodeAciNumeratorDenominatorNullElementAsNode() throws Exception {
 		String xmlFragment = XmlUtils.buildString(
 				"<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">",
 				"  <observation classCode=\"OBS\" moodCode=\"EVN\">",

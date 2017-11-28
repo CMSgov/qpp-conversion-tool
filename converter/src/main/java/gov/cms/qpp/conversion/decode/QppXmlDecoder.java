@@ -6,15 +6,22 @@ import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Consumer;
+import org.jdom2.Attribute;
 import org.jdom2.Element;
+import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import static gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE;
+import static gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_KEY;
+import static gov.cms.qpp.conversion.decode.SupplementalDataPayerDecoder.SUPPLEMENTAL_DATA_PAYER_CODE;
 
 /**
  * Top level Decoder for parsing into QPP format.
@@ -52,15 +59,13 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 */
 	@Override
 	public DecodeResult decode(Element element, Node parentNode) {
-		if (null == element) {
+		if (element == null) {
 			return DecodeResult.ERROR;
 		}
 
 		setNamespace(element, this);
 
-		DecodeResult decodeResult = decodeChildren(element, parentNode);
-
-		return (decodeResult != null) ? decodeResult : DecodeResult.TREE_CONTINUE;
+		return decodeChildren(element, parentNode);
 	}
 
 	/**
@@ -75,11 +80,11 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 		List<Element> childElements = element.getChildren();
 
-		for (Element childEl : childElements) {
+		for (Element childElement : childElements) {
 
-			if (TEMPLATE_ID.equals(childEl.getName())) {
-				String root = childEl.getAttributeValue(ROOT_STRING);
-				String extension = childEl.getAttributeValue(EXTENSION_STRING);
+			if (TEMPLATE_ID.equals(childElement.getName())) {
+				String root = childElement.getAttributeValue(ROOT_STRING);
+				String extension = childElement.getAttributeValue(EXTENSION_STRING);
 				TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
 				DEV_LOG.debug("templateIdFound:{}", templateId);
 
@@ -94,7 +99,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				childNode.setDefaultNsUri(defaultNs.getURI());
 				childNode.setPath(XPathHelper.getAbsolutePath(element));
 				
-				setNamespace(childEl, childDecoder);
+				setNamespace(childElement, childDecoder);
 				
 				// the child decoder might require the entire its siblings
 				DecodeResult result = childDecoder.internalDecode(element, childNode);
@@ -105,12 +110,12 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				parentNode.addChildNode(childNode);
 				currentNode = childNode;
 
-				DecodeResult placeholderNode = testChildDecodeResult(result, childEl, childNode);
+				DecodeResult placeholderNode = testChildDecodeResult(result, childElement, childNode);
 				if (placeholderNode != null) {
 					return placeholderNode;
 				}
 			} else {
-				decode(childEl, currentNode);
+				decode(childElement, currentNode);
 			}
 		}
 
@@ -126,9 +131,13 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	private QppXmlDecoder getDecoder(TemplateId templateId) {
 		QppXmlDecoder qppDecoder = decoders.get(templateId);
 		if (qppDecoder != null) {
+			if (scope == null) {
+				return qppDecoder;
+			}
+
 			Decoder decoder = qppDecoder.getClass().getAnnotation(Decoder.class);
 			TemplateId template = decoder == null ? TemplateId.DEFAULT : decoder.value();
-			return scope != null && !scope.contains(template) ? null : qppDecoder;
+			return !scope.contains(template) ? null : qppDecoder;
 		}
 
 		return null;
@@ -149,14 +158,20 @@ public class QppXmlDecoder extends XmlInputDecoder {
 			return decode(childElement, placeholderNode);
 		}
 
-		if (result == DecodeResult.TREE_FINISHED) {
-			return DecodeResult.TREE_FINISHED;
-		} else if (result == DecodeResult.TREE_CONTINUE) {
-			decode(childElement, childNode);
-		} else if (result == DecodeResult.ERROR) {
-			DEV_LOG.error("Failed to decode templateId {} ", childNode.getType());
-		} else {
-			DEV_LOG.error("We need to define a default case. Could be TreeContinue?");
+		switch (result) {
+			case TREE_FINISHED:
+				return DecodeResult.TREE_FINISHED;
+
+			case TREE_CONTINUE:
+				decode(childElement, childNode);
+				break;
+
+			case ERROR:
+				DEV_LOG.error("Failed to decode templateId {} ", childNode.getType());
+				break;
+
+			default:
+				DEV_LOG.error("We need to define a default case. Could be TreeContinue?");
 		}
 
 		return null;
@@ -263,5 +278,23 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	protected String getXpath(String attribute) {
 		String template = this.getClass().getAnnotation(Decoder.class).value().name();
 		return PathCorrelator.getXpath(template, attribute, defaultNs.getURI());
+	}
+
+	/**
+	 * Sets a given Supplemental Data by type in the current Node
+	 *
+	 * @param element XML element that represents SupplementalDataCode
+	 * @param thisNode Current Node to decode into
+	 * @param type Current Supplemental Type to put onto this node
+	 */
+	public void setSupplementalDataOnNode(Element element, Node thisNode, SupplementalType type) {
+		String supplementalXpathCode = type.equals(SupplementalType.PAYER) ?
+				SUPPLEMENTAL_DATA_PAYER_CODE :  SUPPLEMENTAL_DATA_CODE;
+		String expressionStr = getXpath(supplementalXpathCode);
+		Consumer<? super Attribute> consumer = attr -> {
+			String code = attr.getValue();
+			thisNode.putValue(SUPPLEMENTAL_DATA_KEY, code, false);
+		};
+		setOnNode(element, expressionStr, consumer, Filters.attribute(), false);
 	}
 }

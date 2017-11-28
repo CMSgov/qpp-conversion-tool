@@ -1,20 +1,22 @@
 package gov.cms.qpp.conversion.validate;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Collection;
 import java.util.Set;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 /**
  * Test class for IaMeasureValidator
  */
-public class IaMeasureValidatorTest {
+class IaMeasureValidatorTest {
 
 	/**
 	 * Validate a correct set of Nodes
@@ -22,7 +24,7 @@ public class IaMeasureValidatorTest {
 	 * @throws Exception on test error
 	 */
 	@Test
-	public void internalValidateSingleNodeY() throws Exception {
+	void internalValidateSingleNodeY() throws Exception {
 		Node measureNode = new Node(TemplateId.IA_MEASURE);
 		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED, measureNode);
 		measureNode.addChildNode(measurePerformedNode);
@@ -35,7 +37,7 @@ public class IaMeasureValidatorTest {
 	}
 
 	@Test
-	public void internalValidateSingleNodeN() throws Exception {
+	void internalValidateSingleNodeN() throws Exception {
 		Node measureNode = new Node(TemplateId.IA_MEASURE);
 		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED, measureNode);
 		measureNode.addChildNode(measurePerformedNode);
@@ -54,14 +56,14 @@ public class IaMeasureValidatorTest {
 	 * @throws Exception on test error
 	 */
 	@Test
-	public void testMissingNode() throws Exception {
+	void testMissingNode() throws Exception {
 		Node measureNode = new Node(TemplateId.IA_MEASURE);
 		IaMeasureValidator validator = new IaMeasureValidator();
 		Set<Detail> errors = validator.validateSingleNode(measureNode);
 
 		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(IaMeasureValidator.INCORRECT_CHILDREN_COUNT);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT);
 	}
 
 	/**
@@ -70,7 +72,7 @@ public class IaMeasureValidatorTest {
 	 * @throws Exception on test error
 	 */
 	@Test
-	public void testTooManyChildren() throws Exception {
+	void testTooManyChildren() throws Exception {
 		Node measureNode = new Node(TemplateId.IA_MEASURE);
 		Node measurePerformedNode1 = new Node(TemplateId.MEASURE_PERFORMED, measureNode);
 		Node measurePerformedNode2 = new Node(TemplateId.MEASURE_PERFORMED, measureNode);
@@ -83,7 +85,7 @@ public class IaMeasureValidatorTest {
 		Set<Detail> errors = validator.validateSingleNode(measureNode);
 
 		assertWithMessage("The INCORRECT_CHILDREN_COUNT Error is expected")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(IaMeasureValidator.INCORRECT_CHILDREN_COUNT);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT);
 	}
 }

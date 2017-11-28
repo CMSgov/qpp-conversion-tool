@@ -8,23 +8,23 @@ import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import java.lang.reflect.Method;
 import org.jdom2.Element;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class QppXmlDecoderTest {
+class QppXmlDecoderTest {
 
 	private static boolean errorDecode = false;
 
 	@Test
-	public void decodeResultNoAction() throws Exception {
+	void decodeResultNoAction() throws Exception {
 		assertWithMessage("DecodeResult is incorrect")
 				.that(new QppXmlDecoder(new Context()).internalDecode(null, null))
 				.isEquivalentAccordingToCompareTo(DecodeResult.NO_ACTION);
 	}
 
 	@Test
-	public void nullElementDecodeReturnsError() {
+	void nullElementDecodeReturnsError() {
 		// Element nullElement = null;
 		assertWithMessage("DecodeResult is incorrect")
 				.that(new QppXmlDecoder(new Context()).decode((Element) null, null))
@@ -32,7 +32,7 @@ public class QppXmlDecoderTest {
 	}
 
 	@Test
-	public void decodeInvalidChildReturnsError() {
+	void decodeInvalidChildReturnsError() {
 		Context context = new Context();
 		TestHelper.mockDecoder(context, TestChildDecodeError.class, new ComponentKey(TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS, Program.ALL));
 		TestHelper.mockDecoder(context, TestChildNoAction.class, new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL));
@@ -53,7 +53,7 @@ public class QppXmlDecoderTest {
 	}
 
 	@Test
-	public void testChildDecodeErrorResultTest() throws Exception {
+	void testChildDecodeErrorResultTest() throws Exception {
 		DecodeResult result = DecodeResult.ERROR;
 		DecodeResult returnValue = runTestChildDecodeResult(result);
 		assertWithMessage("Should get an invalid Decode Result")
@@ -63,7 +63,7 @@ public class QppXmlDecoderTest {
 	}
 
 	@Test
-	public void testChildDecodeInvalidResultTest() throws Exception {
+	void testChildDecodeInvalidResultTest() throws Exception {
 		DecodeResult result = DecodeResult.NO_ACTION;
 		DecodeResult returnValue = runTestChildDecodeResult(result);
 		assertWithMessage("Should get an invalid Decode Result")

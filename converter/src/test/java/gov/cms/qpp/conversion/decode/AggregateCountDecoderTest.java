@@ -9,13 +9,11 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.jdom2.Element;
-import org.jdom2.Namespace;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class AggregateCountDecoderTest {
+class AggregateCountDecoderTest {
 
     private static final String XML_FRAGMENT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
             + "<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
@@ -58,9 +56,9 @@ public class AggregateCountDecoderTest {
             + "    <value xsi:type=\"INT\" value=\"400\"/>\n"
             + "    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>\n"
             + "</observation>";
-c
+
     @Test
-    public void testAggregateCountDecoderIgnoresInvalidTemplateId() throws Exception {
+    void testAggregateCountDecoderIgnoresInvalidTemplateId() throws Exception {
         Node parent = decodeAggregateCountFromXml(XML_FRAGMENT);
         Node measureData = parent.getChildNodes().get(0);
 
@@ -68,7 +66,7 @@ c
     }
 
     @Test
-    public void testAggregateCountDecoderHasValidAggregateCount() throws Exception {
+    void testAggregateCountDecoderHasValidAggregateCount() throws Exception {
         Node parent = decodeAggregateCountFromXml(XML_FRAGMENT);
         Node measureData = parent.getChildNodes().get(0);
 
@@ -77,17 +75,14 @@ c
     }
 
     @Test
-    public void testAggregateCountDecoderWithGarbageXmlDecodesValidValue() throws Exception {
-
+    void testAggregateCountDecoderWithGarbageXmlDecodesValidValue() throws Exception {
         Node root = decodeAggregateCountFromXml(ANOTHER_XML_FRAGMENT);
-
         assertThat(root.getValue("aggregateCount")).isEqualTo("400");
     }
 
     @Test
-    public void testAggregateCountDecoderWithGarbageXmlDecodesValidType() throws Exception {
+    void testAggregateCountDecoderWithGarbageXmlDecodesValidType() throws Exception {
         Node root = decodeAggregateCountFromXml(ANOTHER_XML_FRAGMENT);
-
         assertThat(root.getType()).isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
     }
 

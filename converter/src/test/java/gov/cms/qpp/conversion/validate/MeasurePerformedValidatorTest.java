@@ -3,8 +3,9 @@ package gov.cms.qpp.conversion.validate;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Test;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
@@ -14,7 +15,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
  * Test class for MeasurePerformedValidator
  */
 
-public class MeasurePerformedValidatorTest {
+class MeasurePerformedValidatorTest {
 
 	/**
 	 * Validate a correct set of Nodes
@@ -22,7 +23,7 @@ public class MeasurePerformedValidatorTest {
 	 * @throws Exception on test error
 	 */
 	@Test
-	public void internalValidateSingleNodeY() throws Exception {
+	void internalValidateSingleNodeY() throws Exception {
 		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		measurePerformedNode.putValue("measurePerformed", "Y");
 
@@ -33,7 +34,7 @@ public class MeasurePerformedValidatorTest {
 	}
 
 	@Test
-	public void internalValidateSingleNodeN() throws Exception {
+	void internalValidateSingleNodeN() throws Exception {
 		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		measurePerformedNode.putValue("measurePerformed", "N");
 
@@ -44,14 +45,14 @@ public class MeasurePerformedValidatorTest {
 	}
 
 	@Test
-	public void internalValidateSingleNodeInvalid() throws Exception {
+	void internalValidateSingleNodeInvalid() throws Exception {
 		Node measurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		measurePerformedNode.putValue("measurePerformed", "wrong value");
 
 		MeasurePerformedValidator validator = new MeasurePerformedValidator();
 		Set<Detail> errors = validator.validateSingleNode(measurePerformedNode);
 		assertWithMessage("Should result in a single type error")
-				.that(errors).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly(IaMeasureValidator.TYPE_ERROR);
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.IA_MEASURE_INVALID_TYPE);
 	}
 }

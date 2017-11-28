@@ -1,15 +1,18 @@
 package gov.cms.qpp.conversion.model.error;
 
-import org.junit.Test;
-
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
+import org.junit.jupiter.api.Test;
+
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class AllErrorsTest {
+class AllErrorsTest {
 
 	@Test
-	public void errorSourceInit() {
+	void testErrorSourceInit() {
 		AllErrors objectUnderTest = new AllErrors();
 		assertWithMessage("The error sources should have been null at first")
 				.that(objectUnderTest.getErrors())
@@ -17,7 +20,7 @@ public class AllErrorsTest {
 	}
 
 	@Test
-	public void addErrorSource() {
+	void testAddErrorSource() {
 		AllErrors objectUnderTest = new AllErrors();
 		objectUnderTest.addError(new Error());
 
@@ -26,7 +29,7 @@ public class AllErrorsTest {
 	}
 
 	@Test
-	public void addErrorSources() {
+	void testAddErrorSources() {
 		AllErrors objectUnderTest = new AllErrors();
 		objectUnderTest.addError(new Error());
 		objectUnderTest.addError(new Error());
@@ -36,7 +39,7 @@ public class AllErrorsTest {
 	}
 
 	@Test
-	public void setErrorSources() {
+	void testSetErrorSources() {
 		AllErrors objectUnderTest = new AllErrors();
 		objectUnderTest.setErrors(Collections.singletonList(new Error()));
 
@@ -45,12 +48,21 @@ public class AllErrorsTest {
 	}
 
 	@Test
-	public void testToString() {
+	void testToString() {
 		AllErrors objectUnderTest = new AllErrors();
 		Error error = new Error();
 		objectUnderTest.addError(error);
 
 		assertWithMessage("Must contain formatted string")
 				.that(objectUnderTest.toString()).contains(error.toString());
+	}
+
+	@Test
+	void testArgConstructor() {
+		List<Error> errors = new ArrayList<>();
+		errors.add(new Error());
+		new AllErrors(errors);
+		assertThat(new AllErrors(errors).getErrors())
+				.containsAllIn(errors);
 	}
 }

@@ -4,8 +4,10 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsMessageEquals;
-import org.junit.Test;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
@@ -16,9 +18,9 @@ import static org.mockito.Mockito.verify;
 /**
  * This class tests the QualitySectionEncoder class
  */
-public class QualitySectionEncoderTest {
+class QualitySectionEncoderTest {
 	@Test
-	public void internalEncode() throws EncodeException {
+	void internalEncode() throws EncodeException {
 		Node qualitySectionNode = getQualitySectionNode();
 		QualitySectionEncoder encoder = new QualitySectionEncoder(new Context());
 		JsonWrapper jsonWrapper = new JsonWrapper();
@@ -31,7 +33,7 @@ public class QualitySectionEncoderTest {
 	}
 
 	@Test
-	public void internalEncodeNegative() throws EncodeException {
+	void internalEncodeNegative() throws EncodeException {
 		Node qualitySectionNode = getQualitySectionNode();
 		qualitySectionNode.addChildNode(new Node());
 
@@ -40,12 +42,12 @@ public class QualitySectionEncoderTest {
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 
 		assertWithMessage("An encoder for a child node should not have been found.")
-				.that(encoder.getDetails()).comparingElementsUsing(DetailsMessageEquals.INSTANCE)
-				.containsExactly("Failed to find an encoder for child node DEFAULT");
+				.that(encoder.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.ENCODER_MISSING);
 	}
 
 	@Test
-	public void internalEncodeNoReportingParametersNegative() throws EncodeException {
+	void internalEncodeNoReportingParametersNegative() throws EncodeException {
 		Node qualitySectionNode = getQualitySectionNode();
 		Node removeMe = qualitySectionNode.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualitySectionNode.getChildNodes().remove(removeMe);
