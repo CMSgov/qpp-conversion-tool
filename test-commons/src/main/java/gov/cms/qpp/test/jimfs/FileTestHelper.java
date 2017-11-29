@@ -1,4 +1,4 @@
-package gov.cms.qpp.test;
+package gov.cms.qpp.test.jimfs;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -11,10 +11,12 @@ import java.util.stream.Stream;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 
+import gov.cms.qpp.test.CopyFileVisitor;
+
 public class FileTestHelper {
 
-	public static FileSystem createMockFileSystem() {
-		FileSystem mock = Jimfs.newFileSystem(Configuration.unix());
+	public static FileSystem createMockFileSystem(Configuration configuration) {
+		FileSystem mock = Jimfs.newFileSystem();
 
 		copy("../qrda-files", mock);
 		copy("src/test/resources", mock);
