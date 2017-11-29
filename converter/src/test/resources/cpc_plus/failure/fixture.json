@@ -513,6 +513,43 @@
 			}
 		]
 	},
+	"CPCPlus_WithQuality_137_IncStratUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 48,
+				"subs": ["94B9555F-8700-45EF-B69F-433EBEDE8051", "IPOP", "EC2C5F63-AF76-4D3C-85F0-5423F8C28541"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_139_IncDenomExUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 59,
+				"subs": [
+					"CMS139v5",
+					"DENEXCEP",
+					"CF7E1913-CB4E-42F7-BAEC-0EFFF01ECB17"
+				],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_149_IncNumerUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 59,
+				"subs": [
+					"CMS149v5",
+					"NUMER",
+					"2C2431A3-7DE3-4C97-80C0-4BF96D4880F0"
+				],
+				"occurrences": 1
+			}]
+	},
 	"CPCPlus_WithQuality_165_IncSuppData_SampleQRDA-III.xml": {
 		"strict": true,
 		"errorData": [
