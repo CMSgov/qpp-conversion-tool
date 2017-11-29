@@ -53,7 +53,7 @@ public class QrdaControllerV1 {
 	@RequestMapping(method = RequestMethod.POST, headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
 		String originalFilename = file.getOriginalFilename();
-		API_LOG.info("Conversion request received for " + originalFilename);
+		API_LOG.info("Conversion request received");
 
 		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
 				new InputStreamSupplierQrdaSource(originalFilename, inputStreamSupplier(file)));
@@ -62,7 +62,7 @@ public class QrdaControllerV1 {
 
 		auditService.success(conversionReport);
 
-		API_LOG.info("Conversion request succeeded for " + originalFilename);
+		API_LOG.info("Conversion request succeeded");
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
