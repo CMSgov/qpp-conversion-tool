@@ -6,9 +6,9 @@ import java.util.stream.Stream;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.PathType;
 
-public abstract class JimfsTestSuite {
+public interface JimfsContract {
 
-	public static Stream<FileSystem> jimfs() {
+	static Stream<FileSystem> jimfs() {
 		return Stream.of(Configuration.unix(), Configuration.osX(), Configuration.windows())
 				.map(FileTestHelper::createMockFileSystem);
 	}

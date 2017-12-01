@@ -11,9 +11,9 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.AfterEach;
 
 import gov.cms.qpp.test.jimfs.JimfsTest;
-import gov.cms.qpp.test.jimfs.JimfsTestSuite;
+import gov.cms.qpp.test.jimfs.JimfsContract;
 
-class ConverterWithAbridgedTest extends JimfsTestSuite {
+class ConverterWithAbridgedTest implements JimfsContract {
 
 	private FileSystem fileSystem;
 	private Field fileSystemField;
