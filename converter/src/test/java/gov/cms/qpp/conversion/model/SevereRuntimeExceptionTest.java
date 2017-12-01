@@ -1,12 +1,12 @@
 package gov.cms.qpp.conversion.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class SevereRuntimeExceptionTest {
+class SevereRuntimeExceptionTest {
 	@Test
-	public void testConstuctor() {
+	void testConstuctor() {
 		Throwable cause = new Throwable();
 		SevereRuntimeException exception = new SevereRuntimeException(cause);
 

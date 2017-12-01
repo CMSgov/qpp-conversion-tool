@@ -44,13 +44,16 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
 		String value = node.getValue(MEASURE_ID);
 		MeasureConfig measureConfig = configurationMap.get(value);
-		int requiredPerformanceRateCount = measureConfig.getStrata().size();
 
-		thoroughlyCheck(node)
-				.childMinimum(ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
-						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-				.childMaximum(ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
-						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+		if (measureConfig != null) {
+			int requiredPerformanceRateCount = measureConfig.getStrata().size();
+
+			thoroughlyCheck(node)
+					.childMinimum(ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
+							requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
+					.childMaximum(ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
+							requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+		}
 
 	}
 

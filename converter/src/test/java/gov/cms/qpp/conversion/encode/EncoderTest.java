@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 import java.util.EnumSet;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
@@ -19,7 +19,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 /**
  * This class tests basic Encoder functionality for the defined list of tmeplateId's
  */
-public class EncoderTest {
+class EncoderTest {
 
 	private final Set<TemplateId> templateIds = EnumSet.of(
 			TemplateId.CLINICAL_DOCUMENT,
@@ -49,7 +49,7 @@ public class EncoderTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void decodeTemplateIds() throws Exception {
+	void decodeTemplateIds() throws Exception {
 		Registry<OutputEncoder> registry = new Registry<>(new Context(), Encoder.class);
 		for (TemplateId templateId : templateIds) {
 			OutputEncoder encoder = registry.get(templateId);

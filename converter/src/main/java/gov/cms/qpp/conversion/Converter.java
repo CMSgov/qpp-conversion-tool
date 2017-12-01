@@ -80,7 +80,7 @@ public class Converter {
 	 * @return status of conversion
 	 */
 	public JsonWrapper transform() {
-		DEV_LOG.info("Transform invoked with file {}", source.getName());
+		DEV_LOG.info("Transform invoked");
 		try {
 			encoded = transform(source.toInputStream());
 		} catch (XmlInputFileException | XmlException xe) {
@@ -112,7 +112,7 @@ public class Converter {
 		decoded = XmlInputDecoder.decodeXml(context, doc);
 		JsonWrapper qpp = null;
 		if (null != decoded) {
-			DEV_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), source.getName());
+			DEV_LOG.info("Decoded template ID {}", decoded.getType());
 
 			if (!context.isDoDefaults()) {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());

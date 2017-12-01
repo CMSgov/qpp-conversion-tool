@@ -91,6 +91,9 @@
    <!--Practice Site-->
 	  <participant typeCode="LOC">
       <associatedEntity classCode="SDLOC">
+         <id root="2.16.840.1.113883.3.249.5.1"
+            extension="DogCow"
+             assigningAuthorityName="CMS-CMMI"/>
          <code code="394730007"
                displayName="healthcare related organization"
                codeSystem="2.16.840.1.113883.6.96"
@@ -20164,10 +20167,10 @@ QRDA Category III Measure Section (CMS EP)
                                  </entryRelationship>
                               </observation>
                            </entryRelationship>
-                           <!--DENEXCEP Population ID from eMeasure-->			
+                           <!--DENEXCEP Population ID from eMeasure Changed BAEC to BA3C-->			
                            <reference typeCode="REFR">
                               <externalObservation classCode="OBS" moodCode="EVN">
-                                 <id root="CF7E1913-CB4E-42F7-BAEC-0EFFF01ECB17"/>
+                                 <id root="CF7E1913-CB4E-42F7-BA3C-0EFFF01ECB17"/>
                               </externalObservation>
                            </reference>
                         </observation>
