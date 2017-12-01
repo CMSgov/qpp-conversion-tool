@@ -16,7 +16,7 @@ import gov.cms.qpp.test.CopyFileVisitor;
 public class FileTestHelper {
 
 	public static FileSystem createMockFileSystem(Configuration configuration) {
-		FileSystem mock = Jimfs.newFileSystem();
+		FileSystem mock = Jimfs.newFileSystem(configuration);
 
 		copy("../qrda-files", mock);
 		copy("src/test/resources", mock);
