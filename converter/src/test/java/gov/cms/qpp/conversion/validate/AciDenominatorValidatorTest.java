@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
@@ -14,15 +14,15 @@ import static com.google.common.truth.Truth.assertWithMessage;
 /**
  * Class to test the AciDenominatorValidatorTest
  */
-public class AciDenominatorValidatorTest {
+class AciDenominatorValidatorTest {
 
 	@Test
-	public void internalValidateSingleNodeWithGreaterThanZeroValue() throws Exception {
+	void internalValidateSingleNodeWithGreaterThanZeroValue() throws Exception {
 		validateDenominatorWithValue("100");
 	}
 
 	@Test
-	public void internalValidateSingleNodeWithZeroValue() throws Exception {
+	void internalValidateSingleNodeWithZeroValue() throws Exception {
 		validateDenominatorWithValue("0");
 	}
 
@@ -40,7 +40,7 @@ public class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	public void noChildrenTest() throws Exception {
+	void noChildrenTest() throws Exception {
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 
 		AciDenominatorValidator validator = new AciDenominatorValidator();
@@ -53,7 +53,7 @@ public class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	public void incorrectChildrenTest() throws Exception {
+	void incorrectChildrenTest() throws Exception {
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_SECTION);
 		aggregateCountNode.putValue("aggregateCount", "100");
@@ -71,7 +71,7 @@ public class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	public void tooManyChildrenTest() throws Exception {
+	void tooManyChildrenTest() throws Exception {
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		Node aggregateCountNode1 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		Node aggregateCountNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
@@ -93,7 +93,7 @@ public class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	public void invalidValueNaNTest() throws Exception {
+	void invalidValueNaNTest() throws Exception {
 		//Not a number check
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
@@ -108,7 +108,7 @@ public class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	public void invalidValueNegativeNumberTest() throws Exception {
+	void invalidValueNegativeNumberTest() throws Exception {
 		//Not a number check
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
@@ -126,7 +126,7 @@ public class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	public void invalidValueDenominatorNumberTest() throws Exception {
+	void invalidValueDenominatorNumberTest() throws Exception {
 		//Not a number check
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);

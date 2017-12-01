@@ -15,7 +15,7 @@ public enum ErrorCode implements LocalizedError {
 	UNEXPECTED_ERROR(3, "Unexpected exception occurred during conversion"),
 	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occured during encoding"),
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document"),
-	MEASURE_GUID_MISSING(6, "The measure reference results must have a measure GUID"),
+	MEASURE_GUID_MISSING(6, "The measure reference results must have a recognized measure GUID"),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
@@ -101,7 +101,12 @@ public enum ErrorCode implements LocalizedError {
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64,
 			"CPC+ Submissions must have at least %d of the following %s measures: %s.", true),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65,
-			"CPC+ Submissions must have at least %d of the following measures: %s.", true);
+			"CPC+ Submissions must have at least %d of the following measures: %s.", true),
+	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66,
+			"Missing the Supplemental Code %s for eCQM measure %s's Sub-population %s", true),
+	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67,
+			"Must have one count for Supplemental Data %s on Sub-population %s for eCQM measure %s", true),
+	CPC_PLUS_SUBMISSION_ENDED(68, "CPC+ Submission is after the end date %s.", true);
 
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
@@ -144,7 +149,7 @@ public enum ErrorCode implements LocalizedError {
 	 * Creates a formatted version of this error code, or throws an exception
 	 *
 	 * @param arguments arguments to format with
-	 * @return the formatted version of this error code, or throws an exception if formatting is 
+	 * @return the formatted version of this error code, or throws an exception if formatting is
 	 * not supported.
 	 */
 	public final LocalizedError format(Object... arguments) {

@@ -1,0 +1,567 @@
+{
+	"CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS124v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS125v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS130v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS131v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS137v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS138v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS139v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS149v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS156v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS159v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS165v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS166v6IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMS50v5IncUUID_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 6,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_CMSPrgrm_DiffCode_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 25,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_InvalidPerformancePeriod_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 55,
+				"occurrences": 1
+			},
+			{
+				"errorCode": 56,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_Measure_Section.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 36,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPLUS_Performance_Rate_Number.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 59,
+				"subs": [
+					"CMS\\d{2,3}v\\d{1}",
+					".*",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 2
+			},
+			{
+				"errorCode": 37,
+				"subs": [1],
+				"occurrences": 2
+			},
+			{
+				"errorCode": 37,
+				"subs": [2],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPLUS_Performance_Rate_Sample.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 33,
+				"occurrences": 2
+			}
+		]
+	},
+	"CPCPlus_AddressEx1_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 34,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_PracID_Null_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 35,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_InvalidApmId.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 63,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_PracID_Not_Provided_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 35,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_QualityWithDupNumOfDenomPops_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 14,
+				"subs": ["CMS\\d{2,3}v\\d{1}", 1, "DENOM", 2],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_QualityWithIncNumOfNumerPops_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 14,
+				"subs": ["CMS\\d{2,3}v\\d{1}", 1, "NUMER", 2],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithOnlyACI_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 36,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithOnlyACIandIA_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 36,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithOnlyIA_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 36,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQualityIncorrectEndDate_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 56,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQualityIncorrectStartDate_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 55,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_122_IPOPLessThanDenom_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 13,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_130_IPOPLessThanDenom_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 13,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_137OnlyOnePerfRateSampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 33,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_137_IncNumerator_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}",
+					"performanceRateUuid",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_137_IncStrata_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 57,
+				"occurrences": 1
+			},
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}",
+					"IPOP,IPP",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 1
+			},
+			{
+				"errorCode": 66,
+				"subs": [".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
+				"occurrences": 14
+			}
+		]
+	},
+	"CPCPlus_WithQuality_149PerfRateOver1_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 33,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_156OnlyOnePerfRate_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 37,
+				"subs": [2],
+				"occurrences": 1
+			},
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}",
+					"performanceRateUuid",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_156_IncNumberator_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}",
+					"performanceRateUuid",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_165NegativePerfRate_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 33,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_CMS138_AlphCharInPerfRate_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 33,
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_ExtraPopulationForCMS149_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 14,
+				"subs": ["CMS\\d{2,3}v\\d{1}", 0, "DENEX", 1],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_PerfRateNotPresent_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 37,
+				"subs": [1],
+				"occurrences": 1
+			},
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}",
+					"performanceRateUuid",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 1
+			}
+		]
+	},
+	"QRDAIII_CMS153_NonCPCPlusMsr_IncStrata.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 49,
+				"subs": [1, 2, "[A-Z]{3,8}",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}",
+				    ".*"],
+				"occurrences": 3
+			},
+			{
+				"errorCode": 48,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[A-Z]{3,8}",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 3
+			}
+		]
+	},
+	"QRDAIII_CMS155_NonCPCPlusMsr_IncStrata.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 14,
+				"subs": ["CMS137v5", 2, "[A-Z]{3,8}", 3],
+				"occurrences": 4
+			},
+			{
+				"errorCode": 59,
+				"subs": ["CMS137v5", ".*", "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 10
+			}
+		]
+	},
+	"QRDAIII_CMS74_NonCPCPlusMsr_IncStrata.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 49,
+				"subs": [2, 3, "[A-Z]{3,8}",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}",
+					".*"],
+				"occurrences": 2
+			},
+			{
+				"errorCode": 48,
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[A-Z]{3,8}",
+					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences": 2
+			}
+		]
+	},
+	"CPCPlus_IncNumofGroup1Measures_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 64,
+				"subs": [2, "outcome", "40280381-51f0-825b-0152-22b98cff181a,40280381-51f0-825b-0152-229afff616ee,40280381-5118-2f4e-0151-3a9382cd09ba"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_IncNumofGroup2Measures_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 64,
+				"subs": [2, "complex process", "40280381-51f0-825b-0152-22aae8a21778,40280381-52fc-3a32-0153-1a401cc10b57,40280381-528a-60ff-0152-8e089ed20376,40280381-52fc-3a32-0153-56d2b4f01ae5"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_IncNumTotalMeasures_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 65,
+				"subs": [9, "40280381-51f0-825b-0152-22b98cff181a,40280381-51f0-825b-0152-229afff616ee,40280381-5118-2f4e-0151-3a9382cd09ba,40280381-51f0-825b-0152-22aae8a21778,40280381-52fc-3a32-0153-1a401cc10b57,40280381-528a-60ff-0152-8e089ed20376,40280381-52fc-3a32-0153-56d2b4f01ae5,40280381-51f0-825b-0152-22ba7621182e,40280381-5118-2f4e-0151-59fb81bf1055,40280381-51f0-825b-0152-22a1e7e81737,40280381-51f0-825b-0152-229c4ea3170c,40280381-51f0-825b-0152-22a24cdd1740,40280381-51f0-825b-0152-229bdcab1702,40280381-503f-a1fc-0150-d33f5b0a1b8c"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_137_IncStratUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 48,
+				"subs": ["94B9555F-8700-45EF-B69F-433EBEDE8051", "IPOP", "EC2C5F63-AF76-4D3C-85F0-5423F8C28541"],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_139_IncDenomExUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 59,
+				"subs": [
+					"CMS139v5",
+					"DENEXCEP",
+					"CF7E1913-CB4E-42F7-BAEC-0EFFF01ECB17"
+				],
+				"occurrences": 1
+			}
+		]
+	},
+	"CPCPlus_WithQuality_149_IncNumerUUID_SampleQRDA-III.xml": {
+		"strict": false,
+		"errorData": [
+			{
+				"errorCode": 59,
+				"subs": [
+					"CMS149v5",
+					"NUMER",
+					"2C2431A3-7DE3-4C97-80C0-4BF96D4880F0"
+				],
+				"occurrences": 1
+			}]
+	},
+	"CPCPlus_WithQuality_165_IncSuppData_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 63,
+				"occurrences": 1
+			},
+			{
+				"errorCode": 66,
+				"subs": [".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
+				"occurrences": 119
+			}
+		]
+	}
+}
