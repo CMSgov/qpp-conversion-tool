@@ -36,7 +36,7 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
-	void getUnprocessedFileListTest() throws IOException {
+	void testGetUnprocessedFileList() throws IOException {
 		when(cpcFileService.getUnprocessedCpcPlusFiles()).thenReturn(expectedUnprocessedCpcFileDataList);
 
 		ResponseEntity qppResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles();
