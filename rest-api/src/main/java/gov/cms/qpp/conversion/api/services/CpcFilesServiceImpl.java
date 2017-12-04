@@ -2,10 +2,11 @@ package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CpcFilesServiceImpl implements CpcFileService {
@@ -27,12 +28,6 @@ public class CpcFilesServiceImpl implements CpcFileService {
 	 * @return
 	 */
 	private List<UnprocessedCpcFileData> transformMetaDataToUnprocessedCpcFileData(List<Metadata> metadataList) {
-		List<UnprocessedCpcFileData> unprocessedCpcFileDataList = new ArrayList<>();
-		metadataList.forEach(data -> {
-			UnprocessedCpcFileData unprocessedCpcFileData = new UnprocessedCpcFileData(data);
-			unprocessedCpcFileDataList.add(unprocessedCpcFileData);
-		});
-
-		return unprocessedCpcFileDataList;
+		return metadataList.stream().map(UnprocessedCpcFileData::new).collect(Collectors.toList());
 	}
 }
