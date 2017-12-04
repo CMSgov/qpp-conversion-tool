@@ -32,6 +32,7 @@ public final class Metadata {
 	private String conversionErrorLocator;
 	private String validationErrorLocator;
 	private String rawValidationErrorLocator;
+	private Boolean cpcProcessed;
 
 
 	/**
@@ -374,6 +375,26 @@ public final class Metadata {
 	}
 
 	/**
+	 * Whether the file was processed by the CPC+ team
+	 *
+	 * @return
+	 */
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = "CpcProcessed")
+	public Boolean getCpcProcessed() {
+		return cpcProcessed;
+	}
+
+	/**
+	 * Sets whether the file was processed by the CPC+ team
+	 *
+	 * @param cpcProcessed
+	 */
+	public void setCpcProcessed(Boolean cpcProcessed) {
+		this.cpcProcessed = cpcProcessed;
+	}
+
+	/**
 	 * Determines the equality between this object and another.
 	 *
 	 * @param o The other object.
@@ -407,6 +428,7 @@ public final class Metadata {
 		equals &= Objects.equal(conversionErrorLocator, that.conversionErrorLocator);
 		equals &= Objects.equal(validationErrorLocator, that.validationErrorLocator);
 		equals &= Objects.equal(rawValidationErrorLocator, that.rawValidationErrorLocator);
+		equals &= Objects.equal(cpcProcessed, that.cpcProcessed);
 		return equals;
 	}
 
@@ -418,6 +440,6 @@ public final class Metadata {
 	public int hashCode() {
 		return Objects.hashCode(uuid, tin, npi, createdDate, apm, submissionYear,
 				submissionLocator, qppLocator, fileName, overallStatus, conversionStatus, validationStatus,
-				cpc, conversionErrorLocator, validationErrorLocator, rawValidationErrorLocator);
+				cpc, conversionErrorLocator, validationErrorLocator, rawValidationErrorLocator, cpcProcessed);
 	}
 }
