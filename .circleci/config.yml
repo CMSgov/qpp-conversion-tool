@@ -40,7 +40,6 @@ jobs:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/node:7.10.0-browsers
-    resource_class: large
     steps:
       - checkout
       - run: curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -58,7 +57,6 @@ jobs:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/node:7.10.0-browsers
-    resource_class: large
     steps:
       - checkout
       - run: cd frontend; rm -f yarn.lock && yarn
