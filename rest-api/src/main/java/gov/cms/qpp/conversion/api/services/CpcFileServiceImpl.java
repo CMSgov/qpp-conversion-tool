@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * Service for handling Cpc File meta data
  */
 @Service
-public class CpcFilesServiceImpl implements CpcFileService {
+public class CpcFileServiceImpl implements CpcFileService {
 
 	@Autowired
 	private DbService dbService;

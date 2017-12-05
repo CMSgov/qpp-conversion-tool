@@ -16,10 +16,10 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CpcFilesServiceImplTest {
+class CpcFileServiceImplTest {
 
 	@InjectMocks
-	private CpcFilesServiceImpl objectUnderTest;
+	private CpcFileServiceImpl objectUnderTest;
 
 	@Mock
 	private DbService dbService;
