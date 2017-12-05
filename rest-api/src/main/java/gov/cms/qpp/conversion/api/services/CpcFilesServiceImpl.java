@@ -8,12 +8,20 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service for handling Cpc File meta data
+ */
 @Service
 public class CpcFilesServiceImpl implements CpcFileService {
 
 	@Autowired
 	private DbService dbService;
 
+	/**
+	 * Calls the DbService for unprocessed metadata to transform into UnprocessedCpcFileData
+	 *
+	 * @return List of {@link UnprocessedCpcFileData}
+	 */
 	@Override
 	public List<UnprocessedCpcFileData> getUnprocessedCpcPlusFiles() {
 		List<Metadata> metadata = dbService.getUnprocessedCpcPlusMetaData();
@@ -22,7 +30,7 @@ public class CpcFilesServiceImpl implements CpcFileService {
 	}
 
 	/**
-	 * Service to transform a {@link Metadata} list into the {@Link UnprocessedCpcFileData}
+	 * Service to transform a {@link Metadata} list into the {@link UnprocessedCpcFileData}
 	 *
 	 * @param metadataList
 	 * @return
