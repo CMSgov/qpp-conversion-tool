@@ -32,8 +32,8 @@ public class CpcFileServiceImpl implements CpcFileService {
 	/**
 	 * Service to transform a {@link Metadata} list into the {@link UnprocessedCpcFileData}
 	 *
-	 * @param metadataList
-	 * @return
+	 * @param metadataList object to hold the list of {@link Metadata} from DynamoDb
+	 * @return transformed list of {@link UnprocessedCpcFileData}
 	 */
 	private List<UnprocessedCpcFileData> transformMetaDataToUnprocessedCpcFileData(List<Metadata> metadataList) {
 		return metadataList.stream().map(UnprocessedCpcFileData::new).collect(Collectors.toList());

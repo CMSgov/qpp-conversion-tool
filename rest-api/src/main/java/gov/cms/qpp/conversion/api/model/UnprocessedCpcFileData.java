@@ -7,6 +7,7 @@ import java.util.Date;
  */
 public class UnprocessedCpcFileData {
 	private String fileId;
+	private String fileLocationId;
 	private String filename;
 	private String apm;
 	private Date conversionDate;
@@ -19,6 +20,7 @@ public class UnprocessedCpcFileData {
 	 */
 	public UnprocessedCpcFileData(Metadata metadata) {
 		this.fileId = metadata.getUuid();
+		this.fileLocationId = metadata.getSubmissionLocator();
 		this.filename = metadata.getFileName();
 		this.apm = metadata.getApm();
 		this.conversionDate = metadata.getCreatedDate();
@@ -26,12 +28,21 @@ public class UnprocessedCpcFileData {
 	}
 
 	/**
-	 * retrieves the uuid
+	 * retrieves the uuid for file data
 	 *
 	 * @return fileId
 	 */
-	public String getFileId() {
+	public String getFileDataId() {
 		return fileId;
+	}
+
+	/**
+	 * retrieves the file location id
+	 *
+	 * @return fileId
+	 */
+	public String getFileLocationId() {
+		return fileLocationId;
 	}
 
 	/**
