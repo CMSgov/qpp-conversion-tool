@@ -132,12 +132,24 @@
 						<excludes>
 							<exclude>${exclusionFilter}</exclude>
 						</excludes>
+
+						<classpathDependencyExcludes>
+							<classpathDependencyExclude>ch.qos.logback:logback-classic</classpathDependencyExclude>
+							<classpathDependencyExclude>ch.qos.logback:logback-core</classpathDependencyExclude>
+							<classpathDependencyExclude>net.logstash.logback:logstash-logback-encoder</classpathDependencyExclude>
+						</classpathDependencyExcludes>
 					</configuration>
 					<dependencies>
 						<dependency>
 							<groupId>org.junit.platform</groupId>
 							<artifactId>junit-platform-surefire-provider</artifactId>
 							<version>1.0.2</version>
+						</dependency>
+
+						<dependency>
+							<groupId>org.junit.vintage</groupId>
+							<artifactId>junit-vintage-engine</artifactId>
+							<version>4.12.2</version>
 						</dependency>
 					</dependencies>
 				</plugin>
