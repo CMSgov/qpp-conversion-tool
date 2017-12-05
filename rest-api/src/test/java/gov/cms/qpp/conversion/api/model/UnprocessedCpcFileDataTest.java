@@ -10,7 +10,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 class UnprocessedCpcFileDataTest {
 
-	private static Stream<String> submissionLocatorProvider() {
+	private static Stream<String> uuidProvider() {
 		return Stream.of("000099f2-1f9e-4261-8d60-e4bc294386d7", "006ce223-cbf2-4509-9159-a93524662985");
 	}
 
@@ -31,14 +31,14 @@ class UnprocessedCpcFileDataTest {
 	}
 
 	private static Stream<Metadata> metadataProvider() {
-		return submissionLocatorProvider()
-			.flatMap(submissionLocator -> fileNameProvider()
+		return uuidProvider()
+			.flatMap(uuidLocator -> fileNameProvider()
 				.flatMap(fileName -> apmIdProvider()
 					.flatMap(apmId -> createdDateProvider()
 						.flatMap(createdDate -> overallSuccessProvider()
 							.map(overallSuccess -> {
 			Metadata metadata = new Metadata();
-			metadata.setSubmissionLocator(submissionLocator);
+			metadata.setUuid(uuidLocator);
 			metadata.setFileName(fileName);
 			metadata.setApm(apmId);
 			metadata.setCreatedDate(createdDate);
@@ -53,7 +53,7 @@ class UnprocessedCpcFileDataTest {
 
 		UnprocessedCpcFileData cpcFileData = new UnprocessedCpcFileData(metadata);
 
-		assertThat(cpcFileData.getFileId()).isEqualTo(metadata.getSubmissionLocator());
+		assertThat(cpcFileData.getFileId()).isEqualTo(metadata.getUuid());
 		assertThat(cpcFileData.getFilename()).isEqualTo(metadata.getFileName());
 		assertThat(cpcFileData.getApm()).isEqualTo(metadata.getApm());
 		assertThat(cpcFileData.getConversionDate()).isEqualTo(metadata.getCreatedDate().toString());

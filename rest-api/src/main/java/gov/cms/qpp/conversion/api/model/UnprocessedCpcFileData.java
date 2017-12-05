@@ -18,7 +18,7 @@ public class UnprocessedCpcFileData {
 	 * @param metadata object to be transformed
 	 */
 	public UnprocessedCpcFileData(Metadata metadata) {
-		this.fileId = metadata.getSubmissionLocator();
+		this.fileId = metadata.getUuid();
 		this.filename = metadata.getFileName();
 		this.apm = metadata.getApm();
 		this.conversionDate = metadata.getCreatedDate();
@@ -26,7 +26,7 @@ public class UnprocessedCpcFileData {
 	}
 
 	/**
-	 * retrieves the id for the file location
+	 * retrieves the uuid
 	 *
 	 * @return fileId
 	 */
