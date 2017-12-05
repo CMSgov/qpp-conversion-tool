@@ -67,9 +67,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 				.withFilterExpression("Cpc = :cpcValue and CpcProcessed = :cpcProcessedValue")
 				.withExpressionAttributeValues(valueMap);
 
-		List<Metadata> unprocessedCpcPlusMetadata = mapper.scan(Metadata.class, metadataScan);
-
-		return unprocessedCpcPlusMetadata;
+		return mapper.scan(Metadata.class, metadataScan);
 	}
 
 	/**

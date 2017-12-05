@@ -15,7 +15,7 @@ public class UnprocessedCpcFileData {
 	/**
 	 * Constructor to transform metadata into unprocessed cpc file data
 	 *
-	 * @param metadata
+	 * @param metadata object to be transformed
 	 */
 	public UnprocessedCpcFileData(Metadata metadata) {
 		this.fileId = metadata.getSubmissionLocator();

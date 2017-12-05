@@ -18,5 +18,5 @@ public interface DbService {
 	 */
 	CompletableFuture<Metadata> write(Metadata meta);
 
-	public List<Metadata> getUnprocessedCpcPlusMetaData();
+	List<Metadata> getUnprocessedCpcPlusMetaData();
 }
