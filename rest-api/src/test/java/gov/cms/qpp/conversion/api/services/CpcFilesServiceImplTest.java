@@ -24,7 +24,7 @@ class CpcFilesServiceImplTest {
 	@Mock
 	private DbService dbService;
 
-	static Stream<Integer> numberOfMetadata() {
+	private static Stream<Integer> numberOfMetadata() {
 		return Stream.of(1, 4, 26);
 	}
 

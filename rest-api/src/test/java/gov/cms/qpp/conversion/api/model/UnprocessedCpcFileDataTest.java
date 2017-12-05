@@ -10,27 +10,27 @@ import static com.google.common.truth.Truth.assertThat;
 
 class UnprocessedCpcFileDataTest {
 
-	static Stream<String> submissionLocatorProvider() {
+	private static Stream<String> submissionLocatorProvider() {
 		return Stream.of("000099f2-1f9e-4261-8d60-e4bc294386d7", "006ce223-cbf2-4509-9159-a93524662985");
 	}
 
-	static Stream<String> fileNameProvider() {
+	private static Stream<String> fileNameProvider() {
 		return Stream.of("valid.xml", "aci_moof.xml");
 	}
 
-	static Stream<String> apmIdProvider() {
+	private static Stream<String> apmIdProvider() {
 		return Stream.of("T02789", "KF5RGI");
 	}
 
-	static Stream<Date> createdDateProvider() {
+	private static Stream<Date> createdDateProvider() {
 		return Stream.of(new Date(954982730L), new Date(23546L));
 	}
 
-	static Stream<Boolean> overallSuccessProvider() {
+	private static Stream<Boolean> overallSuccessProvider() {
 		return Stream.of(Boolean.TRUE, Boolean.FALSE);
 	}
 
-	static Stream<Metadata> metadataProvider() {
+	private static Stream<Metadata> metadataProvider() {
 		return submissionLocatorProvider()
 			.flatMap(submissionLocator -> fileNameProvider()
 				.flatMap(fileName -> apmIdProvider()
