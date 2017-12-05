@@ -4,9 +4,9 @@ jobs:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/openjdk:8-jdk-browsers
+    resource_class: large
     steps:
       - checkout
-      - run: cd converter; mvn dependency:resolve
       - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
       - run: unzip -d . sonarscanner.zip
       - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
