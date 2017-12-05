@@ -7,12 +7,11 @@ package gov.cms.qpp.conversion.decode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.jdom2.Element;
-import org.jdom2.Namespace;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class AggregateCountDecoderTest {
 
@@ -45,7 +44,9 @@ class AggregateCountDecoderTest {
             + "</component>"
             + "</entry>";
 
-    private static final String ANOTHER_XML_FRAGMENT = "<observation classCode=\"OBS\" moodCode=\"EVN\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
+    private static final String XML_FRAGMENT_WITH_GARBAGE =
+            "<observation classCode=\"OBS\" moodCode=\"EVN\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+            + " xmlns=\"urn:hl7-org:v3\">\n"
             + " Some extraneous text \n" // extraneous text element
             + "    <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
             + "    <templateId root=\"R2.D2\"/>\n" // Funky templateId
@@ -59,56 +60,36 @@ class AggregateCountDecoderTest {
             + "</observation>";
 
     @Test
-    void testInternalDecode() throws Exception {
-        Namespace rootNs = Namespace.getNamespace("urn:hl7-org:v3");
-        Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+    void testAggregateCountDecoderIgnoresInvalidTemplateId() throws Exception {
+        Node parent = decodeAggregateCountFromXml(XML_FRAGMENT);
+        Node measureData = parent.getChildNodes().get(0);
 
-        Context context = new Context();
-        Element element = new Element("observation", rootNs);
-        element.addContent(new Element("templateId", rootNs).setAttribute("root", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(context)));
-        element.addContent(new Element("value", rootNs).setAttribute("value", "450").setAttribute("type", "INT", ns));
-        element.addNamespaceDeclaration(ns);
-
-        Node thisNode = new Node();
-
-        AggregateCountDecoder instance = new AggregateCountDecoder(context);
-        instance.setNamespace(element, instance);
-
-        instance.internalDecode(element, thisNode);
-
-        assertWithMessage("Aggregate Count should be 450 ")
-                .that(thisNode.getValue("aggregateCount"))
-                .isEqualTo("450");
+        assertThat(measureData.getChildNodes()).hasSize(1);
     }
 
     @Test
-    void testAggregateCountDecoderIgnoresInvalidElements() throws Exception {
+    void testAggregateCountDecoderHasValidAggregateCount() throws Exception {
+        Node parent = decodeAggregateCountFromXml(XML_FRAGMENT);
+        Node measureData = parent.getChildNodes().get(0);
 
-        Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
-        Node node = root.getChildNodes().get(0);
-
-        assertWithMessage("Node has one element")
-                .that(node.getChildNodes()).hasSize(1);
-
-        assertWithMessage("Node has aggregate count")
-                .that(node.getChildNodes().get(0).getValue("aggregateCount"))
-                .isEqualTo("400");
-
-        assertWithMessage("Should have template id")
-                .that(node.getChildNodes().get(0).getType())
+        assertThat(measureData.getChildNodes().get(0).getType())
                 .isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
     }
 
     @Test
-    void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws Exception {
+    void testAggregateCountDecoderWithGarbageXmlDecodesValidValue() throws Exception {
+        Node root = decodeAggregateCountFromXml(XML_FRAGMENT_WITH_GARBAGE);
+        assertThat(root.getValue("aggregateCount")).isEqualTo("400");
+    }
 
-        Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(ANOTHER_XML_FRAGMENT));
+    @Test
+    void testAggregateCountDecoderWithGarbageXmlDecodesValidType() throws Exception {
+        Node root = decodeAggregateCountFromXml(XML_FRAGMENT_WITH_GARBAGE);
+        assertThat(root.getType()).isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
+    }
 
-        assertWithMessage("Node has aggregate count")
-                .that(root.getValue("aggregateCount"))
-                .isEqualTo("400");
-
-        assertWithMessage("Should have template id")
-                .that(root.getType()).isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
+    Node decodeAggregateCountFromXml(String xmlFragment) throws XmlException {
+        Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+        return root;
     }
 }
