@@ -35,26 +35,12 @@ public class UnprocessedCpcFileData {
 	}
 
 	/**
-	 * sets the id for the file location
-	 */
-	public void setFileId(String fileId) {
-		this.fileId = fileId;
-	}
-
-	/**
 	 * retrieves the filename
 	 *
 	 * @return filename
 	 */
 	public String getFilename() {
 		return filename;
-	}
-
-	/**
-	 * sets the file id location
-	 */
-	public void setFilename(String filename) {
-		this.filename = filename;
 	}
 
 	/**
@@ -67,26 +53,12 @@ public class UnprocessedCpcFileData {
 	}
 
 	/**
-	 * sets the file id location
-	 */
-	public void setApm(String apm) {
-		this.apm = apm;
-	}
-
-	/**
 	 * retrieves the conversion date
 	 *
 	 * @return conversionDate formatted as a string
 	 */
 	public String getConversionDate() {
 		return conversionDate.toString();
-	}
-
-	/**
-	 * sets the file id location
-	 */
-	public void setConversionDate(Date conversionDate) {
-		this.conversionDate = conversionDate;
 	}
 
 	/**
@@ -98,10 +70,4 @@ public class UnprocessedCpcFileData {
 		return validationSuccess;
 	}
 
-	/**
-	 * sets whether the validation was a success or not
-	 */
-	public void setValidationSuccess(Boolean validationSuccess) {
-		this.validationSuccess = validationSuccess;
-	}
 }
