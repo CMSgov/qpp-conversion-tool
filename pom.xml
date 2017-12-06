@@ -13,7 +13,6 @@
 		<java.version>1.8</java.version>
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
-		<exclusionFilter>**/*Integration.java</exclusionFilter>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -130,7 +129,8 @@
 						<trimStackTrace>false</trimStackTrace>
 						<useFile>false</useFile>
 						<excludes>
-							<exclude>${exclusionFilter}</exclude>
+							<exclude>**/*Integration.java</exclude>
+							<exclude>**/*IntegrationTest.java</exclude>
 						</excludes>
 
 						<classpathDependencyExcludes>
