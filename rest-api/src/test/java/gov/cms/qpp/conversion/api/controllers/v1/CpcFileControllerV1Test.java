@@ -65,9 +65,9 @@ class CpcFileControllerV1Test {
 		CompletableFuture<InputStream> valid = CompletableFuture.completedFuture(new ByteArrayInputStream("1234".getBytes()));
 		when(fileRetrievalService.getFileById(anyString())).thenReturn(valid);
 
-		ResponseEntity<InputStream> response = cpcFileControllerV1.getFileByLocationId("meep");
+		ResponseEntity<String> response = cpcFileControllerV1.getFileByLocationId("meep");
 
-		assertThat(IOUtils.toString(response.getBody(), Charset.defaultCharset())).isEqualTo("1234");
+		assertThat(response.getBody()).isEqualTo("1234");
 	}
 
 
