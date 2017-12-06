@@ -46,6 +46,6 @@ public class CpcFileControllerV1 {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
-		return new ResponseEntity<>(unprocessedCpcFileDataList, httpHeaders, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(unprocessedCpcFileDataList, httpHeaders, HttpStatus.OK);
 	}
 }
