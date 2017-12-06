@@ -37,6 +37,7 @@ public class MetadataHelper {
 		metadata.setTin(findTin(node));
 		metadata.setNpi(findNpi(node));
 		metadata.setCpc(isCpc(node));
+		metadata.setCpcProcessed(false);
 		outcome.setStatus(metadata);
 
 		return metadata;
