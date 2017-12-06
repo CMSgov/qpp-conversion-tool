@@ -8,10 +8,13 @@ import gov.cms.qpp.test.MockitoExtension;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,13 +61,13 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
-	void testCompletableFuture() {
-//		when(fileRetrievalService.getFileById(anyString())).thenReturn(expectedStreamFuture);
-		when(fileRetrievalService.getFileById(anyString())).thenThrow(new RuntimeException());
+	void testCompletableFuture() throws IOException {
+		CompletableFuture<InputStream> valid = CompletableFuture.completedFuture(new ByteArrayInputStream("1234".getBytes()));
+		when(fileRetrievalService.getFileById(anyString())).thenReturn(valid);
 
-		CompletableFuture<ResponseEntity> response = cpcFileControllerV1.testCompletableFuture("test");
+		ResponseEntity<InputStream> response = cpcFileControllerV1.getFileByLocationId("meep");
 
-		assertThat(response.join().getStatusCode()).isEquivalentAccordingToCompareTo(HttpStatus.OK);
+		assertThat(IOUtils.toString(response.getBody(), Charset.defaultCharset())).isEqualTo("1234");
 	}
 
 
