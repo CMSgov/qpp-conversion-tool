@@ -19,6 +19,19 @@ public class EnvironmentHelper {
 	 * @return true if System.getenv(variable) or System.getProperty(variable) are not null
 	 */
 	public static boolean isPresent(String variable) {
-		return System.getenv(variable) != null || System.getProperty(variable) != null;
+		return get(variable) != null;
+	}
+
+	public static String get(String variable) {
+		String value = System.getProperty(variable);
+		if (value != null) {
+			return value;
+		}
+		return System.getenv(variable);
+	}
+
+	public static String getOrDefault(String variable, String defaultValue) {
+		String value = get(variable);
+		return value == null ? defaultValue : value;
 	}
 }

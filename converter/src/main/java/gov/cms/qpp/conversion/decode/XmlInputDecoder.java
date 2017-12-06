@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.decode;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -13,6 +11,8 @@ import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
@@ -83,15 +83,10 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	void setNamespace(Element element, XmlInputDecoder decoder) {
 		decoder.defaultNs = element.getNamespace();
 
-		// this handle the case where there is no URI for a default namespace (test)
-		try {
-			Constructor<Namespace> constructor = Namespace.class.getDeclaredConstructor(String.class, String.class);
-			constructor.setAccessible(true);
-			decoder.xpathNs = constructor.newInstance("ns", decoder.defaultNs.getURI());
-		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-			throw new IllegalArgumentException("Cannot construct special Xpath namespace", e);
-		}
+		// this handles the case where there is no URI for a default namespace (test)
+				String uri = decoder.defaultNs.getURI();
+				decoder.xpathNs = Strings.isNullOrEmpty(uri) ? Namespace.NO_NAMESPACE
+						: Namespace.getNamespace("ns", decoder.defaultNs.getURI());
 	}
 
 	/**

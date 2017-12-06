@@ -213,7 +213,6 @@ public final class Metadata {
 	 *
 	 * @return The file name.
 	 */
-	@DoNotEncrypt
 	@DynamoDBAttribute(attributeName = "FileName")
 	public String getFileName() {
 		return fileName;
