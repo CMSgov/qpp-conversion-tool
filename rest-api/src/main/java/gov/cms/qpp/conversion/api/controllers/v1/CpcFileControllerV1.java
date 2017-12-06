@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -44,18 +45,15 @@ public class CpcFileControllerV1 {
 	 * @return Valid json or error json content
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/unprocessed-files",
-			headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<List> getUnprocessedCpcPlusFiles() {
+			headers = {"Accept=" + Constants.V1_API_ACCEPT + ", application/json;charset=UTF-8"})
+	public ResponseEntity<List> getUnprocessedCpcPlusFiles() throws IOException {
 		API_LOG.info("CPC+ unprocessed files request received");
 
 		List<UnprocessedCpcFileData> unprocessedCpcFileDataList = cpcFileService.getUnprocessedCpcPlusFiles();
 
 		API_LOG.info("CPC+ unprocessed files request succeeded");
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-
-		return new ResponseEntity<>(unprocessedCpcFileDataList, httpHeaders, HttpStatus.OK);
+		return new ResponseEntity<>(unprocessedCpcFileDataList, HttpStatus.OK);
 	}
 
 	/**
