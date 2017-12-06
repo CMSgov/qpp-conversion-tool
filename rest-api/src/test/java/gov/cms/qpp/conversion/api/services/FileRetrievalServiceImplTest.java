@@ -59,6 +59,7 @@ class FileRetrievalServiceImplTest {
 
 	@Test
 	void noKmsKey() throws ExecutionException, InterruptedException {
+		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("meep");
 		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn(null);
 		CompletableFuture<InputStream> inStream = underTest.getFileById("meep");
 
