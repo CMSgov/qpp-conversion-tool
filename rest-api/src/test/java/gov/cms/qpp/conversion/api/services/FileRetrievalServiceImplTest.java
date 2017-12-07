@@ -69,7 +69,6 @@ class FileRetrievalServiceImplTest {
 		s3ObjectMock.setObjectContent(new ByteArrayInputStream("1234".getBytes()));
 		when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(s3ObjectMock);
 		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("meep");
-		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn("mawp");
 		when(dbService.getFileSubmissionLocationId(anyString())).thenReturn("meep");
 		underTest.getFileById("meep").join();
 

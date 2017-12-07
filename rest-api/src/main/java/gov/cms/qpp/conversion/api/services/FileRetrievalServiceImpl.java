@@ -39,8 +39,6 @@ public class FileRetrievalServiceImpl extends InOrderActionService<GetObjectRequ
 
 		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName,
 				dbService.getFileSubmissionLocationId(fileId));
-//		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName,
-//				fileId);
 
 		return actOnItem(getObjectRequest);
 	}

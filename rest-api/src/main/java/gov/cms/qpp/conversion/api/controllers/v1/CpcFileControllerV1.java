@@ -67,7 +67,7 @@ public class CpcFileControllerV1 {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/get-file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<String> getFileByLocationId(@PathVariable("fileId") String fileId)
+	public ResponseEntity<String> getFileById(@PathVariable("fileId") String fileId)
 			throws IOException {
 		API_LOG.info("CPC+ file request received");
 
