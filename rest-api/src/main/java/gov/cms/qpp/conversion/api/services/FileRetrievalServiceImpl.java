@@ -26,6 +26,9 @@ public class FileRetrievalServiceImpl extends InOrderActionService<GetObjectRequ
 	@Autowired
 	private Environment environment;
 
+	@Autowired
+	private DbService dbService;
+
 	@Override
 	public CompletableFuture<InputStream> getFileById(String fileId) {
 		final String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
@@ -34,7 +37,8 @@ public class FileRetrievalServiceImpl extends InOrderActionService<GetObjectRequ
 			return CompletableFuture.completedFuture(null);
 		}
 
-		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, fileId);
+		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName,
+				dbService.getFileSubmissionLocationId(fileId));
 
 		return actOnItem(getObjectRequest);
 	}

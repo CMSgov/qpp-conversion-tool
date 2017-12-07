@@ -19,4 +19,6 @@ public interface DbService {
 	CompletableFuture<Metadata> write(Metadata meta);
 
 	List<Metadata> getUnprocessedCpcPlusMetaData();
+
+	String getFileSubmissionLocationId(String uuid);
 }

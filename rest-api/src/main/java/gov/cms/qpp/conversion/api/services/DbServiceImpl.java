@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.services;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import gov.cms.qpp.conversion.api.model.Constants;
@@ -54,7 +55,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	}
 
 	/**
-	 * Queries the DynamoDB table for unprocessed {@link Metadata}
+	 * Scans the DynamoDB table for unprocessed {@link Metadata}
 	 *
 	 * @return {@link List} of unprocessed {@link Metadata}
 	 */
@@ -68,6 +69,21 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 				.withExpressionAttributeValues(valueMap);
 
 		return mapper.scan(Metadata.class, metadataScan);
+	}
+
+	/**
+	 * Queries the DynamoDb table for a {@link Metadata} with a specific uuid
+	 *
+	 * @param uuid id to query on
+	 * @return location  id of the submitted file
+	 */
+	public String getFileSubmissionLocationId(String uuid) {
+		DynamoDBQueryExpression metadataQuery = new DynamoDBQueryExpression()
+				.withKeyConditionExpression(uuid);
+
+		List<Metadata> metadata = mapper.query(Metadata.class, metadataQuery);
+
+		return metadata.get(0).getSubmissionLocator();
 	}
 
 	/**

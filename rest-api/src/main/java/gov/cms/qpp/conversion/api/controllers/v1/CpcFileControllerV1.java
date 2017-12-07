@@ -56,17 +56,17 @@ public class CpcFileControllerV1 {
 	/**
 	 * Retrieve a stored S3 object.
 	 *
-	 * @param fileLocationId id for the stored object
+	 * @param fileId id for the stored object
 	 * @return object json or xml content
 	 * @throws IOException if S3Object content stream is invalid
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/get-file/{fileLocationId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<String> getFileByLocationId(@PathVariable("fileLocationId") String fileLocationId)
+	public ResponseEntity<String> getFileByLocationId(@PathVariable("fileId") String fileId)
 			throws IOException {
 		API_LOG.info("CPC+ file request received");
 
-		CompletableFuture<InputStream> fileStreamFuture = fileRetrievalService.getFileById(fileLocationId);
+		CompletableFuture<InputStream> fileStreamFuture = fileRetrievalService.getFileById(fileId);
 		InputStream inStream = fileStreamFuture.join();
 
 		API_LOG.info("CPC+ file request succeeded");
