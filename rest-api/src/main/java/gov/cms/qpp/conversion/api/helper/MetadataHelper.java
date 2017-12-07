@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.helper;
 
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
@@ -50,7 +51,7 @@ public class MetadataHelper {
 	}
 
 	private static String cpcHash() {
-		return "CPC_" + RANDOM_HASH.nextInt(32);
+		return "CPC_" + RANDOM_HASH.nextInt(Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
 	private static String findApm(Node node) {
