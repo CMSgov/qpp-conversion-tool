@@ -59,7 +59,7 @@
   <!--Program for which data is being submitted-->
   <informationRecipient>
     <intendedRecipient>
-      <id root="2.16.840.1.113883.3.249.7" extension="cpcplus" />
+      <id root="2.16.840.1.113883.3.249.7" extension="CPCPLUS" />
     </intendedRecipient>
   </informationRecipient>
   <legalAuthenticator>
@@ -82,7 +82,6 @@
   <!--Practice Site-->
   <participant typeCode="LOC">
     <associatedEntity classCode="SDLOC">
-      <id root="2.16.840.1.113883.3.249.5.1" extension="TestApmEntityId" assigningAuthorityName="CMS-CMMI" />
       <code code="394730007" displayName="healthcare related organization" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
       <addr>
         <streetAddressLine>123 Healthcare St</streetAddressLine>
@@ -1811,7 +1810,7 @@ QRDA Category III Measure Section (CMS EP)
               <tbody>
                 <tr>
                   <td>Preventive Care and Screening: Tobacco Use: Screening and Cessation
-                    Intervention</td>
+            Intervention</td>
                   <td>e35791df-5b25-41bb-b260-673337bc44a8</td>
                   <td>40280381-503f-a1fc-0150-d33f5b0a1b8c</td>
                 </tr>
@@ -3768,7 +3767,6 @@ QRDA Category III Measure Section (CMS EP)
             </list>
           </text>
           <!--Performance Period-->
-          <!--Measure Entry for NQF 0059 / CMS122-->
           <entry>
             <act classCode="ACT" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.17.3.8" />
@@ -3780,6 +3778,7 @@ QRDA Category III Measure Section (CMS EP)
               </effectiveTime>
             </act>
           </entry>
+          <!--Measure Entry for NQF 0059 / CMS122-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.24.3.98" />
@@ -14790,7 +14789,7 @@ QRDA Category III Measure Section (CMS EP)
                   <id root="2.16.840.1.113883.4.738" extension="40280381-503f-a1fc-0150-d33f5b0a1b8c" />
                   <code code="57024-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Health Quality Measure Document" />
                   <text>Preventive Care and Screening: Tobacco Use: Screening and Cessation
-                    Intervention</text>
+            Intervention</text>
                 </externalDocument>
               </reference>
               <!--Performance Rate-->

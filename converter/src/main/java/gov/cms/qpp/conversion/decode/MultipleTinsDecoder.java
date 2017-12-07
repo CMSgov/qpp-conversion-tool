@@ -45,6 +45,7 @@ public class MultipleTinsDecoder extends QppXmlDecoder {
 
 		Node child = new Node(TemplateId.CLINICAL_DOCUMENT);
 		child.setPath(XPathHelper.getAbsolutePath(element));
+		child.setDefaultNsUri(element.getNamespaceURI());
 		ClinicalDocumentDecoder clinicalDocument = new ClinicalDocumentDecoder(context);
 		clinicalDocument.setNamespace(element, clinicalDocument);
 		clinicalDocument.internalDecode(element, child);
