@@ -31,7 +31,7 @@ import static org.junit.Assume.assumeTrue;
 
 public class SubmissionIntegrationTest {
 	private static HttpClient client;
-	private static String serviceUrl = "https://qpp-submissions-sandbox.navapbc.com/submissions";
+	private static String serviceUrl = "https://qpp-submissions-sandbox.navapbc.com/public/validate-submission";
 	private JsonWrapper qpp;
 
 	@BeforeClass
@@ -71,7 +71,7 @@ public class SubmissionIntegrationTest {
 		assumeTrue("Submissions api is down", endpointIsUp(httpResponse));
 		cleanUp(httpResponse);
 
-		assertThat(getStatus(httpResponse)).isEqualTo(201);
+		assertThat(getStatus(httpResponse)).isEqualTo(200);
 	}
 
 	@Test

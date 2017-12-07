@@ -1,15 +1,18 @@
 package gov.cms.qpp.conversion.api.services;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Writes a {@link Metadata} object to DynamoDB.
@@ -48,6 +51,23 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		API_LOG.info("Writing item to DynamoDB");
 
 		return actOnItem(meta);
+	}
+
+	/**
+	 * Queries the DynamoDB table for unprocessed {@link Metadata}
+	 *
+	 * @return {@link List} of unprocessed {@link Metadata}
+	 */
+	public List<Metadata> getUnprocessedCpcPlusMetaData() {
+		HashMap<String, AttributeValue> valueMap = new HashMap<>();
+		valueMap.put(":cpcValue", new AttributeValue().withN("1"));
+		valueMap.put(":cpcProcessedValue", new AttributeValue().withN("0"));
+
+		DynamoDBScanExpression metadataScan = new DynamoDBScanExpression()
+				.withFilterExpression("Cpc = :cpcValue and CpcProcessed = :cpcProcessedValue")
+				.withExpressionAttributeValues(valueMap);
+
+		return mapper.scan(Metadata.class, metadataScan);
 	}
 
 	/**

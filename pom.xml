@@ -6,14 +6,13 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.22-SNAPSHOT</version>
+	<version>0.30-SNAPSHOT</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
 		<java.version>1.8</java.version>
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
-		<exclusionFilter>**/*Integration.java</exclusionFilter>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -129,7 +128,8 @@
 						<trimStackTrace>false</trimStackTrace>
 						<useFile>false</useFile>
 						<excludes>
-							<exclude>${exclusionFilter}</exclude>
+							<exclude>**/*Integration.java</exclude>
+							<exclude>**/*IntegrationTest.java</exclude>
 						</excludes>
 					</configuration>
 					<dependencies>
