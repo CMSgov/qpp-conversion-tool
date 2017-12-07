@@ -66,7 +66,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 
 		return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
 			HashMap<String, AttributeValue> valueMap = new HashMap<>();
-			valueMap.put(":cpcValue", new AttributeValue().withS("CPC_" + partition));
+			valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
 			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
 
 			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()

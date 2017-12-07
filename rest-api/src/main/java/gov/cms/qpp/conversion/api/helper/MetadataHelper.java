@@ -51,7 +51,7 @@ public class MetadataHelper {
 	}
 
 	private static String cpcHash() {
-		return "CPC_" + RANDOM_HASH.nextInt(Constants.CPC_DYNAMO_PARTITIONS);
+		return Constants.CPC_DYNAMO_PARTITION_START + RANDOM_HASH.nextInt(Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
 	private static String findApm(Node node) {
