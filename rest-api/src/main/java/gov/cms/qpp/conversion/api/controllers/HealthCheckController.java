@@ -1,14 +1,23 @@
 package gov.cms.qpp.conversion.api.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cms.qpp.conversion.api.model.HealthCheck;
 import gov.cms.qpp.conversion.api.services.VersionService;
@@ -25,6 +34,8 @@ public class HealthCheckController {
 
 	/**
 	 * Invoked with an HTTP GET call.
+	 *
+	 * @return health check of version, environment variables, and system properties
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
