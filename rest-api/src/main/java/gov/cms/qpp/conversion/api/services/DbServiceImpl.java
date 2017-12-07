@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,8 +79,16 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @return location  id of the submitted file
 	 */
 	public String getFileSubmissionLocationId(String uuid) {
+		Map<String, String> nameMap = new HashMap<>();
+		nameMap.put("#Uuid", "Uuid");
+
+		Map<String, AttributeValue> valueMap = new HashMap<>();
+		valueMap.put(":uuid", new AttributeValue().withS(uuid));
+
 		DynamoDBQueryExpression metadataQuery = new DynamoDBQueryExpression()
-				.withKeyConditionExpression(uuid);
+				.withKeyConditionExpression("#Uuid = :uuid")
+				.withExpressionAttributeNames(nameMap)
+				.withExpressionAttributeValues(valueMap);
 
 		List<Metadata> metadata = mapper.query(Metadata.class, metadataQuery);
 
