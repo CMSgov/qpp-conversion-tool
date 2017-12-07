@@ -8,7 +8,9 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +44,7 @@ public class CpcFileControllerV1 {
 	 * @return Valid json or error json content
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/unprocessed-files",
-			headers = {"Accept=" + Constants.V1_API_ACCEPT + ", application/json;charset=UTF-8"})
+			headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<List> getUnprocessedCpcPlusFiles() throws IOException {
 		API_LOG.info("CPC+ unprocessed files request received");
 
@@ -50,7 +52,10 @@ public class CpcFileControllerV1 {
 
 		API_LOG.info("CPC+ unprocessed files request succeeded");
 
-		return new ResponseEntity<>(unprocessedCpcFileDataList, HttpStatus.OK);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+		return new ResponseEntity<>(unprocessedCpcFileDataList, httpHeaders, HttpStatus.OK);
 	}
 
 	/**
@@ -71,6 +76,9 @@ public class CpcFileControllerV1 {
 
 		API_LOG.info("CPC+ file request succeeded");
 
-		return new ResponseEntity<>(IOUtils.toString(inStream, Charset.defaultCharset()), HttpStatus.ACCEPTED);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_XML);
+
+		return new ResponseEntity<>(IOUtils.toString(inStream, Charset.defaultCharset()), httpHeaders, HttpStatus.ACCEPTED);
 	}
 }

@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
 import gov.cms.qpp.conversion.api.model.Constants;
@@ -23,6 +24,7 @@ import org.springframework.core.task.TaskExecutor;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -97,6 +99,19 @@ class DbServiceImplTest {
 		verify(dbMapper, times(1)).scan(any(Class.class), any(DynamoDBScanExpression.class));
 	}
 
+	@Test
+	void testGetFileSubmissionLocationId() {
+		String fakeUuid = "1337-f4ke-uuid";
+
+		when(dbMapper.load(eq(Metadata.class), anyString())).thenReturn(buildFakeMetadataWithSubmissionIdOnly());
+
+		String fakeSubmissionId = underTest.getFileSubmissionLocationId(fakeUuid);
+
+		verify(dbMapper, times(1)).load(any(Class.class), anyString());
+
+		assertThat(fakeSubmissionId).isEqualTo("1337");
+	}
+
 	private Metadata writeMeta() {
 		return writeMeta(new Metadata());
 	}
@@ -104,6 +119,13 @@ class DbServiceImplTest {
 	private Metadata writeMeta(Metadata metadata) {
 		CompletableFuture<Metadata> writeResult = underTest.write(metadata);
 		return writeResult.join();
+	}
+
+	private Metadata buildFakeMetadataWithSubmissionIdOnly() {
+		Metadata metadata = new Metadata();
+		metadata.setSubmissionLocator("1337");
+
+		return metadata;
 	}
 }
 

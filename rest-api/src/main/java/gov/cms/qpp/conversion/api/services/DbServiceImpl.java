@@ -79,20 +79,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @return location  id of the submitted file
 	 */
 	public String getFileSubmissionLocationId(String uuid) {
-		Map<String, String> nameMap = new HashMap<>();
-		nameMap.put("#Uuid", "Uuid");
-
-		Map<String, AttributeValue> valueMap = new HashMap<>();
-		valueMap.put(":uuid", new AttributeValue().withS(uuid));
-
-		DynamoDBQueryExpression metadataQuery = new DynamoDBQueryExpression()
-				.withKeyConditionExpression("#Uuid = :uuid")
-				.withExpressionAttributeNames(nameMap)
-				.withExpressionAttributeValues(valueMap);
-
-		List<Metadata> metadata = mapper.query(Metadata.class, metadataQuery);
-
-		return metadata.get(0).getSubmissionLocator();
+		return mapper.load(Metadata.class, uuid).getSubmissionLocator();
 	}
 
 	/**
