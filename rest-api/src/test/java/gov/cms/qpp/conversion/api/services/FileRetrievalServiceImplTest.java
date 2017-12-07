@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -36,6 +37,9 @@ class FileRetrievalServiceImplTest {
 
 	@Mock
 	private AmazonS3 amazonS3Client;
+
+	@Mock
+	private DbService dbService;
 
 	@Mock
 	private TaskExecutor taskExecutor;
@@ -60,9 +64,11 @@ class FileRetrievalServiceImplTest {
 	@Test
 	void noKmsKey() throws ExecutionException, InterruptedException {
 		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("meep");
-		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn(null);
+		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn("meep");
+		when(dbService.getFileSubmissionLocationId(anyString())).thenReturn("meep");
 		CompletableFuture<InputStream> inStream = underTest.getFileById("meep");
 
+		verify(dbService, times(1)).getFileSubmissionLocationId(anyString());
 		assertThat(inStream.get()).isNull();
 	}
 
@@ -72,7 +78,10 @@ class FileRetrievalServiceImplTest {
 		when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(s3ObjectMock);
 		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("meep");
 		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn("mawp");
+		when(dbService.getFileSubmissionLocationId(anyString())).thenReturn("meep");
 		underTest.getFileById("meep").join();
+
+		verify(dbService, times(1)).getFileSubmissionLocationId(anyString());
 
 		verify(s3ObjectMock, times(1)).getObjectContent();
 	}
