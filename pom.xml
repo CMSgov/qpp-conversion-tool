@@ -128,6 +128,9 @@
 					<configuration>
 						<trimStackTrace>false</trimStackTrace>
 						<useFile>false</useFile>
+						<forkCount>1.5C</forkCount>
+						<reuseForks>true</reuseForks>
+						<argLine>-Xmx2G -Xms2G</argLine>
 						<excludes>
 							<exclude>**/*Integration.java</exclude>
 							<exclude>**/*IntegrationTest.java</exclude>
