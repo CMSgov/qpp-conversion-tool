@@ -53,6 +53,15 @@ class MetadataTest {
 
 	@SuppressWarnings("unchecked")
 	private static <T> T getDefaultValue(Class<T> clazz) {
-		return (T) Array.get(Array.newInstance(clazz, 1), 0);
+		T defaultValue = null;
+
+		try {
+			defaultValue = clazz.getConstructor().newInstance();
+		}
+		catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+			defaultValue = (T) Array.get(Array.newInstance(clazz, 1), 0);
+		}
+
+		return defaultValue;
 	}
 }

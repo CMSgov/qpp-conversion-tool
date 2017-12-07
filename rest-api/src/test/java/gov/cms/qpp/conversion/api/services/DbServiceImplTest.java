@@ -2,16 +2,11 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.test.MockitoExtension;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -87,14 +86,19 @@ class DbServiceImplTest {
 
 		verifyZeroInteractions(dbMapper);
 		assertWithMessage("The returned metadata must be an empty metadata.")
-				.that(metadataOut).isEqualTo(new Metadata());
+				.that(metadataOut.getUuid()).isNull();
 	}
 
 	@Test
 	void testGetUnprocessedCpcPlusMetaData() {
+		PaginatedQueryList<Metadata> mockMetadataList = mock(PaginatedQueryList.class);
+		when(mockMetadataList.stream()).thenAnswer(invocationOnMock -> Stream.of(new Metadata(), new Metadata()));
+		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class))).thenReturn(mockMetadataList);
+
 		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData();
 
-		verify(dbMapper, times(1)).scan(any(Class.class), any(DynamoDBScanExpression.class));
+		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(any(Class.class), any(DynamoDBQueryExpression.class));
+		assertThat(metaDataList).hasSize(2 * Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
 	private Metadata writeMeta() {

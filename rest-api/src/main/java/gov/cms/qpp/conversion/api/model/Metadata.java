@@ -411,6 +411,11 @@ public final class Metadata {
 	public void setCpcProcessedCreateDate(String combination) {
 
 		String[] split = combination.split("#");
+
+		if (split.length < 2) {
+			return;
+		}
+
 		String isProcessed = split[0];
 		String creationDate = split[1];
 
