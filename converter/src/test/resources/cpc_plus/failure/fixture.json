@@ -563,5 +563,30 @@
 				"occurrences": 119
 			}
 		]
+	},
+	"CPCPlus_MultiRate_IncNumOfPops_SampleQRDA-III.xml": {
+		"strict": true,
+		"errorData": [
+			{
+				"errorCode": 14,
+				"subs": ["CMS\\d{2,3}v\\d{1}", 2, "[A-Z]{3,8}", 1],
+				"occurrences":4
+			},
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}", "[A-Z\\,]{3,8}", "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences":4
+			},
+			{
+				"errorCode": 59,
+				"subs": ["CMS\\d{2,3}v\\d{1}", "performanceRateUuid", "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
+				"occurrences":1
+			},
+			{
+				"errorCode": 37,
+				"subs": [2],
+				"occurrences":1
+			}
+		]
 	}
 }
