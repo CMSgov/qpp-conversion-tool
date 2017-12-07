@@ -516,8 +516,7 @@
 		}
 	],
 	"CLINICAL_DOCUMENT": {
-		"performanceYear": 2017,
-		"programName" : "mips",
+		"performanceYear" : 2017,
 		"entityType" : "individual",
 		"taxpayerIdentificationNumber" : "000777777",
 		"nationalProviderIdentifier" : "0777777777",
@@ -575,6 +574,7 @@
 					} ]
 				}
 			} ],
+			"programName" : "mips",
 			"performanceStart" : "2017-01-01",
 			"performanceEnd" : "2017-12-31"
 		}, {
@@ -593,6 +593,7 @@
 					"denominator" : 600
 				}
 			} ],
+			"programName" : "mips",
 			"performanceStart" : "2017-02-01",
 			"performanceEnd" : "2017-05-31"
 		}, {
@@ -605,6 +606,7 @@
 				"measureId" : "IA_CC_10",
 				"value" : true
 			} ],
+			"programName" : "mips",
 			"performanceStart" : "2017-01-01",
 			"performanceEnd" : "2017-04-30"
 		} ]
