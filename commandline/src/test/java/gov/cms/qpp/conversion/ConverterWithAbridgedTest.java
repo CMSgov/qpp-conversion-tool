@@ -1,9 +1,6 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.test.FileTestHelper;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -11,31 +8,27 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.AfterEach;
 
-public class ConverterWithAbridgedTest {
+import gov.cms.qpp.test.jimfs.JimfsTest;
+import gov.cms.qpp.test.jimfs.JimfsContract;
 
+class ConverterWithAbridgedTest implements JimfsContract {
+
+	private FileSystem fileSystem;
 	private Field fileSystemField;
 	private FileSystem defaultFileSystem;
-	private FileSystem fileSystem;
 
-	@Before
-	public void setup() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		fileSystem = FileTestHelper.createMockFileSystem();
-		fileSystemField = ConversionEntry.class.getDeclaredField("fileSystem");
-		fileSystemField.setAccessible(true);
-		defaultFileSystem = (FileSystem) fileSystemField.get(null);
-		fileSystemField.set(null, fileSystem);
-	}
-
-	@After
-	public void teardown() throws IOException, IllegalArgumentException, IllegalAccessException {
+	@AfterEach
+	void teardown() throws IOException, IllegalArgumentException, IllegalAccessException {
 		fileSystemField.set(null, defaultFileSystem);
 		fileSystem.close();
 	}
 
-	@Test
-	public void testWithAbridgedXml() throws IOException {
+	@JimfsTest
+	void testWithAbridgedXml(FileSystem fileSystem) throws Exception {
+		setup(fileSystem);
+
 		String fileName = "valid-QRDA-III-abridged.qpp.json";
 		long start = System.currentTimeMillis();
 
@@ -55,8 +48,10 @@ public class ConverterWithAbridgedTest {
 		System.out.println("Time to run transform " + (finish - start));
 	}
 
-	@Test
-	public void testMultiThreadRun_testSkipValidationToo() throws IOException {
+	@JimfsTest
+	void testMultiThreadRun_testSkipValidationToo(FileSystem fileSystem) throws Exception {
+		setup(fileSystem);
+
 		String aConversion = "a.qpp.json";
 		String dConversion = "d.qpp.json";
 		long start = System.currentTimeMillis();
@@ -81,6 +76,14 @@ public class ConverterWithAbridgedTest {
 		Files.delete(dJson);
 
 		System.out.println("Time to run two thread transform " + (finish - start));
+	}
+
+	private void setup(FileSystem fileSystem) throws Exception {
+		this.fileSystem = fileSystem;
+		fileSystemField = ConversionEntry.class.getDeclaredField("fileSystem");
+		fileSystemField.setAccessible(true);
+		defaultFileSystem = (FileSystem) fileSystemField.get(null);
+		fileSystemField.set(null, fileSystem);
 	}
 
 }

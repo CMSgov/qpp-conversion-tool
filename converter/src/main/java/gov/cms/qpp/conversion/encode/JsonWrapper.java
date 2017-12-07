@@ -592,12 +592,12 @@ public class JsonWrapper {
 	}
 
 	void attachMetadata(Node node) {
-		addMetaMap(createMetaMap(node));
+		addMetaMap(createMetaMap(node, ""));
 	}
 
-	private Map<String,String> createMetaMap(Node node) {
+	Map<String,String> createMetaMap(Node node, String encodeLabel) {
 		Map<String, String> metaMap = new HashMap<>();
-		metaMap.put("encodeLabel", "");
+		metaMap.put("encodeLabel", encodeLabel);
 		metaMap.put("nsuri", node.getDefaultNsUri());
 		metaMap.put("template", node.getType().name());
 		metaMap.put("path", node.getPath());
@@ -625,5 +625,9 @@ public class JsonWrapper {
 			other.put("encodeLabel", encodeLabel);
 			meta.add(other);
 		});
+	}
+
+	void mergeMetadata(Map<String, String> otherMeta) {
+		this.getMetadataHolder().add(otherMeta);
 	}
 }

@@ -4,16 +4,16 @@ jobs:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/openjdk:8-jdk-browsers
+    resource_class: large
     steps:
       - checkout
-      - run: cd converter; mvn dependency:resolve
       - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
       - run: unzip -d . sonarscanner.zip
       - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
       - run: sudo python get-pip.py
       - run: sudo pip install ansible
       - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
-      - run: mvn clean verify
+      - run: mvn --batch-mode clean verify
       - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
       - run: sudo apt-get install -y nodejs
       - run: ./tools/bin/sonarqube.sh

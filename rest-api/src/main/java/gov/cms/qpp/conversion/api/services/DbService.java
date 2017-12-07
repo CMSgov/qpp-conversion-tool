@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -16,4 +17,6 @@ public interface DbService {
 	 * @return A {@link CompletableFuture} that will hold the written Metadata.
 	 */
 	CompletableFuture<Metadata> write(Metadata meta);
+
+	List<Metadata> getUnprocessedCpcPlusMetaData();
 }
