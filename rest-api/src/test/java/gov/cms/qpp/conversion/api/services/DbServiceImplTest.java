@@ -2,9 +2,16 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import gov.cms.qpp.test.MockitoExtension;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.test.MockitoExtension;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,12 +20,12 @@ import org.mockito.Mock;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 
-import java.util.concurrent.CompletableFuture;
-
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -81,6 +88,13 @@ class DbServiceImplTest {
 		verifyZeroInteractions(dbMapper);
 		assertWithMessage("The returned metadata must be an empty metadata.")
 				.that(metadataOut).isEqualTo(new Metadata());
+	}
+
+	@Test
+	void testGetUnprocessedCpcPlusMetaData() {
+		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData();
+
+		verify(dbMapper, times(1)).scan(any(Class.class), any(DynamoDBScanExpression.class));
 	}
 
 	private Metadata writeMeta() {
