@@ -5,6 +5,8 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.test.MockitoExtension;
+import java.io.ByteArrayInputStream;
+import javassist.bytecode.ByteArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,19 +64,9 @@ class FileRetrievalServiceImplTest {
 	}
 
 	@Test
-	void noKmsKey() throws ExecutionException, InterruptedException {
-		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("meep");
-		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn("meep");
-		when(dbService.getFileSubmissionLocationId(anyString())).thenReturn("meep");
-		CompletableFuture<InputStream> inStream = underTest.getFileById("meep");
-
-		verify(dbService, times(1)).getFileSubmissionLocationId(anyString());
-		assertThat(inStream.get()).isNull();
-	}
-
-	@Test
 	void envVariablesPresent() {
 		S3Object s3ObjectMock = mock(S3Object.class);
+		s3ObjectMock.setObjectContent(new ByteArrayInputStream("1234".getBytes()));
 		when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(s3ObjectMock);
 		when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("meep");
 		when(environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE)).thenReturn("mawp");
