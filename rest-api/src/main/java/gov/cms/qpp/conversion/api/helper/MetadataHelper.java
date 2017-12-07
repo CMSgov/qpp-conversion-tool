@@ -10,11 +10,14 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * Utilities for working with Metadata beans
  */
 public class MetadataHelper {
+
+	private static final Random RANDOM_HASH = new Random();
 
 	private MetadataHelper() {
 	}
@@ -33,14 +36,21 @@ public class MetadataHelper {
 
 		Metadata metadata = new Metadata();
 
-		metadata.setApm(findApm(node));
+		String apmId = findApm(node);
+
+		metadata.setApm(apmId);
 		metadata.setTin(findTin(node));
 		metadata.setNpi(findNpi(node));
-		metadata.setCpc(isCpc(node));
+
+		metadata.setCpc(isCpc(node) ? cpcHash() : null);
 		metadata.setCpcProcessed(false);
 		outcome.setStatus(metadata);
 
 		return metadata;
+	}
+
+	private static String cpcHash() {
+		return "CPC_" + RANDOM_HASH.nextInt(32);
 	}
 
 	private static String findApm(Node node) {
