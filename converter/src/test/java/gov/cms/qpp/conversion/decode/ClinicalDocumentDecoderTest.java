@@ -243,10 +243,10 @@ class ClinicalDocumentDecoderTest {
 
 		assertWithMessage("Clinical Document doesn't contain program name")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
-				.isEqualTo(ClinicalDocumentDecoder.CPCPLUS.toLowerCase());
+				.isEqualTo(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		assertWithMessage("Clinical Document doesn't contain entity type")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
-				.isEmpty();
+				.isEqualTo(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL);
 		assertWithMessage("Clinical Document doesn't contain national provider")
 				.that(testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");

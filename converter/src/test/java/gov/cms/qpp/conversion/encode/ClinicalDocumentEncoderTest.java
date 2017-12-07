@@ -141,15 +141,9 @@ public class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertWithMessage("Must have a correct program name")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.PROGRAM_NAME))
-				.isEqualTo("mips");
 		assertWithMessage("Must have a correct entityType")
 				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo("individual");
-		assertWithMessage("Must have a correct entityId")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
-				.isEqualTo("AR000000");
 		assertWithMessage("Must have a correct taxpayerIdentificationNumber")
 				.that(clinicalDocMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");

@@ -10,8 +10,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Strings;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -40,7 +38,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) {
 		encodeToplevel(wrapper, thisNode);
-		encodeEntityId(wrapper, thisNode);
 		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 				Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
@@ -57,8 +54,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 */
 	private void encodeToplevel(JsonWrapper wrapper, Node thisNode) {
 		encodePerformanceYear(wrapper, thisNode);
-		wrapper.putString(ClinicalDocumentDecoder.PROGRAM_NAME,
-				thisNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
 		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE,
 				thisNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE));
 		wrapper.putString(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
@@ -82,20 +77,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		String start = reportingDescendant.getValue(ReportingParametersActDecoder.PERFORMANCE_YEAR);
 		wrapper.putInteger(ReportingParametersActDecoder.PERFORMANCE_YEAR, start);
 		maintainContinuity(wrapper, reportingDescendant, ReportingParametersActDecoder.PERFORMANCE_YEAR);
-	}
-
-
-	/**
-	 * This will add the entityId from the Clinical Document Node
-	 *
-	 * @param wrapper will hold the json format of nodes
-	 * @param thisNode holds the decoded node sections of clinical document
-	 */
-	private void encodeEntityId(JsonWrapper wrapper, Node thisNode) {
-		String entityId = thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID);
-		if (!Strings.isNullOrEmpty(entityId)) {
-			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID, entityId);
-		}
 	}
 
 	/**
