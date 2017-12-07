@@ -57,7 +57,7 @@ class QualitySectionEncoderTest {
 		mock.internalEncode(jsonWrapper, qualitySectionNode);
 
 		verify(mock, never())
-				.maintainContinuity(any(), any(JsonWrapper.class), any());
+				.maintainContinuity(any(), any(Node.class), any());
 	}
 
 	/**

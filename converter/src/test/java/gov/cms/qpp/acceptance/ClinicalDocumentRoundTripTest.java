@@ -1,37 +1,34 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.reflections.util.ClasspathHelper;
+
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.Collections;
-import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Test;
-import org.reflections.util.ClasspathHelper;
 
 import static com.google.common.truth.Truth.assertThat;
 
 class ClinicalDocumentRoundTripTest {
 
-	private static final String EXPECTED = "{\n  \"performanceYear\" : 2017,\n  \"programName\" : \"mips\",\n  \"entityType\" : \"individual\",\n  "
-			+ "\"taxpayerIdentificationNumber\" : \"123456789\",\n  \"nationalProviderIdentifier\" : \"2567891421\",\n  "
-			+ "\"measurementSets\" : [ {\n    \"category\" : \"aci\",\n    "
-			+ "\"submissionMethod\" : \"electronicHealthRecord\",\n    "
-			+ "\"measurements\" : [ {\n      \"measureId\" : \"ACI-PEA-1\",\n      \"value\" : {\n        "
-			+ "\"numerator\" : 600,\n        \"denominator\" : 800\n      }\n    }, {\n      \"measureId\" : \"ACI_EP_1\",\n      "
-			+ "\"value\" : {\n        \"numerator\" : 500,\n        \"denominator\" : 700\n      }\n    }, {\n      "
-			+ "\"measureId\" : \"ACI_CCTPE_3\",\n      \"value\" : {\n        \"numerator\" : 400,\n        "
-			+ "\"denominator\" : 600\n      }\n    } ],\n    \"performanceStart\" : \"2017-01-01\",\n    "
-			+ "\"performanceEnd\" : \"2017-12-31\"\n  }, "
-			+ "{\n    \"category\" : \"ia\",\n    \"submissionMethod\" : \"electronicHealthRecord\",\n    "
-			+ "\"measurements\" : [ {\n      \"measureId\" : \"IA_EPA_1\",\n      \"value\" : true\n    } ],\n    "
-			+ "\"performanceStart\" : \"2017-01-01\",\n    \"performanceEnd\" : \"2017-12-31\"\n  } ]\n}";
+	private static String expected;
+
+	@BeforeAll
+	static void setup() throws IOException {
+		expected = TestHelper.getFixture("clinicalDocument.json");
+	}
 
 	@Test
 	void parseClinicalDocument() throws Exception {
@@ -51,7 +48,7 @@ class ClinicalDocumentRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		assertThat(sw.toString()).isEqualTo(EXPECTED);
+		assertThat(sw.toString()).isEqualTo(expected);
 	}
 
 }
