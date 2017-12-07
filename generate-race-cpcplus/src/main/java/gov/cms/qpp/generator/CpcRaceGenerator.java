@@ -66,7 +66,8 @@ public class CpcRaceGenerator {
 			Element measureSection =
 					rootElement.getChild("component", rootNamespace)
 							.getChild("structuredBody", rootNamespace)
-							.getChild("component", rootNamespace);
+							.getChild("component", rootNamespace)
+							.getChild("section", rootNamespace);
 			List<Element> measureEntries = measureSection.getChildren("entry", rootNamespace);
 			Element performancePeriod = measureEntries.remove(0);
 			int index;
