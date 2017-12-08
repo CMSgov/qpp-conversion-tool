@@ -130,7 +130,7 @@
 						<useFile>false</useFile>
 						<forkCount>1.5C</forkCount>
 						<reuseForks>true</reuseForks>
-						<argLine>-Xmx2G -Xms2G</argLine>
+						<argLine>-Xmx1G -Xms1G</argLine>
 						<excludes>
 							<exclude>**/*Integration.java</exclude>
 							<exclude>**/*IntegrationTest.java</exclude>
