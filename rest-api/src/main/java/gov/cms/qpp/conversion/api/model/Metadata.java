@@ -299,7 +299,7 @@ public final class Metadata {
 	 * @return True for a CPC+ conversion, false otherwise.
 	 */
 	@DoNotEncrypt
-	@DynamoDBAttribute(attributeName = "Cpc")
+	@DynamoDBAttribute(attributeName = Constants.DYNAMO_CPC_ATTRIBUTE)
 	public String getCpc() {
 		return cpc;
 	}
@@ -399,7 +399,7 @@ public final class Metadata {
 	}
 
 	@DoNotEncrypt
-	@DynamoDBAttribute(attributeName = "CpcProcessed_CreateDate")
+	@DynamoDBAttribute(attributeName = Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE)
 	public String getCpcProcessedCreateDate() {
 		String combination = null;
 
