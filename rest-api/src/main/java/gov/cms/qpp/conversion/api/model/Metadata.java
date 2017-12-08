@@ -36,6 +36,9 @@ public final class Metadata {
 	private Date createdDate;
 	private Boolean cpcProcessed;
 
+	/**
+	 * Constructs a new {@code Metadata} with the {@code createdDate} filled in upon construction.
+	 */
 	public Metadata() {
 		createdDate = new Date();
 	}
@@ -382,7 +385,9 @@ public final class Metadata {
 	/**
 	 * Whether the file was processed by the CPC+ team
 	 *
-	 * @return
+	 * Ignored when writing to DynamoDB because {@code CpcProcessed_CreateDate} holds the pertinent information.
+	 *
+	 * @return Whether the file was processed.
 	 */
 	@DynamoDBIgnore
 	public Boolean getCpcProcessed() {
@@ -398,6 +403,13 @@ public final class Metadata {
 		this.cpcProcessed = cpcProcessed;
 	}
 
+	/**
+	 * Returns an attribute that combines the CPC+ processed state and the date of creation.
+	 *
+	 * This is mostly useful in the CPC+ global secondary index.
+	 *
+	 * @return The combined attribute.
+	 */
 	@DoNotEncrypt
 	@DynamoDBAttribute(attributeName = Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE)
 	public String getCpcProcessedCreateDate() {
@@ -410,6 +422,15 @@ public final class Metadata {
 		return combination;
 	}
 
+	/**
+	 * Sets the separate CPC+ processed flag and created date based on the argument
+	 *
+	 * Splits the the processed flag from the date by a {@code #} character.
+	 * The first field must be {@code true} or {@code false} which represents the CPC+ processed boolean.
+	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2017-12-08T18:32:54.846Z}.
+	 *
+	 * @param combination The combined attribute.
+	 */
 	public void setCpcProcessedCreateDate(String combination) {
 
 		String[] split = combination.split("#");
