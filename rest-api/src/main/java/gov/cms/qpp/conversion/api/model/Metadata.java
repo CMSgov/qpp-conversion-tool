@@ -397,7 +397,7 @@ public final class Metadata {
 	}
 
 	@DoNotEncrypt
-	@DynamoDBAttribute(attributeName = "CpcProcessedCreateDate")
+	@DynamoDBAttribute(attributeName = "CpcProcessed_CreateDate")
 	public String getCpcProcessedCreateDate() {
 		String combination = null;
 

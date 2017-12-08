@@ -11,14 +11,14 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Utilities for working with Metadata beans
  */
 public class MetadataHelper {
 
-	private static final Random RANDOM_HASH = new Random();
+		private static final ThreadLocalRandom RANDOM_HASH = ThreadLocalRandom.current();
 
 	private MetadataHelper() {
 	}
@@ -37,9 +37,7 @@ public class MetadataHelper {
 
 		Metadata metadata = new Metadata();
 
-		String apmId = findApm(node);
-
-		metadata.setApm(apmId);
+		metadata.setApm(findApm(node));
 		metadata.setTin(findTin(node));
 		metadata.setNpi(findNpi(node));
 

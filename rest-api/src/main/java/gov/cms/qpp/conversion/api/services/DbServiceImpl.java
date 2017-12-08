@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -65,7 +66,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	public List<Metadata> getUnprocessedCpcPlusMetaData() {
 
 		return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
-			HashMap<String, AttributeValue> valueMap = new HashMap<>();
+			Map<String, AttributeValue> valueMap = new HashMap<>();
 			valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
 			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
 
