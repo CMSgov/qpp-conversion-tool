@@ -29,7 +29,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assume.assumeTrue;
 
-public class SubmissionIntegration {
+public class SubmissionIntegrationTest {
 	private static HttpClient client;
 	private static String serviceUrl = "https://qpp-submissions-sandbox.navapbc.com/public/validate-submission";
 	private JsonWrapper qpp;

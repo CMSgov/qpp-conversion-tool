@@ -52,6 +52,12 @@ public class FileRetrievalServiceImpl extends InOrderActionService<GetObjectRequ
 		return actOnItem(getObjectRequest);
 	}
 
+	/**
+	 * Action to get the file from the s3bucket.
+	 *
+	 * @param objectToActOn An object that contains information pertinent to the execution of the action.
+	 * @return contents of the {@link S3Object}
+	 */
 	@Override
 	protected InputStream asynchronousAction(GetObjectRequest objectToActOn) {
 		S3Object s3Object = amazonS3Client.getObject(objectToActOn);

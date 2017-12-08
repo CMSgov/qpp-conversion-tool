@@ -79,6 +79,6 @@ public class CpcFileControllerV1 {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_XML);
 
-		return new ResponseEntity<>(IOUtils.toString(inStream, Charset.defaultCharset()), httpHeaders, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(IOUtils.toString(inStream, Charset.defaultCharset()), httpHeaders, HttpStatus.OK);
 	}
 }
