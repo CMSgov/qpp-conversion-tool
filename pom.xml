@@ -128,8 +128,6 @@
 					<configuration>
 						<trimStackTrace>false</trimStackTrace>
 						<useFile>false</useFile>
-						<forkCount>1.5C</forkCount>
-						<reuseForks>true</reuseForks>
 						<excludes>
 							<exclude>**/*Integration.java</exclude>
 							<exclude>**/*IntegrationTest.java</exclude>
