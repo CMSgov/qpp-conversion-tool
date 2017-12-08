@@ -21,8 +21,8 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	public static final String PROGRAM_NAME = "programName";
 	public static final String ENTITY_TYPE = "entityType";
 	public static final String MIPS_PROGRAM_NAME = "mips";
-	public static final String CPCPLUS_PROGRAM_NAME = "cpcplus";
-	public static final String ENTITY_ID = "entityId";
+	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
+	public static final String ENTITY_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
 	public static final String MIPS = "MIPS";
 	public static final String MIPS_GROUP = "MIPS_GROUP";
@@ -152,7 +152,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 			pairs[1] = ENTITY_GROUP;
 		} else if (CPCPLUS.equalsIgnoreCase(name)) {
 			pairs[0] = CPCPLUS_PROGRAM_NAME;
-			pairs[1] = "";
+			pairs[1] = ENTITY_GROUP;
 		} else {
 			pairs[0] = name.toLowerCase(); //Unknown case
 			pairs[1] = ENTITY_INDIVIDUAL;

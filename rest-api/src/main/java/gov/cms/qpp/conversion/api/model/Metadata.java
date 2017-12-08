@@ -6,11 +6,11 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.DoNotEncrypt;
-import com.google.common.base.Objects;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Model to hold conversion metadata. Maps to a table in DynamoDB.
@@ -26,7 +26,7 @@ public final class Metadata {
 	private Long submissionYear;
 	private String submissionLocator;
 	private String qppLocator;
-	private String fileName;
+	private String fileName;  //this field is encrypted
 	private Boolean overallStatus;
 	private Boolean conversionStatus;
 	private Boolean validationStatus;
@@ -466,23 +466,23 @@ public final class Metadata {
 
 		Metadata that = (Metadata) o;
 
-		boolean equals = Objects.equal(submissionYear, that.submissionYear);
-		equals &= Objects.equal(overallStatus, that.overallStatus);
-		equals &= Objects.equal(conversionStatus, that.conversionStatus);
-		equals &= Objects.equal(validationStatus, that.validationStatus);
-		equals &= Objects.equal(cpc, that.cpc);
-		equals &= Objects.equal(uuid, that.uuid);
-		equals &= Objects.equal(tin, that.tin);
-		equals &= Objects.equal(npi, that.npi);
-		equals &= Objects.equal(createdDate, that.createdDate);
-		equals &= Objects.equal(apm, that.apm);
-		equals &= Objects.equal(submissionLocator, that.submissionLocator);
-		equals &= Objects.equal(qppLocator, that.qppLocator);
-		equals &= Objects.equal(fileName, that.fileName);
-		equals &= Objects.equal(conversionErrorLocator, that.conversionErrorLocator);
-		equals &= Objects.equal(validationErrorLocator, that.validationErrorLocator);
-		equals &= Objects.equal(rawValidationErrorLocator, that.rawValidationErrorLocator);
-		equals &= Objects.equal(cpcProcessed, that.cpcProcessed);
+		boolean equals = Objects.equals(submissionYear, that.submissionYear);
+		equals &= Objects.equals(overallStatus, that.overallStatus);
+		equals &= Objects.equals(conversionStatus, that.conversionStatus);
+		equals &= Objects.equals(validationStatus, that.validationStatus);
+		equals &= Objects.equals(cpc, that.cpc);
+		equals &= Objects.equals(uuid, that.uuid);
+		equals &= Objects.equals(tin, that.tin);
+		equals &= Objects.equals(npi, that.npi);
+		equals &= Objects.equals(createdDate, that.createdDate);
+		equals &= Objects.equals(apm, that.apm);
+		equals &= Objects.equals(submissionLocator, that.submissionLocator);
+		equals &= Objects.equals(qppLocator, that.qppLocator);
+		equals &= Objects.equals(fileName, that.fileName);
+		equals &= Objects.equals(conversionErrorLocator, that.conversionErrorLocator);
+		equals &= Objects.equals(validationErrorLocator, that.validationErrorLocator);
+		equals &= Objects.equals(rawValidationErrorLocator, that.rawValidationErrorLocator);
+		equals &= Objects.equals(cpcProcessed, that.cpcProcessed);
 		return equals;
 	}
 
@@ -492,7 +492,7 @@ public final class Metadata {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(uuid, tin, npi, createdDate, apm, submissionYear,
+		return Objects.hash(uuid, tin, npi, createdDate, apm, submissionYear,
 				submissionLocator, qppLocator, fileName, overallStatus, conversionStatus, validationStatus,
 				cpc, conversionErrorLocator, validationErrorLocator, rawValidationErrorLocator, cpcProcessed);
 	}

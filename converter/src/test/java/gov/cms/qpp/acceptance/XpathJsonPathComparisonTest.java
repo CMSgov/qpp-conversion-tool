@@ -50,7 +50,7 @@ class XpathJsonPathComparisonTest {
 
 	@Test
 	void compareTopLevelAttributeEntityId() throws XmlException, IOException {
-		String jsonPath = "entityId";
+		String jsonPath = "practiceId";
 		helper.executeAttributeTest(jsonPath, EXTENSION, "AR000000");
 	}
 

@@ -36,7 +36,7 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 
 			JsonWrapper value = new JsonWrapper();
 			measurePerformedEncoder.encode(value, measurePerformedNode);
-			maintainContinuity(wrapper, value, VALUE);
+			maintainContinuity(wrapper, measurePerformedNode, VALUE);
 
 			if (null != value.getBoolean(VALUE)) {
 				wrapper.putObject(VALUE, value.getBoolean(VALUE));
