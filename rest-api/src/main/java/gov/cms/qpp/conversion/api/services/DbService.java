@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Interface for writing a {@link Metadata} object to a database.
+ * Interface for reading/writing a {@link Metadata} object to a database.
  */
 public interface DbService {
 	/**
@@ -20,5 +20,11 @@ public interface DbService {
 
 	List<Metadata> getUnprocessedCpcPlusMetaData();
 
+	/**
+	 * Retrieves the FileLocationId from the database by Metadata id
+	 *
+	 * @param uuid Id of the Metadata holding the FileLocationId
+	 * @return File Location Id
+	 */
 	String getFileSubmissionLocationId(String uuid);
 }

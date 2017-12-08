@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Service for CPC+ File retrieval from the S3 bucket
+ */
 @Service
 public class FileRetrievalServiceImpl extends InOrderActionService<GetObjectRequest, InputStream>
 		implements  FileRetrievalService {
@@ -29,6 +32,12 @@ public class FileRetrievalServiceImpl extends InOrderActionService<GetObjectRequ
 	@Autowired
 	private DbService dbService;
 
+	/**
+	 * Performs a {@link GetObjectRequest} to the S3 bucket by file id for the file
+	 *
+	 * @param fileId Id of the file to search for
+	 * @return file found from S3
+	 */
 	@Override
 	public CompletableFuture<InputStream> getFileById(String fileId) {
 		final String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
