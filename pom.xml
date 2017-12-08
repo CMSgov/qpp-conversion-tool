@@ -134,7 +134,6 @@
 						</excludes>
 
 						<classpathDependencyExcludes>
-							<classpathDependencyExclude>ch.qos.logback:logback-classic</classpathDependencyExclude>
 							<classpathDependencyExclude>ch.qos.logback:logback-core</classpathDependencyExclude>
 							<classpathDependencyExclude>net.logstash.logback:logstash-logback-encoder</classpathDependencyExclude>
 						</classpathDependencyExcludes>
