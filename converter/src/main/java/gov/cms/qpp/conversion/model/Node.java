@@ -1,8 +1,5 @@
 package gov.cms.qpp.conversion.model;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,10 +7,13 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import com.google.common.base.MoreObjects;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -422,14 +422,14 @@ public class Node {
 		final Node node = (Node)o;
 
 		boolean halfEquals = isValidated() == node.isValidated()
-			&& Objects.equal(getChildNodes(), node.getChildNodes())
-			&& Objects.equal(data, node.data)
-			&& Objects.equal(duplicateData, node.duplicateData);
+			&& Objects.equals(getChildNodes(), node.getChildNodes())
+			&& Objects.equals(data, node.data)
+			&& Objects.equals(duplicateData, node.duplicateData);
 
 		return halfEquals
 			&& getType() == node.getType()
-			&& Objects.equal(getDefaultNsUri(), node.getDefaultNsUri())
-			&& Objects.equal(getPath(), node.getPath());
+			&& Objects.equals(getDefaultNsUri(), node.getDefaultNsUri())
+			&& Objects.equals(getPath(), node.getPath());
 	}
 
 	/**
@@ -439,6 +439,6 @@ public class Node {
 	 */
 	@Override
 	public final int hashCode() {
-		return Objects.hashCode(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(), getPath());
+		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(), getPath());
 	}
 }
