@@ -17,6 +17,9 @@ import java.io.InputStream;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Service for storing {@link Metadata} by {@link Converter.ConversionReport} outcome
+ */
 @Service
 public class AuditServiceImpl implements AuditService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
@@ -95,6 +98,11 @@ public class AuditServiceImpl implements AuditService {
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
+	/**
+	 * Determines if the No Audit Environment variable was passed
+	 *
+	 * @return the status of auditing
+	 */
 	private boolean noAudit() {
 		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 		boolean returnValue = noAudit != null && !noAudit.isEmpty();
@@ -106,17 +114,37 @@ public class AuditServiceImpl implements AuditService {
 		return returnValue;
 	}
 
+	/**
+	 * Initializes {@link Metadata} from the {@link Converter.ConversionReport} and conversion outcome
+	 *
+	 * @param report Object containing metadata information
+	 * @param outcome Status of the conversion
+	 * @return Constructed metadata
+	 */
 	private Metadata initMetadata(Converter.ConversionReport report, MetadataHelper.Outcome outcome) {
 		Metadata metadata = MetadataHelper.generateMetadata(report.getDecoded(), outcome);
 		metadata.setFileName(report.getFilename());
 		return metadata;
 	}
 
+	/**
+	 * Calls the service to store the given file
+	 *
+	 * @param content to be stored
+	 * @return the result of the storage upload
+	 */
 	private CompletableFuture<String> storeContent(InputStream content) {
 		UUID key = UUID.randomUUID();
 		return storageService.store(key.toString(), content);
 	}
 
+	/**
+	 * Calls the service for writing {@link Metadata} to the database
+	 *
+	 * @param metadata to be stored
+	 * @param thrown check for {@link AuditException}
+	 * @return A {@link CompletableFuture} that will hold the written Metadata.
+	 */
 	private CompletableFuture<Metadata> persist(Metadata metadata, Throwable thrown) {
 		if (thrown != null) {
 			throw new AuditException(thrown);
