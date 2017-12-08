@@ -66,6 +66,14 @@ Error scenarios
     * error-missing-subpopulation-qrda.xml (eCQM measure missing a required popuation)
     * error-nonboolean-value-qrda.xml (IA boolean measure with a non-boolean value)
 
+CPC+ Sample Files
+
+These files should validate successfully for both the conversion tool validation and
+the Submission Validation.
+
+* CPCPlus_Success_PreProd.xml - For pre-prod environments that require TIN and NPI that start with '000'
+* CPCPlus_Success_Prod.xml - For the production environment
+
 CPC+ error scenarios for Conversion Tool CPC+ specific validations
 
 These files do not cover validations performed by the Submission Validation API, nor
