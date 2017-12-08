@@ -17,6 +17,8 @@ import java.util.Date;
  */
 @DynamoDBTable(tableName = "ConversionMetadata")
 public final class Metadata {
+	private static final int CPC_PROCESSED_CREATE_DATE_NUM_FIELDS = 2;
+
 	private String uuid;
 	private String tin;  //this field is encrypted
 	private String npi;
@@ -435,12 +437,12 @@ public final class Metadata {
 
 		String[] split = combination.split("#");
 
-		if (split.length < 2) {
+		if (split.length < CPC_PROCESSED_CREATE_DATE_NUM_FIELDS) {
 			return;
 		}
 
-		String isProcessed = split[0];
-		String creationDate = split[1];
+		String isProcessed = split[CPC_PROCESSED_CREATE_DATE_NUM_FIELDS - 2];
+		String creationDate = split[CPC_PROCESSED_CREATE_DATE_NUM_FIELDS - 1];
 
 		setCpcProcessed(Boolean.valueOf(isProcessed));
 		setCreatedDate(Date.from(Instant.parse(creationDate)));
