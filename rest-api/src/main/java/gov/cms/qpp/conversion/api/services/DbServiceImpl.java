@@ -71,8 +71,8 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
 
 			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
-				.withIndexName("Cpc-CpcProcessedCreateDate-index")
-				.withKeyConditionExpression("Cpc = :cpcValue and begins_with(CpcProcessedCreateDate, :cpcProcessedValue)")
+				.withIndexName("Cpc-CpcProcessed_CreateDate-index")
+				.withKeyConditionExpression("Cpc = :cpcValue and begins_with(CpcProcessed_CreateDate, :cpcProcessedValue)")
 				.withExpressionAttributeValues(valueMap)
 				.withConsistentRead(false);
 
