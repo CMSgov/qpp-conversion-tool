@@ -18,9 +18,13 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class MetadataHelper {
 
-		private static final ThreadLocalRandom RANDOM_HASH = ThreadLocalRandom.current();
+	private static final ThreadLocalRandom RANDOM_HASH = ThreadLocalRandom.current();
 
+	/**
+	 * No need for constructor in this utility class
+	 */
 	private MetadataHelper() {
+		//empty
 	}
 
 	/**
@@ -48,24 +52,49 @@ public class MetadataHelper {
 		return metadata;
 	}
 
+	/**
+	 * Retrieves the random hash for CPC Field
+	 *
+	 * @return Cpc field randomly hashed
+	 */
 	private static String cpcHash() {
 		return Constants.CPC_DYNAMO_PARTITION_START + RANDOM_HASH.nextInt(Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
+	/**
+	 * Retrieves the APM Entity Id from the given node
+	 *
+	 * @return Apm Entity ID value
+	 */
 	private static String findApm(Node node) {
 		return findValue(node, ClinicalDocumentDecoder.ENTITY_ID, TemplateId.CLINICAL_DOCUMENT);
 	}
 
+	/**
+	 * Retrieves the Taxpayer Identification Number from the given node
+	 *
+	 * @return TIN value
+	 */
 	private static String findTin(Node node) {
 		return findValue(node, MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
 				TemplateId.QRDA_CATEGORY_III_REPORT_V3, TemplateId.CLINICAL_DOCUMENT);
 	}
 
+	/**
+	 * Retrieves the National Provider Identifier from the given node
+	 *
+	 * @return NPI value
+	 */
 	private static String findNpi(Node node) {
 		return findValue(node, MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
 				TemplateId.QRDA_CATEGORY_III_REPORT_V3, TemplateId.CLINICAL_DOCUMENT);
 	}
 
+	/**
+	 * Retrieves the random hash for CPC Field
+	 *
+	 * @return Cpc field randomly hashed
+	 */
 	private static boolean isCpc(Node node) {
 		if (Program.isCpc(node)) {
 			return true;
@@ -95,6 +124,15 @@ public class MetadataHelper {
 		return found == null ? null : found.getValue(key);
 	}
 
+	/**
+	 * Finds all possible children within the given node for each {@link TemplateId} given
+	 * filtered by children with specific keys
+	 *
+	 * @param node Object to search through
+	 * @param key value to filter
+	 * @param possibleLocations areas which the child can exist
+	 * @return A child node with the correct value or null
+	 */
 	private static Node findPossibleChildNode(Node node, String key, TemplateId... possibleLocations) {
 		return Arrays.stream(possibleLocations)
 			.distinct()
