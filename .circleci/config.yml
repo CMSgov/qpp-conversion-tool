@@ -4,6 +4,8 @@ jobs:
     working_directory: ~/qpp-conversion-tool
     docker:
       - image: circleci/openjdk:8-jdk-browsers
+    environment:
+      MAVEN_OPTS: "-Xms1G -Xmx1G"
     resource_class: large
     steps:
       - checkout
