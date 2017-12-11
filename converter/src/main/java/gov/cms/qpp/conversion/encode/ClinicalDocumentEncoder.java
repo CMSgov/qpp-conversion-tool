@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -56,10 +55,10 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		encodePerformanceYear(wrapper, thisNode);
 		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE,
 				thisNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE));
-		wrapper.putString(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
-				thisNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
-		wrapper.putString(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
-				thisNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
+		wrapper.putString(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+				thisNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
+		wrapper.putString(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+				thisNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER));
 	}
 
 	/**
@@ -91,16 +90,14 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-			if (TemplateId.NPI_TIN_ID != child.getType()) {
-				childWrapper = new JsonWrapper();
-				sectionEncoder = encoders.get(child.getType());
-				try {
-					sectionEncoder.encode(childWrapper, child);
-					measurementSetsWrapper.putObject(childWrapper);
-				} catch (NullPointerException exc) {
-					String message = "No encoder for decoder : " + child.getType();
-					throw new EncodeException(message, exc);
-				}
+			childWrapper = new JsonWrapper();
+			sectionEncoder = encoders.get(child.getType());
+			try {
+				sectionEncoder.encode(childWrapper, child);
+				measurementSetsWrapper.putObject(childWrapper);
+			} catch (NullPointerException exc) {
+				String message = "No encoder for decoder : " + child.getType();
+				throw new EncodeException(message, exc);
 			}
 		}
 		return measurementSetsWrapper;

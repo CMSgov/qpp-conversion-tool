@@ -1,9 +1,27 @@
 package gov.cms.qpp;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-
+import gov.cms.qpp.acceptance.helper.MarkupManipulator;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
+import gov.cms.qpp.conversion.correlation.model.Goods;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder;
 import gov.cms.qpp.conversion.decode.SupplementalDataPayerDecoder;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.Error;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -15,28 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.xml.sax.SAXException;
-
-import gov.cms.qpp.acceptance.helper.MarkupManipulator;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
-import gov.cms.qpp.conversion.correlation.model.Goods;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
-import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.Error;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class SingularAttributeTest {
 
@@ -63,9 +60,8 @@ class SingularAttributeTest {
 		exclusions = new HashSet<>(
 				Arrays.asList(
 						//MultipleTinsDecoder maps multiple tin/npi combination
-						MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
-						MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
-						MultipleTinsDecoder.NPI_TIN,
+						ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+						ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
 						//There are no validations currently for entity type
 						ClinicalDocumentDecoder.ENTITY_ID,
 						ClinicalDocumentDecoder.PRACTICE_SITE_ADDR,

@@ -2,11 +2,8 @@ package gov.cms.qpp.conversion.api.helper;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -97,7 +94,7 @@ class MetadataHelperTest {
 	@Test
 	void testExtractsTin() {
 		Node node = new Node();
-		node.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
+		node.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getTin()).isEqualTo(MOCK_STRING);
@@ -108,7 +105,7 @@ class MetadataHelperTest {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
+		child.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
@@ -129,7 +126,7 @@ class MetadataHelperTest {
 	@Test
 	void testExtractsNpi() {
 		Node node = new Node();
-		node.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
+		node.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getNpi()).isEqualTo(MOCK_STRING);
@@ -140,7 +137,7 @@ class MetadataHelperTest {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
+		child.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
