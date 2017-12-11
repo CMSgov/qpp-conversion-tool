@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
-import gov.cms.qpp.conversion.api.services.FileRetrievalService;
 import gov.cms.qpp.test.MockitoExtension;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -36,9 +35,6 @@ class CpcFileControllerV1Test {
 	@Mock
 	CpcFileService cpcFileService;
 
-	@Mock
-	FileRetrievalService fileRetrievalService;
-
 	@BeforeEach
 	void setUp() {
 		expectedUnprocessedCpcFileDataList = createMockedUnprocessedDataList();
@@ -58,8 +54,8 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testGetFileById() throws IOException {
-		CompletableFuture<InputStream> valid = CompletableFuture.completedFuture(new ByteArrayInputStream("1234".getBytes()));
-		when(fileRetrievalService.getFileById(anyString())).thenReturn(valid);
+		InputStream valid = new ByteArrayInputStream("1234".getBytes());
+		when(cpcFileService.getFileById(anyString())).thenReturn(valid);
 
 		ResponseEntity<String> response = cpcFileControllerV1.getFileById("meep");
 

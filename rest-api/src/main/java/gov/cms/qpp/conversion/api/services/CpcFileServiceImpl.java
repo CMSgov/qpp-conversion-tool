@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import java.io.InputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class CpcFileServiceImpl implements CpcFileService {
 	@Autowired
 	private DbService dbService;
 
+	@Autowired
+	private StorageService storageService;
+
 	/**
 	 * Calls the DbService for unprocessed metadata to transform into UnprocessedCpcFileData
 	 *
@@ -27,6 +31,12 @@ public class CpcFileServiceImpl implements CpcFileService {
 		List<Metadata> metadata = dbService.getUnprocessedCpcPlusMetaData();
 
 		return transformMetaDataToUnprocessedCpcFileData(metadata);
+	}
+
+	public InputStream getFileById(String fileId) {
+		String fileLocationId = dbService.getFileSubmissionLocationId(fileId);
+
+		return storageService.getFileByLocationId(fileLocationId);
 	}
 
 	/**

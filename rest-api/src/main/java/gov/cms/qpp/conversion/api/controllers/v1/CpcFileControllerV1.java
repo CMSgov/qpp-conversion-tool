@@ -3,7 +3,10 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
-import gov.cms.qpp.conversion.api.services.FileRetrievalService;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
 /**
  * Controller to handle cpc file data
  */
@@ -34,9 +31,6 @@ public class CpcFileControllerV1 {
 
 	@Autowired
 	private CpcFileService cpcFileService;
-
-	@Autowired
-	private FileRetrievalService fileRetrievalService;
 
 	/**
 	 * Endpoint to transform an uploaded file into a valid or error json response
@@ -71,8 +65,7 @@ public class CpcFileControllerV1 {
 			throws IOException {
 		API_LOG.info("CPC+ file request received");
 
-		CompletableFuture<InputStream> fileStreamFuture = fileRetrievalService.getFileById(fileId);
-		InputStream inStream = fileStreamFuture.join();
+		InputStream inStream = cpcFileService.getFileById(fileId);
 
 		API_LOG.info("CPC+ file request succeeded");
 
