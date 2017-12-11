@@ -21,6 +21,7 @@
 		<module>test-commons</module>
 		<module>converter</module>
 		<module>commandline</module>
+		<module>rest-logging</module>
 		<module>rest-api</module>
 		<module>benchmark</module>
 	</modules>
@@ -132,11 +133,6 @@
 							<exclude>**/*Integration.java</exclude>
 							<exclude>**/*IntegrationTest.java</exclude>
 						</excludes>
-
-						<classpathDependencyExcludes>
-							<classpathDependencyExclude>ch.qos.logback:logback-core</classpathDependencyExclude>
-							<classpathDependencyExclude>net.logstash.logback:logstash-logback-encoder</classpathDependencyExclude>
-						</classpathDependencyExcludes>
 					</configuration>
 					<dependencies>
 						<dependency>
