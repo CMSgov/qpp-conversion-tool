@@ -16,6 +16,7 @@
 
 	<properties>
 		<requiredCodeCoverage>0.75</requiredCodeCoverage>
+		<maven.test.dependency.excludes>ch.qos.logback:*</maven.test.dependency.excludes>
 	</properties>
 
 	<build>
