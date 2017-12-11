@@ -90,17 +90,15 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-//			if (TemplateId.NPI_TIN_ID != child.getType()) {
-				childWrapper = new JsonWrapper();
-				sectionEncoder = encoders.get(child.getType());
-				try {
-					sectionEncoder.encode(childWrapper, child);
-					measurementSetsWrapper.putObject(childWrapper);
-				} catch (NullPointerException exc) {
-					String message = "No encoder for decoder : " + child.getType();
-					throw new EncodeException(message, exc);
-				}
-//			}
+			childWrapper = new JsonWrapper();
+			sectionEncoder = encoders.get(child.getType());
+			try {
+				sectionEncoder.encode(childWrapper, child);
+				measurementSetsWrapper.putObject(childWrapper);
+			} catch (NullPointerException exc) {
+				String message = "No encoder for decoder : " + child.getType();
+				throw new EncodeException(message, exc);
+			}
 		}
 		return measurementSetsWrapper;
 	}

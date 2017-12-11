@@ -154,7 +154,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 			pairs[1] = ENTITY_GROUP;
 		} else if (CPCPLUS.equalsIgnoreCase(name)) {
 			pairs[0] = CPCPLUS_PROGRAM_NAME;
-			pairs[1] = ENTITY_GROUP;
+			pairs[1] = ENTITY_INDIVIDUAL;
 		} else {
 			pairs[0] = name.toLowerCase(); //Unknown case
 			pairs[1] = ENTITY_INDIVIDUAL;
