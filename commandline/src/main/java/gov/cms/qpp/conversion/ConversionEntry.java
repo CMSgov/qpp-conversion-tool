@@ -96,7 +96,7 @@ public class ConversionEntry {
 	 * @param args Command line parameters.
 	 * @return  A list of file(s) that are to be transformed.
 	 */
-	static Collection<Path> validArgs(String[] args) {
+	static Collection<Path> validArgs(String... args) {
 		Collection<Path> returnValue = new LinkedList<>();
 		try {
 			CommandLine line = cli(args);
@@ -179,7 +179,7 @@ public class ConversionEntry {
 	 * @return parsed representation of command line entries
 	 * @throws ParseException when options cannot be parsed
 	 */
-	static CommandLine cli(String[] arguments) throws ParseException {
+	static CommandLine cli(String... arguments) throws ParseException {
 		return new DefaultParser().parse(options, arguments);
 	}
 
