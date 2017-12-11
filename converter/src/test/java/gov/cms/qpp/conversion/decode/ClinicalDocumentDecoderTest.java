@@ -57,14 +57,14 @@ class ClinicalDocumentDecoderTest {
 	@Test
 	void testRootNationalProviderIdentifier() {
 		assertWithMessage("Must have the correct NPI")
-				.that(clinicalDocument.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(clinicalDocument.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 	}
 
 	@Test
 	void testRootTaxpayerIdentificationNumber() {
 		assertWithMessage("Must have the correct TIN")
-				.that(clinicalDocument.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(clinicalDocument.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 	}
 
@@ -131,7 +131,7 @@ class ClinicalDocumentDecoderTest {
 				.isEqualTo(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
 
 		assertWithMessage("Should contain a TIN")
-				.that(clinicalDocument.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(clinicalDocument.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 	}
 
@@ -161,10 +161,10 @@ class ClinicalDocumentDecoderTest {
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL);
 		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
 				.that(testChildNode)
@@ -190,10 +190,10 @@ class ClinicalDocumentDecoderTest {
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL);
 		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
 				.that(testChildNode)
@@ -219,10 +219,10 @@ class ClinicalDocumentDecoderTest {
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo(ClinicalDocumentDecoder.ENTITY_GROUP);
 		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
 				.that(testChildNode)
@@ -246,12 +246,12 @@ class ClinicalDocumentDecoderTest {
 				.isEqualTo(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		assertWithMessage("Clinical Document doesn't contain entity type")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
-				.isEqualTo(ClinicalDocumentDecoder.ENTITY_GROUP);
+				.isEqualTo(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL);
 		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
 				.that(testChildNode)
@@ -277,10 +277,10 @@ class ClinicalDocumentDecoderTest {
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo("individual");
 		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
 				.that(testChildNode)
