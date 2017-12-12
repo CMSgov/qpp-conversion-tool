@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +26,6 @@ import static org.mockito.Mockito.when;
 class CpcFileControllerV1Test {
 
 	private List<UnprocessedCpcFileData> expectedUnprocessedCpcFileDataList;
-	private CompletableFuture<InputStream> expectedStreamFuture;
 
 	@InjectMocks
 	CpcFileControllerV1 cpcFileControllerV1;
@@ -38,7 +36,6 @@ class CpcFileControllerV1Test {
 	@BeforeEach
 	void setUp() {
 		expectedUnprocessedCpcFileDataList = createMockedUnprocessedDataList();
-		expectedStreamFuture = CompletableFuture.completedFuture(new ByteArrayInputStream("12345".getBytes()));
 	}
 
 	@Test
