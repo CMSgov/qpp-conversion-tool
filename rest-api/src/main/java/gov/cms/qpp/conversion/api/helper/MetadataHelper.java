@@ -27,16 +27,18 @@ public class MetadataHelper {
 	 * @return
 	 */
 	public static Metadata generateMetadata(Node node, Outcome outcome) {
-		Objects.requireNonNull(node, "node");
 		Objects.requireNonNull(outcome, "outcome");
 
 		Metadata metadata = new Metadata();
 
-		metadata.setApm(findApm(node));
-		metadata.setTin(findTin(node));
-		metadata.setNpi(findNpi(node));
-		metadata.setCpc(isCpc(node));
-		metadata.setCpcProcessed(false);
+		if (node != null) {
+			metadata.setApm(findApm(node));
+			metadata.setTin(findTin(node));
+			metadata.setNpi(findNpi(node));
+			metadata.setCpc(isCpc(node));
+			metadata.setCpcProcessed(false);
+		}
+
 		outcome.setStatus(metadata);
 
 		return metadata;
