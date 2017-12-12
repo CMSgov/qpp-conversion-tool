@@ -18,6 +18,8 @@ import java.util.function.Consumer;
 public class ClinicalDocumentDecoder extends QppXmlDecoder {
 
 	/*  Constants for lookups and tests */
+	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
+	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
 	public static final String PROGRAM_NAME = "programName";
 	public static final String ENTITY_TYPE = "entityType";
 	public static final String MIPS_PROGRAM_NAME = "mips";
@@ -25,8 +27,8 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	public static final String ENTITY_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
 	public static final String MIPS = "MIPS";
-	public static final String MIPS_GROUP = "MIPS_GROUP";
-	public static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
+	private static final String MIPS_GROUP = "MIPS_GROUP";
+	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
 	public static final String ENTITY_GROUP = "group";
 	public static final String ENTITY_INDIVIDUAL = "individual";
 	public static final String CPCPLUS = "CPCPLUS";
@@ -106,8 +108,8 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 */
 	private void setNationalProviderIdOnNode(Element element, Node thisNode) {
 		Consumer<? super Attribute> consumer = p ->
-				thisNode.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, p.getValue());
-		setOnNode(element, getXpath(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER),
+				thisNode.putValue(NATIONAL_PROVIDER_IDENTIFIER, p.getValue());
+		setOnNode(element, getXpath(NATIONAL_PROVIDER_IDENTIFIER),
 				consumer, Filters.attribute(), true);
 	}
 
@@ -119,9 +121,9 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 */
 	private void setTaxProviderTaxIdOnNode(Element element, Node thisNode) {
 		Consumer<? super Attribute> consumer = p ->
-				thisNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+				thisNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER,
 						p.getValue());
-		setOnNode(element, getXpath(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER),
+		setOnNode(element, getXpath(TAX_PAYER_IDENTIFICATION_NUMBER),
 				consumer, Filters.attribute(), true);
 	}
 
@@ -152,7 +154,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 			pairs[1] = ENTITY_GROUP;
 		} else if (CPCPLUS.equalsIgnoreCase(name)) {
 			pairs[0] = CPCPLUS_PROGRAM_NAME;
-			pairs[1] = ENTITY_GROUP;
+			pairs[1] = ENTITY_INDIVIDUAL;
 		} else {
 			pairs[0] = name.toLowerCase(); //Unknown case
 			pairs[1] = ENTITY_INDIVIDUAL;
