@@ -5,9 +5,6 @@
 			"templateId": "CLINICAL_DOCUMENT",
 			"correlationId": "topLevel"
 		},{
-			"templateId": "QRDA_CATEGORY_III_REPORT_V3",
-			"correlationId": "topLevel"
-		},{
 			"templateId": "ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS",
 			"correlationId": "measure"
 		},{
@@ -28,9 +25,6 @@
 		},{
 			"templateId": "REPORTING_PARAMETERS_ACT",
 			"correlationId": "reportingParameters"
-		},{
-			"templateId": "QRDA_CATEGORY_III_REPORT_V3",
-			"correlationId": "npiTinParent"
 		},{
 			"templateId": "MEASURE_DATA_CMS_V2",
 			"correlationId": "measureData"
@@ -293,18 +287,6 @@
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'high' and namespace-uri() = '<nsuri>']/@value",
-						"xmltype": "attribute"
-					}
-				}
-			]
-		},
-		{
-			"correlationId": "npiTinParent",
-			"config": [
-				{
-					"decodeLabel": "npiTin",
-					"goods": {
-						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']",
 						"xmltype": "attribute"
 					}
 				}

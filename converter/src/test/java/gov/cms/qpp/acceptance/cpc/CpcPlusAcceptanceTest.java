@@ -103,9 +103,6 @@ class CpcPlusAcceptanceTest {
 	private void verifyOutcome(String filename, List<Detail> details) {
 		CPCAcceptanceFixture expectedErrors = fixtureValues.get(filename);
 
-		System.out.println("Verifying scenario " + filename +
-				", expected errors match the following actual errors. " + details);
-
 		if (expectedErrors.isStrict()) {
 			int totalErrors = expectedErrors.getErrorData().stream()
 					.mapToInt(FixtureErrorData::getOccurrences)

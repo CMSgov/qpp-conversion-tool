@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>0.30-SNAPSHOT</version>
+		<version>0.33-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -16,6 +16,7 @@
 
 	<properties>
 		<requiredCodeCoverage>0.75</requiredCodeCoverage>
+		<maven.test.dependency.excludes>ch.qos.logback:*</maven.test.dependency.excludes>
 	</properties>
 
 	<build>

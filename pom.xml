@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.30-SNAPSHOT</version>
+	<version>0.33-SNAPSHOT</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -17,9 +17,11 @@
 	</properties>
 
 	<modules>
-		<module>converter</module>
+		<module>commons</module>
 		<module>test-commons</module>
+		<module>converter</module>
 		<module>commandline</module>
+		<module>rest-logging</module>
 		<module>rest-api</module>
 		<module>benchmark</module>
 	</modules>
@@ -150,6 +152,12 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
 		</dependency>
 
 		<dependency>
