@@ -3,11 +3,10 @@ package gov.cms.qpp.conversion.api.services;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import java.io.InputStream;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Service for handling Cpc File meta data
@@ -33,6 +32,12 @@ public class CpcFileServiceImpl implements CpcFileService {
 		return transformMetaDataToUnprocessedCpcFileData(metadata);
 	}
 
+	/**
+	 * Retrieves the file location id and uses it to retrieve the file
+	 *
+	 * @param fileId {@link Metadata} identifier
+	 * @return file returned as an {@link InputStream}
+	 */
 	public InputStream getFileById(String fileId) {
 		String fileLocationId = dbService.getFileSubmissionLocationId(fileId);
 

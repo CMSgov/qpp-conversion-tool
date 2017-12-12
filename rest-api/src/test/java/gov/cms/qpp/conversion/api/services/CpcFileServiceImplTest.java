@@ -57,7 +57,6 @@ class CpcFileServiceImplTest {
 
 		InputStream outcome = objectUnderTest.getFileById("test");
 
-
 		verify(dbService, times(1)).getFileSubmissionLocationId(anyString());
 		verify(storageService, times(1)).getFileByLocationId(anyString());
 
