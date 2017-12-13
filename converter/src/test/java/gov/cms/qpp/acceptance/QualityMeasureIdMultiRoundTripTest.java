@@ -31,7 +31,7 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
-public class QualityMeasureIdMultiRoundTripTest {
+class QualityMeasureIdMultiRoundTripTest {
 
 	private static final String REQUIRE_ELIGIBLE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
 	private static final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
