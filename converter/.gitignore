@@ -1,3 +1,4 @@
 DefaultRun.json
 DefaultRun.nodes
 src/main/java/gov/cms/qpp/conversion/correlation/model/*
+/bin/
