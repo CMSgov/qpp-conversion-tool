@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,15 +34,19 @@ public class CpcFileServiceImpl implements CpcFileService {
 	}
 
 	/**
-	 * Retrieves the file location id and uses it to retrieve the file
+	 * Retrieves the file location id and retrieves the file if it is an unprocessed cpc+ file
 	 *
 	 * @param fileId {@link Metadata} identifier
 	 * @return file returned as an {@link InputStream}
 	 */
 	public InputStream getFileById(String fileId) {
-		String fileLocationId = dbService.getFileSubmissionLocationId(fileId);
+		InputStream inputStream = new ByteArrayInputStream("File not found!".getBytes());
+		Metadata metadata = dbService.getMetadataById(fileId);
+		if (metadata != null && metadata.getCpc() && !metadata.getCpcProcessed()) {
+			inputStream = storageService.getFileByLocationId(metadata.getSubmissionLocator());
+		}
 
-		return storageService.getFileByLocationId(fileLocationId);
+		return inputStream;
 	}
 
 	/**

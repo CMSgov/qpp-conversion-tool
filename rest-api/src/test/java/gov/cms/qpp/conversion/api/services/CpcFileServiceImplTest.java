@@ -52,14 +52,49 @@ class CpcFileServiceImplTest {
 
 	@Test
 	void testGetFileById() throws IOException {
-		when(dbService.getFileSubmissionLocationId(anyString())).thenReturn("abcd");
-		when(storageService.getFileByLocationId("abcd")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, false));
+		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
 		InputStream outcome = objectUnderTest.getFileById("test");
 
-		verify(dbService, times(1)).getFileSubmissionLocationId(anyString());
+		verify(dbService, times(1)).getMetadataById(anyString());
 		verify(storageService, times(1)).getFileByLocationId(anyString());
 
 		assertThat(IOUtils.toString(outcome, Charset.defaultCharset())).isEqualTo("1337");
+	}
+
+	@Test
+	void testGetFileByIdWithMips() throws IOException {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(false, false));
+		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
+
+		InputStream outcome = objectUnderTest.getFileById("test");
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+		verify(storageService, times(1)).getFileByLocationId(anyString());
+
+		assertThat(IOUtils.toString(outcome, Charset.defaultCharset())).isEqualTo("File not found!");
+	}
+
+	@Test
+	void testGetFileByIdWithProcessedFile() throws IOException {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, true));
+		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
+
+		InputStream outcome = objectUnderTest.getFileById("test");
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+		verify(storageService, times(1)).getFileByLocationId(anyString());
+
+		assertThat(IOUtils.toString(outcome, Charset.defaultCharset())).isEqualTo("File not found!");
+	}
+
+	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {
+		Metadata metadata = new Metadata();
+		metadata.setCpc(isCpc);
+		metadata.setCpcProcessed(isCpcProcessed);
+		metadata.setSubmissionLocator("test");
+
+		return metadata;
 	}
 }

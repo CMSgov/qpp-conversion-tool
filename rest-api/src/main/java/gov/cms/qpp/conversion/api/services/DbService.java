@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import gov.cms.qpp.conversion.api.model.Metadata;
-
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,10 +20,10 @@ public interface DbService {
 	List<Metadata> getUnprocessedCpcPlusMetaData();
 
 	/**
-	 * Retrieves the FileLocationId from the database by Metadata id
+	 * Retrieves the metadata from the database by uuid
 	 *
 	 * @param uuid Id of the Metadata holding the FileLocationId
-	 * @return File Location Id
+	 * @return {@link Metadata} or null
 	 */
-	String getFileSubmissionLocationId(String uuid);
+	Metadata getMetadataById(String uuid);
 }
