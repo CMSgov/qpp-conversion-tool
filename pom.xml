@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.33-SNAPSHOT</version>
+	<version>0.34-SNAPSHOT</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
