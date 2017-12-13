@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.Detail;
 
-public class JsonOutputEncoderTest {
+class JsonOutputEncoderTest {
 
 	private JsonOutputEncoder joe;
 

@@ -40,7 +40,7 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.test.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class QrdaControllerV1Test {
+class QrdaControllerV1Test {
 
 	private static final String GOOD_FILE_CONTENT = "Good file";
 	private static MultipartFile multipartFile;

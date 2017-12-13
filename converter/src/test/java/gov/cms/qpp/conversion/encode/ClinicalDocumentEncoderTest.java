@@ -16,7 +16,7 @@ import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
-public class ClinicalDocumentEncoderTest {
+class ClinicalDocumentEncoderTest {
 
 	private Node aciSectionNode;
 	private Node aciReportingPerformanceNode;

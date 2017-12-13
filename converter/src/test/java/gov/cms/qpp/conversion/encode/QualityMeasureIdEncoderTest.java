@@ -13,7 +13,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 
-public class QualityMeasureIdEncoderTest {
+class QualityMeasureIdEncoderTest {
 
 	private Node qualityMeasureId;
 	private Node populationNode;

@@ -16,7 +16,7 @@ import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
-public class IaSectionEncoderTest {
+class IaSectionEncoderTest {
 
 	private static final String EXPECTED = "{\n  \"category\" : \"ia\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ "
 			+ "{\n    \"measureId\" : \"IA_EPA_1\",\n    \"value\" : true\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";

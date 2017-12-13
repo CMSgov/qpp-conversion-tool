@@ -15,7 +15,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
-public class AggregateCountEncoderTest {
+class AggregateCountEncoderTest {
 
 	private Node numeratorDenominatorNode;
 	private List<Node> nodes;
