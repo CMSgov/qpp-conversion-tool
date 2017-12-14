@@ -16,9 +16,15 @@ class MetadataHelperTest {
 	private static final String MOCK_STRING = "some random mock value";
 
 	@Test
-	void testGenerateMetadataForNullNodeThrowsNullPointerException() {
-		Assertions.assertThrows(NullPointerException.class, () ->
-			MetadataHelper.generateMetadata(null, MetadataHelper.Outcome.SUCCESS));
+	void testGenerateMetadataForNullNodeReturnsSkinnyMetadata() {
+		MetadataHelper.Outcome outcome = MetadataHelper.Outcome.VALIDATION_ERROR;
+		Metadata comparison = new Metadata();
+		comparison.setOverallStatus(false);
+		comparison.setConversionStatus(true);
+		comparison.setValidationStatus(false);
+
+		Metadata metadata = MetadataHelper.generateMetadata(null, outcome);
+		assertThat(metadata).isEqualTo(comparison);
 	}
 
 	@Test
