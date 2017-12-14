@@ -89,6 +89,19 @@ class CpcFileServiceImplTest {
 		assertThat(IOUtils.toString(outcome, Charset.defaultCharset())).isEqualTo("File not found!");
 	}
 
+	@Test
+	void testGetFileByIdNoFile() throws IOException {
+		when(dbService.getMetadataById(anyString())).thenReturn(null);
+		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
+
+		InputStream outcome = objectUnderTest.getFileById("test");
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+		verify(storageService, times(0)).getFileByLocationId(anyString());
+
+		assertThat(IOUtils.toString(outcome, Charset.defaultCharset())).isEqualTo("File not found!");
+	}
+
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {
 		Metadata metadata = new Metadata();
 		metadata.setCpc(isCpc);
