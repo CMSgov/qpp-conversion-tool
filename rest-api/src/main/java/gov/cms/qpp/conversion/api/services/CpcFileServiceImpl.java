@@ -45,7 +45,7 @@ public class CpcFileServiceImpl implements CpcFileService {
 		String content = "File not found!";
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (metadata != null && metadata.getCpc() && !metadata.getCpcProcessed()) {
-			content  = IOUtils.toString(storageService.getFileByLocationId(metadata.getSubmissionLocator()),
+			content = IOUtils.toString(storageService.getFileByLocationId(metadata.getSubmissionLocator()),
 					Charset.defaultCharset());
 		}
 
