@@ -1,8 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +14,7 @@ import java.util.Set;
 public abstract class NodeValidator {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(NodeValidator.class);
-	private final TemplateId template;
 	private Set<Detail> details = new LinkedHashSet<>();
-
-	public NodeValidator() {
-		Validator val = this.getClass().getAnnotation(Validator.class);
-		template = (val != null) ? val.value() : TemplateId.DEFAULT;
-	}
 
 	/**
 	 * Validates a single {@link gov.cms.qpp.conversion.model.Node} and returns the list
@@ -33,7 +25,7 @@ public abstract class NodeValidator {
 	 * @see #internalValidateSingleNode(Node)
 	 */
 	public Set<Detail> validateSingleNode(final Node node) {
-		DEV_LOG.debug("Using " + template + " validator (class: " + this.getClass().getName() + ") to validate " + node);
+		DEV_LOG.debug("Using {} to validate {}", this.getClass().getName(), node);
 		internalValidateSingleNode(node);
 		return getDetails();
 	}
@@ -53,7 +45,6 @@ public abstract class NodeValidator {
 	 * @param newError The error to add to the list.
 	 */
 	protected void addValidationError(final Detail newError) {
-		logValidationError(newError);
 		getDetails().add(newError);
 	}
 
@@ -70,20 +61,6 @@ public abstract class NodeValidator {
 	 * @param node The node to validate.
 	 */
 	protected abstract void internalValidateSingleNode(final Node node);
-
-	private void logValidationError(final Detail newError) {
-		DEV_LOG.debug("Error '{}' added for templateId {}", newError, getTemplateId());
-	}
-
-	/**
-	 * Get the node validator's corresponding template id.
-	 *
-	 * @return templateId
-	 */
-	protected TemplateId getTemplateId() {
-		final Validator validator = this.getClass().getAnnotation(Validator.class);
-		return (null != validator) ? validator.value() : null;
-	}
 
 	protected Checker check(Node node) {
 		return Checker.check(node, this.getDetails());
