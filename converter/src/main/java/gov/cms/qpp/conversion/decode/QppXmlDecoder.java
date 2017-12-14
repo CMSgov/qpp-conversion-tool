@@ -8,16 +8,17 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Consumer;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Consumer;
 
 import static gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_CODE;
 import static gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_KEY;
@@ -97,7 +98,6 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				Node childNode = new Node(templateId, parentNode);
 
 				childNode.setDefaultNsUri(defaultNs.getURI());
-				childNode.setPath(XPathHelper.getAbsolutePath(element));
 				
 				setNamespace(childElement, childDecoder);
 				
@@ -106,6 +106,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				if (result == DecodeResult.TREE_ESCAPED) {
 					return DecodeResult.TREE_FINISHED;
 				}
+
+				childNode.setPath(XPathHelper.getAbsolutePath(element));
 
 				parentNode.addChildNode(childNode);
 				currentNode = childNode;

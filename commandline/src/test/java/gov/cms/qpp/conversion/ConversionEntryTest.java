@@ -1,28 +1,10 @@
 package gov.cms.qpp.conversion;
 
-import com.google.common.collect.ImmutableMap;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.MissingArgumentException;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.api.support.membermodification.MemberMatcher;
-import org.powermock.api.support.membermodification.MemberModifier;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -33,109 +15,111 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.MissingArgumentException;
+import org.apache.commons.cli.ParseException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.powermock.api.support.membermodification.MemberMatcher;
+import org.powermock.api.support.membermodification.MemberModifier;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
-public class ConversionEntryTest {
+import com.google.common.collect.ImmutableMap;
+
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import gov.cms.qpp.test.LoggerContract;
+
+class ConversionEntryTest implements LoggerContract {
 
 	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 	private static final String SKIP_DEFAULTS = "--" + ConversionEntry.SKIP_DEFAULTS;
 	private static final String SKIP_VALIDATION = "--" + ConversionEntry.SKIP_VALIDATION;
 	private static final String TEMPLATE_SCOPE = "--" + ConversionEntry.TEMPLATE_SCOPE;
-	private PrintStream stdout;
 
-	@Before
-	public void setup() throws Exception {
-		stdout = System.out;
-	}
-
-	@After
-	public void teardown() throws IOException {
+	@AfterEach
+	void teardown() throws IOException {
 		Files.deleteIfExists(Paths.get("defaultedNode.qpp.json"));
-		System.setOut(stdout);
 	}
 
 	@Test
-	public void testNonexistantFile() {
+	void testNonexistantFile() {
 		String regex = ConversionEntry.wildCardToRegex("*.xml").pattern();
 		String expect = ".*\\.xml";
 		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
-	public void testWildCardToRegexSimpleFileWild() {
+	void testWildCardToRegexSimpleFileWild() {
 		String regex = ConversionEntry.wildCardToRegex("*.xml").pattern();
 		String expect = ".*\\.xml";
 		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
-	public void testWildCardToRegexPathFileWild() {
+	void testWildCardToRegexPathFileWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*.xml").pattern();
 		String expect = ".*\\.xml";
 		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
 	}
 
 	@Test
-	public void testWildCardToRegexPathAllWild() {
+	void testWildCardToRegexPathAllWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*").pattern();
 		String expect = ".*";
 		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
-	public void testWildCardToRegexPathExtraWild() {
+	void testWildCardToRegexPathExtraWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*.xm*").pattern();
 		String expect = ".*\\.xm.*";
 		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
-	public void testWildCardToRegexDoubleStar() {
+	void testWildCardToRegexDoubleStar() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/**").pattern();
 		String expect = ".";
 		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
-	public void testWildCardToRegexTooManyWild() {
+	void testWildCardToRegexTooManyWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/*/*/*.xml").pattern();
 		String expect = "";
 		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
-	public void testExtractDirWildcard() {
+	void testExtractDirWildcard() {
 		String regex = ConversionEntry.extractDir("path/*/*.xml");
 		String expect = "path";
 		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
-	public void testExtractDirNone() {
+	void testExtractDirNone() {
 		String regex = ConversionEntry.extractDir("*.xml");
 		String expect = ".";
 		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
-	public void testExtractDirRoot() {
+	void testExtractDirRoot() {
 		String regex = ConversionEntry.extractDir( File.separator );
 		String expect = ".";
 		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
-	public void testExtractDirUnix() {
+	void testExtractDirUnix() {
 		String regex = ConversionEntry.extractDir("path/to/dir/*.xml");
 		String expect = "path" + SEPARATOR + "to" + SEPARATOR + "dir";
 		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
-	public void testExtractDirWindows() {
+	void testExtractDirWindows() {
 		// testing the extraction not the building on windows
 		String regex = ConversionEntry.extractDir("path\\to\\dir\\*.xml");
 		// this test is running on *nix so expect this path while testing
@@ -145,7 +129,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testManyPathXml() {
+	void testManyPathXml() {
 		Path baseDir = Paths.get("src/test/resources/pathTest/");
 		Path aFile = baseDir.resolve("a.xml");
 		Path bFile = baseDir.resolve("b.xml");
@@ -157,8 +141,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	@PrepareForTest({ConversionEntry.class})
-	public void testManyPathDir() {
+	void testManyPathDir() {
 		String pathTest = "src/test/resources/pathTest";
 		// ensure a directory
 		MemberModifier.stub(MemberMatcher.method(ConversionEntry.class, "wildCardToRegex", String.class)).toReturn( Pattern.compile(pathTest) );
@@ -169,7 +152,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testManyPathDoubleWild() {
+	void testManyPathDoubleWild() {
 		String filePath = "src/test/resources/pathTest/c.xmm";
 		Collection<Path> files = ConversionEntry.manyPath("src/test/resources/pathTest/*.xm*");
 
@@ -180,7 +163,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testCheckPathXml() {
+	void testCheckPathXml() {
 		Map<String, Integer> scenarios = ImmutableMap.of(
 				"src/test/resources/pathTest/*.xml", 3,
 				"src/test/resources/pathTest/a.xml", 1,
@@ -198,14 +181,14 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testCheckPathNull() {
+	void testCheckPathNull() {
 		Collection<Path> files = ConversionEntry.checkPath("src/test/resources/pathTest/*.xml");
 		assertWithMessage("Should find 3 files")
 				.that(files.size()).isEqualTo(3);
 	}
 
 	@Test
-	public void testManyPathPathNotFound() {
+	void testManyPathPathNotFound() {
 		Collection<Path> files = ConversionEntry.manyPath("notExist/*.xml");
 
 		assertWithMessage("Should not find any files")
@@ -213,7 +196,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testValidArgs() {
+	void testValidArgs() {
 		String[] args = { "src/test/resources/pathTest/a.xml", "src/test/resources/pathTest/subdir/*.xml" };
 		String found = "src/test/resources/pathTest/subdir/d.xml";
 		Collection<Path> files = ConversionEntry.validArgs(args);
@@ -225,7 +208,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testValidArgsHelp() {
+	void testValidArgsHelp() {
 		Collection<Path> files = ConversionEntry.validArgs(
 				new String[] { "-h", "src/test/resources/pathTest/a.xml", "src/test/resources/pathTest/subdir/*.xml" });
 
@@ -234,7 +217,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testValidArgsNoFiles() {
+	void testValidArgsNoFiles() {
 		Collection<Path> files = ConversionEntry.validArgs(new String[] {});
 
 		assertWithMessage("files should be empty")
@@ -242,11 +225,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void shouldDenyInvalidTemplateScopes() throws ParseException {
-		//setup
-		ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(baos1));
-
+	void shouldDenyInvalidTemplateScopes() throws ParseException {
 		//when
 		CommandLine line = ConversionEntry.cli(new String[] {"-t", QrdaScope.ACI_SECTION.name() + ",MEEP"});
 		boolean result = ConversionEntry.shouldContinue(line);
@@ -255,18 +234,20 @@ public class ConversionEntryTest {
 		assertWithMessage("MEEP is not a valid scope")
 				.that(result).isFalse();
 		assertWithMessage("output stream should contain " + ConversionEntry.INVALID_TEMPLATE_SCOPE)
-				.that(baos1.toString()).contains(ConversionEntry.INVALID_TEMPLATE_SCOPE);
-	}
-
-	@Test(expected = MissingArgumentException.class)
-	public void shouldAllowEmptyTemplateScope() throws ParseException {
-		//when
-		CommandLine line = ConversionEntry.cli(new String[] {"-t"});
-		ConversionEntry.shouldContinue(line);
+				.that(getLogs().toString()).contains(ConversionEntry.INVALID_TEMPLATE_SCOPE);
 	}
 
 	@Test
-	public void shouldAllowValidTemplateScopes() throws ParseException {
+	void shouldAllowEmptyTemplateScope() throws ParseException {
+		//when
+		Assertions.assertThrows(MissingArgumentException.class, () -> {
+			CommandLine line = ConversionEntry.cli(new String[] {"-t"});
+			ConversionEntry.shouldContinue(line);
+		});
+	}
+
+	@Test
+	void shouldAllowValidTemplateScopes() throws ParseException {
 		//when
 		CommandLine line = ConversionEntry.cli(new String[] {"file.txt", "-t", QrdaScope.ACI_SECTION.name()
 				+ ","
@@ -279,60 +260,51 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	@PrepareForTest({DefaultParser.class, ConversionEntry.class})
-	public void testValidArgsParseException() throws Exception {
-		//setup
-		DefaultParser mockParser = PowerMockito.mock(DefaultParser.class);
-		PowerMockito.when(mockParser.parse(ArgumentMatchers.any(Options.class), ArgumentMatchers.any(String[].class))).thenThrow(new ParseException("mock error"));
-		PowerMockito.whenNew(DefaultParser.class).withNoArguments().thenReturn(mockParser);
-
-		ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(baos1));
-
+	void testValidArgsParseException() throws Exception {
 		//when
-		ConversionEntry.validArgs(new String[] {});
+		ConversionEntry.validArgs("-someInvalidArgument");
 
 		//then
 		assertWithMessage("output stream should contain %s", ConversionEntry.CLI_PROBLEM)
-				.that(baos1.toString()).contains(ConversionEntry.CLI_PROBLEM);
+				.that(getLogs().toString()).contains(ConversionEntry.CLI_PROBLEM);
 	}
 
 	//cli
 	@Test
-	public void testHandleSkipDefaults() throws ParseException {
-		CommandLine line = ConversionEntry.cli(new String[] {SKIP_DEFAULTS});
+	void testHandleSkipDefaults() throws ParseException {
+		CommandLine line = ConversionEntry.cli(SKIP_DEFAULTS);
 		assertWithMessage("Should have a skip default option")
 				.that(line.hasOption(ConversionEntry.SKIP_DEFAULTS))
 				.isTrue();
 	}
 
 	@Test
-	public void testHandleSkipDefaultsAbbreviated() throws ParseException {
-		CommandLine line = ConversionEntry.cli(new String[] {"-d"});
+	void testHandleSkipDefaultsAbbreviated() throws ParseException {
+		CommandLine line = ConversionEntry.cli("-d");
 		assertWithMessage("Should have a skip default option")
 				.that(line.hasOption(ConversionEntry.SKIP_DEFAULTS))
 				.isTrue();
 	}
 
 	@Test
-	public void testHandleSkipValidation() throws ParseException {
-		CommandLine line = ConversionEntry.cli(new String[] {SKIP_VALIDATION});
+	void testHandleSkipValidation() throws ParseException {
+		CommandLine line = ConversionEntry.cli(SKIP_VALIDATION);
 		assertWithMessage("Should have a skip validation option")
 				.that(line.hasOption(ConversionEntry.SKIP_VALIDATION))
 				.isTrue();
 	}
 
 	@Test
-	public void testHandleSkipValidationAbbreviated() throws ParseException {
-		CommandLine line = ConversionEntry.cli(new String[] {"-v"});
+	void testHandleSkipValidationAbbreviated() throws ParseException {
+		CommandLine line = ConversionEntry.cli("-v");
 		assertWithMessage("Should have a skip validation option")
 				.that(line.hasOption(ConversionEntry.SKIP_VALIDATION))
 				.isTrue();
 	}
 
 	@Test
-	public void testHandleCombo() throws ParseException {
-		CommandLine line = ConversionEntry.cli(new String[] {"-dvt", "meep"});
+	void testHandleCombo() throws ParseException {
+		CommandLine line = ConversionEntry.cli("-dvt", "meep");
 		assertWithMessage("Should have a skip validation option")
 				.that(line.hasOption(ConversionEntry.SKIP_VALIDATION)).isTrue();
 		assertWithMessage("Should have a skip default option")
@@ -342,8 +314,8 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testHandleTemplateScope() throws ParseException {
-		CommandLine line = ConversionEntry.cli(new String[] {TEMPLATE_SCOPE, "meep"});
+	void testHandleTemplateScope() throws ParseException {
+		CommandLine line = ConversionEntry.cli(TEMPLATE_SCOPE, "meep");
 
 		assertWithMessage("Should have a template scope option")
 				.that(line.hasOption(ConversionEntry.TEMPLATE_SCOPE))
@@ -353,8 +325,8 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testHandleTemplateScopeAbbreviated() throws ParseException {
-		CommandLine line = ConversionEntry.cli(new String[] {"-t", "meep"});
+	void testHandleTemplateScopeAbbreviated() throws ParseException {
+		CommandLine line = ConversionEntry.cli("-t", "meep");
 
 		assertWithMessage("Should have a template scope option")
 				.that(line.hasOption(ConversionEntry.TEMPLATE_SCOPE))
@@ -364,9 +336,9 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void testHandleArguments() throws ParseException {
+	void testHandleArguments() throws ParseException {
 		CommandLine line = ConversionEntry.cli(
-				new String[]{SKIP_VALIDATION, "file.txt", SKIP_DEFAULTS, "-t", "meep,mawp", "file2.txt"});
+				SKIP_VALIDATION, "file.txt", SKIP_DEFAULTS, "-t", "meep,mawp", "file2.txt");
 		List<String> args = line.getArgList();
 
 		assertWithMessage("should be comprised of the 2 files")
@@ -376,7 +348,7 @@ public class ConversionEntryTest {
 	}
 
 	@Test
-	public void privateConstructorTest() throws Exception {
+	void privateConstructorTest() throws Exception {
 		Constructor<ConversionEntry> constructor = ConversionEntry.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		ConversionEntry conversionEntry = constructor.newInstance();
@@ -384,5 +356,10 @@ public class ConversionEntryTest {
 		assertWithMessage("Expect to have an instance here ")
 				.that(conversionEntry)
 				.isInstanceOf(ConversionEntry.class);
+	}
+
+	@Override
+	public Class<?> getLoggerType() {
+		return ConversionEntry.class;
 	}
 }

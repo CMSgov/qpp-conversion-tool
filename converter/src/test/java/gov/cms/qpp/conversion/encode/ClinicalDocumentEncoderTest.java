@@ -2,15 +2,15 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -111,8 +111,8 @@ public class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "mips");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "individual");
-		clinicalDocumentNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
-		clinicalDocumentNode.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, "2567891421");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "2567891421");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,  "AR000000" );
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
@@ -145,10 +145,10 @@ public class ClinicalDocumentEncoderTest {
 				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo("individual");
 		assertWithMessage("Must have a correct taxpayerIdentificationNumber")
-				.that(clinicalDocMap.get(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(clinicalDocMap.get(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 		assertWithMessage("Must have a correct nationalProviderIdentifier")
-				.that(clinicalDocMap.get(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 	}
 

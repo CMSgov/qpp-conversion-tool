@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <configuration>
-	<conversionRule conversionWord="attachment" converterClass="gov.cms.qpp.conversion.api.helper.AttachmentHashPartConverter"/>
+	<conversionRule conversionWord="attachment" converterClass="gov.cms.qpp.conversion.logging.AttachmentHashPartConverter"/>
 
 	<property name="defaultPattern"
 			  value='{"timestamp": "%d{HH:mm:ss.SSS}", "thread": "%thread", "attachment": "%attachment", "level": "%-5level", "logger": "%logger{36}", "message": "%msg"}'/>

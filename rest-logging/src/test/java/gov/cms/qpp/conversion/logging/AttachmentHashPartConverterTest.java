@@ -1,6 +1,8 @@
-package gov.cms.qpp.conversion.api.helper;
+package gov.cms.qpp.conversion.logging;
 
 import ch.qos.logback.classic.spi.LoggingEvent;
+import gov.cms.qpp.conversion.logging.AttachmentHashPartConverter;
+
 import org.junit.Before;
 import org.junit.Test;
 
