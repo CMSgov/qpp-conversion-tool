@@ -301,7 +301,10 @@ public final class Metadata {
 	/**
 	 * Whether the conversion was for the CPC+ program.
 	 *
-	 * @return True for a CPC+ conversion, false otherwise.
+	 * This is set to a {@link String} that contains "CPC_" plus a number for DynamoDB partitioning of the GSI.
+	 * If this method returns {@code null}, this was not a CPC+ conversion.
+	 *
+	 * @return A {@link String} for a CPC+ conversion, null otherwise.
 	 */
 	@DoNotEncrypt
 	@DynamoDBAttribute(attributeName = Constants.DYNAMO_CPC_ATTRIBUTE)
@@ -311,6 +314,9 @@ public final class Metadata {
 
 	/**
 	 * Sets whether the conversion was for the CPC+ program.
+	 *
+	 * If not {@code null}, must be of the form "CPC_" plus a number.
+	 * Setting this to {@code null}, indicates this was not a CPC+ conversion.
 	 *
 	 * @param cpc A CPC+ conversion or not.
 	 */
