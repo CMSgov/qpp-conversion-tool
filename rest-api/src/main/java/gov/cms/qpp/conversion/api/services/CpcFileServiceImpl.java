@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
