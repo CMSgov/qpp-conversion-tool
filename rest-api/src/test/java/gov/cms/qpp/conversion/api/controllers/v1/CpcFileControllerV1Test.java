@@ -59,7 +59,6 @@ class CpcFileControllerV1Test {
 		assertThat(response.getBody()).isEqualTo("1234");
 	}
 
-
 	List<UnprocessedCpcFileData> createMockedUnprocessedDataList() {
 		Metadata metadata = new Metadata();
 		metadata.setSubmissionLocator("Test");

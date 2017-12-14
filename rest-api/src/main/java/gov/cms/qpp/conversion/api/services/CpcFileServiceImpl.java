@@ -40,7 +40,7 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @return file returned as an {@link InputStream}
 	 */
 	public InputStream getFileById(String fileId) {
-		InputStream inputStream = new ByteArrayInputStream("File not found!".getBytes());
+		InputStream inputStream = null;
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (metadata != null && metadata.getCpc() && !metadata.getCpcProcessed()) {
 			inputStream = storageService.getFileByLocationId(metadata.getSubmissionLocator());

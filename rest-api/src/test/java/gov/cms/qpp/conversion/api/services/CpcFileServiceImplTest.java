@@ -72,7 +72,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(IOUtils.toString(outcome, Charset.defaultCharset())).isEqualTo("File not found!");
+		assertThat(outcome).isNull();
 	}
 
 	@Test
@@ -84,7 +84,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(IOUtils.toString(outcome, Charset.defaultCharset())).isEqualTo("File not found!");
+		assertThat(outcome).isNull();
 	}
 
 	@Test
@@ -97,7 +97,7 @@ class CpcFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(anyString());
 		verify(storageService, times(0)).getFileByLocationId(anyString());
 
-		assertThat(IOUtils.toString(outcome, Charset.defaultCharset())).isEqualTo("File not found!");
+		assertThat(outcome).isNull();
 	}
 
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {
