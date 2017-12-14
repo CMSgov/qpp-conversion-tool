@@ -4,12 +4,9 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.test.MockitoExtension;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -55,12 +52,12 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, false));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		InputStream outcome = objectUnderTest.getFileById("test");
+		String outcome = objectUnderTest.getFileById("test");
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 		verify(storageService, times(1)).getFileByLocationId(anyString());
 
-		assertThat(IOUtils.toString(outcome, Charset.defaultCharset())).isEqualTo("1337");
+		assertThat(outcome).isEqualTo("1337");
 	}
 
 	@Test
@@ -68,11 +65,11 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(false, false));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		InputStream outcome = objectUnderTest.getFileById("test");
+		String outcome = objectUnderTest.getFileById("test");
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(outcome).isNull();
+		assertThat(outcome).isEqualTo("File not found!");
 	}
 
 	@Test
@@ -80,11 +77,11 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, true));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		InputStream outcome = objectUnderTest.getFileById("test");
+		String outcome = objectUnderTest.getFileById("test");
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(outcome).isNull();
+		assertThat(outcome).isEqualTo("File not found!");
 	}
 
 	@Test
@@ -92,12 +89,12 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(null);
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		InputStream outcome = objectUnderTest.getFileById("test");
+		String outcome = objectUnderTest.getFileById("test");
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 		verify(storageService, times(0)).getFileByLocationId(anyString());
 
-		assertThat(outcome).isNull();
+		assertThat(outcome).isEqualTo("File not found!");
 	}
 
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {

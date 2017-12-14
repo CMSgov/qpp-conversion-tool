@@ -2,9 +2,12 @@ package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,14 +41,15 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @param fileId {@link Metadata} identifier
 	 * @return file returned as an {@link InputStream}
 	 */
-	public InputStream getFileById(String fileId) {
-		InputStream inputStream = null;
+	public String getFileById(String fileId) throws IOException {
+		String content = "File not found!";
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (metadata != null && metadata.getCpc() && !metadata.getCpcProcessed()) {
-			inputStream = storageService.getFileByLocationId(metadata.getSubmissionLocator());
+			content  = IOUtils.toString(storageService.getFileByLocationId(metadata.getSubmissionLocator()),
+					Charset.defaultCharset());
 		}
 
-		return inputStream;
+		return content;
 	}
 
 	/**
