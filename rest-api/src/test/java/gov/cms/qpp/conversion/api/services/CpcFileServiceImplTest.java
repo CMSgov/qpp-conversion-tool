@@ -71,7 +71,6 @@ class CpcFileServiceImplTest {
 		InputStream outcome = objectUnderTest.getFileById("test");
 
 		verify(dbService, times(1)).getMetadataById(anyString());
-		verify(storageService, times(1)).getFileByLocationId(anyString());
 
 		assertThat(IOUtils.toString(outcome, Charset.defaultCharset())).isEqualTo("File not found!");
 	}
@@ -84,7 +83,6 @@ class CpcFileServiceImplTest {
 		InputStream outcome = objectUnderTest.getFileById("test");
 
 		verify(dbService, times(1)).getMetadataById(anyString());
-		verify(storageService, times(1)).getFileByLocationId(anyString());
 
 		assertThat(IOUtils.toString(outcome, Charset.defaultCharset())).isEqualTo("File not found!");
 	}
