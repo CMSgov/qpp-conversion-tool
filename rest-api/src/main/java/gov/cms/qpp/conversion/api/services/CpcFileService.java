@@ -21,7 +21,7 @@ public interface CpcFileService {
 	 *
 	 * @param fileId {@link Metadata} identifier
 	 * @return file contents parsed as a {@link String}
-	 * @throws IOException
+	 * @throws IOException for invalid IOUtils usage
 	 */
 	String getFileById(String fileId) throws IOException;
 }
