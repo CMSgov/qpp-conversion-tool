@@ -1,16 +1,18 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
+import static com.google.common.truth.Truth.assertWithMessage;
+
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 class EncoderNegativeConditionsTest {
 
@@ -31,7 +33,7 @@ class EncoderNegativeConditionsTest {
 		try {
 			encoder.encode(new BufferedWriter(sw));
 		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
+			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
 		// NOTE: This test is only relevant in that it finds the deep value but

@@ -1,7 +1,6 @@
 package gov.cms.qpp.acceptance;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -55,6 +54,8 @@ class IaSectionRoundTripTest {
 		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].measurements[0].value", Boolean.class);
 
-		assertTrue("Must contain a measure performed", measurePerformed);
+		assertWithMessage("Must contain a measure performed")
+			.that(measurePerformed)
+			.isTrue();
 	}
 }

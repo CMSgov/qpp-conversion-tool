@@ -1,21 +1,22 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.error.Detail;
-import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
-
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.assertEquals;
 
-public class JsonOutputEncoderTest {
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.error.Detail;
+
+class JsonOutputEncoderTest {
 
 	private JsonOutputEncoder joe;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		joe = new JsonOutputEncoder() {
 			@Override
 			protected void internalEncode(JsonWrapper wrapper, Node node) throws EncodeException {
@@ -26,8 +27,8 @@ public class JsonOutputEncoderTest {
 	}
 
 	@Test
-	public void testAddValidationAndGetValidations() {
-		assertEquals(0, joe.getDetails().size());
+	void testAddValidationAndGetValidations() {
+		assertThat(joe.getDetails()).isEmpty();
 		Detail detail1 = new Detail();
 		detail1.setMessage("error");
 		Detail detail2 = new Detail();
@@ -41,7 +42,7 @@ public class JsonOutputEncoderTest {
 	}
 
 	@Test
-	public void testAddValidationAndGetValidationById() {
+	void testAddValidationAndGetValidationById() {
 		List<Detail> validations = joe.getDetails();
 		assertThat(validations).hasSize(0);
 
@@ -56,7 +57,7 @@ public class JsonOutputEncoderTest {
 	}
 
 	@Test
-	public void testAddValidationByEncodeException() {
+	void testAddValidationByEncodeException() {
 		joe.encode((JsonWrapper) null, (Node) null); // the values are not used in the test
 
 		List<Detail> details = joe.getDetails();

@@ -13,8 +13,8 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
@@ -31,7 +31,8 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
-public class QualityMeasureIdMultiRoundTripTest {
+class QualityMeasureIdMultiRoundTripTest {
+
 	private static final String REQUIRE_ELIGIBLE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
 	private static final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
 	private static final String REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS = "Must have a required eligiblePopulationException";
@@ -47,14 +48,14 @@ public class QualityMeasureIdMultiRoundTripTest {
 
 	private static MarkupManipulator manipulator;
 
-	@BeforeClass
-	public static void setup() throws ParserConfigurationException, SAXException, IOException {
+	@BeforeAll
+	static void setup() throws ParserConfigurationException, SAXException, IOException {
 		manipulator = new MarkupManipulator.MarkupManipulatorBuilder()
 			.setPathname(JUNK_QRDA3_FILE).build();
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureId() throws IOException {
+	void testRoundTripForQualityMeasureId() throws IOException {
 		Converter converter = new Converter(new PathQrdaSource(JUNK_QRDA3_FILE));
 		JsonWrapper qpp = converter.transform();
 		String json = qpp.toString();
@@ -80,7 +81,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureIdWithDuplicateIpopMeasureType() {
+	void testRoundTripForQualityMeasureIdWithDuplicateIpopMeasureType() {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[4]/observation/value/@code";
 
@@ -91,7 +92,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureIdWithDuplicateDenomMeasureType() {
+	void testRoundTripForQualityMeasureIdWithDuplicateDenomMeasureType() {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
@@ -103,7 +104,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
+	void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
 		LocalizedError error = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulations.DENOM, 2);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
@@ -116,7 +117,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureIdWithDuplicateDenomMeasurePopulation() {
+	void testRoundTripForQualityMeasureIdWithDuplicateDenomMeasurePopulation() {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/reference/externalObservation/id";
 
@@ -129,7 +130,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripForQualityMeasureIdWithNoDenomMeasurePopulation() {
+	void testRoundTripForQualityMeasureIdWithNoDenomMeasurePopulation() {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/reference/externalObservation/id";
 
@@ -141,7 +142,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripQualityMeasureIdWithDenomGreaterThanIpop() {
+	void testRoundTripQualityMeasureIdWithDenomGreaterThanIpop() {
 		Converter converter = new Converter(new PathQrdaSource(DENOM_GREATER_THAN_IPOP));
 		List<Detail> details = new ArrayList<>();
 		try {
@@ -157,7 +158,7 @@ public class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	public void testRoundTripQualityMeasureMissingOnePerformanceRateSuccess() {
+	void testRoundTripQualityMeasureMissingOnePerformanceRateSuccess() {
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[1]";
 		List<Detail> expectedOutput = executeScenario(path, true);
