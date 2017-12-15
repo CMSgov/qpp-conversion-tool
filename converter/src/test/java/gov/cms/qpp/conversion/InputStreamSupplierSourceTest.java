@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -12,10 +13,10 @@ import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
 
-class InputStreamSourceTest extends SourceTestSuite {
+class InputStreamSupplierSourceTest extends SourceTestSuite {
 
-	private static InputStreamSupplierSource source(String path) {
-		return new InputStreamSupplierSource(path, () -> stream(path));
+	private static InputStreamSupplierSource source(String path) throws IOException {
+		return new InputStreamSupplierSource(path, () -> stream(path), Files.size(Paths.get(path)));
 	}
 
 	private static InputStream stream(String path) {
@@ -26,7 +27,7 @@ class InputStreamSourceTest extends SourceTestSuite {
 		}
 	}
 
-	InputStreamSourceTest() {
+	InputStreamSupplierSourceTest() throws IOException {
 		super("src/test/resources/arbitrary.txt", source("src/test/resources/arbitrary.txt"));
 	}
 
@@ -37,4 +38,19 @@ class InputStreamSourceTest extends SourceTestSuite {
 		assertThat(actual).isEqualTo(content);
 	}
 
+	@Test
+	void testSpecificSize() {
+		long size = 26;
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", () -> new ByteArrayInputStream("Moof".getBytes()), size);
+
+		assertThat(source.getSize()).isEqualTo(size);
+	}
+
+	@Test
+	void testUnspecifiedSize() {
+		byte [] bytes = "Moof".getBytes();
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", () -> new ByteArrayInputStream(bytes));
+
+		assertThat(source.getSize()).isEqualTo(bytes.length);
+	}
 }

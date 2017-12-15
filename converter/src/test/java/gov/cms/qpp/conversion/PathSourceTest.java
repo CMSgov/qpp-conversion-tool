@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -39,5 +40,10 @@ class PathSourceTest extends SourceTestSuite {
 		PathSource testSource = new PathSource(mockPath);
 		assertWithMessage("name should be empty")
 				.that(testSource.getName()).isEmpty();
+	}
+
+	@Test
+	void testSize() throws IOException {
+		assertThat(source.getSize()).isEqualTo(IOUtils.toByteArray(source.toInputStream()).length);
 	}
 }
