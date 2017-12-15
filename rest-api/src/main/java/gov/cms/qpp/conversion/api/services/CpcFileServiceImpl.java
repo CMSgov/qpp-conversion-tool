@@ -39,13 +39,6 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * Retrieves the file location id and retrieves the file if it is an unprocessed cpc+ file
 	 *
 	 * @param fileId {@link Metadata} identifier
-	 * @return file returned as an {@link InputStream}
-	 */
-
-	/**
-	 * Retrieves the file location id and retrieves the file if it is an unprocessed cpc+ file
-	 *
-	 * @param fileId {@link Metadata} identifier
 	 * @return file contents as a {@link String}
 	 * @throws IOException
 	 */
