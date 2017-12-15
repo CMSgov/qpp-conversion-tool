@@ -56,7 +56,7 @@ public class QrdaControllerV1 {
 		API_LOG.info("Conversion request received");
 
 		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
-				new InputStreamSupplierQrdaSource(originalFilename, inputStreamSupplier(file)));
+				new InputStreamSupplierQrdaSource(originalFilename, inputStreamSupplier(file), file.getSize()));
 
 		validationService.validateQpp(conversionReport);
 

@@ -300,6 +300,10 @@ public class Converter {
 		public String getFilename() {
 			return source.getName();
 		}
+
+		public long getFileSize() {
+			return source.getSize();
+		}
 	}
 
 }

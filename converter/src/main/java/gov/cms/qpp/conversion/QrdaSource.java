@@ -8,4 +8,5 @@ public interface QrdaSource {
 
 	InputStream toInputStream();
 
+	long getSize();
 }

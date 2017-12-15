@@ -24,4 +24,12 @@ public class PathQrdaSource extends SkeletalQrdaSource {
 		}
 	}
 
+	@Override
+	public long getSize() {
+		try {
+			return Files.size(path);
+		} catch (IOException exception) {
+			throw new UncheckedIOException(exception);
+		}
+	}
 }
