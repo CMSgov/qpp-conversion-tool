@@ -4,8 +4,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.LinkedHashMap;
 
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
@@ -26,7 +26,7 @@ class QualityMeasureIdEncoderTest {
 	private String type = "type";
 	private static final String ELIGIBLE_POPULATION = "eligiblePopulation";
 
-	@Before
+	@BeforeEach
 	void setUp() {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue("measureId", "40280381-51f0-825b-0152-22b98cff181a");
