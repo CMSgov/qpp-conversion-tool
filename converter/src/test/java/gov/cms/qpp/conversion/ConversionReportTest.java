@@ -62,14 +62,14 @@ class ConversionReportTest {
 				new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		Converter.ConversionReport aReport = converter.getReport();
 		aReport.setRawValidationDetails("meep");
-		String details = IOUtils.toString(aReport.streamRawValidationDetails(), "UTF-8");
+		String details = IOUtils.toString(aReport.getRawValidationErrorsOrEmptySource().toInputStream(), "UTF-8");
 
 		assertThat(details).isEqualTo("meep");
 	}
 
 	@Test
 	void emptyValidationErrorDetails() throws IOException {
-		String details = IOUtils.toString(errorReport.streamRawValidationDetails(), "UTF-8");
+		String details = IOUtils.toString(errorReport.getRawValidationErrorsOrEmptySource().toInputStream(), "UTF-8");
 
 		assertThat(details).isEmpty();
 	}
@@ -94,16 +94,16 @@ class ConversionReportTest {
 		field.setAccessible(true);
 		field.set(badReport, mockMapper);
 
-		assertThrows(EncodeException.class, badReport::streamDetails);
+		assertThrows(EncodeException.class, badReport::getValidationErrorsSource);
 	}
 
 	@Test
-	void getGoodReportDetails() throws NoSuchFieldException, IllegalAccessException, JsonProcessingException {
-		assertThat(errorReport.streamDetails()).isNotNull();
+	void getGoodReportDetails() {
+		assertThat(errorReport.getValidationErrorsSource().toInputStream()).isNotNull();
 	}
 
 	@Test
-	void getErrorStream() throws IOException {
+	void getErrorStream() {
 		Converter converter = new Converter(
 				new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		Converter.ConversionReport badReport = converter.getReport();
@@ -113,17 +113,7 @@ class ConversionReportTest {
 		errors.addError(error);
 		badReport.setReportDetails(errors);
 
-		AllErrors echo = JsonHelper.readJson(badReport.streamDetails(), AllErrors.class);
+		AllErrors echo = JsonHelper.readJson(badReport.getValidationErrorsSource().toInputStream(), AllErrors.class);
 		assertThat(echo.toString()).isEqualTo(errors.toString());
-	}
-
-	@Test
-	void getFilename() {
-		assertThat(report.getFilename()).isEqualTo("valid-QRDA-III-latest.xml");
-	}
-
-	@Test
-	void getFileInput() {
-		assertThat(report.getFileInput()).isNotNull();
 	}
 }

@@ -16,5 +16,5 @@ public interface StorageService {
 	 * @param inStream The {@link InputStream} to write out to an object in S3.
 	 * @return A {@link CompletableFuture} that will eventually contain the S3 object key.
 	 */
-	CompletableFuture<String> store(String keyName, InputStream inStream);
+	CompletableFuture<String> store(String keyName, InputStream inStream, long size);
 }

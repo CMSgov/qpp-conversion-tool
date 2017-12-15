@@ -119,8 +119,9 @@ class StorageServiceImplTest {
 	}
 
 	private String storeFile() {
+		byte[] testBytes = "test file content".getBytes();
 		CompletableFuture<String> storeResult = underTest.store(
-				"submission", new ByteArrayInputStream("test file content".getBytes()));
+				"submission", new ByteArrayInputStream(testBytes), testBytes.length);
 		return storeResult.join();
 	}
 }

@@ -39,7 +39,7 @@ public class StorageServiceImpl extends InOrderActionService<PutObjectRequest, S
 	 * @return A {@link CompletableFuture} that will eventually contain the S3 object key.
 	 */
 	@Override
-	public CompletableFuture<String> store(String keyName, InputStream inStream) {
+	public CompletableFuture<String> store(String keyName, InputStream inStream, long size) {
 		final String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
 		final String kmsKey = environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE);
 		if (Strings.isNullOrEmpty(bucketName) || Strings.isNullOrEmpty(kmsKey)) {
@@ -47,7 +47,10 @@ public class StorageServiceImpl extends InOrderActionService<PutObjectRequest, S
 			return CompletableFuture.completedFuture("");
 		}
 
-		PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, inStream, new ObjectMetadata())
+		ObjectMetadata s3ObjectMetadata = new ObjectMetadata();
+		s3ObjectMetadata.setContentLength(size);
+
+		PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, inStream, s3ObjectMetadata)
 			.withSSEAwsKeyManagementParams(new SSEAwsKeyManagementParams(kmsKey));
 
 		API_LOG.info("Writing object {} to S3 bucket {}", keyName, bucketName);
