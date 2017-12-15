@@ -2,7 +2,9 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.api.exceptions.FileNotFoundException;
 import gov.cms.qpp.conversion.api.services.AuditService;
+import gov.cms.qpp.conversion.api.services.CpcFileServiceImpl;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
@@ -112,5 +114,37 @@ public class ExceptionHandlerControllerV1Test {
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
 		assertThat(responseEntity.getBody()).isEqualTo(allErrors);
+	}
+
+	@Test
+	public void testFileNotFoundExceptionStatusCode() {
+		FileNotFoundException exception =
+				new FileNotFoundException("test file not found exception");
+
+		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
+
+		assertWithMessage("The response entity's status code must be 422.")
+				.that(responseEntity.getStatusCode())
+				.isEquivalentAccordingToCompareTo(HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	@Test
+	public void testFileNotFoundExceptionHeaderContentType() {
+		FileNotFoundException exception =
+				new FileNotFoundException("test file not found exception");
+
+		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
+
+		assertThat(responseEntity.getHeaders().getContentType())
+				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON_UTF8);
+	}
+
+	@Test
+	public void testFileNotFoundExceptionBody() {
+		FileNotFoundException exception =
+				new FileNotFoundException("test file not found exception");
+
+		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
+		assertThat(responseEntity.getBody()).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
 	}
 }

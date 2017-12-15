@@ -2,8 +2,8 @@ package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CpcFileServiceImpl implements CpcFileService {
+
+	public static final String FILE_NOT_FOUND = "File not found!";
 
 	@Autowired
 	private DbService dbService;
@@ -43,14 +45,14 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @throws IOException
 	 */
 	public String getFileById(String fileId) throws IOException {
-		String content = "File not found!";
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (metadata != null && metadata.getCpc() && !metadata.getCpcProcessed()) {
-			content = IOUtils.toString(storageService.getFileByLocationId(metadata.getSubmissionLocator()),
+			String content = IOUtils.toString(storageService.getFileByLocationId(metadata.getSubmissionLocator()),
 					Charset.defaultCharset());
+			return content;
+		} else {
+			throw new FileNotFoundException(FILE_NOT_FOUND);
 		}
-
-		return content;
 	}
 
 	/**
