@@ -6,11 +6,11 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class PathQrdaSource extends SkeletalQrdaSource {
+public class PathSource extends SkeletalSource {
 
 	private final Path path;
 
-	public PathQrdaSource(Path path) {
+	public PathSource(Path path) {
 		super(path != null && path.getFileName() != null ? path.getFileName().toString() : "");
 		this.path = path;
 	}

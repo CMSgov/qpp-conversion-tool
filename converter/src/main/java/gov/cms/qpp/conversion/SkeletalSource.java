@@ -2,11 +2,11 @@ package gov.cms.qpp.conversion;
 
 import java.util.Objects;
 
-public abstract class SkeletalQrdaSource implements QrdaSource {
+public abstract class SkeletalSource implements Source {
 
 	private final String name;
 
-	public SkeletalQrdaSource(String name) {
+	public SkeletalSource(String name) {
 		Objects.requireNonNull(name, "name");
 
 		this.name = name;
@@ -16,5 +16,4 @@ public abstract class SkeletalQrdaSource implements QrdaSource {
 	public final String getName() {
 		return name;
 	}
-
 }

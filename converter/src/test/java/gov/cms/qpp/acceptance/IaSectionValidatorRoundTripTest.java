@@ -10,18 +10,17 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.validate.IaSectionValidator;
 
 class IaSectionValidatorRoundTripTest {
 
 	@Test
 	void testIaSectionValidatorIncorrectChildren() throws IOException {
 		Path path = Paths.get("src/test/resources/negative/iaSectionContainsWrongChild.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 
 		AllErrors errors = new AllErrors();
 		try {
@@ -39,7 +38,7 @@ class IaSectionValidatorRoundTripTest {
 	@Test
 	void testIaSectionValidatorMissingMeasures() throws IOException {
 		Path path = Paths.get("src/test/resources/negative/iaSectionMissingMeasures.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 
 		AllErrors errors = new AllErrors();
 		try {
@@ -57,7 +56,7 @@ class IaSectionValidatorRoundTripTest {
 	@Test
 	void testIaSectionValidatorMissingReportingParameters() throws IOException {
 		Path path = Paths.get("src/test/resources/negative/iaSectionMissingReportingParameter.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 
 		AllErrors errors = new AllErrors();
 		try {

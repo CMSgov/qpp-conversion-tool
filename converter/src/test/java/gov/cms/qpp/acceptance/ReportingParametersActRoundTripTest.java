@@ -1,7 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.BeforeClass;
@@ -20,7 +20,7 @@ public class ReportingParametersActRoundTripTest {
 
 	@BeforeClass
 	public static void setUp() {
-		Converter converter = new Converter(new PathQrdaSource(VALID_QRDA_III));
+		Converter converter = new Converter(new PathSource(VALID_QRDA_III));
 		JsonWrapper qpp = converter.transform();
 		json = qpp.toString();
 	}

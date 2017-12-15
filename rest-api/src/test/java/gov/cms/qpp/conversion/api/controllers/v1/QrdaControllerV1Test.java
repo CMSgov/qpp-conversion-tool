@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.QrdaSource;
+import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
@@ -73,13 +73,13 @@ public class QrdaControllerV1Test {
 
 	@Test
 	public void uploadQrdaFile() throws IOException {
-		when(qrdaService.convertQrda3ToQpp(any(QrdaSource.class))).thenReturn(report);
+		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
 		when(auditService.success(any(Converter.ConversionReport.class)))
 				.then(invocation -> null);
 
 		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
 
-		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(QrdaSource.class));
+		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(Source.class));
 
 		assertWithMessage("The QPP response body is incorrect.")
 				.that(qppResponse.getBody())
@@ -90,7 +90,7 @@ public class QrdaControllerV1Test {
 	public void testFailedQppValidation() {
 		String transformationErrorMessage = "Test failed QPP validation";
 
-		when(qrdaService.convertQrda3ToQpp(any(QrdaSource.class)))
+		when(qrdaService.convertQrda3ToQpp(any(Source.class)))
 				.thenReturn(null);
 		Mockito.doThrow(new TransformException(transformationErrorMessage, null, null))
 			.when(validationService).validateQpp(isNull());

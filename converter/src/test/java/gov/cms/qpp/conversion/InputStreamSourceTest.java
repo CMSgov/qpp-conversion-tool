@@ -12,10 +12,10 @@ import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
 
-class InputStreamQrdaSourceTest extends QrdaSourceTestSuite {
+class InputStreamSourceTest extends SourceTestSuite {
 
-	private static InputStreamSupplierQrdaSource source(String path) {
-		return new InputStreamSupplierQrdaSource(path, () -> stream(path));
+	private static InputStreamSupplierSource source(String path) {
+		return new InputStreamSupplierSource(path, () -> stream(path));
 	}
 
 	private static InputStream stream(String path) {
@@ -26,7 +26,7 @@ class InputStreamQrdaSourceTest extends QrdaSourceTestSuite {
 		}
 	}
 
-	InputStreamQrdaSourceTest() {
+	InputStreamSourceTest() {
 		super("src/test/resources/arbitrary.txt", source("src/test/resources/arbitrary.txt"));
 	}
 

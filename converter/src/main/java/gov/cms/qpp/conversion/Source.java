@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion;
 
 import java.io.InputStream;
 
-public interface QrdaSource {
+public interface Source {
 
 	String getName();
 

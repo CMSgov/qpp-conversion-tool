@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
@@ -26,7 +26,7 @@ class IaSectionRoundTripTest {
 
 	@Test
 	void testIaSectionConvertsIaCategory() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(file));
+		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaCategory = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].category", String.class);
@@ -38,7 +38,7 @@ class IaSectionRoundTripTest {
 
 	@Test
 	void testIaSectionConvertsIaMeasureId() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(file));
+		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaMeasureId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].measurements[0].measureId", String.class);
@@ -50,7 +50,7 @@ class IaSectionRoundTripTest {
 
 	@Test
 	void testIaSectionConvertsMeasurePerformed() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(file));
+		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(qpp.toString(),
 				"$.measurementSets[2].measurements[0].value", Boolean.class);
