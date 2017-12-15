@@ -5,7 +5,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
@@ -19,7 +19,7 @@ class AciProportionDenominatorEncoderTest {
 	private List<Node> nodes;
 	private JsonWrapper json;
 
-	@Before
+	@BeforeEach
 	void createNode() {
 		numeratorDenominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorDenominatorValueNode.putValue("aggregateCount", "600");

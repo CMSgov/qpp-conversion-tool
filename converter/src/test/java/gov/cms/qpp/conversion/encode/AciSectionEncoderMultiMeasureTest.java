@@ -7,8 +7,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
@@ -46,7 +46,7 @@ class AciSectionEncoderMultiMeasureTest {
 	private Node denominatorValueNode3;
 	private List<Node> nodes;
 
-	@Before
+	@BeforeEach
 	void createNode() {
 		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue("aggregateCount", "400");

@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Converter;
@@ -27,7 +27,7 @@ class ClinicalDocumentValidatorTest {
 
 	private static final String CLINICAL_DOCUMENT_ERROR_FILE = "angerClinicalDocumentValidations.err.json";
 
-	@After
+	@AfterEach
 	void cleanup() throws IOException {
 		Files.deleteIfExists(Paths.get(CLINICAL_DOCUMENT_ERROR_FILE));
 	}
