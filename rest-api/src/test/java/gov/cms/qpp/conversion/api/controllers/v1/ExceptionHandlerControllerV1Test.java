@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.api.exceptions.FileNotFoundException;
+import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.CpcFileServiceImpl;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -118,8 +118,8 @@ public class ExceptionHandlerControllerV1Test {
 
 	@Test
 	public void testFileNotFoundExceptionStatusCode() {
-		FileNotFoundException exception =
-				new FileNotFoundException("test file not found exception");
+		NoFileInDatabaseException exception =
+				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
 
@@ -130,8 +130,8 @@ public class ExceptionHandlerControllerV1Test {
 
 	@Test
 	public void testFileNotFoundExceptionHeaderContentType() {
-		FileNotFoundException exception =
-				new FileNotFoundException("test file not found exception");
+		NoFileInDatabaseException exception =
+				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
 
@@ -141,8 +141,8 @@ public class ExceptionHandlerControllerV1Test {
 
 	@Test
 	public void testFileNotFoundExceptionBody() {
-		FileNotFoundException exception =
-				new FileNotFoundException("test file not found exception");
+		NoFileInDatabaseException exception =
+				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
 		assertThat(responseEntity.getBody()).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);

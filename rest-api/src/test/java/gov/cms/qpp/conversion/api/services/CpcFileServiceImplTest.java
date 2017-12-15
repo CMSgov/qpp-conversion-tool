@@ -1,9 +1,9 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.test.MockitoExtension;
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,7 +67,7 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(false, false));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		FileNotFoundException expectedException = assertThrows(FileNotFoundException.class, ()
+		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
 				-> objectUnderTest.getFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
@@ -80,7 +80,7 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, true));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		FileNotFoundException expectedException = assertThrows(FileNotFoundException.class, ()
+		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
 				-> objectUnderTest.getFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
@@ -93,7 +93,7 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(null);
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		FileNotFoundException expectedException = assertThrows(FileNotFoundException.class, ()
+		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
 				-> objectUnderTest.getFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());

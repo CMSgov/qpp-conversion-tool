@@ -1,12 +1,11 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.api.exceptions.FileNotFoundException;
+import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,15 +59,15 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	}
 
 	/**
-	 * "Catch" the {@link FileNotFoundException}.
+	 * "Catch" the {@link NoFileInDatabaseException}.
 	 * Return the {@link AllErrors} with an HTTP status 422.
 	 *
-	 * @param exception The FileNotFoundException that was "caught".
-	 * @return The FileNotFoundException message
+	 * @param exception The NoFileInDatabaseException that was "caught".
+	 * @return The NoFileInDatabaseException message
 	 */
-	@ExceptionHandler(FileNotFoundException.class)
+	@ExceptionHandler(NoFileInDatabaseException.class)
 	@ResponseBody
-	ResponseEntity<String> handleFileNotFoundException(FileNotFoundException exception) {
+	ResponseEntity<String> handleFileNotFoundException(NoFileInDatabaseException exception) {
 		API_LOG.error("A database error occurred", exception);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);

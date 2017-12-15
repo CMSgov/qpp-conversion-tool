@@ -1,8 +1,8 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
@@ -44,14 +44,14 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @return file contents as a {@link String}
 	 * @throws IOException
 	 */
-	public String getFileById(String fileId) throws IOException {
+	public String getFileById(String fileId) throws IOException, NoFileInDatabaseException {
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (metadata != null && metadata.getCpc() && !metadata.getCpcProcessed()) {
 			String content = IOUtils.toString(storageService.getFileByLocationId(metadata.getSubmissionLocator()),
 					Charset.defaultCharset());
 			return content;
 		} else {
-			throw new FileNotFoundException(FILE_NOT_FOUND);
+			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
 		}
 	}
 
