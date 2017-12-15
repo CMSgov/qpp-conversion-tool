@@ -125,7 +125,7 @@ public class ExceptionHandlerControllerV1Test {
 
 		assertWithMessage("The response entity's status code must be 422.")
 				.that(responseEntity.getStatusCode())
-				.isEquivalentAccordingToCompareTo(HttpStatus.UNPROCESSABLE_ENTITY);
+				.isEquivalentAccordingToCompareTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test

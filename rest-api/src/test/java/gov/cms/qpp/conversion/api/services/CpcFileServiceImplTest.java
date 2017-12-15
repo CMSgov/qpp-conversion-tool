@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.api.services;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.test.MockitoExtension;
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -65,11 +67,12 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(false, false));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		String outcome = objectUnderTest.getFileById("test");
+		FileNotFoundException expectedException = assertThrows(FileNotFoundException.class, ()
+				-> objectUnderTest.getFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(outcome).isEqualTo("File not found!");
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -77,11 +80,12 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, true));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		String outcome = objectUnderTest.getFileById("test");
+		FileNotFoundException expectedException = assertThrows(FileNotFoundException.class, ()
+				-> objectUnderTest.getFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(outcome).isEqualTo("File not found!");
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
 	}
 
 	@Test
@@ -89,12 +93,12 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(null);
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		String outcome = objectUnderTest.getFileById("test");
+		FileNotFoundException expectedException = assertThrows(FileNotFoundException.class, ()
+				-> objectUnderTest.getFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
-		verify(storageService, times(0)).getFileByLocationId(anyString());
 
-		assertThat(outcome).isEqualTo("File not found!");
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
 	}
 
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {
