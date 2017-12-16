@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
@@ -56,12 +55,11 @@ public class CpcFileControllerV1 {
 	 * @param fileId id for the stored object
 	 * @return object json or xml content
 	 * @throws IOException if S3Object content stream is invalid
-	 * @throws NoFileInDatabaseException if no cpc+ file is found
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/get-file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> getFileById(@PathVariable("fileId") String fileId)
-			throws IOException, NoFileInDatabaseException {
+			throws IOException {
 		API_LOG.info("CPC+ file request received");
 
 		String content = cpcFileService.getFileById(fileId);
