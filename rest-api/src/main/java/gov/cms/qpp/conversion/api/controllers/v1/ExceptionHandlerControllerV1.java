@@ -70,7 +70,7 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	ResponseEntity<String> handleFileNotFoundException(NoFileInDatabaseException exception) {
 		API_LOG.error("A database error occurred", exception);
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
 
 		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.NOT_FOUND);
 	}
