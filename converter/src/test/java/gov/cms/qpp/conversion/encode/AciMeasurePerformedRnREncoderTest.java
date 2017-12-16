@@ -1,9 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.util.JsonHelper;
+import static com.google.common.truth.Truth.assertWithMessage;
+
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -11,13 +9,17 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class AciMeasurePerformedRnREncoderTest {
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.util.JsonHelper;
+
+class AciMeasurePerformedRnREncoderTest {
 
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
 	private static final String VALUE = "Y";
@@ -26,8 +28,8 @@ public class AciMeasurePerformedRnREncoderTest {
 	private Node aciMeasurePerformedRnR;
 	private Node measurePerformed;
 
-	@Before
-	public void createNode() {
+	@BeforeEach
+	void createNode() {
 		aciMeasurePerformedRnR = new Node(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS);
 		aciMeasurePerformedRnR.putValue("measureId", MEASURE_ID);
 
@@ -42,7 +44,7 @@ public class AciMeasurePerformedRnREncoderTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testEncoder() throws IOException {
+	void testEncoder() throws IOException {
 		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 		encoder.setNodes(nodes);
 
@@ -51,7 +53,7 @@ public class AciMeasurePerformedRnREncoderTest {
 		try {
 			encoder.encode(new BufferedWriter(sw));
 		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
+			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
 		Map<String, Object> content = JsonHelper.readJson(new ByteArrayInputStream(sw.toString().getBytes()), Map.class);
@@ -65,7 +67,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	}
 
 	@Test
-	public void testInternalEncode() {
+	void testInternalEncode() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(new Context());
@@ -83,7 +85,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	}
 
 	@Test
-	public void testInternalEncodeNoChildNoValue(){
+	void testInternalEncodeNoChildNoValue(){
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(new Context());
@@ -102,7 +104,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	}
 
 	@Test
-	public void testInternalEncodeBooleanTrueValue() {
+	void testInternalEncodeBooleanTrueValue() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(new Context());
@@ -120,7 +122,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	}
 
 	@Test
-	public void testInternalEncodeBooleanFalseValue() {
+	void testInternalEncodeBooleanFalseValue() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(new Context());
@@ -138,7 +140,7 @@ public class AciMeasurePerformedRnREncoderTest {
 	}
 
 	@Test
-	public void testInternalEncodeBooleanStringValue() {
+	void testInternalEncodeBooleanStringValue() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(new Context());

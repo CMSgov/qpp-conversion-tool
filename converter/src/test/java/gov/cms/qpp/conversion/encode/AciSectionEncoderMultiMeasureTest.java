@@ -1,20 +1,22 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
+import static com.google.common.truth.Truth.assertWithMessage;
+
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class AciSectionEncoderMultiMeasureTest {
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+
+class AciSectionEncoderMultiMeasureTest {
 
 	private static final String EXPECTED = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  "
 			+ "\"measurements\" : [ "
@@ -44,8 +46,8 @@ public class AciSectionEncoderMultiMeasureTest {
 	private Node denominatorValueNode3;
 	private List<Node> nodes;
 
-	@Before
-	public void createNode() {
+	@BeforeEach
+	void createNode() {
 		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue("aggregateCount", "400");
 
@@ -113,7 +115,7 @@ public class AciSectionEncoderMultiMeasureTest {
 	}
 
 	@Test
-	public void testEncoder() {
+	void testEncoder() {
 		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
 		encoder.setNodes(nodes);
@@ -123,7 +125,7 @@ public class AciSectionEncoderMultiMeasureTest {
 		try {
 			encoder.encode(new BufferedWriter(sw));
 		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
+			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
 		assertWithMessage("expected encoder to return a json representation of an ACI Section node")

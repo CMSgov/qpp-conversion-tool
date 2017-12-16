@@ -1,17 +1,19 @@
 package gov.cms.qpp.conversion.encode;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.LinkedHashMap;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
-import java.util.LinkedHashMap;
-import org.junit.Before;
-import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
-
-public class QualityMeasureIdEncoderTest {
+class QualityMeasureIdEncoderTest {
 
 	private Node qualityMeasureId;
 	private Node populationNode;
@@ -24,8 +26,8 @@ public class QualityMeasureIdEncoderTest {
 	private String type = "type";
 	private static final String ELIGIBLE_POPULATION = "eligiblePopulation";
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue("measureId", "40280381-51f0-825b-0152-22b98cff181a");
 
@@ -53,7 +55,7 @@ public class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	public void testMeasureIdIsEncoded() {
+	void testMeasureIdIsEncoded() {
 		executeInternalEncode();
 
 		assertWithMessage("expected encoder to return a single value")
@@ -62,7 +64,7 @@ public class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	public void testEndToEndReportedIsEncoded() {
+	void testEndToEndReportedIsEncoded() {
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
@@ -72,7 +74,7 @@ public class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	public void testPopulationTotalIsEncoded() {
+	void testPopulationTotalIsEncoded() {
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
@@ -83,7 +85,7 @@ public class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	public void testPopulationAltTotalIsEncoded() {
+	void testPopulationAltTotalIsEncoded() {
 		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		populationNode.putValue(type, SubPopulations.IPP);
 		populationNode.addChildNode(aggregateCountNode);
@@ -96,7 +98,7 @@ public class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	public void testPerformanceMetIsEncoded() {
+	void testPerformanceMetIsEncoded() {
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 		assertWithMessage("expected encoder to return a single value")
@@ -105,7 +107,7 @@ public class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	public void testPerformanceExclusionIsEncoded() {
+	void testPerformanceExclusionIsEncoded() {
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
@@ -115,7 +117,7 @@ public class QualityMeasureIdEncoderTest {
 	}
 
 	@Test
-	public void testPerformanceNotMetIsEncoded() {
+	void testPerformanceNotMetIsEncoded() {
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
 
@@ -129,7 +131,7 @@ public class QualityMeasureIdEncoderTest {
 		try {
 			encoder.internalEncode(wrapper, qualityMeasureId);
 		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
+			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 	}
 
