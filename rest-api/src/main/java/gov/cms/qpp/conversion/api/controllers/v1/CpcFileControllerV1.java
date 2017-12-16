@@ -56,6 +56,7 @@ public class CpcFileControllerV1 {
 	 * @param fileId id for the stored object
 	 * @return object json or xml content
 	 * @throws IOException if S3Object content stream is invalid
+	 * @throws NoFileInDatabaseException if no cpc+ file is found
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/get-file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
