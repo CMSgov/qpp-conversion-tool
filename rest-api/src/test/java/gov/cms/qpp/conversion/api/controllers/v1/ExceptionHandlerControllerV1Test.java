@@ -136,7 +136,7 @@ public class ExceptionHandlerControllerV1Test {
 		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
 
 		assertThat(responseEntity.getHeaders().getContentType())
-				.isEquivalentAccordingToCompareTo(MediaType.APPLICATION_JSON_UTF8);
+				.isEquivalentAccordingToCompareTo(MediaType.TEXT_PLAIN);
 	}
 
 	@Test
