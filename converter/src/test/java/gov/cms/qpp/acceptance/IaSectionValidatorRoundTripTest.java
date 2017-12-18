@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Converter;
@@ -61,7 +61,7 @@ class IaSectionValidatorRoundTripTest {
 		AllErrors errors = new AllErrors();
 		try {
 			converter.transform();
-			Assert.fail("Should not reach");
+			Assertions.fail("Should not reach");
 		} catch (TransformException exception) {
 			errors = exception.getDetails();
 		}
