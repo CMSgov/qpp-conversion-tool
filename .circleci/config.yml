@@ -2,7 +2,7 @@ version: 2
 container_config: &container_config
   docker:
     - image: circleci/openjdk:8-jdk-browsers
-  working_directory: ~/qpp-conversion-tool
+  working_directory: /home/circleci/qpp-conversion-tool
 
 jobs:
   build:
@@ -12,18 +12,19 @@ jobs:
     resource_class: large
     steps:
       - checkout
-      - run: echo "Working Directory:" pwd
-      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
-      - run: unzip -d . sonarscanner.zip
-      - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
-      - run: sudo python get-pip.py
-      - run: sudo pip install ansible
-      - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
-      - run: mvn --batch-mode clean verify
-      - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-      - run: sudo apt-get install -y nodejs
-      - run: ./tools/bin/sonarqube.sh
-      - run: ./tools/bin/docker_deploy.sh
+      - run: echo Working Directory `pwd`
+#      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
+#      - run: unzip -d . sonarscanner.zip
+#      - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
+#      - run: sudo python get-pip.py
+#      - run: sudo pip install ansible
+#      - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
+#      - run: mvn --batch-mode clean verify
+      - run: mvn clean package -Dmaven.test.skip
+#      - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+#      - run: sudo apt-get install -y nodejs
+#      - run: ./tools/bin/sonarqube.sh
+#      - run: ./tools/bin/docker_deploy.sh
       - run:
           name: Creating artifacts
           command: |
@@ -32,25 +33,27 @@ jobs:
             cp converter/target/converter.jar $ARTIFACT_DIR;
             cp commandline/target/commandline.jar $ARTIFACT_DIR;
             cp rest-api/target/rest-api.jar $ARTIFACT_DIR;
-            mkdir -p $ARTIFACT_DIR/coverage/converter;
-            cp -R converter/target/site/jacoco $ARTIFACT_DIR/coverage/converter;
-            mkdir -p $ARTIFACT_DIR/coverage/rest-api;
-            cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/rest-api;
-            mkdir -p ARTIFACT_DIR/coverage/commandline;
-            cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/commandline;
+#            mkdir -p $ARTIFACT_DIR/coverage/converter;
+#            cp -R converter/target/site/jacoco $ARTIFACT_DIR/coverage/converter;
+#            mkdir -p $ARTIFACT_DIR/coverage/rest-api;
+#            cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/rest-api;
+#            mkdir -p ARTIFACT_DIR/coverage/commandline;
+#            cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/commandline;
 
       - store_artifacts:
           path: /tmp/artifacts
       - persist_to_workspace:
+          root: /home/circleci
           paths:
-            - /tmp/artifacts/rest-api.jar
+            - qpp-conversion-tool
 
   integration_test:
     <<: *container_config
     steps:
       - attach_workspace:
-          at: /tmp/artifacts
-      - run: ls -al /tmp/artifacts
+          at: /home/circleci
+      - run: echo listing saved artifacts
+      - run: ls -al /home/circleci
 
 
   ui_test:
@@ -99,6 +102,9 @@ workflows:
     jobs:
       - build
       - ui_test
+      - integration_test:
+          requires:
+            - build
       - ui_deployment:
           filters:
             branches:
@@ -109,3 +115,4 @@ workflows:
           requires:
             - build
             - ui_test
+
