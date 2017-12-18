@@ -1,51 +1,52 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.decode.InputDecoder;
-import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
-import org.jdom2.Element;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Set;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import org.jdom2.Element;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class RegistryTest {
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.decode.InputDecoder;
+import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
+
+class RegistryTest {
 
 	private Context context;
 	private Registry<InputDecoder> registry;
 	private PrintStream err;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		context = new Context();
 		registry = context.getRegistry(Decoder.class);
 		err = System.err;
 	}
 
-	@After
-	public void tearDown() {
+	@AfterEach
+	void tearDown() {
 		System.setErr(err);
 	}
 
 	@Test
-	public void testRegistryExistsByDefault() throws Exception {
+	void testRegistryExistsByDefault() {
 		try {
 			registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		} catch (NullPointerException e) {
-			fail("Registry should always exist.");
+			Assertions.fail("Registry should always exist.");
 		}
 	}
 
 	@Test
-	public void testRegistryGetDefaultConverterHandler() throws Exception {
+	void testRegistryGetDefaultConverterHandler() {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
@@ -55,7 +56,7 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testRegistryGetProgramSpecificConverterHandler() throws Exception {
+	void testRegistryGetProgramSpecificConverterHandler() {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
@@ -66,7 +67,7 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testRegistryInclusiveGetDefaultConverterHandler() throws Exception {
+	void testRegistryInclusiveGetDefaultConverterHandler() {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
@@ -76,7 +77,7 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testRegistryInclusiveGetProgramSpecificConverterHandler() throws Exception {
+	void testRegistryInclusiveGetProgramSpecificConverterHandler() {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
@@ -87,7 +88,7 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testRegistryInclusiveGetPrioritizesGeneral() throws Exception {
+	void testRegistryInclusiveGetPrioritizesGeneral() {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
@@ -103,7 +104,7 @@ public class RegistryTest {
 	// This test must reside here in order to call the protected methods on the
 	// registry
 	@Test
-	public void testRegistry_placeAndFetch() throws Exception {
+	void testRegistry_placeAndFetch() {
 		Set<ComponentKey> componentKeys = registry.getComponentKeys(AggregateCountDecoder.class);
 
 		assertThat(componentKeys).hasSize(1);
@@ -118,7 +119,7 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testRegistry_getTemplateIds() throws Exception {
+	void testRegistry_getTemplateIds() {
 		Set<ComponentKey> componentKeys = registry.getComponentKeys(AggregateCountDecoder.class);
 		assertWithMessage("A componentKey is expected")
 				.that(componentKeys).hasSize(1);
@@ -137,14 +138,14 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testRegistry_getTemplateIds_NullReturn() throws Exception {
+	void testRegistry_getTemplateIds_NullReturn() {
 		Set<ComponentKey> componentKeys = context.getRegistry(SuppressWarnings.class).getComponentKeys(Placeholder.class);
 		assertWithMessage("A componentKey is not expected")
 				.that(componentKeys).isEmpty();
 	}
 
 	@Test
-	public void testRegistryGetHandlerThatFailsConstruction() throws Exception {
+	void testRegistryGetHandlerThatFailsConstruction() {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), PrivateConstructor.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertWithMessage("Registry with a private constructor should be constructable")
@@ -152,7 +153,7 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testRegistryGetHandlerWithNoDefaultConstructor() throws Exception {
+	void testRegistryGetHandlerWithNoDefaultConstructor() {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), NoDefaultConstructor.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertWithMessage("Registry without a default constructor should not be constructable")
@@ -160,33 +161,37 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testRegistryGetHandlerWithMalcontentedConstructor() throws Exception {
+	void testRegistryGetHandlerWithMalcontentedConstructor() {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), MalcontentedConstructor.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertThat(decoder).isNull();
 	}
 
-	@Test(expected = SevereRuntimeException.class)
-	public void testRegistryGetHandlerWithThrowableConstructor() throws Exception {
-		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), ThrowableConstructor.class);
-		registry.get(TemplateId.PLACEHOLDER);
+	@Test
+	void testRegistryGetHandlerWithThrowableConstructor() {
+		Assertions.assertThrows(SevereRuntimeException.class, () -> {
+			registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), ThrowableConstructor.class);
+			registry.get(TemplateId.PLACEHOLDER);
+		});
 	}
 
 	@Test
-	public void testRegistryGetHandlerWithNoArgMalcontentedConstructor() throws Exception {
+	void testRegistryGetHandlerWithNoArgMalcontentedConstructor() {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), NoArgMalcontentedConstructor.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertThat(decoder).isNull();
 	}
 
-	@Test(expected = SevereRuntimeException.class)
-	public void testRegistryGetHandlerWithNoArgThrowableConstructor() throws Exception {
-		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), NoArgThrowableConstructor.class);
-		registry.get(TemplateId.PLACEHOLDER);
+	@Test
+	void testRegistryGetHandlerWithNoArgThrowableConstructor() {
+		Assertions.assertThrows(SevereRuntimeException.class, () -> {
+			registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), NoArgThrowableConstructor.class);
+			registry.get(TemplateId.PLACEHOLDER);
+		});
 	}
 
 	@Test
-	public void testRegistryAddDuplicate() throws Exception {
+	void testRegistryAddDuplicate() {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), AnotherPlaceholder.class);
 		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
@@ -195,7 +200,7 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void testSize() {
+	void testSize() {
 		assertWithMessage("Registry does not have contents")
 				.that(registry.size()).isGreaterThan(0);
 	}
