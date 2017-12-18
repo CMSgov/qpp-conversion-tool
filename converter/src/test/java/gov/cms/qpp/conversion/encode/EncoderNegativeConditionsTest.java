@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
@@ -39,8 +39,7 @@ class EncoderNegativeConditionsTest {
 		// NOTE: This test is only relevant in that it finds the deep value but
 		// it is not actually a result
 		String expected = "null";
-		assertWithMessage("expected encoder to return an empty string")
-				.that(sw.toString())
+		assertThat(sw.toString())
 				.isEqualTo(expected);
 	}
 
@@ -63,9 +62,8 @@ class EncoderNegativeConditionsTest {
 
 		encoder.encode(new BufferedWriter(failWrite));
 
-		assertWithMessage("Should contain one error").that(encoder.getDetails()).hasSize(1);
-		assertWithMessage("Should have same correct message")
-				.that(encoder.getDetails().get(0).getMessage())
+		assertThat(encoder.getDetails()).hasSize(1);
+		assertThat(encoder.getDetails().get(0).getMessage())
 				.isEqualTo("Fake IOException");
 	}
 }

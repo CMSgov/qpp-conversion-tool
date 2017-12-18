@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -58,11 +58,9 @@ class AciMeasurePerformedRnREncoderTest {
 
 		Map<String, Object> content = JsonHelper.readJson(new ByteArrayInputStream(sw.toString().getBytes()), Map.class);
 
-		assertWithMessage("MeasureId should be %s", MEASURE_ID)
-				.that(content.get("measureId"))
+		assertThat(content.get("measureId"))
 				.isEqualTo(MEASURE_ID);
-		assertWithMessage("value should be true")
-				.that(content.get("value"))
+		assertThat(content.get("value"))
 				.isEqualTo(true);
 	}
 
@@ -76,11 +74,9 @@ class AciMeasurePerformedRnREncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
 
 		//assert
-		assertWithMessage("MeasureId should be %s", MEASURE_ID)
-				.that(jsonWrapper.getString("measureId"))
+		assertThat(jsonWrapper.getString("measureId"))
 				.isEqualTo(MEASURE_ID);
-		assertWithMessage("value should be true")
-				.that(jsonWrapper.getBoolean("value"))
+		assertThat(jsonWrapper.getBoolean("value"))
 				.isEqualTo(true);
 	}
 
@@ -95,11 +91,9 @@ class AciMeasurePerformedRnREncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
 
 		//assert
-		assertWithMessage("MeasureId should be %s", MEASURE_ID)
-				.that(jsonWrapper.getString("measureId"))
+		assertThat(jsonWrapper.getString("measureId"))
 				.isEqualTo(MEASURE_ID);
-		assertWithMessage("Value must be null")
-				.that(jsonWrapper.getBoolean("value"))
+		assertThat(jsonWrapper.getBoolean("value"))
 				.isNull();
 	}
 
@@ -113,11 +107,9 @@ class AciMeasurePerformedRnREncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
 
 		//assert
-		assertWithMessage("MeasureId should be %s", MEASURE_ID)
-				.that(jsonWrapper.getString("measureId"))
+		assertThat(jsonWrapper.getString("measureId"))
 				.isEqualTo(MEASURE_ID);
-		assertWithMessage("value should be true")
-				.that(jsonWrapper.getBoolean("value"))
+		assertThat(jsonWrapper.getBoolean("value"))
 				.isEqualTo(true);
 	}
 
@@ -131,11 +123,9 @@ class AciMeasurePerformedRnREncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
 
 		//assert
-		assertWithMessage("MeasureId should be %s", MEASURE_ID)
-				.that(jsonWrapper.getString("measureId"))
+		assertThat(jsonWrapper.getString("measureId"))
 				.isEqualTo(MEASURE_ID);
-		assertWithMessage("value should be false")
-				.that(jsonWrapper.getBoolean("value"))
+		assertThat(jsonWrapper.getBoolean("value"))
 				.isEqualTo(false);
 	}
 
@@ -150,11 +140,9 @@ class AciMeasurePerformedRnREncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
 
 		//assert
-		assertWithMessage("MeasureId should be %s", MEASURE_ID)
-				.that(jsonWrapper.getString("measureId"))
+		assertThat(jsonWrapper.getString("measureId"))
 				.isEqualTo(MEASURE_ID);
-		assertWithMessage("value should be a string value")
-				.that(jsonWrapper.getString("value"))
+		assertThat(jsonWrapper.getString("value"))
 				.isEqualTo(unknownValue);
 	}
 }
