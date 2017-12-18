@@ -1,21 +1,23 @@
 package gov.cms.qpp.conversion.api.services;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.SSEAwsKeyManagementParams;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.google.common.base.Strings;
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.model.Constants;
+import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-
-import java.io.InputStream;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Used to store an {@link InputStream} in S3.
@@ -30,6 +32,9 @@ public class StorageServiceImpl extends InOrderActionService<PutObjectRequest, S
 
 	@Autowired
 	private Environment environment;
+
+	@Autowired
+	private AmazonS3 amazonS3;
 
 	/**
 	 * Stores the {@link InputStream} as an object in the S3 bucket.
@@ -52,6 +57,29 @@ public class StorageServiceImpl extends InOrderActionService<PutObjectRequest, S
 
 		API_LOG.info("Writing object {} to S3 bucket {}", keyName, bucketName);
 		return actOnItem(putObjectRequest);
+	}
+
+	/**
+	 * Performs a {@link GetObjectRequest} to the S3 bucket by file id for the file
+	 *
+	 * @param fileLocationId Id of the file to search for
+	 * @return file found from S3
+	 */
+	@Override
+	public InputStream getFileByLocationId(String fileLocationId) {
+		final String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
+		if (Strings.isNullOrEmpty(bucketName)) {
+			API_LOG.warn("No bucket name is specified.");
+			return null;
+		}
+
+		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, fileLocationId);
+
+		S3Object s3Object = amazonS3.getObject(getObjectRequest);
+
+		API_LOG.info("Successfully retrieved the file from S3 bucket {}", getObjectRequest.getBucketName());
+
+		return s3Object.getObjectContent();
 	}
 
 	/**
