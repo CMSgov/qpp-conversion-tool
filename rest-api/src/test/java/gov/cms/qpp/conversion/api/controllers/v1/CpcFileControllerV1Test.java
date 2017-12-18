@@ -4,15 +4,19 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
 import gov.cms.qpp.test.MockitoExtension;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -49,12 +53,13 @@ class CpcFileControllerV1Test {
 
 	@Test
 	void testGetFileById() throws IOException {
-		String valid = "1234";
+		InputStreamResource valid = new InputStreamResource(new ByteArrayInputStream("1234".getBytes()));
 		when(cpcFileService.getFileById(anyString())).thenReturn(valid);
 
-		ResponseEntity<String> response = cpcFileControllerV1.getFileById("meep");
+		ResponseEntity<InputStreamResource> response = cpcFileControllerV1.getFileById("meep");
 
-		assertThat(response.getBody()).isEqualTo("1234");
+		assertThat(IOUtils.toString(response.getBody().getInputStream(), Charset.defaultCharset()))
+				.isEqualTo("1234");
 	}
 
 	List<UnprocessedCpcFileData> createMockedUnprocessedDataList() {

@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,11 +59,11 @@ public class CpcFileControllerV1 {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/get-file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<String> getFileById(@PathVariable("fileId") String fileId)
+	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
 			throws IOException {
 		API_LOG.info("CPC+ file request received");
 
-		String content = cpcFileService.getFileById(fileId);
+		InputStreamResource content = cpcFileService.getFileById(fileId);
 
 		API_LOG.info("CPC+ file request succeeded");
 

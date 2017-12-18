@@ -5,15 +5,18 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.test.MockitoExtension;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.core.io.InputStreamResource;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -54,12 +57,12 @@ class CpcFileServiceImplTest {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, false));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
-		String outcome = objectUnderTest.getFileById("test");
+		InputStreamResource outcome = objectUnderTest.getFileById("test");
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 		verify(storageService, times(1)).getFileByLocationId(anyString());
 
-		assertThat(outcome).isEqualTo("1337");
+		assertThat(IOUtils.toString(outcome.getInputStream(), Charset.defaultCharset())).isEqualTo("1337");
 	}
 
 	@Test

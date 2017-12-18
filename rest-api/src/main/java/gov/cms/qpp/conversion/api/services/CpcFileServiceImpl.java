@@ -4,11 +4,10 @@ import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,11 +43,10 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @return file contents as a {@link String}
 	 * @throws IOException
 	 */
-	public String getFileById(String fileId) throws IOException {
+	public InputStreamResource getFileById(String fileId) throws IOException {
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (metadata != null && metadata.getCpc() && !metadata.getCpcProcessed()) {
-			return IOUtils.toString(storageService.getFileByLocationId(metadata.getSubmissionLocator()),
-					Charset.defaultCharset());
+			return new InputStreamResource(storageService.getFileByLocationId(metadata.getSubmissionLocator()));
 		} else {
 			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
 		}

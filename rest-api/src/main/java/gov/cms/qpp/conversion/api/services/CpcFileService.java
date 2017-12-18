@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import java.io.IOException;
 import java.util.List;
+import org.springframework.core.io.InputStreamResource;
 
 /**
  * Service interface to handle processing cpc+ files
@@ -23,5 +24,5 @@ public interface CpcFileService {
 	 * @return file contents parsed as a {@link String}
 	 * @throws IOException for invalid IOUtils usage
 	 */
-	String getFileById(String fileId) throws IOException;
+	InputStreamResource getFileById(String fileId) throws IOException;
 }
