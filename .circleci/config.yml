@@ -134,7 +134,8 @@ workflows:
             - checkout
       - deploy_api:
           requires:
-            - build
+            #change this to be filtered on the master branch
+            - checkout
       - integration_test:
           requires:
             - deploy_api
