@@ -6,6 +6,9 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * A {@link Source} represented by a path that points to a file in the file system.
+ */
 public class PathSource extends SkeletalSource {
 
 	private final Path path;
@@ -15,6 +18,11 @@ public class PathSource extends SkeletalSource {
 		this.path = path;
 	}
 
+	/**
+	 * An {@link InputStream} representation of the file at the path.
+	 *
+	 * @return An InputStream representing the source.
+	 */
 	@Override
 	public InputStream toInputStream() {
 		try {
@@ -24,6 +32,11 @@ public class PathSource extends SkeletalSource {
 		}
 	}
 
+	/**
+	 * The size of the file specified by the path.
+	 *
+	 * @return The source's size.
+	 */
 	@Override
 	public long getSize() {
 		try {
