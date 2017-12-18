@@ -1,22 +1,8 @@
 package gov.cms.qpp.acceptance;
 
-
-import com.jayway.jsonpath.PathNotFoundException;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.util.JsonHelper;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,18 +11,34 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assume.assumeTrue;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class SubmissionIntegrationTest {
+import com.jayway.jsonpath.PathNotFoundException;
+
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.util.JsonHelper;
+
+class SubmissionIntegrationTest {
+
 	private static HttpClient client;
 	private static String serviceUrl = "https://qpp-submissions-sandbox.navapbc.com/public/validate-submission";
 	private JsonWrapper qpp;
 
-	@BeforeClass
+	@BeforeAll
 	@SuppressWarnings("unchecked")
-	public static void setup() throws IOException {
+	static void setup() throws IOException {
 		client = HttpClientBuilder.create().build();
 		HttpGet request = new HttpGet(serviceUrl);
 		request.setHeader("qpp-taxpayer-identification-number", "000777777");
@@ -60,13 +62,13 @@ public class SubmissionIntegrationTest {
 		return response.getStatusLine().getStatusCode() < 500;
 	}
 
-	@Before
-	public void setupTest() {
+	@BeforeEach
+	void setupTest() {
 		qpp = loadQpp();
 	}
 
 	@Test
-	public void testSubmissionApiPostSuccess() throws IOException {
+	void testSubmissionApiPostSuccess() throws IOException {
 		HttpResponse httpResponse = servicePost(qpp);
 		assumeTrue("Submissions api is down", endpointIsUp(httpResponse));
 		cleanUp(httpResponse);
@@ -76,7 +78,7 @@ public class SubmissionIntegrationTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testSubmissionApiPostFailure() throws IOException {
+	void testSubmissionApiPostFailure() throws IOException {
 		Map<String, Object> obj = (Map<String, Object>) qpp.getObject();
 		obj.remove("performanceYear");
 		HttpResponse httpResponse = servicePost(qpp);

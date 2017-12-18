@@ -9,8 +9,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathQrdaSource;
@@ -23,17 +23,17 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
-public class ClinicalDocumentValidatorTest {
+class ClinicalDocumentValidatorTest {
 
 	private static final String CLINICAL_DOCUMENT_ERROR_FILE = "angerClinicalDocumentValidations.err.json";
 
-	@After
-	public void cleanup() throws IOException {
+	@AfterEach
+	void cleanup() throws IOException {
 		Files.deleteIfExists(Paths.get(CLINICAL_DOCUMENT_ERROR_FILE));
 	}
 
 	@Test
-	public void testClinicalDocumentPresent() {
+	void testClinicalDocumentPresent() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 		clinicalDocumentNode.addChildNode(aciSectionNode);
@@ -45,7 +45,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testClinicalDocumentPresentIa() {
+	void testClinicalDocumentPresentIa() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node iaSectionNode = createIASectionNode(clinicalDocumentNode);
 		clinicalDocumentNode.addChildNode(iaSectionNode);
@@ -57,7 +57,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testClinicalDocumentPresentEcQM() {
+	void testClinicalDocumentPresentEcQM() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node ecqmSectionNode = new Node(TemplateId.MEASURE_SECTION_V2, clinicalDocumentNode);
 		ecqmSectionNode.putValue("category", "eCQM");
@@ -70,7 +70,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testNoSections() {
+	void testNoSections() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
@@ -81,7 +81,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testNoSectionsOtherChildren() {
+	void testNoSectionsOtherChildren() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node placeholderNode = new Node(TemplateId.PLACEHOLDER);
 
@@ -96,7 +96,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testMissingName() {
+	void testMissingName() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
@@ -115,7 +115,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testMissingTin() {
+	void testMissingTin() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("nationalProviderIdentifier", "2567891421");
@@ -132,7 +132,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testNpiIsOptional() {
+	void testNpiIsOptional() {
 		Node clinicalDocumentNode = new Node(TemplateId.CLINICAL_DOCUMENT);
 		clinicalDocumentNode.putValue("programName", "mips");
 		clinicalDocumentNode.putValue("taxpayerIdentificationNumber", "123456789");
@@ -149,7 +149,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testDuplicateAciSectionCausesError() {
+	void testDuplicateAciSectionCausesError() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 		Node duplicateAciSectionNode = createAciSectionNode(clinicalDocumentNode);
@@ -165,7 +165,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testDuplicateIASectionCausesError() {
+	void testDuplicateIASectionCausesError() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node IASectionNode = createIASectionNode(clinicalDocumentNode);
 		Node duplicateIASectionNode = createIASectionNode(clinicalDocumentNode);
@@ -181,7 +181,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testDuplicateQualityMeasureSectionCausesError() {
+	void testDuplicateQualityMeasureSectionCausesError() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node qualityMeasureNode = createQualityMeasureSectionNode(clinicalDocumentNode);
 		Node duplicateQualityMeasureNode = createQualityMeasureSectionNode(clinicalDocumentNode);
@@ -197,7 +197,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testMultipleNonDuplicatedSectionsIsValid() {
+	void testMultipleNonDuplicatedSectionsIsValid() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 		Node IASectionNode = createIASectionNode(clinicalDocumentNode);
@@ -213,7 +213,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testClinicalDocumentValidationParsesMultipleErrors() throws IOException {
+	void testClinicalDocumentValidationParsesMultipleErrors() throws IOException {
 		//setup
 		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
 
@@ -239,7 +239,7 @@ public class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	public void testInvalidProgramName() {
+	void testInvalidProgramName() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 		clinicalDocumentNode.addChildNodes(aciSectionNode);
