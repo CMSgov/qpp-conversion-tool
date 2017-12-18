@@ -25,6 +25,8 @@ class MetadataHelperTest {
 		comparison.setValidationStatus(false);
 
 		Metadata metadata = MetadataHelper.generateMetadata(null, outcome);
+		metadata.setCreatedDate(comparison.getCreatedDate());
+
 		assertThat(metadata).isEqualTo(comparison);
 	}
 
