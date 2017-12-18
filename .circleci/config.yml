@@ -53,22 +53,6 @@ jobs:
     steps:
       - attach_workspace:
           at: /home/circleci
-      - run:
-          name: Check for docker
-          command: |
-            docker -v;
-            if [ $? -ne 0 ]; then
-               apt-get -qq update
-               apt install -yqq wget python curl lsb-release software-properties-common
-               curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-               add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-               apt update && apt upgrade
-               apt-cache search docker-ce
-               apt-get install -yqq docker-ce
-               wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
-               python get-pip.py
-               pip install ansible
-            fi
       - run: ./tools/bin/docker_deploy.sh
 
   integration_test:
@@ -147,6 +131,6 @@ workflows:
             - ui_test
       - signal_success:
           requires:
-            - deploy_api
+            - build
             - ui_test
 
