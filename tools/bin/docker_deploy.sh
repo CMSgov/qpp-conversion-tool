@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 function build_and_tar_converter_image() {
 	echo "Build the QPP Conversion Tools Docker image"
