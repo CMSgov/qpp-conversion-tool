@@ -1,14 +1,18 @@
 version: 2
+container_config: &container_config
+  docker:
+    - image: circleci/openjdk:8-jdk-browsers
+  working_directory: ~/qpp-conversion-tool
+
 jobs:
   build:
-    working_directory: ~/qpp-conversion-tool
-    docker:
-      - image: circleci/openjdk:8-jdk-browsers
+    <<: *container_config
     environment:
       MAVEN_OPTS: "-Xms7G -Xmx7G"
     resource_class: large
     steps:
       - checkout
+      - run: echo "Working Directory:" pwd
       - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
       - run: unzip -d . sonarscanner.zip
       - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
@@ -27,6 +31,7 @@ jobs:
             mkdir $ARTIFACT_DIR;
             cp converter/target/converter.jar $ARTIFACT_DIR;
             cp commandline/target/commandline.jar $ARTIFACT_DIR;
+            cp rest-api/target/rest-api.jar $ARTIFACT_DIR;
             mkdir -p $ARTIFACT_DIR/coverage/converter;
             cp -R converter/target/site/jacoco $ARTIFACT_DIR/coverage/converter;
             mkdir -p $ARTIFACT_DIR/coverage/rest-api;
@@ -36,6 +41,17 @@ jobs:
 
       - store_artifacts:
           path: /tmp/artifacts
+      - persist_to_workspace:
+          paths:
+            - /tmp/artifacts/rest-api.jar
+
+  integration_test:
+    <<: *container_config
+    steps:
+      - attach_workspace:
+          at: /tmp/artifacts
+      - run: ls -al /tmp/artifacts
+
 
   ui_test:
     working_directory: ~/qpp-conversion-tool
