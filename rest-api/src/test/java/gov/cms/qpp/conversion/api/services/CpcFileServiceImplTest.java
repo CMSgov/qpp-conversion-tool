@@ -28,6 +28,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CpcFileServiceImplTest {
 
+	private static final String MEEP = "meep";
+
 	@InjectMocks
 	private CpcFileServiceImpl objectUnderTest;
 
@@ -98,6 +100,41 @@ class CpcFileServiceImplTest {
 
 		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
 				-> objectUnderTest.getFileById("test"));
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+	}
+
+	@Test
+	void testProcessFileByIdSuccess() {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, false));
+
+		String message = objectUnderTest.processFileById(MEEP);
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+
+		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND);
+	}
+
+	@Test
+	void testProcessFileByIdWithMipsFile() {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(false, false));
+
+		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
+				-> objectUnderTest.processFileById("test"));
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+	}
+
+	@Test
+	void testProcessFileByIdWithProcessedFile() {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, true));
+
+		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
+				-> objectUnderTest.processFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 

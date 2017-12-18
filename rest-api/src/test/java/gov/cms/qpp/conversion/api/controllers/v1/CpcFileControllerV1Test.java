@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -60,6 +61,17 @@ class CpcFileControllerV1Test {
 
 		assertThat(IOUtils.toString(response.getBody().getInputStream(), Charset.defaultCharset()))
 				.isEqualTo("1234");
+	}
+
+	@Test
+	void testMarkFileAsProcessed() {
+		when(cpcFileService.processFileById(anyString())).thenReturn("success!");
+
+		ResponseEntity<String> response = cpcFileControllerV1.markFileProcessed("meep");
+
+		verify(cpcFileService, times(1)).processFileById(anyString());
+
+		assertThat(response.getBody()).isEqualTo("success!");
 	}
 
 	List<UnprocessedCpcFileData> createMockedUnprocessedDataList() {

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class CpcFileServiceImpl implements CpcFileService {
 
 	public static final String FILE_NOT_FOUND = "File not found!";
+	protected static final String FILE_FOUND = "The file was found and will be updated as processed.";
 
 	@Autowired
 	private DbService dbService;
@@ -45,8 +46,25 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 */
 	public InputStreamResource getFileById(String fileId) throws IOException {
 		Metadata metadata = dbService.getMetadataById(fileId);
-		if (metadata != null && metadata.getCpc() && !metadata.getCpcProcessed()) {
+		if (isAnUnprocessedCpcFile(metadata)) {
 			return new InputStreamResource(storageService.getFileByLocationId(metadata.getSubmissionLocator()));
+		} else {
+			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
+		}
+	}
+
+	/**
+	 * Process to ensure the file is an unprocessed cpc+ file and marks the file as processed
+	 *
+	 * @param fileId Identifier of the CPC+ file
+	 * @return Success or failure message.
+	 */
+	public String processFileById(String fileId) {
+		Metadata metadata = dbService.getMetadataById(fileId);
+		if (isAnUnprocessedCpcFile(metadata)) {
+			metadata.setCpcProcessed(true);
+			dbService.write(metadata);
+			return FILE_FOUND;
 		} else {
 			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
 		}
@@ -60,5 +78,15 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 */
 	private List<UnprocessedCpcFileData> transformMetaDataToUnprocessedCpcFileData(List<Metadata> metadataList) {
 		return metadataList.stream().map(UnprocessedCpcFileData::new).collect(Collectors.toList());
+	}
+
+	/**
+	 * Determines if the file is unprocessed and is CPC+
+	 *
+	 * @param metadata Data to be determined valid or invalid
+	 * @return result of the check
+	 */
+	private boolean isAnUnprocessedCpcFile(Metadata metadata) {
+		return metadata != null && metadata.getCpc() && !metadata.getCpcProcessed();
 	}
 }
