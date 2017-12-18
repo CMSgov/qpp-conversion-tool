@@ -5,26 +5,34 @@ container_config: &container_config
   working_directory: /home/circleci/qpp-conversion-tool
 
 jobs:
+  checkout:
+    <<: *container_config
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - qpp-conversion-tool
+
   build:
     <<: *container_config
     environment:
       MAVEN_OPTS: "-Xms7G -Xmx7G"
     resource_class: large
     steps:
-      - checkout
-      - run: echo Working Directory `pwd`
-#      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
-#      - run: unzip -d . sonarscanner.zip
-#      - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
-#      - run: sudo python get-pip.py
-#      - run: sudo pip install ansible
-#      - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
-#      - run: mvn --batch-mode clean verify
-      - run: mvn clean package -Dmaven.test.skip
-#      - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-#      - run: sudo apt-get install -y nodejs
-#      - run: ./tools/bin/sonarqube.sh
-#      - run: ./tools/bin/docker_deploy.sh
+      - attach_workspace:
+          at: /home/circleci
+      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
+      - run: unzip -d . sonarscanner.zip
+      - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
+      - run: sudo python get-pip.py
+      - run: sudo pip install ansible
+      - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
+      - run: mvn --batch-mode clean verify
+      - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+      - run: sudo apt-get install -y nodejs
+      - run: ./tools/bin/sonarqube.sh
+      - run: ./tools/bin/docker_deploy.sh
       - run:
           name: Creating artifacts
           command: |
@@ -33,35 +41,30 @@ jobs:
             cp converter/target/converter.jar $ARTIFACT_DIR;
             cp commandline/target/commandline.jar $ARTIFACT_DIR;
             cp rest-api/target/rest-api.jar $ARTIFACT_DIR;
-#            mkdir -p $ARTIFACT_DIR/coverage/converter;
-#            cp -R converter/target/site/jacoco $ARTIFACT_DIR/coverage/converter;
-#            mkdir -p $ARTIFACT_DIR/coverage/rest-api;
-#            cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/rest-api;
-#            mkdir -p ARTIFACT_DIR/coverage/commandline;
-#            cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/commandline;
+            mkdir -p $ARTIFACT_DIR/coverage/converter;
+            cp -R converter/target/site/jacoco $ARTIFACT_DIR/coverage/converter;
+            mkdir -p $ARTIFACT_DIR/coverage/rest-api;
+            cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/rest-api;
+            mkdir -p ARTIFACT_DIR/coverage/commandline;
+            cp -R rest-api/target/site/jacoco $ARTIFACT_DIR/coverage/commandline;
 
       - store_artifacts:
           path: /tmp/artifacts
-      - persist_to_workspace:
-          root: /home/circleci
-          paths:
-            - qpp-conversion-tool
 
   integration_test:
     <<: *container_config
     steps:
       - attach_workspace:
           at: /home/circleci
-      - run: echo listing saved artifacts
-      - run: ls -al /home/circleci
-
+      - run: mvn clean test -DfailIfNoTests=false -Dtest=*ApiAcceptance*
 
   ui_test:
-    working_directory: ~/qpp-conversion-tool
+    <<: *container_config
     docker:
       - image: circleci/node:7.10.0-browsers
     steps:
-      - checkout
+      - attach_workspace:
+          at: /home/circleci
       - run: curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
       - run: sudo apt-get install gconf-service libasound2 libatk1.0-0 libcups2 libdbus-1-3 libgconf-2-4 libgtk-3-0 libnspr4 libxcomposite1 lsb-release
       - run: sudo dpkg -i google-chrome.deb
@@ -74,11 +77,12 @@ jobs:
       - run: cd frontend; yarn run e2e:ci;
 
   ui_deployment:
-    working_directory: ~/qpp-conversion-tool
+    <<: *container_config
     docker:
       - image: circleci/node:7.10.0-browsers
     steps:
-      - checkout
+      - attach_workspace:
+          at: /home/circleci
       - run: cd frontend; rm -f yarn.lock && yarn
       - run: cd frontend; yarn run build;
       - run: sudo apt-get install python-dev
@@ -88,11 +92,12 @@ jobs:
       - run: aws s3 sync frontend/dist s3://qpp-conversion-tool-ui --delete
 
   signal_success:
-    working_directory: ~/qpp-conversion-tool
+    <<: *container_config
     docker:
       - image: circleci/node:7.10.0-browsers
     steps:
-      - checkout
+      - attach_workspace:
+          at: /home/circleci
       - run: sudo apt-get install jq
       - run: ./tools/bin/signal_success.sh
 
@@ -100,8 +105,13 @@ workflows:
   version: 2
   commit:
     jobs:
-      - build
-      - ui_test
+      - checkout
+      - build:
+          requires:
+            - checkout
+      - ui_test:
+          requires:
+            - checkout
       - integration_test:
           requires:
             - build
