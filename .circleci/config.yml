@@ -22,17 +22,13 @@ jobs:
     steps:
       - attach_workspace:
           at: /home/circleci
-#      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
-#      - run: unzip -d . sonarscanner.zip
-#      - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
-#      - run: sudo python get-pip.py
-#      - run: sudo pip install ansible
-#      - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
-#      - run: mvn --batch-mode clean verify
-#      - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-#      - run: sudo apt-get install -y nodejs
-#      - run: ./tools/bin/sonarqube.sh
-      - run: ./tools/bin/docker_deploy.sh
+      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
+      - run: unzip -d . sonarscanner.zip
+      - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
+      - run: mvn --batch-mode clean verify
+      - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+      - run: sudo apt-get install -y nodejs
+      - run: ./tools/bin/sonarqube.sh
       - run:
           name: Creating artifacts
           command: |
@@ -50,6 +46,19 @@ jobs:
 
       - store_artifacts:
           path: /tmp/artifacts
+
+  deploy_api:
+    <<: *container_config
+    docker:
+      - image: docker:latest
+    working_directory: /home/circleci/qpp-conversion-tool
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
+      - run: sudo python get-pip.py
+      - run: sudo pip install ansible
+      - run: ./tools/bin/docker_deploy.sh
 
   integration_test:
     <<: *container_config
@@ -112,9 +121,12 @@ workflows:
       - ui_test:
           requires:
             - checkout
-      - integration_test:
+      - deploy_api:
           requires:
             - build
+      - integration_test:
+          requires:
+            - deploy_api
       - ui_deployment:
           filters:
             branches:
@@ -123,6 +135,6 @@ workflows:
             - ui_test
       - signal_success:
           requires:
-            - build
+            - deploy_api
             - ui_test
 

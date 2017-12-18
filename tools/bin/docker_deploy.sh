@@ -2,10 +2,10 @@
 
 function build_and_tar_converter_image() {
 	echo "Build the QPP Conversion Tools Docker image"
-	sudo docker build -t qpp_conversion .
+	docker build -t qpp_conversion .
 
 	echo "Export the QPP Conversion Tools Docker image as a tar file"
-	sudo docker save -o qpp_conversion_docker_image.tar qpp_conversion
+	docker save -o qpp_conversion_docker_image.tar qpp_conversion
 }
 
 function run_ansible() {
