@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.decode;
 
 import com.google.common.collect.Sets;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
@@ -71,7 +71,7 @@ class QualityMeasureScopedTest {
 	}
 
 	private Node scopedConversion(QrdaScope testSection, String path) {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(path)));
+		Converter converter = new Converter(new PathSource(Paths.get(path)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
 		converter.transform();
 		return converter.getReport().getDecoded();

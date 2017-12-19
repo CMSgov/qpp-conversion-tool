@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
@@ -40,7 +40,7 @@ public class ExceptionHandlerControllerV1Test {
 	@BeforeClass
 	public static void setup() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		report = new Converter(new PathQrdaSource(path)).getReport();
+		report = new Converter(new PathSource(path)).getReport();
 		report.setReportDetails(allErrors);
 	}
 
