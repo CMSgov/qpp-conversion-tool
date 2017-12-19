@@ -73,7 +73,7 @@ public class CpcFileControllerV1 {
 		return new ResponseEntity<>(content, httpHeaders, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/mark-file/{fileId}",
+	@RequestMapping(method = RequestMethod.POST, value = "/file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT} )
 	public ResponseEntity<String> markFileProcessed(@PathVariable("fileId") String fileId) {
 		API_LOG.info("CPC+ file request received");
