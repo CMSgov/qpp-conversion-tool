@@ -1,15 +1,14 @@
 package gov.cms.qpp.conversion.api.services;
 
-import javax.annotation.PostConstruct;
-
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Source;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.QrdaSource;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import javax.annotation.PostConstruct;
 
 /**
  * Implementation of the QRDA-III to QPP conversion service
@@ -33,7 +32,7 @@ public class QrdaServiceImpl implements QrdaService {
 	 * @return Results of the conversion
 	 */
 	@Override
-	public Converter.ConversionReport convertQrda3ToQpp(QrdaSource source) {
+	public Converter.ConversionReport convertQrda3ToQpp(Source source) {
 		Converter converter = initConverter(source);
 		API_LOG.info("Performing QRDA3 to QPP conversion");
 		converter.transform();
@@ -41,12 +40,12 @@ public class QrdaServiceImpl implements QrdaService {
 	}
 
 	/**
-	 * Instantiate a {@link Converter} with a given {@link QrdaSource}
+	 * Instantiate a {@link Converter} with a given {@link Source}
 	 *
 	 * @param source for qrda input
 	 * @return converter instance
 	 */
-	Converter initConverter(QrdaSource source) {
+	Converter initConverter(Source source) {
 		return new Converter(source);
 	}
 }
