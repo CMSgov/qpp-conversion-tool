@@ -1,20 +1,22 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
+import static com.google.common.truth.Truth.assertWithMessage;
+
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class IaSectionEncoderTest {
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+
+class IaSectionEncoderTest {
 
 	private static final String EXPECTED = "{\n  \"category\" : \"ia\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ "
 			+ "{\n    \"measureId\" : \"IA_EPA_1\",\n    \"value\" : true\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
@@ -31,8 +33,8 @@ public class IaSectionEncoderTest {
 	private Node iaReportingSectionNode;
 	private List<Node> nodes;
 
-	@Before
-	public void createNode() {
+	@BeforeEach
+	void createNode() {
 		iaMeasurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		iaMeasurePerformedNode.putValue("measurePerformed", "Y");
 
@@ -54,7 +56,7 @@ public class IaSectionEncoderTest {
 	}
 
 	@Test
-	public void testEncoder() {
+	void testEncoder() {
 		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
 		encoder.setNodes(nodes);
@@ -64,7 +66,7 @@ public class IaSectionEncoderTest {
 		try {
 			encoder.encode(new BufferedWriter(sw));
 		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
+			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
 		assertWithMessage("expected encoder to return a json representation of an IA Section node")
@@ -73,7 +75,7 @@ public class IaSectionEncoderTest {
 	}
 
 	@Test
-	public void testEncoderWithoutMeasure() {
+	void testEncoderWithoutMeasure() {
 		iaSectionNode.getChildNodes().remove(iaMeasureNode);
 		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
@@ -84,7 +86,7 @@ public class IaSectionEncoderTest {
 		try {
 			encoder.encode(new BufferedWriter(sw));
 		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
+			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
 		assertWithMessage("expected encoder to return a json representation of an IA Section node")
@@ -93,7 +95,7 @@ public class IaSectionEncoderTest {
 	}
 	
 	@Test
-	public void testEncoderWithoutMeasureValue1() {
+	void testEncoderWithoutMeasureValue1() {
 		iaMeasureNode.getChildNodes().remove(iaMeasurePerformedNode);
 		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
@@ -104,7 +106,7 @@ public class IaSectionEncoderTest {
 		try {
 			encoder.encode(new BufferedWriter(sw));
 		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
+			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
 		assertWithMessage("expected encoder to return a json representation of an IA Section node")
@@ -113,7 +115,7 @@ public class IaSectionEncoderTest {
 	}
 	
 	@Test
-	public void testEncoderWithoutMeasureValue2() {
+	void testEncoderWithoutMeasureValue2() {
 		iaMeasurePerformedNode.putValue("measurePerformed", null);
 		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 
@@ -124,7 +126,7 @@ public class IaSectionEncoderTest {
 		try {
 			encoder.encode(new BufferedWriter(sw));
 		} catch (EncodeException e) {
-			fail("Failure to encode: " + e.getMessage());
+			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
 		assertWithMessage("expected encoder to return a json representation of an IA Section node")
