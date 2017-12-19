@@ -15,16 +15,16 @@ function run_ansible() {
 
 #if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $DOCKER_DEPLOY_OTHER_BRANCH && "$CIRCLE_BRANCH" == "$DOCKER_DEPLOY_OTHER_BRANCH" ) ]]; then
 
-    sudo su
-    apt-get update
-    export RUNLEVEL=1
-    apt-get install apt-transport-https ca-certificates curl gnupg2 software-properties-common
-    curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | apt-key add -
-    apt-key fingerprint 0EBFCD88
-    add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
+    sudo apt-get update
+    sudo export RUNLEVEL=1
+    sudo apt-get install apt-transport-https ca-certificates curl gnupg2 software-properties-common
+    curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | sudo  apt-key add -
+    sudo apt-key fingerprint 0EBFCD88
+    sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
     $(lsb_release -cs) stable"
-    apt-get update
-    apt-get install docker-ce
+    sudo apt-get update
+    sudo apt-get install docker-ce
+    sudo service --status-all
 
 	build_and_tar_converter_image
 	run_ansible ${DOCKER_DEPLOY_HOSTS} ${DOCKER_DEPLOY_REMOTE_USERNAME} ${DOCKER_DEPLOY_SUDOER_PASSWORD}
