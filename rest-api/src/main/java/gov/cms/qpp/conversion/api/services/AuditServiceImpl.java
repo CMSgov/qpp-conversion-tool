@@ -109,6 +109,11 @@ public class AuditServiceImpl implements AuditService {
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
+	/**
+	 * Determines whether the no audit environment variable is set.
+	 *
+	 * @return Whether to do auditing or not.
+	 */
 	private boolean noAudit() {
 		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 		boolean returnValue = noAudit != null && !noAudit.isEmpty();
@@ -120,17 +125,38 @@ public class AuditServiceImpl implements AuditService {
 		return returnValue;
 	}
 
+	/**
+	 * Creates a baseline {@link Metadata} object.
+	 *
+	 * @param report The report from a conversion.
+	 * @param outcome The high level outcome of a conversion.
+	 * @return A new {@link Metadata}.
+	 */
 	private Metadata initMetadata(Converter.ConversionReport report, MetadataHelper.Outcome outcome) {
 		Metadata metadata = MetadataHelper.generateMetadata(report.getDecoded(), outcome);
 		metadata.setFileName(report.getQrdaSource().getName());
 		return metadata;
 	}
 
+	/**
+	 * Calls the {@link StorageService} to store an {@link InputStream}.
+	 *
+	 * @param content The {@link InputStream} to store.
+	 * @param size The size of the {@link InputStream}.
+	 * @return A {@link CompletableFuture} that represents storing the information.
+	 */
 	private CompletableFuture<String> storeContent(InputStream content, long size) {
 		UUID key = UUID.randomUUID();
 		return storageService.store(key.toString(), content, size);
 	}
 
+	/**
+	 * Calls the {@link DbService} to store the {@link Metadata} in a database.
+	 *
+	 * @param metadata The {@link Metadata} to save.
+	 * @param thrown A {@link Throwable} from a previous step.
+	 * @return A {@link CompletableFuture} that represents saving {@link Metadata} to a database.
+	 */
 	private CompletableFuture<Metadata> persist(Metadata metadata, Throwable thrown) {
 		if (thrown != null) {
 			throw new AuditException(thrown);

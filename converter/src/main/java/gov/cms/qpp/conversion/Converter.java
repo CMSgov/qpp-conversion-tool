@@ -259,14 +259,29 @@ public class Converter {
 			qppValidationDetails = details;
 		}
 
+		/**
+		 * Get the {@link Source} for the input to the converter.
+		 *
+		 * @return {@link Source} for the input.
+		 */
 		public Source getQrdaSource() {
 			return source;
 		}
 
+		/**
+		 * Get the {@link Source} for the output.
+		 *
+		 * @return {@link Source} for the output.
+		 */
 		public Source getQppSource() {
 			return getEncoded().toSource();
 		}
 
+		/**
+		 * Get the {@link Source} for the conversion validation errors.
+		 *
+		 * @return {@link Source} for the validation errors.
+		 */
 		public Source getValidationErrorsSource() {
 			try {
 				byte[] validationErrorBytes = mapper.writeValueAsBytes(reportDetails);
@@ -276,6 +291,11 @@ public class Converter {
 			}
 		}
 
+		/**
+		 * Get the {@link Source} for the raw QPP validation errors (if any).
+		 *
+		 * @return {@link Source} for the raw QPP validation errors.
+		 */
 		public Source getRawValidationErrorsOrEmptySource() {
 			String raw = (qppValidationDetails != null) ? qppValidationDetails : "";
 			byte[] rawValidationErrorBytes = raw.getBytes(StandardCharsets.UTF_8);
