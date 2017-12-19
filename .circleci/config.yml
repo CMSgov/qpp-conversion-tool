@@ -56,6 +56,9 @@ jobs:
           at: /home/circleci
       - setup_remote_docker:
           docker_layer_caching: true
+      - run: wget -O get-pip.py https://bootstrap.pypa.io/get-pip.py
+      - run: python get-pip.py
+      - run: pip install ansible
       - run:
           name: Install Docker client
           command: |
