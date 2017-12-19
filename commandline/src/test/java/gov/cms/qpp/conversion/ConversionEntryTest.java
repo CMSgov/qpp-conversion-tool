@@ -1,7 +1,15 @@
 package gov.cms.qpp.conversion;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import com.google.common.collect.ImmutableMap;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.MissingArgumentException;
+import org.apache.commons.cli.ParseException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.powermock.api.support.membermodification.MemberMatcher;
+import org.powermock.api.support.membermodification.MemberModifier;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,21 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.MissingArgumentException;
-import org.apache.commons.cli.ParseException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.powermock.api.support.membermodification.MemberMatcher;
-import org.powermock.api.support.membermodification.MemberModifier;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
-import com.google.common.collect.ImmutableMap;
-
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.test.LoggerContract;
-
-class ConversionEntryTest implements LoggerContract {
+class ConversionEntryTest {
 
 	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 	private static final String SKIP_DEFAULTS = "--" + ConversionEntry.SKIP_DEFAULTS;
@@ -233,8 +230,6 @@ class ConversionEntryTest implements LoggerContract {
 		//then
 		assertWithMessage("MEEP is not a valid scope")
 				.that(result).isFalse();
-		assertWithMessage("output stream should contain " + ConversionEntry.INVALID_TEMPLATE_SCOPE)
-				.that(getLogs().toString()).contains(ConversionEntry.INVALID_TEMPLATE_SCOPE);
 	}
 
 	@Test
@@ -262,11 +257,10 @@ class ConversionEntryTest implements LoggerContract {
 	@Test
 	void testValidArgsParseException() throws Exception {
 		//when
-		ConversionEntry.validArgs("-someInvalidArgument");
+		Collection<Path> arguments = ConversionEntry.validArgs("-someInvalidArgument");
 
 		//then
-		assertWithMessage("output stream should contain %s", ConversionEntry.CLI_PROBLEM)
-				.that(getLogs().toString()).contains(ConversionEntry.CLI_PROBLEM);
+		assertThat(arguments).isEmpty();
 	}
 
 	//cli
@@ -356,10 +350,5 @@ class ConversionEntryTest implements LoggerContract {
 		assertWithMessage("Expect to have an instance here ")
 				.that(conversionEntry)
 				.isInstanceOf(ConversionEntry.class);
-	}
-
-	@Override
-	public Class<?> getLoggerType() {
-		return ConversionEntry.class;
 	}
 }

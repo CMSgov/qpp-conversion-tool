@@ -2,7 +2,7 @@ package gov.cms.qpp.acceptance.cpc;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
@@ -11,7 +11,6 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -20,10 +19,8 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -75,7 +72,7 @@ class CpcPlusAcceptanceTest {
 	void testCpcPlusFileSuccesses(Path entry) throws IOException {
 		AllErrors errors = null;
 
-		Converter converter = new Converter(new PathQrdaSource(entry));
+		Converter converter = new Converter(new PathSource(entry));
 
 		try {
 			converter.transform();
@@ -92,7 +89,7 @@ class CpcPlusAcceptanceTest {
 		String fileName = entry.getFileName().toString();
 		assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues).containsKey(fileName);
 
-		Converter converter = new Converter(new PathQrdaSource(entry));
+		Converter converter = new Converter(new PathSource(entry));
 
 		TransformException expected = Assertions.assertThrows(TransformException.class, converter::transform);
 		//runnning conversions on individual files

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -105,7 +105,7 @@ class MeasureDataValidatorTest {
 		Path path = Paths.get("src/test/resources/negative/angerMeasureDataValidations.xml");
 
 		//execute
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 		AllErrors allErrors = new AllErrors();
 		try {
 			converter.transform();
