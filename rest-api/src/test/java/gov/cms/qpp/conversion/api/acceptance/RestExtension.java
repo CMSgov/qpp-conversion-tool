@@ -9,21 +9,21 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.awaitility.Awaitility.await;
 
 public class RestExtension implements BeforeAllCallback, AfterAllCallback {
 
 	private static final String BASE_URI_PROPERTY = "DOCKER_DEPLOY_HOSTS";
-	private static final Integer PORT = 8080;
+	private static final String DEPLOY_PORT_PROPERTY = "DOCKER_DEPLOY_PORT";
 	private static final String ROOT_PATH = "/";
 
 	@Override
 	public void beforeAll(ExtensionContext context) throws Exception {
 		Optional<String> baseUri = getSystemProperty(BASE_URI_PROPERTY);
+		Optional<String> port = getSystemProperty(DEPLOY_PORT_PROPERTY);
 
-		RestAssured.port = PORT;
+		RestAssured.port = Integer.parseInt(port.orElse("8080"));
 		RestAssured.baseURI = baseUri.map(host -> "http://" + host).orElse(RestAssured.DEFAULT_URI);
 		RestAssured.rootPath = ROOT_PATH;
 
