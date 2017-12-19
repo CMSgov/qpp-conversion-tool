@@ -13,7 +13,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -23,7 +23,6 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import gov.cms.qpp.conversion.validate.MipsQualityMeasureIdValidator;
 
 class QualityMeasureIdRoundTripTest {
 	static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/junk_in_quality_measure.xml");
@@ -34,7 +33,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testRoundTripForQualityMeasureId() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(JUNK_QRDA3_FILE));
+		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE));
 		JsonWrapper qpp = converter.transform();
 
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
@@ -48,7 +47,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testMeasureCMS68v6PerformanceRateUuid() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(INVALID_PERFORMANCE_UUID_FILE));
+		Converter converter = new Converter(new PathSource(INVALID_PERFORMANCE_UUID_FILE));
 		List<Detail> details = new ArrayList<>();
 
 		try {
@@ -69,7 +68,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testMeasureCMS160v5PerformanceRateUuid() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(INVALID_PERFORMANCE_UUID_FILE));
+		Converter converter = new Converter(new PathSource(INVALID_PERFORMANCE_UUID_FILE));
 		List<Detail> details = new ArrayList<>();
 
 		try {
@@ -85,7 +84,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testMeasureCMS52v5WithInsensitiveTextUuid() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(INSENSITIVE_TEXT_FILE));
+		Converter converter = new Converter(new PathSource(INSENSITIVE_TEXT_FILE));
 		List<Detail> details = new ArrayList<>();
 
 		try {
@@ -101,7 +100,7 @@ class QualityMeasureIdRoundTripTest {
 
 	@Test
 	void testMeasureCMS52v5InsensitiveMeasureDataUuid() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(INSENSITIVE_TEXT_FILE));
+		Converter converter = new Converter(new PathSource(INSENSITIVE_TEXT_FILE));
 		List<Detail> details = new ArrayList<>();
 
 		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(

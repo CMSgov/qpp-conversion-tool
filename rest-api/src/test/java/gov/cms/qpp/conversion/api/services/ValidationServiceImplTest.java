@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.api.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.test.MockitoExtension;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
@@ -72,7 +72,7 @@ class ValidationServiceImplTest {
 		pathToSubmissionError = Paths.get("src/test/resources/submissionErrorFixture.json");
 		pathToSubmissionDuplicateEntryError = Paths.get("src/test/resources/submissionDuplicateEntryErrorFixture.json");
 		Path toConvert = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		qppWrapper = new JsonWrapper(new Converter(new PathQrdaSource(toConvert)).transform(), false);
+		qppWrapper = new JsonWrapper(new Converter(new PathSource(toConvert)).transform(), false);
 		prepAllErrors();
 	}
 
