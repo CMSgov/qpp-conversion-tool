@@ -20,8 +20,8 @@ public class RestExtension implements BeforeAllCallback, AfterAllCallback {
 
 	@Override
 	public void beforeAll(ExtensionContext context) throws Exception {
-		Optional<String> baseUri = getSystemProperty(BASE_URI_PROPERTY);
-		Optional<String> port = getSystemProperty(DEPLOY_PORT_PROPERTY);
+		Optional<String> baseUri = getProperty(BASE_URI_PROPERTY);
+		Optional<String> port = getProperty(DEPLOY_PORT_PROPERTY);
 
 		RestAssured.port = Integer.parseInt(port.orElse("8080"));
 		RestAssured.baseURI = baseUri.map(host -> "http://" + host).orElse(RestAssured.DEFAULT_URI);
@@ -35,8 +35,8 @@ public class RestExtension implements BeforeAllCallback, AfterAllCallback {
 		RestAssured.reset();
 	}
 
-	private Optional<String> getSystemProperty(String propertyName) {
-		return Optional.ofNullable(System.getProperty(propertyName));
+	private Optional<String> getProperty(String propertyName) {
+		return Optional.ofNullable(System.getenv(propertyName));
 	}
 
 	private void waitForIt(String host, int port) {
