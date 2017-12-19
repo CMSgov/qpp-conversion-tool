@@ -57,7 +57,7 @@ public class CpcFileControllerV1 {
 	 * @return object json or xml content
 	 * @throws IOException if S3Object content stream is invalid
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/get-file/{fileId}",
+	@RequestMapping(method = RequestMethod.GET, value = "/file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
 			throws IOException {
