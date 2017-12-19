@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -64,14 +65,25 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
-	void testMarkFileAsProcessed() {
+	void testMarkFileAsProcessedReturnsSuccess() {
 		when(cpcFileService.processFileById(anyString())).thenReturn("success!");
 
 		ResponseEntity<String> response = cpcFileControllerV1.markFileProcessed("meep");
 
-		verify(cpcFileService, times(1)).processFileById(anyString());
+		verify(cpcFileService, times(1)).processFileById("meep");
 
 		assertThat(response.getBody()).isEqualTo("success!");
+	}
+
+	@Test
+	void testMarkFileAsProcessedHttpStatusOk() {
+		when(cpcFileService.processFileById(anyString())).thenReturn("success!");
+
+		ResponseEntity<String> response = cpcFileControllerV1.markFileProcessed("meep");
+
+		verify(cpcFileService, times(1)).processFileById("meep");
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 	List<UnprocessedCpcFileData> createMockedUnprocessedDataList() {

@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
@@ -20,6 +21,7 @@ import org.springframework.core.io.InputStreamResource;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -108,11 +110,14 @@ class CpcFileServiceImplTest {
 
 	@Test
 	void testProcessFileByIdSuccess() {
-		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, false));
+		Metadata returnedData = buildFakeMetadata(true, false);
+		when(dbService.getMetadataById(anyString())).thenReturn(returnedData);
+		when(dbService.write(any(Metadata.class))).thenReturn(CompletableFuture.completedFuture(returnedData));
 
 		String message = objectUnderTest.processFileById(MEEP);
 
-		verify(dbService, times(1)).getMetadataById(anyString());
+		verify(dbService, times(1)).getMetadataById(MEEP);
+		verify(dbService, times(1)).write(returnedData);
 
 		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND);
 	}

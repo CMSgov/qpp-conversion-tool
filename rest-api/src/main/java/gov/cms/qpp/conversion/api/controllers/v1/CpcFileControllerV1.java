@@ -61,11 +61,11 @@ public class CpcFileControllerV1 {
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
 			throws IOException {
-		API_LOG.info("CPC+ file request received");
+		API_LOG.info("CPC+ file retrieval request received");
 
 		InputStreamResource content = cpcFileService.getFileById(fileId);
 
-		API_LOG.info("CPC+ file request succeeded");
+		API_LOG.info("CPC+ file retrieval request succeeded");
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_XML);
@@ -73,12 +73,18 @@ public class CpcFileControllerV1 {
 		return new ResponseEntity<>(content, httpHeaders, HttpStatus.OK);
 	}
 
+	/**
+	 * Updates a file's status to processed in the database
+	 *
+	 * @param fileId Identifier of the file needing to be updated
+	 * @return Message if the file was updated or not
+	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT} )
 	public ResponseEntity<String> markFileProcessed(@PathVariable("fileId") String fileId) {
-		API_LOG.info("CPC+ file request received");
+		API_LOG.info("CPC+ update file as processed request received");
 		String message = cpcFileService.processFileById(fileId);
-		API_LOG.info("CPC+ file request succeeded");
+		API_LOG.info("CPC+ update file as processed request succeeded");
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
 

@@ -5,6 +5,7 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -63,7 +64,8 @@ public class CpcFileServiceImpl implements CpcFileService {
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (isAnUnprocessedCpcFile(metadata)) {
 			metadata.setCpcProcessed(true);
-			dbService.write(metadata);
+			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
+			metadataFuture.join();
 			return FILE_FOUND;
 		} else {
 			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
