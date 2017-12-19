@@ -132,8 +132,10 @@ workflows:
           requires:
             - checkout
       - deploy_api:
+          filters:
+            branches:
+              only: master
           requires:
-            #change this to be filtered on the master branch
             - checkout
       - integration_test:
           requires:
