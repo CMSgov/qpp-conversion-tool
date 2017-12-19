@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
  * Used to store an {@link InputStream} in S3.
  */
 @Service
-public class StorageServiceImpl extends InOrderActionService<PutObjectRequest, String>
+public class StorageServiceImpl extends AnyOrderActionService<PutObjectRequest, String>
 		implements StorageService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
