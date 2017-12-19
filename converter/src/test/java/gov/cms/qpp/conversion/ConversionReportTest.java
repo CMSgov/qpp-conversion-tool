@@ -31,12 +31,12 @@ class ConversionReportTest {
 	@BeforeAll
 	static void setup() {
 		Converter converter = new Converter(
-				new PathQrdaSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
+				new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		wrapper = converter.transform();
 		report = converter.getReport();
 
 		Converter otherConverter = new Converter(
-				new PathQrdaSource(Paths.get("../qrda-files/QRDA-III-without-required-measure.xml")));
+				new PathSource(Paths.get("../qrda-files/QRDA-III-without-required-measure.xml")));
 		try {
 			otherConverter.transform();
 		} catch (TransformException ex) {
@@ -59,7 +59,7 @@ class ConversionReportTest {
 	@Test
 	void validationErrorDetails() throws IOException {
 		Converter converter = new Converter(
-				new PathQrdaSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
+				new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		Converter.ConversionReport aReport = converter.getReport();
 		aReport.setRawValidationDetails("meep");
 		String details = IOUtils.toString(aReport.streamRawValidationDetails(), "UTF-8");
@@ -87,7 +87,7 @@ class ConversionReportTest {
 				.thenThrow(new JsonMappingException("meep"));
 
 		Converter converter = new Converter(
-				new PathQrdaSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
+				new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		Converter.ConversionReport badReport = converter.getReport();
 
 		Field field = badReport.getClass().getDeclaredField("mapper");
@@ -105,7 +105,7 @@ class ConversionReportTest {
 	@Test
 	void getErrorStream() throws IOException {
 		Converter converter = new Converter(
-				new PathQrdaSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
+				new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		Converter.ConversionReport badReport = converter.getReport();
 		Error error = new Error();
 		error.setMessage("meep");
