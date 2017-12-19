@@ -10,20 +10,20 @@ import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.s3.transfer.model.UploadResult;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.test.MockitoExtension;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,6 +38,8 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class StorageServiceImplTest {
+
+	private static final byte[] TEST_CONTENT_BYTES = "test file content".getBytes();
 
 	@InjectMocks
 	private StorageServiceImpl underTest;
@@ -75,17 +77,19 @@ class StorageServiceImplTest {
 	}
 
 	@Test
-	void testPut() throws TimeoutException, InterruptedException {
+	void testPut() throws InterruptedException {
 		when(upload.waitForUploadResult()).thenReturn(result);
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 		Mockito.when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(ksmKey);
 
 		assertThat(storeFile()).isNotNull();
-		verify(transferManager, times(1)).upload(any(PutObjectRequest.class));
+		ArgumentCaptor<PutObjectRequest> objectReqestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
+		verify(transferManager, times(1)).upload(objectReqestCaptor.capture());
+		assertThat(objectReqestCaptor.getValue().getMetadata().getContentLength()).isEqualTo(TEST_CONTENT_BYTES.length);
 	}
 
 	@Test
-	void testPutFail() throws TimeoutException, InterruptedException {
+	void testPutFail() throws InterruptedException {
 		when(upload.waitForUploadResult()).thenThrow(InterruptedException.class);
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 		Mockito.when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(ksmKey);
@@ -94,7 +98,7 @@ class StorageServiceImplTest {
 	}
 
 	@Test
-	void testPutRecoverableFailure() throws TimeoutException, InterruptedException {
+	void testPutRecoverableFailure() throws InterruptedException {
 		when(upload.waitForUploadResult()).thenThrow(Exception.class).thenReturn(result);
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 		Mockito.when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(ksmKey);
@@ -104,7 +108,7 @@ class StorageServiceImplTest {
 	}
 
 	@Test
-	void testPutNoBucket() throws TimeoutException, InterruptedException {
+	void testPutNoBucket() {
 		Mockito.when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn("");
 
 		assertThat(storeFile()).isEmpty();
@@ -112,7 +116,7 @@ class StorageServiceImplTest {
 	}
 
 	@Test
-	void testPutNoBucketSpecified() throws TimeoutException, InterruptedException {
+	void testPutNoBucketSpecified() {
 		assertThat(storeFile()).isEmpty();
 		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
 	}
@@ -127,7 +131,7 @@ class StorageServiceImplTest {
 	}
 
 	@Test
-	void noBucket() throws ExecutionException, InterruptedException {
+	void noBucket() {
 		Mockito.when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn(null);
 		InputStream inStream = underTest.getFileByLocationId("meep");
 
@@ -146,9 +150,8 @@ class StorageServiceImplTest {
 	}
 
 	private String storeFile() {
-		byte[] testBytes = "test file content".getBytes();
 		CompletableFuture<String> storeResult = underTest.store(
-				"submission", new ByteArrayInputStream(testBytes), testBytes.length);
+				"submission", new ByteArrayInputStream(TEST_CONTENT_BYTES), TEST_CONTENT_BYTES.length);
 		return storeResult.join();
 	}
 }
