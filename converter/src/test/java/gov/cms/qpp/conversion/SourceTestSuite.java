@@ -4,12 +4,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-abstract class QrdaSourceTestSuite {
+abstract class SourceTestSuite {
 
 	private final String expectedName;
-	protected final QrdaSource source;
+	protected final Source source;
 
-	QrdaSourceTestSuite(String expectedName, QrdaSource source) {
+	SourceTestSuite(String expectedName, Source source) {
 		this.expectedName = expectedName;
 		this.source = source;
 	}

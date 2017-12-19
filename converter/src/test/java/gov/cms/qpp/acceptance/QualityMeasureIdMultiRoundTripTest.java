@@ -1,26 +1,10 @@
 package gov.cms.qpp.acceptance;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.xml.sax.SAXException;
 
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.InputStreamSupplierSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -30,6 +14,22 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+
 
 class QualityMeasureIdMultiRoundTripTest {
 
@@ -56,7 +56,8 @@ class QualityMeasureIdMultiRoundTripTest {
 
 	@Test
 	void testRoundTripForQualityMeasureId() throws IOException {
-		Converter converter = new Converter(new PathQrdaSource(JUNK_QRDA3_FILE));
+		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE));
+
 		JsonWrapper qpp = converter.transform();
 		String json = qpp.toString();
 
@@ -142,8 +143,9 @@ class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
+
 	void testRoundTripQualityMeasureIdWithDenomGreaterThanIpop() {
-		Converter converter = new Converter(new PathQrdaSource(DENOM_GREATER_THAN_IPOP));
+		Converter converter = new Converter(new PathSource(DENOM_GREATER_THAN_IPOP));
 		List<Detail> details = new ArrayList<>();
 		try {
 			converter.transform();
@@ -168,7 +170,7 @@ class QualityMeasureIdMultiRoundTripTest {
 	private List<Detail> executeScenario(String path, boolean remove) {
 		InputStream modified = manipulator.upsetTheNorm(path, remove);
 		Converter converter = new Converter(
-				new InputStreamSupplierQrdaSource(JUNK_QRDA3_FILE.toString(), () -> modified));
+				new InputStreamSupplierSource(JUNK_QRDA3_FILE.toString(), () -> modified));
 		List<Detail> details = new ArrayList<>();
 		try {
 			converter.transform();

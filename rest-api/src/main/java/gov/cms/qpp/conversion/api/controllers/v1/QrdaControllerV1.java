@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
+import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
@@ -56,7 +56,7 @@ public class QrdaControllerV1 {
 		API_LOG.info("Conversion request received");
 
 		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
-				new InputStreamSupplierQrdaSource(originalFilename, inputStreamSupplier(file)));
+				new InputStreamSupplierSource(originalFilename, inputStreamSupplier(file), file.getSize()));
 
 		validationService.validateQpp(conversionReport);
 
