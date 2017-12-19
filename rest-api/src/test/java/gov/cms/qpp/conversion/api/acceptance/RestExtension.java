@@ -5,7 +5,13 @@ import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.awaitility.Awaitility.await;
 
 public class RestExtension implements BeforeAllCallback, AfterAllCallback {
 
@@ -20,6 +26,8 @@ public class RestExtension implements BeforeAllCallback, AfterAllCallback {
 		RestAssured.port = PORT;
 		RestAssured.baseURI = baseUri.map(host -> "http://" + host).orElse(RestAssured.DEFAULT_URI);
 		RestAssured.rootPath = ROOT_PATH;
+
+		waitForIt(baseUri.orElse("localhost"), RestAssured.port);
 	}
 
 	@Override
@@ -29,5 +37,24 @@ public class RestExtension implements BeforeAllCallback, AfterAllCallback {
 
 	private Optional<String> getSystemProperty(String propertyName) {
 		return Optional.ofNullable(System.getProperty(propertyName));
+	}
+
+	private void waitForIt(String host, int port) {
+		await().ignoreException(RuntimeException.class)
+				.atMost(30, TimeUnit.SECONDS).until(() -> {
+			if (checkPort(host, port)) {
+				throw new RuntimeException("Not yet");
+			} else {
+				return true;
+			}
+		});
+	}
+
+	private boolean checkPort(String host, int port) {
+		try (Socket ignored = new Socket(host, port)) {
+			return false;
+		} catch (IOException ignored) {
+			return true;
+		}
 	}
 }
