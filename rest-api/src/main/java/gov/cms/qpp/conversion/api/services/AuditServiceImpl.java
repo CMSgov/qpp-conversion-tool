@@ -51,8 +51,8 @@ public class AuditServiceImpl implements AuditService {
 		Source qppSource = conversionReport.getQppSource();
 
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
-				storeContent(qrdaSource.toInputStream(), qrdaSource.getSize()).thenAccept(metadata::setSubmissionLocator),
-				storeContent(qppSource.toInputStream(), qppSource.getSize()).thenAccept(metadata::setQppLocator));
+				storeContent(qrdaSource).thenAccept(metadata::setSubmissionLocator),
+				storeContent(qppSource).thenAccept(metadata::setQppLocator));
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
@@ -76,8 +76,8 @@ public class AuditServiceImpl implements AuditService {
 		Source validationErrorSource = conversionReport.getValidationErrorsSource();
 
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
-				storeContent(validationErrorSource.toInputStream(), validationErrorSource.getSize()).thenAccept(metadata::setConversionErrorLocator),
-				storeContent(qrdaSource.toInputStream(), qrdaSource.getSize()).thenAccept(metadata::setSubmissionLocator));
+				storeContent(validationErrorSource).thenAccept(metadata::setConversionErrorLocator),
+				storeContent(qrdaSource).thenAccept(metadata::setSubmissionLocator));
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
@@ -102,10 +102,10 @@ public class AuditServiceImpl implements AuditService {
 
 		Metadata metadata = initMetadata(conversionReport, Outcome.VALIDATION_ERROR);
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
-				storeContent(rawValidationErrorSource.toInputStream(), rawValidationErrorSource.getSize()).thenAccept(metadata::setRawValidationErrorLocator),
-				storeContent(validationErrorSource.toInputStream(), validationErrorSource.getSize()).thenAccept(metadata::setValidationErrorLocator),
-				storeContent(qppSource.toInputStream(), qppSource.getSize()).thenAccept(metadata::setQppLocator),
-				storeContent(qrdaSource.toInputStream(), qrdaSource.getSize()).thenAccept(metadata::setSubmissionLocator));
+				storeContent(rawValidationErrorSource).thenAccept(metadata::setRawValidationErrorLocator),
+				storeContent(validationErrorSource).thenAccept(metadata::setValidationErrorLocator),
+				storeContent(qppSource).thenAccept(metadata::setQppLocator),
+				storeContent(qrdaSource).thenAccept(metadata::setSubmissionLocator));
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
@@ -141,13 +141,12 @@ public class AuditServiceImpl implements AuditService {
 	/**
 	 * Calls the {@link StorageService} to store an {@link InputStream}.
 	 *
-	 * @param content The {@link InputStream} to store.
-	 * @param size The size of the {@link InputStream}.
+	 * @param sourceToStore The {@link Source} to store.
 	 * @return A {@link CompletableFuture} that represents storing the information.
 	 */
-	private CompletableFuture<String> storeContent(InputStream content, long size) {
+	private CompletableFuture<String> storeContent(Source sourceToStore) {
 		UUID key = UUID.randomUUID();
-		return storageService.store(key.toString(), content, size);
+		return storageService.store(key.toString(), sourceToStore.toInputStream(), sourceToStore.getSize());
 	}
 
 	/**
