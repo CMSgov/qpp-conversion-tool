@@ -9,6 +9,9 @@ jobs:
     <<: *container_config
     steps:
       - checkout
+      - run: cd frontend; rm -f yarn.lock && yarn
+      - run: sudo apt-get install -y nodejs
+      - run: sudo npm install -g protractor;
       - persist_to_workspace:
           root: /home/circleci
           paths:
@@ -27,7 +30,6 @@ jobs:
       - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
       - run: mvn --batch-mode clean verify
       - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-      - run: sudo apt-get install -y nodejs
       - run: ./tools/bin/sonarqube.sh
       - run:
           name: Creating artifacts
@@ -89,8 +91,6 @@ jobs:
       - run: sudo dpkg -i google-chrome.deb
       - run: sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
       - run: rm google-chrome.deb
-      - run: cd frontend; rm -f yarn.lock && yarn
-      - run: sudo npm install -g protractor;
       - run: cd frontend; yarn run lint;
       - run: cd frontend; yarn run test:ci;
       - run: cd frontend; yarn run e2e:ci;
