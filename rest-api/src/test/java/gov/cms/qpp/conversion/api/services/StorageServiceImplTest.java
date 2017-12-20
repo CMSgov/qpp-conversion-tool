@@ -1,12 +1,21 @@
 package gov.cms.qpp.conversion.api.services;
 
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.s3.transfer.model.UploadResult;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.test.MockitoExtension;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,16 +25,12 @@ import org.mockito.Mockito;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 
-import java.io.ByteArrayInputStream;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.TimeoutException;
-
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -45,6 +50,9 @@ class StorageServiceImplTest {
 
 	@Mock
 	private TaskExecutor taskExecutor;
+
+	@Mock
+	private AmazonS3 amazonS3Client;
 
 	@Mock
 	private Environment environment;
@@ -116,6 +124,25 @@ class StorageServiceImplTest {
 		String s3ObjectId = storeFile();
 		assertThat(s3ObjectId).isEqualTo("");
 		verify(transferManager, times(0)).upload(any(PutObjectRequest.class));
+	}
+
+	@Test
+	void noBucket() throws ExecutionException, InterruptedException {
+		Mockito.when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn(null);
+		InputStream inStream = underTest.getFileByLocationId("meep");
+
+		assertThat(inStream).isNull();
+	}
+
+	@Test
+	void envVariablesPresent() {
+		S3Object s3ObjectMock = mock(S3Object.class);
+		s3ObjectMock.setObjectContent(new ByteArrayInputStream("1234".getBytes()));
+		Mockito.when(amazonS3Client.getObject(any(GetObjectRequest.class))).thenReturn(s3ObjectMock);
+		Mockito.when(environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE)).thenReturn("meep");
+		underTest.getFileByLocationId("meep");
+
+		verify(s3ObjectMock, times(1)).getObjectContent();
 	}
 
 	private String storeFile() {
