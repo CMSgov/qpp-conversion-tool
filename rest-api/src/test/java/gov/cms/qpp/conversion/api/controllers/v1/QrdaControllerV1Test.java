@@ -30,7 +30,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.QrdaSource;
+import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
@@ -73,13 +73,13 @@ class QrdaControllerV1Test {
 
 	@Test
 	void uploadQrdaFile() throws IOException {
-		when(qrdaService.convertQrda3ToQpp(any(QrdaSource.class))).thenReturn(report);
+		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
 		when(auditService.success(any(Converter.ConversionReport.class)))
 				.then(invocation -> null);
 
 		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
 
-		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(QrdaSource.class));
+		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(Source.class));
 
 		assertThat(qppResponse.getBody())
 				.isEqualTo(report.getEncoded().toString());
@@ -89,7 +89,7 @@ class QrdaControllerV1Test {
 	void testFailedQppValidation() {
 		String transformationErrorMessage = "Test failed QPP validation";
 
-		when(qrdaService.convertQrda3ToQpp(any(QrdaSource.class)))
+		when(qrdaService.convertQrda3ToQpp(any(Source.class)))
 				.thenReturn(null);
 		Mockito.doThrow(new TransformException(transformationErrorMessage, null, null))
 			.when(validationService).validateQpp(isNull());

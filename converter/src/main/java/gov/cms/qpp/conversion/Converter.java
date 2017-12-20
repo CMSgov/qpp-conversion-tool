@@ -41,7 +41,7 @@ public class Converter {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
 
-	private final QrdaSource source;
+	private final Source source;
 	private final Context context;
 	private List<Detail> details = new ArrayList<>();
 	private Node decoded;
@@ -50,19 +50,19 @@ public class Converter {
 	/**
 	 * Constructor for the CLI Converter application
 	 *
-	 * @param source QrdaSource to use for the conversion
+	 * @param source Source to use for the conversion
 	 */
-	public Converter(QrdaSource source) {
+	public Converter(Source source) {
 		this(source, new Context());
 	}
 
 	/**
 	 * Constructor for the CLI Converter application
 	 *
-	 * @param source QrdaSource to use for the conversion
+	 * @param source Source to use for the conversion
 	 * @param context Context to use for the conversion
 	 */
-	public Converter(QrdaSource source, Context context) {
+	public Converter(Source source, Context context) {
 		Objects.requireNonNull(source, "source");
 		Objects.requireNonNull(context, "context");
 

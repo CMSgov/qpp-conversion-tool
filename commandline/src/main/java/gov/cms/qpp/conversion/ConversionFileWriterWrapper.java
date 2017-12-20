@@ -21,12 +21,12 @@ import java.nio.file.Path;
 public class ConversionFileWriterWrapper {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ConversionFileWriterWrapper.class);
 
-	private final QrdaSource source;
+	private final Source source;
 	private final FileSystem fileSystem;
 	private Context context;
 
 	public ConversionFileWriterWrapper(Path inFile) {
-		this.source = new PathQrdaSource(inFile);
+		this.source = new PathSource(inFile);
 
 		fileSystem = inFile.getFileSystem();
 	}
