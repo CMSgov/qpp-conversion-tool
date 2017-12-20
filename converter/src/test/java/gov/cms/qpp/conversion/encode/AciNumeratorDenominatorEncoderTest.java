@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.BufferedWriter;
@@ -65,8 +66,7 @@ class AciNumeratorDenominatorEncoderTest {
 		}
 
 		String EXPECTED = "{\n  \"measureId\" : \"" + MEASURE_ID + "\",\n  \"value\" : {\n    \"numerator\" : 400,\n    \"denominator\" : 600\n  }\n}";
-		assertWithMessage("expected encoder to return a json representation of a measure node")
-				.that(sw.toString())
+		assertThat(sw.toString())
 				.isEqualTo(EXPECTED);
 	}
 
@@ -81,17 +81,13 @@ class AciNumeratorDenominatorEncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
 
 		//assert
-		assertWithMessage("The measureId must be " + MEASURE_ID)
-				.that(jsonWrapper.getString("measureId"))
+		assertThat(jsonWrapper.getString("measureId"))
 				.isEqualTo(MEASURE_ID);
-		assertWithMessage("The internal object of the jsonWrapper must not be null")
-				.that(jsonWrapper.getObject())
+		assertThat(jsonWrapper.getObject())
 				.isNotNull();
-		assertWithMessage("The internal object of the jsonWrapper must be a Map")
-				.that(jsonWrapper.getObject())
+		assertThat(jsonWrapper.getObject())
 				.isInstanceOf(Map.class);
-		assertWithMessage("The internal object must have an attribute named value")
-				.that(((Map<?, ?>)jsonWrapper.getObject()).get("value"))
+		assertThat(((Map<?, ?>)jsonWrapper.getObject()).get("value"))
 				.isNotNull();
 	}
 
@@ -106,8 +102,7 @@ class AciNumeratorDenominatorEncoderTest {
 		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
 
 		//assert
-		assertWithMessage("There must be a single validation error")
-				.that(objectUnderTest.getDetails())
+		assertThat(objectUnderTest.getDetails())
 				.hasSize(1);
 		assertWithMessage("The validation error must be the inability to find an encoder")
 				.that(objectUnderTest.getDetails().get(0).getMessage())

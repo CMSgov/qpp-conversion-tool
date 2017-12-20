@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class QedDecoderTest {
 
@@ -20,15 +20,11 @@ class QedDecoderTest {
 	
 		// Get the root wrapper node
 		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
-		assertWithMessage("root node should have one child node")
-				.that(root.getChildNodes())
-				.hasSize(1);
+		assertThat(root.getChildNodes()).hasSize(1);
 
 		Node target = root.getChildNodes().get(0);
 
-		assertWithMessage("test value should be mytestvalue")
-				.that(target.getValue("result"))
-				.isEqualTo("mytestvalue");
+		assertThat(target.getValue("result")).isEqualTo("mytestvalue");
 	}
 
 }

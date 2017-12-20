@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
@@ -128,8 +128,7 @@ class AciSectionEncoderMultiMeasureTest {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
-		assertWithMessage("expected encoder to return a json representation of an ACI Section node")
-				.that(sw.toString())
+		assertThat(sw.toString())
 				.isEqualTo(EXPECTED);
 	}
 

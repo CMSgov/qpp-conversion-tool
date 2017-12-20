@@ -56,7 +56,7 @@ class ConversionEntryTest {
 	void testWildCardToRegexPathFileWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*.xml").pattern();
 		String expect = ".*\\.xml";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
@@ -133,8 +133,7 @@ class ConversionEntryTest {
 		Path dFile = baseDir.resolve("subdir/d.xml");
 
 		Collection<Path> files = ConversionEntry.manyPath("src/test/resources/pathTest/*.xml");
-		assertWithMessage("There should %s files", 3)
-				.that(files).containsExactly(aFile, bFile, dFile);
+		assertThat(files).containsExactly(aFile, bFile, dFile);
 	}
 
 	@Test
@@ -144,8 +143,7 @@ class ConversionEntryTest {
 		MemberModifier.stub(MemberMatcher.method(ConversionEntry.class, "wildCardToRegex", String.class)).toReturn( Pattern.compile(pathTest) );
 
 		Collection<Path> files = ConversionEntry.manyPath(pathTest);
-		assertWithMessage("No files should be found")
-				.that(files.size()).isEqualTo(0);
+		assertThat(files).isEmpty();
 	}
 
 	@Test
@@ -154,7 +152,7 @@ class ConversionEntryTest {
 		Collection<Path> files = ConversionEntry.manyPath("src/test/resources/pathTest/*.xm*");
 
 		assertWithMessage("Should find 4 matching files")
-				.that(files.size()).isEqualTo(4);
+				.that(files).hasSize(4);
 		assertWithMessage("Matching file %s should have been found", filePath)
 				.that(files).contains(Paths.get(filePath));
 	}
@@ -168,12 +166,12 @@ class ConversionEntryTest {
 				"   ", 0
 		);
 
-		scenarios.forEach((key, value) -> {
+		scenarios.forEach((key, expectedSize) -> {
 			Collection<Path> files = ConversionEntry.checkPath(key);
 			assertWithMessage(key + " should not result in null paths")
 					.that(files).isNotNull();
 			assertWithMessage("Number of matched files does not meet expectation")
-					.that(files.size()).isEqualTo(value);
+					.that(files).hasSize(expectedSize);
 		});
 	}
 
@@ -181,7 +179,7 @@ class ConversionEntryTest {
 	void testCheckPathNull() {
 		Collection<Path> files = ConversionEntry.checkPath("src/test/resources/pathTest/*.xml");
 		assertWithMessage("Should find 3 files")
-				.that(files.size()).isEqualTo(3);
+				.that(files).hasSize(3);
 	}
 
 	@Test
@@ -199,9 +197,8 @@ class ConversionEntryTest {
 		Collection<Path> files = ConversionEntry.validArgs(args);
 
 		assertWithMessage("Should find 2 files")
-				.that(files.size()).isEqualTo(2);
-		assertWithMessage("Should find %s and %s", args[0], found)
-				.that(files).containsExactly(Paths.get(args[0]), Paths.get(found));
+				.that(files).hasSize(2);
+		assertThat(files).containsExactly(Paths.get(args[0]), Paths.get(found));
 	}
 
 	@Test
@@ -236,7 +233,7 @@ class ConversionEntryTest {
 	void shouldAllowEmptyTemplateScope() throws ParseException {
 		//when
 		Assertions.assertThrows(MissingArgumentException.class, () -> {
-			CommandLine line = ConversionEntry.cli(new String[] {"-t"});
+			CommandLine line = ConversionEntry.cli("-t");
 			ConversionEntry.shouldContinue(line);
 		});
 	}
