@@ -78,6 +78,7 @@ class CpcFileControllerV1Test {
 		ResponseEntity<List<UnprocessedCpcFileData>> cpcResponse = cpcFileControllerV1.getUnprocessedCpcPlusFiles();
 
 		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+		assertThat(cpcResponse.getBody()).isNull();
 	}
 
 	@Test
@@ -87,6 +88,7 @@ class CpcFileControllerV1Test {
 		ResponseEntity<InputStreamResource> cpcResponse = cpcFileControllerV1.getFileById("meep");
 
 		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+		assertThat(cpcResponse.getBody()).isNull();
 	}
 
 	List<UnprocessedCpcFileData> createMockedUnprocessedDataList() {
