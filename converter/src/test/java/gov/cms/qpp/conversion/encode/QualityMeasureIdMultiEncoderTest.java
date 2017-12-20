@@ -16,6 +16,12 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
+
 class QualityMeasureIdMultiEncoderTest {
 
 	private static final String REQUIRE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
@@ -152,7 +158,7 @@ class QualityMeasureIdMultiEncoderTest {
 		List<LinkedHashMap<String, ?>> subPopulations =
 				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
 
-		assertWithMessage("Must have zero sub populations encoded").that(subPopulations).isEmpty();
+		assertThat(subPopulations).isEmpty();
 	}
 
 	@SuppressWarnings("unchecked")

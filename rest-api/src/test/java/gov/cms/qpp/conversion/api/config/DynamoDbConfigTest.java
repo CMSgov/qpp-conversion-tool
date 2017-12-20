@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.config;
 
-
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -23,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.core.env.Environment;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,7 +34,6 @@ import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
-
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AmazonDynamoDBClientBuilder.class, DynamoDbConfigFactory.class, DynamoDBMapper.class})
@@ -104,7 +102,7 @@ public class DynamoDbConfigTest {
 
 		DynamoDBMapper dynamoDBMapper = underTest.dynamoDbMapper(amazonDynamoDB);
 
-		assertWithMessage("DynamoDBMapper must be null.").that(dynamoDBMapper).isNull();
+		assertThat(dynamoDBMapper).isNull();
 	}
 
 	@Test

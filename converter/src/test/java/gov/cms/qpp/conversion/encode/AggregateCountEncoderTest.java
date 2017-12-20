@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
@@ -50,10 +50,9 @@ class AggregateCountEncoderTest {
 		}
 
 		// NOTE: This test is only relevant in that it finds the deep value but it is not actually a result
-		String EXPECTED = "{\n  \"value\" : 600\n}";
-		assertWithMessage("expected encoder to return a single number numerator/denominator")
-				.that(sw.toString())
-				.isEqualTo(EXPECTED);
+		String expected = "{\n  \"value\" : 600\n}";
+		assertThat(sw.toString())
+				.isEqualTo(expected);
 	}
 
 	/**
@@ -69,8 +68,7 @@ class AggregateCountEncoderTest {
 		} catch (EncodeException e) {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
-		assertWithMessage("expected encoder to return a single number numerator/denominator")
-				.that(json.getInteger("value"))
+		assertThat(json.getInteger("value"))
 				.isEqualTo(600);
 	}
 

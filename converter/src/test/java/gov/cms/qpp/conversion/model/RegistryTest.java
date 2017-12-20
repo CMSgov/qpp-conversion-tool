@@ -201,8 +201,7 @@ class RegistryTest {
 
 	@Test
 	void testSize() {
-		assertWithMessage("Registry does not have contents")
-				.that(registry.size()).isGreaterThan(0);
+		assertThat(registry.size()).isGreaterThan(0);
 	}
 }
 

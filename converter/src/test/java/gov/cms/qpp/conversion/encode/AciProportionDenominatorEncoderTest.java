@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +37,7 @@ class AciProportionDenominatorEncoderTest {
 	void testEncoder() {
 		runEncoder();
 
-		assertWithMessage("denominator value must be 600")
-				.that(json.getInteger("denominator"))
+		assertThat(json.getInteger("denominator"))
 				.isEqualTo(600);
 	}
 
@@ -47,8 +46,7 @@ class AciProportionDenominatorEncoderTest {
 		aciProportionDenominatorNode.getChildNodes().remove(numeratorDenominatorValueNode);
 		runEncoder();
 
-		assertWithMessage("denominator value must be null")
-				.that(json.getInteger("denominator"))
+		assertThat(json.getInteger("denominator"))
 				.isNull();
 	}
 
@@ -57,8 +55,7 @@ class AciProportionDenominatorEncoderTest {
 		numeratorDenominatorValueNode.putValue("aggregateCount", null);
 		runEncoder();
 
-		assertWithMessage("expected encoder to return null")
-				.that(json.toString())
+		assertThat(json.toString())
 				.isEqualTo("null");
 	}
 
