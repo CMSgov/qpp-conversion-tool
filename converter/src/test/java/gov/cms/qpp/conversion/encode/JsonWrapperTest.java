@@ -575,7 +575,7 @@ class JsonWrapperTest {
 	@SuppressWarnings("unchecked")
 	void testContentStream() {
 		objectObjWrapper.putString("meep", "mawp");
-		InputStream content = objectObjWrapper.contentStream();
+		InputStream content = objectObjWrapper.toSource().toInputStream();
 		Map<String, String> contentMap = JsonHelper.readJson(content, Map.class);
 		assertThat(contentMap.get("meep")).isEqualTo("mawp");
 	}
