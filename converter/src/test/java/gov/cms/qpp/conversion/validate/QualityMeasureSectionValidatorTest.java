@@ -4,8 +4,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -13,18 +13,19 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
-public class QualityMeasureSectionValidatorTest {
+class QualityMeasureSectionValidatorTest {
+
 	private Node reportingParameterNode;
 	private Node qualityMeasureSectionNode;
 
-	@Before
-	public void setUpQualityMeasureSection() {
+	@BeforeEach
+	void setUpQualityMeasureSection() {
 		reportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualityMeasureSectionNode = new Node(TemplateId.MEASURE_SECTION_V2);
 	}
 
 	@Test
-	public void validQualityMeasureSectionValidation() {
+	void validQualityMeasureSectionValidation() {
 		qualityMeasureSectionNode.addChildNode(reportingParameterNode);
 
 		Set<Detail> errors = validateQualityMeasureSection();
@@ -34,7 +35,7 @@ public class QualityMeasureSectionValidatorTest {
 	}
 
 	@Test
-	public void testMissingReportingParams() {
+	void testMissingReportingParams() {
 		Set<Detail> errors = validateQualityMeasureSection();
 
 		assertWithMessage("Must contain correct error")
@@ -44,7 +45,7 @@ public class QualityMeasureSectionValidatorTest {
 	}
 
 	@Test
-	public void testTooManyReportingParams() {
+	void testTooManyReportingParams() {
 		Node secondReportingParameterNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualityMeasureSectionNode.addChildNodes(reportingParameterNode, secondReportingParameterNode);
 
