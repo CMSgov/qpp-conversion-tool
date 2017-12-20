@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeastOnce;
@@ -82,8 +81,7 @@ class QrdaControllerV1Test {
 
 		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(QrdaSource.class));
 
-		assertWithMessage("The QPP response body is incorrect.")
-				.that(qppResponse.getBody())
+		assertThat(qppResponse.getBody())
 				.isEqualTo(report.getEncoded().toString());
 	}
 
@@ -100,8 +98,7 @@ class QrdaControllerV1Test {
 			ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
 			Assertions.fail("An exception should have occurred. Instead was " + qppResponse);
 		} catch(TransformException exception) {
-			assertWithMessage("A different exception occurred.")
-					.that(exception.getMessage())
+			assertThat(exception.getMessage())
 					.isEqualTo(transformationErrorMessage);
 		} catch (Exception exception) {
 			Assertions.fail("The wrong exception occurred.");
