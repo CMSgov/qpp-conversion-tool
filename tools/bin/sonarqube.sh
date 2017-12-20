@@ -7,7 +7,7 @@ ORG_KEY=cmsgov
 #if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $SONAR_OTHER_BRANCH && "$CIRCLE_BRANCH" == "$SONAR_OTHER_BRANCH" ) ]]; then
 	#Do a full SonarQube run
 	echo "Doing full SonarQube run"
-	./sonar-scanner-3.0.1.733/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST} \
+	./sonar-scanner-3.0.3.778/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST} \
     																					-Dsonar.organization=${ORG_KEY} \
     																					-Dsonar.login=${SONAR_KEY_NEW}
 	sleep 3
