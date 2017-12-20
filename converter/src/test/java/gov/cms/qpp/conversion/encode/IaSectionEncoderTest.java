@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
@@ -69,8 +69,7 @@ class IaSectionEncoderTest {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
-		assertWithMessage("expected encoder to return a json representation of an IA Section node")
-				.that(sw.toString())
+		assertThat(sw.toString())
 				.isEqualTo(EXPECTED);
 	}
 
@@ -89,8 +88,7 @@ class IaSectionEncoderTest {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
-		assertWithMessage("expected encoder to return a json representation of an IA Section node")
-				.that(sw.toString())
+		assertThat(sw.toString())
 				.isEqualTo(EXPECTED_NO_MEASURE);
 	}
 	
@@ -109,8 +107,7 @@ class IaSectionEncoderTest {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
-		assertWithMessage("expected encoder to return a json representation of an IA Section node")
-				.that(sw.toString())
+		assertThat(sw.toString())
 				.isEqualTo(EXPECTED_NO_MEASURE_VALUE_1);
 	}
 	
@@ -129,8 +126,7 @@ class IaSectionEncoderTest {
 			Assertions.fail("Failure to encode: " + e.getMessage());
 		}
 
-		assertWithMessage("expected encoder to return a json representation of an IA Section node")
-				.that(sw.toString())
+		assertThat(sw.toString())
 				.isEqualTo(EXPECTED_NO_MEASURE_VALUE_1);
 	}
 

@@ -33,8 +33,9 @@ class EnvironmentHelperTest {
 	@Test
 	void testIsPresentOnAdded() {
 		String someKey = UUID.randomUUID().toString();
-		System.setProperty(someKey, "nothing important");
-		assertWithMessage("%s should be set to %s", someKey, "nothing important")
+		String value = "nothing important";
+		System.setProperty(someKey, value);
+		assertWithMessage("%s should be set to %s", someKey, value)
 				.that(EnvironmentHelper.isPresent(someKey)).isTrue();
 	}
 }

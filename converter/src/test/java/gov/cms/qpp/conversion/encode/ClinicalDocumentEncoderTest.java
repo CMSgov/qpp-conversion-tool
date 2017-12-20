@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,8 +128,7 @@ class ClinicalDocumentEncoderTest {
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 		Object performanceYear = testJsonWrapper.getValue(ReportingParametersActDecoder.PERFORMANCE_YEAR);
 
-		assertWithMessage("performance year should be 2017")
-				.that(performanceYear)
+		assertThat(performanceYear)
 				.isEqualTo(2017);
 	}
 
@@ -142,14 +141,11 @@ class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertWithMessage("Must have a correct entityType")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_TYPE))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo("individual");
-		assertWithMessage("Must have a correct taxpayerIdentificationNumber")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
-		assertWithMessage("Must have a correct nationalProviderIdentifier")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 	}
 
@@ -174,8 +170,7 @@ class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertWithMessage("Must not contain a measure because the measurements are missing.")
-				.that(clinicalDocMap.get(MEASUREMENT_SETS))
+		assertThat(clinicalDocMap.get(MEASUREMENT_SETS))
 				.isNull();
 	}
 
@@ -190,8 +185,7 @@ class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertWithMessage("Must not contain an Entity Id.")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
 				.isNull();
 	}
 	@Test
@@ -205,8 +199,7 @@ class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertWithMessage("Must not contain an Entity Id.")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
 				.isNull();
 	}
 }

@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
@@ -94,10 +95,8 @@ class AciSectionEncoderTest {
 		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder(new Context());
 		aciSectionEncoder.internalEncode(testWrapper, aciSectionNode);
 
-		assertWithMessage("Must have validation error.")
-				.that(aciSectionEncoder.getDetails()).isNotNull();
-		assertWithMessage("Must be correct validation error")
-				.that(aciSectionEncoder.getDetails().get(0).getMessage())
+		assertThat(aciSectionEncoder.getDetails()).isNotNull();
+		assertThat(aciSectionEncoder.getDetails().get(0).getMessage())
 				.isEqualTo("Failed to find an encoder");
 	}
 

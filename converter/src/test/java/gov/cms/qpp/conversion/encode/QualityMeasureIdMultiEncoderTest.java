@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 public class QualityMeasureIdMultiEncoderTest {
 
@@ -151,7 +152,7 @@ public class QualityMeasureIdMultiEncoderTest {
 		List<LinkedHashMap<String, ?>> subPopulations =
 				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
 
-		assertWithMessage("Must have zero sub populations encoded").that(subPopulations).isEmpty();
+		assertThat(subPopulations).isEmpty();
 	}
 
 	@SuppressWarnings("unchecked")

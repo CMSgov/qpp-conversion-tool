@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +38,7 @@ class AciProportionNumeratorEncoderTest {
 		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(new Context());
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
-		assertWithMessage("Must have a numerator value of 600")
-				.that(jsonWrapper.getInteger("numerator"))
+		assertThat(jsonWrapper.getInteger("numerator"))
 				.isEqualTo(600);
 	}
 
@@ -50,8 +49,7 @@ class AciProportionNumeratorEncoderTest {
 		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(new Context());
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
-		assertWithMessage("Must have a null numerator")
-				.that(jsonWrapper.getInteger("numerator"))
+		assertThat(jsonWrapper.getInteger("numerator"))
 				.isNull();
 	}
 
@@ -62,8 +60,7 @@ class AciProportionNumeratorEncoderTest {
 		AciProportionNumeratorEncoder aciProportionNumeratorEncoder = new AciProportionNumeratorEncoder(new Context());
 		aciProportionNumeratorEncoder.internalEncode(jsonWrapper, aciProportionNumeratorNode);
 
-		assertWithMessage("Must have a numerator value of null")
-				.that(jsonWrapper.getInteger("numerator"))
+		assertThat(jsonWrapper.getInteger("numerator"))
 				.isNull();
 	}
 }

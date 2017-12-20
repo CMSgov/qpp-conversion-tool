@@ -1,13 +1,21 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.Source;
-import gov.cms.qpp.conversion.api.services.AuditService;
-import gov.cms.qpp.conversion.api.services.QrdaService;
-import gov.cms.qpp.conversion.api.services.ValidationService;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.test.MockitoExtension;
+import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,22 +29,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
-
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Source;
+import gov.cms.qpp.conversion.api.services.AuditService;
+import gov.cms.qpp.conversion.api.services.QrdaService;
+import gov.cms.qpp.conversion.api.services.ValidationService;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.test.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class QrdaControllerV1Test {
@@ -81,8 +81,7 @@ class QrdaControllerV1Test {
 
 		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(Source.class));
 
-		assertWithMessage("The QPP response body is incorrect.")
-				.that(qppResponse.getBody())
+		assertThat(qppResponse.getBody())
 				.isEqualTo(report.getEncoded().toString());
 	}
 
@@ -99,8 +98,7 @@ class QrdaControllerV1Test {
 			ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
 			Assertions.fail("An exception should have occurred. Instead was " + qppResponse);
 		} catch(TransformException exception) {
-			assertWithMessage("A different exception occurred.")
-					.that(exception.getMessage())
+			assertThat(exception.getMessage())
 					.isEqualTo(transformationErrorMessage);
 		} catch (Exception exception) {
 			Assertions.fail("The wrong exception occurred.");

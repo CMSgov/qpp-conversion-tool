@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
 class MeasureDataDecoderTest {
@@ -57,12 +57,7 @@ class MeasureDataDecoderTest {
 	private void sharedTest(String type) {
 		Node measure =  placeholder.findChildNode(node -> node.getValue(MEASURE_TYPE).equals(type));
 
-		String message = String.format("Should have a %s value", type);
-		assertWithMessage(message)
-				.that(measure)
-				.isNotNull();
-		assertWithMessage("Should have an aggregate count child")
-				.that(measure.getChildNodes().get(0).getType())
-				.isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
+		assertThat(measure).isNotNull();
+		assertThat(measure.getChildNodes().get(0).getType()).isEqualTo(TemplateId.ACI_AGGREGATE_COUNT);
 	}
 }

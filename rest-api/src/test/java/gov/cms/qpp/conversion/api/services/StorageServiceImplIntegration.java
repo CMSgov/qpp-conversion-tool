@@ -60,7 +60,6 @@ public class StorageServiceImplIntegration {
 	private String bucketName = "test-bucket";
 	private AmazonS3 amazonS3Client;
 
-
 	@Before
 	public void setup() throws IllegalAccessException, NoSuchFieldException {
 		Assume.assumeTrue(System.getProperty("skip.long") == null);

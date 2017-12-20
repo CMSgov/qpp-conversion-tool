@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.List;
 
@@ -61,8 +60,7 @@ class JsonOutputEncoderTest {
 		joe.encode((JsonWrapper) null, (Node) null); // the values are not used in the test
 
 		List<Detail> details = joe.getDetails();
-		assertWithMessage("Should have one error message")
-				.that(details)
+		assertThat(details)
 				.hasSize(1);
 	}
 }
