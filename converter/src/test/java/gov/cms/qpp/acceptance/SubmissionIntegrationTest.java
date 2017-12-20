@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,8 +27,6 @@ import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assume.assumeTrue;
-
 
 class SubmissionIntegrationTest {
 
@@ -43,7 +42,7 @@ class SubmissionIntegrationTest {
 		request.setHeader("qpp-taxpayer-identification-number", "000777777");
 		request.setHeader("Content-Type", "application/json");
 		HttpResponse response = client.execute(request);
-		assumeTrue("Submissions api is down", endpointIsUp(response));
+		Assumptions.assumeTrue(endpointIsUp(response), "Submissions api is down");
 
 		try {
 			List<Map<?, ?>> subs = JsonHelper.readJsonAtJsonPath(response.getEntity().getContent(),
@@ -69,7 +68,7 @@ class SubmissionIntegrationTest {
 	@Test
 	void testSubmissionApiPostSuccess() throws IOException {
 		HttpResponse httpResponse = servicePost(qpp);
-		assumeTrue("Submissions api is down", endpointIsUp(httpResponse));
+		Assumptions.assumeTrue(endpointIsUp(httpResponse), "Submissions api is down");
 		cleanUp(httpResponse);
 
 		assertThat(getStatus(httpResponse)).isEqualTo(200);
@@ -81,7 +80,7 @@ class SubmissionIntegrationTest {
 		Map<String, Object> obj = (Map<String, Object>) qpp.getObject();
 		obj.remove("performanceYear");
 		HttpResponse httpResponse = servicePost(qpp);
-		assumeTrue("Submissions api is down", endpointIsUp(httpResponse));
+		Assumptions.assumeTrue(endpointIsUp(httpResponse), "Submissions api is down");
 
 		assertWithMessage("QPP submission should be unprocessable")
 				.that(getStatus(httpResponse))
