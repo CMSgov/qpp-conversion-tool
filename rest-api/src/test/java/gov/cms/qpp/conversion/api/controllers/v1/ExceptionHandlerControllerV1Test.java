@@ -1,8 +1,10 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.api.services.AuditService;
+import gov.cms.qpp.conversion.api.services.CpcFileServiceImpl;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
@@ -40,7 +42,7 @@ public class ExceptionHandlerControllerV1Test {
 	@BeforeClass
 	public static void setup() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		report = new Converter(new PathQrdaSource(path)).getReport();
+		report = new Converter(new PathSource(path)).getReport();
 		report.setReportDetails(allErrors);
 	}
 
@@ -112,5 +114,37 @@ public class ExceptionHandlerControllerV1Test {
 
 		ResponseEntity<AllErrors> responseEntity = objectUnderTest.handleQppValidationException(exception);
 		assertThat(responseEntity.getBody()).isEqualTo(allErrors);
+	}
+
+	@Test
+	public void testFileNotFoundExceptionStatusCode() {
+		NoFileInDatabaseException exception =
+				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
+
+		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
+
+		assertWithMessage("The response entity's status code must be 422.")
+				.that(responseEntity.getStatusCode())
+				.isEquivalentAccordingToCompareTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	public void testFileNotFoundExceptionHeaderContentType() {
+		NoFileInDatabaseException exception =
+				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
+
+		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
+
+		assertThat(responseEntity.getHeaders().getContentType())
+				.isEquivalentAccordingToCompareTo(MediaType.TEXT_PLAIN);
+	}
+
+	@Test
+	public void testFileNotFoundExceptionBody() {
+		NoFileInDatabaseException exception =
+				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
+
+		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
+		assertThat(responseEntity.getBody()).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
 	}
 }
