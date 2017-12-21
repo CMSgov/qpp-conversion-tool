@@ -7,9 +7,10 @@ ORG_KEY=cmsgov
 #if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $SONAR_OTHER_BRANCH && "$CIRCLE_BRANCH" == "$SONAR_OTHER_BRANCH" ) ]]; then
 	#Do a full SonarQube run
 	echo "Doing full SonarQube run"
-	./sonar-scanner-3.0.3.778/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST} \
-    																					-Dsonar.organization=${ORG_KEY} \
-    																					-Dsonar.login=${SONAR_KEY_NEW}
+	./sonar-scanner-3.0.3.778/bin/sonar-scanner -Dsonar.analysis.mode=preview \
+	                                            -Dsonar.host.url=${SONAR_HOST} \
+    										    -Dsonar.organization=${ORG_KEY} \
+    											-Dsonar.login=${SONAR_KEY_NEW}
 	sleep 3
 	project_status=$(curl -sS ${SONAR_HOST}/api/qualitygates/project_status?projectKey=gov.cms.qpp.conversion:qpp-conversion)
 	status=$(echo ${project_status} | jq '.projectStatus.status')
