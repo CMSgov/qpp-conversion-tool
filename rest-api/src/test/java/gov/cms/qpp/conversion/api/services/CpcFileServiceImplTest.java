@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.test.MockitoExtension;
@@ -123,8 +124,8 @@ class CpcFileServiceImplTest {
 	}
 
 	@Test
-	void testProcessFileByIdWithMipsFile() {
-		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(false, false));
+	void testProcessFileByIdFileNotFound() {
+		when(dbService.getMetadataById(anyString())).thenReturn(null);
 
 		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
 				-> objectUnderTest.processFileById("test"));
@@ -135,15 +136,26 @@ class CpcFileServiceImplTest {
 	}
 
 	@Test
-	void testProcessFileByIdWithProcessedFile() {
-		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, true));
+	void testProcessFileByIdWithMipsFile() {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(false, false));
 
-		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
+		InvalidFileTypeException expectedException = assertThrows(InvalidFileTypeException.class, ()
 				-> objectUnderTest.processFileById("test"));
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
+	}
+
+	@Test
+	void testProcessFileByIdWithProcessedFile() {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, true));
+
+		String response = objectUnderTest.processFileById("test");
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+
+		assertThat(response).isEqualTo(CpcFileServiceImpl.PROCESSED);
 	}
 
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {

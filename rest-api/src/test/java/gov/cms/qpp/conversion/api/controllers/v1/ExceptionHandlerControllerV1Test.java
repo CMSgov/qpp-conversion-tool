@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.api.services.AuditService;
@@ -117,7 +118,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testFileNotFoundExceptionStatusCode() {
+	public void testNoFileInDatabaseExceptionStatusCode() {
 		NoFileInDatabaseException exception =
 				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
@@ -129,7 +130,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testFileNotFoundExceptionHeaderContentType() {
+	public void testNoFileInDatabaseExceptionHeaderContentType() {
 		NoFileInDatabaseException exception =
 				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
@@ -140,11 +141,43 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testFileNotFoundExceptionBody() {
+	public void testNoFileInDatabaseExceptionBody() {
 		NoFileInDatabaseException exception =
 				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleFileNotFoundException(exception);
+		assertThat(responseEntity.getBody()).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+	}
+
+	@Test
+	public void testInvalidFileTypeExceptionStatusCode() {
+		InvalidFileTypeException exception =
+				new InvalidFileTypeException(CpcFileServiceImpl.FILE_NOT_FOUND);
+
+		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
+
+		assertWithMessage("The response entity's status code must be 422.")
+				.that(responseEntity.getStatusCode())
+				.isEquivalentAccordingToCompareTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	public void testInvalidFileTypeExceptionHeaderContentType() {
+		InvalidFileTypeException exception =
+				new InvalidFileTypeException(CpcFileServiceImpl.FILE_NOT_FOUND);
+
+		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
+
+		assertThat(responseEntity.getHeaders().getContentType())
+				.isEquivalentAccordingToCompareTo(MediaType.TEXT_PLAIN);
+	}
+
+	@Test
+	public void testInvalidFileTypeExceptionBody() {
+		InvalidFileTypeException exception =
+				new InvalidFileTypeException(CpcFileServiceImpl.FILE_NOT_FOUND);
+
+		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
 		assertThat(responseEntity.getBody()).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
 	}
 }

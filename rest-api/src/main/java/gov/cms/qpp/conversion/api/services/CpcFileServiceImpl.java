@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 public class CpcFileServiceImpl implements CpcFileService {
 
 	public static final String FILE_NOT_FOUND = "File not found!";
+	protected static final String INVALID_FILE = "The file was not a CPC+ file.";
+	protected static final String PROCESSED = "The file was already processed";
 	protected static final String FILE_FOUND = "The file was found and will be updated as processed.";
 
 	@Autowired
@@ -62,13 +65,17 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 */
 	public String processFileById(String fileId) {
 		Metadata metadata = dbService.getMetadataById(fileId);
-		if (isAnUnprocessedCpcFile(metadata)) {
+		if (metadata == null) {
+			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
+		} else if (!metadata.getCpc()) {
+			throw new InvalidFileTypeException(INVALID_FILE);
+		} else if (metadata.getCpcProcessed()) {
+			return PROCESSED;
+		} else {
 			metadata.setCpcProcessed(true);
 			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
 			metadataFuture.join();
 			return FILE_FOUND;
-		} else {
-			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
 		}
 	}
 
