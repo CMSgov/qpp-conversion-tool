@@ -44,6 +44,7 @@ public class Converter {
 	private final QrdaSource source;
 	private final Context context;
 	private List<Detail> details = new ArrayList<>();
+	
 	private Node decoded;
 	private JsonWrapper encoded;
 
