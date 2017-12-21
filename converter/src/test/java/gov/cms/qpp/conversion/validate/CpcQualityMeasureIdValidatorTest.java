@@ -1,20 +1,22 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import org.junit.Before;
-import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+class CpcQualityMeasureIdValidatorTest {
 
-public class CpcQualityMeasureIdValidatorTest {
 	private CpcQualityMeasureIdValidator validator;
 	private Node testNode;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		validator = new CpcQualityMeasureIdValidator();
 
 		testNode = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
@@ -22,7 +24,7 @@ public class CpcQualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testPerformanceCountWithNoErrors() {
+	void testPerformanceCountWithNoErrors() {
 		addAnyNumberOfChildren(2);
 		validator.internalValidateSingleNode(testNode);
 
@@ -32,7 +34,7 @@ public class CpcQualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testPerformanceCountWithIncreasedSizeError() {
+	void testPerformanceCountWithIncreasedSizeError() {
 		addAnyNumberOfChildren(3);
 		validator.internalValidateSingleNode(testNode);
 
@@ -42,7 +44,7 @@ public class CpcQualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testPerformanceCountWithDecreasedSizeError() {
+	void testPerformanceCountWithDecreasedSizeError() {
 		addAnyNumberOfChildren(1);
 		validator.internalValidateSingleNode(testNode);
 
