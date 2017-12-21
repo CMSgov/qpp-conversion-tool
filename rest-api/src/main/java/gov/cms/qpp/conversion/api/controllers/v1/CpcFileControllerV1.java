@@ -3,8 +3,7 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
-import java.io.IOException;
-import java.util.List;
+import gov.cms.qpp.conversion.util.EnvironmentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Controller to handle cpc file data
@@ -37,8 +39,13 @@ public class CpcFileControllerV1 {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/unprocessed-files",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<List> getUnprocessedCpcPlusFiles() throws IOException {
+	public ResponseEntity<List<UnprocessedCpcFileData>> getUnprocessedCpcPlusFiles() {
 		API_LOG.info("CPC+ unprocessed files request received");
+
+		if (blockCpcPlusApi()) {
+			API_LOG.info("CPC+ unprocessed files request blocked by feature flag");
+			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
+		}
 
 		List<UnprocessedCpcFileData> unprocessedCpcFileDataList = cpcFileService.getUnprocessedCpcPlusFiles();
 
@@ -63,6 +70,11 @@ public class CpcFileControllerV1 {
 			throws IOException {
 		API_LOG.info("CPC+ file request received");
 
+		if (blockCpcPlusApi()) {
+			API_LOG.info("CPC+ file request blocked by feature flag");
+			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
+		}
+
 		InputStreamResource content = cpcFileService.getFileById(fileId);
 
 		API_LOG.info("CPC+ file request succeeded");
@@ -71,5 +83,14 @@ public class CpcFileControllerV1 {
 		httpHeaders.setContentType(MediaType.APPLICATION_XML);
 
 		return new ResponseEntity<>(content, httpHeaders, HttpStatus.OK);
+	}
+
+	/**
+	 * Checks whether the the CPC+ APIs should not be allowed to execute.
+	 *
+	 * @return Whether the CPC+ APIs should be blocked.
+	 */
+	private boolean blockCpcPlusApi() {
+		return EnvironmentHelper.isPresent(Constants.NO_CPC_PLUS_API_ENV_VARIABLE);
 	}
 }
