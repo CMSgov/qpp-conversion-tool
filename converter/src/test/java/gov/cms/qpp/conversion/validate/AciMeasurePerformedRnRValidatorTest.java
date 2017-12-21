@@ -1,24 +1,25 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.Set;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import org.junit.Before;
-import org.junit.Test;
 
-import java.util.Set;
-
-import static com.google.common.truth.Truth.assertWithMessage;
-
-public class AciMeasurePerformedRnRValidatorTest {
+class AciMeasurePerformedRnRValidatorTest {
 
 	private AciMeasurePerformedRnRValidator validator;
 	private Node aciMeasurePerformedRnRNode;
 
-	@Before
-	public void init() {
+	@BeforeEach
+	void init() {
 		validator = new AciMeasurePerformedRnRValidator();
 
 		aciMeasurePerformedRnRNode = new Node(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS);
@@ -29,14 +30,14 @@ public class AciMeasurePerformedRnRValidatorTest {
 	}
 
 	@Test
-	public void testValidateGoodData() throws Exception {
+	void testValidateGoodData() throws Exception {
 		Set<Detail> errors = run();
 		assertWithMessage("no errors should be present")
 				.that(errors).isEmpty();
 	}
 
 	@Test
-	public void testWithNoMeasureId() throws Exception {
+	void testWithNoMeasureId() throws Exception {
 		aciMeasurePerformedRnRNode.removeValue("measureId");
 		Set<Detail> errors = run();
 		assertWithMessage("Should result in a MEASURE_ID_IS_REQUIRED error")
@@ -45,7 +46,7 @@ public class AciMeasurePerformedRnRValidatorTest {
 	}
 
 	@Test
-	public void testWithNoChildren() throws Exception {
+	void testWithNoChildren() throws Exception {
 		aciMeasurePerformedRnRNode.getChildNodes().clear();
 		Set<Detail> errors = run();
 		assertWithMessage("Validation error size should be 1")
