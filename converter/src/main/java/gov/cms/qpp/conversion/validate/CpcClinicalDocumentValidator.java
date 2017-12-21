@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 import com.google.common.base.Strings;
 
@@ -24,8 +25,8 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	static final String END_DATE_VARIABLE = "CPC_END_DATE";
 	private static final String NEVER_ENDING = "3000-01-01";
 	// LocalDate.now() creates extra unneeded clock objects before Java 9.
-	// It also uses the system clock, rather than UTC.
-	private static final Clock CLOCK = Clock.systemUTC();
+	// It also uses the system clock, rather than Eastern Time.
+	private static final Clock CLOCK = Clock.system(ZoneId.of("US/Eastern"));
 
 	/**
 	 * Validates a single clinical document node
@@ -80,7 +81,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	}
 
 	/**
-	 * @return the current local date, in UTC
+	 * @return the current local date, in Eastern Time
 	 */
 	private LocalDate now() {
 		return LocalDate.now(CLOCK);
