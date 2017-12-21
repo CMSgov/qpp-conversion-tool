@@ -11,10 +11,11 @@ import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import gov.cms.qpp.conversion.InputStreamSupplierSource;
+import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.model.Node;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -529,8 +530,9 @@ public class JsonWrapper {
 	 *
 	 * @return input stream containing serialized json
 	 */
-	public InputStream contentStream() {
-		return new ByteArrayInputStream(toString().getBytes(StandardCharsets.UTF_8));
+	public Source toSource() {
+		byte[] qppBytes = toString().getBytes(StandardCharsets.UTF_8);
+		return new InputStreamSupplierSource("QPP", () -> new ByteArrayInputStream(qppBytes), qppBytes.length);
 	}
 
 	/**
