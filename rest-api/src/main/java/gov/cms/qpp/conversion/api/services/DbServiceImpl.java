@@ -59,7 +59,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	}
 
 	/**
-	 * Queries the DynamoDB table for unprocessed {@link Metadata}
+	 * Scans the DynamoDB table for unprocessed {@link Metadata}
 	 *
 	 * @return {@link List} of unprocessed {@link Metadata}
 	 */
@@ -79,6 +79,16 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 
 			return mapper.query(Metadata.class, metadataQuery).stream();
 		}).flatMap(Function.identity()).collect(Collectors.toList());
+	}
+
+	/**
+	 * Queries the database table for a {@link Metadata} with a specific uuid
+	 *
+	 * @param uuid Identifier to query on
+	 * @return Metadata found
+	 */
+	public Metadata getMetadataById(String uuid) {
+		return mapper.load(Metadata.class, uuid);
 	}
 
 	/**

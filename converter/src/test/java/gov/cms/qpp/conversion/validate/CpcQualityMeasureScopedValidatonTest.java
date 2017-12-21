@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import com.google.common.collect.Sets;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -117,7 +117,7 @@ class CpcQualityMeasureScopedValidatonTest {
 	}
 
 	private Node scopedConversion(QrdaScope testSection, String path) {
-		Converter converter = new Converter(new PathQrdaSource(baseDir.resolve(path)));
+		Converter converter = new Converter(new PathSource(baseDir.resolve(path)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
 		converter.transform();
 		return converter.getReport().getDecoded().findFirstNode(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);

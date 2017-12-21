@@ -30,7 +30,7 @@ public class AsyncConfig {
 		}
 
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(5);
+		executor.setCorePoolSize(15);
 		executor.setThreadNamePrefix(POOLED_THREAD_PREFIX);
 		executor.initialize();
 		return executor;

@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper.Outcome;
@@ -48,9 +49,13 @@ public class AuditServiceImpl implements AuditService {
 		API_LOG.info("Writing success audit information");
 
 		Metadata metadata = initMetadata(conversionReport, Outcome.SUCCESS);
+
+		Source qrdaSource = conversionReport.getQrdaSource();
+		Source qppSource = conversionReport.getQppSource();
+
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
-				storeContent(conversionReport.getFileInput()).thenAccept(metadata::setSubmissionLocator),
-				storeContent(conversionReport.getEncoded().contentStream()).thenAccept(metadata::setQppLocator));
+				storeContent(qrdaSource).thenAccept(metadata::setSubmissionLocator),
+				storeContent(qppSource).thenAccept(metadata::setQppLocator));
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
@@ -69,9 +74,13 @@ public class AuditServiceImpl implements AuditService {
 		API_LOG.info("Writing audit information for a conversion failure scenario");
 
 		Metadata metadata = initMetadata(conversionReport, Outcome.CONVERSION_ERROR);
+
+		Source qrdaSource = conversionReport.getQrdaSource();
+		Source validationErrorSource = conversionReport.getValidationErrorsSource();
+
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
-				storeContent(conversionReport.streamDetails()).thenAccept(metadata::setConversionErrorLocator),
-				storeContent(conversionReport.getFileInput()).thenAccept(metadata::setSubmissionLocator));
+				storeContent(validationErrorSource).thenAccept(metadata::setConversionErrorLocator),
+				storeContent(qrdaSource).thenAccept(metadata::setSubmissionLocator));
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
@@ -89,12 +98,17 @@ public class AuditServiceImpl implements AuditService {
 
 		API_LOG.info("Writing audit information for a validation failure scenario");
 
+		Source qrdaSource = conversionReport.getQrdaSource();
+		Source qppSource = conversionReport.getQppSource();
+		Source validationErrorSource = conversionReport.getValidationErrorsSource();
+		Source rawValidationErrorSource = conversionReport.getRawValidationErrorsOrEmptySource();
+
 		Metadata metadata = initMetadata(conversionReport, Outcome.VALIDATION_ERROR);
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
-				storeContent(conversionReport.streamRawValidationDetails()).thenAccept(metadata::setRawValidationErrorLocator),
-				storeContent(conversionReport.streamDetails()).thenAccept(metadata::setValidationErrorLocator),
-				storeContent(conversionReport.getEncoded().contentStream()).thenAccept(metadata::setQppLocator),
-				storeContent(conversionReport.getFileInput()).thenAccept(metadata::setSubmissionLocator));
+				storeContent(rawValidationErrorSource).thenAccept(metadata::setRawValidationErrorLocator),
+				storeContent(validationErrorSource).thenAccept(metadata::setValidationErrorLocator),
+				storeContent(qppSource).thenAccept(metadata::setQppLocator),
+				storeContent(qrdaSource).thenAccept(metadata::setSubmissionLocator));
 		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
 	}
 
@@ -123,27 +137,27 @@ public class AuditServiceImpl implements AuditService {
 	 */
 	private Metadata initMetadata(Converter.ConversionReport report, MetadataHelper.Outcome outcome) {
 		Metadata metadata = MetadataHelper.generateMetadata(report.getDecoded(), outcome);
-		metadata.setFileName(report.getFilename());
+		metadata.setFileName(report.getQrdaSource().getName());
 		return metadata;
 	}
 
 	/**
-	 * Calls the service to store the given file
+	 * Calls the {@link StorageService} to store an {@link InputStream}.
 	 *
-	 * @param content to be stored
-	 * @return the result of the storage upload
+	 * @param sourceToStore The {@link Source} to store.
+	 * @return A {@link CompletableFuture} that represents storing the information.
 	 */
-	private CompletableFuture<String> storeContent(InputStream content) {
+	private CompletableFuture<String> storeContent(Source sourceToStore) {
 		UUID key = UUID.randomUUID();
-		return storageService.store(key.toString(), content);
+		return storageService.store(key.toString(), sourceToStore.toInputStream(), sourceToStore.getSize());
 	}
 
 	/**
-	 * Calls the service for writing {@link Metadata} to the database
+	 * Calls the {@link DbService} to store the {@link Metadata} in a database.
 	 *
-	 * @param metadata to be stored
-	 * @param thrown check for {@link AuditException}
-	 * @return A {@link CompletableFuture} that will hold the written Metadata.
+	 * @param metadata The {@link Metadata} to save.
+	 * @param thrown A {@link Throwable} from a previous step.
+	 * @return A {@link CompletableFuture} that represents saving {@link Metadata} to a database.
 	 */
 	private CompletableFuture<Metadata> persist(Metadata metadata, Throwable thrown) {
 		if (thrown != null) {

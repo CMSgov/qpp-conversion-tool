@@ -3,26 +3,23 @@ package gov.cms.qpp.conversion.model;
 import gov.cms.qpp.conversion.Context;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class TemplateIdTest {
 
 	@Test
 	void testRoot() {
-		assertWithMessage("TemplateId#getRoot() is not working")
-				.that(TemplateId.CLINICAL_DOCUMENT.getRoot()).isSameAs("2.16.840.1.113883.10.20.27.1.2");
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getRoot()).isSameAs("2.16.840.1.113883.10.20.27.1.2");
 	}
 
 	@Test
 	void testExtension() {
-		assertWithMessage("TemplateId#getExtension() is not working")
-				.that(TemplateId.CLINICAL_DOCUMENT.getExtension()).isSameAs("2017-07-01");
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getExtension()).isSameAs("2017-07-01");
 	}
 
 	@Test
 	void testGetTemplateId() {
-		assertWithMessage("TemplateId#getTemplateId() is not working")
-				.that(TemplateId.CLINICAL_DOCUMENT.getTemplateId(new Context()))
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getTemplateId(new Context()))
 				.isEqualTo(TemplateId.CLINICAL_DOCUMENT.getRoot() + ":" +
 						TemplateId.CLINICAL_DOCUMENT.getExtension());
 	}
@@ -33,8 +30,7 @@ class TemplateIdTest {
 		TemplateId actual = TemplateId.getTemplateId(clinicalDocument.getRoot(),
 				clinicalDocument.getExtension(), new Context());
 
-		assertWithMessage("TemplateId#getTypeById(String, String) is not working")
-				.that(actual).isSameAs(clinicalDocument);
+		assertThat(actual).isSameAs(clinicalDocument);
 	}
 
 	@Test
@@ -42,8 +38,7 @@ class TemplateIdTest {
 		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
 				"nonExistingExtension", new Context());
 
-		assertWithMessage("TemplateId#getTypeById(String, String) is not working")
-				.that(actual).isSameAs(TemplateId.DEFAULT);
+		assertThat(actual).isSameAs(TemplateId.DEFAULT);
 	}
 
 	@Test
@@ -51,8 +46,7 @@ class TemplateIdTest {
 		TemplateId actual = TemplateId.getTemplateId("nonExistingRoot",
 				TemplateId.CLINICAL_DOCUMENT.getExtension(), new Context());
 
-		assertWithMessage("TemplateId#getTypeById(String, String) is not working")
-				.that(actual).isSameAs(TemplateId.DEFAULT);
+		assertThat(actual).isSameAs(TemplateId.DEFAULT);
 	}
 
 	@Test
@@ -61,15 +55,13 @@ class TemplateIdTest {
 		final String extension = "jkl;";
 		String actual = TemplateId.generateTemplateIdString(root, extension, new Context());
 
-		assertWithMessage("TemplateId#generateTemplateIdString() is not working")
-				.that(actual).isEqualTo(root + ":" + extension);
+		assertThat(actual).isEqualTo(root + ":" + extension);
 	}
 
 	@Test
 	void valueOfTest() {
 		String actual = TemplateId.valueOf("DEFAULT").getTemplateId(new Context());
 
-		assertWithMessage("Expect value of to return a TemplateId")
-				.that(actual).isSameAs("default");
+		assertThat(actual).isSameAs("default");
 	}
 }

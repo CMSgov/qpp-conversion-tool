@@ -7,6 +7,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.test.MockitoExtension;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,13 +18,12 @@ import org.mockito.Mock;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -99,6 +101,19 @@ class DbServiceImplTest {
 
 		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(any(Class.class), any(DynamoDBQueryExpression.class));
 		assertThat(metaDataList).hasSize(2 * Constants.CPC_DYNAMO_PARTITIONS);
+	}
+
+	@Test
+	void testGetMetadataById() {
+		String fakeUuid = "1337-f4ke-uuid";
+
+		when(dbMapper.load(eq(Metadata.class), anyString())).thenReturn(new Metadata());
+
+		Metadata fakeMetadata = underTest.getMetadataById(fakeUuid);
+
+		verify(dbMapper, times(1)).load(any(Class.class), anyString());
+
+		assertThat(fakeMetadata).isNotNull();
 	}
 
 	private Metadata writeMeta() {

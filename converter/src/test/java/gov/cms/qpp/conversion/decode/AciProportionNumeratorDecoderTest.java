@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class AciProportionNumeratorDecoderTest {
 
@@ -19,10 +19,8 @@ class AciProportionNumeratorDecoderTest {
 		AciProportionNumeratorDecoder aciProportionNumeratorDecoder = new AciProportionNumeratorDecoder(new Context());
 		DecodeResult decodeResult = aciProportionNumeratorDecoder.internalDecode(element, node);
 
-		assertWithMessage("Must continue on tree")
-				.that(decodeResult)
-				.isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
-		assertWithMessage("The node name must be %s", NUMERATOR_NODE_NAME)
-				.that(node.getValue("name")).isEqualTo(NUMERATOR_NODE_NAME);
+		assertThat(decodeResult)
+				.isEqualTo(DecodeResult.TREE_CONTINUE);
+		assertThat(node.getValue("name")).isEqualTo(NUMERATOR_NODE_NAME);
 	}
 }

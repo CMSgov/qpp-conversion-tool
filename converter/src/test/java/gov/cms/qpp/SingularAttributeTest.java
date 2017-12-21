@@ -2,7 +2,7 @@ package gov.cms.qpp;
 
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
+import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
@@ -150,7 +150,7 @@ class SingularAttributeTest {
 		String xPath = getPath(templateId, attribute);
 		InputStream inStream = manipulator.upsetTheNorm(xPath, remove);
 		Converter converter = new Converter(
-				new InputStreamSupplierQrdaSource(xPath, () -> inStream));
+				new InputStreamSupplierSource(xPath, () -> inStream));
 		try {
 			converter.transform();
 		} catch (TransformException exception) {

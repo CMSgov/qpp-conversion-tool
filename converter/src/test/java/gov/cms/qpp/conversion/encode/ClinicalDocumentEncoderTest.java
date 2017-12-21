@@ -1,20 +1,22 @@
 package gov.cms.qpp.conversion.encode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.Before;
-import org.junit.Test;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class ClinicalDocumentEncoderTest {
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+
+class ClinicalDocumentEncoderTest {
 
 	private Node aciSectionNode;
 	private Node aciReportingPerformanceNode;
@@ -40,9 +42,8 @@ public class ClinicalDocumentEncoderTest {
 	private final String CATEGORY = "category";
 	private final String MEASUREMENT_SETS = "measurementSets";
 
-
-	@Before
-	public void createNode() {
+	@BeforeEach
+	void createNode() {
 
 		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 
@@ -121,19 +122,18 @@ public class ClinicalDocumentEncoderTest {
 	}
 
 	@Test
-	public void testPerformanceYear() {
+	void testPerformanceYear() {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
 		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
 		Object performanceYear = testJsonWrapper.getValue(ReportingParametersActDecoder.PERFORMANCE_YEAR);
 
-		assertWithMessage("performance year should be 2017")
-				.that(performanceYear)
+		assertThat(performanceYear)
 				.isEqualTo(2017);
 	}
 
 	@Test
-	public void testInternalEncode() throws EncodeException {
+	void testInternalEncode() throws EncodeException {
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
@@ -141,28 +141,27 @@ public class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertWithMessage("Must have a correct entityType")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_TYPE))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo("individual");
-		assertWithMessage("Must have a correct taxpayerIdentificationNumber")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
-		assertWithMessage("Must have a correct nationalProviderIdentifier")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 	}
 
-	@Test(expected = EncodeException.class)
-	public void testInternalEncodeNegative() throws EncodeException {
-		JsonWrapper testJsonWrapper = new JsonWrapper();
+	@Test
+	void testInternalEncodeNegative() throws EncodeException {
+		Assertions.assertThrows(EncodeException.class, () -> {
+			JsonWrapper testJsonWrapper = new JsonWrapper();
 
-		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
-		clinicalDocumentNode.addChildNode(new Node());
-		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+			ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+			clinicalDocumentNode.addChildNode(new Node());
+			clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+		});
 	}
 
 	@Test
-	public void testInternalEncodeWithoutMeasures() throws EncodeException {
+	void testInternalEncodeWithoutMeasures() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
@@ -171,13 +170,12 @@ public class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertWithMessage("Must not contain a measure because the measurements are missing.")
-				.that(clinicalDocMap.get(MEASUREMENT_SETS))
+		assertThat(clinicalDocMap.get(MEASUREMENT_SETS))
 				.isNull();
 	}
 
 	@Test
-	public void testInternalEncodeEmptyEntityId() throws EncodeException {
+	void testInternalEncodeEmptyEntityId() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,"");
 		JsonWrapper testJsonWrapper = new JsonWrapper();
@@ -187,12 +185,11 @@ public class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertWithMessage("Must not contain an Entity Id.")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
 				.isNull();
 	}
 	@Test
-	public void testInternalEncodeNullEntityId() throws EncodeException {
+	void testInternalEncodeNullEntityId() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,null);
 		JsonWrapper testJsonWrapper = new JsonWrapper();
@@ -202,8 +199,7 @@ public class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertWithMessage("Must not contain an Entity Id.")
-				.that(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
 				.isNull();
 	}
 }

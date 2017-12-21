@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
+import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -57,6 +58,23 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		return cope(exception);
 	}
 
+	/**
+	 * "Catch" the {@link NoFileInDatabaseException}.
+	 * Return the {@link AllErrors} with an HTTP status 422.
+	 *
+	 * @param exception The NoFileInDatabaseException that was "caught".
+	 * @return The NoFileInDatabaseException message
+	 */
+	@ExceptionHandler(NoFileInDatabaseException.class)
+	@ResponseBody
+	ResponseEntity<String> handleFileNotFoundException(NoFileInDatabaseException exception) {
+		API_LOG.error("A database error occurred", exception);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
+
+		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.NOT_FOUND);
+	}
+	
 	private ResponseEntity<AllErrors> cope(TransformException exception) {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);

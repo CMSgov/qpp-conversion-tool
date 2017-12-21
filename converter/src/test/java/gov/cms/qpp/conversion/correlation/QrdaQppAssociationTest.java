@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 
 class QrdaQppAssociationTest {
@@ -20,7 +20,7 @@ class QrdaQppAssociationTest {
 	@BeforeAll
 	static void setup() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 
 		qpp = converter.transform();
 	}
