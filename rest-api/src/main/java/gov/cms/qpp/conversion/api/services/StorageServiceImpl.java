@@ -11,13 +11,14 @@ import com.amazonaws.services.s3.transfer.Upload;
 import com.google.common.base.Strings;
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.model.Constants;
-import java.io.InputStream;
-import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+
+import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Used to store an {@link InputStream} in S3.
@@ -41,10 +42,11 @@ public class StorageServiceImpl extends AnyOrderActionService<PutObjectRequest, 
 	 *
 	 * @param keyName The requested key name for the object.
 	 * @param inStream The {@link InputStream} to write out to an object in S3.
+	 * @param size The size of the {@link InputStream}.
 	 * @return A {@link CompletableFuture} that will eventually contain the S3 object key.
 	 */
 	@Override
-	public CompletableFuture<String> store(String keyName, InputStream inStream) {
+	public CompletableFuture<String> store(String keyName, InputStream inStream, long size) {
 		final String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
 		final String kmsKey = environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE);
 		if (Strings.isNullOrEmpty(bucketName) || Strings.isNullOrEmpty(kmsKey)) {
@@ -52,7 +54,10 @@ public class StorageServiceImpl extends AnyOrderActionService<PutObjectRequest, 
 			return CompletableFuture.completedFuture("");
 		}
 
-		PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, inStream, new ObjectMetadata())
+		ObjectMetadata s3ObjectMetadata = new ObjectMetadata();
+		s3ObjectMetadata.setContentLength(size);
+
+		PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, inStream, s3ObjectMetadata)
 			.withSSEAwsKeyManagementParams(new SSEAwsKeyManagementParams(kmsKey));
 
 		API_LOG.info("Writing object {} to S3 bucket {}", keyName, bucketName);

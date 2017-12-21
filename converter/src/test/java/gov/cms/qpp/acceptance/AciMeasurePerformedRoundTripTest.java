@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 class AciMeasurePerformedRoundTripTest {
 
