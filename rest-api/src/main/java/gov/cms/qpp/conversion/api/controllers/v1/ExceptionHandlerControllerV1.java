@@ -37,6 +37,7 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	@ExceptionHandler(TransformException.class)
 	@ResponseBody
 	ResponseEntity<AllErrors> handleTransformException(TransformException exception) {
+		API_LOG.error("Transform exception occurred", exception);
 		auditService.failConversion(exception.getConversionReport());
 		return cope(exception);
 	}
@@ -51,17 +52,16 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	@ExceptionHandler(QppValidationException.class)
 	@ResponseBody
 	ResponseEntity<AllErrors> handleQppValidationException(QppValidationException exception) {
+		API_LOG.error("Validation exception occurred", exception);
 		auditService.failValidation(exception.getConversionReport());
 		return cope(exception);
 	}
 
 	private ResponseEntity<AllErrors> cope(TransformException exception) {
-		API_LOG.error("Problem during conversion: ", exception);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
-		return new ResponseEntity<>(exception.getDetails(), httpHeaders,
-				HttpStatus.UNPROCESSABLE_ENTITY);
+		return new ResponseEntity<>(exception.getDetails(), httpHeaders, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
 }

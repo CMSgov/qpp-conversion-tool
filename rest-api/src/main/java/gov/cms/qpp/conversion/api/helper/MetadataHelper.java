@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.api.helper;
 
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -28,15 +27,18 @@ public class MetadataHelper {
 	 * @return
 	 */
 	public static Metadata generateMetadata(Node node, Outcome outcome) {
-		Objects.requireNonNull(node, "node");
 		Objects.requireNonNull(outcome, "outcome");
 
 		Metadata metadata = new Metadata();
 
-		metadata.setApm(findApm(node));
-		metadata.setTin(findTin(node));
-		metadata.setNpi(findNpi(node));
-		metadata.setCpc(isCpc(node));
+		if (node != null) {
+			metadata.setApm(findApm(node));
+			metadata.setTin(findTin(node));
+			metadata.setNpi(findNpi(node));
+			metadata.setCpc(isCpc(node));
+			metadata.setCpcProcessed(false);
+		}
+
 		outcome.setStatus(metadata);
 
 		return metadata;
@@ -47,13 +49,13 @@ public class MetadataHelper {
 	}
 
 	private static String findTin(Node node) {
-		return findValue(node, MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
-				TemplateId.QRDA_CATEGORY_III_REPORT_V3, TemplateId.CLINICAL_DOCUMENT);
+		return findValue(node, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+				TemplateId.CLINICAL_DOCUMENT);
 	}
 
 	private static String findNpi(Node node) {
-		return findValue(node, MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
-				TemplateId.QRDA_CATEGORY_III_REPORT_V3, TemplateId.CLINICAL_DOCUMENT);
+		return findValue(node, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+				TemplateId.CLINICAL_DOCUMENT);
 	}
 
 	private static boolean isCpc(Node node) {
@@ -62,7 +64,7 @@ public class MetadataHelper {
 		}
 
 		Node found = findPossibleChildNode(node, ClinicalDocumentDecoder.PROGRAM_NAME,
-						TemplateId.CLINICAL_DOCUMENT, TemplateId.QRDA_CATEGORY_III_REPORT_V3);
+						TemplateId.CLINICAL_DOCUMENT);
 
 		return found != null && Program.isCpc(found);
 	}

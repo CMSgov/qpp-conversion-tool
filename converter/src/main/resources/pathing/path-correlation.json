@@ -5,9 +5,6 @@
 			"templateId": "CLINICAL_DOCUMENT",
 			"correlationId": "topLevel"
 		},{
-			"templateId": "QRDA_CATEGORY_III_REPORT_V3",
-			"correlationId": "topLevel"
-		},{
 			"templateId": "ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS",
 			"correlationId": "measure"
 		},{
@@ -29,9 +26,6 @@
 			"templateId": "REPORTING_PARAMETERS_ACT",
 			"correlationId": "reportingParameters"
 		},{
-			"templateId": "QRDA_CATEGORY_III_REPORT_V3",
-			"correlationId": "npiTinParent"
-		},{
 			"templateId": "MEASURE_DATA_CMS_V2",
 			"correlationId": "measureData"
 		},{
@@ -43,6 +37,18 @@
 		},{
 			"templateId": "PERFORMANCE_RATE_PROPORTION_MEASURE",
 			"correlationId": "performanceRate"
+		},{
+			"templateId": "ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2",
+			"correlationId": "supplementData"
+		},{
+			"templateId": "SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2",
+			"correlationId": "supplementData"
+		},{
+			"templateId": "RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2",
+			"correlationId": "supplementData"
+		},{
+			"templateId": "PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2",
+			"correlationId": "supplementData"
 		}
 	],
 	"correlations": [
@@ -89,9 +95,9 @@
 					}
 				},
 				{
-					"decodeLabel": "entityId",
+					"decodeLabel": "practiceId",
 					"encodeLabels": [
-						"entityId"
+						"practiceId"
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'participant' and namespace-uri() = '<nsuri>']/*[local-name() = 'associatedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.1']/@extension",
@@ -242,6 +248,25 @@
 			]
 		},
 		{
+			"correlationId": "supplementData",
+			"config": [
+				{
+					"decodeLabel": "code",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/@code",
+						"xmltype": "attribute"
+					}
+				},
+				{
+					"decodeLabel": "payerCode",
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'value' and namespace-uri() = '<nsuri>']/*[local-name() = 'translation' and namespace-uri() = '<nsuri>']/@code",
+						"xmltype": "attribute"
+					}
+				}
+			]
+		},
+		{
 			"correlationId": "reportingParameters",
 			"config": [
 				{
@@ -262,18 +287,6 @@
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/*[local-name() = 'high' and namespace-uri() = '<nsuri>']/@value",
-						"xmltype": "attribute"
-					}
-				}
-			]
-		},
-		{
-			"correlationId": "npiTinParent",
-			"config": [
-				{
-					"decodeLabel": "npiTin",
-					"goods": {
-						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']",
 						"xmltype": "attribute"
 					}
 				}

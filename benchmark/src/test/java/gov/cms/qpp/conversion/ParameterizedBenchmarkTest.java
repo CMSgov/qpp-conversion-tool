@@ -22,10 +22,12 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import gov.cms.qpp.test.FileTestHelper;
-import gov.cms.qpp.test.LoadTestSuite;
+import com.google.common.jimfs.Configuration;
 
-public class ParameterizedBenchmarkTest extends LoadTestSuite {
+import gov.cms.qpp.test.LoadTestSuite;
+import gov.cms.qpp.test.jimfs.FileTestHelper;
+
+class ParameterizedBenchmarkTest extends LoadTestSuite {
 
 	private static Field fileSystemField;
 	private static FileSystem defaultFileSystem;
@@ -35,7 +37,7 @@ public class ParameterizedBenchmarkTest extends LoadTestSuite {
 	@BeforeAll
 	static void loadPaths() throws IOException, RunnerException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		String[] paths;
-		fileSystem = FileTestHelper.createMockFileSystem();
+		fileSystem = FileTestHelper.createMockFileSystem(Configuration.unix());
 		fileSystemField = ConversionEntry.class.getDeclaredField("fileSystem");
 		fileSystemField.setAccessible(true);
 		defaultFileSystem = (FileSystem) fileSystemField.get(null);

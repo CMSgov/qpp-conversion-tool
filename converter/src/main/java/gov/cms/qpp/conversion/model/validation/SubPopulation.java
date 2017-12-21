@@ -2,10 +2,10 @@ package gov.cms.qpp.conversion.model.validation;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Sub Population Identifiers Fields
@@ -141,7 +141,7 @@ public class SubPopulation {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(initialPopulationUuid, denominatorUuid, denominatorExclusionsUuid,
+		return Objects.hash(initialPopulationUuid, denominatorUuid, denominatorExclusionsUuid,
 				numeratorUuid, denominatorExceptionsUuid, strata);
 	}
 

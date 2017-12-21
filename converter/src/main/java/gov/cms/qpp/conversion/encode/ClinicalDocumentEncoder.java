@@ -2,15 +2,12 @@ package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Strings;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -40,7 +37,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node thisNode) {
 		encodeToplevel(wrapper, thisNode);
-		encodeEntityId(wrapper, thisNode);
 		Map<TemplateId, Node> childMapByTemplateId = thisNode.getChildNodes().stream().collect(
 				Collectors.toMap(Node::getType, Function.identity(), (v1, v2) -> v1, LinkedHashMap::new));
 
@@ -57,14 +53,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 */
 	private void encodeToplevel(JsonWrapper wrapper, Node thisNode) {
 		encodePerformanceYear(wrapper, thisNode);
-		wrapper.putString(ClinicalDocumentDecoder.PROGRAM_NAME,
-				thisNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
 		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE,
 				thisNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE));
-		wrapper.putString(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
-				thisNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
-		wrapper.putString(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
-				thisNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER));
+		wrapper.putString(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+				thisNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
+		wrapper.putString(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+				thisNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER));
 	}
 
 	/**
@@ -84,20 +78,6 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		maintainContinuity(wrapper, reportingDescendant, ReportingParametersActDecoder.PERFORMANCE_YEAR);
 	}
 
-
-	/**
-	 * This will add the entityId from the Clinical Document Node
-	 *
-	 * @param wrapper will hold the json format of nodes
-	 * @param thisNode holds the decoded node sections of clinical document
-	 */
-	private void encodeEntityId(JsonWrapper wrapper, Node thisNode) {
-		String entityId = thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID);
-		if (!Strings.isNullOrEmpty(entityId)) {
-			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID, entityId);
-		}
-	}
-
 	/**
 	 * Method for encoding each child measurement set
 	 *
@@ -110,16 +90,14 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-			if (TemplateId.NPI_TIN_ID != child.getType()) {
-				childWrapper = new JsonWrapper();
-				sectionEncoder = encoders.get(child.getType());
-				try {
-					sectionEncoder.encode(childWrapper, child);
-					measurementSetsWrapper.putObject(childWrapper);
-				} catch (NullPointerException exc) {
-					String message = "No encoder for decoder : " + child.getType();
-					throw new EncodeException(message, exc);
-				}
+			childWrapper = new JsonWrapper();
+			sectionEncoder = encoders.get(child.getType());
+			try {
+				sectionEncoder.encode(childWrapper, child);
+				measurementSetsWrapper.putObject(childWrapper);
+			} catch (NullPointerException exc) {
+				String message = "No encoder for decoder : " + child.getType();
+				throw new EncodeException(message, exc);
 			}
 		}
 		return measurementSetsWrapper;

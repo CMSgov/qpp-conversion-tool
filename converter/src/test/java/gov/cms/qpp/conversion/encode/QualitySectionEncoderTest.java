@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
@@ -18,9 +18,9 @@ import static org.mockito.Mockito.verify;
 /**
  * This class tests the QualitySectionEncoder class
  */
-public class QualitySectionEncoderTest {
+class QualitySectionEncoderTest {
 	@Test
-	public void internalEncode() throws EncodeException {
+	void internalEncode() throws EncodeException {
 		Node qualitySectionNode = getQualitySectionNode();
 		QualitySectionEncoder encoder = new QualitySectionEncoder(new Context());
 		JsonWrapper jsonWrapper = new JsonWrapper();
@@ -33,7 +33,7 @@ public class QualitySectionEncoderTest {
 	}
 
 	@Test
-	public void internalEncodeNegative() throws EncodeException {
+	void internalEncodeNegative() throws EncodeException {
 		Node qualitySectionNode = getQualitySectionNode();
 		qualitySectionNode.addChildNode(new Node());
 
@@ -47,7 +47,7 @@ public class QualitySectionEncoderTest {
 	}
 
 	@Test
-	public void internalEncodeNoReportingParametersNegative() throws EncodeException {
+	void internalEncodeNoReportingParametersNegative() throws EncodeException {
 		Node qualitySectionNode = getQualitySectionNode();
 		Node removeMe = qualitySectionNode.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		qualitySectionNode.getChildNodes().remove(removeMe);
@@ -57,7 +57,7 @@ public class QualitySectionEncoderTest {
 		mock.internalEncode(jsonWrapper, qualitySectionNode);
 
 		verify(mock, never())
-				.maintainContinuity(any(), any(JsonWrapper.class), any());
+				.maintainContinuity(any(), any(Node.class), any());
 	}
 
 	/**
