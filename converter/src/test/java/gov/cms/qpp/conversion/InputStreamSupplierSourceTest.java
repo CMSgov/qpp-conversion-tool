@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion;
 
-import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Test;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -11,7 +10,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static com.google.common.truth.Truth.assertThat;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import com.google.common.base.Supplier;
 
 class InputStreamSupplierSourceTest extends SourceTestSuite {
 
@@ -52,5 +56,12 @@ class InputStreamSupplierSourceTest extends SourceTestSuite {
 		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", () -> new ByteArrayInputStream(bytes));
 
 		assertThat(source.getSize()).isEqualTo(bytes.length);
+	}
+
+	@Test
+	void testSupplierThrowsIOException() {
+		Supplier<InputStream> mock = Mockito.mock(Supplier.class);
+		Mockito.when(mock.get()).thenThrow(IOException.class);
+		Assertions.assertThrows(UncheckedIOException.class, () -> new InputStreamSupplierSource("mock name", mock));
 	}
 }
