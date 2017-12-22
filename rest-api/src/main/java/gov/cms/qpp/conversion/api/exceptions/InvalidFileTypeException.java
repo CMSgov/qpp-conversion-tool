@@ -7,7 +7,7 @@ public class InvalidFileTypeException extends RuntimeException {
 
 	/**
 	 * Constructor to call RuntimeException
-	 * @param message
+	 * @param message Error response
 	 */
 	public InvalidFileTypeException(String message) {
 		super(message);

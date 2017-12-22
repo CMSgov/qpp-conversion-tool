@@ -61,7 +61,7 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 
 	/**
 	 * "Catch" the {@link NoFileInDatabaseException}.
-	 * Return the {@link AllErrors} with an HTTP status 422.
+	 * Return the {@link AllErrors} with an HTTP status 404.
 	 *
 	 * @param exception The NoFileInDatabaseException that was "caught".
 	 * @return The NoFileInDatabaseException message
@@ -77,11 +77,11 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	}
 
 	/**
-	 * "Catch" the {@link NoFileInDatabaseException}.
-	 * Return the {@link AllErrors} with an HTTP status 422.
+	 * "Catch" the {@link InvalidFileTypeException}.
+	 * Return the {@link AllErrors} with an HTTP status 404.
 	 *
-	 * @param exception The NoFileInDatabaseException that was "caught".
-	 * @return The NoFileInDatabaseException message
+	 * @param exception The InvalidFileTypeException that was "caught".
+	 * @return The InvalidFileTypeException message
 	 */
 	@ExceptionHandler(InvalidFileTypeException.class)
 	@ResponseBody
