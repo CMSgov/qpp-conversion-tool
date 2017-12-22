@@ -91,7 +91,7 @@ public class CpcFileControllerV1 {
 	 * @param fileId Identifier of the file needing to be updated
 	 * @return Message if the file was updated or not
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/file/{fileId}",
+	@RequestMapping(method = RequestMethod.PUT, value = "/file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT} )
 	public ResponseEntity<String> markFileProcessed(@PathVariable("fileId") String fileId) {
 		if (blockCpcPlusApi()) {
