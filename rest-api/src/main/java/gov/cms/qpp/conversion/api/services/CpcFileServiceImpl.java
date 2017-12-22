@@ -20,6 +20,7 @@ public class CpcFileServiceImpl implements CpcFileService {
 
 	public static final String FILE_NOT_FOUND = "File not found!";
 	protected static final String INVALID_FILE = "The file was not a CPC+ file.";
+	protected static final String PROCESSED = "The file was already processed";
 	protected static final String FILE_FOUND = "The file was found and will be updated as processed.";
 
 	@Autowired
@@ -68,6 +69,8 @@ public class CpcFileServiceImpl implements CpcFileService {
 			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
 		} else if (!metadata.getCpc()) {
 			throw new InvalidFileTypeException(INVALID_FILE);
+		} else if (metadata.getCpcProcessed()) {
+			return FILE_FOUND;
 		} else {
 			metadata.setCpcProcessed(true);
 			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
