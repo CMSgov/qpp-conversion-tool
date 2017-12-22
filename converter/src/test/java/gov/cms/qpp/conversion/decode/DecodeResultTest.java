@@ -1,25 +1,12 @@
 package gov.cms.qpp.conversion.decode;
 
-import org.junit.jupiter.api.Test;
+import gov.cms.qpp.test.enums.EnumContract;
 
-import static com.google.common.truth.Truth.assertThat;
+class DecodeResultTest implements EnumContract {
 
-/**
- * Test class for DecodeResult satisfy JaCoCo code coverage
- */
-class DecodeResultTest {
-
-	@Test
-	void decodeResultTest() {
-		DecodeResult result = DecodeResult.valueOf("TREE_FINISHED");
-		assertThat(result)
-				.isEquivalentAccordingToCompareTo(DecodeResult.TREE_FINISHED);
+	@Override
+	public Class<? extends Enum<?>> getEnumType() {
+		return DecodeResult.class;
 	}
 
-	@Test
-	void decodeResultValuesTest() {
-		DecodeResult[] results = DecodeResult.values();
-		assertThat(results)
-				.hasLength(5);
-	}
 }

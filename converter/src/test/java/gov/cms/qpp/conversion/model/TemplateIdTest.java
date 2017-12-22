@@ -1,11 +1,15 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.Context;
-import org.junit.jupiter.api.Test;
-
 import static com.google.common.truth.Truth.assertThat;
 
-class TemplateIdTest {
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.TemplateId.Extension;
+import gov.cms.qpp.test.enums.EnumContract;
+
+class TemplateIdTest implements EnumContract {
 
 	@Test
 	void testRoot() {
@@ -82,10 +86,18 @@ class TemplateIdTest {
 		assertThat(actual).isEqualTo(root + ":" + extension);
 	}
 
-	@Test
-	void valueOfTest() {
-		String actual = TemplateId.valueOf("DEFAULT").getTemplateId(new Context());
+	@Override
+	public Class<? extends Enum<?>> getEnumType() {
+		return TemplateId.class;
+	}
 
-		assertThat(actual).isSameAs("default");
+	@Nested
+	static class ExtensionTest implements EnumContract {
+
+		@Override
+		public Class<? extends Enum<?>> getEnumType() {
+			return Extension.class;
+		}
+
 	}
 }

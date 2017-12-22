@@ -9,7 +9,9 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-class QrdaScopeTest {
+import gov.cms.qpp.test.enums.EnumContract;
+
+class QrdaScopeTest implements EnumContract {
 
 	@Test
 	void testGetTemplates() {
@@ -37,11 +39,8 @@ class QrdaScopeTest {
 				.that(QrdaScope.getTemplates(new HashSet<>())).isEmpty();
 	}
 
-	@Test
-	void testValueOfString() {
-		//JaCoCo coverage test
-		QrdaScope scope = QrdaScope.valueOf("CLINICAL_DOCUMENT");
-		assertWithMessage("QrdaScope of CLINICAL_DOCUMENT equals TemplateId")
-				.that(scope.name()).isSameAs("CLINICAL_DOCUMENT");
+	@Override
+	public Class<? extends Enum<?>> getEnumType() {
+		return QrdaScope.class;
 	}
 }

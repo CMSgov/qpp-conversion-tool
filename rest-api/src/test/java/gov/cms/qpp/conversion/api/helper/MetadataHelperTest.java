@@ -1,15 +1,17 @@
 package gov.cms.qpp.conversion.api.helper;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.api.helper.MetadataHelper.Outcome;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-
-import static com.google.common.truth.Truth.assertThat;
+import gov.cms.qpp.test.enums.EnumContract;
 
 class MetadataHelperTest {
 
@@ -188,12 +190,14 @@ class MetadataHelperTest {
 		assertThat(metadata.getValidationStatus()).isFalse();
 	}
 
-	@Test
-	void testOutcomeValueOf() {
-		Arrays.stream(MetadataHelper.Outcome.values())
-				.forEach(outcome -> {
-					assertThat(outcome).isSameAs(MetadataHelper.Outcome.valueOf(outcome.name()));
-				});
+	@Nested
+	static class OutcomeTest implements EnumContract {
+
+		@Override
+		public Class<? extends Enum<?>> getEnumType() {
+			return Outcome.class;
+		}
+
 	}
 
 }
