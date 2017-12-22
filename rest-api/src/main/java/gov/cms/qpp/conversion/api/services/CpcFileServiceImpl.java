@@ -20,7 +20,6 @@ public class CpcFileServiceImpl implements CpcFileService {
 
 	public static final String FILE_NOT_FOUND = "File not found!";
 	protected static final String INVALID_FILE = "The file was not a CPC+ file.";
-	protected static final String PROCESSED = "The file was already processed";
 	protected static final String FILE_FOUND = "The file was found and will be updated as processed.";
 
 	@Autowired
