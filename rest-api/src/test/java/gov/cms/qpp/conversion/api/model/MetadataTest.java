@@ -9,8 +9,10 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.function.Consumer;
 
+import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.fail;
 
 class MetadataTest {
@@ -21,6 +23,50 @@ class MetadataTest {
 				.usingGetClass()
 				.suppress(Warning.NONFINAL_FIELDS)
 				.verify();
+	}
+
+	@Test
+	void testDateCreatedOnConstruction() {
+		Metadata metadata = new Metadata();
+		assertThat(metadata.getCreatedDate()).isNotNull();
+	}
+
+	@Test
+	void testGetCpcProcessedCreateDateWithNullProcessed() {
+		Metadata metadata = new Metadata();
+		assertThat(metadata.getCpcProcessedCreateDate()).isNull();
+	}
+
+	@Test
+	void testGetCpcProcessedCreateDateWithNonNullProcessed() {
+		Metadata metadata = new Metadata();
+		Boolean processed = false;
+		metadata.setCpcProcessed(processed);
+		assertThat(metadata.getCpcProcessedCreateDate()).startsWith(processed + "#");
+	}
+
+	@Test
+	void testSetCpcProcessedCreateDateWithoutHash() {
+		Metadata metadata = new Metadata();
+		Boolean processedBefore = metadata.getCpcProcessed();
+		Date createDateBefore = metadata.getCreatedDate();
+
+		metadata.setCpcProcessedCreateDate("DogCow");
+
+		assertThat(metadata.getCpcProcessed()).isEqualTo(processedBefore);
+		assertThat(metadata.getCreatedDate()).isEqualTo(createDateBefore);
+	}
+
+	@Test
+	void testSetCpcProcessedCreateDateWithHash() {
+		Metadata metadata = new Metadata();
+		metadata.setCpcProcessed(false);
+		Date createDateBefore = metadata.getCreatedDate();
+
+		metadata.setCpcProcessedCreateDate("true#2017-12-08T18:32:54.846Z");
+
+		assertThat(metadata.getCpcProcessed()).isTrue();
+		assertThat(metadata.getCreatedDate()).isLessThan(createDateBefore);
 	}
 
 	@Test
@@ -53,6 +99,15 @@ class MetadataTest {
 
 	@SuppressWarnings("unchecked")
 	private static <T> T getDefaultValue(Class<T> clazz) {
-		return (T) Array.get(Array.newInstance(clazz, 1), 0);
+		T defaultValue = null;
+
+		try {
+			defaultValue = clazz.getConstructor().newInstance();
+		}
+		catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+			defaultValue = (T) Array.get(Array.newInstance(clazz, 1), 0);
+		}
+
+		return defaultValue;
 	}
 }

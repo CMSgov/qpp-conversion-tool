@@ -3,12 +3,6 @@ package gov.cms.qpp.conversion.api.services;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.test.MockitoExtension;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +11,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.core.io.InputStreamResource;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -106,7 +107,7 @@ class CpcFileServiceImplTest {
 
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {
 		Metadata metadata = new Metadata();
-		metadata.setCpc(isCpc);
+		metadata.setCpc(isCpc ? "CPC_26" : null);
 		metadata.setCpcProcessed(isCpcProcessed);
 		metadata.setSubmissionLocator("test");
 
