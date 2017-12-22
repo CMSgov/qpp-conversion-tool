@@ -35,23 +35,19 @@ import java.util.stream.Collectors;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-class SingularAttributeTest {
+class SingularAttributeTest{
 
-	private static final String NAMESPACE_URI = "urn:hl7-org:v3";
 	private static Map<String, Goods> corrMap;
 	private static Set<String> exclusions;
 	private static int inclusionCount = 0;
-	private static MarkupManipulator manipulator;
+	private static MarkupManipulationHandler manipulationHandler;
 
 
 	@BeforeAll
 	@SuppressWarnings("unchecked")
 	static void before() throws NoSuchFieldException, IllegalAccessException,
 			IOException, SAXException, ParserConfigurationException {
-		manipulator = new MarkupManipulator.MarkupManipulatorBuilder()
-				.setPathname("../qrda-files/valid-QRDA-III-latest.xml")
-				.setNsAware(true)
-				.build();
+		manipulationHandler = new MarkupManipulationHandler("../qrda-files/valid-QRDA-III-latest.xml");
 
 		Field corrMapField = PathCorrelator.class.getDeclaredField("pathCorrelationMap");
 		corrMapField.setAccessible(true);
@@ -108,7 +104,7 @@ class SingularAttributeTest {
 		for (String key : corrMap.keySet()) {
 			String[] components = key.split(PathCorrelator.KEY_DELIMITER);
 			if (!exclusions.contains(components[1])) {
-				List<Detail> details = executeScenario(components[0], components[1], remove);
+				List<Detail> details = manipulationHandler.executeScenario(components[0], components[1], remove);
 
 				if (!details.isEmpty()) {
 					errorCount++;
@@ -123,7 +119,7 @@ class SingularAttributeTest {
 
 	@Test
 	void doubleUpProgramName() {
-		List<Detail> details = executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
+		List<Detail> details = manipulationHandler.executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
 				ClinicalDocumentDecoder.PROGRAM_NAME, false);
 
 		assertWithMessage("error should be about missing missing program name").that(details)
@@ -137,7 +133,7 @@ class SingularAttributeTest {
 
 	@Test
 	void noProgramName() {
-		List<Detail> details = executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
+		List<Detail> details = manipulationHandler.executeScenario(TemplateId.CLINICAL_DOCUMENT.name(),
 				ClinicalDocumentDecoder.PROGRAM_NAME, true);
 
 		assertWithMessage("error should be about missing program name").that(details)
@@ -145,27 +141,4 @@ class SingularAttributeTest {
 				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME,
 						ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME);
 	}
-
-	private List<Detail> executeScenario(String templateId, String attribute, boolean remove) {
-		String xPath = getPath(templateId, attribute);
-		InputStream inStream = manipulator.upsetTheNorm(xPath, remove);
-		Converter converter = new Converter(
-				new InputStreamSupplierSource(xPath, () -> inStream));
-		try {
-			converter.transform();
-		} catch (TransformException exception) {
-			AllErrors errors = exception.getDetails();
-			return errors.getErrors().stream().map(Error::getDetails).flatMap(List::stream).collect(Collectors.toList());
-		}
-		return Collections.emptyList();
-	}
-
-	private String getPath(String templateId, String attribute) {
-		String path = PathCorrelator.getXpath(templateId, attribute, NAMESPACE_URI);
-		if (path == null) {
-			System.out.println("Bad combo templateId: " + templateId + " attribute: " + attribute);
-		}
-		return "//" + path;
-	}
-
 }
