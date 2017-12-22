@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/cpc")
+@CrossOrigin
 public class CpcFileControllerV1 {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
@@ -69,7 +71,7 @@ public class CpcFileControllerV1 {
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
 			throws IOException {
-		API_LOG.info("CPC+ file request received");
+		API_LOG.info("CPC+ file retrieval request received");
 
 		if (blockCpcPlusApi()) {
 			API_LOG.info("CPC+ file request blocked by feature flag");
@@ -78,12 +80,35 @@ public class CpcFileControllerV1 {
 
 		InputStreamResource content = cpcFileService.getFileById(fileId);
 
-		API_LOG.info("CPC+ file request succeeded");
+		API_LOG.info("CPC+ file retrieval request succeeded");
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_XML);
 
 		return new ResponseEntity<>(content, httpHeaders, HttpStatus.OK);
+	}
+
+	/**
+	 * Updates a file's status to processed in the database
+	 *
+	 * @param fileId Identifier of the file needing to be updated
+	 * @return Message if the file was updated or not
+	 */
+	@RequestMapping(method = RequestMethod.PUT, value = "/file/{fileId}",
+			headers = {"Accept=" + Constants.V1_API_ACCEPT} )
+	public ResponseEntity<String> markFileProcessed(@PathVariable("fileId") String fileId) {
+		if (blockCpcPlusApi()) {
+			API_LOG.info("CPC+ unprocessed files request blocked by feature flag");
+			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
+		}
+
+		API_LOG.info("CPC+ update file as processed request received");
+		String message = cpcFileService.processFileById(fileId);
+		API_LOG.info("CPC+ update file as processed request succeeded");
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
+
+		return new ResponseEntity<>(message, httpHeaders, HttpStatus.OK);
 	}
 
 	/**
@@ -93,5 +118,6 @@ public class CpcFileControllerV1 {
 	 */
 	private boolean blockCpcPlusApi() {
 		return EnvironmentHelper.isPresent(Constants.NO_CPC_PLUS_API_ENV_VARIABLE);
+
 	}
 }
