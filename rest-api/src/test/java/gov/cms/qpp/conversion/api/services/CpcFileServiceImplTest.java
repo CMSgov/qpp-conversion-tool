@@ -147,6 +147,17 @@ class CpcFileServiceImplTest {
 		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
 	}
 
+	@Test
+	void testProcessFileByIdWithProcessedFile() {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, true));
+
+		String response = objectUnderTest.processFileById("test");
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+
+		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND);
+	}
+
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {
 		Metadata metadata = new Metadata();
 		metadata.setCpc(isCpc);
