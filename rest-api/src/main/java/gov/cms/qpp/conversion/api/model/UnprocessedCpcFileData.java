@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.api.model;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.Date;
 
 /**
@@ -70,4 +72,14 @@ public class UnprocessedCpcFileData {
 		return validationSuccess;
 	}
 
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+			.add("fileId", fileId)
+			.add("filename", "*could hold PII*")
+			.add("apm", apm)
+			.add("conversionDate", conversionDate)
+			.add("validationSuccess", validationSuccess)
+			.toString();
+	}
 }

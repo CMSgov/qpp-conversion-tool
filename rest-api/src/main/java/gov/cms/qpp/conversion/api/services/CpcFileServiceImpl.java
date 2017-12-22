@@ -4,7 +4,6 @@ import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -45,9 +44,8 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 *
 	 * @param fileId {@link Metadata} identifier
 	 * @return file contents as a {@link String}
-	 * @throws IOException
 	 */
-	public InputStreamResource getFileById(String fileId) throws IOException {
+	public InputStreamResource getFileById(String fileId) {
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (isAnUnprocessedCpcFile(metadata)) {
 			return new InputStreamResource(storageService.getFileByLocationId(metadata.getSubmissionLocator()));
@@ -66,7 +64,7 @@ public class CpcFileServiceImpl implements CpcFileService {
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (metadata == null) {
 			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
-		} else if (!metadata.getCpc()) {
+		} else if (metadata.getCpc() == null) {
 			throw new InvalidFileTypeException(INVALID_FILE);
 		} else if (metadata.getCpcProcessed()) {
 			return FILE_FOUND;
@@ -95,6 +93,6 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @return result of the check
 	 */
 	private boolean isAnUnprocessedCpcFile(Metadata metadata) {
-		return metadata != null && metadata.getCpc() && !metadata.getCpcProcessed();
+		return metadata != null && metadata.getCpc() != null && !metadata.getCpcProcessed();
 	}
 }

@@ -18,6 +18,9 @@ import java.io.InputStream;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Service for storing {@link Metadata} by {@link Converter.ConversionReport} outcome
+ */
 @Service
 public class AuditServiceImpl implements AuditService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
@@ -110,9 +113,9 @@ public class AuditServiceImpl implements AuditService {
 	}
 
 	/**
-	 * Determines whether the no audit environment variable is set.
+	 * Determines if the No Audit Environment variable was passed
 	 *
-	 * @return Whether to do auditing or not.
+	 * @return the status of auditing
 	 */
 	private boolean noAudit() {
 		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);
@@ -126,11 +129,11 @@ public class AuditServiceImpl implements AuditService {
 	}
 
 	/**
-	 * Creates a baseline {@link Metadata} object.
+	 * Initializes {@link Metadata} from the {@link Converter.ConversionReport} and conversion outcome
 	 *
-	 * @param report The report from a conversion.
-	 * @param outcome The high level outcome of a conversion.
-	 * @return A new {@link Metadata}.
+	 * @param report Object containing metadata information
+	 * @param outcome Status of the conversion
+	 * @return Constructed metadata
 	 */
 	private Metadata initMetadata(Converter.ConversionReport report, MetadataHelper.Outcome outcome) {
 		Metadata metadata = MetadataHelper.generateMetadata(report.getDecoded(), outcome);
