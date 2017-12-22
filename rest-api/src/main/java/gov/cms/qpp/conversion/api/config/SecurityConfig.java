@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.config;
 
-import com.amazonaws.HttpMethod;
 import gov.cms.qpp.conversion.api.security.JwtAuthorizationFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,16 +12,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final String SIGN_UP_URL = "/users/sign-up";
+	private static final String CPC_WILDCARD = "**/cpc/*";
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
-				//.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+				.antMatchers(CPC_WILDCARD).permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.addFilter(new JwtAuthorizationFilter(authenticationManager()))
-
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
