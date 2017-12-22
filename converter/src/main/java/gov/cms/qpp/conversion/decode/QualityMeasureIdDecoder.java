@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Decoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 public class QualityMeasureIdDecoder extends QppXmlDecoder {
 
-	private static final String MEASURE_ID = "measureId";
+	public static final String MEASURE_ID = "measureId";
 
 	public QualityMeasureIdDecoder(Context context) {
 		super(context);

@@ -8,15 +8,22 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations
@@ -360,6 +367,28 @@ class Checker {
 			if (!valid) {
 				details.add(detail(code));
 			}
+		}
+		return this;
+	}
+
+	/**
+	 * Allows for the assurance that a {@link Node} has children of a {@link TemplateId} type
+	 * that are distinct according to a given criteria.
+	 *
+	 * @param code that identifies the error
+	 * @param type template id type
+	 * @param dedup distinction criteria
+	 * @param <T> type that can serve as a hash key value
+	 * @return The checker, for chaining method calls.
+	 */
+	<T> Checker oneChildPolicy(LocalizedError code, TemplateId type, Function<Node, T> dedup) {
+		List<Node> nodes = node.getChildNodes(type).collect(Collectors.toList());
+		Map<T, Node> distinct =
+				nodes.stream().collect(
+						Collectors.toMap(dedup, Function.identity(), (pre, current) -> pre));
+
+		if (distinct.size() < nodes.size()) {
+			details.add(detail(code));
 		}
 		return this;
 	}

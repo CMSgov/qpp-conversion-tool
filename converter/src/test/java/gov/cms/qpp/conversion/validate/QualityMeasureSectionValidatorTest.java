@@ -1,31 +1,25 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Set;
-
 import gov.cms.qpp.MarkupManipulationHandler;
-import gov.cms.qpp.acceptance.helper.MarkupManipulator;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamSupplierSource;
-import gov.cms.qpp.conversion.model.error.FormattedErrorCode;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.FormattedErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2;
 
 class QualityMeasureSectionValidatorTest {
 
@@ -82,6 +76,16 @@ class QualityMeasureSectionValidatorTest {
 	void duplicateEcqMeasure() {
 		List<Detail> errorDetails = manipulatorHandler
 				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V2.name(), "measureId", false);
+		assertThat(errorDetails)
+				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.contains(new FormattedErrorCode(ErrorCode.MEASURE_GUID_MISSING,
+						ErrorCode.MEASURE_GUID_MISSING.getMessage()));
+	}
+
+	@Test
+	void duplicateEcqMeasureLevelUp() {
+		String xPath = manipulatorHandler.getCannedPath(MarkupManipulationHandler.CannedPath.ECQM_PARENT);
+		List<Detail> errorDetails = manipulatorHandler.executeScenario(xPath, false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(new FormattedErrorCode(ErrorCode.MEASURE_GUID_MISSING,
