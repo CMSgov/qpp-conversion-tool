@@ -4,12 +4,15 @@ import gov.cms.qpp.conversion.api.model.security.Organization;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 /**
@@ -48,13 +51,13 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		}
 
 		Organization organization = getOrganization(request);
-
 		if (organization.getId() != null && organization.getOrgType() != null) {
-
+			if (organization.getId().equalsIgnoreCase("sam-is-memorable")) {
+				UsernamePasswordAuthenticationToken token =
+						new UsernamePasswordAuthenticationToken(organization.getId(), null , new ArrayList<>());
+				SecurityContextHolder.getContext().setAuthentication(token);
+			}
 		}
-		//SecurityContextHolder.getContext().setAuthentication(organization); //--Holds the information in Security Context for later use?
-
-		//Do some kind of Org authentication or pass it back in the response?
 
 		chain.doFilter(request, response);
 	}
@@ -72,7 +75,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 					.parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
 					.getBody();
 
-			Organization org = new Organization(body.getId(), (String)body.get("orgType"));
+			Organization org = new Organization(body.get("data", Map.class));
 			//return new UsernamePasswordAuthenticationToken(org, null, new ArrayList<>());
 			return org;
 		}
