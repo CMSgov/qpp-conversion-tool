@@ -12,8 +12,9 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.test.enums.EnumContract;
+import gov.cms.qpp.test.helper.HelperContract;
 
-class MetadataHelperTest {
+class MetadataHelperTest implements HelperContract {
 
 	private static final String MOCK_STRING = "some random mock value";
 
@@ -198,6 +199,11 @@ class MetadataHelperTest {
 			return Outcome.class;
 		}
 
+	}
+
+	@Override
+	public Class<?> getHelperClass() {
+		return MetadataHelper.class;
 	}
 
 }
