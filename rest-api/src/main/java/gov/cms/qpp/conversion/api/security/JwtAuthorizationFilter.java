@@ -1,11 +1,12 @@
 package gov.cms.qpp.conversion.api.security;
 
-import gov.cms.qpp.conversion.api.model.security.Organization;
+import com.google.common.collect.Sets;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	private static final String HEADER_STRING = "Authorization";
 	private static final String TOKEN_PREFIX = "Bearer ";
+	private static final Set<String> VALID_ORG_IDS = Sets.newHashSet("fb1778dd-a5e3-42c8-836f-47654e003fab",
+			"ef33b1f6-842a-4519-9109-2ca2ed728ceb", "45624754-cce1-47ea-a7b1-02a9b9e19c2a");
 
 	/**
 	 * JWT Constructor with Authentication manager
@@ -32,53 +35,69 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	}
 
 	/**
+	 * Internal filter of the Json Web Token (jwt) to determine the organization.
 	 *
-	 * @param request
-	 * @param response
+	 * @param request Object holding the token
+	 * @param response Object to hold the parsed token object
 	 * @param chain
-	 * @throws IOException
-	 * @throws ServletException
+	 * @throws IOException check for IOException occuring
+	 * @throws ServletException check for ServletException occuring
 	 */
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,
 									HttpServletResponse response,
 									FilterChain chain) throws IOException, ServletException {
-		String header = request.getHeader(HEADER_STRING);
+		String tokenHeader = request.getHeader(HEADER_STRING);
 
-		if (header == null) {
+		if (tokenHeader == null) {
 			chain.doFilter(request, response);
 			return;
 		}
 
-		Organization organization = getOrganization(request);
-		if (organization.getId() != null && organization.getOrgType() != null) {
-			if (organization.getId().equalsIgnoreCase("sam-is-memorable")) {
-				UsernamePasswordAuthenticationToken token =
-						new UsernamePasswordAuthenticationToken(organization.getId(), null , new ArrayList<>());
-				SecurityContextHolder.getContext().setAuthentication(token);
-			}
-		}
+		Map<String, String> payloadMap = getPayload(tokenHeader);
+		if (isValidCpcPlusOrg(payloadMap)) {
+			UsernamePasswordAuthenticationToken token =
+					new UsernamePasswordAuthenticationToken(payloadMap.get("id"), null , new ArrayList<>());
+			SecurityContextHolder.getContext().setAuthentication(token);
 
+		}
 		chain.doFilter(request, response);
 	}
 
 	/**
+	 * Parses the token header into a payload data map
 	 *
-	 * @param request
-	 * @return
+	 * @param tokenHeader Object holding the token
+	 * @return data map of the token parsed
 	 */
-	private Organization getOrganization(HttpServletRequest request) {
-		String token = request.getHeader(HEADER_STRING);
-		if (token != null) {
-			Claims body = Jwts.parser()
-					.setSigningKey("secret".getBytes())
-					.parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-					.getBody();
+	private Map<String, String> getPayload(String tokenHeader) {
+		String tokenWithoutBearer = tokenHeader.replace(TOKEN_PREFIX, "");
+		String tokenWithoutSignatureAndBearer = removeSignature(tokenWithoutBearer);
+		Claims body = Jwts.parser()
+				.parseClaimsJwt(tokenWithoutSignatureAndBearer)
+				.getBody();
+		return body.get("data", Map.class);
+	}
 
-			Organization org = new Organization(body.get("data", Map.class));
-			//return new UsernamePasswordAuthenticationToken(org, null, new ArrayList<>());
-			return org;
-		}
-		return null;
+	/**
+	 * Removes signature for JWT parsing.
+	 *
+	 * @param jws Signed JWT
+	 * @return JWT unsigned
+	 */
+	private String removeSignature(String jws) {
+		int i = jws.lastIndexOf('.');
+		return jws.substring(0, i + 1);
+	}
+
+	/**
+	 * Check for the valid cpc+ organization
+	 *
+	 * @param payloadMap Data map holding the currently parsed user/org
+	 * @return validation of the user/org
+	 */
+	private boolean isValidCpcPlusOrg(Map<String, String> payloadMap) {
+		String orgId = payloadMap.get("id");
+		return (orgId !=null && payloadMap.get("orgType") != null && VALID_ORG_IDS.contains(orgId));
 	}
 }

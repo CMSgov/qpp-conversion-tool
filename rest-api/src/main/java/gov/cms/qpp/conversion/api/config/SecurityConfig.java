@@ -13,16 +13,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final String CPC_WILDCARD = "**/cpc/**";
+	private static final String CPC_WILDCARD = "/cpc/**";
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().authorizeRequests()
-				.antMatchers(CPC_WILDCARD).permitAll()
+		http.antMatcher(CPC_WILDCARD).authorizeRequests()
 				.anyRequest().authenticated()
 				.and()
 				.addFilter(new JwtAuthorizationFilter(authenticationManager()))
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and().cors()
+				.and().csrf().disable();
 	}
 
 	@Override
