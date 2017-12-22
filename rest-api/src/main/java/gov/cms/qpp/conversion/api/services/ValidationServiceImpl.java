@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Implementation for the QPP Validation Service
@@ -133,7 +134,7 @@ public class ValidationServiceImpl implements ValidationService {
 	 * @return An Error object.
 	 */
 	Error getError(String response) {
-		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes(Charset.defaultCharset())),
+		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes(StandardCharsets.UTF_8)),
 				ErrorMessage.class)
 				.getError();
 	}

@@ -7,6 +7,7 @@ import gov.cms.qpp.test.MockitoExtension;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +59,7 @@ class CpcFileControllerV1Test {
 
 		ResponseEntity<InputStreamResource> response = cpcFileControllerV1.getFileById("meep");
 
-		assertThat(IOUtils.toString(response.getBody().getInputStream(), Charset.defaultCharset()))
+		assertThat(IOUtils.toString(response.getBody().getInputStream(), StandardCharsets.UTF_8))
 				.isEqualTo("1234");
 	}
 

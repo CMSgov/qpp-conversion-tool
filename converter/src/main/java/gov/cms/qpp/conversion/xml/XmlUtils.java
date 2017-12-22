@@ -3,6 +3,8 @@ package gov.cms.qpp.conversion.xml;
 
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
@@ -42,7 +44,7 @@ public class XmlUtils {
 			return null;
 		}
 
-		return parseXmlStream(new ByteArrayInputStream(xml.getBytes(Charset.defaultCharset())));
+		return parseXmlStream(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
 	}
 
 	/**
