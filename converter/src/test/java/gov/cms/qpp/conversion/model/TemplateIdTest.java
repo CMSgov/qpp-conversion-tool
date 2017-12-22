@@ -25,6 +25,30 @@ class TemplateIdTest {
 	}
 
 	@Test
+	void testGetTemplateIdHistoricalWithExtension() {
+		Context context = new Context();
+		context.setHistorical(true);
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getTemplateId(context))
+				.isEqualTo(TemplateId.CLINICAL_DOCUMENT.getRoot());
+	}
+
+	@Test
+	void testGetTemplateIdHistoricalNoExtension() {
+		Context context = new Context();
+		context.setHistorical(true);
+		assertThat(TemplateId.PLACEHOLDER.getTemplateId(context))
+				.isEqualTo(TemplateId.PLACEHOLDER.getRoot());
+	}
+
+	@Test
+	void testGetTemplateIdNotHistoricalNoExtension() {
+		Context context = new Context();
+		context.setHistorical(false);
+		assertThat(TemplateId.PLACEHOLDER.getTemplateId(context))
+				.isEqualTo(TemplateId.PLACEHOLDER.getRoot());
+	}
+
+	@Test
 	void testFindByTypeId2() {
 		TemplateId clinicalDocument = TemplateId.CLINICAL_DOCUMENT;
 		TemplateId actual = TemplateId.getTemplateId(clinicalDocument.getRoot(),
