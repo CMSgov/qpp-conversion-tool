@@ -1,36 +1,36 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
-import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.CpcFileServiceImpl;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-
+import gov.cms.qpp.test.MockitoExtension;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ExceptionHandlerControllerV1Test {
+@ExtendWith(MockitoExtension.class)
+class ExceptionHandlerControllerV1Test {
+
 	private static Converter.ConversionReport report;
 	private static AllErrors allErrors = new AllErrors();
 
@@ -40,21 +40,21 @@ public class ExceptionHandlerControllerV1Test {
 	@Mock
 	private AuditService auditService;
 
-	@BeforeClass
-	public static void setup() {
+	@BeforeAll
+	static void setup() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		report = new Converter(new PathSource(path)).getReport();
 		report.setReportDetails(allErrors);
 	}
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		when(auditService.failConversion(any(Converter.ConversionReport.class)))
 				.thenReturn(CompletableFuture.completedFuture(null));
 	}
 
 	@Test
-	public void testTransformExceptionStatusCode() {
+	void testTransformExceptionStatusCode() {
 		TransformException exception =
 				new TransformException("test transform exception", new NullPointerException(), report);
 
@@ -66,7 +66,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testTransformExceptionHeaderContentType() {
+	void testTransformExceptionHeaderContentType() {
 		TransformException exception =
 				new TransformException("test transform exception", new NullPointerException(), report);
 
@@ -77,7 +77,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testTransformExceptionBody() {
+	void testTransformExceptionBody() {
 		TransformException exception =
 				new TransformException("test transform exception", new NullPointerException(), report);
 
@@ -86,7 +86,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testQppValidationExceptionStatusCode() {
+	void testQppValidationExceptionStatusCode() {
 		QppValidationException exception =
 				new QppValidationException("test transform exception", new NullPointerException(), report);
 
@@ -98,7 +98,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testQppValidationExceptionHeaderContentType() {
+	void testQppValidationExceptionHeaderContentType() {
 		QppValidationException exception =
 				new QppValidationException("test transform exception", new NullPointerException(), report);
 
@@ -109,7 +109,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testQppValidationExceptionBody() {
+	void testQppValidationExceptionBody() {
 		QppValidationException exception =
 				new QppValidationException("test transform exception", new NullPointerException(), report);
 
@@ -118,7 +118,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testNoFileInDatabaseExceptionStatusCode() {
+	void testFileNotFoundExceptionStatusCode() {
 		NoFileInDatabaseException exception =
 				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
@@ -130,7 +130,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testNoFileInDatabaseExceptionHeaderContentType() {
+	void testFileNotFoundExceptionHeaderContentType() {
 		NoFileInDatabaseException exception =
 				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
@@ -141,7 +141,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testNoFileInDatabaseExceptionBody() {
+	void testFileNotFoundExceptionBody() {
 		NoFileInDatabaseException exception =
 				new NoFileInDatabaseException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
@@ -150,7 +150,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testInvalidFileTypeExceptionStatusCode() {
+	void testInvalidFileTypeExceptionStatusCode() {
 		InvalidFileTypeException exception =
 				new InvalidFileTypeException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
@@ -162,7 +162,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testInvalidFileTypeExceptionHeaderContentType() {
+	void testInvalidFileTypeExceptionHeaderContentType() {
 		InvalidFileTypeException exception =
 				new InvalidFileTypeException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
@@ -173,7 +173,7 @@ public class ExceptionHandlerControllerV1Test {
 	}
 
 	@Test
-	public void testInvalidFileTypeExceptionBody() {
+	void testInvalidFileTypeExceptionBody() {
 		InvalidFileTypeException exception =
 				new InvalidFileTypeException(CpcFileServiceImpl.FILE_NOT_FOUND);
 
