@@ -25,6 +25,7 @@ import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -72,6 +73,28 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
+	void testMarkFileAsProcessedReturnsSuccess() {
+		when(cpcFileService.processFileById(anyString())).thenReturn("success!");
+
+		ResponseEntity<String> response = cpcFileControllerV1.markFileProcessed("meep");
+
+		verify(cpcFileService, times(1)).processFileById("meep");
+
+		assertThat(response.getBody()).isEqualTo("success!");
+	}
+
+	@Test
+	void testMarkFileAsProcessedHttpStatusOk() {
+		when(cpcFileService.processFileById(anyString())).thenReturn("success!");
+
+		ResponseEntity<String> response = cpcFileControllerV1.markFileProcessed("meep");
+
+		verify(cpcFileService, times(1)).processFileById("meep");
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
+
+	@Test
 	void testEndpoint1WithFeatureFlagDisabled() {
 		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
 
@@ -86,6 +109,16 @@ class CpcFileControllerV1Test {
 		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
 
 		ResponseEntity<InputStreamResource> cpcResponse = cpcFileControllerV1.getFileById("meep");
+
+		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+		assertThat(cpcResponse.getBody()).isNull();
+	}
+
+	@Test
+	void testEndpoint3WithFeatureFlagDisabled() throws IOException {
+		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
+
+		ResponseEntity<String> cpcResponse = cpcFileControllerV1.markFileProcessed("meep");
 
 		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 		assertThat(cpcResponse.getBody()).isNull();

@@ -25,4 +25,12 @@ public interface CpcFileService {
 	 * @throws IOException for invalid IOUtils usage
 	 */
 	InputStreamResource getFileById(String fileId) throws IOException;
+
+	/**
+	 * Marks a CPC File as processed by id
+	 *
+	 * @param fileId Identifier of the CPC+ file
+	 * @return Success or failure message
+	 */
+	String processFileById(String fileId);
 }
