@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.api.helper.MetadataHelper.Outcome;
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -27,6 +28,8 @@ class MetadataHelperTest implements HelperContract {
 		comparison.setValidationStatus(false);
 
 		Metadata metadata = MetadataHelper.generateMetadata(null, outcome);
+		metadata.setCreatedDate(comparison.getCreatedDate());
+
 		assertThat(metadata).isEqualTo(comparison);
 	}
 
@@ -42,7 +45,7 @@ class MetadataHelperTest implements HelperContract {
 		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "CPCPLUS");
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		assertThat(metadata.getCpc()).isTrue();
+		assertThat(metadata.getCpc()).startsWith(Constants.CPC_DYNAMO_PARTITION_START);
 	}
 
 	@Test
@@ -54,7 +57,7 @@ class MetadataHelperTest implements HelperContract {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		assertThat(metadata.getCpc()).isTrue();
+		assertThat(metadata.getCpc()).startsWith(Constants.CPC_DYNAMO_PARTITION_START);
 	}
 
 	@Test
@@ -65,7 +68,7 @@ class MetadataHelperTest implements HelperContract {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		assertThat(metadata.getCpc()).isFalse();
+		assertThat(metadata.getCpc()).isNull();
 	}
 
 	@Test
