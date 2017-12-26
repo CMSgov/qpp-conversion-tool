@@ -1,18 +1,23 @@
 package gov.cms.qpp.conversion.api.services;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Writes a {@link Metadata} object to DynamoDB.
@@ -59,15 +64,21 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @return {@link List} of unprocessed {@link Metadata}
 	 */
 	public List<Metadata> getUnprocessedCpcPlusMetaData() {
-		HashMap<String, AttributeValue> valueMap = new HashMap<>();
-		valueMap.put(":cpcValue", new AttributeValue().withN("1"));
-		valueMap.put(":cpcProcessedValue", new AttributeValue().withN("0"));
 
-		DynamoDBScanExpression metadataScan = new DynamoDBScanExpression()
-				.withFilterExpression("Cpc = :cpcValue and CpcProcessed = :cpcProcessedValue")
-				.withExpressionAttributeValues(valueMap);
+		return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
+			Map<String, AttributeValue> valueMap = new HashMap<>();
+			valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
+			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
 
-		return mapper.scan(Metadata.class, metadataScan);
+			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
+				.withIndexName("Cpc-CpcProcessed_CreateDate-index")
+				.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with(" +
+					Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
+				.withExpressionAttributeValues(valueMap)
+				.withConsistentRead(false);
+
+			return mapper.query(Metadata.class, metadataQuery).stream();
+		}).flatMap(Function.identity()).collect(Collectors.toList());
 	}
 
 	/**
