@@ -59,7 +59,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 			UsernamePasswordAuthenticationToken token =
 					new UsernamePasswordAuthenticationToken(payloadMap.get("id"), null , new ArrayList<>());
 			SecurityContextHolder.getContext().setAuthentication(token);
-
 		}
 		chain.doFilter(request, response);
 	}
@@ -98,6 +97,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 */
 	private boolean isValidCpcPlusOrg(Map<String, String> payloadMap) {
 		String orgId = payloadMap.get("id");
-		return (orgId !=null && payloadMap.get("orgType") != null && VALID_ORG_IDS.contains(orgId));
+		return (orgId != null && payloadMap.get("orgType") != null && VALID_ORG_IDS.contains(orgId));
 	}
 }
