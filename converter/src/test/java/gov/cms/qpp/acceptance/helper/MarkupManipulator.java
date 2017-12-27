@@ -44,13 +44,11 @@ public class MarkupManipulator {
 
 	public InputStream upsetTheNorm(String xPath, boolean remove) {
 		try {
-			document = dbf.newDocumentBuilder().parse(
-					new File(pathname));
+			document = dbf.newDocumentBuilder().parse(new File(pathname));
 			XPath xpath = xpf.newXPath();
 			XPathExpression expression = xpath.compile(xPath);
 
-			NodeList searchedNodes = (NodeList) expression
-					.evaluate(document, XPathConstants.NODESET);
+			NodeList searchedNodes = (NodeList) expression.evaluate(document, XPathConstants.NODESET);
 			if (searchedNodes == null) {
 				System.out.println("bad path: " + xPath);
 			} else {
