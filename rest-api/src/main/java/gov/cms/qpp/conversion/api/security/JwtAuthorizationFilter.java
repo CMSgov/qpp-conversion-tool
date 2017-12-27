@@ -28,7 +28,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	/**
 	 * JWT Constructor with Authentication manager
 	 *
-	 * @param authManager
+	 * @param authManager Object to be passed to it's parent constructor
 	 */
 	public JwtAuthorizationFilter(AuthenticationManager authManager) {
 		super(authManager);
