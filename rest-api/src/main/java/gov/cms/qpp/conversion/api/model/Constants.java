@@ -18,6 +18,7 @@ public class Constants {
 	public static final String CPC_DYNAMO_PARTITION_START = "CPC_";
 	public static final String DYNAMO_CPC_ATTRIBUTE = "Cpc";
 	public static final String DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE = "CpcProcessed_CreateDate";
+	public static final String ORGANIZATION_ID_VARIABLE = "ORG_ID";
 
 	/**
 	 * Library utility class so the constructor is private and empty.

@@ -1,16 +1,17 @@
 package gov.cms.qpp.conversion.api.security;
 
-import com.google.common.collect.Sets;
+import gov.cms.qpp.conversion.api.model.Constants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +23,20 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	private static final String HEADER_STRING = "Authorization";
 	private static final String TOKEN_PREFIX = "Bearer ";
-	private static final Set<String> VALID_ORG_IDS = Sets.newHashSet("fb1778dd-a5e3-42c8-836f-47654e003fab",
-			"ef33b1f6-842a-4519-9109-2ca2ed728ceb", "45624754-cce1-47ea-a7b1-02a9b9e19c2a");
+
+	@Autowired
+	private Environment environment;
+
+	/**
+	 * JWT Constructor with Authentication manager
+	 *
+	 * @param authManager Object to be passed to it's parent constructor
+	 * @param environment for mocking test environemnts
+	 */
+	public JwtAuthorizationFilter(AuthenticationManager authManager, Environment environment) {
+		super(authManager);
+		this.environment = environment;
+	}
 
 	/**
 	 * JWT Constructor with Authentication manager
@@ -32,6 +45,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 */
 	public JwtAuthorizationFilter(AuthenticationManager authManager) {
 		super(authManager);
+		this.environment = environment;
 	}
 
 	/**
@@ -96,7 +110,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 * @return validation of the user/org
 	 */
 	private boolean isValidCpcPlusOrg(Map<String, String> payloadMap) {
-		String orgId = payloadMap.get("id");
-		return (orgId != null && payloadMap.get("orgType") != null && VALID_ORG_IDS.contains(orgId));
+		String currentOrganizationId = payloadMap.get("id");
+		String correctOrganizationId = environment.getProperty(Constants.ORGANIZATION_ID_VARIABLE);
+
+		return (currentOrganizationId != null && payloadMap.get("orgType") != null &&
+				correctOrganizationId.equals(currentOrganizationId));
 	}
 }
