@@ -1,6 +1,6 @@
 {
     "name": "qpp-conversion-frontend",
-    "version": "0.34",
+    "version": "1.0",
     "license": "MIT",
     "scripts": {
         "ng": "ng",
