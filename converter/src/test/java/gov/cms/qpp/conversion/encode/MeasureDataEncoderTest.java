@@ -6,7 +6,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
@@ -20,8 +20,7 @@ class MeasureDataEncoderTest {
 	void testDenominator() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENOM);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertWithMessage("Must return correct encoded result")
-				.that(jsonWrapper.getInteger(ELIGIBLE_POPULATION))
+		assertThat(jsonWrapper.getInteger(ELIGIBLE_POPULATION))
 				.isEqualTo(900);
 	}
 
@@ -29,8 +28,7 @@ class MeasureDataEncoderTest {
 	void testEligiblePopulationException() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENEXCEP);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertWithMessage("Must return correct encoded result")
-				.that(jsonWrapper.getInteger(ELIGIBLE_POPULATION_EXCEP))
+		assertThat(jsonWrapper.getInteger(ELIGIBLE_POPULATION_EXCEP))
 				.isEqualTo(900);
 	}
 
@@ -38,8 +36,7 @@ class MeasureDataEncoderTest {
 	void testEligiblePopulationExclusion() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENEX);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertWithMessage("Must return correct encoded result")
-				.that(jsonWrapper.getInteger(ELIGIBLE_POPULATION_EX))
+		assertThat(jsonWrapper.getInteger(ELIGIBLE_POPULATION_EX))
 				.isEqualTo(900);
 	}
 
@@ -47,8 +44,7 @@ class MeasureDataEncoderTest {
 	void testPerformanceMet() throws EncodeException {
 		Node measureDataNode = setUpMeasureDataNode(SubPopulations.NUMER);
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertWithMessage("Must return correct encoded result")
-				.that(jsonWrapper.getInteger(PERFORMANCE_MET))
+		assertThat(jsonWrapper.getInteger(PERFORMANCE_MET))
 				.isEqualTo(900);
 	}
 

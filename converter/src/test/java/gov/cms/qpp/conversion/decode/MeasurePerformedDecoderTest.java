@@ -10,7 +10,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class MeasurePerformedDecoderTest {
 
@@ -48,8 +48,7 @@ class MeasurePerformedDecoderTest {
 	}
 
 	private void assertValidMeasurePerformed(Node measurePerformedNode) {
-		assertWithMessage("Should have a measure perform")
-				.that(measurePerformedNode.getValue("measurePerformed"))
+		assertThat(measurePerformedNode.getValue("measurePerformed"))
 				.isEqualTo("Y");
 	}
 }

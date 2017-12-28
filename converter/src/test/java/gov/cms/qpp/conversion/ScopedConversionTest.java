@@ -12,12 +12,7 @@ import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.AciDenominatorValidator;
-import gov.cms.qpp.conversion.validate.AciNumeratorDenominatorValidator;
 import gov.cms.qpp.conversion.validate.AciNumeratorValidator;
-import gov.cms.qpp.conversion.validate.AciSectionValidator;
-import gov.cms.qpp.conversion.validate.AggregateCountValidator;
-import gov.cms.qpp.conversion.validate.IaMeasureValidator;
-import gov.cms.qpp.conversion.validate.IaSectionValidator;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -297,7 +292,7 @@ class ScopedConversionTest {
 
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> scopedConversion(QrdaScope testSection) {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(SUCCESS_MAKER)));
+		Converter converter = new Converter(new PathSource(Paths.get(SUCCESS_MAKER)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
 		JsonWrapper qpp = converter.transform();
 		return (Map<String, Object>) JsonHelper.readJson(qpp.toString(), HashMap.class);
@@ -305,7 +300,7 @@ class ScopedConversionTest {
 
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> errantScopedConversion(QrdaScope testSection) throws JsonProcessingException {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(ERROR_MAKER)));
+		Converter converter = new Converter(new PathSource(Paths.get(ERROR_MAKER)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
 		Map<String, Object> content = null;
 		try {

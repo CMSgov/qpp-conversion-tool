@@ -21,7 +21,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -53,7 +52,7 @@ class AnyOrderAsyncActionServiceTest {
 	void testAsynchronousActionIsCalled() {
 		runSimpleScenario(0);
 
-		assertTrue("The asynchronousAction was not called.", objectUnderTest.asynchronousActionCalled.get());
+		assertThat(objectUnderTest.asynchronousActionCalled.get()).isTrue();
 	}
 
 	@Test

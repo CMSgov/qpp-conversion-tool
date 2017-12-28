@@ -1,12 +1,15 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
+import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.stereotype.Service;
 
 /**
  * Service for handling Cpc File meta data
@@ -14,8 +17,15 @@ import java.util.stream.Collectors;
 @Service
 public class CpcFileServiceImpl implements CpcFileService {
 
+	public static final String FILE_NOT_FOUND = "File not found!";
+	protected static final String INVALID_FILE = "The file was not a CPC+ file.";
+	protected static final String FILE_FOUND = "The file was found and will be updated as processed.";
+
 	@Autowired
 	private DbService dbService;
+
+	@Autowired
+	private StorageService storageService;
 
 	/**
 	 * Calls the DbService for unprocessed metadata to transform into UnprocessedCpcFileData
@@ -30,6 +40,43 @@ public class CpcFileServiceImpl implements CpcFileService {
 	}
 
 	/**
+	 * Retrieves the file location id and retrieves the file if it is an unprocessed cpc+ file
+	 *
+	 * @param fileId {@link Metadata} identifier
+	 * @return file contents as a {@link String}
+	 */
+	public InputStreamResource getFileById(String fileId) {
+		Metadata metadata = dbService.getMetadataById(fileId);
+		if (isAnUnprocessedCpcFile(metadata)) {
+			return new InputStreamResource(storageService.getFileByLocationId(metadata.getSubmissionLocator()));
+		} else {
+			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
+		}
+	}
+
+	/**
+	 * Process to ensure the file is an unprocessed cpc+ file and marks the file as processed
+	 *
+	 * @param fileId Identifier of the CPC+ file
+	 * @return Success or failure message.
+	 */
+	public String processFileById(String fileId) {
+		Metadata metadata = dbService.getMetadataById(fileId);
+		if (metadata == null) {
+			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
+		} else if (metadata.getCpc() == null) {
+			throw new InvalidFileTypeException(INVALID_FILE);
+		} else if (metadata.getCpcProcessed()) {
+			return FILE_FOUND;
+		} else {
+			metadata.setCpcProcessed(true);
+			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
+			metadataFuture.join();
+			return FILE_FOUND;
+		}
+	}
+
+	/**
 	 * Service to transform a {@link Metadata} list into the {@link UnprocessedCpcFileData}
 	 *
 	 * @param metadataList object to hold the list of {@link Metadata} from DynamoDb
@@ -37,5 +84,15 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 */
 	private List<UnprocessedCpcFileData> transformMetaDataToUnprocessedCpcFileData(List<Metadata> metadataList) {
 		return metadataList.stream().map(UnprocessedCpcFileData::new).collect(Collectors.toList());
+	}
+
+	/**
+	 * Determines if the file is unprocessed and is CPC+
+	 *
+	 * @param metadata Data to be determined valid or invalid
+	 * @return result of the check
+	 */
+	private boolean isAnUnprocessedCpcFile(Metadata metadata) {
+		return metadata != null && metadata.getCpc() != null && !metadata.getCpcProcessed();
 	}
 }

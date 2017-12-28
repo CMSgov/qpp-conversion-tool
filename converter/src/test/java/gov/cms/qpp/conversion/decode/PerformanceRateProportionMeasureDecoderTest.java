@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class PerformanceRateProportionMeasureDecoderTest {
 	private static String happy;
@@ -35,16 +35,14 @@ class PerformanceRateProportionMeasureDecoderTest {
 
 	@Test
 	void testPerformanceRateValueSuccess() {
-		assertWithMessage("Must contain the correct value")
-				.that(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE))
+		assertThat(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE))
 				.isEqualTo("0.947368");
 	}
 
 	@Test
 	void testPerformanceRateUuidSuccess() {
 		final String performanceRateId = "6D01A564-58CC-4CF5-929F-B83583701BFE";
-		assertWithMessage("Must contain the correct UUID")
-				.that(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID))
+		assertThat(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID))
 				.isEqualTo(performanceRateId);
 	}
 
@@ -52,8 +50,7 @@ class PerformanceRateProportionMeasureDecoderTest {
 	void testSuccessfulNullPerformanceRate() throws XmlException {
 		decodeNodeFromFile(nullHappy);
 		performanceRateNode = getNode();
-		assertWithMessage("Must contain the correct value")
-				.that(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))
+		assertThat(performanceRateNode.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))
 				.isEqualTo("NA");
 	}
 

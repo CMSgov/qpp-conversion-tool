@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import org.jdom2.Element;
 import org.junit.jupiter.api.Test;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 class QppXmlDecoderTest {
@@ -18,17 +19,15 @@ class QppXmlDecoderTest {
 
 	@Test
 	void decodeResultNoAction() throws Exception {
-		assertWithMessage("DecodeResult is incorrect")
-				.that(new QppXmlDecoder(new Context()).internalDecode(null, null))
-				.isEquivalentAccordingToCompareTo(DecodeResult.NO_ACTION);
+		assertThat(new QppXmlDecoder(new Context()).internalDecode(null, null))
+				.isEqualTo(DecodeResult.NO_ACTION);
 	}
 
 	@Test
 	void nullElementDecodeReturnsError() {
 		// Element nullElement = null;
-		assertWithMessage("DecodeResult is incorrect")
-				.that(new QppXmlDecoder(new Context()).decode((Element) null, null))
-				.isEquivalentAccordingToCompareTo(DecodeResult.ERROR);
+		assertThat(new QppXmlDecoder(new Context()).decode((Element) null, null))
+				.isEqualTo(DecodeResult.ERROR);
 	}
 
 	@Test
@@ -56,9 +55,7 @@ class QppXmlDecoderTest {
 	void testChildDecodeErrorResultTest() throws Exception {
 		DecodeResult result = DecodeResult.ERROR;
 		DecodeResult returnValue = runTestChildDecodeResult(result);
-		assertWithMessage("Should get an invalid Decode Result")
-				.that(returnValue)
-				.isNull();
+		assertThat(returnValue).isNull();
 
 	}
 
@@ -66,9 +63,7 @@ class QppXmlDecoderTest {
 	void testChildDecodeInvalidResultTest() throws Exception {
 		DecodeResult result = DecodeResult.NO_ACTION;
 		DecodeResult returnValue = runTestChildDecodeResult(result);
-		assertWithMessage("Should get an invalid Decode Result")
-				.that(returnValue)
-				.isNull();
+		assertThat(returnValue).isNull();
 	}
 
 	private DecodeResult runTestChildDecodeResult(DecodeResult code) throws Exception {

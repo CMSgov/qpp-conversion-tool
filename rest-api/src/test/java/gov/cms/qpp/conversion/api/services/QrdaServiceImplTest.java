@@ -1,8 +1,8 @@
 package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamSupplierQrdaSource;
-import gov.cms.qpp.conversion.QrdaSource;
+import gov.cms.qpp.conversion.InputStreamSupplierSource;
+import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.test.MockitoExtension;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -16,17 +16,16 @@ import org.mockito.Spy;
 import java.io.ByteArrayInputStream;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class QrdaServiceImplTest {
-	private static final QrdaSource MOCK_SUCCESS_QRDA_SOURCE =
-			new InputStreamSupplierQrdaSource("Good Qrda", () -> new ByteArrayInputStream("Good Qrda".getBytes()));
-	private static final QrdaSource MOCK_ERROR_QRDA_SOURCE =
-			new InputStreamSupplierQrdaSource("Error Qrda", () ->new ByteArrayInputStream("Error Qrda".getBytes()));
+	private static final Source MOCK_SUCCESS_QRDA_SOURCE =
+			new InputStreamSupplierSource("Good Qrda", () -> new ByteArrayInputStream("Good Qrda".getBytes()));
+	private static final Source MOCK_ERROR_QRDA_SOURCE =
+			new InputStreamSupplierSource("Error Qrda", () ->new ByteArrayInputStream("Error Qrda".getBytes()));
 
 	private static final String KEY = "key";
 	private static final String MOCK_SUCCESS_QPP_STRING = "Good Qpp";
@@ -49,8 +48,7 @@ class QrdaServiceImplTest {
 	@Test
 	void testConvertQrda3ToQppSuccess() {
 		JsonWrapper qpp = objectUnderTest.convertQrda3ToQpp(MOCK_SUCCESS_QRDA_SOURCE).getEncoded();
-		assertWithMessage("The JSON content is incorrect.")
-				.that(qpp.getString(KEY)).isSameAs(MOCK_SUCCESS_QPP_STRING);
+		assertThat(qpp.getString(KEY)).isSameAs(MOCK_SUCCESS_QPP_STRING);
 	}
 
 	@Test
