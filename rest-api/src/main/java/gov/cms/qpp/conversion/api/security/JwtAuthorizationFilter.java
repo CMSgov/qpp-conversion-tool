@@ -45,7 +45,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 */
 	public JwtAuthorizationFilter(AuthenticationManager authManager) {
 		super(authManager);
-		this.environment = environment;
 	}
 
 	/**
