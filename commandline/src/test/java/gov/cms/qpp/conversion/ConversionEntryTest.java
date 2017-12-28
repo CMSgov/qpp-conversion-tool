@@ -1,7 +1,15 @@
 package gov.cms.qpp.conversion;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import com.google.common.collect.ImmutableMap;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.MissingArgumentException;
+import org.apache.commons.cli.ParseException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.powermock.api.support.membermodification.MemberMatcher;
+import org.powermock.api.support.membermodification.MemberModifier;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,21 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.MissingArgumentException;
-import org.apache.commons.cli.ParseException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.powermock.api.support.membermodification.MemberMatcher;
-import org.powermock.api.support.membermodification.MemberModifier;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
-import com.google.common.collect.ImmutableMap;
-
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.test.LoggerContract;
-
-class ConversionEntryTest implements LoggerContract {
+class ConversionEntryTest {
 
 	private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 	private static final String SKIP_DEFAULTS = "--" + ConversionEntry.SKIP_DEFAULTS;
@@ -59,7 +56,7 @@ class ConversionEntryTest implements LoggerContract {
 	void testWildCardToRegexPathFileWild() {
 		String regex = ConversionEntry.wildCardToRegex("path/to/dir/*.xml").pattern();
 		String expect = ".*\\.xml";
-		assertWithMessage("Should be %s", expect).that(expect).isEqualTo(regex);
+		assertThat(expect).isEqualTo(regex);
 	}
 
 	@Test
@@ -136,8 +133,7 @@ class ConversionEntryTest implements LoggerContract {
 		Path dFile = baseDir.resolve("subdir/d.xml");
 
 		Collection<Path> files = ConversionEntry.manyPath("src/test/resources/pathTest/*.xml");
-		assertWithMessage("There should %s files", 3)
-				.that(files).containsExactly(aFile, bFile, dFile);
+		assertThat(files).containsExactly(aFile, bFile, dFile);
 	}
 
 	@Test
@@ -147,8 +143,7 @@ class ConversionEntryTest implements LoggerContract {
 		MemberModifier.stub(MemberMatcher.method(ConversionEntry.class, "wildCardToRegex", String.class)).toReturn( Pattern.compile(pathTest) );
 
 		Collection<Path> files = ConversionEntry.manyPath(pathTest);
-		assertWithMessage("No files should be found")
-				.that(files.size()).isEqualTo(0);
+		assertThat(files).isEmpty();
 	}
 
 	@Test
@@ -157,7 +152,7 @@ class ConversionEntryTest implements LoggerContract {
 		Collection<Path> files = ConversionEntry.manyPath("src/test/resources/pathTest/*.xm*");
 
 		assertWithMessage("Should find 4 matching files")
-				.that(files.size()).isEqualTo(4);
+				.that(files).hasSize(4);
 		assertWithMessage("Matching file %s should have been found", filePath)
 				.that(files).contains(Paths.get(filePath));
 	}
@@ -171,12 +166,12 @@ class ConversionEntryTest implements LoggerContract {
 				"   ", 0
 		);
 
-		scenarios.forEach((key, value) -> {
+		scenarios.forEach((key, expectedSize) -> {
 			Collection<Path> files = ConversionEntry.checkPath(key);
 			assertWithMessage(key + " should not result in null paths")
 					.that(files).isNotNull();
 			assertWithMessage("Number of matched files does not meet expectation")
-					.that(files.size()).isEqualTo(value);
+					.that(files).hasSize(expectedSize);
 		});
 	}
 
@@ -184,7 +179,7 @@ class ConversionEntryTest implements LoggerContract {
 	void testCheckPathNull() {
 		Collection<Path> files = ConversionEntry.checkPath("src/test/resources/pathTest/*.xml");
 		assertWithMessage("Should find 3 files")
-				.that(files.size()).isEqualTo(3);
+				.that(files).hasSize(3);
 	}
 
 	@Test
@@ -202,9 +197,8 @@ class ConversionEntryTest implements LoggerContract {
 		Collection<Path> files = ConversionEntry.validArgs(args);
 
 		assertWithMessage("Should find 2 files")
-				.that(files.size()).isEqualTo(2);
-		assertWithMessage("Should find %s and %s", args[0], found)
-				.that(files).containsExactly(Paths.get(args[0]), Paths.get(found));
+				.that(files).hasSize(2);
+		assertThat(files).containsExactly(Paths.get(args[0]), Paths.get(found));
 	}
 
 	@Test
@@ -233,15 +227,13 @@ class ConversionEntryTest implements LoggerContract {
 		//then
 		assertWithMessage("MEEP is not a valid scope")
 				.that(result).isFalse();
-		assertWithMessage("output stream should contain " + ConversionEntry.INVALID_TEMPLATE_SCOPE)
-				.that(getLogs().toString()).contains(ConversionEntry.INVALID_TEMPLATE_SCOPE);
 	}
 
 	@Test
 	void shouldAllowEmptyTemplateScope() throws ParseException {
 		//when
 		Assertions.assertThrows(MissingArgumentException.class, () -> {
-			CommandLine line = ConversionEntry.cli(new String[] {"-t"});
+			CommandLine line = ConversionEntry.cli("-t");
 			ConversionEntry.shouldContinue(line);
 		});
 	}
@@ -262,11 +254,10 @@ class ConversionEntryTest implements LoggerContract {
 	@Test
 	void testValidArgsParseException() throws Exception {
 		//when
-		ConversionEntry.validArgs("-someInvalidArgument");
+		Collection<Path> arguments = ConversionEntry.validArgs("-someInvalidArgument");
 
 		//then
-		assertWithMessage("output stream should contain %s", ConversionEntry.CLI_PROBLEM)
-				.that(getLogs().toString()).contains(ConversionEntry.CLI_PROBLEM);
+		assertThat(arguments).isEmpty();
 	}
 
 	//cli
@@ -356,10 +347,5 @@ class ConversionEntryTest implements LoggerContract {
 		assertWithMessage("Expect to have an instance here ")
 				.that(conversionEntry)
 				.isInstanceOf(ConversionEntry.class);
-	}
-
-	@Override
-	public Class<?> getLoggerType() {
-		return ConversionEntry.class;
 	}
 }

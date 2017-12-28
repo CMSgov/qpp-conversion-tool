@@ -4,7 +4,6 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.model.TemplateId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,18 +18,15 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 	protected final Registry<JsonOutputEncoder> encoders;
 
 	protected final Context context;
-	private final TemplateId template;
 
 	public QppOutputEncoder(Context context) {
 		this.context = context;
 		this.encoders = context.getRegistry(Encoder.class);
-		Encoder enc = this.getClass().getAnnotation(Encoder.class);
-		template = (enc != null) ? enc.value() : TemplateId.DEFAULT;
 	}
 
 	@Override
 	public final void encode(JsonWrapper wrapper, Node node) {
-		DEV_LOG.debug("Using " + template + " encoder to encode " + node);
+		DEV_LOG.debug("Using {} to encode {}", this.getClass().getName(), node);
 		super.encode(wrapper, node);
 	}
 

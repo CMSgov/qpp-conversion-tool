@@ -1,7 +1,7 @@
 package gov.cms.qpp.acceptance.helper;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -33,7 +33,7 @@ public class JsonPathToXpathHelper {
 	public JsonPathToXpathHelper(Path inPath, JsonWrapper inWrapper, boolean doDefaults) throws IOException {
 		path = inPath;
 		wrapper = inWrapper;
-		Converter converter = new Converter(new PathQrdaSource(inPath));
+		Converter converter = new Converter(new PathSource(inPath));
 		converter.getContext().setDoDefaults(doDefaults);
 		converter.transform();
 		QppOutputEncoder encoder = new QppOutputEncoder(converter.getContext());

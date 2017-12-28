@@ -9,7 +9,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Test class for the IaMeasureDecoder
@@ -31,14 +31,11 @@ class IaMeasureDecoderTest {
 		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED);
 		String value = measurePerformed.getValue("measurePerformed");
 
-		assertWithMessage("Should contain the correct value")
-				.that(iaMeasure.getValue("measureId"))
+		assertThat(iaMeasure.getValue("measureId"))
 				.isEqualTo("IA_EPA_1");
-		assertWithMessage("Should contain the correct template id")
-				.that(measurePerformed.getType())
-				.isEquivalentAccordingToCompareTo(TemplateId.MEASURE_PERFORMED);
-		assertWithMessage("The ACI_MEASURE_PERFORMED value should be \"Y\"")
-				.that(value)
+		assertThat(measurePerformed.getType())
+				.isEqualTo(TemplateId.MEASURE_PERFORMED);
+		assertThat(value)
 				.isEqualTo("Y");
 	}
 
@@ -50,11 +47,9 @@ class IaMeasureDecoderTest {
 		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
 		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
 
-		assertWithMessage("IAMeasure node should be IA_MEASURE ")
-				.that(iaMeasure.getType())
+		assertThat(iaMeasure.getType())
 				.isEquivalentAccordingToCompareTo(TemplateId.IA_MEASURE);
-		assertWithMessage("There should not be any child node")
-				.that(iaMeasure.getChildNodes())
+		assertThat(iaMeasure.getChildNodes())
 				.hasSize(0);
 	}
 
@@ -68,14 +63,11 @@ class IaMeasureDecoderTest {
 		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED);
 		String value = measurePerformed.getValue("measurePerformed");
 
-		assertWithMessage("Should contain the correct value")
-				.that(iaMeasure.getValue("measureId"))
+		assertThat(iaMeasure.getValue("measureId"))
 				.isEqualTo("IA_EPA_1");
-		assertWithMessage("Should contain the correct template id")
-				.that(measurePerformed.getType())
-				.isEquivalentAccordingToCompareTo(TemplateId.MEASURE_PERFORMED);
-		assertWithMessage("The MEASURE_PERFORMED value should be \"Y\"")
-				.that(value)
+		assertThat(measurePerformed.getType())
+				.isEqualTo(TemplateId.MEASURE_PERFORMED);
+		assertThat(value)
 				.isEqualTo("Y");
 	}
 

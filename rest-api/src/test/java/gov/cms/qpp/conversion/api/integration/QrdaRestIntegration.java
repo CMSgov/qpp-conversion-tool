@@ -1,32 +1,33 @@
 package gov.cms.qpp.conversion.api.integration;
 
-import gov.cms.qpp.conversion.api.model.Constants;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import gov.cms.qpp.conversion.api.model.Constants;
 
 @SpringBootTest
 @WebAppConfiguration
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "classpath:test.properties")
 public class QrdaRestIntegration {
 
@@ -35,19 +36,19 @@ public class QrdaRestIntegration {
 
 	private MockMvc mockMvc;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 
 	@Test
-	public void shouldBeHealthy() throws Exception {
+	void shouldBeHealthy() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/health"))
 				.andExpect(status().is(200));
 	}
 
 	@Test
-	public void testDefaultValidQpp() throws Exception {
+	void testDefaultValidQpp() throws Exception {
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		mockMvc.perform(MockMvcRequestBuilders
 			.fileUpload("/").file(qrda3File))
@@ -57,7 +58,7 @@ public class QrdaRestIntegration {
 	}
 
 	@Test
-	public void testValidQpp() throws Exception {
+	void testValidQpp() throws Exception {
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
 		mockMvc.perform(MockMvcRequestBuilders
 				.fileUpload("/").file(qrda3File).accept(Constants.V1_API_ACCEPT))
@@ -68,7 +69,7 @@ public class QrdaRestIntegration {
 
 
 	@Test
-	public void testInvalidQpp() throws Exception {
+	void testInvalidQpp() throws Exception {
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/not-a-QDRA-III-file.xml")));
 		mockMvc.perform(MockMvcRequestBuilders
 			.fileUpload("/").file(qrda3File))
@@ -78,7 +79,7 @@ public class QrdaRestIntegration {
 	}
 
 	@Test
-	public void testInvalidAcceptHeader() throws Exception {
+	void testInvalidAcceptHeader() throws Exception {
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get("../qrda-files/not-a-QDRA-III-file.xml")));
 		mockMvc.perform(MockMvcRequestBuilders
 				.fileUpload("/").file(qrda3File)
@@ -87,7 +88,7 @@ public class QrdaRestIntegration {
 	}
 
 	@Test
-	public void shouldFailForSubmissionApiValidation() throws Exception {
+	void shouldFailForSubmissionApiValidation() throws Exception {
 		String file = "../converter/src/test/resources/cpc_plus/CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III-success.xml";
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get(file)));
 		mockMvc.perform(MockMvcRequestBuilders
