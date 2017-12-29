@@ -60,7 +60,6 @@ public class StorageServiceImplIntegration {
 	private String bucketName = "test-bucket";
 	private AmazonS3 amazonS3Client;
 
-
 	@Before
 	public void setup() throws IllegalAccessException, NoSuchFieldException {
 		Assume.assumeTrue(System.getProperty("skip.long") == null);
@@ -94,7 +93,7 @@ public class StorageServiceImplIntegration {
 		when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 
 		CompletableFuture<String> result = underTest.store(
-				key, new ByteArrayInputStream(content.getBytes()));
+				key, new ByteArrayInputStream(content.getBytes()), content.getBytes().length);
 
 		result.whenComplete((outcome, ex) -> {
 			waiter.assertEquals(content, getObjectContent(key));

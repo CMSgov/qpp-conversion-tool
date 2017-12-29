@@ -8,7 +8,7 @@ import org.jdom2.Element;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Test for the QualityMeasureIdDecoder
@@ -34,9 +34,7 @@ class QualityMeasureIdDecoderTest {
 		objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		String value = qualityMeasureIdNode.getValue("measureId");
-		assertWithMessage("Expect to have a value")
-				.that(value)
-				.isEqualTo("measurement id value");
+		assertThat(value).isEqualTo("measurement id value");
 	}
 
 	/**
@@ -53,12 +51,9 @@ class QualityMeasureIdDecoderTest {
 		objectUnderTest.setNamespace(qualityMeasureIdElement, objectUnderTest);
 		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
-		assertWithMessage("The incorrect DecodeResult was returned.")
-				.that(decodeResult).isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
+		assertThat(decodeResult).isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
 		String value = qualityMeasureIdNode.getValue("measureId");
-		assertWithMessage("Expect to not have a value")
-				.that(value)
-				.isNull();
+		assertThat(value).isNull();
 	}
 
 	@Test
@@ -73,11 +68,8 @@ class QualityMeasureIdDecoderTest {
 		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		//assert
-		assertWithMessage("The incorrect DecodeResult was returned.")
-				.that(decodeResult).isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
-		assertWithMessage("The node should not have a value.")
-				.that(qualityMeasureIdNode.getValue("measureId"))
-				.isNull();
+		assertThat(decodeResult).isEqualTo(DecodeResult.TREE_CONTINUE);
+		assertThat(qualityMeasureIdNode.getValue("measureId")).isNull();
 	}
 
 	@Test
@@ -94,12 +86,10 @@ class QualityMeasureIdDecoderTest {
 		DecodeResult decodeResult = objectUnderTest.internalDecode(qualityMeasureIdElement, qualityMeasureIdNode);
 
 		//assert
-		assertWithMessage("The incorrect DecodeResult was returned.")
-				.that(decodeResult)
-				.isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
+		assertThat(decodeResult)
+				.isEqualTo(DecodeResult.TREE_CONTINUE);
 		String value = qualityMeasureIdNode.getValue("measureId");
-		assertWithMessage("Expect to have a value.")
-				.that(value)
+		assertThat(value)
 				.isEqualTo(nonIgnorableGuid);
 	}
 

@@ -1,7 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 class AciMeasurePerformedRoundTripTest {
 
@@ -22,7 +21,7 @@ class AciMeasurePerformedRoundTripTest {
 	@Test
 	void testGarbage() throws IOException {
 
-		Converter converter = new Converter(new PathQrdaSource(JUNK_QRDA3_FILE));
+		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE));
 		JsonWrapper qpp = converter.transform();
 
 		List<Map<String, ?>> aciMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),

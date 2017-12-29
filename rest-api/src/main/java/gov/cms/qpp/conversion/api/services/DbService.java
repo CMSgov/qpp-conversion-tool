@@ -2,12 +2,11 @@ package gov.cms.qpp.conversion.api.services;
 
 
 import gov.cms.qpp.conversion.api.model.Metadata;
-
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Interface for writing a {@link Metadata} object to a database.
+ * Interface for reading/writing a {@link Metadata} object to a database.
  */
 public interface DbService {
 	/**
@@ -19,4 +18,12 @@ public interface DbService {
 	CompletableFuture<Metadata> write(Metadata meta);
 
 	List<Metadata> getUnprocessedCpcPlusMetaData();
+
+	/**
+	 * Retrieves the metadata from the database by uuid
+	 *
+	 * @param uuid Id of the Metadata holding the FileLocationId
+	 * @return {@link Metadata} or null
+	 */
+	Metadata getMetadataById(String uuid);
 }

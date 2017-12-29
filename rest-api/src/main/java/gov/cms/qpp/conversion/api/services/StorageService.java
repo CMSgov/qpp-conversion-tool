@@ -14,7 +14,16 @@ public interface StorageService {
 	 *
 	 * @param keyName The requested key name for the object.
 	 * @param inStream The {@link InputStream} to write out to an object in S3.
+	 * @param size The size of the {@link InputStream}.
 	 * @return A {@link CompletableFuture} that will eventually contain the S3 object key.
 	 */
-	CompletableFuture<String> store(String keyName, InputStream inStream);
+	CompletableFuture<String> store(String keyName, InputStream inStream, long size);
+
+	/**
+	 * Retrieve a CPC+ file by file id
+	 *
+	 * @param fileId Id of the file
+	 * @return file to be returned
+	 */
+	InputStream getFileByLocationId(String fileId);
 }

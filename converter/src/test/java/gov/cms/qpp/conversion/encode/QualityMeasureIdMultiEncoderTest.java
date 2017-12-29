@@ -1,21 +1,28 @@
 package gov.cms.qpp.conversion.encode;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
-public class QualityMeasureIdMultiEncoderTest {
+class QualityMeasureIdMultiEncoderTest {
 
 	private static final String REQUIRE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
 	private static final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
@@ -46,18 +53,18 @@ public class QualityMeasureIdMultiEncoderTest {
 	private JsonWrapper wrapper;
 	private QualityMeasureIdEncoder encoder;
 
-	@BeforeClass
-	public static  void setUpCustomMeasureData() {
+	@BeforeAll
+	static  void setUpCustomMeasureData() {
 		MeasureConfigs.setMeasureDataFile("test-multi-prop-measure-data.json");
 	}
 
-	@AfterClass
-	public static void resetMeasuresData() {
+	@AfterAll
+	static void resetMeasuresData() {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue(MEASURE_ID, "test1");
 
@@ -120,7 +127,7 @@ public class QualityMeasureIdMultiEncoderTest {
 	}
 
 	@Test
-	public void testInternalEncode() {
+	void testInternalEncode() {
 		qualityMeasureId.addChildNodes(
 				eligiblePopulationNode, eligiblePopulationExceptionNode,
 				eligiblePopulationExclusionNode, numeratorNode, denominatorNode,
@@ -138,7 +145,7 @@ public class QualityMeasureIdMultiEncoderTest {
 	}
 
 	@Test
-	public void testNullSubPopulations() {
+	void testNullSubPopulations() {
 		qualityMeasureId.putValue(MEASURE_ID, "test2");
 		qualityMeasureId.addChildNodes(eligiblePopulationNode, eligiblePopulationExceptionNode,
 				numeratorNode, denominatorNode, eligiblePopulationNodeTwo,
@@ -151,7 +158,7 @@ public class QualityMeasureIdMultiEncoderTest {
 		List<LinkedHashMap<String, ?>> subPopulations =
 				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
 
-		assertWithMessage("Must have zero sub populations encoded").that(subPopulations).isEmpty();
+		assertThat(subPopulations).isEmpty();
 	}
 
 	@SuppressWarnings("unchecked")

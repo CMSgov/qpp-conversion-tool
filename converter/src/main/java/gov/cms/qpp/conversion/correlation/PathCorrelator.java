@@ -27,11 +27,12 @@ public class PathCorrelator {
 	public static final String KEY_DELIMITER = "#";
 	private static final String ENCODE_LABEL = "encodeLabel";
 	private static String config = "pathing/path-correlation.json";
-	private static PathCorrelation pathCorrelation;
 	private static Map<String, Goods> pathCorrelationMap = new HashMap<>();
+	private static String uriSubstitution = "";
+
 
 	static {
-		pathCorrelation = loadPathCorrelation();
+		uriSubstitution = loadPathCorrelation().getUriSubstitution();
 	}
 
 	private PathCorrelator() {}
@@ -84,7 +85,7 @@ public class PathCorrelator {
 	 * @return substitution place holder
 	 */
 	static String getUriSubstitution() {
-		return pathCorrelation.getUriSubstitution();
+		return uriSubstitution;
 	}
 
 	/**
@@ -110,7 +111,7 @@ public class PathCorrelator {
 		String key = PathCorrelator.getKey(base, attribute);
 		Goods goods = pathCorrelationMap.get(key);
 		return (goods == null) ? null :
-				goods.getRelativeXPath().replace(pathCorrelation.getUriSubstitution(), uri);
+				goods.getRelativeXPath().replace(uriSubstitution, uri);
 	}
 
 	/**
