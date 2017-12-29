@@ -1,5 +1,17 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.ComponentKey;
@@ -7,18 +19,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.expectation.PowerMockitoStubber;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.google.common.truth.Truth.assertWithMessage;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(QrdaValidator.class)
