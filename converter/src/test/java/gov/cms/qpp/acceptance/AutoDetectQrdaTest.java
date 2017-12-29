@@ -5,6 +5,7 @@ import static com.google.common.truth.Truth.assertThat;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ class AutoDetectQrdaTest implements LoggerContract {
 	@Test
 	void testNoTemplateId() throws IOException, XmlException {
 		//set-up
-		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III"), Charset.defaultCharset());
+		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III"), StandardCharsets.UTF_8);
 
 		//execute
 		XmlInputDecoder.decodeXml(new Context(), XmlUtils.stringToDom(xmlFragment));
@@ -35,7 +36,7 @@ class AutoDetectQrdaTest implements LoggerContract {
 	@Test
 	void testNoClinicalDocumentElement() throws IOException, XmlException {
 		//set-up
-		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III-root"), Charset.defaultCharset());
+		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III-root"), StandardCharsets.UTF_8);
 
 		//execute
 		XmlInputDecoder.decodeXml(new Context(), XmlUtils.stringToDom(xmlFragment));
