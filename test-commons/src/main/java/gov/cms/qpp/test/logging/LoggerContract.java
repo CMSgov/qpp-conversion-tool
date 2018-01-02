@@ -1,4 +1,4 @@
-package gov.cms.qpp.test;
+package gov.cms.qpp.test.logging;
 
 import java.util.List;
 import java.util.stream.Collectors;

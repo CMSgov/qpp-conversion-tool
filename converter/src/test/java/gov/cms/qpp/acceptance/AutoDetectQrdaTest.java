@@ -15,7 +15,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.XmlInputDecoder;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import gov.cms.qpp.test.LoggerContract;
+import gov.cms.qpp.test.logging.LoggerContract;
 
 class AutoDetectQrdaTest implements LoggerContract {
 
