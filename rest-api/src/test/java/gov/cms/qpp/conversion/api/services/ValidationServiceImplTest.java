@@ -1,16 +1,22 @@
 package gov.cms.qpp.conversion.api.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.test.MockitoExtension;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.ErrorMessage;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.util.JsonHelper;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,26 +31,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
-
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.ErrorMessage;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.conversion.util.JsonHelper;
+import gov.cms.qpp.test.LoggerContract;
+import gov.cms.qpp.test.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ValidationServiceImplTest {
+class ValidationServiceImplTest implements LoggerContract {
 
 	@InjectMocks
 	private ValidationServiceImpl objectUnderTest;
@@ -64,7 +66,6 @@ class ValidationServiceImplTest {
 	private static AllErrors convertedErrors;
 	private static ErrorMessage submissionError;
 	private static ValidationServiceImpl service;
-
 
 	@BeforeAll
 	static void setup() throws IOException {
@@ -190,5 +191,23 @@ class ValidationServiceImplTest {
 		assertWithMessage("Json path should be converted to xpath")
 				.that(detail.getPath())
 				.isNotEqualTo(mappedDetails.getPath());
+	}
+
+	@Test
+	void testCheckForValidationUrlVariableLoggingIfPresent() {
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn("mock");
+		objectUnderTest.checkForValidationUrlVariable();
+		assertThat(this.getLogs()).contains(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to mock");
+	}
+
+	@Test
+	void testCheckForValidationUrlVariableLoggingIfAbsent() {
+		objectUnderTest.checkForValidationUrlVariable();
+		assertThat(this.getLogs()).contains(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
+	}
+
+	@Override
+	public Class<?> getLoggerType() {
+		return ValidationServiceImpl.class;
 	}
 }

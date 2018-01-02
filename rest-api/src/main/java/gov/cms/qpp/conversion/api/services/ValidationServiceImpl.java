@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,11 +38,20 @@ public class ValidationServiceImpl implements ValidationService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 	static final String CONTENT_TYPE = "application/json";
 
-
 	@Autowired
 	private Environment environment;
 
 	private RestTemplate restTemplate = new RestTemplate();
+
+	@PostConstruct
+	public void checkForValidationUrlVariable() {
+		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
+		if (!StringUtils.isEmpty(validationUrl)) {
+			API_LOG.info(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to " + validationUrl);
+		} else {
+			API_LOG.info(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
+		}
+	}
 
 	/**
 	 * Validates that the given QPP is valid.
