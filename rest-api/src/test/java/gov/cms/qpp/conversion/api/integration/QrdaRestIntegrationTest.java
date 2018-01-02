@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:test.properties")
-public class QrdaRestIntegration {
+public class QrdaRestIntegrationTest {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
