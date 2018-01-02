@@ -11,8 +11,6 @@ import java.util.stream.Stream;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 
-import gov.cms.qpp.test.CopyFileVisitor;
-
 public class FileTestHelper {
 
 	public static FileSystem createMockFileSystem(Configuration configuration) {

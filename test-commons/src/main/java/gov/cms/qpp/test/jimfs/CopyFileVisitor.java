@@ -1,4 +1,4 @@
-package gov.cms.qpp.test;
+package gov.cms.qpp.test.jimfs;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;

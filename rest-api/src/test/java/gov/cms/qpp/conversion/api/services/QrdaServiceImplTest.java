@@ -59,6 +59,11 @@ class QrdaServiceImplTest {
 		assertThat(allErrors.getErrors().get(0).getSourceIdentifier()).isSameAs(MOCK_ERROR_SOURCE_IDENTIFIER);
 	}
 
+	@Test
+	void testPostConstructForCoverage() {
+		objectUnderTest.preloadMeasureConfigs();
+	}
+
 	private Converter successConverter() {
 		Converter mockConverter = mock(Converter.class);
 
