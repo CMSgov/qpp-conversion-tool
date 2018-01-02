@@ -43,7 +43,7 @@ public enum TemplateId {
 	/**
 	 * Defined TemplateId Constants
 	 */
-	private enum Extension {
+	enum Extension {
 		NONE(""),
 		JUNE_2017("2017-06-01"),
 		JULY_2017("2017-07-01"),

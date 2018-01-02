@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import com.google.common.base.Strings;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Node checker DSL to help abbreviate / simplify single node validations
@@ -69,7 +73,7 @@ class Checker {
 	 * @return determination as to whether or not a check should be performed
 	 */
 	private boolean shouldShortcut() {
-		return anded && !details.isEmpty();
+		return anded && !isEmpty(details);
 	}
 
 	/**
@@ -112,7 +116,7 @@ class Checker {
 	public Checker singleValue(LocalizedError code, String name) {
 		value(code, name);
 		List<String> duplicates = node.getDuplicateValues(name);
-		if (duplicates != null && !duplicates.isEmpty()) {
+		if (!isEmpty(duplicates)) {
 			details.add(detail(code));
 		}
 		return this;
@@ -264,7 +268,7 @@ class Checker {
 	 * @return The checker, for chaining method calls.
 	 */
 	Checker hasChildren(LocalizedError code) {
-		if (!shouldShortcut() && node.getChildNodes().isEmpty()) {
+		if (!shouldShortcut() && isEmpty(node.getChildNodes())) {
 			details.add(detail(code));
 		}
 		return this;
@@ -365,6 +369,28 @@ class Checker {
 	}
 
 	/**
+	 * Allows for the assurance that a {@link Node} has children of a {@link TemplateId} type
+	 * that are distinct according to a given criteria.
+	 *
+	 * @param code that identifies the error
+	 * @param type template id type
+	 * @param dedup distinction criteria
+	 * @param <T> type that can serve as a hash key value
+	 * @return The checker, for chaining method calls.
+	 */
+	<T> Checker oneChildPolicy(LocalizedError code, TemplateId type, Function<Node, T> dedup) {
+		List<Node> nodes = node.getChildNodes(type).collect(Collectors.toList());
+		Map<T, Node> distinct =
+				nodes.stream().collect(
+						Collectors.toMap(dedup, Function.identity(), (pre, current) -> pre));
+
+		if (distinct.size() < nodes.size()) {
+			details.add(detail(code));
+		}
+		return this;
+	}
+
+	/**
 	 * Marks the checked node as being incompletely validated.
 	 *
 	 * @return The checker, for chaining method calls.
@@ -395,5 +421,15 @@ class Checker {
 	 */
 	private Detail detail(LocalizedError code) {
 		return Detail.forErrorAndNode(code, node);
+	}
+
+	/**
+	 * Helper method to check if a collection is empty or null
+	 *
+	 * @param collection the collection to check
+	 * @return true if the collection is empty
+	 */
+	private boolean isEmpty(Collection<?> collection) {
+		return collection == null || collection.isEmpty();
 	}
 }

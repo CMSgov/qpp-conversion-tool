@@ -1,14 +1,16 @@
 package gov.cms.qpp.conversion.model;
 
-import com.google.common.collect.Lists;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-import org.junit.jupiter.api.Test;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.List;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.Lists;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 class NodeTest {
 
@@ -185,6 +187,18 @@ class NodeTest {
 		node.removeValue("test");
 
 		assertThat(node.hasValue("test")).isFalse();
+	}
+
+	@Test
+	void testRemoveChildNodeNull() {
+		Node node = new Node();
+		assertThat(node.removeChildNode(null)).isFalse();
+	}
+
+	@Test
+	void testRemoveChildNodeSelf() {
+		Node node = new Node();
+		assertThat(node.removeChildNode(node)).isFalse();
 	}
 
 	@Test

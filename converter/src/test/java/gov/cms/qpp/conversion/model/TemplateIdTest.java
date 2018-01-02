@@ -1,11 +1,15 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.Context;
-import org.junit.jupiter.api.Test;
-
 import static com.google.common.truth.Truth.assertThat;
 
-class TemplateIdTest {
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.TemplateId.Extension;
+import gov.cms.qpp.test.enums.EnumContract;
+
+class TemplateIdTest implements EnumContract {
 
 	@Test
 	void testRoot() {
@@ -22,6 +26,30 @@ class TemplateIdTest {
 		assertThat(TemplateId.CLINICAL_DOCUMENT.getTemplateId(new Context()))
 				.isEqualTo(TemplateId.CLINICAL_DOCUMENT.getRoot() + ":" +
 						TemplateId.CLINICAL_DOCUMENT.getExtension());
+	}
+
+	@Test
+	void testGetTemplateIdHistoricalWithExtension() {
+		Context context = new Context();
+		context.setHistorical(true);
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getTemplateId(context))
+				.isEqualTo(TemplateId.CLINICAL_DOCUMENT.getRoot());
+	}
+
+	@Test
+	void testGetTemplateIdHistoricalNoExtension() {
+		Context context = new Context();
+		context.setHistorical(true);
+		assertThat(TemplateId.PLACEHOLDER.getTemplateId(context))
+				.isEqualTo(TemplateId.PLACEHOLDER.getRoot());
+	}
+
+	@Test
+	void testGetTemplateIdNotHistoricalNoExtension() {
+		Context context = new Context();
+		context.setHistorical(false);
+		assertThat(TemplateId.PLACEHOLDER.getTemplateId(context))
+				.isEqualTo(TemplateId.PLACEHOLDER.getRoot());
 	}
 
 	@Test
@@ -58,10 +86,18 @@ class TemplateIdTest {
 		assertThat(actual).isEqualTo(root + ":" + extension);
 	}
 
-	@Test
-	void valueOfTest() {
-		String actual = TemplateId.valueOf("DEFAULT").getTemplateId(new Context());
+	@Override
+	public Class<? extends Enum<?>> getEnumType() {
+		return TemplateId.class;
+	}
 
-		assertThat(actual).isSameAs("default");
+	@Nested
+	static class ExtensionTest implements EnumContract {
+
+		@Override
+		public Class<? extends Enum<?>> getEnumType() {
+			return Extension.class;
+		}
+
 	}
 }
