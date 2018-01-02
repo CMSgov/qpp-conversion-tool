@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
@@ -38,12 +37,6 @@ public class QrdaRestIntegrationTest {
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-	}
-
-	@Test
-	public void shouldBeHealthy() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/health"))
-				.andExpect(status().is(200));
 	}
 
 	@Test
