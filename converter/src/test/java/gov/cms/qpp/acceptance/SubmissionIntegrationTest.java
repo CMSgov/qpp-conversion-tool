@@ -25,7 +25,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class SubmissionIntegrationTest {
 
 	private static HttpClient client;
-	private static final String SERVICE_URL = "https://val.qpp-submissions.navapbc.com/public/validate-submission";
+	private static final String SERVICE_URL = "https://qpp-submissions-sandbox.navapbc.com/public/validate-submission";
 	private JsonWrapper qpp;
 
 	@BeforeAll
