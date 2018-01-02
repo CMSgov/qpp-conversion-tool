@@ -88,12 +88,12 @@ public class QrdaRestIntegration {
 
 	@Test
 	public void shouldFailForSubmissionApiValidation() throws Exception {
-		String file = "../converter/src/test/resources/cpc_plus/success/CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III.xml";
+		String file = "../rest-api/src/test/resources/fail_validation.xml";
 		MockMultipartFile qrda3File = new MockMultipartFile("file", Files.newInputStream(Paths.get(file)));
 		mockMvc.perform(MockMvcRequestBuilders
 				.fileUpload("/").file(qrda3File))
 			.andExpect(status().is(422))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-			.andExpect(jsonPath("$.errors").exists());
+			.andExpect(jsonPath("$.errors[0].type").value("ValidationError"));
 	}
 }
