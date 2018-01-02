@@ -1,4 +1,3 @@
-
 package gov.cms.qpp.conversion.xml;
 
 import java.io.ByteArrayInputStream;
