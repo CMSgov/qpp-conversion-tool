@@ -24,6 +24,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -42,15 +44,13 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import gov.cms.qpp.test.logging.LoggerContract;
-import uk.org.lidalia.slf4jtest.TestLogger;
-import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 import gov.cms.qpp.test.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ValidationServiceImplTest implements LoggerContract {
+class ValidationServiceImplTest {
 
 	@InjectMocks
+	@Spy
 	private ValidationServiceImpl objectUnderTest;
 
 	@Mock
@@ -199,22 +199,12 @@ class ValidationServiceImplTest implements LoggerContract {
 	void testCheckForValidationUrlVariableLoggingIfPresent() {
 		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn("mock");
 		objectUnderTest.checkForValidationUrlVariable();
-		assertThat(this.getLogs()).contains(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to mock");
+		Mockito.verify(objectUnderTest, Mockito.times(1)).apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to mock");
 	}
 
 	@Test
 	void testCheckForValidationUrlVariableLoggingIfAbsent() {
 		objectUnderTest.checkForValidationUrlVariable();
-		assertThat(this.getLogs()).contains(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
-	}
-
-	@Override
-	public TestLogger getLogger() {
-		return TestLoggerFactory.getTestLogger(Constants.API_LOG);
-	}
-
-	@Override
-	public Class<?> getLoggerType() {
-		return null;
+		Mockito.verify(objectUnderTest, Mockito.times(1)).apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
 	}
 }

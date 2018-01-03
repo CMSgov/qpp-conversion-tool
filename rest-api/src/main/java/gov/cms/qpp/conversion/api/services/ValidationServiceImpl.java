@@ -44,14 +44,26 @@ public class ValidationServiceImpl implements ValidationService {
 
 	private RestTemplate restTemplate = new RestTemplate();
 
+	/**
+	 * Logs on startup whether a validation url is present
+	 */
 	@PostConstruct
 	public void checkForValidationUrlVariable() {
 		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
 		if (!StringUtils.isEmpty(validationUrl)) {
-			API_LOG.info(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to " + validationUrl);
+			apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to " + validationUrl);
 		} else {
-			API_LOG.info(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
+			apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
 		}
+	}
+
+	/**
+	 * Workaround to a problem with our logging dependencies preventing us from using TestLogger
+	 *
+	 * @param message The message to log
+	 */
+	protected void apiLog(String message) {
+		API_LOG.info(message);
 	}
 
 	/**
