@@ -35,6 +35,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
  */
 @Service
 public class ValidationServiceImpl implements ValidationService {
+
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 	static final String CONTENT_TYPE = "application/json";
 

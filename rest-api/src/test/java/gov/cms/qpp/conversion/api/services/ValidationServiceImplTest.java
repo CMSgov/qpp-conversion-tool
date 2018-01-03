@@ -43,6 +43,8 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.test.logging.LoggerContract;
+import uk.org.lidalia.slf4jtest.TestLogger;
+import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 import gov.cms.qpp.test.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -207,7 +209,12 @@ class ValidationServiceImplTest implements LoggerContract {
 	}
 
 	@Override
+	public TestLogger getLogger() {
+		return TestLoggerFactory.getTestLogger(Constants.API_LOG);
+	}
+
+	@Override
 	public Class<?> getLoggerType() {
-		return ValidationServiceImpl.class;
+		return null;
 	}
 }
