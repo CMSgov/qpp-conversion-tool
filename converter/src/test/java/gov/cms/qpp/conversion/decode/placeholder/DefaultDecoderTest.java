@@ -4,6 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +27,7 @@ class DefaultDecoderTest {
 	@Test
 	void parseAllNodes() throws Exception {
 		InputStream stream = XmlUtils.fileToStream(Paths.get("../qrda-files/valid-QRDA-III.xml"));
-		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
+		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
 		Node node = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 

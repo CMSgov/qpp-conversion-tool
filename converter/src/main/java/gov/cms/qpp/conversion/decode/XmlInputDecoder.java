@@ -54,18 +54,6 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	}
 
 	/**
-	 * Convenient way to pass a list into sub decoders.
-	 * 
-	 * @param elements List of elements to be decoded
-	 * @param parent Parent node that all child elements will be decoded into
-	 */
-	protected void decode(List<Element> elements, Node parent) {
-		for (Element element : elements) {
-			decode(element, parent);
-		}
-	}
-
-	/**
 	 * Abstraction of decode for an element to a node
 	 * 
 	 * @param element Element to be decoded
