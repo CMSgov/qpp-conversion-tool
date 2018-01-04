@@ -9,6 +9,7 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -32,7 +33,7 @@ public abstract class AnyOrderActionService<T, S> {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
-	@Autowired
+	@Inject
 	protected TaskExecutor taskExecutor;
 
 	/**

@@ -32,8 +32,11 @@ public class CpcFileControllerV1 {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
-	@Autowired
 	private CpcFileService cpcFileService;
+
+	public CpcFileControllerV1(final CpcFileService cpcFileService) {
+		this.cpcFileService = cpcFileService;
+	}
 
 	/**
 	 * Endpoint to transform an uploaded file into a valid or error json response

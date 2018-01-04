@@ -1,12 +1,16 @@
 package gov.cms.qpp.conversion.api.services;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.ErrorMessage;
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Error;
+import gov.cms.qpp.conversion.model.error.QppValidationException;
+import gov.cms.qpp.conversion.util.JsonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,15 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.ErrorMessage;
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Error;
-import gov.cms.qpp.conversion.model.error.QppValidationException;
-import gov.cms.qpp.conversion.util.JsonHelper;
+import javax.inject.Inject;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Implementation for the QPP Validation Service
@@ -36,7 +35,7 @@ public class ValidationServiceImpl implements ValidationService {
 	static final String CONTENT_TYPE = "application/json";
 
 
-	@Autowired
+	@Inject
 	private Environment environment;
 
 	private RestTemplate restTemplate = new RestTemplate();

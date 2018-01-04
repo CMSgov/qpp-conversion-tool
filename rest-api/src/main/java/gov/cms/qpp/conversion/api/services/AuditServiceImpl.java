@@ -10,7 +10,6 @@ import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +24,23 @@ import java.util.concurrent.CompletableFuture;
 public class AuditServiceImpl implements AuditService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
-	@Autowired
 	private StorageService storageService;
-
-	@Autowired
 	private DbService dbService;
-
-	@Autowired
 	private Environment environment;
+
+	/**
+	 * initialize
+	 *
+	 * @param storageService save conversion output
+	 * @param dbService save conversion metadata
+	 * @param environment hooks to the environment in which the application runs
+	 */
+	public AuditServiceImpl(final StorageService storageService, final DbService dbService,
+							final Environment environment) {
+		this.storageService = storageService;
+		this.dbService = dbService;
+		this.environment = environment;
+	}
 
 	/**
 	 * Audit a successful conversion.

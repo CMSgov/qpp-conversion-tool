@@ -26,8 +26,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
-	@Autowired
 	private AuditService auditService;
+
+	/**
+	 * initialize controller
+	 *
+	 * @param auditService {@link AuditService} facilitates persistence of conversion results
+	 */
+	public ExceptionHandlerControllerV1(final AuditService auditService) {
+		this.auditService = auditService;
+	}
 
 	/**
 	 * "Catch" the {@link TransformException}.

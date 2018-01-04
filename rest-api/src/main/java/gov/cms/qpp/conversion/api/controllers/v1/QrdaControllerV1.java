@@ -34,14 +34,23 @@ import java.util.function.Supplier;
 public class QrdaControllerV1 {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
-	@Autowired
 	private QrdaService qrdaService;
-
-	@Autowired
 	private ValidationService validationService;
-
-	@Autowired
 	private AuditService auditService;
+
+	/**
+	 * init dependencies
+	 *
+	 * @param qrdaService {@link QrdaService} to perform QRDA -> QPP conversion
+	 * @param validationService {@link ValidationService} to perform post conversion validation
+	 * @param auditService {@link AuditService} to persist audit information
+	 */
+	public QrdaControllerV1(final QrdaService qrdaService, final ValidationService validationService,
+							final AuditService auditService) {
+		this.qrdaService = qrdaService;
+		this.validationService = validationService;
+		this.auditService = auditService;
+	}
 
 	/**
 	 * Endpoint to transform an uploaded file into a valid or error json response

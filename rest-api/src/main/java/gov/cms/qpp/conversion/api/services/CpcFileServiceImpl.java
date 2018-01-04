@@ -21,11 +21,19 @@ public class CpcFileServiceImpl implements CpcFileService {
 	protected static final String INVALID_FILE = "The file was not a CPC+ file.";
 	protected static final String FILE_FOUND = "The file was found and will be updated as processed.";
 
-	@Autowired
 	private DbService dbService;
-
-	@Autowired
 	private StorageService storageService;
+
+	/**
+	 * initialize
+	 *
+	 * @param dbService service to persist conversion metadata
+	 * @param storageService store conversion output
+	 */
+	public CpcFileServiceImpl(final DbService dbService, final StorageService storageService) {
+		this.dbService = dbService;
+		this.storageService = storageService;
+	}
 
 	/**
 	 * Calls the DbService for unprocessed metadata to transform into UnprocessedCpcFileData

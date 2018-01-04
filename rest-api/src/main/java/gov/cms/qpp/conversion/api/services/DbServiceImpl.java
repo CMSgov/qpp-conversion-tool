@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +29,10 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 
-	@Autowired
+	@Inject
 	private DynamoDBMapper mapper;
 
-	@Autowired
+	@Inject
 	private Environment environment;
 
 	/**
