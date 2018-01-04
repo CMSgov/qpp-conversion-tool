@@ -22,8 +22,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	private static final String HEADER_STRING = "Authorization";
 	private static final String TOKEN_PREFIX = "Bearer ";
-	private static final Set<String> VALID_ORG_IDS = Sets.newHashSet("fb1778dd-a5e3-42c8-836f-47654e003fab",
-			"ef33b1f6-842a-4519-9109-2ca2ed728ceb", "45624754-cce1-47ea-a7b1-02a9b9e19c2a");
+	protected static final String ORG_NAME = "cpc-test";
 
 	/**
 	 * JWT Constructor with Authentication manager
@@ -96,7 +95,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 * @return validation of the user/org
 	 */
 	private boolean isValidCpcPlusOrg(Map<String, String> payloadMap) {
-		String orgId = payloadMap.get("id");
-		return (orgId != null && payloadMap.get("orgType") != null && VALID_ORG_IDS.contains(orgId));
+		String orgName = payloadMap.get("name");
+		return (orgName != null && payloadMap.get("orgType") != null && ORG_NAME.equals(orgName));
 	}
 }

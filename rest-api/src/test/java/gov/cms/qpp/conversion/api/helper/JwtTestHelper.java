@@ -30,10 +30,10 @@ public class JwtTestHelper {
 
 		dataMap.put("cmsId", "40000");
 		dataMap.put("programYear", "2017");
-		dataMap.put("name", "testing-org");
+		dataMap.put("id", "random-id");
 
-		if (payload.getId() != null) {
-			dataMap.put("id", payload.getId());
+		if (payload.getName() != null) {
+			dataMap.put("name", payload.getName());
 		}
 		if (payload.getOrgType() != null) {
 			dataMap.put("orgType", payload.getOrgType());

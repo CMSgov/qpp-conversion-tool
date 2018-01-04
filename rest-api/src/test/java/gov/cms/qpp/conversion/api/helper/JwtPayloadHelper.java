@@ -1,19 +1,19 @@
 package gov.cms.qpp.conversion.api.helper;
 
 public class JwtPayloadHelper {
-	String id;
+	String name;
 	String orgType;
 
-	public String getId() {
-		return id;
+	public String getName() {
+		return name;
 	}
 
 	public String getOrgType() {
 		return orgType;
 	}
 
-	public JwtPayloadHelper withId(String id) {
-		this.id = id;
+	public JwtPayloadHelper withName(String name) {
+		this.name = name;
 		return this;
 	}
 

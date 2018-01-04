@@ -33,7 +33,6 @@ public class JwtAuthorizationFilterTest {
 	private MockHttpServletRequest request;
 	private MockHttpServletResponse response;
 	private FilterChain filterChain;
-	private final String ORG_ID = "fb1778dd-a5e3-42c8-836f-47654e003fab";
 	private final String ORG_TYPE = "registry";
 
 	@BeforeClass
@@ -51,7 +50,7 @@ public class JwtAuthorizationFilterTest {
 	@Test
 	public void testDoFilterInternal() throws IOException, ServletException {
 		JwtPayloadHelper payload = new JwtPayloadHelper()
-				.withId(ORG_ID)
+				.withName(JwtAuthorizationFilter.ORG_NAME)
 				.withOrgType(ORG_TYPE);
 
 		request.addHeader("Authorization", JwtTestHelper.createJwt(payload));
@@ -69,9 +68,9 @@ public class JwtAuthorizationFilterTest {
 	}
 
 	@Test
-	public void testDoFilterInternalWithInvalidOrgId() throws IOException, ServletException {
+	public void testDoFilterInternalWithInvalidOrgName() throws IOException, ServletException {
 		JwtPayloadHelper payload = new JwtPayloadHelper()
-				.withId("invalid-id")
+				.withName("invalid-name")
 				.withOrgType(ORG_TYPE);
 
 		request.addHeader("Authorization", JwtTestHelper.createJwt(payload));
@@ -110,7 +109,7 @@ public class JwtAuthorizationFilterTest {
 	@Test
 	public void testDoFilterInternalWithNoOrgType() throws IOException, ServletException {
 		JwtPayloadHelper payload = new JwtPayloadHelper()
-				.withId(ORG_ID);
+				.withName(JwtAuthorizationFilter.ORG_NAME);
 
 		request.addHeader("Authorization", JwtTestHelper.createJwt(payload));
 		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter(authenticationManager);
