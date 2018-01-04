@@ -10,8 +10,10 @@ import org.junit.jupiter.api.Test;
 import com.google.common.truth.Truth;
 
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.test.enums.EnumContract;
 
-class ProgramTest {
+class ProgramTest implements EnumContract {
+
 	@Test
 	void instanceRetrievalMips() {
 		Stream.of("MIPS_GROUP", "MIPS_INDIV", "MIPS").forEach(mip ->
@@ -83,5 +85,10 @@ class ProgramTest {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "cPcPlUs");
 		Truth.assertThat(Program.isCpc(node)).isTrue();
+	}
+
+	@Override
+	public Class<? extends Enum<?>> getEnumType() {
+		return Program.class;
 	}
 }

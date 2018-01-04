@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
 
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.test.helper.HelperContract;
 
-/**
- * Test class to increase JaCoCo code coverage
- */
-class JsonHelperTest {
+class JsonHelperTest implements HelperContract {
 
 	@Test
 	void privateConstructorTest() throws Exception {
@@ -73,5 +71,10 @@ class JsonHelperTest {
 		} catch(Exception exception) {
 			Assertions.fail("Incorrect exception was thrown.");
 		}
+	}
+
+	@Override
+	public Class<?> getHelperClass() {
+		return JsonHelper.class;
 	}
 }

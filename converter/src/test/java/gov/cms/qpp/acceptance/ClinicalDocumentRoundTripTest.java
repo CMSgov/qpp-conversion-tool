@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -34,7 +35,7 @@ class ClinicalDocumentRoundTripTest {
 	void parseClinicalDocument() throws Exception {
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
-		String xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
+		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
 		Context context = new Context();
 		Node clinicalDocumentNode = XmlInputDecoder.decodeXml(context, XmlUtils.stringToDom(xmlFragment));
