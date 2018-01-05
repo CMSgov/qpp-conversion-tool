@@ -27,9 +27,9 @@ import static gov.cms.qpp.conversion.decode.SupplementalDataPayerDecoder.SUPPLEM
 /**
  * Top level Decoder for parsing into QPP format.
  */
-public class QppXmlDecoder extends XmlInputDecoder {
+public class QrdaXmlDecoder extends XmlInputDecoder {
 
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaXmlDecoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
 	private static final String ROOT_STRING = "root";
@@ -37,12 +37,12 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 	protected final Context context;
 	private final Set<TemplateId> scope;
-	private final Registry<QppXmlDecoder> decoders;
+	private final Registry<QrdaXmlDecoder> decoders;
 
 	/**
 	 * Initialize a qpp xml decoder
 	 */
-	public QppXmlDecoder(Context context) {
+	public QrdaXmlDecoder(Context context) {
 		Objects.requireNonNull(context, "converter");
 
 		this.context = context;
@@ -89,7 +89,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 				TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
 				DEV_LOG.debug("templateIdFound:{}", templateId);
 
-				QppXmlDecoder childDecoder = getDecoder(templateId);
+				QrdaXmlDecoder childDecoder = getDecoder(templateId);
 
 				if (null == childDecoder) {
 					continue;
@@ -130,8 +130,8 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * @param templateId string representation of a would be decoder's template id
 	 * @return decoder that corresponds to the given template id
 	 */
-	private QppXmlDecoder getDecoder(TemplateId templateId) {
-		QppXmlDecoder qppDecoder = decoders.get(templateId);
+	private QrdaXmlDecoder getDecoder(TemplateId templateId) {
+		QrdaXmlDecoder qppDecoder = decoders.get(templateId);
 		if (qppDecoder != null) {
 			if (scope == null) {
 				return qppDecoder;
@@ -190,7 +190,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		Node rootNode = new Node();
 		Element rootElement = xmlDoc.getDocument().getRootElement();
 		
-		QppXmlDecoder rootDecoder = null;
+		QrdaXmlDecoder rootDecoder = null;
 		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
 			String root = element.getAttributeValue(ROOT_STRING);
 			String extension = element.getAttributeValue(EXTENSION_STRING);

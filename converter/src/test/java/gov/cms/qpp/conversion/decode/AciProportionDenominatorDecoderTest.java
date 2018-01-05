@@ -16,7 +16,7 @@ class AciProportionDenominatorDecoderTest {
 	/**
 	 * decodeACIProportionDenominatorAsNode given a well formed xml fragment
 	 * parses out the appropriate aggregateCount This test calls
-	 * QppXmlDecoder.()decode() which in turn calls the only method in this
+	 * QrdaXmlDecoder.()decode() which in turn calls the only method in this
 	 * class. AciProportionDenominatorDecoder().decode()
 	 *
 	 * @throws Exception
@@ -36,7 +36,7 @@ class AciProportionDenominatorDecoderTest {
 				+ "     </entryRelationship>\n"
 				+ " </observation>\n"
 				+ "</component>";
-		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		// For all decoders this should be either a value or child node
 		assertThat(root.getChildNodes())
@@ -76,7 +76,7 @@ class AciProportionDenominatorDecoderTest {
 			+ "    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>"
 			+ "  </observation>"
 			+ " </component>";
-		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		// For all decoders this should be either a value or child node
 		assertThat(root.getChildNodes()).hasSize(2);
