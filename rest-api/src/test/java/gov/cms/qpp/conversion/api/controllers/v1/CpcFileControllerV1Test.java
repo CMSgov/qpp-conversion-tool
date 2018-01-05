@@ -96,6 +96,28 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
+	void testMarkFileAsUnprocessedReturnsSuccess() {
+		when(cpcFileService.unprocessFileById(anyString())).thenReturn("success!");
+
+		ResponseEntity<String> response = cpcFileControllerV1.markFileUnprocessed("meep");
+
+		verify(cpcFileService, times(1)).unprocessFileById("meep");
+
+		assertThat(response.getBody()).isEqualTo("success!");
+	}
+
+	@Test
+	void testMarkFileAsUnprocessedHttpStatusOk() {
+		when(cpcFileService.unprocessFileById(anyString())).thenReturn("success!");
+
+		ResponseEntity<String> response = cpcFileControllerV1.markFileUnprocessed("meep");
+
+		verify(cpcFileService, times(1)).unprocessFileById("meep");
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
+
+	@Test
 	void testEndpoint1WithFeatureFlagDisabled() {
 		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
 

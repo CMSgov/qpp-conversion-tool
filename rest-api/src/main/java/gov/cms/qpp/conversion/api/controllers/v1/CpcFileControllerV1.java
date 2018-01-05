@@ -104,7 +104,30 @@ public class CpcFileControllerV1 {
 
 		API_LOG.info("CPC+ update file as processed request received");
 		String message = cpcFileService.processFileById(fileId);
-		API_LOG.info("CPC+ update file as processed request succeeded");
+		API_LOG.info("CPC+ update file as processed request succeeded with message: " + message);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
+
+		return new ResponseEntity<>(message, httpHeaders, HttpStatus.OK);
+	}
+
+	/**
+	 * Updates a file's status to unprocessed in the database
+	 *
+	 * @param fileId Identifier of the file needing to be updated
+	 * @return Message if the file was updated or not
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/unprocess/{fileId}",
+			headers = {"Accept=" + Constants.V1_API_ACCEPT} )
+	public ResponseEntity<String> markFileUnprocessed(@PathVariable("fileId") String fileId) {
+		if (blockCpcPlusApi()) {
+			API_LOG.info("CPC+ unprocessed files request blocked by feature flag");
+			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
+		}
+
+		API_LOG.info("CPC+ update file as unprocessed request received");
+		String message = cpcFileService.unprocessFileById(fileId);
+		API_LOG.info("CPC+ update file as unprocessed request succeeded with message: " + message);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
 
