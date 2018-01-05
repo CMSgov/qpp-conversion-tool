@@ -19,6 +19,9 @@ import static io.restassured.RestAssured.put;
 @ExtendWith(RestExtension.class)
 class CpcApiAcceptance {
 
+	private static final String CPC_UNPROCESSED_FILES_API_PATH = "/cpc/unprocessed-files";
+	private static final String CPC_FILE_API_PATH = "/cpc/file/";
+
 	@BeforeAll
 	static void createUnprocessedItem() {
 		given()
@@ -30,7 +33,7 @@ class CpcApiAcceptance {
 	@Test
 	@Tag("acceptance")
 	void testNoSecurityForUnprocessedFiles() {
-		get("/cpc/unprocessed-files")
+		get(CPC_UNPROCESSED_FILES_API_PATH)
 			.then()
 			.statusCode(403);
 	}
@@ -39,13 +42,7 @@ class CpcApiAcceptance {
 	@Tag("acceptance")
 	void testUnprocessedFiles() {
 
-		List<Map> responseBody = given()
-			.auth().oauth2(createCpcJwtToken())
-			.get("/cpc/unprocessed-files")
-			.then()
-			.statusCode(200)
-			.extract()
-			.body().jsonPath().getList("$", Map.class);
+		List<Map> responseBody = getUnprocessedFiles();
 
 		assertThat(responseBody).isNotEmpty();
 		assertThat(responseBody.get(0)).containsKey("fileId");
@@ -61,7 +58,7 @@ class CpcApiAcceptance {
 
 		String firstFileId = getFirstUnprocessedCpcFileId();
 
-		get("/cpc/file/" + firstFileId)
+		get(CPC_FILE_API_PATH + firstFileId)
 			.then()
 			.statusCode(403);
 	}
@@ -74,7 +71,7 @@ class CpcApiAcceptance {
 
 		given()
 			.auth().oauth2(createCpcJwtToken())
-			.get("/cpc/file/" + firstFileId)
+			.get(CPC_FILE_API_PATH + firstFileId)
 			.then()
 			.statusCode(200)
 			.contentType("application/xml");
@@ -86,7 +83,7 @@ class CpcApiAcceptance {
 
 		String firstFileId = getFirstUnprocessedCpcFileId();
 
-		put("/cpc/file/" + firstFileId)
+		put(CPC_FILE_API_PATH + firstFileId)
 			.then()
 			.statusCode(403);
 	}
@@ -129,7 +126,7 @@ class CpcApiAcceptance {
 	private String markFileAsProcessed(String fileId, int expectedResponseCode) {
 		return given()
 			.auth().oauth2(createCpcJwtToken())
-			.put("/cpc/file/" + fileId)
+			.put(CPC_FILE_API_PATH + fileId)
 			.then()
 			.statusCode(expectedResponseCode)
 			.contentType("text/plain")
@@ -140,7 +137,7 @@ class CpcApiAcceptance {
 	private List<Map> getUnprocessedFiles() {
 		return given()
 			.auth().oauth2(createCpcJwtToken())
-			.get("/cpc/unprocessed-files")
+			.get(CPC_UNPROCESSED_FILES_API_PATH)
 			.then()
 			.statusCode(200)
 			.extract()

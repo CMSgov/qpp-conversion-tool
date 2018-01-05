@@ -20,6 +20,9 @@ import static io.restassured.RestAssured.given;
 @ExtendWith(RestExtension.class)
 class QrdaApiAcceptance {
 
+	private static final String QRDA_API_PATH = "/";
+	private static final String MULTIPART_FORM_DATA_KEY = "file";
+
 	private AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 
 	private AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
@@ -37,9 +40,9 @@ class QrdaApiAcceptance {
 	@Tag("acceptance")
 	void testWithValid() {
 		given()
-			.multiPart("file", Paths.get("../qrda-files/valid-QRDA-III-latest.xml").toFile())
+			.multiPart(MULTIPART_FORM_DATA_KEY, Paths.get("../qrda-files/valid-QRDA-III-latest.xml").toFile())
 			.when()
-			.post("/")
+			.post(QRDA_API_PATH)
 			.then()
 			.statusCode(201);
 
@@ -54,9 +57,9 @@ class QrdaApiAcceptance {
 	@Tag("acceptance")
 	void testWithConversionError() {
 		given()
-			.multiPart("file", Paths.get("../qrda-files/not-a-QDRA-III-file.xml").toFile())
+			.multiPart(MULTIPART_FORM_DATA_KEY, Paths.get("../qrda-files/not-a-QDRA-III-file.xml").toFile())
 			.when()
-			.post("/")
+			.post(QRDA_API_PATH)
 			.then()
 			.statusCode(422);
 
@@ -71,9 +74,9 @@ class QrdaApiAcceptance {
 	@Tag("acceptance")
 	void testWithValidationError() {
 		given()
-			.multiPart("file", Paths.get("../rest-api/src/test/resources/fail_validation.xml").toFile())
+			.multiPart(MULTIPART_FORM_DATA_KEY, Paths.get("../rest-api/src/test/resources/fail_validation.xml").toFile())
 			.when()
-			.post("/")
+			.post(QRDA_API_PATH)
 			.then()
 			.statusCode(422);
 
