@@ -2,10 +2,12 @@ package gov.cms.qpp.conversion.api.acceptance;
 
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
 import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,14 @@ import static io.restassured.RestAssured.put;
 
 @ExtendWith(RestExtension.class)
 class CpcApiAcceptance {
+
+	@BeforeAll
+	static void createUnprocessedItem() {
+		given()
+			.multiPart("file", Paths.get("../sample-files/CPCPlus_Success_PreProd.xml").toFile())
+			.when()
+			.post("/");
+	}
 
 	@Test
 	@Tag("acceptance")
