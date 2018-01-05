@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0-RELEASE</version>
+	<version>1.1-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -131,7 +131,6 @@
 						<useFile>false</useFile>
 						<excludes>
 							<exclude>**/*Integration.java</exclude>
-							<exclude>**/*IntegrationTest.java</exclude>
 						</excludes>
 					</configuration>
 					<dependencies>

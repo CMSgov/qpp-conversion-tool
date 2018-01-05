@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.api.services;
+package gov.cms.qpp.conversion.api.integration;
 
 
 import cloud.localstack.LocalstackTestRunner;
@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
 import gov.cms.qpp.conversion.api.config.S3Config;
 import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.services.StorageServiceImpl;
 import net.jodah.concurrentunit.Waiter;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assume;
