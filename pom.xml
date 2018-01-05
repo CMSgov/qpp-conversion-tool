@@ -131,7 +131,6 @@
 						<useFile>false</useFile>
 						<excludes>
 							<exclude>**/*Integration.java</exclude>
-							<exclude>**/*IntegrationTest.java</exclude>
 						</excludes>
 					</configuration>
 					<dependencies>
