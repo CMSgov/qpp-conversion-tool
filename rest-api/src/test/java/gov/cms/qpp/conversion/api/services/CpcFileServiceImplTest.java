@@ -121,7 +121,7 @@ class CpcFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(MEEP);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND);
+		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
 	}
 
 	@Test
@@ -156,7 +156,7 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND);
+		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
 	}
 
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {
