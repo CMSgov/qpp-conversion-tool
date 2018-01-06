@@ -10,7 +10,7 @@ This document describes how to set up your development environment to build and 
 * [SonarQube](#sonarqube)
 * [Third Party Extensions](#third-party-extensions)
 
-See the [contribution guidelines](CONTRIBUTING.md)
+See the [contribution guidelines](.github/CONTRIBUTING.md)
 if you'd like to contribute to qpp-conversion-tool.
 
 ## Additional Prerequisite Software
@@ -89,6 +89,6 @@ measure how clean the codebase is.
 ## Third Party Extensions
 
 Finished a cool new feature or fix for the conversion tool? Please feel free submit a pull request to our repository (https://github.com/CMSgov/qpp-conversion-tool) for any changes made. We appreciate and thank you for your patronage!
-See the [contribution guidelines](https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md) on how to submit a Pull Request.
+See the [contribution guidelines](https://github.com/CMSgov/qpp-conversion-tool/blob/master/.github/CONTRIBUTING.md) on how to submit a Pull Request.
 
 [readme]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/README.md

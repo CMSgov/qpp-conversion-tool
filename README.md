@@ -127,14 +127,14 @@ View all commands with `convert.sh`.
 ## Sample files
 
 Sample QRDA-III files that cover all of the eCQM, ACI, and IA measures as well as other scenarios
-can be found in the [sample-files/README.md](sample-files/README.md) folder.
+can be found in the [sample-files](sample-files/README.md) folder.
 
 ## Want to Contribute?
 
 Want to file a bug or contribute some code? Read up on our guidelines for [contributing] and
 [developer instructions][developer].
 
-[contributing]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/CONTRIBUTING.md
+[contributing]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/.github/CONTRIBUTING.md
 [developer]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
 
 ## Public Domain
