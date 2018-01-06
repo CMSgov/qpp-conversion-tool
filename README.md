@@ -90,14 +90,12 @@ The HTTP Status will be `201 Created` on success or `422 Unprocessable entity` o
 
 #### Submission Validation
 
-*The public submissions validation API is currently unavailable.*
-
 While the converter will validate the format of the QRDA-III file and some basic semantics, deeper semantic checks are only
 available if you enable the public  submission validation API. If any errors are found by the public submission validation API,
 error JSON will be returned from the ReST API like normal.
 
 To enable the public submission validation API, modify the `.env` file with
-`VALIDATION_URL=<URL to the public submissions validation API>` and then
+`VALIDATION_URL=https://qpp.cms.gov/api/submissions/public/validate-submission` and then
 [restart the ReST API endpoint](#starting-the-api-endpoint).
 
 ### Command Line
@@ -134,8 +132,8 @@ can be found in the [sample-files](sample-files/README.md) folder.
 Want to file a bug or contribute some code? Read up on our guidelines for [contributing] and
 [developer instructions][developer].
 
-[contributing]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/.github/CONTRIBUTING.md
-[developer]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
+[contributing]: /.github/CONTRIBUTING.md
+[developer]: /DEVELOPER.md
 
 ## Public Domain
 This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived
@@ -144,4 +142,4 @@ through the CC0 1.0 Universal public domain dedication.
 All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to
 comply with this waiver of copyright interest.		
 
-See the [formal LICENSE file](https://github.com/CMSgov/qpp-conversion-tool/blob/master/LICENSE).
+See the [formal LICENSE file](/LICENSE).

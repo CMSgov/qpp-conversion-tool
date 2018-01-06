@@ -37,7 +37,7 @@ To be respectful of maintainer's time and ultimately fix more bugs, we will requ
 
 You can file new issues by filling out our [new issue form](https://github.com/CMSgov/qpp-conversion-tool/issues/new).
 
-Please see [SUPPORT](https://github.com/CMSgov/qpp-conversion-tool/blob/master/.github/SUPPORT.md) for more details on the issue submission process.
+Please see [SUPPORT](/.github/SUPPORT.md) for more details on the issue submission process.
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
 
@@ -113,4 +113,4 @@ To ensure consistency throughout the source code, please keep these rules in min
 [git-hooks]: https://git-scm.com/book/gr/v2/Customizing-Git-Git-Hooks
 [truffle-hooks]: https://github.com/clydet/truffleHog/tree/master/truffleHooks
 [github]: https://github.com/CMSgov/qpp-conversion-tool
-[dev-doc]: https://github.com/CMSgov/qpp-conversion-tool/blob/master/DEVELOPER.md
+[dev-doc]: /DEVELOPER.md
