@@ -60,13 +60,7 @@ public class QrdaXmlDecoder extends XmlInputDecoder {
 	 */
 	@Override
 	public DecodeResult decode(Element element, Node parentNode) {
-		if (element == null) {
-			return DecodeResult.ERROR;
-		}
-
-		setNamespace(element, this);
-
-		return decodeChildren(element, parentNode);
+		return (element == null) ? DecodeResult.ERROR : decodeChildren(element, parentNode);
 	}
 
 	/**
@@ -77,6 +71,7 @@ public class QrdaXmlDecoder extends XmlInputDecoder {
 	 * @return status of current decode
 	 */
 	private DecodeResult decodeChildren(final Element element, final Node parentNode) {
+		setNamespace(element, this);
 		Node currentNode = parentNode;
 
 		List<Element> childElements = element.getChildren();
@@ -84,23 +79,16 @@ public class QrdaXmlDecoder extends XmlInputDecoder {
 		for (Element childElement : childElements) {
 
 			if (TEMPLATE_ID.equals(childElement.getName())) {
-				String root = childElement.getAttributeValue(ROOT_STRING);
-				String extension = childElement.getAttributeValue(EXTENSION_STRING);
-				TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
-				DEV_LOG.debug("templateIdFound:{}", templateId);
-
+				TemplateId templateId = getTemplateId(childElement);
 				QrdaXmlDecoder childDecoder = getDecoder(templateId);
 
 				if (null == childDecoder) {
 					continue;
 				}
-				DEV_LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
 				Node childNode = new Node(templateId, parentNode);
-
 				childNode.setDefaultNsUri(defaultNs.getURI());
-				
 				setNamespace(childElement, childDecoder);
-				
+
 				// the child decoder might require the entire its siblings
 				DecodeResult result = childDecoder.internalDecode(element, childNode);
 				if (result == DecodeResult.TREE_ESCAPED) {
@@ -122,6 +110,12 @@ public class QrdaXmlDecoder extends XmlInputDecoder {
 		}
 
 		return null;
+	}
+
+	private TemplateId getTemplateId(final Element idElement) {
+		String root = idElement.getAttributeValue(ROOT_STRING);
+		String extension = idElement.getAttributeValue(EXTENSION_STRING);
+		return TemplateId.getTemplateId(root, extension, context);
 	}
 
 	/**
