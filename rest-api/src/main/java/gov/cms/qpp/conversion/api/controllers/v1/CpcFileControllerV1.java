@@ -31,6 +31,8 @@ import java.util.List;
 public class CpcFileControllerV1 {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final String BLOCKED_BY_FEATURE_FLAG =
+			"CPC+ unprocessed files request blocked by feature flag";
 
 	@Autowired
 	private CpcFileService cpcFileService;
@@ -46,7 +48,7 @@ public class CpcFileControllerV1 {
 		API_LOG.info("CPC+ unprocessed files request received");
 
 		if (blockCpcPlusApi()) {
-			API_LOG.info("CPC+ unprocessed files request blocked by feature flag");
+			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
@@ -98,7 +100,7 @@ public class CpcFileControllerV1 {
 			headers = {"Accept=" + Constants.V1_API_ACCEPT} )
 	public ResponseEntity<String> markFileProcessed(@PathVariable("fileId") String fileId) {
 		if (blockCpcPlusApi()) {
-			API_LOG.info("CPC+ unprocessed files request blocked by feature flag");
+			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
@@ -121,7 +123,7 @@ public class CpcFileControllerV1 {
 			headers = {"Accept=" + Constants.V1_API_ACCEPT} )
 	public ResponseEntity<String> markFileUnprocessed(@PathVariable("fileId") String fileId) {
 		if (blockCpcPlusApi()) {
-			API_LOG.info("CPC+ unprocessed files request blocked by feature flag");
+			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
