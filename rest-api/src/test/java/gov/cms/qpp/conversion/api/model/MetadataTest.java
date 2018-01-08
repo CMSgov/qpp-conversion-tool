@@ -1,16 +1,15 @@
 package gov.cms.qpp.conversion.api.model;
 
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.function.Consumer;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.fail;
@@ -49,7 +48,7 @@ class MetadataTest {
 	void testSetCpcProcessedCreateDateWithoutHash() {
 		Metadata metadata = new Metadata();
 		Boolean processedBefore = metadata.getCpcProcessed();
-		Date createDateBefore = metadata.getCreatedDate();
+		LocalDateTime createDateBefore = metadata.getCreatedDate();
 
 		metadata.setCpcProcessedCreateDate("DogCow");
 
@@ -61,7 +60,7 @@ class MetadataTest {
 	void testSetCpcProcessedCreateDateWithHash() {
 		Metadata metadata = new Metadata();
 		metadata.setCpcProcessed(false);
-		Date createDateBefore = metadata.getCreatedDate();
+		LocalDateTime createDateBefore = metadata.getCreatedDate();
 
 		metadata.setCpcProcessedCreateDate("true#2017-12-08T18:32:54.846Z");
 
