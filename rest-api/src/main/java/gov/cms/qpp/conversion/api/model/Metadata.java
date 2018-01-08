@@ -22,7 +22,6 @@ public final class Metadata {
 	private static final int CPC_PROCESSED_CREATE_DATE_NUM_FIELDS = 2;
 	private static final int CPC_PROCESSED_INDEX = 0;
 	private static final int CPC_CREATE_DATE_INDEX = 1;
-	private static final String TIME_ZONE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
 	private String uuid;
 	private String tin;  //this field is encrypted
