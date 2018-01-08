@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>1.1-RELEASE</version>
+		<version>1.1.1-RELEASE</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -68,7 +68,6 @@
 	</dependencyManagement>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
@@ -140,7 +139,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>5.0.1.RELEASE</version>
+			<version>4.3.13.RELEASE</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
