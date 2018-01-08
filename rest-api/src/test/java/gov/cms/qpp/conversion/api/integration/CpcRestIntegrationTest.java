@@ -1,5 +1,7 @@
 package gov.cms.qpp.conversion.api.integration;
 
+import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
+import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:test.properties")
 public class CpcRestIntegrationTest {
+
+	private static final String NOT_CPC = "not-CPC+";
+	private static final String ORG_TYPE = "whatever";
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -50,6 +55,42 @@ public class CpcRestIntegrationTest {
 	public void testNoSecurityProcessCpcFile() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders
 			.put("/cpc/file/uuid"))
+			.andExpect(status().is(403));
+	}
+
+	@Test
+	public void testIncorrectJwtNameUnprocessedCpcFiles() throws Exception {
+		JwtPayloadHelper jwtPayload = new JwtPayloadHelper().withName(NOT_CPC).withOrgType(ORG_TYPE);
+
+		mockMvc.perform(MockMvcRequestBuilders
+			.get("/cpc/unprocessed-files").header("Authorization", JwtTestHelper.createJwt(jwtPayload)))
+			.andExpect(status().is(403));
+	}
+
+	@Test
+	public void testIncorrectJwtNoOrgUnprocessedCpcFiles() throws Exception {
+		JwtPayloadHelper jwtPayload = new JwtPayloadHelper().withName("cpc-test");
+
+		mockMvc.perform(MockMvcRequestBuilders
+			.get("/cpc/unprocessed-files").header("Authorization", JwtTestHelper.createJwt(jwtPayload)))
+			.andExpect(status().is(403));
+	}
+
+	@Test
+	public void testIncorrectJwtGetCpcFile() throws Exception {
+		JwtPayloadHelper jwtPayload = new JwtPayloadHelper().withName(NOT_CPC).withOrgType(ORG_TYPE);
+
+		mockMvc.perform(MockMvcRequestBuilders
+			.get("/cpc/file/uuid").header("Authorization", JwtTestHelper.createJwt(jwtPayload)))
+			.andExpect(status().is(403));
+	}
+
+	@Test
+	public void testIncorrectJwtProcessCpcFile() throws Exception {
+		JwtPayloadHelper jwtPayload = new JwtPayloadHelper().withName(NOT_CPC).withOrgType(ORG_TYPE);
+
+		mockMvc.perform(MockMvcRequestBuilders
+			.put("/cpc/file/uuid").header("Authorization", JwtTestHelper.createJwt(jwtPayload)))
 			.andExpect(status().is(403));
 	}
 }
