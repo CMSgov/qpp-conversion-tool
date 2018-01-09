@@ -491,12 +491,27 @@ public final class Metadata {
 		return equals;
 	}
 
+	/**
+	 * Converter for DynamoDb to convert type {@link Instant} to a {@link String} in the database
+	 */
 	public static class InstantConverter implements DynamoDBTypeConverter<String, Instant> {
+		/**
+		 * Converts the an Instant to the ISO INSTANT format string for db storage
+		 *
+		 * @param date Object to be converted
+		 * @return Converted Object
+		 */
 		@Override
 		public String convert(final Instant date) {
 			return DateTimeFormatter.ISO_INSTANT.format(date);
 		}
 
+		/**
+		 * Converts a String to an Instant for application usage
+		 *
+		 * @param stringValue object to be reverted
+		 * @return reverted object
+		 */
 		@Override
 		public Instant unconvert(final String stringValue) {
 			return Instant.parse(stringValue);
