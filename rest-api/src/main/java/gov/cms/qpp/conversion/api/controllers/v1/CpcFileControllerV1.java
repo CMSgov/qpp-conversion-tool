@@ -30,7 +30,7 @@ import java.util.List;
 @CrossOrigin
 public class CpcFileControllerV1 {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(CpcFileControllerV1.class);
 
 	@Autowired
 	private CpcFileService cpcFileService;

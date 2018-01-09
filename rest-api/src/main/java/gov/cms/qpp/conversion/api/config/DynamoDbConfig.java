@@ -32,7 +32,7 @@ import static gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory.createDyna
 @Configuration
 public class DynamoDbConfig {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(DynamoDbConfig.class);
 	static final String NO_KMS_KEY = "No KMS key specified!";
 
 	@Autowired
