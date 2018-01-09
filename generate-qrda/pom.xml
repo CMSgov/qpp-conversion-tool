@@ -5,11 +5,11 @@
     <parent>
         <artifactId>qpp-conversion-tool-parent</artifactId>
         <groupId>gov.cms.qpp.conversion</groupId>
-        <version>1.1.1-RELEASE</version>
+        <version>1.1.2-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>generateQrda</artifactId>
+    <artifactId>generate-qrda</artifactId>
 
     <dependencies>
         <dependency>
