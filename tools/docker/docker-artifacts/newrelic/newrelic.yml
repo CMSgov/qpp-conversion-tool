@@ -198,13 +198,13 @@ common: &default_settings
     # The default is to exclude 404s. If you want to override
     # this, you must provide any new value as an empty list is ignored.
     ignore_status_codes: [
-      400, // missing required query parameter or extra invalid query parameter (not yet used)
-      401, // invalid/missing JWT or user doesn't have necessary AuthZ privileges
-      403, // forbidden (not yet used)
-      404, // resource doesn't exist
-      405, // invalid request type
-      406, // accept headers asking for format our API doesn't support (not yet used)
-      422  // validation error
+      400, # missing required query parameter or extra invalid query parameter (not yet used)
+      401, # invalid/missing JWT or user doesn't have necessary AuthZ privileges
+      403, # forbidden (not yet used)
+      404, # resource doesn't exist
+      405, # invalid request type
+      406, # accept headers asking for format our API doesn't support (not yet used)
+      422  # validation error
     ]
 
   # Transaction Events are used for Histograms and Percentiles. Unaggregated data is collected
