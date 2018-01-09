@@ -8,7 +8,7 @@ import gov.cms.qpp.test.MockitoExtension;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
@@ -128,7 +128,7 @@ class CpcFileControllerV1Test {
 		metadata.setSubmissionLocator("Test");
 		metadata.setFileName("TestFile.xml");
 		metadata.setApm("TestApmEntity");
-		metadata.setCreatedDate(LocalDateTime.now());
+		metadata.setCreatedDate(Instant.now());
 		metadata.setOverallStatus(true);
 
 		UnprocessedCpcFileData unprocessedCpcFileData = new UnprocessedCpcFileData(metadata);

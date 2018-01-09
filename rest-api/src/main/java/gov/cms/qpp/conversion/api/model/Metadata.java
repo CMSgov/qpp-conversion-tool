@@ -9,8 +9,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.DoNotEncrypt;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -39,14 +37,14 @@ public final class Metadata {
 	private String validationErrorLocator;
 	private String rawValidationErrorLocator;
 
-	private LocalDateTime createdDate;
+	private Instant createdDate;
 	private Boolean cpcProcessed;
 
 	/**
 	 * Constructs a new {@code Metadata} with the {@code createdDate} filled in upon construction.
 	 */
 	public Metadata() {
-		createdDate = LocalDateTime.now();
+		createdDate = Instant.now();
 	}
 
 
@@ -77,8 +75,8 @@ public final class Metadata {
 	 */
 	@DoNotEncrypt
 	@DynamoDBAttribute(attributeName = "CreateDate")
-	@DynamoDBTypeConverted(converter = LocalDateTimeConverter.class)
-	public LocalDateTime getCreatedDate() {
+	@DynamoDBTypeConverted(converter = InstantConverter.class)
+	public Instant getCreatedDate() {
 		return createdDate;
 	}
 
@@ -87,7 +85,7 @@ public final class Metadata {
 	 *
 	 * @param createdDate The date and time to use.
 	 */
-	public void setCreatedDate(LocalDateTime createdDate) {
+	public void setCreatedDate(Instant createdDate) {
 		if (createdDate != null) {
 			this.createdDate = createdDate;
 		} else {
@@ -424,7 +422,7 @@ public final class Metadata {
 
 		if (cpcProcessed != null) {
 			DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-			combination = cpcProcessed.toString() + "#" + formatter.format(createdDate.toInstant(ZoneOffset.UTC));
+			combination = cpcProcessed.toString() + "#" + formatter.format(createdDate);
 		}
 
 		return combination;
@@ -452,7 +450,7 @@ public final class Metadata {
 		Instant instant = Instant.parse(creationDate);
 
 		setCpcProcessed(Boolean.valueOf(isProcessed));
-		setCreatedDate(LocalDateTime.ofInstant(instant, ZoneOffset.UTC));
+		setCreatedDate(instant);
 	}
 
 	/**
@@ -493,15 +491,15 @@ public final class Metadata {
 		return equals;
 	}
 
-	static public class LocalDateTimeConverter implements DynamoDBTypeConverter<String, LocalDateTime> {
+	public static class InstantConverter implements DynamoDBTypeConverter<String, Instant> {
 		@Override
-		public String convert( final LocalDateTime date ) {
-			return DateTimeFormatter.ISO_INSTANT.format(date.toInstant(ZoneOffset.UTC));
+		public String convert(final Instant date) {
+			return DateTimeFormatter.ISO_INSTANT.format(date);
 		}
 
 		@Override
-		public LocalDateTime unconvert( final String stringValue ) {
-			return LocalDateTime.ofInstant(Instant.parse(stringValue), ZoneOffset.UTC);
+		public Instant unconvert(final String stringValue) {
+			return Instant.parse(stringValue);
 		}
 	}
 

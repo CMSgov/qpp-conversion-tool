@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.model;
 
 import com.google.common.base.MoreObjects;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * Model to hold converted metadata to Unprocessed Cpc file data.
@@ -10,7 +10,7 @@ public class UnprocessedCpcFileData {
 	private String fileId;
 	private String filename;
 	private String apm;
-	private LocalDateTime conversionDate;
+	private Instant conversionDate;
 	private Boolean validationSuccess;
 
 	/**
