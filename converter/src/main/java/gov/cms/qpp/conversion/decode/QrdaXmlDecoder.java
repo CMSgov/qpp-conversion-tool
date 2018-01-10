@@ -27,9 +27,9 @@ import static gov.cms.qpp.conversion.decode.SupplementalDataPayerDecoder.SUPPLEM
 /**
  * Top level Decoder for parsing into QPP format.
  */
-public class QppXmlDecoder extends XmlInputDecoder {
+public class QrdaXmlDecoder extends XmlInputDecoder {
 
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(QppXmlDecoder.class);
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaXmlDecoder.class);
 	private static final String TEMPLATE_ID = "templateId";
 	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
 	private static final String ROOT_STRING = "root";
@@ -37,12 +37,12 @@ public class QppXmlDecoder extends XmlInputDecoder {
 
 	protected final Context context;
 	private final Set<TemplateId> scope;
-	private final Registry<QppXmlDecoder> decoders;
+	private final Registry<QrdaXmlDecoder> decoders;
 
 	/**
 	 * Initialize a qpp xml decoder
 	 */
-	public QppXmlDecoder(Context context) {
+	public QrdaXmlDecoder(Context context) {
 		Objects.requireNonNull(context, "converter");
 
 		this.context = context;
@@ -60,13 +60,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 */
 	@Override
 	public DecodeResult decode(Element element, Node parentNode) {
-		if (element == null) {
-			return DecodeResult.ERROR;
-		}
-
-		setNamespace(element, this);
-
-		return decodeChildren(element, parentNode);
+		return (element == null) ? DecodeResult.ERROR : decodeChildren(element, parentNode);
 	}
 
 	/**
@@ -77,6 +71,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 	 * @return status of current decode
 	 */
 	private DecodeResult decodeChildren(final Element element, final Node parentNode) {
+		setNamespace(element, this);
 		Node currentNode = parentNode;
 
 		List<Element> childElements = element.getChildren();
@@ -84,23 +79,16 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		for (Element childElement : childElements) {
 
 			if (TEMPLATE_ID.equals(childElement.getName())) {
-				String root = childElement.getAttributeValue(ROOT_STRING);
-				String extension = childElement.getAttributeValue(EXTENSION_STRING);
-				TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
-				DEV_LOG.debug("templateIdFound:{}", templateId);
-
-				QppXmlDecoder childDecoder = getDecoder(templateId);
+				TemplateId templateId = getTemplateId(childElement);
+				QrdaXmlDecoder childDecoder = getDecoder(templateId);
 
 				if (null == childDecoder) {
 					continue;
 				}
-				DEV_LOG.debug("Using decoder for {} as {}", templateId, childDecoder.getClass());
 				Node childNode = new Node(templateId, parentNode);
-
 				childNode.setDefaultNsUri(defaultNs.getURI());
-				
 				setNamespace(childElement, childDecoder);
-				
+
 				// the child decoder might require the entire its siblings
 				DecodeResult result = childDecoder.internalDecode(element, childNode);
 				if (result == DecodeResult.TREE_ESCAPED) {
@@ -124,14 +112,20 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		return null;
 	}
 
+	private TemplateId getTemplateId(final Element idElement) {
+		String root = idElement.getAttributeValue(ROOT_STRING);
+		String extension = idElement.getAttributeValue(EXTENSION_STRING);
+		return TemplateId.getTemplateId(root, extension, context);
+	}
+
 	/**
 	 * Retrieve a permitted {@link Decoder}. {@link #scope} is used to determine which DECODERS are allowable.
 	 *
 	 * @param templateId string representation of a would be decoder's template id
 	 * @return decoder that corresponds to the given template id
 	 */
-	private QppXmlDecoder getDecoder(TemplateId templateId) {
-		QppXmlDecoder qppDecoder = decoders.get(templateId);
+	private QrdaXmlDecoder getDecoder(TemplateId templateId) {
+		QrdaXmlDecoder qppDecoder = decoders.get(templateId);
 		if (qppDecoder != null) {
 			if (scope == null) {
 				return qppDecoder;
@@ -190,7 +184,7 @@ public class QppXmlDecoder extends XmlInputDecoder {
 		Node rootNode = new Node();
 		Element rootElement = xmlDoc.getDocument().getRootElement();
 		
-		QppXmlDecoder rootDecoder = null;
+		QrdaXmlDecoder rootDecoder = null;
 		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
 			String root = element.getAttributeValue(ROOT_STRING);
 			String extension = element.getAttributeValue(EXTENSION_STRING);

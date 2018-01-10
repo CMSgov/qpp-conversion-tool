@@ -12,7 +12,7 @@ import org.jdom2.Element;
  * Measure Denominator Data.
  */
 @Decoder(TemplateId.ACI_DENOMINATOR)
-public class AciProportionDenominatorDecoder extends QppXmlDecoder {
+public class AciProportionDenominatorDecoder extends QrdaXmlDecoder {
 
 	public AciProportionDenominatorDecoder(Context context) {
 		super(context);

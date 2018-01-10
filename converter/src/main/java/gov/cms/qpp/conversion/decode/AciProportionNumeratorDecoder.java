@@ -10,7 +10,7 @@ import org.jdom2.Element;
  * Decoder to read XML data for a Numerator Type Measure
  */
 @Decoder(TemplateId.ACI_NUMERATOR)
-public class AciProportionNumeratorDecoder extends QppXmlDecoder {
+public class AciProportionNumeratorDecoder extends QrdaXmlDecoder {
 
 	public AciProportionNumeratorDecoder(Context context) {
 		super(context);
