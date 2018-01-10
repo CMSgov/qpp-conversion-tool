@@ -22,6 +22,8 @@ class QrdaApiAcceptance {
 
 	private static final String QRDA_API_PATH = "/";
 	private static final String MULTIPART_FORM_DATA_KEY = "file";
+	private static final String TEST_S3_BUCKET_NAME = "flexion-qpp-conversion-tool-pii-convrtr-audt-test-us-east-1";
+	private static final String TEST_DYNAMO_TABLE_NAME = "qpp-qrda3converter-test-metadata";
 
 	private AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 
@@ -89,7 +91,7 @@ class QrdaApiAcceptance {
 
 	private long getS3ObjectCount() {
 
-		ObjectListing objectListing = s3Client.listObjects("flexion-qpp-conversion-tool-pii-convrtr-audt-test-us-east-1");
+		ObjectListing objectListing = s3Client.listObjects(TEST_S3_BUCKET_NAME);
 		long objectCount = objectListing.getObjectSummaries().size();
 
 		while(objectListing.isTruncated()) {
@@ -101,6 +103,6 @@ class QrdaApiAcceptance {
 	}
 
 	private long getDynamoItemCount() {
-		return dynamoClient.scan("qpp-qrda3converter-test-metadata", Lists.newArrayList("Uuid")).getCount();
+		return dynamoClient.scan(TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid")).getCount();
 	}
 }
