@@ -32,6 +32,11 @@ public class CpcFileControllerV1 {
 
 	private CpcFileService cpcFileService;
 
+	/**
+	 * init instance
+	 *
+	 * @param cpcFileService service for processing cpc+ files
+	 */
 	public CpcFileControllerV1(final CpcFileService cpcFileService) {
 		this.cpcFileService = cpcFileService;
 	}
