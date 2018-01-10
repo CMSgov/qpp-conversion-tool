@@ -79,7 +79,7 @@ class CpcApiAcceptance {
 
 	@Test
 	@Tag("acceptance")
-	void testNoSecurityMarkFileUnprocessed() {
+	void testNoSecurityMarkFileProcessed() {
 
 		String firstFileId = getFirstUnprocessedCpcFileId();
 
@@ -90,7 +90,7 @@ class CpcApiAcceptance {
 
 	@Test
 	@Tag("acceptance")
-	void testMarkFileUnprocessed() {
+	void testMarkFileProcessed() {
 
 		List<Map> unprocessedFiles = getUnprocessedFiles();
 
@@ -105,7 +105,7 @@ class CpcApiAcceptance {
 
 	@Test
 	@Tag("acceptance")
-	void testMarkFileUnprocessedBadFileId() {
+	void testMarkFileProcessedBadFileId() {
 
 		String responseBody = markFileAsProcessed("Moof!", 404);
 		assertThat(responseBody).isEqualTo("File not found!");
@@ -113,7 +113,7 @@ class CpcApiAcceptance {
 
 	@Test
 	@Tag("acceptance")
-	void testMarkFileUnprocessedNotCPC() {
+	void testMarkFileProcessedNotCPC() {
 
 		String responseBody = markFileAsProcessed("c9368ae7-474d-4106-919e-be94d862875f", 404);
 		assertThat(responseBody).isEqualTo("The file was not a CPC+ file.");
