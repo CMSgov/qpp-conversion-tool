@@ -41,6 +41,7 @@
 						<forceJavacCompilerUse>true</forceJavacCompilerUse>
 						<source>${java.version}</source>
 						<target>${java.version}</target>
+						<debug>true</debug>
 					</configuration>
 					<dependencies>
 						<dependency>
