@@ -24,7 +24,6 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -38,10 +37,13 @@ public class ValidationServiceImpl implements ValidationService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 	static final String CONTENT_TYPE = "application/json";
 
-	@Inject
 	private Environment environment;
+	private RestTemplate restTemplate;
 
-	private RestTemplate restTemplate = new RestTemplate();
+	public ValidationServiceImpl(final Environment environment) {
+		this.environment = environment;
+		this.restTemplate = new RestTemplate();
+	}
 
 	/**
 	 * Logs on startup whether a validation url is present

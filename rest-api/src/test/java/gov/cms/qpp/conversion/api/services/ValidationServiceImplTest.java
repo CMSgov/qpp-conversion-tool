@@ -28,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,8 +48,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ValidationServiceImplTest {
 
-	@InjectMocks
-	@Spy
+//	@InjectMocks
+//	@Spy
 	private ValidationServiceImpl objectUnderTest;
 
 	@Mock
@@ -69,7 +70,7 @@ class ValidationServiceImplTest {
 
 	@BeforeAll
 	static void setup() throws IOException {
-		service = new ValidationServiceImpl();
+		service = new ValidationServiceImpl(null);
 		pathToSubmissionError = Paths.get("src/test/resources/submissionErrorFixture.json");
 		pathToSubmissionDuplicateEntryError = Paths.get("src/test/resources/submissionDuplicateEntryErrorFixture.json");
 		Path toConvert = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
@@ -86,7 +87,14 @@ class ValidationServiceImplTest {
 	}
 
 	@BeforeEach
-	void before() {
+	void before() throws NoSuchFieldException, IllegalAccessException {
+		ValidationServiceImpl meep = new ValidationServiceImpl(environment);
+		Field rt = meep.getClass().getDeclaredField("restTemplate");
+		rt.setAccessible(true);
+		rt.set(meep, restTemplate);
+		rt.setAccessible(false);
+		objectUnderTest = spy(meep);
+
 		Converter.ConversionReport report = mock(Converter.ConversionReport.class);
 		when(report.getEncoded()).thenReturn(qppWrapper);
 		when(converter.getReport()).thenReturn(report);
