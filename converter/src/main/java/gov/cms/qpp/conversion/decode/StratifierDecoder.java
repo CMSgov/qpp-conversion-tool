@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * Decoder for Quality Measure Stratifiers
  */
 @Decoder(TemplateId.REPORTING_STRATUM_CMS)
-public class StratifierDecoder extends QppXmlDecoder {
+public class StratifierDecoder extends QrdaXmlDecoder {
 
 	public static final String STRATIFIER_ID = "populationId";
 

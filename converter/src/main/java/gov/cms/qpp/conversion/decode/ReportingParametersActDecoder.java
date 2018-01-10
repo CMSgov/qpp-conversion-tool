@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * Decoder to parse Reporting Parameters Act - CMS (V2).
  */
 @Decoder(TemplateId.REPORTING_PARAMETERS_ACT)
-public class ReportingParametersActDecoder extends QppXmlDecoder {
+public class ReportingParametersActDecoder extends QrdaXmlDecoder {
 
 	public static final String PERFORMANCE_START = "performanceStart";
 	public static final String PERFORMANCE_END = "performanceEnd";
