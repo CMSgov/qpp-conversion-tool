@@ -40,6 +40,11 @@ public class ValidationServiceImpl implements ValidationService {
 	private Environment environment;
 	private RestTemplate restTemplate;
 
+	/**
+	 * init ValidationServiceImpl instances
+	 *
+	 * @param environment hooks to application environment
+	 */
 	public ValidationServiceImpl(final Environment environment) {
 		this.environment = environment;
 		this.restTemplate = new RestTemplate();
