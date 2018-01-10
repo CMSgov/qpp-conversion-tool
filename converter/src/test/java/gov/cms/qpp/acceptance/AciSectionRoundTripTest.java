@@ -1,7 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.decode.QrdaXmlDecoder;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -51,7 +51,7 @@ class AciSectionRoundTripTest {
 		                     + "</component>";
 
 		//execute
-		Node parentNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node parentNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
@@ -93,7 +93,7 @@ class AciSectionRoundTripTest {
 		                     + "</component>";
 
 		//execute
-		Node parentNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node parentNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
@@ -134,7 +134,7 @@ class AciSectionRoundTripTest {
 
 		Context context = new Context();
 		//Decode
-		Node measureNode = new QppXmlDecoder(context).decode(XmlUtils.stringToDom(xmlFragment));
+		Node measureNode = new QrdaXmlDecoder(context).decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(measureNode.getChildNodes());
 

@@ -29,7 +29,7 @@ class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node aggregateCountNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node aggregateCountNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertThat(aggregateCountNode.getChildNodes().get(0).getValue("aggregateCount"))
 				.isEqualTo("600");
@@ -45,7 +45,7 @@ class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node numDenomNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertWithMessage("aci numerator/denominator value should be null")
 				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
@@ -60,7 +60,7 @@ class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node numDenomNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertWithMessage("aci numerator/denominator value should be null")
 				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
@@ -68,7 +68,7 @@ class AciNumeratorDenominatorDecoderTest {
 
 	@Test
 	void decodeValidAciNumeratorDenominatorTest() throws XmlException {
-		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
+		Node aciMeasureNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
 		Node numeratorDenominatorNode = aciMeasureNode.getChildNodes().get(0);
 		int numberNodes = countNodes(aciMeasureNode);
 		List<Node> nodeList = aciMeasureNode.findNode(TemplateId.ACI_NUMERATOR);
@@ -111,7 +111,7 @@ class AciNumeratorDenominatorDecoderTest {
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
 
-		Node aciMeasureNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node aciMeasureNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		assertWithMessage("Decoded xml fragment should contain one child node")
 				.that(aciMeasureNode.getChildNodes())
 				.hasSize(1);
