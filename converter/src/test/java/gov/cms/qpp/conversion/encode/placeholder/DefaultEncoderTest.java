@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.encode.placeholder;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.decode.QrdaXmlDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
@@ -9,7 +9,6 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import org.apache.commons.io.IOUtils;
@@ -24,7 +23,7 @@ class DefaultEncoderTest {
 		InputStream stream = XmlUtils.fileToStream(Paths.get("../qrda-files/valid-QRDA-III.xml"));
 		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
-		Node node = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node node = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		Node placeHolder = new Node(TemplateId.DEFAULT, node);
 		node.addChildNode(placeHolder);

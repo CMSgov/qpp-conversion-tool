@@ -2,13 +2,13 @@ package gov.cms.qpp.conversion.decode.placeholder;
 
 import java.util.Iterator;
 
+import gov.cms.qpp.conversion.decode.QrdaXmlDecoder;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.DecodeResult;
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -20,7 +20,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * away.
  *
  */
-public class DefaultDecoder extends QppXmlDecoder {
+public class DefaultDecoder extends QrdaXmlDecoder {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(DefaultDecoder.class);
 
