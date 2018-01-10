@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,8 +35,8 @@ import java.nio.file.Paths;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -42,11 +44,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(MockitoExtension.class)
 class ValidationServiceImplTest {
 
 	@InjectMocks
+	@Spy
 	private ValidationServiceImpl objectUnderTest;
 
 	@Mock
@@ -64,7 +66,6 @@ class ValidationServiceImplTest {
 	private static AllErrors convertedErrors;
 	private static ErrorMessage submissionError;
 	private static ValidationServiceImpl service;
-
 
 	@BeforeAll
 	static void setup() throws IOException {
@@ -190,5 +191,18 @@ class ValidationServiceImplTest {
 		assertWithMessage("Json path should be converted to xpath")
 				.that(detail.getPath())
 				.isNotEqualTo(mappedDetails.getPath());
+	}
+
+	@Test
+	void testCheckForValidationUrlVariableLoggingIfPresent() {
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn("mock");
+		objectUnderTest.checkForValidationUrlVariable();
+		Mockito.verify(objectUnderTest, Mockito.times(1)).apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to mock");
+	}
+
+	@Test
+	void testCheckForValidationUrlVariableLoggingIfAbsent() {
+		objectUnderTest.checkForValidationUrlVariable();
+		Mockito.verify(objectUnderTest, Mockito.times(1)).apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
 	}
 }

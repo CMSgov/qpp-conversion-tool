@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
@@ -18,9 +19,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -31,14 +34,36 @@ import java.nio.charset.StandardCharsets;
  */
 @Service
 public class ValidationServiceImpl implements ValidationService {
+
 	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
 	static final String CONTENT_TYPE = "application/json";
-
 
 	@Inject
 	private Environment environment;
 
 	private RestTemplate restTemplate = new RestTemplate();
+
+	/**
+	 * Logs on startup whether a validation url is present
+	 */
+	@PostConstruct
+	public void checkForValidationUrlVariable() {
+		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
+		if (!StringUtils.isEmpty(validationUrl)) {
+			apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to " + validationUrl);
+		} else {
+			apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
+		}
+	}
+
+	/**
+	 * Workaround to a problem with our logging dependencies preventing us from using TestLogger
+	 *
+	 * @param message The message to log
+	 */
+	protected void apiLog(String message) {
+		API_LOG.info(message);
+	}
 
 	/**
 	 * Validates that the given QPP is valid.
