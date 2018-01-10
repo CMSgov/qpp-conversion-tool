@@ -1,9 +1,10 @@
 package gov.cms.qpp.conversion.api.config;
 
 import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.util.EnvironmentHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -17,6 +18,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class AsyncConfig {
 
 	public static final String POOLED_THREAD_PREFIX = "QppConversionRestApi-";
+
+	@Autowired
+	private Environment environment;
 
 	/**
 	 * A thread pool just for the ReST API.
@@ -37,6 +41,6 @@ public class AsyncConfig {
 	}
 
 	private boolean isSync() {
-		return EnvironmentHelper.isPresent(Constants.USE_SYNC_EXECUTOR);
+		return environment.containsProperty(Constants.USE_SYNC_EXECUTOR);
 	}
 }

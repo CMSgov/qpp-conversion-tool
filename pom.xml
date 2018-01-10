@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.1-RELEASE</version>
+	<version>1.1.2-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -24,6 +24,7 @@
 		<module>rest-logging</module>
 		<module>rest-api</module>
 		<module>benchmark</module>
+		<module>generate-qrda</module>
 	</modules>
 
 	<build>
@@ -131,7 +132,6 @@
 						<useFile>false</useFile>
 						<excludes>
 							<exclude>**/*Integration.java</exclude>
-							<exclude>**/*IntegrationTest.java</exclude>
 						</excludes>
 					</configuration>
 					<dependencies>
@@ -192,6 +192,13 @@
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
 			<version>5.0.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<version>1.0.2</version>
 			<scope>test</scope>
 		</dependency>
 
