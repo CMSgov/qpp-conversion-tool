@@ -15,12 +15,19 @@ import static com.google.common.truth.Truth.assertThat;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.put;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.xml.HasXPath.hasXPath;
 
 @ExtendWith(RestExtension.class)
 class CpcApiAcceptance {
 
 	private static final String CPC_UNPROCESSED_FILES_API_PATH = "/cpc/unprocessed-files";
 	private static final String CPC_FILE_API_PATH = "/cpc/file/";
+	private static final String PROGRAM_NAME_XPATH = "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']"
+		+ "/./*[local-name() = 'informationRecipient' and namespace-uri() = 'urn:hl7-org:v3']"
+		+ "/*[local-name() = 'intendedRecipient' and namespace-uri() = 'urn:hl7-org:v3']"
+		+ "/*[local-name() = 'id' and namespace-uri() = 'urn:hl7-org:v3'][@root='2.16.840.1.113883.3.249.7']/@extension";
+	private static final String CPC_PLUS_PROGRAM_NAME = "CPCPLUS";
 
 	@BeforeAll
 	static void createUnprocessedItem() {
@@ -74,7 +81,8 @@ class CpcApiAcceptance {
 			.get(CPC_FILE_API_PATH + firstFileId)
 			.then()
 			.statusCode(200)
-			.contentType("application/xml");
+			.contentType("application/xml")
+			.body(hasXPath(PROGRAM_NAME_XPATH, equalTo(CPC_PLUS_PROGRAM_NAME)));
 	}
 
 	@Test
