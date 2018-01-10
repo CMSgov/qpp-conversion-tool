@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  *
  */
 @Decoder(TemplateId.IA_MEASURE)
-public class IaMeasureDecoder extends QppXmlDecoder {
+public class IaMeasureDecoder extends QrdaXmlDecoder {
 
 	public IaMeasureDecoder(Context context) {
 		super(context);

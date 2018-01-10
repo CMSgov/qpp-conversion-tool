@@ -84,7 +84,7 @@ class AggregateCountDecoderTest {
     @Test
     void testAggregateCountDecoderIgnoresInvalidElements() throws Exception {
 
-        Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
+        Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
         Node node = root.getChildNodes().get(0);
 
         assertThat(node.getChildNodes()).hasSize(1);
@@ -100,7 +100,7 @@ class AggregateCountDecoderTest {
     @Test
     void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws Exception {
 
-        Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(ANOTHER_XML_FRAGMENT));
+        Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(ANOTHER_XML_FRAGMENT));
 
         assertWithMessage("Node has aggregate count")
                 .that(root.getValue("aggregateCount"))
