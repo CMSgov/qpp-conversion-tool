@@ -3,11 +3,9 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
-
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -4,12 +4,12 @@ import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.stereotype.Service;
 
 /**
  * Service for handling Cpc File meta data
