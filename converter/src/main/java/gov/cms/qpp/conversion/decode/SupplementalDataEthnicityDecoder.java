@@ -11,7 +11,7 @@ import org.jdom2.Element;
  * Decoder for Supplemental Data Ethnicity Element
  */
 @Decoder(TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-public class SupplementalDataEthnicityDecoder extends QppXmlDecoder {
+public class SupplementalDataEthnicityDecoder extends QrdaXmlDecoder {
 
 	public static final String SUPPLEMENTAL_DATA_CODE = "code";
 	public static final String SUPPLEMENTAL_DATA_KEY = "supplementalData";

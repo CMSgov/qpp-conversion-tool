@@ -32,7 +32,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	 * @return Root intermediate format node
 	 */
 	public static Node decodeXml(Context context, Element xmlDoc) {
-		XmlInputDecoder decoder = new QppXmlDecoder(context);
+		XmlInputDecoder decoder = new QrdaXmlDecoder(context);
 		if (decoder.accepts(xmlDoc)) {
 			return decoder.decode(xmlDoc);
 		}

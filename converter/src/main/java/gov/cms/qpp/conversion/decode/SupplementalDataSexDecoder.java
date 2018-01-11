@@ -11,7 +11,7 @@ import org.jdom2.Element;
  * Decoder for Supplemental Data Sex Element
  */
 @Decoder(TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-public class SupplementalDataSexDecoder extends QppXmlDecoder {
+public class SupplementalDataSexDecoder extends QrdaXmlDecoder {
 
 	public SupplementalDataSexDecoder(Context context) {
 		super(context);

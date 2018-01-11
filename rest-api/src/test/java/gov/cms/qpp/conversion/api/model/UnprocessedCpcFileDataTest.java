@@ -1,10 +1,9 @@
 package gov.cms.qpp.conversion.api.model;
 
+import java.time.Instant;
+import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.Date;
-import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -22,8 +21,10 @@ class UnprocessedCpcFileDataTest {
 		return Stream.of("T02789", "KF5RGI");
 	}
 
-	private static Stream<Date> createdDateProvider() {
-		return Stream.of(new Date(954982730L), new Date(23546L));
+	private static Stream<Instant> createdDateProvider() {
+		Instant firstDateInstant = Instant.parse("2017-01-01T08:00:00.846Z");
+		Instant secondDateInstant = Instant.parse("2018-01-01T08:00:00.846Z");
+		return Stream.of(firstDateInstant, secondDateInstant);
 	}
 
 	private static Stream<Boolean> overallSuccessProvider() {

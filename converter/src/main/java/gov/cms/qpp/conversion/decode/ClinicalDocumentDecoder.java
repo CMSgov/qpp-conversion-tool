@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * Decoder to parse the root element of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
 @Decoder(TemplateId.CLINICAL_DOCUMENT)
-public class ClinicalDocumentDecoder extends QppXmlDecoder {
+public class ClinicalDocumentDecoder extends QrdaXmlDecoder {
 
 	/*  Constants for lookups and tests */
 	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";

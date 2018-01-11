@@ -13,7 +13,7 @@ import org.jdom2.filter.Filters;
  * Decodes the Performance Rate Proportion Measure from the Measure Section
  */
 @Decoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-public class PerformanceRateProportionMeasureDecoder extends QppXmlDecoder {
+public class PerformanceRateProportionMeasureDecoder extends QrdaXmlDecoder {
 
 	public static final String PERFORMANCE_RATE = "rate";
 	public static final String NULL_PERFORMANCE_RATE = "nullRate";
