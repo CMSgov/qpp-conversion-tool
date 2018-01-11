@@ -91,6 +91,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @return Metadata found
 	 */
 	public Metadata getMetadataById(String uuid) {
+		API_LOG.info("Read item {} from DynamoDB", uuid);
 		return mapper.load(Metadata.class, uuid);
 	}
 
