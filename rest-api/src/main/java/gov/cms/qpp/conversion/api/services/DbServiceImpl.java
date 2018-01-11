@@ -75,9 +75,10 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 				.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with(" +
 					Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
 				.withExpressionAttributeValues(valueMap)
-				.withConsistentRead(false);
+				.withConsistentRead(false)
+				.withLimit(3);
 
-			return mapper.query(Metadata.class, metadataQuery).stream();
+			return mapper.queryPage(Metadata.class, metadataQuery).getResults().stream();
 		}).flatMap(Function.identity()).collect(Collectors.toList());
 	}
 

@@ -12,6 +12,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
+import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
@@ -92,13 +94,13 @@ class DbServiceImplTest {
 
 	@Test
 	void testGetUnprocessedCpcPlusMetaData() {
-		PaginatedQueryList<Metadata> mockMetadataList = mock(PaginatedQueryList.class);
-		when(mockMetadataList.stream()).thenAnswer(invocationOnMock -> Stream.of(new Metadata(), new Metadata()));
-		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class))).thenReturn(mockMetadataList);
+		QueryResultPage<Metadata> mockMetadataPage = mock(QueryResultPage.class);
+		when(mockMetadataPage.getResults()).thenReturn(Lists.newArrayList(new Metadata(), new Metadata()));
+		when(dbMapper.queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class))).thenReturn(mockMetadataPage);
 
 		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData();
 
-		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(any(Class.class), any(DynamoDBQueryExpression.class));
+		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).queryPage(any(Class.class), any(DynamoDBQueryExpression.class));
 		assertThat(metaDataList).hasSize(2 * Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
