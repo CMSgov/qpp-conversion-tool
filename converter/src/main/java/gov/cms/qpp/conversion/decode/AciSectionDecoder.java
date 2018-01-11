@@ -10,7 +10,7 @@ import org.jdom2.Element;
  * Decoder to read XML Data for an ACI Section.
  */
 @Decoder(TemplateId.ACI_SECTION)
-public class AciSectionDecoder extends QppXmlDecoder {
+public class AciSectionDecoder extends QrdaXmlDecoder {
 
 	public AciSectionDecoder(Context context) {
 		super(context);

@@ -1,21 +1,22 @@
 package gov.cms.qpp.conversion.api.model;
 
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.Instant;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.function.Consumer;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.fail;
 
 class MetadataTest {
+
+	private final String EXPECTED_DATE = "2017-12-12T08:30:30.285Z";
 
 	@Test
 	void equalsContract() {
@@ -49,7 +50,7 @@ class MetadataTest {
 	void testSetCpcProcessedCreateDateWithoutHash() {
 		Metadata metadata = new Metadata();
 		Boolean processedBefore = metadata.getCpcProcessed();
-		Date createDateBefore = metadata.getCreatedDate();
+		Instant createDateBefore = metadata.getCreatedDate();
 
 		metadata.setCpcProcessedCreateDate("DogCow");
 
@@ -61,7 +62,7 @@ class MetadataTest {
 	void testSetCpcProcessedCreateDateWithHash() {
 		Metadata metadata = new Metadata();
 		metadata.setCpcProcessed(false);
-		Date createDateBefore = metadata.getCreatedDate();
+		Instant createDateBefore = metadata.getCreatedDate();
 
 		metadata.setCpcProcessedCreateDate("true#2017-12-08T18:32:54.846Z");
 
@@ -76,6 +77,23 @@ class MetadataTest {
 		Arrays.stream(Metadata.class.getDeclaredMethods())
 				.filter(this::junk)
 				.forEach(consumer);
+	}
+
+	@Test
+	void testConvertInstantToString() {
+		Metadata.InstantConverter instantConverter = new Metadata.InstantConverter();
+		Instant testInstant = Instant.parse(EXPECTED_DATE);
+
+		assertThat(instantConverter.convert(testInstant)).isEqualTo(EXPECTED_DATE);
+	}
+
+	@Test
+	void testConvertStringToInstant() {
+		Instant expected = Instant.parse(EXPECTED_DATE);
+		Metadata.InstantConverter instantConverter = new Metadata.InstantConverter();
+		Instant outcome = instantConverter.unconvert(EXPECTED_DATE);
+
+		assertThat(outcome).isEquivalentAccordingToCompareTo(expected);
 	}
 
 	private Consumer<Method> harness(Metadata meta) {

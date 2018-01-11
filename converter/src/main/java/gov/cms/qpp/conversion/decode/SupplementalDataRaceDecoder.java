@@ -11,7 +11,7 @@ import org.jdom2.Element;
  * Decoder for Supplemental Data Race Element
  */
 @Decoder(TemplateId.RACE_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-public class SupplementalDataRaceDecoder extends QppXmlDecoder {
+public class SupplementalDataRaceDecoder extends QrdaXmlDecoder {
 
 	public SupplementalDataRaceDecoder(Context context) {
 		super(context);

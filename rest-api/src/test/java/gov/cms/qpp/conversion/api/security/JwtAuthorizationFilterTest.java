@@ -2,14 +2,12 @@ package gov.cms.qpp.conversion.api.security;
 
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
 import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
-import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -19,6 +17,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import java.io.IOException;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -27,6 +29,7 @@ import static org.mockito.Mockito.verify;
 //Using jUnit 4 for power mock
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({SecurityContextHolder.class})
+@PowerMockIgnore("javax.crypto.*")
 public class JwtAuthorizationFilterTest {
 
 	private static AuthenticationManager authenticationManager;

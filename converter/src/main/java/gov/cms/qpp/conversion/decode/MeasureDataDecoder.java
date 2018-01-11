@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * Decoder for CMS V2 Measure Data eCQM
  */
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
-public class MeasureDataDecoder extends QppXmlDecoder {
+public class MeasureDataDecoder extends QrdaXmlDecoder {
 
 	protected static final Set<String> MEASURES = Stream.of("IPP", "IPOP", "DENEX", "DENOM", "DENEXCEP", "NUMER")
 			.collect(Collectors.toSet());

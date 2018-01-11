@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * Decoder to read XML Data for an Quality Measure Identifier (eCQM).
  */
 @Decoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
-public class QualityMeasureIdDecoder extends QppXmlDecoder {
+public class QualityMeasureIdDecoder extends QrdaXmlDecoder {
 
 	public static final String MEASURE_ID = "measureId";
 
