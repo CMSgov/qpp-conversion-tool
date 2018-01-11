@@ -59,7 +59,9 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	}
 
 	/**
-	 * Scans the DynamoDB table for unprocessed {@link Metadata}
+	 * Queries the DynamoDB GSI for unprocessed {@link Metadata} with a maximum of 96 items.
+	 *
+	 * Iterates over all of the different partitions, returning a maximum of three items from each.
 	 *
 	 * @return {@link List} of unprocessed {@link Metadata}
 	 */
