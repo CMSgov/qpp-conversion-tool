@@ -45,7 +45,7 @@ class IaSectionDecoderTest {
 	}
 
 	private Node executeDecoderWithoutDefaults() throws XmlException {
-		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(root.getChildNodes());
 		return root;
 	}
