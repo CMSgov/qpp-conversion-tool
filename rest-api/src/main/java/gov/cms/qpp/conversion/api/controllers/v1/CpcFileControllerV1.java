@@ -96,6 +96,7 @@ public class CpcFileControllerV1 {
 	 * Updates a file's status in the database
 	 *
 	 * @param fileId Identifier of the file needing to be updated
+	 * @param request The new state of the file being updated
 	 * @return Message if the file was updated or not
 	 */
 	@RequestMapping(method = RequestMethod.PUT, value = "/file/{fileId}",

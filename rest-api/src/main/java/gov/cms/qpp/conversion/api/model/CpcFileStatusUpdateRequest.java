@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion.api.model;
 
+/**
+ * Request body for updating a cpc file
+ */
 public class CpcFileStatusUpdateRequest {
 
 	private Boolean processed;
