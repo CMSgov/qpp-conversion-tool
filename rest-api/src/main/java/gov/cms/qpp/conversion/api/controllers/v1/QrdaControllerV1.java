@@ -8,7 +8,6 @@ import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,14 +33,23 @@ import java.util.function.Supplier;
 public class QrdaControllerV1 {
 	private static final Logger API_LOG = LoggerFactory.getLogger(QrdaControllerV1.class);
 
-	@Autowired
 	private QrdaService qrdaService;
-
-	@Autowired
 	private ValidationService validationService;
-
-	@Autowired
 	private AuditService auditService;
+
+	/**
+	 * init dependencies
+	 *
+	 * @param qrdaService {@link QrdaService} to perform QRDA -> QPP conversion
+	 * @param validationService {@link ValidationService} to perform post conversion validation
+	 * @param auditService {@link AuditService} to persist audit information
+	 */
+	public QrdaControllerV1(final QrdaService qrdaService, final ValidationService validationService,
+							final AuditService auditService) {
+		this.qrdaService = qrdaService;
+		this.validationService = validationService;
+		this.auditService = auditService;
+	}
 
 	/**
 	 * Endpoint to transform an uploaded file into a valid or error json response
