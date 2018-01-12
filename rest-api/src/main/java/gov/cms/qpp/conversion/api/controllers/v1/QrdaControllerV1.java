@@ -32,7 +32,7 @@ import java.util.function.Supplier;
 @RequestMapping("/")
 @CrossOrigin
 public class QrdaControllerV1 {
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(QrdaControllerV1.class);
 
 	@Autowired
 	private QrdaService qrdaService;
