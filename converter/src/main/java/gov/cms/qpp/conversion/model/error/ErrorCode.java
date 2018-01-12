@@ -129,8 +129,8 @@ public enum ErrorCode implements LocalizedError {
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
-	private static String VARIABLE_MARKER = "`\\(([^()]*)\\)`";
-	private static Pattern REPLACE_PATTERN = Pattern.compile(VARIABLE_MARKER);
+	private static final String VARIABLE_MARKER = "`\\(([^()]*)\\)`";
+	private static Pattern replacePattern;
 
 	private final int code;
 	private final String message;
@@ -150,7 +150,7 @@ public enum ErrorCode implements LocalizedError {
 	}
 
 	private void initMessageMarkers(String message) {
-		Matcher matcher = REPLACE_PATTERN.matcher(message);
+		Matcher matcher = getPattern().matcher(message);
 		while(matcher.find()) {
 			messageVariables.add(matcher.group(1));
 		}
@@ -198,9 +198,14 @@ public enum ErrorCode implements LocalizedError {
 		return new StrSubstitutor(valueSub, "`(", ")`").replace(message);
 	}
 
+	private static Pattern getPattern() {
+		if (replacePattern == null) {
+			replacePattern = Pattern.compile(VARIABLE_MARKER);
+		}
+		return replacePattern;
+	}
 
 	public static ErrorCode getByCode(int code) {
 		return CODE_TO_VALUE.get(code);
 	}
-
 }
