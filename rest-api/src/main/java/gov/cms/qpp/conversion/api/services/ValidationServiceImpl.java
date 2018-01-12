@@ -1,11 +1,14 @@
 package gov.cms.qpp.conversion.api.services;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
-import javax.annotation.PostConstruct;
-
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.ErrorMessage;
+import gov.cms.qpp.conversion.correlation.PathCorrelator;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Error;
+import gov.cms.qpp.conversion.model.error.QppValidationException;
+import gov.cms.qpp.conversion.util.JsonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +23,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.ErrorMessage;
-import gov.cms.qpp.conversion.correlation.PathCorrelator;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Error;
-import gov.cms.qpp.conversion.model.error.QppValidationException;
-import gov.cms.qpp.conversion.util.JsonHelper;
+import javax.annotation.PostConstruct;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Implementation for the QPP Validation Service
@@ -36,7 +34,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 @Service
 public class ValidationServiceImpl implements ValidationService {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(ValidationServiceImpl.class);
 	static final String CONTENT_TYPE = "application/json";
 
 	@Autowired

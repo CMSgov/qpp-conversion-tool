@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.Source;
-import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,7 @@ import javax.annotation.PostConstruct;
  */
 @Service
 public class QrdaServiceImpl implements QrdaService {
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(QrdaServiceImpl.class);
 
 	/**
 	 * Preloads the measure configs data
