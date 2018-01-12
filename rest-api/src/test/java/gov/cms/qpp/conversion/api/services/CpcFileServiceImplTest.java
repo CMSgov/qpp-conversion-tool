@@ -159,6 +159,55 @@ class CpcFileServiceImplTest {
 		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
 	}
 
+	@Test
+	void testProcessFileByIdSuccess() {
+		Metadata returnedData = buildFakeMetadata(true, false);
+		when(dbService.getMetadataById(anyString())).thenReturn(returnedData);
+		when(dbService.write(any(Metadata.class))).thenReturn(CompletableFuture.completedFuture(returnedData));
+
+		String message = objectUnderTest.processFileById(MEEP);
+
+		verify(dbService, times(1)).getMetadataById(MEEP);
+		verify(dbService, times(1)).write(returnedData);
+
+		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
+	}
+
+	@Test
+	void testUnprocessFileByIdFileNotFound() {
+		when(dbService.getMetadataById(anyString())).thenReturn(null);
+
+		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
+				-> objectUnderTest.unprocessFileById("test"));
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+	}
+
+	@Test
+	void testUnprocessFileByIdWithMipsFile() {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(false, false));
+
+		InvalidFileTypeException expectedException = assertThrows(InvalidFileTypeException.class, ()
+				-> objectUnderTest.unprocessFileById("test"));
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
+	}
+
+	@Test
+	void testUnprocessFileByIdWithProcessedFile() {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, false));
+
+		String response = objectUnderTest.unprocessFileById("test");
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+
+		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND_UNPROCESSED);
+	}
+
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {
 		Metadata metadata = new Metadata();
 		metadata.setCpc(isCpc ? "CPC_26" : null);
