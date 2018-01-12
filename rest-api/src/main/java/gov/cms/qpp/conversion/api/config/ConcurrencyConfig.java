@@ -15,32 +15,15 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
  * Configures {@link Bean}s associated with threadding.
  */
 @Configuration
-public class AsyncConfig {
-
-	public static final String POOLED_THREAD_PREFIX = "QppConversionRestApi-";
-
-	@Autowired
-	private Environment environment;
+public class ConcurrencyConfig {
 
 	/**
 	 * A thread pool just for the ReST API.
 	 *
-	 * @return The thread pool, or synchronous task executor if desired.
+	 * @return synchronous task executor
 	 */
 	@Bean
 	public TaskExecutor taskExecutor() {
-		if (isSync()) {
-			return new SyncTaskExecutor();
-		}
-
-		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(15);
-		executor.setThreadNamePrefix(POOLED_THREAD_PREFIX);
-		executor.initialize();
-		return executor;
-	}
-
-	private boolean isSync() {
-		return environment.containsProperty(Constants.USE_SYNC_EXECUTOR);
+		return new SyncTaskExecutor();
 	}
 }
