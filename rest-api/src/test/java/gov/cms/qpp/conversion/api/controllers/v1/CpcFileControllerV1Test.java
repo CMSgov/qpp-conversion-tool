@@ -1,16 +1,18 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
-import gov.cms.qpp.conversion.api.services.CpcFileService;
-import gov.cms.qpp.test.MockitoExtension;
+import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,11 +24,12 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import gov.cms.qpp.conversion.api.services.CpcFileService;
+import gov.cms.qpp.test.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class CpcFileControllerV1Test {
@@ -75,7 +78,7 @@ class CpcFileControllerV1Test {
 	void testMarkFileAsProcessedReturnsSuccess() {
 		when(cpcFileService.processFileById(anyString())).thenReturn("success!");
 
-		ResponseEntity<String> response = cpcFileControllerV1.markFileProcessed("meep");
+		ResponseEntity<String> response = markProcessed();
 
 		verify(cpcFileService, times(1)).processFileById("meep");
 
@@ -86,9 +89,31 @@ class CpcFileControllerV1Test {
 	void testMarkFileAsProcessedHttpStatusOk() {
 		when(cpcFileService.processFileById(anyString())).thenReturn("success!");
 
-		ResponseEntity<String> response = cpcFileControllerV1.markFileProcessed("meep");
+		ResponseEntity<String> response = markProcessed();
 
 		verify(cpcFileService, times(1)).processFileById("meep");
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
+
+	@Test
+	void testMarkFileAsUnprocessedReturnsSuccess() {
+		when(cpcFileService.unprocessFileById(anyString())).thenReturn("success!");
+
+		ResponseEntity<String> response = markUnprocessed();
+
+		verify(cpcFileService, times(1)).unprocessFileById("meep");
+
+		assertThat(response.getBody()).isEqualTo("success!");
+	}
+
+	@Test
+	void testMarkFileAsUnprocessedHttpStatusOk() {
+		when(cpcFileService.unprocessFileById(anyString())).thenReturn("success!");
+
+		ResponseEntity<String> response = markUnprocessed();
+
+		verify(cpcFileService, times(1)).unprocessFileById("meep");
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
@@ -117,10 +142,22 @@ class CpcFileControllerV1Test {
 	void testEndpoint3WithFeatureFlagDisabled() throws IOException {
 		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
 
-		ResponseEntity<String> cpcResponse = cpcFileControllerV1.markFileProcessed("meep");
+		ResponseEntity<String> cpcResponse = markProcessed();
 
 		assertThat(cpcResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 		assertThat(cpcResponse.getBody()).isNull();
+	}
+
+	private ResponseEntity<String> markProcessed() {
+		CpcFileStatusUpdateRequest request = new CpcFileStatusUpdateRequest();
+		request.setProcessed(true);
+		return cpcFileControllerV1.updateFile("meep", request);
+	}
+
+	private ResponseEntity<String> markUnprocessed() {
+		CpcFileStatusUpdateRequest request = new CpcFileStatusUpdateRequest();
+		request.setProcessed(false);
+		return cpcFileControllerV1.updateFile("meep", request);
 	}
 
 	List<UnprocessedCpcFileData> createMockedUnprocessedDataList() {
