@@ -33,4 +33,12 @@ public interface CpcFileService {
 	 * @return Success or failure message
 	 */
 	String processFileById(String fileId);
+
+	/**
+	 * Marks a CPC File as unprocessed by id
+	 *
+	 * @param fileId Identifier of the CPC+ file
+	 * @return Success or failure message
+	 */
+	String unprocessFileById(String fileId);
 }
