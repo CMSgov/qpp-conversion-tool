@@ -1,14 +1,13 @@
 package gov.cms.qpp.conversion.api.services;
 
-import gov.cms.qpp.conversion.api.model.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -30,9 +29,9 @@ import java.util.concurrent.CompletableFuture;
  */
 public abstract class AnyOrderActionService<T, S> {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(AnyOrderActionService.class);
 
-	@Autowired
+	@Inject
 	protected TaskExecutor taskExecutor;
 
 	/**
