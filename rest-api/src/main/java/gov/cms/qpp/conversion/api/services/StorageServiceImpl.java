@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class StorageServiceImpl extends AnyOrderActionService<PutObjectRequest, String>
 		implements StorageService {
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(StorageServiceImpl.class);
 
 	@Inject
 	private TransferManager s3TransferManager;

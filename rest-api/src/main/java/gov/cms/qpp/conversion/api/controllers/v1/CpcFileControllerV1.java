@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +30,9 @@ import java.util.List;
 @CrossOrigin
 public class CpcFileControllerV1 {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final String BLOCKED_BY_FEATURE_FLAG =
+			"CPC+ unprocessed files request blocked by feature flag";
+	private static final Logger API_LOG = LoggerFactory.getLogger(CpcFileControllerV1.class);
 
 	private CpcFileService cpcFileService;
 
@@ -52,7 +56,7 @@ public class CpcFileControllerV1 {
 		API_LOG.info("CPC+ unprocessed files request received");
 
 		if (blockCpcPlusApi()) {
-			API_LOG.info("CPC+ unprocessed files request blocked by feature flag");
+			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
@@ -95,22 +99,31 @@ public class CpcFileControllerV1 {
 	}
 
 	/**
-	 * Updates a file's status to processed in the database
+	 * Updates a file's status in the database
 	 *
 	 * @param fileId Identifier of the file needing to be updated
+	 * @param request The new state of the file being updated
 	 * @return Message if the file was updated or not
 	 */
 	@RequestMapping(method = RequestMethod.PUT, value = "/file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT} )
-	public ResponseEntity<String> markFileProcessed(@PathVariable("fileId") String fileId) {
+	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId,
+			@RequestBody CpcFileStatusUpdateRequest request) {
 		if (blockCpcPlusApi()) {
-			API_LOG.info("CPC+ unprocessed files request blocked by feature flag");
+			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		API_LOG.info("CPC+ update file as processed request received");
-		String message = cpcFileService.processFileById(fileId);
-		API_LOG.info("CPC+ update file as processed request succeeded");
+		API_LOG.info("CPC+ update file request received");
+
+		String message;
+		if (request.getProcessed() != null && !request.getProcessed()) {
+			message = cpcFileService.unprocessFileById(fileId);
+		} else {
+			message = cpcFileService.processFileById(fileId);
+		}
+
+		API_LOG.info("CPC+ update file request succeeded with message: " + message);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
 

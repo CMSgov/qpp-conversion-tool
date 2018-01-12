@@ -34,7 +34,7 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class ValidationServiceImpl implements ValidationService {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(ValidationServiceImpl.class);
 	static final String CONTENT_TYPE = "application/json";
 
 	private Environment environment;

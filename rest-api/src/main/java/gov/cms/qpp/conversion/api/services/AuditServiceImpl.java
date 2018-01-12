@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
  */
 @Service
 public class AuditServiceImpl implements AuditService {
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(AuditServiceImpl.class);
 
 	private StorageService storageService;
 	private DbService dbService;

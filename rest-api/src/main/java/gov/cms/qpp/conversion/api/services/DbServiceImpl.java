@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
 public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		implements DbService {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(DbServiceImpl.class);
 
 	@Inject
 	private DynamoDBMapper mapper;
