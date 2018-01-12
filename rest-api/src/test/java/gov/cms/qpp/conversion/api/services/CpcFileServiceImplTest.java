@@ -111,20 +111,6 @@ class CpcFileServiceImplTest {
 	}
 
 	@Test
-	void testProcessFileByIdSuccess() {
-		Metadata returnedData = buildFakeMetadata(true, false);
-		when(dbService.getMetadataById(anyString())).thenReturn(returnedData);
-		when(dbService.write(any(Metadata.class))).thenReturn(CompletableFuture.completedFuture(returnedData));
-
-		String message = objectUnderTest.processFileById(MEEP);
-
-		verify(dbService, times(1)).getMetadataById(MEEP);
-		verify(dbService, times(1)).write(returnedData);
-
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
-	}
-
-	@Test
 	void testProcessFileByIdFileNotFound() {
 		when(dbService.getMetadataById(anyString())).thenReturn(null);
 
