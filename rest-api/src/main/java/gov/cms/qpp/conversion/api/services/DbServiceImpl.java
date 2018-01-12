@@ -71,6 +71,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			Map<String, AttributeValue> valueMap = new HashMap<>();
 			valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
 			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
+			int limit = 3;
 
 			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 				.withIndexName("Cpc-CpcProcessed_CreateDate-index")
@@ -78,7 +79,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 					Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
 				.withExpressionAttributeValues(valueMap)
 				.withConsistentRead(false)
-				.withLimit(3);
+				.withLimit(limit);
 
 			return mapper.queryPage(Metadata.class, metadataQuery).getResults().stream();
 		}).flatMap(Function.identity()).collect(Collectors.toList());
