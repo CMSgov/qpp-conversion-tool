@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion.api.acceptance;
 
-import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
-import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
+import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
+import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
 
 import java.nio.file.Paths;
 import java.util.List;
@@ -28,6 +30,7 @@ class CpcApiAcceptance {
 		+ "/*[local-name() = 'intendedRecipient' and namespace-uri() = 'urn:hl7-org:v3']"
 		+ "/*[local-name() = 'id' and namespace-uri() = 'urn:hl7-org:v3'][@root='2.16.840.1.113883.3.249.7']/@extension";
 	private static final String CPC_PLUS_PROGRAM_NAME = "CPCPLUS";
+	private static final String NOT_A_CPC_FILE = "beed7ed4-107c-400f-b0de-0c60abc54344";
 
 	@BeforeAll
 	static void createUnprocessedItem() {
@@ -101,14 +104,12 @@ class CpcApiAcceptance {
 	void testMarkFileProcessed() {
 
 		List<Map> unprocessedFiles = getUnprocessedFiles();
-
-		int numberOfUnprocessedFiles = unprocessedFiles.size();
 		String firstFileId = (String)unprocessedFiles.get(0).get("fileId");
 
 		String responseBody = markFileAsProcessed(firstFileId, 200);
 
 		assertThat(responseBody).isEqualTo("The file was found and will be updated as processed.");
-		assertThat(getUnprocessedFiles().size()).isEqualTo(numberOfUnprocessedFiles - 1);
+		assertThat(getUnprocessedFiles().stream().filter(metadata -> metadata.get("fileId").equals(firstFileId)).count()).isEqualTo(0);
 	}
 
 	@Test
@@ -123,8 +124,21 @@ class CpcApiAcceptance {
 	@Tag("acceptance")
 	void testMarkFileProcessedNotCPC() {
 
-		String responseBody = markFileAsProcessed("c9368ae7-474d-4106-919e-be94d862875f", 404);
+		String responseBody = markFileAsProcessed(NOT_A_CPC_FILE, 404);
 		assertThat(responseBody).isEqualTo("The file was not a CPC+ file.");
+	}
+
+	@Test
+	@Tag("acceptance")
+	void testMarkFileUnProcessed() {
+
+		List<Map> unprocessedFiles = getUnprocessedFiles();
+		String firstFileId = (String)unprocessedFiles.get(0).get("fileId");
+
+		String responseBody = markFileAsUnProcessed(firstFileId, 200);
+
+		assertThat(responseBody).isEqualTo("The file was found and will be updated as unprocessed.");
+		assertThat(getUnprocessedFiles().stream().filter(metadata -> metadata.get("fileId").equals(firstFileId)).count()).isEqualTo(1);
 	}
 
 	private String getFirstUnprocessedCpcFileId() {
@@ -132,8 +146,21 @@ class CpcApiAcceptance {
 	}
 
 	private String markFileAsProcessed(String fileId, int expectedResponseCode) {
+		return markFile(fileId, true, expectedResponseCode);
+	}
+
+	private String markFileAsUnProcessed(String fileId, int expectedResponseCode) {
+		return markFile(fileId, false, expectedResponseCode);
+	}
+
+	private String markFile(String fileId, boolean processed, int expectedResponseCode) {
+		CpcFileStatusUpdateRequest status = new CpcFileStatusUpdateRequest();
+		status.setProcessed(processed);
+
 		return given()
 			.auth().oauth2(createCpcJwtToken())
+			.contentType("application/json").body(status)
+			.when()
 			.put(CPC_FILE_API_PATH + fileId)
 			.then()
 			.statusCode(expectedResponseCode)
