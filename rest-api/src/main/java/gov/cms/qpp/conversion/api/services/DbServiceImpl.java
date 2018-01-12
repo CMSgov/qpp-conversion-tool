@@ -7,10 +7,10 @@ import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,11 +27,12 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		implements DbService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(DbServiceImpl.class);
+	private static final int LIMIT = 3;
 
-	@Autowired
+	@Inject
 	private DynamoDBMapper mapper;
 
-	@Autowired
+	@Inject
 	private Environment environment;
 
 	/**
@@ -59,7 +60,9 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	}
 
 	/**
-	 * Scans the DynamoDB table for unprocessed {@link Metadata}
+	 * Queries the DynamoDB GSI for unprocessed {@link Metadata} with a maximum of 96 items.
+	 *
+	 * Iterates over all of the different partitions, returning a maximum of three items from each.
 	 *
 	 * @return {@link List} of unprocessed {@link Metadata}
 	 */
@@ -75,9 +78,10 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 				.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with(" +
 					Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
 				.withExpressionAttributeValues(valueMap)
-				.withConsistentRead(false);
+				.withConsistentRead(false)
+				.withLimit(LIMIT);
 
-			return mapper.query(Metadata.class, metadataQuery).stream();
+			return mapper.queryPage(Metadata.class, metadataQuery).getResults().stream();
 		}).flatMap(Function.identity()).collect(Collectors.toList());
 	}
 
@@ -88,6 +92,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @return Metadata found
 	 */
 	public Metadata getMetadataById(String uuid) {
+		API_LOG.info("Read item {} from DynamoDB", uuid);
 		return mapper.load(Metadata.class, uuid);
 	}
 

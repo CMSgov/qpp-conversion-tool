@@ -1,11 +1,12 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import java.io.IOException;
-import java.util.List;
-
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import gov.cms.qpp.conversion.api.services.CpcFileService;
+import gov.cms.qpp.conversion.util.EnvironmentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
-import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
-import gov.cms.qpp.conversion.api.services.CpcFileService;
-import gov.cms.qpp.conversion.util.EnvironmentHelper;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Controller to handle cpc file data
@@ -36,8 +34,16 @@ public class CpcFileControllerV1 {
 			"CPC+ unprocessed files request blocked by feature flag";
 	private static final Logger API_LOG = LoggerFactory.getLogger(CpcFileControllerV1.class);
 
-	@Autowired
 	private CpcFileService cpcFileService;
+
+	/**
+	 * init instance
+	 *
+	 * @param cpcFileService service for processing cpc+ files
+	 */
+	public CpcFileControllerV1(final CpcFileService cpcFileService) {
+		this.cpcFileService = cpcFileService;
+	}
 
 	/**
 	 * Endpoint to transform an uploaded file into a valid or error json response

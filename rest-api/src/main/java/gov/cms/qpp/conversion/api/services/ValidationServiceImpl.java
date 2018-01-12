@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
@@ -11,7 +12,6 @@ import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -37,10 +37,18 @@ public class ValidationServiceImpl implements ValidationService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(ValidationServiceImpl.class);
 	static final String CONTENT_TYPE = "application/json";
 
-	@Autowired
 	private Environment environment;
+	private RestTemplate restTemplate;
 
-	private RestTemplate restTemplate = new RestTemplate();
+	/**
+	 * init ValidationServiceImpl instances
+	 *
+	 * @param environment hooks to application environment
+	 */
+	public ValidationServiceImpl(final Environment environment) {
+		this.environment = environment;
+		this.restTemplate = new RestTemplate();
+	}
 
 	/**
 	 * Logs on startup whether a validation url is present

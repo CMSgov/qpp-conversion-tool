@@ -4,12 +4,12 @@ import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.stereotype.Service;
 
 /**
  * Service for handling Cpc File meta data
@@ -22,11 +22,19 @@ public class CpcFileServiceImpl implements CpcFileService {
 	protected static final String FILE_FOUND_PROCESSED = "The file was found and will be updated as processed.";
 	protected static final String FILE_FOUND_UNPROCESSED = "The file was found and will be updated as unprocessed.";
 
-	@Autowired
 	private DbService dbService;
-
-	@Autowired
 	private StorageService storageService;
+
+	/**
+	 * initialize
+	 *
+	 * @param dbService service to persist conversion metadata
+	 * @param storageService store conversion output
+	 */
+	public CpcFileServiceImpl(final DbService dbService, final StorageService storageService) {
+		this.dbService = dbService;
+		this.storageService = storageService;
+	}
 
 	/**
 	 * Calls the DbService for unprocessed metadata to transform into UnprocessedCpcFileData
