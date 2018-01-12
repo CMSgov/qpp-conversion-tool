@@ -40,13 +40,13 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 34 : Must contain a practice site address for CPC+ conversions
 * 35 : One and only one Alternative Payment Model (APM) Entity Identifier should be specified
 * 36 : Must contain one Measure (eCQM) section
-* 37 : Must contain correct number of performance rate(s). Correct Number is %s
+* 37 : Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
   * Ex. : Must contain correct number of performance rate(s). Correct Number is 3
-* 38 : This `(Numerate or Denominator)` Node does not have any child Nodes
-* 39 : This `(Numerate or Denominator)` Node does not have an Aggregate Count Node
-* 40 : This `(Numerate or Denominator)` Node has too many child Nodes
-* 41 : This `(Numerate or Denominator)` Node Aggregate Value is not an integer
-* 42 : This `(Numerate or Denominator)` Node Aggregate Value has an invalid value
+* 38 : This `(Numerator or Denominator)` Node does not have any child Nodes
+* 39 : This `(Numerator or Denominator)` Node does not have an Aggregate Count Node
+* 40 : This `(Numerator or Denominator)` Node has too many child Nodes
+* 41 : This `(Numerator or Denominator)` Node Aggregate Value is not an integer
+* 42 : This `(Numerator or Denominator)` Node Aggregate Value has an invalid value
 * 43 : The IA Section must have at least one IA Measure
 * 44 : The IA Section must have one Reporting Parameter ACT
 * 45 : The IA Section must contain only measures and reporting parameter
