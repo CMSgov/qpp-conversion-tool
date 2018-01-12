@@ -19,7 +19,8 @@ public class CpcFileServiceImpl implements CpcFileService {
 
 	public static final String FILE_NOT_FOUND = "File not found!";
 	protected static final String INVALID_FILE = "The file was not a CPC+ file.";
-	protected static final String FILE_FOUND = "The file was found and will be updated as processed.";
+	protected static final String FILE_FOUND_PROCESSED = "The file was found and will be updated as processed.";
+	protected static final String FILE_FOUND_UNPROCESSED = "The file was found and will be updated as unprocessed.";
 
 	@Autowired
 	private DbService dbService;
@@ -45,6 +46,7 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @param fileId {@link Metadata} identifier
 	 * @return file contents as a {@link String}
 	 */
+	@Override
 	public InputStreamResource getFileById(String fileId) {
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (isAnUnprocessedCpcFile(metadata)) {
@@ -60,6 +62,7 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @param fileId Identifier of the CPC+ file
 	 * @return Success or failure message.
 	 */
+	@Override
 	public String processFileById(String fileId) {
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (metadata == null) {
@@ -67,12 +70,35 @@ public class CpcFileServiceImpl implements CpcFileService {
 		} else if (metadata.getCpc() == null) {
 			throw new InvalidFileTypeException(INVALID_FILE);
 		} else if (metadata.getCpcProcessed()) {
-			return FILE_FOUND;
+			return FILE_FOUND_PROCESSED;
 		} else {
 			metadata.setCpcProcessed(true);
 			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
 			metadataFuture.join();
-			return FILE_FOUND;
+			return FILE_FOUND_PROCESSED;
+		}
+	}
+
+	/**
+	 * Process to ensure the file is a processed cpc+ file and marks the file as unprocessed
+	 *
+	 * @param fileId Identifier of the CPC+ file
+	 * @return Success or failure message.
+	 */
+	@Override
+	public String unprocessFileById(String fileId) {
+		Metadata metadata = dbService.getMetadataById(fileId);
+		if (metadata == null) {
+			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
+		} else if (metadata.getCpc() == null) {
+			throw new InvalidFileTypeException(INVALID_FILE);
+		} else if (!metadata.getCpcProcessed()) {
+			return FILE_FOUND_UNPROCESSED;
+		} else {
+			metadata.setCpcProcessed(false);
+			CompletableFuture<Metadata> metadataFuture = dbService.write(metadata);
+			metadataFuture.join();
+			return FILE_FOUND_UNPROCESSED;
 		}
 	}
 
