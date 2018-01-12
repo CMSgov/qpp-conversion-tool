@@ -7,10 +7,10 @@ import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +29,10 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	private static final Logger API_LOG = LoggerFactory.getLogger(DbServiceImpl.class);
 	private static final int LIMIT = 3;
 
-	@Autowired
+	@Inject
 	private DynamoDBMapper mapper;
 
-	@Autowired
+	@Inject
 	private Environment environment;
 
 	/**

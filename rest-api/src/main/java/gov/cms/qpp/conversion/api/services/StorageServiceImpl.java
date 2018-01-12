@@ -13,10 +13,10 @@ import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
@@ -28,13 +28,13 @@ public class StorageServiceImpl extends AnyOrderActionService<PutObjectRequest, 
 		implements StorageService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(StorageServiceImpl.class);
 
-	@Autowired
+	@Inject
 	private TransferManager s3TransferManager;
 
-	@Autowired
+	@Inject
 	private Environment environment;
 
-	@Autowired
+	@Inject
 	private AmazonS3 amazonS3;
 
 	/**
