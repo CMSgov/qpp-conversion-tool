@@ -10,7 +10,7 @@ import org.jdom2.Element;
  * Decoder to read XML Data for an Quality Section (eCQM).
  */
 @Decoder(TemplateId.MEASURE_SECTION_V2)
-public class QualitySectionDecoder extends QppXmlDecoder {
+public class QualitySectionDecoder extends QrdaXmlDecoder {
 
 	public static final String CATEGORY = "category";
 

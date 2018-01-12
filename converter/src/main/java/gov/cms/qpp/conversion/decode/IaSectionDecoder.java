@@ -10,7 +10,7 @@ import org.jdom2.Element;
  * Decoder to parse Improvement Activity Section.
  */
 @Decoder(TemplateId.IA_SECTION)
-public class IaSectionDecoder extends QppXmlDecoder {
+public class IaSectionDecoder extends QrdaXmlDecoder {
 
 	public IaSectionDecoder(Context context) {
 		super(context);

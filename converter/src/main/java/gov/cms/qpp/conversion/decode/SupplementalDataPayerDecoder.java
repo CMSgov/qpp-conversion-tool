@@ -11,7 +11,7 @@ import org.jdom2.Element;
  * Decoder for Supplemental Data Payer Element
  */
 @Decoder(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-public class SupplementalDataPayerDecoder extends QppXmlDecoder {
+public class SupplementalDataPayerDecoder extends QrdaXmlDecoder {
 
 	public static final String SUPPLEMENTAL_DATA_PAYER_CODE = "payerCode";
 

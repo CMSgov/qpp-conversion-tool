@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Test;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-class QppXmlDecoderTest {
+class QrdaXmlDecoderTest {
 
 	private static boolean errorDecode = false;
 
 	@Test
 	void decodeResultNoAction() throws Exception {
-		assertThat(new QppXmlDecoder(new Context()).internalDecode(null, null))
+		assertThat(new QrdaXmlDecoder(new Context()).internalDecode(null, null))
 				.isEqualTo(DecodeResult.NO_ACTION);
 	}
 
 	@Test
 	void nullElementDecodeReturnsError() {
 		// Element nullElement = null;
-		assertThat(new QppXmlDecoder(new Context()).decode((Element) null, null))
+		assertThat(new QrdaXmlDecoder(new Context()).decode((Element) null, null))
 				.isEqualTo(DecodeResult.ERROR);
 	}
 
@@ -43,7 +43,7 @@ class QppXmlDecoderTest {
 		testElement.getChildren().add(testChildElement);
 		Node testNode = new Node();
 
-		QppXmlDecoder objectUnderTest = new DefaultQppXmlDecoder(context);
+		QrdaXmlDecoder objectUnderTest = new DefaultQrdaXmlDecoder(context);
 		objectUnderTest.decode(testElement, testNode);
 
 		assertWithMessage("Child Node was not encountered")
@@ -67,13 +67,13 @@ class QppXmlDecoderTest {
 	}
 
 	private DecodeResult runTestChildDecodeResult(DecodeResult code) throws Exception {
-		QppXmlDecoder objectUnderTest = new QppXmlDecoder(new Context());
+		QrdaXmlDecoder objectUnderTest = new QrdaXmlDecoder(new Context());
 		Element childElement = new Element("childElement");
 		Node childNode = new Node();
 
 		String methodName = "testChildDecodeResult";
 		Method testChildDecodeResult =
-				QppXmlDecoder.class.getDeclaredMethod(methodName, DecodeResult.class, Element.class, Node.class);
+				QrdaXmlDecoder.class.getDeclaredMethod(methodName, DecodeResult.class, Element.class, Node.class);
 		testChildDecodeResult.setAccessible(true);
 
 		DecodeResult returnValue = (DecodeResult) testChildDecodeResult.invoke(objectUnderTest, code, childElement,
@@ -81,13 +81,13 @@ class QppXmlDecoderTest {
 		return returnValue;
 	}
 
-	public static class DefaultQppXmlDecoder extends QppXmlDecoder {
-		public DefaultQppXmlDecoder(Context context) {
+	public static class DefaultQrdaXmlDecoder extends QrdaXmlDecoder {
+		public DefaultQrdaXmlDecoder(Context context) {
 			super(context);
 		}
 	}
 
-	public static class TestChildDecodeError extends QppXmlDecoder {
+	public static class TestChildDecodeError extends QrdaXmlDecoder {
 
 		public TestChildDecodeError(Context context) {
 			super(context);
@@ -100,7 +100,7 @@ class QppXmlDecoderTest {
 		}
 	}
 
-	public static class TestChildNoAction extends QppXmlDecoder {
+	public static class TestChildNoAction extends QrdaXmlDecoder {
 
 		public TestChildNoAction(Context context) {
 			super(context);

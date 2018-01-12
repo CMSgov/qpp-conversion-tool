@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.1-RELEASE</version>
+	<version>1.1.3-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -24,6 +24,7 @@
 		<module>rest-logging</module>
 		<module>rest-api</module>
 		<module>benchmark</module>
+		<module>generate-qrda</module>
 	</modules>
 
 	<build>
