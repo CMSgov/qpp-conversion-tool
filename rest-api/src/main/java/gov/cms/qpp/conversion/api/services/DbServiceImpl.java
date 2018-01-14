@@ -27,6 +27,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		implements DbService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(DbServiceImpl.class);
+	private static final int LIMIT = 3;
 
 	@Inject
 	private DynamoDBMapper mapper;
@@ -59,7 +60,9 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	}
 
 	/**
-	 * Scans the DynamoDB table for unprocessed {@link Metadata}
+	 * Queries the DynamoDB GSI for unprocessed {@link Metadata} with a maximum of 96 items.
+	 *
+	 * Iterates over all of the different partitions, returning a maximum of three items from each.
 	 *
 	 * @return {@link List} of unprocessed {@link Metadata}
 	 */
@@ -75,9 +78,10 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 				.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with(" +
 					Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
 				.withExpressionAttributeValues(valueMap)
-				.withConsistentRead(false);
+				.withConsistentRead(false)
+				.withLimit(LIMIT);
 
-			return mapper.query(Metadata.class, metadataQuery).stream();
+			return mapper.queryPage(Metadata.class, metadataQuery).getResults().stream();
 		}).flatMap(Function.identity()).collect(Collectors.toList());
 	}
 
@@ -88,6 +92,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @return Metadata found
 	 */
 	public Metadata getMetadataById(String uuid) {
+		API_LOG.info("Read item {} from DynamoDB", uuid);
 		return mapper.load(Metadata.class, uuid);
 	}
 
