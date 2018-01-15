@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.1.3-RELEASE</version>
+	<version>1.1.4-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -148,7 +148,7 @@
 				<plugin>
 					<groupId>gov.cms.qpp.conversion</groupId>
 					<artifactId>generate-maven-plugin</artifactId>
-					<version>1.1.3-RELEASE</version>
+					<version>1.1.4-RELEASE</version>
 					<executions>
 						<execution>
 							<phase>compile</phase>
@@ -173,6 +173,13 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.25</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
