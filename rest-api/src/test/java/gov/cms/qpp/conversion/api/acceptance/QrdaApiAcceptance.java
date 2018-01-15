@@ -10,9 +10,9 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import gov.cms.qpp.test.annotations.AcceptanceTest;
 
 import java.nio.file.Paths;
 
@@ -40,8 +40,7 @@ class QrdaApiAcceptance {
 		beforeDynamoCount = getDynamoItemCount();
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testWithValid() {
 		given()
 			.multiPart(MULTIPART_FORM_DATA_KEY, Paths.get("../qrda-files/valid-QRDA-III-latest.xml").toFile())
@@ -57,8 +56,7 @@ class QrdaApiAcceptance {
 		assertThat(afterDynamoCount).isEqualTo(beforeDynamoCount + 1);
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testWithConversionError() {
 		given()
 			.multiPart(MULTIPART_FORM_DATA_KEY, Paths.get("../qrda-files/not-a-QDRA-III-file.xml").toFile())
@@ -74,8 +72,7 @@ class QrdaApiAcceptance {
 		assertThat(afterDynamoCount).isEqualTo(beforeDynamoCount + 1);
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testWithValidationError() {
 		given()
 			.multiPart(MULTIPART_FORM_DATA_KEY, Paths.get("../rest-api/src/test/resources/fail_validation.xml").toFile())

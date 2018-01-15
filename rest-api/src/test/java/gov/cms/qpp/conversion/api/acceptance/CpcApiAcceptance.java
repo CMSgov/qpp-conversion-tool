@@ -1,13 +1,12 @@
 package gov.cms.qpp.conversion.api.acceptance;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
 import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
 import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.test.annotations.AcceptanceTest;
 
 import java.nio.file.Paths;
 import java.util.List;
@@ -40,16 +39,14 @@ class CpcApiAcceptance {
 			.post("/");
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testNoSecurityForUnprocessedFiles() {
 		get(CPC_UNPROCESSED_FILES_API_PATH)
 			.then()
 			.statusCode(403);
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testUnprocessedFiles() {
 
 		List<Map> responseBody = getUnprocessedFiles();
@@ -62,8 +59,7 @@ class CpcApiAcceptance {
 		assertThat(responseBody.get(0)).containsKey("validationSuccess");
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testNoSecurityGetFile() {
 
 		String firstFileId = getFirstUnprocessedCpcFileId();
@@ -73,8 +69,7 @@ class CpcApiAcceptance {
 			.statusCode(403);
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testGetFile() {
 
 		String firstFileId = getFirstUnprocessedCpcFileId();
@@ -88,8 +83,7 @@ class CpcApiAcceptance {
 			.body(hasXPath(PROGRAM_NAME_XPATH, equalTo(CPC_PLUS_PROGRAM_NAME)));
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testNoSecurityMarkFileProcessed() {
 
 		String firstFileId = getFirstUnprocessedCpcFileId();
@@ -99,8 +93,7 @@ class CpcApiAcceptance {
 			.statusCode(403);
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testMarkFileProcessed() {
 
 		List<Map> unprocessedFiles = getUnprocessedFiles();
@@ -112,24 +105,21 @@ class CpcApiAcceptance {
 		assertThat(getUnprocessedFiles().stream().filter(metadata -> metadata.get("fileId").equals(firstFileId)).count()).isEqualTo(0);
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testMarkFileProcessedBadFileId() {
 
 		String responseBody = markFileAsProcessed("Moof!", 404);
 		assertThat(responseBody).isEqualTo("File not found!");
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testMarkFileProcessedNotCPC() {
 
 		String responseBody = markFileAsProcessed(NOT_A_CPC_FILE, 404);
 		assertThat(responseBody).isEqualTo("The file was not a CPC+ file.");
 	}
 
-	@Test
-	@Tag("acceptance")
+	@AcceptanceTest
 	void testMarkFileUnProcessed() {
 
 		List<Map> unprocessedFiles = getUnprocessedFiles();
