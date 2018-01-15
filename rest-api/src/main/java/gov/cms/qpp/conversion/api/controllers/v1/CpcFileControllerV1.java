@@ -108,7 +108,7 @@ public class CpcFileControllerV1 {
 	@RequestMapping(method = RequestMethod.PUT, value = "/file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT} )
 	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId,
-			@RequestBody CpcFileStatusUpdateRequest request) {
+			@RequestBody(required = false) CpcFileStatusUpdateRequest request) {
 		if (blockCpcPlusApi()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
@@ -117,7 +117,7 @@ public class CpcFileControllerV1 {
 		API_LOG.info("CPC+ update file request received");
 
 		String message;
-		if (request.getProcessed() != null && !request.getProcessed()) {
+		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
 			message = cpcFileService.unprocessFileById(fileId);
 		} else {
 			message = cpcFileService.processFileById(fileId);
