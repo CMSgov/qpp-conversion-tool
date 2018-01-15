@@ -3,7 +3,7 @@ package gov.cms.qpp.test.logging;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import gov.cms.qpp.test.AroundEach;
+import gov.cms.qpp.test.annotations.AroundEach;
 import uk.org.lidalia.slf4jtest.LoggingEvent;
 import uk.org.lidalia.slf4jtest.TestLogger;
 import uk.org.lidalia.slf4jtest.TestLoggerFactory;
