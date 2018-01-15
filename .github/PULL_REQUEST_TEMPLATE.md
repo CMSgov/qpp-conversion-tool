@@ -1,5 +1,4 @@
 ### Information
-- Fixes #_.
 - JIRA story _.
 
 ### Changes proposed in this PR:
