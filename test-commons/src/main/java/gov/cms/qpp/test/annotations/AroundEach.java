@@ -1,4 +1,4 @@
-package gov.cms.qpp.test;
+package gov.cms.qpp.test.annotations;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
