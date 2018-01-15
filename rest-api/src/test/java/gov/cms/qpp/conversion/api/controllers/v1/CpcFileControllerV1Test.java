@@ -53,6 +53,12 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
+	void testUpdateFileWithNullBodyMarksAsProcessed() {
+		cpcFileControllerV1.updateFile("mock", null);
+		verify(cpcFileService).processFileById("mock");
+	}
+
+	@Test
 	void testGetUnprocessedFileList() {
 		when(cpcFileService.getUnprocessedCpcPlusFiles()).thenReturn(expectedUnprocessedCpcFileDataList);
 
