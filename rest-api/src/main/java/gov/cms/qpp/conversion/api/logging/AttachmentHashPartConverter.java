@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.logging;
+package gov.cms.qpp.conversion.api.logging;
 
 import ch.qos.logback.classic.pattern.ClassicConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
