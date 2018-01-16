@@ -6,6 +6,9 @@ import cloud.localstack.TestUtils;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.CreateBucketRequest;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import gov.cms.qpp.conversion.api.config.S3Config;
 import gov.cms.qpp.conversion.api.model.Constants;
@@ -59,6 +62,7 @@ public class StorageServiceImplIntegration {
 	private StorageServiceImpl underTest;
 
 	private String bucketName = "test-bucket";
+	private String kmsKey = "test-key";
 	private AmazonS3 amazonS3Client;
 
 	@Before
@@ -73,7 +77,10 @@ public class StorageServiceImplIntegration {
 						LocalstackTestRunner.getDefaultRegion()))
 				.withChunkedEncodingDisabled(true)
 				.withPathStyleAccessEnabled(true).build();
-		amazonS3Client.createBucket(bucketName);
+		CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName)
+			.withCannedAcl(CannedAccessControlList.PublicReadWrite);
+
+		amazonS3Client.createBucket(createBucketRequest);
 
 		S3Config config = new S3Config();
 
@@ -93,6 +100,7 @@ public class StorageServiceImplIntegration {
 		final Waiter waiter = new Waiter();
 
 		when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
+		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(kmsKey);
 
 		CompletableFuture<String> result = underTest.store(
 				key, new ByteArrayInputStream(content.getBytes()), content.getBytes().length);
@@ -106,7 +114,8 @@ public class StorageServiceImplIntegration {
 	}
 
 	private String getObjectContent(String key) {
-		S3Object stored = amazonS3Client.getObject(bucketName, key);
+		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, key);
+		S3Object stored = amazonS3Client.getObject(getObjectRequest);
 
 		try {
 			return IOUtils.toString(stored.getObjectContent(), "UTF-8");
