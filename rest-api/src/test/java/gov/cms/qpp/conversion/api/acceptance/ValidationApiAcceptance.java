@@ -25,14 +25,14 @@ import static com.google.common.truth.Truth.assertThat;
 
 @ExtendWith(RestExtension.class)
 class ValidationApiAcceptance {
-	private static XPathFactory xpf = XPathFactory.instance();
-	private static Path path = Paths.get("../sample-files/CPCPlus_Validation_API_Errors.xml");
-	private static int cannedValue = 1000;
+	private static final XPathFactory XPF = XPathFactory.instance();
+	private static final Path PATH = Paths.get("../sample-files/CPCPlus_Validation_API_Errors.xml");
+	private static final int CANNED_VALUE = 1000;
 
 	@AcceptanceTest
 	void testUnprocessedFiles() {
 		Response response = given()
-			.multiPart("file", path.toFile())
+			.multiPart("file", PATH.toFile())
 			.when()
 			.post("/");
 
@@ -48,7 +48,7 @@ class ValidationApiAcceptance {
 			Object found = evaluateXpath(detail.getPath(), filter);
 			if (filter.equals(Filters.attribute())) {
 				Attribute attribute = (Attribute) found;
-				assertThat(attribute.getIntValue()).isEqualTo(cannedValue);
+				assertThat(attribute.getIntValue()).isEqualTo(CANNED_VALUE);
 			} else {
 				assertThat(found).isNotNull();
 			}
@@ -58,8 +58,8 @@ class ValidationApiAcceptance {
 	}
 
 	private Object evaluateXpath(String xPath, Filter filter) throws IOException, XmlException {
-		XPathExpression<Object> xpath = xpf.compile(xPath, filter);
-		return xpath.evaluateFirst(XmlUtils.parseXmlStream(XmlUtils.fileToStream(path)));
+		XPathExpression<Object> xpath = XPF.compile(xPath, filter);
+		return xpath.evaluateFirst(XmlUtils.parseXmlStream(XmlUtils.fileToStream(PATH)));
 	}
 }
 
