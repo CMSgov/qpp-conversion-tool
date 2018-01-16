@@ -24,8 +24,10 @@
 		<module>rest-logging</module>
 		<module>rest-api</module>
 		<module>benchmark</module>
-		<module>generate-qrda</module>
+		<module>generate</module>
 	</modules>
+
+
 
 	<build>
 		<defaultGoal>clean install</defaultGoal>
@@ -142,8 +144,21 @@
 						</dependency>
 					</dependencies>
 				</plugin>
-			</plugins>
 
+				<plugin>
+					<groupId>gov.cms.qpp.conversion</groupId>
+					<artifactId>generate-maven-plugin</artifactId>
+					<version>1.1.4-RELEASE</version>
+					<executions>
+						<execution>
+							<phase>compile</phase>
+							<goals>
+								<goal>generateErrorCodeDoc</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
 		</pluginManagement>
 	</build>
 
