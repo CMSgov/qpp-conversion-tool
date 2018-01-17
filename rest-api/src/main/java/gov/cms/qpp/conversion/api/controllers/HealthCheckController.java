@@ -1,17 +1,15 @@
 package gov.cms.qpp.conversion.api.controllers;
 
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import gov.cms.qpp.conversion.api.model.HealthCheck;
+import gov.cms.qpp.conversion.api.services.VersionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.cms.qpp.conversion.api.model.HealthCheck;
-import gov.cms.qpp.conversion.api.services.VersionService;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Controller to simply respond with status 200 with a GET /health call.
@@ -20,8 +18,16 @@ import gov.cms.qpp.conversion.api.services.VersionService;
 @RequestMapping("/health")
 public class HealthCheckController {
 
-	@Autowired
 	private VersionService version;
+
+	/**
+	 * Provide dependency
+	 *
+	 * @param version reference to the version service
+	 */
+	public HealthCheckController(final VersionService version) {
+		this.version = version;
+	}
 
 	/**
 	 * Invoked with an HTTP GET call.

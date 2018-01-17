@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * Decoder to parse Improvement Activity Section.
  */
 @Decoder(TemplateId.MEASURE_PERFORMED)
-public class MeasurePerformedDecoder extends QppXmlDecoder {
+public class MeasurePerformedDecoder extends QrdaXmlDecoder {
 
 	public MeasurePerformedDecoder(Context context) {
 		super(context);

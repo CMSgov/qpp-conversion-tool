@@ -7,6 +7,7 @@ import gov.cms.qpp.test.MockitoExtension;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -67,7 +68,7 @@ class CpcFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(anyString());
 		verify(storageService, times(1)).getFileByLocationId(anyString());
 
-		assertThat(IOUtils.toString(outcome.getInputStream(), Charset.defaultCharset())).isEqualTo("1337");
+		assertThat(IOUtils.toString(outcome.getInputStream(), StandardCharsets.UTF_8)).isEqualTo("1337");
 	}
 
 	@Test
@@ -120,7 +121,7 @@ class CpcFileServiceImplTest {
 		verify(dbService, times(1)).getMetadataById(MEEP);
 		verify(dbService, times(1)).write(returnedData);
 
-		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND);
+		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
 	}
 
 	@Test
@@ -155,7 +156,56 @@ class CpcFileServiceImplTest {
 
 		verify(dbService, times(1)).getMetadataById(anyString());
 
-		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND);
+		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND_PROCESSED);
+	}
+
+	@Test
+	void testUnprocessFileByIdSuccess() {
+		Metadata returnedData = buildFakeMetadata(true, true);
+		when(dbService.getMetadataById(anyString())).thenReturn(returnedData);
+		when(dbService.write(any(Metadata.class))).thenReturn(CompletableFuture.completedFuture(returnedData));
+
+		String message = objectUnderTest.unprocessFileById(MEEP);
+
+		verify(dbService, times(1)).getMetadataById(MEEP);
+		verify(dbService, times(1)).write(returnedData);
+
+		assertThat(message).isEqualTo(CpcFileServiceImpl.FILE_FOUND_UNPROCESSED);
+	}
+
+	@Test
+	void testUnprocessFileByIdFileNotFound() {
+		when(dbService.getMetadataById(anyString())).thenReturn(null);
+
+		NoFileInDatabaseException expectedException = assertThrows(NoFileInDatabaseException.class, ()
+				-> objectUnderTest.unprocessFileById("test"));
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+	}
+
+	@Test
+	void testUnprocessFileByIdWithMipsFile() {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(false, false));
+
+		InvalidFileTypeException expectedException = assertThrows(InvalidFileTypeException.class, ()
+				-> objectUnderTest.unprocessFileById("test"));
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+
+		assertThat(expectedException).hasMessageThat().isEqualTo(CpcFileServiceImpl.INVALID_FILE);
+	}
+
+	@Test
+	void testUnprocessFileByIdWithProcessedFile() {
+		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, false));
+
+		String response = objectUnderTest.unprocessFileById("test");
+
+		verify(dbService, times(1)).getMetadataById(anyString());
+
+		assertThat(response).isEqualTo(CpcFileServiceImpl.FILE_FOUND_UNPROCESSED);
 	}
 
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {

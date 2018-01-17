@@ -57,7 +57,7 @@ class AciMeasurePerformedRnRDecoderTest {
 	void testUpperLevel() throws XmlException, IOException {
 		String needsFormattingXml = TestHelper.getFixture("AciMeasurePerformedIsolated.xml");
 		String xml = String.format(needsFormattingXml, MEASURE_ID);
-		Node wrapperNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xml));
+		Node wrapperNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xml));
 		Node aciMeasurePerformedNode = wrapperNode.getChildNodes().get(0);
 
 		String actualMeasureId = aciMeasurePerformedNode.getValue("measureId");

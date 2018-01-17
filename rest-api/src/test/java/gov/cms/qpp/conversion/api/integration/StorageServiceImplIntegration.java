@@ -1,4 +1,4 @@
-package gov.cms.qpp.conversion.api.services;
+package gov.cms.qpp.conversion.api.integration;
 
 
 import cloud.localstack.LocalstackTestRunner;
@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
 import gov.cms.qpp.conversion.api.config.S3Config;
 import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.services.StorageServiceImpl;
 import net.jodah.concurrentunit.Waiter;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assume;
@@ -20,13 +21,13 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
+import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -54,7 +55,7 @@ public class StorageServiceImplIntegration {
 	@Mock
 	private Environment environment;
 
-	@Autowired
+	@Inject
 	private StorageServiceImpl underTest;
 
 	private String bucketName = "test-bucket";
@@ -62,6 +63,7 @@ public class StorageServiceImplIntegration {
 
 	@Before
 	public void setup() throws IllegalAccessException, NoSuchFieldException {
+
 		Assume.assumeTrue(System.getProperty("skip.long") == null);
 		TestUtils.disableSslCertChecking();
 

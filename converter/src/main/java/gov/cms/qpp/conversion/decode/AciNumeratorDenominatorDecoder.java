@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * Decoder to parse ACI Numerator Denominator Type Measure reference and results.
  */
 @Decoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
-public class AciNumeratorDenominatorDecoder extends QppXmlDecoder {
+public class AciNumeratorDenominatorDecoder extends QrdaXmlDecoder {
 
 	private static final String MEASURE_ID = "measureId";
 

@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * Decoder to parse an Aggregate Count value type.
  */
 @Decoder(TemplateId.ACI_AGGREGATE_COUNT)
-public class AggregateCountDecoder extends QppXmlDecoder {
+public class AggregateCountDecoder extends QrdaXmlDecoder {
 
 	public static final String AGGREGATE_COUNT = "aggregateCount";
 

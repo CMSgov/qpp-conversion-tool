@@ -1,15 +1,11 @@
 package gov.cms.qpp.conversion.api.services;
 
-
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
+import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.test.MockitoExtension;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +14,9 @@ import org.mockito.Mock;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -31,7 +30,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
-
 
 @ExtendWith(MockitoExtension.class)
 class DbServiceImplTest {
@@ -93,14 +91,16 @@ class DbServiceImplTest {
 
 	@Test
 	void testGetUnprocessedCpcPlusMetaData() {
-		PaginatedQueryList<Metadata> mockMetadataList = mock(PaginatedQueryList.class);
-		when(mockMetadataList.stream()).thenAnswer(invocationOnMock -> Stream.of(new Metadata(), new Metadata()));
-		when(dbMapper.query(eq(Metadata.class), any(DynamoDBQueryExpression.class))).thenReturn(mockMetadataList);
+		int itemsPerPartition = 2;
+
+		QueryResultPage<Metadata> mockMetadataPage = mock(QueryResultPage.class);
+		when(mockMetadataPage.getResults()).thenReturn(Stream.generate(Metadata::new).limit(itemsPerPartition).collect(Collectors.toList()));
+		when(dbMapper.queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class))).thenReturn(mockMetadataPage);
 
 		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData();
 
-		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).query(any(Class.class), any(DynamoDBQueryExpression.class));
-		assertThat(metaDataList).hasSize(2 * Constants.CPC_DYNAMO_PARTITIONS);
+		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).queryPage(any(Class.class), any(DynamoDBQueryExpression.class));
+		assertThat(metaDataList).hasSize(itemsPerPartition * Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
 	@Test

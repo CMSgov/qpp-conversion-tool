@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
@@ -11,7 +12,6 @@ import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,26 +19,58 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Implementation for the QPP Validation Service
  */
 @Service
 public class ValidationServiceImpl implements ValidationService {
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+
+	private static final Logger API_LOG = LoggerFactory.getLogger(ValidationServiceImpl.class);
 	static final String CONTENT_TYPE = "application/json";
 
-
-	@Autowired
 	private Environment environment;
+	private RestTemplate restTemplate;
 
-	private RestTemplate restTemplate = new RestTemplate();
+	/**
+	 * init ValidationServiceImpl instances
+	 *
+	 * @param environment hooks to application environment
+	 */
+	public ValidationServiceImpl(final Environment environment) {
+		this.environment = environment;
+		this.restTemplate = new RestTemplate();
+	}
+
+	/**
+	 * Logs on startup whether a validation url is present
+	 */
+	@PostConstruct
+	public void checkForValidationUrlVariable() {
+		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
+		if (!StringUtils.isEmpty(validationUrl)) {
+			apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to " + validationUrl);
+		} else {
+			apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
+		}
+	}
+
+	/**
+	 * Workaround to a problem with our logging dependencies preventing us from using TestLogger
+	 *
+	 * @param message The message to log
+	 */
+	protected void apiLog(String message) {
+		API_LOG.info(message);
+	}
 
 	/**
 	 * Validates that the given QPP is valid.
@@ -133,7 +165,7 @@ public class ValidationServiceImpl implements ValidationService {
 	 * @return An Error object.
 	 */
 	Error getError(String response) {
-		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes(Charset.defaultCharset())),
+		return JsonHelper.readJson(new ByteArrayInputStream(response.getBytes(StandardCharsets.UTF_8)),
 				ErrorMessage.class)
 				.getError();
 	}

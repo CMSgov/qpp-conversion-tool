@@ -1,18 +1,21 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.validate.CpcQualityMeasureSectionValidator.CpcGroupMinimum;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.stream.Stream;
-
-import static com.google.common.truth.Truth.assertThat;
+import gov.cms.qpp.test.enums.EnumContract;
 
 class CpcQualityMeasureSectionValidatorTest {
 
@@ -112,5 +115,15 @@ class CpcQualityMeasureSectionValidatorTest {
 		Node node = new Node();
 		node.putValue("measureId", measureId);
 		return node;
+	}
+
+	@Nested
+	static class CpcGroupMinimumTest implements EnumContract {
+
+		@Override
+		public Class<? extends Enum<?>> getEnumType() {
+			return CpcGroupMinimum.class;
+		}
+
 	}
 }

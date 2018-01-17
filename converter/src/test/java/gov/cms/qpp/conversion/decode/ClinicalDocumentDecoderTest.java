@@ -8,7 +8,8 @@ import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.commons.io.IOUtils;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
@@ -30,12 +31,12 @@ class ClinicalDocumentDecoderTest {
 	static void init() throws IOException {
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
-		xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
+		xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 	}
 
 	@BeforeEach
 	void setupTest() throws XmlException {
-		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(clinicalDocument.getChildNodes());
@@ -112,9 +113,9 @@ class ClinicalDocumentDecoderTest {
 	void testClinicalDocumentIgnoresGarbage() throws IOException, XmlException {
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("QRDA-III-with-extra-elements.xml");
-		String xmlWithGarbage = IOUtils.toString(stream, Charset.defaultCharset());
+		String xmlWithGarbage = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
-		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlWithGarbage));
+		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlWithGarbage));
 		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 
 		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))

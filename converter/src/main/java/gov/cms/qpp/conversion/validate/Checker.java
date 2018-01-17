@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import com.google.common.base.Strings;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
@@ -71,7 +73,7 @@ class Checker {
 	 * @return determination as to whether or not a check should be performed
 	 */
 	private boolean shouldShortcut() {
-		return anded && !details.isEmpty();
+		return anded && !isEmpty(details);
 	}
 
 	/**
@@ -114,7 +116,7 @@ class Checker {
 	public Checker singleValue(LocalizedError code, String name) {
 		value(code, name);
 		List<String> duplicates = node.getDuplicateValues(name);
-		if (duplicates != null && !duplicates.isEmpty()) {
+		if (!isEmpty(duplicates)) {
 			details.add(detail(code));
 		}
 		return this;
@@ -266,7 +268,7 @@ class Checker {
 	 * @return The checker, for chaining method calls.
 	 */
 	Checker hasChildren(LocalizedError code) {
-		if (!shouldShortcut() && node.getChildNodes().isEmpty()) {
+		if (!shouldShortcut() && isEmpty(node.getChildNodes())) {
 			details.add(detail(code));
 		}
 		return this;
@@ -419,5 +421,15 @@ class Checker {
 	 */
 	private Detail detail(LocalizedError code) {
 		return Detail.forErrorAndNode(code, node);
+	}
+
+	/**
+	 * Helper method to check if a collection is empty or null
+	 *
+	 * @param collection the collection to check
+	 * @return true if the collection is empty
+	 */
+	private boolean isEmpty(Collection<?> collection) {
+		return collection == null || collection.isEmpty();
 	}
 }
