@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.acceptance;
 
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
@@ -37,13 +38,13 @@ class ValidationApiAcceptance {
 			.post("/");
 
 		AllErrors blah = response.getBody().as(AllErrors.class);
-		blah.getErrors().get(0).getDetails()
+		blah.getErrors().stream().flatMap(error -> error.getDetails().stream())
 				.forEach(this::verifyDetail);
 	}
 
 	private void verifyDetail(Detail detail) {
 		String xPath = detail.getPath();
-		Filter filter = (xPath.contains("@")) ? Filters.attribute() : Filters.element();
+		Filter filter = xPath.contains("@") ? Filters.attribute() : Filters.element();
 		try {
 			Object found = evaluateXpath(detail.getPath(), filter);
 			if (filter.equals(Filters.attribute())) {
