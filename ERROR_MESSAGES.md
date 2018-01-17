@@ -17,7 +17,6 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 12 : ACI Measure Performed RnR's requires a single Measure ID
 * 13 : Denominator count must be less than or equal to Initial Population count for an eCQM that is proportion measure
 * 14 : The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
-  * Ex. : The eCQM (electronic measure id: CMS165v5) requires 1 DENEX(s) but there are 0
 * 15 : ACI Numerator Denominator Node should have an ACI Section Node as a parent
 * 16 : ACI Numerator Denominator Node does not contain a measure name ID
 * 17 : ACI Numerator Denominator Node does not have any child Nodes
@@ -39,23 +38,22 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 33 : Must enter a valid Performance Rate value
 * 34 : Must contain a practice site address for CPC+ conversions
 * 35 : One and only one Alternative Payment Model (APM) Entity Identifier should be specified
+* 62 : The Alternative Payment Model (APM) Entity Identifier must not be empty
+* 63 : The Alternative Payment Model (APM) Entity Identifier is not valid
 * 36 : Must contain one Measure (eCQM) section
-* 37 : Must contain correct number of performance rate(s). Correct Number is %s
-  * Ex. : Must contain correct number of performance rate(s). Correct Number is 3
-* 38 : This `(Numerate or Denominator)` Node does not have any child Nodes
-* 39 : This `(Numerate or Denominator)` Node does not have an Aggregate Count Node
-* 40 : This `(Numerate or Denominator)` Node has too many child Nodes
-* 41 : This `(Numerate or Denominator)` Node Aggregate Value is not an integer
-* 42 : This `(Numerate or Denominator)` Node Aggregate Value has an invalid value
+* 37 : Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
+* 38 : This `(Numerator or Denominator)` Node does not have any child Nodes
+* 39 : This `(Numerator or Denominator)` Node does not have an Aggregate Count Node
+* 40 : This `(Numerator or Denominator)` Node has too many child Nodes
+* 41 : This `(Numerator or Denominator)` Node Aggregate Value is not an integer
+* 42 : This `(Numerator or Denominator)` Node Aggregate Value has an invalid value
 * 43 : The IA Section must have at least one IA Measure
 * 44 : The IA Section must have one Reporting Parameter ACT
 * 45 : The IA Section must contain only measures and reporting parameter
 * 46 : Clinical Document Node is required
 * 47 : Only one Clinical Document Node is allowed
 * 48 : Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
-  * Ex. : Missing strata EFB5B088-CE10-43DE-ACCD-9913B7AC12A2 for DENEX measure (56BC7FA2-C22A-4440-8652-2D3568852C60)
 * 49 : Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`
-  * Ex. : Amount of stratifications 0 does not meet expectations 2 for DENEX measure (56BC7FA2-C22A-4440-8652-2D3568852C60).
 * 50 : Measure performed must have exactly one child.
 * 51 : A single measure performed value is required and must be either a Y or an N.
 * 52 : Measure performed must have exactly one Aggregate Count.
@@ -66,12 +64,8 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 57 : The measure reference results must have a single measure population
 * 58 : The measure reference results must have a single measure type
 * 59 : The eCQM (electronic measure id: `(Current eMeasure ID)`) requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`
-  * Ex. : The eCQM (electronic measure id: CMS165v5) requires a DENEX with the correct UUID of 55A6D5F3-2029-4896-B850-4C7894161D7D
 * 60 : The eCQM (electronic measure id: `(Current eMeasure ID)`) has a performanceRateId with an incorrect UUID of `(Incorrect UUID)`
-  * Ex. : The eCQM (electronic measure id: CMS68v6) has a performanceRateUuid with an incorrect UUID of 00000000-0000-0000-0000-1NV4L1D
 * 61 : A Performance Rate must contain a single Performance Rate UUID
-* 62 : The Alternative Payment Model (APM) Entity Identifier must not be empty
-* 63 : The Alternative Payment Model (APM) Entity Identifier is not valid
 * 64 : CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
 * 65 : CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.
 * 66 : Missing the Supplemental Code `(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`

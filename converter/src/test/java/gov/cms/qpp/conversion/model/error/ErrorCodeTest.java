@@ -21,7 +21,8 @@ class ErrorCodeTest implements EnumContract {
 	@Test
 	void testFormatOnFormattedErrorCode() {
 		ErrorCode code = ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE;
-		Truth.assertThat(code.format("mock").getMessage()).isEqualTo(code.getMessage().replace("%s", "mock"));
+		Truth.assertThat(code.format("mock").getMessage()).isEqualTo(code.getMessage()
+				.replace("`(Numerator or Denominator)`", "mock"));
 	}
 
 	@Test
