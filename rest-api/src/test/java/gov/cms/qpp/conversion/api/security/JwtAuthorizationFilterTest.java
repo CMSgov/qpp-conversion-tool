@@ -53,7 +53,7 @@ public class JwtAuthorizationFilterTest {
 	@Test
 	public void testDoFilterInternal() throws IOException, ServletException {
 		JwtPayloadHelper payload = new JwtPayloadHelper()
-				.withName(JwtAuthorizationFilter.ORG_NAME)
+				.withName(JwtAuthorizationFilter.DEFAULT_ORG_NAME)
 				.withOrgType(ORG_TYPE);
 
 		request.addHeader("Authorization", JwtTestHelper.createJwt(payload));
@@ -112,7 +112,7 @@ public class JwtAuthorizationFilterTest {
 	@Test
 	public void testDoFilterInternalWithNoOrgType() throws IOException, ServletException {
 		JwtPayloadHelper payload = new JwtPayloadHelper()
-				.withName(JwtAuthorizationFilter.ORG_NAME);
+				.withName(JwtAuthorizationFilter.DEFAULT_ORG_NAME);
 
 		request.addHeader("Authorization", JwtTestHelper.createJwt(payload));
 		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter(authenticationManager);
