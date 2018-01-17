@@ -36,10 +36,10 @@ class DecoderTest {
 
 	@Test
 	void decodeTemplateIds() throws Exception {
-		Registry<InputDecoder> registry = new Registry<>(new Context(), Decoder.class);
+		Registry<InputDecoderEngine> registry = new Registry<>(new Context(), Decoder.class);
 
 		for (TemplateId templateId : templateIds) {
-			InputDecoder decoder = registry.get(templateId);
+			InputDecoderEngine decoder = registry.get(templateId);
 			assertWithMessage("%s returned node should not be null", templateId.name())
 					.that(decoder)
 					.isNotNull();

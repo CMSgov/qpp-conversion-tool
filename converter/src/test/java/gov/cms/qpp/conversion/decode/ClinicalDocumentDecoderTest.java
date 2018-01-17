@@ -1,25 +1,26 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.apache.commons.io.IOUtils;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.reflections.util.ClasspathHelper;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.apache.commons.io.IOUtils;
-import org.jdom2.Element;
-import org.jdom2.Namespace;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.reflections.util.ClasspathHelper;
-
-import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class ClinicalDocumentDecoderTest {
 
@@ -36,7 +37,7 @@ class ClinicalDocumentDecoderTest {
 
 	@BeforeEach
 	void setupTest() throws XmlException {
-		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(clinicalDocument.getChildNodes());
@@ -115,7 +116,7 @@ class ClinicalDocumentDecoderTest {
 				ClasspathHelper.contextClassLoader().getResourceAsStream("QRDA-III-with-extra-elements.xml");
 		String xmlWithGarbage = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
-		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlWithGarbage));
+		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlWithGarbage));
 		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 
 		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
@@ -139,8 +140,8 @@ class ClinicalDocumentDecoderTest {
 		Element clinicalDocument = makeClinicalDocument("MIPS");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
-		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
 		Node testChildNode = testParentNode.getChildNodes().get(0);
 
 		assertWithMessage("Clinical Document doesn't contain program name")
@@ -168,8 +169,8 @@ class ClinicalDocumentDecoderTest {
 		Element clinicalDocument = makeClinicalDocument("MIPS_INDIV");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
-		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
 		Node testChildNode = testParentNode.getChildNodes().get(0);
 
 		assertWithMessage("Clinical Document doesn't contain program name")
@@ -197,8 +198,8 @@ class ClinicalDocumentDecoderTest {
 		Element clinicalDocument = makeClinicalDocument("MIPS_GROUP");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
-		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
 		Node testChildNode = testParentNode.getChildNodes().get(0);
 
 		assertWithMessage("Clinical Document doesn't contain program name")
@@ -226,8 +227,8 @@ class ClinicalDocumentDecoderTest {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS);
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
-		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
 		Node testChildNode = testParentNode.getChildNodes().get(0);
 
 		assertWithMessage("Clinical Document doesn't contain program name")
@@ -255,8 +256,8 @@ class ClinicalDocumentDecoderTest {
 		Element clinicalDocument = makeClinicalDocument("Unknown");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
-		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
 		Node testChildNode = testParentNode.getChildNodes().get(0);
 
 		assertWithMessage("Clinical Document doesn't contain program name")
@@ -285,8 +286,8 @@ class ClinicalDocumentDecoderTest {
 		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
-		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
 		assertWithMessage("Clinical Document contains the Entity Id")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
 				.isEqualTo(ENTITY_ID_VALUE);
@@ -298,8 +299,8 @@ class ClinicalDocumentDecoderTest {
 		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
-		objectUnderTest.setNamespace(clinicalDocument, objectUnderTest);
-		objectUnderTest.internalDecode(clinicalDocument, testParentNode);
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
 		assertWithMessage("Clinical Document contains the Entity Id")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR))
 				.isEqualTo("testing123");

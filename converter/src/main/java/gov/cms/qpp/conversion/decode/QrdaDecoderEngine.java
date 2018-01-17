@@ -1,5 +1,12 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+import org.jdom2.xpath.XPathHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.Decoder;
@@ -8,12 +15,6 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
-import org.jdom2.xpath.XPathHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,9 +28,9 @@ import static gov.cms.qpp.conversion.decode.SupplementalDataPayerDecoder.SUPPLEM
 /**
  * Top level Decoder for parsing into QPP format.
  */
-public class QrdaXmlDecoder extends XmlInputDecoder {
+public class QrdaDecoderEngine extends XmlDecoderEngine {
 
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaXmlDecoder.class);
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(QrdaDecoderEngine.class);
 	private static final String TEMPLATE_ID = "templateId";
 	private static final String NOT_VALID_QRDA_III_FORMAT = "The file is not a QRDA-III XML document";
 	private static final String ROOT_STRING = "root";
@@ -37,12 +38,12 @@ public class QrdaXmlDecoder extends XmlInputDecoder {
 
 	protected final Context context;
 	private final Set<TemplateId> scope;
-	private final Registry<QrdaXmlDecoder> decoders;
+	private final Registry<QrdaDecoder> decoders;
 
 	/**
 	 * Initialize a qpp xml decoder
 	 */
-	public QrdaXmlDecoder(Context context) {
+	public QrdaDecoderEngine(Context context) {
 		Objects.requireNonNull(context, "converter");
 
 		this.context = context;
@@ -80,17 +81,17 @@ public class QrdaXmlDecoder extends XmlInputDecoder {
 
 			if (TEMPLATE_ID.equals(childElement.getName())) {
 				TemplateId templateId = getTemplateId(childElement);
-				QrdaXmlDecoder childDecoder = getDecoder(templateId);
+				QrdaDecoder childDecoder = getDecoder(templateId);
 
 				if (null == childDecoder) {
 					continue;
 				}
 				Node childNode = new Node(templateId, parentNode);
 				childNode.setDefaultNsUri(defaultNs.getURI());
-				setNamespace(childElement, childDecoder);
+				childDecoder.setNamespace(childElement.getNamespace());
 
 				// the child decoder might require the entire its siblings
-				DecodeResult result = childDecoder.internalDecode(element, childNode);
+				DecodeResult result = childDecoder.decode(element, childNode);
 				if (result == DecodeResult.TREE_ESCAPED) {
 					return DecodeResult.TREE_FINISHED;
 				}
@@ -124,8 +125,8 @@ public class QrdaXmlDecoder extends XmlInputDecoder {
 	 * @param templateId string representation of a would be decoder's template id
 	 * @return decoder that corresponds to the given template id
 	 */
-	private QrdaXmlDecoder getDecoder(TemplateId templateId) {
-		QrdaXmlDecoder qppDecoder = decoders.get(templateId);
+	private QrdaDecoder getDecoder(TemplateId templateId) {
+		QrdaDecoder qppDecoder = decoders.get(templateId);
 		if (qppDecoder != null) {
 			if (scope == null) {
 				return qppDecoder;
@@ -183,29 +184,33 @@ public class QrdaXmlDecoder extends XmlInputDecoder {
 	protected Node decodeRoot(Element xmlDoc) {
 		Node rootNode = new Node();
 		Element rootElement = xmlDoc.getDocument().getRootElement();
+
+		rootNode.setType(TemplateId.PLACEHOLDER);
+		rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
+		this.decode(rootElement, rootNode);
 		
-		QrdaXmlDecoder rootDecoder = null;
-		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
-			String root = element.getAttributeValue(ROOT_STRING);
-			String extension = element.getAttributeValue(EXTENSION_STRING);
-			TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
-			rootDecoder = getDecoder(templateId);
-			if (rootDecoder != null) {
-				rootNode.setType(templateId);
-				break;
-			}
-		}
-		
-		if (rootDecoder != null) {
-			rootDecoder.setNamespace(rootElement, rootDecoder);
-			rootNode.setDefaultNsUri(rootDecoder.defaultNs.getURI());
-			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
-			rootDecoder.internalDecode(rootElement, rootNode);
-		} else {
-			rootNode.setType(TemplateId.PLACEHOLDER);
-			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
-			this.decode(rootElement, rootNode);
-		}
+//		QrdaDecoder rootDecoder = null;
+//		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
+//			String root = element.getAttributeValue(ROOT_STRING);
+//			String extension = element.getAttributeValue(EXTENSION_STRING);
+//			TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
+//			rootDecoder = getDecoder(templateId);
+//			if (rootDecoder != null) {
+//				rootNode.setType(templateId);
+//				break;
+//			}
+//		}
+//
+//		if (rootDecoder != null) {
+//			rootDecoder.setNamespace(rootElement.getNamespace());
+//			rootNode.setDefaultNsUri(rootDecoder.defaultNs.getURI());
+//			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
+//			rootDecoder.decode(rootElement, rootNode);
+//		} else {
+//			rootNode.setType(TemplateId.PLACEHOLDER);
+//			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
+//			this.decode(rootElement, rootNode);
+//		}
 		
 		return rootNode;
 	}

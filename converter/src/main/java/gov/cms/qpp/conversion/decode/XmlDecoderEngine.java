@@ -1,9 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
-
+import com.google.common.base.Strings;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filter;
@@ -12,16 +9,18 @@ import org.jdom2.xpath.XPathFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Strings;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Abstraction to parse XML files within the decoder structure.
  */
-public abstract class XmlInputDecoder implements InputDecoder {
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(XmlInputDecoder.class);
+public abstract class XmlDecoderEngine implements InputDecoderEngine {
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(XmlDecoderEngine.class);
 	Namespace defaultNs;
 	Namespace xpathNs;
 
@@ -32,7 +31,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	 * @return Root intermediate format node
 	 */
 	public static Node decodeXml(Context context, Element xmlDoc) {
-		XmlInputDecoder decoder = new QrdaXmlDecoder(context);
+		XmlDecoderEngine decoder = new QrdaDecoderEngine(context);
 		if (decoder.accepts(xmlDoc)) {
 			return decoder.decode(xmlDoc);
 		}
@@ -68,7 +67,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	 * @param element Element that hold the namespace
 	 * @param decoder Decoder to configure
 	 */
-	void setNamespace(Element element, XmlInputDecoder decoder) {
+	void setNamespace(Element element, XmlDecoderEngine decoder) {
 		decoder.defaultNs = element.getNamespace();
 
 		// this handles the case where there is no URI for a default namespace (test)

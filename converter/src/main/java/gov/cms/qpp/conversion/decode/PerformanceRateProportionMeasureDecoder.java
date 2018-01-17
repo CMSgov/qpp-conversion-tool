@@ -1,19 +1,21 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+
 import java.util.function.Consumer;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 /**
  * Decodes the Performance Rate Proportion Measure from the Measure Section
  */
 @Decoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-public class PerformanceRateProportionMeasureDecoder extends QrdaXmlDecoder {
+public class PerformanceRateProportionMeasureDecoder extends QrdaDecoder {
 
 	public static final String PERFORMANCE_RATE = "rate";
 	public static final String NULL_PERFORMANCE_RATE = "nullRate";
@@ -33,7 +35,7 @@ public class PerformanceRateProportionMeasureDecoder extends QrdaXmlDecoder {
 	 * @return
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setNameOnNode(element, thisNode, PERFORMANCE_RATE);
 		if (isFirstExpressionUnsuccessful(thisNode)) {
 			setNameOnNode(element, thisNode, NULL_PERFORMANCE_RATE);

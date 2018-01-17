@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
 @Decoder(TemplateId.NULL_RETURN)
-public class NullReturnDecoder extends QrdaXmlDecoder {
+public class NullReturnDecoder extends QrdaDecoderEngine {
 
 	public NullReturnDecoder(Context context) {
 		super(context);

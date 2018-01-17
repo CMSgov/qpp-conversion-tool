@@ -1,32 +1,34 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.ComponentKey;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+
 import java.lang.reflect.Method;
-import org.jdom2.Element;
-import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-class QrdaXmlDecoderTest {
+class QrdaDecoderEngineTest {
 
 	private static boolean errorDecode = false;
 
 	@Test
 	void decodeResultNoAction() throws Exception {
-		assertThat(new QrdaXmlDecoder(new Context()).internalDecode(null, null))
+		assertThat(new QrdaDecoderEngine(new Context()).internalDecode(null, null))
 				.isEqualTo(DecodeResult.NO_ACTION);
 	}
 
 	@Test
 	void nullElementDecodeReturnsError() {
 		// Element nullElement = null;
-		assertThat(new QrdaXmlDecoder(new Context()).decode((Element) null, null))
+		assertThat(new QrdaDecoderEngine(new Context()).decode((Element) null, null))
 				.isEqualTo(DecodeResult.ERROR);
 	}
 
@@ -43,7 +45,7 @@ class QrdaXmlDecoderTest {
 		testElement.getChildren().add(testChildElement);
 		Node testNode = new Node();
 
-		QrdaXmlDecoder objectUnderTest = new DefaultQrdaXmlDecoder(context);
+		QrdaDecoderEngine objectUnderTest = new DefaultQrdaXmlDecoder(context);
 		objectUnderTest.decode(testElement, testNode);
 
 		assertWithMessage("Child Node was not encountered")
@@ -67,13 +69,13 @@ class QrdaXmlDecoderTest {
 	}
 
 	private DecodeResult runTestChildDecodeResult(DecodeResult code) throws Exception {
-		QrdaXmlDecoder objectUnderTest = new QrdaXmlDecoder(new Context());
+		QrdaDecoderEngine objectUnderTest = new QrdaDecoderEngine(new Context());
 		Element childElement = new Element("childElement");
 		Node childNode = new Node();
 
 		String methodName = "testChildDecodeResult";
 		Method testChildDecodeResult =
-				QrdaXmlDecoder.class.getDeclaredMethod(methodName, DecodeResult.class, Element.class, Node.class);
+				QrdaDecoderEngine.class.getDeclaredMethod(methodName, DecodeResult.class, Element.class, Node.class);
 		testChildDecodeResult.setAccessible(true);
 
 		DecodeResult returnValue = (DecodeResult) testChildDecodeResult.invoke(objectUnderTest, code, childElement,
@@ -81,33 +83,33 @@ class QrdaXmlDecoderTest {
 		return returnValue;
 	}
 
-	public static class DefaultQrdaXmlDecoder extends QrdaXmlDecoder {
+	public static class DefaultQrdaXmlDecoder extends QrdaDecoderEngine {
 		public DefaultQrdaXmlDecoder(Context context) {
 			super(context);
 		}
 	}
 
-	public static class TestChildDecodeError extends QrdaXmlDecoder {
+	public static class TestChildDecodeError extends QrdaDecoder {
 
 		public TestChildDecodeError(Context context) {
 			super(context);
 		}
 
 		@Override
-		public DecodeResult internalDecode(Element element, Node childNode) {
+		public DecodeResult decode(Element element, Node childNode) {
 			errorDecode = true;
 			return DecodeResult.ERROR;
 		}
 	}
 
-	public static class TestChildNoAction extends QrdaXmlDecoder {
+	public static class TestChildNoAction extends QrdaDecoder {
 
 		public TestChildNoAction(Context context) {
 			super(context);
 		}
 
 		@Override
-		public DecodeResult internalDecode(Element element, Node childNode) {
+		public DecodeResult decode(Element element, Node childNode) {
 			return DecodeResult.NO_ACTION;
 		}
 	}

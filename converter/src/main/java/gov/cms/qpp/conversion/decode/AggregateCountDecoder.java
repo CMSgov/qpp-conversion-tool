@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 import java.util.function.Consumer;
 
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
  * Decoder to parse an Aggregate Count value type.
  */
 @Decoder(TemplateId.ACI_AGGREGATE_COUNT)
-public class AggregateCountDecoder extends QrdaXmlDecoder {
+public class AggregateCountDecoder extends QrdaDecoder {
 
 	public static final String AGGREGATE_COUNT = "aggregateCount";
 
@@ -30,7 +31,7 @@ public class AggregateCountDecoder extends QrdaXmlDecoder {
 	 * @return DecodeResult.TreeFinished;
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisnode) {
+	protected DecodeResult decode(Element element, Node thisnode) {
 		setSciNumeratorDenominatorOnNode(element, thisnode);
 		return DecodeResult.TREE_FINISHED;
 	}

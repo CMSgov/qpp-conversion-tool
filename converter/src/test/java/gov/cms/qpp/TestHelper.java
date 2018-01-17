@@ -1,15 +1,11 @@
 package gov.cms.qpp;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.mockito.ArgumentMatchers;
 import org.powermock.api.mockito.PowerMockito;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.InputDecoder;
+import gov.cms.qpp.conversion.decode.InputDecoderEngine;
+import gov.cms.qpp.conversion.decode.QrdaDecoder;
 import gov.cms.qpp.conversion.encode.OutputEncoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.ComponentKey;
@@ -18,6 +14,11 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class TestHelper {
 
@@ -36,13 +37,13 @@ public class TestHelper {
 	}
 
 	/**
-	 * Registers the {@link InputDecoder} in the {@link gov.cms.qpp.conversion.model.Registry}.
+	 * Registers the {@link InputDecoderEngine} in the {@link gov.cms.qpp.conversion.model.Registry}.
 	 *
 	 * @param context The context that contains the Registry.
 	 * @param decoder The decoder to register.
 	 * @param componentKey The combination of a TemplateId and Program that the decoder will be registered for.
 	 */
-	public static void mockDecoder(Context context, Class<? extends InputDecoder> decoder, ComponentKey componentKey) {
+	public static void mockDecoder(Context context, Class<? extends QrdaDecoder> decoder, ComponentKey componentKey) {
 		context.getRegistry(Decoder.class).register(componentKey, decoder);
 	}
 
