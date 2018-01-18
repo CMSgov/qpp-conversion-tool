@@ -13,7 +13,7 @@
 	10/9/2017: 
 	Description: 1) Added the all improvement activities for the 2017 performance period for testing purpose.
 				 2) Added the advancing care information measures except the exclusion identifiers (ACI_LVPP_1, ACI_TRANS_LVPP_1, 
-				 ACI_LVOTC_1, ACI_LVITC_1, ACI_TRANS_LVPP_1, ACI_TRANS_LVTOC_1) and the attestation identifiers 
+				 ACI_LVOTC_1, ACI_LVITC_1, ACI_TRANS_LVPP_1, ACI_TRANS_LVOTC_1) and the attestation identifiers
 				 for the 2017 performance period for testing purpose. 
 				 3) Removed comments of conformance statements
 				 3) Removed the person author from the header 
@@ -126,7 +126,7 @@ CDA Header
 					<assignedEntity>
 					<id root="2.16.840.1.113883.4.6" nullFlavor="NA"/>
 					<representedOrganization>
-						<id root="2.16.840.1.113883.4.2" extension="123456789"/>
+						<id root="2.16.840.1.113883.4.2" extension="000456789"/>
 						<name>Good Health Clinic</name>
 					</representedOrganization>
 				</assignedEntity>
@@ -28421,7 +28421,7 @@ CDA Header
 							<statusCode code="completed"/>
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.3.7031" extension="AACI_CCTPE_1"/>
+									<id root="2.16.840.1.113883.3.7031" extension="ACI_CCTPE_1"/>
 									<text>View, Download or Transmit (VDT)</text>
 								</externalDocument>
 							</reference>
@@ -32703,7 +32703,7 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					<!-- improvement activity: IA_ERP_3 -->					
+					<!-- improvement activity: IA_ERP_2 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
 							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
@@ -32713,7 +32713,7 @@ CDA Header
 							<statusCode code="completed"/>
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.3.7034" extension="IA_ERP_3"/>
+									<id root="2.16.840.1.113883.3.7034" extension="IA_ERP_2"/>
 									<text>Participation in a 60-day or greater effort to support domestic or international humanitarian needs.</text>
 								</externalDocument>
 							</reference>
