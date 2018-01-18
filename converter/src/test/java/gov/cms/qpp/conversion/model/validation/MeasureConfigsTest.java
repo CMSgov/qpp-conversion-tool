@@ -68,17 +68,17 @@ class MeasureConfigsTest {
 //				.that(configurations).isNotEmpty();
 //	}
 
-	@Test
-	void getMeasureConfigMisspell() {
-		String measureId = "IA_PCMG";
-		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
-		System.out.println(Instant.now());
-		List<String> blahBlah = MeasureConfigs.getSuggestions(measureId);
-		System.out.println(Instant.now());
-		LevenshteinDistance distanceCheck = new LevenshteinDistance(5);
-		System.out.println(blahBlah);
-		assertThat(blahBlah).contains("IA_PCMH");
-	}
+//	@Test
+//	void getMeasureConfigMisspell() {
+//		String measureId = "IA_PCMG";
+//		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+//		System.out.println(Instant.now());
+//		List<String> blahBlah = MeasureConfigs.getSuggestions(measureId);
+//		System.out.println(Instant.now());
+//		LevenshteinDistance distanceCheck = new LevenshteinDistance(5);
+//		System.out.println(blahBlah);
+//		assertThat(blahBlah).contains("IA_PCMH");
+//	}
 
 //	@Test
 //	void requiredMeasuresForSectionTest() {
