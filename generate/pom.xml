@@ -30,6 +30,12 @@
             <groupId>gov.cms.qpp.conversion</groupId>
             <artifactId>converter</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>gov.cms.qpp.conversion</groupId>
+                    <artifactId>test-commons</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
