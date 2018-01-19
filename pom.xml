@@ -144,19 +144,6 @@
 						</dependency>
 					</dependencies>
 				</plugin>
-				
-				<plugin>
-					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>2.18.1</version>
-					<configuration>
-						<includes>
-							<include>**/Integration.java</include>
-						</includes>
-						<environmentVariables>
-							<USE_SSL>true</USE_SSL>
-						</environmentVariables>
-					</configuration>
-				</plugin>
 
 				<plugin>
 					<groupId>gov.cms.qpp.conversion</groupId>
