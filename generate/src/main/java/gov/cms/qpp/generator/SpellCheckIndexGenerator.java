@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 import java.util.Set;
 
 @Mojo(name = "generateLuceneIndex")
-public class SpellCheckManager extends AbstractMojo {
+public class SpellCheckIndexGenerator extends AbstractMojo {
 
 	@Parameter( property = "generateLuceneIndex.baseDir", defaultValue = "./commons/src/main/resources" )
 	private String baseDir;

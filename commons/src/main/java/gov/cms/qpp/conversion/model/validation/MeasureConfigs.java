@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +25,6 @@ public class MeasureConfigs {
 	public static final String DEFAULT_MEASURE_DATA_FILE_NAME = "measures-data.json";
 	static final int SUGGESTION_COUNT = 3;
 	private static final String INDEX_DIR = "measures_index";
-	private static final String INDEX_PATH = ClasspathHelper.contextClassLoader().getResource(INDEX_DIR).getFile();
 
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
 	private static Map<String, MeasureConfig> configurationMap;
@@ -61,10 +59,11 @@ public class MeasureConfigs {
 	}
 
 	private static void initSpellChecker() {
+		String indexPath = ClasspathHelper.contextClassLoader().getResource(INDEX_DIR).getFile();
 		try {
-			spellChecker = new SpellChecker(FSDirectory.open(Paths.get(INDEX_PATH)));
+			spellChecker = new SpellChecker(FSDirectory.open(Paths.get(indexPath)));
 		} catch (IOException ex) {
-			//TODO add logging
+			DEV_LOG.warn("Problem loading measure spell check index: " + indexPath, ex);
 		}
 	}
 
@@ -134,10 +133,17 @@ public class MeasureConfigs {
 		return cpcPlusGroups;
 	}
 
-	static List<String> getMeasureSuggestions(String measureId) throws IOException {
-		SpellChecker checkPlease = getSpellChecker();
-		return checkPlease == null ? Collections.emptyList() :
-			Arrays.asList(checkPlease.suggestSimilar(measureId, SUGGESTION_COUNT));
+	public static List<String> getMeasureSuggestions(String measureId) {
+		List<String> suggestions = Collections.emptyList();
+		if (getSpellChecker() != null) {
+			try {
+				suggestions = Arrays.asList(getSpellChecker().suggestSimilar(measureId, SUGGESTION_COUNT));
+			} catch(IOException ex) {
+				DEV_LOG.warn("Problem when seeking measure suggestions.", ex);
+			}
+		}
+
+		return suggestions;
 	}
 
 	/**
