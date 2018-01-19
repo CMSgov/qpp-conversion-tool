@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,11 +60,13 @@ public class MeasureConfigs {
 	}
 
 	private static void initSpellChecker() {
-		String indexPath = ClasspathHelper.contextClassLoader().getResource(INDEX_DIR).getFile();
-		try {
-			spellChecker = new SpellChecker(FSDirectory.open(Paths.get(indexPath)));
-		} catch (IOException ex) {
-			DEV_LOG.warn("Problem loading measure spell check index: " + indexPath, ex);
+		URL indexPath = ClasspathHelper.contextClassLoader().getResource(INDEX_DIR);
+		if (indexPath != null) {
+			try {
+				spellChecker = new SpellChecker(FSDirectory.open(Paths.get(indexPath.getFile())));
+			} catch (IOException ex) {
+				DEV_LOG.warn("Problem loading measure spell check index: " + indexPath, ex);
+			}
 		}
 	}
 
