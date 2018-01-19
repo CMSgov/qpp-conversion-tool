@@ -139,15 +139,35 @@ public class QrdaGenerator {
 		return new StreamResult(writer);
 	}
 
+	private enum PopulationValue {
+		IPOP(SubPopulations.IPOP, 100),
+		DENOM(SubPopulations.DENOM, 100),
+		DENEX(SubPopulations.DENEX, 10),
+		DENEXCEP(SubPopulations.DENEXCEP, 10),
+		NUMER(SubPopulations.NUMER, 80);
+
+		String measure;
+		int value;
+
+		PopulationValue(String measure, int factor) {
+			this.measure = measure;
+			this.value = factor * getSubPopCount();
+		}
+
+		static int getSubPopCount() {
+			return 12;
+		}
+	}
+
 	private class Context {
 		List<MeasureConfig> quality;
 		List<MeasureConfig> aci;
 		List<MeasureConfig> ia;
-		Function<String, Object> generateIpop = uuid -> generateSubpopulation(uuid, SubPopulations.IPOP);
-		Function<String, Object> generateDenom = uuid -> generateSubpopulation(uuid, SubPopulations.DENOM);
-		Function<String, Object> generateDenex = uuid -> generateSubpopulation(uuid, SubPopulations.DENEX);
-		Function<String, Object> generateDenexcep = uuid -> generateSubpopulation(uuid, SubPopulations.DENEXCEP);
-		Function<String, Object> generateNumer = uuid -> generateSubpopulation(uuid, SubPopulations.NUMER);
+		Function<String, Object> generateIpop = uuid -> generateSubpopulation(uuid, PopulationValue.IPOP);
+		Function<String, Object> generateDenom = uuid -> generateSubpopulation(uuid, PopulationValue.DENOM);
+		Function<String, Object> generateDenex = uuid -> generateSubpopulation(uuid, PopulationValue.DENEX);
+		Function<String, Object> generateDenexcep = uuid -> generateSubpopulation(uuid, PopulationValue.DENEXCEP);
+		Function<String, Object> generateNumer = uuid -> generateSubpopulation(uuid, PopulationValue.NUMER);
 		Function<String, Object> generatePerformanceRate = this::generatePerformanceRate;
 
 
@@ -163,16 +183,16 @@ public class QrdaGenerator {
 			return performanceRate.execute(new StringWriter(), ctx).toString();
 		}
 
-		private String generateSubpopulation(Object uuid, String type) {
+		private String generateSubpopulation(Object uuid, PopulationValue type) {
 			if (uuid == null || ((String) uuid).isEmpty()) {
 				return "";
 			}
 
 			Map<String, Object> ctx = new HashMap<>();
 			ctx.put("uuid", uuid);
-			ctx.put("label", type);
-			ctx.put("value", 10);
-			ctx.put("total", 120);
+			ctx.put("label", type.measure);
+			ctx.put("value", type.value / PopulationValue.getSubPopCount());
+			ctx.put("total", type.value);
 
 			return subpopulation.execute(new StringWriter(), ctx).toString();
 		}

@@ -2,14 +2,15 @@ package gov.cms.qpp.conversion.api.controllers;
 
 import gov.cms.qpp.conversion.api.model.HealthCheck;
 import gov.cms.qpp.conversion.api.services.VersionService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller to simply respond with status 200 with a GET /health call.
@@ -34,7 +35,7 @@ public class HealthCheckController {
 	 *
 	 * @return health check of version, environment variables, and system properties
 	 */
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	@ResponseBody
 	public ResponseEntity<HealthCheck> health() {
 		HealthCheck healthCheck = new HealthCheck();
