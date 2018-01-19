@@ -9,6 +9,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -21,22 +22,28 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
-@Mojo( name = "generateLuceneIndex")
-public class LuceneIndexGenerator extends AbstractMojo {
-	private static final Path BASE_DIR = Paths.get("./commons/src/main/resources");
-	private static final Path DICTIONARY_PATH = BASE_DIR.resolve("measures-dictionary.txt");
-	private static final Path INDEX_DIR = BASE_DIR.resolve("measures_index");
+@Mojo(name = "generateLuceneIndex")
+public class SpellCheckManager extends AbstractMojo {
+
+	@Parameter( property = "generateLuceneIndex.baseDir", defaultValue = "./commons/src/main/resources" )
+	private String baseDir;
+
+	private Path dictionaryPath;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		getLog().info( "Running lucene index generator" );
+		Path baseDirPath = Paths.get(baseDir);
+		dictionaryPath = baseDirPath.resolve("measures-dictionary.txt");
+		Path indexDir = baseDirPath.resolve("measures_index");
+
+		getLog().info("Running lucene index generator: " + baseDir);
 		try {
 			writeMeasures();
-			getLog().info( "Prepping measures index" );
-			new SpellChecker(FSDirectory.open(INDEX_DIR))
+			getLog().info("Prepping measures index");
+			new SpellChecker(FSDirectory.open(indexDir))
 				.indexDictionary(
-					new PlainTextDictionary(DICTIONARY_PATH), new IndexWriterConfig(), false);
-			Files.deleteIfExists(DICTIONARY_PATH);
+					new PlainTextDictionary(dictionaryPath), new IndexWriterConfig(), false);
+			Files.deleteIfExists(dictionaryPath);
 		} catch (IOException ex) {
 			throw new MojoExecutionException("Could not create lucene index", ex);
 		}
@@ -46,7 +53,7 @@ public class LuceneIndexGenerator extends AbstractMojo {
 		getLog().info( "Writing measures dictionary" );
 		Set<String> keys = MeasureConfigs.getConfigurationMap().keySet();
 		try (PrintWriter pw = new PrintWriter(
-			new OutputStreamWriter(new FileOutputStream(DICTIONARY_PATH.toFile()), "UTF-8"))) {
+			new OutputStreamWriter(new FileOutputStream(dictionaryPath.toFile()), "UTF-8"))) {
 			for (String s : keys) {
 				pw.println(s);
 			}

@@ -61,6 +61,9 @@
 				<groupId>gov.cms.qpp.conversion</groupId>
 				<artifactId>generate-maven-plugin</artifactId>
 				<version>1.1.4-RELEASE</version>
+				<configuration>
+					<baseDir>${basedir}/src/main/resources</baseDir>
+				</configuration>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
@@ -75,12 +78,6 @@
 	</build>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-suggest</artifactId>
-			<version>7.2.1</version>
-		</dependency>
 
 		<dependency>
 			<groupId>commons-cli</groupId>

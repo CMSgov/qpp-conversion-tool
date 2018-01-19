@@ -2,13 +2,19 @@ package gov.cms.qpp.conversion.model.validation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.lucene.search.spell.SpellChecker;
+import org.apache.lucene.store.FSDirectory;
 import org.reflections.util.ClasspathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +24,14 @@ import java.util.stream.Collectors;
 public class MeasureConfigs {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(MeasureConfigs.class);
 	public static final String DEFAULT_MEASURE_DATA_FILE_NAME = "measures-data.json";
+	static final int SUGGESTION_COUNT = 3;
+	private static final String INDEX_DIR = "measures_index";
+	private static final String INDEX_PATH = ClasspathHelper.contextClassLoader().getResource(INDEX_DIR).getFile();
 
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
 	private static Map<String, MeasureConfig> configurationMap;
 	private static Map<String, List<MeasureConfig>> cpcPlusGroups;
+	private static SpellChecker spellChecker = null;
 
 	/**
 	 * Static initialization
@@ -41,12 +51,25 @@ public class MeasureConfigs {
 	 * Initialize all measure configurations
 	 */
 	private static void initMeasureConfigs() {
+		initSpellChecker();
 		configurationMap = grabConfiguration(measureDataFileName);
 		cpcPlusGroups = new HashMap<>();
 		getMeasureConfigs().stream()
 				.filter(config -> config.getCpcPlusGroup() != null)
 				.forEach(config -> cpcPlusGroups.computeIfAbsent(
 						config.getCpcPlusGroup(), key -> new ArrayList<>()).add(config));
+	}
+
+	private static void initSpellChecker() {
+		try {
+			spellChecker = new SpellChecker(FSDirectory.open(Paths.get(INDEX_PATH)));
+		} catch (IOException ex) {
+			//TODO add logging
+		}
+	}
+
+	static SpellChecker getSpellChecker() {
+		return spellChecker;
 	}
 
 	public static Map<String, MeasureConfig> grabConfiguration(String fileName) {
@@ -109,6 +132,12 @@ public class MeasureConfigs {
 	 */
 	public static Map<String, List<MeasureConfig>> getCpcPlusGroups() {
 		return cpcPlusGroups;
+	}
+
+	static List<String> getMeasureSuggestions(String measureId) throws IOException {
+		SpellChecker checkPlease = getSpellChecker();
+		return checkPlease == null ? Collections.emptyList() :
+			Arrays.asList(checkPlease.suggestSimilar(measureId, SUGGESTION_COUNT));
 	}
 
 	/**
