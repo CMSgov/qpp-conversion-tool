@@ -20,7 +20,6 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
@@ -56,9 +55,6 @@ public class StorageServiceImplIntegration {
 	@Rule
 	public MockitoRule rule = MockitoJUnit.rule();
 
-//	@Rule
-//	public EnvironmentVariables environmentVariables = new EnvironmentVariables();
-
 	@Mock
 	private Environment environment;
 
@@ -70,9 +66,7 @@ public class StorageServiceImplIntegration {
 	private AmazonS3 amazonS3Client;
 
 	@Before
-	public void setup() throws IllegalAccessException, NoSuchFieldException {
-		//environmentVariables.set("USE_SSL", "true");
-
+	public void setup() throws Exception {
 		Assume.assumeTrue(System.getProperty("skip.long") == null);
 		TestUtils.disableSslCertChecking();
 
