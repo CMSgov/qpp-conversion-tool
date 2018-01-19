@@ -72,8 +72,8 @@
       published_ports:
         - 2680:8080
       env:
-        BUCKET_NAME: flexion-qpp-conversion-tool-pii-convrtr-audt-test-us-east-1
-        DYNAMO_TABLE_NAME: qpp-qrda3converter-test-metadata
+        BUCKET_NAME: qpp-qrda3converter-acceptance-test
+        DYNAMO_TABLE_NAME: qpp-qrda3converter-acceptance-test
         KMS_KEY: arn:aws:kms:us-east-1:850094054452:alias/qpp-qrda3converter-test-kms_alias
         VALIDATION_URL: https://qpp-submissions-sandbox.navapbc.com/public/validate-submission
         APP_ENV: test
