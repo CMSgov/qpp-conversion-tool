@@ -23,7 +23,7 @@ import java.util.Set;
 
 @Mojo( name = "generateLuceneIndex")
 public class LuceneIndexGenerator extends AbstractMojo {
-	private static final Path BASE_DIR = Paths.get("./converter/src/main/resources");
+	private static final Path BASE_DIR = Paths.get("./commons/src/main/resources");
 	private static final Path DICTIONARY_PATH = BASE_DIR.resolve("measures-dictionary.txt");
 	private static final Path INDEX_DIR = BASE_DIR.resolve("measures_index");
 
