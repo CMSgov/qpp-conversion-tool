@@ -1,20 +1,18 @@
-package gov.cms.qpp.conversion.logging;
+package gov.cms.qpp.conversion.api.logging;
+
+import ch.qos.logback.classic.spi.LoggingEvent;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Part;
+import java.io.IOException;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.Part;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import ch.qos.logback.classic.spi.LoggingEvent;
 
 class AttachmentHashPartConverterTest {
 
