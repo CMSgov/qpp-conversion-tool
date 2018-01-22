@@ -17,6 +17,7 @@
 
 	<properties>
 		<spring-boot.version>1.5.8.RELEASE</spring-boot.version>
+		<logback.version>1.2.3</logback.version>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 	</properties>
 
@@ -75,10 +76,21 @@
 		</dependency>
 
 		<dependency>
-			<groupId>gov.cms.qpp.conversion</groupId>
-			<artifactId>rest-logging</artifactId>
-			<version>${project.version}</version>
-			<scope>runtime</scope>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>4.11</version>
 		</dependency>
 
 		<dependency>
