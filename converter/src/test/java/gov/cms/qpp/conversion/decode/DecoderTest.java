@@ -1,12 +1,14 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
+
 import java.util.EnumSet;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -36,10 +38,10 @@ class DecoderTest {
 
 	@Test
 	void decodeTemplateIds() throws Exception {
-		Registry<InputDecoderEngine> registry = new Registry<>(new Context(), Decoder.class);
+		Registry<QrdaDecoder> registry = new Registry<>(new Context(), Decoder.class);
 
 		for (TemplateId templateId : templateIds) {
-			InputDecoderEngine decoder = registry.get(templateId);
+			QrdaDecoder decoder = registry.get(templateId);
 			assertWithMessage("%s returned node should not be null", templateId.name())
 					.that(decoder)
 					.isNotNull();

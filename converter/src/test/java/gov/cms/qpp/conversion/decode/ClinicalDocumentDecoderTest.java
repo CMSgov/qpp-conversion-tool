@@ -136,13 +136,12 @@ class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	void decodeClinicalDocumentInternalDecode() throws Exception {
+	void decodeClinicalDocumentInternalDecode() {
 		Element clinicalDocument = makeClinicalDocument("MIPS");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
 		objectUnderTest.decode(clinicalDocument, testParentNode);
-		Node testChildNode = testParentNode.getChildNodes().get(0);
 
 		assertWithMessage("Clinical Document doesn't contain program name")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
@@ -156,22 +155,15 @@ class ClinicalDocumentDecoderTest {
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
-		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
-				.that(testChildNode)
-				.isNotNull();
-		assertWithMessage("Clinical Document doesn't contain ACI Section category")
-				.that(testChildNode.getValue("category"))
-				.isEqualTo("aci");
 	}
 
 	@Test
-	void decodeClinicalDocumentInternalDecodeMIPSIndividual() throws Exception {
+	void decodeClinicalDocumentInternalDecodeMIPSIndividual() {
 		Element clinicalDocument = makeClinicalDocument("MIPS_INDIV");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
 		objectUnderTest.decode(clinicalDocument, testParentNode);
-		Node testChildNode = testParentNode.getChildNodes().get(0);
 
 		assertWithMessage("Clinical Document doesn't contain program name")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
@@ -185,22 +177,15 @@ class ClinicalDocumentDecoderTest {
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
-		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
-				.that(testChildNode)
-				.isNotNull();
-		assertWithMessage("Clinical Document doesn't contain ACI Section category")
-				.that(testChildNode.getValue("category"))
-				.isEqualTo("aci");
 	}
 
 	@Test
-	void decodeClinicalDocumentInternalDecodeMIPSGroup() throws Exception {
+	void decodeClinicalDocumentInternalDecodeMIPSGroup() {
 		Element clinicalDocument = makeClinicalDocument("MIPS_GROUP");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
 		objectUnderTest.decode(clinicalDocument, testParentNode);
-		Node testChildNode = testParentNode.getChildNodes().get(0);
 
 		assertWithMessage("Clinical Document doesn't contain program name")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
@@ -214,22 +199,15 @@ class ClinicalDocumentDecoderTest {
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
-		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
-				.that(testChildNode)
-				.isNotNull();
-		assertWithMessage("Clinical Document doesn't contain ACI Section category")
-				.that(testChildNode.getValue("category"))
-				.isEqualTo("aci");
 	}
 
 	@Test
-	void decodeClinicalDocumentInternalDecodeCPCPlus() throws Exception {
+	void decodeClinicalDocumentInternalDecodeCPCPlus() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS);
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
 		objectUnderTest.decode(clinicalDocument, testParentNode);
-		Node testChildNode = testParentNode.getChildNodes().get(0);
 
 		assertWithMessage("Clinical Document doesn't contain program name")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
@@ -243,22 +221,15 @@ class ClinicalDocumentDecoderTest {
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
-		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
-				.that(testChildNode)
-				.isNotNull();
-		assertWithMessage("Clinical Document doesn't contain ACI Section category")
-				.that(testChildNode.getValue("category"))
-				.isEqualTo("aci");
 	}
 
 	@Test
-	void decodeClinicalDocumentInternalDecodeUnknown() throws Exception {
+	void decodeClinicalDocumentInternalDecodeUnknown() {
 		Element clinicalDocument = makeClinicalDocument("Unknown");
 		Node testParentNode = new Node();
 		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
 		objectUnderTest.decode(clinicalDocument, testParentNode);
-		Node testChildNode = testParentNode.getChildNodes().get(0);
 
 		assertWithMessage("Clinical Document doesn't contain program name")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
@@ -272,16 +243,10 @@ class ClinicalDocumentDecoderTest {
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
-		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
-				.that(testChildNode)
-				.isNotNull();
-		assertWithMessage("Clinical Document doesn't contain ACI Section category")
-				.that(testChildNode.getValue("category"))
-				.isEqualTo("aci");
 	}
 
 	@Test
-	void decodeCpcPlusEntityIdTest() throws Exception {
+	void decodeCpcPlusEntityIdTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
 		Node testParentNode = new Node();
@@ -294,7 +259,7 @@ class ClinicalDocumentDecoderTest {
 	}
 
 	@Test
-	void decodeCpcPracticeSiteAddressTest() throws Exception {
+	void decodeCpcPracticeSiteAddressTest() {
 		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocument.addContent( prepareParticipant( clinicalDocument.getNamespace()) );
 		Node testParentNode = new Node();

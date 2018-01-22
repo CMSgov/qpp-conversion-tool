@@ -35,8 +35,6 @@ public class IaMeasureDecoder extends QrdaDecoder {
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue("measureId", p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 
-		decode(element.getChild("component", defaultNs), thisNode);
-
-		return DecodeResult.TREE_FINISHED;
+		return DecodeResult.TREE_CONTINUE;
 	}
 }

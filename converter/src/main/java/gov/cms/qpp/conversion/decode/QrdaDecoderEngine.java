@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
+import gov.cms.qpp.conversion.model.DecodeData;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
@@ -62,6 +63,82 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	@Override
 	public DecodeResult decode(Element element, Node parentNode) {
 		return (element == null) ? DecodeResult.ERROR : decodeChildren(element, parentNode);
+	}
+
+	private DecodeData decodeTree(final Element element, final Node parentNode) {
+		DecodeData result = decodeSingleElement(element, parentNode);
+		DecodeResult decodedResult = result.getDecodeResult();
+		Node decodedNode = result.getNode();
+
+		if (null == decodedNode) {
+			decodedNode = parentNode;
+		}
+
+		if (DecodeResult.TREE_FINISHED == decodedResult) {
+			return new DecodeData(DecodeResult.TREE_FINISHED, decodedNode);
+		} else if (DecodeResult.TREE_ESCAPED == decodedResult) {
+			return new DecodeData(DecodeResult.TREE_FINISHED, null);
+		}
+
+		return decodeChildrenNew(element, decodedNode);
+	}
+
+	private DecodeData decodeSingleElement(final Element element, final Node parentNode) {
+
+		if (!TEMPLATE_ID.equals(element.getName())) {
+			return new DecodeData(DecodeResult.TREE_CONTINUE, null);
+		}
+
+		TemplateId templateId = getTemplateId(element);
+		QrdaDecoder decoder = getDecoder(templateId);
+
+		if (null == decoder) {
+			return new DecodeData(DecodeResult.TREE_CONTINUE, null);
+		}
+
+		Node childNode = new Node(templateId, parentNode);
+		childNode.setDefaultNsUri(defaultNs.getURI());
+		decoder.setNamespace(element.getNamespace());
+
+		Element parentElement = element.getParentElement();
+
+		DecodeResult decodeResult = decoder.decode(parentElement, childNode);
+
+		if (decodeResult == DecodeResult.TREE_ESCAPED) {
+			return new DecodeData(DecodeResult.TREE_ESCAPED, null);
+		}
+
+		childNode.setPath(XPathHelper.getAbsolutePath(parentElement));
+		if (null != parentNode) {
+			parentNode.addChildNode(childNode);
+		}
+
+		return new DecodeData(decodeResult, childNode);
+	}
+
+	private DecodeData decodeChildrenNew(final Element element, final Node parentNode) {
+
+		List<Element> childElements = element.getChildren();
+
+		DecodeData decodeData = new DecodeData(DecodeResult.TREE_CONTINUE, parentNode);
+
+		Node currentParentNode = parentNode;
+
+		for (Element childElement : childElements) {
+			DecodeData childDecodeData = decodeTree(childElement, currentParentNode);
+
+			DecodeResult childDecodeResult = childDecodeData.getDecodeResult();
+			Node childDecodedNode = childDecodeData.getNode();
+
+			if (DecodeResult.TREE_FINISHED == childDecodeResult) {
+				decodeData = new DecodeData(DecodeResult.TREE_CONTINUE, currentParentNode);
+				break;
+			}
+
+			currentParentNode = childDecodedNode == null ? currentParentNode : childDecodedNode;
+		}
+
+		return decodeData;
 	}
 
 	/**
@@ -184,35 +261,30 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	protected Node decodeRoot(Element xmlDoc) {
 		Node rootNode = new Node();
 		Element rootElement = xmlDoc.getDocument().getRootElement();
+		defaultNs = rootElement.getNamespace();
 
 		rootNode.setType(TemplateId.PLACEHOLDER);
 		rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
-		this.decode(rootElement, rootNode);
+
+//		return this.decodeTree(rootElement, rootNode).getNode();
+
+		QrdaDecoder rootDecoder = null;
+		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
+			TemplateId templateId = getTemplateId(element);
+			rootDecoder = getDecoder(templateId);
+			if (rootDecoder != null) {
+				rootNode.setType(templateId);
+				break;
+			}
+		}
+
+		if (rootDecoder != null) {
+			return this.decodeTree(rootElement, rootNode).getNode().getChildNodes().get(0);
+		} else {
+			return this.decodeTree(rootElement, rootNode).getNode();
+		}
 		
-//		QrdaDecoder rootDecoder = null;
-//		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
-//			String root = element.getAttributeValue(ROOT_STRING);
-//			String extension = element.getAttributeValue(EXTENSION_STRING);
-//			TemplateId templateId = TemplateId.getTemplateId(root, extension, context);
-//			rootDecoder = getDecoder(templateId);
-//			if (rootDecoder != null) {
-//				rootNode.setType(templateId);
-//				break;
-//			}
-//		}
-//
-//		if (rootDecoder != null) {
-//			rootDecoder.setNamespace(rootElement.getNamespace());
-//			rootNode.setDefaultNsUri(rootDecoder.defaultNs.getURI());
-//			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
-//			rootDecoder.decode(rootElement, rootNode);
-//		} else {
-//			rootNode.setType(TemplateId.PLACEHOLDER);
-//			rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
-//			this.decode(rootElement, rootNode);
-//		}
-		
-		return rootNode;
+//		return rootNode;
 	}
 
 	/**
