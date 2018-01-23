@@ -26,6 +26,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.google.common.truth.Truth;
+
 //Using jUnit 4 for power mock
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({SecurityContextHolder.class})
@@ -53,7 +55,7 @@ public class JwtAuthorizationFilterTest {
 	@Test
 	public void testDoFilterInternal() throws IOException, ServletException {
 		JwtPayloadHelper payload = new JwtPayloadHelper()
-				.withName(JwtAuthorizationFilter.ORG_NAME)
+				.withName(JwtAuthorizationFilter.DEFAULT_ORG_NAME)
 				.withOrgType(ORG_TYPE);
 
 		request.addHeader("Authorization", JwtTestHelper.createJwt(payload));
@@ -112,7 +114,7 @@ public class JwtAuthorizationFilterTest {
 	@Test
 	public void testDoFilterInternalWithNoOrgType() throws IOException, ServletException {
 		JwtPayloadHelper payload = new JwtPayloadHelper()
-				.withName(JwtAuthorizationFilter.ORG_NAME);
+				.withName(JwtAuthorizationFilter.DEFAULT_ORG_NAME);
 
 		request.addHeader("Authorization", JwtTestHelper.createJwt(payload));
 		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter(authenticationManager);
@@ -141,5 +143,18 @@ public class JwtAuthorizationFilterTest {
 
 		verify(filterChain, times(1)).doFilter(any(MockHttpServletRequest.class), any(MockHttpServletResponse.class));
 		verify(SecurityContextHolder.getContext(), times(0)).setAuthentication(any(UsernamePasswordAuthenticationToken.class));
+	}
+
+	@Test
+	public void testDefaultOrgName() {
+		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter(authenticationManager, JwtAuthorizationFilter.DEFAULT_ORG_NAME);
+		Truth.assertThat(testJwtAuthFilter.orgName).isEqualTo(JwtAuthorizationFilter.DEFAULT_ORG_NAME);
+	}
+
+	@Test
+	public void testGivenOrgName() {
+		String expected = "some org name";
+		JwtAuthorizationFilter testJwtAuthFilter = new JwtAuthorizationFilter(authenticationManager, expected);
+		Truth.assertThat(testJwtAuthFilter.orgName).isEqualTo(expected);
 	}
 }

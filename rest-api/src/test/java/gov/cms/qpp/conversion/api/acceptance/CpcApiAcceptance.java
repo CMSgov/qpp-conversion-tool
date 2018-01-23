@@ -16,7 +16,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.put;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.hamcrest.xml.HasXPath.hasXPath;
 
 @ExtendWith(RestExtension.class)
@@ -80,7 +80,7 @@ class CpcApiAcceptance {
 			.then()
 			.statusCode(200)
 			.contentType("application/xml")
-			.body(hasXPath(PROGRAM_NAME_XPATH, equalTo(CPC_PLUS_PROGRAM_NAME)));
+			.body(hasXPath(PROGRAM_NAME_XPATH, equalToIgnoringCase(CPC_PLUS_PROGRAM_NAME)));
 	}
 
 	@AcceptanceTest
