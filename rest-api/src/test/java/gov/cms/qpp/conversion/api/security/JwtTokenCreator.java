@@ -6,7 +6,7 @@ import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
 public class JwtTokenCreator {
 	public static void main(String... args) {
 
-		String orgName = JwtAuthorizationFilter.ORG_NAME;
+		String orgName = JwtAuthorizationFilter.DEFAULT_ORG_NAME;
 
 		if (args.length >= 1) {
 			orgName = args[0];
