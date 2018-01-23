@@ -44,6 +44,37 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		this.decoders = context.getRegistry(Decoder.class);
 	}
 
+	/**
+	 * Decodes the top of the XML document
+	 *
+	 * @param xmlDoc XML Document to be parsed
+	 * @return Root node
+	 */
+	@Override
+	public Node decode(Element xmlDoc) {
+		Node rootNode = new Node();
+		Element rootElement = xmlDoc.getDocument().getRootElement();
+		defaultNs = rootElement.getNamespace();
+
+		rootNode.setType(TemplateId.PLACEHOLDER);
+		rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
+
+		QrdaDecoder rootDecoder = null;
+		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
+			TemplateId templateId = getTemplateId(element);
+			rootDecoder = getDecoder(templateId);
+			if (rootDecoder != null) {
+				break;
+			}
+		}
+
+		if (rootDecoder != null) {
+			return this.decodeTree(rootElement, rootNode).getNode().getChildNodes().get(0);
+		} else {
+			return this.decodeTree(rootElement, rootNode).getNode();
+		}
+	}
+
 	private DecodeData decodeTree(final Element element, final Node parentNode) {
 		DecodeData result = decodeSingleElement(element, parentNode);
 		DecodeResult decodedResult = result.getDecodeResult();
@@ -59,7 +90,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 			return new DecodeData(DecodeResult.TREE_FINISHED, null);
 		}
 
-		return decodeChildrenNew(element, decodedNode);
+		return decodeChildren(element, decodedNode);
 	}
 
 	private DecodeData decodeSingleElement(final Element element, final Node parentNode) {
@@ -95,7 +126,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		return new DecodeData(decodeResult, childNode);
 	}
 
-	private DecodeData decodeChildrenNew(final Element element, final Node parentNode) {
+	private DecodeData decodeChildren(final Element element, final Node parentNode) {
 
 		List<Element> childElements = element.getChildren();
 
@@ -145,38 +176,6 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		}
 
 		return null;
-	}
-
-	/**
-	 * Decodes the top of the XML document
-	 *
-	 * @param xmlDoc XML Document to be parsed
-	 * @return Root node
-	 */
-	@Override
-	public Node decode(Element xmlDoc) {
-		Node rootNode = new Node();
-		Element rootElement = xmlDoc.getDocument().getRootElement();
-		defaultNs = rootElement.getNamespace();
-
-		rootNode.setType(TemplateId.PLACEHOLDER);
-		rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
-
-		QrdaDecoder rootDecoder = null;
-		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
-			TemplateId templateId = getTemplateId(element);
-			rootDecoder = getDecoder(templateId);
-			if (rootDecoder != null) {
-				rootNode.setType(templateId);
-				break;
-			}
-		}
-
-		if (rootDecoder != null) {
-			return this.decodeTree(rootElement, rootNode).getNode().getChildNodes().get(0);
-		} else {
-			return this.decodeTree(rootElement, rootNode).getNode();
-		}
 	}
 
 	/**
