@@ -21,7 +21,6 @@
 		<module>test-commons</module>
 		<module>converter</module>
 		<module>commandline</module>
-		<module>rest-logging</module>
 		<module>rest-api</module>
 		<module>benchmark</module>
 		<module>generate</module>
@@ -135,6 +134,9 @@
 						<excludes>
 							<exclude>**/*Integration.java</exclude>
 						</excludes>
+						<properties>
+							<excludeTags>performance</excludeTags>
+						</properties>
 					</configuration>
 					<dependencies>
 						<dependency>
