@@ -106,7 +106,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 * @return validation of the user/org
 	 */
 	private boolean isValidCpcPlusOrg(Map<String, String> payloadMap) {
-		String orgName = payloadMap.get("name");
-		return (orgName != null && payloadMap.get("orgType") != null && this.orgName.equals(orgName));
+		String payloadOrgName = payloadMap.get("name");
+		return (payloadOrgName != null && payloadMap.containsKey("orgType") && orgName.equals(payloadOrgName));
 	}
 }
