@@ -24,10 +24,10 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import com.google.common.jimfs.Configuration;
 
-import gov.cms.qpp.test.LoadTestSuite;
+import gov.cms.qpp.test.annotations.PerformanceTest;
 import gov.cms.qpp.test.jimfs.FileTestHelper;
 
-class ParameterizedBenchmarkTest extends LoadTestSuite {
+class ParameterizedBenchmarkTest {
 
 	private static Field fileSystemField;
 	private static FileSystem defaultFileSystem;
@@ -68,7 +68,7 @@ class ParameterizedBenchmarkTest extends LoadTestSuite {
 		}
 	}
 
-	@Test
+	@PerformanceTest
 	void testParameterizedBenchmarkThroughput() throws RunnerException {
 		benchResults.stream()
 			.filter(result -> result.getParams().getMode().equals(Mode.Throughput))
@@ -81,7 +81,7 @@ class ParameterizedBenchmarkTest extends LoadTestSuite {
 			});
 	}
 
-	@Test
+	@PerformanceTest
 	void testParameterizedBenchmarkAverageTime() throws RunnerException {
 		benchResults.stream()
 			.filter(result -> result.getParams().getMode().equals(Mode.AverageTime))
