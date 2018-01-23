@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,7 +36,7 @@ class CpcPlusAcceptanceTest {
 	private static Map<String, CPCAcceptanceFixture> fixtureValues;
 
 	@BeforeAll
-	static void initMockApmIds() throws IOException {
+	static void initMockApmIds() throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
 		TypeReference<Map<String, CPCAcceptanceFixture>> ref =
 				new TypeReference<Map<String, CPCAcceptanceFixture>>() { };
@@ -43,7 +44,7 @@ class CpcPlusAcceptanceTest {
 	}
 
 	@AfterAll
-	static void resetApmIds() {
+	static void resetApmIds() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
 
