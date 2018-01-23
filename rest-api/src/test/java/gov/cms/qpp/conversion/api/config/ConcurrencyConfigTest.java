@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
-import gov.cms.qpp.test.PropertiesTestSuite;
-
-class ConcurrencyConfigTest extends PropertiesTestSuite {
+class ConcurrencyConfigTest {
 
 	@Test
 	void testIsSync() {
