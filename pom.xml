@@ -134,6 +134,9 @@
 						<excludes>
 							<exclude>**/*Integration.java</exclude>
 						</excludes>
+						<properties>
+							<excludeTags>performance</excludeTags>
+						</properties>
 					</configuration>
 					<dependencies>
 						<dependency>

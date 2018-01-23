@@ -18,9 +18,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
  * Filter for checking the Json Web Token (JWT) for the correct Authorization
  */
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+	public static final String DEFAULT_ORG_NAME = "cpc-test";
 	private static final String HEADER_STRING = "Authorization";
 	private static final String TOKEN_PREFIX = "Bearer ";
-	protected static final String ORG_NAME = "cpc-test";
+
+	protected final String orgName;
 
 	/**
 	 * JWT Constructor with Authentication manager
@@ -28,7 +30,18 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 * @param authManager Object to be passed to it's parent constructor
 	 */
 	public JwtAuthorizationFilter(AuthenticationManager authManager) {
+		this(authManager, DEFAULT_ORG_NAME);
+	}
+
+	/**
+	 * JWT Constructor with Authentication manager
+	 *
+	 * @param authManager Object to be passed to it's parent constructor
+	 * @param orgName The organization name
+	 */
+	public JwtAuthorizationFilter(AuthenticationManager authManager, String orgName) {
 		super(authManager);
+		this.orgName = orgName;
 	}
 
 	/**
@@ -93,7 +106,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 * @return validation of the user/org
 	 */
 	private boolean isValidCpcPlusOrg(Map<String, String> payloadMap) {
-		String orgName = payloadMap.get("name");
-		return (orgName != null && payloadMap.get("orgType") != null && ORG_NAME.equals(orgName));
+		String payloadOrgName = payloadMap.get("name");
+		return (payloadOrgName != null && payloadMap.containsKey("orgType") && orgName.equals(payloadOrgName));
 	}
 }
