@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String CPC_WILDCARD = "/cpc/**";
 
 	@Value("${ORG_NAME:" + JwtAuthorizationFilter.DEFAULT_ORG_NAME + "}")
-	private String orgName;
+	protected String orgName;
 
 	/**
 	 * Configures the path to be authorized by the JWT token
