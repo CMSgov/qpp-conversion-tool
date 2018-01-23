@@ -2,15 +2,17 @@ package gov.cms.qpp.conversion.model.validation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cms.qpp.conversion.util.EnvironmentHelper;
 import org.apache.lucene.search.spell.SpellChecker;
 import org.apache.lucene.store.FSDirectory;
 import org.reflections.util.ClasspathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,10 +24,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MeasureConfigs {
+	static final String MEASURES_INDEX_DIR = "MEASURES_INDEX_DIR";
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(MeasureConfigs.class);
 	public static final String DEFAULT_MEASURE_DATA_FILE_NAME = "measures-data.json";
 	static final int SUGGESTION_COUNT = 3;
-	private static final String INDEX_DIR = "measures_index";
+	private static final String INDEX_DEFAULT = "/usr/src/run/measures_index";
 
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
 	private static Map<String, MeasureConfig> configurationMap;
@@ -60,12 +63,13 @@ public class MeasureConfigs {
 	}
 
 	private static void initSpellChecker() {
-		URL indexPath = ClasspathHelper.contextClassLoader().getResource(INDEX_DIR);
-		if (indexPath != null) {
+		File indexDir = new File(EnvironmentHelper.getOrDefault(MEASURES_INDEX_DIR, INDEX_DEFAULT));
+		if (indexDir.exists()) {
 			try {
-				spellChecker = new SpellChecker(FSDirectory.open(Paths.get(indexPath.getFile())));
+				Path indexPath = Paths.get(indexDir.getAbsolutePath());
+				spellChecker = new SpellChecker(FSDirectory.open(indexPath));
 			} catch (IOException ex) {
-				DEV_LOG.warn("Problem loading measure spell check index: " + indexPath, ex);
+				DEV_LOG.warn("Problem loading measure spell check index: " + indexDir, ex);
 			}
 		}
 	}

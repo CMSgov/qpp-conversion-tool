@@ -17,6 +17,23 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals><goal>shade</goal></goals>
+						<configuration>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 			</plugin>
@@ -62,7 +79,7 @@
 				<artifactId>generate-maven-plugin</artifactId>
 				<version>1.1.4-RELEASE</version>
 				<configuration>
-					<baseDir>${basedir}/src/main/resources</baseDir>
+					<baseDir>${basedir}/../tools/docker/docker-artifacts/</baseDir>
 				</configuration>
 				<executions>
 					<execution>
@@ -78,6 +95,12 @@
 	</build>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-suggest</artifactId>
+			<version>7.2.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-cli</groupId>

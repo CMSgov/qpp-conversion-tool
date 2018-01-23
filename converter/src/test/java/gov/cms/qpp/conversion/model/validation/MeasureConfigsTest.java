@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -15,8 +17,9 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class MeasureConfigsTest {
 
 	@AfterAll
-	static void resetMeasureConfiguration() {
+	static void resetMeasureConfiguration() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+		reinitMeasureConfigs(null);
 	}
 
 	@Test
@@ -65,7 +68,8 @@ class MeasureConfigsTest {
 	}
 
 	@Test
-	void missingMeasureSuggestion() throws IOException {
+	void missingMeasureSuggestion() throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		reinitMeasureConfigs("../tools/docker/docker-artifacts/measures_index");
 		String measureId = "IA_PCMG";
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 		List<String> suggestions = MeasureConfigs.getMeasureSuggestions(measureId);
@@ -84,5 +88,18 @@ class MeasureConfigsTest {
 				.that(requiredMeasures).isNotEmpty();
 		assertWithMessage("Expect the notRequiredMeasures to be a empty list")
 				.that(notRequiredMeasures).isEmpty();
+	}
+
+	private static void reinitMeasureConfigs(String value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		if (value == null) {
+			System.clearProperty(MeasureConfigs.MEASURES_INDEX_DIR);
+		} else {
+			System.setProperty(MeasureConfigs.MEASURES_INDEX_DIR, value);
+		}
+
+		Method reinit = MeasureConfigs.class.getDeclaredMethod("initMeasureConfigs");
+		reinit.setAccessible(true);
+		reinit.invoke(null);
+		reinit.setAccessible(false);
 	}
 }
