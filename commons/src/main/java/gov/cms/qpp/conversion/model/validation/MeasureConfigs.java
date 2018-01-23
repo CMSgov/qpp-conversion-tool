@@ -9,9 +9,9 @@ import org.reflections.util.ClasspathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -63,13 +63,12 @@ public class MeasureConfigs {
 	}
 
 	private static void initSpellChecker() {
-		File indexDir = new File(EnvironmentHelper.getOrDefault(MEASURES_INDEX_DIR, INDEX_DEFAULT));
-		if (indexDir.exists()) {
+		Path indexPath = Paths.get(EnvironmentHelper.getOrDefault(MEASURES_INDEX_DIR, INDEX_DEFAULT));
+		if (Files.exists(indexPath)) {
 			try {
-				Path indexPath = Paths.get(indexDir.getAbsolutePath());
 				spellChecker = new SpellChecker(FSDirectory.open(indexPath));
 			} catch (IOException ex) {
-				DEV_LOG.warn("Problem loading measure spell check index: " + indexDir, ex);
+				DEV_LOG.warn("Problem loading measure spell check index: " + indexPath.toAbsolutePath(), ex);
 			}
 		}
 	}
