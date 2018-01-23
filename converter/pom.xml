@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>1.1.4-RELEASE</version>
+		<version>1.2.0-RELEASE</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -80,7 +80,7 @@
 			<plugin>
 				<groupId>gov.cms.qpp.conversion</groupId>
 				<artifactId>generate-maven-plugin</artifactId>
-				<version>1.1.4-RELEASE</version>
+				<version>${project.version}</version>
 				<configuration>
 					<baseDir>${basedir}/../tools/docker/docker-artifacts/</baseDir>
 				</configuration>
