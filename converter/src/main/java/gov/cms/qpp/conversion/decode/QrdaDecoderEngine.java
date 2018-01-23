@@ -61,18 +61,19 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 
 		QrdaDecoder rootDecoder = null;
 		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
-			TemplateId templateId = getTemplateId(element);
-			rootDecoder = getDecoder(templateId);
+			rootDecoder = getDecoder(getTemplateId(element));
 			if (rootDecoder != null) {
 				break;
 			}
 		}
 
 		if (rootDecoder != null) {
-			return this.decodeTree(rootElement, rootNode).getNode().getChildNodes().get(0);
+			rootNode = this.decodeTree(rootElement, rootNode).getNode().getChildNodes().get(0);
 		} else {
-			return this.decodeTree(rootElement, rootNode).getNode();
+			rootNode = this.decodeTree(rootElement, rootNode).getNode();
 		}
+
+		return rootNode;
 	}
 
 	private DecodeData decodeTree(final Element element, final Node parentNode) {
@@ -80,9 +81,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		DecodeResult decodedResult = result.getDecodeResult();
 		Node decodedNode = result.getNode();
 
-		if (null == decodedNode) {
-			decodedNode = parentNode;
-		}
+		decodedNode = decideNewParentNode(decodedNode, parentNode);
 
 		if (DecodeResult.TREE_FINISHED == decodedResult) {
 			return new DecodeData(DecodeResult.TREE_FINISHED, decodedNode);
@@ -119,9 +118,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		}
 
 		childNode.setPath(XPathHelper.getAbsolutePath(parentElement));
-		if (null != parentNode) {
-			parentNode.addChildNode(childNode);
-		}
+		parentNode.addChildNode(childNode);
 
 		return new DecodeData(decodeResult, childNode);
 	}
@@ -149,6 +146,16 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		}
 
 		return decodeData;
+	}
+
+	private Node decideNewParentNode(final Node decodedNode, final Node originalParent) {
+		Node newParent = originalParent;
+
+		if (null != decodedNode) {
+			newParent = decodedNode;
+		}
+
+		return newParent;
 	}
 
 	private TemplateId getTemplateId(final Element idElement) {
@@ -206,18 +213,15 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	private boolean containsClinicalDocumentTemplateId(Element rootElement) {
 		boolean containsTemplateId = false;
 
-		List<Element> clinicalDocumentChildren = rootElement.getChildren(TEMPLATE_ID,
-																			rootElement.getNamespace());
+		List<Element> clinicalDocumentChildren = rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace());
 
 		for (Element currentChild : clinicalDocumentChildren) {
-			final String root = currentChild.getAttributeValue(ROOT_STRING);
-			final String extension = currentChild.getAttributeValue(EXTENSION_STRING);
-
-			if (TemplateId.getTemplateId(root, extension, context) == TemplateId.CLINICAL_DOCUMENT) {
+			if (getTemplateId(currentChild) == TemplateId.CLINICAL_DOCUMENT) {
 				containsTemplateId = true;
 				break;
 			}
 		}
+
 		return containsTemplateId;
 	}
 
