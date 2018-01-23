@@ -26,7 +26,7 @@ import static gov.cms.qpp.conversion.decode.SupplementalDataPayerDecoder.SUPPLEM
 public abstract class QrdaDecoder {
 
 	protected final Context context;
-	protected Namespace defaultNs;
+	private Namespace defaultNs;
 	protected Namespace xpathNs;
 
 	public QrdaDecoder(final Context context) {

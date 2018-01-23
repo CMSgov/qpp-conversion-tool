@@ -14,7 +14,6 @@ import gov.cms.qpp.conversion.model.Node;
 public abstract class XmlDecoderEngine implements InputDecoderEngine {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(XmlDecoderEngine.class);
 	Namespace defaultNs;
-	Namespace xpathNs;
 
 	/**
 	 * decodeXml Determines what formats of xml we accept and decode to
