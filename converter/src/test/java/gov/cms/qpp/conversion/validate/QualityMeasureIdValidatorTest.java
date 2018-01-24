@@ -1,17 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
-import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
-import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
-
-import java.util.Set;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -20,7 +8,23 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.MeasureIndexInit;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
+import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
 
 class QualityMeasureIdValidatorTest {
 
@@ -57,13 +61,15 @@ class QualityMeasureIdValidatorTest {
 	private QualityMeasureIdValidator objectUnderTest = new MipsQualityMeasureIdValidator();
 
 	@BeforeAll
-	static void setupCustomMeasuresData() {
+	static void setupCustomMeasuresData() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		MeasureConfigs.setMeasureDataFile("reduced-test-measures-data.json");
+		MeasureIndexInit.reinitMeasureConfigs(true);
 	}
 
 	@AfterAll
-	static void resetMeasuresData() {
+	static void resetMeasuresData() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+		MeasureIndexInit.reinitMeasureConfigs(false);
 	}
 
 	@Test
@@ -119,9 +125,12 @@ class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	void testInvalidMeasureId() {
+	void testInvalidMeasureIdGetsThreeSuggestions() {
+		String measureId = "40280381-51f0-825b-0152-22a639d8NOPE";
+		List<String> suggestions = Arrays.asList("40280381-51f0-825b-0152-22a639d81762",
+			"40280381-51f0-825b-0152-227617db152e", "40280381-51f0-825b-0152-22a112d2172a");
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-				.addMeasureId("InvalidMeasureId")
+				.addMeasureId(measureId)
 				.addSubPopulationMeasureDataWithCounts(SubPopulations.IPOP, REQUIRES_DENOM_EXCLUSION_IPOP_GUID, ONE_HUNDRED)
 				.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
 				.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
@@ -132,7 +141,25 @@ class QualityMeasureIdValidatorTest {
 
 		assertWithMessage("There must be one validation errors.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.MEASURE_GUID_MISSING);
+				.containsExactly(ErrorCode.MEASURE_GUID_MISSING.format(measureId, suggestions));
+	}
+
+	@Test
+	void testHorriblyInvalidMeasureIdGetsNoSuggestions() {
+		String measureId = "InvalidMeasureId";
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+			.addMeasureId(measureId)
+			.addSubPopulationMeasureDataWithCounts(SubPopulations.IPOP, REQUIRES_DENOM_EXCLUSION_IPOP_GUID, ONE_HUNDRED)
+			.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
+			.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
+			.addSubPopulationMeasureDataWithCounts(SubPopulations.DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
+			.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		assertWithMessage("There must be one validation errors.")
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.MEASURE_GUID_MISSING.format(measureId, Collections.emptyList()));
 	}
 
 	@Test
