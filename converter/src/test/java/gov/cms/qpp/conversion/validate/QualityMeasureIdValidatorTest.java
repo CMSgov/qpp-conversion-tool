@@ -1,17 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
-import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
-import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
-
-import java.util.Set;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -20,9 +8,25 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.MeasureIndexInit;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-public class QualityMeasureIdValidatorTest {
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
+import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
+
+class QualityMeasureIdValidatorTest {
 
 	public static final String ONE_HUNDRED = "100";
 
@@ -56,18 +60,20 @@ public class QualityMeasureIdValidatorTest {
 
 	private QualityMeasureIdValidator objectUnderTest = new MipsQualityMeasureIdValidator();
 
-	@BeforeClass
-	public static void setupCustomMeasuresData() {
+	@BeforeAll
+	static void setupCustomMeasuresData() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		MeasureConfigs.setMeasureDataFile("reduced-test-measures-data.json");
+		MeasureIndexInit.reinitMeasureConfigs(true);
 	}
 
-	@AfterClass
-	public static void resetMeasuresData() {
+	@AfterAll
+	static void resetMeasuresData() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
+		MeasureIndexInit.reinitMeasureConfigs(false);
 	}
 
 	@Test
-	public void validateHappyPath() {
+	void validateHappyPath() {
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -77,7 +83,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void validateMissingMeasureId() {
+	void validateMissingMeasureId() {
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, true);
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -88,7 +94,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void validateMissingMeasure() {
+	void validateMissingMeasure() {
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(true, false);
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -99,7 +105,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void validateMissingMeasureIdAndMeasure() {
+	void validateMissingMeasureIdAndMeasure() {
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, false);
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -111,7 +117,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testDenominatorExclusionExists() {
+	void testDenominatorExclusionExists() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCLUSION_GUID).build();
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertWithMessage("There must be zero validation errors.")
@@ -119,9 +125,12 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInvalidMeasureId() {
+	void testInvalidMeasureIdGetsThreeSuggestions() {
+		String measureId = "40280381-51f0-825b-0152-22a639d8NOPE";
+		List<String> suggestions = Arrays.asList("40280381-51f0-825b-0152-22a639d81762",
+			"40280381-51f0-825b-0152-227617db152e", "40280381-51f0-825b-0152-22a112d2172a");
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-				.addMeasureId("InvalidMeasureId")
+				.addMeasureId(measureId)
 				.addSubPopulationMeasureDataWithCounts(SubPopulations.IPOP, REQUIRES_DENOM_EXCLUSION_IPOP_GUID, ONE_HUNDRED)
 				.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
 				.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
@@ -132,11 +141,29 @@ public class QualityMeasureIdValidatorTest {
 
 		assertWithMessage("There must be one validation errors.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.MEASURE_GUID_MISSING);
+				.containsExactly(ErrorCode.MEASURE_GUID_MISSING.format(measureId, suggestions));
 	}
 
 	@Test
-	public void testDenominatorExclusionMissing() {
+	void testHorriblyInvalidMeasureIdGetsNoSuggestions() {
+		String measureId = "InvalidMeasureId";
+		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
+			.addMeasureId(measureId)
+			.addSubPopulationMeasureDataWithCounts(SubPopulations.IPOP, REQUIRES_DENOM_EXCLUSION_IPOP_GUID, ONE_HUNDRED)
+			.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
+			.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
+			.addSubPopulationMeasureDataWithCounts(SubPopulations.DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
+			.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		assertWithMessage("There must be one validation errors.")
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.MEASURE_GUID_MISSING.format(measureId, Collections.emptyList()));
+	}
+
+	@Test
+	void testDenominatorExclusionMissing() {
 		LocalizedError incorrectCount = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(
 				"CMS165v5", 1, SubPopulations.DENEX, 0);
 		LocalizedError incorrectUuid = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
@@ -153,7 +180,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInternalExistingDenexcepMeasure() {
+	void testInternalExistingDenexcepMeasure() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID).build();
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertWithMessage("There must not be any validation errors.")
@@ -161,7 +188,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInternalIPPMeasure() {
+	void testInternalIPPMeasure() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
 			.replaceSubPopulationMeasureData(SubPopulations.IPOP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID, SubPopulations.IPP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID)
 			.build();
@@ -172,7 +199,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInternalMissingDenexcepMeasure() {
+	void testInternalMissingDenexcepMeasure() {
 		LocalizedError countMessage = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS68v6", 1, SubPopulations.DENEXCEP, 0);
 		LocalizedError uuidMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
 				"CMS68v6", SubPopulations.DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID);
@@ -189,7 +216,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInternalDenexcepMultipleSupPopulations() {
+	void testInternalDenexcepMultipleSupPopulations() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID).build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -199,7 +226,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInternalDenexcepMultipleSupPopulationsInvalidMeasureId() {
+	void testInternalDenexcepMultipleSupPopulationsInvalidMeasureId() {
 		LocalizedError message = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulations.DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
@@ -215,7 +242,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInternalDenexcepMultipleSupPopulationsMissingMeasureId() {
+	void testInternalDenexcepMultipleSupPopulationsMissingMeasureId() {
 		LocalizedError countMessage = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 2, SubPopulations.DENEXCEP, 1);
 		LocalizedError uuidMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulations.DENEXCEP,
 				MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID);
@@ -231,7 +258,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testTooManyCriteriaExists() {
+	void testTooManyCriteriaExists() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
 			.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER,
 					MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID, ONE_HUNDRED)
@@ -246,7 +273,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testTooFewCriteriaExists() {
+	void testTooFewCriteriaExists() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
 			.removeSubPopulationMeasureData(SubPopulations.NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID)
 			.build();
@@ -263,7 +290,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testIncorrectUuid() {
+	void testIncorrectUuid() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
 			.replaceSubPopulationMeasureData(SubPopulations.NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID,
 					SubPopulations.NUMER, "incorrectUUID")
@@ -280,7 +307,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInternalDenomCountLessThanIpopCount() {
+	void testInternalDenomCountLessThanIpopCount() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
 				.removeSubPopulationMeasureData(SubPopulations.DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID)
 				.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID, "50")
@@ -292,7 +319,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInternalDenomCountEqualToIpopCount() {
+	void testInternalDenomCountEqualToIpopCount() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
 				.build();
 
@@ -302,7 +329,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testInternalDenomCountGreaterThanIpopCount() {
+	void testInternalDenomCountGreaterThanIpopCount() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
 				.removeSubPopulationMeasureData(SubPopulations.DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID)
 				.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID, "101")
@@ -315,7 +342,7 @@ public class QualityMeasureIdValidatorTest {
 	}
 
 	@Test
-	public void testPerformanceRateUuidFail() {
+	void testPerformanceRateUuidFail() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
 				.replaceSubPopulationPerformanceRate(REQUIRES_DENOM_EXCEPTION_NUMER_GUID, "fail")
 				.build();

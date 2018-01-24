@@ -13,6 +13,7 @@ import org.jdom2.Namespace;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class AggregateCountDecoderTest {
 
@@ -76,22 +77,19 @@ class AggregateCountDecoderTest {
 
         instance.internalDecode(element, thisNode);
 
-        assertWithMessage("Aggregate Count should be 450 ")
-                .that(thisNode.getValue("aggregateCount"))
+        assertThat(thisNode.getValue("aggregateCount"))
                 .isEqualTo("450");
     }
 
     @Test
     void testAggregateCountDecoderIgnoresInvalidElements() throws Exception {
 
-        Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
+        Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
         Node node = root.getChildNodes().get(0);
 
-        assertWithMessage("Node has one element")
-                .that(node.getChildNodes()).hasSize(1);
+        assertThat(node.getChildNodes()).hasSize(1);
 
-        assertWithMessage("Node has aggregate count")
-                .that(node.getChildNodes().get(0).getValue("aggregateCount"))
+        assertThat(node.getChildNodes().get(0).getValue("aggregateCount"))
                 .isEqualTo("400");
 
         assertWithMessage("Should have template id")
@@ -102,7 +100,7 @@ class AggregateCountDecoderTest {
     @Test
     void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws Exception {
 
-        Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(ANOTHER_XML_FRAGMENT));
+        Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(ANOTHER_XML_FRAGMENT));
 
         assertWithMessage("Node has aggregate count")
                 .that(root.getValue("aggregateCount"))

@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import com.google.common.testing.EqualsTester;
 import com.google.common.truth.Truth;
 
-class ErrorCodeTest {
+import gov.cms.qpp.test.enums.EnumContract;
+
+class ErrorCodeTest implements EnumContract {
 
 	@Test
 	void testFormatOnNonFormattedErrorCode() {
@@ -19,7 +21,8 @@ class ErrorCodeTest {
 	@Test
 	void testFormatOnFormattedErrorCode() {
 		ErrorCode code = ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE;
-		Truth.assertThat(code.format("mock").getMessage()).isEqualTo(code.getMessage().replace("%s", "mock"));
+		Truth.assertThat(code.format("mock").getMessage()).isEqualTo(code.getMessage()
+				.replace("`(Numerator or Denominator)`", "mock"));
 	}
 
 	@Test
@@ -63,6 +66,11 @@ class ErrorCodeTest {
 
 	private LocalizedError formattedAlt(String salt) {
 		return ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(salt);
+	}
+
+	@Override
+	public Class<? extends Enum<?>> getEnumType() {
+		return ErrorCode.class;
 	}
 
 }

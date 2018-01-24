@@ -12,6 +12,7 @@ import org.jdom2.Namespace;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class AciMeasurePerformedRnRDecoderTest {
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
@@ -45,12 +46,10 @@ class AciMeasurePerformedRnRDecoderTest {
 		DecodeResult decodeResult = objectUnderTest.internalDecode(element, aciMeasurePerformedNode);
 
 		//assert
-		assertWithMessage("The decode result is incorrect.")
-				.that(decodeResult)
-				.isEquivalentAccordingToCompareTo(DecodeResult.TREE_CONTINUE);
+		assertThat(decodeResult)
+				.isEqualTo(DecodeResult.TREE_CONTINUE);
 		String actualMeasureId = aciMeasurePerformedNode.getValue("measureId");
-		assertWithMessage("measureId is incorrect.")
-				.that(actualMeasureId)
+		assertThat(actualMeasureId)
 				.isEqualTo(MEASURE_ID);
 	}
 
@@ -58,16 +57,15 @@ class AciMeasurePerformedRnRDecoderTest {
 	void testUpperLevel() throws XmlException, IOException {
 		String needsFormattingXml = TestHelper.getFixture("AciMeasurePerformedIsolated.xml");
 		String xml = String.format(needsFormattingXml, MEASURE_ID);
-		Node wrapperNode = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xml));
+		Node wrapperNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xml));
 		Node aciMeasurePerformedNode = wrapperNode.getChildNodes().get(0);
 
 		String actualMeasureId = aciMeasurePerformedNode.getValue("measureId");
 
-		assertWithMessage("The measureId is incorrect.").that(actualMeasureId).isEqualTo(MEASURE_ID);
+		assertThat(actualMeasureId).isEqualTo(MEASURE_ID);
 		long measurePerformedCount = aciMeasurePerformedNode.getChildNodes(
 			node -> node.getType() == TemplateId.MEASURE_PERFORMED).count();
-		assertWithMessage("There must be one Measure Performed child node.")
-				.that( measurePerformedCount)
+		assertThat(measurePerformedCount)
 				.isEqualTo(1L);
 	}
 }

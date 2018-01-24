@@ -9,7 +9,7 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -26,10 +26,8 @@ class QualitySectionEncoderTest {
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 
-		assertWithMessage("Expect to encode category")
-				.that(jsonWrapper.getString("category")).isEqualTo("quality");
-		assertWithMessage("Expect to encode submissionMethod")
-				.that(jsonWrapper.getString("submissionMethod")).isEqualTo("electronicHealthRecord");
+		assertThat(jsonWrapper.getString("category")).isEqualTo("quality");
+		assertThat(jsonWrapper.getString("submissionMethod")).isEqualTo("electronicHealthRecord");
 	}
 
 	@Test
@@ -41,8 +39,7 @@ class QualitySectionEncoderTest {
 		JsonWrapper jsonWrapper = new JsonWrapper();
 		encoder.internalEncode(jsonWrapper, qualitySectionNode);
 
-		assertWithMessage("An encoder for a child node should not have been found.")
-				.that(encoder.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+		assertThat(encoder.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.ENCODER_MISSING);
 	}
 
@@ -57,7 +54,7 @@ class QualitySectionEncoderTest {
 		mock.internalEncode(jsonWrapper, qualitySectionNode);
 
 		verify(mock, never())
-				.maintainContinuity(any(), any(JsonWrapper.class), any());
+				.maintainContinuity(any(), any(Node.class), any());
 	}
 
 	/**

@@ -11,22 +11,33 @@ import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.google.common.truth.Truth;
+
 import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
+import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.ComponentKey;
+import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -50,17 +61,17 @@ public class ConverterTest {
 	@Test(expected = org.junit.Test.None.class)
 	public void testValidQppFile() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 
 		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
 	}
 
 	@Test(expected = org.junit.Test.None.class)
-	public void testValidQppStream() {
+	public void testValidQppStream() throws IOException {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Converter converter = new Converter(
-				new InputStreamSupplierQrdaSource(path.toString(), () -> XmlUtils.fileToStream(path)));
+				new InputStreamSupplierSource(path.toString(), () -> XmlUtils.fileToStream(path), Files.size(path)));
 
 		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
@@ -77,7 +88,7 @@ public class ConverterTest {
 			.thenReturn(mockQrdaValidator);
 
 		Path path = Paths.get("src/test/resources/converter/errantDefaultedNode.xml");
-		Converter converter = new Converter(new PathQrdaSource(path), context);
+		Converter converter = new Converter(new PathSource(path), context);
 
 		try {
 			converter.transform();
@@ -99,7 +110,7 @@ public class ConverterTest {
 	@Test
 	public void testInvalidXml() throws IOException {
 		Path path = Paths.get("src/test/resources/non-xml-file.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 
 		try {
 			converter.transform();
@@ -118,7 +129,7 @@ public class ConverterTest {
 		doThrow(ex).when(encoder).encode();
 
 		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 		converter.getContext().setDoDefaults(false);
 		converter.getContext().setDoValidation(false);
 
@@ -132,7 +143,7 @@ public class ConverterTest {
 
 	@Test
 	public void testInvalidXmlFile() {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/not-a-QRDA-III-file.xml")));
+		Converter converter = new Converter(new PathSource(Paths.get("src/test/resources/not-a-QRDA-III-file.xml")));
 		
 		try {
 			converter.transform();
@@ -145,7 +156,7 @@ public class ConverterTest {
 	@Test
 	public void testNotAValidQrdaIIIFile() throws IOException {
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 		converter.getContext().setDoDefaults(false);
 		converter.getContext().setDoValidation(false);
 
@@ -165,7 +176,7 @@ public class ConverterTest {
 		when(XmlUtils.fileToStream(any(Path.class))).thenReturn(null);
 
 		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 
 		try {
 			converter.transform();
@@ -177,7 +188,7 @@ public class ConverterTest {
 
 	@Test
 	public void testSkipDefaults() throws Exception {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml")));
+		Converter converter = new Converter(new PathSource(Paths.get("src/test/resources/converter/defaultedNode.xml")));
 		converter.getContext().setDoDefaults(false);
 		converter.getContext().setDoValidation(false);
 		JsonWrapper qpp = converter.transform();
@@ -194,12 +205,27 @@ public class ConverterTest {
 		TestHelper.mockDecoder(context, JennyDecoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
 		TestHelper.mockEncoder(context, Jenncoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
 
-		Converter converter = new Converter(new PathQrdaSource(Paths.get("src/test/resources/converter/defaultedNode.xml")), context);
+		Converter converter = new Converter(new PathSource(Paths.get("src/test/resources/converter/defaultedNode.xml")), context);
 		JsonWrapper qpp = converter.transform();
 
 		String content = qpp.toString();
 
 		assertThat(content).contains("Jenny");
+	}
+
+	@Test
+	public void testEncodeThrowingEncodeException() throws Exception {
+		Converter converter = Mockito.mock(Converter.class);
+		Field field = Converter.class.getDeclaredField("decoded");
+		field.setAccessible(true);
+		field.set(converter, new Node());
+		JsonOutputEncoder mockEncoder = Mockito.mock(JsonOutputEncoder.class);
+		Mockito.when(mockEncoder.encode()).thenThrow(EncodeException.class);
+		Mockito.when(converter.getEncoder()).thenReturn(mockEncoder);
+		Method encode = Converter.class.getDeclaredMethod("encode");
+		encode.setAccessible(true);
+		Exception thrown = Assertions.assertThrows(InvocationTargetException.class, () -> encode.invoke(converter));
+		Truth.assertThat(thrown).hasCauseThat().isInstanceOf(XmlInputFileException.class);
 	}
 
 	private void checkup(TransformException exception, LocalizedError error) {

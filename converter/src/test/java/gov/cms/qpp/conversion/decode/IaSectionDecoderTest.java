@@ -11,7 +11,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class IaSectionDecoderTest {
 	private String xmlFragment;
@@ -27,8 +27,7 @@ class IaSectionDecoderTest {
 
 		Node iaSectionNode = root.findFirstNode(TemplateId.IA_SECTION);
 
-		assertWithMessage("returned category")
-				.that(iaSectionNode.getValue("category"))
+		assertThat(iaSectionNode.getValue("category"))
 				.isEqualTo("ia");
 	}
 
@@ -41,13 +40,12 @@ class IaSectionDecoderTest {
 		Node root = executeDecoderWithoutDefaults();
 		Node iaSectionNode = root.findFirstNode(TemplateId.IA_SECTION);
 
-		assertWithMessage("returned category")
-				.that(iaSectionNode.getValue("category"))
+		assertThat(iaSectionNode.getValue("category"))
 				.isEqualTo("ia");
 	}
 
 	private Node executeDecoderWithoutDefaults() throws XmlException {
-		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		DefaultDecoder.removeDefaultNode(root.getChildNodes());
 		return root;
 	}

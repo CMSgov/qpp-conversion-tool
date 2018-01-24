@@ -1,15 +1,23 @@
 package gov.cms.qpp.conversion.api.services;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Writes a {@link Metadata} object to DynamoDB.
@@ -18,12 +26,13 @@ import java.util.concurrent.CompletableFuture;
 public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		implements DbService {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(DbServiceImpl.class);
+	private static final int LIMIT = 3;
 
-	@Autowired
+	@Inject
 	private DynamoDBMapper mapper;
 
-	@Autowired
+	@Inject
 	private Environment environment;
 
 	/**
@@ -48,6 +57,43 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		API_LOG.info("Writing item to DynamoDB");
 
 		return actOnItem(meta);
+	}
+
+	/**
+	 * Queries the DynamoDB GSI for unprocessed {@link Metadata} with a maximum of 96 items.
+	 *
+	 * Iterates over all of the different partitions, returning a maximum of three items from each.
+	 *
+	 * @return {@link List} of unprocessed {@link Metadata}
+	 */
+	public List<Metadata> getUnprocessedCpcPlusMetaData() {
+
+		return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
+			Map<String, AttributeValue> valueMap = new HashMap<>();
+			valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
+			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
+
+			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
+				.withIndexName("Cpc-CpcProcessed_CreateDate-index")
+				.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with(" +
+					Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
+				.withExpressionAttributeValues(valueMap)
+				.withConsistentRead(false)
+				.withLimit(LIMIT);
+
+			return mapper.queryPage(Metadata.class, metadataQuery).getResults().stream();
+		}).flatMap(Function.identity()).collect(Collectors.toList());
+	}
+
+	/**
+	 * Queries the database table for a {@link Metadata} with a specific uuid
+	 *
+	 * @param uuid Identifier to query on
+	 * @return Metadata found
+	 */
+	public Metadata getMetadataById(String uuid) {
+		API_LOG.info("Read item {} from DynamoDB", uuid);
+		return mapper.load(Metadata.class, uuid);
 	}
 
 	/**

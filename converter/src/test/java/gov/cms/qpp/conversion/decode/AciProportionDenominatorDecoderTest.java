@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * AciProportionDenominatorDecoderTest JUnit test for
@@ -16,7 +16,7 @@ class AciProportionDenominatorDecoderTest {
 	/**
 	 * decodeACIProportionDenominatorAsNode given a well formed xml fragment
 	 * parses out the appropriate aggregateCount This test calls
-	 * QppXmlDecoder.()decode() which in turn calls the only method in this
+	 * QrdaXmlDecoder.()decode() which in turn calls the only method in this
 	 * class. AciProportionDenominatorDecoder().decode()
 	 *
 	 * @throws Exception
@@ -36,24 +36,21 @@ class AciProportionDenominatorDecoderTest {
 				+ "     </entryRelationship>\n"
 				+ " </observation>\n"
 				+ "</component>";
-		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		// For all decoders this should be either a value or child node
-		assertWithMessage("returned node should have one child node")
-				.that(root.getChildNodes())
+		assertThat(root.getChildNodes())
 				.hasSize(1);
 
 		// This is the child node that is produced by the intended decoder
 		Node aciProportionDenominatorNode = root.getChildNodes().get(0);
 		// Should have a aggregate count node
-		assertWithMessage("returned node should have one child decoder node")
-				.that(aciProportionDenominatorNode.getChildNodes())
+		assertThat(aciProportionDenominatorNode.getChildNodes())
 				.hasSize(1);
 		// This is stubbed node with the test value
 		Node target = aciProportionDenominatorNode.getChildNodes().get(0);
 		// Get the test value
-		assertWithMessage("test value should be mytestvalue")
-				.that(target.getValue("aggregateCount"))
+		assertThat(target.getValue("aggregateCount"))
 				.isEqualTo("800");
 	}
 
@@ -79,21 +76,18 @@ class AciProportionDenominatorDecoderTest {
 			+ "    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>"
 			+ "  </observation>"
 			+ " </component>";
-		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		// For all decoders this should be either a value or child node
-		assertWithMessage("returned node should have one child node")
-				.that(root.getChildNodes()).hasSize(2);
+		assertThat(root.getChildNodes()).hasSize(2);
 		// This is the child node that is produced by the intended decoder
 		Node aciProportionDenominatorNode = root.getChildNodes().get(0);
 		// Should have a aggregate count node
-		assertWithMessage("returned node should have one child decoder node")
-				.that(aciProportionDenominatorNode.getChildNodes()).hasSize(1);
+		assertThat(aciProportionDenominatorNode.getChildNodes()).hasSize(1);
 		// This is stubbed node with the test value
 		Node target = aciProportionDenominatorNode.getChildNodes().get(0);
 		// Get the test value
-		assertWithMessage("test value should be mytestvalue")
-				.that(target.getValue("aggregateCount"))
+		assertThat(target.getValue("aggregateCount"))
 				.isEqualTo("800");
 	}
 }

@@ -22,10 +22,12 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import gov.cms.qpp.test.FileTestHelper;
-import gov.cms.qpp.test.LoadTestSuite;
+import com.google.common.jimfs.Configuration;
 
-class ParameterizedBenchmarkTest extends LoadTestSuite {
+import gov.cms.qpp.test.annotations.PerformanceTest;
+import gov.cms.qpp.test.jimfs.FileTestHelper;
+
+class ParameterizedBenchmarkTest {
 
 	private static Field fileSystemField;
 	private static FileSystem defaultFileSystem;
@@ -35,7 +37,7 @@ class ParameterizedBenchmarkTest extends LoadTestSuite {
 	@BeforeAll
 	static void loadPaths() throws IOException, RunnerException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		String[] paths;
-		fileSystem = FileTestHelper.createMockFileSystem();
+		fileSystem = FileTestHelper.createMockFileSystem(Configuration.unix());
 		fileSystemField = ConversionEntry.class.getDeclaredField("fileSystem");
 		fileSystemField.setAccessible(true);
 		defaultFileSystem = (FileSystem) fileSystemField.get(null);
@@ -66,7 +68,7 @@ class ParameterizedBenchmarkTest extends LoadTestSuite {
 		}
 	}
 
-	@Test
+	@PerformanceTest
 	void testParameterizedBenchmarkThroughput() throws RunnerException {
 		benchResults.stream()
 			.filter(result -> result.getParams().getMode().equals(Mode.Throughput))
@@ -79,7 +81,7 @@ class ParameterizedBenchmarkTest extends LoadTestSuite {
 			});
 	}
 
-	@Test
+	@PerformanceTest
 	void testParameterizedBenchmarkAverageTime() throws RunnerException {
 		benchResults.stream()
 			.filter(result -> result.getParams().getMode().equals(Mode.AverageTime))

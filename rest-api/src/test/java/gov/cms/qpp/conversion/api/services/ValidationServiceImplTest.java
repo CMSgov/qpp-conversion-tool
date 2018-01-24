@@ -2,8 +2,7 @@ package gov.cms.qpp.conversion.api.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
-import gov.cms.qpp.test.MockitoExtension;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -11,13 +10,14 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
+import gov.cms.qpp.test.MockitoExtension;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,8 +34,8 @@ import java.nio.file.Paths;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -42,11 +43,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(MockitoExtension.class)
 class ValidationServiceImplTest {
 
-	@InjectMocks
 	private ValidationServiceImpl objectUnderTest;
 
 	@Mock
@@ -65,14 +64,13 @@ class ValidationServiceImplTest {
 	private static ErrorMessage submissionError;
 	private static ValidationServiceImpl service;
 
-
 	@BeforeAll
 	static void setup() throws IOException {
-		service = new ValidationServiceImpl();
+		service = new ValidationServiceImpl(null);
 		pathToSubmissionError = Paths.get("src/test/resources/submissionErrorFixture.json");
 		pathToSubmissionDuplicateEntryError = Paths.get("src/test/resources/submissionDuplicateEntryErrorFixture.json");
 		Path toConvert = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
-		qppWrapper = new JsonWrapper(new Converter(new PathQrdaSource(toConvert)).transform(), false);
+		qppWrapper = new JsonWrapper(new Converter(new PathSource(toConvert)).transform(), false);
 		prepAllErrors();
 	}
 
@@ -85,7 +83,14 @@ class ValidationServiceImplTest {
 	}
 
 	@BeforeEach
-	void before() {
+	void before() throws NoSuchFieldException, IllegalAccessException {
+		ValidationServiceImpl meep = new ValidationServiceImpl(environment);
+		Field rt = meep.getClass().getDeclaredField("restTemplate");
+		rt.setAccessible(true);
+		rt.set(meep, restTemplate);
+		rt.setAccessible(false);
+		objectUnderTest = spy(meep);
+
 		Converter.ConversionReport report = mock(Converter.ConversionReport.class);
 		when(report.getEncoded()).thenReturn(qppWrapper);
 		when(converter.getReport()).thenReturn(report);
@@ -190,5 +195,18 @@ class ValidationServiceImplTest {
 		assertWithMessage("Json path should be converted to xpath")
 				.that(detail.getPath())
 				.isNotEqualTo(mappedDetails.getPath());
+	}
+
+	@Test
+	void testCheckForValidationUrlVariableLoggingIfPresent() {
+		when(environment.getProperty(eq(Constants.VALIDATION_URL_ENV_VARIABLE))).thenReturn("mock");
+		objectUnderTest.checkForValidationUrlVariable();
+		Mockito.verify(objectUnderTest, Mockito.times(1)).apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is set to mock");
+	}
+
+	@Test
+	void testCheckForValidationUrlVariableLoggingIfAbsent() {
+		objectUnderTest.checkForValidationUrlVariable();
+		Mockito.verify(objectUnderTest, Mockito.times(1)).apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
 	}
 }

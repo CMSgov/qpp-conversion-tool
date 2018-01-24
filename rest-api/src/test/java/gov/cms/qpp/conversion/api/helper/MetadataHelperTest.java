@@ -1,27 +1,36 @@
 package gov.cms.qpp.conversion.api.helper;
 
-import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.Program;
-import gov.cms.qpp.conversion.model.TemplateId;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-
 import static com.google.common.truth.Truth.assertThat;
 
-class MetadataHelperTest {
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.api.helper.MetadataHelper.Outcome;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.test.enums.EnumContract;
+import gov.cms.qpp.test.helper.HelperContract;
+
+class MetadataHelperTest implements HelperContract {
 
 	private static final String MOCK_STRING = "some random mock value";
 
 	@Test
-	void testGenerateMetadataForNullNodeThrowsNullPointerException() {
-		Assertions.assertThrows(NullPointerException.class, () ->
-			MetadataHelper.generateMetadata(null, MetadataHelper.Outcome.SUCCESS));
+	void testGenerateMetadataForNullNodeReturnsSkinnyMetadata() {
+		MetadataHelper.Outcome outcome = MetadataHelper.Outcome.VALIDATION_ERROR;
+		Metadata comparison = new Metadata();
+		comparison.setOverallStatus(false);
+		comparison.setConversionStatus(true);
+		comparison.setValidationStatus(false);
+
+		Metadata metadata = MetadataHelper.generateMetadata(null, outcome);
+		metadata.setCreatedDate(comparison.getCreatedDate());
+
+		assertThat(metadata).isEqualTo(comparison);
 	}
 
 	@Test
@@ -36,7 +45,7 @@ class MetadataHelperTest {
 		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "CPCPLUS");
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		assertThat(metadata.getCpc()).isTrue();
+		assertThat(metadata.getCpc()).startsWith(Constants.CPC_DYNAMO_PARTITION_START);
 	}
 
 	@Test
@@ -48,7 +57,7 @@ class MetadataHelperTest {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		assertThat(metadata.getCpc()).isTrue();
+		assertThat(metadata.getCpc()).startsWith(Constants.CPC_DYNAMO_PARTITION_START);
 	}
 
 	@Test
@@ -59,7 +68,7 @@ class MetadataHelperTest {
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
-		assertThat(metadata.getCpc()).isFalse();
+		assertThat(metadata.getCpc()).isNull();
 	}
 
 	@Test
@@ -97,7 +106,7 @@ class MetadataHelperTest {
 	@Test
 	void testExtractsTin() {
 		Node node = new Node();
-		node.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
+		node.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getTin()).isEqualTo(MOCK_STRING);
@@ -108,7 +117,7 @@ class MetadataHelperTest {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
+		child.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, MOCK_STRING);
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
@@ -129,7 +138,7 @@ class MetadataHelperTest {
 	@Test
 	void testExtractsNpi() {
 		Node node = new Node();
-		node.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
+		node.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getNpi()).isEqualTo(MOCK_STRING);
@@ -140,7 +149,7 @@ class MetadataHelperTest {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
+		child.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, MOCK_STRING);
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
@@ -185,12 +194,19 @@ class MetadataHelperTest {
 		assertThat(metadata.getValidationStatus()).isFalse();
 	}
 
-	@Test
-	void testOutcomeValueOf() {
-		Arrays.stream(MetadataHelper.Outcome.values())
-				.forEach(outcome -> {
-					assertThat(outcome).isSameAs(MetadataHelper.Outcome.valueOf(outcome.name()));
-				});
+	@Nested
+	static class OutcomeTest implements EnumContract {
+
+		@Override
+		public Class<? extends Enum<?>> getEnumType() {
+			return Outcome.class;
+		}
+
+	}
+
+	@Override
+	public Class<?> getHelperClass() {
+		return MetadataHelper.class;
 	}
 
 }

@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.QppXmlDecoder;
+import gov.cms.qpp.conversion.decode.QrdaXmlDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -24,7 +24,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateSuccessfulSupplementalDataFieldsTest() throws Exception {
 		String successfulFile = TestHelper.getFixture("successfulSupplementalDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(successfulFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(successfulFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -36,7 +36,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalAfricanRaceDataTest() throws Exception {
 		String failureRaceFile = TestHelper.getFixture("failureSupplementalRaceDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -53,7 +53,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalAsianRaceDataTest() throws Exception {
 		String failureRaceFile = TestHelper.getFixture("failureSupplementalRaceDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -70,7 +70,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalHawaiianRaceDataTest() throws Exception {
 		String failureRaceFile = TestHelper.getFixture("failureSupplementalRaceDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -87,7 +87,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalWhiteRaceDataTest() throws Exception {
 		String failureRaceFile = TestHelper.getFixture("failureSupplementalRaceDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -104,7 +104,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalAlaskanRaceDataTest() throws Exception {
 		String failureRaceFile = TestHelper.getFixture("failureSupplementalRaceDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -121,7 +121,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalOtherRaceDataTest() throws Exception {
 		String failureRaceFile = TestHelper.getFixture("failureSupplementalRaceDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -138,7 +138,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalMaleSexDataTest() throws Exception {
 		String failureSexFile = TestHelper.getFixture("failureSupplementalSexDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureSexFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureSexFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -155,7 +155,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalFemaleSexDataTest() throws Exception {
 		String failureSexFile = TestHelper.getFixture("failureSupplementalSexDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureSexFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureSexFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -172,7 +172,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalEthnicityNotHispanicDataTest() throws Exception {
 		String failureEthnicityFile = TestHelper.getFixture("failureSupplementalEthnicityDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureEthnicityFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureEthnicityFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -189,7 +189,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalEthnicityHispanicDataTest() throws Exception {
 		String failureEthnicityFile = TestHelper.getFixture("failureSupplementalEthnicityDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureEthnicityFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failureEthnicityFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -206,7 +206,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalPayerMedicareDataTest() throws Exception {
 		String failurePayerFile = TestHelper.getFixture("failureSupplementalPayerDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -223,7 +223,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalPayerMedicaidDataTest() throws Exception {
 		String failurePayerFile = TestHelper.getFixture("failureSupplementalPayerDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -240,7 +240,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalPayerPrivateDataTest() throws Exception {
 		String failurePayerFile = TestHelper.getFixture("failureSupplementalPayerDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -257,7 +257,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalPayerOtherDataTest() throws Exception {
 		String failurePayerFile = TestHelper.getFixture("failureSupplementalPayerDataFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
@@ -274,7 +274,7 @@ class CpcMeasureDataValidatorTest {
 	@Test
 	void validateFailureSupplementalDataMissingCountTest() throws Exception {
 		String failurePayerFile = TestHelper.getFixture("failureSupplementalDataCountFile.xml");
-		Node placeholder = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
+		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
 		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);

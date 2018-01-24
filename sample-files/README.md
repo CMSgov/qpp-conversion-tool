@@ -65,3 +65,43 @@ Error scenarios
     * error-invalid-uuid-qrda.xml (eCQM measure popuation with an invalid uuid)
     * error-missing-subpopulation-qrda.xml (eCQM measure missing a required popuation)
     * error-nonboolean-value-qrda.xml (IA boolean measure with a non-boolean value)
+
+CPC+ Sample Files
+
+These files should validate successfully for both the conversion tool validation and
+the Submission Validation.
+
+* CPCPlus_Success_PreProd.xml - For pre-prod environments that require TIN and NPI that start with '000'
+* CPCPlus_Success_Prod.xml - For the production environment
+
+CPC+ error scenarios for Conversion Tool CPC+ specific validations
+
+These files do not cover validations performed by the Submission Validation API, nor
+do they cover validations that are also performed for MIPS Programs.
+
+All errors and error messages can be found in https://github.com/CMSgov/qpp-conversion-tool/blob/master/ERROR_MESSAGES.md
+
+* CPCPlus_No_TINs.xml
+  * Errors: 54, 63, 66
+* CPCPlus_No_APM_ID.xml
+  * Errors: 35
+* CPCPlus_Empty_APM_ID.xml
+  * Errors: 62
+* CPCPlus_Bad_Address.xml
+  * Errors: 34, 63
+* CPCPlus_No_Quality.xml
+  * Errors: 36, 63
+* CPCPlus_WrongStartDate.xml
+  * Errors: 63, 55
+* CPCPlus_WrongEndDate.xml
+  * Errors: 63, 56
+* CPCPlus_Group1_Wrong_Num.xml
+  * Errors: 63, 64
+* CPCPlus_Total_Wrong_Num.xml
+  * Errors: 63, 65
+* CPCPlus_No_Perf_Rate.xml
+  * Errors: 63, 59, 37
+* CPCPlus_Strat.xml
+  * Errors: 63, 49, 48
+* CPCPlus_Strat2.xml
+  * Errors: 63, 14, 59, 37

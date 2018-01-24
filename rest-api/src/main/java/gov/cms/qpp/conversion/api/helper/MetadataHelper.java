@@ -1,8 +1,8 @@
 package gov.cms.qpp.conversion.api.helper;
 
+import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.MultipleTinsDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -10,13 +10,20 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Utilities for working with Metadata beans
  */
 public class MetadataHelper {
 
+	private static final ThreadLocalRandom RANDOM_HASH = ThreadLocalRandom.current();
+
+	/**
+	 * No need for constructor in this utility class
+	 */
 	private MetadataHelper() {
+		//empty
 	}
 
 	/**
@@ -28,41 +35,79 @@ public class MetadataHelper {
 	 * @return
 	 */
 	public static Metadata generateMetadata(Node node, Outcome outcome) {
-		Objects.requireNonNull(node, "node");
 		Objects.requireNonNull(outcome, "outcome");
 
 		Metadata metadata = new Metadata();
 
-		metadata.setApm(findApm(node));
-		metadata.setTin(findTin(node));
-		metadata.setNpi(findNpi(node));
-		metadata.setCpc(isCpc(node));
+		if (node != null) {
+			metadata.setApm(findApm(node));
+			metadata.setTin(findTin(node));
+			metadata.setNpi(findNpi(node));
+			metadata.setCpc(deriveCpcHash(node));
+			metadata.setCpcProcessed(false);
+		}
+
 		outcome.setStatus(metadata);
 
 		return metadata;
 	}
 
+	/**
+	 * Retrieves the random hash for the Cpc field if this is a CPC+ conversion.
+	 *
+	 * @return Cpc field randomly hashed or null if this isn't a CPC+ conversion
+	 */
+	private static String deriveCpcHash(Node node) {
+		String cpcHash = null;
+
+		if (isCpc(node)) {
+			cpcHash = Constants.CPC_DYNAMO_PARTITION_START + RANDOM_HASH.nextInt(Constants.CPC_DYNAMO_PARTITIONS);
+		}
+
+		return cpcHash;
+	}
+
+	/**
+	 * Retrieves the APM Entity Id from the given node
+	 *
+	 * @return Apm Entity ID value
+	 */
 	private static String findApm(Node node) {
 		return findValue(node, ClinicalDocumentDecoder.ENTITY_ID, TemplateId.CLINICAL_DOCUMENT);
 	}
 
+	/**
+	 * Retrieves the Taxpayer Identification Number from the given node
+	 *
+	 * @return TIN value
+	 */
 	private static String findTin(Node node) {
-		return findValue(node, MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
-				TemplateId.QRDA_CATEGORY_III_REPORT_V3, TemplateId.CLINICAL_DOCUMENT);
+		return findValue(node, ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+				TemplateId.CLINICAL_DOCUMENT);
 	}
 
+	/**
+	 * Retrieves the National Provider Identifier from the given node
+	 *
+	 * @return NPI value
+	 */
 	private static String findNpi(Node node) {
-		return findValue(node, MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER,
-				TemplateId.QRDA_CATEGORY_III_REPORT_V3, TemplateId.CLINICAL_DOCUMENT);
+		return findValue(node, ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
+				TemplateId.CLINICAL_DOCUMENT);
 	}
 
+	/**
+	 * Retrieves the random hash for CPC Field
+	 *
+	 * @return Cpc field randomly hashed
+	 */
 	private static boolean isCpc(Node node) {
 		if (Program.isCpc(node)) {
 			return true;
 		}
 
 		Node found = findPossibleChildNode(node, ClinicalDocumentDecoder.PROGRAM_NAME,
-						TemplateId.CLINICAL_DOCUMENT, TemplateId.QRDA_CATEGORY_III_REPORT_V3);
+						TemplateId.CLINICAL_DOCUMENT);
 
 		return found != null && Program.isCpc(found);
 	}
@@ -85,6 +130,15 @@ public class MetadataHelper {
 		return found == null ? null : found.getValue(key);
 	}
 
+	/**
+	 * Finds all possible children within the given node for each {@link TemplateId} given
+	 * filtered by children with specific keys
+	 *
+	 * @param node Object to search through
+	 * @param key value to filter
+	 * @param possibleLocations areas which the child can exist
+	 * @return A child node with the correct value or null
+	 */
 	private static Node findPossibleChildNode(Node node, String key, TemplateId... possibleLocations) {
 		return Arrays.stream(possibleLocations)
 			.distinct()

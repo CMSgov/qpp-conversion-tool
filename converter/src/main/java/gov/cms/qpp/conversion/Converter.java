@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +41,7 @@ public class Converter {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(Converter.class);
 
-	private final QrdaSource source;
+	private final Source source;
 	private final Context context;
 	private List<Detail> details = new ArrayList<>();
 	private Node decoded;
@@ -50,19 +50,19 @@ public class Converter {
 	/**
 	 * Constructor for the CLI Converter application
 	 *
-	 * @param source QrdaSource to use for the conversion
+	 * @param source Source to use for the conversion
 	 */
-	public Converter(QrdaSource source) {
+	public Converter(Source source) {
 		this(source, new Context());
 	}
 
 	/**
 	 * Constructor for the CLI Converter application
 	 *
-	 * @param source QrdaSource to use for the conversion
+	 * @param source Source to use for the conversion
 	 * @param context Context to use for the conversion
 	 */
-	public Converter(QrdaSource source, Context context) {
+	public Converter(Source source, Context context) {
 		Objects.requireNonNull(source, "source");
 		Objects.requireNonNull(context, "context");
 
@@ -80,7 +80,7 @@ public class Converter {
 	 * @return status of conversion
 	 */
 	public JsonWrapper transform() {
-		DEV_LOG.info("Transform invoked with file {}", source.getName());
+		DEV_LOG.info("Transform invoked");
 		try {
 			encoded = transform(source.toInputStream());
 		} catch (XmlInputFileException | XmlException xe) {
@@ -112,7 +112,7 @@ public class Converter {
 		decoded = XmlInputDecoder.decodeXml(context, doc);
 		JsonWrapper qpp = null;
 		if (null != decoded) {
-			DEV_LOG.info("Decoded template ID {} from file '{}'", decoded.getType(), source.getName());
+			DEV_LOG.info("Decoded template ID {}", decoded.getType());
 
 			if (!context.isDoDefaults()) {
 				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
@@ -242,36 +242,12 @@ public class Converter {
 		}
 
 		/**
-		 * Convenience method to return conversion error information as a stream of serialized json.
-		 *
-		 * @return input stream containing error json
-		 */
-		public InputStream streamDetails() {
-			try {
-				return new ByteArrayInputStream(mapper.writeValueAsBytes(reportDetails));
-			} catch (JsonProcessingException e) {
-				throw new EncodeException("Issue serializing error report details", e);
-			}
-		}
-
-		/**
 		 * Mutator for reportDetails
 		 *
 		 * @param details updated errors
 		 */
 		public void setReportDetails(AllErrors details) {
 			reportDetails = details;
-		}
-
-
-		/**
-		 * Convenience method to retrieve QPP validation details
-		 *
-		 * @return input stream of QPP validation details
-		 */
-		public InputStream streamRawValidationDetails() {
-			String raw = (qppValidationDetails != null) ? qppValidationDetails : "";
-			return new ByteArrayInputStream(raw.getBytes(Charset.defaultCharset()));
 		}
 
 		/**
@@ -284,22 +260,46 @@ public class Converter {
 		}
 
 		/**
-		 * Get input stream for converted content
+		 * Get the {@link Source} for the input to the converter.
 		 *
-		 * @return input stream for submission
+		 * @return {@link Source} for the input.
 		 */
-		public InputStream getFileInput() {
-			return source.toInputStream();
+		public Source getQrdaSource() {
+			return source;
 		}
 
 		/**
-		 * Get source file name
+		 * Get the {@link Source} for the output.
 		 *
-		 * @return file name
+		 * @return {@link Source} for the output.
 		 */
-		public String getFilename() {
-			return source.getName();
+		public Source getQppSource() {
+			return getEncoded().toSource();
+		}
+
+		/**
+		 * Get the {@link Source} for the conversion validation errors.
+		 *
+		 * @return {@link Source} for the validation errors.
+		 */
+		public Source getValidationErrorsSource() {
+			try {
+				byte[] validationErrorBytes = mapper.writeValueAsBytes(reportDetails);
+				return new InputStreamSupplierSource("ValidationErrors", () -> new ByteArrayInputStream(validationErrorBytes), validationErrorBytes.length);
+			} catch (JsonProcessingException e) {
+				throw new EncodeException("Issue serializing error report details", e);
+			}
+		}
+
+		/**
+		 * Get the {@link Source} for the raw QPP validation errors (if any).
+		 *
+		 * @return {@link Source} for the raw QPP validation errors.
+		 */
+		public Source getRawValidationErrorsOrEmptySource() {
+			String raw = (qppValidationDetails != null) ? qppValidationDetails : "";
+			byte[] rawValidationErrorBytes = raw.getBytes(StandardCharsets.UTF_8);
+			return new InputStreamSupplierSource("RawValidationErrors", () -> new ByteArrayInputStream(rawValidationErrorBytes), rawValidationErrorBytes.length);
 		}
 	}
-
 }

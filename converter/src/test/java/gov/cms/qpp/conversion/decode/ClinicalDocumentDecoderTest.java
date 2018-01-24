@@ -8,7 +8,8 @@ import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.commons.io.IOUtils;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.reflections.util.ClasspathHelper;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class ClinicalDocumentDecoderTest {
 
@@ -29,12 +31,12 @@ class ClinicalDocumentDecoderTest {
 	static void init() throws IOException {
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
-		xmlFragment = IOUtils.toString(stream, Charset.defaultCharset());
+		xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 	}
 
 	@BeforeEach
 	void setupTest() throws XmlException {
-		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 		// remove default nodes (will fail if defaults change)
 		DefaultDecoder.removeDefaultNode(clinicalDocument.getChildNodes());
@@ -42,69 +44,60 @@ class ClinicalDocumentDecoderTest {
 
 	@Test
 	void testRootId() {
-		assertWithMessage("Must have be the correct TemplateId")
-				.that(clinicalDocument.getType())
-				.isEquivalentAccordingToCompareTo(TemplateId.CLINICAL_DOCUMENT);
+		assertThat(clinicalDocument.getType())
+				.isEqualTo(TemplateId.CLINICAL_DOCUMENT);
 	}
 
 	@Test
 	void testRootProgramName() {
-		assertWithMessage("Must be the correct Program Name")
-				.that(clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
+		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
 				.isEqualTo(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
 	}
 
 	@Test
 	void testRootNationalProviderIdentifier() {
-		assertWithMessage("Must have the correct NPI")
-				.that(clinicalDocument.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 	}
 
 	@Test
 	void testRootTaxpayerIdentificationNumber() {
-		assertWithMessage("Must have the correct TIN")
-				.that(clinicalDocument.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 	}
 
 	@Test
 	void testAciCategory() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
-		assertWithMessage("returned category should be aci")
-				.that(aciSectionNode.getValue("category"))
+		assertThat(aciSectionNode.getValue("category"))
 				.isEqualTo("aci");
 	}
 
 	@Test
 	void testAciPea1MeasureId() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
-		assertWithMessage("returned measureId ACI-PEA-1")
-				.that(aciSectionNode.getChildNodes().get(0).getValue("measureId"))
+		assertThat(aciSectionNode.getChildNodes().get(0).getValue("measureId"))
 				.isEqualTo("ACI-PEA-1");
 	}
 
 	@Test
 	void testAciEp1MeasureId() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
-		assertWithMessage("returned measureId ACI_EP_1")
-				.that(aciSectionNode.getChildNodes().get(1).getValue("measureId"))
+		assertThat(aciSectionNode.getChildNodes().get(1).getValue("measureId"))
 				.isEqualTo("ACI_EP_1");
 	}
 
 	@Test
 	void testAciCctpe3MeasureId() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
-		assertWithMessage("returned measureId ACI_CCTPE_3")
-				.that(aciSectionNode.getChildNodes().get(2).getValue("measureId"))
+		assertThat(aciSectionNode.getChildNodes().get(2).getValue("measureId"))
 				.isEqualTo("ACI_CCTPE_3");
 	}
 
 	@Test
 	void testIaCategory() {
 		Node iaSectionNode = clinicalDocument.getChildNodes().get(1);
-		assertWithMessage("returned category")
-				.that(iaSectionNode.getValue("category"))
+		assertThat(iaSectionNode.getValue("category"))
 				.isEqualTo("ia");
 	}
 
@@ -112,8 +105,7 @@ class ClinicalDocumentDecoderTest {
 	void testIaMeasureId() {
 		Node iaSectionNode = clinicalDocument.getChildNodes().get(1);
 		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
-		assertWithMessage("returned should have measureId")
-				.that(iaMeasureNode.getValue("measureId"))
+		assertThat(iaMeasureNode.getValue("measureId"))
 				.isEqualTo("IA_EPA_1");
 	}
 
@@ -121,17 +113,15 @@ class ClinicalDocumentDecoderTest {
 	void testClinicalDocumentIgnoresGarbage() throws IOException, XmlException {
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("QRDA-III-with-extra-elements.xml");
-		String xmlWithGarbage = IOUtils.toString(stream, Charset.defaultCharset());
+		String xmlWithGarbage = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
-		Node root = new QppXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlWithGarbage));
+		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlWithGarbage));
 		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 
-		assertWithMessage("Should contain a program name")
-				.that(clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
+		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
 				.isEqualTo(ClinicalDocumentDecoder.MIPS_PROGRAM_NAME);
 
-		assertWithMessage("Should contain a TIN")
-				.that(clinicalDocument.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+		assertThat(clinicalDocument.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 	}
 
@@ -140,8 +130,7 @@ class ClinicalDocumentDecoderTest {
 		Node iaSectionNode = clinicalDocument.getChildNodes().get(1);
 		Node iaMeasureNode = iaSectionNode.getChildNodes().get(0);
 		Node iaMeasurePerformedNode = iaMeasureNode.getChildNodes().get(0);
-		assertWithMessage("returned measurePerformed")
-				.that(iaMeasurePerformedNode.getValue("measurePerformed"))
+		assertThat(iaMeasurePerformedNode.getValue("measurePerformed"))
 				.isEqualTo("Y");
 	}
 
@@ -161,10 +150,10 @@ class ClinicalDocumentDecoderTest {
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL);
 		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
 				.that(testChildNode)
@@ -190,10 +179,10 @@ class ClinicalDocumentDecoderTest {
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL);
 		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
 				.that(testChildNode)
@@ -219,10 +208,10 @@ class ClinicalDocumentDecoderTest {
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo(ClinicalDocumentDecoder.ENTITY_GROUP);
 		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
 				.that(testChildNode)
@@ -243,15 +232,15 @@ class ClinicalDocumentDecoderTest {
 
 		assertWithMessage("Clinical Document doesn't contain program name")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.PROGRAM_NAME))
-				.isEqualTo(ClinicalDocumentDecoder.CPCPLUS.toLowerCase());
+				.isEqualTo(ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		assertWithMessage("Clinical Document doesn't contain entity type")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
-				.isEmpty();
+				.isEqualTo(ClinicalDocumentDecoder.ENTITY_INDIVIDUAL);
 		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
 				.that(testChildNode)
@@ -277,10 +266,10 @@ class ClinicalDocumentDecoderTest {
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 				.isEqualTo("individual");
 		assertWithMessage("Clinical Document doesn't contain national provider")
-				.that(testParentNode.getValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
-				.that(testParentNode.getValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
 		assertWithMessage("Clinical Document doesn't contain the ACI Section child node")
 				.that(testChildNode)

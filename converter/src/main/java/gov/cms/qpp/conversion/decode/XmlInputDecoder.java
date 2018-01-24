@@ -32,7 +32,7 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	 * @return Root intermediate format node
 	 */
 	public static Node decodeXml(Context context, Element xmlDoc) {
-		XmlInputDecoder decoder = new QppXmlDecoder(context);
+		XmlInputDecoder decoder = new QrdaXmlDecoder(context);
 		if (decoder.accepts(xmlDoc)) {
 			return decoder.decode(xmlDoc);
 		}
@@ -51,18 +51,6 @@ public abstract class XmlInputDecoder implements InputDecoder {
 	@Override
 	public Node decode(Element xmlDoc) {
 		return decodeRoot(xmlDoc);
-	}
-
-	/**
-	 * Convenient way to pass a list into sub decoders.
-	 * 
-	 * @param elements List of elements to be decoded
-	 * @param parent Parent node that all child elements will be decoded into
-	 */
-	protected void decode(List<Element> elements, Node parent) {
-		for (Element element : elements) {
-			decode(element, parent);
-		}
 	}
 
 	/**

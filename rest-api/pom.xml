@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.2.0-RELEASE</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -17,6 +17,7 @@
 
 	<properties>
 		<spring-boot.version>1.5.8.RELEASE</spring-boot.version>
+		<logback.version>1.2.3</logback.version>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 	</properties>
 
@@ -69,9 +70,21 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-jaxb-annotations</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
+			<version>${logback.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 
 		<dependency>
@@ -89,6 +102,12 @@
 					<artifactId>logback-classic</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.7.0</version>
 		</dependency>
 
 		<dependency>
@@ -132,7 +151,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>5.0.1.RELEASE</version>
+			<version>4.3.13.RELEASE</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -140,6 +159,13 @@
 					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<version>4.2.3.RELEASE</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -153,6 +179,18 @@
 					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+			<version>1.0.9.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -173,6 +211,14 @@
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.awaitility</groupId>
+			<artifactId>awaitility</artifactId>
+			<version>3.0.0</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 </project>
