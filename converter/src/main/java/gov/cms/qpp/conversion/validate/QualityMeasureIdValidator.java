@@ -78,8 +78,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		} else {
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
 				DEV_LOG.error("MEASURE_GUID_MISSING " + value);
-				
-				addValidationError(Detail.forErrorAndNode(ErrorCode.MEASURE_GUID_MISSING, node));
+				List<String> suggestions = MeasureConfigs.getMeasureSuggestions(value);
+				addValidationError(Detail.forErrorAndNode(ErrorCode.MEASURE_GUID_MISSING.format(value, suggestions), node));
 			}
 		}
 	}
@@ -285,7 +285,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * Creates a {@link Predicate} which takes a node and tests whether the measure population is equal to the given unique id
 	 *
 	 * @param uuid Supplies a unique id to test against
-	 * @param message Supplies a unique error message to use
+	 * @param error Supplies a unique error message and error code to use
 	 * @param name Supplies a node field validate on
 	 * @return predicate seeking a matching uuid
 	 */
