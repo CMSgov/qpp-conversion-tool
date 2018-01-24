@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Top level Decoder for parsing into QPP format.
+ * The engine for parsing XML into QPP format.
  */
 public class QrdaDecoderEngine extends XmlDecoderEngine {
 
@@ -34,7 +34,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	private final Registry<QrdaDecoder> decoders;
 
 	/**
-	 * Initialize a qpp xml decoder
+	 * Initialize a QPP xml decoder
 	 */
 	public QrdaDecoderEngine(Context context) {
 		Objects.requireNonNull(context, "converter");
@@ -45,10 +45,10 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	}
 
 	/**
-	 * Decodes the top of the XML document
+	 * Decodes the top of the XML document.
 	 *
-	 * @param xmlDoc XML Document to be parsed
-	 * @return Root node
+	 * @param xmlDoc XML Document to be parsed.
+	 * @return The root node.
 	 */
 	@Override
 	public Node decode(Element xmlDoc) {
@@ -76,6 +76,13 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		return rootNode;
 	}
 
+	/**
+	 * Decodes the element specified and the entire tree of child {@link Element}s below.
+	 *
+	 * @param element The element who's tree to decode.
+	 * @param parentNode The node to add any possible decoded child {@link Node}s.
+	 * @return The tuple of a {@link DecodeResult} and {@link Node} that was decoded from this tree.
+	 */
 	private DecodeData decodeTree(final Element element, final Node parentNode) {
 		DecodeData result = decodeSingleElement(element, parentNode);
 		DecodeResult decodedResult = result.getDecodeResult();
@@ -92,6 +99,13 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		return decodeChildren(element, decodedNode);
 	}
 
+	/**
+	 * Decodes the passed in element if it is a {@code templateId} and assigns it to the {@code parentNode}.
+	 *
+	 * @param element The element to decode.
+	 * @param parentNode The node add the child decoded {@link Node} to.
+	 * @return The tuple of a {@link DecodeResult} and {@link Node} that was decoded from the {@link Element}.
+	 */
 	private DecodeData decodeSingleElement(final Element element, final Node parentNode) {
 
 		if (!TEMPLATE_ID.equals(element.getName())) {
@@ -123,6 +137,13 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		return new DecodeData(decodeResult, childNode);
 	}
 
+	/**
+	 * Iterates over all the children of the passed in {@link Element} and calls {@link #decodeTree(Element, Node)} on them.
+	 *
+	 * @param element The element who's children will be decoded.
+	 * @param parentNode The parent node
+	 * @return The tuple of a {@link DecodeResult} and {@link Node} that was decoded from the children.
+	 */
 	private DecodeData decodeChildren(final Element element, final Node parentNode) {
 
 		List<Element> childElements = element.getChildren();
@@ -148,6 +169,13 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		return decodeData;
 	}
 
+	/**
+	 *  If the {@code decodedNode} is not null, it is returned, else the {@code originalParent} is returned.
+	 *
+	 * @param decodedNode The newly decoded {@link Node}.
+	 * @param originalParent The original parent {@link Node}.
+	 * @return The new parent node.
+	 */
 	private Node decideNewParentNode(final Node decodedNode, final Node originalParent) {
 		Node newParent = originalParent;
 
@@ -158,6 +186,12 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		return newParent;
 	}
 
+	/**
+	 * Get the {@link TemplateId} for the given element.
+	 *
+	 * @param idElement The element to convert into a {@link TemplateId}.
+	 * @return The {@link TemplateId}.
+	 */
 	private TemplateId getTemplateId(final Element idElement) {
 		String root = idElement.getAttributeValue(ROOT_STRING);
 		String extension = idElement.getAttributeValue(EXTENSION_STRING);
@@ -206,10 +240,22 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		return isValidQrdaFile;
 	}
 
+	/**
+	 * Checks whether the element's name is {@code ClinicalDocument}.
+	 *
+	 * @param rootElement The element to check.
+	 * @return True or false.
+	 */
 	private boolean containsClinicalDocumentElement(Element rootElement) {
 		return "ClinicalDocument".equals(rootElement.getName());
 	}
 
+	/**
+	 * Checks whether the element has a child {@code templateId} element that is the Clinical Document {@link TemplateId}.
+	 *
+	 * @param rootElement The element to check.
+	 * @return True or false.
+	 */
 	private boolean containsClinicalDocumentTemplateId(Element rootElement) {
 		boolean containsTemplateId = false;
 
