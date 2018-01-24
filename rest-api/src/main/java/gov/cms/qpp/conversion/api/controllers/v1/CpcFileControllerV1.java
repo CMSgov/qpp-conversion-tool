@@ -5,6 +5,10 @@ import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
+
+import java.io.IOException;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
@@ -13,14 +17,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Controller to handle cpc file data
@@ -50,7 +52,7 @@ public class CpcFileControllerV1 {
 	 *
 	 * @return Valid json or error json content
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/unprocessed-files",
+	@GetMapping(value = "/unprocessed-files",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<List<UnprocessedCpcFileData>> getUnprocessedCpcPlusFiles() {
 		API_LOG.info("CPC+ unprocessed files request received");
@@ -77,7 +79,7 @@ public class CpcFileControllerV1 {
 	 * @return object json or xml content
 	 * @throws IOException if S3Object content stream is invalid
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/file/{fileId}",
+	@GetMapping(value = "/file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
 			throws IOException {
@@ -105,10 +107,10 @@ public class CpcFileControllerV1 {
 	 * @param request The new state of the file being updated
 	 * @return Message if the file was updated or not
 	 */
-	@RequestMapping(method = RequestMethod.PUT, value = "/file/{fileId}",
+	@PutMapping(value = "/file/{fileId}",
 			headers = {"Accept=" + Constants.V1_API_ACCEPT} )
 	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId,
-			@RequestBody CpcFileStatusUpdateRequest request) {
+			@RequestBody(required = false) CpcFileStatusUpdateRequest request) {
 		if (blockCpcPlusApi()) {
 			API_LOG.info(BLOCKED_BY_FEATURE_FLAG);
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
@@ -117,7 +119,7 @@ public class CpcFileControllerV1 {
 		API_LOG.info("CPC+ update file request received");
 
 		String message;
-		if (request.getProcessed() != null && !request.getProcessed()) {
+		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
 			message = cpcFileService.unprocessFileById(fileId);
 		} else {
 			message = cpcFileService.processFileById(fileId);
