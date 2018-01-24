@@ -52,7 +52,6 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setPracticeSiteAddress(element, thisNode);
 		setNationalProviderIdOnNode(element, thisNode);
 		setTaxProviderTaxIdOnNode(element, thisNode);
-//		processComponentElement(element, thisNode);
 		return DecodeResult.TREE_CONTINUE;
 	}
 
@@ -126,17 +125,6 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 						p.getValue());
 		setOnNode(element, getXpath(TAX_PAYER_IDENTIFICATION_NUMBER),
 				consumer, Filters.attribute(), true);
-	}
-
-	/**
-	 * Continues decoding the elements that are children of Clinical Document.
-	 *
-	 * @param element Xml fragment being parsed.
-	 * @param thisNode The output internal representation of the document
-	 */
-	private void processComponentElement(Element element, Node thisNode) {
-		Consumer<Element> consumer = p -> this.decode(p, thisNode);
-		setOnNode(element, getXpath("components"), consumer, Filters.element(), false);
 	}
 
 	/**
