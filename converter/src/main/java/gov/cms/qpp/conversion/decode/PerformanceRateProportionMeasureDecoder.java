@@ -42,7 +42,7 @@ public class PerformanceRateProportionMeasureDecoder extends QrdaDecoder {
 		}
 		setNameOnNode(element, thisNode, PERFORMANCE_RATE_ID);
 
-		return DecodeResult.TREE_CONTINUE;
+		return DecodeResult.TREE_FINISHED;
 	}
 
 	/**
