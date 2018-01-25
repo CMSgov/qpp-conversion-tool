@@ -36,7 +36,9 @@ public abstract class QrdaDecoder {
 	protected abstract DecodeResult decode(Element element, Node thisNode);
 
 	/**
-	 * Sets xml namespace
+	 * Sets the xml namespace.
+	 *
+	 * Required so that we find the correct elements.  For example, XPath evaluation needs to know namespaces.
 	 */
 	public void setNamespace(Namespace defaultNs) {
 		this.defaultNs = defaultNs;
