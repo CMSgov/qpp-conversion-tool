@@ -27,7 +27,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 22 : The ACI Section must have one Reporting Parameter ACT
 * 23 : Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child
 * 24 : Clinical Document must have one and only one program name
-* 25 : Clinical Document program name is not recognized
+* 25 : The Clinical Document program name `(program name)` is not recognized. Valid program names are MIPS_GROUP, MIPS_INDIV, or CPCPLUS.
 * 26 : Clinical Document contains duplicate ACI sections
 * 27 : Clinical Document contains duplicate IA sections
 * 28 : Clinical Document contains duplicate eCQN sections
