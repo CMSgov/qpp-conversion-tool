@@ -159,7 +159,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 			Node childDecodedNode = childDecodeData.getNode();
 
 			if (DecodeResult.TREE_FINISHED == childDecodeResult) {
-				decodeData = new DecodeData(DecodeResult.TREE_CONTINUE, currentParentNode);
+				decodeData = new DecodeData(DecodeResult.TREE_CONTINUE, parentNode);
 				break;
 			}
 
