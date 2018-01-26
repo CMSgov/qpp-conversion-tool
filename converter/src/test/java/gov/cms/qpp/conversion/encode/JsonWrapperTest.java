@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -145,63 +146,56 @@ class JsonWrapperTest {
 
 	@Test
 	void testValidDateYyyyMmDd() throws Exception {
-		objectObjWrapper.putDate("19690720");
-		assertWithMessage("should be an object container")
-				.that(((List<?>) objectObjWrapper.getObject()))
-				.isNotEmpty();
+		ensureDateIsValid("19690720");
 	}
 
 	@Test
 	void testValidDateYyyySlashMmSlashDd() throws Exception {
-		objectObjWrapper.putDate("1969/07/20");
-		assertWithMessage("should be an object container")
-				.that(((List<?>) objectObjWrapper.getObject()))
-				.isNotEmpty();
+		ensureDateIsValid("1969/07/20");
 	}
 
 	@Test
 	void testValidDateYyyyDashMmDashDd() throws Exception {
-		objectObjWrapper.putDate("1969-07-20");
-		assertWithMessage("should be an object container")
-				.that(((List<?>) objectObjWrapper.getObject()))
-				.isNotEmpty();
+		ensureDateIsValid("1969-07-20");
+	}
+
+	@Test
+	void testValidDateYyyyDashMmDashDdThhColonMmColonSsZ() {
+		ensureDateIsValid("2018-01-26T15:35:30.685Z");
 	}
 
 	@Test
 	void testValidDateFromInstant() throws Exception {
-		objectObjWrapper.putDate(Instant.now().toString());
-		assertWithMessage("should be an object container")
-				.that(((List<?>) objectObjWrapper.getObject()))
-				.isNotEmpty();
+		ensureDateIsValid(Instant.now().toString());
 	}
 
 	@Test
 	void testValidDateFromLocalDate() throws Exception {
-		objectObjWrapper.putDate(LocalDate.now().toString());
-		assertWithMessage("should be an object container")
-				.that(((List<?>) objectObjWrapper.getObject()))
-				.isNotEmpty();
+		ensureDateIsValid(LocalDate.now().toString());
 	}
 
 	@Test
 	void testValidDateFromLocalDateTime() throws Exception {
-		objectObjWrapper.putDate(LocalDateTime.now().toString());
-		assertWithMessage("should be an object container")
-				.that(((List<?>) objectObjWrapper.getObject()))
-				.isNotEmpty();
+		ensureDateIsValid(LocalDateTime.now().toString());
 	}
 
 	@Test
 	void testValidDateWithSeconds1() throws Exception {
-		objectObjWrapper.putDate("20170101000000");
-		assertWithMessage("should be an object container")
-				.that(((List<?>) objectObjWrapper.getObject()))
-				.isNotEmpty();
+		ensureDateIsValid("20170101000000");
 	}
 
 	@Test
 	void testValidDateWithSeconds2() throws Exception {
-		objectObjWrapper.putDate("20171231235959");
+		ensureDateIsValid("20171231235959");
+	}
+
+	@Test
+	void testValidDateFullyQualified() {
+		ensureDateIsValid("2018-01-22T20:09:39.949Z");
+	}
+
+	private void ensureDateIsValid(String date) {
+		objectObjWrapper.putDate(date);
 		assertWithMessage("should be an object container")
 				.that(((List<?>) objectObjWrapper.getObject()))
 				.isNotEmpty();
