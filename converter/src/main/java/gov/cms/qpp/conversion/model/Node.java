@@ -319,7 +319,7 @@ public class Node {
 	private List<Node> findNode(TemplateId templateId, Predicate<List<Node>> bail) {
 		List<Node> foundNodes = new ArrayList<>();
 		List<Node> toSearch = Lists.newArrayList(childNodes);
-		Consumer<Node> templateCheck = (node) -> {
+		Consumer<Node> templateCheck = node -> {
 			if (node.getType() == templateId) {
 				foundNodes.add(node);
 			}
