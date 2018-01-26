@@ -394,7 +394,8 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Validates that the given value conforms to expected date formatting (i.e. yyyyMMdd).
+	 * Validates that the given value conforms to an ISO date with or without separators.
+	 * It can include a time but is unnecessary.
 	 *
 	 * @param value to validate
 	 * @return valid date String
