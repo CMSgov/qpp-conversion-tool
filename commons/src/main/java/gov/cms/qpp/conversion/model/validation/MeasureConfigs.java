@@ -2,13 +2,21 @@ package gov.cms.qpp.conversion.model.validation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cms.qpp.conversion.util.EnvironmentHelper;
+import org.apache.lucene.search.spell.SpellChecker;
+import org.apache.lucene.store.FSDirectory;
 import org.reflections.util.ClasspathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +24,16 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MeasureConfigs {
+	static final String MEASURES_INDEX_DIR = "MEASURES_INDEX_DIR";
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(MeasureConfigs.class);
 	public static final String DEFAULT_MEASURE_DATA_FILE_NAME = "measures-data.json";
+	static final int SUGGESTION_COUNT = 3;
+	private static final String INDEX_DEFAULT = "/usr/src/run/measures_index";
 
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
 	private static Map<String, MeasureConfig> configurationMap;
 	private static Map<String, List<MeasureConfig>> cpcPlusGroups;
+	private static SpellChecker spellChecker = null;
 
 	/**
 	 * Static initialization
@@ -41,12 +53,28 @@ public class MeasureConfigs {
 	 * Initialize all measure configurations
 	 */
 	private static void initMeasureConfigs() {
+		initSpellChecker();
 		configurationMap = grabConfiguration(measureDataFileName);
 		cpcPlusGroups = new HashMap<>();
 		getMeasureConfigs().stream()
 				.filter(config -> config.getCpcPlusGroup() != null)
 				.forEach(config -> cpcPlusGroups.computeIfAbsent(
 						config.getCpcPlusGroup(), key -> new ArrayList<>()).add(config));
+	}
+
+	private static void initSpellChecker() {
+		Path indexPath = Paths.get(EnvironmentHelper.getOrDefault(MEASURES_INDEX_DIR, INDEX_DEFAULT));
+		if (Files.exists(indexPath)) {
+			try {
+				spellChecker = new SpellChecker(FSDirectory.open(indexPath));
+			} catch (IOException ex) {
+				DEV_LOG.warn("Problem loading measure spell check index: " + indexPath.toAbsolutePath(), ex);
+			}
+		}
+	}
+
+	static SpellChecker getSpellChecker() {
+		return spellChecker;
 	}
 
 	public static Map<String, MeasureConfig> grabConfiguration(String fileName) {
@@ -111,6 +139,19 @@ public class MeasureConfigs {
 		return cpcPlusGroups;
 	}
 
+	public static List<String> getMeasureSuggestions(String measureId) {
+		List<String> suggestions = Collections.emptyList();
+		if (getSpellChecker() != null) {
+			try {
+				suggestions = Arrays.asList(getSpellChecker().suggestSimilar(measureId, SUGGESTION_COUNT));
+			} catch(IOException ex) {
+				DEV_LOG.warn("Problem when seeking measure suggestions.", ex);
+			}
+		}
+
+		return suggestions;
+	}
+
 	/**
 	 * Retrieves a list of required mappings for any given section
 	 *
@@ -124,4 +165,5 @@ public class MeasureConfigs {
 			.map(MeasureConfigs::getMeasureId)
 			.collect(Collectors.toList());
 	}
+
 }

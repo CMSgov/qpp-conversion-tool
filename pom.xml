@@ -6,7 +6,7 @@
 	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-conversion-tool-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.1.4-RELEASE</version>
+	<version>1.2.0-RELEASE</version>
 	<name>QPP Conversion Tool</name>
 
 	<properties>
@@ -25,7 +25,6 @@
 		<module>benchmark</module>
 		<module>generate</module>
 	</modules>
-
 
 
 	<build>
@@ -145,20 +144,6 @@
 							<version>1.0.2</version>
 						</dependency>
 					</dependencies>
-				</plugin>
-
-				<plugin>
-					<groupId>gov.cms.qpp.conversion</groupId>
-					<artifactId>generate-maven-plugin</artifactId>
-					<version>1.1.4-RELEASE</version>
-					<executions>
-						<execution>
-							<phase>compile</phase>
-							<goals>
-								<goal>generateErrorCodeDoc</goal>
-							</goals>
-						</execution>
-					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
