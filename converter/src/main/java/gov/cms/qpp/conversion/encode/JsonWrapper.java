@@ -34,6 +34,7 @@ import java.util.stream.Stream;
  * This class is a wrapper around a list/map impl.
  */
 public class JsonWrapper {
+	private static final String YYYYMMDD = "yyyyMMdd";
 	private static final String METADATA_HOLDER = "metadata_holder";
 	private ObjectWriter ow;
 	private Map<String, Object> object;
@@ -403,10 +404,10 @@ public class JsonWrapper {
 		try {
 			String parse = cleanString(value);
 			parse = parse.replace("-", "").replace("/", "");
-			if (parse.length() > "yyyyMMdd".length()) {
-				parse = parse.substring(0, "yyyyMMdd".length());
+			if (parse.length() > YYYYMMDD.length()) {
+				parse = parse.substring(0, YYYYMMDD.length());
 			}
-			LocalDate thisDate = LocalDate.parse(cleanString(parse),  DateTimeFormatter.ofPattern("yyyyMMdd"));
+			LocalDate thisDate = LocalDate.parse(cleanString(parse),  DateTimeFormatter.BASIC_ISO_DATE);
 			return thisDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		} catch (Exception e) {
 			throw new EncodeException(value + " is not an date of format YYYYMMDD.", e);
