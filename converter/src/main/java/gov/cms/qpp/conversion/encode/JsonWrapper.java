@@ -401,7 +401,12 @@ public class JsonWrapper {
 	 */
 	protected String validDate(String value) {
 		try {
-			LocalDate thisDate = LocalDate.parse(cleanString(value),  DateTimeFormatter.ofPattern("yyyyMMdd"));
+			String parse = cleanString(value);
+			parse = parse.replace("-", "").replace("/", "");
+			if (parse.length() > "yyyyMMdd".length()) {
+				parse = parse.substring(0, "yyyyMMdd".length());
+			}
+			LocalDate thisDate = LocalDate.parse(cleanString(parse),  DateTimeFormatter.ofPattern("yyyyMMdd"));
 			return thisDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		} catch (Exception e) {
 			throw new EncodeException(value + " is not an date of format YYYYMMDD.", e);

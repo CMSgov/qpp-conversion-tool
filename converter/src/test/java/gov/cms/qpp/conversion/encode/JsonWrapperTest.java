@@ -1,15 +1,11 @@
 package gov.cms.qpp.conversion.encode;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -19,6 +15,14 @@ import java.util.Map;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import org.joda.time.Instant;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class JsonWrapperTest {
 
@@ -139,11 +143,56 @@ class JsonWrapperTest {
 	}
 
 	@Test
-	void testValidDate() throws Exception {
+	void testValidDateYyyyMmDd() throws Exception {
 		objectObjWrapper.putDate("19690720");
 		assertWithMessage("should be an object container")
 				.that(((List<?>) objectObjWrapper.getObject()))
 				.isNotEmpty();
+	}
+
+	@Test
+	void testValidDateYyyySlashMmSlashDd() throws Exception {
+		objectObjWrapper.putDate("1969/07/20");
+		assertWithMessage("should be an object container")
+				.that(((List<?>) objectObjWrapper.getObject()))
+				.isNotEmpty();
+	}
+
+	@Test
+	void testValidDateYyyyDashMmDashDd() throws Exception {
+		objectObjWrapper.putDate("1969-07-20");
+		assertWithMessage("should be an object container")
+				.that(((List<?>) objectObjWrapper.getObject()))
+				.isNotEmpty();
+	}
+
+	@Test
+	void testValidDateFromInstant() throws Exception {
+		objectObjWrapper.putDate(Instant.now().toString());
+		assertWithMessage("should be an object container")
+				.that(((List<?>) objectObjWrapper.getObject()))
+				.isNotEmpty();
+	}
+
+	@Test
+	void testValidDateFromLocalDate() throws Exception {
+		objectObjWrapper.putDate(LocalDate.now().toString());
+		assertWithMessage("should be an object container")
+				.that(((List<?>) objectObjWrapper.getObject()))
+				.isNotEmpty();
+	}
+
+	@Test
+	void testValidDateFromLocalDateTime() throws Exception {
+		objectObjWrapper.putDate(LocalDateTime.now().toString());
+		assertWithMessage("should be an object container")
+				.that(((List<?>) objectObjWrapper.getObject()))
+				.isNotEmpty();
+	}
+
+	@Test
+	void testValidDateYyMmDdIsInvalid() throws Exception {
+		Assertions.assertThrows(EncodeException.class, () -> objectObjWrapper.putDate("690720"));
 	}
 
 	@Test
