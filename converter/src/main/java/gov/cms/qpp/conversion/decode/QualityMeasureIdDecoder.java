@@ -1,24 +1,25 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Decoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import java.util.Locale;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Decoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
  * Decoder to read XML Data for an Quality Measure Identifier (eCQM).
  */
 @Decoder(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
-public class QualityMeasureIdDecoder extends QrdaXmlDecoder {
+public class QualityMeasureIdDecoder extends QrdaDecoder {
 
 	public static final String MEASURE_ID = "measureId";
 
@@ -36,7 +37,7 @@ public class QualityMeasureIdDecoder extends QrdaXmlDecoder {
 	 * @return {@code DecodeResult.TREE_CONTINUE} to continue down the parsed XML
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		List<String> measureGuids = getMeasureGuid(element);
 
 		measureGuids.forEach(measureGuid ->

@@ -1,16 +1,17 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
+import org.jdom2.Element;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
-import org.jdom2.Element;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
  * Decoder to parse Improvement Activity Section.
  */
 @Decoder(TemplateId.IA_SECTION)
-public class IaSectionDecoder extends QrdaXmlDecoder {
+public class IaSectionDecoder extends QrdaDecoder {
 
 	public IaSectionDecoder(Context context) {
 		super(context);
@@ -24,7 +25,7 @@ public class IaSectionDecoder extends QrdaXmlDecoder {
 	 * @return
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		thisNode.putValue("category", "ia");
 		return DecodeResult.TREE_CONTINUE;
 	}

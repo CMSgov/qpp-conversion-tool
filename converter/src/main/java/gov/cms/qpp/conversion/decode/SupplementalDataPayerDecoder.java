@@ -1,17 +1,18 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
-import org.jdom2.Element;
 
 /**
  * Decoder for Supplemental Data Payer Element
  */
 @Decoder(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2)
-public class SupplementalDataPayerDecoder extends QrdaXmlDecoder {
+public class SupplementalDataPayerDecoder extends QrdaDecoder {
 
 	public static final String SUPPLEMENTAL_DATA_PAYER_CODE = "payerCode";
 
@@ -27,7 +28,7 @@ public class SupplementalDataPayerDecoder extends QrdaXmlDecoder {
 	 * @return Continuation of tree traversal
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setSupplementalDataOnNode(element, thisNode, SupplementalType.PAYER);
 		return DecodeResult.TREE_CONTINUE;
 	}

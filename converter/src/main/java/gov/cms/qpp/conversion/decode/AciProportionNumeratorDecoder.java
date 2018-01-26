@@ -1,16 +1,17 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Element;
 
 /**
  * Decoder to read XML data for a Numerator Type Measure
  */
 @Decoder(TemplateId.ACI_NUMERATOR)
-public class AciProportionNumeratorDecoder extends QrdaXmlDecoder {
+public class AciProportionNumeratorDecoder extends QrdaDecoder {
 
 	public AciProportionNumeratorDecoder(Context context) {
 		super(context);
@@ -24,7 +25,7 @@ public class AciProportionNumeratorDecoder extends QrdaXmlDecoder {
 	 * @return
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		thisNode.putValue("name", "aciProportionNumerator");
 		return DecodeResult.TREE_CONTINUE;
 	}
