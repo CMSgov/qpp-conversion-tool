@@ -108,17 +108,13 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	 */
 	private DecodeData decodeSingleElement(final Element element, final Node parentNode) {
 
-		if (!TEMPLATE_ID.equals(element.getName())) {
-			return new DecodeData(DecodeResult.TREE_CONTINUE, null);
-		}
-
-		TemplateId templateId = getTemplateId(element);
-		QrdaDecoder decoder = getDecoder(templateId);
+		QrdaDecoder decoder = decoderForElement(element);
 
 		if (null == decoder) {
 			return new DecodeData(DecodeResult.TREE_CONTINUE, null);
 		}
 
+		TemplateId templateId = getTemplateId(element);
 		Node childNode = new Node(templateId, parentNode);
 		childNode.setDefaultNsUri(defaultNs.getURI());
 		decoder.setNamespace(element.getNamespace());
@@ -167,6 +163,22 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		}
 
 		return decodeData;
+	}
+
+	/**
+	 * Get the {@link QrdaDecoder} for the passed in {@link Element}.
+	 *
+	 * @param element The element.
+	 * @return The QRDA decoder.
+	 */
+	private QrdaDecoder decoderForElement(final Element element) {
+		if (!TEMPLATE_ID.equals(element.getName())) {
+			return null;
+		}
+
+		TemplateId templateId = getTemplateId(element);
+
+		return getDecoder(templateId);
 	}
 
 	/**
