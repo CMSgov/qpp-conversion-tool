@@ -1,13 +1,14 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 import java.util.function.Consumer;
 
@@ -95,9 +96,9 @@ public class ClinicalDocumentDecoder extends QrdaXmlDecoder {
 			String[] nameEntityPair = getProgramNameEntityPair(p.getValue());
 			thisNode.putValue(PROGRAM_NAME, nameEntityPair[0], false);
 			thisNode.putValue(ENTITY_TYPE, nameEntityPair[1], false);
+			context.setProgram(Program.getInstance(p.getValue()));
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
-		context.setProgram(Program.extractProgram(thisNode));
 	}
 
 	/**
@@ -146,7 +147,7 @@ public class ClinicalDocumentDecoder extends QrdaXmlDecoder {
 	 */
 	private String[] getProgramNameEntityPair(String name) {
 		String[] pairs = new String[2];
-		if (MIPS.equalsIgnoreCase(name) || MIPS_INDIVIDUAL.equalsIgnoreCase(name)) {
+		if (MIPS_INDIVIDUAL.equalsIgnoreCase(name)) {
 			pairs[0] = MIPS_PROGRAM_NAME;
 			pairs[1] = ENTITY_INDIVIDUAL;
 		} else if (MIPS_GROUP.equalsIgnoreCase(name)) {

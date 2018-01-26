@@ -1,22 +1,21 @@
 package gov.cms.qpp.conversion.model;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.util.stream.Stream;
-
+import com.google.common.truth.Truth;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.truth.Truth;
-
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.test.enums.EnumContract;
+
+import java.util.stream.Stream;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class ProgramTest implements EnumContract {
 
 	@Test
 	void instanceRetrievalMips() {
-		Stream.of("MIPS_GROUP", "MIPS_INDIV", "MIPS").forEach(mip ->
+		Stream.of("MIPS_GROUP", "MIPS_INDIV").forEach(mip ->
 			assertWithMessage("Program other than %s was returned", Program.MIPS)
 					.that(Program.getInstance(mip)).isSameAs(Program.MIPS)
 		);

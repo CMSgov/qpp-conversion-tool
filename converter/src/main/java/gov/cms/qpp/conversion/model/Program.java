@@ -1,18 +1,18 @@
 package gov.cms.qpp.conversion.model;
 
 
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-
 /**
  * Construct that helps categorize submissions by program name.
  */
 public enum Program {
-	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS"),
+	MIPS("MIPS_GROUP", "MIPS_INDIV"),
 	CPC("CPCPLUS"),
 	ALL;
 
