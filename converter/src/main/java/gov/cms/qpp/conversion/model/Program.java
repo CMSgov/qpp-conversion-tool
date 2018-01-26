@@ -4,6 +4,7 @@ package gov.cms.qpp.conversion.model;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,5 +60,14 @@ public enum Program {
 				.filter(program -> program.aliases.contains(upperName))
 				.findFirst()
 				.orElse(Program.ALL);
+	}
+
+	/**
+	 * Returns the {@link Set} of all the valid program names under each program.
+	 *
+	 * @return A {@link Set} of the aliases.
+	 */
+	public static Set<String> setOfAliases() {
+		return Arrays.stream(Program.values()).flatMap(program -> program.aliases.stream()).collect(Collectors.toCollection(HashSet::new));
 	}
 }

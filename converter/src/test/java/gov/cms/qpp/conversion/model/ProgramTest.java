@@ -1,14 +1,18 @@
 package gov.cms.qpp.conversion.model;
 
-import com.google.common.truth.Truth;
+import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.test.enums.EnumContract;
 
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Stream;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 class ProgramTest implements EnumContract {
@@ -48,42 +52,57 @@ class ProgramTest implements EnumContract {
 	void testIsCpcPlusForNullStringIsFalse() {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, null);
-		Truth.assertThat(Program.isCpc(node)).isFalse();
+		assertThat(Program.isCpc(node)).isFalse();
 	}
 
 	@Test
 	void testIsCpcPlusForRandomStringIsFalse() {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "some fake mock value");
-		Truth.assertThat(Program.isCpc(node)).isFalse();
+		assertThat(Program.isCpc(node)).isFalse();
 	}
 
 	@Test
 	void testIsCpcPlusForMipsIsFalse() {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "MIPS");
-		Truth.assertThat(Program.isCpc(node)).isFalse();
+		assertThat(Program.isCpc(node)).isFalse();
 	}
 
 	@Test
 	void testIsCpcPlusForCpcplusUppercaseIsTrue() {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "CPCPLUS");
-		Truth.assertThat(Program.isCpc(node)).isTrue();
+		assertThat(Program.isCpc(node)).isTrue();
 	}
 
 	@Test
 	void testIsCpcPlusForCpcplusLowercaseIsTrue() {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "cpcplus");
-		Truth.assertThat(Program.isCpc(node)).isTrue();
+		assertThat(Program.isCpc(node)).isTrue();
 	}
 
 	@Test
 	void testIsCpcPlusForCpcplusMixedCaseIsTrue() {
 		Node node = new Node();
 		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "cPcPlUs");
-		Truth.assertThat(Program.isCpc(node)).isTrue();
+		assertThat(Program.isCpc(node)).isTrue();
+	}
+
+	@Test
+	void testSetOfProgramNames() throws NoSuchFieldException, IllegalAccessException {
+		Set<String> actual = Program.setOfAliases();
+
+		Field aliases = Program.class.getDeclaredField("aliases");
+		aliases.setAccessible(true);
+
+		Set<String> expected = Sets.newHashSet();
+		for (Program program : Program.values()) {
+			expected.addAll((Collection<? extends String>)aliases.get(program));
+		}
+
+		assertThat(actual).containsAllIn(expected);
 	}
 
 	@Override
