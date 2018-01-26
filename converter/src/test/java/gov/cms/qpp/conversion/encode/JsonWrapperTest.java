@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -191,8 +192,29 @@ class JsonWrapperTest {
 	}
 
 	@Test
+	void testValidDateWithSeconds1() throws Exception {
+		objectObjWrapper.putDate("20170101000000");
+		assertWithMessage("should be an object container")
+				.that(((List<?>) objectObjWrapper.getObject()))
+				.isNotEmpty();
+	}
+
+	@Test
+	void testValidDateWithSeconds2() throws Exception {
+		objectObjWrapper.putDate("20171231235959");
+		assertWithMessage("should be an object container")
+				.that(((List<?>) objectObjWrapper.getObject()))
+				.isNotEmpty();
+	}
+
+	@Test
 	void testValidDateYyMmDdIsInvalid() throws Exception {
 		Assertions.assertThrows(EncodeException.class, () -> objectObjWrapper.putDate("690720"));
+	}
+
+	@Test
+	void testValidDateRandomStringIsInvalid() throws Exception {
+		Assertions.assertThrows(EncodeException.class, () -> objectObjWrapper.putDate(UUID.randomUUID().toString()));
 	}
 
 	@Test
