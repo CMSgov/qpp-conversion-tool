@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.model;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -116,6 +117,37 @@ class NodeTest {
 
 		assertWithMessage("should find first child that has the searched id")
 				.that(results).hasSize(1);
+	}
+
+	@Test
+	void testFindNodeLoveThySelf() {
+		Node parent = new Node(TemplateId.PLACEHOLDER);
+		Node onlyChild = new Node(TemplateId.PLACEHOLDER);
+		parent.addChildNodes(onlyChild);
+
+		List<Node> results = parent.findNode(TemplateId.PLACEHOLDER);
+
+		assertWithMessage("should find first node that has the searched id")
+			.that(results).hasSize(2);
+		assertWithMessage("should search self first")
+			.that(results.get(0)).isSameAs(parent);
+	}
+
+	@Test
+	void testFindNodeOrder() {
+		Node carter = new Node(TemplateId.PLACEHOLDER);
+		Node lois = new Node(TemplateId.PLACEHOLDER);
+		Node chris = new Node(TemplateId.PLACEHOLDER);
+		Node meg = new Node(TemplateId.PLACEHOLDER);
+		Node stewie = new Node(TemplateId.PLACEHOLDER);
+		carter.addChildNodes(lois);
+		lois.addChildNodes(chris, meg, stewie);
+		List<Node> order = Arrays.asList(carter, lois, chris, meg, stewie);
+
+		List<Node> results = carter.findNode(TemplateId.PLACEHOLDER);
+
+		assertWithMessage("should prioritize by generation and birth / add order")
+			.that(results).containsExactlyElementsIn(order).inOrder();
 	}
 
 	@Test

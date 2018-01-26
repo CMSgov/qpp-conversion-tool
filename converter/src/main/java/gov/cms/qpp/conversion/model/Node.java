@@ -1,19 +1,13 @@
 package gov.cms.qpp.conversion.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Lists;
+
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -315,16 +309,23 @@ public class Node {
 	 */
 	private List<Node> findNode(TemplateId templateId, Predicate<List<Node>> bail) {
 		List<Node> foundNodes = new ArrayList<>();
-		if (this.type == templateId) {
-			foundNodes.add(this);
-		}
-		for (Node childNode : childNodes) {
+		List<Node> toSearch = Lists.newArrayList(childNodes);
+		Consumer<Node> templateCheck = (node) -> {
+			if (node.getType() == templateId) {
+				foundNodes.add(node);
+			}
+		};
+		templateCheck.accept(this);
+
+		for (int i = 0; i < toSearch.size(); i++) {
 			if (bail != null && bail.test(foundNodes)) {
 				break;
 			}
-			List<Node> matches = childNode.findNode(templateId, bail);
-			foundNodes.addAll(matches);
+			Node childNode = toSearch.get(i);
+			templateCheck.accept(childNode);
+			toSearch.addAll(childNode.getChildNodes());
 		}
+
 		return foundNodes;
 	}
 
