@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * Decodes the Performance Rate Proportion Measure from the Measure Section
  */
 @Decoder(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-public class PerformanceRateProportionMeasureDecoder extends QrdaXmlDecoder {
+public class PerformanceRateProportionMeasureDecoder extends QrdaDecoder {
 
 	public static final String PERFORMANCE_RATE = "rate";
 	public static final String NULL_PERFORMANCE_RATE = "nullRate";
@@ -35,7 +35,7 @@ public class PerformanceRateProportionMeasureDecoder extends QrdaXmlDecoder {
 	 * @return
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setNameOnNode(element, thisNode, PERFORMANCE_RATE);
 		if (isFirstExpressionUnsuccessful(thisNode)) {
 			setNameOnNode(element, thisNode, NULL_PERFORMANCE_RATE);

@@ -1,14 +1,16 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+
 import java.io.IOException;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -44,7 +46,8 @@ class MeasurePerformedDecoderTest {
 
 	private Node executeMeasurePerformedDecoder(String xmlFragment) throws XmlException {
 		MeasurePerformedDecoder measurePerformedDecoder = new MeasurePerformedDecoder(context);
-		return measurePerformedDecoder.decode(XmlUtils.stringToDom(xmlFragment));
+		QrdaDecoderEngine engine = new QrdaDecoderEngine(context);
+		return engine.decode(XmlUtils.stringToDom(xmlFragment));
 	}
 
 	private void assertValidMeasurePerformed(Node measurePerformedNode) {
