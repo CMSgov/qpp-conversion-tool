@@ -9,7 +9,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.cms.qpp.conversion.decode.QrdaXmlDecoder;
+import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -56,7 +57,7 @@ class MeasureDataRoundTripTest {
 
 	private void test(String type) throws Exception {
 		//setup
-		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(happy));
+		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(happy));
 		Node measure =  placeholder.findChildNode(n -> n.getValue(MEASURE_TYPE).equals(type));
 		String message = String.format("Should have a %s measure", type);
 

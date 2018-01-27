@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 import java.util.function.Consumer;
 
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
  * Decoder to parse Reporting Parameters Act - CMS (V2).
  */
 @Decoder(TemplateId.REPORTING_PARAMETERS_ACT)
-public class ReportingParametersActDecoder extends QrdaXmlDecoder {
+public class ReportingParametersActDecoder extends QrdaDecoder {
 
 	public static final String PERFORMANCE_START = "performanceStart";
 	public static final String PERFORMANCE_END = "performanceEnd";
@@ -33,7 +34,7 @@ public class ReportingParametersActDecoder extends QrdaXmlDecoder {
 	 * @return Finished parsing tree result
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setPerformanceTimeRangeOnNode(element, thisNode);
 		return DecodeResult.TREE_FINISHED;
 	}

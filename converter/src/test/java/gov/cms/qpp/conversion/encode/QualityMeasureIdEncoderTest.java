@@ -21,6 +21,7 @@ class QualityMeasureIdEncoderTest {
 	private Node numeratorNode;
 	private Node denominatorNode;
 	private Node aggregateCountNode;
+	private Node paymentNode;
 	private JsonWrapper wrapper;
 	private QualityMeasureIdEncoder encoder;
 	private String type = "type";
@@ -34,6 +35,9 @@ class QualityMeasureIdEncoderTest {
 		aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
 
+		paymentNode = new Node(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
+		paymentNode.putValue("place", "holder");
+
 		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		populationNode.putValue(type, SubPopulations.IPOP);
 		populationNode.addChildNode(aggregateCountNode);
@@ -45,9 +49,11 @@ class QualityMeasureIdEncoderTest {
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		numeratorNode.putValue(type, SubPopulations.NUMER);
 		numeratorNode.addChildNode(aggregateCountNode);
+		numeratorNode.addChildNode(paymentNode);
 
 		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		denominatorNode.putValue(type, SubPopulations.DENOM);
+		denominatorNode.addChildNode(paymentNode);
 		denominatorNode.addChildNode(aggregateCountNode);
 
 		encoder = new QualityMeasureIdEncoder(new Context());

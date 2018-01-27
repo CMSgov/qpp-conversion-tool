@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 import java.util.Set;
 import java.util.function.Consumer;
@@ -17,7 +18,7 @@ import java.util.stream.Stream;
  * Decoder for CMS V2 Measure Data eCQM
  */
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
-public class MeasureDataDecoder extends QrdaXmlDecoder {
+public class MeasureDataDecoder extends QrdaDecoder {
 
 	protected static final Set<String> MEASURES = Stream.of("IPP", "IPOP", "DENEX", "DENOM", "DENEXCEP", "NUMER")
 			.collect(Collectors.toSet());
@@ -37,7 +38,7 @@ public class MeasureDataDecoder extends QrdaXmlDecoder {
 	 * @return DecodeResult
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setMeasure(element, thisNode);
 		setPopulationId(element, thisNode);
 		return thisNode.hasValue(MEASURE_TYPE) ? DecodeResult.TREE_CONTINUE : DecodeResult.TREE_ESCAPED;

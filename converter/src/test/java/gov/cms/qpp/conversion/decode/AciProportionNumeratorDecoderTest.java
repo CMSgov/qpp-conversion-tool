@@ -1,9 +1,10 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Node;
 import org.jdom2.Element;
 import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Node;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -17,7 +18,7 @@ class AciProportionNumeratorDecoderTest {
 		Node node = new Node();
 
 		AciProportionNumeratorDecoder aciProportionNumeratorDecoder = new AciProportionNumeratorDecoder(new Context());
-		DecodeResult decodeResult = aciProportionNumeratorDecoder.internalDecode(element, node);
+		DecodeResult decodeResult = aciProportionNumeratorDecoder.decode(element, node);
 
 		assertThat(decodeResult)
 				.isEqualTo(DecodeResult.TREE_CONTINUE);

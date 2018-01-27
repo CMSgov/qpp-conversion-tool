@@ -1,17 +1,18 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import java.io.IOException;
-import org.jdom2.Element;
-import org.jdom2.Namespace;
-import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import java.io.IOException;
+
 import static com.google.common.truth.Truth.assertThat;
 
 class AciMeasurePerformedRnRDecoderTest {
@@ -40,10 +41,10 @@ class AciMeasurePerformedRnRDecoderTest {
 
 		Node aciMeasurePerformedNode = new Node();
 
-		objectUnderTest.setNamespace(element, objectUnderTest);
+		objectUnderTest.setNamespace(element.getNamespace());
 
 		//execute
-		DecodeResult decodeResult = objectUnderTest.internalDecode(element, aciMeasurePerformedNode);
+		DecodeResult decodeResult = objectUnderTest.decode(element, aciMeasurePerformedNode);
 
 		//assert
 		assertThat(decodeResult)
@@ -57,7 +58,7 @@ class AciMeasurePerformedRnRDecoderTest {
 	void testUpperLevel() throws XmlException, IOException {
 		String needsFormattingXml = TestHelper.getFixture("AciMeasurePerformedIsolated.xml");
 		String xml = String.format(needsFormattingXml, MEASURE_ID);
-		Node wrapperNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xml));
+		Node wrapperNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xml));
 		Node aciMeasurePerformedNode = wrapperNode.getChildNodes().get(0);
 
 		String actualMeasureId = aciMeasurePerformedNode.getValue("measureId");
