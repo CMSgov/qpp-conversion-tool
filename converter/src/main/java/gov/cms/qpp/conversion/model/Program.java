@@ -45,7 +45,7 @@ public enum Program {
 	 * @return
 	 */
 	public static Program extractProgram(Node node) {
-		return Program.getInstance(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
+		return Program.getInstance(node.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME));
 	}
 
 	/**
@@ -68,6 +68,8 @@ public enum Program {
 	 * @return A {@link Set} of the aliases.
 	 */
 	public static Set<String> setOfAliases() {
-		return Arrays.stream(Program.values()).flatMap(program -> program.aliases.stream()).collect(Collectors.toCollection(HashSet::new));
+		return Arrays.stream(Program.values())
+			.flatMap(program -> program.aliases.stream())
+			.collect(Collectors.toCollection(HashSet::new));
 	}
 }

@@ -51,43 +51,50 @@ class ProgramTest implements EnumContract {
 	@Test
 	void testIsCpcPlusForNullStringIsFalse() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, null);
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, null);
 		assertThat(Program.isCpc(node)).isFalse();
 	}
 
 	@Test
 	void testIsCpcPlusForRandomStringIsFalse() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "some fake mock value");
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "some fake mock value");
 		assertThat(Program.isCpc(node)).isFalse();
 	}
 
 	@Test
 	void testIsCpcPlusForMipsIsFalse() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "MIPS");
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
 		assertThat(Program.isCpc(node)).isFalse();
 	}
 
 	@Test
 	void testIsCpcPlusForCpcplusUppercaseIsTrue() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "CPCPLUS");
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "CPCPLUS");
 		assertThat(Program.isCpc(node)).isTrue();
 	}
 
 	@Test
 	void testIsCpcPlusForCpcplusLowercaseIsTrue() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "cpcplus");
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "cpcplus");
 		assertThat(Program.isCpc(node)).isTrue();
 	}
 
 	@Test
 	void testIsCpcPlusForCpcplusMixedCaseIsTrue() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "cPcPlUs");
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "cPcPlUs");
 		assertThat(Program.isCpc(node)).isTrue();
+	}
+
+	@Test
+	void testExtractProgramForMips() {
+		Node node = new Node();
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "MIPS_INDIV");
+		assertThat(Program.extractProgram(node)).isEqualTo(Program.MIPS);
 	}
 
 	@Test

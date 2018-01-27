@@ -1,7 +1,5 @@
 package gov.cms.qpp.conversion.api.helper;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,6 +12,8 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.test.enums.EnumContract;
 import gov.cms.qpp.test.helper.HelperContract;
+
+import static com.google.common.truth.Truth.assertThat;
 
 class MetadataHelperTest implements HelperContract {
 
@@ -42,7 +42,7 @@ class MetadataHelperTest implements HelperContract {
 	@Test
 	void testExtractsCpcProgramType() {
 		Node node = new Node();
-		node.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "CPCPLUS");
+		node.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "CPCPLUS");
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);
 		assertThat(metadata.getCpc()).startsWith(Constants.CPC_DYNAMO_PARTITION_START);
@@ -53,7 +53,7 @@ class MetadataHelperTest implements HelperContract {
 		Node node = new Node();
 		Node child = new Node();
 		child.setType(TemplateId.CLINICAL_DOCUMENT);
-		child.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, "CPCPLUS");
+		child.putValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME, "CPCPLUS");
 		node.addChildNode(child);
 
 		Metadata metadata = MetadataHelper.generateMetadata(node, MetadataHelper.Outcome.SUCCESS);

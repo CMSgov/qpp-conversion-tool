@@ -22,6 +22,7 @@ public class ClinicalDocumentDecoder extends QrdaXmlDecoder {
 	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
 	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
 	public static final String PROGRAM_NAME = "programName";
+	public static final String RAW_PROGRAM_NAME = "rawProgramName";
 	public static final String ENTITY_TYPE = "entityType";
 	public static final String MIPS_PROGRAM_NAME = "mips";
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
@@ -96,9 +97,10 @@ public class ClinicalDocumentDecoder extends QrdaXmlDecoder {
 			String[] nameEntityPair = getProgramNameEntityPair(p.getValue());
 			thisNode.putValue(PROGRAM_NAME, nameEntityPair[0], false);
 			thisNode.putValue(ENTITY_TYPE, nameEntityPair[1], false);
-			context.setProgram(Program.getInstance(p.getValue()));
+			thisNode.putValue(RAW_PROGRAM_NAME, p.getValue(), false);
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
+		context.setProgram(Program.extractProgram(thisNode));
 	}
 
 	/**
