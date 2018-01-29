@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.model;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import gov.cms.qpp.conversion.util.EnvironmentHelper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,11 @@ import gov.cms.qpp.conversion.model.TemplateId.Extension;
 import gov.cms.qpp.test.enums.EnumContract;
 
 class TemplateIdTest implements EnumContract {
+
+	@AfterEach
+	void cleanUp() {
+		System.clearProperty(Extension.STRICT_EXTENSION);
+	}
 
 	@Test
 	void testRoot() {
@@ -62,9 +69,18 @@ class TemplateIdTest implements EnumContract {
 	}
 
 	@Test
-	void testFindByTypeId2NotExist() {
+	void testFindWithInvalidExtensionNoExtensionEnforcement() {
 		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
 				"nonExistingExtension", new Context());
+
+		assertThat(actual).isSameAs(TemplateId.CLINICAL_DOCUMENT);
+	}
+
+	@Test
+	void testFindWithInvalidExtensionWithExtensionEnforcement() {
+		System.setProperty(Extension.STRICT_EXTENSION, "yep");
+		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
+			"nonExistingExtension", new Context());
 
 		assertThat(actual).isSameAs(TemplateId.DEFAULT);
 	}
