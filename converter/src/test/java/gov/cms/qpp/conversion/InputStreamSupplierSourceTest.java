@@ -20,7 +20,7 @@ import com.google.common.base.Supplier;
 class InputStreamSupplierSourceTest extends SourceTestSuite {
 
 	private static InputStreamSupplierSource source(String path) throws IOException {
-		return new InputStreamSupplierSource(path, () -> stream(path), Files.size(Paths.get(path)));
+		return new InputStreamSupplierSource(path, stream(path));
 	}
 
 	private static InputStream stream(String path) {
@@ -45,7 +45,7 @@ class InputStreamSupplierSourceTest extends SourceTestSuite {
 	@Test
 	void testSpecificSize() {
 		long size = 26;
-		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", () -> new ByteArrayInputStream("Moof".getBytes()), size);
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream("Moof".getBytes()));
 
 		assertThat(source.getSize()).isEqualTo(size);
 	}
@@ -53,15 +53,8 @@ class InputStreamSupplierSourceTest extends SourceTestSuite {
 	@Test
 	void testUnspecifiedSize() {
 		byte [] bytes = "Moof".getBytes();
-		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", () -> new ByteArrayInputStream(bytes));
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(bytes));
 
 		assertThat(source.getSize()).isEqualTo(bytes.length);
-	}
-
-	@Test
-	void testSupplierThrowsIOException() {
-		Supplier<InputStream> mock = Mockito.mock(Supplier.class);
-		Mockito.when(mock.get()).thenThrow(IOException.class);
-		Assertions.assertThrows(UncheckedIOException.class, () -> new InputStreamSupplierSource("mock name", mock));
 	}
 }

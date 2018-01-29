@@ -8,14 +8,17 @@ import gov.cms.qpp.conversion.api.helper.MetadataHelper;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper.Outcome;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Service;
+import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
 
 import java.io.InputStream;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
 
 /**
  * Service for storing {@link Metadata} by {@link Converter.ConversionReport} outcome
@@ -157,7 +160,8 @@ public class AuditServiceImpl implements AuditService {
 	 */
 	private CompletableFuture<String> storeContent(Source sourceToStore) {
 		UUID key = UUID.randomUUID();
-		return storageService.store(key.toString(), sourceToStore.toInputStream(), sourceToStore.getSize());
+		Supplier<InputStream> stream = MeasuredInputStreamSupplier.terminallyTransformInputStream(sourceToStore.toInputStream());
+		return storageService.store(key.toString(), stream, sourceToStore.getSize());
 	}
 
 	/**

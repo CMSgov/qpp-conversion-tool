@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.services;
 
-
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
@@ -34,7 +33,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({MetadataHelper.class})
 public class AuditServiceImplTest {
@@ -58,7 +56,7 @@ public class AuditServiceImplTest {
 
 	private Metadata metadata;
 	private String content = "Hello";
-	private Source fileContentSource = new InputStreamSupplierSource(FILENAME, () -> new ByteArrayInputStream(content.getBytes()), content.getBytes().length);
+	private Source fileContentSource = new InputStreamSupplierSource(FILENAME, new ByteArrayInputStream(content.getBytes()));
 
 	@Before
 	public void before() {
@@ -102,7 +100,7 @@ public class AuditServiceImplTest {
 		allGood();
 		underTest.success(report);
 
-		verify(storageService, times(0)).store(any(String.class), any(InputStream.class), anyLong());
+		verify(storageService, times(0)).store(any(String.class), any(), anyLong());
 		verify(dbService, times(0)).write(metadata);
 	}
 
@@ -153,7 +151,7 @@ public class AuditServiceImplTest {
 		allGood();
 		underTest.failConversion(report);
 
-		verify(storageService, times(0)).store(any(String.class), any(InputStream.class), anyLong());
+		verify(storageService, times(0)).store(any(String.class), any(), anyLong());
 		verify(dbService, times(0)).write(metadata);
 	}
 
@@ -179,7 +177,7 @@ public class AuditServiceImplTest {
 		allGood();
 		underTest.failValidation(report);
 
-		verify(storageService, times(0)).store(any(String.class), any(InputStream.class), anyLong());
+		verify(storageService, times(0)).store(any(String.class), any(), anyLong());
 		verify(dbService, times(0)).write(metadata);
 	}
 
@@ -208,12 +206,12 @@ public class AuditServiceImplTest {
 	}
 
 	private void allGood() {
-		when(storageService.store(any(String.class), any(InputStream.class), anyLong()))
+		when(storageService.store(any(String.class), any(), anyLong()))
 				.thenReturn(CompletableFuture.completedFuture(AN_ID));
 	}
 
 	private void problematic() {
-		when(storageService.store(any(String.class), any(InputStream.class), anyLong()))
+		when(storageService.store(any(String.class), any(), anyLong()))
 				.thenReturn(CompletableFuture.supplyAsync( () -> {
 					throw new UncheckedInterruptedException(new InterruptedException());
 				}));

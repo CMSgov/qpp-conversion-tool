@@ -23,9 +23,9 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @ExtendWith(MockitoExtension.class)
 class QrdaServiceImplTest {
 	private static final Source MOCK_SUCCESS_QRDA_SOURCE =
-			new InputStreamSupplierSource("Good Qrda", () -> new ByteArrayInputStream("Good Qrda".getBytes()));
+			new InputStreamSupplierSource("Good Qrda", new ByteArrayInputStream("Good Qrda".getBytes()));
 	private static final Source MOCK_ERROR_QRDA_SOURCE =
-			new InputStreamSupplierSource("Error Qrda", () ->new ByteArrayInputStream("Error Qrda".getBytes()));
+			new InputStreamSupplierSource("Error Qrda", new ByteArrayInputStream("Error Qrda".getBytes()));
 
 	private static final String KEY = "key";
 	private static final String MOCK_SUCCESS_QPP_STRING = "Good Qpp";

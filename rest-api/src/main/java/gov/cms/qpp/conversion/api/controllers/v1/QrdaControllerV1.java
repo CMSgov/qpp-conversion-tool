@@ -65,7 +65,7 @@ public class QrdaControllerV1 {
 		API_LOG.info("Conversion request received");
 
 		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
-				new InputStreamSupplierSource(originalFilename, inputStreamSupplier(file), file.getSize()));
+				new InputStreamSupplierSource(originalFilename, inputStreamSupplier(file)));
 
 		validationService.validateQpp(conversionReport);
 
@@ -85,13 +85,11 @@ public class QrdaControllerV1 {
 	 * @param file the attachment
 	 * @return a supplier that wraps the attachment's input stream retrieval
 	 */
-	Supplier<InputStream> inputStreamSupplier(MultipartFile file) {
-		return () -> {
-			try {
-				return file.getInputStream();
-			} catch (IOException ex) {
-				throw new UncheckedIOException(ex);
-			}
-		};
+	InputStream inputStreamSupplier(MultipartFile file) {
+		try {
+			return file.getInputStream();
+		} catch (IOException ex) {
+			throw new UncheckedIOException(ex);
+		}
 	}
 }

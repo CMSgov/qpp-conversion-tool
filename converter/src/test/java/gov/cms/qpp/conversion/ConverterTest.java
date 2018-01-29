@@ -71,7 +71,7 @@ public class ConverterTest {
 	public void testValidQppStream() throws IOException {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Converter converter = new Converter(
-				new InputStreamSupplierSource(path.toString(), () -> XmlUtils.fileToStream(path), Files.size(path)));
+				new InputStreamSupplierSource(path.toString(), XmlUtils.fileToStream(path)));
 
 		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
