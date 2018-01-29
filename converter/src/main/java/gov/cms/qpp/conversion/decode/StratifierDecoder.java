@@ -1,13 +1,14 @@
 package gov.cms.qpp.conversion.decode;
 
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 import java.util.function.Consumer;
 
@@ -15,7 +16,7 @@ import java.util.function.Consumer;
  * Decoder for Quality Measure Stratifiers
  */
 @Decoder(TemplateId.REPORTING_STRATUM_CMS)
-public class StratifierDecoder extends QrdaXmlDecoder {
+public class StratifierDecoder extends QrdaDecoder {
 
 	public static final String STRATIFIER_ID = "populationId";
 
@@ -31,7 +32,7 @@ public class StratifierDecoder extends QrdaXmlDecoder {
 	 * @return cue to caller about how to proceed after this node of the xml document is decoded
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setStratifierId(element, thisNode);
 		return DecodeResult.TREE_FINISHED;
 	}

@@ -1,13 +1,14 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 import java.util.function.Consumer;
 
@@ -15,7 +16,7 @@ import java.util.function.Consumer;
  * Decoder to parse the root element of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
 @Decoder(TemplateId.CLINICAL_DOCUMENT)
-public class ClinicalDocumentDecoder extends QrdaXmlDecoder {
+public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 	/*  Constants for lookups and tests */
 	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
@@ -45,14 +46,13 @@ public class ClinicalDocumentDecoder extends QrdaXmlDecoder {
 	 * @return DecodeResult.TreeFinished thisNode gets the newly parsed xml fragment
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setProgramNameOnNode(element, thisNode);
 		setEntityIdOnNode(element, thisNode);
 		setPracticeSiteAddress(element, thisNode);
 		setNationalProviderIdOnNode(element, thisNode);
 		setTaxProviderTaxIdOnNode(element, thisNode);
-		processComponentElement(element, thisNode);
-		return DecodeResult.TREE_FINISHED;
+		return DecodeResult.TREE_CONTINUE;
 	}
 
 	/**
@@ -125,17 +125,6 @@ public class ClinicalDocumentDecoder extends QrdaXmlDecoder {
 						p.getValue());
 		setOnNode(element, getXpath(TAX_PAYER_IDENTIFICATION_NUMBER),
 				consumer, Filters.attribute(), true);
-	}
-
-	/**
-	 * Continues decoding the elements that are children of Clinical Document.
-	 *
-	 * @param element Xml fragment being parsed.
-	 * @param thisNode The output internal representation of the document
-	 */
-	private void processComponentElement(Element element, Node thisNode) {
-		Consumer<Element> consumer = p -> this.decode(p, thisNode);
-		setOnNode(element, getXpath("components"), consumer, Filters.element(), false);
 	}
 
 	/**

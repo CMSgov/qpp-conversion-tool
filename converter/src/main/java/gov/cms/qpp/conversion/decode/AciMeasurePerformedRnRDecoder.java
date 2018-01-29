@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 import java.util.function.Consumer;
 
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
  * Decoder to parse an ACI Measure Performed Reference and Results.
  */
 @Decoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
-public class AciMeasurePerformedRnRDecoder extends QrdaXmlDecoder {
+public class AciMeasurePerformedRnRDecoder extends QrdaDecoder {
 
 	public static final String MEASURE_ID = "measureId";
 
@@ -30,7 +31,7 @@ public class AciMeasurePerformedRnRDecoder extends QrdaXmlDecoder {
 	 * @return {@code DecodeResult.TREE_CONTINUE}
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setMeasureIdOnNode(element, thisNode);
 		return DecodeResult.TREE_CONTINUE;
 	}

@@ -1,6 +1,13 @@
 package gov.cms.qpp.conversion.decode.placeholder;
 
-import static com.google.common.truth.Truth.assertThat;
+import com.google.common.truth.Truth;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -9,15 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import gov.cms.qpp.conversion.decode.QrdaXmlDecoder;
-import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Test;
-
-import com.google.common.truth.Truth;
-
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.xml.XmlUtils;
+import static com.google.common.truth.Truth.assertThat;
 
 class DefaultDecoderTest {
 
@@ -26,7 +25,7 @@ class DefaultDecoderTest {
 		InputStream stream = XmlUtils.fileToStream(Paths.get("../qrda-files/valid-QRDA-III.xml"));
 		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
-		Node node = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node node = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertThat(node).isNotNull();
 	}
@@ -35,7 +34,7 @@ class DefaultDecoderTest {
 	void testInternalDecode() {
 		DefaultDecoder decoder = new DefaultDecoder(new Context(), "mock");
 		Node node = new Node();
-		decoder.internalDecode(null, node);
+		decoder.decode(null, node);
 		Truth.assertThat(node.getValue("DefaultDecoderFor")).isEqualTo("mock");
 	}
 

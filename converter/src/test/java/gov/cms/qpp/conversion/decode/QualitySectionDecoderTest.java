@@ -1,11 +1,12 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.jdom2.Element;
-import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -27,7 +28,7 @@ class QualitySectionDecoderTest {
 		Node node = new Node();
 
 		QualitySectionDecoder sectionDecoder = new QualitySectionDecoder(new Context());
-		sectionDecoder.internalDecode(element, node);
+		sectionDecoder.decode(element, node);
 
 		assertThat(node.getValue("category"))
 				.isEqualTo("quality");

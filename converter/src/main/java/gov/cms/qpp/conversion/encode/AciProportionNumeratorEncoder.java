@@ -5,8 +5,6 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
-import java.util.List;
-
 /**
  * Encoder to serialize numerator data from a Numerator/Denominator Type Measure.
  */
@@ -29,10 +27,10 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 
-		List<Node> children = node.getChildNodes();
+		Node aciNumeratorNode = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 
-		if (!children.isEmpty()) {
-			JsonWrapper numerator = encodeChild(children.get(0));
+		if (aciNumeratorNode != null) {
+			JsonWrapper numerator = encodeChild(aciNumeratorNode);
 
 			if (null != numerator.getInteger(VALUE)) {
 				wrapper.putObject(ENCODE_LABEL, numerator.getInteger(VALUE));
