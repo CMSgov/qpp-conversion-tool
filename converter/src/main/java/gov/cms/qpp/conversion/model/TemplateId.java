@@ -55,7 +55,7 @@ public enum TemplateId {
 
 		private final String value;
 
-		private Extension(String value) {
+		Extension(String value) {
 			this.value = value;
 		}
 
