@@ -29,7 +29,7 @@ public class AttachmentHashPartConverter extends ClassicConverter {
 
 		try {
 			hashPart = getHashPart();
-		} catch (IOException | ServletException e) {
+		} catch (Exception e) {
 			DEV_LOG.trace("No part to associate with log output.", e);
 		}
 
