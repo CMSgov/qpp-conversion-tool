@@ -44,10 +44,10 @@ class InputStreamSupplierSourceTest extends SourceTestSuite {
 
 	@Test
 	void testSpecificSize() {
-		long size = 26;
-		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream("Moof".getBytes()));
+		String text = "mock";
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()));
 
-		assertThat(source.getSize()).isEqualTo(size);
+		assertThat(source.getSize()).isEqualTo(text.length());
 	}
 
 	@Test
