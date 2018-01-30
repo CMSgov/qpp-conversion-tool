@@ -10,6 +10,7 @@ import java.util.List;
  * that a conversion takes.
  */
 public class SpeedTest {
+	private static final int TESTS_FOR_WARMUP = 1000;
 	private static final int SETS_PER_SUITE = 10;
 	private static final int TESTS_PER_SET = 20;
 	private static final PathSource FILE_TO_CONVERT = new PathSource(Paths.get("./qrda-files/valid-QRDA-III-latest.xml"));
@@ -18,9 +19,11 @@ public class SpeedTest {
 	 * Run the speed suite and out the results.
 	 *
 	 * @param args Arguments passed to the program.
-	 * @throws InterruptedException When sleeping for one second is interrupted.
 	 */
-	public static void main(String... args) throws InterruptedException {
+	public static void main(String... args) {
+		System.out.println("Warming-up");
+		multipleTests(TESTS_FOR_WARMUP);
+		System.out.println("Finished warming-up");
 		System.out.println("Average of averages=" + testSuite());
 	}
 
@@ -28,14 +31,12 @@ public class SpeedTest {
 	 * Run multiple sets of conversions.
 	 *
 	 * @return The average of the averages.
-	 * @throws InterruptedException When sleeping for one second is interrupted.
 	 */
-	private static Double testSuite() throws InterruptedException {
+	private static Double testSuite() {
 		List<Double> testSuite = Lists.newArrayList();
 
 		for (int lcv = 0; lcv < SETS_PER_SUITE; lcv++) {
 			testSuite.add(testSet());
-			Thread.sleep(1000);
 		}
 
 		return testSuite.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
@@ -47,15 +48,19 @@ public class SpeedTest {
 	 * @return The average of all of the conversions.
 	 */
 	private static Double testSet() {
+		List<Long> testSet = multipleTests(TESTS_PER_SET);
+
+		return testSet.stream().mapToLong(Long::longValue).average().getAsDouble();
+	}
+
+	private static List<Long> multipleTests(int numberOfTests) {
 		List<Long> testSet = Lists.newArrayList();
 
-		for (int lcv = 0; lcv < TESTS_PER_SET + 1; lcv++) {
+		for (int lcv = 0; lcv < numberOfTests; lcv++) {
 			testSet.add(individualTest());
 		}
 
-		testSet.remove(0);
-
-		return testSet.stream().mapToLong(Long::longValue).average().getAsDouble();
+		return testSet;
 	}
 
 	/**
