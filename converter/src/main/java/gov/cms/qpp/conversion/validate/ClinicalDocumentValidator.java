@@ -2,9 +2,14 @@ package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
+import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.util.StringHelper;
+
+import java.util.Optional;
 
 /**
  * Validates the Clinical Document.
@@ -12,6 +17,7 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 @Validator(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentValidator extends NodeValidator {
 
+	protected static final String VALID_PROGRAM_NAMES = StringHelper.join(Program.setOfAliases(), ", ", "or ");
 	/**
 	 * Validates a single Clinical Document Node.
 	 * Validates the following.
@@ -28,6 +34,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
+
 		thoroughlyCheck(node)
 			.childMinimum(ErrorCode.CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD, 1, 
 					TemplateId.ACI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)
@@ -38,9 +45,14 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			.childMaximum(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS, 1, 
 					TemplateId.MEASURE_SECTION_V2)
 			.singleValue(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME, 
-					ClinicalDocumentDecoder.PROGRAM_NAME)
-			.valueIn(ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME, 
-					ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
+					ClinicalDocumentDecoder.PROGRAM_NAME);
+
+		if (!getDetails().contains(Detail.forErrorAndNode(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME, node))) {
+			String programName = Optional.ofNullable(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)).orElse("<missing>");
+
+			thoroughlyCheck(node).valueIn(ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME.format(programName, VALID_PROGRAM_NAMES),
+				ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
 				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+		}
 	}
 }

@@ -24,6 +24,9 @@ import cloud.localstack.TestUtils;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.CreateBucketRequest;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import net.jodah.concurrentunit.Waiter;
 import org.apache.commons.io.IOUtils;
@@ -63,11 +66,11 @@ public class StorageServiceImplIntegrationTest {
 	private StorageServiceImpl underTest;
 
 	private String bucketName = "test-bucket";
+	private String kmsKey = "test-key";
 	private AmazonS3 amazonS3Client;
 
 	@Before
-	public void setup() throws IllegalAccessException, NoSuchFieldException {
-
+	public void setup() throws Exception {
 		Assume.assumeTrue(System.getProperty("skip.long") == null);
 		TestUtils.disableSslCertChecking();
 
@@ -77,7 +80,10 @@ public class StorageServiceImplIntegrationTest {
 						LocalstackTestRunner.getDefaultRegion()))
 				.withChunkedEncodingDisabled(true)
 				.withPathStyleAccessEnabled(true).build();
-		amazonS3Client.createBucket(bucketName);
+		CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName)
+			.withCannedAcl(CannedAccessControlList.PublicReadWrite);
+
+		amazonS3Client.createBucket(createBucketRequest);
 
 		S3Config config = new S3Config();
 
@@ -97,6 +103,7 @@ public class StorageServiceImplIntegrationTest {
 		final Waiter waiter = new Waiter();
 
 		when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
+		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(kmsKey);
 
 		MeasuredInputStreamSupplier source = MeasuredInputStreamSupplier.terminallyTransformInputStream(new ByteArrayInputStream(content.getBytes()));
 		CompletableFuture<String> result = underTest.store(key, source, source.size());
@@ -110,7 +117,8 @@ public class StorageServiceImplIntegrationTest {
 	}
 
 	private String getObjectContent(String key) {
-		S3Object stored = amazonS3Client.getObject(bucketName, key);
+		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, key);
+		S3Object stored = amazonS3Client.getObject(getObjectRequest);
 
 		try {
 			return IOUtils.toString(stored.getObjectContent(), "UTF-8");
