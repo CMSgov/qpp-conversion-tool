@@ -1,17 +1,17 @@
 package gov.cms.qpp.conversion.decode.placeholder;
 
-import java.util.Iterator;
-
-import gov.cms.qpp.conversion.decode.QrdaXmlDecoder;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.DecodeResult;
+import gov.cms.qpp.conversion.decode.QrdaDecoder;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+
+import java.util.Iterator;
 
 /**
  * Decoder used to "fill-in" decoders where none have been implemented.
@@ -20,7 +20,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * away.
  *
  */
-public class DefaultDecoder extends QrdaXmlDecoder {
+public class DefaultDecoder extends QrdaDecoder {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(DefaultDecoder.class);
 
@@ -33,7 +33,7 @@ public class DefaultDecoder extends QrdaXmlDecoder {
 	}
 
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisnode) {
+	protected DecodeResult decode(Element element, Node thisnode) {
 		DEV_LOG.debug("Default decoder {} is handling templateId {} and is described as '{}' ",
 				getClass(), thisnode.getType().name(), description);
 		thisnode.putValue("DefaultDecoderFor", description);

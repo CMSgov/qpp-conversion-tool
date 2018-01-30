@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 import java.util.function.Consumer;
 
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
  * Decoder to parse Improvement Activity Section.
  */
 @Decoder(TemplateId.MEASURE_PERFORMED)
-public class MeasurePerformedDecoder extends QrdaXmlDecoder {
+public class MeasurePerformedDecoder extends QrdaDecoder {
 
 	public MeasurePerformedDecoder(Context context) {
 		super(context);
@@ -28,7 +29,7 @@ public class MeasurePerformedDecoder extends QrdaXmlDecoder {
 	 * @return
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setMeasurePerformedOnNode(element, thisNode);
 		return DecodeResult.TREE_FINISHED;
 	}

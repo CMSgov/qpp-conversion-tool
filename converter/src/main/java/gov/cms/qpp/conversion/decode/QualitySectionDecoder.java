@@ -1,16 +1,17 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Element;
 
 /**
  * Decoder to read XML Data for an Quality Section (eCQM).
  */
 @Decoder(TemplateId.MEASURE_SECTION_V2)
-public class QualitySectionDecoder extends QrdaXmlDecoder {
+public class QualitySectionDecoder extends QrdaDecoder {
 
 	public static final String CATEGORY = "category";
 
@@ -26,7 +27,7 @@ public class QualitySectionDecoder extends QrdaXmlDecoder {
 	 * @return {@code DecodeResult.TREE_CONTINUE} to continue down the parsed XML
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		thisNode.putValue(CATEGORY, "quality");
 		return DecodeResult.TREE_CONTINUE;
 	}
