@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
  * Used to store an {@link InputStream} in S3.
  */
 @Service
-public class StorageServiceImpl extends AnyOrderActionService<PutObjectRequest, String>
+public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObjectRequest>, String>
 		implements StorageService {
 	private static final Logger API_LOG = LoggerFactory.getLogger(StorageServiceImpl.class);
 
@@ -60,7 +60,7 @@ public class StorageServiceImpl extends AnyOrderActionService<PutObjectRequest, 
 		ObjectMetadata s3ObjectMetadata = new ObjectMetadata();
 		s3ObjectMetadata.setContentLength(size);
 
-		PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, inStream.get(), s3ObjectMetadata)
+		Supplier<PutObjectRequest> putObjectRequest = () -> new PutObjectRequest(bucketName, keyName, inStream.get(), s3ObjectMetadata)
 			.withSSEAwsKeyManagementParams(new SSEAwsKeyManagementParams(kmsKey));
 
 		API_LOG.info("Writing object {} to S3 bucket {}", keyName, bucketName);
@@ -97,18 +97,19 @@ public class StorageServiceImpl extends AnyOrderActionService<PutObjectRequest, 
 	 * @return The object key in the bucket.
 	 */
 	@Override
-	protected String asynchronousAction(PutObjectRequest objectToActOn) {
+	protected String asynchronousAction(Supplier<PutObjectRequest> objectToActOn) {
 		String returnValue;
 
+		PutObjectRequest request = objectToActOn.get();
 		try {
-			Upload upload = s3TransferManager.upload(objectToActOn);
+			Upload upload = s3TransferManager.upload(request);
 			returnValue = upload.waitForUploadResult().getKey();
 		} catch (InterruptedException exception) {
 			Thread.currentThread().interrupt();
 			throw new UncheckedInterruptedException(exception);
 		}
 
-		API_LOG.info("Successfully wrote object {} to S3 bucket {}", returnValue, objectToActOn.getBucketName());
+		API_LOG.info("Successfully wrote object {} to S3 bucket {}", returnValue, request.getBucketName());
 
 		return returnValue;
 	}
