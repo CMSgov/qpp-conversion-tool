@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cms.qpp.conversion.decode.XmlInputDecoder;
+import gov.cms.qpp.conversion.decode.XmlDecoderEngine;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
@@ -109,7 +109,7 @@ public class Converter {
 	 */
 	private JsonWrapper transform(InputStream inStream) throws XmlException {
 		Element doc = XmlUtils.parseXmlStream(inStream);
-		decoded = XmlInputDecoder.decodeXml(context, doc);
+		decoded = XmlDecoderEngine.decodeXml(context, doc);
 		JsonWrapper qpp = null;
 		if (null != decoded) {
 			DEV_LOG.info("Decoded template ID {}", decoded.getType());

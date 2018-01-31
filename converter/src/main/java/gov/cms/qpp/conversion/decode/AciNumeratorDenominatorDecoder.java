@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 import java.util.function.Consumer;
 
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
  * Decoder to parse ACI Numerator Denominator Type Measure reference and results.
  */
 @Decoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
-public class AciNumeratorDenominatorDecoder extends QrdaXmlDecoder {
+public class AciNumeratorDenominatorDecoder extends QrdaDecoder {
 
 	private static final String MEASURE_ID = "measureId";
 
@@ -31,7 +32,7 @@ public class AciNumeratorDenominatorDecoder extends QrdaXmlDecoder {
 	 * @return DecodeResult
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setMeasureIdOnNode(element, thisNode);
 
 		return DecodeResult.TREE_CONTINUE;

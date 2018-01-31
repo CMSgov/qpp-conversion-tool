@@ -4,16 +4,17 @@
  */
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class AggregateCountDecoderTest {
 
@@ -73,9 +74,9 @@ class AggregateCountDecoderTest {
         Node thisNode = new Node();
 
         AggregateCountDecoder instance = new AggregateCountDecoder(context);
-        instance.setNamespace(element, instance);
+        instance.setNamespace(element.getNamespace());
 
-        instance.internalDecode(element, thisNode);
+        instance.decode(element, thisNode);
 
         assertThat(thisNode.getValue("aggregateCount"))
                 .isEqualTo("450");
@@ -84,7 +85,7 @@ class AggregateCountDecoderTest {
     @Test
     void testAggregateCountDecoderIgnoresInvalidElements() throws Exception {
 
-        Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
+        Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
         Node node = root.getChildNodes().get(0);
 
         assertThat(node.getChildNodes()).hasSize(1);
@@ -100,7 +101,7 @@ class AggregateCountDecoderTest {
     @Test
     void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws Exception {
 
-        Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(ANOTHER_XML_FRAGMENT));
+        Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(ANOTHER_XML_FRAGMENT));
 
         assertWithMessage("Node has aggregate count")
                 .that(root.getValue("aggregateCount"))

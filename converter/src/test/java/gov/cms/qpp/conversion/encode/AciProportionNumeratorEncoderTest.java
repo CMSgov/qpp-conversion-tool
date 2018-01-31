@@ -16,19 +16,18 @@ class AciProportionNumeratorEncoderTest {
 
 	private Node aciProportionNumeratorNode;
 	private Node numeratorDenominatorValueNode;
-	private List<Node> nodes;
 	private JsonWrapper jsonWrapper;
 
 	@BeforeEach
 	void createNode() {
+		Node ensureChildOrderIsNotProblematic = new Node(TemplateId.CLINICAL_DOCUMENT);
+
 		numeratorDenominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		numeratorDenominatorValueNode.putValue("aggregateCount", "600");
 
 		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
+		aciProportionNumeratorNode.addChildNode(ensureChildOrderIsNotProblematic);
 		aciProportionNumeratorNode.addChildNode(numeratorDenominatorValueNode);
-
-		nodes = new ArrayList<>();
-		nodes.add(aciProportionNumeratorNode);
 
 		jsonWrapper = new JsonWrapper();
 	}

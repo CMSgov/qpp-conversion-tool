@@ -7,7 +7,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 2 : The file is not a valid XML document
 * 3 : Unexpected exception occurred during conversion
 * 4 : Unexpected exception occured during encoding
-* 5 : The file is not a QRDA-III XML document
+* 5 : The file is not a QRDA-III XML document. Please ensure that the submission complies with the most recent implementation guide. https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=19
 * 6 : The measure reference results must have a single occurrence of the recognized measure GUID `(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?
 * 7 : The measure reference results must have at least one measure
 * 8 : A single aggregate count value is required
@@ -27,7 +27,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 22 : The ACI Section must have one Reporting Parameter ACT
 * 23 : Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child
 * 24 : Clinical Document must have one and only one program name
-* 25 : Clinical Document program name is not recognized
+* 25 : The Clinical Document program name `(program name)` is not recognized. Valid program names are `(list of valid program names)`.
 * 26 : Clinical Document contains duplicate ACI sections
 * 27 : Clinical Document contains duplicate IA sections
 * 28 : Clinical Document contains duplicate eCQN sections

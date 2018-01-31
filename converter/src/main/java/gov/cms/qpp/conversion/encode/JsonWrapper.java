@@ -34,6 +34,7 @@ import java.util.stream.Stream;
  * This class is a wrapper around a list/map impl.
  */
 public class JsonWrapper {
+	private static final String YYYYMMDD = "yyyyMMdd";
 	private static final String METADATA_HOLDER = "metadata_holder";
 	private ObjectWriter ow;
 	private Map<String, Object> object;
@@ -393,7 +394,8 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Validates that the given value conforms to expected date formatting (i.e. yyyyMMdd).
+	 * Validates that the given value conforms to an ISO date with or without separators.
+	 * It can include a time but is unnecessary.
 	 *
 	 * @param value to validate
 	 * @return valid date String
@@ -401,7 +403,12 @@ public class JsonWrapper {
 	 */
 	protected String validDate(String value) {
 		try {
-			LocalDate thisDate = LocalDate.parse(cleanString(value),  DateTimeFormatter.ofPattern("yyyyMMdd"));
+			String parse = cleanString(value);
+			parse = parse.replace("-", "").replace("/", "");
+			if (parse.length() > YYYYMMDD.length()) {
+				parse = parse.substring(0, YYYYMMDD.length());
+			}
+			LocalDate thisDate = LocalDate.parse(cleanString(parse),  DateTimeFormatter.BASIC_ISO_DATE);
 			return thisDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		} catch (Exception e) {
 			throw new EncodeException(value + " is not an date of format YYYYMMDD.", e);

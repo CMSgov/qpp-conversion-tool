@@ -42,7 +42,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 		JsonWrapper measurementSets =
 			encodeMeasurementSets(childMapByTemplateId);
-			wrapper.putObject(MEASUREMENT_SETS, measurementSets);
+		wrapper.putObject(MEASUREMENT_SETS, measurementSets);
 	}
 
 	/**

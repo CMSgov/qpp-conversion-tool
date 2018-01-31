@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
-import gov.cms.qpp.conversion.decode.QrdaXmlDecoder;
+import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.TestHelper;
@@ -31,7 +31,7 @@ class MeasureDataValidatorTest {
 	@Test
 	void internalValidateSingleNode() throws Exception {
 		String happy = TestHelper.getFixture("measureDataHappy.xml");
-		Node placeholder = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(happy));
+		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(happy));
 		MeasureDataValidator validator = new MeasureDataValidator();
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
