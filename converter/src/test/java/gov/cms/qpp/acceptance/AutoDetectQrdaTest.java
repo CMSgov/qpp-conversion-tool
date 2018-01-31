@@ -26,6 +26,7 @@ class AutoDetectQrdaTest implements LoggerContract {
 		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III"), StandardCharsets.UTF_8);
 
 		//execute
+		clearLogs();
 		XmlDecoderEngine.decodeXml(new Context(), XmlUtils.stringToDom(xmlFragment));
 
 		//assert
@@ -38,6 +39,7 @@ class AutoDetectQrdaTest implements LoggerContract {
 		String xmlFragment = IOUtils.toString(getStream("bogus-QDRA-III-root"), StandardCharsets.UTF_8);
 
 		//execute
+		clearLogs();
 		XmlDecoderEngine.decodeXml(new Context(), XmlUtils.stringToDom(xmlFragment));
 
 		//assert
