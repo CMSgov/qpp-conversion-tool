@@ -1,13 +1,6 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import gov.cms.qpp.test.helper.JsonTestHelper;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,6 +11,14 @@ import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 public class ConversionFileWriterWrapperTest {
@@ -100,7 +101,7 @@ public class ConversionFileWriterWrapperTest {
 		converterWrapper.transform();
 
 		//then
-		String sourceId = JsonHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file.err.json"),
+		String sourceId = JsonTestHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file.err.json"),
 				"$.errors[0].sourceIdentifier", String.class);
 
 		assertThat(sourceId)
@@ -116,7 +117,7 @@ public class ConversionFileWriterWrapperTest {
 		//when
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 		converterWrapper.transform();
-		Map<String, String> detail = JsonHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file.err.json"),
+		Map<String, String> detail = JsonTestHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file.err.json"),
 				"$.errors[0].details[0]");
 
 		//then
@@ -136,12 +137,12 @@ public class ConversionFileWriterWrapperTest {
 		//when
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 		converterWrapper.transform();
-		Map<String, String> firstDetail = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
+		Map<String, String> firstDetail = JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
 				"$.errors[0].details[0]");
-		Map<String, String> secondDetail = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
+		Map<String, String> secondDetail = JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
 				"$.errors[0].details[1]");
 
-		List<Map<String, String>> details = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
+		List<Map<String, String>> details = JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
 				"$.errors[0].details");
 
 		//then
