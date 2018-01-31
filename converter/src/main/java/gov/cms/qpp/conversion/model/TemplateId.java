@@ -73,12 +73,15 @@ public enum TemplateId {
 					ROOT_AND_TO_TEMPLATE_ID.computeIfAbsent(templateId.root, ignore -> new HashMap<>());
 
 			extensionToTemplateId.put(templateId.extension.toString(), templateId);
-			extensionToTemplateId.putIfAbsent(null, templateId);
+			if (!templateId.alwaysStrict) {
+				extensionToTemplateId.putIfAbsent(null, templateId);
+			}
 		}
 	}
 
 	private final String root;
 	private final Extension extension;
+	private final boolean alwaysStrict;
 
 	/**
 	 * Constructs a TemplateId with just a root.
@@ -98,6 +101,7 @@ public enum TemplateId {
 	TemplateId(String root, Extension extension) {
 		this.root = root;
 		this.extension = extension;
+		this.alwaysStrict = this.name().equals("CLINICAL_DOCUMENT");
 	}
 
 	/**
@@ -138,7 +142,7 @@ public enum TemplateId {
 		} else if (context.isHistorical()) {
 			retrieved = extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
 		} else {
-			retrieved = EnvironmentHelper.isPresent(Extension.STRICT_EXTENSION) ?
+			retrieved = (CLINICAL_DOCUMENT.root.equals(root) || EnvironmentHelper.isPresent(Extension.STRICT_EXTENSION)) ?
 				extensionsToTemplateId.getOrDefault(extension, TemplateId.DEFAULT) :
 				extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
 		}
