@@ -169,14 +169,11 @@ public class ConverterTest {
 	}
 
 	@Test
-	@PrepareForTest({Converter.class, XmlUtils.class})
 	public void testUnexpectedError() {
+		Source source = mock(Source.class);
+		when(source.toInputStream()).thenThrow(Exception.class);
 
-		mockStatic(XmlUtils.class);
-		when(NioHelper.fileToStream(any(Path.class))).thenReturn(null);
-
-		Path path = Paths.get("../qrda-files/valid-QRDA-III.xml");
-		Converter converter = new Converter(new PathSource(path));
+		Converter converter = new Converter(source);
 
 		try {
 			converter.transform();
