@@ -19,6 +19,7 @@ class QrdaDecoderEngineTest {
 
 	private static final String TEMPLATE_ID = "templateId";
 	private static final String ROOT = "root";
+	private static final String EXTENSION = "extension";
 
 	private static Context context;
 
@@ -243,6 +244,7 @@ class QrdaDecoderEngineTest {
 		Element rootElement = createRootElement();
 		Element clinicalDocumentTemplateIdElement = new Element(TEMPLATE_ID);
 		clinicalDocumentTemplateIdElement.setAttribute(ROOT, TemplateId.CLINICAL_DOCUMENT.getRoot());
+		clinicalDocumentTemplateIdElement.setAttribute(EXTENSION, TemplateId.CLINICAL_DOCUMENT.getExtension());
 		rootElement.getParentElement().getChildren().add(clinicalDocumentTemplateIdElement);
 
 		QrdaDecoderEngine objectUnderTest = new QrdaDecoderEngine(context);
