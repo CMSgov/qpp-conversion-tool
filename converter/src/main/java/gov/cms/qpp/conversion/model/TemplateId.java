@@ -102,7 +102,7 @@ public enum TemplateId {
 	TemplateId(String root, Extension extension) {
 		this.root = root;
 		this.extension = extension;
-		this.alwaysStrict = this.name().equals("CLINICAL_DOCUMENT");
+		this.alwaysStrict = "CLINICAL_DOCUMENT".equals(this.name());
 	}
 
 	/**
@@ -136,7 +136,7 @@ public enum TemplateId {
 	 */
 	public static TemplateId getTemplateId(final String root, final String extension, final Context context) {
 		Map<String, TemplateId> extensionsToTemplateId = ROOT_AND_TO_TEMPLATE_ID.get(root);
-		Function<Boolean, TemplateId> templateIdFunction = (condition) -> condition ?
+		Function<Boolean, TemplateId> templateIdFunction = condition -> condition ?
 			extensionsToTemplateId.getOrDefault(extension, TemplateId.DEFAULT) :
 			extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
 		TemplateId retrieved = null;
