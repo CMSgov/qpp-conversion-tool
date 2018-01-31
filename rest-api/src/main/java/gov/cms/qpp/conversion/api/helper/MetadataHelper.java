@@ -106,7 +106,7 @@ public class MetadataHelper {
 			return true;
 		}
 
-		Node found = findPossibleChildNode(node, ClinicalDocumentDecoder.PROGRAM_NAME,
+		Node found = findPossibleChildNode(node, ClinicalDocumentDecoder.RAW_PROGRAM_NAME,
 						TemplateId.CLINICAL_DOCUMENT);
 
 		return found != null && Program.isCpc(found);

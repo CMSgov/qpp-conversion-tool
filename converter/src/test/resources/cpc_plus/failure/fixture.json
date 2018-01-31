@@ -144,6 +144,7 @@
 		"errorData": [
 			{
 				"errorCode": 25,
+				"subs": ["cpci", "[a-zA-Z, _]*"],
 				"occurrences": 1
 			}
 		]
