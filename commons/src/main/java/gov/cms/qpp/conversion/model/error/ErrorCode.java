@@ -128,7 +128,8 @@ public enum ErrorCode implements LocalizedError {
 			"`(Measure Id)`'s Sub-population `(Sub Population)`", true),
 	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` " +
 			"on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`", true),
-	CPC_PLUS_SUBMISSION_ENDED(68, "CPC+ Submission is after the end date `(Submission end date)`", true);
+	CPC_PLUS_SUBMISSION_ENDED(68, "CPC+ Submission is after the end date `(Submission end date)`", true),
+	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format", true);
 
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())

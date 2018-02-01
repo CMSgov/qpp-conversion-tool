@@ -12,11 +12,17 @@ public class ReportingParametersActValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-				.singleValue(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START, 
+				.singleValue(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START,
 						ReportingParametersActDecoder.PERFORMANCE_START)
-				.singleValue(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END, 
+				.singleValue(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END,
 						ReportingParametersActDecoder.PERFORMANCE_END)
-				.value(ErrorCode.REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR, 
-						ReportingParametersActDecoder.PERFORMANCE_YEAR);
+				.value(ErrorCode.REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR,
+						ReportingParametersActDecoder.PERFORMANCE_YEAR)
+				.isValidDate(ErrorCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(
+					node.getValue(ReportingParametersActDecoder.PERFORMANCE_START)),
+					ReportingParametersActDecoder.PERFORMANCE_START)
+				.isValidDate(ErrorCode.INVALID_PERFORMANCE_PERIOD_FORMAT.
+					format(node.getValue(ReportingParametersActDecoder.PERFORMANCE_END)),
+					ReportingParametersActDecoder.PERFORMANCE_END);
 	}
 }

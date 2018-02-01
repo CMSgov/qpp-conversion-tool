@@ -9,6 +9,9 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -120,6 +123,35 @@ class Checker {
 			details.add(detail(code));
 		}
 		return this;
+	}
+
+	/**
+	 * checks target node for a date that is properly formatted.
+	 *
+	 * @param code
+	 * @param name
+	 * @return
+	 */
+	public Checker isValidDate(LocalizedError code, String name) {
+		String date = node.getValue(name);
+		try {
+			String parse = cleanString(date);
+			parse = parse.replace("-", "").replace("/", "");
+			if (parse.length() > "yyyyMMdd".length()) {
+				parse = parse.substring(0, "yyyyMMdd".length());
+			}
+			LocalDate.parse(cleanString(parse),  DateTimeFormatter.ofPattern("yyyyMMdd"));
+		} catch (DateTimeParseException e) {
+			details.add(detail(code));
+		}
+		return this;
+	}
+
+	protected String cleanString(String value) {
+		if (value == null) {
+			return "";
+		}
+		return value.trim().toLowerCase();
 	}
 
 	/**
