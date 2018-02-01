@@ -30,12 +30,8 @@ class ConverterWithAbridgedTest implements JimfsContract {
 		setup(fileSystem);
 
 		String fileName = "valid-QRDA-III-abridged.qpp.json";
-		long start = System.currentTimeMillis();
-
 		ConversionEntry.main("--" + ConversionEntry.SKIP_VALIDATION,
 				"src/test/resources/valid-QRDA-III-abridged.xml");
-
-		long finish = System.currentTimeMillis();
 
 		Path aJson = fileSystem.getPath(fileName);
 
@@ -52,13 +48,10 @@ class ConverterWithAbridgedTest implements JimfsContract {
 
 		String aConversion = "a.qpp.json";
 		String dConversion = "d.qpp.json";
-		long start = System.currentTimeMillis();
 
 		ConversionEntry.main("--" + ConversionEntry.SKIP_VALIDATION,
 				"src/test/resources/pathTest/a.xml",
 				"src/test/resources/pathTest/subdir/*.xml");
-
-		long finish = System.currentTimeMillis();
 
 		Path aJson = fileSystem.getPath(aConversion);
 		Path dJson = fileSystem.getPath(dConversion);
