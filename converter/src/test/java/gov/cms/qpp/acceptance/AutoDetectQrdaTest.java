@@ -27,6 +27,7 @@ class AutoDetectQrdaTest implements LoggerContract {
 
 		//execute
 		clearLogs();
+		assertThat(getLogs()).hasSize(0);
 		XmlDecoderEngine.decodeXml(new Context(), XmlUtils.stringToDom(xmlFragment));
 
 		//assert
