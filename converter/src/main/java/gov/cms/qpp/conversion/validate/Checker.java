@@ -140,14 +140,15 @@ class Checker {
 			if (parse.length() > DATE_FORMAT.length()) {
 				parse = parse.substring(0, DATE_FORMAT.length());
 			}
-			LocalDate.parse(cleanString(parse),  DateTimeFormatter.ofPattern(DATE_FORMAT));
-		} catch (DateTimeParseException e) {
+			LocalDate.parse(cleanString(parse), DateTimeFormatter.ofPattern(DATE_FORMAT));
+		}
+		catch (DateTimeParseException e) {
 			details.add(detail(code));
 		}
 		return this;
 	}
 
-	protected String cleanString(String value) {
+	private String cleanString(String value) {
 		if (value == null) {
 			return "";
 		}
