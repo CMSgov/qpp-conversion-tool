@@ -15,7 +15,7 @@ import gov.cms.qpp.conversion.segmentation.QrdaScope;
  * throughout the conversion.
  */
 public class Context {
-	public static String REPORTING_YEAR = "2017";
+	public static final String REPORTING_YEAR = "2017";
 	private final Map<Class<? extends Annotation>, Registry<?>> registries = new IdentityHashMap<>();
 	private Program program = Program.ALL;
 	private Set<QrdaScope> scope = EnumSet.noneOf(QrdaScope.class);

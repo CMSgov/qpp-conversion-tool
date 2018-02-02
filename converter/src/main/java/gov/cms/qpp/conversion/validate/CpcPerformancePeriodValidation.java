@@ -14,8 +14,8 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
  */
 @Validator(value = TemplateId.REPORTING_PARAMETERS_ACT, program = Program.CPC)
 public class CpcPerformancePeriodValidation extends NodeValidator {
-	private static String REPORTING_PERIOD_START = Context.REPORTING_YEAR + "0101";
-	private static String REPORTING_PERIOD_END = Context.REPORTING_YEAR + "1231";
+	private static final String REPORTING_PERIOD_START = Context.REPORTING_YEAR + "0101";
+	private static final String REPORTING_PERIOD_END = Context.REPORTING_YEAR + "1231";
 
 	/**
 	 * Validates the NPI/TIN Combination within the QRDA Category III Report V3 section
