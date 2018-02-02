@@ -12,7 +12,7 @@ public interface LoggerContract {
 
 	@AroundEach
 	default void clearLogs() {
-		getLogger().clear();
+		TestLoggerFactory.getAllTestLoggers().values().forEach(TestLogger::clear);
 	}
 
 	default List<String> getLogs() {
