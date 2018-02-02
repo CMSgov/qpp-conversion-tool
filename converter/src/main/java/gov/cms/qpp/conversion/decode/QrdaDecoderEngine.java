@@ -274,7 +274,8 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		List<Element> clinicalDocumentChildren = rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace());
 
 		for (Element currentChild : clinicalDocumentChildren) {
-			if (getTemplateId(currentChild) == TemplateId.CLINICAL_DOCUMENT) {
+			TemplateId templateId = getTemplateId(currentChild);
+			if (templateId == TemplateId.CLINICAL_DOCUMENT) {
 				containsTemplateId = true;
 				break;
 			}

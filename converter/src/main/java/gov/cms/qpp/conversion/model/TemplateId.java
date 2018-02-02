@@ -3,8 +3,10 @@ package gov.cms.qpp.conversion.model;
 import gov.cms.qpp.conversion.Context;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import com.google.common.base.Strings;
+import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
 /**
  * An enumeration of known templates IDs.
@@ -50,9 +52,11 @@ public enum TemplateId {
 		SEPTEMBER_2016("2016-09-01"),
 		NOVEMBER_2016("2016-11-01");
 
+		static final String STRICT_EXTENSION = "STRICT_EXTENSION";
+
 		private final String value;
 
-		private Extension(String value) {
+		Extension(String value) {
 			this.value = value;
 		}
 
@@ -70,12 +74,15 @@ public enum TemplateId {
 					ROOT_AND_TO_TEMPLATE_ID.computeIfAbsent(templateId.root, ignore -> new HashMap<>());
 
 			extensionToTemplateId.put(templateId.extension.toString(), templateId);
-			extensionToTemplateId.putIfAbsent(null, templateId);
+			if (!templateId.alwaysStrict) {
+				extensionToTemplateId.putIfAbsent(null, templateId);
+			}
 		}
 	}
 
 	private final String root;
 	private final Extension extension;
+	private final boolean alwaysStrict;
 
 	/**
 	 * Constructs a TemplateId with just a root.
@@ -95,6 +102,7 @@ public enum TemplateId {
 	TemplateId(String root, Extension extension) {
 		this.root = root;
 		this.extension = extension;
+		this.alwaysStrict = "CLINICAL_DOCUMENT".equals(this.name());
 	}
 
 	/**
@@ -126,18 +134,23 @@ public enum TemplateId {
 	 * @param extension The extension part of the templateId.
 	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
 	 */
-	public static TemplateId getTemplateId(String root, String extension, Context context) {
+	public static TemplateId getTemplateId(final String root, final String extension, final Context context) {
 		Map<String, TemplateId> extensionsToTemplateId = ROOT_AND_TO_TEMPLATE_ID.get(root);
+		Function<Boolean, TemplateId> templateIdFunction = condition -> condition ?
+			extensionsToTemplateId.getOrDefault(extension, TemplateId.DEFAULT) :
+			extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
+		TemplateId retrieved = null;
 
 		if (extensionsToTemplateId == null) {
-			return TemplateId.DEFAULT;
+			retrieved = TemplateId.DEFAULT;
+		} else if (context.isHistorical()) {
+			retrieved = templateIdFunction.apply(CLINICAL_DOCUMENT.root.equals(root));
+		} else {
+			retrieved = templateIdFunction.apply(
+				CLINICAL_DOCUMENT.root.equals(root) || EnvironmentHelper.isPresent(Extension.STRICT_EXTENSION));
 		}
 
-		if (context.isHistorical()) {
-			return extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
-		}
-
-		return extensionsToTemplateId.getOrDefault(extension, TemplateId.DEFAULT);
+		return retrieved;
 	}
 
 	/**

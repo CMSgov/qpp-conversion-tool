@@ -13,6 +13,7 @@ public interface LoggerContract {
 	@AroundEach
 	default void clearLogs() {
 		getLogger().clear();
+		getLogger().clearAll();
 	}
 
 	default List<String> getLogs() {
