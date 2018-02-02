@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.test.MockitoExtension;
@@ -27,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -208,5 +210,15 @@ class ValidationServiceImplTest {
 	void testCheckForValidationUrlVariableLoggingIfAbsent() {
 		objectUnderTest.checkForValidationUrlVariable();
 		Mockito.verify(objectUnderTest, Mockito.times(1)).apiLog(Constants.VALIDATION_URL_ENV_VARIABLE + " is unset");
+	}
+
+	@Test
+	void testInvalidSubmissionResponseJsonPath() throws IOException {
+		pathToSubmissionError = Paths.get("src/test/resources/invalidSubmissionErrorFixture.json");
+		String errorJson = FileUtils.readFileToString(pathToSubmissionError.toFile(), StandardCharsets.UTF_8);
+		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
+
+		convertedErrors.getErrors().stream().flatMap(error -> error.getDetails().stream())
+			.map(Detail::getPath).forEach(path -> assertThat(path).isEqualTo(ValidationServiceImpl.UNABLE_PROVIDE_XPATH));
 	}
 }

@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.services;
 
 
+import com.jayway.jsonpath.JsonPathException;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
@@ -39,6 +40,7 @@ public class ValidationServiceImpl implements ValidationService {
 
 	private Environment environment;
 	private RestTemplate restTemplate;
+	protected static final String UNABLE_PROVIDE_XPATH = "Unable to provide an XPath.";
 
 	/**
 	 * init ValidationServiceImpl instances
@@ -149,7 +151,12 @@ public class ValidationServiceImpl implements ValidationService {
 		Error error = getError(validationResponse);
 
 		error.getDetails().forEach(detail -> {
-			String newPath = PathCorrelator.prepPath(detail.getPath(), wrapper);
+			String newPath = UNABLE_PROVIDE_XPATH;
+			try {
+				newPath = PathCorrelator.prepPath(detail.getPath(), wrapper);
+			} catch (ClassCastException | JsonPathException exc) {
+				API_LOG.warn("Failed to convert from json path to an XPath.", exc);
+			}
 			detail.setPath(newPath);
 		});
 
