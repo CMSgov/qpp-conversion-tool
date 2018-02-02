@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -120,7 +119,7 @@ public class ConversionFileWriterWrapperTest {
 
 		//then
 		assertThat(detail.get("message"))
-				.isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.getMessage());
+				.isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR).getMessage());
 		assertThat(detail.get("path"))
 				.isEmpty();
 	}
@@ -140,8 +139,7 @@ public class ConversionFileWriterWrapperTest {
 		Map<String, String> secondDetail = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
 				"$.errors[0].details[1]");
 
-		List<Map<String, String>> details = JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
-				"$.errors[0].details");
+		JsonHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),"$.errors[0].details");
 
 		//then
 		assertThat(firstDetail.get("message")).isEqualTo(firstMessage);

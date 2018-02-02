@@ -1,5 +1,6 @@
 package gov.cms.qpp.acceptance;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -36,7 +37,7 @@ class ClinicalDocumentExtensionTest {
 			convert(INVALID);
 		} catch (TransformException ex) {
 			Detail detail = ex.getDetails().getErrors().get(0).getDetails().get(0);
-			assertThat(detail.getMessage()).isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.getMessage());
+			assertThat(detail.getMessage()).isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR).getMessage());
 		}
 	}
 

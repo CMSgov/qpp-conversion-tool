@@ -149,7 +149,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR));
 		}
 	}
 
@@ -164,7 +164,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR));
 		}
 	}
 
