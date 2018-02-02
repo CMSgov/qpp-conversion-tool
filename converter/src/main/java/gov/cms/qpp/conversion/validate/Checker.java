@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
 import com.google.common.base.Strings;
-
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -35,6 +34,7 @@ class Checker {
 	private boolean anded;
 	private Map<TemplateId, AtomicInteger> nodeCount;
 	private Comparable<?> lastAppraised;
+	private static final String DATE_FORMAT = "yyyyMMdd";
 
 	private Checker(Node node, Set<Detail> details, boolean anded) {
 		this.node = node;
@@ -128,19 +128,19 @@ class Checker {
 	/**
 	 * checks target node for a date that is properly formatted.
 	 *
-	 * @param code
-	 * @param name
-	 * @return
+	 * @param code that identifies the error
+	 * @param name key of the expected value
+	 * @return The checker, for chaining method calls
 	 */
 	public Checker isValidDate(LocalizedError code, String name) {
 		String date = node.getValue(name);
 		try {
 			String parse = cleanString(date);
 			parse = parse.replace("-", "").replace("/", "");
-			if (parse.length() > "yyyyMMdd".length()) {
-				parse = parse.substring(0, "yyyyMMdd".length());
+			if (parse.length() > DATE_FORMAT.length()) {
+				parse = parse.substring(0, DATE_FORMAT.length());
 			}
-			LocalDate.parse(cleanString(parse),  DateTimeFormatter.ofPattern("yyyyMMdd"));
+			LocalDate.parse(cleanString(parse),  DateTimeFormatter.ofPattern(DATE_FORMAT));
 		} catch (DateTimeParseException e) {
 			details.add(detail(code));
 		}
