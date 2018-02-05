@@ -15,10 +15,15 @@ if you'd like to contribute to qpp-conversion-tool.
 
 ## Additional Prerequisite Software
 
-The only additional prerequisite that was not already outlined in the
-[main README][readme] is the
-[Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 1.8`). The Java Runtime
+The additional prerequisites that were not already outlined in the
+[main README][readme] are...
+- [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 1.8`). The Java Runtime
 will not suffice.
+- [Maven](https://maven.apache.org).
+- Due to using [Localstack](https://localstack.cloud) for testing, the following are also required
+  - [Python](https://www.python.org/downloads/) (version `2.x` or `3.x`, but why not use the latest version?) with [pip](https://pip.pypa.io/en/stable/installing/).
+  - `make` command line program.
+  - `npm` from [Node.js](https://nodejs.org/).
 
 ## Building
 

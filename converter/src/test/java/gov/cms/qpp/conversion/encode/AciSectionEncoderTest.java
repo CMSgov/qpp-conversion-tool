@@ -9,6 +9,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -79,6 +81,20 @@ class AciSectionEncoderTest {
 		assertWithMessage("Must have measurements").that(testMapObject.get(MEASUREMENTS)).isNotNull();
 		assertWithMessage("Must have submissionMethod")
 				.that(testMapObject.get(SUBMISSION_METHOD)).isEqualTo(ELECTRONIC_HEALTH_RECORD);
+	}
+
+	@Test
+	void aboutMetadataHolder() {
+		JsonWrapper jsonWrapper = new JsonWrapper();
+		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder(new Context());
+		aciSectionEncoder.internalEncode(jsonWrapper, aciSectionNode);
+
+		Map<?, ?> testMapObject = (Map<?, ?>) jsonWrapper.getObject();
+		Stream failed = ((Set) testMapObject.get("metadata_holder")).stream()
+			.filter(entry -> ((Map) entry).get("template").equals(TemplateId.REPORTING_PARAMETERS_ACT.name()))
+			.filter(entry -> ((Map) entry).get("encodeLabel").equals(""));
+
+		assertThat(failed.count()).isEqualTo(0);
 	}
 
 	@Test
