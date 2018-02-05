@@ -16,53 +16,53 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 class AggregateCountValidatorTest {
 
-    @Test
-    void testIsAggregateCount() {
-        Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+	@Test
+	void testIsAggregateCount() {
+			Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 
-        AggregateCountValidator validator = new AggregateCountValidator();
+		AggregateCountValidator validator = new AggregateCountValidator();
 
-        assertWithMessage("validator and node are compatible")
-                .that(validator.getClass().getAnnotation(Validator.class).value()).isEqualTo(aggregateCountNode.getType());
-    }
+		assertWithMessage("validator and node are compatible")
+				.that(validator.getClass().getAnnotation(Validator.class).value()).isEqualTo(aggregateCountNode.getType());
+	}
 
-    @Test
-    void testValueAbsenceFailure() {
-        Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+	@Test
+	void testValueAbsenceFailure() {
+		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 
-        AggregateCountValidator validator = new AggregateCountValidator();
-        validator.internalValidateSingleNode( aggregateCountNode );
-        Set<Detail> errors = validator.getDetails();
+		AggregateCountValidator validator = new AggregateCountValidator();
+		validator.internalValidateSingleNode( aggregateCountNode );
+		Set<Detail> errors = validator.getDetails();
 
-        assertWithMessage("Should result in a value error")
-                .that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-                .containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR);
-    }
+		assertWithMessage("Should result in a value error")
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR);
+	}
 
-    @Test
-    void testValueTypeFailure() {
-        Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
-        aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "meep");
+	@Test
+	void testValueTypeFailure() {
+		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "meep");
 
-        AggregateCountValidator validator = new AggregateCountValidator();
-        validator.internalValidateSingleNode(aggregateCountNode);
-        Set<Detail> errors = validator.getDetails();
+		AggregateCountValidator validator = new AggregateCountValidator();
+		validator.internalValidateSingleNode(aggregateCountNode);
+		Set<Detail> errors = validator.getDetails();
 
-        assertWithMessage("Should result in a type error")
-                .that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-                .containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER);
-    }
+		assertWithMessage("Should result in a type error")
+				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER);
+	}
 
-    @Test
-    void testValueTypeSuccess() {
-        Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
-        aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "7");
+	@Test
+	void testValueTypeSuccess() {
+		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "7");
 
-        AggregateCountValidator validator = new AggregateCountValidator();
-        validator.internalValidateSingleNode(aggregateCountNode);
-        Set<Detail> errors = validator.getDetails();
+		AggregateCountValidator validator = new AggregateCountValidator();
+		validator.internalValidateSingleNode(aggregateCountNode);
+		Set<Detail> errors = validator.getDetails();
 
-        assertWithMessage("there are no errors")
-                .that(errors).isEmpty();
-    }
+		assertWithMessage("there are no errors")
+				.that(errors).isEmpty();
+	}
 }
