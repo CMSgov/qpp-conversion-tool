@@ -88,8 +88,8 @@ public abstract class QrdaDecoder {
 	 * @param type Current Supplemental Type to put onto this node
 	 */
 	public void setSupplementalDataOnNode(Element element, Node thisNode, SupplementalData.SupplementalType type) {
-		String supplementalXpathCode = type.equals(SupplementalData.SupplementalType.PAYER) ?
-			SUPPLEMENTAL_DATA_PAYER_CODE :  SUPPLEMENTAL_DATA_CODE;
+		String supplementalXpathCode = type.equals(SupplementalData.SupplementalType.PAYER)
+				? SUPPLEMENTAL_DATA_PAYER_CODE :  SUPPLEMENTAL_DATA_CODE;
 		String expressionStr = getXpath(supplementalXpathCode);
 		Consumer<? super Attribute> consumer = attr -> {
 			String code = attr.getValue();

@@ -222,7 +222,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			if (check.get() != null) {
 				Predicate<Node> childTypeFinder = makeTypeChildFinder(keys);
 				Predicate<Node> childUuidFinder =
-						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION, MEASURE_POPULATION);
+						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION,
+								MEASURE_POPULATION);
 
 				Node existingUuidChild = node
 						.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2)
