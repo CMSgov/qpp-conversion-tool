@@ -1,6 +1,15 @@
 package gov.cms.qpp.conversion;
 
 import gov.cms.qpp.test.helper.JsonTestHelper;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.util.JsonHelper;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -110,8 +119,6 @@ public class ConversionFileWriterWrapperTest {
 
 	@Test
 	public void testErrorHasDetail() throws IOException {
-		//setup
-		String errorMessage = "The file is not a QRDA-III XML document";
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 
 		//when
@@ -122,7 +129,7 @@ public class ConversionFileWriterWrapperTest {
 
 		//then
 		assertThat(detail.get("message"))
-				.isEqualTo(errorMessage);
+				.isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.getMessage());
 		assertThat(detail.get("path"))
 				.isEmpty();
 	}
