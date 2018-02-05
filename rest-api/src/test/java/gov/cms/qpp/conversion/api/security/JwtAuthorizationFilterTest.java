@@ -34,11 +34,12 @@ import com.google.common.truth.Truth;
 @PowerMockIgnore("javax.crypto.*")
 public class JwtAuthorizationFilterTest {
 
+	private static final String ORG_TYPE = "registry";
 	private static AuthenticationManager authenticationManager;
+
 	private MockHttpServletRequest request;
 	private MockHttpServletResponse response;
 	private FilterChain filterChain;
-	private final String ORG_TYPE = "registry";
 
 	@BeforeClass
 	public static void setUpStatic() {
