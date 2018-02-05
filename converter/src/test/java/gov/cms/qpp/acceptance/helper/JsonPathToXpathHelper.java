@@ -15,6 +15,7 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import gov.cms.qpp.test.helper.NioHelper;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -89,6 +90,6 @@ public class JsonPathToXpathHelper {
 	@SuppressWarnings("unchecked")
 	private <T> T evaluateXpath(String xPath, Filter filter) throws IOException, XmlException {
 		XPathExpression<Attribute> xpath = xpf.compile(xPath, filter);
-		return (T) xpath.evaluateFirst(XmlUtils.parseXmlStream(XmlUtils.fileToStream(path)));
+		return (T) xpath.evaluateFirst(XmlUtils.parseXmlStream(NioHelper.fileToStream(path)));
 	}
 }

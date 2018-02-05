@@ -1,6 +1,8 @@
 package gov.cms.qpp.conversion;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.truth.Truth;
+
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.MissingArgumentException;
@@ -347,5 +349,15 @@ class ConversionEntryTest {
 		assertWithMessage("Expect to have an instance here ")
 				.that(conversionEntry)
 				.isInstanceOf(ConversionEntry.class);
+	}
+
+	@Test
+	void testCheckPathNullString() {
+		Truth.assertThat(ConversionEntry.checkPath(null)).isEmpty();
+	}
+
+	@Test
+	void testCheckPathEmptyString() {
+		Truth.assertThat(ConversionEntry.checkPath("")).isEmpty();
 	}
 }

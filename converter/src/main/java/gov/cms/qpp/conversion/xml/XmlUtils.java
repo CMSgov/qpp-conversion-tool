@@ -45,20 +45,6 @@ public class XmlUtils {
 	}
 
 	/**
-	 * Returns an InputStream sourced by the given path.
-	 *
-	 * @param file An XML file.
-	 * @return InputStream for the file's content
-	 */
-	public static InputStream fileToStream(Path file) {
-		try {
-			return Files.newInputStream(file);
-		} catch (IOException ex) {
-			throw new UncheckedIOException(ex);
-		}
-	}
-
-	/**
 	 * Parses a stream of XML into a tree of XML elements.
 	 *
 	 * @param xmlStream The XML.
