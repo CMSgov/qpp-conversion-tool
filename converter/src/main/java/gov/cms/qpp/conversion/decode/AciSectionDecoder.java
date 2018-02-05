@@ -1,16 +1,17 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
+import org.jdom2.Element;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
-import org.jdom2.Element;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
  * Decoder to read XML Data for an ACI Section.
  */
 @Decoder(TemplateId.ACI_SECTION)
-public class AciSectionDecoder extends QrdaXmlDecoder {
+public class AciSectionDecoder extends QrdaDecoder {
 
 	public AciSectionDecoder(Context context) {
 		super(context);
@@ -24,7 +25,7 @@ public class AciSectionDecoder extends QrdaXmlDecoder {
 	 * @return {@code DecodeResult.TREE_CONTINUE} to continue down the parsed XML
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		thisNode.putValue("category", "aci");
 		return DecodeResult.TREE_CONTINUE;
 	}

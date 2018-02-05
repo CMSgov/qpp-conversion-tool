@@ -112,12 +112,6 @@
 					}
 				},
 				{
-					"decodeLabel": "components",
-					"goods": {
-						"relativeXPath": "./*[local-name() = 'component' and namespace-uri() = '<nsuri>']/*[local-name() = 'structuredBody' and namespace-uri() = '<nsuri>']/*[local-name() = 'component' and namespace-uri() = '<nsuri>']",
-						"xmltype": "element"
-					}
-				},{
 					"decodeLabel": "performanceYear",
 					"encodeLabels": [
 						"performanceYear"

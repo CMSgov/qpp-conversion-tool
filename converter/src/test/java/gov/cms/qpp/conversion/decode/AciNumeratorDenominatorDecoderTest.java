@@ -1,17 +1,19 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import java.util.List;
-import org.jdom2.Element;
-import org.jdom2.Namespace;
-import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import java.util.List;
+
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class AciNumeratorDenominatorDecoderTest {
 
@@ -29,7 +31,7 @@ class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node aggregateCountNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node aggregateCountNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertThat(aggregateCountNode.getChildNodes().get(0).getValue("aggregateCount"))
 				.isEqualTo("600");
@@ -45,7 +47,7 @@ class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node numDenomNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertWithMessage("aci numerator/denominator value should be null")
 				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
@@ -60,7 +62,7 @@ class AciNumeratorDenominatorDecoderTest {
 				"  </observation>",
 				"</root>");
 
-		Node numDenomNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node numDenomNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 
 		assertWithMessage("aci numerator/denominator value should be null")
 				.that(numDenomNode.getChildNodes().get(0).getValue("aggregateCount")).isNull();
@@ -68,7 +70,7 @@ class AciNumeratorDenominatorDecoderTest {
 
 	@Test
 	void decodeValidAciNumeratorDenominatorTest() throws XmlException {
-		Node aciMeasureNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
+		Node aciMeasureNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(getValidXmlFragment()));
 		Node numeratorDenominatorNode = aciMeasureNode.getChildNodes().get(0);
 		int numberNodes = countNodes(aciMeasureNode);
 		List<Node> nodeList = aciMeasureNode.findNode(TemplateId.ACI_NUMERATOR);
@@ -111,7 +113,7 @@ class AciNumeratorDenominatorDecoderTest {
 		xmlFragment = xmlFragment.replaceAll("<statusCode ",
 				"\n<Stuff arbitrary=\"123\"><newnode>Some extra stuff</newnode></Stuff>Unexpected stuff appears here\n\n<statusCode ");
 
-		Node aciMeasureNode = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node aciMeasureNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		assertWithMessage("Decoded xml fragment should contain one child node")
 				.that(aciMeasureNode.getChildNodes())
 				.hasSize(1);
@@ -160,10 +162,10 @@ class AciNumeratorDenominatorDecoderTest {
 		Node thisNode = new Node();
 
 		AciNumeratorDenominatorDecoder objectUnderTest = new AciNumeratorDenominatorDecoder(new Context());
-		objectUnderTest.setNamespace(element, objectUnderTest);
+		objectUnderTest.setNamespace(element.getNamespace());
 
 		//execute
-		objectUnderTest.internalDecode(element, thisNode);
+		objectUnderTest.decode(element, thisNode);
 
 		//assert
 		assertThat(thisNode.getValue("measureId"))

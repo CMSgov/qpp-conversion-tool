@@ -22,7 +22,9 @@ public enum ErrorCode implements LocalizedError {
 	NOT_VALID_XML_DOCUMENT(2, "The file is not a valid XML document"),
 	UNEXPECTED_ERROR(3, "Unexpected exception occurred during conversion"),
 	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occured during encoding"),
-	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document"),
+	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. " +
+		"Please ensure that the submission complies with the most recent implementation guide. " +
+		"https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=19"),
 	MEASURE_GUID_MISSING(6, "The measure reference results must have a single occurrence of the recognized measure GUID "
 	+ "`(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?", true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),
@@ -57,7 +59,8 @@ public enum ErrorCode implements LocalizedError {
 	CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document Node must have at least one "
 			+ "Aci or IA or eCQM Section Node as a child"),
 	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Clinical Document must have one and only one program name"),
-	CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME(25, "Clinical Document program name is not recognized"),
+	CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME(25, "The Clinical Document program name `(program name)` is not recognized. Valid "
+		+ "program names are `(list of valid program names)`.", true),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS(26, "Clinical Document contains duplicate ACI sections"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS(27, "Clinical Document contains duplicate IA sections"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate eCQN "

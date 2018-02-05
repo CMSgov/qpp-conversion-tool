@@ -119,7 +119,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 			DEV_LOG.error("Missing Reporting Parameters from ACI Section");
 			return;
 		}
-		reportingParamEncoder.encode(wrapper, reportingChild);
+		reportingParamEncoder.encode(wrapper, reportingChild, false);
 		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_END);
 		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_START);
 	}
