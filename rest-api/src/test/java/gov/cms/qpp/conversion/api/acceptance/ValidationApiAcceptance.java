@@ -6,6 +6,8 @@ import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
+import gov.cms.qpp.test.helper.NioHelper;
+
 import io.restassured.response.Response;
 import org.jdom2.Attribute;
 import org.jdom2.DataConversionException;
@@ -60,7 +62,7 @@ class ValidationApiAcceptance {
 
 	private Object evaluateXpath(String xPath, Filter filter) throws IOException, XmlException {
 		XPathExpression<Object> xpath = XPF.compile(xPath, filter);
-		return xpath.evaluateFirst(XmlUtils.parseXmlStream(XmlUtils.fileToStream(PATH)));
+		return xpath.evaluateFirst(XmlUtils.parseXmlStream(NioHelper.fileToStream(PATH)));
 	}
 }
 
