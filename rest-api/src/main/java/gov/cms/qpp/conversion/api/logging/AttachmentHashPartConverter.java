@@ -26,7 +26,7 @@ public class AttachmentHashPartConverter extends ClassicConverter {
 
 		try {
 			hashPart = getHashPart();
-		} catch (IOException | ServletException | NullPointerException e) {
+		} catch (IOException | ServletException e) {
 			//don't log because the logging will not show up, nor log manually because it will ruin the format and become hard to understand
 		}
 
@@ -57,6 +57,14 @@ public class AttachmentHashPartConverter extends ClassicConverter {
 	 */
 	Part getPart() throws IOException, ServletException {
 		ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+
+		if (attrs == null
+			|| attrs.getRequest() == null
+			|| attrs.getRequest().getParts() == null
+			|| attrs.getRequest().getParts().iterator() == null) {
+			return null;
+		}
+
 		return attrs.getRequest().getParts().iterator().next();
 	}
 }
