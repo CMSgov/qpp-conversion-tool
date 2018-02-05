@@ -1,18 +1,8 @@
 package gov.cms.qpp.conversion;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.FileSystem;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.google.common.jimfs.Configuration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.results.BenchmarkResult;
 import org.openjdk.jmh.results.Result;
@@ -22,10 +12,18 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import com.google.common.jimfs.Configuration;
-
 import gov.cms.qpp.test.annotations.PerformanceTest;
 import gov.cms.qpp.test.jimfs.FileTestHelper;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class ParameterizedBenchmarkTest {
 
@@ -35,7 +33,7 @@ class ParameterizedBenchmarkTest {
 	private static List<BenchmarkResult> benchResults;
 
 	@BeforeAll
-	static void loadPaths() throws IOException, RunnerException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+	static void loadPaths() throws  RunnerException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		String[] paths;
 		fileSystem = FileTestHelper.createMockFileSystem(Configuration.unix());
 		fileSystemField = ConversionEntry.class.getDeclaredField("fileSystem");
@@ -69,7 +67,7 @@ class ParameterizedBenchmarkTest {
 	}
 
 	@PerformanceTest
-	void testParameterizedBenchmarkThroughput() throws RunnerException {
+	void testParameterizedBenchmarkThroughput() {
 		benchResults.stream()
 			.filter(result -> result.getParams().getMode().equals(Mode.Throughput))
 			.forEach(br -> {
@@ -82,7 +80,7 @@ class ParameterizedBenchmarkTest {
 	}
 
 	@PerformanceTest
-	void testParameterizedBenchmarkAverageTime() throws RunnerException {
+	void testParameterizedBenchmarkAverageTime() {
 		benchResults.stream()
 			.filter(result -> result.getParams().getMode().equals(Mode.AverageTime))
 			.forEach(br -> {

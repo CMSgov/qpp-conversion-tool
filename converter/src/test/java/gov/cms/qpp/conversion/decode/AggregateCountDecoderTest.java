@@ -61,7 +61,7 @@ class AggregateCountDecoderTest {
 			+ "</observation>";
 
 	@Test
-	void testInternalDecode() throws Exception {
+	void testInternalDecode() {
 		Namespace rootNs = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 

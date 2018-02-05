@@ -1,17 +1,18 @@
 package gov.cms.qpp.conversion.api.services;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamSupplierSource;
-import gov.cms.qpp.conversion.Source;
-import gov.cms.qpp.test.MockitoExtension;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Error;
-import gov.cms.qpp.conversion.model.error.TransformException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
+
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.InputStreamSupplierSource;
+import gov.cms.qpp.conversion.Source;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Error;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.test.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
 
@@ -35,7 +36,7 @@ class QrdaServiceImplTest {
 	private QrdaServiceImpl objectUnderTest;
 
 	@BeforeEach
-	void mockConverter() throws Exception {
+	void mockConverter() {
 		Converter success = successConverter();
 		when(objectUnderTest.initConverter(MOCK_SUCCESS_QRDA_SOURCE))
 				.thenReturn(success);
