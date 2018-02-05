@@ -54,7 +54,7 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	 * @return intialized measure type map
 	 */
 	private Map<String, String> initializeMeasureTypeMap() {
-		Map<String , String> measureTypeMapper = new HashMap<>();
+		Map<String, String> measureTypeMapper = new HashMap<>();
 		final String eligiblePopulation = "eligiblePopulation";
 
 		measureTypeMapper.put(SubPopulations.NUMER, "performanceMet");

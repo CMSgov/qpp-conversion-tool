@@ -29,14 +29,14 @@ public class MarkupManipulationHandler {
 	}
 
 	public List<Detail> executeScenario(String templateId, String attribute, boolean remove) {
-		String xPath = getPath(templateId, attribute);
-		return executeScenario(xPath, remove);
+		String xpath = getPath(templateId, attribute);
+		return executeScenario(xpath, remove);
 	}
 
-	public List<Detail> executeScenario(String xPath, boolean remove) {
-		InputStream inStream = manipulator.upsetTheNorm(xPath, remove);
+	public List<Detail> executeScenario(String xpath, boolean remove) {
+		InputStream inStream = manipulator.upsetTheNorm(xpath, remove);
 		Converter converter = new Converter(
-				new InputStreamSupplierSource(xPath, () -> inStream));
+				new InputStreamSupplierSource(xpath, () -> inStream));
 		try {
 			converter.transform();
 		} catch (TransformException exception) {
