@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -134,32 +133,16 @@ class Checker {
 	 * @return The checker, for chaining method calls
 	 */
 	public Checker isValidDate(LocalizedError code, String name) {
-		String date = node.getValue(name);
-		try {
-			String parse = cleanString(date);
-			parse = parse.replace("-", "").replace("/", "");
-			if (parse.length() > DATE_FORMAT.length()) {
-				parse = parse.substring(0, DATE_FORMAT.length());
+		lastAppraised = node.getValue(name);
+		if (!shouldShortcut()) {
+			try {
+				LocalDate.parse(node.getValue(name), DateTimeFormatter.ofPattern(DATE_FORMAT));
 			}
-			LocalDate.parse(cleanString(parse), DateTimeFormatter.ofPattern(DATE_FORMAT));
-		}
-		catch (DateTimeParseException e) {
-			details.add(detail(code));
+			catch (DateTimeParseException e) {
+				details.add(detail(code));
+			}
 		}
 		return this;
-	}
-
-	/**
-	 * Remove whitespace and lowercases the string passed in
-	 *
-	 * @param value to be formatted
-	 * @return a cleaned string value
-	 */
-	private String cleanString(String value) {
-		if (value == null) {
-			return "";
-		}
-		return value.trim().toLowerCase(Locale.ENGLISH);
 	}
 
 	/**

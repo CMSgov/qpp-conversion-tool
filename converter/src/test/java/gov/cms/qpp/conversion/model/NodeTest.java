@@ -34,7 +34,7 @@ class NodeTest {
 	}
 
 	@Test
-	void testNULLGetValueOrDefault() {
+	void testNullGetValueOrDefault() {
 		Node node = new Node(TemplateId.PLACEHOLDER);
 		node.putValue("DEF", null);
 
