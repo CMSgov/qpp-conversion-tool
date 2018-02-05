@@ -26,7 +26,6 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -179,7 +178,6 @@ public class ValidationServiceImpl implements ValidationService {
 		 * Empty so it doesn't throw an exception.
 		 *
 		 * @param response The ClientHttpResponse.
-		 * @throws IOException An IOException.
 		 */
 		@Override
 		public void handleError(final ClientHttpResponse response) {

@@ -57,7 +57,6 @@ public class QrdaControllerV1 {
 	 *
 	 * @param file Uploaded file
 	 * @return Valid json or error json content
-	 * @throws IOException If errors occur during file upload or conversion
 	 */
 	@PostMapping(headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) {
