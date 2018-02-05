@@ -149,6 +149,7 @@ public class ValidationServiceImpl implements ValidationService {
 		Error error = getError(validationResponse);
 
 		error.getDetails().forEach(detail -> {
+			detail.setMessage("SV - " + detail.getMessage());
 			String newPath = PathCorrelator.prepPath(detail.getPath(), wrapper);
 			detail.setPath(newPath);
 		});
