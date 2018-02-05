@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
 public class MarkupManipulator {
 	private static TransformerFactory tf = TransformerFactory.newInstance();
 	private static XPathFactory xpf = XPathFactory.newInstance();
@@ -49,25 +51,23 @@ public class MarkupManipulator {
 			XPathExpression expression = xpath.compile(xPath);
 
 			NodeList searchedNodes = (NodeList) expression.evaluate(document, XPathConstants.NODESET);
-			if (searchedNodes == null) {
-				System.out.println("bad path: " + xPath);
-			} else {
-				for (int i = 0; i < searchedNodes.getLength(); i++) {
-					Node searched = searchedNodes.item(i);
+			assertWithMessage("bad path: %s", xPath).that(searchedNodes).isNotNull();
 
-					Node owningElement = (searched instanceof ElementImpl)
-							? searched
-							: ((AttrImpl) searched).getOwnerElement();
+			for (int i = 0; i < searchedNodes.getLength(); i++) {
+				Node searched = searchedNodes.item(i);
 
-					Node containingParent = owningElement.getParentNode();
+				Node owningElement = (searched instanceof ElementImpl)
+						? searched
+						: ((AttrImpl) searched).getOwnerElement();
 
-					if (remove) {
-						containingParent.removeChild(owningElement);
-					} else {
-						containingParent.appendChild(owningElement.cloneNode(true));
-					}
+				Node containingParent = owningElement.getParentNode();
 
+				if (remove) {
+					containingParent.removeChild(owningElement);
+				} else {
+					containingParent.appendChild(owningElement.cloneNode(true));
 				}
+
 			}
 
 			Transformer t = tf.newTransformer();

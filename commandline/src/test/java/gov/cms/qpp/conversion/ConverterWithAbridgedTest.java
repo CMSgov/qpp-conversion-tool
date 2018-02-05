@@ -1,6 +1,9 @@
 package gov.cms.qpp.conversion;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.junit.jupiter.api.AfterEach;
+
+import gov.cms.qpp.test.jimfs.JimfsContract;
+import gov.cms.qpp.test.jimfs.JimfsTest;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -8,10 +11,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.jupiter.api.AfterEach;
-
-import gov.cms.qpp.test.jimfs.JimfsTest;
-import gov.cms.qpp.test.jimfs.JimfsContract;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class ConverterWithAbridgedTest implements JimfsContract {
 
@@ -30,12 +30,8 @@ class ConverterWithAbridgedTest implements JimfsContract {
 		setup(fileSystem);
 
 		String fileName = "valid-QRDA-III-abridged.qpp.json";
-		long start = System.currentTimeMillis();
-
 		ConversionEntry.main("--" + ConversionEntry.SKIP_VALIDATION,
 				"src/test/resources/valid-QRDA-III-abridged.xml");
-
-		long finish = System.currentTimeMillis();
 
 		Path aJson = fileSystem.getPath(fileName);
 
@@ -44,8 +40,6 @@ class ConverterWithAbridgedTest implements JimfsContract {
 				.isTrue();
 
 		Files.delete(aJson);
-
-		System.out.println("Time to run transform " + (finish - start));
 	}
 
 	@JimfsTest
@@ -54,13 +48,10 @@ class ConverterWithAbridgedTest implements JimfsContract {
 
 		String aConversion = "a.qpp.json";
 		String dConversion = "d.qpp.json";
-		long start = System.currentTimeMillis();
 
 		ConversionEntry.main("--" + ConversionEntry.SKIP_VALIDATION,
 				"src/test/resources/pathTest/a.xml",
 				"src/test/resources/pathTest/subdir/*.xml");
-
-		long finish = System.currentTimeMillis();
 
 		Path aJson = fileSystem.getPath(aConversion);
 		Path dJson = fileSystem.getPath(dConversion);
@@ -74,8 +65,6 @@ class ConverterWithAbridgedTest implements JimfsContract {
 
 		Files.delete(aJson);
 		Files.delete(dJson);
-
-		System.out.println("Time to run two thread transform " + (finish - start));
 	}
 
 	private void setup(FileSystem fileSystem) throws Exception {
