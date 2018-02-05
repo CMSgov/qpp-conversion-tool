@@ -58,7 +58,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 	/**
 	 * Looks up the entity Id from the element if the program name is CPC+
-	 * <id root="2.16.840.1.113883.3.249.5.1" extension="AR000000"
+	 * <id root="2.16.840.1.113883.3.249.5.1" extension="AR000000"/>
 	 *
 	 * @param element Xml fragment being parsed.
 	 * @param thisNode The output internal representation of the document

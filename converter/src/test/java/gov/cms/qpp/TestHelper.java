@@ -77,7 +77,8 @@ public class TestHelper {
 	 * @return A spied QrdaValidator that has all the appropriate hooks in place to validate a test validator
 	 * @throws Exception If the mocking fails.
 	 */
-	public static QrdaValidator mockValidator(Context context, Class<? extends NodeValidator> validator, final ComponentKey componentKey, boolean required, QrdaValidator spy) throws Exception {
+	public static QrdaValidator mockValidator(Context context, Class<? extends NodeValidator> validator,
+			final ComponentKey componentKey, boolean required, QrdaValidator spy) throws Exception {
 		if (spy == null) {
 			spy = PowerMockito.spy(new QrdaValidator(context));
 		}

@@ -45,20 +45,6 @@ public class XmlUtils {
 	}
 
 	/**
-	 * Returns an InputStream sourced by the given path.
-	 *
-	 * @param file An XML file.
-	 * @return InputStream for the file's content
-	 */
-	public static InputStream fileToStream(Path file) {
-		try {
-			return Files.newInputStream(file);
-		} catch (IOException ex) {
-			throw new UncheckedIOException(ex);
-		}
-	}
-
-	/**
 	 * Parses a stream of XML into a tree of XML elements.
 	 *
 	 * @param xmlStream The XML.
@@ -69,7 +55,7 @@ public class XmlUtils {
 		try {
 			SAXBuilder saxBuilder = new SAXBuilder();
 			saxBuilder.setFeature(DISALLOW_DTD,true);
-			saxBuilder.setFeature(EXT_GENERAL_ENTITIES , false);
+			saxBuilder.setFeature(EXT_GENERAL_ENTITIES, false);
 			saxBuilder.setFeature(EXT_PARAM_ENTITIES, false);
 
 			return saxBuilder.build(xmlStream).getRootElement();
@@ -84,7 +70,7 @@ public class XmlUtils {
 	 * @param parts The strings to concatenate.
 	 * @return A concatenation of the parts.
 	 */
-	public static String buildString(String ... parts) {
+	public static String buildString(String... parts) {
 		return Arrays.stream(parts)
 				.collect(Collectors.joining());
 	}

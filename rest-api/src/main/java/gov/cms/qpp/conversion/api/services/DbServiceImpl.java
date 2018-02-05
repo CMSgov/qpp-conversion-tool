@@ -78,8 +78,8 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 
 			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 				.withIndexName("Cpc-CpcProcessed_CreateDate-index")
-				.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with(" +
-					Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
+				.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with("
+						+ Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
 				.withExpressionAttributeValues(valueMap)
 				.withConsistentRead(false)
 				.withLimit(LIMIT);

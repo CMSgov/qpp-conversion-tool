@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import gov.cms.qpp.test.helper.NioHelper;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +23,7 @@ class DefaultDecoderTest {
 
 	@Test
 	void parseAllNodes() throws Exception {
-		InputStream stream = XmlUtils.fileToStream(Paths.get("../qrda-files/valid-QRDA-III.xml"));
+		InputStream stream = NioHelper.fileToStream(Paths.get("../qrda-files/valid-QRDA-III.xml"));
 		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
 
 		Node node = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));

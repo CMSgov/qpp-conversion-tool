@@ -108,7 +108,7 @@ public class CpcFileControllerV1 {
 	 * @return Message if the file was updated or not
 	 */
 	@PutMapping(value = "/file/{fileId}",
-			headers = {"Accept=" + Constants.V1_API_ACCEPT} )
+			headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> updateFile(@PathVariable("fileId") String fileId,
 			@RequestBody(required = false) CpcFileStatusUpdateRequest request) {
 		if (blockCpcPlusApi()) {

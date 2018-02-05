@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.services;
 
-import gov.cms.qpp.test.MockitoExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +9,8 @@ import org.mockito.Mock;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
+
+import gov.cms.qpp.test.MockitoExtension;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -65,7 +66,6 @@ class InOrderAsyncActionServiceTest {
 		protected Object asynchronousAction(final Object objectToActOn) {
 
 			while (pauseAsynchronousAction.get()) {
-				System.out.println("While pauseAsynchronousAction");
 				try {
 					Thread.sleep(1000);
 				}
