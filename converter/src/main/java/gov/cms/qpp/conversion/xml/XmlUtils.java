@@ -55,7 +55,7 @@ public class XmlUtils {
 		try {
 			SAXBuilder saxBuilder = new SAXBuilder();
 			saxBuilder.setFeature(DISALLOW_DTD,true);
-			saxBuilder.setFeature(EXT_GENERAL_ENTITIES , false);
+			saxBuilder.setFeature(EXT_GENERAL_ENTITIES, false);
 			saxBuilder.setFeature(EXT_PARAM_ENTITIES, false);
 
 			return saxBuilder.build(xmlStream).getRootElement();
@@ -70,7 +70,7 @@ public class XmlUtils {
 	 * @param parts The strings to concatenate.
 	 * @return A concatenation of the parts.
 	 */
-	public static String buildString(String ... parts) {
+	public static String buildString(String... parts) {
 		return Arrays.stream(parts)
 				.collect(Collectors.joining());
 	}

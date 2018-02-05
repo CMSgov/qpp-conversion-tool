@@ -84,8 +84,8 @@ class QualityMeasureSectionValidatorTest {
 
 	@Test
 	void duplicateEcqMeasureLevelUp() {
-		String xPath = manipulatorHandler.getCannedPath(MarkupManipulationHandler.CannedPath.ECQM_PARENT);
-		List<Detail> errorDetails = manipulatorHandler.executeScenario(xPath, false);
+		String xpath = manipulatorHandler.getCannedPath(MarkupManipulationHandler.CannedPath.ECQM_PARENT);
+		List<Detail> errorDetails = manipulatorHandler.executeScenario(xpath, false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(new FormattedErrorCode(ErrorCode.MEASURE_GUID_MISSING,
