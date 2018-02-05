@@ -71,4 +71,4 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 66 : Missing the Supplemental Code `(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`
 * 67 : Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`
 * 68 : CPC+ Submission is after the end date `(Submission end date)`
-* 69 : `(Performance period start or end date)` is an invalid date format
+* 69 : `(Performance period start or end date)` is an invalid date format. Please use the format 'yyyyMMdd'. Ex.: '20170101'

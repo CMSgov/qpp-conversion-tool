@@ -148,6 +148,12 @@ class Checker {
 		return this;
 	}
 
+	/**
+	 * Remove whitespace and lowercases the string passed in
+	 *
+	 * @param value to be formatted
+	 * @return a cleaned string value
+	 */
 	private String cleanString(String value) {
 		if (value == null) {
 			return "";

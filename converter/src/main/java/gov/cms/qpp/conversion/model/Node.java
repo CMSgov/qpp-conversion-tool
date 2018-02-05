@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.model;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -70,6 +69,18 @@ public class Node {
 	 */
 	public String getValue(String name) {
 		return data.get(name);
+	}
+
+	/**
+	 * Returns the string value of the xml fragment parsed into this Node or defaults to the passed in value
+	 *
+	 * @param name String key for the value
+	 * @param defaultValue default value if the original value is null
+	 * @return node value or default value
+	 */
+	public String getValueOrDefault(String name, String defaultValue) {
+		String nodeValue = getValue(name);
+		return nodeValue != null ? nodeValue : defaultValue;
 	}
 
 	/**

@@ -11,11 +11,9 @@ public class ReportingParametersActValidator extends NodeValidator {
 
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		String performanceStart = node.getValue(ReportingParametersActDecoder.PERFORMANCE_START) != null ?
-			node.getValue(ReportingParametersActDecoder.PERFORMANCE_START) : "";
+		String performanceStart = node.getValueOrDefault(ReportingParametersActDecoder.PERFORMANCE_START, "");
 
-		String performanceEnd = node.getValue(ReportingParametersActDecoder.PERFORMANCE_END) != null ?
-			node.getValue(ReportingParametersActDecoder.PERFORMANCE_END) : "";
+		String performanceEnd = node.getValueOrDefault(ReportingParametersActDecoder.PERFORMANCE_END,"");
 
 		check(node)
 				.singleValue(ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START,
