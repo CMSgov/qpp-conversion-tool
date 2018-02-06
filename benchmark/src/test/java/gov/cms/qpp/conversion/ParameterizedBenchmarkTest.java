@@ -33,7 +33,7 @@ class ParameterizedBenchmarkTest {
 	private static List<BenchmarkResult> benchResults;
 
 	@BeforeAll
-	static void loadPaths() throws  RunnerException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+	static void loadPaths() throws RunnerException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		String[] paths;
 		fileSystem = FileTestHelper.createMockFileSystem(Configuration.unix());
 		fileSystemField = ConversionEntry.class.getDeclaredField("fileSystem");
