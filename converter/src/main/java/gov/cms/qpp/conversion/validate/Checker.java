@@ -34,7 +34,6 @@ class Checker {
 	private boolean anded;
 	private Map<TemplateId, AtomicInteger> nodeCount;
 	private Comparable<?> lastAppraised;
-	private static final String DATE_FORMAT = "yyyyMMdd";
 
 	private Checker(Node node, Set<Detail> details, boolean anded) {
 		this.node = node;
