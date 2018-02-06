@@ -36,6 +36,7 @@ public class ValidationServiceImpl implements ValidationService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(ValidationServiceImpl.class);
 	static final String CONTENT_TYPE = "application/json";
+	protected static final String SV_LABEL = "SV - ";
 
 	private Environment environment;
 	private RestTemplate restTemplate;
@@ -149,7 +150,7 @@ public class ValidationServiceImpl implements ValidationService {
 		Error error = getError(validationResponse);
 
 		error.getDetails().forEach(detail -> {
-			detail.setMessage("SV - " + detail.getMessage());
+			detail.setMessage(SV_LABEL + detail.getMessage());
 			String newPath = PathCorrelator.prepPath(detail.getPath(), wrapper);
 			detail.setPath(newPath);
 		});

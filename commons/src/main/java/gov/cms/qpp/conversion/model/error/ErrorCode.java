@@ -135,6 +135,7 @@ public enum ErrorCode implements LocalizedError {
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
 	private static final String VARIABLE_MARKER = "`\\(([^()]*)\\)`";
 	private static Pattern replacePattern;
+	public static final String CT_LABEL = "CT - ";
 
 	private final int code;
 	private final String message;
@@ -164,7 +165,7 @@ public enum ErrorCode implements LocalizedError {
 	 * Gets the message associated with this error code
 	 */
 	public final String getMessage() {
-		return "CT - " + message;
+		return CT_LABEL + message;
 	}
 
 	/**
