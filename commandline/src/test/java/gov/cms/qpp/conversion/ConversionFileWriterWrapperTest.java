@@ -137,8 +137,8 @@ public class ConversionFileWriterWrapperTest {
 	@Test
 	public void testErrorHasMultipleDetails() throws IOException {
 		//setup
-		String firstMessage = "This Numerator Node Aggregate Value has an invalid value";
-		String secondMessage = "This Denominator Node Aggregate Value has an invalid value";
+		String firstMessage = "CT - This Numerator Node Aggregate Value has an invalid value";
+		String secondMessage = "CT - This Denominator Node Aggregate Value has an invalid value";
 		Path path = Paths.get("src/test/resources/qrda_bad_denominator.xml");
 
 		//when
