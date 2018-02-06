@@ -113,7 +113,7 @@ class AciSectionEncoderTest {
 
 		assertThat(aciSectionEncoder.getDetails()).isNotNull();
 		assertThat(aciSectionEncoder.getDetails().get(0).getMessage())
-				.isEqualTo("Failed to find an encoder");
+				.isEqualTo("CT - Failed to find an encoder");
 	}
 
 	@Test

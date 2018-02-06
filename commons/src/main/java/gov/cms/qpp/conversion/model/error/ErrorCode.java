@@ -164,7 +164,7 @@ public enum ErrorCode implements LocalizedError {
 	 * Gets the message associated with this error code
 	 */
 	public final String getMessage() {
-		return message;
+		return "CT - " + message;
 	}
 
 	/**
@@ -199,7 +199,7 @@ public enum ErrorCode implements LocalizedError {
 		Map<String, String> valueSub = new HashMap<>();
 		IntStream.range(0, arguments.length)
 				.forEach(index -> valueSub.put(messageVariables.get(index), arguments[index].toString()));
-		return new StrSubstitutor(valueSub, "`(", ")`").replace(message);
+		return new StrSubstitutor(valueSub, "`(", ")`").replace(getMessage());
 	}
 
 	private static Pattern getPattern() {

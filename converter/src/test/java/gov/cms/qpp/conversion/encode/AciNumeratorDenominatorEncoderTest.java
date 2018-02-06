@@ -106,6 +106,6 @@ class AciNumeratorDenominatorEncoderTest {
 				.hasSize(1);
 		assertWithMessage("The validation error must be the inability to find an encoder")
 				.that(objectUnderTest.getDetails().get(0).getMessage())
-				.isEqualTo("Failed to find an encoder");
+				.isEqualTo("CT - Failed to find an encoder");
 	}
 }
