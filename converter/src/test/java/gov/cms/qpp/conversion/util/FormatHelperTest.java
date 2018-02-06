@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class FormatHelperTest {
+class FormatHelperTest {
 
 	private String VALID_DASH_DATE = "2017-01-01";
 	private String VALID_SLASH_DATE = "2017/01/01";
@@ -14,20 +14,20 @@ public class FormatHelperTest {
 	private LocalDate DATE_COMPARED = LocalDate.of(2017, 01, 01);
 
 	@Test
-	public void testFormattedDateParseRemovesDashes() {
+	void testFormattedDateParseRemovesDashes() {
 		LocalDate date = FormatHelper.formattedDateParse(VALID_DASH_DATE);
-		assertThat(date).isEquivalentAccordingToCompareTo(DATE_COMPARED);
+		assertThat(date).isEqualTo(DATE_COMPARED);
 	}
 
 	@Test
-	public void testFormattedDateParseRemovesSlashes() {
+	void testFormattedDateParseRemovesSlashes() {
 		LocalDate date = FormatHelper.formattedDateParse(VALID_SLASH_DATE);
-		assertThat(date).isEquivalentAccordingToCompareTo(DATE_COMPARED);
+		assertThat(date).isEqualTo(DATE_COMPARED);
 	}
 
 	@Test
-	public void testFormattedDateParseRemovesTimeAndZone() {
+	void testFormattedDateParseRemovesTimeAndZone() {
 		LocalDate date = FormatHelper.formattedDateParse(VALID_TIMEZONED_DATE);
-		assertThat(date).isEquivalentAccordingToCompareTo(DATE_COMPARED);
+		assertThat(date).isEqualTo(DATE_COMPARED);
 	}
 }
