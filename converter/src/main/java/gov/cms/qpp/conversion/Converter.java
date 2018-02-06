@@ -199,8 +199,13 @@ public class Converter {
 		 */
 		private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
 			AllErrors errors = new AllErrors();
+			labelConversionToolDetailErrors(details);
 			errors.addError(constructErrorSource(inputIdentifier, details));
 			return errors;
+		}
+
+		private void labelConversionToolDetailErrors(List<Detail> details) {
+			details.forEach(detail -> detail.setMessage("CT - " + detail.getMessage()));
 		}
 
 		/**
