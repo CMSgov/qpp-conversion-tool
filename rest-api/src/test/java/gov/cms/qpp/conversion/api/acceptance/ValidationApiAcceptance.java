@@ -2,12 +2,10 @@ package gov.cms.qpp.conversion.api.acceptance;
 
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
 import gov.cms.qpp.test.helper.NioHelper;
-
 import io.restassured.response.Response;
 import org.jdom2.Attribute;
 import org.jdom2.DataConversionException;
@@ -21,9 +19,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.google.common.truth.Truth.assertThat;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.fail;
-import static com.google.common.truth.Truth.assertThat;
 
 
 @ExtendWith(RestExtension.class)
