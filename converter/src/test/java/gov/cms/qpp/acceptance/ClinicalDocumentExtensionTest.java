@@ -37,7 +37,8 @@ class ClinicalDocumentExtensionTest {
 			convert(INVALID);
 		} catch (TransformException ex) {
 			Detail detail = ex.getDetails().getErrors().get(0).getDetails().get(0);
-			assertThat(detail.getMessage()).isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR).getMessage());
+			assertThat(detail.getMessage()).isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT
+				.format(Context.REPORTING_YEAR, Context.IG_URL).getMessage());
 		}
 	}
 

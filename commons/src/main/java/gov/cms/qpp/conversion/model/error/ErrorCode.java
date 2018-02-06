@@ -24,7 +24,7 @@ public enum ErrorCode implements LocalizedError {
 	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occured during encoding"),
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. " +
 		"Please ensure that the submission complies with the `(Submission year's)` implementation guide. " +
-		"https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=19", true),
+		"`(Implementation guide link)`", true),
 	MEASURE_GUID_MISSING(6, "The measure reference results must have a single occurrence of the recognized measure GUID "
 	+ "`(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?", true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),

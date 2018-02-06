@@ -119,7 +119,7 @@ public class ConversionFileWriterWrapperTest {
 
 		//then
 		assertThat(detail.get("message"))
-				.isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR).getMessage());
+				.isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, Context.IG_URL).getMessage());
 		assertThat(detail.get("path"))
 				.isEmpty();
 	}
