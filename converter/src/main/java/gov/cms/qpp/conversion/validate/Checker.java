@@ -135,8 +135,7 @@ class Checker {
 		if (!shouldShortcut()) {
 			try {
 				FormatHelper.formattedDateParse(node.getValue(name));
-			}
-			catch (DateTimeParseException e) {
+			} catch (DateTimeParseException e) {
 				details.add(detail(code));
 			}
 		}
