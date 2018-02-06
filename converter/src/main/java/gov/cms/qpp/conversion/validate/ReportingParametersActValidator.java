@@ -25,8 +25,7 @@ public class ReportingParametersActValidator extends NodeValidator {
 				.isValidDate(ErrorCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(
 					performanceStart),
 					ReportingParametersActDecoder.PERFORMANCE_START)
-				.isValidDate(ErrorCode.INVALID_PERFORMANCE_PERIOD_FORMAT.
-					format(performanceEnd),
+				.isValidDate(ErrorCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(performanceEnd),
 					ReportingParametersActDecoder.PERFORMANCE_END);
 	}
 }
