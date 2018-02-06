@@ -115,7 +115,7 @@ class CpcPlusAcceptanceTest {
 
 			long matchingActualErrors = details.stream()
 				.filter(actualError -> actualError.getErrorCode() == expectedErrorCode)
-				.filter(actualError -> messageComparison(actualError.getMessage(), expectedErrorMessage))
+				.filter(actualError -> messageComparison(actualError.getMessage(), "CT - " + expectedErrorMessage))
 				.count();
 
 			assertWithMessage("The actual number of occurrences for the error code %s and substitutions %s did not match",
