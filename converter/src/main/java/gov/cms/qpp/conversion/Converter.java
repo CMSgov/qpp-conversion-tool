@@ -127,7 +127,8 @@ public class Converter {
 				qpp = encode();
 			}
 		} else {
-			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_QRDA_DOCUMENT);
+			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(
+				Context.REPORTING_YEAR, Context.IG_URL));
 			details.add(detail);
 		}
 

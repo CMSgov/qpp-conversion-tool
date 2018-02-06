@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 @Decoder(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataDecoder extends QrdaDecoder {
 
-	protected static final Set<String> MEASURES = Stream.of("IPP", "IPOP", "DENEX", "DENOM", "DENEXCEP", "NUMER")
+	static final Set<String> MEASURES = Stream.of("IPP", "IPOP", "DENEX", "DENOM", "DENEXCEP", "NUMER")
 			.collect(Collectors.toSet());
 
 	public static final String MEASURE_TYPE = "type";

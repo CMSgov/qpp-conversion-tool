@@ -15,7 +15,8 @@ import gov.cms.qpp.conversion.segmentation.QrdaScope;
  * throughout the conversion.
  */
 public class Context {
-
+	public static final String REPORTING_YEAR = "2017";
+	public static final String IG_URL = "https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=19";
 	private final Map<Class<? extends Annotation>, Registry<?>> registries = new IdentityHashMap<>();
 	private Program program = Program.ALL;
 	private Set<QrdaScope> scope = EnumSet.noneOf(QrdaScope.class);
