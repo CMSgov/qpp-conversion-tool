@@ -26,7 +26,7 @@ public enum ErrorCode implements LocalizedError {
 		"Please ensure that the submission complies with the `(Submission year's)` implementation guide. " +
 		"`(Implementation guide link)`", true),
 	MEASURE_GUID_MISSING(6, "The measure reference results must have a single occurrence of the recognized measure GUID "
-	+ "`(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?", true),
+			+ "`(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?", true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
@@ -39,8 +39,8 @@ public enum ErrorCode implements LocalizedError {
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
 			+ "for an eCQM that is proportion measure"),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
-			"The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` " +
-			"`(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`", true),
+			"The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` "
+			+ "`(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`", true),
 	ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION(15, "ACI Numerator Denominator Node should have an ACI "
 			+ "Section Node as a parent"),
 	ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "ACI Numerator Denominator Node does not contain a "
@@ -79,8 +79,8 @@ public enum ErrorCode implements LocalizedError {
 	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty"),
 	CPC_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid"),
 	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "Must contain one Measure (eCQM) section"),
-	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "Must contain correct number of performance rate(s). " +
-			"Correct Number is `(Expected value)`", true),
+	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "Must contain correct number of performance rate(s). "
+			+ "Correct Number is `(Expected value)`", true),
 	NUMERATOR_DENOMINATOR_MISSING_CHILDREN(38,
 			"This `(Numerator or Denominator)` Node does not have any child Nodes", true),
 	NUMERATOR_DENOMINATOR_INCORRECT_CHILD(39,
@@ -96,13 +96,12 @@ public enum ErrorCode implements LocalizedError {
 	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only measures and reporting parameter"),
 	NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT(46, "Clinical Document Node is required"),
 	NPI_TIN_COMBINATION_EXACTLY_ONE_DOCUMENT_ALLOWED(47, "Only one Clinical Document Node is allowed"),
-	CPC_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for " +
-			"`(Current subpopulation type)` measure `(Current subpopulation UUID)`", true),
-	CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH(49,
-			"Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations " +
-			"`(Number of stratifiers required)` for `(Current subpopulation type)` measure " +
-			"`(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`"
-			, true),
+	CPC_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
+			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`", true),
+	CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH(49,"Amount of stratifications `(Current number of "
+			+ "Reporting Stratifiers)` does not meet expectations "
+			+ "`(Number of stratifiers required)` for `(Current subpopulation type)` measure "
+			+ "`(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`", true),
 	IA_MEASURE_INCORRECT_CHILDREN_COUNT(50, "Measure performed must have exactly one child."),
 	IA_MEASURE_INVALID_TYPE(51, "A single measure performed value is required and must be either a Y or an N."),
 	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "Measure performed must have exactly one Aggregate Count."),
@@ -114,20 +113,20 @@ public enum ErrorCode implements LocalizedError {
 			+ "measure population"),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE(58, "The measure reference results must have a single "
 			+ "measure type"),
-	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The eCQM (electronic measure id: `(Current eMeasure ID)`) requires a " +
-			"`(Subpopulation type)` with the correct UUID of `(Correct uuid required)`", true),
-	QUALITY_MEASURE_ID_INCORRECT_PERFORMANCE_UUID(60, "The eCQM (electronic measure id: `(Current eMeasure ID)`) has " +
-			"a performanceRateId with an incorrect UUID of `(Incorrect UUID)`", true),
+	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The eCQM (electronic measure id: `(Current eMeasure ID)`) requires a "
+			+ "`(Subpopulation type)` with the correct UUID of `(Correct uuid required)`", true),
+	QUALITY_MEASURE_ID_INCORRECT_PERFORMANCE_UUID(60, "The eCQM (electronic measure id: `(Current eMeasure ID)`) has "
+			+ "a performanceRateId with an incorrect UUID of `(Incorrect UUID)`", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID"),
-	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64, "CPC+ Submissions must have at least `(CPC+ measure group minimum)` " +
-			"of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`", true),
-	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of " +
-			"the following measures: `(Listing of all CPC+ measure ids)`.", true),
-	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the Supplemental Code `(Supplemental Data Code)` for eCQM measure " +
-			"`(Measure Id)`'s Sub-population `(Sub Population)`", true),
-	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` " +
-			"on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`", true),
+	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64, "CPC+ Submissions must have at least `(CPC+ measure group minimum)` "
+			+ "of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`", true),
+	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of "
+			+ "the following measures: `(Listing of all CPC+ measure ids)`.", true),
+	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the Supplemental Code `(Supplemental Data Code)` for eCQM measure "
+			+ "`(Measure Id)`'s Sub-population `(Sub Population)`", true),
+	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
+			+ "on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`", true),
 	CPC_PLUS_SUBMISSION_ENDED(68, "CPC+ Submission is after the end date `(Submission end date)`", true);
 
 
@@ -155,7 +154,7 @@ public enum ErrorCode implements LocalizedError {
 
 	private void initMessageMarkers(String message) {
 		Matcher matcher = getPattern().matcher(message);
-		while(matcher.find()) {
+		while (matcher.find()) {
 			messageVariables.add(matcher.group(1));
 		}
 	}

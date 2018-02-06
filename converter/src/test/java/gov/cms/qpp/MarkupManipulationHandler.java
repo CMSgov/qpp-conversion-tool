@@ -1,5 +1,7 @@
 package gov.cms.qpp;
 
+import org.xml.sax.SAXException;
+
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
@@ -8,7 +10,6 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
@@ -16,6 +17,8 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class MarkupManipulationHandler {
 	private static final String NAMESPACE_URI = "urn:hl7-org:v3";
@@ -29,14 +32,14 @@ public class MarkupManipulationHandler {
 	}
 
 	public List<Detail> executeScenario(String templateId, String attribute, boolean remove) {
-		String xPath = getPath(templateId, attribute);
-		return executeScenario(xPath, remove);
+		String xpath = getPath(templateId, attribute);
+		return executeScenario(xpath, remove);
 	}
 
-	public List<Detail> executeScenario(String xPath, boolean remove) {
-		InputStream inStream = manipulator.upsetTheNorm(xPath, remove);
+	public List<Detail> executeScenario(String xpath, boolean remove) {
+		InputStream inStream = manipulator.upsetTheNorm(xpath, remove);
 		Converter converter = new Converter(
-				new InputStreamSupplierSource(xPath, () -> inStream));
+				new InputStreamSupplierSource(xpath, () -> inStream));
 		try {
 			converter.transform();
 		} catch (TransformException exception) {
@@ -48,9 +51,7 @@ public class MarkupManipulationHandler {
 
 	public String getPath(String templateId, String attribute) {
 		String path = PathCorrelator.getXpath(templateId, attribute, NAMESPACE_URI);
-		if (path == null) {
-			System.out.println("Bad combo templateId: " + templateId + " attribute: " + attribute);
-		}
+		assertWithMessage("Bad combo templateId: %s attribute: %s", templateId, attribute).that(path).isNotNull();
 		return "//" + path;
 	}
 

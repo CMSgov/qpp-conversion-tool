@@ -33,7 +33,7 @@ class AciNumeratorDenominatorValueRoundTripTest {
 		Node numDenomNode = new QrdaDecoderEngine(context).decode(XmlUtils.stringToDom(xmlFragment));
 
 		String xPathExpected = "/*[local-name() = 'root' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'observation'" +
-		                       " and namespace-uri() = 'urn:hl7-org:v3']";
+								" and namespace-uri() = 'urn:hl7-org:v3']";
 		assertWithMessage("The XPath of the aggregate count node is incorrect")
 				.that(numDenomNode.getChildNodes().get(0).getPath())
 				.isEqualTo(xPathExpected);

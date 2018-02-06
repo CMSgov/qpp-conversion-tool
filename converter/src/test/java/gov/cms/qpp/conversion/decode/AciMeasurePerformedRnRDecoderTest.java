@@ -27,8 +27,7 @@ class AciMeasurePerformedRnRDecoderTest {
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
 		Element element = new Element("organizer", rootns);
-		Element templateIdElement = new Element("templateId", rootns)
-			                            .setAttribute("root","2.16.840.1.113883.10.20.27.3.28");
+		Element templateIdElement = new Element("templateId", rootns).setAttribute("root","2.16.840.1.113883.10.20.27.3.28");
 		Element referenceElement = new Element("reference", rootns);
 		Element externalDocumentElement = new Element("externalDocument", rootns);
 		Element idElement = new Element("id", rootns).setAttribute("extension", MEASURE_ID);

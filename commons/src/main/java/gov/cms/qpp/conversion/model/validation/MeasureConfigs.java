@@ -144,7 +144,7 @@ public class MeasureConfigs {
 		if (getSpellChecker() != null) {
 			try {
 				suggestions = Arrays.asList(getSpellChecker().suggestSimilar(measureId, SUGGESTION_COUNT));
-			} catch(IOException ex) {
+			} catch (IOException ex) {
 				DEV_LOG.warn("Problem when seeking measure suggestions.", ex);
 			}
 		}

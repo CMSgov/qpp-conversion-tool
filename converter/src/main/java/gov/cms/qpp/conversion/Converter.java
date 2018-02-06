@@ -286,7 +286,8 @@ public class Converter {
 		public Source getValidationErrorsSource() {
 			try {
 				byte[] validationErrorBytes = mapper.writeValueAsBytes(reportDetails);
-				return new InputStreamSupplierSource("ValidationErrors", () -> new ByteArrayInputStream(validationErrorBytes), validationErrorBytes.length);
+				return new InputStreamSupplierSource("ValidationErrors",
+						() -> new ByteArrayInputStream(validationErrorBytes), validationErrorBytes.length);
 			} catch (JsonProcessingException e) {
 				throw new EncodeException("Issue serializing error report details", e);
 			}
@@ -300,7 +301,8 @@ public class Converter {
 		public Source getRawValidationErrorsOrEmptySource() {
 			String raw = (qppValidationDetails != null) ? qppValidationDetails : "";
 			byte[] rawValidationErrorBytes = raw.getBytes(StandardCharsets.UTF_8);
-			return new InputStreamSupplierSource("RawValidationErrors", () -> new ByteArrayInputStream(rawValidationErrorBytes), rawValidationErrorBytes.length);
+			return new InputStreamSupplierSource("RawValidationErrors",
+					() -> new ByteArrayInputStream(rawValidationErrorBytes), rawValidationErrorBytes.length);
 		}
 	}
 }

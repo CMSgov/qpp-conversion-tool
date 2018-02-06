@@ -11,6 +11,8 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.test.MockitoExtension;
+import gov.cms.qpp.test.helper.JsonTestHelper;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,7 +77,7 @@ class ValidationServiceImplTest {
 	}
 
 	private static void prepAllErrors() throws IOException {
-		submissionError = JsonHelper.readJsonAtJsonPath(
+		submissionError = JsonTestHelper.readJsonAtJsonPath(
 			pathToSubmissionError, "$", ErrorMessage.class);
 
 		String errorJson = new ObjectMapper().writeValueAsString(submissionError);
