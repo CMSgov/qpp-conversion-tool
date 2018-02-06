@@ -8,10 +8,10 @@ public class FormatHelper {
 	private static final String DATE_FORMAT = "yyyyMMdd";
 
 	/**
-	 * Formats the date and parses into a local date.
+	 * Formats the date and parses into a {@link LocalDate}.
 	 *
-	 * @param date
-	 * @return
+	 * @param date String to be parsed into a date.
+	 * @return LocalDate parsed from the given string
 	 */
 	public static LocalDate formattedDateParse(String date) {
 		String parse = cleanString(date);
