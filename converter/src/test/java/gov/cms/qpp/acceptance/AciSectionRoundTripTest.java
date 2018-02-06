@@ -23,18 +23,18 @@ class AciSectionRoundTripTest {
 	void parseSparseAciSectionAsNode() throws XmlException {
 		//set-up
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-		                     + "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
-		                     + "	<section>\n" + "		<!-- Measure Section -->\n"
-		                     + "		<templateId root=\"2.16.840.1.113883.10.20.24.2.2\"/>\n"
-		                     + "		<!-- Advancing Care Information Section templateId -->\n"
-		                     + "		<templateId root=\"2.16.840.1.113883.10.20.27.2.5\" extension=\"2017-06-01\"/>\n"
-		                     + "		<code code=\"55186-1\" codeSystem=\"2.16.840.1.113883.6.1\" displayName=\"Measure Section\"/>\n"
-		                     + "		<title>Measure Section</title>\n" + "		<text>\n" + "		</text>\n"
-		                     + "		<entry>\n"
-		                     + "			<qed resultName=\"measure\" resultValue=\"measure1\">\n"
-		                     + "				<templateId root=\"Q.E.D\"/>\n"
-		                     + "			</qed>"
-		                     + "		</entry>\n"
+							 + "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
+							 + "	<section>\n" + "		<!-- Measure Section -->\n"
+							 + "		<templateId root=\"2.16.840.1.113883.10.20.24.2.2\"/>\n"
+							 + "		<!-- Advancing Care Information Section templateId -->\n"
+							 + "		<templateId root=\"2.16.840.1.113883.10.20.27.2.5\" extension=\"2017-06-01\"/>\n"
+							 + "		<code code=\"55186-1\" codeSystem=\"2.16.840.1.113883.6.1\" displayName=\"Measure Section\"/>\n"
+							 + "		<title>Measure Section</title>\n" + "		<text>\n" + "		</text>\n"
+							 + "		<entry>\n"
+							 + "			<qed resultName=\"measure\" resultValue=\"measure1\">\n"
+							 + "				<templateId root=\"Q.E.D\"/>\n"
+							 + "			</qed>"
+							 + "		</entry>\n"
 							 + "		<entry typeCode=\"DRIV\">"
 							 + "			<act classCode=\"ACT\" moodCode=\"EVN\">"
 							 + "				<templateId root=\"2.16.840.1.113883.10.20.17.3.8\"/>"
@@ -47,8 +47,8 @@ class AciSectionRoundTripTest {
 							 + "				</effectiveTime>"
 							 + "			</act>"
 							 + "		</entry>"
-		                     + "	</section>\n"
-		                     + "</component>";
+							 + "	</section>\n"
+							 + "</component>";
 
 		//execute
 		Node parentNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
@@ -63,20 +63,20 @@ class AciSectionRoundTripTest {
 	void parseGarbageAciSectionAsNode() throws XmlException {
 		//set-up
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-		                     + "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
-		                     + "	<section>\n" + "		<!-- Measure Section -->\n"
-		                     + "		<templateId root=\"2.16.840.1.113883.10.20.24.2.2\"/>\n"
-		                     + "		<!-- Advancing Care Information Section templateId -->\n"
-		                     + "		<templateId root=\"2.16.840.1.113883.10.20.27.2.5\" extension=\"2017-06-01\"/>\n"
-		                     + "		<code code=\"55186-1\" codeSystem=\"2.16.840.1.113883.6.1\" displayName=\"Measure Section\"/>\n"
-		                     + "        <statusCode code=\"Death and Destruction!\" />\n"
-		                     + "        Utter garbage!  Buahahahahaha!\n"
-		                     + "		<title>Measure Section</title>\n" + "		<text>\n" + "		</text>\n"
-		                     + "		<entry>\n"
-		                     + "			<qed resultName=\"measure\" resultValue=\"measure1\">\n"
-		                     + "				<templateId root=\"Q.E.D\"/>\n"
-		                     + "			</qed>"
-		                     + "		</entry>\n"
+							+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
+							 + "	<section>\n" + "		<!-- Measure Section -->\n"
+							 + "		<templateId root=\"2.16.840.1.113883.10.20.24.2.2\"/>\n"
+							 + "		<!-- Advancing Care Information Section templateId -->\n"
+							 + "		<templateId root=\"2.16.840.1.113883.10.20.27.2.5\" extension=\"2017-06-01\"/>\n"
+							 + "		<code code=\"55186-1\" codeSystem=\"2.16.840.1.113883.6.1\" displayName=\"Measure Section\"/>\n"
+							 + "        <statusCode code=\"Death and Destruction!\" />\n"
+							 + "        Utter garbage!  Buahahahahaha!\n"
+							 + "		<title>Measure Section</title>\n" + "		<text>\n" + "		</text>\n"
+							 + "		<entry>\n"
+							 + "			<qed resultName=\"measure\" resultValue=\"measure1\">\n"
+							 + "				<templateId root=\"Q.E.D\"/>\n"
+							 + "			</qed>"
+							 + "		</entry>\n"
 							 + "		<entry typeCode=\"DRIV\">"
 							 + "			<act classCode=\"ACT\" moodCode=\"EVN\">"
 							 + "				<templateId root=\"2.16.840.1.113883.10.20.17.3.8\"/>"
@@ -89,8 +89,8 @@ class AciSectionRoundTripTest {
 							 + "				</effectiveTime>"
 							 + "			</act>"
 							 + "		</entry>"
-		                     + "	</section>\n"
-		                     + "</component>";
+							 + "	</section>\n"
+							 + "</component>";
 
 		//execute
 		Node parentNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
@@ -113,8 +113,8 @@ class AciSectionRoundTripTest {
 				+ "		<title>Measure Section</title>\n" + "		<text>\n" + "		</text>\n" + "		<entry>\n"
 				+ "			<qed resultName=\"measure\" resultValue=\"measure1\">\n"
 				+ "				<templateId root=\"Q.E.D\"/>\n"
-		        + "			</qed>"
-		        + "		</entry>\n"
+				+ "			</qed>"
+				+ "		</entry>\n"
 				+ "		<entry typeCode=\"DRIV\">"
 				+ "			<act classCode=\"ACT\" moodCode=\"EVN\">"
 				+ "				<templateId root=\"2.16.840.1.113883.10.20.17.3.8\"/>"
@@ -128,7 +128,7 @@ class AciSectionRoundTripTest {
 				+ "			</act>"
 				+ "		</entry>"
 				+ "	</section>\n"
-		        + "</component>";
+				+ "</component>";
 
 		String expected = "{\n  \"category\" : \"aci\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ {\n    \"measure\" : \"measure1\"\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-04-30\"\n}";
 

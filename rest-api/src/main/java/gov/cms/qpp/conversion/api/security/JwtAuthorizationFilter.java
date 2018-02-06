@@ -67,7 +67,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		Map<String, String> payloadMap = getPayload(tokenHeader);
 		if (isValidCpcPlusOrg(payloadMap)) {
 			UsernamePasswordAuthenticationToken token =
-					new UsernamePasswordAuthenticationToken(payloadMap.get("id"), null , new ArrayList<>());
+					new UsernamePasswordAuthenticationToken(payloadMap.get("id"), null, new ArrayList<>());
 			SecurityContextHolder.getContext().setAuthentication(token);
 		}
 		chain.doFilter(request, response);
