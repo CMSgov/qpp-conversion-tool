@@ -36,7 +36,7 @@ public class ValidationServiceImpl implements ValidationService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(ValidationServiceImpl.class);
 	static final String CONTENT_TYPE = "application/json";
-	protected static final String SV_LABEL = "SV - ";
+	public static final String SV_LABEL = "SV - ";
 
 	private Environment environment;
 	private RestTemplate restTemplate;
