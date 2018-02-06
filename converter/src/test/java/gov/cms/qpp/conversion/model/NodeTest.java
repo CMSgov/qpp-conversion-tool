@@ -25,6 +25,24 @@ class NodeTest {
 	}
 
 	@Test
+	void testNonNullGetValueOrDefault() {
+		Node node = new Node(TemplateId.PLACEHOLDER);
+		node.putValue("DEF", "GHI");
+
+		assertWithMessage("get value should equal put value")
+			.that(node.getValueOrDefault("DEF", "")).isSameAs("GHI");
+	}
+
+	@Test
+	void testNullGetValueOrDefault() {
+		Node node = new Node(TemplateId.PLACEHOLDER);
+		node.putValue("DEF", null);
+
+		assertWithMessage("get value should equal put value")
+			.that(node.getValueOrDefault("DEF", "")).isSameAs("");
+	}
+
+	@Test
 	void testChild() {
 		Node node = new Node(TemplateId.PLACEHOLDER);
 		Node childNode = new Node();
