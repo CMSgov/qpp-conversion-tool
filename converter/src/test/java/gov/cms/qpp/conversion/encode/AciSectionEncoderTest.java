@@ -19,6 +19,7 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 class AciSectionEncoderTest {
 
@@ -113,7 +114,7 @@ class AciSectionEncoderTest {
 
 		assertThat(aciSectionEncoder.getDetails()).isNotNull();
 		assertThat(aciSectionEncoder.getDetails().get(0).getMessage())
-				.isEqualTo("CT - Failed to find an encoder");
+				.isEqualTo(ErrorCode.CT_LABEL + "Failed to find an encoder");
 	}
 
 	@Test
