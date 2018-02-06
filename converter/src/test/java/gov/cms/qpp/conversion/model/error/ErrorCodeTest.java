@@ -32,6 +32,12 @@ class ErrorCodeTest implements EnumContract {
 	}
 
 	@Test
+	void testGetMessagePrependsConversionToolLabel() {
+		ErrorCode code = ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE;
+		Truth.assertThat(code.getMessage()).startsWith("CT - ");
+	}
+
+	@Test
 	void testFormattedEqualsNull() {
 		Truth.assertThat(formatted("mock")).isNotEqualTo(null);
 	}

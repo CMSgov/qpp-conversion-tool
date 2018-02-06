@@ -52,7 +52,7 @@ class ValidationApiAcceptance {
 			if (filter.equals(Filters.attribute())) {
 				Attribute attribute = (Attribute) found;
 				assertThat(attribute.getIntValue()).isEqualTo(CANNED_VALUE);
-				assertThat(detail.getMessage()).contains("SV - ");
+				assertThat(detail.getMessage()).startsWith("SV - ");
 			} else {
 				assertThat(found).isNotNull();
 			}
