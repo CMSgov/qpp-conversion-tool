@@ -70,9 +70,9 @@ public class QrdaGenerator {
 
 	private List<MeasureConfig> filterQualityMeasures() throws IOException {
 		return measureConfigs.stream()
-				.filter(measureConfig -> measureConfig.getCategory().equals("quality") &&
-						measureConfig.getElectronicMeasureId() != null &&
-						!measureConfig.getElectronicMeasureId().isEmpty())
+				.filter(measureConfig -> measureConfig.getCategory().equals("quality")
+						&& measureConfig.getElectronicMeasureId() != null
+						&& !measureConfig.getElectronicMeasureId().isEmpty())
 				.collect(Collectors.toList());
 	}
 
@@ -99,19 +99,19 @@ public class QrdaGenerator {
 	private void prettyPrint(StringWriter writer) throws TransformerException, IOException,
 			SAXException, ParserConfigurationException, XPathExpressionException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		DocumentBuilder documentBuilder = dbFactory.newDocumentBuilder();
 		InputSource is = new InputSource(new InputStreamReader(
 				new ByteArrayInputStream(writer.toString().getBytes())));
 
-		Document original = dBuilder.parse(is);
+		Document original = documentBuilder.parse(is);
 		removeWhitespace(original);
 		moreThanMeetsTheEye().transform(new DOMSource(original), getDestination());
 	}
 
 	private void removeWhitespace(Document document) throws XPathExpressionException {
 		document.normalize();
-		XPath xPath = XPathFactory.newInstance().newXPath();
-		NodeList nodeList = (NodeList) xPath.evaluate("//text()[normalize-space()='']",
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList) xpath.evaluate("//text()[normalize-space()='']",
 				document,
 				XPathConstants.NODESET);
 
