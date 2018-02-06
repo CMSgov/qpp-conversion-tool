@@ -6,6 +6,8 @@ import java.util.Locale;
 
 public class FormatHelper {
 	private static final String DATE_FORMAT = "yyyyMMdd";
+	
+	private FormatHelper(){}
 
 	/**
 	 * Formats the date and parses into a {@link LocalDate}.
