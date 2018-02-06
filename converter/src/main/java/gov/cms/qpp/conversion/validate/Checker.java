@@ -1,15 +1,15 @@
 package gov.cms.qpp.conversion.validate;
 
 import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import gov.cms.qpp.conversion.util.FormatHelper;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -133,10 +133,9 @@ class Checker {
 	 * @return The checker, for chaining method calls
 	 */
 	public Checker isValidDate(LocalizedError code, String name) {
-		lastAppraised = node.getValue(name);
 		if (!shouldShortcut()) {
 			try {
-				LocalDate.parse(node.getValue(name), DateTimeFormatter.ofPattern(DATE_FORMAT));
+				FormatHelper.formattedDateParse(node.getValue(name));
 			}
 			catch (DateTimeParseException e) {
 				details.add(detail(code));

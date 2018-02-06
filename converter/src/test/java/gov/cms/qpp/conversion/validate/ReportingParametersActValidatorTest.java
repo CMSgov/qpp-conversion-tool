@@ -18,6 +18,7 @@ class ReportingParametersActValidatorTest {
 	private final String PERFORMANCE_START = "20170101";
 	private final String PERFORMANCE_YEAR = "2017";
 	private final String TIMESTAMPED_DATE = "1521231541231";
+
 	private ReportingParametersActValidator reportingParametersActValidator;
 
 	@BeforeEach
@@ -84,7 +85,7 @@ class ReportingParametersActValidatorTest {
 	}
 
 	@Test
-	void testInvalidPerformanceEndFormat(){
+	void testInvalidPerformanceEndFormat() {
 		Node reportingParametersActNode = createReportingParametersAct(PERFORMANCE_START, TIMESTAMPED_DATE, PERFORMANCE_YEAR);
 
 		reportingParametersActValidator.internalValidateSingleNode(reportingParametersActNode);
@@ -93,6 +94,42 @@ class ReportingParametersActValidatorTest {
 
 		assertThat(error).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.contains(ErrorCode.INVALID_PERFORMANCE_PERIOD_FORMAT.format(TIMESTAMPED_DATE));
+	}
+
+	@Test
+	void testPerformanceStartAndEndWithDashesAndTimezone() {
+		Node reportingParametersActNode = createReportingParametersAct("2017-01-01T01:45:23.123",
+			"2017-12-01T01:45:23.123", PERFORMANCE_YEAR);
+
+		reportingParametersActValidator.internalValidateSingleNode(reportingParametersActNode);
+
+		Set<Detail> error = reportingParametersActValidator.getDetails();
+
+		assertThat(error).isEmpty();
+	}
+
+	@Test
+	void testPerformanceStartAndEndWithSlashesAndTimezone() {
+		Node reportingParametersActNode = createReportingParametersAct("2017/01/01",
+			"2017/12/01T01:45:23.123", PERFORMANCE_YEAR);
+
+		reportingParametersActValidator.internalValidateSingleNode(reportingParametersActNode);
+
+		Set<Detail> error = reportingParametersActValidator.getDetails();
+
+		assertThat(error).isEmpty();
+	}
+
+	@Test
+	void testPerformanceStartAndEndSlashesAndDashesNoTimezone() {
+		Node reportingParametersActNode = createReportingParametersAct("2017/01/01T01:45:23",
+			"2017-012-01T01:45:23", PERFORMANCE_YEAR);
+
+		reportingParametersActValidator.internalValidateSingleNode(reportingParametersActNode);
+
+		Set<Detail> error = reportingParametersActValidator.getDetails();
+
+		assertThat(error).isEmpty();
 	}
 
 	private Node createReportingParametersAct(String startDate, String endDate, String performanceYear) {
