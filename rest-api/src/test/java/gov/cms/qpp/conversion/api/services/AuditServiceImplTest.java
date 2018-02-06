@@ -214,7 +214,7 @@ public class AuditServiceImplTest {
 
 	private void problematic() {
 		when(storageService.store(any(String.class), any(InputStream.class), anyLong()))
-				.thenReturn(CompletableFuture.supplyAsync( () -> {
+				.thenReturn(CompletableFuture.supplyAsync(() -> {
 					throw new UncheckedInterruptedException(new InterruptedException());
 				}));
 	}

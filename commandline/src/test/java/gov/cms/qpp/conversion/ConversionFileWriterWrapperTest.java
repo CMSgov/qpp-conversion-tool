@@ -1,8 +1,7 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.test.helper.JsonTestHelper;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.util.JsonHelper;
+import gov.cms.qpp.test.helper.JsonTestHelper;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,19 +14,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 public class ConversionFileWriterWrapperTest {
@@ -129,7 +119,7 @@ public class ConversionFileWriterWrapperTest {
 
 		//then
 		assertThat(detail.get("message"))
-				.isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.getMessage());
+				.isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, Context.IG_URL).getMessage());
 		assertThat(detail.get("path"))
 				.isEmpty();
 	}
@@ -149,8 +139,7 @@ public class ConversionFileWriterWrapperTest {
 		Map<String, String> secondDetail = JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
 				"$.errors[0].details[1]");
 
-		List<Map<String, String>> details = JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
-				"$.errors[0].details");
+		JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"), "$.errors[0].details");
 
 		//then
 		assertThat(firstDetail.get("message")).isEqualTo(firstMessage);

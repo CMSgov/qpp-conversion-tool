@@ -100,7 +100,7 @@ public enum SupplementalData {
 	 *
 	 * @return static supplemental type map
 	 */
-	public static Map<SupplementalType, TemplateId> getSupplementalTypeMapToTemplateId(){
+	public static Map<SupplementalType, TemplateId> getSupplementalTypeMapToTemplateId() {
 		return SUPPLEMENTAL_TYPES.clone();
 	}
 }

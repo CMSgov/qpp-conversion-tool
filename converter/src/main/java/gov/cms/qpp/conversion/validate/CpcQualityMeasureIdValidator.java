@@ -49,9 +49,13 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 			int requiredPerformanceRateCount = measureConfig.getStrata().size();
 
 			thoroughlyCheck(node)
-					.childMinimum(ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
+					.childMinimum(
+							ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+									.format(requiredPerformanceRateCount),
 							requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-					.childMaximum(ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
+					.childMaximum(
+							ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+									.format(requiredPerformanceRateCount),
 							requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 		}
 
@@ -81,7 +85,8 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childUuidFinder =
-						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
+						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE,
+								PERFORMANCE_RATE_ID);
 
 				Node existingUuidChild = node
 						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)

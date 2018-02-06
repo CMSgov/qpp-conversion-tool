@@ -7,7 +7,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 2 : CT - The file is not a valid XML document
 * 3 : CT - Unexpected exception occurred during conversion
 * 4 : CT - Unexpected exception occured during encoding
-* 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the most recent implementation guide. https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=19
+* 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`
 * 6 : CT - The measure reference results must have a single occurrence of the recognized measure GUID `(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?
 * 7 : CT - The measure reference results must have at least one measure
 * 8 : CT - A single aggregate count value is required
