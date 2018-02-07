@@ -1,24 +1,5 @@
 package gov.cms.qpp.conversion.api.integration;
 
-import gov.cms.qpp.conversion.api.config.S3Config;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.services.StorageServiceImpl;
-import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
-
-import javax.inject.Inject;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeoutException;
-import java.util.function.Supplier;
-
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-
 import cloud.localstack.LocalstackTestRunner;
 import cloud.localstack.TestUtils;
 import com.amazonaws.client.builder.AwsClientBuilder;
@@ -45,10 +26,26 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
+import gov.cms.qpp.conversion.api.config.S3Config;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.services.StorageServiceImpl;
+import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
+
+import javax.inject.Inject;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeoutException;
+
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+
 @SpringBootTest
 @RunWith(LocalstackTestRunner.class)
 @PropertySource("classpath:application.properties")
-public class StorageServiceImplIntegrationTest {
+public class StorageServiceImplIntegration {
 
 	@ClassRule
 	public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();
