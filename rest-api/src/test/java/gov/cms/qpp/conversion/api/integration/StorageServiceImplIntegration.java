@@ -45,7 +45,7 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 @SpringBootTest
 @RunWith(LocalstackTestRunner.class)
 @PropertySource("classpath:application.properties")
-public class StorageServiceImplIntegrationTest {
+public class StorageServiceImplIntegration {
 
 	@ClassRule
 	public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();
