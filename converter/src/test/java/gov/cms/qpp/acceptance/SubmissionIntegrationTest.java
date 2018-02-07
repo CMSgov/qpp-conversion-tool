@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -71,7 +72,7 @@ class SubmissionIntegrationTest {
 	}
 
 	private HttpResponse servicePost(JsonWrapper qpp) throws IOException {
-		HttpEntity entity = new ByteArrayEntity(qpp.toString().getBytes("UTF-8"));
+		HttpEntity entity = new ByteArrayEntity(qpp.toString().getBytes(StandardCharsets.UTF_8));
 		HttpPost request = new HttpPost(SERVICE_URL);
 		request.setHeader("Content-Type", "application/json");
 		request.setEntity(entity);

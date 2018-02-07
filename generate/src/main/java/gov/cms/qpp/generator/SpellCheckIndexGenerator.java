@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,7 +26,7 @@ import java.util.Set;
 @Mojo(name = "generateLuceneIndex")
 public class SpellCheckIndexGenerator extends AbstractMojo {
 
-	@Parameter( property = "generateLuceneIndex.baseDir", defaultValue = "./commons/src/main/resources" )
+	@Parameter(property = "generateLuceneIndex.baseDir", defaultValue = "./commons/src/main/resources")
 	private String baseDir;
 
 	private Path dictionaryPath;
@@ -50,14 +51,14 @@ public class SpellCheckIndexGenerator extends AbstractMojo {
 	}
 
 	private void writeMeasures() throws FileNotFoundException, UnsupportedEncodingException {
-		getLog().info( "Writing measures dictionary" );
+		getLog().info("Writing measures dictionary");
 		Set<String> keys = MeasureConfigs.getConfigurationMap().keySet();
-		try (PrintWriter pw = new PrintWriter(
-			new OutputStreamWriter(new FileOutputStream(dictionaryPath.toFile()), "UTF-8"))) {
-			for (String s : keys) {
-				pw.println(s);
+		try (PrintWriter writer = new PrintWriter(
+			new OutputStreamWriter(new FileOutputStream(dictionaryPath.toFile()), StandardCharsets.UTF_8))) {
+			for (String key : keys) {
+				writer.println(key);
 			}
-			pw.flush();
+			writer.flush();
 		}
 	}
 }
