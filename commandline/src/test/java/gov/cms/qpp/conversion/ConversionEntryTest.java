@@ -2,8 +2,6 @@ package gov.cms.qpp.conversion;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.truth.Truth;
-
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.ParseException;
@@ -12,6 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.powermock.api.support.membermodification.MemberMatcher;
 import org.powermock.api.support.membermodification.MemberModifier;
+
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 import java.io.File;
 import java.io.IOException;
@@ -232,7 +232,7 @@ class ConversionEntryTest {
 	}
 
 	@Test
-	void shouldAllowEmptyTemplateScope() throws ParseException {
+	void shouldAllowEmptyTemplateScope() {
 		//when
 		Assertions.assertThrows(MissingArgumentException.class, () -> {
 			CommandLine line = ConversionEntry.cli("-t");
@@ -254,7 +254,7 @@ class ConversionEntryTest {
 	}
 
 	@Test
-	void testValidArgsParseException() throws Exception {
+	void testValidArgsParseException() {
 		//when
 		Collection<Path> arguments = ConversionEntry.validArgs("-someInvalidArgument");
 

@@ -104,7 +104,7 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testInvalidXml() throws IOException {
+	public void testInvalidXml() {
 		Path path = Paths.get("src/test/resources/non-xml-file.xml");
 		Converter converter = new Converter(new PathSource(path));
 
@@ -150,7 +150,7 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testNotAValidQrdaIIIFile() throws IOException {
+	public void testNotAValidQrdaIIIFile() {
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 		Converter converter = new Converter(new PathSource(path));
 		converter.getContext().setDoDefaults(false);
@@ -180,7 +180,7 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testSkipDefaults() throws Exception {
+	public void testSkipDefaults() {
 		Converter converter = new Converter(new PathSource(Paths.get("src/test/resources/converter/defaultedNode.xml")));
 		converter.getContext().setDoDefaults(false);
 		converter.getContext().setDoValidation(false);
@@ -192,7 +192,7 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testDefaults() throws Exception {
+	public void testDefaults() {
 		Context context = new Context();
 		context.setDoValidation(false);
 		TestHelper.mockDecoder(context, JennyDecoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));

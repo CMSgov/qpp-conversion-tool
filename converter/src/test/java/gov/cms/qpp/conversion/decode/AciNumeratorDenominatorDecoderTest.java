@@ -141,7 +141,7 @@ class AciNumeratorDenominatorDecoderTest {
 	}
 
 	@Test
-	void testInternalDecode() throws Exception {
+	void testInternalDecode() {
 		//set-up
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
