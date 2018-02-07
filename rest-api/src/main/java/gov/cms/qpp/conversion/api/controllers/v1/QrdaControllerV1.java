@@ -10,8 +10,6 @@ import gov.cms.qpp.conversion.api.services.ValidationService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.util.function.Supplier;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -65,7 +63,7 @@ public class QrdaControllerV1 {
 		API_LOG.info("Conversion request received");
 
 		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
-				new InputStreamSupplierSource(originalFilename, inputStreamSupplier(file), file.getSize()));
+				new InputStreamSupplierSource(originalFilename, inputStream(file)));
 
 		validationService.validateQpp(conversionReport);
 
@@ -80,18 +78,16 @@ public class QrdaControllerV1 {
 	}
 
 	/**
-	 * Supplier for file input
+	 * Input stream from a file
 	 *
 	 * @param file the attachment
-	 * @return a supplier that wraps the attachment's input stream retrieval
+	 * @return an input stream from the {@link MultipartFile}
 	 */
-	Supplier<InputStream> inputStreamSupplier(MultipartFile file) {
-		return () -> {
-			try {
-				return file.getInputStream();
-			} catch (IOException ex) {
-				throw new UncheckedIOException(ex);
-			}
-		};
+	InputStream inputStream(MultipartFile file) {
+		try {
+			return file.getInputStream();
+		} catch (IOException ex) {
+			throw new UncheckedIOException(ex);
+		}
 	}
 }

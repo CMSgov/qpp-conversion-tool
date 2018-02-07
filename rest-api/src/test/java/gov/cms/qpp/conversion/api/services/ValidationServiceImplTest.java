@@ -8,9 +8,7 @@ import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.test.MockitoExtension;
 import gov.cms.qpp.test.helper.JsonTestHelper;
 
