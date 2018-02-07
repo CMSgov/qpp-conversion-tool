@@ -521,7 +521,7 @@ public class JsonWrapper {
 	 */
 	public Source toSource() {
 		byte[] qppBytes = toString().getBytes(StandardCharsets.UTF_8);
-		return new InputStreamSupplierSource("QPP", () -> new ByteArrayInputStream(qppBytes), qppBytes.length);
+		return new InputStreamSupplierSource("QPP", new ByteArrayInputStream(qppBytes));
 	}
 
 	/**

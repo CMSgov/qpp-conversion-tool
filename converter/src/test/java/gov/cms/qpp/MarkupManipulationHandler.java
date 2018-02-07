@@ -38,8 +38,7 @@ public class MarkupManipulationHandler {
 
 	public List<Detail> executeScenario(String xpath, boolean remove) {
 		InputStream inStream = manipulator.upsetTheNorm(xpath, remove);
-		Converter converter = new Converter(
-				new InputStreamSupplierSource(xpath, () -> inStream));
+		Converter converter = new Converter(new InputStreamSupplierSource(xpath, inStream));
 		try {
 			converter.transform();
 		} catch (TransformException exception) {

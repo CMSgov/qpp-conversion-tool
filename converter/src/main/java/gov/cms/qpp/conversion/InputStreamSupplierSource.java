@@ -1,13 +1,11 @@
 package gov.cms.qpp.conversion;
 
-import org.apache.commons.io.IOUtils;
+import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.function.Supplier;
+
 
 /**
  * A {@link Source} represented by a {@link Supplier} of an {@link InputStream}.
@@ -17,8 +15,7 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	/**
 	 * The intent is that the supplier will provide a new {@link InputStream} each time it is invoked.
 	 */
-	private final Supplier<InputStream> streamSupplier;
-	private final long size;
+	private final MeasuredInputStreamSupplier stream;
 
 	/**
 	 * Creates a new Source with the given name and {@link Supplier}.
@@ -28,36 +25,12 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 * @param name The name of the source.
 	 * @param supplier The supplier of an {@link InputStream}.
 	 */
-	public InputStreamSupplierSource(String name, Supplier<InputStream> supplier) {
+	public InputStreamSupplierSource(String name, InputStream source) {
 		super(name);
 
-		Objects.requireNonNull(supplier, "supplier");
+		Objects.requireNonNull(source, "source");
 
-		try {
-			final byte[] byteArray = IOUtils.toByteArray(supplier.get());
-			streamSupplier = () -> new ByteArrayInputStream(byteArray);
-			this.size = byteArray.length;
-		} catch (IOException exception) {
-			throw new UncheckedIOException(exception);
-		}
-	}
-
-	/**
-	 * Creates a new Source with the given name, {@link Supplier}, and size.
-	 *
-	 * The size doesn't need to be the actual size of the data inside the {@link InputStream}, but this will cause inconsistent
-	 * results down the line.
-	 *
-	 * @param name The name of the source.
-	 * @param supplier The supplier of an {@link InputStream}.
-	 * @param size The size of the data inside the {@link InputStream}.
-	 */
-	public InputStreamSupplierSource(String name, Supplier<InputStream> supplier, long size) {
-		super(name);
-
-		Objects.requireNonNull(supplier, "supplier");
-		streamSupplier = supplier;
-		this.size = size;
+		this.stream = MeasuredInputStreamSupplier.terminallyTransformInputStream(source);
 	}
 
 	/**
@@ -67,7 +40,7 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 */
 	@Override
 	public InputStream toInputStream() {
-		return streamSupplier.get();
+		return stream.get();
 	}
 
 	/**
@@ -77,6 +50,6 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 */
 	@Override
 	public long getSize() {
-		return size;
+		return stream.size();
 	}
 }

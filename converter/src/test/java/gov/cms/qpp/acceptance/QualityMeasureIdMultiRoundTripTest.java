@@ -170,7 +170,7 @@ class QualityMeasureIdMultiRoundTripTest {
 	private List<Detail> executeScenario(String path, boolean remove) {
 		InputStream modified = manipulator.upsetTheNorm(path, remove);
 		Converter converter = new Converter(
-				new InputStreamSupplierSource(JUNK_QRDA3_FILE.toString(), () -> modified));
+				new InputStreamSupplierSource(JUNK_QRDA3_FILE.toString(), modified));
 		List<Detail> details = new ArrayList<>();
 		try {
 			converter.transform();

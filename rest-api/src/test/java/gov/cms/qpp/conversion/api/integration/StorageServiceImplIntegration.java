@@ -1,5 +1,20 @@
 package gov.cms.qpp.conversion.api.integration;
 
+import gov.cms.qpp.conversion.api.config.S3Config;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.services.StorageServiceImpl;
+import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
+
+import javax.inject.Inject;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeoutException;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 import cloud.localstack.LocalstackTestRunner;
 import cloud.localstack.TestUtils;
@@ -10,9 +25,6 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-import gov.cms.qpp.conversion.api.config.S3Config;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.services.StorageServiceImpl;
 import net.jodah.concurrentunit.Waiter;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assume;
@@ -29,17 +41,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
-
-import javax.inject.Inject;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeoutException;
-
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(LocalstackTestRunner.class)
@@ -101,8 +102,8 @@ public class StorageServiceImplIntegration {
 		when(environment.getProperty(eq(Constants.BUCKET_NAME_ENV_VARIABLE))).thenReturn(bucketName);
 		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(kmsKey);
 
-		CompletableFuture<String> result = underTest.store(
-				key, new ByteArrayInputStream(content.getBytes()), content.getBytes().length);
+		MeasuredInputStreamSupplier source = MeasuredInputStreamSupplier.terminallyTransformInputStream(new ByteArrayInputStream(content.getBytes()));
+		CompletableFuture<String> result = underTest.store(key, source, source.size());
 
 		result.whenComplete((outcome, ex) -> {
 			waiter.assertEquals(content, getObjectContent(key));
