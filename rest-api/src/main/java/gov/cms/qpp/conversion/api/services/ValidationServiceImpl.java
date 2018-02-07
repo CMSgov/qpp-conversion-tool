@@ -37,6 +37,7 @@ public class ValidationServiceImpl implements ValidationService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(ValidationServiceImpl.class);
 	static final String CONTENT_TYPE = "application/json";
+	public static final String SV_LABEL = "SV - ";
 
 	private Environment environment;
 	private RestTemplate restTemplate;
@@ -151,6 +152,7 @@ public class ValidationServiceImpl implements ValidationService {
 		Error error = getError(validationResponse);
 
 		error.getDetails().forEach(detail -> {
+			detail.setMessage(SV_LABEL + detail.getMessage());
 			String newPath = UNABLE_PROVIDE_XPATH;
 			try {
 				newPath = PathCorrelator.prepPath(detail.getPath(), wrapper);

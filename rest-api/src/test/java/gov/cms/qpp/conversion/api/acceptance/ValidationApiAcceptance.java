@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.acceptance;
 
+import gov.cms.qpp.conversion.api.services.ValidationServiceImpl;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
@@ -52,6 +53,7 @@ class ValidationApiAcceptance {
 			if (filter.equals(Filters.attribute())) {
 				Attribute attribute = (Attribute) found;
 				assertThat(attribute.getIntValue()).isEqualTo(CANNED_VALUE);
+				assertThat(detail.getMessage()).startsWith(ValidationServiceImpl.SV_LABEL);
 			} else {
 				assertThat(found).isNotNull();
 			}

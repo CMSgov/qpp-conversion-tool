@@ -266,7 +266,7 @@ class ScopedConversionTest {
 				.that(getErrorMessages(content))
 				.containsExactly(
 						ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM.getMessage(),
-						ErrorCode.IA_MEASURE_INVALID_TYPE.getMessage());
+					ErrorCode.IA_MEASURE_INVALID_TYPE.getMessage());
 	}
 
 	/**
@@ -286,8 +286,8 @@ class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.ACI_AGGREGATE_COUNT)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER.getMessage(),
-						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.getMessage());
+					ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER.getMessage(),
+					ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.getMessage());
 	}
 
 	@SuppressWarnings("unchecked")

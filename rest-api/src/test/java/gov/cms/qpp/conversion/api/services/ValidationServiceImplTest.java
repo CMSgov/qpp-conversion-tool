@@ -189,6 +189,9 @@ class ValidationServiceImplTest {
 		assertWithMessage("Error json should map to AllErrors")
 				.that(convertedErrors.getErrors())
 				.hasSize(1);
+
+		assertThat(convertedErrors.getErrors().get(0).getDetails().get(0).getMessage())
+			.startsWith(ValidationServiceImpl.SV_LABEL);
 	}
 
 	@Test
