@@ -421,11 +421,6 @@ class JsonWrapperTest {
 	}
 
 	@Test
-	void testCleanString_null() throws Exception {
-		assertThat(objectStrWrapper.cleanString(null)).isNotNull();
-	}
-
-	@Test
 	void testToString_booleanArray() throws Exception {
 		objectStrWrapper.putString("True"); // as string where case is preserved
 		objectStrWrapper.putBoolean("True");

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 class AciNumeratorDenominatorEncoderTest {
 
@@ -106,6 +107,6 @@ class AciNumeratorDenominatorEncoderTest {
 				.hasSize(1);
 		assertWithMessage("The validation error must be the inability to find an encoder")
 				.that(objectUnderTest.getDetails().get(0).getMessage())
-				.isEqualTo("Failed to find an encoder");
+				.isEqualTo(ErrorCode.CT_LABEL + "Failed to find an encoder");
 	}
 }

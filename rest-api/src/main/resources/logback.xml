@@ -17,7 +17,7 @@
 			</providers>
 		</encoder>
 	</appender>
-	<root name="gov.cms" level="INFO">
+	<root level="INFO">
 		<appender-ref ref="STDOUT_DETAIL"/>
 	</root>
 </configuration>

@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.util.FormatHelper;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -34,7 +35,6 @@ import java.util.stream.Stream;
  * This class is a wrapper around a list/map impl.
  */
 public class JsonWrapper {
-	private static final String YYYYMMDD = "yyyyMMdd";
 	private static final String METADATA_HOLDER = "metadata_holder";
 	private ObjectWriter ow;
 	private Map<String, Object> object;
@@ -366,19 +366,6 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Enforces uniform {@link String} presentation.
-	 *
-	 * @param value potentially dirty value
-	 * @return cleaned
-	 */
-	protected String cleanString(String value) {
-		if (value == null) {
-			return "";
-		}
-		return value.trim().toLowerCase();
-	}
-
-	/**
 	 * Validates that the given value is an parsable integer.
 	 *
 	 * @param value to validate
@@ -387,7 +374,7 @@ public class JsonWrapper {
 	 */
 	protected int validInteger(String value) {
 		try {
-			return Integer.parseInt(cleanString(value));
+			return Integer.parseInt(FormatHelper.cleanString(value));
 		} catch (Exception e) {
 			throw new EncodeException(value + " is not an integer.", e);
 		}
@@ -403,12 +390,7 @@ public class JsonWrapper {
 	 */
 	protected String validDate(String value) {
 		try {
-			String parse = cleanString(value);
-			parse = parse.replace("-", "").replace("/", "");
-			if (parse.length() > YYYYMMDD.length()) {
-				parse = parse.substring(0, YYYYMMDD.length());
-			}
-			LocalDate thisDate = LocalDate.parse(cleanString(parse),  DateTimeFormatter.BASIC_ISO_DATE);
+			LocalDate thisDate = FormatHelper.formattedDateParse(value);
 			return thisDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		} catch (Exception e) {
 			throw new EncodeException(value + " is not an date of format YYYYMMDD.", e);
@@ -424,7 +406,7 @@ public class JsonWrapper {
 	 */
 	protected float validFloat(String value) {
 		try {
-			return Float.parseFloat(cleanString(value));
+			return Float.parseFloat(FormatHelper.cleanString(value));
 		} catch (Exception e) {
 			throw new EncodeException(value + " is not a number.", e);
 		}
@@ -438,7 +420,7 @@ public class JsonWrapper {
 	 * @throws EncodeException
 	 */
 	protected boolean validBoolean(String value) {
-		String cleanedValueString = cleanString(value);
+		String cleanedValueString = FormatHelper.cleanString(value);
 		
 		if ("true".equals(cleanedValueString) || "yes".equals(cleanedValueString) || "y".equals(cleanedValueString)) {
 			return true;
