@@ -20,7 +20,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.core.env.Environment;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 

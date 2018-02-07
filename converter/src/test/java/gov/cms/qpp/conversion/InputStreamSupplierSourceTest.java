@@ -11,11 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import com.google.common.base.Supplier;
 
 class InputStreamSupplierSourceTest extends SourceTestSuite {
 

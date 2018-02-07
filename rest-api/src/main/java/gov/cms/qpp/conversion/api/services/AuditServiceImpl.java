@@ -8,13 +8,9 @@ import gov.cms.qpp.conversion.api.helper.MetadataHelper;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper.Outcome;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
-
 import java.io.InputStream;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;

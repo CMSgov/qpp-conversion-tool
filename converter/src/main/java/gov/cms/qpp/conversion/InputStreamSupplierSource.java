@@ -2,14 +2,10 @@ package gov.cms.qpp.conversion;
 
 import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import org.apache.commons.io.IOUtils;
 
 /**
  * A {@link Source} represented by a {@link Supplier} of an {@link InputStream}.
