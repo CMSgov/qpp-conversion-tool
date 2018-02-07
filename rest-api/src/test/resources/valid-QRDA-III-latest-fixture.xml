@@ -769,7 +769,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="{{qualityDenominator}}"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -1242,7 +1242,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="50"/>
+											<value xsi:type="INT" value="{{qualityDenomExclusion}}"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -1715,7 +1715,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="{{qualityDenominator}}"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -2188,7 +2188,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="{{qualityNumerator}}"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -4176,7 +4176,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="{{qualityDenominator}}"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -4653,7 +4653,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="20"/>
+											<value xsi:type="INT" value="{{qualityDenomException}}"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -5130,7 +5130,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="1000"/>
+											<value xsi:type="INT" value="{{qualityDenominator}}"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
@@ -5605,7 +5605,7 @@ CDA Header
 												codeSystemName="ActCode"
 												displayName="rate aggregation"/>
 											<statusCode code="completed"/>
-											<value xsi:type="INT" value="800"/>
+											<value xsi:type="INT" value="{{qualityNumerator}}"/>
 											<methodCode code="COUNT"
 												codeSystem="2.16.840.1.113883.5.84"
 												codeSystemName="ObservationMethod"
