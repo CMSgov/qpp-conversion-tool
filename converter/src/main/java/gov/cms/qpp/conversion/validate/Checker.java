@@ -1,14 +1,16 @@
 package gov.cms.qpp.conversion.validate;
 
 import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import gov.cms.qpp.conversion.util.FormatHelper;
 
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -118,6 +120,24 @@ class Checker {
 		List<String> duplicates = node.getDuplicateValues(name);
 		if (!isEmpty(duplicates)) {
 			details.add(detail(code));
+		}
+		return this;
+	}
+
+	/**
+	 * checks target node for a date that is properly formatted.
+	 *
+	 * @param code that identifies the error
+	 * @param name key of the expected value
+	 * @return The checker, for chaining method calls
+	 */
+	public Checker isValidDate(LocalizedError code, String name) {
+		if (!shouldShortcut()) {
+			try {
+				FormatHelper.formattedDateParse(node.getValue(name));
+			} catch (DateTimeParseException e) {
+				details.add(detail(code));
+			}
 		}
 		return this;
 	}

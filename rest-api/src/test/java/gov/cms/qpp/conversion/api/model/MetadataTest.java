@@ -16,7 +16,7 @@ import static junit.framework.TestCase.fail;
 
 class MetadataTest {
 
-	private final String EXPECTED_DATE = "2017-12-12T08:30:30.285Z";
+	private static final String EXPECTED_DATE = "2017-12-12T08:30:30.285Z";
 
 	@Test
 	void equalsContract() {

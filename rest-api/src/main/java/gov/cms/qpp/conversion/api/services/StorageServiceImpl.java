@@ -23,6 +23,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
+import gov.cms.qpp.conversion.api.model.Constants;
+
+import javax.inject.Inject;
+import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Used to store an {@link InputStream} in S3.
  */
@@ -81,11 +88,13 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 			return null;
 		}
 
+		API_LOG.info("Retrieving file {} from bucket {}", fileLocationId, bucketName);
+
 		GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, fileLocationId);
 
 		S3Object s3Object = amazonS3.getObject(getObjectRequest);
 
-		API_LOG.info("Successfully retrieved the file from S3 bucket {}", getObjectRequest.getBucketName());
+		API_LOG.info("Successfully retrieved file {} from S3 bucket {}", getObjectRequest.getKey(), getObjectRequest.getBucketName());
 
 		return s3Object.getObjectContent();
 	}

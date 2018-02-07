@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.model;
 
 import org.jdom2.Element;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import gov.cms.qpp.conversion.decode.DecodeResult;
 import gov.cms.qpp.conversion.decode.QrdaDecoder;
 import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
 
-import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -23,18 +21,11 @@ class RegistryTest {
 
 	private Context context;
 	private Registry<QrdaDecoder> registry;
-	private PrintStream err;
 
 	@BeforeEach
 	void before() {
 		context = new Context();
 		registry = context.getRegistry(Decoder.class);
-		err = System.err;
-	}
-
-	@AfterEach
-	void tearDown() {
-		System.setErr(err);
 	}
 
 	@Test

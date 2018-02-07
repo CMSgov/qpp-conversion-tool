@@ -45,8 +45,7 @@ public class MockitoExtension implements TestInstancePostProcessor, ParameterRes
 
 		if (mockName != null) {
 			return mocks.getOrComputeIfAbsent(mockName, key -> mock(mockType, mockName));
-		}
-		else {
+		} else {
 			return mocks.getOrComputeIfAbsent(mockType.getCanonicalName(), key -> mock(mockType));
 		}
 	}
@@ -55,8 +54,7 @@ public class MockitoExtension implements TestInstancePostProcessor, ParameterRes
 		String explicitMockName = parameter.getAnnotation(Mock.class).name().trim();
 		if (!explicitMockName.isEmpty()) {
 			return explicitMockName;
-		}
-		else if (parameter.isNamePresent()) {
+		} else if (parameter.isNamePresent()) {
 			return parameter.getName();
 		}
 		return null;

@@ -95,7 +95,7 @@ class AciNumeratorDenominatorRoundTripTest {
 		DefaultDecoder.removeDefaultNode(numeratorDenominatorNode.getChildNodes());
 
 		String xPathExpected = "/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'organizer' " +
-		                       "and namespace-uri() = 'urn:hl7-org:v3']";
+							"and namespace-uri() = 'urn:hl7-org:v3']";
 
 		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		List<Node> nodes = new ArrayList<>();
