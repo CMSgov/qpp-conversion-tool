@@ -19,6 +19,23 @@
 		<requiredCodeCoverage>0.00</requiredCodeCoverage>
 	</properties>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.gaul</groupId>
+				<artifactId>modernizer-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>

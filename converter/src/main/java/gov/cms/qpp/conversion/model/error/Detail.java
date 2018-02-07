@@ -58,7 +58,7 @@ public class Detail implements Serializable {
 
 	/**
 	 * Creates a mutable Detail based on the given error
-	 * @param code
+	 * @param error error to be added
 	 * @return
 	 */
 	public static Detail forErrorCode(LocalizedError error) {
@@ -113,7 +113,7 @@ public class Detail implements Serializable {
 	/**
 	 * Sets the path that this error references.
 	 *
-	 * @param newPath The path that this error references.
+	 * @param path The path that this error references.
 	 */
 	@JsonProperty("path")
 	public void setPath(String path) {

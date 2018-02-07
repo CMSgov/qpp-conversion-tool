@@ -4,7 +4,6 @@ import java.nio.file.FileSystem;
 import java.util.stream.Stream;
 
 import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.PathType;
 
 public interface JimfsContract {
 

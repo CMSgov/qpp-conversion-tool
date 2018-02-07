@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -68,7 +67,7 @@ public class ConverterTest {
 	public void testValidQppStream() throws IOException {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Converter converter = new Converter(
-				new InputStreamSupplierSource(path.toString(), () -> NioHelper.fileToStream(path), Files.size(path)));
+				new InputStreamSupplierSource(path.toString(), NioHelper.fileToStream(path)));
 
 		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
@@ -146,7 +145,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, Context.IG_URL));
 		}
 	}
 
@@ -161,7 +160,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT);
+			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, Context.IG_URL));
 		}
 	}
 

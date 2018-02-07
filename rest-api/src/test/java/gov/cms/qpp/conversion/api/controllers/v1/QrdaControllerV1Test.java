@@ -107,7 +107,7 @@ class QrdaControllerV1Test {
 
 	@Test
 	void testInputStreamSupplier() throws IOException {
-		InputStream in = objectUnderTest.inputStreamSupplier(multipartFile).get();
+		InputStream in = objectUnderTest.inputStream(multipartFile);
 		String content = IOUtils.toString(in, StandardCharsets.UTF_8);
 
 		assertThat(content).isEqualTo(GOOD_FILE_CONTENT);
@@ -120,7 +120,7 @@ class QrdaControllerV1Test {
 
 			try {
 				doThrow(new IOException()).when(spy).getInputStream();
-				InputStream in = objectUnderTest.inputStreamSupplier(spy).get();
+				InputStream in = objectUnderTest.inputStream(spy);
 				in.close();
 			} catch (IOException ex) {
 				Assertions.fail("wrong exception");

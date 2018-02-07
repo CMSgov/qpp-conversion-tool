@@ -23,8 +23,8 @@ public enum ErrorCode implements LocalizedError {
 	UNEXPECTED_ERROR(3, "Unexpected exception occurred during conversion"),
 	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occured during encoding"),
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. "
-			+ "Please ensure that the submission complies with the most recent implementation guide. "
-			+ "https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=19"),
+		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
+		+ "`(Implementation guide link)`", true),
 	MEASURE_GUID_MISSING(6, "The measure reference results must have a single occurrence of the recognized measure GUID "
 			+ "`(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?", true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),
@@ -122,18 +122,22 @@ public enum ErrorCode implements LocalizedError {
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64, "CPC+ Submissions must have at least `(CPC+ measure group minimum)` "
 			+ "of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`", true),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of "
-			+ "the following measures: `(Listing of all CPC+ measure ids)`.", true),
+		+ "the following measures: `(Listing of all CPC+ measure ids)`.", true),
 	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the Supplemental Code `(Supplemental Data Code)` for eCQM measure "
-			+ "`(Measure Id)`'s Sub-population `(Sub Population)`", true),
+		+ "`(Measure Id)`'s Sub-population `(Sub Population)`", true),
 	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
-			+ "on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`", true),
-	CPC_PLUS_SUBMISSION_ENDED(68, "CPC+ Submission is after the end date `(Submission end date)`", true);
+		+ "on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`", true),
+	CPC_PLUS_SUBMISSION_ENDED(68, "CPC+ Submission is after the end date `(Submission end date)`", true),
+	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
+		+ "Please use a standard ISO date format. "
+		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123", true);
 
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
 	private static final String VARIABLE_MARKER = "`\\(([^()]*)\\)`";
 	private static Pattern replacePattern;
+	public static final String CT_LABEL = "CT - ";
 
 	private final int code;
 	private final String message;
@@ -163,7 +167,7 @@ public enum ErrorCode implements LocalizedError {
 	 * Gets the message associated with this error code
 	 */
 	public final String getMessage() {
-		return message;
+		return CT_LABEL + message;
 	}
 
 	/**
@@ -198,7 +202,7 @@ public enum ErrorCode implements LocalizedError {
 		Map<String, String> valueSub = new HashMap<>();
 		IntStream.range(0, arguments.length)
 				.forEach(index -> valueSub.put(messageVariables.get(index), arguments[index].toString()));
-		return new StrSubstitutor(valueSub, "`(", ")`").replace(message);
+		return new StrSubstitutor(valueSub, "`(", ")`").replace(getMessage());
 	}
 
 	private static Pattern getPattern() {

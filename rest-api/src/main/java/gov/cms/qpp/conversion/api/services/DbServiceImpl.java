@@ -3,12 +3,13 @@ package gov.cms.qpp.conversion.api.services;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.Metadata;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -67,6 +68,8 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @return {@link List} of unprocessed {@link Metadata}
 	 */
 	public List<Metadata> getUnprocessedCpcPlusMetaData() {
+
+		API_LOG.info("Getting list of unprocessed CPC+ metadata");
 
 		return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
 			Map<String, AttributeValue> valueMap = new HashMap<>();
