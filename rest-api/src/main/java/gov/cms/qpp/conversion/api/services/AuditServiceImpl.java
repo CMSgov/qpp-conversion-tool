@@ -160,8 +160,7 @@ public class AuditServiceImpl implements AuditService {
 	 */
 	private CompletableFuture<String> storeContent(Source sourceToStore) {
 		UUID key = UUID.randomUUID();
-		Supplier<InputStream> stream = MeasuredInputStreamSupplier.terminallyTransformInputStream(sourceToStore.toInputStream());
-		return storageService.store(key.toString(), stream, sourceToStore.getSize());
+		return storageService.store(key.toString(), sourceToStore::toInputStream, sourceToStore.getSize());
 	}
 
 	/**
