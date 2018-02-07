@@ -27,7 +27,8 @@ public class AttachmentHashPartConverter extends ClassicConverter {
 		try {
 			hashPart = getHashPart();
 		} catch (IOException | ServletException e) {
-			//don't log because the logging will not show up, nor log manually because it will ruin the format and become hard to understand
+			//don't log because the logging will not show up, nor log manually because
+			//it will ruin the format and become hard to understand
 		}
 
 		return hashPart;
