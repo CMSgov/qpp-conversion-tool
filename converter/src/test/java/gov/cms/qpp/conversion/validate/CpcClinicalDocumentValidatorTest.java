@@ -149,7 +149,9 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertThat(cpcValidator.getDetails())
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(endDate));
+			.containsExactly(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(
+				endDate.format(CpcClinicalDocumentValidator.END_DATE_FORMAT),
+				CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL));
 		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
 	}
 

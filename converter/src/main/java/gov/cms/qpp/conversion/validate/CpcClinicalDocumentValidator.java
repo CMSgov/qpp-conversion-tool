@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.validate;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import com.google.common.base.Strings;
 
@@ -23,7 +24,9 @@ import gov.cms.qpp.conversion.util.EnvironmentHelper;
 public class CpcClinicalDocumentValidator extends NodeValidator {
 
 	static final String END_DATE_VARIABLE = "CPC_END_DATE";
+	static final DateTimeFormatter END_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
 	private static final String NEVER_ENDING = "3000-01-01";
+	static final String CPC_PLUS_CONTACT_EMAIL = "cpcplus@telligen.com";
 	// LocalDate.now() creates extra unneeded clock objects before Java 9.
 	// It also uses the system clock, rather than Eastern Time.
 	private static final Clock CLOCK = Clock.system(ZoneId.of("US/Eastern"));
@@ -76,7 +79,10 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	private void validateSubmissionDate(Node node) {
 		LocalDate endDate = endDate();
 		if (now().isAfter(endDate)) {
-			addValidationError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(endDate), node));
+			String formatted = endDate.format(END_DATE_FORMAT);
+			addValidationError(Detail.forErrorAndNode(
+				ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formatted, CPC_PLUS_CONTACT_EMAIL),
+				node));
 		}
 	}
 
