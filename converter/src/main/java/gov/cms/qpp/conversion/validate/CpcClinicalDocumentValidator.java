@@ -26,7 +26,8 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	static final String END_DATE_VARIABLE = "CPC_END_DATE";
 	static final DateTimeFormatter END_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
 	private static final String NEVER_ENDING = "3000-01-01";
-	static final String CPC_PLUS_CONTACT_EMAIL = "cpcplus@telligen.com";
+	static final String DEFAULT_CPC_PLUS_CONTACT_EMAIL = "cpcplus@telligen.com";
+	static final String CPC_PLUS_CONTACT_EMAIL = "CPC_PLUS_CONTACT_EMAIL";
 	// LocalDate.now() creates extra unneeded clock objects before Java 9.
 	// It also uses the system clock, rather than Eastern Time.
 	private static final Clock CLOCK = Clock.system(ZoneId.of("US/Eastern"));
@@ -81,7 +82,8 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 		if (now().isAfter(endDate)) {
 			String formatted = endDate.format(END_DATE_FORMAT);
 			addValidationError(Detail.forErrorAndNode(
-				ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formatted, CPC_PLUS_CONTACT_EMAIL),
+				ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formatted,
+					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),
 				node));
 		}
 	}
