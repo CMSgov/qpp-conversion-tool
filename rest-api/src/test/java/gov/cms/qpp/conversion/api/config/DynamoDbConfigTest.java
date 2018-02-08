@@ -7,7 +7,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.AttributeTransformer;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.kms.AWSKMS;
-import gov.cms.qpp.conversion.api.model.Constants;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,6 +19,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.core.env.Environment;
+
+import gov.cms.qpp.conversion.api.model.Constants;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -65,7 +66,7 @@ public class DynamoDbConfigTest {
 	private ExpectedException thrown = ExpectedException.none();
 
 	@Before
-	public void setup() throws NoSuchFieldException, IllegalAccessException {
+	public void setup() {
 
 		underTest = spy(new DynamoDbConfig(environment, awsKms));
 
@@ -109,7 +110,7 @@ public class DynamoDbConfigTest {
 	}
 
 	@Test
-	public void dbMapperInitWithNothing() throws Exception {
+	public void dbMapperInitWithNothing() {
 		when(environment.getProperty(eq(Constants.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
 		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn(null);
 		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn("");
@@ -121,7 +122,7 @@ public class DynamoDbConfigTest {
 	}
 
 	@Test
-	public void dbMapperInitWithTableName() throws Exception {
+	public void dbMapperInitWithTableName() {
 		when(environment.getProperty(eq(Constants.NO_AUDIT_ENV_VARIABLE))).thenReturn(null);
 		when(environment.getProperty(eq(Constants.DYNAMO_TABLE_NAME_ENV_VARIABLE))).thenReturn("meep");
 		when(environment.getProperty(eq(Constants.KMS_KEY_ENV_VARIABLE))).thenReturn(null);

@@ -1,10 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.util.EnumSet;
 import java.util.Set;
 

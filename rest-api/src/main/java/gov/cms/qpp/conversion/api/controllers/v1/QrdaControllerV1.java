@@ -1,16 +1,5 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamSupplierSource;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.services.AuditService;
-import gov.cms.qpp.conversion.api.services.QrdaService;
-import gov.cms.qpp.conversion.api.services.ValidationService;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.InputStreamSupplierSource;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.services.AuditService;
+import gov.cms.qpp.conversion.api.services.QrdaService;
+import gov.cms.qpp.conversion.api.services.ValidationService;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 
 /**
  * Controller to handle uploading files for QRDA-III Conversion
@@ -57,15 +57,14 @@ public class QrdaControllerV1 {
 	 *
 	 * @param file Uploaded file
 	 * @return Valid json or error json content
-	 * @throws IOException If errors occur during file upload or conversion
 	 */
 	@PostMapping(headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
+	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) {
 		String originalFilename = file.getOriginalFilename();
 		API_LOG.info("Conversion request received");
 
 		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
-				new InputStreamSupplierSource(originalFilename, inputStreamSupplier(file), file.getSize()));
+				new InputStreamSupplierSource(originalFilename, inputStream(file)));
 
 		validationService.validateQpp(conversionReport);
 
@@ -80,18 +79,16 @@ public class QrdaControllerV1 {
 	}
 
 	/**
-	 * Supplier for file input
+	 * Input stream from a file
 	 *
 	 * @param file the attachment
-	 * @return a supplier that wraps the attachment's input stream retrieval
+	 * @return an input stream from the {@link MultipartFile}
 	 */
-	Supplier<InputStream> inputStreamSupplier(MultipartFile file) {
-		return () -> {
-			try {
-				return file.getInputStream();
-			} catch (IOException ex) {
-				throw new UncheckedIOException(ex);
-			}
-		};
+	InputStream inputStream(MultipartFile file) {
+		try {
+			return file.getInputStream();
+		} catch (IOException ex) {
+			throw new UncheckedIOException(ex);
+		}
 	}
 }

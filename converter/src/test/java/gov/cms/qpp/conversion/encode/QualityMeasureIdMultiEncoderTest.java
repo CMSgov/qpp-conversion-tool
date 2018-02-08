@@ -16,10 +16,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth.assertThat;
 
 class QualityMeasureIdMultiEncoderTest {

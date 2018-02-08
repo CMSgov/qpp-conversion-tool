@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.api.services;
 
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 /**
  * Interface to store an {@link InputStream} in S3.
@@ -17,7 +18,7 @@ public interface StorageService {
 	 * @param size The size of the {@link InputStream}.
 	 * @return A {@link CompletableFuture} that will eventually contain the S3 object key.
 	 */
-	CompletableFuture<String> store(String keyName, InputStream inStream, long size);
+	CompletableFuture<String> store(String keyName, Supplier<InputStream> inStream, long size);
 
 	/**
 	 * Retrieve a CPC+ file by file id

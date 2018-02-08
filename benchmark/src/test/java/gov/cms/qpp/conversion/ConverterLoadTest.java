@@ -1,18 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.test.annotations.PerformanceTest;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.google.common.truth.Truth.assertWithMessage;
-
 import org.apache.jmeter.control.LoopController;
 import org.apache.jmeter.engine.StandardJMeterEngine;
 import org.apache.jmeter.protocol.http.sampler.HTTPSamplerProxy;
@@ -26,12 +13,25 @@ import org.apache.jorphan.collections.HashTree;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
+import gov.cms.qpp.test.annotations.PerformanceTest;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.google.common.truth.Truth.assertWithMessage;
+
 class ConverterLoadTest {
 
 	private static StandardJMeterEngine jmeter;
 
 	@BeforeAll
-	static void setupClass() throws IOException {
+	static void setupClass() {
 		jmeter = new StandardJMeterEngine();
 
 		//JMeter initialization (properties, log levels, locale, etc)
