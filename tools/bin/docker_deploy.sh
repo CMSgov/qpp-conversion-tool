@@ -18,8 +18,8 @@ if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $DOCKER_DEPLOY_OTHER_BRANCH && "$CI
 	run_ansible ${DOCKER_DEPLOY_HOSTS} ${DOCKER_DEPLOY_REMOTE_USERNAME} ${DOCKER_DEPLOY_SUDOER_PASSWORD}
 	if [[ $? -ne 0 ]]; then
 		echo "Failure on ansible playbook run!"
-    	exit -1
-    fi
+		exit -1
+	fi
 
 	echo "Done!"
 else
