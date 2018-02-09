@@ -16,6 +16,10 @@ function run_ansible() {
 if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $DOCKER_DEPLOY_OTHER_BRANCH && "$CIRCLE_BRANCH" == "$DOCKER_DEPLOY_OTHER_BRANCH" ) ]]; then
 	build_and_tar_converter_image
 	run_ansible ${DOCKER_DEPLOY_HOSTS} ${DOCKER_DEPLOY_REMOTE_USERNAME} ${DOCKER_DEPLOY_SUDOER_PASSWORD}
+	if [[ $? -ne 0 ]]; then
+		echo "Failure on ansible playbook run!"
+		exit -1
+	fi
 
 	echo "Done!"
 else
