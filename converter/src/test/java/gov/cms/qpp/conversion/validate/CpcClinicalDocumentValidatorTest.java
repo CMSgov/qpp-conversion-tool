@@ -7,7 +7,9 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import org.junit.After;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,12 @@ class CpcClinicalDocumentValidatorTest {
 	@BeforeEach
 	void createNewValidator() {
 		cpcValidator = new CpcClinicalDocumentValidator();
+	}
+
+	@AfterEach
+	void cleanUp() {
+		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
+		System.clearProperty(CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL);
 	}
 
 	@Test
@@ -138,7 +146,6 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertThat(cpcValidator.getDetails())
 			.isEmpty();
-		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
 	}
 
 	@ParameterizedTest
@@ -157,8 +164,6 @@ class CpcClinicalDocumentValidatorTest {
 		assertThat(cpcValidator.getDetails())
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 			.containsExactly(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formattedDate, expected));
-		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
-		System.clearProperty(CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL);
 	}
 
 	private Node createValidCpcPlusClinicalDocument() {
