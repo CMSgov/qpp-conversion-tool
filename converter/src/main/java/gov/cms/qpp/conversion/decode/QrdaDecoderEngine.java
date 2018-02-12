@@ -14,7 +14,7 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -144,9 +144,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	 */
 	private DecodeData decodeChildren(final Element element, final Node parentNode) {
 
-		List<Element> childElements = element.getChildren();
-
-		List<Element> filteredChildElements = getUniqueTemplateIdElements(childElements);
+		List<Element> filteredChildElements = getUniqueTemplateIdElements(element.getChildren());
 
 		DecodeData decodeData = new DecodeData(DecodeResult.TREE_CONTINUE, parentNode);
 
@@ -176,22 +174,26 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	 * @return A {@link List} of {@link Element}s that are filtered.
 	 */
 	private List<Element> getUniqueTemplateIdElements(final List<Element> childElements) {
-		Set<TemplateId> uniqueTemplates = new HashSet<>();
+		Set<TemplateId> uniqueTemplates = EnumSet.noneOf(TemplateId.class);
 
 		return childElements.stream()
 			.filter(filterElement -> {
+				boolean isTemplateIdId = TEMPLATE_ID.equals(filterElement.getName());
 				TemplateId filterTemplateId = getTemplateId(filterElement);
 
-				if (!TEMPLATE_ID.equals(filterElement.getName())) {
-					return true;
-				} else if (getDecoder(filterTemplateId) == null) {
-					return false;
-				} else if (!uniqueTemplates.contains(filterTemplateId)) {
-					uniqueTemplates.add(filterTemplateId);
-					return true;
+				boolean elementWillStay = true;
+
+				if (isTemplateIdId) {
+					if (getDecoder(filterTemplateId) == null) {
+						elementWillStay = false;
+					} else if (uniqueTemplates.contains(filterTemplateId)) {
+						elementWillStay = false;
+					} else {
+						uniqueTemplates.add(filterTemplateId);
+					}
 				}
 
-				return false;
+				return elementWillStay;
 			})
 			.collect(Collectors.toList());
 	}
