@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
+import gov.cms.qpp.test.annotations.ParameterizedAcceptanceTest;
 import io.restassured.response.Response;
 import org.jdom2.Attribute;
 import org.jdom2.filter.Filter;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -47,8 +49,7 @@ class ValidationApiFailureAcceptance {
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED.value());
 	}
 
-	@ParameterizedTest
-	@Tag("acceptance")
+	@ParameterizedAcceptanceTest
 	@MethodSource("getFailureScenarios")
 	void testBadPerformanceStart(String comparison, Map<String, String> override) {
 		String qrda = getQrda(override);
@@ -62,27 +63,17 @@ class ValidationApiFailureAcceptance {
 
 	private static Stream<Arguments> getFailureScenarios() {
 		return Stream.of(
-			Arguments.of("20160101", new HashMap<String, String>() {{
-				put("performanceStart", "20160101");
-			}}),
+			Arguments.of("20160101", Collections.singletonMap("performanceStart", "20160101")),
 //TODO: create issue to track this
-//			Arguments.of("20180101", new HashMap<String, String>() {{ put("performanceEnd", "20180101");}}),
-			Arguments.of("ACI_PEA_42", new HashMap<String, String>() {{
-				put("aciMeasure", "ACI_PEA_42");
-			}}),
+//			Arguments.of("20180101", Collections.singletonMap("performanceEnd", "20180101")),
+			Arguments.of("ACI_PEA_42", Collections.singletonMap("aciMeasure", "ACI_PEA_42")),
 			Arguments.of("ACI_PEA_2", new HashMap<String, String>() {{
 				put("aciDenominator", "600");
 				put("aciNumerator", "800");
 			}}),
-			Arguments.of("1000", new HashMap<String, String>() {{
-				put("qualityDenomExclusion", "1100");
-			}}),
-			Arguments.of("1000", new HashMap<String, String>() {{
-				put("qualityDenomException", "1100");
-			}}),
-			Arguments.of("1000", new HashMap<String, String>() {{
-				put("qualityNumerator", "1100");
-			}}));
+			Arguments.of("1000", Collections.singletonMap("qualityDenomExclusion", "1100")),
+			Arguments.of("1000", Collections.singletonMap("qualityDenomException", "1100")),
+			Arguments.of("1000", Collections.singletonMap("qualityNumerator", "1100")));
 	}
 
 	private Response performRequest(String qrda) {
@@ -93,9 +84,7 @@ class ValidationApiFailureAcceptance {
 	}
 
 	private String getQrda(Map<String, String> overrides) {
-		return fixture.execute(new StringWriter(), defaults(overrides))
-			.toString()
-			.replaceAll("\n", "");
+		return fixture.execute(new StringWriter(), defaults(overrides)).toString();
 	}
 
 	private Map<String, String> defaults(Map<String, String> overrides) {
