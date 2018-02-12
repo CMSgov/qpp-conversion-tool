@@ -23,5 +23,5 @@ if [[ "$CIRCLE_BRANCH" == "develop" || ( ! -z $DOCKER_DEPLOY_OTHER_BRANCH && "$C
 
 	echo "Done!"
 else
-	echo "Not on master so not deploying Docker image."
+	echo "Not on develop so not deploying Docker image."
 fi
