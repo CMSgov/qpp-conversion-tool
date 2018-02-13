@@ -134,7 +134,7 @@ workflows:
       - deploy_api:
           filters:
             branches:
-              only: master
+              only: develop
           requires:
             - checkout
       - integration_test:
