@@ -178,12 +178,12 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 
 		return childElements.stream()
 			.filter(filterElement -> {
-				boolean isTemplateIdId = TEMPLATE_ID.equals(filterElement.getName());
+				boolean isTemplateId = TEMPLATE_ID.equals(filterElement.getName());
 				TemplateId filterTemplateId = getTemplateId(filterElement);
 
 				boolean elementWillStay = true;
 
-				if (isTemplateIdId) {
+				if (isTemplateId) {
 					if (getDecoder(filterTemplateId) == null) {
 						elementWillStay = false;
 					} else if (uniqueTemplates.contains(filterTemplateId)) {
