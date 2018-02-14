@@ -251,6 +251,28 @@ class QrdaDecoderEngineTest {
 		assertThat(objectUnderTest.accepts(rootElement)).isTrue();
 	}
 
+	@Test
+	void testGetUniqueTemplateIdElements() {
+		Element rootElement = createRootElement();
+		Element middleElement = createGenericElement();
+		Element initialTemplateIdElement = createContinueElement();
+		Element duplicateTemplateIdElement = createContinueElement();
+		Element fourthLevelElement = createGenericElement();
+		Element fifthLevelElement = createFinishElement();
+
+		addChildToParent(rootElement, middleElement);
+		addChildToParent(middleElement, initialTemplateIdElement);
+		addChildToParent(middleElement, duplicateTemplateIdElement);
+		addChildToParent(middleElement, fourthLevelElement);
+		addChildToParent(fourthLevelElement, fifthLevelElement);
+
+
+		QrdaDecoderEngine objectUnderTest = new QrdaDecoderEngine(context);
+		Node decodedNodes = objectUnderTest.decode(rootElement);
+
+		assertNodeCount(decodedNodes, 1, 1, 0);
+	}
+
 	private Element createContinueElement() {
 		Element element = new Element(TEMPLATE_ID);
 		element.setAttribute(ROOT, TemplateId.ACI_SECTION.getRoot());
