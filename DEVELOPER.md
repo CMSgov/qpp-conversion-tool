@@ -20,10 +20,6 @@ The additional prerequisites that were not already outlined in the
 - [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 1.8`). The Java Runtime
 will not suffice.
 - [Maven](https://maven.apache.org).
-- Due to using [Localstack](https://localstack.cloud) for testing, the following are also required
-  - [Python](https://www.python.org/downloads/) (version `2.x` or `3.x`, but why not use the latest version?) with [pip](https://pip.pypa.io/en/stable/installing/).
-  - `make` command line program.
-  - `npm` from [Node.js](https://nodejs.org/).
 
 ## Building
 
@@ -74,7 +70,6 @@ environment variables are for.
 ### Amazon Web Services
 
 The ReST API depends on AWS for some of the additional functionality. Currently, a real account with AWS must be used.
-[Localstack](https://github.com/localstack/localstack) is used in tests.
 
 Ensure that credentials are set such that the
 [Default Credential Provider Chain](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) can find them.
