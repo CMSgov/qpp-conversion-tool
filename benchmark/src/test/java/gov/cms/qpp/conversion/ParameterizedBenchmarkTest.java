@@ -36,7 +36,7 @@ class ParameterizedBenchmarkTest {
 	static void loadPaths() throws RunnerException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		String[] paths;
 		fileSystem = FileTestHelper.createMockFileSystem(Configuration.unix());
-		fileSystemField = ConversionEntry.class.getDeclaredField("fileSystem");
+		fileSystemField = CE.class.getDeclaredField("fileSystem");
 		fileSystemField.setAccessible(true);
 		defaultFileSystem = (FileSystem) fileSystemField.get(null);
 		fileSystemField.set(null, fileSystem);

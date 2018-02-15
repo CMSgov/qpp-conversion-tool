@@ -21,6 +21,6 @@ public class ParameterizedBenchmark {
 
 	@Benchmark
 	public void bench() {
-		ConversionEntry.main(fileName);
+		CE.main(fileName);
 	}
 }
