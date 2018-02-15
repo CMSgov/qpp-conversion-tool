@@ -123,7 +123,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 		sub.getStrata().forEach(stratum -> {
 			Predicate<Node> seek = child ->
-					child.getValue(StratifierDecoder.STRATIFIER_ID).equals(stratum);
+					child.getValue(StratifierDecoder.STRATIFIER_ID).equalsIgnoreCase(stratum);
 
 			if (strataNodes.stream().noneMatch(seek)) {
 				LocalizedError error = ErrorCode.CPC_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,

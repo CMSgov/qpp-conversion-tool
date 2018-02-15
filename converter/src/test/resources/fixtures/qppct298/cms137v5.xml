@@ -687,6 +687,7 @@
                     </observation>
                 </entryRelationship>
                 <!-- Stratifier for EFB5B088-CE10-43DE-ACCD-9913B7AC12A2-->
+                <!-- Includes lower and uppercase characters -->
                 <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                         <templateId root="2.16.840.1.113883.10.20.27.3.20"/>
@@ -718,12 +719,13 @@
                         </entryRelationship>
                         <reference typeCode="REFR">
                             <externalObservation>
-                                <id root="EFB5B088-CE10-43DE-ACCD-9913B7AC12A2"/>
+                                <id root="efb5b088-ce10-43de-accd-9913b7ac12a2"/>
                             </externalObservation>
                         </reference>
                     </observation>
                 </entryRelationship>
                 <!-- Stratifier for 94B9555F-8700-45EF-B69F-433EBEDE8051-->
+                <!--Includes lower and uppercase characters-->
                 <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                         <templateId root="2.16.840.1.113883.10.20.27.3.20"/>
@@ -755,7 +757,7 @@
                         </entryRelationship>
                         <reference typeCode="REFR">
                             <externalObservation>
-                                <id root="94B9555F-8700-45EF-B69F-433EBEDE8051"/>
+                                <id root="94B9555F-8700-45eF-B69F-433eBEdE8051"/>
                             </externalObservation>
                         </reference>
                     </observation>
