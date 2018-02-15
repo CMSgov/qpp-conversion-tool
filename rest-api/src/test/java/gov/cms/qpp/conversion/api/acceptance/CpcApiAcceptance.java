@@ -6,11 +6,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
 import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
 import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.conversion.util.FormatHelper;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
 
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import static com.google.common.truth.Truth.assertThat;
 import static io.restassured.RestAssured.get;
@@ -57,6 +60,18 @@ class CpcApiAcceptance {
 		assertThat(responseBody.get(0)).containsKey("apm");
 		assertThat(responseBody.get(0)).containsKey("conversionDate");
 		assertThat(responseBody.get(0)).containsKey("validationSuccess");
+	}
+
+	@AcceptanceTest
+	void testUnprocessedFilesDates() {
+		List<Map> responseBody = getUnprocessedFiles();
+		assertThat(responseBody).isNotEmpty();
+
+		Predicate<Map> filterDate = map -> LocalDate.of(2018, 01, 01)
+			.isBefore(FormatHelper.formattedDateParse((String)map.get("conversionDate")));
+
+		Long responseCount = responseBody.stream().filter(filterDate).count();
+		assertThat(responseCount).isEqualTo(0);
 	}
 
 	@AcceptanceTest
