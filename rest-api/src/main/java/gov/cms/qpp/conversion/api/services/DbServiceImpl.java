@@ -75,7 +75,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			Map<String, AttributeValue> valueMap = new HashMap<>();
 			valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
 			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
-			valueMap.put(":createDate", new AttributeValue().withS("2018-01-02"));
+			valueMap.put(":createDate", new AttributeValue().withS("2018-01-02T05:00:00.000Z"));
 
 
 			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
