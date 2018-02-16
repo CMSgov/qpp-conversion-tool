@@ -22,6 +22,7 @@
 		<module>converter</module>
 		<module>commandline</module>
 		<module>rest-api</module>
+		<module>benchmark</module>
 		<module>generate</module>
 	</modules>
 
