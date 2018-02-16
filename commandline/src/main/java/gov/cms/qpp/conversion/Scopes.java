@@ -4,6 +4,9 @@ import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 import java.util.Set;
 
+/**
+ * Helper class used during scope validation
+ */
 public class Scopes {
 
 	private Set<QrdaScope> scopes;

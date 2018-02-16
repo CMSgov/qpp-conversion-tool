@@ -26,6 +26,9 @@ import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Responsible for executing the given command line instructions
+ */
 public class CommandLineRunner implements Runnable {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CommandLineMain.class);
@@ -40,10 +43,21 @@ public class CommandLineRunner implements Runnable {
 	private boolean doDefaults;
 	private boolean historical;
 
+	/**
+	 * Creates a new CommandLineRunner from a given {@link CommandLine}
+	 *
+	 * @param commandLine command line execute
+	 */
 	public CommandLineRunner(CommandLine commandLine) {
 		this(commandLine, FileSystems.getDefault());
 	}
 
+	/**
+	 * Creates a new CommandLineRunner from a given {@link CommandLine} and {@link FileSystem}
+	 *
+	 * @param commandLine command line execute
+	 * @param fileSystem contextual file system to use for path operations
+	 */
 	public CommandLineRunner(CommandLine commandLine, FileSystem fileSystem) {
 		Objects.requireNonNull(commandLine, "commandLine");
 		Objects.requireNonNull(fileSystem, "fileSystem");
@@ -52,6 +66,9 @@ public class CommandLineRunner implements Runnable {
 		this.fileSystem = fileSystem;
 	}
 
+	/**
+	 * Executes the command line
+	 */
 	@Override
 	public void run() {
 		if (isHelp()) {
