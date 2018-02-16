@@ -58,9 +58,9 @@ public enum QrdaScope {
 
 	public static QrdaScope getInstanceByName(String name) {
 		Objects.requireNonNull(name, "name");
-		String match = name.trim().replace(' ', '_').toLowerCase();
+		String match = name.trim().replace(' ', '_');
 		return Arrays.stream(QrdaScope.values())
-				.filter(value -> value.name().toLowerCase().equals(match))
+				.filter(value -> value.name().equalsIgnoreCase(match))
 				.findFirst()
 				.orElse(null);
 	}

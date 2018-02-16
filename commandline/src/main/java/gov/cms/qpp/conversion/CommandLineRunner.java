@@ -56,41 +56,36 @@ public class CommandLineRunner implements Runnable {
 	public void run() {
 		if (isHelp()) {
 			sendHelp();
-			return;
-		}
+		} else if (hasPotentialFiles()) {
+			Scopes scopes = getScopes();
+			scope = scopes.getScopes();
+			if (scopes.isValid()) {
+				Set<Path> convert = getRequestedFilesForConversion();
 
-		if (!hasPotentialFiles()) {
+				List<Path> invalid = convert.stream()
+						.filter(path -> !isValid(path))
+						.collect(Collectors.toList());
+				if (invalid.isEmpty()) {
+					doValidation = !commandLine.hasOption(CommandLineMain.SKIP_VALIDATION);
+					doDefaults = !commandLine.hasOption(CommandLineMain.SKIP_DEFAULTS);
+					historical = commandLine.hasOption(CommandLineMain.BYGONE);
+
+					convert.parallelStream()
+						.map(ConversionFileWriterWrapper::new)
+						.peek(conversion -> conversion.setContext(createContext()))
+						.forEach(ConversionFileWriterWrapper::transform);
+				} else {
+					DEV_LOG.error("Invalid or missing paths: " + invalid);
+					sendHelpHint();
+				}
+			} else {
+				DEV_LOG.error("A given template scope was invalid");
+				sendHelpHint();
+			}
+		} else {
 			DEV_LOG.error("You must specify files to convert");
 			sendHelpHint();
-			return;
 		}
-
-		scope = getScope();
-		if (scope == null) {
-			DEV_LOG.error("A given template scope was invalid");
-			sendHelpHint();
-			return;
-		}
-
-		Set<Path> convert = getConvert();
-
-		List<Path> invalid = convert.stream()
-				.filter(path -> !isValid(path))
-				.collect(Collectors.toList());
-		if (!invalid.isEmpty()) {
-			DEV_LOG.error("Invalid or missing paths: " + invalid);
-			sendHelpHint();
-			return;
-		}
-
-		doValidation = !commandLine.hasOption(CommandLineMain.SKIP_VALIDATION);
-		doDefaults = !commandLine.hasOption(CommandLineMain.SKIP_DEFAULTS);
-		historical = commandLine.hasOption(CommandLineMain.BYGONE);
-
-		convert.parallelStream()
-			.map(ConversionFileWriterWrapper::new)
-			.peek(conversion -> conversion.setContext(createContext()))
-			.forEach(ConversionFileWriterWrapper::transform);
 	}
 
 	private Context createContext() {
@@ -123,30 +118,38 @@ public class CommandLineRunner implements Runnable {
 		return !commandLine.getArgList().isEmpty();
 	}
 
-	private Set<QrdaScope> getScope() {
+	private Scopes getScopes() {
+		Scopes scopes = new Scopes();
 		if (commandLine.hasOption(CommandLineMain.TEMPLATE_SCOPE)) {
 			String[] templateScope = LITERAL_COMMA.split(commandLine.getOptionValue(CommandLineMain.TEMPLATE_SCOPE));
-			Set<QrdaScope> scope = Arrays.stream(templateScope)
+			Set<QrdaScope> validScopes = Arrays.stream(templateScope)
 					.map(QrdaScope::getInstanceByName)
 					.filter(Objects::nonNull)
 					.collect(Collectors.toCollection(() -> EnumSet.noneOf(QrdaScope.class)));
 
-			if (scope.size() != templateScope.length) {
-				return null;
+			if (validScopes.size() != templateScope.length) {
+				scopes.setValid(false);
+			} else {
+				scopes.setValid(true);
 			}
+
+			scopes.setScopes(validScopes);
+			return scopes;
 		}
-		return EnumSet.noneOf(QrdaScope.class);
+		scopes.setScopes(EnumSet.noneOf(QrdaScope.class));
+		scopes.setValid(true);
+		return scopes;
 	}
 
-	private Set<Path> getConvert() { // TODO rename
+	private Set<Path> getRequestedFilesForConversion() {
 		return commandLine.getArgList()
 				.stream()
-				.map(this::getConvert)
+				.map(this::getRequestedFilesForConversion)
 				.flatMap(Collection::stream)
 				.collect(Collectors.toSet());
 	}
 
-	private Collection<Path> getConvert(String path) { // TODO rename
+	private Collection<Path> getRequestedFilesForConversion(String path) {
 		if (isNormalPath(path)) {
 			return Collections.singleton(fileSystem.getPath(path));
 		}
