@@ -14,9 +14,11 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The engine for parsing XML into QPP format.
@@ -142,13 +144,13 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	 */
 	private DecodeData decodeChildren(final Element element, final Node parentNode) {
 
-		List<Element> childElements = element.getChildren();
+		List<Element> filteredChildElements = getUniqueTemplateIdElements(element.getChildren());
 
 		DecodeData decodeData = new DecodeData(DecodeResult.TREE_CONTINUE, parentNode);
 
 		Node currentParentNode = parentNode;
 
-		for (Element childElement : childElements) {
+		for (Element childElement : filteredChildElements) {
 			DecodeData childDecodeData = decodeTree(childElement, currentParentNode);
 
 			DecodeResult childDecodeResult = childDecodeData.getDecodeResult();
@@ -163,6 +165,37 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		}
 
 		return decodeData;
+	}
+
+	/**
+	 * Reduces the {@code templateId} {@link Element}s so there are no duplicates.  All other {@link Element}s are left alone.
+	 *
+	 * @param childElements The elements to filter
+	 * @return A {@link List} of {@link Element}s that are filtered.
+	 */
+	private List<Element> getUniqueTemplateIdElements(final List<Element> childElements) {
+		Set<TemplateId> uniqueTemplates = EnumSet.noneOf(TemplateId.class);
+
+		return childElements.stream()
+			.filter(filterElement -> {
+				boolean isTemplateId = TEMPLATE_ID.equals(filterElement.getName());
+				TemplateId filterTemplateId = getTemplateId(filterElement);
+
+				boolean elementWillStay = true;
+
+				if (isTemplateId) {
+					if (getDecoder(filterTemplateId) == null) {
+						elementWillStay = false;
+					} else if (uniqueTemplates.contains(filterTemplateId)) {
+						elementWillStay = false;
+					} else {
+						uniqueTemplates.add(filterTemplateId);
+					}
+				}
+
+				return elementWillStay;
+			})
+			.collect(Collectors.toList());
 	}
 
 	/**
