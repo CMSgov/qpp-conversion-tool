@@ -6,6 +6,8 @@ import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
+
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -80,6 +82,16 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
 
 		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(AmazonS3Exception.class)
+	@ResponseBody
+	ResponseEntity<String> handleGenericS3Exception(AmazonS3Exception exception) {
+		API_LOG.error("An s3 error occured", exception);
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+			.contentType(MediaType.TEXT_PLAIN)
+			.body(exception.getMessage());
 	}
 
 	/**
