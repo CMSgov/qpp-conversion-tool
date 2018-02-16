@@ -75,7 +75,7 @@ public class CommandLineRunner implements Runnable {
 			sendHelp();
 		} else if (hasPotentialFiles()) {
 			Scopes scopes = getScopes();
-			scope = scopes.getScopes();
+			scope = scopes.getQrdaScopes();
 			if (scopes.isValid()) {
 				Set<Path> convert = getRequestedFilesForConversion();
 
@@ -150,10 +150,10 @@ public class CommandLineRunner implements Runnable {
 				scopes.setValid(true);
 			}
 
-			scopes.setScopes(validScopes);
+			scopes.setQrdaScopes(validScopes);
 			return scopes;
 		}
-		scopes.setScopes(EnumSet.noneOf(QrdaScope.class));
+		scopes.setQrdaScopes(EnumSet.noneOf(QrdaScope.class));
 		scopes.setValid(true);
 		return scopes;
 	}

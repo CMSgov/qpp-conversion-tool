@@ -9,15 +9,15 @@ import java.util.Set;
  */
 public class Scopes {
 
-	private Set<QrdaScope> scopes;
+	private Set<QrdaScope> qrdaScopes;
 	private boolean valid;
 
-	public Set<QrdaScope> getScopes() {
-		return scopes;
+	public Set<QrdaScope> getQrdaScopes() {
+		return qrdaScopes;
 	}
 
-	public void setScopes(Set<QrdaScope> scopes) {
-		this.scopes = scopes;
+	public void setQrdaScopes(Set<QrdaScope> qrdaScopes) {
+		this.qrdaScopes = qrdaScopes;
 	}
 
 	public boolean isValid() {
