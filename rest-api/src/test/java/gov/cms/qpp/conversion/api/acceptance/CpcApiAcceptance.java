@@ -22,6 +22,7 @@ import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.services.DbServiceImpl;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
 
 import java.nio.file.Paths;
@@ -54,7 +55,7 @@ class CpcApiAcceptance {
 	private static AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
 
 	@BeforeAll
-	static void createUnprocessedItem() {
+	static void setUp() {
 		String kmsKey = "arn:aws:kms:us-east-1:850094054452:key/8b19f7e9-b58c-4b7a-8162-e01809a8a2e9";
 		mapper = DynamoDbConfigFactory
 			.createDynamoDbMapper(dynamoClient, DynamoDBMapperConfig.builder()
@@ -102,16 +103,18 @@ class CpcApiAcceptance {
 
 	@AcceptanceTest
 	void testUnprocessedFilesDates() {
-		Metadata metadata = createDatedMetadata("2018-01-02T05:00:00.000Z");
-		Metadata beforeJanuarySecondMetadata = createDatedMetadata("2018-01-02T04:59:59.999Z");
+		Metadata afterJanuarySecondMetadata = createDatedCpcMetadata("2018-01-02T05:00:00.000Z");
+		Metadata beforeJanuarySecondMetadata = createDatedCpcMetadata(DbServiceImpl.START_OF_UNALLOWED_CONVERSION_TIME);
+		Metadata anotherAllowedMetadata = createDatedCpcMetadata("2018-02-26T14:36:43.723Z");
+		Metadata anotherUnallowedMetadata = createDatedCpcMetadata("2017-12-25T00:00:00.000Z");
 
-		mapper.batchSave(metadata, beforeJanuarySecondMetadata);
+		mapper.batchSave(afterJanuarySecondMetadata, beforeJanuarySecondMetadata, anotherAllowedMetadata, anotherUnallowedMetadata);
 
 		List<Map> responseBody = getUnprocessedFiles();
 
 		responseBody.stream().forEach(map ->
 			assertThat(Instant.parse((String)map.get("conversionDate")))
-				.isGreaterThan(Instant.parse("2018-01-02T04:59:59.999Z")));
+				.isGreaterThan(Instant.parse(DbServiceImpl.START_OF_UNALLOWED_CONVERSION_TIME)));
 	}
 
 	@AcceptanceTest
@@ -169,7 +172,7 @@ class CpcApiAcceptance {
 
 	@AcceptanceTest
 	void testMarkFileProcessedNotCPC() {
-		Metadata metadata = createDatedMetadata("2018-01-02T05:00:00.000Z");
+		Metadata metadata = createDatedCpcMetadata("2018-01-02T05:00:00.000Z");
 		metadata.setCpc(null);
 		mapper.save(metadata);
 
@@ -235,7 +238,7 @@ class CpcApiAcceptance {
 		return JwtTestHelper.createJwt(payload);
 	}
 
-	private Metadata createDatedMetadata(String parsableDate) {
+	private Metadata createDatedCpcMetadata(String parsableDate) {
 		Metadata metadata = new Metadata();
 		metadata.setApm("T3STV47U3");
 		metadata.setTin("0001233212");
