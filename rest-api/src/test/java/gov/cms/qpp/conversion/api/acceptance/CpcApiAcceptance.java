@@ -6,13 +6,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.AttributeEncryptor;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ScanRequest;
-import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClientBuilder;
-import com.google.common.collect.Lists;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -24,6 +19,7 @@ import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.DbServiceImpl;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
+import gov.cms.qpp.test.helper.AwsTestHelper;
 
 import java.nio.file.Paths;
 import java.time.Instant;
@@ -39,7 +35,6 @@ import static org.hamcrest.xml.HasXPath.hasXPath;
 
 @ExtendWith(RestExtension.class)
 class CpcApiAcceptance {
-
 	private static final String CPC_UNPROCESSED_FILES_API_PATH = "/cpc/unprocessed-files";
 	private static final String CPC_FILE_API_PATH = "/cpc/file/";
 	private static final String PROGRAM_NAME_XPATH = "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']"
@@ -47,11 +42,8 @@ class CpcApiAcceptance {
 		+ "/*[local-name() = 'intendedRecipient' and namespace-uri() = 'urn:hl7-org:v3']"
 		+ "/*[local-name() = 'id' and namespace-uri() = 'urn:hl7-org:v3'][@root='2.16.840.1.113883.3.249.7']/@extension";
 	private static final String CPC_PLUS_PROGRAM_NAME = "CPCPLUS";
-
 	private static AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().build();
 	private static DynamoDBMapper mapper;
-	private static final String TEST_DYNAMO_TABLE_NAME = "qpp-qrda3converter-acceptance-test";
-
 	private static AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
 
 	@BeforeAll
@@ -59,26 +51,13 @@ class CpcApiAcceptance {
 		String kmsKey = "arn:aws:kms:us-east-1:850094054452:key/8b19f7e9-b58c-4b7a-8162-e01809a8a2e9";
 		mapper = DynamoDbConfigFactory
 			.createDynamoDbMapper(dynamoClient, DynamoDBMapperConfig.builder()
-				.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(TEST_DYNAMO_TABLE_NAME))
+				.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(AwsTestHelper.TEST_DYNAMO_TABLE_NAME))
 				.build(), new AttributeEncryptor(new DirectKmsMaterialProvider(kmsClient, kmsKey)));
 
 		given()
 			.multiPart("file", Paths.get("../sample-files/CPCPlus_Success_PreProd.xml").toFile())
 			.when()
 			.post("/");
-	}
-
-	@AfterAll
-	static void tearDown() {
-		ScanResult scanResult = dynamoClient.scan(TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
-		List<Map<String, AttributeValue>> metadataList = scanResult.getItems();
-		while(scanResult.getLastEvaluatedKey() != null && !scanResult.getLastEvaluatedKey().isEmpty()) {
-			scanResult = dynamoClient.scan(new ScanRequest().withTableName(TEST_DYNAMO_TABLE_NAME).withAttributesToGet("Uuid")
-				.withExclusiveStartKey(scanResult.getLastEvaluatedKey()));
-			metadataList.addAll(scanResult.getItems());
-		}
-
-		metadataList.forEach(map -> dynamoClient.deleteItem(TEST_DYNAMO_TABLE_NAME, map));
 	}
 
 	@AcceptanceTest
