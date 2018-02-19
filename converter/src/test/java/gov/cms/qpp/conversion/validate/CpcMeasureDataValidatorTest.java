@@ -41,7 +41,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.AFRICAN_AMERICAN.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.AFRICAN_AMERICAN.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -58,7 +58,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.ASIAN.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.ASIAN.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -75,7 +75,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.HAWAIIAN_PACIFIC_ISLANDER.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.HAWAIIAN_PACIFIC_ISLANDER.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -92,7 +92,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.WHITE.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.WHITE.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -109,7 +109,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.ALASKAN_NATIVE_AMERICAN_INDIAN.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.ALASKAN_NATIVE_AMERICAN_INDIAN.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -126,7 +126,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.OTHER_RACE.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.OTHER_RACE.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -143,7 +143,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.MALE.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.MALE.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -160,7 +160,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.FEMALE.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.FEMALE.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -177,7 +177,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.NOT_HISPANIC_LATINO.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.NOT_HISPANIC_LATINO.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -194,7 +194,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.HISPANIC_LATINO.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.HISPANIC_LATINO.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -211,7 +211,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.MEDICARE.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.MEDICARE.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -228,7 +228,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.MEDICAID.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.MEDICAID.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -245,7 +245,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.PRIVATE_HEALTH_INSURANCE.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.PRIVATE_HEALTH_INSURANCE.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
@@ -262,7 +262,7 @@ class CpcMeasureDataValidatorTest {
 		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 		validator.internalValidateSingleNode(underTest);
 
-		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(SupplementalData.OTHER_PAYER.getCode(),
+		LocalizedError error = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(SupplementalData.OTHER_PAYER.getCode(),
 				MEASURE_ID, SubPopulations.IPOP);
 
 		Set<Detail> errors = validator.getDetails();
