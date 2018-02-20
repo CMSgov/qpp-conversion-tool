@@ -15,12 +15,18 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A helper class for aws testing
+ */
 public class AwsTestHelper {
 	private static AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().build();
 	private static AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	public static final String TEST_DYNAMO_TABLE_NAME = "qpp-qrda3converter-acceptance-test";
 	private static final String TEST_S3_BUCKET_NAME = "qpp-qrda3converter-acceptance-test";
 
+	/**
+	 * Cleans dynamodb items until via batch scan and delete for performance purposes
+	 */
 	public static void cleanDynamoDb() {
 		ScanResult scanResult = dynamoClient.scan(TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
 		List<Map<String, AttributeValue>> metadataList = scanResult.getItems();
@@ -33,6 +39,9 @@ public class AwsTestHelper {
 		metadataList.forEach(map -> dynamoClient.deleteItem(TEST_DYNAMO_TABLE_NAME, map));
 	}
 
+	/**
+	 * Cleans up the test s3 bucket by batch for performance purposes
+	 */
 	public static void cleanS3() {
 		ObjectListing objectListing = s3Client.listObjects(TEST_S3_BUCKET_NAME);
 		boolean firstTimeThrough = true;
