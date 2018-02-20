@@ -127,7 +127,9 @@ public enum ErrorCode implements LocalizedError {
 		+ "`(Measure Id)`'s Sub-population `(Sub Population)`", true),
 	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
 		+ "on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`", true),
-	CPC_PLUS_SUBMISSION_ENDED(68, "CPC+ Submission is after the end date `(Submission end date)`", true),
+	CPC_PLUS_SUBMISSION_ENDED(68, "Your CPC+ submission was made after the CPC+ eCQM submission deadline of "
+		+ "`(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at "
+		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
 		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123", true);

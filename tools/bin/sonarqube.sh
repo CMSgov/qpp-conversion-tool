@@ -4,7 +4,7 @@ DIR=$(dirname "$0")
 SONAR_HOST=https://sonarcloud.io
 ORG_KEY=cmsgov
 
-if [[ "$CIRCLE_BRANCH" == "master" || ( ! -z $SONAR_OTHER_BRANCH && "$CIRCLE_BRANCH" == "$SONAR_OTHER_BRANCH" ) ]]; then
+if [[ "$CIRCLE_BRANCH" == "develop" || ( ! -z $SONAR_OTHER_BRANCH && "$CIRCLE_BRANCH" == "$SONAR_OTHER_BRANCH" ) ]]; then
 	#Do a full SonarQube run
 	echo "Doing full SonarQube run"
 	./sonar-scanner-3.0.1.733/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST} \

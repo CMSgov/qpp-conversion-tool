@@ -1,7 +1,3 @@
-/*
- * Source code copyright Flexion
- * All rights reserved 
- */
 package gov.cms.qpp.conversion.decode;
 
 import org.jdom2.Element;
@@ -11,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -60,6 +57,45 @@ class AggregateCountDecoderTest {
 			+ "    <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>\n"
 			+ "</observation>";
 
+	private static final String DUPLICATE_AGGREGATE_COUNT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+		+ "<entry xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
+		+ "<component>\n"
+		+ "<observation classCode=\"OBS\" moodCode=\"EVN\">\n"
+		+ "        <templateId root=\"2.16.840.1.113883.10.20.27.3.5\" extension=\"2016-09-01\"/>\n"
+		+ "        <templateId root=\"2.16.840.1.113883.10.20.27.3.31\" extension=\"2016-09-01\"/>\n"
+		+ "        <code code=\"ASSERTION\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"Assertion\"/>\n"
+		+ "        <statusCode code=\"completed\"/>\n"
+		+ "        <value xsi:type=\"CD\" code=\"DENOM\" codeSystem=\"2.16.840.1.113883.5.1063\" codeSystemName=\"ObservationValue\"/>\n"
+		+ "        <entryRelationship typeCode=\"COMP\">\n"
+		+ "        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
+		+ "                <value xsi:type=\"CD\" code=\"M\" codeSystem=\"2.16.840.1.113883.5.1\" codeSystemName=\"AdministrativeGenderCode\" displayName=\"Male\"/>\n"
+		+ "                <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
+		+ "                        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
+		+ "                                <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
+		+ "                                <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>\n"
+		+ "                                <statusCode code=\"completed\"/>\n"
+		+ "                                <value xsi:type=\"INT\" value=\"400\"/>\n"
+		+ "                                <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>\n"
+		+ "                        </observation>\n"
+		+ "                </entryRelationship>\n"
+		+ "        </observation>\n"
+		+ "        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
+		+ "                <value xsi:type=\"CD\" code=\"M\" codeSystem=\"2.16.840.1.113883.5.1\" codeSystemName=\"AdministrativeGenderCode\" displayName=\"Male\"/>\n"
+		+ "                <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
+		+ "                        <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
+		+ "                                <templateId root=\"2.16.840.1.113883.10.20.27.3.3\"/>\n"
+		+ "                                <code code=\"MSRAGG\" codeSystem=\"2.16.840.1.113883.5.4\" codeSystemName=\"ActCode\" displayName=\"rate aggregation\"/>\n"
+		+ "                                <statusCode code=\"completed\"/>\n"
+		+ "                                <value xsi:type=\"INT\" value=\"400\"/>\n"
+		+ "                                <methodCode code=\"COUNT\" codeSystem=\"2.16.840.1.113883.5.84\" codeSystemName=\"ObservationMethod\" displayName=\"Count\"/>\n"
+		+ "                        </observation>\n"
+		+ "                </entryRelationship>\n"
+		+ "        </observation>\n"
+		+ "</entryRelationship>\n"
+		+ "</observation>\n"
+		+ "</component>"
+		+ "</entry>";
+
 	@Test
 	void testInternalDecode() {
 		Namespace rootNs = Namespace.getNamespace("urn:hl7-org:v3");
@@ -83,7 +119,7 @@ class AggregateCountDecoderTest {
 	}
 
 	@Test
-	void testAggregateCountDecoderIgnoresInvalidElements() throws Exception {
+	void testAggregateCountDecoderIgnoresInvalidElements() throws XmlException {
 
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(XML_FRAGMENT));
 		Node node = root.getChildNodes().get(0);
@@ -95,11 +131,11 @@ class AggregateCountDecoderTest {
 
 		assertWithMessage("Should have template id")
 				.that(node.getChildNodes().get(0).getType())
-				.isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
+				.isEqualTo(TemplateId.ACI_AGGREGATE_COUNT);
 	}
 
 	@Test
-	void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws Exception {
+	void testAggregateCountDecoderIgnoresInvalidElementsPartTwo() throws XmlException {
 
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(ANOTHER_XML_FRAGMENT));
 
@@ -108,6 +144,12 @@ class AggregateCountDecoderTest {
 				.isEqualTo("400");
 
 		assertWithMessage("Should have template id")
-				.that(root.getType()).isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
+				.that(root.getType()).isEqualTo(TemplateId.ACI_AGGREGATE_COUNT);
+	}
+
+	@Test
+	void testDuplicateAggregateCountDecodesToDuplicateAggregateCount() throws XmlException {
+		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(DUPLICATE_AGGREGATE_COUNT));
+		assertThat(root.getChildNodes().get(0).getChildNodes(TemplateId.ACI_AGGREGATE_COUNT).count()).isEqualTo(2);
 	}
 }
