@@ -110,6 +110,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 		CommandLineRunner runner = new CommandLineRunner(line("src/test/resources/*"), fileSystem);
 		runner.run();
 		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("not-a-QRDA-III-file.err.json"))).isTrue();
 	}
 
 	private CommandLine line(String... arguments) {
