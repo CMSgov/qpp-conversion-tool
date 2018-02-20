@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 
+	private static final String VALID_FILE = "src/test/resources/valid-QRDA-III-abridged.xml";
 	private static final String INVALID_FILE = "THIS_FILE_SHOULD_NOT_EXIST.xml";
 
 	@Test
@@ -61,14 +62,14 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 
 	@JimfsTest
 	void testRunWithValidFile(FileSystem fileSystem) throws IOException {
-		CommandLineRunner runner = new CommandLineRunner(line("src/test/resources/valid-QRDA-III-abridged.xml"), fileSystem);
+		CommandLineRunner runner = new CommandLineRunner(line(VALID_FILE), fileSystem);
 		runner.run();
 		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
 	}
 
 	@JimfsTest
 	void testRunWithValidFileSkipDefaults(FileSystem fileSystem) throws IOException {
-		CommandLineRunner runner = new CommandLineRunner(line("src/test/resources/valid-QRDA-III-abridged.xml",
+		CommandLineRunner runner = new CommandLineRunner(line(VALID_FILE,
 				"-" + CommandLineMain.SKIP_DEFAULTS), fileSystem);
 		runner.run();
 		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
@@ -91,7 +92,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 
 	@JimfsTest
 	void testRunWithValidFileGlobAtHeadInRoot(FileSystem fileSystem) throws IOException {
-		Files.copy(fileSystem.getPath("src/test/resources/valid-QRDA-III-abridged.xml"), fileSystem.getPath("valid-QRDA-III-abridged.xml"));
+		Files.copy(fileSystem.getPath(VALID_FILE), fileSystem.getPath("valid-QRDA-III-abridged.xml"));
 		CommandLineRunner runner = new CommandLineRunner(line("*.xml"), fileSystem);
 		runner.run();
 		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
@@ -99,7 +100,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 
 	@JimfsTest
 	void testRunWithValidFileGlobAtTailInRoot(FileSystem fileSystem) throws IOException {
-		Files.copy(fileSystem.getPath("src/test/resources/valid-QRDA-III-abridged.xml"), fileSystem.getPath("valid-QRDA-III-abridged.xml"));
+		Files.copy(fileSystem.getPath(VALID_FILE), fileSystem.getPath("valid-QRDA-III-abridged.xml"));
 		CommandLineRunner runner = new CommandLineRunner(line("valid-QRDA-III-abridged.*"), fileSystem);
 		runner.run();
 		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
