@@ -13,23 +13,38 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * File Visitor with a {@link PathMatcher} filter, optionally supporting a recursive directory search
+ */
 public class Finder extends SimpleFileVisitor<Path> {
 
 	private final PathMatcher matcher;
 	private final boolean recursive;
 	private final Set<Path> files = new HashSet<>();
 
+	/**
+	 * Constructs a new Finder
+	 *
+	 * @param matcher inclusive filter for finding files
+	 * @param recursive whether to run the Finder on each directory recursively
+	 */
 	public Finder(PathMatcher matcher, boolean recursive) {
 		this.matcher = matcher;
 		this.recursive = recursive;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
 		find(file);
 		return FileVisitResult.CONTINUE;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes attributes) {
 		if (recursive) {
@@ -49,6 +64,11 @@ public class Finder extends SimpleFileVisitor<Path> {
 		}
 	}
 
+	/**
+	 * After the finder has been ran, get the files that were matched
+	 *
+	 * @return a list of paths that matched the inclusive path matcher
+	 */
 	public List<Path> getFoundFiles() {
 		return new ArrayList<>(files);
 	}
