@@ -11,6 +11,9 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Entry point for the converter when ran from the command line
+ */
 public class CommandLineMain {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CommandLineMain.class);
@@ -44,6 +47,11 @@ public class CommandLineMain {
 		HELP_FORMAT = new HelpFormatter();
 	}
 
+	/**
+	 * Entry point for the converter when ran from the command line
+	 *
+	 * @param arguments options and files to run with the converter
+	 */
 	public static void main(String... arguments) {
 		CommandLine commandLine = cli(arguments);
 
@@ -52,6 +60,12 @@ public class CommandLineMain {
 		}
 	}
 
+	/**
+	 * Creates a {@link org.apache.commons.cli.CommandLine} from the given arguments, normally called automatically using {@link #main(String...)}
+	 *
+	 * @param arguments options and files to run with the converter
+	 * @return a command line, or null if arguments were not valid
+	 */
 	static CommandLine cli(String... arguments) {
 		try {
 			return new DefaultParser().parse(OPTIONS, arguments);
