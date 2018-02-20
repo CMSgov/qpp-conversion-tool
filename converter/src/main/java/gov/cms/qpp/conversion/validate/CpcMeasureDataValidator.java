@@ -14,7 +14,6 @@ import gov.cms.qpp.conversion.model.validation.SupplementalData;
 import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -75,9 +74,14 @@ public class CpcMeasureDataValidator extends NodeValidator {
 
 				if (validatedSupplementalNode == null) {
 					addSupplementalValidationError(node, supplementalData, electronicMeasureID);
+				} else {
+					LocalizedError error = makeIncorrectCountSizeLocalizedError(node, supplementalData.getCode(),
+						electronicMeasureID);
+					check(validatedSupplementalNode)
+						.childMinimum(error, 1, TemplateId.ACI_AGGREGATE_COUNT)
+						.childMaximum(error, 1, TemplateId.ACI_AGGREGATE_COUNT);
 				}
 			}
-			validateSupplementalDataNodeCounts(node, supplementalDataNodes, electronicMeasureID);
 		}
 	}
 
@@ -114,26 +118,9 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 */
 	private void addSupplementalValidationError(Node node, SupplementalData supplementalData, String measureId) {
 		LocalizedError error =
-				ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_NODE.format(supplementalData.getCode(),
+				ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(supplementalData.getCode(),
 						measureId, node.getValue(MeasureDataDecoder.MEASURE_TYPE));
 		addValidationError(Detail.forErrorAndNode(error, node));
-	}
-
-	/**
-	 * Validates all Supplemental Data nodes for an Aggregate count
-	 *
-	 * @param node parent node
-	 * @param supplementalDataNodes supplemental nodes to be validated
-	 */
-	private void validateSupplementalDataNodeCounts(Node node, Set<Node> supplementalDataNodes, String measureId) {
-		supplementalDataNodes.forEach(thisNode -> {
-			String suppleCode = thisNode.getValue(SUPPLEMENTAL_DATA_KEY);
-			LocalizedError error = makeIncorrectCountSizeLocalizedError(node, suppleCode, measureId);
-			check(thisNode)
-					.valueIsNotEmpty(makeMissingSupplementalCodeValueError(node, thisNode, measureId), SUPPLEMENTAL_DATA_KEY)
-					.childMinimum(error, 1, TemplateId.ACI_AGGREGATE_COUNT)
-					.childMaximum(error, 1, TemplateId.ACI_AGGREGATE_COUNT);
-		});
 	}
 
 	/**
@@ -148,18 +135,5 @@ public class CpcMeasureDataValidator extends NodeValidator {
 		return ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
 			supplementalCode, node.getValue(MeasureDataDecoder.MEASURE_TYPE),
 				measureId);
-	}
-
-	/**
-	 * Creates a localized error for a missing supplemental code
-	 *
-	 * @param node Parent node holding the measure type
-	 * @param supplementalNode holder of the supplemental type
-	 * @param measureId electronic measure id
-	 * @return
-	 */
-	private LocalizedError makeMissingSupplementalCodeValueError(Node node, Node supplementalNode, String measureId) {
-		return ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE_VALUE.format(measureId,
-			node.getValue(MeasureDataDecoder.MEASURE_TYPE), supplementalNode.getType().name());
 	}
 }
