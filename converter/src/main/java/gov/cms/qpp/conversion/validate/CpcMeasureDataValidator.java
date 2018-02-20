@@ -66,23 +66,18 @@ public class CpcMeasureDataValidator extends NodeValidator {
 		EnumSet<SupplementalData> codes = EnumSet.copyOf(
 				 SupplementalData.getSupplementalDataSetByType(supplementalDataType));
 
-		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(
-			node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
-		String measureId = config.getElectronicMeasureId();
-		if (config == null) {
-			if(measureId != null) {
-				List<String> suggestions = MeasureConfigs.getMeasureSuggestions(measureId);
-				addValidationError(Detail.forErrorAndNode(ErrorCode.MEASURE_GUID_MISSING.format(measureId, suggestions), node));
-			}
-		} else {
+		String measureId = node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID);
+		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(measureId);
+		if (config != null) {
+			String electronicMeasureID = config.getElectronicMeasureId();
 			for (SupplementalData supplementalData : codes) {
 				Node validatedSupplementalNode = filterCorrectNode(supplementalDataNodes, supplementalData);
 
 				if (validatedSupplementalNode == null) {
-					addSupplementalValidationError(node, supplementalData, measureId);
+					addSupplementalValidationError(node, supplementalData, electronicMeasureID);
 				}
 			}
-			validateSupplementalDataNodeCounts(node, supplementalDataNodes, measureId);
+			validateSupplementalDataNodeCounts(node, supplementalDataNodes, electronicMeasureID);
 		}
 	}
 
@@ -144,8 +139,9 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	/**
 	 * Creates a localized error for an invalid number of aggregate counts
 	 *
-	 * @param node parent node
-	 * @param supplementalCode current code that's missing
+	 * @param node holder of the measure type
+	 * @param supplementalCode data code that is missing
+	 * @param measureId electronic measure id
 	 * @return
 	 */
 	private LocalizedError makeIncorrectCountSizeLocalizedError(Node node, String supplementalCode, String measureId) {
@@ -157,7 +153,9 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	/**
 	 * Creates a localized error for a missing supplemental code
 	 *
-	 * @param node
+	 * @param node Parent node holding the measure type
+	 * @param supplementalNode holder of the supplemental type
+	 * @param measureId electronic measure id
 	 * @return
 	 */
 	private LocalizedError makeMissingSupplementalCodeValueError(Node node, Node supplementalNode, String measureId) {
