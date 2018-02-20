@@ -144,11 +144,7 @@ public class CommandLineRunner implements Runnable {
 					.filter(Objects::nonNull)
 					.collect(Collectors.toCollection(() -> EnumSet.noneOf(QrdaScope.class)));
 
-			if (validScopes.size() != templateScope.length) {
-				scopes.setValid(false);
-			} else {
-				scopes.setValid(true);
-			}
+			scopes.setValid(validScopes.size() == templateScope.length);
 
 			scopes.setQrdaScopes(validScopes);
 			return scopes;
