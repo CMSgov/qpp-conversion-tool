@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.util.FutureHelper;
 
 import javax.inject.Inject;
 
@@ -54,9 +53,8 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 		final String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
 		final String kmsKey = environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE);
 		if (Strings.isNullOrEmpty(bucketName) || Strings.isNullOrEmpty(kmsKey)) {
-			String error = "No bucket name is specified or no KMS key specified.";
-			API_LOG.warn(error);
-			return FutureHelper.exceptionally(new IllegalStateException(error));
+			API_LOG.warn("No bucket name is specified or no KMS key specified.");
+			return CompletableFuture.completedFuture("");
 		}
 
 		ObjectMetadata s3ObjectMetadata = new ObjectMetadata();
