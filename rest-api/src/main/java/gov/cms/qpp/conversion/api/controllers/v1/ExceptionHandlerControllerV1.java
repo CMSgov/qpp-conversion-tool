@@ -7,14 +7,13 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
 
-import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.amazonaws.AmazonServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -85,16 +84,6 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(AmazonS3Exception.class)
-	@ResponseBody
-	ResponseEntity<String> handleGenericS3Exception(AmazonS3Exception exception) {
-		API_LOG.error("An s3 error occured", exception);
-
-		return ResponseEntity.status(errorCode(exception.getErrorCode()))
-			.contentType(MediaType.TEXT_PLAIN)
-			.body(exception.getMessage());
-	}
-
 	/**
 	 * "Catch" the {@link InvalidFileTypeException}.
 	 * Return the {@link AllErrors} with an HTTP status 404.
@@ -111,24 +100,22 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 
 		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.NOT_FOUND);
 	}
+
+	@ExceptionHandler(AmazonServiceException.class)
+	@ResponseBody
+	ResponseEntity<String> handleAmazonException(AmazonServiceException exception) {
+		API_LOG.error("An S3 error occured", exception);
+
+		return ResponseEntity.status(exception.getStatusCode())
+			.contentType(MediaType.TEXT_PLAIN)
+			.body(exception.getMessage());
+	}
 	
 	private ResponseEntity<AllErrors> cope(TransformException exception) {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
 		return new ResponseEntity<>(exception.getDetails(), httpHeaders, HttpStatus.UNPROCESSABLE_ENTITY);
-	}
-
-	private int errorCode(String errorCode) {
-		if (StringUtils.isEmpty(errorCode)) {
-			return HttpStatus.BAD_REQUEST.value();
-		}
-
-		try {
-			return Integer.parseInt(errorCode);
-		} catch (NumberFormatException thatsOk) {
-			return HttpStatus.BAD_REQUEST.value();
-		}
 	}
 
 }
