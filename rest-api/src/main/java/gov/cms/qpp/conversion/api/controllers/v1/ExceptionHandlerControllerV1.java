@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -89,7 +90,7 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	ResponseEntity<String> handleGenericS3Exception(AmazonS3Exception exception) {
 		API_LOG.error("An s3 error occured", exception);
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+		return ResponseEntity.status(errorCode(exception.getErrorCode()))
 			.contentType(MediaType.TEXT_PLAIN)
 			.body(exception.getMessage());
 	}
@@ -116,6 +117,18 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
 		return new ResponseEntity<>(exception.getDetails(), httpHeaders, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	private int errorCode(String errorCode) {
+		if (StringUtils.isEmpty(errorCode)) {
+			return HttpStatus.BAD_REQUEST.value();
+		}
+
+		try {
+			return Integer.parseInt(errorCode);
+		} catch (NumberFormatException thatsOk) {
+			return HttpStatus.BAD_REQUEST.value();
+		}
 	}
 
 }
