@@ -104,7 +104,7 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 	@ExceptionHandler(AmazonServiceException.class)
 	@ResponseBody
 	ResponseEntity<String> handleAmazonException(AmazonServiceException exception) {
-		API_LOG.error("An S3 error occured", exception);
+		API_LOG.error("An AWS error occured", exception);
 
 		return ResponseEntity.status(exception.getStatusCode())
 			.contentType(MediaType.TEXT_PLAIN)
