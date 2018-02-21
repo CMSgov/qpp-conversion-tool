@@ -36,9 +36,9 @@ public final class Metadata {
 	private String conversionErrorLocator;
 	private String validationErrorLocator;
 	private String rawValidationErrorLocator;
-
 	private Instant createdDate;
 	private Boolean cpcProcessed;
+	private Boolean test;
 
 	/**
 	 * Constructs a new {@code Metadata} with the {@code createdDate} filled in upon construction.
@@ -253,6 +253,26 @@ public final class Metadata {
 	 */
 	public void setOverallStatus(Boolean overallStatus) {
 		this.overallStatus = overallStatus;
+	}
+
+	/**
+	 * Whether a submission was part of a test
+	 *
+	 * @return Test or valid
+	 */
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = "Test")
+	public Boolean getTest() {
+		return test;
+	}
+
+	/**
+	 * Sets whether a submission is part of a test
+	 *
+	 * @param test Whether a submission is part of a test
+	 */
+	public void setTest(Boolean test) {
+		this.test = test;
 	}
 
 	/**
