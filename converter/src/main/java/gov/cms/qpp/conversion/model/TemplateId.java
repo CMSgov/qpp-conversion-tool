@@ -120,6 +120,9 @@ public enum TemplateId {
 	}
 
 	/**
+	 * String representation of this template id
+	 *
+	 * @param context allows historical check
 	 * @return The complete template ID which includes a concatenation of the root followed by a colon followed by the
 	 * extension.
 	 */
@@ -132,6 +135,7 @@ public enum TemplateId {
 	 *
 	 * @param root The root part of the templateId.
 	 * @param extension The extension part of the templateId.
+	 * @param context allows historical check
 	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
 	 */
 	public static TemplateId getTemplateId(final String root, final String extension, final Context context) {
@@ -158,6 +162,7 @@ public enum TemplateId {
 	 *
 	 * @param root The root part of the templateId.
 	 * @param extension The extension part of the templateId.
+	 * @param context allows historical check
 	 * @return A string that concatenates the arguments the same way the enumeration does.
 	 */
 	static String generateTemplateIdString(String root, String extension, Context context) {

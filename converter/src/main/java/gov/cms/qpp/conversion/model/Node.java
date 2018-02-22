@@ -108,6 +108,7 @@ public class Node {
 	 *
 	 * @param name  String key to store value under
 	 * @param value String that is stored with this xml parsed Node
+	 * @param replace replace existing value
 	 */
 	public void putValue(String name, String value, boolean replace) {
 		if (getValue(name) == null || replace) {
@@ -153,6 +154,7 @@ public class Node {
 	/**
 	 * Returns a list of child Nodes for each template id specified
 	 *
+	 * @param templateIds we're looking for these.
 	 * @return List of matching child Nodes.
 	 */
 	public Stream<Node> getChildNodes(TemplateId... templateIds) {

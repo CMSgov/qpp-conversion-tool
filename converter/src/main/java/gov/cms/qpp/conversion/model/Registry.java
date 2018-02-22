@@ -102,7 +102,8 @@ public class Registry<R> {
 	 * Later iteration will examine the XPATH startsWith and return a most
 	 * appropriate handler
 	 *
-	 * @param registryKey String
+	 * @param registryKey template id key
+	 * @return value corresponding to registry key
 	 */
 	public R get(TemplateId registryKey) {
 		return instantiateHandler(findHandler(registryKey));
