@@ -29,9 +29,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @ExtendWith(MockitoExtension.class)
 class ExceptionHandlerControllerV1Test implements LoggerContract {
@@ -203,6 +208,20 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 		ResponseEntity<String> response = objectUnderTest.handleAmazonException(exception);
 
 		Truth.assertThat(response.getBody()).contains("some message");
+	}
+
+	@Test
+	void testHandleAmazonExceptionResponseBodyDoesInterception() throws Exception {
+		CpcFileControllerV1 mock = Mockito.mock(CpcFileControllerV1.class);
+		MockMvc mvc = MockMvcBuilders.standaloneSetup(mock)
+				.setControllerAdvice(new ExceptionHandlerControllerV1(auditService))
+				.build();
+		AmazonServiceException exception = new AmazonServiceException("some message");
+		exception.setStatusCode(404);
+		Mockito.when(mock.getUnprocessedCpcPlusFiles()).thenThrow(exception);
+		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/cpc/unprocessed-files")).andReturn();
+		Truth.assertThat(result.getResponse().getStatus()).isEqualTo(404);
+		//mvc.perform(RequestBuilder("/cpc/unprocessed-files"));
 	}
 
 	@Override
