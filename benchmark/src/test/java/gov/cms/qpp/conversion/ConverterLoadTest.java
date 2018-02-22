@@ -135,8 +135,8 @@ class ConverterLoadTest {
 			total.setAccessible(true);
 			Object totalObj = total.get(obj);
 			Method[] methods = totalObj.getClass().getDeclaredMethods();
-			for(Method method : methods) {
-				if (method.getName().startsWith("get")){
+			for (Method method : methods) {
+				if (method.getName().startsWith("get")) {
 					method.setAccessible(true);
 					values.put(method.getName().replace("get", ""),
 							method.invoke(totalObj).toString());

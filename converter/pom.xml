@@ -98,7 +98,6 @@
 	</build>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-suggest</artifactId>
