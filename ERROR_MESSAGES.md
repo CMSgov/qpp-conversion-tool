@@ -68,7 +68,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 61 : CT - A Performance Rate must contain a single Performance Rate UUID
 * 64 : CT - CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
 * 65 : CT - CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.
-* 66 : CT - Missing the Supplemental Code `(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`
+* 66 : CT - Missing the Supplemental data for code `(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`
 * 67 : CT - Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`
 * 68 : CT - Your CPC+ submission was made after the CPC+ eCQM submission deadline of `(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at `(CPC+ contact email)` for assistance.
 * 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123
