@@ -79,7 +79,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 *
 	 * @param supplementalDataNodes List of nodes to filter
 	 * @param supplementalData Current Supplemental Data to validate against
-	 * @return
+	 * @return first matching node
 	 */
 	private Node filterCorrectNode(Set<Node> supplementalDataNodes, SupplementalData supplementalData) {
 		return supplementalDataNodes.stream()
@@ -92,7 +92,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * Predicate for filtering the correct Supplemental Data node.
 	 *
 	 * @param code Required code to be validate against
-	 * @return
+	 * @return filtering predicate
 	 */
 	private Predicate<Node> filterDataBySupplementalCode(String code) {
 		return thisNode -> code.equalsIgnoreCase(thisNode.getValue(SUPPLEMENTAL_DATA_KEY));
@@ -135,7 +135,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 *
 	 * @param node parent node
 	 * @param thisNode current supplemental node to be validated
-	 * @return
+	 * @return initialized {@link LocalizedError}
 	 */
 	private LocalizedError makeIncorrectCountSizeLocalizedError(Node node, Node thisNode) {
 		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(

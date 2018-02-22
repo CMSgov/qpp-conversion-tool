@@ -30,6 +30,13 @@ public class EnvironmentHelper {
 		return System.getenv(variable);
 	}
 
+	/**
+	 * Get the value for a given property / environment variable. Substitute the given default if not found.
+	 *
+	 * @param variable key used to search for value
+	 * @param defaultValue substitute value if not found
+	 * @return value for the given variable key or substitute
+	 */
 	public static String getOrDefault(String variable, String defaultValue) {
 		String value = get(variable);
 		return value == null ? defaultValue : value;

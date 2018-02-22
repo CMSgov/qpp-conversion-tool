@@ -22,6 +22,7 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	/**
 	 * Validates a single Clinical Document Node.
 	 * Validates the following.
+	 * <p>
 	 * <ul>
 	 * <li>At least one child exists.</li>
 	 * <li>At least one ACI or IA or eCQM (MEASURE_SECTION_V2) section exists.</li>
