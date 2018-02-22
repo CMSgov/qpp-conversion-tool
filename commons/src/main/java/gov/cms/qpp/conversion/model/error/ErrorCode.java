@@ -104,7 +104,7 @@ public enum ErrorCode implements LocalizedError {
 			+ "`(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`", true),
 	IA_MEASURE_INCORRECT_CHILDREN_COUNT(50, "Measure performed must have exactly one child."),
 	IA_MEASURE_INVALID_TYPE(51, "A single measure performed value is required and must be either a Y or an N."),
-	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "Measure performed must have exactly one Aggregate Count."),
+	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "Measure data must have exactly one Aggregate Count."),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data must be a positive integer value"),
 	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION(54, "Must have at least one NPI/TIN combination"),
 	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "Must be 01/01/2017"),
