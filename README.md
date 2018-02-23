@@ -98,6 +98,8 @@ To enable the public submission validation API, modify the `.env` file with
 `VALIDATION_URL=https://qpp.cms.gov/api/submissions/public/validate-submission` and then
 [restart the ReST API endpoint](#starting-the-api-endpoint).
 
+Ensure the environment variable `CPC_END_DATE` is set to a valid date, in the format `YYYY-MM-DD`, or a validation error may be thrown.
+
 ### Command Line
 
 For the examples below, make sure you're in the `qpp-conversion-tool` directory.
