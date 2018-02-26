@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.encode;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -201,5 +203,30 @@ class ClinicalDocumentEncoderTest {
 
 		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
 				.isNull();
+	}
+
+	@Test
+	void testClinicalDocumentEncoderIgnoresInvalidMeasurementSection() {
+		Node reportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, clinicalDocumentNode);
+		reportingParamNode.putValue(ReportingParametersActEncoder.PERFORMANCE_START,"20170101");
+		reportingParamNode.putValue(ReportingParametersActEncoder.PERFORMANCE_END,"20171231");
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+		String expectedSection = "aci";
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+		List<LinkedHashMap<String, Object>> measurementSets = getMeasurementSets(clinicalDocMap);
+		String value = (String)measurementSets.get(0).get("category");
+
+		assertThat(measurementSets).hasSize(1);
+		assertThat(value).isEqualTo(expectedSection);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	private List<LinkedHashMap<String, Object>> getMeasurementSets(Map clinicalDocumentMap) {
+		return ((List<LinkedHashMap<String, Object>>)clinicalDocumentMap.get("measurementSets"));
 	}
 }
