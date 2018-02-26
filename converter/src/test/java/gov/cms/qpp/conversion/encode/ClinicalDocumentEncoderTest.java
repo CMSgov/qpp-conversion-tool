@@ -1,22 +1,20 @@
 package gov.cms.qpp.conversion.encode;
 
-import static com.google.common.truth.Truth.assertThat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.correlation.model.Template;
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
-import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
+import static com.google.common.truth.Truth.assertThat;
 
 class ClinicalDocumentEncoderTest {
 
@@ -149,17 +147,6 @@ class ClinicalDocumentEncoderTest {
 				.isEqualTo("123456789");
 		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
 				.isEqualTo("2567891421");
-	}
-
-	@Test
-	void testInternalEncodeNegative() throws EncodeException {
-		Assertions.assertThrows(EncodeException.class, () -> {
-			JsonWrapper testJsonWrapper = new JsonWrapper();
-
-			ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
-			clinicalDocumentNode.addChildNode(new Node());
-			clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
-		});
 	}
 
 	@Test

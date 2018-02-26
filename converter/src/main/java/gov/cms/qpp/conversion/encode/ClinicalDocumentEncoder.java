@@ -28,7 +28,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ClinicalDocumentEncoder.class);
 	private static final String MEASUREMENT_SETS = "measurementSets";
 	private static final Set<TemplateId> sections = Stream.of(
-		TemplateId.ACI_SECTION, TemplateId.MEASURE_SECTION_V2, TemplateId.IA_SECTION)
+		TemplateId.ACI_SECTION, TemplateId.MEASURE_SECTION_V2, TemplateId.IA_SECTION, TemplateId.DEFAULT)
 		.collect(Collectors.toSet());
 
 	public ClinicalDocumentEncoder(Context context) {
@@ -97,17 +97,12 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-			childWrapper = new JsonWrapper();
-			if (sections.contains(child.getType())) {
-				sectionEncoder = encoders.get(child.getType());
-				try {
-					sectionEncoder.encode(childWrapper, child);
-					measurementSetsWrapper.putObject(childWrapper);
-				}
-				catch (NullPointerException exc) {
-					String message = "No encoder for decoder : " + child.getType();
-					throw new EncodeException(message, exc);
-				}
+			TemplateId childType = child.getType();
+			if (sections.contains(childType)) {
+				childWrapper = new JsonWrapper();
+				sectionEncoder = encoders.get(childType);
+				sectionEncoder.encode(childWrapper, child);
+				measurementSetsWrapper.putObject(childWrapper);
 			}
 		}
 		return measurementSetsWrapper;
