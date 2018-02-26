@@ -163,6 +163,7 @@
 						<useFile>false</useFile>
 						<environmentVariables>
 							<USE_SSL>true</USE_SSL>
+							<TEST_KMS_KEY>arn:aws:kms:us-east-1:850094054452:key/8b19f7e9-b58c-4b7a-8162-e01809a8a2e9</TEST_KMS_KEY>
 						</environmentVariables>
 						<properties>
 							<excludeTags>performance</excludeTags>

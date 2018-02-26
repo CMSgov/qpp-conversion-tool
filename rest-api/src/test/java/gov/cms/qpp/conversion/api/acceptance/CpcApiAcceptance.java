@@ -10,6 +10,8 @@ import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.springframework.core.env.Environment;
 
 import gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory;
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
@@ -48,7 +50,7 @@ class CpcApiAcceptance {
 
 	@BeforeAll
 	static void setUp() {
-		String kmsKey = "arn:aws:kms:us-east-1:850094054452:key/8b19f7e9-b58c-4b7a-8162-e01809a8a2e9";
+		String kmsKey = System.getenv(Constants.TEST_KMS_KEY_ENV_VARIABLE);
 		mapper = DynamoDbConfigFactory
 			.createDynamoDbMapper(dynamoClient, DynamoDBMapperConfig.builder()
 				.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(AwsTestHelper.TEST_DYNAMO_TABLE_NAME))
