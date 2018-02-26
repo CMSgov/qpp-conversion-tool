@@ -28,10 +28,17 @@ class EnvironmentHelperTest implements LoggerContract {
 	@Test
 	void testIsPresentOnRandomString() {
 		String random = UUID.randomUUID().toString();
-		String message = String.format(EnvironmentHelper.NOT_FOUND, random);
 
 		assertWithMessage("Should not have an environment variable with randomized key")
 				.that(EnvironmentHelper.isPresent(random)).isFalse();
+	}
+
+	@Test
+	void testLogEntryForFailures() {
+		String random = UUID.randomUUID().toString();
+		String message = String.format(EnvironmentHelper.NOT_FOUND, random);
+		EnvironmentHelper.isPresent(random);
+
 		assertThat(getLogs()).contains(message);
 	}
 
