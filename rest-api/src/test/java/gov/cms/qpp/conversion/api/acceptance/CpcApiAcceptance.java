@@ -20,6 +20,7 @@ import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.DbServiceImpl;
+import gov.cms.qpp.conversion.util.EnvironmentHelper;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
 import gov.cms.qpp.test.helper.AwsTestHelper;
 
@@ -47,10 +48,12 @@ class CpcApiAcceptance {
 	private static AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().build();
 	private static DynamoDBMapper mapper;
 	private static AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
+	private static final String TEST_KMS_KEY_ENV_VARIABLE = "TEST_KMS_KEY";
+	private static final String DEFAULT_KMS_ARN = "arn:aws:kms:us-east-1:850094054452:key/8b19f7e9-b58c-4b7a-8162-e01809a8a2e9";
 
 	@BeforeAll
 	static void setUp() {
-		String kmsKey = System.getenv(Constants.TEST_KMS_KEY_ENV_VARIABLE);
+		String kmsKey = EnvironmentHelper.getOrDefault(TEST_KMS_KEY_ENV_VARIABLE, DEFAULT_KMS_ARN);
 		mapper = DynamoDbConfigFactory
 			.createDynamoDbMapper(dynamoClient, DynamoDBMapperConfig.builder()
 				.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(AwsTestHelper.TEST_DYNAMO_TABLE_NAME))
