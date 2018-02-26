@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,11 +57,12 @@ public enum QrdaScope {
 	}
 
 	public static QrdaScope getInstanceByName(String name) {
-		Optional<QrdaScope> found = Arrays.stream(QrdaScope.values())
-				.filter(inst -> inst.name().equals(name))
-				.findFirst();
-
-		return found.orElse(null);
+		Objects.requireNonNull(name, "name");
+		String match = name.trim().replace(' ', '_');
+		return Arrays.stream(QrdaScope.values())
+				.filter(value -> value.name().equalsIgnoreCase(match))
+				.findFirst()
+				.orElse(null);
 	}
 
 	public static Set<TemplateId> getTemplates(Collection<QrdaScope> scopes) {
@@ -74,8 +75,8 @@ public enum QrdaScope {
 				.collect(Collectors.toCollection(() -> EnumSet.noneOf(TemplateId.class)));
 	}
 
-	public static String[] getNames() {
-		return Arrays.stream(QrdaScope.class.getEnumConstants()).map(Enum::name).toArray(String[]::new);
+	public static Set<String> getNames() {
+		return Arrays.stream(QrdaScope.class.getEnumConstants()).map(Enum::name).collect(Collectors.toSet());
 	}
 
 	public Set<TemplateId> getValue() {
