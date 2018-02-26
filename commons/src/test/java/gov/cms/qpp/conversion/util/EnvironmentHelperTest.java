@@ -51,6 +51,26 @@ class EnvironmentHelperTest implements LoggerContract {
 				.that(EnvironmentHelper.isPresent(someKey)).isTrue();
 	}
 
+	@Test
+	void testIsPresentButEmpty() {
+		String someKey = UUID.randomUUID().toString();
+		String value = "";
+		System.setProperty(someKey, value);
+		assertWithMessage("%s should be set to %s", someKey, value)
+			.that(EnvironmentHelper.isPresent(someKey)).isFalse();
+	}
+
+	@Test
+	void testLogEntryForFailureEmpty() {
+		String someKey = UUID.randomUUID().toString();
+		String value = "";
+		System.setProperty(someKey, value);
+		String message = String.format(EnvironmentHelper.NOT_FOUND, someKey);
+		EnvironmentHelper.isPresent(someKey);
+
+		assertThat(getLogs()).contains(message);
+	}
+
 	@Override
 	public Class<?> getLoggerType() {
 		return EnvironmentHelper.class;
