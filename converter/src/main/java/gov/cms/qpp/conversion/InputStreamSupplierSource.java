@@ -23,7 +23,7 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 * Because the size is not specified, this constructor loads the {@link InputStream} into memory to calculate the size.
 	 *
 	 * @param name The name of the source.
-	 * @param supplier The supplier of an {@link InputStream}.
+	 * @param source an {@link InputStream}.
 	 */
 	public InputStreamSupplierSource(String name, InputStream source) {
 		super(name);

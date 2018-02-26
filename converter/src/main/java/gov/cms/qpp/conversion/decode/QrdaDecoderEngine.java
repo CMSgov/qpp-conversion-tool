@@ -37,6 +37,8 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 
 	/**
 	 * Initialize a QPP xml decoder
+	 *
+	 * @param context Establish context for decoder engine
 	 */
 	public QrdaDecoderEngine(Context context) {
 		Objects.requireNonNull(context, "converter");

@@ -29,7 +29,6 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	 * <li>TIN name is required</li>
 	 * <li>Performance year is required</li>
 	 * </ul>
-	 * </p>
 	 *
 	 * @param node Node that represents a Clinical Document.
 	 */

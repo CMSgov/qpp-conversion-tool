@@ -41,7 +41,7 @@ public class QrdaControllerV1 {
 	/**
 	 * init dependencies
 	 *
-	 * @param qrdaService {@link QrdaService} to perform QRDA -> QPP conversion
+	 * @param qrdaService {@link QrdaService} to perform QRDA to QPP conversion
 	 * @param validationService {@link ValidationService} to perform post conversion validation
 	 * @param auditService {@link AuditService} to persist audit information
 	 */
