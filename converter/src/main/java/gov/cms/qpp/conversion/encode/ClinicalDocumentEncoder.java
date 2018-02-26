@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
@@ -9,10 +10,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Encoder to serialize the root node of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
@@ -23,6 +27,9 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(ClinicalDocumentEncoder.class);
 	private static final String MEASUREMENT_SETS = "measurementSets";
+	private static final Set<TemplateId> sections = Stream.of(
+		TemplateId.ACI_SECTION, TemplateId.MEASURE_SECTION_V2, TemplateId.IA_SECTION)
+		.collect(Collectors.toSet());
 
 	public ClinicalDocumentEncoder(Context context) {
 		super(context);
@@ -91,13 +98,16 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 		for (Node child : childMapByTemplateId.values()) {
 			childWrapper = new JsonWrapper();
-			sectionEncoder = encoders.get(child.getType());
-			try {
-				sectionEncoder.encode(childWrapper, child);
-				measurementSetsWrapper.putObject(childWrapper);
-			} catch (NullPointerException exc) {
-				String message = "No encoder for decoder : " + child.getType();
-				throw new EncodeException(message, exc);
+			if (sections.contains(child.getType())) {
+				sectionEncoder = encoders.get(child.getType());
+				try {
+					sectionEncoder.encode(childWrapper, child);
+					measurementSetsWrapper.putObject(childWrapper);
+				}
+				catch (NullPointerException exc) {
+					String message = "No encoder for decoder : " + child.getType();
+					throw new EncodeException(message, exc);
+				}
 			}
 		}
 		return measurementSetsWrapper;
