@@ -99,7 +99,7 @@ public class JsonHelper {
 	 * @param valueType object type representation
 	 * @param <T> generic class type
 	 * @return Object of specified type
-	 * @throws JsonReadException if problems arise while attempting to parse the json input stream
+	 * @throws IOException if problems arise while attempting to parse the json file
 	 */
 	public static <T> T readJson(Path filePath, TypeReference<T> valueType) throws IOException {
 		return new ObjectMapper().readValue(filePath.toFile(), valueType);
