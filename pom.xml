@@ -164,6 +164,9 @@
 						<properties>
 							<excludeTags>performance</excludeTags>
 						</properties>
+						<forkCount>3</forkCount>
+						<reuseForks>true</reuseForks>
+						<argLine>-Xms3G -XX:MaxPermSize=3g</argLine>
 					</configuration>
 					<dependencies>
 						<dependency>
