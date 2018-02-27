@@ -26,7 +26,7 @@ public class MeasurePerformedDecoder extends QrdaDecoder {
 	 *
 	 * @param element XML parsed representation of measure performed
 	 * @param thisNode Object to hold the measure performed
-	 * @return
+	 * @return we're done with this branch of the tree
 	 */
 	@Override
 	protected DecodeResult decode(Element element, Node thisNode) {

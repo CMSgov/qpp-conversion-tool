@@ -268,6 +268,7 @@ class Checker {
 	 * Checks target node for the existence of a specified parent.
 	 *
 	 * @param code that identifies the error
+	 * @param type parent template id for which to search.
 	 * @return The checker, for chaining method calls.
 	 */
 	Checker hasParent(LocalizedError code, TemplateId type) {

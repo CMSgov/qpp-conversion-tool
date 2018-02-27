@@ -10,26 +10,36 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.test.MockitoExtension;
+import gov.cms.qpp.test.logging.LoggerContract;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+import com.amazonaws.AmazonServiceException;
+import com.google.common.truth.Truth;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 @ExtendWith(MockitoExtension.class)
-class ExceptionHandlerControllerV1Test {
+class ExceptionHandlerControllerV1Test implements LoggerContract {
 
 	private static Converter.ConversionReport report;
 	private static AllErrors allErrors = new AllErrors();
@@ -179,5 +189,43 @@ class ExceptionHandlerControllerV1Test {
 
 		ResponseEntity<String> responseEntity = objectUnderTest.handleInvalidFileTypeException(exception);
 		assertThat(responseEntity.getBody()).isEqualTo(CpcFileServiceImpl.FILE_NOT_FOUND);
+	}
+
+	@Test
+	void testHandleAmazonExceptionStatusCode() {
+		AmazonServiceException exception = new AmazonServiceException("some message");
+		exception.setStatusCode(404);
+
+		ResponseEntity<String> response = objectUnderTest.handleAmazonException(exception);
+
+		Truth.assertThat(response.getStatusCodeValue()).isEqualTo(404);
+	}
+
+	@Test
+	void testHandleAmazonExceptionResponseBody() {
+		AmazonServiceException exception = new AmazonServiceException("some message");
+
+		ResponseEntity<String> response = objectUnderTest.handleAmazonException(exception);
+
+		Truth.assertThat(response.getBody()).contains("some message");
+	}
+
+	@Test
+	void testHandleAmazonExceptionResponseBodyDoesInterception() throws Exception {
+		CpcFileControllerV1 mock = Mockito.mock(CpcFileControllerV1.class);
+		MockMvc mvc = MockMvcBuilders.standaloneSetup(mock)
+				.setControllerAdvice(new ExceptionHandlerControllerV1(auditService))
+				.build();
+		AmazonServiceException exception = new AmazonServiceException("some message");
+		exception.setStatusCode(404);
+		Mockito.when(mock.getUnprocessedCpcPlusFiles()).thenThrow(exception);
+		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/cpc/unprocessed-files")).andReturn();
+		Truth.assertThat(result.getResponse().getStatus()).isEqualTo(404);
+		//mvc.perform(RequestBuilder("/cpc/unprocessed-files"));
+	}
+
+	@Override
+	public Class<?> getLoggerType() {
+		return ExceptionHandlerControllerV1.class;
 	}
 }
