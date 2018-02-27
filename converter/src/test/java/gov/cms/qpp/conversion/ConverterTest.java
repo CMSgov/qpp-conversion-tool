@@ -11,7 +11,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import gov.cms.qpp.TestHelper;
-import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.ClinicalDocumentEncoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
