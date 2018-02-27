@@ -161,9 +161,6 @@
 					<configuration>
 						<trimStackTrace>false</trimStackTrace>
 						<useFile>false</useFile>
-						<environmentVariables>
-							<USE_SSL>true</USE_SSL>
-						</environmentVariables>
 						<properties>
 							<excludeTags>performance</excludeTags>
 						</properties>

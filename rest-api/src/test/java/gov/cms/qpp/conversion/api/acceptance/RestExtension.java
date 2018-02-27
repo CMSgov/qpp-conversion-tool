@@ -5,6 +5,8 @@ import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import gov.cms.qpp.test.helper.AwsTestHelper;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Optional;
@@ -19,7 +21,7 @@ public class RestExtension implements BeforeAllCallback, AfterAllCallback {
 	private static final String ROOT_PATH = "/";
 
 	@Override
-	public void beforeAll(ExtensionContext context) throws Exception {
+	public void beforeAll(ExtensionContext context) {
 		Optional<String> baseUri = getProperty(BASE_URI_PROPERTY);
 		Optional<String> port = getProperty(DEPLOY_PORT_PROPERTY);
 
@@ -31,8 +33,10 @@ public class RestExtension implements BeforeAllCallback, AfterAllCallback {
 	}
 
 	@Override
-	public void afterAll(ExtensionContext context) throws Exception {
+	public void afterAll(ExtensionContext context) {
 		RestAssured.reset();
+		AwsTestHelper.cleanDynamoDb();
+		AwsTestHelper.cleanS3();
 	}
 
 	private Optional<String> getProperty(String propertyName) {

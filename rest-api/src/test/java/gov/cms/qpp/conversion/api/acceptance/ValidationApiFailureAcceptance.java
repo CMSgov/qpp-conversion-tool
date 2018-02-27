@@ -3,12 +3,6 @@ package gov.cms.qpp.conversion.api.acceptance;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.xml.XmlException;
-import gov.cms.qpp.conversion.xml.XmlUtils;
-import gov.cms.qpp.test.annotations.AcceptanceTest;
-import gov.cms.qpp.test.annotations.ParameterizedAcceptanceTest;
 import io.restassured.response.Response;
 import org.jdom2.Attribute;
 import org.jdom2.filter.Filter;
@@ -19,6 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
+
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
+import gov.cms.qpp.test.annotations.AcceptanceTest;
+import gov.cms.qpp.test.annotations.ParameterizedAcceptanceTest;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -38,7 +39,6 @@ class ValidationApiFailureAcceptance {
 	private static final XPathFactory XPF = XPathFactory.instance();
 	private MustacheFactory mf = new DefaultMustacheFactory();
 	private Mustache fixture = mf.compile("valid-QRDA-III-latest-fixture.xml");
-
 
 	@AcceptanceTest
 	void testSuccess() {
