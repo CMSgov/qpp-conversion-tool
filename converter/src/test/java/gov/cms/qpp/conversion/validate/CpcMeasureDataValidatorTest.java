@@ -19,6 +19,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -39,112 +40,6 @@ class CpcMeasureDataValidatorTest {
 		assertThat(errors).isEmpty();
 	}
 
-	@DisplayName("Should fail on absent supplemental race data")
-	@ParameterizedTest(name = "{index} => Supplemental data=''{0}''")
-	@EnumSource(value = SupplementalData.class, mode = EnumSource.Mode.INCLUDE,
-		names = {"ALASKAN_NATIVE_AMERICAN_INDIAN", "ASIAN", "AFRICAN_AMERICAN",
-			"HAWAIIAN_PACIFIC_ISLANDER", "WHITE", "OTHER_RACE"})
-	void validateFailureSupplementalRaceDataTest(SupplementalData supplementalData) throws Exception {
-		String failureRaceFile = TestHelper.getFixture("failureSupplementalRaceDataFile.xml");
-		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failureRaceFile));
-		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
-		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
-		validator.internalValidateSingleNode(underTest);
-
-		LocalizedError expectedError = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE
-			.format(supplementalData.getType(), supplementalData, supplementalData.getCode(),
-				MEASURE_ID, SubPopulations.IPOP);
-
-		Set<Detail> errors = validator.getDetails();
-
-		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(expectedError);
-	}
-
-	@DisplayName("Should fail on absent supplemental ethnicity data")
-	@ParameterizedTest(name = "{index} => Supplemental data=''{0}''")
-	@EnumSource(value = SupplementalData.class, mode = EnumSource.Mode.INCLUDE,
-		names = {"HISPANIC_LATINO", "NOT_HISPANIC_LATINO"})
-	void validateFailureSupplementalEthnicityDataTest(SupplementalData supplementalData) throws Exception {
-		String failureEthnicityFile = TestHelper.getFixture("failureSupplementalEthnicityDataFile.xml");
-		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failureEthnicityFile));
-		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
-		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
-		validator.internalValidateSingleNode(underTest);
-
-		LocalizedError expectedError = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE
-			.format(supplementalData.getType(), supplementalData, supplementalData.getCode(),
-				MEASURE_ID, SubPopulations.IPOP);
-
-		Set<Detail> errors = validator.getDetails();
-
-		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(expectedError);
-	}
-
-	@DisplayName("Should fail on absent supplemental sex data")
-	@ParameterizedTest(name = "{index} => Supplemental data=''{0}''")
-	@EnumSource(value = SupplementalData.class, mode = EnumSource.Mode.INCLUDE,
-		names = {"MALE", "FEMALE"})
-	void validateFailureSupplementalSexDataTest(SupplementalData supplementalData) throws Exception {
-		String failureEthnicityFile = TestHelper.getFixture("failureSupplementalSexDataFile.xml");
-		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failureEthnicityFile));
-		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
-		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
-		validator.internalValidateSingleNode(underTest);
-
-		LocalizedError expectedError = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE
-			.format(supplementalData.getType(), supplementalData, supplementalData.getCode(),
-				MEASURE_ID, SubPopulations.IPOP);
-
-		Set<Detail> errors = validator.getDetails();
-
-		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(expectedError);
-	}
-
-	@DisplayName("Should fail on absent supplemental payer data")
-	@ParameterizedTest(name = "{index} => Supplemental data=''{0}''")
-	@EnumSource(value = SupplementalData.class, mode = EnumSource.Mode.INCLUDE,
-		names = {"MEDICAID", "PRIVATE_HEALTH_INSURANCE", "OTHER_PAYER", "MEDICARE"})
-	void validateFailureSupplementalPayerDataTest(SupplementalData supplementalData) throws Exception {
-		String failurePayerFile = TestHelper.getFixture("failureSupplementalPayerDataFile.xml");
-		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failurePayerFile));
-		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
-		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
-		validator.internalValidateSingleNode(underTest);
-
-		LocalizedError expectedError = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE
-			.format(supplementalData.getType(), supplementalData, supplementalData.getCode(),
-				MEASURE_ID, SubPopulations.IPOP);
-
-		Set<Detail> errors = validator.getDetails();
-
-		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(expectedError);
-	}
-
-	@DisplayName("Should fail when missing supplemental codes")
-	@ParameterizedTest(name = "{index} => Supplemental data=''{0}''")
-	@EnumSource(value = SupplementalData.class, mode = EnumSource.Mode.INCLUDE,
-		names = {"AFRICAN_AMERICAN", "MALE", "NOT_HISPANIC_LATINO", "MEDICARE"})
-	void validateFailureSupplementalRaceCodeMissing(SupplementalData supplementalData) throws Exception {
-		String failureSexFile = TestHelper.getFixture(MISSING_SUPPLEMENTAL_CODES_FILE);
-		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failureSexFile));
-		CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
-		Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
-		validator.internalValidateSingleNode(underTest);
-
-		LocalizedError expectedError = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE
-			.format(supplementalData.getType(), supplementalData, supplementalData.getCode(),
-				MEASURE_ID, SubPopulations.IPOP);
-
-		Set<Detail> errors = validator.getDetails();
-
-		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.contains(expectedError);
-	}
-
 	@Test
 	void validateFailureSupplementalDataMissingCountTest() throws Exception {
 		String failurePayerFile = TestHelper.getFixture("failureSupplementalDataCountFile.xml");
@@ -154,11 +49,75 @@ class CpcMeasureDataValidatorTest {
 		validator.internalValidateSingleNode(underTest);
 
 		LocalizedError expectedError = ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
-				 SupplementalData.MALE.getCode(), SubPopulations.IPOP, MEASURE_ID);
+			SupplementalData.MALE.getCode(), SubPopulations.IPOP, MEASURE_ID);
 
 		Set<Detail> errors = validator.getDetails();
 
 		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(expectedError);
+			.contains(expectedError);
+	}
+
+	@DisplayName("Should fail on absent supplemental race data")
+	@ParameterizedTest(name = "{index} => Supplemental data=''{0}''")
+	@EnumSource(value = SupplementalData.class, mode = EnumSource.Mode.INCLUDE,
+		names = {"ALASKAN_NATIVE_AMERICAN_INDIAN", "ASIAN", "AFRICAN_AMERICAN",
+			"HAWAIIAN_PACIFIC_ISLANDER", "WHITE", "OTHER_RACE"})
+	void validateFailureSupplementalRaceDataTest(SupplementalData supplementalData) {
+		supplementalDataCheck("failureSupplementalRaceDataFile.xml").accept(supplementalData);
+	}
+
+	@DisplayName("Should fail on absent supplemental ethnicity data")
+	@ParameterizedTest(name = "{index} => Supplemental data=''{0}''")
+	@EnumSource(value = SupplementalData.class, mode = EnumSource.Mode.INCLUDE,
+		names = {"HISPANIC_LATINO", "NOT_HISPANIC_LATINO"})
+	void validateFailureSupplementalEthnicityDataTest(SupplementalData supplementalData) {
+		supplementalDataCheck("failureSupplementalEthnicityDataFile.xml").accept(supplementalData);
+	}
+
+	@DisplayName("Should fail on absent supplemental sex data")
+	@ParameterizedTest(name = "{index} => Supplemental data=''{0}''")
+	@EnumSource(value = SupplementalData.class, mode = EnumSource.Mode.INCLUDE,
+		names = {"MALE", "FEMALE"})
+	void validateFailureSupplementalSexDataTest(SupplementalData supplementalData) {
+		supplementalDataCheck("failureSupplementalSexDataFile.xml").accept(supplementalData);
+	}
+
+	@DisplayName("Should fail on absent supplemental payer data")
+	@ParameterizedTest(name = "{index} => Supplemental data=''{0}''")
+	@EnumSource(value = SupplementalData.class, mode = EnumSource.Mode.INCLUDE,
+		names = {"MEDICAID", "PRIVATE_HEALTH_INSURANCE", "OTHER_PAYER", "MEDICARE"})
+	void validateFailureSupplementalPayerDataTest(SupplementalData supplementalData) {
+		supplementalDataCheck("failureSupplementalPayerDataFile.xml").accept(supplementalData);
+	}
+
+	@DisplayName("Should fail when missing supplemental codes")
+	@ParameterizedTest(name = "{index} => Supplemental data=''{0}''")
+	@EnumSource(value = SupplementalData.class, mode = EnumSource.Mode.INCLUDE,
+		names = {"AFRICAN_AMERICAN", "MALE", "NOT_HISPANIC_LATINO", "MEDICARE"})
+	void validateFailureSupplementalRaceCodeMissing(SupplementalData supplementalData) {
+		supplementalDataCheck(MISSING_SUPPLEMENTAL_CODES_FILE).accept(supplementalData);
+	}
+
+	private Consumer<SupplementalData> supplementalDataCheck(final String scenarioFile) {
+		return (supplementalData) -> {
+			try {
+				String failureSexFile = TestHelper.getFixture(scenarioFile);
+				Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failureSexFile));
+				CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
+				Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
+				validator.internalValidateSingleNode(underTest);
+
+				LocalizedError expectedError = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE
+					.format(supplementalData.getType(), supplementalData, supplementalData.getCode(),
+						MEASURE_ID, SubPopulations.IPOP);
+
+				Set<Detail> errors = validator.getDetails();
+
+				assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+					.contains(expectedError);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		};
 	}
 }
