@@ -212,6 +212,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	/**
 	 * Method template for measure validations.
 	 *
+	 * @param sub {@link SubPopulation} against which follow validations may be performed
 	 * @param check a property existence check
 	 * @param keys that identify measure
 	 * @return a callback / consumer that will perform a measure specific validation against a given

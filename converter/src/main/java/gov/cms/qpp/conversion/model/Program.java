@@ -31,8 +31,8 @@ public enum Program {
 	/**
 	 * Checks if a node is using the CPC program
 	 *
-	 * @param node
-	 * @return
+	 * @param node to check
+	 * @return result of check
 	 */
 	public static boolean isCpc(Node node) {
 		return extractProgram(node) == Program.CPC;
@@ -41,8 +41,8 @@ public enum Program {
 	/**
 	 * Extracts a program type from a node
 	 *
-	 * @param node
-	 * @return
+	 * @param node to interrogate
+	 * @return program with which node is affiliated
 	 */
 	public static Program extractProgram(Node node) {
 		return Program.getInstance(node.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME));

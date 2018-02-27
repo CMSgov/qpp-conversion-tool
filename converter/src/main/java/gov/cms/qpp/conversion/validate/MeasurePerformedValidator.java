@@ -14,7 +14,7 @@ public class MeasurePerformedValidator extends NodeValidator {
 	private static final String[] BOOLEAN_VALUES = {"Y", "N"};
 
 	/**
-	 * An string value named "measurePerformed" was decoded from the source element<
+	 * An string value named "measurePerformed" was decoded from the source element
 	 * The string value is either a Y or an N
 	 *
 	 * @param node Node that represents a Measure Performed.

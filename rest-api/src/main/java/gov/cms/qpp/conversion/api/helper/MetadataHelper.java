@@ -30,9 +30,9 @@ public class MetadataHelper {
 	 * Generates a {@link Metadata} object from a {@link Node}.
 	 * This {@link Metadata} does not contain data not found in a standard {@link Node}.
 	 *
-	 * @param node
-	 * @param outcome
-	 * @return
+	 * @param node from which to extract metadata
+	 * @param outcome to update with metadata
+	 * @return metadata
 	 */
 	public static Metadata generateMetadata(Node node, Outcome outcome) {
 		Objects.requireNonNull(outcome, "outcome");
@@ -55,6 +55,7 @@ public class MetadataHelper {
 	/**
 	 * Retrieves the random hash for the Cpc field if this is a CPC+ conversion.
 	 *
+	 * @param node to ensure it's a CPC+ node
 	 * @return Cpc field randomly hashed or null if this isn't a CPC+ conversion
 	 */
 	private static String deriveCpcHash(Node node) {
@@ -70,6 +71,7 @@ public class MetadataHelper {
 	/**
 	 * Retrieves the APM Entity Id from the given node
 	 *
+	 * @param node to interrogate
 	 * @return Apm Entity ID value
 	 */
 	private static String findApm(Node node) {
@@ -79,6 +81,7 @@ public class MetadataHelper {
 	/**
 	 * Retrieves the Taxpayer Identification Number from the given node
 	 *
+	 * @param node to interrogate
 	 * @return TIN value
 	 */
 	private static String findTin(Node node) {
@@ -89,6 +92,7 @@ public class MetadataHelper {
 	/**
 	 * Retrieves the National Provider Identifier from the given node
 	 *
+	 * @param node to interrogate
 	 * @return NPI value
 	 */
 	private static String findNpi(Node node) {
@@ -99,6 +103,7 @@ public class MetadataHelper {
 	/**
 	 * Retrieves the random hash for CPC Field
 	 *
+	 * @param node to interrogate
 	 * @return Cpc field randomly hashed
 	 */
 	private static boolean isCpc(Node node) {
@@ -115,10 +120,10 @@ public class MetadataHelper {
 	/**
 	 * Recursively searches a node for a value.
 	 *
-	 * @param node
-	 * @param key
-	 * @param possibleLocations
-	 * @return
+	 * @param node to interrogate
+	 * @param key value name
+	 * @param possibleLocations where the value might reside
+	 * @return the found value or null
 	 */
 	private static String findValue(Node node, String key, TemplateId... possibleLocations) {
 		String value = node.getValue(key);

@@ -120,8 +120,8 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * Creates a {@link Predicate} which takes a SubPopulation and tests whether
 	 * the SubPopulation's Uuid is equal to the given unique id
 	 *
-	 * @param uuid
-	 * @return
+	 * @param uuid value that forms basis for finder comparison
+	 * @return finder predicate
 	 */
 	private Predicate<SubPopulation> makePerformanceRateUuidFinder(String uuid) {
 		return subPopulation -> uuid.equalsIgnoreCase(subPopulation.getNumeratorUuid());

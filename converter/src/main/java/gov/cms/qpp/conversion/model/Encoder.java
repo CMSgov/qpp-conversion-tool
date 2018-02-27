@@ -15,10 +15,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Encoder {
 
 	/**
-	 * The param(s) is/are the string pattern(s) that the defined handler will
-	 * act.
+	 * The template id with which this encoder is associated.
 	 *
-	 * @return
+	 * @return the template id
 	 */
 	TemplateId value();
 

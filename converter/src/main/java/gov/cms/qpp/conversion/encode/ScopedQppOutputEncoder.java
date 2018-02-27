@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
@@ -19,8 +18,7 @@ public class ScopedQppOutputEncoder extends QppOutputEncoder {
 	}
 
 	/**
-	 * Encode the decoded node. If a {@link TemplateId#PLACEHOLDER} node is detected then assume
-	 * the {@link Converter#scope} has been set to a level lower than {@link QrdaScope#CLINICAL_DOCUMENT}.
+	 * Encode the decoded node.
 	 *
 	 * @param wrapper object to encode into
 	 * @param node object to encode
