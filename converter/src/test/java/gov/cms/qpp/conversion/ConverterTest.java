@@ -11,7 +11,9 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import gov.cms.qpp.TestHelper;
+import gov.cms.qpp.conversion.correlation.model.Template;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
+import gov.cms.qpp.conversion.encode.ClinicalDocumentEncoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -46,7 +48,6 @@ import java.util.Set;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -194,11 +195,15 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testDefaults() {
+	public void testDefaults() throws NoSuchFieldException, IllegalAccessException {
 		Context context = new Context();
 		context.setDoValidation(false);
 		TestHelper.mockDecoder(context, JennyDecoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
 		TestHelper.mockEncoder(context, Jenncoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
+		Field sections = ClinicalDocumentEncoder.class.getDeclaredField("SECTIONS");
+		sections.setAccessible(true);
+		Set<TemplateId> testSections = (Set<TemplateId>)sections.get(ClinicalDocumentEncoder.class);
+		testSections.add(TemplateId.DEFAULT);
 
 		Converter converter = new Converter(new PathSource(Paths.get("src/test/resources/converter/defaultedNode.xml")), context);
 		JsonWrapper qpp = converter.transform();
