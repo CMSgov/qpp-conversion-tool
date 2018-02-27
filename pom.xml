@@ -166,7 +166,7 @@
 						</properties>
 						<forkCount>3</forkCount>
 						<reuseForks>true</reuseForks>
-						<argLine>-Xms6G -Xmx6G</argLine>
+						<argLine>-Xms7G -XX:MaxPermSize=7g</argLine>
 					</configuration>
 					<dependencies>
 						<dependency>
