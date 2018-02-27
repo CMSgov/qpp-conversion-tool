@@ -101,8 +101,8 @@ class CpcMeasureDataValidatorTest {
 	private Consumer<SupplementalData> supplementalDataCheck(final String scenarioFile) {
 		return (supplementalData) -> {
 			try {
-				String failureSexFile = TestHelper.getFixture(scenarioFile);
-				Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failureSexFile));
+				String failureFile = TestHelper.getFixture(scenarioFile);
+				Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(failureFile));
 				CpcMeasureDataValidator validator = new CpcMeasureDataValidator();
 				Node underTest = placeholder.findFirstNode(TemplateId.MEASURE_DATA_CMS_V2);
 				validator.internalValidateSingleNode(underTest);
