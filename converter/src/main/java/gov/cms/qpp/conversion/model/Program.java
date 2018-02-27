@@ -72,4 +72,8 @@ public enum Program {
 			.flatMap(program -> program.aliases.stream())
 			.collect(Collectors.toCollection(HashSet::new));
 	}
+
+	Set<String> getAliases() {
+		return aliases;
+	}
 }
