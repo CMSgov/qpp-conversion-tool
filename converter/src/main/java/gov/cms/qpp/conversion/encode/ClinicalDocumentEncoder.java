@@ -98,10 +98,15 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		for (Node child : childMapByTemplateId.values()) {
 			TemplateId childType = child.getType();
 			if (SECTIONS.contains(childType)) {
-				childWrapper = new JsonWrapper();
-				sectionEncoder = encoders.get(childType);
-				sectionEncoder.encode(childWrapper, child);
-				measurementSetsWrapper.putObject(childWrapper);
+				try {
+					childWrapper = new JsonWrapper();
+					sectionEncoder = encoders.get(childType);
+					sectionEncoder.encode(childWrapper, child);
+					measurementSetsWrapper.putObject(childWrapper);
+				} catch (NullPointerException exc) {
+					String message = "An unexpected error occured for " + child.getType();
+					throw new EncodeException(message, exc);
+				}
 			}
 		}
 		return measurementSetsWrapper;
