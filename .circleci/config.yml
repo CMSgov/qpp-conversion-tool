@@ -2,6 +2,7 @@ version: 2
 container_config: &container_config
   docker:
     - image: circleci/openjdk:8-jdk-browsers
+      cmd: ["/bin/bash"]
   working_directory: /home/circleci/qpp-conversion-tool
 
 jobs:
@@ -17,7 +18,7 @@ jobs:
   build:
     <<: *container_config
     environment:
-      MAVEN_OPTS: "-Xms6G -Xmx6G"
+      MAVEN_OPTS: "-Xms5G -Xmx5G"
     resource_class: large
     steps:
       - attach_workspace:
