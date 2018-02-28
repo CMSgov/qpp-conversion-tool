@@ -173,7 +173,6 @@ public class Converter {
 		return new ConversionReport();
 	}
 
-
 	/**
 	 * Report on the stat of a conversion.
 	 */
@@ -301,6 +300,15 @@ public class Converter {
 			String raw = (qppValidationDetails != null) ? qppValidationDetails : "";
 			byte[] rawValidationErrorBytes = raw.getBytes(StandardCharsets.UTF_8);
 			return new InputStreamSupplierSource("RawValidationErrors", new ByteArrayInputStream(rawValidationErrorBytes));
+		}
+
+		/**
+		 * Gets the test status of the conversion
+		 *
+		 * @return True if the conversion was sourced from test data
+		 */
+		public boolean isTest() {
+			return source.isTest();
 		}
 	}
 }

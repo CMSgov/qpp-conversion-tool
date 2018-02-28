@@ -1,19 +1,6 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.api.model.Constants;
@@ -24,6 +11,20 @@ import gov.cms.qpp.conversion.api.services.ValidationService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Controller to handle uploading files for QRDA-III Conversion
@@ -59,12 +60,13 @@ public class QrdaControllerV1 {
 	 * @return Valid json or error json content
 	 */
 	@PostMapping(headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) {
+	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file,
+			@RequestHeader(required = false, name = "Test") boolean test) {
 		String originalFilename = file.getOriginalFilename();
 		API_LOG.info("Conversion request received");
 
 		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
-				new InputStreamSupplierSource(originalFilename, inputStream(file)));
+				new InputStreamSupplierSource(originalFilename, inputStream(file), test));
 
 		validationService.validateQpp(conversionReport);
 

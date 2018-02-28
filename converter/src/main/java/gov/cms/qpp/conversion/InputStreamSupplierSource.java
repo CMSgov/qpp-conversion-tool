@@ -17,6 +17,8 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 */
 	private final MeasuredInputStreamSupplier stream;
 
+	private final boolean test;
+
 	/**
 	 * Creates a new Source with the given name and {@link Supplier}.
 	 *
@@ -26,11 +28,25 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 * @param source an {@link InputStream}.
 	 */
 	public InputStreamSupplierSource(String name, InputStream source) {
+		this(name, source, false);
+	}
+
+	/**
+	 * Creates a new Source with the given name and {@link Supplier}.
+	 *
+	 * Because the size is not specified, this constructor loads the {@link InputStream} into memory to calculate the size.
+	 *
+	 * @param name The name of the source.
+	 * @param source an {@link InputStream}.
+	 * @param test Whether the source is a test
+	 */
+	public InputStreamSupplierSource(String name, InputStream source, boolean test) {
 		super(name);
 
 		Objects.requireNonNull(source, "source");
 
 		this.stream = MeasuredInputStreamSupplier.terminallyTransformInputStream(source);
+		this.test = test;
 	}
 
 	/**
@@ -51,5 +67,13 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	@Override
 	public long getSize() {
 		return stream.size();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isTest() {
+		return test;
 	}
 }

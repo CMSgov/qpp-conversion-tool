@@ -27,4 +27,11 @@ public interface Source {
 	 * @return The source's size.
 	 */
 	long getSize();
+
+	/**
+	 * Whether or not the source is test data
+	 *
+	 * @return The test status of the source
+	 */
+	boolean isTest();
 }
