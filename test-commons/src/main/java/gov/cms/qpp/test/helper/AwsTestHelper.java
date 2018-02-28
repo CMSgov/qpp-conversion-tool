@@ -19,7 +19,7 @@ import java.util.Map;
  * A helper class for aws testing
  */
 public class AwsTestHelper {
-	private static AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().build();
+	private static AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	private static AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	public static final String TEST_DYNAMO_TABLE_NAME = "qpp-qrda3converter-acceptance-test";
 	private static final String TEST_S3_BUCKET_NAME = "qpp-qrda3converter-acceptance-test";

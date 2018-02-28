@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.acceptance;
 
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.AttributeEncryptor;
@@ -10,8 +11,6 @@ import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.springframework.core.env.Environment;
 
 import gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory;
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
@@ -45,9 +44,9 @@ class CpcApiAcceptance {
 		+ "/*[local-name() = 'intendedRecipient' and namespace-uri() = 'urn:hl7-org:v3']"
 		+ "/*[local-name() = 'id' and namespace-uri() = 'urn:hl7-org:v3'][@root='2.16.840.1.113883.3.249.7']/@extension";
 	private static final String CPC_PLUS_PROGRAM_NAME = "CPCPLUS";
-	private static AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().build();
+	private static AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	private static DynamoDBMapper mapper;
-	private static AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
+	private static AWSKMS kmsClient = AWSKMSClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	private static final String TEST_KMS_KEY_ENV_VARIABLE = "TEST_KMS_KEY";
 	private static final String DEFAULT_KMS_ARN = "arn:aws:kms:us-east-1:850094054452:key/8b19f7e9-b58c-4b7a-8162-e01809a8a2e9";
 
