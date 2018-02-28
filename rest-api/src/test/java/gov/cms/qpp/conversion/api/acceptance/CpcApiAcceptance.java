@@ -10,8 +10,6 @@ import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.springframework.core.env.Environment;
 
 import gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory;
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
