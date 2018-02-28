@@ -22,7 +22,7 @@ public class IaSectionDecoder extends QrdaDecoder {
 	 * This will update the thisNode value
 	 * @param element Top element in the XML document
 	 * @param thisNode Node
-	 * @return
+	 * @return carry on
 	 */
 	@Override
 	protected DecodeResult decode(Element element, Node thisNode) {

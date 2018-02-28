@@ -88,7 +88,7 @@ public class AuditServiceImpl implements AuditService {
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(validationErrorSource).thenAccept(metadata::setConversionErrorLocator),
 				storeContent(qrdaSource).thenAccept(metadata::setSubmissionLocator));
-		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
+		return allWrites.whenComplete((ignore, thrown) -> persist(metadata, thrown));
 	}
 
 	/**

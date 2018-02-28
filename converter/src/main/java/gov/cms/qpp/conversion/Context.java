@@ -126,6 +126,8 @@ public class Context {
 	/**
 	 * Looks up or creates a new {@link Registry} for the given annotation type under this context
 	 *
+	 * @param <A> Marker annotation that helps identify registry types
+	 * @param <R> Types that comprise the registry
 	 * @param annotation The annotation type to use for class path searching in the {@link Registry}
 	 * @return The existing or new {@link Registry}
 	 */

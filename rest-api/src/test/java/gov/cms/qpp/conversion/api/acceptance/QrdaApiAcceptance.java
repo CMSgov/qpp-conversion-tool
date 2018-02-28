@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import gov.cms.qpp.test.annotations.AcceptanceTest;
+import gov.cms.qpp.test.helper.AwsTestHelper;
 
 import java.nio.file.Paths;
 
@@ -25,11 +26,10 @@ class QrdaApiAcceptance {
 	private static final String QRDA_API_PATH = "/";
 	private static final String MULTIPART_FORM_DATA_KEY = "file";
 	private static final String TEST_S3_BUCKET_NAME = "qpp-qrda3converter-acceptance-test";
-	private static final String TEST_DYNAMO_TABLE_NAME = "qpp-qrda3converter-acceptance-test";
 
 	private AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 
-	private AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+	private static AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 
 	private long beforeObjectCount;
 	private long beforeDynamoCount;
@@ -103,11 +103,11 @@ class QrdaApiAcceptance {
 
 	private long getDynamoItemCount() {
 
-		ScanResult scanResult = dynamoClient.scan(TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
+		ScanResult scanResult = dynamoClient.scan(AwsTestHelper.TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
 		long itemCount = scanResult.getCount();
 
 		while(scanResult.getLastEvaluatedKey() != null && !scanResult.getLastEvaluatedKey().isEmpty()) {
-			scanResult = dynamoClient.scan(new ScanRequest().withTableName(TEST_DYNAMO_TABLE_NAME).withAttributesToGet("Uuid").withExclusiveStartKey(scanResult.getLastEvaluatedKey()));
+			scanResult = dynamoClient.scan(new ScanRequest().withTableName(AwsTestHelper.TEST_DYNAMO_TABLE_NAME).withAttributesToGet("Uuid").withExclusiveStartKey(scanResult.getLastEvaluatedKey()));
 			itemCount += scanResult.getCount();
 		}
 

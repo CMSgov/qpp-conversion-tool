@@ -3,9 +3,6 @@ package gov.cms.qpp.conversion.api.services;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.test.MockitoExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +10,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
+
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.test.MockitoExtension;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -90,6 +91,7 @@ class DbServiceImplTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	void testGetUnprocessedCpcPlusMetaData() {
 		int itemsPerPartition = 2;
 
@@ -99,7 +101,7 @@ class DbServiceImplTest {
 
 		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData();
 
-		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).queryPage(any(Class.class), any(DynamoDBQueryExpression.class));
+		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class));
 		assertThat(metaDataList).hasSize(itemsPerPartition * Constants.CPC_DYNAMO_PARTITIONS);
 	}
 
@@ -111,7 +113,7 @@ class DbServiceImplTest {
 
 		Metadata fakeMetadata = underTest.getMetadataById(fakeUuid);
 
-		verify(dbMapper, times(1)).load(any(Class.class), anyString());
+		verify(dbMapper, times(1)).load(eq(Metadata.class), anyString());
 
 		assertThat(fakeMetadata).isNotNull();
 	}
@@ -125,4 +127,3 @@ class DbServiceImplTest {
 		return writeResult.join();
 	}
 }
-

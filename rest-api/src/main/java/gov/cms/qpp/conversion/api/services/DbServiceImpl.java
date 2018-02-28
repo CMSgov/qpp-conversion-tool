@@ -29,6 +29,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(DbServiceImpl.class);
 	private static final int LIMIT = 3;
+	public static final String START_OF_UNALLOWED_CONVERSION_TIME = "2018-01-02T04:59:59.999Z";
 
 	@Inject
 	private DynamoDBMapper mapper;
@@ -47,7 +48,6 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 */
 	@Override
 	public CompletableFuture<Metadata> write(Metadata meta) {
-
 		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 
 		if (noAudit != null && !noAudit.isEmpty()) {
@@ -75,12 +75,15 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			Map<String, AttributeValue> valueMap = new HashMap<>();
 			valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
 			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
+			valueMap.put(":createDate", new AttributeValue().withS(START_OF_UNALLOWED_CONVERSION_TIME));
+
 
 			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 				.withIndexName("Cpc-CpcProcessed_CreateDate-index")
 				.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with("
 						+ Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
 				.withExpressionAttributeValues(valueMap)
+				.withFilterExpression(Constants.DYNAMO_CREATE_DATE_ATTRIBUTE + " > :createDate")
 				.withConsistentRead(false)
 				.withLimit(LIMIT);
 

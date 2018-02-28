@@ -39,6 +39,8 @@ public class PathCorrelator {
 
 	/**
 	 * Initializes correlations between json paths and xpaths
+	 *
+	 * @return a holder for path correlations
 	 */
 	private static PathCorrelation loadPathCorrelation() {
 		PathCorrelation pathCorrelation;
