@@ -124,8 +124,8 @@ public enum ErrorCode implements LocalizedError {
 			+ "of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`", true),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of "
 		+ "the following measures: `(Listing of all CPC+ measure ids)`.", true),
-	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the Supplemental data for code `(Supplemental Data Code)` for eCQM measure "
-		+ "`(Measure Id)`'s Sub-population `(Sub Population)`", true),
+	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code "
+		+ "`(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`", true),
 	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
 		+ "on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`", true),
 	CPC_PLUS_SUBMISSION_ENDED(68, "Your CPC+ submission was made after the CPC+ eCQM submission deadline of "
