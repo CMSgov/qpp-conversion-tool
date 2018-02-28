@@ -34,13 +34,17 @@ public class FormattedErrorCode implements LocalizedError {
 
 	@Override
 	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
 		if (o == null) {
 			return false;
 		}
 
 		if (o.getClass() == getClass()) {
 			FormattedErrorCode that = (FormattedErrorCode) o;
-			return that.getErrorCode() == errorCode && Objects.equals(that.message, message);
+			return that.errorCode == errorCode && Objects.equals(that.message, message);
 		}
 
 		return false;
