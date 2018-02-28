@@ -1,12 +1,9 @@
 package gov.cms.qpp.conversion.api.acceptance;
 
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,10 +23,6 @@ class QrdaApiAcceptance {
 	private static final String QRDA_API_PATH = "/";
 	private static final String MULTIPART_FORM_DATA_KEY = "file";
 	private static final String TEST_S3_BUCKET_NAME = "qpp-qrda3converter-acceptance-test";
-
-	private AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
-
-	private static AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 
 	private long beforeObjectCount;
 	private long beforeDynamoCount;
@@ -89,6 +82,7 @@ class QrdaApiAcceptance {
 	}
 
 	private long getS3ObjectCount() {
+		AmazonS3 s3Client = AwsTestHelper.getS3Client();
 
 		ObjectListing objectListing = s3Client.listObjects(TEST_S3_BUCKET_NAME);
 		long objectCount = objectListing.getObjectSummaries().size();
@@ -102,6 +96,7 @@ class QrdaApiAcceptance {
 	}
 
 	private long getDynamoItemCount() {
+		AmazonDynamoDB dynamoClient = AwsTestHelper.getDynamoClient();
 
 		ScanResult scanResult = dynamoClient.scan(AwsTestHelper.TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
 		long itemCount = scanResult.getCount();
