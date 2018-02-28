@@ -118,7 +118,8 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 */
 	private void addSupplementalValidationError(Node node, SupplementalData supplementalData, String measureId) {
 		LocalizedError error =
-				ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(supplementalData.getCode(),
+				ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(
+					supplementalData.getType(), supplementalData, supplementalData.getCode(),
 						measureId, node.getValue(MeasureDataDecoder.MEASURE_TYPE));
 		addValidationError(Detail.forErrorAndNode(error, node));
 	}
