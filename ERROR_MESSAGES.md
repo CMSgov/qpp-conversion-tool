@@ -13,15 +13,15 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 8 : CT - A single aggregate count value is required
 * 9 : CT - Aggregate count value must be an integer
 * 10 : CT - ACI Measure Performed RnR's Measure Performed is required
-* 11 : CT - ACI Measure Performed RnR's Measure Performed can only be present once
+* 11 : CT - The ACI Measure Performed RnR requires exactly one Measure Performed
 * 12 : CT - ACI Measure Performed RnR's requires a single Measure ID
 * 13 : CT - Denominator count must be less than or equal to Initial Population count for an eCQM that is proportion measure
 * 14 : CT - The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
 * 15 : CT - ACI Numerator Denominator Node should have an ACI Section Node as a parent
 * 16 : CT - ACI Numerator Denominator Node does not contain a measure name ID
 * 17 : CT - ACI Numerator Denominator Node does not have any child Nodes
-* 18 : CT - This ACI Numerator Denominator Node does not contain a Denominator Node child
-* 19 : CT - This ACI Numerator Denominator Node does not contain a Numerator Node child
+* 18 : CT - This ACI Numerator Denominator Node does requies exactly one Denominator Node child
+* 19 : CT - This ACI Numerator Denominator Node requires exactly one Numerator Node child
 * 20 : CT - This ACI Numerator Denominator Node contains too many Denominator Node children
 * 21 : CT - This ACI Numerator Denominator Node contains too many Numerator Node children
 * 22 : CT - The ACI Section must have one Reporting Parameter ACT
@@ -43,8 +43,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 36 : CT - Must contain one Measure (eCQM) section
 * 37 : CT - Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
 * 38 : CT - This `(Numerator or Denominator)` Node does not have any child Nodes
-* 39 : CT - This `(Numerator or Denominator)` Node does not have an Aggregate Count Node
-* 40 : CT - This `(Numerator or Denominator)` Node has too many child Nodes
+* 39 : CT - This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node
 * 41 : CT - This `(Numerator or Denominator)` Node Aggregate Value is not an integer
 * 42 : CT - This `(Numerator or Denominator)` Node Aggregate Value has an invalid value
 * 43 : CT - The IA Section must have at least one IA Measure
