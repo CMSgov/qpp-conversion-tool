@@ -23,52 +23,52 @@ import java.util.Map;
 public class AwsTestHelper {
 	public static final String TEST_DYNAMO_TABLE_NAME = "qpp-qrda3converter-acceptance-test";
 
-	private static AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
-	private static AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
-	private static AWSKMS kmsClient = AWSKMSClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+	private static final  AmazonDynamoDB DYNAMO_CLIENT = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+	private static final AmazonS3 S3_CLIENT = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+	private static final AWSKMS KMS_CLIENT = AWSKMSClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 	private static final String TEST_S3_BUCKET_NAME = "qpp-qrda3converter-acceptance-test";
 
 	public static AmazonDynamoDB getDynamoClient() {
-		return dynamoClient;
+		return DYNAMO_CLIENT;
 	}
 
 	public static AmazonS3 getS3Client() {
-		return s3Client;
+		return S3_CLIENT;
 	}
 
 	public static AWSKMS getKmsClient() {
-		return kmsClient;
+		return KMS_CLIENT;
 	}
 
 	/**
 	 * Cleans dynamodb items until via batch scan and delete for performance purposes
 	 */
 	public static void cleanDynamoDb() {
-		ScanResult scanResult = dynamoClient.scan(TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
+		ScanResult scanResult = DYNAMO_CLIENT.scan(TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
 		List<Map<String, AttributeValue>> metadataList = scanResult.getItems();
 		while (scanResult.getLastEvaluatedKey() != null && !scanResult.getLastEvaluatedKey().isEmpty()) {
-			scanResult = dynamoClient.scan(new ScanRequest().withTableName(TEST_DYNAMO_TABLE_NAME).withAttributesToGet("Uuid")
+			scanResult = DYNAMO_CLIENT.scan(new ScanRequest().withTableName(TEST_DYNAMO_TABLE_NAME).withAttributesToGet("Uuid")
 				.withExclusiveStartKey(scanResult.getLastEvaluatedKey()));
 			metadataList.addAll(scanResult.getItems());
 		}
 
-		metadataList.forEach(map -> dynamoClient.deleteItem(TEST_DYNAMO_TABLE_NAME, map));
+		metadataList.forEach(map -> DYNAMO_CLIENT.deleteItem(TEST_DYNAMO_TABLE_NAME, map));
 	}
 
 	/**
 	 * Cleans up the test s3 bucket by batch for performance purposes
 	 */
 	public static void cleanS3() {
-		ObjectListing objectListing = s3Client.listObjects(TEST_S3_BUCKET_NAME);
+		ObjectListing objectListing = S3_CLIENT.listObjects(TEST_S3_BUCKET_NAME);
 		boolean firstTimeThrough = true;
 
 		do {
 			if (!firstTimeThrough) {
-				objectListing = s3Client.listNextBatchOfObjects(objectListing);
+				objectListing = S3_CLIENT.listNextBatchOfObjects(objectListing);
 			}
 
 			for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-				s3Client.deleteObject(TEST_S3_BUCKET_NAME, objectSummary.getKey());
+				S3_CLIENT.deleteObject(TEST_S3_BUCKET_NAME, objectSummary.getKey());
 			}
 
 
