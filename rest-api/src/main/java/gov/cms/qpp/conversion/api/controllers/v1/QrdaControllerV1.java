@@ -63,7 +63,12 @@ public class QrdaControllerV1 {
 	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file,
 			@RequestHeader(required = false, name = "Test") boolean test) {
 		String originalFilename = file.getOriginalFilename();
-		API_LOG.info("Conversion request received");
+
+		if (test) {
+			API_LOG.info("Test conversion request received");
+		} else {
+			API_LOG.info("Conversion request received");
+		}
 
 		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
 				new InputStreamSupplierSource(originalFilename, inputStream(file), test));
