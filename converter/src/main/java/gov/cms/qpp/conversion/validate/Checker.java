@@ -332,6 +332,24 @@ class Checker {
 	}
 
 	/**
+	 * Verifies that the target node has the exact amount total sum of all the {@link TemplateId}s types
+	 *
+	 * @param code that identifies the error
+	 * @param exactCount exact number required children of specified type(s)
+	 * @param types types of children to filter by
+	 * @return The checker, for chaining method calls.
+	 */
+	public Checker childExact(LocalizedError code, int exactCount, TemplateId... types) {
+		if (!shouldShortcut()) {
+			int count = tallyNodes(types);
+			if (count != exactCount) {
+				details.add(detail(code));
+			}
+		}
+		return this;
+	}
+
+	/**
 	 * Verifies that the measures specified are contained within the current node's children
 	 *
 	 * @param code that identifies the error
