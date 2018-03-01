@@ -33,8 +33,8 @@ public enum ErrorCode implements LocalizedError {
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_MISSING(10, "ACI Measure Performed RnR's Measure Performed is "
 			+ "required"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_REPEATED(11, "ACI Measure Performed RnR's Measure Performed "
-			+ "can only be present once"),
+	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_REPEATED(11, "The ACI Measure Performed RnR requires exactly one "
+		+ "Measure Performed"),
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "ACI Measure Performed RnR's requires a single "
 			+ "Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
