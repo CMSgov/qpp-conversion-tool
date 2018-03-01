@@ -39,18 +39,25 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	 * @param nodeChecker for a node that represents the ACI Numerator Denominator Measure Section
 	 */
 	private void validateChildren(Checker nodeChecker) {
+//		nodeChecker
+//				.singleValue(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID, "measureId")
+//				.hasChildren(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN)
+//				.childMinimum(
+//						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_DENOMINATOR_CHILD_NODE, 1,
+//						TemplateId.ACI_DENOMINATOR)
+//				.childMinimum(
+//						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_NUMERATOR_CHILD_NODE, 1,
+//						TemplateId.ACI_NUMERATOR)
+//				.childMaximum(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS, 1,
+//						TemplateId.ACI_DENOMINATOR)
+//				.childMaximum(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS, 1,
+//						TemplateId.ACI_NUMERATOR);
 		nodeChecker
-				.singleValue(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID, "measureId")
-				.hasChildren(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN)
-				.childMinimum(
-						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_DENOMINATOR_CHILD_NODE, 1,
-						TemplateId.ACI_DENOMINATOR)
-				.childMinimum(
-						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_NUMERATOR_CHILD_NODE, 1,
-						TemplateId.ACI_NUMERATOR)
-				.childMaximum(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS, 1,
-						TemplateId.ACI_DENOMINATOR)
-				.childMaximum(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS, 1,
-						TemplateId.ACI_NUMERATOR);
+			.singleValue(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID, "measureId")
+			.hasChildren(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN)
+			.childExact(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_DENOMINATOR_CHILD_NODE,
+				1, TemplateId.ACI_DENOMINATOR)
+			.childExact(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE,
+				1, TemplateId.ACI_NUMERATOR);
 	}
 }

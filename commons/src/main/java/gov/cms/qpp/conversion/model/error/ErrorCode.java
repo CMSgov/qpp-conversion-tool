@@ -33,7 +33,7 @@ public enum ErrorCode implements LocalizedError {
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_MISSING(10, "ACI Measure Performed RnR's Measure Performed is "
 			+ "required"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_REPEATED(11, "The ACI Measure Performed RnR requires exactly one "
+	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "The ACI Measure Performed RnR requires exactly one "
 		+ "Measure Performed"),
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "ACI Measure Performed RnR's requires a single "
 			+ "Measure ID"),
@@ -48,10 +48,10 @@ public enum ErrorCode implements LocalizedError {
 			+ "measure name ID"),
 	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "ACI Numerator Denominator Node does not have any child "
 			+ "Nodes"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
-			+ "Node does not contain a Denominator Node child"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_NUMERATOR_CHILD_NODE(19, "This ACI Numerator Denominator "
-			+ "Node does not contain a Numerator Node child"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
+			+ "Node does requies exactly one Denominator Node child"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE(19, "This ACI Numerator Denominator "
+			+ "Node requires exactly one Numerator Node child"),
 	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS(20, "This ACI Numerator Denominator Node "
 			+ "contains too many Denominator Node children"),
 	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS(21, "This ACI Numerator Denominator Node "
