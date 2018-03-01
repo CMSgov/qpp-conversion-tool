@@ -49,14 +49,9 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 			int requiredPerformanceRateCount = measureConfig.getStrata().size();
 
 			thoroughlyCheck(node)
-					.childMinimum(
-							ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
-									.format(requiredPerformanceRateCount),
-							requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-					.childMaximum(
-							ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
-									.format(requiredPerformanceRateCount),
-							requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+					.childExact(
+						ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
+						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 		}
 
 	}
