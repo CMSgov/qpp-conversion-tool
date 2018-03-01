@@ -1,15 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import com.google.common.truth.Truth;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.EncodeException;
@@ -49,6 +39,16 @@ import static org.powermock.api.mockito.PowerMockito.doThrow;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
+
+import com.google.common.truth.Truth;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
@@ -219,6 +219,20 @@ public class ConverterTest {
 		encode.setAccessible(true);
 		Exception thrown = Assertions.assertThrows(InvocationTargetException.class, () -> encode.invoke(converter));
 		Truth.assertThat(thrown).hasCauseThat().isInstanceOf(XmlInputFileException.class);
+	}
+
+	@Test
+	public void testTestSourceCreatesTestReport() {
+		Source source = mock(Source.class);
+		when(source.isTest()).thenReturn(true);
+		Truth.assertThat(new Converter(source).getReport().isTest()).isTrue();
+	}
+
+	@Test
+	public void testNormalSourceCreatesNormalReport() {
+		Source source = mock(Source.class);
+		when(source.isTest()).thenReturn(false);
+		Truth.assertThat(new Converter(source).getReport().isTest()).isFalse();
 	}
 
 	private void checkup(TransformException exception, LocalizedError error) {
