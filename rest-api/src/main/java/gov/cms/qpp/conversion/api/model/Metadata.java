@@ -508,6 +508,7 @@ public final class Metadata {
 		equals &= Objects.equals(validationErrorLocator, that.validationErrorLocator);
 		equals &= Objects.equals(rawValidationErrorLocator, that.rawValidationErrorLocator);
 		equals &= Objects.equals(cpcProcessed, that.cpcProcessed);
+		equals &= Objects.equals(test, that.test);
 		return equals;
 	}
 
@@ -544,8 +545,8 @@ public final class Metadata {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(uuid, tin, npi, createdDate, apm, submissionYear,
-				submissionLocator, qppLocator, fileName, overallStatus, conversionStatus, validationStatus,
-				cpc, conversionErrorLocator, validationErrorLocator, rawValidationErrorLocator, cpcProcessed);
+		return Objects.hash(uuid, tin, npi, createdDate, apm, submissionYear, submissionLocator, qppLocator, fileName,
+				overallStatus, conversionStatus, validationStatus, cpc, conversionErrorLocator, validationErrorLocator,
+				rawValidationErrorLocator, cpcProcessed, test);
 	}
 }
