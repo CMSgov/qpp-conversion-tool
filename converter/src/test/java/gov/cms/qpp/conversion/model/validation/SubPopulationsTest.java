@@ -15,28 +15,30 @@ import com.google.common.collect.Sets;
 
 class SubPopulationsTest {
 
-	@Test
-	void testGetKeysContainsExpected() {
-		assertThat(SubPopulations.getKeys())
-				.containsExactly(SubPopulations.DENEXCEP, SubPopulations.DENEX,
-						SubPopulations.DENOM, SubPopulations.NUMER, SubPopulations.IPOP);
-	}
+	//TODO: move to new test for SubPopulationLabel
+//	@Test
+//	void testGetKeysContainsExpected() {
+//		assertThat(SubPopulations.getKeys())
+//				.containsExactly(SubPopulations.DENEXCEP, SubPopulations.DENEX,
+//						SubPopulations.DENOM, SubPopulations.NUMER, SubPopulations.IPOP);
+//	}
 
 	@Test
 	void testGetExclusiveKeysExcludesExpected() {
-		Set<String> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulations.DENEXCEP));
-		assertWithMessage("Excluded key %s should be absent", SubPopulations.DENEXCEP)
-				.that(keys).doesNotContain(SubPopulations.DENEXCEP);
+		String label = SubPopulationLabel.DENEXCEP.name();
+		Set<String> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(label));
+		assertWithMessage("Excluded key %s should be absent", label)
+				.that(keys).doesNotContain(label);
 	}
 
 	@Test
 	void testGetExclusiveKeysIncludesOthers() {
-		Set<String> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulations.DENEX));
+		Set<String> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulationLabel.DENEX.name()));
 
  		assertWithMessage("Non excluded keys should be present")
 				.that(keys)
-				.containsExactly(SubPopulations.DENEXCEP, SubPopulations.DENOM,
-						SubPopulations.NUMER, SubPopulations.IPOP);
+				.containsExactly(SubPopulationLabel.DENEXCEP.name(), SubPopulationLabel.DENOM.name(),
+					SubPopulationLabel.NUMER.name(), SubPopulationLabel.IPOP.name(), "IPP");
 	}
 
 	@Test
@@ -60,15 +62,15 @@ class SubPopulationsTest {
 	@Test
 	void testGetUniqueIdForKeyReturnsExpectedValue() {
 		Map<String, String> expected = new HashMap<>();
-		for (String key : SubPopulations.getKeys()) {
+		for (String key : SubPopulationLabel.aliasSet()) {
 			expected.put(key, UUID.randomUUID().toString());
 		}
 
 		SubPopulation subPopulation = new SubPopulation();
-		subPopulation.setDenominatorExceptionsUuid(expected.get(SubPopulations.DENEXCEP));
-		subPopulation.setDenominatorExclusionsUuid(expected.get(SubPopulations.DENEX));
-		subPopulation.setDenominatorUuid(expected.get(SubPopulations.DENOM));
-		subPopulation.setNumeratorUuid(expected.get(SubPopulations.NUMER));
+		subPopulation.setDenominatorExceptionsUuid(expected.get(SubPopulationLabel.DENEXCEP.name()));
+		subPopulation.setDenominatorExclusionsUuid(expected.get(SubPopulationLabel.DENEX.name()));
+		subPopulation.setDenominatorUuid(expected.get(SubPopulationLabel.DENOM.name()));
+		subPopulation.setNumeratorUuid(expected.get(SubPopulationLabel.NUMER.name()));
 
 		for (String key : SubPopulations.getExclusiveKeys(Sets.newHashSet("IPOP", "IPP"))) {
 			assertThat(SubPopulations.getUniqueIdForKey(key, subPopulation))

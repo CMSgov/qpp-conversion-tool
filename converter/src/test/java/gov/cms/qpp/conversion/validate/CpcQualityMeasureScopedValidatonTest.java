@@ -1,6 +1,19 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import com.google.common.collect.Sets;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import gov.cms.qpp.conversion.xml.XmlException;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -12,22 +25,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.collect.Sets;
-
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
-import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.conversion.xml.XmlException;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class CpcQualityMeasureScopedValidatonTest {
 	private static Path baseDir = Paths.get("src/test/resources/fixtures/qppct298/");
@@ -44,12 +42,12 @@ class CpcQualityMeasureScopedValidatonTest {
 	@Test
 	void validateCms137V5FailMissingDenomStrata() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, SubPopulations.DENOM);
+		removeMeasureStrata(result, SubPopulationLabel.DENOM.name());
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Missing CMS137v5 DENOM strata should result in errors")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(getMessages(SubPopulations.DENOM,
+				.containsExactly(getMessages(SubPopulationLabel.DENOM.name(),
 						"BC948E65-B908-493B-B48B-04AC342D3E6C",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
 	}
@@ -57,12 +55,12 @@ class CpcQualityMeasureScopedValidatonTest {
 	@Test
 	void validateCms137V5FailMissingDenexStrata() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, SubPopulations.DENEX);
+		removeMeasureStrata(result, SubPopulationLabel.DENEX.name());
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Missing CMS137v5 DENEX strata should result in errors")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(getMessages(SubPopulations.DENEX,
+				.containsExactly(getMessages(SubPopulationLabel.DENEX.name(),
 						"56BC7FA2-C22A-4440-8652-2D3568852C60",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
 	}
@@ -70,12 +68,12 @@ class CpcQualityMeasureScopedValidatonTest {
 	@Test
 	void validateCms137V5FailMissingNumerStrata() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, SubPopulations.NUMER);
+		removeMeasureStrata(result, SubPopulationLabel.NUMER.name());
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Missing CMS137v5 NUMER strata should result in errors")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(getMessages(SubPopulations.NUMER,
+				.containsExactly(getMessages(SubPopulationLabel.NUMER.name(),
 						"0BBF8596-4CFE-47F4-A0D7-9BEAB94BA4CD",
 						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
 	}

@@ -3,7 +3,7 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -18,7 +18,7 @@ class MeasureDataEncoderTest {
 
 	@Test
 	void testDenominator() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENOM);
+		Node measureDataNode = setUpMeasureDataNode(SubPopulationLabel.DENOM.name());
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertThat(jsonWrapper.getInteger(ELIGIBLE_POPULATION))
 				.isEqualTo(900);
@@ -26,7 +26,7 @@ class MeasureDataEncoderTest {
 
 	@Test
 	void testEligiblePopulationException() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENEXCEP);
+		Node measureDataNode = setUpMeasureDataNode(SubPopulationLabel.DENEXCEP.name());
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertThat(jsonWrapper.getInteger(ELIGIBLE_POPULATION_EXCEP))
 				.isEqualTo(900);
@@ -34,7 +34,7 @@ class MeasureDataEncoderTest {
 
 	@Test
 	void testEligiblePopulationExclusion() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode(SubPopulations.DENEX);
+		Node measureDataNode = setUpMeasureDataNode(SubPopulationLabel.DENEX.name());
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertThat(jsonWrapper.getInteger(ELIGIBLE_POPULATION_EX))
 				.isEqualTo(900);
@@ -42,7 +42,7 @@ class MeasureDataEncoderTest {
 
 	@Test
 	void testPerformanceMet() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode(SubPopulations.NUMER);
+		Node measureDataNode = setUpMeasureDataNode(SubPopulationLabel.NUMER.name());
 		JsonWrapper jsonWrapper = encode(measureDataNode);
 		assertThat(jsonWrapper.getInteger(PERFORMANCE_MET))
 				.isEqualTo(900);

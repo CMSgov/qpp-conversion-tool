@@ -1,8 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
@@ -12,9 +9,11 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -49,7 +48,7 @@ class CpcMeasureDataValidatorTest {
 		validator.internalValidateSingleNode(underTest);
 
 		LocalizedError expectedError = ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
-			SupplementalData.MALE.getCode(), SubPopulations.IPOP, MEASURE_ID);
+			SupplementalData.MALE.getCode(), SubPopulationLabel.IPOP.name(), MEASURE_ID);
 
 		Set<Detail> errors = validator.getDetails();
 
@@ -109,7 +108,7 @@ class CpcMeasureDataValidatorTest {
 
 				LocalizedError expectedError = ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE
 					.format(supplementalData.getType(), supplementalData, supplementalData.getCode(),
-						MEASURE_ID, SubPopulations.IPOP);
+						MEASURE_ID, SubPopulationLabel.IPOP.name());
 
 				Set<Detail> errors = validator.getDetails();
 

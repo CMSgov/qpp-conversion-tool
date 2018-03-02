@@ -12,6 +12,7 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
 
 import java.util.Arrays;
@@ -64,12 +65,11 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	@Override
 	List<Consumer<Node>> prepValidations(SubPopulation subPopulation) {
 		return Arrays.asList(
-				makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulations.DENEXCEP),
-				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulations.DENEX),
-				makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulations.NUMER),
-				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulations.DENOM),
-				makeValidator(subPopulation, subPopulation::getInitialPopulationUuid,
-						SubPopulations.IPOP, SubPopulations.IPP),
+				makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulationLabel.DENEXCEP.name()),
+				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulationLabel.DENEX.name()),
+				makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulationLabel.NUMER.name()),
+				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulationLabel.DENOM.name()),
+				makeValidator(subPopulation, subPopulation::getInitialPopulationUuid, SubPopulationLabel.IPOP.getAliases()),
 				makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
 	}
 

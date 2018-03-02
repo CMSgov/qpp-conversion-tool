@@ -1,7 +1,18 @@
 package gov.cms.qpp.conversion.validate;
 
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.SubPopulation;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,19 +26,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
-import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
 /**
  * Validates a Measure Reference Results node.
@@ -106,6 +106,32 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	}
 
 	/**
+	 * Validates that given subpopulations have the correct number of a given type
+	 *
+	 * @param subPopulations The subpopulations to test against
+	 * @param key The type to check
+	 * @param node The node in which the child nodes live
+	 */
+	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
+		long expectedChildTypeCount = subPopulations.stream()
+			.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
+			.filter(Objects::nonNull)
+			.count();
+
+		Predicate<Node> childTypeFinder = makeTypeChildFinder(SubPopulations.getKeyAliases(key));
+		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
+
+		if (expectedChildTypeCount != actualChildTypeCount) {
+			MeasureConfig config = MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+			LocalizedError error =
+				ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(config.getElectronicMeasureId(),
+					expectedChildTypeCount, key, actualChildTypeCount);
+			Detail detail = Detail.forErrorAndNode(error, node);
+			addValidationError(detail);
+		}
+	}
+
+	/**
 	 * Validate individual sub-populations.
 	 *
 	 * @param node          to validate
@@ -149,7 +175,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	private Node getDenominatorNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
 		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
-				SubPopulations.DENOM.equals(thisNode.getValue(MEASURE_TYPE))
+				SubPopulationLabel.DENOM.hasAlias(thisNode.getValue(MEASURE_TYPE))
 						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
 	}
@@ -181,32 +207,6 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 						AggregateCountDecoder.AGGREGATE_COUNT)
 				.lessThanOrEqualTo(ErrorCode.DENOMINATOR_COUNT_INVALID,
 						Integer.parseInt(ipopCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT)));
-	}
-
-	/**
-	 * Validates that given subpopulations have the correct number of a given type
-	 *
-	 * @param subPopulations The subpopulations to test against
-	 * @param key The type to check
-	 * @param node The node in which the child nodes live
-	 */
-	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
-		long expectedChildTypeCount = subPopulations.stream()
-				.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
-				.filter(Objects::nonNull)
-				.count();
-
-		Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
-		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
-
-		if (expectedChildTypeCount != actualChildTypeCount) {
-			MeasureConfig config = MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-			LocalizedError error =
-					ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(config.getElectronicMeasureId(),
-							expectedChildTypeCount, key, actualChildTypeCount);
-			Detail detail = Detail.forErrorAndNode(error, node);
-			addValidationError(detail);
-		}
 	}
 
 	/**
