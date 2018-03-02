@@ -31,8 +31,6 @@ public enum ErrorCode implements LocalizedError {
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_MISSING(10, "This ACI Measure Performed RnR's Measure Performed is "
-			+ "required"),
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Measure Performed RnR requires exactly one "
 		+ "Measure Performed"),
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This ACI Measure Performed RnR's requires a single "

@@ -51,8 +51,7 @@ class AciMeasurePerformedRnRValidatorTest {
 		Set<Detail> errors = run();
 		assertWithMessage("Validation error size should be 2")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_MISSING,
-					ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT);
+				.containsExactly(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT);
 	}
 
 	private Set<Detail> run() {

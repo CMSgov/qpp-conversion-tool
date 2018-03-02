@@ -19,7 +19,6 @@ public class AciMeasurePerformedRnRValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		thoroughlyCheck(node)
-			.hasChildren(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_MISSING)
 			.childExact(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT, 1, TemplateId.MEASURE_PERFORMED)
 			.singleValue(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR, "measureId");
 	}
