@@ -2,35 +2,17 @@ package gov.cms.qpp.conversion.model.validation;
 
 import com.google.common.collect.Sets;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * {@link SubPopulation} utilities
  */
 public class SubPopulations {
-
-	private static final Map<String, Function<SubPopulation, String>> KEY_TO_UNIQUEID;
-	public static final String DENEXCEP = "DENEXCEP";
-	public static final String DENEX = "DENEX";
-	public static final String NUMER = "NUMER";
-	public static final String DENOM = "DENOM";
-	public static final String IPOP = "IPOP";
-	public static final String IPP = "IPP";
-
-	static {
-		Map<String, Function<SubPopulation, String>> keyToUniqueId = new HashMap<>();
-		keyToUniqueId.put(DENEXCEP, SubPopulation::getDenominatorExceptionsUuid);
-		keyToUniqueId.put(DENEX, SubPopulation::getDenominatorExclusionsUuid);
-		keyToUniqueId.put(DENOM, SubPopulation::getDenominatorUuid);
-		keyToUniqueId.put(NUMER, SubPopulation::getNumeratorUuid);
-		keyToUniqueId.put(IPOP, SubPopulation::getNumeratorUuid);
-		KEY_TO_UNIQUEID = Collections.unmodifiableMap(keyToUniqueId);
-	}
 
 	/**
 	 * Helper class, should not be instantiated.
@@ -49,24 +31,29 @@ public class SubPopulations {
 		Objects.requireNonNull(key, "key");
 		Objects.requireNonNull(subPopulation, "subPopulation");
 
-		Function<SubPopulation, String> lookup = KEY_TO_UNIQUEID.get(key);
+		Function<SubPopulation, String> lookup = SubPopulationLabel.getGetter(key);
 		if (lookup == null) {
-			throw new IllegalArgumentException("Illegal key: " + key + ", expected one of " + KEY_TO_UNIQUEID.keySet());
+			throw new IllegalArgumentException("Illegal key: " + key + ", expected one of " + SubPopulationLabel.names());
 		}
 
 		return lookup.apply(subPopulation);
 	}
 
 	/**
-	 * Get an exclusive key set of sub population lebels.
+	 * Get an exclusive key set of sub population labels.
 	 *
 	 * @param exclusions keys to exclude
 	 * @return exclusive key set
 	 */
 	public static Set<String> getExclusiveKeys(Set<String> exclusions) {
-		Set<String> exclusive = Sets.newHashSet(KEY_TO_UNIQUEID.keySet());
+		Set<String> exclusive = Sets.newHashSet(SubPopulationLabel.aliasSet());
 		exclusive.removeAll(exclusions);
 		return exclusive;
+	}
+
+	public static String[] getKeyAliases(String key){
+		SubPopulationLabel found = SubPopulationLabel.findPopulation(key);
+		return found == null ? new String[] {} : found.getAliases();
 	}
 
 	/**
@@ -75,7 +62,7 @@ public class SubPopulations {
 	 * @return DENEXCEP, DENEX, DENOM, NUMER, IPOP
 	 */
 	static Set<String> getKeys() {
-		return KEY_TO_UNIQUEID.keySet();
+		return SubPopulationLabel.aliasSet();
 	}
 
 }
