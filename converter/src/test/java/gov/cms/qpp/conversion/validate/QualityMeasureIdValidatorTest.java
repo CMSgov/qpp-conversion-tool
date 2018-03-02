@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import com.google.common.collect.Lists;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.MeasureIndexInit;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.util.StringHelper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -354,6 +356,26 @@ class QualityMeasureIdValidatorTest {
 		assertWithMessage("Must contain the correct error message.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(expectedErrorMessage);
+	}
+
+	@Test
+	void testPerformanceRateMultipleUuidFail() {
+		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
+			.replaceSubPopulationPerformanceRate(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID, "fail1")
+			.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		String expectedUuids = StringHelper.join(
+			Lists.newArrayList(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID),
+			", ",
+			"or ");
+		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
+			PERFORMANCE_RATE_ID, expectedUuids);
+
+		assertWithMessage("Must contain the correct error message.")
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(expectedErrorMessage);
 	}
 
 	private MeasureReferenceBuilder createCorrectMeasureReference(String measureId) {
