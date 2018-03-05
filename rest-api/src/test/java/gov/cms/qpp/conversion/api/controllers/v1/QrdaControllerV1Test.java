@@ -73,7 +73,7 @@ class QrdaControllerV1Test {
 	void uploadQrdaFile() throws IOException {
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
 		when(auditService.success(any(Converter.ConversionReport.class)))
-				.then(invocation -> null);
+				.thenReturn(null);
 
 		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, null);
 
