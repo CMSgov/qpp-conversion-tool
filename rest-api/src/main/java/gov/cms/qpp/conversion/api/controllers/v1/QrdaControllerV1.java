@@ -57,6 +57,7 @@ public class QrdaControllerV1 {
 	 * Endpoint to transform an uploaded file into a valid or error json response
 	 *
 	 * @param file Uploaded file
+	 * @param test Whether the conversion is a test or not
 	 * @return Valid json or error json content
 	 */
 	@PostMapping(headers = {"Accept=" + Constants.V1_API_ACCEPT})
