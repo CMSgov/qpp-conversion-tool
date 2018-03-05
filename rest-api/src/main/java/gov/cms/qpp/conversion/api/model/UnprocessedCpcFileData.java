@@ -13,7 +13,7 @@ public class UnprocessedCpcFileData {
 	private final String apm;
 	private final Instant conversionDate;
 	private final Boolean validationSuccess;
-	private final Boolean test;
+	private final String purpose;
 
 	/**
 	 * Constructor to transform metadata into unprocessed cpc file data
@@ -26,7 +26,7 @@ public class UnprocessedCpcFileData {
 		this.apm = metadata.getApm();
 		this.conversionDate = metadata.getCreatedDate();
 		this.validationSuccess = metadata.getOverallStatus();
-		this.test = metadata.getTest();
+		this.purpose = metadata.getPurpose();
 	}
 
 	/**
@@ -75,12 +75,12 @@ public class UnprocessedCpcFileData {
 	}
 
 	/**
-	 * retrieves whether the submission was part of a test
+	 * retrieves the purpose of the submission, or null if it's a standard production submission
 	 *
-	 * @return validationSuccess
+	 * @return purpose
 	 */
-	public Boolean getTest() {
-		return test;
+	public String getPurpose() {
+		return purpose;
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class UnprocessedCpcFileData {
 			.add("apm", apm)
 			.add("conversionDate", conversionDate)
 			.add("validationSuccess", validationSuccess)
-			.add("test", test)
+			.add("purpose", purpose)
 			.toString();
 	}
 }

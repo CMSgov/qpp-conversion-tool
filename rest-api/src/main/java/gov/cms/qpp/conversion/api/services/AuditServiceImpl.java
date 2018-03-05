@@ -145,7 +145,7 @@ public class AuditServiceImpl implements AuditService {
 	private Metadata initMetadata(Converter.ConversionReport report, MetadataHelper.Outcome outcome) {
 		Metadata metadata = MetadataHelper.generateMetadata(report.getDecoded(), outcome);
 		metadata.setFileName(report.getQrdaSource().getName());
-		metadata.setTest(report.isTest());
+		metadata.setPurpose(report.getPurpose());
 		return metadata;
 	}
 

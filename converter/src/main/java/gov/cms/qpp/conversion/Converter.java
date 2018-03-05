@@ -303,12 +303,12 @@ public class Converter {
 		}
 
 		/**
-		 * Gets the test status of the conversion
+		 * Gets the purpose of the conversion
 		 *
-		 * @return True if the conversion was sourced from test data
+		 * @return The purpose of the conversion, for example \"Test\". Treat null as a standard production call
 		 */
-		public boolean isTest() {
-			return source.isTest();
+		public String getPurpose() {
+			return source.getPurpose();
 		}
 	}
 }

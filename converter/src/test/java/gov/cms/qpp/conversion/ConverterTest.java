@@ -230,15 +230,15 @@ public class ConverterTest {
 	@Test
 	public void testTestSourceCreatesTestReport() {
 		Source source = mock(Source.class);
-		when(source.isTest()).thenReturn(true);
-		Truth.assertThat(new Converter(source).getReport().isTest()).isTrue();
+		when(source.getPurpose()).thenReturn("Test");
+		Truth.assertThat(new Converter(source).getReport().getPurpose()).isEqualTo("Test");
 	}
 
 	@Test
 	public void testNormalSourceCreatesNormalReport() {
 		Source source = mock(Source.class);
-		when(source.isTest()).thenReturn(false);
-		Truth.assertThat(new Converter(source).getReport().isTest()).isFalse();
+		when(source.getPurpose()).thenReturn(null);
+		Truth.assertThat(new Converter(source).getReport().getPurpose()).isNull();
 	}
 
 	private void checkup(TransformException exception, LocalizedError error) {

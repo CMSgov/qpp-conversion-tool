@@ -70,6 +70,6 @@ class PathSourceTest extends SourceTestSuite implements JimfsContract {
 
 	@Test
 	void testIsTest() {
-		assertThat(source.isTest()).isFalse();
+		assertThat(source.getPurpose()).isNull();
 	}
 }

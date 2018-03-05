@@ -17,7 +17,7 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 */
 	private final MeasuredInputStreamSupplier stream;
 
-	private final boolean test;
+	private final String purpose;
 
 	/**
 	 * Creates a new Source with the given name and {@link Supplier}.
@@ -28,7 +28,7 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 * @param source an {@link InputStream}.
 	 */
 	public InputStreamSupplierSource(String name, InputStream source) {
-		this(name, source, false);
+		this(name, source, null);
 	}
 
 	/**
@@ -40,13 +40,13 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 * @param source an {@link InputStream}.
 	 * @param test Whether the source is a test
 	 */
-	public InputStreamSupplierSource(String name, InputStream source, boolean test) {
+	public InputStreamSupplierSource(String name, InputStream source, String purpose) {
 		super(name);
 
 		Objects.requireNonNull(source, "source");
 
 		this.stream = MeasuredInputStreamSupplier.terminallyTransformInputStream(source);
-		this.test = test;
+		this.purpose = purpose;
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isTest() {
-		return test;
+	public String getPurpose() {
+		return purpose;
 	}
 }

@@ -47,10 +47,10 @@ public class PathSource extends SkeletalSource {
 	}
 
 	/**
-	 * Returns false
+	 * Returns null
 	 */
 	@Override
-	public boolean isTest() {
-		return false;
+	public String getPurpose() {
+		return null;
 	}
 }

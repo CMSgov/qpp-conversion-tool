@@ -59,21 +59,21 @@ class InputStreamSupplierSourceTest extends SourceTestSuite {
 	@Test
 	void testTestIsTest() {
 		String text = "mock";
-		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()), true);
-		Truth.assertThat(source.isTest()).isTrue();
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()), "Test");
+		Truth.assertThat(source.getPurpose()).isEqualTo("Test");
 	}
 
 	@Test
 	void testNormalIsNotTest() {
 		String text = "mock";
-		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()), false);
-		Truth.assertThat(source.isTest()).isFalse();
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()), null);
+		Truth.assertThat(source.getPurpose()).isNull();
 	}
 
 	@Test
 	void testDefaultIsNotTest() {
 		String text = "mock";
 		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()));
-		Truth.assertThat(source.isTest()).isFalse();
+		Truth.assertThat(source.getPurpose()).isNull();
 	}
 }

@@ -29,9 +29,9 @@ public interface Source {
 	long getSize();
 
 	/**
-	 * Whether or not the source is test data
+	 * Gets the purpose of the source creation
 	 *
-	 * @return The test status of the source
+	 * @return The purpose of the source creation, for example \"Test\"
 	 */
-	boolean isTest();
+	String getPurpose();
 }

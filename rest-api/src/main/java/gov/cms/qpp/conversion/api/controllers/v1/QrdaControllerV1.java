@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -62,17 +63,21 @@ public class QrdaControllerV1 {
 	 */
 	@PostMapping(headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file,
-			@RequestHeader(required = false, name = "Test") boolean test) {
+			@RequestHeader(required = false, name = "Purpose") String purpose) {
 		String originalFilename = file.getOriginalFilename();
 
-		if (test) {
-			API_LOG.info("Test conversion request received");
+		if (!StringUtils.isEmpty(purpose)) {
+			if (purpose.length() > 25) {
+				throw new IllegalArgumentException("Given purpose is too large");
+			}
+			API_LOG.info("Conversion request received for " + purpose);
 		} else {
+			purpose = null; // if it's an empty string, make it null
 			API_LOG.info("Conversion request received");
 		}
 
 		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
-				new InputStreamSupplierSource(originalFilename, inputStream(file), test));
+				new InputStreamSupplierSource(originalFilename, inputStream(file), purpose));
 
 		validationService.validateQpp(conversionReport);
 

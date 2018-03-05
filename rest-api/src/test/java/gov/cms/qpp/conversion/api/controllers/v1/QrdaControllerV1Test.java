@@ -75,7 +75,7 @@ class QrdaControllerV1Test {
 		when(auditService.success(any(Converter.ConversionReport.class)))
 				.then(invocation -> null);
 
-		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, false);
+		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, null);
 
 		verify(qrdaService, atLeastOnce()).convertQrda3ToQpp(any(Source.class));
 
@@ -91,10 +91,10 @@ class QrdaControllerV1Test {
 		when(auditService.success(any(Converter.ConversionReport.class)))
 				.then(invocation -> null);
 
-		when(report.isTest()).thenReturn(true);
-		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, true);
+		when(report.getPurpose()).thenReturn("Test");
+		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, "Test");
 
-		assertThat(peopleCaptor.getValue().isTest()).isTrue();
+		assertThat(peopleCaptor.getValue().getPurpose()).isEqualTo("Test");
 	}
 
 	@Test
@@ -107,7 +107,7 @@ class QrdaControllerV1Test {
 			.when(validationService).validateQpp(isNull());
 
 		try {
-			ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, false);
+			ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, null);
 			Assertions.fail("An exception should have occurred. Instead was " + qppResponse);
 		} catch(TransformException exception) {
 			assertThat(exception.getMessage())

@@ -38,7 +38,7 @@ public final class Metadata {
 	private String rawValidationErrorLocator;
 	private Instant createdDate;
 	private Boolean cpcProcessed;
-	private Boolean test;
+	private String purpose;
 
 	/**
 	 * Constructs a new {@code Metadata} with the {@code createdDate} filled in upon construction.
@@ -256,23 +256,23 @@ public final class Metadata {
 	}
 
 	/**
-	 * Whether a submission was part of a test
+	 * The purpose of the conversion, or null if it's a standard conversion
 	 *
-	 * @return Test or valid
+	 * @return The purpose of the conversion, for example \"Test\"
 	 */
 	@DoNotEncrypt
-	@DynamoDBAttribute(attributeName = "Test")
-	public Boolean getTest() {
-		return test;
+	@DynamoDBAttribute(attributeName = "Purpose")
+	public String getPurpose() {
+		return purpose;
 	}
 
 	/**
-	 * Sets whether a submission is part of a test
+	 * Sets the purpose of the conversion
 	 *
-	 * @param test Whether a submission is part of a test
+	 * @param purpose The purpose of the conversion
 	 */
-	public void setTest(Boolean test) {
-		this.test = test;
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
 	}
 
 	/**
@@ -508,7 +508,7 @@ public final class Metadata {
 		equals &= Objects.equals(validationErrorLocator, that.validationErrorLocator);
 		equals &= Objects.equals(rawValidationErrorLocator, that.rawValidationErrorLocator);
 		equals &= Objects.equals(cpcProcessed, that.cpcProcessed);
-		equals &= Objects.equals(test, that.test);
+		equals &= Objects.equals(purpose, that.purpose);
 		return equals;
 	}
 
@@ -547,6 +547,6 @@ public final class Metadata {
 	public int hashCode() {
 		return Objects.hash(uuid, tin, npi, createdDate, apm, submissionYear, submissionLocator, qppLocator, fileName,
 				overallStatus, conversionStatus, validationStatus, cpc, conversionErrorLocator, validationErrorLocator,
-				rawValidationErrorLocator, cpcProcessed, test);
+				rawValidationErrorLocator, cpcProcessed, purpose);
 	}
 }
