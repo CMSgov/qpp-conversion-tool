@@ -170,7 +170,7 @@ class CheckerTest {
 	}
 
 	@Test
-	void testChildExactFailure() {
+	void testChildExactFailureTooManyNodes() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER),
 			new Node(TemplateId.ACI_AGGREGATE_COUNT),
@@ -180,7 +180,21 @@ class CheckerTest {
 		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
 
 		assertWithMessage("An error exists")
-			.that(details).hasSize(1);
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ERROR_MESSAGE);
+	}
+
+	@Test
+	void testChildExactTooLittleNodes() {
+		Node meepNode = new Node();
+		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER));
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+
+		assertWithMessage("An error exists")
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ERROR_MESSAGE);
 	}
 
 	@Test
