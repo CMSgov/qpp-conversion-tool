@@ -44,21 +44,6 @@ class MeasureDataRoundTripTest {
 		test(label);
 	}
 
-//	@Test
-//	void decodeNumerMeasureDataAsNode() throws Exception {
-//		test(SubPopulations.NUMER);//performanceMet
-//	}
-//
-//	@Test
-//	void decodeDenexMeasureDataAsNode() throws Exception {
-//		test(SubPopulations.DENEX);//eligiblePopulationExclusion
-//	}
-//
-//	@Test
-//	void decodeDenexcepMeasureDataAsNode() throws Exception {
-//		test(SubPopulations.DENEXCEP);//eligiblePopulationException
-//	}
-
 	private void test(SubPopulationLabel type) throws Exception {
 		//setup
 		String typeLabel = type.name();
