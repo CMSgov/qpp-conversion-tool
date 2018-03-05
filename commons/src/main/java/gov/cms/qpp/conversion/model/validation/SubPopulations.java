@@ -42,8 +42,8 @@ public class SubPopulations {
 	 * @param exclusions keys to exclude
 	 * @return exclusive key set
 	 */
-	public static Set<String> getExclusiveKeys(Set<String> exclusions) {
-		Set<String> exclusive = Sets.newHashSet(SubPopulationLabel.aliasSet());
+	public static Set<SubPopulationLabel> getExclusiveKeys(Set<SubPopulationLabel> exclusions) {
+		Set<SubPopulationLabel> exclusive = Sets.newHashSet(SubPopulationLabel.values());
 		exclusive.removeAll(exclusions);
 		return exclusive;
 	}
@@ -52,14 +52,4 @@ public class SubPopulations {
 		SubPopulationLabel found = SubPopulationLabel.findPopulation(key);
 		return found == null ? new String[] {} : found.getAliases();
 	}
-
-	/**
-	 * Gets all the valid subpopulation lookup keys
-	 *
-	 * @return DENEXCEP, DENEX, DENOM, NUMER, IPOP
-	 */
-	static Set<String> getKeys() {
-		return SubPopulationLabel.aliasSet();
-	}
-
 }

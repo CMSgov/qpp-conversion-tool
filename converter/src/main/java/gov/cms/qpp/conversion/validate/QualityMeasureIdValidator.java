@@ -33,7 +33,7 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
  * Validates a Measure Reference Results node.
  */
 abstract class QualityMeasureIdValidator extends NodeValidator {
-	Set<String> subPopulationExclusions = Collections.emptySet();
+	Set<SubPopulationLabel> subPopulationExclusions = Collections.emptySet();
 	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
 			.collect(Collectors.toSet());
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
@@ -98,7 +98,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		}
 
 		SubPopulations.getExclusiveKeys(subPopulationExclusions)
-				.forEach(key -> validateChildTypeCount(subPopulations, key, node));
+				.forEach(subPopulationLabel -> validateChildTypeCount(subPopulations, subPopulationLabel.name(), node));
 
 		for (SubPopulation subPopulation : subPopulations) {
 			validateSubPopulation(node, subPopulation);

@@ -25,20 +25,19 @@ class SubPopulationsTest {
 
 	@Test
 	void testGetExclusiveKeysExcludesExpected() {
-		String label = SubPopulationLabel.DENEXCEP.name();
-		Set<String> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(label));
-		assertWithMessage("Excluded key %s should be absent", label)
-				.that(keys).doesNotContain(label);
+		Set<SubPopulationLabel> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulationLabel.DENEXCEP));
+		assertWithMessage("Excluded key %s should be absent", SubPopulationLabel.DENEXCEP)
+				.that(keys).doesNotContain(SubPopulationLabel.DENEXCEP);
 	}
 
 	@Test
 	void testGetExclusiveKeysIncludesOthers() {
-		Set<String> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulationLabel.DENEX.name()));
+		Set<SubPopulationLabel> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulationLabel.DENEX));
 
  		assertWithMessage("Non excluded keys should be present")
 				.that(keys)
-				.containsExactly(SubPopulationLabel.DENEXCEP.name(), SubPopulationLabel.DENOM.name(),
-					SubPopulationLabel.NUMER.name(), SubPopulationLabel.IPOP.name(), "IPP");
+				.containsExactly(SubPopulationLabel.DENEXCEP, SubPopulationLabel.DENOM,
+					SubPopulationLabel.NUMER, SubPopulationLabel.IPOP);
 	}
 
 	@Test
@@ -72,9 +71,9 @@ class SubPopulationsTest {
 		subPopulation.setDenominatorUuid(expected.get(SubPopulationLabel.DENOM.name()));
 		subPopulation.setNumeratorUuid(expected.get(SubPopulationLabel.NUMER.name()));
 
-		for (String key : SubPopulations.getExclusiveKeys(Sets.newHashSet("IPOP", "IPP"))) {
-			assertThat(SubPopulations.getUniqueIdForKey(key, subPopulation))
-					.isSameAs(expected.get(key));
+		for (SubPopulationLabel key : SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulationLabel.IPOP))) {
+			assertThat(SubPopulations.getUniqueIdForKey(key.name(), subPopulation))
+					.isSameAs(expected.get(key.name()));
 		}
 	}
 

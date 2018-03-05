@@ -29,7 +29,7 @@ import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDeco
 public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 	MipsQualityMeasureIdValidator() {
-		subPopulationExclusions = Sets.newHashSet("IPOP", "IPP");
+		subPopulationExclusions = Sets.newHashSet(SubPopulationLabel.IPOP);
 	}
 
 	/**
