@@ -470,8 +470,13 @@
 		"errorData": [
 			{
 				"errorCode": 14,
+				"subs": ["CMS137v5", 2, "IPP or IPOP", 3],
+				"occurrences": 1
+			},
+			{
+				"errorCode": 14,
 				"subs": ["CMS137v5", 2, "[A-Z]{3,8}", 3],
-				"occurrences": 4
+				"occurrences": 3
 			},
 			{
 				"errorCode": 59,

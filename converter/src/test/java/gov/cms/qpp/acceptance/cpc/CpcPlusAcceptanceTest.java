@@ -47,15 +47,15 @@ class CpcPlusAcceptanceTest {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
 
-	static Stream<Path> successData() {
+	private static Stream<Path> successData() {
 		return getXml(SUCCESS);
 	}
 
-	static Stream<Path> failureData() {
+	private static Stream<Path> failureData() {
 		return getXml(FAILURE);
 	}
 
-	static Stream<Path> getXml(Path directory) {
+	private static Stream<Path> getXml(Path directory) {
 		try {
 			return Files.list(directory).filter(CpcPlusAcceptanceTest::isXml);
 		} catch (IOException e) {
@@ -63,7 +63,7 @@ class CpcPlusAcceptanceTest {
 		}
 	}
 
-	static boolean isXml(Path path) {
+	private static boolean isXml(Path path) {
 		return path.toString().endsWith(".xml");
 	}
 
@@ -109,12 +109,12 @@ class CpcPlusAcceptanceTest {
 					.that(details).hasSize(totalErrors);
 		}
 
-		expectedErrors.getErrorData().stream().forEach(expectedError -> {
+		expectedErrors.getErrorData().forEach(expectedError -> {
 			Integer expectedErrorCode = expectedError.getErrorCode();
 			String expectedErrorMessage = expectedError.getMessage();
 
 			long matchingActualErrors = details.stream()
-				.filter(actualError -> actualError.getErrorCode() == expectedErrorCode)
+				.filter(actualError -> actualError.getErrorCode().equals(expectedErrorCode))
 				.filter(actualError -> messageComparison(actualError.getMessage(), expectedErrorMessage))
 				.count();
 

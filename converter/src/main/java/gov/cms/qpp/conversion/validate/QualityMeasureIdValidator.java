@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,7 +99,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		}
 
 		SubPopulations.getExclusiveKeys(subPopulationExclusions)
-				.forEach(subPopulationLabel -> validateChildTypeCount(subPopulations, subPopulationLabel.name(), node));
+				.forEach(subPopulationLabel -> validateChildTypeCount(subPopulations, subPopulationLabel, node));
 
 		for (SubPopulation subPopulation : subPopulations) {
 			validateSubPopulation(node, subPopulation);
@@ -112,20 +113,21 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param key The type to check
 	 * @param node The node in which the child nodes live
 	 */
-	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
+	private void validateChildTypeCount(List<SubPopulation> subPopulations, SubPopulationLabel key, Node node) {
 		long expectedChildTypeCount = subPopulations.stream()
-			.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
+			.map(subPopulation -> SubPopulations.getUniqueIdForKey(key.name(), subPopulation))
 			.filter(Objects::nonNull)
 			.count();
 
-		Predicate<Node> childTypeFinder = makeTypeChildFinder(SubPopulations.getKeyAliases(key));
+		Predicate<Node> childTypeFinder = makeTypeChildFinder(key.getAliases());
 		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
 
 		if (expectedChildTypeCount != actualChildTypeCount) {
 			MeasureConfig config = MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 			LocalizedError error =
 				ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(config.getElectronicMeasureId(),
-					expectedChildTypeCount, key, actualChildTypeCount);
+					expectedChildTypeCount, StringHelper.join(key.getAliases(), ",", "or"),
+					actualChildTypeCount);
 			Detail detail = Detail.forErrorAndNode(error, node);
 			addValidationError(detail);
 		}

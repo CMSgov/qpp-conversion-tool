@@ -15,14 +15,6 @@ import com.google.common.collect.Sets;
 
 class SubPopulationsTest {
 
-	//TODO: move to new test for SubPopulationLabel
-//	@Test
-//	void testGetKeysContainsExpected() {
-//		assertThat(SubPopulations.getKeys())
-//				.containsExactly(SubPopulations.DENEXCEP, SubPopulations.DENEX,
-//						SubPopulations.DENOM, SubPopulations.NUMER, SubPopulations.IPOP);
-//	}
-
 	@Test
 	void testGetExclusiveKeysExcludesExpected() {
 		Set<SubPopulationLabel> keys = SubPopulations.getExclusiveKeys(Sets.newHashSet(SubPopulationLabel.DENEXCEP));
