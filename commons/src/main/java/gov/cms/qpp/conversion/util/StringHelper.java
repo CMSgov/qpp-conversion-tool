@@ -17,6 +17,8 @@ public class StringHelper {
 	 * @return A joined {@link String}.
 	 */
 	public static String join(Iterable<String> iterable, String separator, String conjunction) {
+		separator = separator + " ";
+		conjunction = conjunction + " ";
 
 		StringBuilder creator = new StringBuilder();
 
