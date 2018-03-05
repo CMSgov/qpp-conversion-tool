@@ -55,11 +55,6 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 		measureTypeMapper.put(SubPopulationLabel.DENOM, eligiblePopulation);
 		measureTypeMapper.put(SubPopulationLabel.DENEX, "eligiblePopulationExclusion");
 		measureTypeMapper.put(SubPopulationLabel.DENEXCEP, "eligiblePopulationException");
-
-//		measureTypeMapper.put(SubPopulationLabel.NUMER.name(), "performanceMet");
-//		measureTypeMapper.put(SubPopulationLabel.DENOM.name(), eligiblePopulation);
-//		measureTypeMapper.put(SubPopulationLabel.DENEX.name(), "eligiblePopulationExclusion");
-//		measureTypeMapper.put(SubPopulationLabel.DENEXCEP.name(), "eligiblePopulationException");
 		return measureTypeMapper;
 	}
 
