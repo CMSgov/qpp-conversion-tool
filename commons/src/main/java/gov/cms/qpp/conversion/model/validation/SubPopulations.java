@@ -48,7 +48,7 @@ public class SubPopulations {
 		return exclusive;
 	}
 
-	public static String[] getKeyAliases(String key){
+	public static String[] getKeyAliases(String key) {
 		SubPopulationLabel found = SubPopulationLabel.findPopulation(key);
 		return found == null ? new String[] {} : found.getAliases();
 	}

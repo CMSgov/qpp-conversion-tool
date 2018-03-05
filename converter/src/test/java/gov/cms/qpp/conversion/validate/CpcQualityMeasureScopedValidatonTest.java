@@ -95,7 +95,7 @@ class CpcQualityMeasureScopedValidatonTest {
 	void validateCms137V5FailMissingMeasure() throws IOException, XmlException {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5_MissingMeasure.xml");
 		Set<Detail> details = validateNode(result);
-		LocalizedError message = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS137v5", "IPOP,IPP", "EC2C5F63-AF76-4D3C-85F0-5423F8C28541");
+		LocalizedError message = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS137v5", "IPP,IPOP", "EC2C5F63-AF76-4D3C-85F0-5423F8C28541");
 
 		assertWithMessage("Missing CMS137v5 IPOP strata should result in errors")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)

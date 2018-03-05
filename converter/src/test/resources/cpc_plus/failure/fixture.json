@@ -353,7 +353,7 @@
 			{
 				"errorCode": 59,
 				"subs": ["CMS\\d{2,3}v\\d{1}",
-					"IPOP,IPP",
+					"IPP,IPOP",
 					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
 				"occurrences": 1
 			},

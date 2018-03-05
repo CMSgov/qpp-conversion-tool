@@ -18,12 +18,9 @@ public enum SubPopulationLabel {
 	private Set<String> aka;
 	private Function<SubPopulation, String> getter;
 
-	SubPopulationLabel(Function<SubPopulation, String> getter){
-		this.getter = getter;
-	}
 	SubPopulationLabel(Function<SubPopulation, String> getter, String... aliases) {
-		this(getter);
-		aka = Sets.newHashSet(aliases);
+		this.getter = getter;
+		this.aka = Sets.newHashSet(aliases);
 	}
 
 	public String[] getAliases() {
