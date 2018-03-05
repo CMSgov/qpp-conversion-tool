@@ -32,11 +32,11 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		if (!SubPopulationLabel.IPOP.hasAlias(node.getValue(MEASURE_TYPE))) {
-			Map<String, String> measureTypeMapper = initializeMeasureTypeMap();
+			Map<SubPopulationLabel, String> measureTypeMapper = initializeMeasureTypeMap();
 			String measureType = node.getValue(MEASURE_TYPE);
 			Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 
-			String encodeLabel = measureTypeMapper.get(measureType);
+			String encodeLabel = measureTypeMapper.get(SubPopulationLabel.findPopulation(measureType));
 			wrapper.putInteger(encodeLabel, aggCount.getValue(AGGREGATE_COUNT));
 			maintainContinuity(wrapper, aggCount, encodeLabel);
 		}
@@ -47,14 +47,19 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	 *
 	 * @return intialized measure type map
 	 */
-	private Map<String, String> initializeMeasureTypeMap() {
-		Map<String, String> measureTypeMapper = new HashMap<>();
+	private Map<SubPopulationLabel, String> initializeMeasureTypeMap() {
+		Map<SubPopulationLabel, String> measureTypeMapper = new HashMap<>();
 		final String eligiblePopulation = "eligiblePopulation";
 
-		measureTypeMapper.put(SubPopulationLabel.NUMER.name(), "performanceMet");
-		measureTypeMapper.put(SubPopulationLabel.DENOM.name(), eligiblePopulation);
-		measureTypeMapper.put(SubPopulationLabel.DENEX.name(), "eligiblePopulationExclusion");
-		measureTypeMapper.put(SubPopulationLabel.DENEXCEP.name(), "eligiblePopulationException");
+		measureTypeMapper.put(SubPopulationLabel.NUMER, "performanceMet");
+		measureTypeMapper.put(SubPopulationLabel.DENOM, eligiblePopulation);
+		measureTypeMapper.put(SubPopulationLabel.DENEX, "eligiblePopulationExclusion");
+		measureTypeMapper.put(SubPopulationLabel.DENEXCEP, "eligiblePopulationException");
+
+//		measureTypeMapper.put(SubPopulationLabel.NUMER.name(), "performanceMet");
+//		measureTypeMapper.put(SubPopulationLabel.DENOM.name(), eligiblePopulation);
+//		measureTypeMapper.put(SubPopulationLabel.DENEX.name(), "eligiblePopulationExclusion");
+//		measureTypeMapper.put(SubPopulationLabel.DENEXCEP.name(), "eligiblePopulationException");
 		return measureTypeMapper;
 	}
 

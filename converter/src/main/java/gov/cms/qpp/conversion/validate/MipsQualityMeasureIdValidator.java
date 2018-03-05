@@ -56,10 +56,10 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	@Override
 	List<Consumer<Node>> prepValidations(SubPopulation subPopulation) {
 		return Arrays.asList(
-			makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulationLabel.DENEXCEP.name()),
-			makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulationLabel.DENEX.name()),
-			makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulationLabel.NUMER.name()),
-			makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulationLabel.DENOM.name()));
+			makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulationLabel.DENEXCEP),
+			makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulationLabel.DENEX),
+			makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulationLabel.NUMER),
+			makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulationLabel.DENOM));
 	}
 
 	/**

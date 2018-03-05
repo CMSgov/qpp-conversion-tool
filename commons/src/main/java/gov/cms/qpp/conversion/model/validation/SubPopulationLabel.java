@@ -69,7 +69,7 @@ public enum SubPopulationLabel {
 	 * @param key a given alias
 	 * @return the corresponding SubPopulationLabel if any
 	 */
-	static SubPopulationLabel findPopulation(String key) {
+	public static SubPopulationLabel findPopulation(String key) {
 		return Arrays.stream(SubPopulationLabel.values())
 			.filter(subPop -> subPop.hasAlias(key))
 			.findFirst()

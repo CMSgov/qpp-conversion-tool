@@ -216,13 +216,14 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 *
 	 * @param sub {@link SubPopulation} against which follow validations may be performed
 	 * @param check a property existence check
-	 * @param keys that identify measure
+	 * @param subPopulationLabel that houses sub-population aliases
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	Consumer<Node> makeValidator(SubPopulation sub, Supplier<String> check, String... keys) {
+	Consumer<Node> makeValidator(SubPopulation sub, Supplier<String> check, SubPopulationLabel subPopulationLabel) {
 		return node -> {
 			if (check.get() != null) {
+				String[] keys = subPopulationLabel.getAliases();
 				Predicate<Node> childTypeFinder = makeTypeChildFinder(keys);
 				Predicate<Node> childUuidFinder =
 						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION,
