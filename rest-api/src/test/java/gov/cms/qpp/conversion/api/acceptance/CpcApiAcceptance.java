@@ -1,17 +1,11 @@
 package gov.cms.qpp.conversion.api.acceptance;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.AttributeEncryptor;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.springframework.core.env.Environment;
 
 import gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory;
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
@@ -45,9 +39,7 @@ class CpcApiAcceptance {
 		+ "/*[local-name() = 'intendedRecipient' and namespace-uri() = 'urn:hl7-org:v3']"
 		+ "/*[local-name() = 'id' and namespace-uri() = 'urn:hl7-org:v3'][@root='2.16.840.1.113883.3.249.7']/@extension";
 	private static final String CPC_PLUS_PROGRAM_NAME = "CPCPLUS";
-	private static AmazonDynamoDB dynamoClient = AmazonDynamoDBClientBuilder.standard().build();
 	private static DynamoDBMapper mapper;
-	private static AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
 	private static final String TEST_KMS_KEY_ENV_VARIABLE = "TEST_KMS_KEY";
 	private static final String DEFAULT_KMS_ARN = "arn:aws:kms:us-east-1:850094054452:key/8b19f7e9-b58c-4b7a-8162-e01809a8a2e9";
 
@@ -55,9 +47,9 @@ class CpcApiAcceptance {
 	static void setUp() {
 		String kmsKey = EnvironmentHelper.getOrDefault(TEST_KMS_KEY_ENV_VARIABLE, DEFAULT_KMS_ARN);
 		mapper = DynamoDbConfigFactory
-			.createDynamoDbMapper(dynamoClient, DynamoDBMapperConfig.builder()
+			.createDynamoDbMapper(AwsTestHelper.getDynamoClient(), DynamoDBMapperConfig.builder()
 				.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(AwsTestHelper.TEST_DYNAMO_TABLE_NAME))
-				.build(), new AttributeEncryptor(new DirectKmsMaterialProvider(kmsClient, kmsKey)));
+				.build(), new AttributeEncryptor(new DirectKmsMaterialProvider(AwsTestHelper.getKmsClient(), kmsKey)));
 
 		given()
 			.multiPart("file", Paths.get("../sample-files/CPCPlus_Success_PreProd.xml").toFile())
