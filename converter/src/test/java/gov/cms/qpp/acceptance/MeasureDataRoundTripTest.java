@@ -49,7 +49,6 @@ class MeasureDataRoundTripTest {
 		String typeLabel = type.name();
 		Node placeholder = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(happy));
 		Node measure =  placeholder.findChildNode(n -> n.getValue(MEASURE_TYPE).equals(typeLabel));
-		String message = String.format("Should have a %s measure", type);
 
 		//when
 		StringWriter sw = encode(placeholder);
