@@ -18,6 +18,7 @@ import gov.cms.qpp.conversion.util.StringHelper;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -101,10 +102,11 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					.orElse(null);
 
 			if (subPopulation == null) {
-				String expectedPerformanceUuids = StringHelper.join(subPopulations.stream()
+				Set<String> expectedPerformanceUuids = subPopulations.stream()
 					.map(SubPopulation::getNumeratorUuid)
-					.collect(Collectors.toSet()), ", ", "or ");
-				addPerformanceRateValidationMessage(node, expectedPerformanceUuids);
+					.collect(Collectors.toSet());
+				String expectedUuidString = StringHelper.join(expectedPerformanceUuids, ", ", "or ");
+				addPerformanceRateValidationMessage(node, expectedUuidString);
 			}
 		}
 	}

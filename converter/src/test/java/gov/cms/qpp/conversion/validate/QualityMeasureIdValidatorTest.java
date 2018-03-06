@@ -367,7 +367,9 @@ class QualityMeasureIdValidatorTest {
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		String expectedUuids = StringHelper.join(
-			Lists.newArrayList(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID),
+			Lists.newArrayList(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID,
+				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID,
+				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID),
 			", ",
 			"or ");
 		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
