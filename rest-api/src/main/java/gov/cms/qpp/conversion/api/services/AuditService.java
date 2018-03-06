@@ -16,7 +16,7 @@ public interface AuditService {
 	 * @param report {@link ConversionReport} that details the outcome of a conversion
 	 * @return {@link CompletableFuture} that mules the result of report persistence
 	 */
-	CompletableFuture<Void> success(ConversionReport report);
+	CompletableFuture<Metadata> success(ConversionReport report);
 
 	/**
 	 * Report a failed conversion.
