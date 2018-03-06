@@ -34,7 +34,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/")
 @CrossOrigin
 public class QrdaControllerV1 {
+
 	private static final Logger API_LOG = LoggerFactory.getLogger(QrdaControllerV1.class);
+	private static final int MAX_PURPOSE_LENGTH = 25;
 
 	private QrdaService qrdaService;
 	private ValidationService validationService;
@@ -67,7 +69,7 @@ public class QrdaControllerV1 {
 		String originalFilename = file.getOriginalFilename();
 
 		if (!StringUtils.isEmpty(purpose)) {
-			if (purpose.length() > 25) {
+			if (purpose.length() > MAX_PURPOSE_LENGTH) {
 				throw new IllegalArgumentException("Given purpose is too large");
 			}
 			API_LOG.info("Conversion request received for " + purpose);
