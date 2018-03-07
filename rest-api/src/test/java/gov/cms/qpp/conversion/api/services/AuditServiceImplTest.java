@@ -119,7 +119,7 @@ public class AuditServiceImplTest {
 		successfulEncodingPrep();
 		problematic();
 		final Waiter waiter = new Waiter();
-		CompletableFuture<Void> future = underTest.success(report);
+		CompletableFuture<Metadata> future = underTest.success(report);
 
 		future.whenComplete((nada, ex) -> {
 			waiter.assertNull(metadata.getQppLocator());
