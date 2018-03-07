@@ -13,6 +13,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,10 +42,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		super.internalValidateSingleNode(node);
-		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
-		String value = node.getValue(MEASURE_ID);
-		MeasureConfig measureConfig = configurationMap.get(value);
-
+		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		if (measureConfig != null) {
 			int requiredPerformanceRateCount = measureConfig.getStrata().size();
 
@@ -58,7 +56,6 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 									.format(requiredPerformanceRateCount),
 							requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 		}
-
 	}
 
 	@Override

@@ -10,6 +10,8 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -44,8 +46,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 */
 	@Override
 	public void internalEncode(JsonWrapper wrapper, Node node) {
-		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
-		MeasureConfig measureConfig = configurationMap.get(node.getValue(MEASURE_ID));
+		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		String measureId = measureConfig.getMeasureId();
 		wrapper.putString(MEASURE_ID, measureId);
 

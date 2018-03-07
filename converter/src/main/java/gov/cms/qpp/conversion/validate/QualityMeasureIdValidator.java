@@ -28,6 +28,7 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 /**
  * Validates a Measure Reference Results node.
@@ -69,13 +70,12 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node to validate
 	 */
 	private void validateMeasureConfigs(Node node) {
-		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
-		String value = node.getValue(MEASURE_ID);
-		MeasureConfig measureConfig = configurationMap.get(value);
+		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 
 		if (measureConfig != null) {
 			validateAllSubPopulations(node, measureConfig);
 		} else {
+			String value = node.getValue(MEASURE_ID);
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
 				DEV_LOG.error("MEASURE_GUID_MISSING " + value);
 				List<String> suggestions = MeasureConfigs.getMeasureSuggestions(value);
