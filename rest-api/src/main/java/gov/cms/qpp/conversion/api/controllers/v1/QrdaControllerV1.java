@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
+import gov.cms.qpp.conversion.api.exceptions.AuditException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.AuditService;
@@ -88,7 +89,7 @@ public class QrdaControllerV1 {
 			CompletableFuture<Metadata> metadata = auditService.success(conversionReport);
 			return metadata == null ? null : metadata.get();
 		} catch (InterruptedException | ExecutionException exception) {
-			return null;
+			throw new AuditException(exception);
 		}
 	}
 
