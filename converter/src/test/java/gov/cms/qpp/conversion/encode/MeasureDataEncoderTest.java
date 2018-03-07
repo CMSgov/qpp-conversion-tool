@@ -3,48 +3,35 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static com.google.common.truth.Truth.assertThat;
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
 class MeasureDataEncoderTest {
-	private final String PERFORMANCE_MET = "performanceMet"; //NUMER
-	private final String ELIGIBLE_POPULATION = "eligiblePopulation";//DENUM
-	private final String ELIGIBLE_POPULATION_EX = "eligiblePopulationExclusion";//DENEX
-	private final String ELIGIBLE_POPULATION_EXCEP = "eligiblePopulationException";//DENEXCP
+	private enum Fixture {
+		NUMER("performanceMet"),
+		DENOM("eligiblePopulation"),
+		DENEX("eligiblePopulationExclusion"),
+		DENEXCEP("eligiblePopulationException");
 
-	@Test
-	void testDenominator() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode(SubPopulationLabel.DENOM.name());
-		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat(jsonWrapper.getInteger(ELIGIBLE_POPULATION))
-				.isEqualTo(900);
+		private String value;
+
+		Fixture(String value) {
+			this.value = value;
+		}
 	}
 
-	@Test
-	void testEligiblePopulationException() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode(SubPopulationLabel.DENEXCEP.name());
+	@DisplayName("Verify measure data retrieval")
+	@ParameterizedTest(name = "retrieval of ''{0}''")
+	@EnumSource(Fixture.class)
+	void testDenominator(Fixture fixture) throws EncodeException {
+		Node measureDataNode = setUpMeasureDataNode(fixture.name());
 		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat(jsonWrapper.getInteger(ELIGIBLE_POPULATION_EXCEP))
-				.isEqualTo(900);
-	}
-
-	@Test
-	void testEligiblePopulationExclusion() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode(SubPopulationLabel.DENEX.name());
-		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat(jsonWrapper.getInteger(ELIGIBLE_POPULATION_EX))
-				.isEqualTo(900);
-	}
-
-	@Test
-	void testPerformanceMet() throws EncodeException {
-		Node measureDataNode = setUpMeasureDataNode(SubPopulationLabel.NUMER.name());
-		JsonWrapper jsonWrapper = encode(measureDataNode);
-		assertThat(jsonWrapper.getInteger(PERFORMANCE_MET))
+		assertThat(jsonWrapper.getInteger(fixture.value))
 				.isEqualTo(900);
 	}
 
