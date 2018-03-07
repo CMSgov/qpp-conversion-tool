@@ -12,7 +12,6 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 7 : CT - The measure reference results must have at least one measure
 * 8 : CT - A single aggregate count value is required
 * 9 : CT - Aggregate count value must be an integer
-* 10 : CT - This ACI Measure Performed RnR's Measure Performed is required
 * 11 : CT - This ACI Measure Performed RnR requires exactly one Measure Performed
 * 12 : CT - This ACI Measure Performed RnR's requires a single Measure ID
 * 13 : CT - Denominator count must be less than or equal to Initial Population count for an eCQM that is proportion measure
