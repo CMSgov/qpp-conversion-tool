@@ -389,8 +389,8 @@ class QualityMeasureIdValidatorTest {
 			Lists.newArrayList(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID,
 				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID,
 				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID),
-			", ",
-			"or ");
+			",",
+			"or");
 		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
 			PERFORMANCE_RATE_ID, expectedUuids);
 
