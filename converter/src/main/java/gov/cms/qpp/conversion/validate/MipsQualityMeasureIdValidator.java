@@ -12,10 +12,12 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.util.StringHelper;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -100,7 +102,11 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					.orElse(null);
 
 			if (subPopulation == null) {
-				addPerformanceRateValidationMessage(node, performanceUuid);
+				Set<String> expectedPerformanceUuids = subPopulations.stream()
+					.map(SubPopulation::getNumeratorUuid)
+					.collect(Collectors.toSet());
+				String expectedUuidString = StringHelper.join(expectedPerformanceUuids, ",", "or");
+				addPerformanceRateValidationMessage(node, expectedUuidString);
 			}
 		}
 	}

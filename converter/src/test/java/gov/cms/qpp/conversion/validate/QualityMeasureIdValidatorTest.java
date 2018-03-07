@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import com.google.common.collect.Lists;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -10,6 +11,7 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.MeasureIndexInit;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.util.StringHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,8 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATIO
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
 import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
+
+//import gov.cms.qpp.conversion.model.validation.SubPopulations;
 
 class QualityMeasureIdValidatorTest {
 
@@ -367,10 +371,32 @@ class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS68v6",
-				PERFORMANCE_RATE_ID, "fail");
+				PERFORMANCE_RATE_ID, REQUIRES_DENOM_EXCEPTION_NUMER_GUID);
 		assertWithMessage("Must contain the correct error message.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(expectedErrorMessage);
+	}
+
+	@Test
+	void testPerformanceRateMultipleUuidFail() {
+		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
+			.replaceSubPopulationPerformanceRate(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID, "fail1")
+			.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		String expectedUuids = StringHelper.join(
+			Lists.newArrayList(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID,
+				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID,
+				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID),
+			", ",
+			"or ");
+		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
+			PERFORMANCE_RATE_ID, expectedUuids);
+
+		assertWithMessage("Must contain the correct error message.")
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(expectedErrorMessage);
 	}
 
 	private MeasureReferenceBuilder createCorrectMeasureReference(String measureId) {
