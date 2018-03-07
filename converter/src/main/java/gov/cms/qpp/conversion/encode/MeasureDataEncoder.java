@@ -6,7 +6,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import static gov.cms.qpp.conversion.decode.AggregateCountDecoder.AGGREGATE_COUNT;
@@ -48,11 +48,9 @@ public class MeasureDataEncoder extends QppOutputEncoder {
 	 * @return intialized measure type map
 	 */
 	private Map<SubPopulationLabel, String> initializeMeasureTypeMap() {
-		Map<SubPopulationLabel, String> measureTypeMapper = new HashMap<>();
-		final String eligiblePopulation = "eligiblePopulation";
-
+		Map<SubPopulationLabel, String> measureTypeMapper = new EnumMap<>(SubPopulationLabel.class);
 		measureTypeMapper.put(SubPopulationLabel.NUMER, "performanceMet");
-		measureTypeMapper.put(SubPopulationLabel.DENOM, eligiblePopulation);
+		measureTypeMapper.put(SubPopulationLabel.DENOM, "eligiblePopulation");
 		measureTypeMapper.put(SubPopulationLabel.DENEX, "eligiblePopulationExclusion");
 		measureTypeMapper.put(SubPopulationLabel.DENEXCEP, "eligiblePopulationException");
 		return measureTypeMapper;
