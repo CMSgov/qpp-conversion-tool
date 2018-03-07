@@ -1,5 +1,23 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.Source;
+import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.services.AuditService;
+import gov.cms.qpp.conversion.api.services.QrdaService;
+import gov.cms.qpp.conversion.api.services.ValidationService;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.test.MockitoExtension;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -9,12 +27,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
@@ -28,15 +40,6 @@ import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.Source;
-import gov.cms.qpp.conversion.api.services.AuditService;
-import gov.cms.qpp.conversion.api.services.QrdaService;
-import gov.cms.qpp.conversion.api.services.ValidationService;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.test.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class QrdaControllerV1Test {
@@ -73,9 +76,10 @@ class QrdaControllerV1Test {
 
 	@Test
 	void uploadQrdaFile() throws IOException {
+		Metadata metadata = new Metadata();
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
 		when(auditService.success(any(Converter.ConversionReport.class)))
-				.then(invocation -> null);
+				.then(invocation -> CompletableFuture.completedFuture(metadata));
 
 		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
 
@@ -83,6 +87,18 @@ class QrdaControllerV1Test {
 
 		assertThat(qppResponse.getBody())
 				.isEqualTo(report.getEncoded().toString());
+	}
+
+	@Test
+	void testHeadersContainsLocation() {
+		Metadata metadata = new Metadata();
+		metadata.setUuid(UUID.randomUUID().toString());
+		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
+		when(auditService.success(any(Converter.ConversionReport.class)))
+				.then(invocation -> CompletableFuture.completedFuture(metadata));
+
+		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile);
+		assertThat(qppResponse.getHeaders().get("Location")).containsExactly(metadata.getUuid());
 	}
 
 	@Test
