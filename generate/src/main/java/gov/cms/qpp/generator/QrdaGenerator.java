@@ -5,7 +5,7 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -140,17 +140,17 @@ public class QrdaGenerator {
 	}
 
 	private enum PopulationValue {
-		IPOP(SubPopulations.IPOP, 100),
-		DENOM(SubPopulations.DENOM, 100),
-		DENEX(SubPopulations.DENEX, 10),
-		DENEXCEP(SubPopulations.DENEXCEP, 10),
-		NUMER(SubPopulations.NUMER, 80);
+		IPOP(SubPopulationLabel.IPOP, 100),
+		DENOM(SubPopulationLabel.DENOM, 100),
+		DENEX(SubPopulationLabel.DENEX, 10),
+		DENEXCEP(SubPopulationLabel.DENEXCEP, 10),
+		NUMER(SubPopulationLabel.NUMER, 80);
 
 		String measure;
 		int value;
 
-		PopulationValue(String measure, int factor) {
-			this.measure = measure;
+		PopulationValue(SubPopulationLabel measure, int factor) {
+			this.measure = measure.name();
 			this.value = factor * getSubPopCount();
 		}
 
