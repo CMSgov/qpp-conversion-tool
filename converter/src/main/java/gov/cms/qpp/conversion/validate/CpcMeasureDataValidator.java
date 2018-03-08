@@ -76,8 +76,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 					LocalizedError error = makeIncorrectCountSizeLocalizedError(node, supplementalData.getCode(),
 						electronicMeasureId);
 					check(validatedSupplementalNode)
-						.childMinimum(error, 1, TemplateId.ACI_AGGREGATE_COUNT)
-						.childMaximum(error, 1, TemplateId.ACI_AGGREGATE_COUNT);
+						.childExact(error, 1, TemplateId.ACI_AGGREGATE_COUNT);
 				}
 			}
 		}

@@ -17,7 +17,7 @@ import java.util.Optional;
 @Validator(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentValidator extends NodeValidator {
 
-	protected static final String VALID_PROGRAM_NAMES = StringHelper.join(Program.setOfAliases(), ", ", "or ");
+	protected static final String VALID_PROGRAM_NAMES = StringHelper.join(Program.setOfAliases(), ",", "or");
 
 	/**
 	 * Validates a single Clinical Document Node.

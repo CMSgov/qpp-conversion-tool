@@ -1,17 +1,16 @@
 package gov.cms.qpp.conversion.encode;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import java.util.LinkedHashMap;
-
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import java.util.LinkedHashMap;
+
+import static com.google.common.truth.Truth.assertThat;
 
 class QualityMeasureIdEncoderTest {
 
@@ -21,7 +20,6 @@ class QualityMeasureIdEncoderTest {
 	private Node numeratorNode;
 	private Node denominatorNode;
 	private Node aggregateCountNode;
-	private Node paymentNode;
 	private JsonWrapper wrapper;
 	private QualityMeasureIdEncoder encoder;
 	private String type = "type";
@@ -35,24 +33,24 @@ class QualityMeasureIdEncoderTest {
 		aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
 
-		paymentNode = new Node(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
+		Node paymentNode = new Node(TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2);
 		paymentNode.putValue("place", "holder");
 
 		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		populationNode.putValue(type, SubPopulations.IPOP);
+		populationNode.putValue(type, SubPopulationLabel.IPOP.name());
 		populationNode.addChildNode(aggregateCountNode);
 
 		denomExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denomExclusionNode.putValue(type, SubPopulations.DENEX);
+		denomExclusionNode.putValue(type, SubPopulationLabel.DENEX.name());
 		denomExclusionNode.addChildNode(aggregateCountNode);
 
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		numeratorNode.putValue(type, SubPopulations.NUMER);
+		numeratorNode.putValue(type, SubPopulationLabel.NUMER.name());
 		numeratorNode.addChildNode(aggregateCountNode);
 		numeratorNode.addChildNode(paymentNode);
 
 		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denominatorNode.putValue(type, SubPopulations.DENOM);
+		denominatorNode.putValue(type, SubPopulationLabel.DENOM.name());
 		denominatorNode.addChildNode(paymentNode);
 		denominatorNode.addChildNode(aggregateCountNode);
 
@@ -90,7 +88,7 @@ class QualityMeasureIdEncoderTest {
 	@Test
 	void testPopulationAltTotalIsEncoded() {
 		populationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		populationNode.putValue(type, SubPopulations.IPP);
+		populationNode.putValue(type, "IPP");
 		populationNode.addChildNode(aggregateCountNode);
 		executeInternalEncode();
 		LinkedHashMap<String, Object> childValues = getChildValues();
