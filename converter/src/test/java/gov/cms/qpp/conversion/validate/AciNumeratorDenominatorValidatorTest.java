@@ -137,7 +137,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about missing Numerator node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_NUMERATOR_CHILD_NODE);
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE);
 	}
 
 	@Test
@@ -162,7 +162,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about missing Denominator node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_DENOMINATOR_CHILD_NODE);
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_DENOMINATOR_CHILD_NODE);
 	}
 
 	@Test
@@ -189,7 +189,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about too many Numerator nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS);
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE);
 	}
 
 	@Test
@@ -216,6 +216,6 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about too many Denominator nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS);
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_DENOMINATOR_CHILD_NODE);
 	}
 }
