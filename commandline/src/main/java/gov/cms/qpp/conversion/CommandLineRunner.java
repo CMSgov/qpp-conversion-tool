@@ -1,5 +1,9 @@
 package gov.cms.qpp.conversion;
 
+import org.apache.commons.cli.CommandLine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.Finder;
 
@@ -22,10 +26,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.commons.cli.CommandLine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Responsible for executing the given command line instructions
  */
@@ -33,7 +33,7 @@ public class CommandLineRunner implements Runnable {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CommandLineMain.class);
 	private static final Pattern LITERAL_COMMA = Pattern.compile(",", Pattern.LITERAL);
-	private static final Pattern NORMAL_PATH = Pattern.compile("[a-zA-Z0-9_\\-\\s,.\\/]+");
+	private static final Pattern NORMAL_PATH = Pattern.compile("[a-zA-Z0-9_\\-\\s,.\\/\\\\]+");
 	private static final Pattern GLOB_FINDER = Pattern.compile("(" + NORMAL_PATH.pattern() + ").+");
 
 	private final CommandLine commandLine;
