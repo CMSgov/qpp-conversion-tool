@@ -3,12 +3,11 @@ package gov.cms.qpp.conversion;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.TransformException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -27,7 +26,6 @@ public class ConversionFileWriterWrapper {
 	private Context context;
 
 	public ConversionFileWriterWrapper(Path inFile) {
-		DEV_LOG.info("PAK::ConversionFileWriterWrapper::init");
 		this.source = new PathSource(inFile);
 
 		fileSystem = inFile.getFileSystem();
@@ -40,7 +38,6 @@ public class ConversionFileWriterWrapper {
 	 * @return this for chaining
 	 */
 	public ConversionFileWriterWrapper setContext(Context context) {
-		DEV_LOG.info("PAK::ConversionFileWriterWrapper::setContext");
 		this.context = context;
 		return this;
 	}
@@ -49,7 +46,6 @@ public class ConversionFileWriterWrapper {
 	 * Execute the conversion.
 	 */
 	public void transform() {
-		DEV_LOG.info("PAK::ConversionFileWriterWrapper::transform");
 		Converter converter = context == null ? new Converter(source) : new Converter(source, context);
 
 		executeConverter(converter);
@@ -61,7 +57,6 @@ public class ConversionFileWriterWrapper {
 	 * @param converter The Converter to execute.
 	 */
 	private void executeConverter(Converter converter) {
-		DEV_LOG.info("PAK::ConversionFileWriterWrapper::executeConverter");
 		try {
 			JsonWrapper jsonWrapper = converter.transform();
 			Path outFile = getOutputFile(source.getName(), true);

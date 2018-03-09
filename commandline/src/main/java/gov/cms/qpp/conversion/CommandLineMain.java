@@ -56,7 +56,6 @@ public class CommandLineMain {
 		CommandLine commandLine = cli(arguments);
 
 		if (commandLine != null) {
-			DEV_LOG.info("Commandline is not null");
 			new CommandLineRunner(commandLine).run();
 		}
 	}

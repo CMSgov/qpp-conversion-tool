@@ -1,9 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import org.apache.commons.cli.CommandLine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.Finder;
 
@@ -26,6 +22,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.commons.cli.CommandLine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Responsible for executing the given command line instructions
  */
@@ -33,7 +33,7 @@ public class CommandLineRunner implements Runnable {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(CommandLineMain.class);
 	private static final Pattern LITERAL_COMMA = Pattern.compile(",", Pattern.LITERAL);
-	private static final Pattern NORMAL_PATH = Pattern.compile("[a-zA-Z0-9_\\-\\s,.\\/\\\\]+");
+	private static final Pattern NORMAL_PATH = Pattern.compile("[a-zA-Z0-9_\\-\\s,.\\/]+");
 	private static final Pattern GLOB_FINDER = Pattern.compile("(" + NORMAL_PATH.pattern() + ").+");
 
 	private final CommandLine commandLine;
@@ -74,25 +74,19 @@ public class CommandLineRunner implements Runnable {
 		if (isHelp()) {
 			sendHelp();
 		} else if (hasPotentialFiles()) {
-			DEV_LOG.info("Has potential files");
 			Scopes scopes = getScopes();
 			scope = scopes.getQrdaScopes();
 			if (scopes.isValid()) {
-				DEV_LOG.info("Scopes are valid");
 				Set<Path> convert = getRequestedFilesForConversion();
-				DEV_LOG.info("Convert paths={}", convert);
 
 				List<Path> invalid = convert.stream()
 						.filter(path -> !isValid(path))
 						.collect(Collectors.toList());
 				if (invalid.isEmpty()) {
-					DEV_LOG.info("No invalid paths");
 					doValidation = !commandLine.hasOption(CommandLineMain.SKIP_VALIDATION);
 					doDefaults = !commandLine.hasOption(CommandLineMain.SKIP_DEFAULTS);
 					historical = commandLine.hasOption(CommandLineMain.BYGONE);
 
-					DEV_LOG.info("Call ConversionFileWriterWrapper");
-					DEV_LOG.info("Test go.");
 					convert.parallelStream()
 						.map(ConversionFileWriterWrapper::new)
 						.peek(conversion -> conversion.setContext(createContext()))
@@ -169,7 +163,6 @@ public class CommandLineRunner implements Runnable {
 	}
 
 	private Collection<Path> getRequestedFilesForConversion(String path) {
-		DEV_LOG.info("PAK::CommandLineRunner::getRequestedFilesForConversion");
 		if (isNormalPath(path)) {
 			return Collections.singleton(fileSystem.getPath(path));
 		}
