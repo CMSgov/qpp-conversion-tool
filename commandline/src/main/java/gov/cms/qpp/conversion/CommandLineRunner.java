@@ -203,6 +203,13 @@ public class CommandLineRunner implements Runnable {
 		return getNormalPathPattern().matcher(path).matches();
 	}
 
+	/**
+	 * Generates a regex {@link Pattern} to determine if a path is for a normal file.
+	 *
+	 * The regex is based on the path separator of the {@link FileSystem} used.
+	 *
+	 * @return A regex pattern.
+	 */
 	protected Pattern getNormalPathPattern() {
 		if (normalPathPattern == null) {
 			String separator = "\\" + this.fileSystem.getSeparator();
@@ -212,6 +219,13 @@ public class CommandLineRunner implements Runnable {
 		return normalPathPattern;
 	}
 
+	/**
+	 * Generates a regex {@link Pattern} to determine if a path is a glob path.
+	 *
+	 * The regex is based on the {@link #getNormalPathPattern()} regex.
+	 *
+	 * @return A regex pattern.
+	 */
 	protected Pattern getGlobFinderPattern() {
 		if (globFinderPattern == null) {
 			globFinderPattern = Pattern.compile("(" + getNormalPathPattern().pattern() + ").+");
