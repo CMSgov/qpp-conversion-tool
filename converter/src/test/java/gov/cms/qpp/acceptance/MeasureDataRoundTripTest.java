@@ -13,7 +13,6 @@ import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
 
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
@@ -21,7 +20,6 @@ import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
