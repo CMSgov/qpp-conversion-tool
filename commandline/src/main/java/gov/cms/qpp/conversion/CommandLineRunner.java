@@ -31,10 +31,8 @@ import java.util.stream.Collectors;
  */
 public class CommandLineRunner implements Runnable {
 
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(CommandLineMain.class);
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(CommandLineRunner.class);
 	private static final Pattern LITERAL_COMMA = Pattern.compile(",", Pattern.LITERAL);
-	private static final Pattern NORMAL_PATH = Pattern.compile("[a-zA-Z0-9_\\-\\s,.\\/\\\\]+");
-	private static final Pattern GLOB_FINDER = Pattern.compile("(" + NORMAL_PATH.pattern() + ").+");
 
 	private final CommandLine commandLine;
 	private final FileSystem fileSystem;
@@ -42,6 +40,8 @@ public class CommandLineRunner implements Runnable {
 	private boolean doValidation;
 	private boolean doDefaults;
 	private boolean historical;
+	private Pattern normalPathPattern;
+	private Pattern globFinderPattern;
 
 	/**
 	 * Creates a new CommandLineRunner from a given {@link CommandLine}
@@ -169,7 +169,7 @@ public class CommandLineRunner implements Runnable {
 
 		Path directory;
 		String glob;
-		Matcher globMatcher = GLOB_FINDER.matcher(path);
+		Matcher globMatcher = getGlobFinderPattern().matcher(path);
 		if (globMatcher.matches()) {
 			String directoryName = globMatcher.group(1);
 			if (directoryName.endsWith(".")) {
@@ -200,11 +200,27 @@ public class CommandLineRunner implements Runnable {
 	}
 
 	private boolean isNormalPath(String path) {
-		return NORMAL_PATH.matcher(path).matches();
+		return getNormalPathPattern().matcher(path).matches();
+	}
+
+	protected Pattern getNormalPathPattern() {
+		if (normalPathPattern == null) {
+			String separator = "\\" + this.fileSystem.getSeparator();
+			normalPathPattern = Pattern.compile("[a-zA-Z0-9_\\-\\s,." + separator + "]+");
+		}
+
+		return normalPathPattern;
+	}
+
+	protected Pattern getGlobFinderPattern() {
+		if (globFinderPattern == null) {
+			globFinderPattern = Pattern.compile("(" + getNormalPathPattern().pattern() + ").+");
+		}
+
+		return globFinderPattern;
 	}
 
 	private boolean isValid(Path path) {
 		return Files.isRegularFile(path) && Files.isReadable(path);
 	}
-
 }
