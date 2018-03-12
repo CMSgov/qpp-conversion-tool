@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion;
 
+import com.google.common.truth.Truth;
 import org.apache.commons.cli.CommandLine;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,42 +27,42 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 	@Test
 	void testNewNull() {
 		NullPointerException exception = Assertions.assertThrows(NullPointerException.class, () -> new CommandLineRunner(null));
-		assertThat(exception).hasMessageThat().isEqualTo("commandLine");
+		Truth.assertThat(exception).hasMessageThat().isEqualTo("commandLine");
 	}
 
 	@Test
 	void testRunHelp() {
 		CommandLineRunner runner = new CommandLineRunner(line("-" + CommandLineMain.HELP));
 		runner.run();
-		assertThat(getLogs()).isNotEmpty();
+		Truth.assertThat(getLogs()).isNotEmpty();
 	}
 
 	@Test
 	void testRunWithoutFiles() {
 		CommandLineRunner runner = new CommandLineRunner(line());
 		runner.run();
-		assertThat(getLogs()).contains("You must specify files to convert");
+		Truth.assertThat(getLogs()).contains("You must specify files to convert");
 	}
 
 	@Test
 	void testRunWithInvalidScope() {
 		CommandLineRunner runner = new CommandLineRunner(line(INVALID_FILE, "-t", "SOME_INVALID_SCOPE"));
 		runner.run();
-		assertThat(getLogs()).contains("A given template scope was invalid");
+		Truth.assertThat(getLogs()).contains("A given template scope was invalid");
 	}
 
 	@Test
 	void testRunWithValidScope() {
 		CommandLineRunner runner = new CommandLineRunner(line(INVALID_FILE, "-t", QrdaScope.CLINICAL_DOCUMENT.name()));
 		runner.run();
-		assertThat(getLogs()).doesNotContain("A given template scope was invalid");
+		Truth.assertThat(getLogs()).doesNotContain("A given template scope was invalid");
 	}
 
 	@Test
 	void testRunWithMissingFile() {
 		CommandLineRunner runner = new CommandLineRunner(line(INVALID_FILE));
 		runner.run();
-		assertThat(getLogs()).contains("Invalid or missing paths: [FILE]".replace("FILE", INVALID_FILE));
+		Truth.assertThat(getLogs()).contains("Invalid or missing paths: [FILE]".replace("FILE", INVALID_FILE));
 	}
 
 	@JimfsTest
@@ -69,7 +70,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 		String path = VALID_FILE.replaceAll("/", "\\" + fileSystem.getSeparator());
 		CommandLineRunner runner = new CommandLineRunner(line(path), fileSystem);
 		runner.run();
-		assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
 	}
 
 	@JimfsTest
@@ -78,7 +79,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 		CommandLineRunner runner = new CommandLineRunner(line(path,
 				"-" + CommandLineMain.SKIP_DEFAULTS), fileSystem);
 		runner.run();
-		assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
 	}
 
 	@JimfsTest
@@ -86,7 +87,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 		String path = "src/test/resources/qrda_bad_denominator.xml".replaceAll("/", "\\" + fileSystem.getSeparator());
 		CommandLineRunner runner = new CommandLineRunner(line(path), fileSystem);
 		runner.run();
-		assertThat(Files.exists(fileSystem.getPath("qrda_bad_denominator.err.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("qrda_bad_denominator.err.json"))).isTrue();
 	}
 
 	@JimfsTest
@@ -95,7 +96,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 		CommandLineRunner runner = new CommandLineRunner(line(path,
 				"-" + CommandLineMain.SKIP_VALIDATION), fileSystem);
 		runner.run();
-		assertThat(Files.exists(fileSystem.getPath("qrda_bad_denominator.qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("qrda_bad_denominator.qpp.json"))).isTrue();
 	}
 
 	@JimfsTest
@@ -103,7 +104,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 		Files.copy(fileSystem.getPath(VALID_FILE), fileSystem.getPath("valid-QRDA-III-abridged.xml"));
 		CommandLineRunner runner = new CommandLineRunner(line("*.xml"), fileSystem);
 		runner.run();
-		assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
 	}
 
 	@JimfsTest
@@ -111,7 +112,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 		Files.copy(fileSystem.getPath(VALID_FILE), fileSystem.getPath("valid-QRDA-III-abridged.xml"));
 		CommandLineRunner runner = new CommandLineRunner(line("valid-QRDA-III-abridged.*"), fileSystem);
 		runner.run();
-		assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
 	}
 
 	@JimfsTest
@@ -119,8 +120,8 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 		String path = "src/test/resources/*".replaceAll("/", "\\" + fileSystem.getSeparator());
 		CommandLineRunner runner = new CommandLineRunner(line(path), fileSystem);
 		runner.run();
-		assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
-		assertThat(Files.exists(fileSystem.getPath("not-a-QRDA-III-file.err.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("not-a-QRDA-III-file.err.json"))).isTrue();
 	}
 
 	@Test
@@ -129,7 +130,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 
 		when(mockWindowsFileSystem.getSeparator()).thenReturn("\\");
 		CommandLineRunner runner = new CommandLineRunner(line(WINDOWS_FILE), mockWindowsFileSystem);
-		assertThat(runner.getNormalPathPattern().pattern()).contains("\\\\");
+		Truth.assertThat(runner.getNormalPathPattern().pattern()).contains("\\\\");
 	}
 
 	@Test
@@ -138,7 +139,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 
 		when(mockWindowsFileSystem.getSeparator()).thenReturn("/");
 		CommandLineRunner runner = new CommandLineRunner(line(VALID_FILE), mockWindowsFileSystem);
-		assertThat(runner.getNormalPathPattern().pattern()).contains("\\/");
+		Truth.assertThat(runner.getNormalPathPattern().pattern()).contains("\\/");
 	}
 
 	@Test
@@ -148,7 +149,7 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 		String mockSeparator = ":";
 		when(mockWindowsFileSystem.getSeparator()).thenReturn(mockSeparator);
 		CommandLineRunner runner = new CommandLineRunner(line(VALID_FILE), mockWindowsFileSystem);
-		assertThat(runner.getGlobFinderPattern().pattern()).contains(mockSeparator);
+		Truth.assertThat(runner.getGlobFinderPattern().pattern()).contains(mockSeparator);
 	}
 
 	private CommandLine line(String... arguments) {
