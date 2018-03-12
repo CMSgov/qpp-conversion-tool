@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
+import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.AuditService;
@@ -66,13 +67,13 @@ public class QrdaControllerV1 {
 	 * @return Valid json or error json content
 	 */
 	@PostMapping(headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file,
+	public ResponseEntity<String> uploadQrdaFile(@RequestParam(name = "file") MultipartFile file,
 			@RequestHeader(required = false, name = "Purpose") String purpose) {
 		String originalFilename = file.getOriginalFilename();
 
 		if (!StringUtils.isEmpty(purpose)) {
 			if (purpose.length() > MAX_PURPOSE_LENGTH) {
-				throw new IllegalArgumentException("Given purpose is too large");
+				throw new InvalidPurposeException("Given Purpose (header) is too large");
 			}
 			API_LOG.info("Conversion request received for " + purpose);
 		} else {

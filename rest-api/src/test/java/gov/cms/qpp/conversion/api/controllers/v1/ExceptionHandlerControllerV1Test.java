@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
+import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.CpcFileServiceImpl;
@@ -14,6 +15,7 @@ import gov.cms.qpp.test.logging.LoggerContract;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -23,20 +25,25 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 import com.amazonaws.AmazonServiceException;
 import com.google.common.truth.Truth;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 class ExceptionHandlerControllerV1Test implements LoggerContract {
@@ -222,6 +229,30 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/cpc/unprocessed-files")).andReturn();
 		Truth.assertThat(result.getResponse().getStatus()).isEqualTo(404);
 		//mvc.perform(RequestBuilder("/cpc/unprocessed-files"));
+	}
+
+	@Test
+	void testHandleInvalidPurposeExceptionExceptionResponseBody() {
+		InvalidPurposeException exception = new InvalidPurposeException("some message");
+
+		ResponseEntity<String> response = objectUnderTest.handleInvalidPurposeException(exception);
+
+		Truth.assertThat(response.getBody()).contains("some message");
+	}
+
+	@Test
+	void testHandleInvalidPurposeExceptionResponseBodyDoesInterception() throws Exception {
+		QrdaControllerV1 mock = Mockito.mock(QrdaControllerV1.class);
+		MockMvc mvc = MockMvcBuilders.standaloneSetup(mock)
+				.setControllerAdvice(new ExceptionHandlerControllerV1(auditService))
+				.build();
+		Mockito.when(mock.uploadQrdaFile(ArgumentMatchers.any(), ArgumentMatchers.anyString())).thenCallRealMethod();
+
+		RequestBuilder builder = MockMvcRequestBuilders.fileUpload("/")
+			.file("file", ArrayUtils.EMPTY_BYTE_ARRAY)
+			.header("Purpose", "this is an invalid purpose because it's too long" + UUID.randomUUID());
+		MvcResult result = mvc.perform(builder).andReturn();
+		Truth.assertThat(result.getResponse().getContentAsString()).isEqualTo("Given Purpose (header) is too large");
 	}
 
 	@Override
