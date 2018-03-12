@@ -1,16 +1,16 @@
 package gov.cms.qpp.conversion.decode;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.io.IOException;
 
@@ -21,7 +21,6 @@ class MeasureDataDecoderTest {
 
 	private static String happy;
 
-	private Context context;
 	private Node placeholder;
 
 	@BeforeAll
@@ -31,30 +30,15 @@ class MeasureDataDecoderTest {
 
 	@BeforeEach
 	void before() throws XmlException {
-		context = new Context();
-		MeasureDataDecoder measureDataDecoder = new MeasureDataDecoder(context);
+		Context context = new Context();
 		QrdaDecoderEngine engine = new QrdaDecoderEngine(context);
 		placeholder = engine.decode(XmlUtils.stringToDom(happy));
 	}
 
-	@Test
-	void testDecodeOfDenomMeasureData() {
-		sharedTest(SubPopulations.DENOM);
-	}
-
-	@Test
-	void testDecodeOfNumerMeasureData() {
-		sharedTest(SubPopulations.NUMER);
-	}
-
-	@Test
-	void testDecodeOfDenexMeasureData() {
-		sharedTest(SubPopulations.DENEX);
-	}
-
-	@Test
-	void testDecodeOfDenexcepMeasureData() {
-		sharedTest(SubPopulations.DENEXCEP);
+	@ParameterizedTest
+	@EnumSource(value = SubPopulationLabel.class, mode = EnumSource.Mode.EXCLUDE, names = {"IPOP"})
+	void testDecodeOfMeasureData(SubPopulationLabel label) {
+		sharedTest(label.name());
 	}
 
 	private void sharedTest(String type) {

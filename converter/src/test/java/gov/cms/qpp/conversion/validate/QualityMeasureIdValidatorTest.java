@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import com.google.common.collect.Lists;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -9,7 +10,8 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.MeasureIndexInit;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.util.StringHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -26,9 +28,11 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
 import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
 
+//import gov.cms.qpp.conversion.model.validation.SubPopulations;
+
 class QualityMeasureIdValidatorTest {
 
-	public static final String ONE_HUNDRED = "100";
+	static final String ONE_HUNDRED = "100";
 
 	private static final String REQUIRES_DENOM_EXCLUSION_GUID = "requiresDenominatorExclusionGuid";
 	private static final String REQUIRES_DENOM_EXCLUSION_IPOP_GUID = "3AD33404-E734-4F67-9144-E4B63CB3F4BE";
@@ -131,10 +135,14 @@ class QualityMeasureIdValidatorTest {
 			"40280381-51f0-825b-0152-227617db152e", "40280381-51f0-825b-0152-22a112d2172a");
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 				.addMeasureId(measureId)
-				.addSubPopulationMeasureDataWithCounts(SubPopulations.IPOP, REQUIRES_DENOM_EXCLUSION_IPOP_GUID, ONE_HUNDRED)
-				.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
-				.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
-				.addSubPopulationMeasureDataWithCounts(SubPopulations.DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
+				.addSubPopulationMeasureDataWithCounts(
+					SubPopulationLabel.IPOP.name(), REQUIRES_DENOM_EXCLUSION_IPOP_GUID, ONE_HUNDRED)
+				.addSubPopulationMeasureDataWithCounts(
+					SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
+				.addSubPopulationMeasureDataWithCounts(
+					SubPopulationLabel.NUMER.name(), REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
+				.addSubPopulationMeasureDataWithCounts(
+					SubPopulationLabel.DENEX.name(), REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
 				.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -149,10 +157,14 @@ class QualityMeasureIdValidatorTest {
 		String measureId = "InvalidMeasureId";
 		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
 			.addMeasureId(measureId)
-			.addSubPopulationMeasureDataWithCounts(SubPopulations.IPOP, REQUIRES_DENOM_EXCLUSION_IPOP_GUID, ONE_HUNDRED)
-			.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
-			.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
-			.addSubPopulationMeasureDataWithCounts(SubPopulations.DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
+			.addSubPopulationMeasureDataWithCounts(
+				SubPopulationLabel.IPOP.name(), REQUIRES_DENOM_EXCLUSION_IPOP_GUID, ONE_HUNDRED)
+			.addSubPopulationMeasureDataWithCounts(
+				SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
+			.addSubPopulationMeasureDataWithCounts(
+				SubPopulationLabel.NUMER.name(), REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
+			.addSubPopulationMeasureDataWithCounts(
+				SubPopulationLabel.DENEX.name(), REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -165,12 +177,12 @@ class QualityMeasureIdValidatorTest {
 	@Test
 	void testDenominatorExclusionMissing() {
 		LocalizedError incorrectCount = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(
-				"CMS165v5", 1, SubPopulations.DENEX, 0);
+				"CMS165v5", 1, SubPopulationLabel.DENEX.name(), 0);
 		LocalizedError incorrectUuid = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
-				"CMS165v5", SubPopulations.DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID);
+				"CMS165v5", SubPopulationLabel.DENEX.name(), REQUIRES_DENOM_EXCLUSION_DENEX_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCLUSION_GUID)
-			.removeSubPopulationMeasureData(SubPopulations.DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID)
+			.removeSubPopulationMeasureData(SubPopulationLabel.DENEX.name(), REQUIRES_DENOM_EXCLUSION_DENEX_GUID)
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -190,7 +202,9 @@ class QualityMeasureIdValidatorTest {
 	@Test
 	void testInternalIPPMeasure() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
-			.replaceSubPopulationMeasureData(SubPopulations.IPOP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID, SubPopulations.IPP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID)
+			.replaceSubPopulationMeasureData(
+				SubPopulationLabel.IPOP.name(), REQUIRES_DENOM_EXCEPTION_IPOP_GUID,
+				"IPP", REQUIRES_DENOM_EXCEPTION_IPOP_GUID)
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -200,12 +214,13 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void testInternalMissingDenexcepMeasure() {
-		LocalizedError countMessage = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS68v6", 1, SubPopulations.DENEXCEP, 0);
+		LocalizedError countMessage =
+			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS68v6", 1, SubPopulationLabel.DENEXCEP.name(), 0);
 		LocalizedError uuidMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
-				"CMS68v6", SubPopulations.DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID);
+				"CMS68v6", SubPopulationLabel.DENEXCEP.name(), REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
-			.removeSubPopulationMeasureData(SubPopulations.DENEXCEP, REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID)
+			.removeSubPopulationMeasureData(SubPopulationLabel.DENEXCEP.name(), REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID)
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -227,12 +242,14 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void testInternalDenexcepMultipleSupPopulationsInvalidMeasureId() {
-		LocalizedError message = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulations.DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID);
+		LocalizedError message =
+			ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
+				"CMS52v5", SubPopulationLabel.DENEXCEP.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
 			.replaceSubPopulationMeasureData(
-					SubPopulations.DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID,
-					SubPopulations.DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID+"INVALID")
+					SubPopulationLabel.DENEXCEP.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID,
+					SubPopulationLabel.DENEXCEP.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID+"INVALID")
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -243,12 +260,14 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void testInternalDenexcepMultipleSupPopulationsMissingMeasureId() {
-		LocalizedError countMessage = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 2, SubPopulations.DENEXCEP, 1);
-		LocalizedError uuidMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulations.DENEXCEP,
+		LocalizedError countMessage =
+			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 2, SubPopulationLabel.DENEXCEP.name(), 1);
+		LocalizedError uuidMessage =
+			ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulationLabel.DENEXCEP.name(),
 				MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID);
 
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
-			.removeSubPopulationMeasureData(SubPopulations.DENEXCEP, MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID)
+			.removeSubPopulationMeasureData(SubPopulationLabel.DENEXCEP.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID)
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -260,13 +279,14 @@ class QualityMeasureIdValidatorTest {
 	@Test
 	void testTooManyCriteriaExists() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
-			.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER,
+			.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.NUMER.name(),
 					MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID, ONE_HUNDRED)
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
-		LocalizedError expectedErrorMessage = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulations.NUMER, 4);
+		LocalizedError expectedErrorMessage =
+			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulationLabel.NUMER.name(), 4);
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(expectedErrorMessage);
@@ -275,13 +295,15 @@ class QualityMeasureIdValidatorTest {
 	@Test
 	void testTooFewCriteriaExists() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
-			.removeSubPopulationMeasureData(SubPopulations.NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID)
+			.removeSubPopulationMeasureData(SubPopulationLabel.NUMER.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID)
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
-		LocalizedError expectedErrorMessage = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulations.NUMER, 2);
-		LocalizedError expectedUuidErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulations.NUMER,
+		LocalizedError expectedErrorMessage =
+			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulationLabel.NUMER.name(), 2);
+		LocalizedError expectedUuidErrorMessage =
+			ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5", SubPopulationLabel.NUMER.name(),
 				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
 
 		assertWithMessage("Incorrect validation error.")
@@ -292,14 +314,14 @@ class QualityMeasureIdValidatorTest {
 	@Test
 	void testIncorrectUuid() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
-			.replaceSubPopulationMeasureData(SubPopulations.NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID,
-					SubPopulations.NUMER, "incorrectUUID")
+			.replaceSubPopulationMeasureData(SubPopulationLabel.NUMER.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID,
+					SubPopulationLabel.NUMER.name(), "incorrectUUID")
 			.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
-				SubPopulations.NUMER, MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
+				SubPopulationLabel.NUMER.name(), MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID);
 
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -309,8 +331,8 @@ class QualityMeasureIdValidatorTest {
 	@Test
 	void testInternalDenomCountLessThanIpopCount() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
-				.removeSubPopulationMeasureData(SubPopulations.DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID)
-				.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID, "50")
+				.removeSubPopulationMeasureData(SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCEPTION_DENOM_GUID)
+				.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCEPTION_DENOM_GUID, "50")
 				.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -331,8 +353,8 @@ class QualityMeasureIdValidatorTest {
 	@Test
 	void testInternalDenomCountGreaterThanIpopCount() {
 		Node measureReferenceResultsNode = createCorrectMeasureReference(REQUIRES_DENOM_EXCEPTION_GUID)
-				.removeSubPopulationMeasureData(SubPopulations.DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID)
-				.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID, "101")
+				.removeSubPopulationMeasureData(SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCEPTION_DENOM_GUID)
+				.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCEPTION_DENOM_GUID, "101")
 				.build();
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -349,10 +371,32 @@ class QualityMeasureIdValidatorTest {
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS68v6",
-				PERFORMANCE_RATE_ID, "fail");
+				PERFORMANCE_RATE_ID, REQUIRES_DENOM_EXCEPTION_NUMER_GUID);
 		assertWithMessage("Must contain the correct error message.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(expectedErrorMessage);
+	}
+
+	@Test
+	void testPerformanceRateMultipleUuidFail() {
+		Node measureReferenceResultsNode = createCorrectMeasureReference(MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID)
+			.replaceSubPopulationPerformanceRate(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID, "fail1")
+			.build();
+
+		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
+
+		String expectedUuids = StringHelper.join(
+			Lists.newArrayList(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID,
+				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID,
+				MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID),
+			",",
+			"or");
+		LocalizedError expectedErrorMessage = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS52v5",
+			PERFORMANCE_RATE_ID, expectedUuids);
+
+		assertWithMessage("Must contain the correct error message.")
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(expectedErrorMessage);
 	}
 
 	private MeasureReferenceBuilder createCorrectMeasureReference(String measureId) {
@@ -361,48 +405,48 @@ class QualityMeasureIdValidatorTest {
 
 		if (MULTIPLE_POPULATION_DENOM_EXCEPTION_GUID.equals(measureId)) {
 			measureReferenceResultsNode
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.IPOP,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.IPOP.name(),
 							MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP1_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENOM.name(),
 							MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM1_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.DENEXCEP,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENEXCEP.name(),
 							MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXCEP1_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.NUMER.name(),
 							MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID, ONE_HUNDRED)
 					.addSubPopulationPerformanceRate(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER1_GUID)
 
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.IPOP,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.IPOP.name(),
 							MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP2_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENOM.name(),
 							MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM2_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.DENEXCEP,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENEXCEP.name(),
 							MULTIPLE_POPULATION_DENOM_EXCEPTION_DENEXECEP2_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.NUMER.name(),
 							MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID, ONE_HUNDRED)
 					.addSubPopulationPerformanceRate(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER2_GUID)
 
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.IPOP,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.IPOP.name(),
 							MULTIPLE_POPULATION_DENOM_EXCEPTION_IPOP3_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENOM.name(),
 							MULTIPLE_POPULATION_DENOM_EXCEPTION_DENOM3_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.NUMER.name(),
 							MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID, ONE_HUNDRED)
 					.addSubPopulationPerformanceRate(MULTIPLE_POPULATION_DENOM_EXCEPTION_NUMER3_GUID);
 		} else if (REQUIRES_DENOM_EXCEPTION_GUID.equals(measureId)) {
 			measureReferenceResultsNode
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.DENEXCEP,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENEXCEP.name(),
 							REQUIRES_DENOM_EXCEPTION_DENEXCEP_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.IPOP, REQUIRES_DENOM_EXCEPTION_IPOP_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCEPTION_DENOM_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER, REQUIRES_DENOM_EXCEPTION_NUMER_GUID, ONE_HUNDRED)
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.IPOP.name(), REQUIRES_DENOM_EXCEPTION_IPOP_GUID, ONE_HUNDRED)
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCEPTION_DENOM_GUID, ONE_HUNDRED)
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.NUMER.name(), REQUIRES_DENOM_EXCEPTION_NUMER_GUID, ONE_HUNDRED)
 					.addSubPopulationPerformanceRate(REQUIRES_DENOM_EXCEPTION_NUMER_GUID);
 		} else if (REQUIRES_DENOM_EXCLUSION_GUID.equals(measureId)) {
 			measureReferenceResultsNode
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.IPOP, REQUIRES_DENOM_EXCLUSION_IPOP_GUID,
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.IPOP.name(), REQUIRES_DENOM_EXCLUSION_IPOP_GUID,
 							ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.DENOM, REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.NUMER, REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
-					.addSubPopulationMeasureDataWithCounts(SubPopulations.DENEX, REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.NUMER.name(), REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
+					.addSubPopulationMeasureDataWithCounts(SubPopulationLabel.DENEX.name(), REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
 					.addSubPopulationPerformanceRate(REQUIRES_DENOM_EXCLUSION_NUMER_GUID);
 		}
 

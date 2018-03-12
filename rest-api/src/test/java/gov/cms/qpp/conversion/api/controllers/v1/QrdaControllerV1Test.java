@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.Source;
+import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
@@ -14,15 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
-
-import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
@@ -36,6 +30,15 @@ import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+
+import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class QrdaControllerV1Test {
@@ -70,10 +73,11 @@ class QrdaControllerV1Test {
 	}
 
 	@Test
-	void uploadQrdaFile() throws IOException {
+	void uploadQrdaFile() {
+		Metadata metadata = new Metadata();
 		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
 		when(auditService.success(any(Converter.ConversionReport.class)))
-				.thenReturn(null);
+				.then(invocation -> CompletableFuture.completedFuture(metadata));
 
 		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, null);
 
@@ -84,7 +88,7 @@ class QrdaControllerV1Test {
 	}
 
 	@Test
-	void uploadTestQrdaFile() throws IOException {
+	void uploadTestQrdaFile() {
 		ArgumentCaptor<Source> peopleCaptor = ArgumentCaptor.forClass(Source.class);
 
 		when(qrdaService.convertQrda3ToQpp(peopleCaptor.capture())).thenReturn(report);
@@ -95,6 +99,18 @@ class QrdaControllerV1Test {
 		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, "Test");
 
 		assertThat(peopleCaptor.getValue().getPurpose()).isEqualTo("Test");
+	}
+
+	@Test
+	void testHeadersContainsLocation() {
+		Metadata metadata = new Metadata();
+		metadata.setUuid(UUID.randomUUID().toString());
+		when(qrdaService.convertQrda3ToQpp(any(Source.class))).thenReturn(report);
+		when(auditService.success(any(Converter.ConversionReport.class)))
+				.then(invocation -> CompletableFuture.completedFuture(metadata));
+
+		ResponseEntity qppResponse = objectUnderTest.uploadQrdaFile(multipartFile, null);
+		assertThat(qppResponse.getHeaders().get("Location")).containsExactly(metadata.getUuid());
 	}
 
 	@Test
