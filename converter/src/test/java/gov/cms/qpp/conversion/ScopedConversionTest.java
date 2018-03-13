@@ -218,7 +218,7 @@ class ScopedConversionTest {
 				.that(getErrorMessages(content))
 				.containsExactly(
 						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
-						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS.getMessage(),
+						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE.getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME).getMessage(),
 						ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM.getMessage(),
@@ -243,7 +243,7 @@ class ScopedConversionTest {
 				.that(getErrorMessages(content))
 				.containsExactly(
 						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
-						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS.getMessage(),
+						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE.getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME).getMessage());
 	}

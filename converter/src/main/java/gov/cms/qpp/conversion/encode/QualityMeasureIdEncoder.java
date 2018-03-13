@@ -9,7 +9,8 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.Strata;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -198,7 +199,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the the numerator node
 	 */
 	private void encodePerformanceMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> SubPopulations.NUMER.equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 			node -> {
 				Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
@@ -216,7 +217,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param measureConfig The measure configuration for the current measure.
 	 */
 	private void encodeStratum(JsonWrapper wrapper, Node parentNode, final MeasureConfig measureConfig) {
-		Node numeratorNode = parentNode.findChildNode(n -> SubPopulations.NUMER.equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(TYPE)));
 		Optional.ofNullable(numeratorNode).ifPresent(
 				node -> {
 					maintainContinuity(wrapper, node, "stratum");
@@ -251,10 +252,10 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 	 * @param parentNode holder of the denominator and denominator exclusion nodes
 	 */
 	private void encodePerformanceNotMet(JsonWrapper wrapper, Node parentNode) {
-		Node numeratorNode = parentNode.findChildNode(n -> SubPopulations.NUMER.equals(n.getValue(TYPE)));
-		Node denominatorNode = parentNode.findChildNode(n -> SubPopulations.DENOM.equals(n.getValue(TYPE)));
-		Node denomExclusionNode = parentNode.findChildNode(n -> SubPopulations.DENEX.equals(n.getValue(TYPE)));
-		Node denomExceptionNode = parentNode.findChildNode(n -> SubPopulations.DENEXCEP.equals(n.getValue(TYPE)));
+		Node numeratorNode = parentNode.findChildNode(n -> SubPopulationLabel.NUMER.hasAlias(n.getValue(TYPE)));
+		Node denominatorNode = parentNode.findChildNode(n -> SubPopulationLabel.DENOM.hasAlias(n.getValue(TYPE)));
+		Node denomExclusionNode = parentNode.findChildNode(n -> SubPopulationLabel.DENEX.hasAlias(n.getValue(TYPE)));
+		Node denomExceptionNode = parentNode.findChildNode(n -> SubPopulationLabel.DENEXCEP.hasAlias(n.getValue(TYPE)));
 
 		Optional.ofNullable(denomExclusionNode).ifPresent(
 				node -> {

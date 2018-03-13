@@ -150,7 +150,7 @@ class CheckerTest {
 				new Node(TemplateId.PLACEHOLDER));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.childMaximum(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER);
+		checker.childMaximum(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
 
 		assertWithMessage("There's an error")
 				.that(details).hasSize(1);
@@ -167,6 +167,60 @@ class CheckerTest {
 
 		assertWithMessage("There's no error")
 				.that(details).isEmpty();
+	}
+
+	@Test
+	void testChildExactFailureTooManyNodes() {
+		Node meepNode = new Node();
+		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER),
+			new Node(TemplateId.ACI_AGGREGATE_COUNT),
+			new Node(TemplateId.PLACEHOLDER));
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+
+		assertWithMessage("An error exists")
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ERROR_MESSAGE);
+	}
+
+	@Test
+	void testChildExactTooLittleNodes() {
+		Node meepNode = new Node();
+		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER));
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+
+		assertWithMessage("An error exists")
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ERROR_MESSAGE);
+	}
+
+	@Test
+	void testChildExactSuccessNoMissingType() {
+		Node meepNode = new Node();
+		meepNode.addChildNodes(new Node(TemplateId.ACI_AGGREGATE_COUNT),
+			new Node(TemplateId.PLACEHOLDER));
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+
+		assertWithMessage("There's no error")
+			.that(details).isEmpty();
+	}
+
+	@Test
+	void testChildExactSuccessWithMissingTemplateIds() {
+		Node meepNode = new Node();
+		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER),
+			new Node(TemplateId.PLACEHOLDER));
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+
+		assertWithMessage("There's no error")
+			.that(details).isEmpty();
 	}
 
 	//chaining

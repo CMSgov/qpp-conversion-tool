@@ -22,7 +22,7 @@ class AciNumeratorValidatorTest {
 	}
 
 	@Test
-	void internalValidateSingleNodeWithZeroValue() throws Exception {
+	void internalValidateSingleNodeWithZeroValue() {
 		validateNumeratorWithValue("0");
 	}
 
@@ -40,7 +40,7 @@ class AciNumeratorValidatorTest {
 	}
 
 	@Test
-	void noChildrenTest() throws Exception {
+	void noChildrenTest() {
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
@@ -53,7 +53,7 @@ class AciNumeratorValidatorTest {
 	}
 
 	@Test
-	void incorrectChildrenTest() throws Exception {
+	void incorrectChildrenTest() {
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_SECTION);
 		aggregateCountNode.putValue("aggregateCount", "100");
@@ -65,12 +65,12 @@ class AciNumeratorValidatorTest {
 
 		assertWithMessage("Incorrect child Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INCORRECT_CHILD.format(
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
 						AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
 	@Test
-	void tooManyChildrenTest() throws Exception {
+	void tooManyChildrenTest() {
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		Node aggregateCountNode1 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		Node aggregateCountNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
@@ -87,12 +87,12 @@ class AciNumeratorValidatorTest {
 
 		assertWithMessage("Too many children Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_TOO_MANY_CHILDREN.format(
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
 						AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
 	@Test
-	void invalidValueNaNTest() throws Exception {
+	void invalidValueNaNTest() {
 		//Not a number check
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
@@ -108,7 +108,7 @@ class AciNumeratorValidatorTest {
 	}
 
 	@Test
-	void invalidValueNegativeNumberTest() throws Exception {
+	void invalidValueNegativeNumberTest() {
 		//Not a number check
 		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);

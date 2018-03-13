@@ -1,7 +1,19 @@
 package gov.cms.qpp.conversion.validate;
 
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
-import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+import gov.cms.qpp.conversion.model.validation.SubPopulation;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,25 +27,14 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
-import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
+import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 
 /**
  * Validates a Measure Reference Results node.
  */
 abstract class QualityMeasureIdValidator extends NodeValidator {
-	Set<String> subPopulationExclusions = Collections.emptySet();
+	Set<SubPopulationLabel> subPopulationExclusions = Collections.emptySet();
 	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
 			.collect(Collectors.toSet());
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
@@ -98,10 +99,37 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		}
 
 		SubPopulations.getExclusiveKeys(subPopulationExclusions)
-				.forEach(key -> validateChildTypeCount(subPopulations, key, node));
+				.forEach(subPopulationLabel -> validateChildTypeCount(subPopulations, subPopulationLabel, node));
 
 		for (SubPopulation subPopulation : subPopulations) {
 			validateSubPopulation(node, subPopulation);
+		}
+	}
+
+	/**
+	 * Validates that given subpopulations have the correct number of a given type
+	 *
+	 * @param subPopulations The subpopulations to test against
+	 * @param key The type to check
+	 * @param node The node in which the child nodes live
+	 */
+	private void validateChildTypeCount(List<SubPopulation> subPopulations, SubPopulationLabel key, Node node) {
+		long expectedChildTypeCount = subPopulations.stream()
+			.map(subPopulation -> SubPopulations.getUniqueIdForKey(key.name(), subPopulation))
+			.filter(Objects::nonNull)
+			.count();
+
+		Predicate<Node> childTypeFinder = makeTypeChildFinder(key.getAliases());
+		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
+
+		if (expectedChildTypeCount != actualChildTypeCount) {
+			MeasureConfig config = MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
+			LocalizedError error =
+				ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(config.getElectronicMeasureId(),
+					expectedChildTypeCount, StringHelper.join(key.getAliases(), ",", "or"),
+					actualChildTypeCount);
+			Detail detail = Detail.forErrorAndNode(error, node);
+			addValidationError(detail);
 		}
 	}
 
@@ -149,7 +177,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 */
 	private Node getDenominatorNodeFromCurrentSubPopulation(Node node, SubPopulation subPopulation) {
 		return node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(thisNode ->
-				SubPopulations.DENOM.equals(thisNode.getValue(MEASURE_TYPE))
+				SubPopulationLabel.DENOM.hasAlias(thisNode.getValue(MEASURE_TYPE))
 						&& subPopulation.getDenominatorUuid().equals(thisNode.getValue(MEASURE_POPULATION)))
 				.findFirst().orElse(null);
 	}
@@ -184,43 +212,18 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	}
 
 	/**
-	 * Validates that given subpopulations have the correct number of a given type
-	 *
-	 * @param subPopulations The subpopulations to test against
-	 * @param key The type to check
-	 * @param node The node in which the child nodes live
-	 */
-	private void validateChildTypeCount(List<SubPopulation> subPopulations, String key, Node node) {
-		long expectedChildTypeCount = subPopulations.stream()
-				.map(subPopulation -> SubPopulations.getUniqueIdForKey(key, subPopulation))
-				.filter(Objects::nonNull)
-				.count();
-
-		Predicate<Node> childTypeFinder = makeTypeChildFinder(key);
-		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
-
-		if (expectedChildTypeCount != actualChildTypeCount) {
-			MeasureConfig config = MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-			LocalizedError error =
-					ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(config.getElectronicMeasureId(),
-							expectedChildTypeCount, key, actualChildTypeCount);
-			Detail detail = Detail.forErrorAndNode(error, node);
-			addValidationError(detail);
-		}
-	}
-
-	/**
 	 * Method template for measure validations.
 	 *
 	 * @param sub {@link SubPopulation} against which follow validations may be performed
 	 * @param check a property existence check
-	 * @param keys that identify measure
+	 * @param subPopulationLabel that houses sub-population aliases
 	 * @return a callback / consumer that will perform a measure specific validation against a given
 	 * node.
 	 */
-	Consumer<Node> makeValidator(SubPopulation sub, Supplier<String> check, String... keys) {
+	Consumer<Node> makeValidator(SubPopulation sub, Supplier<String> check, SubPopulationLabel subPopulationLabel) {
 		return node -> {
 			if (check.get() != null) {
+				String[] keys = subPopulationLabel.getAliases();
 				Predicate<Node> childTypeFinder = makeTypeChildFinder(keys);
 				Predicate<Node> childUuidFinder =
 						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION,
