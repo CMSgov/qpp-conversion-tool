@@ -6,6 +6,8 @@ import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
+
+import com.amazonaws.AmazonServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -97,6 +99,16 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
 
 		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(AmazonServiceException.class)
+	@ResponseBody
+	ResponseEntity<String> handleAmazonException(AmazonServiceException exception) {
+		API_LOG.error("An AWS error occured", exception);
+
+		return ResponseEntity.status(exception.getStatusCode())
+			.contentType(MediaType.TEXT_PLAIN)
+			.body(exception.getMessage());
 	}
 	
 	private ResponseEntity<AllErrors> cope(TransformException exception) {

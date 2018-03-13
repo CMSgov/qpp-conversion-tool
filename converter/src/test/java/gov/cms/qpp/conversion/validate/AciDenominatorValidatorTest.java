@@ -17,12 +17,12 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class AciDenominatorValidatorTest {
 
 	@Test
-	void internalValidateSingleNodeWithGreaterThanZeroValue() throws Exception {
+	void internalValidateSingleNodeWithGreaterThanZeroValue() {
 		validateDenominatorWithValue("100");
 	}
 
 	@Test
-	void internalValidateSingleNodeWithZeroValue() throws Exception {
+	void internalValidateSingleNodeWithZeroValue() {
 		validateDenominatorWithValue("0");
 	}
 
@@ -40,7 +40,7 @@ class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	void noChildrenTest() throws Exception {
+	void noChildrenTest() {
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 
 		AciDenominatorValidator validator = new AciDenominatorValidator();
@@ -53,7 +53,7 @@ class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	void incorrectChildrenTest() throws Exception {
+	void incorrectChildrenTest() {
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_SECTION);
 		aggregateCountNode.putValue("aggregateCount", "100");
@@ -65,13 +65,13 @@ class AciDenominatorValidatorTest {
 
 		assertWithMessage("Incorrect child Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INCORRECT_CHILD.format(
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
 						AciDenominatorValidator.DENOMINATOR_NAME));
 
 	}
 
 	@Test
-	void tooManyChildrenTest() throws Exception {
+	void tooManyChildrenTest() {
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		Node aggregateCountNode1 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		Node aggregateCountNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
@@ -88,12 +88,12 @@ class AciDenominatorValidatorTest {
 
 		assertWithMessage("Too many children Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_TOO_MANY_CHILDREN.format(
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
 						AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 
 	@Test
-	void invalidValueNaNTest() throws Exception {
+	void invalidValueNaNTest() {
 		//Not a number check
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
@@ -108,7 +108,7 @@ class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	void invalidValueNegativeNumberTest() throws Exception {
+	void invalidValueNegativeNumberTest() {
 		//Not a number check
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
@@ -126,7 +126,7 @@ class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	void invalidValueDenominatorNumberTest() throws Exception {
+	void invalidValueDenominatorNumberTest() {
 		//Not a number check
 		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);

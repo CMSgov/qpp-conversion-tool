@@ -22,7 +22,7 @@ public class AciProportionNumeratorDecoder extends QrdaDecoder {
 	 *
 	 * @param element XML element that represents the ACI Numerator
 	 * @param thisNode Node that represents the ACI Numerator Measure
-	 * @return
+	 * @return carry on
 	 */
 	@Override
 	protected DecodeResult decode(Element element, Node thisNode) {

@@ -31,11 +31,9 @@ public enum ErrorCode implements LocalizedError {
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_MISSING(10, "ACI Measure Performed RnR's Measure Performed is "
-			+ "required"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_REPEATED(11, "ACI Measure Performed RnR's Measure Performed "
-			+ "can only be present once"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "ACI Measure Performed RnR's requires a single "
+	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Measure Performed RnR requires exactly one "
+		+ "Measure Performed"),
+	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This ACI Measure Performed RnR's requires a single "
 			+ "Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
 			+ "for an eCQM that is proportion measure"),
@@ -48,10 +46,10 @@ public enum ErrorCode implements LocalizedError {
 			+ "measure name ID"),
 	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "ACI Numerator Denominator Node does not have any child "
 			+ "Nodes"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
-			+ "Node does not contain a Denominator Node child"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_NUMERATOR_CHILD_NODE(19, "This ACI Numerator Denominator "
-			+ "Node does not contain a Numerator Node child"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
+			+ "Node requires exactly one Denominator Node child"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE(19, "This ACI Numerator Denominator "
+			+ "Node requires exactly one Numerator Node child"),
 	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS(20, "This ACI Numerator Denominator Node "
 			+ "contains too many Denominator Node children"),
 	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS(21, "This ACI Numerator Denominator Node "
@@ -84,10 +82,8 @@ public enum ErrorCode implements LocalizedError {
 			+ "Correct Number is `(Expected value)`", true),
 	NUMERATOR_DENOMINATOR_MISSING_CHILDREN(38,
 			"This `(Numerator or Denominator)` Node does not have any child Nodes", true),
-	NUMERATOR_DENOMINATOR_INCORRECT_CHILD(39,
-			"This `(Numerator or Denominator)` Node does not have an Aggregate Count Node", true),
-	NUMERATOR_DENOMINATOR_TOO_MANY_CHILDREN(40,
-			"This `(Numerator or Denominator)` Node has too many child Nodes", true),
+	NUMERATOR_DENOMINATOR_CHILD_EXACT(39,
+			"This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node", true),
 	NUMERATOR_DENOMINATOR_MUST_BE_INTEGER(41,
 			"This `(Numerator or Denominator)` Node Aggregate Value is not an integer", true),
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
@@ -105,7 +101,7 @@ public enum ErrorCode implements LocalizedError {
 			+ "`(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`", true),
 	IA_MEASURE_INCORRECT_CHILDREN_COUNT(50, "Measure performed must have exactly one child."),
 	IA_MEASURE_INVALID_TYPE(51, "A single measure performed value is required and must be either a Y or an N."),
-	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "Measure performed must have exactly one Aggregate Count."),
+	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "Measure data must have exactly one Aggregate Count."),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data must be a positive integer value"),
 	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION(54, "Must have at least one NPI/TIN combination"),
 	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "Must be 01/01/2017"),
@@ -124,8 +120,8 @@ public enum ErrorCode implements LocalizedError {
 			+ "of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`", true),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of "
 		+ "the following measures: `(Listing of all CPC+ measure ids)`.", true),
-	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the Supplemental data for code `(Supplemental Data Code)` for eCQM measure "
-		+ "`(Measure Id)`'s Sub-population `(Sub Population)`", true),
+	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code "
+		+ "`(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`", true),
 	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
 		+ "on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`", true),
 	CPC_PLUS_SUBMISSION_ENDED(68, "Your CPC+ submission was made after the CPC+ eCQM submission deadline of "

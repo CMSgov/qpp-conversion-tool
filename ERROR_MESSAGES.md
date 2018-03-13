@@ -12,16 +12,15 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 7 : CT - The measure reference results must have at least one measure
 * 8 : CT - A single aggregate count value is required
 * 9 : CT - Aggregate count value must be an integer
-* 10 : CT - ACI Measure Performed RnR's Measure Performed is required
-* 11 : CT - ACI Measure Performed RnR's Measure Performed can only be present once
-* 12 : CT - ACI Measure Performed RnR's requires a single Measure ID
+* 11 : CT - This ACI Measure Performed RnR requires exactly one Measure Performed
+* 12 : CT - This ACI Measure Performed RnR's requires a single Measure ID
 * 13 : CT - Denominator count must be less than or equal to Initial Population count for an eCQM that is proportion measure
 * 14 : CT - The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
 * 15 : CT - ACI Numerator Denominator Node should have an ACI Section Node as a parent
 * 16 : CT - ACI Numerator Denominator Node does not contain a measure name ID
 * 17 : CT - ACI Numerator Denominator Node does not have any child Nodes
-* 18 : CT - This ACI Numerator Denominator Node does not contain a Denominator Node child
-* 19 : CT - This ACI Numerator Denominator Node does not contain a Numerator Node child
+* 18 : CT - This ACI Numerator Denominator Node requires exactly one Denominator Node child
+* 19 : CT - This ACI Numerator Denominator Node requires exactly one Numerator Node child
 * 20 : CT - This ACI Numerator Denominator Node contains too many Denominator Node children
 * 21 : CT - This ACI Numerator Denominator Node contains too many Numerator Node children
 * 22 : CT - The ACI Section must have one Reporting Parameter ACT
@@ -43,8 +42,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 36 : CT - Must contain one Measure (eCQM) section
 * 37 : CT - Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
 * 38 : CT - This `(Numerator or Denominator)` Node does not have any child Nodes
-* 39 : CT - This `(Numerator or Denominator)` Node does not have an Aggregate Count Node
-* 40 : CT - This `(Numerator or Denominator)` Node has too many child Nodes
+* 39 : CT - This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node
 * 41 : CT - This `(Numerator or Denominator)` Node Aggregate Value is not an integer
 * 42 : CT - This `(Numerator or Denominator)` Node Aggregate Value has an invalid value
 * 43 : CT - The IA Section must have at least one IA Measure
@@ -56,7 +54,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`
 * 50 : CT - Measure performed must have exactly one child.
 * 51 : CT - A single measure performed value is required and must be either a Y or an N.
-* 52 : CT - Measure performed must have exactly one Aggregate Count.
+* 52 : CT - Measure data must have exactly one Aggregate Count.
 * 53 : CT - Measure data must be a positive integer value
 * 54 : CT - Must have at least one NPI/TIN combination
 * 55 : CT - Must be 01/01/2017
@@ -68,7 +66,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 61 : CT - A Performance Rate must contain a single Performance Rate UUID
 * 64 : CT - CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
 * 65 : CT - CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.
-* 66 : CT - Missing the Supplemental data for code `(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`
+* 66 : CT - Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`
 * 67 : CT - Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`
 * 68 : CT - Your CPC+ submission was made after the CPC+ eCQM submission deadline of `(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at `(CPC+ contact email)` for assistance.
 * 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123

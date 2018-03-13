@@ -353,13 +353,13 @@
 			{
 				"errorCode": 59,
 				"subs": ["CMS\\d{2,3}v\\d{1}",
-					"IPOP,IPP",
+					"IPP,IPOP",
 					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
 				"occurrences": 1
 			},
 			{
 				"errorCode": 66,
-				"subs": [".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
+				"subs": [".*", ".*", ".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
 				"occurrences": 14
 			}
 		]
@@ -470,8 +470,13 @@
 		"errorData": [
 			{
 				"errorCode": 14,
+				"subs": ["CMS137v5", 2, "IPP or IPOP", 3],
+				"occurrences": 1
+			},
+			{
+				"errorCode": 14,
 				"subs": ["CMS137v5", 2, "[A-Z]{3,8}", 3],
-				"occurrences": 4
+				"occurrences": 3
 			},
 			{
 				"errorCode": 59,
@@ -574,7 +579,7 @@
 			},
 			{
 				"errorCode": 66,
-				"subs": [".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
+				"subs": [".*", ".*", ".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
 				"occurrences": 119
 			}
 		]

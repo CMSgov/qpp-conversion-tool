@@ -17,7 +17,7 @@ public class MeasureDataValidator extends NodeValidator {
 	 * Validates the following.
 	 * <ul>
 	 *    <li>An integer value with a name in the list from MeasureDataDecoder.MEASURES</li>
-	 *    <li>The string value is an integer/li>
+	 *    <li>The string value is an integer</li>
 	 *</ul>
 	 *
 	 * @param node Node that represents a IA Measure Performed.
@@ -26,8 +26,7 @@ public class MeasureDataValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
 				.hasChildren(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT)
-				.childMinimum(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT)
-				.childMaximum(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT);
+				.childExact(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT);
 
 		if (getDetails().isEmpty()) {
 			Node child = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);

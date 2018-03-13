@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>1.3.0-RELEASE</version>
+		<version>1.4.0-RELEASE</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -98,7 +98,6 @@
 	</build>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-suggest</artifactId>

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.util;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -16,6 +17,8 @@ public class StringHelper {
 	 * @return A joined {@link String}.
 	 */
 	public static String join(Iterable<String> iterable, String separator, String conjunction) {
+		separator = separator + " ";
+		conjunction = conjunction + " ";
 
 		StringBuilder creator = new StringBuilder();
 
@@ -39,6 +42,17 @@ public class StringHelper {
 		}
 
 		return creator.toString();
+	}
+
+	/**
+	 * Convenience override for {@link #join(Iterable, String, String)}
+	 *
+	 * @param toIterate An array to join together
+	 * @param conjunction The {@link String} that splits the second to last and last item.
+	 * @return A joined {@link String}.
+	 */
+	public static String join(String[] toIterate, String separator, String conjunction) {
+		return join(Arrays.asList(toIterate), separator, conjunction);
 	}
 
 	/**

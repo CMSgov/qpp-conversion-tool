@@ -48,7 +48,7 @@ public class AuditServiceImpl implements AuditService {
 	 * @return future
 	 */
 	@Override
-	public CompletableFuture<Void> success(Converter.ConversionReport conversionReport) {
+	public CompletableFuture<Metadata> success(Converter.ConversionReport conversionReport) {
 		if (noAudit()) {
 			return null;
 		}
@@ -63,7 +63,7 @@ public class AuditServiceImpl implements AuditService {
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(qrdaSource).thenAccept(metadata::setSubmissionLocator),
 				storeContent(qppSource).thenAccept(metadata::setQppLocator));
-		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
+		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown)).thenApply(ignore -> metadata);
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class AuditServiceImpl implements AuditService {
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(validationErrorSource).thenAccept(metadata::setConversionErrorLocator),
 				storeContent(qrdaSource).thenAccept(metadata::setSubmissionLocator));
-		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
+		return allWrites.whenComplete((ignore, thrown) -> persist(metadata, thrown));
 	}
 
 	/**

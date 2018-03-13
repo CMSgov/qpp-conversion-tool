@@ -268,6 +268,7 @@ class Checker {
 	 * Checks target node for the existence of a specified parent.
 	 *
 	 * @param code that identifies the error
+	 * @param type parent template id for which to search.
 	 * @return The checker, for chaining method calls.
 	 */
 	Checker hasParent(LocalizedError code, TemplateId type) {
@@ -324,6 +325,24 @@ class Checker {
 		if (!shouldShortcut()) {
 			int count = tallyNodes(types);
 			if (count > maximum) {
+				details.add(detail(code));
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * Verifies that the target node has the exact amount total sum of all the {@link TemplateId}s types
+	 *
+	 * @param code that identifies the error
+	 * @param exactCount exact number required children of specified type(s)
+	 * @param types types of children to filter by
+	 * @return The checker, for chaining method calls.
+	 */
+	public Checker childExact(LocalizedError code, int exactCount, TemplateId... types) {
+		if (!shouldShortcut()) {
+			int count = tallyNodes(types);
+			if (count != exactCount) {
 				details.add(detail(code));
 			}
 		}

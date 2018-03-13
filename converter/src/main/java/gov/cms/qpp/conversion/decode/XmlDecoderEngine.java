@@ -18,6 +18,7 @@ public abstract class XmlDecoderEngine implements InputDecoderEngine {
 	/**
 	 * decodeXml Determines what formats of xml we accept and decode to
 	 *
+	 * @param context Establish context for decoder engine
 	 * @param xmlDoc XML document whose format is to be determined
 	 * @return Root intermediate format node
 	 */
