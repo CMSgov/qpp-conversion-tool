@@ -49,10 +49,12 @@ class ErrorCodeTest implements EnumContract {
 
 	@Test
 	void testGetCodeIsUnique() {
-		long count = Arrays.stream(ErrorCode.values()).mapToInt(ErrorCode::getCode).count();
+		long count = Arrays.stream(ErrorCode.values()).mapToInt(ErrorCode::getCode).distinct().count();
 		long expected = ErrorCode.values().length;
 		Truth.assertThat(count).isEqualTo(expected);
-	}	@Test
+	}
+
+	@Test
 	void testFormatOnNonFormattedErrorCode() {
 		Assertions.assertThrows(IllegalStateException.class, ErrorCode.UNEXPECTED_ERROR::format);
 	}
