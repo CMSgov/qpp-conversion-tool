@@ -73,7 +73,8 @@ public class QrdaControllerV1 {
 
 		if (!StringUtils.isEmpty(purpose)) {
 			if (purpose.length() > MAX_PURPOSE_LENGTH) {
-				throw new InvalidPurposeException("Given Purpose (header) is too large");
+				throw new InvalidPurposeException("Given Purpose (header) is too large. Max length is "
+						+ MAX_PURPOSE_LENGTH + ", yours was " + purpose.length());
 			}
 			API_LOG.info("Conversion request received for " + purpose);
 		} else {
