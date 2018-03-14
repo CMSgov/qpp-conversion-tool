@@ -3,7 +3,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>gov.cms.qpp</groupId>
+	<groupId>gov.cms.qpp.conversion</groupId>
 	<artifactId>qpp-data-restoration</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -54,7 +54,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>gov.cms.qpp.qppdatarestoration.QppDataRestorationApplication</mainClass>
+							<mainClass>gov.cms.qpp.conversion.qppdatarestoration.QppDataRestorationApplication</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
