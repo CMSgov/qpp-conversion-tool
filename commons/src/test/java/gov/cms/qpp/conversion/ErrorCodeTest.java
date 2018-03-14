@@ -5,8 +5,6 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.test.enums.EnumContract;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import com.google.common.testing.EqualsTester;
