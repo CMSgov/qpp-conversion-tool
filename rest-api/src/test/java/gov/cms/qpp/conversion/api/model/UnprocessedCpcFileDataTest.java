@@ -64,13 +64,4 @@ class UnprocessedCpcFileDataTest {
 		assertThat(cpcFileData.getConversionDate()).isEqualTo(metadata.getCreatedDate().toString());
 		assertThat(cpcFileData.getValidationSuccess()).isEqualTo(metadata.getOverallStatus());
 	}
-
-	@Test
-	void equalsContract() {
-		EqualsVerifier.forClass(UnprocessedCpcFileData.class)
-			.usingGetClass()
-			.suppress(Warning.NONFINAL_FIELDS)
-			.suppress(Warning.INHERITED_DIRECTLY_FROM_OBJECT)
-			.verify();
-	}
 }

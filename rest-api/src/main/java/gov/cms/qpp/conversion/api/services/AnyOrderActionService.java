@@ -28,9 +28,9 @@ import java.util.concurrent.CompletableFuture;
  * @param <S> The type of object that is returned from {@link #asynchronousAction(Object)}.
  */
 public abstract class AnyOrderActionService<T, S> {
-	private static int INITIAL_INTERVAL = 1000;
-	private static double MULTIPLIER = 2.0;
-	private static int MAX_INTERVAL = 60000;
+	private static final int INITIAL_INTERVAL = 1000;
+	private static final double MULTIPLIER = 2.0;
+	private static final int MAX_INTERVAL = 60000;
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(AnyOrderActionService.class);
 

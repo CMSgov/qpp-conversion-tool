@@ -7,7 +7,7 @@ import java.util.Iterator;
  * Helper class for custom code that isn't covered by Apache Commons or Google Guava.
  */
 public class StringHelper {
-	private static int SECOND = 2;
+	private static final int SECOND = 2;
 
 	/**
 	 * There should be no instances of this class.

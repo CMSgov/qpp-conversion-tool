@@ -64,7 +64,7 @@ public class MeasureConfigs {
 
 	private static void initSpellChecker() {
 		Path indexPath = Paths.get(EnvironmentHelper.getOrDefault(MEASURES_INDEX_DIR, INDEX_DEFAULT));
-		if (indexPath.toFile().exists()) {
+		if (Files.exists(indexPath)) {
 			try {
 				spellChecker = new SpellChecker(FSDirectory.open(indexPath));
 			} catch (IOException ex) {
@@ -73,7 +73,7 @@ public class MeasureConfigs {
 		}
 	}
 
-	static SpellChecker getSpellChecker() {
+	private static SpellChecker getSpellChecker() {
 		return spellChecker;
 	}
 
@@ -118,8 +118,13 @@ public class MeasureConfigs {
 		initMeasureConfigs();
 	}
 
+	/**
+	 * Get list of measure configurations.
+	 *
+	 * @return measure configurations
+	 */
 	public static List<MeasureConfig> getMeasureConfigs() {
-		return configurationMap.values().stream().collect(Collectors.toList());
+		return new ArrayList<>(configurationMap.values());
 	}
 
 	/**
