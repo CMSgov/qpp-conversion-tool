@@ -43,7 +43,7 @@ public abstract class SkeletalSupplementalDataDecoder extends QrdaDecoder {
 	 * @param thisNode Current Node to decode into
 	 * @param type Current Supplemental Type to put onto this node
 	 */
-	public void setSupplementalDataOnNode(Element element, Node thisNode, SupplementalData.SupplementalType type) {
+	void setSupplementalDataOnNode(Element element, Node thisNode, SupplementalData.SupplementalType type) {
 		String supplementalXpathCode = type.equals(SupplementalData.SupplementalType.PAYER)
 				? SUPPLEMENTAL_DATA_PAYER_CODE :  SUPPLEMENTAL_DATA_CODE;
 		String expressionStr = getXpath(supplementalXpathCode);
