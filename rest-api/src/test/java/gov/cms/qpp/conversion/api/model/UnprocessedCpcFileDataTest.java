@@ -2,6 +2,10 @@ package gov.cms.qpp.conversion.api.model;
 
 import java.time.Instant;
 import java.util.stream.Stream;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -59,5 +63,14 @@ class UnprocessedCpcFileDataTest {
 		assertThat(cpcFileData.getApm()).isEqualTo(metadata.getApm());
 		assertThat(cpcFileData.getConversionDate()).isEqualTo(metadata.getCreatedDate().toString());
 		assertThat(cpcFileData.getValidationSuccess()).isEqualTo(metadata.getOverallStatus());
+	}
+
+	@Test
+	void equalsContract() {
+		EqualsVerifier.forClass(UnprocessedCpcFileData.class)
+			.usingGetClass()
+			.suppress(Warning.NONFINAL_FIELDS)
+			.suppress(Warning.INHERITED_DIRECTLY_FROM_OBJECT)
+			.verify();
 	}
 }

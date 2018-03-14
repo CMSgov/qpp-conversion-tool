@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import gov.cms.qpp.conversion.model.TemplateId;
 
@@ -43,17 +45,9 @@ public enum QrdaScope {
 	}
 
 	private Set<TemplateId> assemble(Object... tiers) {
-		Set<TemplateId> templates = new HashSet<>();
-
-		Arrays.stream(tiers).forEach(tier -> {
-			if (tier instanceof TemplateId) {
-				templates.add((TemplateId) tier);
-			} else {
-				templates.addAll(((QrdaScope) tier).getValue());
-			}
-		});
-
-		return templates;
+		return Arrays.stream(tiers).flatMap(tier ->
+			tier instanceof TemplateId ? Stream.of((TemplateId) tier) : ((QrdaScope) tier).getValue().stream())
+			.collect(Collectors.toSet());
 	}
 
 	public static QrdaScope getInstanceByName(String name) {
