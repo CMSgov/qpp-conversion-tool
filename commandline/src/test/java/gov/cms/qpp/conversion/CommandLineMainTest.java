@@ -1,10 +1,10 @@
 package gov.cms.qpp.conversion;
 
-import gov.cms.qpp.test.logging.LoggerContract;
-
 import com.google.common.truth.Truth;
 import org.apache.commons.cli.CommandLine;
 import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.test.logging.LoggerContract;
 
 class CommandLineMainTest implements LoggerContract {
 
@@ -24,7 +24,7 @@ class CommandLineMainTest implements LoggerContract {
 	@Test
 	void testMain() {
 		CommandLineMain.main();
-		Truth.assertThat(getLogs()).isNotEmpty();
+		Truth.assertThat(getLogs()).isEmpty();
 	}
 
 	@Test
@@ -36,5 +36,4 @@ class CommandLineMainTest implements LoggerContract {
 	public Class<?> getLoggerType() {
 		return CommandLineMain.class;
 	}
-
 }
