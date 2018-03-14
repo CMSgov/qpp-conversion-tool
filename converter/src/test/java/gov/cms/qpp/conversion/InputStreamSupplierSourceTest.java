@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 class InputStreamSupplierSourceTest extends SourceTestSuite {
 
-	private static InputStreamSupplierSource source(String path) throws IOException {
+	private static InputStreamSupplierSource source(String path) {
 		return new InputStreamSupplierSource(path, stream(path));
 	}
 
@@ -29,7 +29,7 @@ class InputStreamSupplierSourceTest extends SourceTestSuite {
 		}
 	}
 
-	InputStreamSupplierSourceTest() throws IOException {
+	InputStreamSupplierSourceTest() {
 		super("src/test/resources/arbitrary.txt", source("src/test/resources/arbitrary.txt"));
 	}
 

@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_KEY;
+import static gov.cms.qpp.conversion.decode.SkeletalSupplementalDataDecoder.SUPPLEMENTAL_DATA_KEY;
 
 /**
  * Validates a Sub Population's Measure Data for the CPC Plus program entity

@@ -9,7 +9,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 
-import javax.xml.transform.TransformerConfigurationException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -18,7 +17,7 @@ import java.util.List;
 @Mojo(name = "generateErrorCodeDoc")
 public class ErrorCodeDocumentationGenerator extends AbstractMojo {
 
-	public static void main(String... args) throws IOException, TransformerConfigurationException {
+	public static void main(String... args) throws IOException {
 		MustacheFactory mf = new DefaultMustacheFactory();
 		Mustache mdTemplate = mf.compile("error-code/error-code-tempate.md");
 
@@ -34,7 +33,7 @@ public class ErrorCodeDocumentationGenerator extends AbstractMojo {
 		try {
 			getLog().info("Running Error Code documentation plugin");
 			ErrorCodeDocumentationGenerator.main();
-		} catch (IOException | TransformerConfigurationException e) {
+		} catch (IOException e) {
 			throw new MojoExecutionException("Error code documentation problems", e);
 		}
 	}

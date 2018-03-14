@@ -25,7 +25,6 @@ import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.test.helper.NioHelper;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -66,7 +65,7 @@ public class ConverterTest {
 	}
 
 	@Test(expected = org.junit.Test.None.class)
-	public void testValidQppStream() throws IOException {
+	public void testValidQppStream() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Converter converter = new Converter(
 				new InputStreamSupplierSource(path.toString(), NioHelper.fileToStream(path)));

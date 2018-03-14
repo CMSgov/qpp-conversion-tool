@@ -1,6 +1,7 @@
 package gov.cms.qpp.test.helper;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import com.jayway.jsonpath.JsonPath;
@@ -19,7 +20,7 @@ public class JsonTestHelper {
 	 * @return The requested return type.
 	 */
 	public static <T> T readJsonAtJsonPath(Path jsonFile, String jsonPath, Class<T> returnType) throws IOException {
-		return JsonPath.parse(jsonFile.toFile()).read(jsonPath, returnType);
+		return JsonPath.parse(Files.newInputStream(jsonFile)).read(jsonPath, returnType);
 	}
 
 	/**
@@ -33,7 +34,7 @@ public class JsonTestHelper {
 	 * @return The requested return type.
 	 */
 	public static <T> T readJsonAtJsonPath(Path jsonFile, String jsonPath) throws IOException {
-		return JsonPath.parse(jsonFile.toFile()).read(jsonPath);
+		return JsonPath.parse(Files.newInputStream(jsonFile)).read(jsonPath);
 	}
 
 	private JsonTestHelper() {

@@ -71,7 +71,7 @@ class CpcFileServiceImplTest {
 	}
 
 	@Test
-	void testGetFileByIdWithMips() throws IOException {
+	void testGetFileByIdWithMips() {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(false, false));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
@@ -84,7 +84,7 @@ class CpcFileServiceImplTest {
 	}
 
 	@Test
-	void testGetFileByIdWithProcessedFile() throws IOException {
+	void testGetFileByIdWithProcessedFile() {
 		when(dbService.getMetadataById(anyString())).thenReturn(buildFakeMetadata(true, true));
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 
@@ -97,7 +97,7 @@ class CpcFileServiceImplTest {
 	}
 
 	@Test
-	void testGetFileByIdNoFile() throws IOException {
+	void testGetFileByIdNoFile() {
 		when(dbService.getMetadataById(anyString())).thenReturn(null);
 		when(storageService.getFileByLocationId("test")).thenReturn(new ByteArrayInputStream("1337".getBytes()));
 

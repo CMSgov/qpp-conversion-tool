@@ -67,7 +67,7 @@ class MeasureConfigsTest {
 	}
 
 	@Test
-	void missingMeasureSuggestion() throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+	void missingMeasureSuggestion() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		MeasureIndexInit.reinitMeasureConfigs(true);
 		String measureId = "IA_PCMG";
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);

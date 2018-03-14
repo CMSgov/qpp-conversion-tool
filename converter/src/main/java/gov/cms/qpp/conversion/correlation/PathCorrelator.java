@@ -162,9 +162,8 @@ public class PathCorrelator {
 					if (encodeLabel.equals(leaf)) {
 						return leaf.isEmpty()
 								|| PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
-					} else {
-						return encodeLabel.isEmpty();
 					}
+					return encodeLabel.isEmpty();
 				})
 				.findFirst()
 				.orElse(null);
