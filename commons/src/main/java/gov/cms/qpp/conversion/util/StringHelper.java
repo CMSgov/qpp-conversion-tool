@@ -7,6 +7,13 @@ import java.util.Iterator;
  * Helper class for custom code that isn't covered by Apache Commons or Google Guava.
  */
 public class StringHelper {
+	private static int SECOND = 2;
+
+	/**
+	 * There should be no instances of this class.
+	 */
+	private StringHelper(){}
+
 	/**
 	 * Joins a {@link Iterable} of {@link String}s together with the specified separator. Between the second to last and last
 	 * item, the specified conjunction is used instead.  This allows one to make a {@link String} like {@code Dog, Cow, and Moof}.
@@ -93,7 +100,7 @@ public class StringHelper {
 	 * @return True if this is the second time through the loop, false otherwise.
 	 */
 	private static boolean isSecondItem(final int timeThroughLoop) {
-		return timeThroughLoop == 2;
+		return timeThroughLoop == SECOND;
 	}
 
 	/**

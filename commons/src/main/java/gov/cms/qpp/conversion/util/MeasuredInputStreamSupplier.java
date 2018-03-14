@@ -14,18 +14,6 @@ import org.apache.commons.io.IOUtils;
  */
 public class MeasuredInputStreamSupplier implements Supplier<InputStream> {
 
-	/**
-	 * Terminally uses an {@link InputStream} to create a {@link MeasuredInputStreamSupplier}
-	 *
-	 * @param source the source for the new {@link MeasuredInputStreamSupplier}. Must not be null.
-	 * @return a new {@link MeasuredInputStreamSupplier} from the given {@link InputStream}
-	 */
-	public static MeasuredInputStreamSupplier terminallyTransformInputStream(InputStream source) {
-		Objects.requireNonNull(source, "source");
-
-		return new MeasuredInputStreamSupplier(source);
-	}
-
 	private final Supplier<InputStream> delegate;
 	private final int size;
 
@@ -38,6 +26,18 @@ public class MeasuredInputStreamSupplier implements Supplier<InputStream> {
 		}
 		delegate = () -> new ByteArrayInputStream(byteArray);
 		this.size = byteArray.length;
+	}
+
+	/**
+	 * Terminally uses an {@link InputStream} to create a {@link MeasuredInputStreamSupplier}
+	 *
+	 * @param source the source for the new {@link MeasuredInputStreamSupplier}. Must not be null.
+	 * @return a new {@link MeasuredInputStreamSupplier} from the given {@link InputStream}
+	 */
+	public static MeasuredInputStreamSupplier terminallyTransformInputStream(InputStream source) {
+		Objects.requireNonNull(source, "source");
+
+		return new MeasuredInputStreamSupplier(source);
 	}
 
 	/**

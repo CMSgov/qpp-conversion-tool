@@ -33,7 +33,7 @@ public class MeasureConfigs {
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
 	private static Map<String, MeasureConfig> configurationMap;
 	private static Map<String, List<MeasureConfig>> cpcPlusGroups;
-	private static SpellChecker spellChecker = null;
+	private static SpellChecker spellChecker;
 
 	/**
 	 * Static initialization
@@ -64,7 +64,7 @@ public class MeasureConfigs {
 
 	private static void initSpellChecker() {
 		Path indexPath = Paths.get(EnvironmentHelper.getOrDefault(MEASURES_INDEX_DIR, INDEX_DEFAULT));
-		if (Files.exists(indexPath)) {
+		if (indexPath.toFile().exists()) {
 			try {
 				spellChecker = new SpellChecker(FSDirectory.open(indexPath));
 			} catch (IOException ex) {
@@ -104,7 +104,8 @@ public class MeasureConfigs {
 		String guid = measureConfig.getElectronicMeasureVerUuid();
 		String electronicMeasureId = measureConfig.getElectronicMeasureId();
 		String measureId = measureConfig.getMeasureId();
-		return (guid != null ? guid : (electronicMeasureId != null ? electronicMeasureId : measureId));
+		String chosenMeasureId = electronicMeasureId != null ? electronicMeasureId : measureId;
+		return (guid != null ? guid : chosenMeasureId);
 	}
 
 	/**
