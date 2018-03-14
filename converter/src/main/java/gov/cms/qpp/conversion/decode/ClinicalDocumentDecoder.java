@@ -1,18 +1,14 @@
 package gov.cms.qpp.conversion.decode;
 
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -34,8 +30,8 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String MIPS = "MIPS";
 	private static final String MIPS_GROUP = "MIPS_GROUP";
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
-	public static final String ENTITY_GROUP = "group";
-	public static final String ENTITY_INDIVIDUAL = "individual";
+	static final String ENTITY_GROUP = "group";
+	static final String ENTITY_INDIVIDUAL = "individual";
 	public static final String CPCPLUS = "CPCPLUS";
 
 	public ClinicalDocumentDecoder(Context context) {

@@ -1,17 +1,15 @@
 package gov.cms.qpp.conversion.segmentation;
 
+import gov.cms.qpp.conversion.model.TemplateId;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import gov.cms.qpp.conversion.model.TemplateId;
 
 public enum QrdaScope {
 
