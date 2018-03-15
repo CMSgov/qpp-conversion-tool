@@ -58,7 +58,7 @@ public class QppDataRestorationApplication {
 			int itemPosition = count.incrementAndGet();
 			if ( itemPosition % 100 == 0) {
 				try {
-					RESTORATION_LOG.info("Imported %d items into %s. Sleeping for one second now...",
+					RESTORATION_LOG.info("Imported {} items into {}. Sleeping for one second now...",
 						itemPosition, tableToImportInto);
 					Thread.sleep(1000);
 				}
