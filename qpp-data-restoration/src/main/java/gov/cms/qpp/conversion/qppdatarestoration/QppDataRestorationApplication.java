@@ -6,13 +6,12 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class QppDataRestorationApplication {
 	private static final Logger RESTORATION_LOG = LoggerFactory.getLogger(QppDataRestorationApplication.class);
@@ -36,12 +35,12 @@ public class QppDataRestorationApplication {
 
 	public static List<Map<String, AttributeValue>> exportData(String tableToExportFrom) {
 		RESTORATION_LOG.info("Performing export from table " + tableToExportFrom);
-		ScanRequest scanRequest = new ScanRequest().withTableName(tableToExportFrom);
+		ScanRequest scanRequest = new ScanRequest().withTableName(tableToExportFrom).withLimit(100);
 
 		ScanResult scanResult = DYNAMO_CLIENT.scan(scanRequest);
 		List<Map<String, AttributeValue>> metadataList = scanResult.getItems();
 		while (scanResult.getLastEvaluatedKey() != null && !scanResult.getLastEvaluatedKey().isEmpty()) {
-			scanResult = DYNAMO_CLIENT.scan(new ScanRequest().withTableName(tableToExportFrom)
+			scanResult = DYNAMO_CLIENT.scan(new ScanRequest().withTableName(tableToExportFrom).withLimit(100)
 				.withExclusiveStartKey(scanResult.getLastEvaluatedKey()));
 			metadataList.addAll(scanResult.getItems());
 		}
