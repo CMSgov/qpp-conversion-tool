@@ -131,7 +131,6 @@ public enum ErrorCode implements LocalizedError {
 		+ "Please use a standard ISO date format. "
 		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123", true);
 
-
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
 	private static final String VARIABLE_MARKER = "`\\(([^()]*)\\)`";
