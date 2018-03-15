@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
+import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -110,7 +111,17 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 			.contentType(MediaType.TEXT_PLAIN)
 			.body(exception.getMessage());
 	}
-	
+
+	@ExceptionHandler(InvalidPurposeException.class)
+	@ResponseBody
+	ResponseEntity<String> handleInvalidPurposeException(InvalidPurposeException exception) {
+		API_LOG.error("An invalid purpose error occured", exception);
+
+		return ResponseEntity.badRequest()
+			.contentType(MediaType.TEXT_PLAIN)
+			.body(exception.getMessage());
+	}
+
 	private ResponseEntity<AllErrors> cope(TransformException exception) {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);

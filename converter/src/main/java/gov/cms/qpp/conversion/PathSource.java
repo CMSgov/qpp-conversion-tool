@@ -45,4 +45,12 @@ public class PathSource extends SkeletalSource {
 			throw new UncheckedIOException(exception);
 		}
 	}
+
+	/**
+	 * Returns null
+	 */
+	@Override
+	public String getPurpose() {
+		return null;
+	}
 }

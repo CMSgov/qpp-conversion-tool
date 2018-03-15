@@ -130,6 +130,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava-testlib</artifactId>
+			<version>23.4-jre</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>test-commons</artifactId>
 			<version>${project.version}</version>
