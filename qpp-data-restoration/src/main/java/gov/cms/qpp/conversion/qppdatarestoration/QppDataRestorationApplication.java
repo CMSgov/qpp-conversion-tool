@@ -43,6 +43,9 @@ public class QppDataRestorationApplication {
 			scanResult = DYNAMO_CLIENT.scan(new ScanRequest().withTableName(tableToExportFrom).withLimit(100)
 				.withExclusiveStartKey(scanResult.getLastEvaluatedKey()));
 			metadataList.addAll(scanResult.getItems());
+			RESTORATION_LOG.info("Exported {} items into {}. Sleeping for one second now...",
+				metadataList.size(), tableToExportFrom);
+			pauseExecution();
 		}
 		RESTORATION_LOG.info("Finished exporting from table " + tableToExportFrom);
 
@@ -56,17 +59,21 @@ public class QppDataRestorationApplication {
 		metadataList.forEach(metadataMap -> {
 			int itemPosition = count.incrementAndGet();
 			if ( itemPosition % 100 == 0) {
-				try {
-					RESTORATION_LOG.info("Imported {} items into {}. Sleeping for one second now...",
-						itemPosition, tableToImportInto);
-					Thread.sleep(1000);
-				}
-				catch (InterruptedException e) {
-					RESTORATION_LOG.info("Sleep has been interrupted!");
-				}
+				RESTORATION_LOG.info("Imported {} items into {}. Sleeping for one second now...",
+					itemPosition, tableToImportInto);
+				pauseExecution();
 			}
 			DYNAMO_CLIENT.putItem(tableToImportInto, metadataMap);
 		});
 		RESTORATION_LOG.info("Finished importing into table " + tableToImportInto);
+	}
+
+	private static void pauseExecution() {
+		try {
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException e) {
+			RESTORATION_LOG.info("Sleep has been interrupted!");
+		}
 	}
 }
