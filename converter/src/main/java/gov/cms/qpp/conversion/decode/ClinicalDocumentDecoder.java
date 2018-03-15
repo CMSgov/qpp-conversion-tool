@@ -9,6 +9,7 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 
+import java.util.Locale;
 import java.util.function.Consumer;
 
 /**
@@ -143,7 +144,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		} else if (CPCPLUS.equalsIgnoreCase(name)) {
 			pairs = new String[] {CPCPLUS_PROGRAM_NAME, ENTITY_INDIVIDUAL};
 		} else {
-			pairs = new String[] {name.toLowerCase(), ENTITY_INDIVIDUAL};
+			pairs = new String[] {name.toLowerCase(Locale.ENGLISH), ENTITY_INDIVIDUAL};
 		}
 		return pairs;
 	}

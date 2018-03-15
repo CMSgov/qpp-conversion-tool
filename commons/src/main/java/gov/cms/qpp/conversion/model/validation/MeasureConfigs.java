@@ -73,10 +73,6 @@ public class MeasureConfigs {
 		}
 	}
 
-	private static SpellChecker getSpellChecker() {
-		return spellChecker;
-	}
-
 	public static Map<String, MeasureConfig> grabConfiguration(String fileName) {
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -147,9 +143,9 @@ public class MeasureConfigs {
 
 	public static List<String> getMeasureSuggestions(String measureId) {
 		List<String> suggestions = Collections.emptyList();
-		if (getSpellChecker() != null) {
+		if (spellChecker != null) {
 			try {
-				suggestions = Arrays.asList(getSpellChecker().suggestSimilar(measureId, SUGGESTION_COUNT));
+				suggestions = Arrays.asList(spellChecker.suggestSimilar(measureId, SUGGESTION_COUNT));
 			} catch (IOException ex) {
 				DEV_LOG.warn("Problem when seeking measure suggestions.", ex);
 			}
