@@ -9,6 +9,8 @@ import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +52,22 @@ public class QppDataRestorationApplication {
 
 	public static void importData(final List<Map<String, AttributeValue>> metadataList, String tableToImportInto) {
 		RESTORATION_LOG.info("Performing import into table " + tableToImportInto);
-		metadataList.forEach(map -> DYNAMO_CLIENT.putItem(tableToImportInto, map));
+		AtomicInteger count = new AtomicInteger();
+
+		metadataList.forEach(metadataMap -> {
+			int itemPosition = count.incrementAndGet();
+			if ( itemPosition % 100 == 0) {
+				try {
+					RESTORATION_LOG.info("Imported %d items into %s. Sleeping for one second now...",
+						itemPosition, tableToImportInto);
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e) {
+					RESTORATION_LOG.info("Sleep has been interrupted!");
+				}
+			}
+			DYNAMO_CLIENT.putItem(tableToImportInto, metadataMap);
+		});
 		RESTORATION_LOG.info("Finished importing into table " + tableToImportInto);
 	}
 }
