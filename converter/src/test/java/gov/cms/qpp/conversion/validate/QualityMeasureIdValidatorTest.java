@@ -11,6 +11,7 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.MeasureIndexInit;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 import gov.cms.qpp.conversion.util.StringHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,9 +27,6 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_POPULATION;
 import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
 import static gov.cms.qpp.conversion.decode.PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE_ID;
-import static gov.cms.qpp.conversion.validate.QualityMeasureIdValidator.MEASURE_ID;
-
-//import gov.cms.qpp.conversion.model.validation.SubPopulations;
 
 class QualityMeasureIdValidatorTest {
 
@@ -476,7 +474,7 @@ class QualityMeasureIdValidatorTest {
 		}
 
 		MeasureReferenceBuilder addMeasureId(String measureId) {
-			measureReferenceResultsNode.putValue(MEASURE_ID, measureId);
+			measureReferenceResultsNode.putValue(MeasureConfigHelper.MEASURE_ID, measureId);
 			return this;
 		}
 
