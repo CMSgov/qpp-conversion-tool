@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Main script to copy items between tables
+ */
 public class QppDataRestorationApplication {
 	private static final Logger RESTORATION_LOG = LoggerFactory.getLogger(QppDataRestorationApplication.class);
 
@@ -23,6 +26,11 @@ public class QppDataRestorationApplication {
 		return DYNAMO_CLIENT;
 	}
 
+	/**
+	 * Main method for handling the export and import of tables.
+	 *
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		if (args.length == 2) {
 			List<Map<String, AttributeValue>> exportTableData = exportData(args[0]);
