@@ -33,7 +33,7 @@ public class QppDataRestorationApplication {
 		}
 	}
 
-	public static List<Map<String, AttributeValue>> exportData(String tableToExportFrom) {
+	private static List<Map<String, AttributeValue>> exportData(String tableToExportFrom) {
 		RESTORATION_LOG.info("Performing export from table " + tableToExportFrom);
 		ScanRequest scanRequest = new ScanRequest().withTableName(tableToExportFrom).withLimit(100);
 
@@ -52,7 +52,7 @@ public class QppDataRestorationApplication {
 		return metadataList;
 	}
 
-	public static void importData(final List<Map<String, AttributeValue>> metadataList, String tableToImportInto) {
+	private static void importData(final List<Map<String, AttributeValue>> metadataList, String tableToImportInto) {
 		RESTORATION_LOG.info("Performing import into table " + tableToImportInto);
 		AtomicInteger count = new AtomicInteger();
 
