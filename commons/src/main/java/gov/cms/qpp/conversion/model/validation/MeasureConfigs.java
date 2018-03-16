@@ -101,7 +101,7 @@ public class MeasureConfigs {
 		String electronicMeasureId = measureConfig.getElectronicMeasureId();
 		String measureId = measureConfig.getMeasureId();
 		String chosenMeasureId = electronicMeasureId != null ? electronicMeasureId : measureId;
-		return (guid != null ? guid : chosenMeasureId);
+		return guid != null ? guid : chosenMeasureId;
 	}
 
 	/**
