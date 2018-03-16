@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import com.google.common.collect.Sets;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -9,14 +10,13 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 import gov.cms.qpp.conversion.util.StringHelper;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -44,14 +44,10 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		super.internalValidateSingleNode(node);
-
-		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
-		String value = node.getValue(MEASURE_ID);
-		MeasureConfig measureConfig = configurationMap.get(value);
+		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 
 		if (measureConfig != null) {
-			List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
-			validateExistingPerformanceRates(node, subPopulations);
+			validateExistingPerformanceRates(node, measureConfig);
 		}
 	}
 
@@ -68,10 +64,10 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * Validates performance rates that were decoded
 	 *
 	 * @param node The current parent node
-	 * @param subPopulations The current sub population
+	 * @param measureConfig The current sub population
 	 */
-	private void validateExistingPerformanceRates(Node node, List<SubPopulation> subPopulations) {
-		if (subPopulations.isEmpty()) {
+	private void validateExistingPerformanceRates(Node node, MeasureConfig measureConfig) {
+		if (measureConfig.getSubPopulation().isEmpty()) {
 			return;
 		}
 		List<Node> performanceRateNodes = node
@@ -79,7 +75,7 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 				.collect(Collectors.toList());
 
 		for (Node performanceRateNode: performanceRateNodes) {
-			validatePerformanceRateUuid(node, subPopulations, performanceRateNode);
+			validatePerformanceRateUuid(node, measureConfig, performanceRateNode);
 		}
 	}
 
@@ -87,10 +83,11 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * Validates an individual performance rate
 	 *
 	 * @param node The current parent node
-	 * @param subPopulations The current sub population
+	 * @param measureConfig Holds the current sub population and electronic measure id
 	 * @param performanceRateNode The current performance rate node
 	 */
-	private void validatePerformanceRateUuid(Node node, List<SubPopulation> subPopulations, Node performanceRateNode) {
+	private void validatePerformanceRateUuid(Node node, MeasureConfig measureConfig, Node performanceRateNode) {
+		List<SubPopulation> subPopulations = measureConfig.getSubPopulation();
 		validatePerformanceRateUuidExists(performanceRateNode);
 
 		String performanceUuid = performanceRateNode.getValue(PERFORMANCE_RATE_ID);
@@ -106,7 +103,7 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 					.map(SubPopulation::getNumeratorUuid)
 					.collect(Collectors.toSet());
 				String expectedUuidString = StringHelper.join(expectedPerformanceUuids, ",", "or");
-				addPerformanceRateValidationMessage(node, expectedUuidString);
+				addPerformanceRateValidationMessage(node, measureConfig.getElectronicMeasureId(), expectedUuidString);
 			}
 		}
 	}
@@ -139,10 +136,8 @@ public class MipsQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	 * @param node The current parent node of performance rate
 	 * @param performanceUuid The current performance rate uuid
 	 */
-	private void addPerformanceRateValidationMessage(Node node, String performanceUuid) {
-		MeasureConfig config =
-				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(config.getElectronicMeasureId(),
+	private void addPerformanceRateValidationMessage(Node node, String electronicMeasureId,String performanceUuid) {
+		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(electronicMeasureId,
 				PERFORMANCE_RATE_ID, performanceUuid);
 		addValidationError(Detail.forErrorAndNode(error, node));
 	}
