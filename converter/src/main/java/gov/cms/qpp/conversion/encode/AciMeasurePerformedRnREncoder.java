@@ -30,11 +30,9 @@ public class AciMeasurePerformedRnREncoder extends QppOutputEncoder {
 	 * @param node Internal representation of parsed xml elements
 	 */
 	private void encodeChild(JsonWrapper wrapper, Node node) {
-		final String measurePerformedValue = "measurePerformed";
-
 		Node child = node.findFirstNode(TemplateId.MEASURE_PERFORMED);
 		if (child != null) {
-			String measureValue = child.getValue(measurePerformedValue);
+			String measureValue = child.getValue("measurePerformed");
 			if ("Y".equalsIgnoreCase(measureValue) || "N".equalsIgnoreCase(measureValue)) {
 				wrapper.putBoolean(VALUE, measureValue);
 			} else {
