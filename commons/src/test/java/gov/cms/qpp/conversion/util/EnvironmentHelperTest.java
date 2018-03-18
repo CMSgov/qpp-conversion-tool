@@ -37,7 +37,7 @@ class EnvironmentHelperTest implements LoggerContract {
 	void testLogEntryForFailures() {
 		String random = UUID.randomUUID().toString();
 		String message = String.format(EnvironmentHelper.NOT_FOUND, random);
-		EnvironmentHelper.isPresent(random);
+		EnvironmentHelper.get(random);
 
 		assertThat(getLogs()).contains(message);
 	}
@@ -61,14 +61,14 @@ class EnvironmentHelperTest implements LoggerContract {
 	}
 
 	@Test
-	void testLogEntryForFailureEmpty() {
+	void testLogEntryForIsPresentFailureIsEmpty() {
 		String someKey = UUID.randomUUID().toString();
 		String value = "";
 		System.setProperty(someKey, value);
 		String message = String.format(EnvironmentHelper.NOT_FOUND, someKey);
 		EnvironmentHelper.isPresent(someKey);
 
-		assertThat(getLogs()).contains(message);
+		assertThat(getLogs()).doesNotContain(message);
 	}
 
 	@Override
