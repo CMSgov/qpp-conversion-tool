@@ -2,6 +2,10 @@ package gov.cms.qpp.conversion.api.model;
 
 import java.time.Instant;
 import java.util.stream.Stream;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
