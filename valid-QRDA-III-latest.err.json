@@ -1,0 +1,10 @@
+{
+  "errors" : [ {
+    "sourceIdentifier" : "valid-QRDA-III-latest.xml",
+    "details" : [ {
+      "errorCode" : 13,
+      "message" : "CT - Denominator count must be less than or equal to Initial Population count for an eCQM that is proportion measure",
+      "path" : "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'structuredBody' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][1]/*[local-name() = 'section' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3'][1]/*[local-name() = 'organizer' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'component' and namespace-uri() = 'urn:hl7-org:v3'][4]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'entryRelationship' and namespace-uri() = 'urn:hl7-org:v3'][1]/*[local-name() = 'observation' and namespace-uri() = 'urn:hl7-org:v3']"
+    } ]
+  } ]
+}
