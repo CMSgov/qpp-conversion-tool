@@ -33,7 +33,7 @@ public class MeasureConfigs {
 	private static String measureDataFileName = DEFAULT_MEASURE_DATA_FILE_NAME;
 	private static Map<String, MeasureConfig> configurationMap;
 	private static Map<String, List<MeasureConfig>> cpcPlusGroups;
-	private static SpellChecker spellChecker = null;
+	private static SpellChecker spellChecker;
 
 	/**
 	 * Static initialization
@@ -73,10 +73,6 @@ public class MeasureConfigs {
 		}
 	}
 
-	static SpellChecker getSpellChecker() {
-		return spellChecker;
-	}
-
 	public static Map<String, MeasureConfig> grabConfiguration(String fileName) {
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -104,7 +100,8 @@ public class MeasureConfigs {
 		String guid = measureConfig.getElectronicMeasureVerUuid();
 		String electronicMeasureId = measureConfig.getElectronicMeasureId();
 		String measureId = measureConfig.getMeasureId();
-		return (guid != null ? guid : (electronicMeasureId != null ? electronicMeasureId : measureId));
+		String chosenMeasureId = electronicMeasureId != null ? electronicMeasureId : measureId;
+		return guid != null ? guid : chosenMeasureId;
 	}
 
 	/**
@@ -117,8 +114,13 @@ public class MeasureConfigs {
 		initMeasureConfigs();
 	}
 
+	/**
+	 * Get list of measure configurations.
+	 *
+	 * @return measure configurations
+	 */
 	public static List<MeasureConfig> getMeasureConfigs() {
-		return configurationMap.values().stream().collect(Collectors.toList());
+		return new ArrayList<>(configurationMap.values());
 	}
 
 	/**
@@ -141,9 +143,9 @@ public class MeasureConfigs {
 
 	public static List<String> getMeasureSuggestions(String measureId) {
 		List<String> suggestions = Collections.emptyList();
-		if (getSpellChecker() != null) {
+		if (spellChecker != null) {
 			try {
-				suggestions = Arrays.asList(getSpellChecker().suggestSimilar(measureId, SUGGESTION_COUNT));
+				suggestions = Arrays.asList(spellChecker.suggestSimilar(measureId, SUGGESTION_COUNT));
 			} catch (IOException ex) {
 				DEV_LOG.warn("Problem when seeking measure suggestions.", ex);
 			}

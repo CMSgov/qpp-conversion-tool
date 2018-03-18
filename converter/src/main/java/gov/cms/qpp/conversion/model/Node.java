@@ -222,11 +222,7 @@ public class Node {
 	 * @return <tt>true</tt> if a child matched such that it was deleted.
 	 */
 	public boolean removeChildNode(Node childNode) {
-		if (childNode == null || childNode == this) {
-			return false;
-		}
-
-		return this.childNodes.remove(childNode);
+		return childNode != null && childNode != this && this.childNodes.remove(childNode);
 	}
 
 	/**
@@ -383,7 +379,7 @@ public class Node {
 	 * @see Node#isNotValidated()
 	 * @see Node#setValidated(boolean)
 	 */
-	public boolean isValidated() {
+	boolean isValidated() {
 		return validated;
 	}
 
