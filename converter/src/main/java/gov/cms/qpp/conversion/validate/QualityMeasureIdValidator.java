@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion.validate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -11,14 +14,12 @@ import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 import gov.cms.qpp.conversion.util.StringHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -39,8 +40,6 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			.collect(Collectors.toSet());
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
 
-	public static final String MEASURE_ID = "measureId";
-
 	/**
 	 * Validates that the Measure Reference Results node contains...
 	 *
@@ -59,7 +58,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		//This should not be an error
 
 		thoroughlyCheck(node)
-				.singleValue(ErrorCode.MEASURE_GUID_MISSING, MEASURE_ID)
+				.singleValue(ErrorCode.MEASURE_GUID_MISSING, MeasureConfigHelper.MEASURE_ID)
 				.childMinimum(ErrorCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
@@ -70,13 +69,12 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node to validate
 	 */
 	private void validateMeasureConfigs(Node node) {
-		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
-		String value = node.getValue(MEASURE_ID);
-		MeasureConfig measureConfig = configurationMap.get(value);
+		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 
 		if (measureConfig != null) {
 			validateAllSubPopulations(node, measureConfig);
 		} else {
+			String value = node.getValue(MeasureConfigHelper.MEASURE_ID);
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
 				DEV_LOG.error("MEASURE_GUID_MISSING " + value);
 				List<String> suggestions = MeasureConfigs.getMeasureSuggestions(value);
@@ -123,9 +121,9 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		long actualChildTypeCount = node.getChildNodes(TemplateId.MEASURE_DATA_CMS_V2).filter(childTypeFinder).count();
 
 		if (expectedChildTypeCount != actualChildTypeCount) {
-			MeasureConfig config = MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
 			LocalizedError error =
-				ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(config.getElectronicMeasureId(),
+				ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format(
+					MeasureConfigHelper.getMeasureConfig(node).getElectronicMeasureId(),
 					expectedChildTypeCount, StringHelper.join(key.getAliases(), ",", "or"),
 					actualChildTypeCount);
 			Detail detail = Detail.forErrorAndNode(error, node);
@@ -263,9 +261,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 	 * @param node Contains the current child nodes
 	 */
 	protected void addMeasureConfigurationValidationMessage(Supplier<String> check, String[] keys, Node node) {
-		MeasureConfig config =
-				MeasureConfigs.getConfigurationMap().get(node.getValue(MEASURE_ID));
-		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(config.getElectronicMeasureId(),
+		LocalizedError error = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format(
+				MeasureConfigHelper.getMeasureConfig(node).getElectronicMeasureId(),
 				String.join(",", keys), check.get());
 		addValidationError(Detail.forErrorAndNode(error, node));
 	}
