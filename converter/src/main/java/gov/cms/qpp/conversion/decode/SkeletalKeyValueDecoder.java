@@ -7,11 +7,19 @@ import java.util.Objects;
 
 import org.jdom2.Element;
 
+/**
+ * {@link QrdaDecoder} that adds a {@link String} key/value pair to the {@link Node}
+ */
 public abstract class SkeletalKeyValueDecoder extends QrdaDecoder {
 
 	private final String key;
 	private final String value;
 
+	/**
+	 * @param context
+	 * @param key the key of the value added to the node
+	 * @param value the value added to the node
+	 */
 	public SkeletalKeyValueDecoder(Context context, String key, String value) {
 		super(context);
 

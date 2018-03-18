@@ -12,6 +12,9 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 
+/**
+ * {@link QrdaDecoder} abstraction for decoding supplemental data
+ */
 public abstract class SkeletalSupplementalDataDecoder extends QrdaDecoder {
 
 	public static final String SUPPLEMENTAL_DATA_CODE = "code";
@@ -20,6 +23,10 @@ public abstract class SkeletalSupplementalDataDecoder extends QrdaDecoder {
 
 	private final SupplementalType type;
 
+	/**
+	 * @param context
+	 * @param type the type of supplemental data to decode
+	 */
 	public SkeletalSupplementalDataDecoder(Context context, SupplementalType type) {
 		super(context);
 
