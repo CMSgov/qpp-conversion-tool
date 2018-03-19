@@ -26,7 +26,7 @@ public class EnvironmentHelper {
 	 * @return true if System.getenv(variable) or System.getProperty(variable) are not null
 	 */
 	public static boolean isPresent(String variable) {
-		return get(variable) != null;
+		return getIfPresent(variable) != null;
 	}
 
 	/**
@@ -36,10 +36,7 @@ public class EnvironmentHelper {
 	 * @return value for the given variable key
 	 */
 	public static String get(String variable) {
-		String value = Stream.of(System.getProperty(variable), System.getenv(variable))
-			.filter(var -> var != null && !var.isEmpty())
-			.findFirst()
-			.orElse(null);
+		String value = getIfPresent(variable);
 		if (value == null) {
 			LOG.warn(
 				String.format(NOT_FOUND, variable));
@@ -55,7 +52,14 @@ public class EnvironmentHelper {
 	 * @return value for the given variable key or substitute
 	 */
 	public static String getOrDefault(String variable, String defaultValue) {
-		String value = get(variable);
+		String value = getIfPresent(variable);
 		return value == null ? defaultValue : value;
+	}
+
+	private static String getIfPresent(String variable) {
+		return Stream.of(System.getProperty(variable), System.getenv(variable))
+				.filter(var -> var != null && !var.isEmpty())
+				.findFirst()
+				.orElse(null);
 	}
 }
