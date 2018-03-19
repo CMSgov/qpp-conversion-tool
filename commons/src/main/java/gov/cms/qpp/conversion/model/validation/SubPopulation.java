@@ -94,27 +94,28 @@ public class SubPopulation {
 
 	@Override
 	public boolean equals(Object o) {
+		boolean isCool = true;
 		if (this == o) {
 			return true;
 		}
 		if (o == null || getClass() != o.getClass()) {
-			return false;
+			isCool = false;
 		}
 
 		SubPopulation that = (SubPopulation) o;
 
 		if (initialPopulationUuid != null
 				? !initialPopulationUuid.equals(that.initialPopulationUuid) : (that.initialPopulationUuid != null)) {
-			return false;
+			isCool = false;
 		}
 		if (numeratorUuid != null
 				? !numeratorUuid.equals(that.numeratorUuid) : (that.numeratorUuid != null)) {
-			return false;
+			isCool = false;
 		}
 		if (strata != null ? !strata.equals(that.strata) : (that.strata != null)) {
-			return false;
+			isCool = false;
 		}
-		return reduceCognitiveComplexity(that);
+		return isCool && reduceCognitiveComplexity(that);
 	}
 
 	private boolean reduceCognitiveComplexity(SubPopulation that) {
