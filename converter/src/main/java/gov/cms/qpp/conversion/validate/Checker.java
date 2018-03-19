@@ -256,7 +256,7 @@ class Checker {
 						|| ((Comparable<Float>) lastAppraised).compareTo(endValue) > 0) {
 					details.add(detail(code));
 				}
-			} catch (NumberFormatException | NullPointerException exc) {
+			} catch (RuntimeException exc) {
 				DEV_LOG.warn("Problem with non float value: " + node.getValue(name), exc);
 				details.add(detail(code));
 			}

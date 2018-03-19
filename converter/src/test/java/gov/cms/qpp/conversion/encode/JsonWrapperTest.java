@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,11 +24,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class JsonWrapperTest {
 
-	private ObjectWriter ow = JsonWrapper.getObjectWriter(true);
+	private ObjectWriter ow = JsonWrapper.getObjectWriterWithoutMeta();
 	private JsonWrapper objectObjWrapper;
 	private JsonWrapper objectStrWrapper;
 	private JsonWrapper listObjWrapper;
@@ -144,6 +146,24 @@ class JsonWrapperTest {
 	}
 
 	@Test
+	@DisplayName("should validate and fail null passed as integer")
+	void testValidInterIsNull() {
+		Throwable exception = assertThrows(EncodeException.class, () -> {
+			objectObjWrapper.validInteger(null);
+		});
+		assertThat(exception).hasCauseThat().isInstanceOf(NumberFormatException.class);
+	}
+
+	@Test
+	@DisplayName("should validate and fail non-numeric string passed as integer")
+	void testValidInterIsNotNumber() {
+		Throwable exception = assertThrows(EncodeException.class, () -> {
+			objectObjWrapper.validInteger("meep");
+		});
+		assertThat(exception).hasCauseThat().isInstanceOf(NumberFormatException.class);
+	}
+
+	@Test
 	void testValidDateYyyyMmDd() throws Exception {
 		ensureDateIsValid("19690720");
 	}
@@ -198,6 +218,12 @@ class JsonWrapperTest {
 		assertWithMessage("should be an object container")
 				.that(((List<?>) objectObjWrapper.getObject()))
 				.isNotEmpty();
+	}
+
+	@Test
+	@DisplayName("should invalidate null value for date")
+	void testValidDateNullInvalid() throws Exception {
+		Assertions.assertThrows(EncodeException.class, () -> objectObjWrapper.putDate(null));
 	}
 
 	@Test

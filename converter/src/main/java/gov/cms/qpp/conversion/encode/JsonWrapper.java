@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -36,6 +37,7 @@ import java.util.stream.Stream;
  */
 public class JsonWrapper {
 	private static final String METADATA_HOLDER = "metadata_holder";
+	private static final String METADATA_FILTER_LABEL = "exclude-metadata";
 	private ObjectWriter ow;
 	private Map<String, Object> object;
 	private List<Object> list;
@@ -45,16 +47,14 @@ public class JsonWrapper {
 	}
 
 	public JsonWrapper(boolean filterMeta) {
-		ow = getObjectWriter(filterMeta);
+		ow = filterMeta ? getObjectWriter() : getObjectWriterWithoutMeta();
 	}
 
 	public JsonWrapper(JsonWrapper wrapper, boolean filterMeta) {
 		this(filterMeta);
 		if (wrapper.isObject()) {
-			this.initAsObject();
 			this.object = new LinkedHashMap<>(wrapper.object);
 		} else {
-			this.initAsList();
 			this.list = new LinkedList<>(wrapper.list);
 		}
 	}
@@ -68,17 +68,20 @@ public class JsonWrapper {
 	 *
 	 * @return utility that will allow client to serialize wrapper contents as json
 	 */
-	public static ObjectWriter getObjectWriter(boolean filterMeta) {
-		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
-		DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
-		printer.indentObjectsWith(withLinefeed);
+	static ObjectWriter getObjectWriter() {
 		ObjectMapper om = new ObjectMapper();
+		outfitMetadataFilter(om);
 
-		if (filterMeta) {
-			outfitMetadataFilter(om);
-		}
+		return om.writer().with(getPrinter());
+	}
 
-		return om.writer().with(printer);
+	/**
+	 * Static factory that creates {@link com.fasterxml.jackson.databind.ObjectWriter}s removing metadata.
+	 *
+	 * @return utility that will allow client to serialize wrapper contents as json
+	 */
+	static ObjectWriter getObjectWriterWithoutMeta() {
+		return new ObjectMapper().writer().with(getPrinter());
 	}
 
 	/**
@@ -87,11 +90,17 @@ public class JsonWrapper {
 	 * @param om object mapper to modify
 	 */
 	private static void outfitMetadataFilter(ObjectMapper om) {
-		final String filterName = "exclude-metadata";
 		SimpleFilterProvider filters = new SimpleFilterProvider();
-		filters.addFilter(filterName, new MetadataPropertyFilter());
-		om.setAnnotationIntrospector(new JsonWrapperIntrospector(filterName));
+		filters.addFilter(METADATA_FILTER_LABEL, new MetadataPropertyFilter());
+		om.setAnnotationIntrospector(new JsonWrapperIntrospector(METADATA_FILTER_LABEL));
 		om.setFilterProvider(filters);
+	}
+
+	private static DefaultPrettyPrinter getPrinter() {
+		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
+		DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
+		printer.indentObjectsWith(withLinefeed);
+		return printer;
 	}
 
 	/**
@@ -375,7 +384,7 @@ public class JsonWrapper {
 	protected int validInteger(String value) {
 		try {
 			return Integer.parseInt(FormatHelper.cleanString(value));
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new EncodeException(value + " is not an integer.", e);
 		}
 	}
@@ -392,7 +401,7 @@ public class JsonWrapper {
 		try {
 			LocalDate thisDate = FormatHelper.formattedDateParse(value);
 			return thisDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new EncodeException(value + " is not an date of format YYYYMMDD.", e);
 		}
 	}
@@ -407,7 +416,7 @@ public class JsonWrapper {
 	protected float validFloat(String value) {
 		try {
 			return Float.parseFloat(FormatHelper.cleanString(value));
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new EncodeException(value + " is not a number.", e);
 		}
 	}
