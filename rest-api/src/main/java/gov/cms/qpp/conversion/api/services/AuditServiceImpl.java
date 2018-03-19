@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.services;
 
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper;
@@ -17,7 +17,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
- * Service for storing {@link Metadata} by {@link Converter.ConversionReport} outcome
+ * Service for storing {@link Metadata} by {@link ConversionReport} outcome
  */
 @Service
 public class AuditServiceImpl implements AuditService {
@@ -48,7 +48,7 @@ public class AuditServiceImpl implements AuditService {
 	 * @return future
 	 */
 	@Override
-	public CompletableFuture<Metadata> success(Converter.ConversionReport conversionReport) {
+	public CompletableFuture<Metadata> success(ConversionReport conversionReport) {
 		if (noAudit()) {
 			return null;
 		}
@@ -73,7 +73,7 @@ public class AuditServiceImpl implements AuditService {
 	 * @return future
 	 */
 	@Override
-	public CompletableFuture<Void> failConversion(Converter.ConversionReport conversionReport) {
+	public CompletableFuture<Void> failConversion(ConversionReport conversionReport) {
 		if (noAudit()) {
 			return null;
 		}
@@ -98,7 +98,7 @@ public class AuditServiceImpl implements AuditService {
 	 * @return future
 	 */
 	@Override
-	public CompletableFuture<Void> failValidation(Converter.ConversionReport conversionReport) {
+	public CompletableFuture<Void> failValidation(ConversionReport conversionReport) {
 		if (noAudit()) {
 			return null;
 		}
@@ -136,13 +136,13 @@ public class AuditServiceImpl implements AuditService {
 	}
 
 	/**
-	 * Initializes {@link Metadata} from the {@link Converter.ConversionReport} and conversion outcome
+	 * Initializes {@link Metadata} from the {@link ConversionReport} and conversion outcome
 	 *
 	 * @param report Object containing metadata information
 	 * @param outcome Status of the conversion
 	 * @return Constructed metadata
 	 */
-	private Metadata initMetadata(Converter.ConversionReport report, MetadataHelper.Outcome outcome) {
+	private Metadata initMetadata(ConversionReport report, MetadataHelper.Outcome outcome) {
 		Metadata metadata = MetadataHelper.generateMetadata(report.getDecoded(), outcome);
 		metadata.setFileName(report.getQrdaSource().getName());
 		metadata.setPurpose(report.getPurpose());

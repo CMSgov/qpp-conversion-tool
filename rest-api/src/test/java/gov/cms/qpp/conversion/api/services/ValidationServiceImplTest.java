@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.api.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.api.model.Constants;
@@ -93,7 +94,7 @@ class ValidationServiceImplTest {
 		rt.setAccessible(false);
 		objectUnderTest = spy(meep);
 
-		Converter.ConversionReport report = mock(Converter.ConversionReport.class);
+		ConversionReport report = mock(ConversionReport.class);
 		when(report.getEncoded()).thenReturn(qppWrapper);
 		when(converter.getReport()).thenReturn(report);
 	}
