@@ -22,10 +22,6 @@ public class QppDataRestorationApplication {
 	private static final AmazonDynamoDB DYNAMO_CLIENT =
 		AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 
-	public static AmazonDynamoDB getDynamoClient() {
-		return DYNAMO_CLIENT;
-	}
-
 	/**
 	 * Main method for handling the export and import of tables.
 	 *
