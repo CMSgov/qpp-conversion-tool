@@ -33,7 +33,7 @@ public class XmlUtils {
 	 * @return The root element of the XML tree.
 	 * @throws XmlException When a failure to parse the XML.
 	 */
-	public static Element stringToDom(String xml) throws XmlException {
+	public static Element stringToDom(String xml) {
 		if (xml == null) {
 			return null;
 		}
@@ -48,7 +48,7 @@ public class XmlUtils {
 	 * @return The root element of the XML tree.
 	 * @throws XmlException When a failure to parse the XML.
 	 */
-	public static Element parseXmlStream(InputStream xmlStream) throws XmlException {
+	public static Element parseXmlStream(InputStream xmlStream) {
 		try {
 			SAXBuilder saxBuilder = new SAXBuilder();
 			saxBuilder.setFeature(DISALLOW_DTD,true);

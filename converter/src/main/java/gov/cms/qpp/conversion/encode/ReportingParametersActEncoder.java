@@ -7,8 +7,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.format.DateTimeParseException;
-
 /**
  * Encoder to serialize reporting paramters
  */

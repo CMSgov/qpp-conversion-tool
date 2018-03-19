@@ -107,7 +107,7 @@ public class Converter {
 	 * @return a transformed representation of the source content
 	 * @throws XmlException during transform
 	 */
-	private JsonWrapper transform(InputStream inStream) throws XmlException {
+	private JsonWrapper transform(InputStream inStream) {
 		Element doc = XmlUtils.parseXmlStream(inStream);
 		decoded = XmlDecoderEngine.decodeXml(context, doc);
 		JsonWrapper qpp = null;
