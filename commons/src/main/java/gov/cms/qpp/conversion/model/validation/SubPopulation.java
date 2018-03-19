@@ -99,7 +99,7 @@ public class SubPopulation {
 			return true;
 		}
 		if (o == null || getClass() != o.getClass()) {
-			isCool = false;
+			return false;
 		}
 
 		SubPopulation that = (SubPopulation) o;
