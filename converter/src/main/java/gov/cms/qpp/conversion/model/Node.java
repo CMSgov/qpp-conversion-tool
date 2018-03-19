@@ -1,8 +1,5 @@
 package gov.cms.qpp.conversion.model;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,12 +7,15 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.Lists;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -460,4 +460,5 @@ public class Node {
 	public final int hashCode() {
 		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(), getPath());
 	}
+
 }

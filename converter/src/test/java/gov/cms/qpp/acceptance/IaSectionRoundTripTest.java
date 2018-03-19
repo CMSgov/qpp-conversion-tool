@@ -2,7 +2,6 @@ package gov.cms.qpp.acceptance;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -24,7 +23,7 @@ class IaSectionRoundTripTest {
 	}
 
 	@Test
-	void testIaSectionConvertsIaCategory() throws IOException {
+	void testIaSectionConvertsIaCategory() {
 		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaCategory = JsonHelper.readJsonAtJsonPath(qpp.toString(),
@@ -36,7 +35,7 @@ class IaSectionRoundTripTest {
 	}
 
 	@Test
-	void testIaSectionConvertsIaMeasureId() throws IOException {
+	void testIaSectionConvertsIaMeasureId() {
 		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaMeasureId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
@@ -48,7 +47,7 @@ class IaSectionRoundTripTest {
 	}
 
 	@Test
-	void testIaSectionConvertsMeasurePerformed() throws IOException {
+	void testIaSectionConvertsMeasurePerformed() {
 		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(qpp.toString(),

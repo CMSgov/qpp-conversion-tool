@@ -1,7 +1,5 @@
 package gov.cms.qpp;
 
-import org.xml.sax.SAXException;
-
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
@@ -11,8 +9,6 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.TransformException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +20,7 @@ public class MarkupManipulationHandler {
 	private static final String NAMESPACE_URI = "urn:hl7-org:v3";
 	private MarkupManipulator manipulator;
 
-	public MarkupManipulationHandler(String path) throws ParserConfigurationException, SAXException, IOException {
+	public MarkupManipulationHandler(String path) {
 		manipulator = new MarkupManipulator.MarkupManipulatorBuilder()
 				.setPathname(path)
 				.setNsAware(true)

@@ -48,9 +48,8 @@ public class RestExtension implements BeforeAllCallback, AfterAllCallback {
 				.atMost(30, TimeUnit.SECONDS).until(() -> {
 			if (checkPort(host, port)) {
 				throw new RuntimeException("Not yet");
-			} else {
-				return true;
 			}
+			return true;
 		});
 	}
 

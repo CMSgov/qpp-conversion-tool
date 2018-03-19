@@ -145,7 +145,7 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
-	void testEndpoint3WithFeatureFlagDisabled() throws IOException {
+	void testEndpoint3WithFeatureFlagDisabled() {
 		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
 
 		ResponseEntity<String> cpcResponse = markProcessed();
