@@ -20,6 +20,7 @@ public class ReportingParametersActDecoder extends QrdaDecoder {
 	public static final String PERFORMANCE_START = "performanceStart";
 	public static final String PERFORMANCE_END = "performanceEnd";
 	public static final String PERFORMANCE_YEAR = "performanceYear";
+	private static final int YEAR_LAST_INDEX = 4;
 
 	public ReportingParametersActDecoder(Context context) {
 		super(context);
@@ -54,7 +55,7 @@ public class ReportingParametersActDecoder extends QrdaDecoder {
 					String start = p.getValue();
 					thisNode.putValue(PERFORMANCE_START, start, false);
 					//start is formatted as follows: yyyyMMddHHmmss
-					thisNode.putValue(PERFORMANCE_YEAR, start.substring(0, 4));
+					thisNode.putValue(PERFORMANCE_YEAR, start.substring(0, YEAR_LAST_INDEX));
 				};
 		Consumer<? super Attribute> performanceEndConsumer =
 				p -> thisNode.putValue(PERFORMANCE_END, p.getValue(), false);

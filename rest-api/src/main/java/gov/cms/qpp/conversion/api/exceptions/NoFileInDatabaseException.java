@@ -3,10 +3,10 @@ package gov.cms.qpp.conversion.api.exceptions;
 /**
  * Exception for an database not
  */
-public class NoFileInDatabaseException extends RuntimeException {
+public class NoFileInDatabaseException extends IllegalArgumentException {
 
 	/**
-	 * Build this exception with as a {@link RuntimeException} with a defaulted message
+	 * Build this exception with as a {@link IllegalArgumentException} with a defaulted message
 	 *
 	 * @param message to be passed into the exception
 	 */

@@ -14,6 +14,9 @@ import org.apache.commons.io.IOUtils;
  */
 public class MeasuredInputStreamSupplier implements Supplier<InputStream> {
 
+	private final Supplier<InputStream> delegate;
+	private final int size;
+
 	/**
 	 * Terminally uses an {@link InputStream} to create a {@link MeasuredInputStreamSupplier}
 	 *
@@ -25,9 +28,6 @@ public class MeasuredInputStreamSupplier implements Supplier<InputStream> {
 
 		return new MeasuredInputStreamSupplier(source);
 	}
-
-	private final Supplier<InputStream> delegate;
-	private final int size;
 
 	private MeasuredInputStreamSupplier(InputStream source) {
 		byte[] byteArray;
