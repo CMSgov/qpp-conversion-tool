@@ -1,6 +1,5 @@
 package gov.cms.qpp.acceptance;
 
-
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
@@ -16,10 +15,7 @@ import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,7 +25,6 @@ import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-
 
 class QualityMeasureIdMultiRoundTripTest {
 
@@ -49,13 +44,13 @@ class QualityMeasureIdMultiRoundTripTest {
 	private static MarkupManipulator manipulator;
 
 	@BeforeAll
-	static void setup() throws ParserConfigurationException, SAXException, IOException {
+	static void setup() {
 		manipulator = new MarkupManipulator.MarkupManipulatorBuilder()
 			.setPathname(JUNK_QRDA3_FILE).build();
 	}
 
 	@Test
-	void testRoundTripForQualityMeasureId() throws IOException {
+	void testRoundTripForQualityMeasureId() {
 		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE));
 
 		JsonWrapper qpp = converter.transform();

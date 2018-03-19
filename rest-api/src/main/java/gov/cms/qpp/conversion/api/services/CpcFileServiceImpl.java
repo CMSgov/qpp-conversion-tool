@@ -59,9 +59,8 @@ public class CpcFileServiceImpl implements CpcFileService {
 		Metadata metadata = dbService.getMetadataById(fileId);
 		if (isAnUnprocessedCpcFile(metadata)) {
 			return new InputStreamResource(storageService.getFileByLocationId(metadata.getSubmissionLocator()));
-		} else {
-			throw new NoFileInDatabaseException(FILE_NOT_FOUND);
 		}
+		throw new NoFileInDatabaseException(FILE_NOT_FOUND);
 	}
 
 	/**

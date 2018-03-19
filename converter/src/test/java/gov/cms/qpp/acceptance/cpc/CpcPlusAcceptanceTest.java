@@ -69,7 +69,7 @@ class CpcPlusAcceptanceTest {
 
 	@ParameterizedTest
 	@MethodSource("successData")
-	void testCpcPlusFileSuccesses(Path entry) throws IOException {
+	void testCpcPlusFileSuccesses(Path entry) {
 		AllErrors errors = null;
 
 		Converter converter = new Converter(new PathSource(entry));
@@ -85,7 +85,7 @@ class CpcPlusAcceptanceTest {
 
 	@ParameterizedTest
 	@MethodSource("failureData")
-	void testCpcPlusFileFailures(Path entry) throws IOException {
+	void testCpcPlusFileFailures(Path entry) {
 		String fileName = entry.getFileName().toString();
 		assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues).containsKey(fileName);
 

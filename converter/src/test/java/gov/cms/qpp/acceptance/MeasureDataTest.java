@@ -2,7 +2,6 @@ package gov.cms.qpp.acceptance;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,7 +20,7 @@ class MeasureDataTest {
 	private static Map<String, MeasureConfig> configMap;
 
 	@BeforeAll
-	static void setup() throws IOException {
+	static void setup() {
 		glossaryMap = MeasureConfigs.grabConfiguration("measureGlossary.json");
 		configMap = MeasureConfigs.getConfigurationMap();
 	}

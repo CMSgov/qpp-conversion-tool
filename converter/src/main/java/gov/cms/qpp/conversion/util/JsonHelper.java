@@ -6,6 +6,7 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -51,7 +52,7 @@ public class JsonHelper {
 	 * @throws IOException if problems arise while attempting to parse the resource at the given filePath
 	 */
 	public static <T> T readJson(Path filePath, Class<T> valueType) throws IOException {
-		return new ObjectMapper().readValue(filePath.toFile(), valueType);
+		return new ObjectMapper().readValue(Files.newBufferedReader(filePath), valueType);
 	}
 
 	/**
@@ -102,7 +103,7 @@ public class JsonHelper {
 	 * @throws IOException if problems arise while attempting to parse the json file
 	 */
 	public static <T> T readJson(Path filePath, TypeReference<T> valueType) throws IOException {
-		return new ObjectMapper().readValue(filePath.toFile(), valueType);
+		return new ObjectMapper().readValue(Files.newBufferedReader(filePath), valueType);
 	}
 
 	/**

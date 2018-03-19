@@ -2,7 +2,6 @@ package gov.cms.qpp.acceptance;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -23,9 +22,8 @@ class CpcPlusRoundTripTest {
 	private static JsonWrapper wrapper = new JsonWrapper();
 	private static ReadContext ctx;
 
-
 	@BeforeAll
-	static void setup() throws URISyntaxException, IOException {
+	static void setup() throws URISyntaxException {
 		ApmEntityIds.setApmDataFile("test_apm_entity_ids.json");
 		URL sample = CpcPlusRoundTripTest.class.getClassLoader()
 				.getResource("cpc_plus/success/CPCPlus_CMSPrgrm_LowerCase_SampleQRDA-III.xml");

@@ -1,6 +1,5 @@
 package gov.cms.qpp.acceptance.helper;
 
-import com.google.common.collect.Sets;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filter;
@@ -17,11 +16,10 @@ import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 import gov.cms.qpp.test.helper.NioHelper;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -29,9 +27,9 @@ import static junit.framework.TestCase.fail;
 
 public class JsonPathToXpathHelper {
 
-	private static final Set<String> CHECK_FOR_NULL_SET = Sets
-		.newHashSet("entityType", "performanceYear", "performanceNotMet", "performanceStart", "performanceEnd", "programName", "measureId", "stratum", "value")
-		.stream().map(ignored -> ".*" + ignored + "$").collect(Collectors.toCollection(HashSet::new));
+	private static final Set<String> CHECK_FOR_NULL_SET =
+			Stream.of("entityType", "performanceYear", "performanceNotMet", "performanceStart", "performanceEnd", "programName", "measureId", "stratum", "value")
+			.map(ignored -> ".*" + ignored + "$").collect(Collectors.toSet());
 	private static XPathFactory xpf = XPathFactory.instance();
 	private Path path;
 	private JsonWrapper wrapper;
@@ -51,7 +49,7 @@ public class JsonPathToXpathHelper {
 	}
 
 	public void executeElementTest(String jsonPath, String xmlElementName)
-			throws IOException, XmlException {
+			throws XmlException {
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 		Element element = evaluateXpath(xPath, Filters.element());
 
@@ -64,7 +62,7 @@ public class JsonPathToXpathHelper {
 		Attribute attribute = null;
 		try {
 			attribute = evaluateXpath(xPath, Filters.attribute());
-		} catch (IOException | XmlException e) {
+		} catch (XmlException e) {
 			fail(e.getMessage());
 		}
 
@@ -77,7 +75,7 @@ public class JsonPathToXpathHelper {
 	}
 
 	public void executeAttributeTest(String jsonPath, String xmlAttributeName, String expectedValue)
-			throws IOException, XmlException {
+			throws XmlException {
 		String xPath = PathCorrelator.prepPath(jsonPath, wrapper);
 		Attribute attribute = evaluateXpath(xPath, Filters.attribute());
 
@@ -88,7 +86,7 @@ public class JsonPathToXpathHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T evaluateXpath(String xPath, Filter filter) throws IOException, XmlException {
+	private <T> T evaluateXpath(String xPath, Filter filter) throws XmlException {
 		XPathExpression<Attribute> xpath = xpf.compile(xPath, filter);
 		return (T) xpath.evaluateFirst(XmlUtils.parseXmlStream(NioHelper.fileToStream(path)));
 	}

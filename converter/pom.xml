@@ -58,26 +58,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.jsonschema2pojo</groupId>
-				<artifactId>jsonschema2pojo-maven-plugin</artifactId>
-				<version>0.5.1</version>
-				<configuration>
-					<includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-					<includeToString>false</includeToString>
-					<outputDirectory>${basedir}/src/main/java</outputDirectory>
-					<sourceDirectory>${basedir}/src/main/resources/pathing/schema</sourceDirectory>
-					<targetPackage>gov.cms.qpp.conversion.correlation.model</targetPackage>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
 				<groupId>gov.cms.qpp.conversion</groupId>
 				<artifactId>generate-maven-plugin</artifactId>
 				<version>${project.version}</version>
@@ -141,12 +121,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>uk.com.robust-it</groupId>
-			<artifactId>cloning</artifactId>
-			<version>1.9.6</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.3</version>
@@ -170,6 +144,12 @@
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>commons</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>uk.com.robust-it</groupId>
+			<artifactId>cloning</artifactId>
+			<version>1.9.9</version>
 		</dependency>
 	</dependencies>
 </project>
