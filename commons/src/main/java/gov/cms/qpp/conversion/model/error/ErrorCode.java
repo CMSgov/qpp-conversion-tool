@@ -69,7 +69,7 @@ public enum ErrorCode implements LocalizedError {
 	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END(30, "Must have one and only one performance end"),
 	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR(31, "Must have a performance year"),
 	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure Section must have "
-			+ "only one Reporting Parameter ACT"),
+			+ "exactly one Reporting Parameter ACT"),
 	PERFORMANCE_RATE_INVALID_VALUE(33, "Must enter a valid Performance Rate value"),
 	CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "Must contain a practice site address for CPC+ "
 			+ "conversions"),

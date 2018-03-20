@@ -10,10 +10,7 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +26,7 @@ class QualityMeasureSectionValidatorTest {
 
 
 	@BeforeAll
-	static void setup() throws ParserConfigurationException, SAXException, IOException {
+	static void setup() {
 		manipulatorHandler = new MarkupManipulationHandler("../qrda-files/valid-QRDA-III-latest.xml");
 	}
 

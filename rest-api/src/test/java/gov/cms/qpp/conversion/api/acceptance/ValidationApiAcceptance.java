@@ -17,14 +17,12 @@ import gov.cms.qpp.conversion.xml.XmlUtils;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
 import gov.cms.qpp.test.helper.NioHelper;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.fail;
-
 
 @ExtendWith(RestExtension.class)
 class ValidationApiAcceptance {
@@ -56,12 +54,12 @@ class ValidationApiAcceptance {
 			} else {
 				assertThat(found).isNotNull();
 			}
-		} catch (IOException | XmlException | DataConversionException ex) {
+		} catch (XmlException | DataConversionException ex) {
 			fail("This xpath could not be found: " + detail.getPath(), ex);
 		}
 	}
 
-	private Object evaluateXpath(String xPath, Filter filter) throws IOException, XmlException {
+	private Object evaluateXpath(String xPath, Filter filter) throws XmlException {
 		XPathExpression<Object> xpath = XPF.compile(xPath, filter);
 		return xpath.evaluateFirst(XmlUtils.parseXmlStream(NioHelper.fileToStream(PATH)));
 	}

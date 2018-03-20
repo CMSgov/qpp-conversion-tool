@@ -57,7 +57,7 @@ public class QrdaGenerator {
 		generator.generate();
 	}
 
-	private QrdaGenerator() throws IOException, TransformerConfigurationException {
+	private QrdaGenerator() {
 		MustacheFactory mf = new DefaultMustacheFactory();
 		submission = mf.compile("submission-template.xml");
 		subpopulation = mf.compile("subpopulation-template.xml");
@@ -68,7 +68,7 @@ public class QrdaGenerator {
 		ia = filterIaMeasures();
 	}
 
-	private List<MeasureConfig> filterQualityMeasures() throws IOException {
+	private List<MeasureConfig> filterQualityMeasures() {
 		return measureConfigs.stream()
 				.filter(measureConfig -> measureConfig.getCategory().equals("quality")
 						&& measureConfig.getElectronicMeasureId() != null
@@ -169,7 +169,6 @@ public class QrdaGenerator {
 		Function<String, Object> generateDenexcep = uuid -> generateSubpopulation(uuid, PopulationValue.DENEXCEP);
 		Function<String, Object> generateNumer = uuid -> generateSubpopulation(uuid, PopulationValue.NUMER);
 		Function<String, Object> generatePerformanceRate = this::generatePerformanceRate;
-
 
 		private Context(List<MeasureConfig> quality, List<MeasureConfig> aci, List<MeasureConfig> ia) {
 			this.quality = quality;

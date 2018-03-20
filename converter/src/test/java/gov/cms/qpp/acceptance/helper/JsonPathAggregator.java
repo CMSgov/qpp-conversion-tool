@@ -1,8 +1,6 @@
 package gov.cms.qpp.acceptance.helper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.collect.Sets;
-import gov.cms.qpp.conversion.decode.QualitySectionDecoder;
+import gov.cms.qpp.conversion.decode.SkeletalSectionDecoder;
 import gov.cms.qpp.conversion.encode.AciSectionEncoder;
 import gov.cms.qpp.conversion.encode.QualityMeasureIdEncoder;
 
@@ -10,10 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.Sets;
+
 public class JsonPathAggregator {
 	private Set<String> excluded = Sets.newHashSet(
 			QualityMeasureIdEncoder.IS_END_TO_END_REPORTED,
-			QualitySectionDecoder.CATEGORY,
+			SkeletalSectionDecoder.CATEGORY,
 			AciSectionEncoder.SUBMISSION_METHOD
 	);
 
