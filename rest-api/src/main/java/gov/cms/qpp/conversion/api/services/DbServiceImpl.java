@@ -6,15 +6,16 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -31,11 +32,14 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	private static final int LIMIT = 3;
 	public static final String START_OF_UNALLOWED_CONVERSION_TIME = "2018-01-02T04:59:59.999Z";
 
-	@Inject
-	private DynamoDBMapper mapper;
-
-	@Inject
+	private Optional<DynamoDBMapper> mapper;
 	private Environment environment;
+
+	public DbServiceImpl(TaskExecutor taskExecutor, Optional<DynamoDBMapper> mapper, Environment environment) {
+		super(taskExecutor);
+		this.mapper = mapper;
+		this.environment = environment;
+	}
 
 	/**
 	 * Writes the passed in {@link Metadata} to DynamoDB.
@@ -50,7 +54,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	public CompletableFuture<Metadata> write(Metadata meta) {
 		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 
-		if (noAudit != null && !noAudit.isEmpty()) {
+		if ((noAudit != null && !noAudit.isEmpty()) || true) {
 			API_LOG.warn("Not writing metadata information");
 			return CompletableFuture.completedFuture(new Metadata());
 		}
@@ -77,7 +81,6 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
 			valueMap.put(":createDate", new AttributeValue().withS(START_OF_UNALLOWED_CONVERSION_TIME));
 
-
 			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
 				.withIndexName("Cpc-CpcProcessed_CreateDate-index")
 				.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with("
@@ -87,7 +90,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 				.withConsistentRead(false)
 				.withLimit(LIMIT);
 
-			return mapper.queryPage(Metadata.class, metadataQuery).getResults().stream();
+			return mapper.get().queryPage(Metadata.class, metadataQuery).getResults().stream();
 		}).flatMap(Function.identity()).collect(Collectors.toList());
 	}
 
@@ -99,7 +102,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 */
 	public Metadata getMetadataById(String uuid) {
 		API_LOG.info("Read item {} from DynamoDB", uuid);
-		return mapper.load(Metadata.class, uuid);
+		return mapper.get().load(Metadata.class, uuid);
 	}
 
 	/**
@@ -110,7 +113,9 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 */
 	@Override
 	protected Metadata asynchronousAction(Metadata meta) {
-		mapper.save(meta);
+		API_LOG.info(mapper + "");
+		API_LOG.info(mapper.get() + "");
+		mapper.get().save(meta);
 		API_LOG.info("Wrote item to DynamoDB with UUID {}", meta.getUuid());
 		return meta;
 	}

@@ -19,7 +19,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.4.1</version>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -105,13 +105,13 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.9.2</version>
+			<version>2.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-xml</artifactId>
-			<version>2.9.2</version>
+			<version>2.9.4</version>
 			<exclusions>
 				<exclusion>
 					<groupId>*</groupId>
@@ -123,13 +123,13 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.3</version>
+			<version>4.5.5</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava-testlib</artifactId>
-			<version>23.4-jre</version>
+			<version>24.1-jre</version>
 			<scope>test</scope>
 		</dependency>
 
