@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
@@ -48,7 +48,7 @@ public class AuditServiceImplTest {
 	private DbService dbService;
 
 	@Mock
-	private Converter.ConversionReport report;
+	private ConversionReport report;
 
 	@Mock
 	private Environment environment;

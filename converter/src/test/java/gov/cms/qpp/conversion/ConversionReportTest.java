@@ -25,8 +25,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class ConversionReportTest {
-	private static Converter.ConversionReport report;
-	private static Converter.ConversionReport errorReport;
+	private static ConversionReport report;
+	private static ConversionReport errorReport;
 	private static JsonWrapper wrapper;
 	private static Source inputSource;
 
@@ -87,7 +87,7 @@ class ConversionReportTest {
 
 		Converter converter = new Converter(
 			new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
-		Converter.ConversionReport badReport = converter.getReport();
+		ConversionReport badReport = converter.getReport();
 
 		Field field = badReport.getClass().getDeclaredField("mapper");
 		field.setAccessible(true);
@@ -105,7 +105,7 @@ class ConversionReportTest {
 	void getErrorStream() {
 		Converter converter = new Converter(
 			new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
-		Converter.ConversionReport badReport = converter.getReport();
+		ConversionReport badReport = converter.getReport();
 		Error error = new Error();
 		error.setMessage("meep");
 		AllErrors errors = new AllErrors();
@@ -120,7 +120,7 @@ class ConversionReportTest {
 	void rawValidationErrors() throws IOException {
 		Converter converter = new Converter(
 				new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
-		Converter.ConversionReport aReport = converter.getReport();
+		ConversionReport aReport = converter.getReport();
 		aReport.setRawValidationDetails("meep");
 		String details = IOUtils.toString(aReport.getRawValidationErrorsOrEmptySource().toInputStream(), "UTF-8");
 

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
@@ -31,7 +32,7 @@ public class QrdaServiceImpl implements QrdaService {
 	 * @return Results of the conversion
 	 */
 	@Override
-	public Converter.ConversionReport convertQrda3ToQpp(Source source) {
+	public ConversionReport convertQrda3ToQpp(Source source) {
 		Converter converter = initConverter(source);
 		API_LOG.info("Performing QRDA3 to QPP conversion");
 		converter.transform();
