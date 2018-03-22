@@ -51,7 +51,9 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setProgramNameOnNode(element, thisNode);
 		setEntityIdOnNode(element, thisNode);
 		setPracticeSiteAddress(element, thisNode);
-		setNationalProviderIdOnNode(element, thisNode);
+		if (ENTITY_INDIVIDUAL.equals(thisNode.getValue(ENTITY_TYPE))) {
+			setNationalProviderIdOnNode(element, thisNode);
+		}
 		setTaxProviderTaxIdOnNode(element, thisNode);
 		return DecodeResult.TREE_CONTINUE;
 	}
