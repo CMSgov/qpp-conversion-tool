@@ -194,7 +194,7 @@ class ClinicalDocumentDecoderTest {
 				.isEqualTo(ClinicalDocumentDecoder.ENTITY_GROUP);
 		assertWithMessage("Clinical Document doesn't contain national provider")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
-				.isEqualTo(null);
+				.isNull();
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
