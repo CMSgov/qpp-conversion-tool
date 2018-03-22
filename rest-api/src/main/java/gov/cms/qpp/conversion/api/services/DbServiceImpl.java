@@ -32,8 +32,8 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	private static final int LIMIT = 3;
 	public static final String START_OF_UNALLOWED_CONVERSION_TIME = "2018-01-02T04:59:59.999Z";
 
-	private Optional<DynamoDBMapper> mapper;
-	private Environment environment;
+	private final Optional<DynamoDBMapper> mapper;
+	private final Environment environment;
 
 	public DbServiceImpl(TaskExecutor taskExecutor, Optional<DynamoDBMapper> mapper, Environment environment) {
 		super(taskExecutor);
@@ -54,7 +54,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	public CompletableFuture<Metadata> write(Metadata meta) {
 		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 
-		if ((noAudit != null && !noAudit.isEmpty()) || true) {
+		if ((noAudit != null && !noAudit.isEmpty())) {
 			API_LOG.warn("Not writing metadata information");
 			return CompletableFuture.completedFuture(new Metadata());
 		}
@@ -113,8 +113,6 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 */
 	@Override
 	protected Metadata asynchronousAction(Metadata meta) {
-		API_LOG.info(mapper + "");
-		API_LOG.info(mapper.get() + "");
 		mapper.get().save(meta);
 		API_LOG.info("Wrote item to DynamoDB with UUID {}", meta.getUuid());
 		return meta;

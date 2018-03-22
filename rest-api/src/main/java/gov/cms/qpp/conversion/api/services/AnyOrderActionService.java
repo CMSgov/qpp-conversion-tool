@@ -33,7 +33,7 @@ public abstract class AnyOrderActionService<T, S> {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(AnyOrderActionService.class);
 
-	protected TaskExecutor taskExecutor;
+	protected final TaskExecutor taskExecutor;
 
 	public AnyOrderActionService(TaskExecutor taskExecutor) {
 		this.taskExecutor = taskExecutor;
