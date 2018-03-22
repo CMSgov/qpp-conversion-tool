@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.model.error;
 
-import gov.cms.qpp.conversion.Converter.ConversionReport;
+import gov.cms.qpp.conversion.ConversionReport;
 
 /**
  * An {@link Exception} that is thrown from the {@link gov.cms.qpp.conversion.Converter} on error.

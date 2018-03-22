@@ -1,5 +1,8 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
+import com.amazonaws.AmazonServiceException;
+import com.google.common.truth.Truth;
+import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
@@ -12,19 +15,6 @@ import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.test.MockitoExtension;
 import gov.cms.qpp.test.logging.LoggerContract;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.mockito.ArgumentMatchers.any;
-import static org.powermock.api.mockito.PowerMockito.when;
-
-import com.amazonaws.AmazonServiceException;
-import com.google.common.truth.Truth;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,10 +33,20 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.mockito.ArgumentMatchers.any;
+import static org.powermock.api.mockito.PowerMockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class ExceptionHandlerControllerV1Test implements LoggerContract {
 
-	private static Converter.ConversionReport report;
+	private static ConversionReport report;
 	private static AllErrors allErrors = new AllErrors();
 
 	@InjectMocks
@@ -64,7 +64,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 
 	@BeforeEach
 	void before() {
-		when(auditService.failConversion(any(Converter.ConversionReport.class)))
+		when(auditService.failConversion(any(ConversionReport.class)))
 				.thenReturn(CompletableFuture.completedFuture(null));
 	}
 

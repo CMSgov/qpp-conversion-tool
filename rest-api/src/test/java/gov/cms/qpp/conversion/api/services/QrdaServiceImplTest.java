@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
+import gov.cms.qpp.conversion.ConversionReport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,7 +72,7 @@ class QrdaServiceImplTest {
 		JsonWrapper qpp = new JsonWrapper();
 		qpp.putString(KEY, MOCK_SUCCESS_QPP_STRING);
 
-		Converter.ConversionReport report = mock(Converter.ConversionReport.class);
+		ConversionReport report = mock(ConversionReport.class);
 
 		when(report.getEncoded()).thenReturn(qpp);
 		when(mockConverter.getReport()).thenReturn(report);
@@ -84,7 +85,7 @@ class QrdaServiceImplTest {
 		AllErrors allErrors = new AllErrors();
 		allErrors.addError(new Error(MOCK_ERROR_SOURCE_IDENTIFIER, null));
 
-		Converter.ConversionReport report = mock(Converter.ConversionReport.class);
+		ConversionReport report = mock(ConversionReport.class);
 		when(report.getReportDetails()).thenReturn(allErrors);
 
 		TransformException transformException = new TransformException("mock problem", new NullPointerException(), report);
