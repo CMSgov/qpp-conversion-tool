@@ -22,7 +22,7 @@ public enum ErrorCode implements LocalizedError {
 	ENCODER_MISSING(1, "Failed to find an encoder"),
 	NOT_VALID_XML_DOCUMENT(2, "The file is not a valid XML document"),
 	UNEXPECTED_ERROR(3, "Unexpected exception occurred during conversion"),
-	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occured during encoding"),
+	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occurred during encoding"),
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. "
 		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
 		+ "`(Implementation guide link)`", true),
