@@ -54,7 +54,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	public CompletableFuture<Metadata> write(Metadata meta) {
 		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 
-		if ((noAudit != null && !noAudit.isEmpty())) {
+		if (noAudit != null && !noAudit.isEmpty()) {
 			API_LOG.warn("Not writing metadata information");
 			return CompletableFuture.completedFuture(new Metadata());
 		}
