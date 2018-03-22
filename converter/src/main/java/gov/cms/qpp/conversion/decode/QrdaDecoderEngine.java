@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.decode;
 
+import com.google.common.collect.Lists;
 import org.jdom2.Element;
 import org.jdom2.xpath.XPathHelper;
 import org.slf4j.Logger;
@@ -178,7 +179,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	private List<Element> getUniqueTemplateIdElements(final List<Element> childElements) {
 		Set<TemplateId> uniqueTemplates = EnumSet.noneOf(TemplateId.class);
 
-		return childElements.stream()
+		List<Element> children = childElements.stream()
 			.filter(filterElement -> {
 				boolean isTemplateId = TEMPLATE_ID.equals(filterElement.getName());
 				TemplateId filterTemplateId = getTemplateId(filterElement);
@@ -186,18 +187,20 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 				boolean elementWillStay = true;
 
 				if (isTemplateId) {
-					if (getDecoder(filterTemplateId) == null) {
+					if (getDecoder(filterTemplateId) == null || uniqueTemplates.contains(filterTemplateId)) {
 						elementWillStay = false;
-					} else if (uniqueTemplates.contains(filterTemplateId)) {
-						elementWillStay = false;
-					} else {
-						uniqueTemplates.add(filterTemplateId);
 					}
+					uniqueTemplates.add(filterTemplateId);
 				}
 
 				return elementWillStay;
 			})
 			.collect(Collectors.toList());
+
+		return (uniqueTemplates.size() == 0 ||
+			uniqueTemplates.stream().anyMatch(template -> !template.equals(TemplateId.DEFAULT)))
+			? children
+			: Lists.newArrayList();
 	}
 
 	/**
