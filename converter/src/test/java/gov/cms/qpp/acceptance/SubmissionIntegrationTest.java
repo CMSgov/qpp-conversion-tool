@@ -22,10 +22,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-@Disabled
 class SubmissionIntegrationTest {
 
 	private static HttpClient client;

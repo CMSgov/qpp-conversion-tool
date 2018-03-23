@@ -55,7 +55,6 @@ class DbServiceImplTest {
 			CompletableFuture.runAsync(method);
 			return null;
 		}).when(taskExecutor).execute(any(Runnable.class));
-		dbMapper = dbMapperWrapper.get();
 	}
 
 	@Test
