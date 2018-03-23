@@ -8,10 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +56,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	public CompletableFuture<Metadata> write(Metadata meta) {
 		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 
-		if (noAudit != null && !noAudit.isEmpty()) {
+		if (!StringUtils.isEmpty(noAudit)) {
 			API_LOG.warn("Not writing metadata information");
 			return CompletableFuture.completedFuture(new Metadata());
 		}
@@ -72,26 +74,30 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @return {@link List} of unprocessed {@link Metadata}
 	 */
 	public List<Metadata> getUnprocessedCpcPlusMetaData() {
+		if (mapper.isPresent()) {
+			API_LOG.info("Getting list of unprocessed CPC+ metadata");
 
-		API_LOG.info("Getting list of unprocessed CPC+ metadata");
+			return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
+				Map<String, AttributeValue> valueMap = new HashMap<>();
+				valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
+				valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
+				valueMap.put(":createDate", new AttributeValue().withS(START_OF_UNALLOWED_CONVERSION_TIME));
 
-		return IntStream.range(0, Constants.CPC_DYNAMO_PARTITIONS).mapToObj(partition -> {
-			Map<String, AttributeValue> valueMap = new HashMap<>();
-			valueMap.put(":cpcValue", new AttributeValue().withS(Constants.CPC_DYNAMO_PARTITION_START + partition));
-			valueMap.put(":cpcProcessedValue", new AttributeValue().withS("false"));
-			valueMap.put(":createDate", new AttributeValue().withS(START_OF_UNALLOWED_CONVERSION_TIME));
+				DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
+					.withIndexName("Cpc-CpcProcessed_CreateDate-index")
+					.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with("
+							+ Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
+					.withExpressionAttributeValues(valueMap)
+					.withFilterExpression(Constants.DYNAMO_CREATE_DATE_ATTRIBUTE + " > :createDate")
+					.withConsistentRead(false)
+					.withLimit(LIMIT);
 
-			DynamoDBQueryExpression<Metadata> metadataQuery = new DynamoDBQueryExpression<Metadata>()
-				.withIndexName("Cpc-CpcProcessed_CreateDate-index")
-				.withKeyConditionExpression(Constants.DYNAMO_CPC_ATTRIBUTE + " = :cpcValue and begins_with("
-						+ Constants.DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE + ", :cpcProcessedValue)")
-				.withExpressionAttributeValues(valueMap)
-				.withFilterExpression(Constants.DYNAMO_CREATE_DATE_ATTRIBUTE + " > :createDate")
-				.withConsistentRead(false)
-				.withLimit(LIMIT);
-
-			return mapper.get().queryPage(Metadata.class, metadataQuery).getResults().stream();
-		}).flatMap(Function.identity()).collect(Collectors.toList());
+				return mapper.get().queryPage(Metadata.class, metadataQuery).getResults().stream();
+			}).flatMap(Function.identity()).collect(Collectors.toList());
+		} else {
+			API_LOG.info("Could not get unprocessed CPC+ metadata because the dynamodb mapper is absent");
+			return Collections.emptyList();
+		}
 	}
 
 	/**
@@ -101,8 +107,13 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 * @return Metadata found
 	 */
 	public Metadata getMetadataById(String uuid) {
-		API_LOG.info("Read item {} from DynamoDB", uuid);
-		return mapper.get().load(Metadata.class, uuid);
+		if (mapper.isPresent()) {
+			API_LOG.info("Read item {} from DynamoDB", uuid);
+			return mapper.get().load(Metadata.class, uuid);
+		} else {
+			API_LOG.info("Skipping reading of item from DynamoDB with UUID {} because the dynamodb mapper is absent", uuid);
+			return null;
+		}
 	}
 
 	/**
@@ -113,8 +124,12 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 	 */
 	@Override
 	protected Metadata asynchronousAction(Metadata meta) {
-		mapper.get().save(meta);
-		API_LOG.info("Wrote item to DynamoDB with UUID {}", meta.getUuid());
+		if (mapper.isPresent()) {
+			mapper.get().save(meta);
+			API_LOG.info("Wrote item to DynamoDB with UUID {}", meta.getUuid());
+		} else {
+			API_LOG.info("Skipping writing of item to DynamoDB with UUID {} because the dynamodb mapper is absent", meta.getUuid());
+		}
 		return meta;
 	}
 }
