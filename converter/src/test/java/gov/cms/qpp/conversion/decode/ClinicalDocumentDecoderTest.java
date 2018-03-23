@@ -1,5 +1,11 @@
 package gov.cms.qpp.conversion.decode;
 
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
@@ -7,13 +13,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
-
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.xml.XmlException;
-import gov.cms.qpp.conversion.xml.XmlUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -195,7 +194,7 @@ class ClinicalDocumentDecoderTest {
 				.isEqualTo(ClinicalDocumentDecoder.ENTITY_GROUP);
 		assertWithMessage("Clinical Document doesn't contain national provider")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER))
-				.isEqualTo("2567891421");
+				.isNull();
 		assertWithMessage("Clinical Document doesn't contain taxpayer id number")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER))
 				.isEqualTo("123456789");
