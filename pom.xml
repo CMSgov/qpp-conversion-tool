@@ -78,7 +78,7 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.7.9</version>
+					<version>0.8.1</version>
 					<configuration>
 						<destFile>${basedir}/target/coverage/jacoco.exec</destFile>
 						<dataFile>${basedir}/target/coverage/jacoco.exec</dataFile>
