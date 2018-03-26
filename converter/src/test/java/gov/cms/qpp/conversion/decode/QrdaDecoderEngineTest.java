@@ -1,19 +1,19 @@
 package gov.cms.qpp.conversion.decode;
 
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.ComponentKey;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -285,14 +285,21 @@ class QrdaDecoderEngineTest {
 		Element noDecoderElement1;
 		Element noDecoderElement2;
 		Element anotherGenericElement;
+		boolean defaults = context.isDoDefaults();
 
 		@BeforeEach
 		void makeElements() {
+			context.setDoDefaults(true);
 			rootElement = createRootElement();
 			aGenericElement = createGenericElement();
 			anotherGenericElement = createGenericElement();
 			noDecoderElement1 = createNoDecoderElement();
 			noDecoderElement2 = createNoDecoderElement();
+		}
+
+		@AfterEach
+		void cleanUp() {
+			context.setDoDefaults(defaults);
 		}
 
 		@Test
@@ -309,8 +316,24 @@ class QrdaDecoderEngineTest {
 		}
 
 		@Test
+		@DisplayName("Should NOT prune branches with insignificant children but significant grand children when defaults enabled")
+		void testDontPruneInsignificantChildrenSignificantGrandChildrenWhenDefaults() {
+			addChildToParent(rootElement, aGenericElement);
+			addChildToParent(aGenericElement, noDecoderElement1);
+			addChildToParent(aGenericElement, noDecoderElement2);
+			addChildToParent(aGenericElement, anotherGenericElement);
+			addChildToParent(anotherGenericElement, createContinueElement());
+
+			QrdaDecoderEngine objectUnderTest = new QrdaDecoderEngine(context);
+			Node decodedNodes = objectUnderTest.decode(rootElement);
+
+			assertNodeCount(decodedNodes, 1, 0, 0);
+		}
+
+		@Test
 		@DisplayName("Should prune branches with insignificant children but significant grand children")
-		void testPruneInsignificantChildrenSignificantGrandChildren() {
+		void testPruneInsignificantChildrenSignificantGrandChildrenWhenNoDefaults() {
+			context.setDoDefaults(false);
 			addChildToParent(rootElement, aGenericElement);
 			addChildToParent(aGenericElement, noDecoderElement1);
 			addChildToParent(aGenericElement, noDecoderElement2);

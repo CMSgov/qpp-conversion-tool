@@ -1,11 +1,5 @@
 package gov.cms.qpp.conversion.decode;
 
-import com.google.common.collect.Lists;
-import org.jdom2.Element;
-import org.jdom2.xpath.XPathHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.DecodeData;
@@ -14,7 +8,12 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import org.jdom2.Element;
+import org.jdom2.xpath.XPathHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -197,10 +196,10 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 			})
 			.collect(Collectors.toList());
 
-		return (uniqueTemplates.size() == 0 ||
-			uniqueTemplates.stream().anyMatch(template -> !template.equals(TemplateId.DEFAULT)))
+		return (uniqueTemplates.isEmpty() ||
+			uniqueTemplates.stream().anyMatch(template -> !template.equals(TemplateId.UNIMPLEMENTED)))
 			? children
-			: Lists.newArrayList();
+			: new ArrayList<>();
 	}
 
 	/**
