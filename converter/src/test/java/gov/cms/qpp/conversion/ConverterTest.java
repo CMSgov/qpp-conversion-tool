@@ -193,15 +193,11 @@ public class ConverterTest {
 	}
 
 	@Test
-	public void testDefaults() throws NoSuchFieldException, IllegalAccessException {
+	public void testDefaults() {
 		Context context = new Context();
 		context.setDoValidation(false);
 		TestHelper.mockDecoder(context, JennyDecoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
 		TestHelper.mockEncoder(context, Jenncoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
-		Field sections = ClinicalDocumentEncoder.class.getDeclaredField("SECTIONS");
-		sections.setAccessible(true);
-		Set<TemplateId> testSections = (Set<TemplateId>)sections.get(ClinicalDocumentEncoder.class);
-		testSections.add(TemplateId.DEFAULT);
 
 		Converter converter = new Converter(new PathSource(Paths.get("src/test/resources/converter/defaultedNode.xml")), context);
 		JsonWrapper qpp = converter.transform();
