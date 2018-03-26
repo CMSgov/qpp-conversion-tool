@@ -14,7 +14,7 @@
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<aws.version>1.11.298</aws.version>
+		<aws.version>1.11.301</aws.version>
 		<jackson.version>2.9.4</jackson.version>
 		<guava.version>24.1-jre</guava.version>
 	</properties>
