@@ -196,8 +196,8 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 			})
 			.collect(Collectors.toList());
 
-		return (uniqueTemplates.isEmpty() ||
-			uniqueTemplates.stream().anyMatch(template -> !template.equals(TemplateId.UNIMPLEMENTED)))
+		return (uniqueTemplates.isEmpty()
+			|| uniqueTemplates.stream().anyMatch(template -> !template.equals(TemplateId.UNIMPLEMENTED)))
 			? children
 			: new ArrayList<>();
 	}
