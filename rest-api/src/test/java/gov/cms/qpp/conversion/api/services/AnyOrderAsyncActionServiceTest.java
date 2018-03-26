@@ -153,6 +153,11 @@ class AnyOrderAsyncActionServiceTest {
 	}
 
 	private static class TestAnyOrderService extends AnyOrderActionService<Object, Object> {
+
+		public TestAnyOrderService(TaskExecutor taskExecutor) {
+			super(taskExecutor);
+		}
+
 		AtomicBoolean asynchronousActionCalled = new AtomicBoolean(false);
 		AtomicInteger timesAsynchronousActionCalled = new AtomicInteger(0);
 		AtomicReference<Object> objectThatWasActedOn = new AtomicReference<>(null);

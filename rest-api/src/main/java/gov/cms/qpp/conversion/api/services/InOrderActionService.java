@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion.api.services;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.springframework.core.task.TaskExecutor;
+
 /**
  * A service extends from this to help it asynchronously do something in a guaranteed fashion.
  *
@@ -20,6 +22,10 @@ import java.util.concurrent.CompletableFuture;
 public abstract class InOrderActionService<T, S> extends AnyOrderActionService<T, S> {
 
 	private CompletableFuture<S> currentThreadFuture;
+
+	public InOrderActionService(TaskExecutor taskExecutor) {
+		super(taskExecutor);
+	}
 
 	/**
 	 * The main point of entry into this class.

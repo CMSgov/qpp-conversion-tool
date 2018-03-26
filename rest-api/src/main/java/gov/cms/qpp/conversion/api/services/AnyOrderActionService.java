@@ -7,7 +7,6 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -34,8 +33,11 @@ public abstract class AnyOrderActionService<T, S> {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(AnyOrderActionService.class);
 
-	@Inject
-	protected TaskExecutor taskExecutor;
+	protected final TaskExecutor taskExecutor;
+
+	public AnyOrderActionService(TaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
+	}
 
 	/**
 	 * The single action that will occur given a call to {@link #actOnItem(Object)}.
