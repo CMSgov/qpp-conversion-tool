@@ -155,7 +155,7 @@ public enum ErrorCode implements LocalizedError {
 	}
 
 	private void initMessageMarkers(String message) {
-		Matcher matcher = getPattern().matcher(message);
+		Matcher matcher = VariableMarker.REPLACE_PATTERN.matcher(message);
 		while (matcher.find()) {
 			messageVariables.add(matcher.group(1));
 		}
@@ -203,14 +203,11 @@ public enum ErrorCode implements LocalizedError {
 		return new StrSubstitutor(valueSub, "`(", ")`").replace(getMessage());
 	}
 
-	private static Pattern getPattern() {
-		if (replacePattern == null) {
-			replacePattern = Pattern.compile(VARIABLE_MARKER);
-		}
-		return replacePattern;
-	}
-
 	public static ErrorCode getByCode(int code) {
 		return CODE_TO_VALUE.get(code);
+	}
+
+	private static final class VariableMarker {
+		private static final Pattern REPLACE_PATTERN = Pattern.compile("`\\(([^()]*)\\)`");
 	}
 }

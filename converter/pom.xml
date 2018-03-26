@@ -58,6 +58,11 @@
 			</plugin>
 
 			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
 				<groupId>gov.cms.qpp.conversion</groupId>
 				<artifactId>generate-maven-plugin</artifactId>
 				<version>${project.version}</version>

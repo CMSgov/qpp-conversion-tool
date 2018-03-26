@@ -30,7 +30,7 @@ public enum SupplementalData {
 	private final String code;
 	private final SupplementalType type;
 
-	protected static final EnumMap<SupplementalType, TemplateId> SUPPLEMENTAL_TYPES =
+	private static final Map<SupplementalType, TemplateId> SUPPLEMENTAL_TYPES =
 			new EnumMap<>(SupplementalType.class);
 
 	/**
@@ -101,6 +101,6 @@ public enum SupplementalData {
 	 * @return static supplemental type map
 	 */
 	public static Map<SupplementalType, TemplateId> getSupplementalTypeMapToTemplateId() {
-		return SUPPLEMENTAL_TYPES.clone();
+		return new EnumMap<>(SUPPLEMENTAL_TYPES);
 	}
 }

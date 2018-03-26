@@ -50,6 +50,12 @@ public class MeasureConfigs {
 	}
 
 	/**
+	 * Method to ensure MeasureConfigs is initialized
+	 */
+	public static void init() {
+	}
+
+	/**
 	 * Initialize all measure configurations
 	 */
 	private static void initMeasureConfigs() {
