@@ -137,7 +137,8 @@ public enum TemplateId {
 	 * @param root The root part of the templateId.
 	 * @param extension The extension part of the templateId.
 	 * @param context allows historical check
-	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
+	 * @return The template ID if found, else a defaulted TemplateId. The defaulted TemplateId will be
+	 * {@code TemplateId.DEFAULT} if {@link Context#isDoDefaults()} is true else {@code TemplateId.UNIMPLEMENTED}.
 	 */
 	public static TemplateId getTemplateId(final String root, final String extension, final Context context) {
 		TemplateId defaultTemplate = context.isDoDefaults() ? TemplateId.DEFAULT : TemplateId.UNIMPLEMENTED;

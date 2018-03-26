@@ -170,10 +170,12 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	}
 
 	/**
-	 * Reduces the {@code templateId} {@link Element}s so there are no duplicates.  All other {@link Element}s are left alone.
+	 * Reduces the {@code templateId} {@link Element}s so there are no duplicates. All other {@link Element}s are left alone.
 	 *
 	 * @param childElements The elements to filter
-	 * @return A {@link List} of {@link Element}s that are filtered.
+	 * @return A {@link List} of {@link Element}s that are filtered. If no template ids or at least one implemented template id
+	 * appears within the filtered child elements then the filtered children will be returned otherwise an empty list will
+	 * be returned.
 	 */
 	private List<Element> getUniqueTemplateIdElements(final List<Element> childElements) {
 		Set<TemplateId> uniqueTemplates = EnumSet.noneOf(TemplateId.class);
