@@ -1,14 +1,14 @@
 package gov.cms.qpp.conversion;
 
+import gov.cms.qpp.conversion.model.Program;
+import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
+
 import java.lang.annotation.Annotation;
 import java.util.EnumSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
-
-import gov.cms.qpp.conversion.model.Program;
-import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 /**
  * Stateful converter context. The values in this data structure will change
@@ -21,7 +21,7 @@ public class Context {
 	private Program program = Program.ALL;
 	private Set<QrdaScope> scope = EnumSet.noneOf(QrdaScope.class);
 	private boolean historical;
-	private boolean doDefaults = false;
+	private boolean doDefaults;
 	private boolean doValidation = true;
 
 	/**

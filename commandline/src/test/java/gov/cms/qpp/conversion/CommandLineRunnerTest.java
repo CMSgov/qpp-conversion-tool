@@ -73,10 +73,10 @@ class CommandLineRunnerTest implements LoggerContract, JimfsContract {
 	}
 
 	@JimfsTest
-	void testRunWithValidFileSkipDefaults(FileSystem fileSystem) {
+	void testRunWithValidFileDoDefaults(FileSystem fileSystem) {
 		String path = VALID_FILE.replaceAll("/", "\\" + fileSystem.getSeparator());
 		CommandLineRunner runner = new CommandLineRunner(line(path,
-				"-" + CommandLineMain.SKIP_DEFAULTS), fileSystem);
+				"-" + CommandLineMain.DO_DEFAULTS), fileSystem);
 		runner.run();
 		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
 	}
