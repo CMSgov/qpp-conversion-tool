@@ -95,7 +95,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 				return mapper.get().queryPage(Metadata.class, metadataQuery).getResults().stream();
 			}).flatMap(Function.identity()).collect(Collectors.toList());
 		} else {
-			API_LOG.info("Could not get unprocessed CPC+ metadata because the dynamodb mapper is absent");
+			API_LOG.warn("Could not get unprocessed CPC+ metadata because the dynamodb mapper is absent");
 			return Collections.emptyList();
 		}
 	}
@@ -111,7 +111,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			API_LOG.info("Read item {} from DynamoDB", uuid);
 			return mapper.get().load(Metadata.class, uuid);
 		} else {
-			API_LOG.info("Skipping reading of item from DynamoDB with UUID {} because the dynamodb mapper is absent", uuid);
+			API_LOG.warn("Skipping reading of item from DynamoDB with UUID {} because the dynamodb mapper is absent", uuid);
 			return null;
 		}
 	}
@@ -128,7 +128,7 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 			mapper.get().save(meta);
 			API_LOG.info("Wrote item to DynamoDB with UUID {}", meta.getUuid());
 		} else {
-			API_LOG.info("Skipping writing of item to DynamoDB with UUID {} because the dynamodb mapper is absent", meta.getUuid());
+			API_LOG.warn("Skipping writing of item to DynamoDB with UUID {} because the dynamodb mapper is absent", meta.getUuid());
 		}
 		return meta;
 	}
