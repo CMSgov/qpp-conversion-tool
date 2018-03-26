@@ -6,7 +6,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 1 : CT - Failed to find an encoder
 * 2 : CT - The file is not a valid XML document
 * 3 : CT - Unexpected exception occurred during conversion
-* 4 : CT - Unexpected exception occured during encoding
+* 4 : CT - Unexpected exception occurred during encoding
 * 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`
 * 6 : CT - The measure reference results must have a single occurrence of the recognized measure GUID `(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?
 * 7 : CT - The measure reference results must have at least one measure
@@ -33,7 +33,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 29 : CT - Must have one and only one performance start
 * 30 : CT - Must have one and only one performance end
 * 31 : CT - Must have a performance year
-* 32 : CT - The Quality Measure Section must have only one Reporting Parameter ACT
+* 32 : CT - The Quality Measure Section must have exactly one Reporting Parameter ACT
 * 33 : CT - Must enter a valid Performance Rate value
 * 34 : CT - Must contain a practice site address for CPC+ conversions
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified

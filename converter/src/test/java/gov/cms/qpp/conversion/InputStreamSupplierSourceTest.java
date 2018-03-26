@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.truth.Truth;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 class InputStreamSupplierSourceTest extends SourceTestSuite {
 
-	private static InputStreamSupplierSource source(String path) throws IOException {
+	private static InputStreamSupplierSource source(String path) {
 		return new InputStreamSupplierSource(path, stream(path));
 	}
 
@@ -27,7 +29,7 @@ class InputStreamSupplierSourceTest extends SourceTestSuite {
 		}
 	}
 
-	InputStreamSupplierSourceTest() throws IOException {
+	InputStreamSupplierSourceTest() {
 		super("src/test/resources/arbitrary.txt", source("src/test/resources/arbitrary.txt"));
 	}
 
@@ -52,5 +54,26 @@ class InputStreamSupplierSourceTest extends SourceTestSuite {
 		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(bytes));
 
 		assertThat(source.getSize()).isEqualTo(bytes.length);
+	}
+
+	@Test
+	void testTestIsTest() {
+		String text = "mock";
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()), "Test");
+		Truth.assertThat(source.getPurpose()).isEqualTo("Test");
+	}
+
+	@Test
+	void testNormalIsNotTest() {
+		String text = "mock";
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()), null);
+		Truth.assertThat(source.getPurpose()).isNull();
+	}
+
+	@Test
+	void testDefaultIsNotTest() {
+		String text = "mock";
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()));
+		Truth.assertThat(source.getPurpose()).isNull();
 	}
 }

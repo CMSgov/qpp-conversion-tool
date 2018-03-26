@@ -5,7 +5,6 @@ import gov.cms.qpp.acceptance.helper.JsonPathToXpathHelper;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.xml.XmlException;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -21,152 +20,152 @@ class XpathJsonPathComparisonTest {
 	private static final String EXTENSION = "extension";
 
 	@BeforeAll
-	static void beforeClass() throws IOException {
+	static void beforeClass() {
 		helper = new JsonPathToXpathHelper(path, wrapper);
 	}
 
 	@Test
-	void compareTopLevelElement() throws XmlException, IOException {
+	void compareTopLevelElement() throws XmlException {
 		helper.executeElementTest("", "ClinicalDocument");
 	}
 
 	@Test
-	void compareTopLevelAttributeProgramName() throws XmlException, IOException {
+	void compareTopLevelAttributeProgramName() throws XmlException {
 		String jsonPath = "programName";
 		helper.executeAttributeTest(jsonPath, EXTENSION, "MIPS_INDIV");
 	}
 
 	@Test
-	void compareTopLevelAttributeTin() throws XmlException, IOException {
+	void compareTopLevelAttributeTin() throws XmlException {
 		String jsonPath = "taxpayerIdentificationNumber";
 		helper.executeAttributeTest(jsonPath, EXTENSION, "000777777");
 	}
 
 	@Test
-	void compareTopLevelAttributeNpi() throws XmlException, IOException {
+	void compareTopLevelAttributeNpi() throws XmlException {
 		String jsonPath = "nationalProviderIdentifier";
 		helper.executeAttributeTest(jsonPath, EXTENSION, "0777777777");
 	}
 
 	@Test
-	void compareTopLevelAttributeEntityId() throws XmlException, IOException {
+	void compareTopLevelAttributeEntityId() throws XmlException {
 		String jsonPath = "practiceId";
 		helper.executeAttributeTest(jsonPath, EXTENSION, "AR000000");
 	}
 
 	//ACI
 	@Test
-	void compareAciMeasurePerformanceEnd() throws IOException, XmlException {
+	void compareAciMeasurePerformanceEnd() throws XmlException {
 		String jsonPath = "measurementSets[1].performanceEnd";
 		helper.executeAttributeTest(jsonPath, "value", "20170531");
 	}
 
 	@Test
-	void compareAciMeasurePerformanceStart() throws IOException, XmlException {
+	void compareAciMeasurePerformanceStart() throws XmlException {
 		String jsonPath = "measurementSets[1].performanceStart";
 		helper.executeAttributeTest(jsonPath, "value", "20170201");
 	}
 
 	@Test
-	void compareAciMeasurePerformedMeasureIdAciPea1() throws IOException, XmlException {
+	void compareAciMeasurePerformedMeasureIdAciPea1() throws XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].measureId";
 		helper.executeAttributeTest(jsonPath, EXTENSION, "ACI_PEA_1");
 	}
 
 	@Test
-	void compareAciMeasurePerformedMeasureIdAciEp1() throws IOException, XmlException {
+	void compareAciMeasurePerformedMeasureIdAciEp1() throws XmlException {
 		String jsonPath = "measurementSets[1].measurements[1].measureId";
 		helper.executeAttributeTest(jsonPath, EXTENSION, "ACI_EP_1");
 	}
 	
 	@Test
-	void compareAciMeasurePerformedMeasureIdAciPea1Numerator() throws IOException, XmlException {
+	void compareAciMeasurePerformedMeasureIdAciPea1Numerator() throws XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].value.numerator";
 		helper.executeAttributeTest(jsonPath, "value", "600");
 	}
 
 	@Test
-	void compareAciMeasurePerformedMeasureIdAciPea1Denominator() throws IOException, XmlException {
+	void compareAciMeasurePerformedMeasureIdAciPea1Denominator() throws XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].value.denominator";
 		helper.executeAttributeTest(jsonPath, "value", "800");
 	}
 
 	//IA
 	@Test
-	void compareIaMeasurePerformanceEnd() throws IOException, XmlException {
+	void compareIaMeasurePerformanceEnd() throws XmlException {
 		String jsonPath = "measurementSets[2].performanceEnd";
 		helper.executeAttributeTest(jsonPath, "value", "20170430");
 	}
 
 	@Test
-	void compareIaMeasurePerformanceStart() throws IOException, XmlException {
+	void compareIaMeasurePerformanceStart() throws XmlException {
 		String jsonPath = "measurementSets[2].performanceStart";
 		helper.executeAttributeTest(jsonPath, "value", "20170101");
 	}
 
 	@Test
-	void compareIaMeasurePerformedMeasureIdIaEpa1Value() throws IOException, XmlException {
+	void compareIaMeasurePerformedMeasureIdIaEpa1Value() throws XmlException {
 		String jsonPath = "measurementSets[2].measurements[0].value";
 		helper.executeAttributeTest(jsonPath, "code", "Y");
 	}
 
 	@Test
-	void compareIaMeasurePerformedMeasureIdIaEpa1() throws IOException, XmlException {
+	void compareIaMeasurePerformedMeasureIdIaEpa1() throws XmlException {
 		String jsonPath = "measurementSets[2].measurements[0].measureId";
 		helper.executeAttributeTest(jsonPath, EXTENSION, "IA_EPA_3");
 	}
 
 	//Quality measure
 	@Test
-	void compareQualityMeasurePerformanceEnd() throws IOException, XmlException {
+	void compareQualityMeasurePerformanceEnd() throws XmlException {
 		String jsonPath = "measurementSets[0].performanceEnd";
 		helper.executeAttributeTest(jsonPath, "value", "20171231");
 	}
 
 	@Test
-	void compareQualityMeasurePerformanceStart() throws IOException, XmlException {
+	void compareQualityMeasurePerformanceStart() throws XmlException {
 		String jsonPath = "measurementSets[0].performanceStart";
 		helper.executeAttributeTest(jsonPath, "value", "20170101");
 	}
 
 	@Test
-	void compareQualityMeasureIdValuePerformanceExclusion() throws IOException, XmlException {
+	void compareQualityMeasureIdValuePerformanceExclusion() throws XmlException {
 		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulationExclusion";
 		helper.executeAttributeTest(jsonPath, "value", "50");
 	}
 
 	@Test
-	void compareQualityMeasureIdValuePerformanceMet() throws IOException, XmlException {
+	void compareQualityMeasureIdValuePerformanceMet() throws XmlException {
 		String jsonPath = "measurementSets[0].measurements[0].value.performanceMet";
 		helper.executeAttributeTest(jsonPath, "value", "800");
 	}
 
 	@Test
-	void compareQualityMeasureIdValueNumerator() throws IOException, XmlException {
+	void compareQualityMeasureIdValueNumerator() throws XmlException {
 		String jsonPath = "measurementSets[0].measurements[0].value.performanceMet";
 		helper.executeAttributeTest(jsonPath, "value", "800");
 	}
 
 	@Test
-	void compareQualityMeasureIdValueDenominator() throws IOException, XmlException {
+	void compareQualityMeasureIdValueDenominator() throws XmlException {
 		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulation";
 		helper.executeAttributeTest(jsonPath, "value", "1000");
 	}
 
 	@Test
-	void compareQualityMeasureIdValueEligiblePopulation() throws IOException, XmlException {
+	void compareQualityMeasureIdValueEligiblePopulation() throws XmlException {
 		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulation";
 		helper.executeAttributeTest(jsonPath, "value", "1000");
 	}
 
 	@Test
-	void compareQualityMeasureIdValueEligiblePopulationExclusion() throws IOException, XmlException {
+	void compareQualityMeasureIdValueEligiblePopulationExclusion() throws XmlException {
 		String jsonPath = "measurementSets[0].measurements[0].value.eligiblePopulationExclusion";
 		helper.executeAttributeTest(jsonPath, "value", "50");
 	}
 
 	@Test
-	void nonexistentJsonPath() throws IOException, XmlException {
+	void nonexistentJsonPath() {
 		Assertions.assertThrows(PathNotFoundException.class, () -> {
 			String jsonPath = "meep.mawp";
 			helper.executeAttributeTest(jsonPath, "", "");

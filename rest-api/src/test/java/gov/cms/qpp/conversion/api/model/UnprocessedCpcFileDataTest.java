@@ -1,9 +1,12 @@
 package gov.cms.qpp.conversion.api.model;
 
-import java.time.Instant;
-import java.util.stream.Stream;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.time.Instant;
+import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -59,5 +62,13 @@ class UnprocessedCpcFileDataTest {
 		assertThat(cpcFileData.getApm()).isEqualTo(metadata.getApm());
 		assertThat(cpcFileData.getConversionDate()).isEqualTo(metadata.getCreatedDate().toString());
 		assertThat(cpcFileData.getValidationSuccess()).isEqualTo(metadata.getOverallStatus());
+	}
+
+	@Test
+	@DisplayName("should give a string representation of its state")
+	void testToString() {
+		UnprocessedCpcFileData data = new UnprocessedCpcFileData(new Metadata());
+		String strung = data.toString();
+		assertThat(strung).matches(".*fileId.*filename.*apm.*conversionDate.*validationSuccess.*purpose.*");
 	}
 }

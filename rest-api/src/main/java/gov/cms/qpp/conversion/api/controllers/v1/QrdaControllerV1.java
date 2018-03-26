@@ -1,32 +1,34 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
+import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Controller to handle uploading files for QRDA-III Conversion
@@ -35,7 +37,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/")
 @CrossOrigin
 public class QrdaControllerV1 {
+
 	private static final Logger API_LOG = LoggerFactory.getLogger(QrdaControllerV1.class);
+	private static final int MAX_PURPOSE_LENGTH = 25;
 
 	private QrdaService qrdaService;
 	private ValidationService validationService;
@@ -58,15 +62,28 @@ public class QrdaControllerV1 {
 	 * Endpoint to transform an uploaded file into a valid or error json response
 	 *
 	 * @param file Uploaded file
+	 * @param purpose the purpose for the conversion
 	 * @return Valid json or error json content
 	 */
 	@PostMapping(headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) {
+	public ResponseEntity<String> uploadQrdaFile(
+		@RequestParam(name = "file") MultipartFile file,
+		@RequestHeader(required = false, name = "Purpose") String purpose) {
 		String originalFilename = file.getOriginalFilename();
-		API_LOG.info("Conversion request received");
 
-		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
-				new InputStreamSupplierSource(originalFilename, inputStream(file)));
+		if (!StringUtils.isEmpty(purpose)) {
+			if (purpose.length() > MAX_PURPOSE_LENGTH) {
+				throw new InvalidPurposeException("Given Purpose (header) is too large. Max length is "
+						+ MAX_PURPOSE_LENGTH + ", yours was " + purpose.length());
+			}
+			API_LOG.info("Conversion request received for " + purpose);
+		} else {
+			purpose = null; // if it's an empty string, make it null
+			API_LOG.info("Conversion request received");
+		}
+
+		ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
+				new InputStreamSupplierSource(originalFilename, inputStream(file), purpose));
 
 		validationService.validateQpp(conversionReport);
 
@@ -84,7 +101,7 @@ public class QrdaControllerV1 {
 		return new ResponseEntity<>(conversionReport.getEncoded().toString(), httpHeaders, HttpStatus.CREATED);
 	}
 
-	private Metadata audit(Converter.ConversionReport conversionReport) {
+	private Metadata audit(ConversionReport conversionReport) {
 		try {
 			CompletableFuture<Metadata> metadata = auditService.success(conversionReport);
 			return metadata == null ? null : metadata.get();

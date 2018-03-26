@@ -8,10 +8,8 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.conversion.xml.XmlException;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -23,7 +21,7 @@ class QualityMeasureScopedTest {
 
 
 	@Test
-	void internalDecodeValidMeasure137V5Ipop() throws IOException, XmlException {
+	void internalDecodeValidMeasure137V5Ipop() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, location);
 		long ipops = pluckDescendants(result, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, TemplateId.MEASURE_DATA_CMS_V2)
 				.filter(node -> SubPopulationLabel.IPOP.hasAlias(node.getValue(MeasureDataDecoder.MEASURE_TYPE)))
@@ -33,7 +31,7 @@ class QualityMeasureScopedTest {
 	}
 
 	@Test
-	void internalDecodeValidMeasure137V5Denom() throws IOException, XmlException {
+	void internalDecodeValidMeasure137V5Denom() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, location);
 		long denom = pluckDescendants(result, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, TemplateId.MEASURE_DATA_CMS_V2)
 				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulationLabel.DENOM.name()))
@@ -43,7 +41,7 @@ class QualityMeasureScopedTest {
 	}
 
 	@Test
-	void internalDecodeValidMeasure137V5Denex() throws IOException, XmlException {
+	void internalDecodeValidMeasure137V5Denex() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, location);
 		long denex = pluckDescendants(result, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, TemplateId.MEASURE_DATA_CMS_V2)
 				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulationLabel.DENEX.name()))
@@ -53,7 +51,7 @@ class QualityMeasureScopedTest {
 	}
 
 	@Test
-	void internalDecodeValidMeasure137V5Numer() throws IOException, XmlException {
+	void internalDecodeValidMeasure137V5Numer() {
 		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, location);
 		long numer = pluckDescendants(result, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2, TemplateId.MEASURE_DATA_CMS_V2)
 				.filter(node -> node.getValue(MeasureDataDecoder.MEASURE_TYPE).equals(SubPopulationLabel.NUMER.name()))

@@ -9,9 +9,9 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
 import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 import java.util.EnumSet;
 import java.util.Map;
@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_KEY;
+import static gov.cms.qpp.conversion.decode.SkeletalSupplementalDataDecoder.SUPPLEMENTAL_DATA_KEY;
 
 /**
  * Validates a Sub Population's Measure Data for the CPC Plus program entity
@@ -64,19 +64,17 @@ public class CpcMeasureDataValidator extends NodeValidator {
 				node.getChildNodes(currSupplementalDataTemplateId).collect(Collectors.toSet());
 		EnumSet<SupplementalData> codes = EnumSet.copyOf(
 				 SupplementalData.getSupplementalDataSetByType(supplementalDataType));
-
-		String measureId = node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID);
-		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(measureId);
-		if (config != null) {
-			String electronicMeasureID = config.getElectronicMeasureId();
+		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node.getParent());
+		if (measureConfig != null) {
+			String electronicMeasureId = measureConfig.getElectronicMeasureId();
 			for (SupplementalData supplementalData : codes) {
 				Node validatedSupplementalNode = filterCorrectNode(supplementalDataNodes, supplementalData);
 
 				if (validatedSupplementalNode == null) {
-					addSupplementalValidationError(node, supplementalData, electronicMeasureID);
+					addSupplementalValidationError(node, supplementalData, electronicMeasureId);
 				} else {
 					LocalizedError error = makeIncorrectCountSizeLocalizedError(node, supplementalData.getCode(),
-						electronicMeasureID);
+						electronicMeasureId);
 					check(validatedSupplementalNode)
 						.childExact(error, 1, TemplateId.ACI_AGGREGATE_COUNT);
 				}

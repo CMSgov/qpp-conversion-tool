@@ -1,15 +1,15 @@
 package gov.cms.qpp.conversion.decode;
 
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
 
+import java.util.Locale;
 import java.util.function.Consumer;
 
 /**
@@ -31,8 +31,8 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String MIPS = "MIPS";
 	private static final String MIPS_GROUP = "MIPS_GROUP";
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
-	public static final String ENTITY_GROUP = "group";
-	public static final String ENTITY_INDIVIDUAL = "individual";
+	static final String ENTITY_GROUP = "group";
+	static final String ENTITY_INDIVIDUAL = "individual";
 	public static final String CPCPLUS = "CPCPLUS";
 
 	public ClinicalDocumentDecoder(Context context) {
@@ -51,7 +51,9 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 		setProgramNameOnNode(element, thisNode);
 		setEntityIdOnNode(element, thisNode);
 		setPracticeSiteAddress(element, thisNode);
-		setNationalProviderIdOnNode(element, thisNode);
+		if (ENTITY_INDIVIDUAL.equals(thisNode.getValue(ENTITY_TYPE))) {
+			setNationalProviderIdOnNode(element, thisNode);
+		}
 		setTaxProviderTaxIdOnNode(element, thisNode);
 		return DecodeResult.TREE_CONTINUE;
 	}
@@ -136,19 +138,15 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @return array of String program name, entity type
 	 */
 	private String[] getProgramNameEntityPair(String name) {
-		String[] pairs = new String[2];
+		String[] pairs;
 		if (MIPS_INDIVIDUAL.equalsIgnoreCase(name)) {
-			pairs[0] = MIPS_PROGRAM_NAME;
-			pairs[1] = ENTITY_INDIVIDUAL;
+			pairs = new String[] {MIPS_PROGRAM_NAME, ENTITY_INDIVIDUAL};
 		} else if (MIPS_GROUP.equalsIgnoreCase(name)) {
-			pairs[0] = MIPS_PROGRAM_NAME;
-			pairs[1] = ENTITY_GROUP;
+			pairs = new String[] {MIPS_PROGRAM_NAME, ENTITY_GROUP};
 		} else if (CPCPLUS.equalsIgnoreCase(name)) {
-			pairs[0] = CPCPLUS_PROGRAM_NAME;
-			pairs[1] = ENTITY_INDIVIDUAL;
+			pairs = new String[] {CPCPLUS_PROGRAM_NAME, ENTITY_INDIVIDUAL};
 		} else {
-			pairs[0] = name.toLowerCase(); //Unknown case
-			pairs[1] = ENTITY_INDIVIDUAL;
+			pairs = new String[] {name.toLowerCase(Locale.ENGLISH), ENTITY_INDIVIDUAL};
 		}
 		return pairs;
 	}

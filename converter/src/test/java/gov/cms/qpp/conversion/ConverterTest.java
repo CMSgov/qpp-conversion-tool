@@ -1,15 +1,5 @@
 package gov.cms.qpp.conversion;
 
-import com.google.common.truth.Truth;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
 import gov.cms.qpp.conversion.encode.ClinicalDocumentEncoder;
@@ -35,7 +25,6 @@ import gov.cms.qpp.conversion.stubs.TestDefaultValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.test.helper.NioHelper;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -52,6 +41,16 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
+import com.google.common.truth.Truth;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.xerces.*", "javax.xml.parsers.*", "org.xml.sax.*" })
 public class ConverterTest {
@@ -66,7 +65,7 @@ public class ConverterTest {
 	}
 
 	@Test(expected = org.junit.Test.None.class)
-	public void testValidQppStream() throws IOException {
+	public void testValidQppStream() {
 		Path path = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 		Converter converter = new Converter(
 				new InputStreamSupplierSource(path.toString(), NioHelper.fileToStream(path)));
@@ -225,6 +224,20 @@ public class ConverterTest {
 		encode.setAccessible(true);
 		Exception thrown = Assertions.assertThrows(InvocationTargetException.class, () -> encode.invoke(converter));
 		Truth.assertThat(thrown).hasCauseThat().isInstanceOf(XmlInputFileException.class);
+	}
+
+	@Test
+	public void testTestSourceCreatesTestReport() {
+		Source source = mock(Source.class);
+		when(source.getPurpose()).thenReturn("Test");
+		Truth.assertThat(new Converter(source).getReport().getPurpose()).isEqualTo("Test");
+	}
+
+	@Test
+	public void testNormalSourceCreatesNormalReport() {
+		Source source = mock(Source.class);
+		when(source.getPurpose()).thenReturn(null);
+		Truth.assertThat(new Converter(source).getReport().getPurpose()).isNull();
 	}
 
 	private void checkup(TransformException exception, LocalizedError error) {

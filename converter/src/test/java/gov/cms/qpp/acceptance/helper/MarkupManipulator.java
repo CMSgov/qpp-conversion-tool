@@ -85,12 +85,12 @@ public class MarkupManipulator {
 		private String pathname;
 		private boolean nsAware;
 
-		public MarkupManipulator build() throws IOException, SAXException, ParserConfigurationException {
+		public MarkupManipulator build() {
 			return new MarkupManipulator(pathname, nsAware);
 		}
 
 		public MarkupManipulatorBuilder setPathname(Path path) {
-			this.pathname = path.toFile().getAbsolutePath();
+			this.pathname = path.toAbsolutePath().toString();
 			return this;
 		}
 

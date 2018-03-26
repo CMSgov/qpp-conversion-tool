@@ -22,7 +22,6 @@ import gov.cms.qpp.test.annotations.AcceptanceTest;
 import gov.cms.qpp.test.annotations.ParameterizedAcceptanceTest;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.HashMap;
@@ -119,13 +118,13 @@ class ValidationApiFailureAcceptance {
 				} else {
 					assertThat(found).isNotNull();
 				}
-			} catch (IOException | XmlException ex) {
+			} catch (XmlException ex) {
 				fail("This xpath could not be found: " + detail.getPath(), ex);
 			}
 		};
 	}
 
-	private Object evaluateXpath(String xPath, Filter filter, String xml) throws IOException, XmlException {
+	private Object evaluateXpath(String xPath, Filter filter, String xml) throws XmlException {
 		XPathExpression<Object> xpath = XPF.compile(xPath, filter);
 		return xpath.evaluateFirst(
 			XmlUtils.parseXmlStream(

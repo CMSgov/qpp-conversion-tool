@@ -2,7 +2,6 @@ package gov.cms.qpp;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.xml.sax.SAXException;
 
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.correlation.model.Goods;
@@ -16,8 +15,6 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,8 +34,7 @@ class SingularAttributeTest{
 
 	@BeforeAll
 	@SuppressWarnings("unchecked")
-	static void before() throws NoSuchFieldException, IllegalAccessException,
-			IOException, SAXException, ParserConfigurationException {
+	static void before() throws NoSuchFieldException, IllegalAccessException {
 		manipulationHandler = new MarkupManipulationHandler("../qrda-files/valid-QRDA-III-latest.xml");
 
 		Field corrMapField = PathCorrelator.class.getDeclaredField("pathCorrelationMap");

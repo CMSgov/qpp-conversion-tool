@@ -19,7 +19,7 @@ class MeasuredInputStreamSupplierTest {
 	}
 
 	@Test
-	void testTerminallyTransformInputStreamOnUsed() throws IOException {
+	void testTerminallyTransformInputStreamOnUsed() {
 		InputStream used = stream("mock");
 		MeasuredInputStreamSupplier.terminallyTransformInputStream(used);
 
@@ -28,13 +28,13 @@ class MeasuredInputStreamSupplierTest {
 	}
 
 	@Test
-	void testSize() throws IOException {
+	void testSize() {
 		InputStream use = stream("mock");
 		Truth.assertThat(MeasuredInputStreamSupplier.terminallyTransformInputStream(use).size()).isEqualTo("mock".length());
 	}
 
 	@Test
-	void testGetInputStreamReturnsUnique() throws IOException {
+	void testGetInputStreamReturnsUnique() {
 		InputStream use = stream("mock");
 		MeasuredInputStreamSupplier objectToTest = MeasuredInputStreamSupplier.terminallyTransformInputStream(use);
 		int expected = 5;

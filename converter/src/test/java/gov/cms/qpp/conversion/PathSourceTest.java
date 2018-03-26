@@ -67,4 +67,9 @@ class PathSourceTest extends SourceTestSuite implements JimfsContract {
 	void testSize() throws IOException {
 		assertThat(source.getSize()).isEqualTo(IOUtils.toByteArray(source.toInputStream()).length);
 	}
+
+	@Test
+	void testIsTest() {
+		assertThat(source.getPurpose()).isNull();
+	}
 }

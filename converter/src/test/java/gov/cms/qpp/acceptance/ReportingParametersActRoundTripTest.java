@@ -1,6 +1,5 @@
 package gov.cms.qpp.acceptance;
 
-
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -8,7 +7,6 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -28,7 +26,7 @@ class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	void testQualityMeasuresContainsPerformanceStart() throws IOException {
+	void testQualityMeasuresContainsPerformanceStart() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 		"$.measurementSets[0].performanceStart", String.class);
 
@@ -36,7 +34,7 @@ class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	void testQualityMeasuresContainsPerformanceEnd() throws IOException {
+	void testQualityMeasuresContainsPerformanceEnd() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[0].performanceEnd", String.class);
 
@@ -44,7 +42,7 @@ class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	void testAciSectionContainsPerformanceStart() throws IOException {
+	void testAciSectionContainsPerformanceStart() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[1].performanceStart", String.class);
 
@@ -52,7 +50,7 @@ class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	void testAciSectionContainsPerformanceEnd() throws IOException {
+	void testAciSectionContainsPerformanceEnd() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[1].performanceEnd", String.class);
 
@@ -60,7 +58,7 @@ class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	void testIaContainsPerformanceStart() throws IOException {
+	void testIaContainsPerformanceStart() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[2].performanceStart", String.class);
 
@@ -68,7 +66,7 @@ class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	void testIaContainsPerformanceEnd() throws IOException {
+	void testIaContainsPerformanceEnd() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[2].performanceEnd", String.class);
 

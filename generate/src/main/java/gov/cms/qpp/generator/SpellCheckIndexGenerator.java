@@ -1,6 +1,16 @@
 package gov.cms.qpp.generator;
 
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Set;
+
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.spell.PlainTextDictionary;
 import org.apache.lucene.search.spell.SpellChecker;
@@ -10,18 +20,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Set;
 
 @Mojo(name = "generateLuceneIndex")
 public class SpellCheckIndexGenerator extends AbstractMojo {
@@ -50,11 +48,11 @@ public class SpellCheckIndexGenerator extends AbstractMojo {
 		}
 	}
 
-	private void writeMeasures() throws FileNotFoundException, UnsupportedEncodingException {
+	private void writeMeasures() throws IOException {
 		getLog().info("Writing measures dictionary");
 		Set<String> keys = MeasureConfigs.getConfigurationMap().keySet();
 		try (PrintWriter writer = new PrintWriter(
-			new OutputStreamWriter(new FileOutputStream(dictionaryPath.toFile()), StandardCharsets.UTF_8))) {
+			new OutputStreamWriter(Files.newOutputStream(dictionaryPath), StandardCharsets.UTF_8))) {
 			for (String key : keys) {
 				writer.println(key);
 			}

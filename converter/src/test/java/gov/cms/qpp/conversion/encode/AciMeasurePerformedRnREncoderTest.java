@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ class AciMeasurePerformedRnREncoderTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	void testEncoder() throws IOException {
+	void testEncoder() {
 		QppOutputEncoder encoder = new QppOutputEncoder(new Context());
 		encoder.setNodes(nodes);
 
