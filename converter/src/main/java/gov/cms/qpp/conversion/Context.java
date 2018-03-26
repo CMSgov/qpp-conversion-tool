@@ -21,7 +21,7 @@ public class Context {
 	private Program program = Program.ALL;
 	private Set<QrdaScope> scope = EnumSet.noneOf(QrdaScope.class);
 	private boolean historical;
-	private boolean doDefaults = true;
+	private boolean doDefaults = false;
 	private boolean doValidation = true;
 
 	/**

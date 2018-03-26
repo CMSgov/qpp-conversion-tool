@@ -78,6 +78,7 @@ public class ConverterTest {
 	@PrepareForTest({Converter.class, QrdaValidator.class})
 	public void testValidationErrors() throws Exception {
 		Context context = new Context();
+		context.setDoDefaults(true);
 		TestHelper.mockDecoder(context, JennyDecoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
 		QrdaValidator mockQrdaValidator = TestHelper.mockValidator(context, TestDefaultValidator.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL), true);
 		PowerMockito.whenNew(QrdaValidator.class)
@@ -195,6 +196,7 @@ public class ConverterTest {
 	@Test
 	public void testDefaults() {
 		Context context = new Context();
+		context.setDoDefaults(true);
 		context.setDoValidation(false);
 		TestHelper.mockDecoder(context, JennyDecoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
 		TestHelper.mockEncoder(context, Jenncoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
