@@ -4,7 +4,7 @@ package gov.cms.qpp.conversion.xml;
  * Exception used during the JDom parsing.
  *
  */
-public class XmlException extends Exception {
+public class XmlException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	/**

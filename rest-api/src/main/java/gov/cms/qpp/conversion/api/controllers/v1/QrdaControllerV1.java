@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
 import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
@@ -9,13 +9,6 @@ import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Controller to handle uploading files for QRDA-III Conversion
@@ -63,12 +62,13 @@ public class QrdaControllerV1 {
 	 * Endpoint to transform an uploaded file into a valid or error json response
 	 *
 	 * @param file Uploaded file
-	 * @param test Whether the conversion is a test or not
+	 * @param purpose the purpose for the conversion
 	 * @return Valid json or error json content
 	 */
 	@PostMapping(headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<String> uploadQrdaFile(@RequestParam(name = "file") MultipartFile file,
-			@RequestHeader(required = false, name = "Purpose") String purpose) {
+	public ResponseEntity<String> uploadQrdaFile(
+		@RequestParam(name = "file") MultipartFile file,
+		@RequestHeader(required = false, name = "Purpose") String purpose) {
 		String originalFilename = file.getOriginalFilename();
 
 		if (!StringUtils.isEmpty(purpose)) {
@@ -82,7 +82,7 @@ public class QrdaControllerV1 {
 			API_LOG.info("Conversion request received");
 		}
 
-		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
+		ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
 				new InputStreamSupplierSource(originalFilename, inputStream(file), purpose));
 
 		validationService.validateQpp(conversionReport);
@@ -101,7 +101,7 @@ public class QrdaControllerV1 {
 		return new ResponseEntity<>(conversionReport.getEncoded().toString(), httpHeaders, HttpStatus.CREATED);
 	}
 
-	private Metadata audit(Converter.ConversionReport conversionReport) {
+	private Metadata audit(ConversionReport conversionReport) {
 		try {
 			CompletableFuture<Metadata> metadata = auditService.success(conversionReport);
 			return metadata == null ? null : metadata.get();
