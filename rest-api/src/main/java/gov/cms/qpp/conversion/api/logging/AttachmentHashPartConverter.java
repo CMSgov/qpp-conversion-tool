@@ -1,13 +1,16 @@
 package gov.cms.qpp.conversion.api.logging;
 
-import ch.qos.logback.classic.pattern.ClassicConverter;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
+
 import java.io.IOException;
+import java.util.Collection;
+
+import ch.qos.logback.classic.pattern.ClassicConverter;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * Adds a logging field that identifies the uploaded file as part of an current request.
@@ -59,13 +62,15 @@ public class AttachmentHashPartConverter extends ClassicConverter {
 	Part getPart() throws IOException, ServletException {
 		ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
-		if (attrs == null
-			|| attrs.getRequest() == null
-			|| attrs.getRequest().getParts() == null
-			|| attrs.getRequest().getParts().iterator() == null) {
+		if (attrs == null) {
 			return null;
 		}
 
-		return attrs.getRequest().getParts().iterator().next();
+		Collection<Part> parts = attrs.getRequest().getParts();
+		if (CollectionUtils.isEmpty(parts)) {
+			return null;
+		}
+
+		return parts.iterator().next();
 	}
 }
