@@ -3,8 +3,6 @@ package gov.cms.qpp.conversion.api.services;
 import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.model.Constants;
 
-import javax.inject.Inject;
-
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -21,6 +19,7 @@ import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,16 +28,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObjectRequest>, String>
 		implements StorageService {
+
 	private static final Logger API_LOG = LoggerFactory.getLogger(StorageServiceImpl.class);
 
-	@Inject
-	private TransferManager s3TransferManager;
+	private final TransferManager s3TransferManager;
+	private final Environment environment;
+	private final AmazonS3 amazonS3;
 
-	@Inject
-	private Environment environment;
+	public StorageServiceImpl(TaskExecutor taskExecutor, TransferManager s3TransferManager,
+			Environment environment, AmazonS3 amazonS3) {
+		super(taskExecutor);
 
-	@Inject
-	private AmazonS3 amazonS3;
+		this.s3TransferManager = s3TransferManager;
+		this.environment = environment;
+		this.amazonS3 = amazonS3;
+	}
 
 	/**
 	 * Stores the {@link InputStream} as an object in the S3 bucket.

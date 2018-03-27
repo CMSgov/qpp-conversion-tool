@@ -247,7 +247,7 @@ class ExceptionHandlerControllerV1Test implements LoggerContract {
 		Mockito.when(mock.uploadQrdaFile(ArgumentMatchers.any(), ArgumentMatchers.anyString())).thenCallRealMethod();
 
 		String purpose = "this is an invalid purpose because it's too long" + UUID.randomUUID();
-		RequestBuilder builder = MockMvcRequestBuilders.fileUpload("/")
+		RequestBuilder builder = MockMvcRequestBuilders.multipart("/")
 			.file("file", ArrayUtils.EMPTY_BYTE_ARRAY)
 			.header("Purpose", purpose);
 		MvcResult result = mvc.perform(builder).andReturn();
