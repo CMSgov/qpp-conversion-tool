@@ -36,7 +36,7 @@ public enum ErrorCode implements LocalizedError {
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This ACI Measure Performed RnR's requires a single "
 			+ "Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
-			+ "for an eCQM that is proportion measure"),
+			+ "for an eCQM that is a proportion measure"),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
 			"The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` "
 			+ "`(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`", true),
