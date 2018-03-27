@@ -12,6 +12,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
 import com.amazonaws.services.kms.AWSKMS;
 import gov.cms.qpp.conversion.api.model.Constants;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -37,14 +38,13 @@ public class DynamoDbConfig {
 	private Environment environment;
 	private AWSKMS awsKms;
 
-
 	/**
 	 * Ensure required dependencies are supplied.
 	 *
 	 * @param environment access to environment variables
 	 * @param awsKms KMS key
 	 */
-	public DynamoDbConfig(final Environment environment, final AWSKMS awsKms) {
+	public DynamoDbConfig(Environment environment, AWSKMS awsKms) {
 		this.environment = environment;
 		this.awsKms = awsKms;
 	}

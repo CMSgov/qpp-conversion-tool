@@ -83,7 +83,7 @@ class ConversionReportTest {
 	void getBadReportDetails() throws NoSuchFieldException, IllegalAccessException, JsonProcessingException {
 		ObjectMapper mockMapper = mock(ObjectMapper.class);
 		when(mockMapper.writeValueAsBytes(any(AllErrors.class)))
-			.thenThrow(new JsonMappingException("meep"));
+			.thenThrow(new JsonMappingException(null, "meep"));
 
 		Converter converter = new Converter(
 			new PathSource(Paths.get("../qrda-files/valid-QRDA-III-latest.xml")));
