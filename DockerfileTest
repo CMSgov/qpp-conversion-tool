@@ -2,8 +2,7 @@ FROM maven:3-jdk-8
 
 RUN mkdir -p /usr/src/app/
 RUN mkdir -p /usr/src/run/
-RUN apt-get update && apt-get install
-RUN apt-get install dos2unix
+RUN apt-get update && apt-get install dos2unix
 
 COPY ./ /usr/src/app/
 
