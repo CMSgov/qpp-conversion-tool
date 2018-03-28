@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.Context;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -217,7 +218,9 @@ class ClinicalDocumentValidatorTest {
 		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
 
 		//execute
-		Converter converter = new Converter(new PathSource(path));
+		Context context = new Context();
+		context.setDoDefaults(true);
+		Converter converter = new Converter(new PathSource(path), context);
 		AllErrors allErrors = new AllErrors();
 		try {
 			converter.transform();

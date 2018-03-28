@@ -11,8 +11,8 @@ import static com.google.common.truth.Truth.assertThat;
 class ContextTest {
 
 	@Test
-	void testDoesDefaultsByDefault() {
-		assertThat(new Context().isDoDefaults()).isTrue();
+	void testDoesNotDoDefaultsByDefault() {
+		assertThat(new Context().isDoDefaults()).isFalse();
 	}
 
 	@Test
