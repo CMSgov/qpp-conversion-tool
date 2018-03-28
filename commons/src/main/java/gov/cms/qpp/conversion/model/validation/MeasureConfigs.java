@@ -53,6 +53,7 @@ public class MeasureConfigs {
 	 * Method to ensure MeasureConfigs is initialized
 	 */
 	public static void init() {
+		// Hack to load the class without doing any extra work
 	}
 
 	/**

@@ -11,16 +11,6 @@ import java.nio.file.Path;
  */
 public class PathSource extends SkeletalSource {
 
-	private static final String fileName(Path path) {
-		if (path != null) {
-			Path fileName = path.getFileName();
-			if (fileName != null) {
-				return fileName.toString();
-			}
-		}
-		return "";
-	}
-
 	private final Path path;
 
 	public PathSource(Path path) {
@@ -62,5 +52,15 @@ public class PathSource extends SkeletalSource {
 	@Override
 	public String getPurpose() {
 		return null;
+	}
+
+	private static final String fileName(Path path) {
+		if (path != null) {
+			Path fileName = path.getFileName();
+			if (fileName != null) {
+				return fileName.toString();
+			}
+		}
+		return "";
 	}
 }

@@ -133,8 +133,6 @@ public enum ErrorCode implements LocalizedError {
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
-	private static final String VARIABLE_MARKER = "`\\(([^()]*)\\)`";
-	private static Pattern replacePattern;
 	public static final String CT_LABEL = "CT - ";
 
 	private final int code;
@@ -208,6 +206,6 @@ public enum ErrorCode implements LocalizedError {
 	}
 
 	private static final class VariableMarker {
-		private static final Pattern REPLACE_PATTERN = Pattern.compile("`\\(([^()]*)\\)`");
+		static final Pattern REPLACE_PATTERN = Pattern.compile("`\\(([^()]*)\\)`");
 	}
 }
