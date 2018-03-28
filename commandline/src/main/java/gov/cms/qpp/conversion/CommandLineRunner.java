@@ -84,7 +84,7 @@ public class CommandLineRunner implements Runnable {
 						.collect(Collectors.toList());
 				if (invalid.isEmpty()) {
 					doValidation = !commandLine.hasOption(CommandLineMain.SKIP_VALIDATION);
-					doDefaults = !commandLine.hasOption(CommandLineMain.SKIP_DEFAULTS);
+					doDefaults = commandLine.hasOption(CommandLineMain.DO_DEFAULTS);
 					historical = commandLine.hasOption(CommandLineMain.BYGONE);
 
 					convert.parallelStream()

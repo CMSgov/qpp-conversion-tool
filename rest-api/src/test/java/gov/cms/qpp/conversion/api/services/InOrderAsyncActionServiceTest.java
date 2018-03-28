@@ -60,6 +60,10 @@ class InOrderAsyncActionServiceTest {
 
 	private static class TestInOrderService extends InOrderActionService<Object, Object> {
 
+		public TestInOrderService(TaskExecutor taskExecutor) {
+			super(taskExecutor);
+		}
+
 		AtomicBoolean pauseAsynchronousAction = new AtomicBoolean(false);
 
 		@Override

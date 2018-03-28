@@ -14,7 +14,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 9 : CT - Aggregate count value must be an integer
 * 11 : CT - This ACI Measure Performed RnR requires exactly one Measure Performed
 * 12 : CT - This ACI Measure Performed RnR's requires a single Measure ID
-* 13 : CT - Denominator count must be less than or equal to Initial Population count for an eCQM that is proportion measure
+* 13 : CT - Denominator count must be less than or equal to Initial Population count for an eCQM that is a proportion measure
 * 14 : CT - The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
 * 15 : CT - ACI Numerator Denominator Node should have an ACI Section Node as a parent
 * 16 : CT - ACI Numerator Denominator Node does not contain a measure name ID
