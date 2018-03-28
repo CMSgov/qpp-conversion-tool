@@ -149,17 +149,19 @@ public class ValidationServiceImpl implements ValidationService {
 	 */
 	AllErrors convertQppValidationErrorsToQrda(String validationResponse, JsonWrapper wrapper) {
 		AllErrors errors = new AllErrors();
+		if (validationResponse == null) {
+			return errors;
+		}
+
 		Error error = getError(validationResponse);
 
 		error.getDetails().forEach(detail -> {
 			detail.setMessage(SV_LABEL + detail.getMessage());
 			String newPath = UNABLE_PROVIDE_XPATH;
-			if (wrapper != null) {
-				try {
-					newPath = PathCorrelator.prepPath(detail.getPath(), wrapper);
-				} catch (ClassCastException | JsonPathException exc) {
-					API_LOG.warn("Failed to convert from json path to an XPath.", exc);
-				}
+			try {
+				newPath = PathCorrelator.prepPath(detail.getPath(), wrapper);
+			} catch (ClassCastException | JsonPathException exc) {
+				API_LOG.warn("Failed to convert from json path to an XPath.", exc);
 			}
 			detail.setPath(newPath);
 		});
