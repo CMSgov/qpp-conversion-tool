@@ -35,6 +35,11 @@
 			</plugin>
 
 			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
 
