@@ -199,7 +199,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 			.collect(Collectors.toList());
 
 		return (uniqueTemplates.isEmpty()
-			|| uniqueTemplates.stream().anyMatch(template -> !template.equals(TemplateId.UNIMPLEMENTED)))
+			|| uniqueTemplates.stream().anyMatch(template -> TemplateId.UNIMPLEMENTED != template))
 			? children
 			: new ArrayList<>();
 	}
