@@ -16,13 +16,13 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 12 : CT - This ACI Measure Performed RnR's requires a single Measure ID
 * 13 : CT - Denominator count must be less than or equal to Initial Population count for an eCQM that is a proportion measure
 * 14 : CT - The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
-* 15 : CT - ACI Numerator Denominator Node should have an ACI Section Node as a parent
-* 16 : CT - ACI Numerator Denominator Node does not contain a measure name ID
-* 17 : CT - ACI Numerator Denominator Node does not have any child Nodes
-* 18 : CT - This ACI Numerator Denominator Node requires exactly one Denominator Node child
-* 19 : CT - This ACI Numerator Denominator Node requires exactly one Numerator Node child
-* 20 : CT - This ACI Numerator Denominator Node contains too many Denominator Node children
-* 21 : CT - This ACI Numerator Denominator Node contains too many Numerator Node children
+* 15 : CT - ACI Numerator Denominator element should have an ACI Section element as a parent
+* 16 : CT - ACI Numerator Denominator element does not contain a measure name ID
+* 17 : CT - ACI Numerator Denominator element does not have any child elements
+* 18 : CT - This ACI Numerator Denominator element requires exactly one Denominator element child
+* 19 : CT - This ACI Numerator Denominator element requires exactly one Numerator element child
+* 20 : CT - This ACI Numerator Denominator element contains too many Denominator element children
+* 21 : CT - This ACI Numerator Denominator element contains too many Numerator element children
 * 22 : CT - The ACI Section must have one Reporting Parameter ACT
 * 23 : CT - Clinical Document Node must have at least one Aci or IA or eCQM Section Node as a child
 * 24 : CT - Clinical Document must have one and only one program name
