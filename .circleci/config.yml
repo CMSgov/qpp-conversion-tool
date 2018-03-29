@@ -104,7 +104,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci
       - run: cd frontend; rm -f yarn.lock && yarn
-      - run: cd frontend; yarn run build;
+      - run: cd frontend; yarn run build --base-href /developers/conversion-tool-sandbox/
       - run: sudo apt-get install python-dev
       - run: curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
       - run: unzip awscli-bundle.zip
@@ -135,7 +135,7 @@ workflows:
       - deploy_api:
           filters:
             branches:
-              only: develop
+              only: story-748-simple_purpose
           requires:
             - checkout
       - integration_test:
