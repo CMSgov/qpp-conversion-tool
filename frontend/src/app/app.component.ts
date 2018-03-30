@@ -11,7 +11,13 @@ const URL  = 'https://qpp.cms.gov/api/submissions/converter';
 })
 export class AppComponent {
 	title = 'Convert QRDA-III to QPP';
-	uploader: FileUploader = new FileUploader({url: URL});
+	uploader: FileUploader = new FileUploader({
+		url: URL,
+        headers: [{
+            name: 'Purpose',
+            value: 'SimpleUI'
+        }]
+	});
 	hasBaseDropZoneOver: boolean;
 	hasAnotherDropZoneOver: boolean;
 	response: string;
