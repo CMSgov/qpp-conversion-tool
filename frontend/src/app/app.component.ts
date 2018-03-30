@@ -13,10 +13,10 @@ export class AppComponent {
 	title = 'Convert QRDA-III to QPP';
 	uploader: FileUploader = new FileUploader({
 		url: URL,
-        headers: [{
-            name: 'Purpose',
-            value: 'SimpleUI'
-        }]
+		headers: [{
+			name: 'Purpose',
+			value: 'SimpleUI'
+		}]
 	});
 	hasBaseDropZoneOver: boolean;
 	hasAnotherDropZoneOver: boolean;
