@@ -135,7 +135,7 @@ workflows:
       - deploy_api:
           filters:
             branches:
-              only: story-748-simple_purpose
+              only: develop
           requires:
             - checkout
       - integration_test:
