@@ -9,7 +9,6 @@ import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
 import gov.cms.qpp.conversion.decode.XmlDecoderEngine;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -44,7 +43,6 @@ class ClinicalDocumentRoundTripTest {
 		Node clinicalDocumentNode = XmlDecoderEngine.decodeXml(context, XmlUtils.stringToDom(xmlFragment));
 
 		// remove default nodes (will fail if defaults change)
-		DefaultDecoder.removeDefaultNode(clinicalDocumentNode.getChildNodes());
 
 		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		encoder.setNodes(Collections.singletonList(clinicalDocumentNode));

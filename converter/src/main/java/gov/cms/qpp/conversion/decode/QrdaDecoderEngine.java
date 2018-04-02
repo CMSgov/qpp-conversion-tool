@@ -263,7 +263,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 			}
 
 			Decoder decoder = qppDecoder.getClass().getAnnotation(Decoder.class);
-			TemplateId template = decoder == null ? TemplateId.DEFAULT : decoder.value();
+			TemplateId template = decoder.value();
 			return !scope.contains(template) ? null : qppDecoder;
 		}
 
