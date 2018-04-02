@@ -60,7 +60,7 @@ public class ConverterTest {
 
 		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
-	}g
+	}
 
 	@Test
 	public void testInvalidXml() {
