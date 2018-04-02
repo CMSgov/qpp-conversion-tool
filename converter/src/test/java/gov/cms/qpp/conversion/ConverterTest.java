@@ -60,38 +60,7 @@ public class ConverterTest {
 
 		converter.transform();
 		//no exception should be thrown, hence explicitly stating the expected exception is None
-	}
-
-//	@Test
-//	@PrepareForTest({Converter.class, QrdaValidator.class})
-//	public void testValidationErrors() throws Exception {
-//		Context context = new Context();
-//		context.setDoDefaults(true);
-//		TestHelper.mockDecoder(context, JennyDecoder.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL));
-//		QrdaValidator mockQrdaValidator = TestHelper.mockValidator(context, TestDefaultValidator.class, new ComponentKey(TemplateId.DEFAULT, Program.ALL), true);
-//		PowerMockito.whenNew(QrdaValidator.class)
-//			.withAnyArguments()
-//			.thenReturn(mockQrdaValidator);
-//
-//		Path path = Paths.get("src/test/resources/converter/errantDefaultedNode.xml");
-//		Converter converter = new Converter(new PathSource(path), context);
-//
-//		try {
-//			converter.transform();
-//			fail("The converter should not create valid QPP JSON");
-//		} catch (TransformException exception) {
-//			AllErrors allErrors = exception.getDetails();
-//			List<Error> errors = allErrors.getErrors();
-//			assertWithMessage("There must only be one error source.")
-//					.that(errors).hasSize(1);
-//
-//			List<Detail> details = errors.get(0).getDetails();
-//			assertWithMessage("The expected validation error was missing")
-//					.that(details)
-//					.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-//					.contains(new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "Test validation error for Jenny"));
-//		}
-//	}
+	}g
 
 	@Test
 	public void testInvalidXml() {
