@@ -21,8 +21,8 @@ public enum ErrorCode implements LocalizedError {
 
 	ENCODER_MISSING(1, "Failed to find an encoder"),
 	NOT_VALID_XML_DOCUMENT(2, "The file is not a valid XML document"),
-	UNEXPECTED_ERROR(3, "Unexpected exception occurred during conversion"),
-	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occurred during encoding"),
+	UNEXPECTED_ERROR(3, "Unexpected exception occurred during conversion. " + ServiceCenter.MESSAGE),
+	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occurred during encoding. " + ServiceCenter.MESSAGE),
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. "
 		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
 		+ "`(Implementation guide link)`", true),
@@ -207,5 +207,10 @@ public enum ErrorCode implements LocalizedError {
 
 	private static final class VariableMarker {
 		static final Pattern REPLACE_PATTERN = Pattern.compile("`\\(([^()]*)\\)`");
+	}
+
+	private static final class ServiceCenter {
+		static final String MESSAGE = "Please contact the Service Center for assistance via phone at "
+				+ "1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov";
 	}
 }
