@@ -29,7 +29,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 25 : CT - The Clinical Document program name `(program name)` is not recognized. Valid program names are `(list of valid program names)`.
 * 26 : CT - Clinical Document contains duplicate ACI sections
 * 27 : CT - Clinical Document contains duplicate IA sections
-* 28 : CT - Clinical Document contains duplicate measure sections
+* 28 : CT - Clinical Document contains duplicate Measure sections
 * 29 : CT - Must have one and only one performance start
 * 30 : CT - Must have one and only one performance end
 * 31 : CT - Must have a performance year
@@ -39,7 +39,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified
 * 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty
 * 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid
-* 36 : CT - Must contain one measure section
+* 36 : CT - Must contain one Measure section
 * 37 : CT - Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
 * 38 : CT - This `(Numerator or Denominator)` Node does not have any child Nodes
 * 39 : CT - This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node
@@ -67,6 +67,6 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 64 : CT - CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
 * 65 : CT - CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.
 * 66 : CT - Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`
-* 67 : CT - Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for the measure id `(Measure Id)`
+* 67 : CT - Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for the Measure id `(Measure Id)`
 * 68 : CT - Your CPC+ submission was made after the CPC+ measure section submission deadline of `(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at `(CPC+ contact email)` for assistance.
 * 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123
