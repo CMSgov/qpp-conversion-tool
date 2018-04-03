@@ -36,9 +36,9 @@ public enum ErrorCode implements LocalizedError {
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This ACI Measure Performed RnR's requires a single "
 			+ "Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
-			+ "for an eCQM that is a proportion measure"),
+			+ "for a measure that is a proportion measure"),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
-			"The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` "
+			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
 			+ "`(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`", true),
 	ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION(15, "ACI Numerator Denominator Node should have an ACI "
 			+ "Section Node as a parent"),
@@ -56,13 +56,13 @@ public enum ErrorCode implements LocalizedError {
 			+ "contains too many Numerator Node children"),
 	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter ACT"),
 	CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document Node must have at least one "
-			+ "Aci or IA or eCQM Section Node as a child"),
+			+ "Aci or IA or Measure section Node as a child"),
 	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Clinical Document must have one and only one program name"),
 	CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME(25, "The Clinical Document program name `(program name)` is not recognized. Valid "
 		+ "program names are `(list of valid program names)`.", true),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS(26, "Clinical Document contains duplicate ACI sections"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS(27, "Clinical Document contains duplicate IA sections"),
-	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate eCQN "
+	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate Measure "
 			+ "sections"),
 	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START(29, "Must have one and only one performance "
 			+ "start"),
@@ -77,7 +77,7 @@ public enum ErrorCode implements LocalizedError {
 			+ "Identifier should be specified"),
 	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty"),
 	CPC_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid"),
-	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "Must contain one Measure (eCQM) section"),
+	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "Must contain one Measure section"),
 	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "Must contain correct number of performance rate(s). "
 			+ "Correct Number is `(Expected value)`", true),
 	NUMERATOR_DENOMINATOR_MISSING_CHILDREN(38,
@@ -110,9 +110,9 @@ public enum ErrorCode implements LocalizedError {
 			+ "measure population"),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE(58, "The measure reference results must have a single "
 			+ "measure type"),
-	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The eCQM (electronic measure id: `(Current eMeasure ID)`) requires a "
+	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The electronic measure id: `(Current eMeasure ID)` requires a "
 			+ "`(Subpopulation type)` with the correct UUID of `(Correct uuid required)`", true),
-	QUALITY_MEASURE_ID_INCORRECT_PERFORMANCE_UUID(60, "The eCQM (electronic measure id: `(Current eMeasure ID)`) has "
+	QUALITY_MEASURE_ID_INCORRECT_PERFORMANCE_UUID(60, "The electronic measure id: `(Current eMeasure ID)` has "
 			+ "a performanceRateId with an incorrect UUID of `(Incorrect UUID)`", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID"),
@@ -121,10 +121,10 @@ public enum ErrorCode implements LocalizedError {
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of "
 		+ "the following measures: `(Listing of all CPC+ measure ids)`.", true),
 	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code "
-		+ "`(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`", true),
+		+ "`(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`", true),
 	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
-		+ "on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`", true),
-	CPC_PLUS_SUBMISSION_ENDED(68, "Your CPC+ submission was made after the CPC+ eCQM submission deadline of "
+		+ "on Sub-population `(Sub Population)` for the measure id `(Measure Id)`", true),
+	CPC_PLUS_SUBMISSION_ENDED(68, "Your CPC+ submission was made after the CPC+ Measure section submission deadline of "
 		+ "`(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at "
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
