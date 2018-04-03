@@ -219,7 +219,6 @@ class ClinicalDocumentValidatorTest {
 
 		//execute
 		Context context = new Context();
-		context.setDoDefaults(true);
 		Converter converter = new Converter(new PathSource(path), context);
 		AllErrors allErrors = new AllErrors();
 		try {

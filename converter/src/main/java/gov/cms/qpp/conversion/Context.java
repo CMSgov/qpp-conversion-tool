@@ -21,7 +21,6 @@ public class Context {
 	private Program program = Program.ALL;
 	private Set<QrdaScope> scope = EnumSet.noneOf(QrdaScope.class);
 	private boolean historical;
-	private boolean doDefaults;
 	private boolean doValidation = true;
 
 	/**
@@ -85,24 +84,6 @@ public class Context {
 	 */
 	public void setHistorical(boolean historical) {
 		this.historical = historical;
-	}
-
-	/**
-	 * Whether this context wants default conversion performed
-	 *
-	 * @return doDefaults
-	 */
-	public boolean isDoDefaults() {
-		return doDefaults;
-	}
-
-	/**
-	 * Switch for enabling or disabling inclusion of default nodes.
-	 *
-	 * @param doDefaults whether the converter should perform defaults
-	 */
-	public void setDoDefaults(boolean doDefaults) {
-		this.doDefaults = doDefaults;
 	}
 
 	/**

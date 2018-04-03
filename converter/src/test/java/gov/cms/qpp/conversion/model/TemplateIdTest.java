@@ -20,7 +20,6 @@ class TemplateIdTest implements EnumContract {
 	@BeforeAll
 	static void setup() {
 		defaultsContext = new Context();
-		defaultsContext.setDoDefaults(true);
 	}
 
 	@AfterEach

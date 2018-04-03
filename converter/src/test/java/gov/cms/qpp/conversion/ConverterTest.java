@@ -85,7 +85,6 @@ public class ConverterTest {
 
 		Path path = Paths.get("src/test/resources/converter/defaultedNode.xml");
 		Converter converter = new Converter(new PathSource(path));
-		converter.getContext().setDoDefaults(false);
 		converter.getContext().setDoValidation(false);
 
 		try {
@@ -112,7 +111,6 @@ public class ConverterTest {
 	public void testNotAValidQrdaIIIFile() {
 		Path path = Paths.get("src/test/resources/not-a-QRDA-III-file.xml");
 		Converter converter = new Converter(new PathSource(path));
-		converter.getContext().setDoDefaults(false);
 		converter.getContext().setDoValidation(false);
 
 		try {
@@ -141,7 +139,6 @@ public class ConverterTest {
 	@Test
 	public void testSkipDefaults() {
 		Converter converter = new Converter(new PathSource(Paths.get("src/test/resources/converter/defaultedNode.xml")));
-		converter.getContext().setDoDefaults(false);
 		converter.getContext().setDoValidation(false);
 		JsonWrapper qpp = converter.transform();
 
