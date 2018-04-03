@@ -40,20 +40,20 @@ public enum ErrorCode implements LocalizedError {
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
 			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
 			+ "`(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`", true),
-	ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION(15, "ACI Numerator Denominator Node should have an ACI "
-			+ "Section Node as a parent"),
-	ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "ACI Numerator Denominator Node does not contain a "
+	ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION(15, "ACI Numerator Denominator element should have an ACI "
+			+ "Section element as a parent"),
+	ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "ACI Numerator Denominator element does not contain a "
 			+ "measure name ID"),
-	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "ACI Numerator Denominator Node does not have any child "
-			+ "Nodes"),
+	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "ACI Numerator Denominator element does not have any child "
+			+ "elements"),
 	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
-			+ "Node requires exactly one Denominator Node child"),
+			+ "element requires exactly one Denominator element child"),
 	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE(19, "This ACI Numerator Denominator "
-			+ "Node requires exactly one Numerator Node child"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS(20, "This ACI Numerator Denominator Node "
-			+ "contains too many Denominator Node children"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS(21, "This ACI Numerator Denominator Node "
-			+ "contains too many Numerator Node children"),
+			+ "element requires exactly one Numerator element child"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS(20, "This ACI Numerator Denominator element "
+			+ "contains too many Denominator element children"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS(21, "This ACI Numerator Denominator element "
+			+ "contains too many Numerator element children"),
 	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter ACT"),
 	CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document Node must have at least one "
 			+ "Aci or IA or Measure section Node as a child"),
