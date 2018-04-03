@@ -320,7 +320,7 @@ class QrdaDecoderEngineTest {
 			QrdaDecoderEngine objectUnderTest = new QrdaDecoderEngine(context);
 			Node decodedNodes = objectUnderTest.decode(rootElement);
 
-			assertNodeCount(decodedNodes, 1, 0, 0);
+			assertNodeCount(decodedNodes, 0, 0, 0);
 		}
 
 		@Test
