@@ -34,6 +34,7 @@ import static org.hamcrest.xml.HasXPath.hasXPath;
 class CpcApiAcceptance {
 	private static final String CPC_UNPROCESSED_FILES_API_PATH = "/cpc/unprocessed-files";
 	private static final String CPC_FILE_API_PATH = "/cpc/file/";
+	private static final String CPC_QPP_API_PATH = "/cpc/qpp/";
 	private static final String PROGRAM_NAME_XPATH = "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']"
 		+ "/./*[local-name() = 'informationRecipient' and namespace-uri() = 'urn:hl7-org:v3']"
 		+ "/*[local-name() = 'intendedRecipient' and namespace-uri() = 'urn:hl7-org:v3']"
@@ -118,6 +119,30 @@ class CpcApiAcceptance {
 	}
 
 	@AcceptanceTest
+	void testGetQpp() {
+
+		String firstFileId = getFirstUnprocessedCpcFileId();
+
+		given()
+			.auth().oauth2(createCpcJwtToken())
+			.get(CPC_QPP_API_PATH + firstFileId)
+			.then()
+			.statusCode(200)
+			.contentType("application/json")
+			.body(equalToIgnoringCase(CPC_PLUS_PROGRAM_NAME)); // THIS SHOULD FAIL FOR NOW
+	}
+
+	@AcceptanceTest
+	void testNoSecurityGetQpp() {
+
+		String firstFileId = getFirstUnprocessedCpcFileId();
+
+		get(CPC_QPP_API_PATH + firstFileId)
+			.then()
+			.statusCode(403);
+	}
+
+	@AcceptanceTest
 	void testNoSecurityMarkFileProcessed() {
 
 		String firstFileId = getFirstUnprocessedCpcFileId();
@@ -169,7 +194,7 @@ class CpcApiAcceptance {
 	}
 
 	private String getFirstUnprocessedCpcFileId() {
-		return (String)getUnprocessedFiles().get(0).get("fileId");
+		return (String) getUnprocessedFiles().get(0).get("fileId");
 	}
 
 	private String markFileAsProcessed(String fileId, int expectedResponseCode) {
