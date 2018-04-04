@@ -23,9 +23,9 @@ jobs:
     steps:
       - attach_workspace:
           at: /home/circleci
-      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
+      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.1.0.1141.zip
       - run: unzip -d . sonarscanner.zip
-      - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
+      - run: cp ./sonar-scanner.properties sonar-scanner-3.1.0.1141/conf/sonar-scanner.properties
       - run: mvn --batch-mode clean verify
       - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
       - run: sudo apt-get install -y nodejs
