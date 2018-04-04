@@ -12,7 +12,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -66,10 +65,7 @@ public class CpcFileControllerV1 {
 
 		API_LOG.info("CPC+ unprocessed files request succeeded");
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-
-		return new ResponseEntity<>(unprocessedCpcFileDataList, httpHeaders, HttpStatus.OK);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(unprocessedCpcFileDataList);
 	}
 
 	/**
@@ -94,10 +90,7 @@ public class CpcFileControllerV1 {
 
 		API_LOG.info("CPC+ file retrieval request succeeded");
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_XML);
-
-		return new ResponseEntity<>(content, httpHeaders, HttpStatus.OK);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_XML).body(content);
 	}
 
 	/**
@@ -122,12 +115,8 @@ public class CpcFileControllerV1 {
 
 		API_LOG.info("CPC+ QPP retrieval request succeeded");
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-
-		return new ResponseEntity<>(content, httpHeaders, HttpStatus.OK);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(content);
 	}
-
 
 	/**
 	 * Updates a file's status in the database
@@ -155,10 +144,8 @@ public class CpcFileControllerV1 {
 		}
 
 		API_LOG.info("CPC+ update file request succeeded with message: " + message);
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
 
-		return new ResponseEntity<>(message, httpHeaders, HttpStatus.OK);
+		return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(message);
 	}
 
 	/**
