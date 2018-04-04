@@ -64,6 +64,21 @@ public class CpcFileServiceImpl implements CpcFileService {
 	}
 
 	/**
+	 * Retrieves the file location id and retrieves the corresponding submission's QPP
+	 *
+	 * @param fileId {@link Metadata} identifier
+	 * @return QPP contents as a {@link String}
+	 */
+	@Override
+	public InputStreamResource getQppById(String fileId) {
+		Metadata metadata = dbService.getMetadataById(fileId);
+		if (metadata != null) {
+			return new InputStreamResource(storageService.getFileByLocationId(metadata.getQppLocator()));
+		}
+		throw new NoFileInDatabaseException(FILE_NOT_FOUND);
+	}
+
+	/**
 	 * Process to ensure the file is an unprocessed cpc+ file and marks the file as processed
 	 *
 	 * @param fileId Identifier of the CPC+ file

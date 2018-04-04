@@ -73,7 +73,7 @@ public class CpcFileControllerV1 {
 	}
 
 	/**
-	 * Retrieve a stored S3 object.
+	 * Retrieve a stored S3 submission object.
 	 *
 	 * @param fileId id for the stored object
 	 * @return object json or xml content
@@ -99,6 +99,35 @@ public class CpcFileControllerV1 {
 
 		return new ResponseEntity<>(content, httpHeaders, HttpStatus.OK);
 	}
+
+	/**
+	 * Retrieve a stored S3 QPP object.
+	 *
+	 * @param fileId id for the stored object
+	 * @return object json or xml content
+	 * @throws IOException if S3Object content stream is invalid
+	 */
+	@GetMapping(value = "/qpp/{fileId}",
+		headers = {"Accept=" + Constants.V1_API_ACCEPT})
+	public ResponseEntity<InputStreamResource> getQppById(@PathVariable("qppId") String fileId)
+		throws IOException {
+		API_LOG.info("CPC+ QPP retrieval request received");
+
+		if (blockCpcPlusApi()) {
+			API_LOG.info("CPC+ QPP request blocked by feature flag");
+			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
+		}
+
+		InputStreamResource content = cpcFileService.getQppById(fileId);
+
+		API_LOG.info("CPC+ QPP retrieval request succeeded");
+
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+		return new ResponseEntity<>(content, httpHeaders, HttpStatus.OK);
+	}
+
 
 	/**
 	 * Updates a file's status in the database
