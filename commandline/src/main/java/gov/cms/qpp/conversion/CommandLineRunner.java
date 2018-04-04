@@ -38,7 +38,6 @@ public class CommandLineRunner implements Runnable {
 	private final FileSystem fileSystem;
 	private Set<QrdaScope> scope;
 	private boolean doValidation;
-	private boolean doDefaults;
 	private boolean historical;
 	private Pattern normalPathPattern;
 	private Pattern globFinderPattern;
