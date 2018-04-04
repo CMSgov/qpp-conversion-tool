@@ -79,7 +79,7 @@ public class CpcFileControllerV1 {
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
 			throws IOException {
-		API_LOG.info("CPC+ file retrieval request received for fileId " + fileId);
+		API_LOG.info("CPC+ file retrieval request received for fileId {}", fileId);
 
 		if (blockCpcPlusApi()) {
 			API_LOG.info("CPC+ file request blocked by feature flag");
@@ -104,7 +104,7 @@ public class CpcFileControllerV1 {
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getQppById(@PathVariable("fileId") String fileId)
 		throws IOException {
-		API_LOG.info("CPC+ QPP retrieval request received for fileId " + fileId);
+		API_LOG.info("CPC+ QPP retrieval request received for fileId {}", fileId);
 
 		if (blockCpcPlusApi()) {
 			API_LOG.info("CPC+ QPP request blocked by feature flag");
@@ -113,7 +113,7 @@ public class CpcFileControllerV1 {
 
 		InputStreamResource content = cpcFileService.getQppById(fileId);
 
-		API_LOG.info("CPC+ QPP retrieval request succeeded");
+		API_LOG.info("CPC+ QPP retrieval request succeeded for fileId {}", fileId);
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(content);
 	}
@@ -134,7 +134,7 @@ public class CpcFileControllerV1 {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		API_LOG.info("CPC+ update file request received for fileId " + fileId);
+		API_LOG.info("CPC+ update file request received for fileId {}", fileId);
 
 		String message;
 		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
@@ -143,7 +143,7 @@ public class CpcFileControllerV1 {
 			message = cpcFileService.processFileById(fileId);
 		}
 
-		API_LOG.info("CPC+ update file request succeeded with message: " + message);
+		API_LOG.info("CPC+ update file request succeeded for fileId {} with message: {}", fileId, message);
 
 		return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(message);
 	}
