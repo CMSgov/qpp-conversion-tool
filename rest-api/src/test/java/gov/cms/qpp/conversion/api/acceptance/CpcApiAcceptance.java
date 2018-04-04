@@ -4,9 +4,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.AttributeEncryptor;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.extension.ExtendWith;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory;
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
 import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
@@ -17,13 +17,23 @@ import gov.cms.qpp.conversion.api.services.DbServiceImpl;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
 import gov.cms.qpp.test.helper.AwsTestHelper;
+import org.hamcrest.Matcher;
+import org.hamcrest.StringDescription;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static com.spotify.hamcrest.jackson.IsJsonArray.jsonArray;
+import static com.spotify.hamcrest.jackson.IsJsonNumber.jsonInt;
+import static com.spotify.hamcrest.jackson.IsJsonObject.jsonObject;
+import static com.spotify.hamcrest.jackson.IsJsonText.jsonText;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.put;
@@ -119,17 +129,25 @@ class CpcApiAcceptance {
 	}
 
 	@AcceptanceTest
-	void testGetQpp() {
+	void testGetQpp() throws IOException {
 
 		String firstFileId = getFirstUnprocessedCpcFileId();
 
-		given()
+		String payload = given()
 			.auth().oauth2(createCpcJwtToken())
 			.get(CPC_QPP_API_PATH + firstFileId)
 			.then()
 			.statusCode(200)
 			.contentType("application/json")
-			.body(equalToIgnoringCase(CPC_PLUS_PROGRAM_NAME)); // THIS SHOULD FAIL FOR NOW
+			.extract()
+			.body()
+			.asString();
+
+		verifyJson(payload, jsonObject()
+			.where("performanceYear", jsonInt(2017))
+			.where("taxpayerIdentificationNumber", jsonText("000000099"))
+			.where("nationalProviderIdentifier", jsonText("0007891421"))
+			.where("measurementSets", jsonArray()));
 	}
 
 	@AcceptanceTest
@@ -191,6 +209,16 @@ class CpcApiAcceptance {
 
 		assertThat(responseBody).isEqualTo("The file was found and will be updated as unprocessed.");
 		assertThat(getUnprocessedFiles().stream().filter(metadata -> metadata.get("fileId").equals(firstFileId)).count()).isEqualTo(1);
+	}
+
+	private void verifyJson(String json, Matcher<JsonNode> matcher) throws IOException {
+		ObjectNode node = (ObjectNode) (new ObjectMapper()).readTree(json);
+		StringDescription description = new StringDescription();
+		description.appendDescriptionOf(matcher);
+
+		assertWithMessage("Expected: " + description.toString() + " Actual: " + json)
+			.that(matcher.matches(node))
+			.isTrue();
 	}
 
 	private String getFirstUnprocessedCpcFileId() {
