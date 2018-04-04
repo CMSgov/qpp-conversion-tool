@@ -72,7 +72,7 @@ public class CpcFileServiceImpl implements CpcFileService {
 	@Override
 	public InputStreamResource getQppById(String fileId) {
 		Metadata metadata = dbService.getMetadataById(fileId);
-		if (metadata != null) {
+		if (isCpcFile(metadata)) {
 			return new InputStreamResource(storageService.getFileByLocationId(metadata.getQppLocator()));
 		}
 		throw new NoFileInDatabaseException(FILE_NOT_FOUND);
@@ -141,6 +141,16 @@ public class CpcFileServiceImpl implements CpcFileService {
 	 * @return result of the check
 	 */
 	private boolean isAnUnprocessedCpcFile(Metadata metadata) {
-		return metadata != null && metadata.getCpc() != null && !metadata.getCpcProcessed();
+		return isCpcFile(metadata) && !metadata.getCpcProcessed();
+	}
+
+	/**
+	 * Determines if the file is a CPC+ submission
+	 *
+	 * @param metadata Data to be determined valid or invalid
+	 * @return result of the check
+	 */
+	private boolean isCpcFile(Metadata metadata) {
+		return metadata != null && metadata.getCpc() != null;
 	}
 }
