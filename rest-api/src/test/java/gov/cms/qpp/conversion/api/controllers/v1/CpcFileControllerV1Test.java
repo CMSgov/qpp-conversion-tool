@@ -81,6 +81,17 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
+	void testGetQppById() throws IOException {
+		InputStreamResource valid = new InputStreamResource(new ByteArrayInputStream("1234".getBytes()));
+		when(cpcFileService.getQppById(anyString())).thenReturn(valid);
+
+		ResponseEntity<InputStreamResource> response = cpcFileControllerV1.getQppById("meep");
+
+		assertThat(IOUtils.toString(response.getBody().getInputStream(), StandardCharsets.UTF_8))
+			.isEqualTo("1234");
+	}
+
+	@Test
 	void testMarkFileAsProcessedReturnsSuccess() {
 		when(cpcFileService.processFileById(anyString())).thenReturn("success!");
 
