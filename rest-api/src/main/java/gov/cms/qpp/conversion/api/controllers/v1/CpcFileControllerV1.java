@@ -83,7 +83,7 @@ public class CpcFileControllerV1 {
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
 			throws IOException {
-		API_LOG.info("CPC+ file retrieval request received");
+		API_LOG.info("CPC+ file retrieval request received for fileId " + fileId);
 
 		if (blockCpcPlusApi()) {
 			API_LOG.info("CPC+ file request blocked by feature flag");
@@ -111,7 +111,7 @@ public class CpcFileControllerV1 {
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getQppById(@PathVariable("qppId") String fileId)
 		throws IOException {
-		API_LOG.info("CPC+ QPP retrieval request received");
+		API_LOG.info("CPC+ QPP retrieval request received for fileId " + fileId);
 
 		if (blockCpcPlusApi()) {
 			API_LOG.info("CPC+ QPP request blocked by feature flag");
@@ -145,7 +145,7 @@ public class CpcFileControllerV1 {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		API_LOG.info("CPC+ update file request received");
+		API_LOG.info("CPC+ update file request received for fileId " + fileId);
 
 		String message;
 		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
