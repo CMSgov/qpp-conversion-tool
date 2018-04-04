@@ -109,7 +109,7 @@ public class CpcFileControllerV1 {
 	 */
 	@GetMapping(value = "/qpp/{fileId}",
 		headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<InputStreamResource> getQppById(@PathVariable("qppId") String fileId)
+	public ResponseEntity<InputStreamResource> getQppById(@PathVariable("fileId") String fileId)
 		throws IOException {
 		API_LOG.info("CPC+ QPP retrieval request received for fileId " + fileId);
 
