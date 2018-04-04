@@ -26,7 +26,7 @@ jobs:
       - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
       - run: unzip -d . sonarscanner.zip
       - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
-      - run: mvn --batch-mode clean verify
+      - run: mvn --batch-mode verify
       - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
       - run: sudo apt-get install -y nodejs
       - run: ./tools/bin/sonarqube.sh
@@ -76,7 +76,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci
       - run: echo host stuff $DOCKER_DEPLOY_HOSTS $DOCKER_DEPLOY_PORT
-      - run: mvn clean test -DfailIfNoTests=false -Dtest=*ApiAcceptance*
+      - run: mvn test -DfailIfNoTests=false -Dtest=*ApiAcceptance*
 
   ui_test:
     <<: *container_config
