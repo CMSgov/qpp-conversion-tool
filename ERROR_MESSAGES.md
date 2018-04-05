@@ -9,7 +9,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 4 : CT - Unexpected exception occurred during encoding. Please contact the Service Center for assistance via phone at 1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov
 * 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`
 * 6 : CT - The measure reference results must have a single occurrence of the recognized measure GUID `(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?
-* 7 : CT - TThe measure reference results must have at least one measure. Please review the measures section of your file as it cannot be empty.
+* 7 : CT - The measure reference results must have at least one measure. Please review the measures section of your file as it cannot be empty.
 * 8 : CT - A single aggregate count value is required
 * 9 : CT - Aggregate count value must be an integer
 * 11 : CT - This ACI Measure Performed RnR requires exactly one Measure Performed
