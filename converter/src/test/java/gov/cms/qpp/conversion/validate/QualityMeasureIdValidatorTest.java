@@ -9,7 +9,6 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.model.validation.MeasureIndexInit;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 import gov.cms.qpp.conversion.util.StringHelper;
@@ -18,9 +17,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -65,13 +61,11 @@ class QualityMeasureIdValidatorTest {
 	@BeforeAll
 	static void setupCustomMeasuresData() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		MeasureConfigs.setMeasureDataFile("reduced-test-measures-data.json");
-		MeasureIndexInit.reinitMeasureConfigs(true);
 	}
 
 	@AfterAll
 	static void resetMeasuresData() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
-		MeasureIndexInit.reinitMeasureConfigs(false);
 	}
 
 	@Test
@@ -124,52 +118,6 @@ class QualityMeasureIdValidatorTest {
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 		assertWithMessage("There must be zero validation errors.")
 				.that(details).isEmpty();
-	}
-
-	@Test
-	void testInvalidMeasureIdGetsThreeSuggestions() {
-		String measureId = "40280381-51f0-825b-0152-22a639d8NOPE";
-		List<String> suggestions = Arrays.asList("40280381-51f0-825b-0152-22a639d81762",
-			"40280381-51f0-825b-0152-227617db152e", "40280381-51f0-825b-0152-22a112d2172a");
-		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-				.addMeasureId(measureId)
-				.addSubPopulationMeasureDataWithCounts(
-					SubPopulationLabel.IPOP.name(), REQUIRES_DENOM_EXCLUSION_IPOP_GUID, ONE_HUNDRED)
-				.addSubPopulationMeasureDataWithCounts(
-					SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
-				.addSubPopulationMeasureDataWithCounts(
-					SubPopulationLabel.NUMER.name(), REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
-				.addSubPopulationMeasureDataWithCounts(
-					SubPopulationLabel.DENEX.name(), REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
-				.build();
-
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-
-		assertWithMessage("There must be one validation errors.")
-				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.MEASURE_GUID_MISSING.format(measureId, suggestions));
-	}
-
-	@Test
-	void testHorriblyInvalidMeasureIdGetsNoSuggestions() {
-		String measureId = "InvalidMeasureId";
-		Node measureReferenceResultsNode = new MeasureReferenceBuilder()
-			.addMeasureId(measureId)
-			.addSubPopulationMeasureDataWithCounts(
-				SubPopulationLabel.IPOP.name(), REQUIRES_DENOM_EXCLUSION_IPOP_GUID, ONE_HUNDRED)
-			.addSubPopulationMeasureDataWithCounts(
-				SubPopulationLabel.DENOM.name(), REQUIRES_DENOM_EXCLUSION_DENOM_GUID, ONE_HUNDRED)
-			.addSubPopulationMeasureDataWithCounts(
-				SubPopulationLabel.NUMER.name(), REQUIRES_DENOM_EXCLUSION_NUMER_GUID, ONE_HUNDRED)
-			.addSubPopulationMeasureDataWithCounts(
-				SubPopulationLabel.DENEX.name(), REQUIRES_DENOM_EXCLUSION_DENEX_GUID, ONE_HUNDRED)
-			.build();
-
-		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
-
-		assertWithMessage("There must be one validation errors.")
-			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.MEASURE_GUID_MISSING.format(measureId, Collections.emptyList()));
 	}
 
 	@Test

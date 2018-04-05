@@ -26,8 +26,9 @@ public enum ErrorCode implements LocalizedError {
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. "
 		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
 		+ "`(Implementation guide link)`", true),
-	MEASURE_GUID_MISSING(6, "The measure reference results must have a single occurrence of the recognized measure GUID "
-			+ "`(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?", true),
+	MEASURE_GUID_MISSING(6, "The measure GUID supplied `(Provided measure id)` is invalid. Please see the 2017 IG "
+			+ "https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_11272017_508_0.pdf#page=88 "
+			+ "for valid measure GUIDs.", true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),

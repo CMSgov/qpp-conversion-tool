@@ -10,7 +10,6 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
@@ -76,9 +75,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		} else {
 			String value = node.getValue(MeasureConfigHelper.MEASURE_ID);
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
-				DEV_LOG.error("MEASURE_GUID_MISSING " + value);
-				List<String> suggestions = MeasureConfigs.getMeasureSuggestions(value);
-				addValidationError(Detail.forErrorAndNode(ErrorCode.MEASURE_GUID_MISSING.format(value, suggestions), node));
+				DEV_LOG.error(ErrorCode.MEASURE_GUID_MISSING.name() + " " + value);
+				addValidationError(Detail.forErrorAndNode(ErrorCode.MEASURE_GUID_MISSING.format(value), node));
 			}
 		}
 	}
