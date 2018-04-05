@@ -20,7 +20,8 @@ import java.util.stream.IntStream;
 public enum ErrorCode implements LocalizedError {
 
 	ENCODER_MISSING(1, "Failed to find an encoder"),
-	NOT_VALID_XML_DOCUMENT(2, "The file is not a valid XML document"),
+	NOT_VALID_XML_DOCUMENT(2, "The file is not a valid XML document. The file you are submitting is not a "
+			+ "properly formatted XML document. Please check your document to ensure proper formatting."),
 	UNEXPECTED_ERROR(3, "Unexpected exception occurred during conversion. " + ServiceCenter.MESSAGE),
 	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occurred during encoding. " + ServiceCenter.MESSAGE),
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. "
