@@ -1,14 +1,5 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
-import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
-import gov.cms.qpp.conversion.api.services.CpcFileService;
-import gov.cms.qpp.conversion.util.EnvironmentHelper;
-
-import java.io.IOException;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
@@ -24,12 +15,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
+import gov.cms.qpp.conversion.api.services.CpcFileService;
+import gov.cms.qpp.conversion.util.EnvironmentHelper;
+
+import java.io.IOException;
+import java.util.List;
+
 /**
  * Controller to handle cpc file data
  */
 @RestController
 @RequestMapping("/cpc")
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true")
 public class CpcFileControllerV1 {
 
 	private static final String BLOCKED_BY_FEATURE_FLAG =
