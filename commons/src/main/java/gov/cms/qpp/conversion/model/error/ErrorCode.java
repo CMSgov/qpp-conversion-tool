@@ -29,7 +29,8 @@ public enum ErrorCode implements LocalizedError {
 		+ "`(Implementation guide link)`", true),
 	MEASURE_GUID_MISSING(6, "The measure reference results must have a single occurrence of the recognized measure GUID "
 			+ "`(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?", true),
-	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),
+	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
+			+ "Please review the measures section of your file as it cannot be empty."),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Measure Performed RnR requires exactly one "
