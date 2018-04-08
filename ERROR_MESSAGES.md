@@ -4,7 +4,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 
 ### Format - Error Code : Error Message
 * 1 : CT - Failed to find an encoder
-* 2 : CT - The file is not a valid XML document
+* 2 : CT - The file is not a valid XML document. The file you are submitting is not a properly formatted XML document. Please check your document to ensure proper formatting.
 * 3 : CT - Unexpected exception occurred during conversion. Please contact the Service Center for assistance via phone at 1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov
 * 4 : CT - Unexpected exception occurred during encoding. Please contact the Service Center for assistance via phone at 1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov
 * 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`
