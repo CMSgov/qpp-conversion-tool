@@ -15,7 +15,7 @@
             -->
             <component>
                 <section>
-                    <templateId root="867.5309"/>
+                    <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01"/>
                     <problem>problem</problem>
                 </section>
             </component>
