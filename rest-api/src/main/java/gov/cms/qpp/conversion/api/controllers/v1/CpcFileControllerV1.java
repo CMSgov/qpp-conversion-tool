@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.api.controllers.v1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -66,14 +65,11 @@ public class CpcFileControllerV1 {
 
 		API_LOG.info("CPC+ unprocessed files request succeeded");
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-
-		return new ResponseEntity<>(unprocessedCpcFileDataList, httpHeaders, HttpStatus.OK);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(unprocessedCpcFileDataList);
 	}
 
 	/**
-	 * Retrieve a stored S3 object.
+	 * Retrieve a stored S3 submission object.
 	 *
 	 * @param fileId id for the stored object
 	 * @return object json or xml content
@@ -83,7 +79,7 @@ public class CpcFileControllerV1 {
 			headers = {"Accept=" + Constants.V1_API_ACCEPT})
 	public ResponseEntity<InputStreamResource> getFileById(@PathVariable("fileId") String fileId)
 			throws IOException {
-		API_LOG.info("CPC+ file retrieval request received");
+		API_LOG.info("CPC+ file retrieval request received for fileId {}", fileId);
 
 		if (blockCpcPlusApi()) {
 			API_LOG.info("CPC+ file request blocked by feature flag");
@@ -94,10 +90,32 @@ public class CpcFileControllerV1 {
 
 		API_LOG.info("CPC+ file retrieval request succeeded");
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_XML);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_XML).body(content);
+	}
 
-		return new ResponseEntity<>(content, httpHeaders, HttpStatus.OK);
+	/**
+	 * Retrieve a stored S3 QPP object.
+	 *
+	 * @param fileId id for the stored object
+	 * @return object json or xml content
+	 * @throws IOException if S3Object content stream is invalid
+	 */
+	@GetMapping(value = "/qpp/{fileId}",
+		headers = {"Accept=" + Constants.V1_API_ACCEPT})
+	public ResponseEntity<InputStreamResource> getQppById(@PathVariable("fileId") String fileId)
+		throws IOException {
+		API_LOG.info("CPC+ QPP retrieval request received for fileId {}", fileId);
+
+		if (blockCpcPlusApi()) {
+			API_LOG.info("CPC+ QPP request blocked by feature flag");
+			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
+		}
+
+		InputStreamResource content = cpcFileService.getQppById(fileId);
+
+		API_LOG.info("CPC+ QPP retrieval request succeeded for fileId {}", fileId);
+
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(content);
 	}
 
 	/**
@@ -116,7 +134,7 @@ public class CpcFileControllerV1 {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		API_LOG.info("CPC+ update file request received");
+		API_LOG.info("CPC+ update file request received for fileId {}", fileId);
 
 		String message;
 		if (request != null && request.getProcessed() != null && !request.getProcessed()) {
@@ -125,11 +143,9 @@ public class CpcFileControllerV1 {
 			message = cpcFileService.processFileById(fileId);
 		}
 
-		API_LOG.info("CPC+ update file request succeeded with message: " + message);
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
+		API_LOG.info("CPC+ update file request succeeded for fileId {} with message: {}", fileId, message);
 
-		return new ResponseEntity<>(message, httpHeaders, HttpStatus.OK);
+		return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(message);
 	}
 
 	/**
