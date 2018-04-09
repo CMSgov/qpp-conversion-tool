@@ -309,21 +309,6 @@ class QrdaDecoderEngineTest {
 		}
 
 		@Test
-		@DisplayName("Should NOT prune branches with insignificant children but significant grand children when defaults enabled")
-		void testDontPruneInsignificantChildrenSignificantGrandChildrenWhenDefaults() {
-			addChildToParent(rootElement, aGenericElement);
-			addChildToParent(aGenericElement, noDecoderElement1);
-			addChildToParent(aGenericElement, noDecoderElement2);
-			addChildToParent(aGenericElement, anotherGenericElement);
-			addChildToParent(anotherGenericElement, createContinueElement());
-
-			QrdaDecoderEngine objectUnderTest = new QrdaDecoderEngine(context);
-			Node decodedNodes = objectUnderTest.decode(rootElement);
-
-			assertNodeCount(decodedNodes, 0, 0, 0);
-		}
-
-		@Test
 		@DisplayName("Should prune branches with insignificant children but significant grand children")
 		void testPruneInsignificantChildrenSignificantGrandChildrenWhenNoDefaults() {
 			addChildToParent(rootElement, aGenericElement);
