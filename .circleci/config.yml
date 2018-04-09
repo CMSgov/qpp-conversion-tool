@@ -23,10 +23,10 @@ jobs:
     steps:
       - attach_workspace:
           at: /home/circleci
-      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.1.733.zip
+      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.1.0.1141.zip
       - run: unzip -d . sonarscanner.zip
-      - run: cp ./sonar-scanner.properties sonar-scanner-3.0.1.733/conf/sonar-scanner.properties
-      - run: mvn --batch-mode clean verify
+      - run: cp ./sonar-scanner.properties sonar-scanner-3.1.0.1141/conf/sonar-scanner.properties
+      - run: mvn --batch-mode verify
       - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
       - run: sudo apt-get install -y nodejs
       - run: ./tools/bin/sonarqube.sh
@@ -76,7 +76,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci
       - run: echo host stuff $DOCKER_DEPLOY_HOSTS $DOCKER_DEPLOY_PORT
-      - run: mvn clean test -DfailIfNoTests=false -Dtest=*ApiAcceptance*
+      - run: mvn test -DfailIfNoTests=false -Dtest=*ApiAcceptance*
 
   ui_test:
     <<: *container_config
@@ -104,7 +104,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci
       - run: cd frontend; rm -f yarn.lock && yarn
-      - run: cd frontend; yarn run build;
+      - run: cd frontend; yarn run build --base-href /developers/conversion-tool-sandbox/
       - run: sudo apt-get install python-dev
       - run: curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
       - run: unzip awscli-bundle.zip
