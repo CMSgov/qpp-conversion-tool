@@ -33,10 +33,9 @@ public enum ErrorCode implements LocalizedError {
 			+ "Please review the measures section of your file as it cannot be empty."),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Measure Performed RnR requires exactly one "
-		+ "Measure Performed"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This ACI Measure Performed RnR's requires a single "
-			+ "Measure ID"),
+	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Reference and Results measure performed is required"),
+	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This ACI Measure Performed Reference and Results requires "
+		+ "a single Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
 			+ "for a measure that is a proportion measure"),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
