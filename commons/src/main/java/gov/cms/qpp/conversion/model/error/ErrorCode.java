@@ -199,8 +199,8 @@ public enum ErrorCode implements LocalizedError {
 
 	private String subValues(Object... arguments) {
 		Map<String, String> valueSub = new HashMap<>();
-		IntStream.range(0, arguments.length)
-				.forEach(index -> valueSub.put(messageVariables.get(index), arguments[index].toString()));
+		IntStream.range(0, arguments.length).forEach(index ->
+			valueSub.put(messageVariables.get(index), arguments[index].toString()));
 		return new StrSubstitutor(valueSub, "`(", ")`").replace(getMessage());
 	}
 

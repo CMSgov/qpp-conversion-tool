@@ -8,7 +8,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 3 : CT - Unexpected exception occurred during conversion. Please contact the Service Center for assistance via phone at 1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov
 * 4 : CT - Unexpected exception occurred during encoding. Please contact the Service Center for assistance via phone at 1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov
 * 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`
-* 6 : CT - The measure GUID supplied `(Provided measure id)` is invalid. Please see the 2017 IG https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88 for valid measure GUIDs.
+* 6 : CT - The measure GUID supplied `(Provided measure id)` is invalid. Please see the `(Submission year's)` IG https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88 for valid measure GUIDs.
 * 7 : CT - The measure reference results must have at least one measure. Please review the measures section of your file as it cannot be empty.
 * 8 : CT - A single aggregate count value is required
 * 9 : CT - Aggregate count value must be an integer

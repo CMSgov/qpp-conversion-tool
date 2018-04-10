@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import com.google.common.collect.Lists;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -80,13 +81,16 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void validateMissingMeasureId() {
+		LocalizedError localizedError = ErrorCode.MEASURE_GUID_MISSING.format(
+			QualityMeasureIdValidator.NOT_AVAILABLE, Context.REPORTING_YEAR);
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, true);
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertWithMessage("Incorrect validation error.")
-				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.MEASURE_GUID_MISSING);
+			.that(details)
+			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(localizedError);
 	}
 
 	@Test
@@ -102,13 +106,15 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void validateMissingMeasureIdAndMeasure() {
+		LocalizedError localizedError = ErrorCode.MEASURE_GUID_MISSING.format(
+			QualityMeasureIdValidator.NOT_AVAILABLE, Context.REPORTING_YEAR);
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, false);
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
 
 		assertWithMessage("Incorrect validation error.")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.MEASURE_GUID_MISSING,
+				.containsExactly(localizedError,
 						ErrorCode.CHILD_MEASURE_MISSING);
 	}
 

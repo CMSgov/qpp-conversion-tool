@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -36,6 +37,7 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
  */
 abstract class QualityMeasureIdValidator extends NodeValidator {
 	Set<SubPopulationLabel> subPopulationExclusions = Collections.emptySet();
+	protected static final String NOT_AVAILABLE = "(not provided)";
 	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
 			.collect(Collectors.toSet());
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
@@ -58,8 +60,11 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		//This should not be an error
 
 		String value = node.getValue(MeasureConfigHelper.MEASURE_ID);
+		LocalizedError error = ErrorCode.MEASURE_GUID_MISSING.format(
+			Optional.ofNullable(value).orElse(NOT_AVAILABLE), Context.REPORTING_YEAR);
+
 		thoroughlyCheck(node)
-				.singleValue(ErrorCode.MEASURE_GUID_MISSING.format(value, Context.REPORTING_YEAR), MeasureConfigHelper.MEASURE_ID)
+				.singleValue(error, MeasureConfigHelper.MEASURE_ID)
 				.childMinimum(ErrorCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
