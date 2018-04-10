@@ -95,8 +95,8 @@
 			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-					<artifactId>logback-classic</artifactId>
+					<groupId>gov.cms.qpp.conversion</groupId>
+					<artifactId>commons</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -106,6 +106,16 @@
 			<artifactId>test-commons</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
+			<!--<exclusions>-->
+				<!--<exclusion>-->
+					<!--<groupId>org.apache.commons</groupId>-->
+					<!--<artifactId>commons-lang3</artifactId>-->
+				<!--</exclusion>-->
+				<!--<exclusion>-->
+					<!--<groupId>org.objenesis</groupId>-->
+					<!--<artifactId>objenesis</artifactId>-->
+				<!--</exclusion>-->
+			<!--</exclusions>-->
 		</dependency>
 	</dependencies>
 
