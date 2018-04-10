@@ -1,7 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.BeforeAll;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
 
@@ -17,7 +17,6 @@ import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
 
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -27,15 +26,10 @@ import static com.google.common.truth.Truth.assertThat;
 
 class ClinicalDocumentRoundTripTest {
 
-	private static String expected;
-
-	@BeforeAll
-	static void setup() throws IOException {
-		expected = TestHelper.getFixture("clinicalDocument.json");
-	}
-
 	@Test
 	void parseClinicalDocument() throws Exception {
+		String expected = TestHelper.getFixture("clinicalDocument.json");
+
 		InputStream stream =
 				ClasspathHelper.contextClassLoader().getResourceAsStream("valid-QRDA-III-abridged.xml");
 		String xmlFragment = IOUtils.toString(stream, StandardCharsets.UTF_8);
@@ -52,7 +46,7 @@ class ClinicalDocumentRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		assertThat(sw.toString()).isEqualTo(expected);
+		assertThat(StringUtils.deleteWhitespace(sw.toString())).isEqualTo(StringUtils.deleteWhitespace(expected));
 	}
 
 	@Test
