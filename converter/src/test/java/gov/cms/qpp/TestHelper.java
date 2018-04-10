@@ -16,6 +16,7 @@ import gov.cms.qpp.conversion.validate.NodeValidator;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,7 +34,7 @@ public class TestHelper {
 	 */
 	public static String getFixture(final String name) throws IOException {
 		Path path = Paths.get("src/test/resources/fixtures/" + name);
-		return new String(Files.readAllBytes(path));
+		return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
 	}
 
 	/**

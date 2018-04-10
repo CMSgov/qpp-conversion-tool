@@ -1,7 +1,6 @@
 package gov.cms.qpp.acceptance;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
 
@@ -46,7 +45,7 @@ class ClinicalDocumentRoundTripTest {
 		StringWriter sw = new StringWriter();
 		encoder.encode(new BufferedWriter(sw));
 
-		assertThat(StringUtils.deleteWhitespace(sw.toString())).isEqualTo(StringUtils.deleteWhitespace(expected));
+		assertThat(sw.toString()).isEqualTo(expected);
 	}
 
 	@Test
