@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,8 +57,9 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		//the meta data measures-data.json
 		//This should not be an error
 
+		String value = node.getValue(MeasureConfigHelper.MEASURE_ID);
 		thoroughlyCheck(node)
-				.singleValue(ErrorCode.MEASURE_GUID_MISSING, MeasureConfigHelper.MEASURE_ID)
+				.singleValue(ErrorCode.MEASURE_GUID_MISSING.format(value, Context.REPORTING_YEAR), MeasureConfigHelper.MEASURE_ID)
 				.childMinimum(ErrorCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
@@ -76,7 +78,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			String value = node.getValue(MeasureConfigHelper.MEASURE_ID);
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
 				DEV_LOG.error(ErrorCode.MEASURE_GUID_MISSING.name() + " " + value);
-				addValidationError(Detail.forErrorAndNode(ErrorCode.MEASURE_GUID_MISSING.format(value), node));
+				addValidationError(Detail.forErrorAndNode(ErrorCode.MEASURE_GUID_MISSING.format(value, Context.REPORTING_YEAR), node));
 			}
 		}
 	}
