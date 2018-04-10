@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.model.error;
 
-
-import org.apache.commons.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -200,7 +199,7 @@ public enum ErrorCode implements LocalizedError {
 		Map<String, String> valueSub = new HashMap<>();
 		IntStream.range(0, arguments.length)
 				.forEach(index -> valueSub.put(messageVariables.get(index), arguments[index].toString()));
-		return new StrSubstitutor(valueSub, "`(", ")`").replace(getMessage());
+		return new StringSubstitutor(valueSub, "`(", ")`").replace(getMessage());
 	}
 
 	public static ErrorCode getByCode(int code) {
