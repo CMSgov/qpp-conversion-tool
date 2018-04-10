@@ -121,7 +121,7 @@ public class Converter {
 			}
 		} else {
 			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(
-				Context.REPORTING_YEAR, Context.IG_URL));
+				Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
 			details.add(detail);
 		}
 

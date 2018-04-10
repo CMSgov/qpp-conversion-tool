@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.model.error;
 
 
+import gov.cms.qpp.conversion.DocumentationReference;
 import org.apache.commons.text.StrSubstitutor;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public enum ErrorCode implements LocalizedError {
 		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
 		+ "`(Implementation guide link)`", true),
 	MEASURE_GUID_MISSING(6, "The measure GUID supplied `(Provided measure id)` is invalid. Please see the 2017 IG "
-			+ "https://ecqi.healthit.gov/system/files/2018_CMS_QRDA_III_Eligible_Clinicians_and_EP_IG_11272017_508_0.pdf#page=88 "
+			+ DocumentationReference.MEASURE_IDS
 			+ "for valid measure GUIDs.", true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
