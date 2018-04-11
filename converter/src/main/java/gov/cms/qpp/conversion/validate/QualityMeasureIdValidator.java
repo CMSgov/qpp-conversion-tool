@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +11,6 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.model.validation.SubPopulations;
@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -36,6 +37,7 @@ import static gov.cms.qpp.conversion.decode.MeasureDataDecoder.MEASURE_TYPE;
  */
 abstract class QualityMeasureIdValidator extends NodeValidator {
 	Set<SubPopulationLabel> subPopulationExclusions = Collections.emptySet();
+	protected static final String NOT_AVAILABLE = "(not provided)";
 	protected static final Set<String> IPOP = Stream.of("IPP", "IPOP")
 			.collect(Collectors.toSet());
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(QualityMeasureIdValidator.class);
@@ -57,8 +59,12 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		//the meta data measures-data.json
 		//This should not be an error
 
+		String value = node.getValue(MeasureConfigHelper.MEASURE_ID);
+		LocalizedError error = ErrorCode.MEASURE_GUID_MISSING.format(
+			Optional.ofNullable(value).orElse(NOT_AVAILABLE), Context.REPORTING_YEAR);
+
 		thoroughlyCheck(node)
-				.singleValue(ErrorCode.MEASURE_GUID_MISSING, MeasureConfigHelper.MEASURE_ID)
+				.singleValue(error, MeasureConfigHelper.MEASURE_ID)
 				.childMinimum(ErrorCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
@@ -76,9 +82,9 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		} else {
 			String value = node.getValue(MeasureConfigHelper.MEASURE_ID);
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
-				DEV_LOG.error("MEASURE_GUID_MISSING " + value);
-				List<String> suggestions = MeasureConfigs.getMeasureSuggestions(value);
-				addValidationError(Detail.forErrorAndNode(ErrorCode.MEASURE_GUID_MISSING.format(value, suggestions), node));
+				DEV_LOG.error(ErrorCode.MEASURE_GUID_MISSING.name() + " " + value);
+				LocalizedError error = ErrorCode.MEASURE_GUID_MISSING.format(value, Context.REPORTING_YEAR);
+				addValidationError(Detail.forErrorAndNode(error, node));
 			}
 		}
 	}
