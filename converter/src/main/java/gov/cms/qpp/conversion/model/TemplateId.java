@@ -137,11 +137,11 @@ public enum TemplateId {
 	 * @param root The root part of the templateId.
 	 * @param extension The extension part of the templateId.
 	 * @param context allows historical check
-	 * @return The template ID if found, else a defaulted TemplateId. The defaulted TemplateId will be
-	 * {@code TemplateId.DEFAULT} if {@link Context#isDoDefaults()} is true else {@code TemplateId.UNIMPLEMENTED}.
+	 * @return The template ID if found, else a defaulted TemplateId. The TemplateId will be
+	 * {@code TemplateId.UNIMPLEMENTED}.
 	 */
 	public static TemplateId getTemplateId(final String root, final String extension, final Context context) {
-		TemplateId defaultTemplate = context.isDoDefaults() ? TemplateId.DEFAULT : TemplateId.UNIMPLEMENTED;
+		TemplateId defaultTemplate = TemplateId.UNIMPLEMENTED;
 		Map<String, TemplateId> extensionsToTemplateId = ROOT_AND_TO_TEMPLATE_ID.get(root);
 		Function<Boolean, TemplateId> templateIdFunction = condition -> condition
 			? extensionsToTemplateId.getOrDefault(extension, defaultTemplate) :
