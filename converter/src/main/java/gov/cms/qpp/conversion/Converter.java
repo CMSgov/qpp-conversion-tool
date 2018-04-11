@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion;
 
 import gov.cms.qpp.conversion.decode.XmlDecoderEngine;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -106,10 +105,6 @@ public class Converter {
 		JsonWrapper qpp = null;
 		if (null != decoded) {
 			DEV_LOG.info("Decoded template ID {}", decoded.getType());
-
-			if (!context.isDoDefaults()) {
-				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
-			}
 
 			if (context.isDoValidation()) {
 				QrdaValidator validator = new QrdaValidator(context);

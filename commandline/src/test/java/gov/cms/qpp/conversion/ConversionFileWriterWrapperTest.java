@@ -36,7 +36,6 @@ public class ConversionFileWriterWrapperTest {
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
 		Context context = new Context();
-		context.setDoDefaults(false);
 		converterWrapper.setContext(context).transform();
 
 		assertFileExists("valid-QRDA-III-latest.qpp.json");
