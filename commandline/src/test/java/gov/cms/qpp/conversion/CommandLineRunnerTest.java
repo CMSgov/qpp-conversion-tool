@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
-import gov.cms.qpp.test.jimfs.JimfsContract;
 import gov.cms.qpp.test.jimfs.JimfsTest;
 import gov.cms.qpp.test.logging.LoggerContract;
 
@@ -17,7 +16,7 @@ import java.nio.file.Files;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class CommandLineRunnerTest implements LoggerContract, JimfsContract {
+class CommandLineRunnerTest implements LoggerContract {
 
 	private static final String VALID_FILE = "src/test/resources/valid-QRDA-III-abridged.xml";
 	private static final String INVALID_FILE = "THIS_FILE_SHOULD_NOT_EXIST.xml";
