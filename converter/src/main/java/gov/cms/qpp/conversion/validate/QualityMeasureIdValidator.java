@@ -83,7 +83,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 			String value = node.getValue(MeasureConfigHelper.MEASURE_ID);
 			if (value != null) { // This check has already been made and a detail will exist if value is null.
 				DEV_LOG.error(ErrorCode.MEASURE_GUID_MISSING.name() + " " + value);
-				addValidationError(Detail.forErrorAndNode(ErrorCode.MEASURE_GUID_MISSING.format(value, Context.REPORTING_YEAR), node));
+				LocalizedError error = ErrorCode.MEASURE_GUID_MISSING.format(value, Context.REPORTING_YEAR);
+				addValidationError(Detail.forErrorAndNode(error, node));
 			}
 		}
 	}
