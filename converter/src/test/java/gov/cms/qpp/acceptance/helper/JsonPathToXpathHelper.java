@@ -42,7 +42,6 @@ public class JsonPathToXpathHelper {
 		path = inPath;
 		wrapper = inWrapper;
 		Converter converter = new Converter(new PathSource(inPath));
-		converter.getContext().setDoDefaults(doDefaults);
 		converter.transform();
 		QppOutputEncoder encoder = new QppOutputEncoder(converter.getContext());
 		encoder.encode(wrapper, converter.getReport().getDecoded());
