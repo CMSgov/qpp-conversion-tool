@@ -4,7 +4,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -14,7 +14,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -24,7 +24,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -34,7 +34,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -44,7 +44,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -54,7 +54,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -64,7 +64,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -74,7 +74,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -84,7 +84,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -94,7 +94,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{16}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{16}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -104,7 +104,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -114,7 +114,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -124,7 +124,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -134,7 +134,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]

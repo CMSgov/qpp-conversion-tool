@@ -14,8 +14,8 @@
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<aws.version>1.11.301</aws.version>
-		<jackson.version>2.9.4</jackson.version>
+		<aws.version>1.11.312</aws.version>
+		<jackson.version>2.9.5</jackson.version>
 		<guava.version>24.1-jre</guava.version>
 	</properties>
 
@@ -209,7 +209,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-shade-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.1.1</version>
 					<executions>
 						<execution>
 							<id>shade</id>

@@ -16,7 +16,7 @@
 	<description>API end-point for the QRDA3 to QPP conversion</description>
 
 	<properties>
-		<spring-boot.version>2.0.0.RELEASE</spring-boot.version>
+		<spring-boot.version>2.0.1.RELEASE</spring-boot.version>
 		<logback.version>1.2.3</logback.version>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 	</properties>

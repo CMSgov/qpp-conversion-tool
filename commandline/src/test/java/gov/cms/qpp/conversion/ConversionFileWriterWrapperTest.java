@@ -36,7 +36,6 @@ public class ConversionFileWriterWrapperTest {
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 
 		Context context = new Context();
-		context.setDoDefaults(false);
 		converterWrapper.setContext(context).transform();
 
 		assertFileExists("valid-QRDA-III-latest.qpp.json");
@@ -119,7 +118,7 @@ public class ConversionFileWriterWrapperTest {
 
 		//then
 		assertThat(detail.get("message"))
-				.isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, Context.IG_URL).getMessage());
+				.isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT).getMessage());
 		assertThat(detail.get("path"))
 				.isEmpty();
 	}

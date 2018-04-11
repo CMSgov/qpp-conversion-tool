@@ -4,3 +4,5 @@
 *.md text
 *.sh text
 *.bat text
+*.json text
+*.xml text

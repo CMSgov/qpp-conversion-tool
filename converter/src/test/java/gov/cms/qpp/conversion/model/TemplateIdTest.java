@@ -20,7 +20,6 @@ class TemplateIdTest implements EnumContract {
 	@BeforeAll
 	static void setup() {
 		defaultsContext = new Context();
-		defaultsContext.setDoDefaults(true);
 	}
 
 	@AfterEach
@@ -94,7 +93,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(templateId.getRoot(),
 			"nonExistingExtension", defaultsContext);
 
-		assertThat(actual).isSameAs(TemplateId.DEFAULT);
+		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
 	}
 
 	@ParameterizedTest
@@ -121,7 +120,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
 			"nonExistingExtension", defaultsContext);
 
-		assertThat(actual).isSameAs(TemplateId.DEFAULT);
+		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
 	}
 
 	@Test
@@ -130,7 +129,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
 			null, defaultsContext);
 
-		assertThat(actual).isSameAs(TemplateId.DEFAULT);
+		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
 	}
 
 	@Test
@@ -138,7 +137,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId(TemplateId.CLINICAL_DOCUMENT.getRoot(),
 			null, defaultsContext);
 
-		assertThat(actual).isSameAs(TemplateId.DEFAULT);
+		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
 	}
 
 	@ParameterizedTest
@@ -156,7 +155,7 @@ class TemplateIdTest implements EnumContract {
 		TemplateId actual = TemplateId.getTemplateId("nonExistingRoot",
 				TemplateId.CLINICAL_DOCUMENT.getExtension(), defaultsContext);
 
-		assertThat(actual).isSameAs(TemplateId.DEFAULT);
+		assertThat(actual).isSameAs(TemplateId.UNIMPLEMENTED);
 	}
 
 	@Test

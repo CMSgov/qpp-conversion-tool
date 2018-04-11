@@ -219,7 +219,6 @@ class ClinicalDocumentValidatorTest {
 
 		//execute
 		Context context = new Context();
-		context.setDoDefaults(true);
 		Converter converter = new Converter(new PathSource(path), context);
 		AllErrors allErrors = new AllErrors();
 		try {
@@ -230,8 +229,8 @@ class ClinicalDocumentValidatorTest {
 
 		List<Detail> errors = getErrors(allErrors);
 
-		assertWithMessage("Must have 4 errors")
-				.that(errors).hasSize(4);
+		assertWithMessage("Must have 3 errors")
+				.that(errors).hasSize(3);
 
 		assertWithMessage("Must contain the correct errors")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)

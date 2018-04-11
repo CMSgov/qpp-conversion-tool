@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.model.error;
 
 
+import gov.cms.qpp.conversion.DocumentationReference;
 import org.apache.commons.text.StrSubstitutor;
 
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public enum ErrorCode implements LocalizedError {
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. "
 		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
 		+ "`(Implementation guide link)`", true),
-	MEASURE_GUID_MISSING(6, "The measure reference results must have a single occurrence of the recognized measure GUID "
-			+ "`(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?", true),
+	MEASURE_GUID_MISSING(6, "The measure GUID supplied `(Provided measure id)` is invalid. Please see the `(Submission year's)` IG "
+			+ DocumentationReference.MEASURE_IDS + " for valid measure GUIDs.", true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
 			+ "Please review the measures section of your file as it cannot be empty."),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
@@ -192,8 +193,8 @@ public enum ErrorCode implements LocalizedError {
 
 	private String subValues(Object... arguments) {
 		Map<String, String> valueSub = new HashMap<>();
-		IntStream.range(0, arguments.length)
-				.forEach(index -> valueSub.put(messageVariables.get(index), arguments[index].toString()));
+		IntStream.range(0, arguments.length).forEach(index ->
+			valueSub.put(messageVariables.get(index), arguments[index].toString()));
 		return new StrSubstitutor(valueSub, "`(", ")`").replace(getMessage());
 	}
 
