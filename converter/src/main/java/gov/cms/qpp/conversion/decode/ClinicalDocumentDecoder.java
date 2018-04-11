@@ -141,8 +141,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @return array of String program name, entity type
 	 */
 	private Pair<String, String> getProgramNameEntityPair(String name) {
-		String lowercase = name.toLowerCase(Locale.ENGLISH);
-		switch(lowercase) {
+		switch(name.toUpperCase(Locale.ENGLISH)) {
 			case MIPS_INDIVIDUAL:
 				return new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
 
