@@ -142,7 +142,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, Context.IG_URL));
+			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
 		}
 	}
 
@@ -156,7 +156,7 @@ public class ConverterTest {
 			converter.transform();
 			fail();
 		} catch (TransformException exception) {
-			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, Context.IG_URL));
+			checkup(exception, ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
 		}
 	}
 

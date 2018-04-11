@@ -7,10 +7,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 
 @ParameterizedTest
-@MethodSource("jimfs")
+@ArgumentsSource(JimfsArgumentSource.class)
 @Retention(RUNTIME)
 @Target(METHOD)
 public @interface JimfsTest {
