@@ -1,7 +1,8 @@
 package gov.cms.qpp.conversion.model.error;
 
+import org.apache.commons.text.StringSubstitutor;
 
-import org.apache.commons.text.StrSubstitutor;
+import gov.cms.qpp.conversion.DocumentationReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,8 +28,8 @@ public enum ErrorCode implements LocalizedError {
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. "
 		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
 		+ "`(Implementation guide link)`", true),
-	MEASURE_GUID_MISSING(6, "The measure reference results must have a single occurrence of the recognized measure GUID "
-			+ "`(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?", true),
+	MEASURE_GUID_MISSING(6, "The measure GUID supplied `(Provided measure id)` is invalid. Please see the `(Submission year's)` IG "
+			+ DocumentationReference.MEASURE_IDS + " for valid measure GUIDs.", true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
 			+ "Please review the measures section of your file as it cannot be empty."),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
@@ -48,14 +49,8 @@ public enum ErrorCode implements LocalizedError {
 			+ "measure name ID"),
 	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "ACI Numerator Denominator element does not have any child "
 			+ "elements"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
-			+ "element requires exactly one Denominator element child"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE(19, "This ACI Numerator Denominator "
-			+ "element requires exactly one Numerator element child"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS(20, "This ACI Numerator Denominator element "
-			+ "contains too many Denominator element children"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS(21, "This ACI Numerator Denominator element "
-			+ "contains too many Numerator element children"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
+			+ "element requires exactly one `(Denominator|Numerator)` element child", true),
 	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter ACT"),
 	CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document Node must have at least one "
 			+ "Aci or IA or Measure section Node as a child"),
@@ -199,9 +194,9 @@ public enum ErrorCode implements LocalizedError {
 
 	private String subValues(Object... arguments) {
 		Map<String, String> valueSub = new HashMap<>();
-		IntStream.range(0, arguments.length)
-				.forEach(index -> valueSub.put(messageVariables.get(index), arguments[index].toString()));
-		return new StrSubstitutor(valueSub, "`(", ")`").replace(getMessage());
+		IntStream.range(0, arguments.length).forEach(index ->
+			valueSub.put(messageVariables.get(index), arguments[index].toString()));
+		return new StringSubstitutor(valueSub, "`(", ")`").replace(getMessage());
 	}
 
 	public static ErrorCode getByCode(int code) {

@@ -1,11 +1,5 @@
 package gov.cms.qpp.conversion.decode;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
-import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.xml.XmlException;
-import gov.cms.qpp.conversion.xml.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
@@ -13,6 +7,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
+
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.model.TemplateId;
+import gov.cms.qpp.conversion.xml.XmlException;
+import gov.cms.qpp.conversion.xml.XmlUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +39,6 @@ class ClinicalDocumentDecoderTest {
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		clinicalDocument = root.findFirstNode(TemplateId.CLINICAL_DOCUMENT);
 		// remove default nodes (will fail if defaults change)
-		DefaultDecoder.removeDefaultNode(clinicalDocument.getChildNodes());
 	}
 
 	@Test

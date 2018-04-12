@@ -2,7 +2,6 @@ package gov.cms.qpp.conversion;
 
 import gov.cms.qpp.conversion.decode.XmlDecoderEngine;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
@@ -107,10 +106,6 @@ public class Converter {
 		if (null != decoded) {
 			DEV_LOG.info("Decoded template ID {}", decoded.getType());
 
-			if (!context.isDoDefaults()) {
-				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
-			}
-
 			if (context.isDoValidation()) {
 				QrdaValidator validator = new QrdaValidator(context);
 				details.addAll(validator.validate(decoded));
@@ -121,7 +116,7 @@ public class Converter {
 			}
 		} else {
 			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(
-				Context.REPORTING_YEAR, Context.IG_URL));
+				Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
 			details.add(detail);
 		}
 

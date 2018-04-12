@@ -2,6 +2,7 @@ package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.DocumentationReference;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.model.error.Detail;
@@ -38,7 +39,7 @@ class ClinicalDocumentExtensionTest {
 		} catch (TransformException ex) {
 			Detail detail = ex.getDetails().getErrors().get(0).getDetails().get(0);
 			assertThat(detail.getMessage()).isEqualTo(ErrorCode.NOT_VALID_QRDA_DOCUMENT
-				.format(Context.REPORTING_YEAR, Context.IG_URL).getMessage());
+				.format(Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT).getMessage());
 		}
 	}
 
