@@ -19,13 +19,10 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 15 : CT - ACI Numerator Denominator element should have an ACI Section element as a parent
 * 16 : CT - ACI Numerator Denominator element does not contain a measure name ID
 * 17 : CT - ACI Numerator Denominator element does not have any child elements
-* 18 : CT - This ACI Numerator Denominator element requires exactly one Denominator element child
-* 19 : CT - This ACI Numerator Denominator element requires exactly one Numerator element child
-* 20 : CT - This ACI Numerator Denominator element contains too many Denominator element children
-* 21 : CT - This ACI Numerator Denominator element contains too many Numerator element children
+* 18 : CT - This ACI Numerator Denominator element requires exactly one `(Denominator|Numerator)` element child
 * 22 : CT - The ACI Section must have one Reporting Parameter ACT
 * 23 : CT - Clinical Document Node must have at least one Aci or IA or Measure section Node as a child
-* 24 : CT - Clinical Document must have one and only one program name
+* 24 : CT - Clinical Document must have one and only one program name. Valid program names are `(list of valid program names)`
 * 25 : CT - The Clinical Document program name `(program name)` is not recognized. Valid program names are `(list of valid program names)`.
 * 26 : CT - Clinical Document contains duplicate ACI sections
 * 27 : CT - Clinical Document contains duplicate IA sections

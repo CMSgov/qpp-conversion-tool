@@ -1,9 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.model.Node;
@@ -11,6 +7,10 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class AciNumeratorDenominatorValidatorTest {
 
@@ -135,9 +135,10 @@ class AciNumeratorDenominatorValidatorTest {
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertWithMessage("error should be about missing Numerator node")
+		assertWithMessage("error should be about missing Numerator element")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE);
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+					.format(AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
 	@Test
@@ -160,9 +161,10 @@ class AciNumeratorDenominatorValidatorTest {
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertWithMessage("error should be about missing Denominator node")
+		assertWithMessage("error should be about missing Denominator element")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_DENOMINATOR_CHILD_NODE);
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+					.format(AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 
 	@Test
@@ -189,7 +191,8 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about too many Numerator nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE);
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+					.format(AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
 	@Test
@@ -216,6 +219,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about too many Denominator nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_DENOMINATOR_CHILD_NODE);
+				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+					.format(AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 }
