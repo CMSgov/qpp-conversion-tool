@@ -3,6 +3,8 @@ package gov.cms.qpp.conversion.model.error;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
@@ -61,17 +63,18 @@ public class Detail implements Serializable {
 	 * @return detail for given error
 	 */
 	public static Detail forErrorAndNode(LocalizedError error, Node node) {
-		Objects.requireNonNull(node, "node");
-
 		Detail detail = forErrorCode(error);
-		detail.setPath(node.getPath());
 
-		if (node.getLine() != Node.DEFAULT_LOCATION_NUMBER) {
-			detail.setLine(node.getLine());
-		}
+		if (node != null) {
+			detail.setPath(node.getPath());
 
-		if (node.getColumn() != Node.DEFAULT_LOCATION_NUMBER) {
-			detail.setColumn(node.getColumn());
+			if (node.getLine() != Node.DEFAULT_LOCATION_NUMBER) {
+				detail.setLine(node.getLine());
+			}
+
+			if (node.getColumn() != Node.DEFAULT_LOCATION_NUMBER) {
+				detail.setColumn(node.getColumn());
+			}
 		}
 
 		return detail;
@@ -223,6 +226,8 @@ public class Detail implements Serializable {
 				.add("path", path)
 				.add("value", value)
 				.add("type", type)
+				.add("line", line)
+				.add("column", column)
 				.toString();
 	}
 
@@ -243,13 +248,15 @@ public class Detail implements Serializable {
 		}
 
 		Detail that = (Detail) o;
-		boolean equals = true; // doing equals this way to avoid making jacoco/sonar unhappy
-		equals &= Objects.equals(errorCode, that.errorCode);
-		equals &= Objects.equals(message, that.message);
-		equals &= Objects.equals(path, that.path);
-		equals &= Objects.equals(value, that.value);
-		equals &= Objects.equals(type, that.type);
-		return equals;
+		return new EqualsBuilder()
+				.append(errorCode, that.errorCode)
+				.append(message, that.message)
+				.append(path, that.path)
+				.append(value, that.value)
+				.append(type, that.type)
+				.append(line, that.line)
+				.append(column, that.column)
+				.isEquals();
 	}
 
 	/**
@@ -259,6 +266,6 @@ public class Detail implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(errorCode, message, path, value, type);
+		return Objects.hash(errorCode, message, path, value, type, line, column);
 	}
 }

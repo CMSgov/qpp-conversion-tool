@@ -14,6 +14,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 
@@ -460,6 +462,8 @@ public class Node {
 				.add("validated", validated)
 				.add("defaultNsUri", defaultNsUri)
 				.add("path", path)
+				.add("line", line)
+				.add("column", column)
 				.toString();
 	}
 
@@ -479,17 +483,18 @@ public class Node {
 			return false;
 		}
 
-		final Node node = (Node)o;
+		final Node node = (Node) o;
 
-		boolean halfEquals = isValidated() == node.isValidated()
-			&& Objects.equals(getChildNodes(), node.getChildNodes())
-			&& Objects.equals(data, node.data)
-			&& Objects.equals(duplicateData, node.duplicateData);
-
-		return halfEquals
-			&& getType() == node.getType()
-			&& Objects.equals(getDefaultNsUri(), node.getDefaultNsUri())
-			&& Objects.equals(getPath(), node.getPath());
+		return new EqualsBuilder().append(isValidated(), node.isValidated())
+				.append(getChildNodes(), node.getChildNodes())
+				.append(data, node.data)
+				.append(duplicateData, node.duplicateData)
+				.append(getType(), node.getType())
+				.append(getDefaultNsUri(), node.getDefaultNsUri())
+				.append(getPath(), node.getPath())
+				.append(getLine(), node.getLine())
+				.append(getColumn(), node.getColumn())
+				.isEquals();
 	}
 
 	/**
@@ -499,7 +504,8 @@ public class Node {
 	 */
 	@Override
 	public final int hashCode() {
-		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(), getPath());
+		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(),
+				getPath(), getLine(), getColumn());
 	}
 
 }
