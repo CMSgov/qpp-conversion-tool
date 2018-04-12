@@ -1,8 +1,23 @@
 * text=auto
 
 *.java text
+*.xml text
+*.yml text
+*.json text
+*.html text
+*.js text
+*.rb text
 *.md text
 *.sh text
 *.bat text
-*.json text
-*.xml text
+*.css text
+*.scss text
+*.txt text
+*.php text
+
+*.jar binary
+*.war binary
+*.ear binary
+*.exe binary
+*.zip binary
+*.rar binary
