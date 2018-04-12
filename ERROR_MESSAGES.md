@@ -12,8 +12,8 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 7 : CT - The measure reference results must have at least one measure. Please review the measures section of your file as it cannot be empty.
 * 8 : CT - A single aggregate count value is required
 * 9 : CT - Aggregate count value must be an integer
-* 11 : CT - This ACI Measure Performed RnR requires exactly one Measure Performed
-* 12 : CT - This ACI Measure Performed RnR's requires a single Measure ID
+* 11 : CT - This ACI Reference and Results is missing a required Measure Performed child
+* 12 : CT - This ACI Measure Performed Reference and Results requires a single Measure ID
 * 13 : CT - Denominator count must be less than or equal to Initial Population count for a measure that is a proportion measure
 * 14 : CT - The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
 * 15 : CT - ACI Numerator Denominator element should have an ACI Section element as a parent
