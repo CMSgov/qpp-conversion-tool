@@ -2,7 +2,6 @@ package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -52,7 +51,6 @@ class AciSectionRoundTripTest {
 
 		//execute
 		Node parentNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
-		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
 		Node aciSectionNode = parentNode.findFirstNode(TemplateId.ACI_SECTION);
@@ -94,7 +92,6 @@ class AciSectionRoundTripTest {
 
 		//execute
 		Node parentNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
-		DefaultDecoder.removeDefaultNode(parentNode.getChildNodes());
 
 		//assert
 		Node aciSectionNode = parentNode.findFirstNode(TemplateId.ACI_SECTION);
@@ -136,7 +133,6 @@ class AciSectionRoundTripTest {
 		//Decode
 		Node measureNode = new QrdaDecoderEngine(context).decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
-		DefaultDecoder.removeDefaultNode(measureNode.getChildNodes());
 
 		//Encode
 		QppOutputEncoder encoder = new QppOutputEncoder(context);

@@ -21,6 +21,9 @@ public final class DetailsErrorEquals extends Correspondence<Detail, LocalizedEr
 			return expected == null;
 		}
 		ErrorCode error = actual.getErrorCode() == null ? null : ErrorCode.getByCode(actual.getErrorCode());
+
+
+
 		return Objects.equals(actual.getMessage(), expected.getMessage()) &&
 				error == expected.getErrorCode();
 	}
