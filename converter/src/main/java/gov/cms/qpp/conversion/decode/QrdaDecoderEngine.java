@@ -9,6 +9,7 @@ import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.jdom2.Element;
+import org.jdom2.located.Located;
 import org.jdom2.xpath.XPathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,6 +133,13 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		}
 
 		childNode.setPath(XPathHelper.getAbsolutePath(parentElement));
+
+		if (element instanceof Located) {
+			Located located = (Located) element;
+			childNode.setLine(located.getLine());
+			childNode.setColumn(located.getColumn());
+		}
+
 		parentNode.addChildNode(childNode);
 
 		return new DecodeData(decodeResult, childNode);

@@ -33,6 +33,8 @@ public class Node {
 
 	private String defaultNsUri;
 	private String path;
+	private int line = -1;
+	private int column = -1;
 
 	/**
 	 * Default constructor initializes internal list of Nodes
@@ -268,6 +270,42 @@ public class Node {
 	 */
 	public TemplateId getType() {
 		return type;
+	}
+
+	/**
+	 * setLine sets the line number of the xml element backing the node
+	 *
+	 * @param line Line number
+	 */
+	public void setLine(int line) {
+		this.line = line;
+	}
+
+	/**
+	 * getLine returns the line number of the xml element backing the node
+	 *
+	 * @return line
+	 */
+	public int getLine() {
+		return line;
+	}
+
+	/**
+	 * setColumn sets the column number of the xml element backing the node
+	 *
+	 * @param column Column number
+	 */
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
+	/**
+	 * getColumn returns the column number of the xml element backing the node
+	 *
+	 * @return column
+	 */
+	public int getColumn() {
+		return column;
 	}
 
 	/**
