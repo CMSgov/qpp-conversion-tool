@@ -64,6 +64,12 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		rootNode.setType(TemplateId.PLACEHOLDER);
 		rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
 
+		if (rootElement instanceof Located) {
+			Located located = (Located) rootElement;
+			rootNode.setLine(located.getLine());
+			rootNode.setColumn(located.getColumn());
+		}
+
 		QrdaDecoder rootDecoder = null;
 		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
 			rootDecoder = getDecoder(getTemplateId(element));
