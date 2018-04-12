@@ -17,7 +17,7 @@ import java.util.Optional;
 @Validator(TemplateId.CLINICAL_DOCUMENT)
 public class ClinicalDocumentValidator extends NodeValidator {
 
-	protected static final String VALID_PROGRAM_NAMES = StringHelper.join(Program.setOfAliases(), ",", "or");
+	public static final String VALID_PROGRAM_NAMES = StringHelper.join(Program.setOfAliases(), ",", "or");
 
 	/**
 	 * Validates a single Clinical Document Node.
@@ -44,10 +44,11 @@ public class ClinicalDocumentValidator extends NodeValidator {
 					TemplateId.IA_SECTION)
 			.childMaximum(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS, 1, 
 					TemplateId.MEASURE_SECTION_V2)
-			.singleValue(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME, 
+			.singleValue(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(VALID_PROGRAM_NAMES),
 					ClinicalDocumentDecoder.PROGRAM_NAME);
 
-		if (!getDetails().contains(Detail.forErrorAndNode(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME, node))) {
+		if (!getDetails().contains(
+			Detail.forErrorAndNode(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(VALID_PROGRAM_NAMES), node))) {
 			String programName = Optional.ofNullable(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME)).orElse("<missing>");
 
 			thoroughlyCheck(node).valueIn(ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME.format(programName, VALID_PROGRAM_NAMES),
