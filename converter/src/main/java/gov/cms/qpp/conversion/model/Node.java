@@ -23,6 +23,9 @@ import com.google.common.collect.Lists;
  * Nodes can contain other nodes as children to create a hierarchy.
  */
 public class Node {
+
+	public static final int DEFAULT_LOCATION_NUMBER = -1;
+
 	private final List<Node> childNodes = new ArrayList<>();
 	private final Map<String, String> data = new HashMap<>();
 	private final Map<String, List<String>> duplicateData = new HashMap<>();
@@ -33,8 +36,8 @@ public class Node {
 
 	private String defaultNsUri;
 	private String path;
-	private int line = -1;
-	private int column = -1;
+	private int line = DEFAULT_LOCATION_NUMBER;
+	private int column = DEFAULT_LOCATION_NUMBER;
 
 	/**
 	 * Default constructor initializes internal list of Nodes

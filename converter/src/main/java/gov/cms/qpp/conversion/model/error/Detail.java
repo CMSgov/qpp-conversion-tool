@@ -22,6 +22,10 @@ public class Detail implements Serializable {
 	private String message;
 	@JsonProperty("path")
 	private String path = "";
+	@JsonProperty("line")
+	private Integer line;
+	@JsonProperty("column")
+	private Integer column;
 	@JsonProperty("value")
 	private String value;
 	@JsonProperty("type")
@@ -45,6 +49,8 @@ public class Detail implements Serializable {
 		path = detail.path;
 		value = detail.value;
 		type = detail.type;
+		line = detail.line;
+		column = detail.column;
 	}
 
 	/**
@@ -59,6 +65,15 @@ public class Detail implements Serializable {
 
 		Detail detail = forErrorCode(error);
 		detail.setPath(node.getPath());
+
+		if (node.getLine() != Node.DEFAULT_LOCATION_NUMBER) {
+			detail.setLine(node.getLine());
+		}
+
+		if (node.getColumn() != Node.DEFAULT_LOCATION_NUMBER) {
+			detail.setColumn(node.getColumn());
+		}
+
 		return detail;
 	}
 
@@ -125,6 +140,46 @@ public class Detail implements Serializable {
 	@JsonProperty("path")
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	/**
+	 * Gets the line of the submitted document that caused this error
+	 *
+	 * @return The line of the submitted document that caused this error
+	 */
+	@JsonProperty("line")
+	public Integer getLine() {
+		return line;
+	}
+
+	/**
+	 * Sets the line of the submitted document that caused this error
+	 *
+	 * @param path The line of the submitted document that caused this error
+	 */
+	@JsonProperty("line")
+	public void setLine(Integer line) {
+		this.line = line;
+	}
+
+	/**
+	 * Gets the line of the submitted document that caused this error
+	 *
+	 * @return The line of the submitted document that caused this error
+	 */
+	@JsonProperty("column")
+	public Integer getColumn() {
+		return column;
+	}
+
+	/**
+	 * Sets the column of the submitted document that caused this error
+	 *
+	 * @param path The column of the submitted document that caused this error
+	 */
+	@JsonProperty("column")
+	public void setColumn(Integer column) {
+		this.column = column;
 	}
 
 	/**
