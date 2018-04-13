@@ -21,7 +21,6 @@ class IaSectionValidatorRoundTripTest {
 	void testIaSectionValidatorIncorrectChildren() {
 		Path path = Paths.get("src/test/resources/negative/iaSectionContainsWrongChild.xml");
 		Context context = new Context();
-		context.setDoDefaults(true);
 		Converter converter = new Converter(new PathSource(path), context);
 
 		AllErrors errors = new AllErrors();

@@ -4,13 +4,13 @@ import org.jdom2.Element;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.DecodeResult;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.decode.QrdaDecoder;
 import gov.cms.qpp.conversion.model.Node;
 
-public class JennyDecoder extends DefaultDecoder {
+public class JennyDecoder extends QrdaDecoder {
 
 	public JennyDecoder(Context context) {
-		super(context, "default decoder for Jenny");
+		super(context);
 	}
 
 	@Override

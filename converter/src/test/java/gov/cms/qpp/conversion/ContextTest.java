@@ -11,11 +11,6 @@ import static com.google.common.truth.Truth.assertThat;
 class ContextTest {
 
 	@Test
-	void testDoesNotDoDefaultsByDefault() {
-		assertThat(new Context().isDoDefaults()).isFalse();
-	}
-
-	@Test
 	void testDoesValidationByDefault() {
 		assertThat(new Context().isDoValidation()).isTrue();
 	}
@@ -23,13 +18,6 @@ class ContextTest {
 	@Test
 	void testIsNotHistoricalByDefault() {
 		assertThat(new Context().isHistorical()).isFalse();
-	}
-
-	@Test
-	void testIsDoDefaultsSetter() {
-		Context context = new Context();
-		context.setDoDefaults(false);
-		assertThat(context.isDoDefaults()).isFalse();
 	}
 
 	@Test
