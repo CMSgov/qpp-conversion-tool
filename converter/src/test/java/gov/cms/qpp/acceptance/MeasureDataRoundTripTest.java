@@ -26,10 +26,10 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 class MeasureDataRoundTripTest {
 
-	private static String happy;
-	private static String expected =
+	private static final String EXPECTED =
 			"{\n  \"eligiblePopulation\" : 950,\n  \"performanceMet\" : 900,\n" +
 			"  \"eligiblePopulationException\" : 50,\n  \"eligiblePopulationExclusion\" : 50\n}";
+	private static String happy;
 
 	@BeforeAll
 	static void setup() throws IOException {
@@ -56,7 +56,7 @@ class MeasureDataRoundTripTest {
 		assertThat(measure.getChildNodes().get(0).getType())
 				.isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
 		assertThat(sw.toString())
-				.isEqualTo(expected);
+				.isEqualTo(EXPECTED);
 	}
 
 	private StringWriter encode(Node placeholder) throws EncodeException {
