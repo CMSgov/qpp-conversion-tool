@@ -141,18 +141,24 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @return array of String program name, entity type
 	 */
 	private Pair<String, String> getProgramNameEntityPair(String name) {
+		Pair<String, String> pair;
 		switch (name.toUpperCase(Locale.ENGLISH)) {
 			case MIPS_INDIVIDUAL:
-				return new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
+				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
+				break;
 
 			case MIPS_GROUP:
-				return new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_GROUP);
+				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_GROUP);
+				break;
 
 			case CPCPLUS:
-				return new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
+				pair = new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
+				break;
 
 			default:
-				return new ImmutablePair<>(name.toLowerCase(Locale.ENGLISH), ENTITY_INDIVIDUAL);
+				pair = new ImmutablePair<>(name.toLowerCase(Locale.ENGLISH), ENTITY_INDIVIDUAL);
+				break;
 		}
+		return pair;
 	}
 }
