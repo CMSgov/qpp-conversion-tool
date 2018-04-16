@@ -5,7 +5,6 @@ import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import gov.cms.qpp.conversion.validate.AggregateCountValidator;
 
 /**
  * Encoder to serialize an Aggregate Count value type.

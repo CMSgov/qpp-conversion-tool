@@ -22,7 +22,7 @@ public class DuplicationCheckHelper {
 	 */
 	public static int calculateDuplications(Node node) {
 		List<String> aggCountList = node.getDuplicateValues(AggregateCountDecoder.AGGREGATE_COUNT);
-		return aggCountList != null
+		return (aggCountList != null)
 			? aggCountList.size() + ACCOUNT_FOR_ORIGINAL_AGGREGATE_COUNT : ACCOUNT_FOR_MISSING_AGGREGATE_COUNT;
 	}
 }
