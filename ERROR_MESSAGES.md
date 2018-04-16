@@ -20,7 +20,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 16 : CT - ACI Numerator Denominator element does not contain a measure name ID
 * 17 : CT - ACI Numerator Denominator element does not have any child elements
 * 18 : CT - This ACI Numerator Denominator element requires exactly one `(Denominator|Numerator)` element child
-* 22 : CT - The ACI Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the implementation guide. `(Implementation Guide link)`
+* 22 : CT - The ACI Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide(IG). Here is a link to the IG Reporting Parameter Act section : https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
 * 23 : CT - Clinical Document Node must have at least one Aci or IA or Measure section Node as a child
 * 24 : CT - Clinical Document must have one and only one program name. Valid program names are `(list of valid program names)`
 * 25 : CT - The Clinical Document program name `(program name)` is not recognized. Valid program names are `(list of valid program names)`.

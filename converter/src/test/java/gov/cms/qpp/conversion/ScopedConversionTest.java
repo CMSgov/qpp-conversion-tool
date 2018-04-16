@@ -220,7 +220,7 @@ class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.CLINICAL_DOCUMENT)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.format(AciSectionValidator.REPORTING_PARAMETERS_ACT_IG).getMessage(),
+						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
 						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
 							.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
@@ -247,7 +247,7 @@ class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.ACI_NUMERATOR_DENOMINATOR)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.format(AciSectionValidator.REPORTING_PARAMETERS_ACT_IG).getMessage(),
+						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
 						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
 							.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),

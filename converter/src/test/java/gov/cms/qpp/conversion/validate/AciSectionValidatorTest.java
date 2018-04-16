@@ -42,8 +42,7 @@ class AciSectionValidatorTest {
 
 		assertWithMessage("error should be about missing proportion node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT
-					.format(AciSectionValidator.REPORTING_PARAMETERS_ACT_IG));
+				.containsExactly(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
 	}
 
 	@Test
@@ -57,7 +56,6 @@ class AciSectionValidatorTest {
 
 		assertWithMessage("error should be about missing required Measure")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT
-					.format(AciSectionValidator.REPORTING_PARAMETERS_ACT_IG));
+				.containsExactly(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
 	}
 }
