@@ -12,10 +12,12 @@ public class DuplicationCheckHelper {
 	public static final int ACCOUNT_FOR_ORIGINAL_AGGREGATE_COUNT = 1;
 	public static final int ACCOUNT_FOR_MISSING_AGGREGATE_COUNT = 0;
 
+	private DuplicationCheckHelper() {}
+
 	/**
 	 * Finds the number of duplications of aggregate counts
 	 *
-	 * @param node
+	 * @param node to check duplications from
 	 * @return
 	 */
 	public static int calculateDuplications(Node node) {
