@@ -16,20 +16,30 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<configuration>
-					<transformers>
-						<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-					</transformers>
-					<artifactSet>
-						<excludes>
-							<exclude>org.apache.commons:commons-lang3</exclude>
-						</excludes>
-					</artifactSet>
-				</configuration>
-			</plugin>
+			<!--<plugin>-->
+				<!--<groupId>org.apache.maven.plugins</groupId>-->
+				<!--<artifactId>maven-shade-plugin</artifactId>-->
+				<!--<configuration>-->
+					<!--<transformers>-->
+						<!--<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>-->
+					<!--</transformers>-->
+					<!--<artifactSet>-->
+						<!--<excludes>-->
+							<!--<exclude>org.apache.commons:commons-lang3</exclude>-->
+							<!--<exclude>com.google.guava:guava</exclude>-->
+							<!--<exclude>commons-io:commons-io</exclude>-->
+							<!--<exclude>com.fasterxml.jackson.core:jackson-annotations</exclude>-->
+							<!--<exclude>com.fasterxml.jackson.dataformat:jackson-dataformat-xml</exclude>-->
+							<!--<exclude>com.fasterxml.jackson.core:jackson-core</exclude>-->
+							<!--<exclude>com.fasterxml.jackson.core:jackson-databind</exclude>-->
+							<!--<exclude>org.jdom:jdom2</exclude>-->
+							<!--<exclude>org.slf4j:slf4j-api</exclude>-->
+							<!--&lt;!&ndash;<exclude>commons-cli:commons-cli</exclude>&ndash;&gt;-->
+							<!--&lt;!&ndash;<exclude>jaxen:jaxen</exclude>&ndash;&gt;-->
+						<!--</excludes>-->
+					<!--</artifactSet>-->
+				<!--</configuration>-->
+			<!--</plugin>-->
 
 			<plugin>
 				<groupId>org.jacoco</groupId>
