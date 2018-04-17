@@ -17,6 +17,8 @@
 		<aws.version>1.11.312</aws.version>
 		<jackson.version>2.9.5</jackson.version>
 		<guava.version>24.1-jre</guava.version>
+		<junit.version>5.1.1</junit.version>
+		<powermock.version>1.7.3</powermock.version>
 	</properties>
 
 	<modules>
@@ -308,22 +310,22 @@
 				<version>3.0.7</version>
 			</dependency>
 
-			<!--<dependency>-->
-				<!--<groupId>org.junit.vintage</groupId>-->
-				<!--<artifactId>junit-vintage-engine</artifactId>-->
-				<!--<version>5.1.1</version>-->
-			<!--</dependency>-->
+			<dependency>
+				<groupId>org.junit.vintage</groupId>
+				<artifactId>junit-vintage-engine</artifactId>
+				<version>${junit.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-engine</artifactId>
-				<version>5.1.1</version>
+				<version>${junit.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-params</artifactId>
-				<version>5.1.1</version>
+				<version>${junit.version}</version>
 			</dependency>
 
 			<dependency>
@@ -341,13 +343,13 @@
 			<dependency>
 				<groupId>org.powermock</groupId>
 				<artifactId>powermock-module-junit4</artifactId>
-				<version>1.7.3</version>
+				<version>${powermock.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.powermock</groupId>
 				<artifactId>powermock-api-mockito2</artifactId>
-				<version>1.7.3</version>
+				<version>${powermock.version}</version>
 			</dependency>
 
 			<dependency>
@@ -357,25 +359,5 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<dependencies>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava-testlib</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.truth</groupId>
-			<artifactId>truth</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>nl.jqno.equalsverifier</groupId>
-			<artifactId>equalsverifier</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 
 </project>
