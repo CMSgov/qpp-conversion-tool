@@ -5,6 +5,9 @@ import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
@@ -95,9 +98,9 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 */
 	private void setProgramNameOnNode(Element element, Node thisNode) {
 		Consumer<? super Attribute> consumer = p -> {
-			String[] nameEntityPair = getProgramNameEntityPair(p.getValue());
-			thisNode.putValue(PROGRAM_NAME, nameEntityPair[0], false);
-			thisNode.putValue(ENTITY_TYPE, nameEntityPair[1], false);
+			Pair<String, String> nameEntityPair = getProgramNameEntityPair(p.getValue());
+			thisNode.putValue(PROGRAM_NAME, nameEntityPair.getLeft(), false);
+			thisNode.putValue(ENTITY_TYPE, nameEntityPair.getRight(), false);
 			thisNode.putValue(RAW_PROGRAM_NAME, p.getValue(), false);
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
@@ -137,17 +140,25 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	 * @param name String one of MIPS, MIPS_GROUP, MIPS_INDIV, or CPCPLUS
 	 * @return array of String program name, entity type
 	 */
-	private String[] getProgramNameEntityPair(String name) {
-		String[] pairs;
-		if (MIPS_INDIVIDUAL.equalsIgnoreCase(name)) {
-			pairs = new String[] {MIPS_PROGRAM_NAME, ENTITY_INDIVIDUAL};
-		} else if (MIPS_GROUP.equalsIgnoreCase(name)) {
-			pairs = new String[] {MIPS_PROGRAM_NAME, ENTITY_GROUP};
-		} else if (CPCPLUS.equalsIgnoreCase(name)) {
-			pairs = new String[] {CPCPLUS_PROGRAM_NAME, ENTITY_INDIVIDUAL};
-		} else {
-			pairs = new String[] {name.toLowerCase(Locale.ENGLISH), ENTITY_INDIVIDUAL};
+	private Pair<String, String> getProgramNameEntityPair(String name) {
+		Pair<String, String> pair;
+		switch (name.toUpperCase(Locale.ENGLISH)) {
+			case MIPS_INDIVIDUAL:
+				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
+				break;
+
+			case MIPS_GROUP:
+				pair = new ImmutablePair<>(MIPS_PROGRAM_NAME, ENTITY_GROUP);
+				break;
+
+			case CPCPLUS:
+				pair = new ImmutablePair<>(CPCPLUS_PROGRAM_NAME, ENTITY_INDIVIDUAL);
+				break;
+
+			default:
+				pair = new ImmutablePair<>(name.toLowerCase(Locale.ENGLISH), ENTITY_INDIVIDUAL);
+				break;
 		}
-		return pairs;
+		return pair;
 	}
 }
