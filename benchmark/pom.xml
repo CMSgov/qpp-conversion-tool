@@ -58,6 +58,7 @@
 								<exclude>org.javassist:javassist</exclude>
 								<exclude>org.jdom:jdom2</exclude>
 								<exclude>xml-apis:xml-apis</exclude>
+								<exclude>org.powermock:powermock-api-mockito-common</exclude>
 							</excludes>
 						</artifactSet>
 						<filters>
