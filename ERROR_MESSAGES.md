@@ -36,7 +36,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified
 * 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty
 * 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid
-* 36 : CT - Must contain one Measure section
+* 36 : CT - CPC+ submissions must contain one Measure section
 * 37 : CT - Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
 * 38 : CT - This `(Numerator or Denominator)` Node does not have any child Nodes
 * 39 : CT - This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node
