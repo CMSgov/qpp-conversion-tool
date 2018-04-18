@@ -1,13 +1,14 @@
 package gov.cms.qpp.conversion.model.error;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
+import org.apache.commons.lang3.StringUtils;
 
 import gov.cms.qpp.conversion.model.Node;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Holds the error information from Validators.
@@ -26,6 +27,8 @@ public class Detail implements Serializable {
 	private String value;
 	@JsonProperty("type")
 	private String type;
+
+	private String location;
 
 	/**
 	 * Dummy constructor for ORM
@@ -59,6 +62,17 @@ public class Detail implements Serializable {
 
 		Detail detail = forErrorCode(error);
 		detail.setPath(node.getPath());
+
+		Node importantParentNode = node.findParentNodeWithHumanReadableTemplateId();
+
+		if (importantParentNode != null) {
+			String importantParentTitle = importantParentNode.getType().getHumanReadableTitle();
+
+			String possibleMeasureId = importantParentNode.getValue("measureId");
+
+			detail.setLocation(importantParentTitle + (StringUtils.isEmpty(possibleMeasureId) ? "" : " " + possibleMeasureId));
+		}
+
 		return detail;
 	}
 
@@ -194,6 +208,7 @@ public class Detail implements Serializable {
 		equals &= Objects.equals(path, that.path);
 		equals &= Objects.equals(value, that.value);
 		equals &= Objects.equals(type, that.type);
+		equals &= Objects.equals(location, that.location);
 		return equals;
 	}
 
@@ -204,6 +219,14 @@ public class Detail implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(errorCode, message, path, value, type);
+		return Objects.hash(errorCode, message, path, value, type, location);
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(final String location) {
+		this.location = location;
 	}
 }

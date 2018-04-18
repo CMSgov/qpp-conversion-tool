@@ -1,21 +1,13 @@
 package gov.cms.qpp.conversion.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.Lists;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -402,6 +394,26 @@ public class Node {
 	 */
 	private static boolean foundNode(List<?> nodes) {
 		return !nodes.isEmpty();
+	}
+
+	public Node findParentNodeWithHumanReadableTemplateId() {
+		if (this.getType() == TemplateId.CLINICAL_DOCUMENT) {
+			return this;
+		}
+
+		return findParentNodeWithHumanReadableTemplateId(getParent());
+	}
+
+	private Node findParentNodeWithHumanReadableTemplateId(Node node) {
+		if (node == null) {
+			return null;
+		}
+
+		if (!StringUtils.isEmpty(node.getType().getHumanReadableTitle())) {
+			return node;
+		}
+
+		return findParentNodeWithHumanReadableTemplateId(node.getParent());
 	}
 
 	/**
