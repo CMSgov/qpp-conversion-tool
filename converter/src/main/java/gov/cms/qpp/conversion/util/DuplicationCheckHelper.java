@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.util;
 
-import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 
 import java.util.List;
@@ -9,8 +8,8 @@ import java.util.List;
  * Utility class to return the number of duplications found.
  */
 public class DuplicationCheckHelper {
-	public static final int ACCOUNT_FOR_ORIGINAL_AGGREGATE_COUNT = 1;
-	public static final int ACCOUNT_FOR_MISSING_AGGREGATE_COUNT = 0;
+	public static final int ACCOUNT_FOR_ORIGINAL_VALUE = 1;
+	public static final int ACCOUNT_FOR_MISSING_VALUE = 0;
 
 	private DuplicationCheckHelper() {}
 
@@ -20,9 +19,9 @@ public class DuplicationCheckHelper {
 	 * @param node to check duplications from
 	 * @return
 	 */
-	public static int calculateDuplications(Node node) {
-		List<String> aggCountList = node.getDuplicateValues(AggregateCountDecoder.AGGREGATE_COUNT);
-		return (aggCountList != null)
-			? (aggCountList.size() + ACCOUNT_FOR_ORIGINAL_AGGREGATE_COUNT) : ACCOUNT_FOR_MISSING_AGGREGATE_COUNT;
+	public static int calculateDuplications(Node node, String type) {
+		List<String> valueCountList = node.getDuplicateValues(type);
+		return (valueCountList != null)
+			? (valueCountList.size() + ACCOUNT_FOR_ORIGINAL_VALUE) : ACCOUNT_FOR_MISSING_VALUE;
 	}
 }

@@ -15,7 +15,7 @@ public class DuplicationCheckHelperTest {
 		Node node = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		node.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "1234", false);
 
-		int duplicationValue = DuplicationCheckHelper.calculateDuplications(node);
+		int duplicationValue = DuplicationCheckHelper.calculateDuplications(node, AggregateCountDecoder.AGGREGATE_COUNT);
 		assertThat(duplicationValue).isEqualTo(0);
 	}
 
@@ -25,7 +25,7 @@ public class DuplicationCheckHelperTest {
 		node.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "1234", false);
 		node.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "1234", false);
 
-		int duplicationValue = DuplicationCheckHelper.calculateDuplications(node);
+		int duplicationValue = DuplicationCheckHelper.calculateDuplications(node, AggregateCountDecoder.AGGREGATE_COUNT);
 		assertThat(duplicationValue).isEqualTo(2);
 	}
 }

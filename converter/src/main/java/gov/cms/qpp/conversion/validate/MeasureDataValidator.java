@@ -35,7 +35,7 @@ public class MeasureDataValidator extends NodeValidator {
 			Node child = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 			check(child)
 					.singleValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(node.getType().name(),
-						DuplicationCheckHelper.calculateDuplications(child)),
+						DuplicationCheckHelper.calculateDuplications(child, AggregateCountDecoder.AGGREGATE_COUNT)),
 						AggregateCountDecoder.AGGREGATE_COUNT)
 					.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AggregateCountDecoder.AGGREGATE_COUNT)
 					.greaterThan(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER, -1);

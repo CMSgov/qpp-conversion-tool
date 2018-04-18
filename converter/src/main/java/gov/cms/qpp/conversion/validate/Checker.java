@@ -8,6 +8,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
+import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
 import gov.cms.qpp.conversion.util.FormatHelper;
 
 import java.time.format.DateTimeParseException;
@@ -117,8 +118,7 @@ class Checker {
 	 */
 	public Checker singleValue(LocalizedError code, String name) {
 		value(code, name);
-		List<String> duplicates = node.getDuplicateValues(name);
-		if (!isEmpty(duplicates)) {
+		if (DuplicationCheckHelper.calculateDuplications(node, name) != 0) {
 			details.add(detail(code));
 		}
 		return this;
