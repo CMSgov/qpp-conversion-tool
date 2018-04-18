@@ -37,10 +37,27 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 		}
 	}
 
+	/**
+	 * Encode given node into json
+	 *
+	 * @param wrapper structure that facilitates json serialization
+	 * @param node structure to be converted to json
+	 */
 	public void encode(JsonWrapper wrapper, Node node) {
+		encode(wrapper, node, true);
+	}
+
+	/**
+	 * Encode given node into json. Optionally include metadata about originating node.
+	 *
+	 * @param wrapper structure that facilitates json serialization
+	 * @param node structure to be converted to json
+	 * @param mergeMetadata instruction on whether or not metadata should be included in the wrapper
+	 */
+	public void encode(JsonWrapper wrapper, Node node, boolean mergeMetadata) {
 		try {
 			internalEncode(wrapper, node);
-			if (wrapper.isObject()) {
+			if (mergeMetadata && wrapper.isObject()) {
 				wrapper.attachMetadata(node);
 			}
 		} catch (EncodeException e) {

@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class MeasurePerformedEncoderTest {
 
@@ -19,7 +19,6 @@ class MeasurePerformedEncoderTest {
 
 		qppOutputEncoder.internalEncode(jsonWrapper, measurePerformedNode);
 
-		assertWithMessage("Must return correct encoded result")
-				.that(jsonWrapper.getBoolean("value")).isTrue();
+		assertThat(jsonWrapper.getBoolean("value")).isTrue();
 	}
 }

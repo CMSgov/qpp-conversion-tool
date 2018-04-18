@@ -20,10 +20,7 @@ public class IaSectionValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
 				.childMinimum(ErrorCode.IA_SECTION_MISSING_IA_MEASURE, 1, TemplateId.IA_MEASURE)
-				.childMinimum(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM, 1,
-						TemplateId.REPORTING_PARAMETERS_ACT)
-				.childMaximum(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM, 1,
-						TemplateId.REPORTING_PARAMETERS_ACT)
+				.childExact(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM, 1, TemplateId.REPORTING_PARAMETERS_ACT)
 				.onlyHasChildren(ErrorCode.IA_SECTION_WRONG_CHILD, TemplateId.IA_MEASURE, TemplateId.REPORTING_PARAMETERS_ACT);
 	}
 }

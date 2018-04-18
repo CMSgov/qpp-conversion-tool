@@ -36,6 +36,8 @@ public class Detail implements Serializable {
 
 	/**
 	 * Copy constructor
+	 *
+	 * @param detail object from which to copy
 	 */
 	public Detail(Detail detail) {
 		errorCode = detail.errorCode;
@@ -47,6 +49,10 @@ public class Detail implements Serializable {
 
 	/**
 	 * Creates a mutable Detail based on the given error and node
+	 *
+	 * @param error error to be added
+	 * @param node node that gives the error context
+	 * @return detail for given error
 	 */
 	public static Detail forErrorAndNode(LocalizedError error, Node node) {
 		Objects.requireNonNull(node, "node");
@@ -58,8 +64,9 @@ public class Detail implements Serializable {
 
 	/**
 	 * Creates a mutable Detail based on the given error
-	 * @param code
-	 * @return
+	 *
+	 * @param error error to be added
+	 * @return detail for given error
 	 */
 	public static Detail forErrorCode(LocalizedError error) {
 		Objects.requireNonNull(error, "error");
@@ -113,7 +120,7 @@ public class Detail implements Serializable {
 	/**
 	 * Sets the path that this error references.
 	 *
-	 * @param newPath The path that this error references.
+	 * @param path The path that this error references.
 	 */
 	@JsonProperty("path")
 	public void setPath(String path) {

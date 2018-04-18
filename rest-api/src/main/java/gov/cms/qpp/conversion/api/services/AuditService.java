@@ -1,10 +1,14 @@
 package gov.cms.qpp.conversion.api.services;
 
 
-import gov.cms.qpp.conversion.Converter.ConversionReport;
+import gov.cms.qpp.conversion.ConversionReport;
+import gov.cms.qpp.conversion.api.model.Metadata;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Service Interface for auditing {@link Metadata} by {@link ConversionReport}
+ */
 public interface AuditService {
 	/**
 	 * Report a successful conversion.
@@ -12,7 +16,7 @@ public interface AuditService {
 	 * @param report {@link ConversionReport} that details the outcome of a conversion
 	 * @return {@link CompletableFuture} that mules the result of report persistence
 	 */
-	CompletableFuture<Void> success(ConversionReport report);
+	CompletableFuture<Metadata> success(ConversionReport report);
 
 	/**
 	 * Report a failed conversion.

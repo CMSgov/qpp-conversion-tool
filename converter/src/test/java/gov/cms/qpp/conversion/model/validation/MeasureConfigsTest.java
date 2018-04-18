@@ -1,22 +1,22 @@
 package gov.cms.qpp.conversion.model.validation;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.JsonMappingException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class MeasureConfigsTest {
 
 	@AfterAll
-	static void resetMeasureConfiguration() {
+	static void resetMeasureConfiguration() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 

@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.correlation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import gov.cms.qpp.conversion.correlation.model.Config;
+import gov.cms.qpp.conversion.correlation.model.CorrelationConfig;
 import gov.cms.qpp.conversion.correlation.model.Correlation;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
@@ -27,17 +27,20 @@ public class PathCorrelator {
 	public static final String KEY_DELIMITER = "#";
 	private static final String ENCODE_LABEL = "encodeLabel";
 	private static String config = "pathing/path-correlation.json";
-	private static PathCorrelation pathCorrelation;
 	private static Map<String, Goods> pathCorrelationMap = new HashMap<>();
+	private static String uriSubstitution = "";
+
 
 	static {
-		pathCorrelation = loadPathCorrelation();
+		uriSubstitution = loadPathCorrelation().getUriSubstitution();
 	}
 
 	private PathCorrelator() {}
 
 	/**
 	 * Initializes correlations between json paths and xpaths
+	 *
+	 * @return a holder for path correlations
 	 */
 	private static PathCorrelation loadPathCorrelation() {
 		PathCorrelation pathCorrelation;
@@ -63,10 +66,10 @@ public class PathCorrelator {
 	 * @param pathCorrelation deserialized representation of the aforementioned correlation configuration
 	 */
 	private static void flattenCorrelations(PathCorrelation pathCorrelation) {
-		Map<String, List<Config>> config = pathCorrelation.getCorrelations().stream()
+		Map<String, List<CorrelationConfig>> config = pathCorrelation.getCorrelations().stream()
 				.collect(Collectors.toMap(Correlation::getCorrelationId, Correlation::getConfig));
 		pathCorrelation.getTemplates().forEach(template -> {
-			List<Config> configs = config.get(template.getCorrelationId());
+			List<CorrelationConfig> configs = config.get(template.getCorrelationId());
 			configs.forEach(conf -> {
 				if (null != conf.getDecodeLabel()) {
 					pathCorrelationMap.put(
@@ -84,7 +87,7 @@ public class PathCorrelator {
 	 * @return substitution place holder
 	 */
 	static String getUriSubstitution() {
-		return pathCorrelation.getUriSubstitution();
+		return uriSubstitution;
 	}
 
 	/**
@@ -110,7 +113,7 @@ public class PathCorrelator {
 		String key = PathCorrelator.getKey(base, attribute);
 		Goods goods = pathCorrelationMap.get(key);
 		return (goods == null) ? null :
-				goods.getRelativeXPath().replace(pathCorrelation.getUriSubstitution(), uri);
+				goods.getRelativeXPath().replace(uriSubstitution, uri);
 	}
 
 	/**
@@ -159,9 +162,8 @@ public class PathCorrelator {
 					if (encodeLabel.equals(leaf)) {
 						return leaf.isEmpty()
 								|| PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
-					} else {
-						return encodeLabel.isEmpty();
 					}
+					return encodeLabel.isEmpty();
 				})
 				.findFirst()
 				.orElse(null);

@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.exceptions;
 
-
 /**
  * Used to rethrow any unexpected exceptions that might occur while persisting
  * Audit information

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.LinkedHashSet;
@@ -149,7 +150,7 @@ class CheckerTest {
 				new Node(TemplateId.PLACEHOLDER));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.childMaximum(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER);
+		checker.childMaximum(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
 
 		assertWithMessage("There's an error")
 				.that(details).hasSize(1);
@@ -166,6 +167,60 @@ class CheckerTest {
 
 		assertWithMessage("There's no error")
 				.that(details).isEmpty();
+	}
+
+	@Test
+	void testChildExactFailureTooManyNodes() {
+		Node meepNode = new Node();
+		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER),
+			new Node(TemplateId.ACI_AGGREGATE_COUNT),
+			new Node(TemplateId.PLACEHOLDER));
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+
+		assertWithMessage("An error exists")
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ERROR_MESSAGE);
+	}
+
+	@Test
+	void testChildExactTooLittleNodes() {
+		Node meepNode = new Node();
+		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER));
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+
+		assertWithMessage("An error exists")
+			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ERROR_MESSAGE);
+	}
+
+	@Test
+	void testChildExactSuccessNoMissingType() {
+		Node meepNode = new Node();
+		meepNode.addChildNodes(new Node(TemplateId.ACI_AGGREGATE_COUNT),
+			new Node(TemplateId.PLACEHOLDER));
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+
+		assertWithMessage("There's no error")
+			.that(details).isEmpty();
+	}
+
+	@Test
+	void testChildExactSuccessWithMissingTemplateIds() {
+		Node meepNode = new Node();
+		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER),
+			new Node(TemplateId.PLACEHOLDER));
+
+		Checker checker = Checker.check(meepNode, details);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+
+		assertWithMessage("There's no error")
+			.that(details).isEmpty();
 	}
 
 	//chaining
@@ -707,6 +762,28 @@ class CheckerTest {
 		assertWithMessage("There should be no errors")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ERROR_MESSAGE);
+	}
+
+	@Test
+	void testIsValidDateWithValidDate() {
+		String key = "My Key";
+		String value = "20140707";
+		Node testNode = makeTestNode(key, value);
+		Checker checker = Checker.check(testNode, details);
+		checker.isValidDate(ERROR_MESSAGE, key);
+
+		assertThat(details).isEmpty();
+	}
+
+	@Test
+	void testIsValidDateWithInvalidDate() {
+		String key = "My Key";
+		String value = "1512321321421";
+		Node testNode = makeTestNode(key, value);
+		Checker checker = Checker.check(testNode, details);
+
+		checker.isValidDate(ERROR_MESSAGE, key);
+		assertThat(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE).containsExactly(ERROR_MESSAGE);
 	}
 
 	private Node makeTestNode(String key, String value) {

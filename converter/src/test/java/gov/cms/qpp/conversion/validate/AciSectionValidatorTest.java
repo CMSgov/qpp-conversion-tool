@@ -1,31 +1,28 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.util.Set;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import java.util.Set;
+class AciSectionValidatorTest {
 
-import static com.google.common.truth.Truth.assertWithMessage;
-
-public class AciSectionValidatorTest {
 	private static final String VALID_ACI_MEASURE = "ACI_EP_1";
 	private Node reportingParamNode;
 	private Node aciNumeratorDenominatorNode;
 	private Node measureNode;
 	private Node aciSectionNode;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
-	@Before
-	public void setUpAciSectionNode() {
+	@BeforeEach
+	void setUpAciSectionNode() {
 		reportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
 		measureNode = new Node(TemplateId.MEASURE_PERFORMED);
@@ -36,7 +33,7 @@ public class AciSectionValidatorTest {
 	}
 
 	@Test
-	public void testNoReportingParamPresent() {
+	void testNoReportingParamPresent() {
 		aciSectionNode.addChildNodes(aciNumeratorDenominatorNode, measureNode);
 
 		AciSectionValidator aciSectionValidator = new AciSectionValidator();
@@ -49,7 +46,7 @@ public class AciSectionValidatorTest {
 	}
 
 	@Test
-	public void testTooManyReportingParams() {
+	void testTooManyReportingParams() {
 		Node invalidReportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		aciSectionNode.addChildNodes(reportingParamNode, invalidReportingParamNode, aciNumeratorDenominatorNode, measureNode);
 

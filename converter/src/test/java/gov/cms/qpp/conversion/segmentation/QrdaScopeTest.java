@@ -7,9 +7,12 @@ import static gov.cms.qpp.conversion.segmentation.QrdaScope.MEASURE_PERFORMED;
 import java.util.HashSet;
 import java.util.Set;
 
+import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.jupiter.api.Test;
 
-class QrdaScopeTest {
+import gov.cms.qpp.test.enums.EnumContract;
+
+class QrdaScopeTest implements EnumContract {
 
 	@Test
 	void testGetTemplates() {
@@ -21,6 +24,15 @@ class QrdaScopeTest {
 		//then
 		assertWithMessage("Should be two scopes")
 				.that(QrdaScope.getTemplates(scopes)).hasSize(2);
+	}
+
+	@Test
+	void testGetIaSectionTemplates() {
+		//then
+		assertWithMessage("IaSection contents")
+			.that(QrdaScope.IA_SECTION.getValue())
+			.containsExactly(TemplateId.MEASURE_PERFORMED, TemplateId.IA_MEASURE,
+				TemplateId.IA_SECTION, TemplateId.REPORTING_PARAMETERS_ACT);
 	}
 
 	@Test
@@ -37,11 +49,8 @@ class QrdaScopeTest {
 				.that(QrdaScope.getTemplates(new HashSet<>())).isEmpty();
 	}
 
-	@Test
-	void testValueOfString() {
-		//JaCoCo coverage test
-		QrdaScope scope = QrdaScope.valueOf("CLINICAL_DOCUMENT");
-		assertWithMessage("QrdaScope of CLINICAL_DOCUMENT equals TemplateId")
-				.that(scope.name()).isSameAs("CLINICAL_DOCUMENT");
+	@Override
+	public Class<? extends Enum<?>> getEnumType() {
+		return QrdaScope.class;
 	}
 }

@@ -12,10 +12,10 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
 import com.amazonaws.services.kms.AWSKMS;
 import gov.cms.qpp.conversion.api.model.Constants;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -32,14 +32,22 @@ import static gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory.createDyna
 @Configuration
 public class DynamoDbConfig {
 
-	private static final Logger API_LOG = LoggerFactory.getLogger(Constants.API_LOG);
+	private static final Logger API_LOG = LoggerFactory.getLogger(DynamoDbConfig.class);
 	static final String NO_KMS_KEY = "No KMS key specified!";
 
-	@Autowired
 	private Environment environment;
-
-	@Autowired
 	private AWSKMS awsKms;
+
+	/**
+	 * Ensure required dependencies are supplied.
+	 *
+	 * @param environment access to environment variables
+	 * @param awsKms KMS key
+	 */
+	public DynamoDbConfig(Environment environment, AWSKMS awsKms) {
+		this.environment = environment;
+		this.awsKms = awsKms;
+	}
 
 	/**
 	 * Creates the DynamoDB client {@link Bean}.

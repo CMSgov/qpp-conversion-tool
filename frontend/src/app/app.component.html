@@ -18,7 +18,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th width="50%">Name</th>
+                            <th class="half">Name</th>
                             <th>Size</th>
                             <th>Progress</th>
                             <th>Status</th>
@@ -35,7 +35,7 @@
                                 <span *ngIf="item.isCancel">cancelled</span>
                                 <span *ngIf="item.isError">error</span>
                             </td>
-                            <td nowrap>
+                            <td class="nowrap">
                                 <button type="button" class="usa-button" (click)="item.upload()" [disabled]="item.isUploading">
                                     <span class="glyphicon glyphicon-upload"></span> Upload
                                 </button>

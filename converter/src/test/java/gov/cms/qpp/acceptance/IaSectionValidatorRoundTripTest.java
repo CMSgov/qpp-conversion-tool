@@ -2,26 +2,26 @@ package gov.cms.qpp.acceptance;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.junit.Assert;
+import gov.cms.qpp.conversion.Context;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.validate.IaSectionValidator;
 
 class IaSectionValidatorRoundTripTest {
 
 	@Test
-	void testIaSectionValidatorIncorrectChildren() throws IOException {
+	void testIaSectionValidatorIncorrectChildren() {
 		Path path = Paths.get("src/test/resources/negative/iaSectionContainsWrongChild.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Context context = new Context();
+		Converter converter = new Converter(new PathSource(path), context);
 
 		AllErrors errors = new AllErrors();
 		try {
@@ -37,9 +37,9 @@ class IaSectionValidatorRoundTripTest {
 	}
 
 	@Test
-	void testIaSectionValidatorMissingMeasures() throws IOException {
+	void testIaSectionValidatorMissingMeasures() {
 		Path path = Paths.get("src/test/resources/negative/iaSectionMissingMeasures.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 
 		AllErrors errors = new AllErrors();
 		try {
@@ -55,14 +55,14 @@ class IaSectionValidatorRoundTripTest {
 	}
 
 	@Test
-	void testIaSectionValidatorMissingReportingParameters() throws IOException {
+	void testIaSectionValidatorMissingReportingParameters() {
 		Path path = Paths.get("src/test/resources/negative/iaSectionMissingReportingParameter.xml");
-		Converter converter = new Converter(new PathQrdaSource(path));
+		Converter converter = new Converter(new PathSource(path));
 
 		AllErrors errors = new AllErrors();
 		try {
 			converter.transform();
-			Assert.fail("Should not reach");
+			Assertions.fail("Should not reach");
 		} catch (TransformException exception) {
 			errors = exception.getDetails();
 		}

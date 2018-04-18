@@ -31,7 +31,7 @@ class PathCorrelatorTest {
 	void pathCorrelatorInitilization() {
 		String xpath = PathCorrelator.getXpath(TemplateId.CLINICAL_DOCUMENT.name(),
 				ClinicalDocumentDecoder.PROGRAM_NAME, "meep");
-		assertWithMessage("xpath should not be null").that(xpath).isNotNull();
+		assertThat(xpath).isNotNull();
 	}
 
 	@Test
@@ -55,9 +55,7 @@ class PathCorrelatorTest {
 
 		int meepCount = (path.length() - path.replace(meep, "").length()) / meep.length();
 
-		assertWithMessage("3 substitutions were expected")
-				.that(meepCount)
-				.isEqualTo(3);
+		assertThat(meepCount).isEqualTo(3);
 		assertWithMessage("No substitution placeholders should remain")
 				.that(path.indexOf(PathCorrelator.getUriSubstitution()))
 				.isEqualTo(-1);

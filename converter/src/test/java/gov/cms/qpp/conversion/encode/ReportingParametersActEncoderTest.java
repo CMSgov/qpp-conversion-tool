@@ -5,12 +5,13 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 /**
  * Test class for ReportingParametersActEncoder
  */
 class ReportingParametersActEncoderTest {
+
 	@Test
 	void internalEncode() throws Exception {
 		Node reportingParametersActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
@@ -22,10 +23,8 @@ class ReportingParametersActEncoderTest {
 		String performanceStart = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_START);
 		String performanceEnd = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_END);
 
-		assertWithMessage("Performance Start = 2017-01-01")
-				.that(performanceStart).isEqualTo("2017-01-01");
-		assertWithMessage("Performance End = 2017-12-31")
-				.that(performanceEnd).isEqualTo("2017-12-31");
+		assertThat(performanceStart).isEqualTo("2017-01-01");
+		assertThat(performanceEnd).isEqualTo("2017-12-31");
 	}
 
 	@Test
@@ -38,9 +37,7 @@ class ReportingParametersActEncoderTest {
 		String performanceStart = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_START);
 		String performanceEnd = outputWrapper.getString(ReportingParametersActEncoder.PERFORMANCE_END);
 
-		assertWithMessage("Performance Start is null")
-				.that(performanceStart).isNull();
-		assertWithMessage("Performance End = is null")
-				.that(performanceEnd).isNull();
+		assertThat(performanceStart).isNull();
+		assertThat(performanceEnd).isNull();
 	}
 }

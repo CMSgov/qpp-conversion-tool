@@ -5,8 +5,6 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
-import java.util.List;
-
 /**
  * Encoder to serialize Improvement Activity Performed Measure Reference and Results
  */
@@ -28,15 +26,14 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		wrapper.putObject("measureId", node.getValue("measureId"));
 
-		List<Node> children = node.getChildNodes();
+		Node measurePerformedNode = node.findFirstNode(TemplateId.MEASURE_PERFORMED);
 
-		if (!children.isEmpty()) {
-			Node measurePerformedNode = children.get(0);
+		if (measurePerformedNode != null) {
 			JsonOutputEncoder measurePerformedEncoder = encoders.get(measurePerformedNode.getType());
 
 			JsonWrapper value = new JsonWrapper();
 			measurePerformedEncoder.encode(value, measurePerformedNode);
-			maintainContinuity(wrapper, value, VALUE);
+			maintainContinuity(wrapper, measurePerformedNode, VALUE);
 
 			if (null != value.getBoolean(VALUE)) {
 				wrapper.putObject(VALUE, value.getBoolean(VALUE));

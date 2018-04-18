@@ -21,7 +21,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -36,7 +35,7 @@ class AnyOrderAsyncActionServiceTest {
 	private TaskExecutor taskExecutor;
 
 	@BeforeEach
-	void runBeforeEachTest() throws InterruptedException {
+	void runBeforeEachTest() {
 		doAnswer(invocationOnMock -> {
 			Runnable method = invocationOnMock.getArgument(0);
 			CompletableFuture.runAsync(method);
@@ -53,7 +52,7 @@ class AnyOrderAsyncActionServiceTest {
 	void testAsynchronousActionIsCalled() {
 		runSimpleScenario(0);
 
-		assertTrue("The asynchronousAction was not called.", objectUnderTest.asynchronousActionCalled.get());
+		assertThat(objectUnderTest.asynchronousActionCalled.get()).isTrue();
 	}
 
 	@Test
@@ -154,6 +153,11 @@ class AnyOrderAsyncActionServiceTest {
 	}
 
 	private static class TestAnyOrderService extends AnyOrderActionService<Object, Object> {
+
+		public TestAnyOrderService(TaskExecutor taskExecutor) {
+			super(taskExecutor);
+		}
+
 		AtomicBoolean asynchronousActionCalled = new AtomicBoolean(false);
 		AtomicInteger timesAsynchronousActionCalled = new AtomicInteger(0);
 		AtomicReference<Object> objectThatWasActedOn = new AtomicReference<>(null);
@@ -196,9 +200,7 @@ class AnyOrderAsyncActionServiceTest {
 				if(failWithInterruptException.get()) {
 					throw new UncheckedInterruptedException(new InterruptedException());
 				}
-				else {
-					throw new RuntimeException();
-				}
+				throw new RuntimeException();
 			}
 
 			failuresUntilSuccess.set(failuresUntilSuccessTemplate);

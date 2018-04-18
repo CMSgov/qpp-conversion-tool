@@ -1,18 +1,19 @@
 package gov.cms.qpp.conversion.model;
 
 
+import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
+
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 
 /**
  * Construct that helps categorize submissions by program name.
  */
 public enum Program {
-	MIPS("MIPS_GROUP", "MIPS_INDIV", "MIPS"),
+	MIPS("MIPS_GROUP", "MIPS_INDIV"),
 	CPC("CPCPLUS"),
 	ALL;
 
@@ -30,8 +31,8 @@ public enum Program {
 	/**
 	 * Checks if a node is using the CPC program
 	 *
-	 * @param node
-	 * @return
+	 * @param node to check
+	 * @return result of check
 	 */
 	public static boolean isCpc(Node node) {
 		return extractProgram(node) == Program.CPC;
@@ -40,11 +41,11 @@ public enum Program {
 	/**
 	 * Extracts a program type from a node
 	 *
-	 * @param node
-	 * @return
+	 * @param node to interrogate
+	 * @return program with which node is affiliated
 	 */
 	public static Program extractProgram(Node node) {
-		return Program.getInstance(node.getValue(ClinicalDocumentDecoder.PROGRAM_NAME));
+		return Program.getInstance(node.getValue(ClinicalDocumentDecoder.RAW_PROGRAM_NAME));
 	}
 
 	/**
@@ -59,5 +60,20 @@ public enum Program {
 				.filter(program -> program.aliases.contains(upperName))
 				.findFirst()
 				.orElse(Program.ALL);
+	}
+
+	/**
+	 * Returns the {@link Set} of all the valid program names under each program.
+	 *
+	 * @return A {@link Set} of the aliases.
+	 */
+	public static Set<String> setOfAliases() {
+		return Arrays.stream(Program.values())
+			.flatMap(program -> program.aliases.stream())
+			.collect(Collectors.toCollection(HashSet::new));
+	}
+
+	Set<String> getAliases() {
+		return aliases;
 	}
 }

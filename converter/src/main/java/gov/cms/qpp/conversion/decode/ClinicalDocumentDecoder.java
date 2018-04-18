@@ -9,26 +9,30 @@ import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 
+import java.util.Locale;
 import java.util.function.Consumer;
 
 /**
  * Decoder to parse the root element of the Document-Level Template: QRDA Category III Report (ClinicalDocument).
  */
 @Decoder(TemplateId.CLINICAL_DOCUMENT)
-public class ClinicalDocumentDecoder extends QppXmlDecoder {
+public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 	/*  Constants for lookups and tests */
+	public static final String NATIONAL_PROVIDER_IDENTIFIER = "nationalProviderIdentifier";
+	public static final String TAX_PAYER_IDENTIFICATION_NUMBER = "taxpayerIdentificationNumber";
 	public static final String PROGRAM_NAME = "programName";
+	public static final String RAW_PROGRAM_NAME = "rawProgramName";
 	public static final String ENTITY_TYPE = "entityType";
 	public static final String MIPS_PROGRAM_NAME = "mips";
-	public static final String CPCPLUS_PROGRAM_NAME = "cpcplus";
-	public static final String ENTITY_ID = "entityId";
+	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
+	public static final String ENTITY_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
 	public static final String MIPS = "MIPS";
-	public static final String MIPS_GROUP = "MIPS_GROUP";
-	public static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
-	public static final String ENTITY_GROUP = "group";
-	public static final String ENTITY_INDIVIDUAL = "individual";
+	private static final String MIPS_GROUP = "MIPS_GROUP";
+	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
+	static final String ENTITY_GROUP = "group";
+	static final String ENTITY_INDIVIDUAL = "individual";
 	public static final String CPCPLUS = "CPCPLUS";
 
 	public ClinicalDocumentDecoder(Context context) {
@@ -43,19 +47,20 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 * @return DecodeResult.TreeFinished thisNode gets the newly parsed xml fragment
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setProgramNameOnNode(element, thisNode);
 		setEntityIdOnNode(element, thisNode);
 		setPracticeSiteAddress(element, thisNode);
-		setNationalProviderIdOnNode(element, thisNode);
+		if (ENTITY_INDIVIDUAL.equals(thisNode.getValue(ENTITY_TYPE))) {
+			setNationalProviderIdOnNode(element, thisNode);
+		}
 		setTaxProviderTaxIdOnNode(element, thisNode);
-		processComponentElement(element, thisNode);
-		return DecodeResult.TREE_FINISHED;
+		return DecodeResult.TREE_CONTINUE;
 	}
 
 	/**
 	 * Looks up the entity Id from the element if the program name is CPC+
-	 * <id root="2.16.840.1.113883.3.249.5.1" extension="AR000000"
+	 * {@code <id root="2.16.840.1.113883.3.249.5.1" extension="AR000000"/>}
 	 *
 	 * @param element Xml fragment being parsed.
 	 * @param thisNode The output internal representation of the document
@@ -93,6 +98,7 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 			String[] nameEntityPair = getProgramNameEntityPair(p.getValue());
 			thisNode.putValue(PROGRAM_NAME, nameEntityPair[0], false);
 			thisNode.putValue(ENTITY_TYPE, nameEntityPair[1], false);
+			thisNode.putValue(RAW_PROGRAM_NAME, p.getValue(), false);
 		};
 		setOnNode(element, getXpath(PROGRAM_NAME), consumer, Filters.attribute(), false);
 		context.setProgram(Program.extractProgram(thisNode));
@@ -106,8 +112,8 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 */
 	private void setNationalProviderIdOnNode(Element element, Node thisNode) {
 		Consumer<? super Attribute> consumer = p ->
-				thisNode.putValue(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER, p.getValue());
-		setOnNode(element, getXpath(MultipleTinsDecoder.NATIONAL_PROVIDER_IDENTIFIER),
+				thisNode.putValue(NATIONAL_PROVIDER_IDENTIFIER, p.getValue());
+		setOnNode(element, getXpath(NATIONAL_PROVIDER_IDENTIFIER),
 				consumer, Filters.attribute(), true);
 	}
 
@@ -119,21 +125,10 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 */
 	private void setTaxProviderTaxIdOnNode(Element element, Node thisNode) {
 		Consumer<? super Attribute> consumer = p ->
-				thisNode.putValue(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
+				thisNode.putValue(TAX_PAYER_IDENTIFICATION_NUMBER,
 						p.getValue());
-		setOnNode(element, getXpath(MultipleTinsDecoder.TAX_PAYER_IDENTIFICATION_NUMBER),
+		setOnNode(element, getXpath(TAX_PAYER_IDENTIFICATION_NUMBER),
 				consumer, Filters.attribute(), true);
-	}
-
-	/**
-	 * Continues decoding the elements that are children of Clinical Document.
-	 *
-	 * @param element Xml fragment being parsed.
-	 * @param thisNode The output internal representation of the document
-	 */
-	private void processComponentElement(Element element, Node thisNode) {
-		Consumer<Element> consumer = p -> this.decode(p, thisNode);
-		setOnNode(element, getXpath("components"), consumer, Filters.element(), false);
 	}
 
 	/**
@@ -143,19 +138,15 @@ public class ClinicalDocumentDecoder extends QppXmlDecoder {
 	 * @return array of String program name, entity type
 	 */
 	private String[] getProgramNameEntityPair(String name) {
-		String[] pairs = new String[2];
-		if (MIPS.equalsIgnoreCase(name) || MIPS_INDIVIDUAL.equalsIgnoreCase(name)) {
-			pairs[0] = MIPS_PROGRAM_NAME;
-			pairs[1] = ENTITY_INDIVIDUAL;
+		String[] pairs;
+		if (MIPS_INDIVIDUAL.equalsIgnoreCase(name)) {
+			pairs = new String[] {MIPS_PROGRAM_NAME, ENTITY_INDIVIDUAL};
 		} else if (MIPS_GROUP.equalsIgnoreCase(name)) {
-			pairs[0] = MIPS_PROGRAM_NAME;
-			pairs[1] = ENTITY_GROUP;
+			pairs = new String[] {MIPS_PROGRAM_NAME, ENTITY_GROUP};
 		} else if (CPCPLUS.equalsIgnoreCase(name)) {
-			pairs[0] = CPCPLUS_PROGRAM_NAME;
-			pairs[1] = "";
+			pairs = new String[] {CPCPLUS_PROGRAM_NAME, ENTITY_INDIVIDUAL};
 		} else {
-			pairs[0] = name.toLowerCase(); //Unknown case
-			pairs[1] = ENTITY_INDIVIDUAL;
+			pairs = new String[] {name.toLowerCase(Locale.ENGLISH), ENTITY_INDIVIDUAL};
 		}
 		return pairs;
 	}

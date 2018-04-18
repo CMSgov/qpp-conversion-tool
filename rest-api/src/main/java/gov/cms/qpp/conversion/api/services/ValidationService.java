@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.ConversionReport;
 
 /**
  * Interface for the QPP Validation Service
@@ -11,5 +11,5 @@ public interface ValidationService {
 	 *
 	 * @param conversionReport A report on the state of the conversion.
 	 */
-	void validateQpp(Converter.ConversionReport conversionReport);
+	void validateQpp(ConversionReport conversionReport);
 }

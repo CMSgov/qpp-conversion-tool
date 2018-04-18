@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.util;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -9,15 +8,14 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
 
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.test.helper.HelperContract;
 
-/**
- * Test class to increase JaCoCo code coverage
- */
-class JsonHelperTest {
+class JsonHelperTest implements HelperContract {
 
 	@Test
 	void privateConstructorTest() throws Exception {
@@ -51,12 +49,12 @@ class JsonHelperTest {
 
 		try {
 			JsonHelper.readJson(new ByteArrayInputStream(testJson.getBytes()), Map.class);
-			fail("An exception should have been thrown.");
+			Assertions.fail("An exception should have been thrown.");
 		} catch(JsonReadException exception) {
 			assertWithMessage("Wrong exception reason.")
 					.that(exception).hasMessageThat().isSameAs("Problem parsing json string");
 		} catch(Exception exception) {
-			fail("Incorrect exception was thrown.");
+			Assertions.fail("Incorrect exception was thrown.");
 		}
 	}
 
@@ -66,12 +64,17 @@ class JsonHelperTest {
 
 		try {
 			JsonHelper.readJson(testJson, Map.class);
-			fail("An exception should have been thrown.");
+			Assertions.fail("An exception should have been thrown.");
 		} catch(JsonReadException exception) {
 			assertWithMessage("Wrong exception reason.")
 					.that(exception).hasMessageThat().isSameAs("Problem parsing json string");
 		} catch(Exception exception) {
-			fail("Incorrect exception was thrown.");
+			Assertions.fail("Incorrect exception was thrown.");
 		}
+	}
+
+	@Override
+	public Class<?> getHelperClass() {
+		return JsonHelper.class;
 	}
 }

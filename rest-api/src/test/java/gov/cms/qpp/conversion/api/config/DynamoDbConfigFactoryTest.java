@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 class DynamoDbConfigFactoryTest {
+
 	@Test
 	void testConstructor() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		Constructor<DynamoDbConfigFactory> constructor = DynamoDbConfigFactory.class.getDeclaredConstructor();

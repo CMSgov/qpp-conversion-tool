@@ -1,13 +1,14 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Element;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
-import org.jdom2.Element;
-import org.junit.jupiter.api.Test;
 
-import static com.google.common.truth.Truth.assertWithMessage;
+import static com.google.common.truth.Truth.assertThat;
 
 class QualitySectionDecoderTest {
 
@@ -27,10 +28,9 @@ class QualitySectionDecoderTest {
 		Node node = new Node();
 
 		QualitySectionDecoder sectionDecoder = new QualitySectionDecoder(new Context());
-		sectionDecoder.internalDecode(element, node);
+		sectionDecoder.decode(element, node);
 
-		assertWithMessage("Expect node to have property category ")
-				.that(node.getValue("category"))
+		assertThat(node.getValue("category"))
 				.isEqualTo("quality");
 		//Performance start and Performance end are parsed by ReportParameters decoder and are not children of this decoder
 	}

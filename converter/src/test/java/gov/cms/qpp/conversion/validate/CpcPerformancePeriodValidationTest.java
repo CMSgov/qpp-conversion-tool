@@ -2,8 +2,8 @@ package gov.cms.qpp.conversion.validate;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -11,13 +11,13 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
-public class CpcPerformancePeriodValidationTest {
+class CpcPerformancePeriodValidationTest {
 
 	private CpcPerformancePeriodValidation cpcValidator;
 	private Node node;
 
-	@Before
-	public void setup() {
+	@BeforeEach
+	void setup() {
 		cpcValidator = new CpcPerformancePeriodValidation();
 		node = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		node.putValue(ReportingParametersActDecoder.PERFORMANCE_YEAR, "2017");
@@ -26,14 +26,14 @@ public class CpcPerformancePeriodValidationTest {
 	}
 
 	@Test
-	public void testPerformancePeriodIsValid() {
+	void testPerformancePeriodIsValid() {
 		cpcValidator.internalValidateSingleNode(node);
 		assertWithMessage("Should be no errors")
 				.that(cpcValidator.getDetails()).isEmpty();
 	}
 
 	@Test
-	public void testPerformancePeriodStartIsInvalid() {
+	void testPerformancePeriodStartIsInvalid() {
 		node.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "not what we want");
 		cpcValidator.internalValidateSingleNode(node);
 
@@ -43,7 +43,7 @@ public class CpcPerformancePeriodValidationTest {
 	}
 
 	@Test
-	public void testPerformancePeriodEndIsInvalid() {
+	void testPerformancePeriodEndIsInvalid() {
 		node.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "not what we want");
 		cpcValidator.internalValidateSingleNode(node);
 		assertWithMessage("Should result in a performance end error")

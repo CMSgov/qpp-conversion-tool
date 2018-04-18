@@ -8,12 +8,17 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
+import java.time.LocalDate;
 import java.util.Set;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 class CpcClinicalDocumentValidatorTest {
@@ -33,6 +38,12 @@ class CpcClinicalDocumentValidatorTest {
 	@BeforeEach
 	void createNewValidator() {
 		cpcValidator = new CpcClinicalDocumentValidator();
+	}
+
+	@AfterEach
+	void cleanUp() {
+		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
+		System.clearProperty(CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL);
 	}
 
 	@Test
@@ -124,6 +135,34 @@ class CpcClinicalDocumentValidatorTest {
 		assertWithMessage("Must validate with the correct error")
 				.that(cpcValidator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED);
+	}
+
+	@Test
+	void testCpcPlusSubmissionBeforeEndDate() {
+		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE, LocalDate.now().plusYears(3).toString());
+		Node clinicalDocument = createValidCpcPlusClinicalDocument();
+		cpcValidator.internalValidateSingleNode(clinicalDocument);
+
+		assertThat(cpcValidator.getDetails())
+			.isEmpty();
+	}
+
+	@ParameterizedTest
+	@CsvSource({"meep@mawp.blah, meep@mawp.blah", ", cpcplus@telligen.com"})
+	void testCpcPlusSubmissionAfterEndDate(String systemValue, String expected) {
+		LocalDate endDate = LocalDate.now().minusYears(3);
+		String formattedDate = endDate.format(CpcClinicalDocumentValidator.END_DATE_FORMAT);
+		if (systemValue != null) {
+			System.setProperty(CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL, systemValue);
+		}
+		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE, endDate.toString());
+		Node clinicalDocument = createValidCpcPlusClinicalDocument();
+
+		cpcValidator.internalValidateSingleNode(clinicalDocument);
+
+		assertThat(cpcValidator.getDetails())
+			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formattedDate, expected));
 	}
 
 	private Node createValidCpcPlusClinicalDocument() {

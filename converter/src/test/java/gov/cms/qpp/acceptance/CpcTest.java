@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
@@ -38,13 +38,13 @@ class CpcTest {
 	@Test
 	void historicalFull() {
 		Assertions.assertThrows(TransformException.class, () -> {
-			Converter converter = new Converter(new PathQrdaSource(Paths.get(CPC_FILE)));
+			Converter converter = new Converter(new PathSource(Paths.get(CPC_FILE)));
 			converter.transform();
 		});
 	}
 
 	private void run(String type) {
-		Converter converter = new Converter(new PathQrdaSource(Paths.get(CPC_FILE)));
+		Converter converter = new Converter(new PathSource(Paths.get(CPC_FILE)));
 		converter.getContext().setHistorical(true);
 		converter.getContext().setScope(Collections.singleton(QrdaScope.getInstanceByName(type)));
 		converter.transform();

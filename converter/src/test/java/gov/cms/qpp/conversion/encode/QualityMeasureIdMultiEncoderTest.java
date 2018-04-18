@@ -4,18 +4,19 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-public class QualityMeasureIdMultiEncoderTest {
+class QualityMeasureIdMultiEncoderTest {
 
 	private static final String REQUIRE_POPULATION_TOTAL = "Must have a required eligiblePopulation";
 	private static final String REQUIRE_PERFORMANCE_MET = "Must have a required performanceMet";
@@ -42,76 +43,75 @@ public class QualityMeasureIdMultiEncoderTest {
 	private Node numeratorNodeTwo;
 	private Node denominatorNode;
 	private Node denominatorNodeTwo;
-	private Node aggregateCountNode;
 	private JsonWrapper wrapper;
 	private QualityMeasureIdEncoder encoder;
 
-	@BeforeClass
-	public static  void setUpCustomMeasureData() {
+	@BeforeAll
+	static  void setUpCustomMeasureData() {
 		MeasureConfigs.setMeasureDataFile("test-multi-prop-measure-data.json");
 	}
 
-	@AfterClass
-	public static void resetMeasuresData() {
+	@AfterAll
+	static void resetMeasuresData() {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
 	}
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue(MEASURE_ID, "test1");
 
-		aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
 
 		eligiblePopulationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationNode.putValue(TYPE, SubPopulations.IPOP);
+		eligiblePopulationNode.putValue(TYPE, SubPopulationLabel.IPOP.name());
 		eligiblePopulationNode.putValue(POPULATION_ID, "ipop1");
 		eligiblePopulationNode.addChildNode(aggregateCountNode);
 
 		eligiblePopulationNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationNodeTwo.putValue(TYPE, SubPopulations.IPOP);
+		eligiblePopulationNodeTwo.putValue(TYPE, SubPopulationLabel.IPOP.name());
 		eligiblePopulationNodeTwo.putValue(POPULATION_ID, "ipop2");
 		eligiblePopulationNodeTwo.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExclusionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExclusionNode.putValue(TYPE, SubPopulations.DENEX);
+		eligiblePopulationExclusionNode.putValue(TYPE, SubPopulationLabel.DENEX.name());
 		eligiblePopulationExclusionNode.putValue(POPULATION_ID, "denex1");
 		eligiblePopulationExclusionNode.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExclusionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExclusionNodeTwo.putValue(TYPE, SubPopulations.DENEX);
+		eligiblePopulationExclusionNodeTwo.putValue(TYPE, SubPopulationLabel.DENEX.name());
 		eligiblePopulationExclusionNodeTwo.putValue(POPULATION_ID, "denex2");
 		eligiblePopulationExclusionNodeTwo.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExceptionNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExceptionNode.putValue(TYPE, SubPopulations.DENEXCEP);
+		eligiblePopulationExceptionNode.putValue(TYPE, SubPopulationLabel.DENEXCEP.name());
 		eligiblePopulationExceptionNode.putValue(POPULATION_ID, "denexcep1");
 		eligiblePopulationExceptionNode.addChildNode(aggregateCountNode);
 
 		eligiblePopulationExceptionNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		eligiblePopulationExceptionNodeTwo.putValue(TYPE, SubPopulations.DENEXCEP);
+		eligiblePopulationExceptionNodeTwo.putValue(TYPE, SubPopulationLabel.DENEXCEP.name());
 		eligiblePopulationExceptionNodeTwo.putValue(POPULATION_ID, "denexcep2");
 		eligiblePopulationExceptionNodeTwo.addChildNode(aggregateCountNode);
 
 		numeratorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 
-		numeratorNode.putValue(TYPE, SubPopulations.NUMER);
+		numeratorNode.putValue(TYPE, SubPopulationLabel.NUMER.name());
 		numeratorNode.putValue(POPULATION_ID, "numer1");
 		numeratorNode.addChildNode(aggregateCountNode);
 
 		numeratorNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		numeratorNodeTwo.putValue(TYPE, SubPopulations.NUMER);
+		numeratorNodeTwo.putValue(TYPE, SubPopulationLabel.NUMER.name());
 		numeratorNodeTwo.putValue(POPULATION_ID, "numer2");
 		numeratorNodeTwo.addChildNode(aggregateCountNode);
 
 		denominatorNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denominatorNode.putValue(TYPE, SubPopulations.DENOM);
+		denominatorNode.putValue(TYPE, SubPopulationLabel.DENOM.name());
 		denominatorNode.putValue(POPULATION_ID, "denom1");
 		denominatorNode.addChildNode(aggregateCountNode);
 
 		denominatorNodeTwo = new Node(TemplateId.MEASURE_DATA_CMS_V2);
-		denominatorNodeTwo.putValue(TYPE, SubPopulations.DENOM);
+		denominatorNodeTwo.putValue(TYPE, SubPopulationLabel.DENOM.name());
 		denominatorNodeTwo.putValue(POPULATION_ID, "denom2");
 		denominatorNodeTwo.addChildNode(aggregateCountNode);
 
@@ -120,7 +120,7 @@ public class QualityMeasureIdMultiEncoderTest {
 	}
 
 	@Test
-	public void testInternalEncode() {
+	void testInternalEncode() {
 		qualityMeasureId.addChildNodes(
 				eligiblePopulationNode, eligiblePopulationExceptionNode,
 				eligiblePopulationExclusionNode, numeratorNode, denominatorNode,
@@ -138,7 +138,7 @@ public class QualityMeasureIdMultiEncoderTest {
 	}
 
 	@Test
-	public void testNullSubPopulations() {
+	void testNullSubPopulations() {
 		qualityMeasureId.putValue(MEASURE_ID, "test2");
 		qualityMeasureId.addChildNodes(eligiblePopulationNode, eligiblePopulationExceptionNode,
 				numeratorNode, denominatorNode, eligiblePopulationNodeTwo,
@@ -151,7 +151,7 @@ public class QualityMeasureIdMultiEncoderTest {
 		List<LinkedHashMap<String, ?>> subPopulations =
 				(List<LinkedHashMap<String, ?>>)childValues.get("strata");
 
-		assertWithMessage("Must have zero sub populations encoded").that(subPopulations).isEmpty();
+		assertThat(subPopulations).isEmpty();
 	}
 
 	@SuppressWarnings("unchecked")

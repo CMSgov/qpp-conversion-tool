@@ -78,4 +78,5 @@ class XmlUtilsTest {
 		assertWithMessage("Expect to have an instance here")
 				.that(xmlUtils).isInstanceOf(XmlUtils.class);
 	}
+
 }

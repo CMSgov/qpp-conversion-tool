@@ -1,32 +1,32 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathQrdaSource;
+import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class ReportingParametersActRoundTripTest {
+class ReportingParametersActRoundTripTest {
+
 	private static final Path VALID_QRDA_III = Paths.get("../qrda-files/valid-QRDA-III-latest.xml");
 
 	private static String json;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
-		Converter converter = new Converter(new PathQrdaSource(VALID_QRDA_III));
+		Converter converter = new Converter(new PathSource(VALID_QRDA_III));
 		JsonWrapper qpp = converter.transform();
 		json = qpp.toString();
 	}
 
 	@Test
-	public void testQualityMeasuresContainsPerformanceStart() throws IOException {
+	void testQualityMeasuresContainsPerformanceStart() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 		"$.measurementSets[0].performanceStart", String.class);
 
@@ -34,7 +34,7 @@ public class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	public void testQualityMeasuresContainsPerformanceEnd() throws IOException {
+	void testQualityMeasuresContainsPerformanceEnd() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[0].performanceEnd", String.class);
 
@@ -42,7 +42,7 @@ public class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	public void testAciSectionContainsPerformanceStart() throws IOException {
+	void testAciSectionContainsPerformanceStart() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[1].performanceStart", String.class);
 
@@ -50,7 +50,7 @@ public class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	public void testAciSectionContainsPerformanceEnd() throws IOException {
+	void testAciSectionContainsPerformanceEnd() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[1].performanceEnd", String.class);
 
@@ -58,7 +58,7 @@ public class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	public void testIaContainsPerformanceStart() throws IOException {
+	void testIaContainsPerformanceStart() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[2].performanceStart", String.class);
 
@@ -66,7 +66,7 @@ public class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	public void testIaContainsPerformanceEnd() throws IOException {
+	void testIaContainsPerformanceEnd() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
 				"$.measurementSets[2].performanceEnd", String.class);
 

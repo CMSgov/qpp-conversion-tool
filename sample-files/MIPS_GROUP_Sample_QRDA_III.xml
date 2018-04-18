@@ -234,7 +234,7 @@ CDA Header
 								1.	SHALL contain exactly one [1..1] @root="2.16.840.1.113883.4.2" Tax ID Number (CONF:711171).
 								Note: This value specifies that this id is the organization's Tax Identification Number (TIN).
 								2.	SHALL contain exactly one [1..1] @extension (CONF:711172). Note: This is the organization's TIN. -->
-						<id root="2.16.840.1.113883.4.2" extension="123456789"/>
+						<id root="2.16.840.1.113883.4.2" extension="000456789"/>
 						<!-- This representedOrganization SHOULD contain zero or more [0..*] name (CONF:19659).-->
 						<name>Good Health Clinic</name>
 					</representedOrganization>
