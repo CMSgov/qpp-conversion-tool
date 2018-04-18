@@ -34,8 +34,6 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 33 : CT - Must enter a valid Performance Rate value
 * 34 : CT - Must contain a practice site address for CPC+ conversions
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified
-* 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty
-* 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid
 * 36 : CT - Must contain one Measure section
 * 37 : CT - Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
 * 38 : CT - This `(Numerator or Denominator)` Node does not have any child Nodes
@@ -61,6 +59,8 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 59 : CT - The electronic measure id: `(Current eMeasure ID)` requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`
 * 60 : CT - The electronic measure id: `(Current eMeasure ID)` has a performanceRateId with an incorrect UUID of `(Incorrect UUID)`
 * 61 : CT - A Performance Rate must contain a single Performance Rate UUID
+* 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty
+* 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid
 * 64 : CT - CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
 * 65 : CT - CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.
 * 66 : CT - Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`
