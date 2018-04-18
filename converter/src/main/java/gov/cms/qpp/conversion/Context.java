@@ -1,14 +1,14 @@
 package gov.cms.qpp.conversion;
 
+import gov.cms.qpp.conversion.model.Program;
+import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.segmentation.QrdaScope;
+
 import java.lang.annotation.Annotation;
 import java.util.EnumSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
-
-import gov.cms.qpp.conversion.model.Program;
-import gov.cms.qpp.conversion.model.Registry;
-import gov.cms.qpp.conversion.segmentation.QrdaScope;
 
 /**
  * Stateful converter context. The values in this data structure will change
@@ -16,12 +16,10 @@ import gov.cms.qpp.conversion.segmentation.QrdaScope;
  */
 public class Context {
 	public static final String REPORTING_YEAR = "2017";
-	public static final String IG_URL = "https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=19";
 	private final Map<Class<? extends Annotation>, Registry<?>> registries = new IdentityHashMap<>();
 	private Program program = Program.ALL;
 	private Set<QrdaScope> scope = EnumSet.noneOf(QrdaScope.class);
 	private boolean historical;
-	private boolean doDefaults = true;
 	private boolean doValidation = true;
 
 	/**
@@ -85,24 +83,6 @@ public class Context {
 	 */
 	public void setHistorical(boolean historical) {
 		this.historical = historical;
-	}
-
-	/**
-	 * Whether this context wants default conversion performed
-	 *
-	 * @return doDefaults
-	 */
-	public boolean isDoDefaults() {
-		return doDefaults;
-	}
-
-	/**
-	 * Switch for enabling or disabling inclusion of default nodes.
-	 *
-	 * @param doDefaults whether the converter should perform defaults
-	 */
-	public void setDoDefaults(boolean doDefaults) {
-		this.doDefaults = doDefaults;
 	}
 
 	/**

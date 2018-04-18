@@ -10,7 +10,7 @@ class CommandLineMainTest implements LoggerContract {
 
 	@Test
 	void testCliInvalidOption() {
-		CommandLine line = CommandLineMain.cli("-InvalidArgument");
+		CommandLine line = CommandLineMain.cli("-" + CommandLineMain.SKIP_VALIDATION + " -InvalidArgument");
 		Truth.assertThat(line).isNull();
 		Truth.assertThat(getLogs()).isNotEmpty();
 	}

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>1.4.1-RELEASE</version>
+		<version>1.4.2-RELEASE</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -16,24 +16,13 @@
 	<description>API end-point for the QRDA3 to QPP conversion</description>
 
 	<properties>
-		<spring-boot.version>1.5.8.RELEASE</spring-boot.version>
+		<spring-boot.version>2.0.1.RELEASE</spring-boot.version>
 		<logback.version>1.2.3</logback.version>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 	</properties>
 
 	<build>
 		<plugins>
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.0.2</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
 
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -49,6 +38,11 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 			</plugin>
@@ -59,14 +53,22 @@
 			</plugin>
 
 			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
 		</plugins>
@@ -89,7 +91,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
-			<version>2.4.0</version>
+			<version>${jackson.version}</version>
 		</dependency>
 
 		<dependency>
@@ -101,7 +103,7 @@
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
-			<version>4.11</version>
+			<version>5.0</version>
 		</dependency>
 
 		<dependency>
@@ -118,25 +120,13 @@
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
-			<version>0.7.0</version>
+			<version>0.9.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk</artifactId>
-			<version>1.11.228</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-dynamodb-encryption-java</artifactId>
-			<version>1.11.0</version>
 		</dependency>
 
 		<dependency>
@@ -155,7 +145,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>4.3.13.RELEASE</version>
+			<version>5.0.4.RELEASE</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -168,7 +158,7 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
-			<version>4.2.3.RELEASE</version>
+			<version>5.0.3.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -200,7 +190,7 @@
 		<dependency>
 			<groupId>org.springframework.retry</groupId>
 			<artifactId>spring-retry</artifactId>
-			<version>1.2.1.RELEASE</version>
+			<version>1.2.2.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -224,12 +214,48 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.spotify</groupId>
+			<artifactId>hamcrest-jackson</artifactId>
+			<version>1.1.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>com.github.spullara.mustache.java</groupId>
 			<artifactId>compiler</artifactId>
 			<version>0.9.5</version>
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-core</artifactId>
+			<version>${aws.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-kms</artifactId>
+			<version>${aws.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-dynamodb</artifactId>
+			<version>${aws.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-dynamodb-encryption-java</artifactId>
+			<version>1.11.0</version>
+		</dependency>
 	</dependencies>
 
 </project>

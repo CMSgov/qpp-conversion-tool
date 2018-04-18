@@ -81,6 +81,27 @@ class CpcFileControllerV1Test {
 	}
 
 	@Test
+	void testGetQppById() throws IOException {
+		InputStreamResource valid = new InputStreamResource(new ByteArrayInputStream("1234".getBytes()));
+		when(cpcFileService.getQppById(anyString())).thenReturn(valid);
+
+		ResponseEntity<InputStreamResource> response = cpcFileControllerV1.getQppById("meep");
+
+		assertThat(IOUtils.toString(response.getBody().getInputStream(), StandardCharsets.UTF_8))
+			.isEqualTo("1234");
+	}
+
+	@Test
+	void testGetQppByIdFeatureFlagDisabled() throws IOException {
+		System.setProperty(Constants.NO_CPC_PLUS_API_ENV_VARIABLE, "trueOrWhatever");
+
+		ResponseEntity<InputStreamResource> response = cpcFileControllerV1.getQppById("meep");
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+		assertThat(response.getBody()).isNull();
+	}
+
+	@Test
 	void testMarkFileAsProcessedReturnsSuccess() {
 		when(cpcFileService.processFileById(anyString())).thenReturn("success!");
 

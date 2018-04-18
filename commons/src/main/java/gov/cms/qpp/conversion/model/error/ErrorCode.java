@@ -1,7 +1,8 @@
 package gov.cms.qpp.conversion.model.error;
 
+import org.apache.commons.text.StringSubstitutor;
 
-import org.apache.commons.text.StrSubstitutor;
+import gov.cms.qpp.conversion.DocumentationReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,49 +21,46 @@ import java.util.stream.IntStream;
 public enum ErrorCode implements LocalizedError {
 
 	ENCODER_MISSING(1, "Failed to find an encoder"),
-	NOT_VALID_XML_DOCUMENT(2, "The file is not a valid XML document"),
-	UNEXPECTED_ERROR(3, "Unexpected exception occurred during conversion"),
-	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occurred during encoding"),
+	NOT_VALID_XML_DOCUMENT(2, "The file is not a valid XML document. The file you are submitting is not a "
+			+ "properly formatted XML document. Please check your document to ensure proper formatting."),
+	UNEXPECTED_ERROR(3, "Unexpected exception occurred during conversion. " + ServiceCenter.MESSAGE),
+	UNEXPECTED_ENCODE_ERROR(4, "Unexpected exception occurred during encoding. " + ServiceCenter.MESSAGE),
 	NOT_VALID_QRDA_DOCUMENT(5, "The file is not a QRDA-III XML document. "
 		+ "Please ensure that the submission complies with the `(Submission year's)` implementation guide. "
 		+ "`(Implementation guide link)`", true),
-	MEASURE_GUID_MISSING(6, "The measure reference results must have a single occurrence of the recognized measure GUID "
-			+ "`(Provided measure id)` is invalid. Did you intend to send one of these `(Valid measure id suggestions)`?", true),
-	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure"),
+	MEASURE_GUID_MISSING(6, "The measure GUID supplied `(Provided measure id)` is invalid. Please see the `(Submission year's)` IG "
+			+ DocumentationReference.MEASURE_IDS + " for valid measure GUIDs.", true),
+	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
+			+ "Please review the measures section of your file as it cannot be empty."),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Measure Performed RnR requires exactly one "
-		+ "Measure Performed"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This ACI Measure Performed RnR's requires a single "
-			+ "Measure ID"),
+	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Reference and Results is missing a required "
+		+ "Measure Performed child"),
+	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This ACI Measure Performed Reference and Results requires "
+		+ "a single Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
-			+ "for an eCQM that is proportion measure"),
+			+ "for a measure that is a proportion measure"),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
-			"The eCQM (electronic measure id: `(Current eMeasure ID)`) requires `(Number of Subpopulations required)` "
+			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
 			+ "`(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`", true),
-	ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION(15, "ACI Numerator Denominator Node should have an ACI "
-			+ "Section Node as a parent"),
-	ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "ACI Numerator Denominator Node does not contain a "
+	ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION(15, "ACI Numerator Denominator element should have an ACI "
+			+ "Section element as a parent"),
+	ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "ACI Numerator Denominator element does not contain a "
 			+ "measure name ID"),
-	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "ACI Numerator Denominator Node does not have any child "
-			+ "Nodes"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
-			+ "Node requires exactly one Denominator Node child"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_CHILD_NODE(19, "This ACI Numerator Denominator "
-			+ "Node requires exactly one Numerator Node child"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS(20, "This ACI Numerator Denominator Node "
-			+ "contains too many Denominator Node children"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS(21, "This ACI Numerator Denominator Node "
-			+ "contains too many Numerator Node children"),
+	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "ACI Numerator Denominator element does not have any child "
+			+ "elements"),
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
+			+ "element requires exactly one `(Denominator|Numerator)` element child", true),
 	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter ACT"),
 	CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document Node must have at least one "
-			+ "Aci or IA or eCQM Section Node as a child"),
-	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Clinical Document must have one and only one program name"),
+			+ "Aci or IA or Measure section Node as a child"),
+	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Clinical Document must have one and only one program name."
+		+ " Valid program names are `(list of valid program names)`", true),
 	CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME(25, "The Clinical Document program name `(program name)` is not recognized. Valid "
 		+ "program names are `(list of valid program names)`.", true),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS(26, "Clinical Document contains duplicate ACI sections"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS(27, "Clinical Document contains duplicate IA sections"),
-	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate eCQN "
+	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate Measure "
 			+ "sections"),
 	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START(29, "Must have one and only one performance "
 			+ "start"),
@@ -77,7 +75,7 @@ public enum ErrorCode implements LocalizedError {
 			+ "Identifier should be specified"),
 	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty"),
 	CPC_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid"),
-	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "Must contain one Measure (eCQM) section"),
+	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "Must contain one Measure section"),
 	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "Must contain correct number of performance rate(s). "
 			+ "Correct Number is `(Expected value)`", true),
 	NUMERATOR_DENOMINATOR_MISSING_CHILDREN(38,
@@ -110,9 +108,9 @@ public enum ErrorCode implements LocalizedError {
 			+ "measure population"),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE(58, "The measure reference results must have a single "
 			+ "measure type"),
-	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The eCQM (electronic measure id: `(Current eMeasure ID)`) requires a "
+	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The electronic measure id: `(Current eMeasure ID)` requires a "
 			+ "`(Subpopulation type)` with the correct UUID of `(Correct uuid required)`", true),
-	QUALITY_MEASURE_ID_INCORRECT_PERFORMANCE_UUID(60, "The eCQM (electronic measure id: `(Current eMeasure ID)`) has "
+	QUALITY_MEASURE_ID_INCORRECT_PERFORMANCE_UUID(60, "The electronic measure id: `(Current eMeasure ID)` has "
 			+ "a performanceRateId with an incorrect UUID of `(Incorrect UUID)`", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID"),
@@ -121,10 +119,10 @@ public enum ErrorCode implements LocalizedError {
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of "
 		+ "the following measures: `(Listing of all CPC+ measure ids)`.", true),
 	CPC_PLUS_MISSING_SUPPLEMENTAL_CODE(66, "Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code "
-		+ "`(Supplemental Data Code)` for eCQM measure `(Measure Id)`'s Sub-population `(Sub Population)`", true),
+		+ "`(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`", true),
 	CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT(67, "Must have one count for Supplemental Data `(Supplemental Data Code)` "
-		+ "on Sub-population `(Sub Population)` for eCQM measure `(Measure Id)`", true),
-	CPC_PLUS_SUBMISSION_ENDED(68, "Your CPC+ submission was made after the CPC+ eCQM submission deadline of "
+		+ "on Sub-population `(Sub Population)` for the measure id `(Measure Id)`", true),
+	CPC_PLUS_SUBMISSION_ENDED(68, "Your CPC+ submission was made after the CPC+ Measure section submission deadline of "
 		+ "`(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at "
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
@@ -133,8 +131,6 @@ public enum ErrorCode implements LocalizedError {
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
-	private static final String VARIABLE_MARKER = "`\\(([^()]*)\\)`";
-	private static Pattern replacePattern;
 	public static final String CT_LABEL = "CT - ";
 
 	private final int code;
@@ -155,7 +151,7 @@ public enum ErrorCode implements LocalizedError {
 	}
 
 	private void initMessageMarkers(String message) {
-		Matcher matcher = getPattern().matcher(message);
+		Matcher matcher = VariableMarker.REPLACE_PATTERN.matcher(message);
 		while (matcher.find()) {
 			messageVariables.add(matcher.group(1));
 		}
@@ -198,19 +194,21 @@ public enum ErrorCode implements LocalizedError {
 
 	private String subValues(Object... arguments) {
 		Map<String, String> valueSub = new HashMap<>();
-		IntStream.range(0, arguments.length)
-				.forEach(index -> valueSub.put(messageVariables.get(index), arguments[index].toString()));
-		return new StrSubstitutor(valueSub, "`(", ")`").replace(getMessage());
-	}
-
-	private static Pattern getPattern() {
-		if (replacePattern == null) {
-			replacePattern = Pattern.compile(VARIABLE_MARKER);
-		}
-		return replacePattern;
+		IntStream.range(0, arguments.length).forEach(index ->
+			valueSub.put(messageVariables.get(index), arguments[index].toString()));
+		return new StringSubstitutor(valueSub, "`(", ")`").replace(getMessage());
 	}
 
 	public static ErrorCode getByCode(int code) {
 		return CODE_TO_VALUE.get(code);
+	}
+
+	private static final class VariableMarker {
+		static final Pattern REPLACE_PATTERN = Pattern.compile("`\\(([^()]*)\\)`");
+	}
+
+	private static final class ServiceCenter {
+		static final String MESSAGE = "Please contact the Service Center for assistance via phone at "
+				+ "1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov";
 	}
 }

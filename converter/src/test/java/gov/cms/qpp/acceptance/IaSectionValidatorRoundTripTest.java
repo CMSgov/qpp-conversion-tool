@@ -5,6 +5,7 @@ import static com.google.common.truth.Truth.assertThat;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import gov.cms.qpp.conversion.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,8 @@ class IaSectionValidatorRoundTripTest {
 	@Test
 	void testIaSectionValidatorIncorrectChildren() {
 		Path path = Paths.get("src/test/resources/negative/iaSectionContainsWrongChild.xml");
-		Converter converter = new Converter(new PathSource(path));
+		Context context = new Context();
+		Converter converter = new Converter(new PathSource(path), context);
 
 		AllErrors errors = new AllErrors();
 		try {

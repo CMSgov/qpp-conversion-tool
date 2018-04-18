@@ -19,10 +19,10 @@ import org.jdom2.xpath.XPathFactory;
 public abstract class QrdaDecoder {
 
 	protected final Context context;
-	private Namespace defaultNs;
-	protected Namespace xpathNs;
+	protected Namespace xpathNs = Namespace.NO_NAMESPACE;
+	private Namespace defaultNs = Namespace.NO_NAMESPACE;
 
-	public QrdaDecoder(final Context context) {
+	public QrdaDecoder(Context context) {
 		this.context = context;
 	}
 

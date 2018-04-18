@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.Context;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -110,7 +111,7 @@ class ClinicalDocumentValidatorTest {
 
 		assertWithMessage("error should be about missing missing program name")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME);
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(ClinicalDocumentValidator.VALID_PROGRAM_NAMES));
 	}
 
 	@Test
@@ -217,7 +218,8 @@ class ClinicalDocumentValidatorTest {
 		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
 
 		//execute
-		Converter converter = new Converter(new PathSource(path));
+		Context context = new Context();
+		Converter converter = new Converter(new PathSource(path), context);
 		AllErrors allErrors = new AllErrors();
 		try {
 			converter.transform();
@@ -227,12 +229,13 @@ class ClinicalDocumentValidatorTest {
 
 		List<Detail> errors = getErrors(allErrors);
 
-		assertWithMessage("Must have 4 errors")
-				.that(errors).hasSize(4);
+		assertWithMessage("Must have 3 errors")
+				.that(errors).hasSize(3);
 
 		assertWithMessage("Must contain the correct errors")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsAllOf(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME,
+				.containsAllOf(
+						ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(ClinicalDocumentValidator.VALID_PROGRAM_NAMES),
 						ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START);
 	}
 

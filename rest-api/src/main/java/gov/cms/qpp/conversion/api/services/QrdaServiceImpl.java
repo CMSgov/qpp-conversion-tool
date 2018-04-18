@@ -22,7 +22,7 @@ public class QrdaServiceImpl implements QrdaService {
 	 */
 	@PostConstruct
 	public void preloadMeasureConfigs() {
-		MeasureConfigs.class.getSimpleName(); // run the MeasureConfigs static block on startup
+		MeasureConfigs.init();
 	}
 
 	/**

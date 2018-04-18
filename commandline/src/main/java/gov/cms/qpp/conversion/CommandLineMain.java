@@ -23,7 +23,6 @@ public class CommandLineMain {
 
 	public static final String BYGONE = "bygone";
 	public static final String SKIP_VALIDATION = "skipValidation";
-	public static final String SKIP_DEFAULTS = "skipDefaults";
 	public static final String TEMPLATE_SCOPE = "templateScope";
 	public static final String RECURSIVE = "recursive";
 	public static final String HELP = "help";
@@ -32,7 +31,6 @@ public class CommandLineMain {
 		OPTIONS = new Options();
 		OPTIONS.addOption("b", BYGONE, false, "Signals a historical conversion");
 		OPTIONS.addOption("v", SKIP_VALIDATION, false, "Skip validations");
-		OPTIONS.addOption("d", SKIP_DEFAULTS, false, "Skip defaulted transformations");
 		OPTIONS.addOption("r", RECURSIVE, false, "Search for specified files recursively");
 		OPTIONS.addOption("h", HELP, false, "This help message");
 

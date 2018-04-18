@@ -1,10 +1,5 @@
 package gov.cms.qpp.conversion.decode;
 
-import org.jdom2.Element;
-import org.jdom2.xpath.XPathHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
 import gov.cms.qpp.conversion.model.DecodeData;
@@ -13,7 +8,12 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
+import org.jdom2.Element;
+import org.jdom2.xpath.XPathHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -170,15 +170,17 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	}
 
 	/**
-	 * Reduces the {@code templateId} {@link Element}s so there are no duplicates.  All other {@link Element}s are left alone.
+	 * Reduces the {@code templateId} {@link Element}s so there are no duplicates. All other {@link Element}s are left alone.
 	 *
 	 * @param childElements The elements to filter
-	 * @return A {@link List} of {@link Element}s that are filtered.
+	 * @return A {@link List} of {@link Element}s that are filtered. If no template ids or at least one implemented template id
+	 * appears within the filtered child elements then the filtered children will be returned otherwise an empty list will
+	 * be returned.
 	 */
 	private List<Element> getUniqueTemplateIdElements(final List<Element> childElements) {
 		Set<TemplateId> uniqueTemplates = EnumSet.noneOf(TemplateId.class);
 
-		return childElements.stream()
+		List<Element> children = childElements.stream()
 			.filter(filterElement -> {
 				boolean isTemplateId = TEMPLATE_ID.equals(filterElement.getName());
 				TemplateId filterTemplateId = getTemplateId(filterElement);
@@ -186,18 +188,20 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 				boolean elementWillStay = true;
 
 				if (isTemplateId) {
-					if (getDecoder(filterTemplateId) == null) {
+					if (getDecoder(filterTemplateId) == null || uniqueTemplates.contains(filterTemplateId)) {
 						elementWillStay = false;
-					} else if (uniqueTemplates.contains(filterTemplateId)) {
-						elementWillStay = false;
-					} else {
-						uniqueTemplates.add(filterTemplateId);
 					}
+					uniqueTemplates.add(filterTemplateId);
 				}
 
 				return elementWillStay;
 			})
 			.collect(Collectors.toList());
+
+		return (uniqueTemplates.isEmpty()
+			|| uniqueTemplates.stream().anyMatch(template -> TemplateId.UNIMPLEMENTED != template))
+			? children
+			: new ArrayList<>();
 	}
 
 	/**
@@ -259,10 +263,8 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 			}
 
 			Decoder decoder = qppDecoder.getClass().getAnnotation(Decoder.class);
-			TemplateId template = decoder == null ? TemplateId.DEFAULT : decoder.value();
-			return !scope.contains(template) ? null : qppDecoder;
+			return decoder == null || !scope.contains(decoder.value()) ? null : qppDecoder;
 		}
-
 		return null;
 	}
 

@@ -1,11 +1,12 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.MarkupManipulationHandler;
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.FormattedErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2;
 
 class QualityMeasureSectionValidatorTest {
-
+	private static final String DUPLICATE_MEASURE_ID = "40280381-51f0-825b-0152-22b98cff181a";
 	private static MarkupManipulationHandler manipulatorHandler;
 	private Node reportingParameterNode;
 	private Node qualityMeasureSectionNode;
@@ -71,12 +72,12 @@ class QualityMeasureSectionValidatorTest {
 
 	@Test
 	void duplicateEcqMeasure() {
+		LocalizedError localizedError = ErrorCode.MEASURE_GUID_MISSING.format(DUPLICATE_MEASURE_ID, Context.REPORTING_YEAR);
 		List<Detail> errorDetails = manipulatorHandler
 				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V2.name(), "measureId", false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(new FormattedErrorCode(ErrorCode.MEASURE_GUID_MISSING,
-						ErrorCode.MEASURE_GUID_MISSING.getMessage()));
+				.contains(localizedError);
 	}
 
 	@Test
@@ -85,8 +86,7 @@ class QualityMeasureSectionValidatorTest {
 		List<Detail> errorDetails = manipulatorHandler.executeScenario(xpath, false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(new FormattedErrorCode(ErrorCode.MEASURE_GUID_MISSING,
-						ErrorCode.MEASURE_GUID_MISSING.getMessage()));
+				.contains(ErrorCode.MEASURE_GUID_MISSING);
 	}
 
 	private Set<Detail> validateQualityMeasureSection() {

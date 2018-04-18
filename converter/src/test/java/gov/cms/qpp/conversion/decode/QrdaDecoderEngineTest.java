@@ -1,17 +1,19 @@
 package gov.cms.qpp.conversion.decode;
 
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.ComponentKey;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
 import gov.cms.qpp.conversion.model.TemplateId;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -271,6 +273,97 @@ class QrdaDecoderEngineTest {
 		Node decodedNodes = objectUnderTest.decode(rootElement);
 
 		assertNodeCount(decodedNodes, 1, 1, 0);
+	}
+
+
+	@Nested
+	@DisplayName("Describe branch pruning")
+	class Prunes//!!!!!!!
+	{
+		Element rootElement;
+		Element aGenericElement;
+		Element noDecoderElement1;
+		Element noDecoderElement2;
+		Element anotherGenericElement;
+
+		@BeforeEach
+		void makeElements() {
+			rootElement = createRootElement();
+			aGenericElement = createGenericElement();
+			anotherGenericElement = createGenericElement();
+			noDecoderElement1 = createNoDecoderElement();
+			noDecoderElement2 = createNoDecoderElement();
+		}
+
+		@Test
+		@DisplayName("Should prune branches with insignificant children")
+		void testPruneInsignificantBranches() {
+			addChildToParent(rootElement, aGenericElement);
+			addChildToParent(aGenericElement, noDecoderElement1);
+			addChildToParent(aGenericElement, noDecoderElement2);
+
+			QrdaDecoderEngine objectUnderTest = new QrdaDecoderEngine(context);
+			Node decodedNodes = objectUnderTest.decode(rootElement);
+
+			assertNodeCount(decodedNodes, 0, 0, 0);
+		}
+
+		@Test
+		@DisplayName("Should prune branches with insignificant children but significant grand children")
+		void testPruneInsignificantChildrenSignificantGrandChildrenWhenNoDefaults() {
+			addChildToParent(rootElement, aGenericElement);
+			addChildToParent(aGenericElement, noDecoderElement1);
+			addChildToParent(aGenericElement, noDecoderElement2);
+			addChildToParent(aGenericElement, anotherGenericElement);
+			addChildToParent(anotherGenericElement, createContinueElement());
+
+			QrdaDecoderEngine objectUnderTest = new QrdaDecoderEngine(context);
+			Node decodedNodes = objectUnderTest.decode(rootElement);
+
+			assertNodeCount(decodedNodes, 0, 0, 0);
+		}
+
+		@Test
+		@DisplayName("Should not prune branches with invalid descendancy")
+		void testPruneInvalidChildren() {
+			addChildToParent(rootElement, aGenericElement);
+			addChildToParent(aGenericElement, createContinueElement());
+			addChildToParent(aGenericElement, anotherGenericElement);
+			addChildToParent(anotherGenericElement, createContinueElement());
+
+			QrdaDecoderEngine objectUnderTest = new QrdaDecoderEngine(context);
+			Node decodedNodes = objectUnderTest.decode(rootElement);
+
+			assertNodeCount(decodedNodes, 2, 0, 0);
+		}
+
+		@Test
+		@DisplayName("Should not prune template-less branches with valid descendant elements")
+		void testPrunePassThroughElements() {
+			addChildToParent(rootElement, aGenericElement);
+			addChildToParent(aGenericElement, anotherGenericElement);
+			addChildToParent(anotherGenericElement, createContinueElement());
+
+			QrdaDecoderEngine objectUnderTest = new QrdaDecoderEngine(context);
+			Node decodedNodes = objectUnderTest.decode(rootElement);
+
+			assertNodeCount(decodedNodes, 1, 0, 0);
+		}
+
+		@Test
+		@DisplayName("Should not prune branches with a supported template amongst unsupported templates")
+		void testCinderellaAndHerEvilStepSisters() {
+			addChildToParent(rootElement, aGenericElement);
+			addChildToParent(aGenericElement, anotherGenericElement);
+			addChildToParent(anotherGenericElement, noDecoderElement1);
+			addChildToParent(anotherGenericElement, noDecoderElement2);
+			addChildToParent(anotherGenericElement, createContinueElement());
+
+			QrdaDecoderEngine objectUnderTest = new QrdaDecoderEngine(context);
+			Node decodedNodes = objectUnderTest.decode(rootElement);
+
+			assertNodeCount(decodedNodes, 1, 0, 0);
+		}
 	}
 
 	private Element createContinueElement() {

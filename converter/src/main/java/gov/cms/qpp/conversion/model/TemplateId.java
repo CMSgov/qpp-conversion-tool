@@ -40,7 +40,8 @@ public enum TemplateId {
 	NULL_RETURN("null.return"),
 	QED("Q.E.D"),
 	PLACEHOLDER("placeholder"),
-	DEFAULT("default");
+	DEFAULT("default"),
+	UNIMPLEMENTED("unimplemented");
 
 	/**
 	 * Defined TemplateId Constants
@@ -136,17 +137,19 @@ public enum TemplateId {
 	 * @param root The root part of the templateId.
 	 * @param extension The extension part of the templateId.
 	 * @param context allows historical check
-	 * @return The template ID if found.  Else {@code TemplateId.DEFAULT}.
+	 * @return The template ID if found, else a defaulted TemplateId. The TemplateId will be
+	 * {@code TemplateId.UNIMPLEMENTED}.
 	 */
 	public static TemplateId getTemplateId(final String root, final String extension, final Context context) {
+		TemplateId defaultTemplate = TemplateId.UNIMPLEMENTED;
 		Map<String, TemplateId> extensionsToTemplateId = ROOT_AND_TO_TEMPLATE_ID.get(root);
 		Function<Boolean, TemplateId> templateIdFunction = condition -> condition
-			? extensionsToTemplateId.getOrDefault(extension, TemplateId.DEFAULT) :
-			extensionsToTemplateId.getOrDefault(null, TemplateId.DEFAULT);
+			? extensionsToTemplateId.getOrDefault(extension, defaultTemplate) :
+			extensionsToTemplateId.getOrDefault(null, defaultTemplate);
 		TemplateId retrieved = null;
 
 		if (extensionsToTemplateId == null) {
-			retrieved = TemplateId.DEFAULT;
+			retrieved = defaultTemplate;
 		} else if (context.isHistorical()) {
 			retrieved = templateIdFunction.apply(CLINICAL_DOCUMENT.root.equals(root));
 		} else {

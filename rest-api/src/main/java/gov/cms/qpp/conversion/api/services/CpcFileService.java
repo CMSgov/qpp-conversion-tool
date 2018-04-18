@@ -27,6 +27,15 @@ public interface CpcFileService {
 	InputStreamResource getFileById(String fileId) throws IOException;
 
 	/**
+	 * Retrieves the file location id by metadata id and uses it to retrieve the submission's QPP
+	 *
+	 * @param fileId {@link Metadata} identifier
+	 * @return QPP contents parsed as a {@link String}
+	 * @throws IOException for invalid IOUtils usage
+	 */
+	InputStreamResource getQppById(String fileId) throws IOException;
+
+	/**
 	 * Marks a CPC File as processed by id
 	 *
 	 * @param fileId Identifier of the CPC+ file

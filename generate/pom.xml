@@ -5,7 +5,7 @@
     <parent>
         <artifactId>qpp-conversion-tool-parent</artifactId>
         <groupId>gov.cms.qpp.conversion</groupId>
-        <version>1.4.1-RELEASE</version>
+        <version>1.4.2-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,7 +17,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.5</version>
+                <version>3.5.1</version>
                 <configuration>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
@@ -40,12 +40,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-suggest</artifactId>
-            <version>7.2.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.github.spullara.mustache.java</groupId>
             <artifactId>compiler</artifactId>
             <version>0.9.5</version>
@@ -54,13 +48,13 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>3.5.0</version>
+            <version>3.5.3</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
-            <version>3.5</version>
+            <version>3.5.1</version>
             <scope>provided</scope>
         </dependency>
 

@@ -4,9 +4,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.AttributeEncryptor;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.extension.ExtendWith;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory;
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
 import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
@@ -17,13 +17,23 @@ import gov.cms.qpp.conversion.api.services.DbServiceImpl;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 import gov.cms.qpp.test.annotations.AcceptanceTest;
 import gov.cms.qpp.test.helper.AwsTestHelper;
+import org.hamcrest.Matcher;
+import org.hamcrest.StringDescription;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static com.spotify.hamcrest.jackson.IsJsonArray.jsonArray;
+import static com.spotify.hamcrest.jackson.IsJsonNumber.jsonInt;
+import static com.spotify.hamcrest.jackson.IsJsonObject.jsonObject;
+import static com.spotify.hamcrest.jackson.IsJsonText.jsonText;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.put;
@@ -34,6 +44,7 @@ import static org.hamcrest.xml.HasXPath.hasXPath;
 class CpcApiAcceptance {
 	private static final String CPC_UNPROCESSED_FILES_API_PATH = "/cpc/unprocessed-files";
 	private static final String CPC_FILE_API_PATH = "/cpc/file/";
+	private static final String CPC_QPP_API_PATH = "/cpc/qpp/";
 	private static final String PROGRAM_NAME_XPATH = "/*[local-name() = 'ClinicalDocument' and namespace-uri() = 'urn:hl7-org:v3']"
 		+ "/./*[local-name() = 'informationRecipient' and namespace-uri() = 'urn:hl7-org:v3']"
 		+ "/*[local-name() = 'intendedRecipient' and namespace-uri() = 'urn:hl7-org:v3']"
@@ -118,6 +129,38 @@ class CpcApiAcceptance {
 	}
 
 	@AcceptanceTest
+	void testGetQpp() throws IOException {
+
+		String firstFileId = getFirstUnprocessedCpcFileId();
+
+		String payload = given()
+			.auth().oauth2(createCpcJwtToken())
+			.get(CPC_QPP_API_PATH + firstFileId)
+			.then()
+			.statusCode(200)
+			.contentType("application/json")
+			.extract()
+			.body()
+			.asString();
+
+		verifyJson(payload, jsonObject()
+			.where("performanceYear", jsonInt(2017))
+			.where("taxpayerIdentificationNumber", jsonText("000000099"))
+			.where("nationalProviderIdentifier", jsonText("0007891421"))
+			.where("measurementSets", jsonArray()));
+	}
+
+	@AcceptanceTest
+	void testNoSecurityGetQpp() {
+
+		String firstFileId = getFirstUnprocessedCpcFileId();
+
+		get(CPC_QPP_API_PATH + firstFileId)
+			.then()
+			.statusCode(403);
+	}
+
+	@AcceptanceTest
 	void testNoSecurityMarkFileProcessed() {
 
 		String firstFileId = getFirstUnprocessedCpcFileId();
@@ -168,8 +211,18 @@ class CpcApiAcceptance {
 		assertThat(getUnprocessedFiles().stream().filter(metadata -> metadata.get("fileId").equals(firstFileId)).count()).isEqualTo(1);
 	}
 
+	private void verifyJson(String json, Matcher<JsonNode> matcher) throws IOException {
+		ObjectNode node = (ObjectNode) (new ObjectMapper()).readTree(json);
+		StringDescription description = new StringDescription();
+		description.appendDescriptionOf(matcher);
+
+		assertWithMessage("Expected: " + description.toString() + " Actual: " + json)
+			.that(matcher.matches(node))
+			.isTrue();
+	}
+
 	private String getFirstUnprocessedCpcFileId() {
-		return (String)getUnprocessedFiles().get(0).get("fileId");
+		return (String) getUnprocessedFiles().get(0).get("fileId");
 	}
 
 	private String markFileAsProcessed(String fileId, int expectedResponseCode) {

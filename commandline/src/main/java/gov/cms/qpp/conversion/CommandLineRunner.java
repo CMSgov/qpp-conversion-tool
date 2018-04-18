@@ -38,7 +38,6 @@ public class CommandLineRunner implements Runnable {
 	private final FileSystem fileSystem;
 	private Set<QrdaScope> scope;
 	private boolean doValidation;
-	private boolean doDefaults;
 	private boolean historical;
 	private Pattern normalPathPattern;
 	private Pattern globFinderPattern;
@@ -84,7 +83,6 @@ public class CommandLineRunner implements Runnable {
 						.collect(Collectors.toList());
 				if (invalid.isEmpty()) {
 					doValidation = !commandLine.hasOption(CommandLineMain.SKIP_VALIDATION);
-					doDefaults = !commandLine.hasOption(CommandLineMain.SKIP_DEFAULTS);
 					historical = commandLine.hasOption(CommandLineMain.BYGONE);
 
 					convert.parallelStream()
@@ -107,7 +105,6 @@ public class CommandLineRunner implements Runnable {
 
 	private Context createContext() {
 		Context context = new Context();
-		context.setDoDefaults(doDefaults);
 		context.setDoValidation(doValidation);
 		context.setHistorical(historical);
 		context.setScope(scope);
