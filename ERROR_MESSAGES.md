@@ -21,7 +21,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 17 : CT - ACI Numerator Denominator element does not have any child elements
 * 18 : CT - This ACI Numerator Denominator element requires exactly one `(Denominator|Numerator)` element child
 * 22 : CT - The ACI Section must have one Reporting Parameter ACT
-* 23 : CT - Clinical Document Node must have at least one Aci or IA or Measure section Node as a child
+* 23 : CT - Clinical Document element must have at least one child element of type ACI, IA, or Measure section
 * 24 : CT - Clinical Document must have one and only one program name. Valid program names are `(list of valid program names)`
 * 25 : CT - The Clinical Document program name `(program name)` is not recognized. Valid program names are `(list of valid program names)`.
 * 26 : CT - Clinical Document contains duplicate ACI sections
