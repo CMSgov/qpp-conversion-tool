@@ -81,7 +81,7 @@ jobs:
   ui_test:
     <<: *container_config
     docker:
-      - image: circleci/node:8.11.1-browsers
+      - image: &nodejs_image circleci/node:8.11.1-browsers
     steps:
       - attach_workspace:
           at: /home/circleci
@@ -99,7 +99,7 @@ jobs:
   ui_deployment:
     <<: *container_config
     docker:
-      - image: circleci/node:8.11.1-browsers
+      - image: *nodejs_image
     steps:
       - attach_workspace:
           at: /home/circleci
@@ -114,7 +114,7 @@ jobs:
   signal_success:
     <<: *container_config
     docker:
-      - image: circleci/node:8.11.1-browsers
+      - image: *nodejs_image
     steps:
       - attach_workspace:
           at: /home/circleci
