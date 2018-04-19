@@ -62,12 +62,12 @@ public enum ErrorCode implements LocalizedError {
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS(27, "Clinical Document contains duplicate IA sections"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate Measure "
 			+ "sections"),
-	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START(29, "Must have one and only one performance "
+	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START(29, "Must have one and only one performance period "
 			+ "start"),
-	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END(30, "Must have one and only one performance end"),
+	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END(30, "Must have one and only one performance period end"),
 	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR(31, "Must have a performance year"),
 	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure Section must have "
-			+ "exactly one Reporting Parameter ACT"),
+			+ "exactly one Reporting Parameter Act"),
 	PERFORMANCE_RATE_INVALID_VALUE(33, "Must enter a valid Performance Rate value"),
 	CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "Must contain a practice site address for CPC+ "
 			+ "conversions"),
@@ -87,7 +87,7 @@ public enum ErrorCode implements LocalizedError {
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
 			"This `(Numerator or Denominator)` Node Aggregate Value has an invalid value", true),
 	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one IA Measure"),
-	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter ACT"),
+	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter Act"),
 	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only measures and reporting parameter"),
 	NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT(46, "Clinical Document Node is required"),
 	NPI_TIN_COMBINATION_EXACTLY_ONE_DOCUMENT_ALLOWED(47, "Only one Clinical Document Node is allowed"),
