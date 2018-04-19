@@ -27,7 +27,8 @@ public class AggregateCountValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
 			.singleValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR
-				.format(node.getParent().getType().name(), DuplicationCheckHelper.calculateDuplications(node, AggregateCountDecoder.AGGREGATE_COUNT)),
+				.format(node.getParent().getType().name(),
+					DuplicationCheckHelper.calculateDuplications(node, AggregateCountDecoder.AGGREGATE_COUNT)),
 				AggregateCountDecoder.AGGREGATE_COUNT)
 			.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AggregateCountDecoder.AGGREGATE_COUNT);
 
