@@ -62,16 +62,7 @@ public class Detail implements Serializable {
 
 		Detail detail = forErrorCode(error);
 		detail.setPath(node.getPath());
-
-		Node importantParentNode = node.findParentNodeWithHumanReadableTemplateId();
-
-		if (importantParentNode != null) {
-			String importantParentTitle = importantParentNode.getType().getHumanReadableTitle();
-
-			String possibleMeasureId = importantParentNode.getValue("measureId");
-
-			detail.setLocation(importantParentTitle + (StringUtils.isEmpty(possibleMeasureId) ? "" : " " + possibleMeasureId));
-		}
+		detail.setLocation(computeLocation(node));
 
 		return detail;
 	}
@@ -89,6 +80,26 @@ public class Detail implements Serializable {
 		detail.setErrorCode(error.getErrorCode().getCode());
 		detail.setMessage(error.getMessage());
 		return detail;
+	}
+
+	private static String computeLocation(Node node) {
+
+		String location = null;
+
+		Node importantParentNode = node.findParentNodeWithHumanReadableTemplateId();
+
+		if (importantParentNode != null) {
+			String importantParentTitle = importantParentNode.getType().getHumanReadableTitle();
+			String possibleMeasureId = importantParentNode.getValue("measureId");
+
+			location = importantParentTitle;
+
+			if (!StringUtils.isEmpty(possibleMeasureId)) {
+				location += " " + possibleMeasureId;
+			}
+		}
+
+		return location;
 	}
 
 	/**
@@ -171,6 +182,14 @@ public class Detail implements Serializable {
 		this.type = type;
 	}
 
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(final String location) {
+		this.location = location;
+	}
+
 	/**
 	 * @return A string representation.
 	 */
@@ -220,13 +239,5 @@ public class Detail implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(errorCode, message, path, value, type, location);
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(final String location) {
-		this.location = location;
 	}
 }

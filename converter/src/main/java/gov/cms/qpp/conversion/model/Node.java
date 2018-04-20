@@ -397,11 +397,7 @@ public class Node {
 	}
 
 	public Node findParentNodeWithHumanReadableTemplateId() {
-		if (this.getType() == TemplateId.CLINICAL_DOCUMENT) {
-			return this;
-		}
-
-		return findParentNodeWithHumanReadableTemplateId(getParent());
+		return findParentNodeWithHumanReadableTemplateId(this);
 	}
 
 	private Node findParentNodeWithHumanReadableTemplateId(Node node) {
