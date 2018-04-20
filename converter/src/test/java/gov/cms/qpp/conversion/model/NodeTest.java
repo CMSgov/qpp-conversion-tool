@@ -1,17 +1,15 @@
 package gov.cms.qpp.conversion.model;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import com.google.common.collect.Lists;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.common.collect.Lists;
-
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class NodeTest {
 
@@ -249,6 +247,36 @@ class NodeTest {
 	void testRemoveChildNodeSelf() {
 		Node node = new Node();
 		assertThat(node.removeChildNode(node)).isFalse();
+	}
+
+	@Test
+	void testFindParentNodeWithHumanReadableTemplateIdTraverse() {
+		Node topLevelNode = new Node(TemplateId.IA_MEASURE);
+		Node middleLevelNode = new Node(TemplateId.ACI_SECTION, topLevelNode);
+		Node bottomLevelNode = new Node(TemplateId.ACI_AGGREGATE_COUNT, middleLevelNode);
+
+		Node humanReadableNode = bottomLevelNode.findParentNodeWithHumanReadableTemplateId();
+
+		assertThat(humanReadableNode).isSameAs(middleLevelNode);
+		assertThat(humanReadableNode).isNotSameAs(topLevelNode);
+	}
+
+	@Test
+	void testFindParentNodeWithHumanReadableTemplateIdSame() {
+		Node node = new Node(TemplateId.IA_MEASURE);
+
+		Node humanReadableNode = node.findParentNodeWithHumanReadableTemplateId();
+
+		assertThat(humanReadableNode).isSameAs(node);
+	}
+
+	@Test
+	void testFindParentNodeWithHumanReadableTemplateIdNull() {
+		Node node = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+
+		Node humanReadableNode = node.findParentNodeWithHumanReadableTemplateId();
+
+		assertThat(humanReadableNode).isNull();
 	}
 
 	@Test
