@@ -166,10 +166,20 @@ public class Detail implements Serializable {
 		this.type = type;
 	}
 
+	/**
+	 * The human readable location where this error occurred.
+	 *
+	 * @return The location.
+	 */
 	public String getLocation() {
 		return location;
 	}
 
+	/**
+	 * Sets the human readable location where this error occurred.
+	 *
+	 * @param location The location.
+	 */
 	public void setLocation(final String location) {
 		this.location = location;
 	}

@@ -405,10 +405,22 @@ public class Node {
 		return !nodes.isEmpty();
 	}
 
+	/**
+	 * Finds the first parent of this {@code Node} that has a human readable {@link TemplateId}.
+	 *
+	 * @return The parent node.
+	 */
 	public Node findParentNodeWithHumanReadableTemplateId() {
 		return findParentNodeWithHumanReadableTemplateId(this);
 	}
 
+	/**
+	 * Recursively searches for a parent {@code Node} with a human readable {@link TemplateId}.
+	 *
+	 * @param node The {@code Node} to see if it or its parent has a human readable {@link TemplateId}
+	 * @return The passed in {@code Node} if it has a human readable {@link TemplateId}, {@code null} if this {@code Node} is {@code null}, or
+	 * whatever the parent {@code Node} has.
+	 */
 	private Node findParentNodeWithHumanReadableTemplateId(Node node) {
 		if (node == null) {
 			return null;

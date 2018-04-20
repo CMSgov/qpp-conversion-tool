@@ -127,6 +127,9 @@ public enum TemplateId {
 		return extension.toString();
 	}
 
+	/**
+	 * @return The human readable title, if any.
+	 */
 	public String getHumanReadableTitle() {
 		return humanReadableTitle;
 	}
