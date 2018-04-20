@@ -86,9 +86,9 @@ public enum ErrorCode implements LocalizedError {
 			"This `(Numerator or Denominator)` Node Aggregate Value is not an integer", true),
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
 			"This `(Numerator or Denominator)` Node Aggregate Value has an invalid value", true),
-	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one IA Measure"),
+	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one Improvement Activity"),
 	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter ACT"),
-	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only measures and reporting parameter"),
+	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activity and a reporting parameter Act"),
 	NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT(46, "Clinical Document Node is required"),
 	NPI_TIN_COMBINATION_EXACTLY_ONE_DOCUMENT_ALLOWED(47, "Only one Clinical Document Node is allowed"),
 	CPC_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "

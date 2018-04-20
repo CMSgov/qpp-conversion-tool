@@ -42,9 +42,9 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 39 : CT - This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node
 * 41 : CT - This `(Numerator or Denominator)` Node Aggregate Value is not an integer
 * 42 : CT - This `(Numerator or Denominator)` Node Aggregate Value has an invalid value
-* 43 : CT - The IA Section must have at least one IA Measure
+* 43 : CT - The IA Section must have at least one Improvement Activity
 * 44 : CT - The IA Section must have one Reporting Parameter ACT
-* 45 : CT - The IA Section must contain only measures and reporting parameter
+* 45 : CT - The IA Section must contain only Improvement Activity and a reporting parameter Act
 * 46 : CT - Clinical Document Node is required
 * 47 : CT - Only one Clinical Document Node is allowed
 * 48 : CT - Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
