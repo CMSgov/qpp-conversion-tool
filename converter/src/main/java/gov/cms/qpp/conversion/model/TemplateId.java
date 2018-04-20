@@ -131,6 +131,10 @@ public enum TemplateId {
 		return extension.toString();
 	}
 
+	public String getHumanReadableTitle() {
+		return humanReadableTitle;
+	}
+
 	/**
 	 * String representation of this template id
 	 *
@@ -140,10 +144,6 @@ public enum TemplateId {
 	 */
 	public String getTemplateId(Context context) {
 		return generateTemplateIdString(root, getExtension(), context);
-	}
-
-	public String getHumanReadableTitle() {
-		return humanReadableTitle;
 	}
 
 	/**

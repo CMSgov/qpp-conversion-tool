@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.model.error;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,17 +16,11 @@ import java.util.Objects;
 public class Detail implements Serializable {
 	private static final long serialVersionUID = 8818544157552590676L;
 
-	@JsonProperty("errorCode")
 	private Integer errorCode;
-	@JsonProperty("message")
 	private String message;
-	@JsonProperty("path")
 	private String path = "";
-	@JsonProperty("value")
 	private String value;
-	@JsonProperty("type")
 	private String type;
-
 	private String location;
 
 	/**
@@ -107,12 +100,10 @@ public class Detail implements Serializable {
 	 *
 	 * @return An {@link ErrorCode}
 	 */
-	@JsonProperty("errorCode")
 	public Integer getErrorCode() {
 		return errorCode;
 	}
 
-	@JsonProperty("errorCode")
 	public void setErrorCode(Integer errorCode) {
 		this.errorCode = errorCode;
 	}
@@ -122,12 +113,10 @@ public class Detail implements Serializable {
 	 *
 	 * @return An error description.
 	 */
-	@JsonProperty("message")
 	public String getMessage() {
 		return message;
 	}
 
-	@JsonProperty("message")
 	public void setMessage(String message) {
 		this.message = message;
 	}
@@ -137,7 +126,6 @@ public class Detail implements Serializable {
 	 *
 	 * @return The path that this error references.
 	 */
-	@JsonProperty("path")
 	public String getPath() {
 		return path;
 	}
@@ -147,7 +135,6 @@ public class Detail implements Serializable {
 	 *
 	 * @param path The path that this error references.
 	 */
-	@JsonProperty("path")
 	public void setPath(String path) {
 		this.path = path;
 	}
@@ -157,12 +144,10 @@ public class Detail implements Serializable {
 	 *
 	 * @return The value that this error references.
 	 */
-	@JsonProperty("value")
 	public String getValue() {
 		return value;
 	}
 
-	@JsonProperty("value")
 	public void setValue(String value) {
 		this.value = value;
 	}
@@ -172,12 +157,10 @@ public class Detail implements Serializable {
 	 *
 	 * @return The type that this error references.
 	 */
-	@JsonProperty("type")
 	public String getType() {
 		return type;
 	}
 
-	@JsonProperty("type")
 	public void setType(String type) {
 		this.type = type;
 	}
