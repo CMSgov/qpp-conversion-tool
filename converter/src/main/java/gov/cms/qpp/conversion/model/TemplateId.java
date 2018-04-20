@@ -21,7 +21,7 @@ public enum TemplateId {
 	ACI_NUMERATOR_DENOMINATOR("2.16.840.1.113883.10.20.27.3.28", Extension.JUNE_2017, "ACI Measure"),
 	ACI_NUMERATOR("2.16.840.1.113883.10.20.27.3.31", Extension.SEPTEMBER_2016),
 	ACI_DENOMINATOR("2.16.840.1.113883.10.20.27.3.32", Extension.SEPTEMBER_2016),
-	IA_MEASURE("2.16.840.1.113883.10.20.27.3.33", Extension.SEPTEMBER_2016, "IA Measure"),
+	IA_MEASURE("2.16.840.1.113883.10.20.27.3.33", Extension.SEPTEMBER_2016, "Improvement Activity"),
 	REPORTING_PARAMETERS_ACT("2.16.840.1.113883.10.20.17.3.8"),
 	MEASURE_DATA_CMS_V2("2.16.840.1.113883.10.20.27.3.16", Extension.NOVEMBER_2016),
 	PERFORMANCE_RATE_PROPORTION_MEASURE("2.16.840.1.113883.10.20.27.3.25", Extension.NOVEMBER_2016),
@@ -94,10 +94,6 @@ public enum TemplateId {
 	 */
 	TemplateId(String root) {
 		this(root, Extension.NONE);
-	}
-
-	TemplateId(String root, String humanReadableTitle) {
-		this(root, Extension.NONE, humanReadableTitle);
 	}
 
 	/**
