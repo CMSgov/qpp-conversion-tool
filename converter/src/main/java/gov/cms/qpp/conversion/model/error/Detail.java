@@ -41,6 +41,7 @@ public class Detail implements Serializable {
 		path = detail.path;
 		value = detail.value;
 		type = detail.type;
+		location = detail.location;
 	}
 
 	/**
