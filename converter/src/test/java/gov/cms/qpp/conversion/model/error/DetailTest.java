@@ -50,11 +50,11 @@ class DetailTest {
 	}
 
 	@Test
-	void testComputeLocationNull() {
+	void testComputeLocationEmpty() {
 		Node node = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 
 		Detail detail = Detail.forErrorAndNode(ErrorCode.UNEXPECTED_ERROR, node);
 
-		assertThat(detail.getLocation()).isNull();
+		assertThat(detail.getLocation()).isEmpty();
 	}
 }

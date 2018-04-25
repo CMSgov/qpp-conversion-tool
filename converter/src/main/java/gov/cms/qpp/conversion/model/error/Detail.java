@@ -78,7 +78,7 @@ public class Detail implements Serializable {
 
 	private static String computeLocation(Node node) {
 
-		String location = null;
+		StringBuilder location = new StringBuilder();
 
 		Node importantParentNode = node.findParentNodeWithHumanReadableTemplateId();
 
@@ -86,14 +86,15 @@ public class Detail implements Serializable {
 			String importantParentTitle = importantParentNode.getType().getHumanReadableTitle();
 			String possibleMeasureId = importantParentNode.getValue("measureId");
 
-			location = importantParentTitle;
+			location.append(importantParentTitle);
 
 			if (!StringUtils.isEmpty(possibleMeasureId)) {
-				location += " " + possibleMeasureId;
+				location.append(" ");
+				location.append(possibleMeasureId);
 			}
 		}
 
-		return location;
+		return location.toString();
 	}
 
 	/**
