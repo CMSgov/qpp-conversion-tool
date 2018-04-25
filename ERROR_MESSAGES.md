@@ -43,8 +43,6 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 43 : CT - The IA Section must have at least one Improvement Activity
 * 44 : CT - The IA Section must have one Reporting Parameter ACT
 * 45 : CT - The IA Section must contain only Improvement Activity and a reporting parameter Act
-* 46 : CT - Clinical Document Node is required
-* 47 : CT - Only one Clinical Document Node is allowed
 * 48 : CT - Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
 * 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`
 * 50 : CT - Measure performed must have exactly one child.
