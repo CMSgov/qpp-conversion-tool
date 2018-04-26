@@ -34,19 +34,15 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 33 : CT - Must enter a valid Performance Rate value
 * 34 : CT - Must contain a practice site address for CPC+ conversions
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified
-* 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty
-* 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid
-* 36 : CT - Must contain one Measure section
+* 36 : CT - CPC+ submissions must contain one Measure section
 * 37 : CT - Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
 * 38 : CT - This `(Numerator or Denominator)` Node does not have any child Nodes
 * 39 : CT - This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node
 * 41 : CT - This `(Numerator or Denominator)` Node Aggregate Value is not an integer
 * 42 : CT - This `(Numerator or Denominator)` Node Aggregate Value has an invalid value
-* 43 : CT - The IA Section must have at least one IA Measure
+* 43 : CT - The IA Section must have at least one Improvement Activity
 * 44 : CT - The IA Section must have one Reporting Parameter ACT
-* 45 : CT - The IA Section must contain only measures and reporting parameter
-* 46 : CT - Clinical Document Node is required
-* 47 : CT - Only one Clinical Document Node is allowed
+* 45 : CT - The IA Section must contain only Improvement Activity and a reporting parameter Act
 * 48 : CT - Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
 * 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`
 * 50 : CT - Measure performed must have exactly one child.
@@ -61,6 +57,8 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 59 : CT - The electronic measure id: `(Current eMeasure ID)` requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`
 * 60 : CT - The electronic measure id: `(Current eMeasure ID)` has a performanceRateId with an incorrect UUID of `(Incorrect UUID)`
 * 61 : CT - A Performance Rate must contain a single Performance Rate UUID
+* 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty
+* 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid
 * 64 : CT - CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
 * 65 : CT - CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.
 * 66 : CT - Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`
