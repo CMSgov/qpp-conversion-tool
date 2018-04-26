@@ -22,8 +22,12 @@ public class PerformanceRateValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		if (!NULL_ATTRIBUTE.equals(node.getValue(PerformanceRateProportionMeasureDecoder.NULL_PERFORMANCE_RATE))) {
+
+			//TODO: Need a new error code to generate when the performance rate doesn't exist
+			String performanceRate = node.getValue(PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE);
+
 			check(node)
-					.inDecimalRangeOf(ErrorCode.PERFORMANCE_RATE_INVALID_VALUE,
+					.inDecimalRangeOf(ErrorCode.PERFORMANCE_RATE_INVALID_VALUE.format(performanceRate),
 							PerformanceRateProportionMeasureDecoder.PERFORMANCE_RATE, 0F, 1F);
 		}
 	}
