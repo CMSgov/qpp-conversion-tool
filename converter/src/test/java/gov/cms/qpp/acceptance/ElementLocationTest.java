@@ -37,17 +37,17 @@ class ElementLocationTest {
 		String qrda = new String(Files.readAllBytes(qrdaPath), StandardCharsets.UTF_8);
 
 		Element document = XmlUtils.stringToDom(qrda);
-		Node node = new QrdaDecoderEngine(new Context()).decode(document).getChildNodes().get(2);
-		XPathExpression<?> xpath = XPathFactory.instance().compile(node.getPath());
-		Element element = (Element) xpath.evaluate(document).get(0);
+		Node someChildNode = new QrdaDecoderEngine(new Context()).decode(document).getChildNodes().get(2);
+		XPathExpression<?> xpathLocationOfSomeChildNode = XPathFactory.instance().compile(someChildNode.getPath());
+		Element element = (Element) xpathLocationOfSomeChildNode.evaluate(document).get(0);
 		Object elementOfNode = element.getChildren()
 			.stream()
 			.map(Located.class::cast)
-			.filter(child -> elementFinder.test(child, node))
+			.filter(child -> elementFinder.test(child, someChildNode))
 			.findAny()
 			.orElse(null);
 
-		Truth.assertWithMessage("Could not find a an element for node " + node).that(elementOfNode).isNotNull();
+		Truth.assertWithMessage("Could not find a an element for node " + someChildNode).that(elementOfNode).isNotNull();
 	}
 
 }

@@ -64,11 +64,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		rootNode.setType(TemplateId.PLACEHOLDER);
 		rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
 
-		if (rootElement instanceof Located) {
-			Located located = (Located) rootElement;
-			rootNode.setLine(located.getLine());
-			rootNode.setColumn(located.getColumn());
-		}
+		addLineAndColumnToNode(rootElement, rootNode);
 
 		QrdaDecoder rootDecoder = null;
 		for (Element element : rootElement.getChildren(TEMPLATE_ID, rootElement.getNamespace())) {
@@ -140,11 +136,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 
 		childNode.setPath(XPathHelper.getAbsolutePath(parentElement));
 
-		if (element instanceof Located) {
-			Located located = (Located) element;
-			childNode.setLine(located.getLine());
-			childNode.setColumn(located.getColumn());
-		}
+		addLineAndColumnToNode(element, childNode);
 
 		parentNode.addChildNode(childNode);
 
@@ -333,6 +325,14 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		}
 
 		return containsTemplateId;
+	}
+
+	private void addLineAndColumnToNode(Element element, Node node) {
+		if (element instanceof Located) {
+			Located located = (Located) element;
+			node.setLine(located.getLine());
+			node.setColumn(located.getColumn());
+		}
 	}
 
 	/**
