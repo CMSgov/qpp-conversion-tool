@@ -332,8 +332,7 @@
 		"strict": true,
 		"errorData": [
 			{
-				"errorCode": 33,
-				"subs": ["null"],
+				"errorCode": 70,
 				"occurrences": 1
 			}
 		]
