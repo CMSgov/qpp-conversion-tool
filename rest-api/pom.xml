@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>1.4.1-RELEASE</version>
+		<version>1.4.2-RELEASE</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -255,6 +255,18 @@
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-dynamodb-encryption-java</artifactId>
 			<version>1.11.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
