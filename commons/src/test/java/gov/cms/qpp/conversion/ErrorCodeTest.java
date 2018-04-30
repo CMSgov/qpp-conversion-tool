@@ -96,6 +96,16 @@ class ErrorCodeTest implements EnumContract {
 		Truth.assertThat(formatted("mock")).isNotEqualTo(formattedAlt("mock2"));
 	}
 
+	@Test
+	void testErrorCodeOrder() {
+		int last = -1;
+		for (ErrorCode errorCode : ErrorCode.values()) {
+			int currentCode = errorCode.getCode();
+			Truth.assertThat(last).isLessThan(currentCode);
+			last = currentCode;
+		}
+	}
+
 	private LocalizedError formatted(String salt) {
 		return ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(salt);
 	}

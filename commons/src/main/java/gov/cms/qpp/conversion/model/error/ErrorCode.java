@@ -52,7 +52,9 @@ public enum ErrorCode implements LocalizedError {
 			+ "elements"),
 	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
 			+ "element requires exactly one `(Denominator|Numerator)` element child", true),
-	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter ACT"),
+	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter Act."
+		+ " Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG)."
+		+ " Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
 	CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document element must have at least one child "
 			+ "element of type ACI, IA, or Measure section"),
 	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Clinical Document must have one and only one program name."
@@ -74,9 +76,7 @@ public enum ErrorCode implements LocalizedError {
 			+ "conversions"),
 	CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "One and only one Alternative Payment Model (APM) Entity "
 			+ "Identifier should be specified"),
-	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty"),
-	CPC_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid"),
-	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "Must contain one Measure section"),
+	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "CPC+ submissions must contain one Measure section"),
 	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "Must contain correct number of performance rate(s). "
 			+ "Correct Number is `(Expected value)`", true),
 	NUMERATOR_DENOMINATOR_MISSING_CHILDREN(38,
@@ -87,11 +87,9 @@ public enum ErrorCode implements LocalizedError {
 			"This `(Numerator or Denominator)` Node Aggregate Value is not an integer", true),
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
 			"This `(Numerator or Denominator)` Node Aggregate Value has an invalid value", true),
-	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one IA Measure"),
+	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one Improvement Activity"),
 	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter ACT"),
-	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only measures and reporting parameter"),
-	NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT(46, "Clinical Document Node is required"),
-	NPI_TIN_COMBINATION_EXACTLY_ONE_DOCUMENT_ALLOWED(47, "Only one Clinical Document Node is allowed"),
+	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activity and a reporting parameter Act"),
 	CPC_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
 			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`", true),
 	CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH(49,"Amount of stratifications `(Current number of "
@@ -115,6 +113,8 @@ public enum ErrorCode implements LocalizedError {
 			+ "a performanceRateId with an incorrect UUID of `(Incorrect UUID)`", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID"),
+	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty"),
+	CPC_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid"),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64, "CPC+ Submissions must have at least `(CPC+ measure group minimum)` "
 			+ "of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`", true),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of "
