@@ -2,6 +2,7 @@ package gov.cms.qpp.conversion;
 
 public enum DocumentationReference {
 	CLINICAL_DOCUMENT(19),
+	REPORTING_PARAMETERS_ACT(80),
 	MEASURE_IDS(88);
 
 	private static final String BASE_PATH = "https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=";
