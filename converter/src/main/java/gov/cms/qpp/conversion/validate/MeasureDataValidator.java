@@ -1,9 +1,12 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
+
 
 /**
  * Validates Measure Data - an Aggregate Count child
@@ -31,8 +34,10 @@ public class MeasureDataValidator extends NodeValidator {
 		if (getDetails().isEmpty()) {
 			Node child = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 			check(child)
-					.singleValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR, "aggregateCount")
-					.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, "aggregateCount")
+					.singleValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(node.getType().name(),
+						DuplicationCheckHelper.calculateDuplications(child, AggregateCountDecoder.AGGREGATE_COUNT)),
+						AggregateCountDecoder.AGGREGATE_COUNT)
+					.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AggregateCountDecoder.AGGREGATE_COUNT)
 					.greaterThan(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER, -1);
 		}
 	}

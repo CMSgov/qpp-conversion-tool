@@ -10,7 +10,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`
 * 6 : CT - The measure GUID supplied `(Provided measure id)` is invalid. Please see the `(Submission year's)` IG https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88 for valid measure GUIDs.
 * 7 : CT - The measure reference results must have at least one measure. Please review the measures section of your file as it cannot be empty.
-* 8 : CT - A single aggregate count value is required
+* 8 : CT - The `(Parent element)` has `(number of aggregate counts)` aggregate count values. A single aggregate count value is required. 
 * 9 : CT - Aggregate count value must be an integer
 * 11 : CT - This ACI Reference and Results is missing a required Measure Performed child
 * 12 : CT - This ACI Measure Performed Reference and Results requires a single Measure ID
