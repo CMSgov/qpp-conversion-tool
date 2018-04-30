@@ -16,7 +16,6 @@ import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.AciDenominatorValidator;
 import gov.cms.qpp.conversion.validate.AciNumeratorValidator;
-import gov.cms.qpp.conversion.validate.AciSectionValidator;
 
 import java.io.IOException;
 import java.nio.file.Paths;
