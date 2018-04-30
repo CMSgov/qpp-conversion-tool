@@ -51,7 +51,9 @@ public enum ErrorCode implements LocalizedError {
 			+ "elements"),
 	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
 			+ "element requires exactly one `(Denominator|Numerator)` element child", true),
-	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter ACT"),
+	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter Act."
+		+ " Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG)."
+		+ " Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
 	CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document element must have at least one child "
 			+ "element of type ACI, IA, or Measure section"),
 	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Clinical Document must have one and only one program name."
