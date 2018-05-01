@@ -73,7 +73,7 @@ public enum ErrorCode implements LocalizedError {
 			+ "exactly one Reporting Parameter ACT"),
 	PERFORMANCE_RATE_INVALID_VALUE(33, "Must enter a valid Performance Rate value"),
 	CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "CPC+ submissions must contain a practice site address."
-		+ " Please refer to the `(Submission year's)` IG for more details: " + DocumentationReference.PRACTICE_SITE_ADDRESS
+		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.PRACTICE_SITE_ADDRESS
 	    + " regarding practice site addresses.", true),
 	CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "One and only one Alternative Payment Model (APM) Entity "
 			+ "Identifier should be specified"),
