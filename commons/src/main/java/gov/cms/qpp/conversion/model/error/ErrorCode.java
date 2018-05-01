@@ -71,7 +71,7 @@ public enum ErrorCode implements LocalizedError {
 	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR(31, "Must have a performance year"),
 	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure Section must have "
 			+ "exactly one Reporting Parameter ACT"),
-	PERFORMANCE_RATE_INVALID_VALUE(33, "Must enter a valid Performance Rate value"),
+	PERFORMANCE_RATE_INVALID_VALUE(33, "The Performance Rate `(supplied value)` is invalid. It must be a decimal between 0 and 1.", true),
 	CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "Must contain a practice site address for CPC+ "
 			+ "conversions"),
 	CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "One and only one Alternative Payment Model (APM) Entity "
@@ -128,7 +128,8 @@ public enum ErrorCode implements LocalizedError {
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
-		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123", true);
+		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123", true),
+	PERFORMANCE_RATE_MISSING(70, "The Performance Rate is missing");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
