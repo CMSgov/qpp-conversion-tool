@@ -81,7 +81,7 @@ class MeasureDataValidatorTest {
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR);
+				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2));
 	}
 
 	@Test
@@ -118,7 +118,7 @@ class MeasureDataValidatorTest {
 		assertWithMessage("Must contain the error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsAllOf(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
-						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR,
+						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2),
 						ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER);
 	}
 

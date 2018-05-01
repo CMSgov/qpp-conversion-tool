@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
@@ -10,8 +11,6 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
  * Factored out common functionality
  */
 public class CommonNumeratorDenominatorValidator extends NodeValidator {
-
-	protected static final String AGGREGATE_COUNT_FIELD = "aggregateCount";
 
 	protected String nodeName;
 
@@ -40,8 +39,8 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 */
 	private void validateAggregateCount(Node aggregateCountNode) {
 		check(aggregateCountNode)
-				.singleValue(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE), AGGREGATE_COUNT_FIELD)
-				.intValue(format(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER), AGGREGATE_COUNT_FIELD)
+				.singleValue(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE), AggregateCountDecoder.AGGREGATE_COUNT)
+				.intValue(format(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER), AggregateCountDecoder.AGGREGATE_COUNT)
 				.greaterThan(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE), -1);
 	}
 
