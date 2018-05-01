@@ -35,7 +35,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 34 : CT - Must contain a practice site address for CPC+ conversions
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified
 * 36 : CT - CPC+ submissions must contain one Measure section
-* 37 : CT - Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
+* 37 : CT - CPC+ submissions must contain correct number of performance rate(s). Correct Number is `(Expected value)` for measure `(Given measure id)`
 * 38 : CT - This `(Numerator or Denominator)` Node does not have any child Nodes
 * 39 : CT - This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node
 * 41 : CT - This `(Numerator or Denominator)` Node Aggregate Value is not an integer
