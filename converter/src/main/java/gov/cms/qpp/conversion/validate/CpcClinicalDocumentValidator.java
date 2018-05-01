@@ -4,9 +4,11 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import com.google.common.base.Strings;
 
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
@@ -14,6 +16,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
@@ -41,9 +44,11 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 			validateSubmissionDate(node);
 
+			LocalizedError addressError = ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+				.format(Context.REPORTING_YEAR);
+
 			check(node)
-					.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS,
-							ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
+					.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
 					.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
 							ClinicalDocumentDecoder.ENTITY_ID)
 					.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.ENTITY_ID)
