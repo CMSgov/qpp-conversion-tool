@@ -16,7 +16,6 @@ import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import gov.cms.qpp.conversion.validate.AciDenominatorValidator;
 import gov.cms.qpp.conversion.validate.AciNumeratorValidator;
-import gov.cms.qpp.conversion.validate.AciSectionValidator;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -295,7 +294,7 @@ class ScopedConversionTest {
 				.that(getErrorMessages(content))
 				.containsExactly(
 					ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER.getMessage(),
-					ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.getMessage());
+					ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.PLACEHOLDER.name(), 0).getMessage());
 	}
 
 	@SuppressWarnings("unchecked")

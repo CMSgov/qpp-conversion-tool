@@ -10,7 +10,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`
 * 6 : CT - The measure GUID supplied `(Provided measure id)` is invalid. Please see the `(Submission year's)` IG https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88 for valid measure GUIDs.
 * 7 : CT - The measure reference results must have at least one measure. Please review the measures section of your file as it cannot be empty.
-* 8 : CT - A single aggregate count value is required
+* 8 : CT - The `(Parent element)` has `(number of aggregate counts)` aggregate count values. A single aggregate count value is required. 
 * 9 : CT - Aggregate count value must be an integer
 * 11 : CT - This ACI Reference and Results is missing a required Measure Performed child
 * 12 : CT - This ACI Measure Performed Reference and Results requires a single Measure ID
@@ -34,19 +34,16 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 33 : CT - Must enter a valid Performance Rate value
 * 34 : CT - Must contain a practice site address for CPC+ conversions
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified
-* 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty
-* 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid
-* 36 : CT - Must contain one Measure section
+* 36 : CT - CPC+ submissions must contain one Measure section
 * 37 : CT - Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
 * 38 : CT - This `(Numerator or Denominator)` Node does not have any child Nodes
 * 39 : CT - This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node
 * 41 : CT - This `(Numerator or Denominator)` Node Aggregate Value is not an integer
 * 42 : CT - This `(Numerator or Denominator)` Node Aggregate Value has an invalid value
-* 43 : CT - The IA Section must have at least one IA Measure
+* 43 : CT - The IA Section must have at least one Improvement Activity
 * 44 : CT - The IA Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
-* 45 : CT - The IA Section must contain only measures and reporting parameter
+* 45 : CT - The IA Section must contain only Improvement Activity and a Reporting Parameter Act
 * 46 : CT - Clinical Document Node is required
-* 47 : CT - Only one Clinical Document Node is allowed
 * 48 : CT - Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
 * 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`
 * 50 : CT - Measure performed must have exactly one child.
@@ -61,6 +58,8 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 59 : CT - The electronic measure id: `(Current eMeasure ID)` requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`
 * 60 : CT - The electronic measure id: `(Current eMeasure ID)` has a performanceRateId with an incorrect UUID of `(Incorrect UUID)`
 * 61 : CT - A Performance Rate must contain a single Performance Rate UUID
+* 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty
+* 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid
 * 64 : CT - CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
 * 65 : CT - CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.
 * 66 : CT - Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`
