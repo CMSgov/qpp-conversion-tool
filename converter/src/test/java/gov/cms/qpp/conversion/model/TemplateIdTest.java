@@ -1,14 +1,15 @@
 package gov.cms.qpp.conversion.model;
 
-import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.model.TemplateId.Extension;
-import gov.cms.qpp.test.enums.EnumContract;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+
+import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.model.TemplateId.Extension;
+import gov.cms.qpp.test.enums.EnumContract;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.params.provider.EnumSource.Mode.EXCLUDE;
@@ -35,6 +36,16 @@ class TemplateIdTest implements EnumContract {
 	@Test
 	void testExtension() {
 		assertThat(TemplateId.CLINICAL_DOCUMENT.getExtension()).isSameAs("2017-07-01");
+	}
+
+	@Test
+	void testHumanReadableTitle() {
+		assertThat(TemplateId.CLINICAL_DOCUMENT.getHumanReadableTitle()).isSameAs("Clinical Document");
+	}
+
+	@Test
+	void testHumanReadableTitleDoesntExist() {
+		assertThat(TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2.getHumanReadableTitle()).isNull();
 	}
 
 	@Test
