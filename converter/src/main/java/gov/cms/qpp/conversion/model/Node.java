@@ -1,5 +1,9 @@
 package gov.cms.qpp.conversion.model;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,9 +17,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.Lists;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -402,6 +403,34 @@ public class Node {
 	 */
 	private static boolean foundNode(List<?> nodes) {
 		return !nodes.isEmpty();
+	}
+
+	/**
+	 * Finds the first parent of this {@code Node} that has a human readable {@link TemplateId}.
+	 *
+	 * @return The parent node.
+	 */
+	public Node findParentNodeWithHumanReadableTemplateId() {
+		return findParentNodeWithHumanReadableTemplateId(this);
+	}
+
+	/**
+	 * Recursively searches for a parent {@code Node} with a human readable {@link TemplateId}.
+	 *
+	 * @param node The {@code Node} to see if it or its parent has a human readable {@link TemplateId}
+	 * @return The passed in {@code Node} if it has a human readable {@link TemplateId}, {@code null} if this {@code Node} is {@code null}, or
+	 * whatever the parent {@code Node} has.
+	 */
+	private Node findParentNodeWithHumanReadableTemplateId(Node node) {
+		if (node == null) {
+			return null;
+		}
+
+		if (!StringUtils.isEmpty(node.getType().getHumanReadableTitle())) {
+			return node;
+		}
+
+		return findParentNodeWithHumanReadableTemplateId(node.getParent());
 	}
 
 	/**
