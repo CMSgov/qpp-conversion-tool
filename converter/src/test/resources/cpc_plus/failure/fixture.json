@@ -199,7 +199,13 @@
 		"errorData": [
 			{
 				"errorCode": 33,
-				"occurrences": 2
+				"subs": ["2.2"],
+				"occurrences": 1
+			},
+			{
+				"errorCode": 33,
+				"subs": ["String"],
+				"occurrences": 1
 			}
 		]
 	},
@@ -327,7 +333,7 @@
 		"strict": true,
 		"errorData": [
 			{
-				"errorCode": 33,
+				"errorCode": 70,
 				"occurrences": 1
 			}
 		]
@@ -370,6 +376,7 @@
 		"errorData": [
 			{
 				"errorCode": 33,
+				"subs": ["1.888889"],
 				"occurrences": 1
 			}
 		]
@@ -408,6 +415,7 @@
 		"errorData": [
 			{
 				"errorCode": 33,
+				"subs": ["-.888889"],
 				"occurrences": 1
 			}
 		]
@@ -417,6 +425,7 @@
 		"errorData": [
 			{
 				"errorCode": 33,
+				"subs": ["true"],
 				"occurrences": 1
 			}
 		]
