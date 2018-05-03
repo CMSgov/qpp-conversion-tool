@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -26,7 +27,6 @@ import java.util.stream.IntStream;
 public class QualityMeasureIdEncoder extends QppOutputEncoder {
 
 	private static final String MEASURE_ID = "measureId";
-	private static final String AGGREGATE_COUNT = "aggregateCount";
 	private static final String TYPE = "type";
 	private static final String SINGLE_PERFORMANCE_RATE = "singlePerformanceRate";
 	public static final String IS_END_TO_END_REPORTED = "isEndToEndReported";
@@ -203,7 +203,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 			node -> {
 				Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 				maintainContinuity(wrapper, aggCount, "performanceMet");
-				wrapper.putInteger("performanceMet", aggCount.getValue(AGGREGATE_COUNT));
+				wrapper.putInteger("performanceMet", aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT));
 			});
 	}
 
@@ -260,7 +260,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				node -> {
 					Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 					maintainContinuity(wrapper, aggCount, "eligiblePopulationExclusion");
-					String value = aggCount.getValue(AGGREGATE_COUNT);
+					String value = aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 					wrapper.putInteger("eligiblePopulationExclusion", value);
 				});
 
@@ -268,7 +268,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				node -> {
 					Node aggCount = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
 					maintainContinuity(wrapper, aggCount, "eligiblePopulationException");
-					String value = aggCount.getValue(AGGREGATE_COUNT);
+					String value = aggCount.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 					wrapper.putInteger("eligiblePopulationException", value);
 				});
 
@@ -295,13 +295,13 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 											Node denomExclusionNode, Node denomExceptionNode) {
 
 		String denominatorValue = denominatorNode == null ? "0" :
-				denominatorNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
+				denominatorNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 		String denomExclusionValue = denomExclusionNode == null ? "0" :
-				denomExclusionNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
+				denomExclusionNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 		String numeratorValue = numeratorNode == null ? "0" :
-				numeratorNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
+				numeratorNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 		String denomExceptionValue = denomExceptionNode == null ? "0" :
-				denomExceptionNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AGGREGATE_COUNT);
+				denomExceptionNode.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT).getValue(AggregateCountDecoder.AGGREGATE_COUNT);
 
 		// for eCQMs, will be equal to denominator - numerator - denominator exclusion - denominator exception
 		return Integer.toString(Integer.parseInt(denominatorValue)

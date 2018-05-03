@@ -10,7 +10,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`
 * 6 : CT - The measure GUID supplied `(Provided measure id)` is invalid. Please see the `(Submission year's)` IG https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88 for valid measure GUIDs.
 * 7 : CT - The measure reference results must have at least one measure. Please review the measures section of your file as it cannot be empty.
-* 8 : CT - A single aggregate count value is required
+* 8 : CT - The `(Parent element)` has `(number of aggregate counts)` aggregate count values. A single aggregate count value is required. 
 * 9 : CT - Aggregate count value must be an integer
 * 11 : CT - This ACI Reference and Results is missing a required Measure Performed child
 * 12 : CT - This ACI Measure Performed Reference and Results requires a single Measure ID
@@ -20,7 +20,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 16 : CT - ACI Numerator Denominator element does not contain a measure name ID
 * 17 : CT - ACI Numerator Denominator element does not have any child elements
 * 18 : CT - This ACI Numerator Denominator element requires exactly one `(Denominator|Numerator)` element child
-* 22 : CT - The ACI Section must have one Reporting Parameter ACT
+* 22 : CT - The ACI Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
 * 23 : CT - Clinical Document element must have at least one child element of type ACI, IA, or Measure section
 * 24 : CT - Clinical Document must have one and only one program name. Valid program names are `(list of valid program names)`
 * 25 : CT - The Clinical Document program name `(program name)` is not recognized. Valid program names are `(list of valid program names)`.
@@ -31,7 +31,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 30 : CT - Must have one and only one performance end
 * 31 : CT - Must have a performance year
 * 32 : CT - The Quality Measure Section must have exactly one Reporting Parameter ACT
-* 33 : CT - Must enter a valid Performance Rate value
+* 33 : CT - The Performance Rate `(supplied value)` is invalid. It must be a decimal between 0 and 1.
 * 34 : CT - Must contain a practice site address for CPC+ conversions
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified
 * 36 : CT - CPC+ submissions must contain one Measure section
@@ -65,3 +65,4 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 67 : CT - Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for the measure id `(Measure Id)`
 * 68 : CT - Your CPC+ submission was made after the CPC+ Measure section submission deadline of `(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at `(CPC+ contact email)` for assistance.
 * 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123
+* 70 : CT - The Performance Rate is missing

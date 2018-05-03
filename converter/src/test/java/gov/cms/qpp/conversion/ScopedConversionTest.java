@@ -294,7 +294,7 @@ class ScopedConversionTest {
 				.that(getErrorMessages(content))
 				.containsExactly(
 					ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER.getMessage(),
-					ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.getMessage());
+					ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.PLACEHOLDER.name(), 0).getMessage());
 	}
 
 	@SuppressWarnings("unchecked")

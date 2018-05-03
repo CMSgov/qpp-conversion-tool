@@ -32,7 +32,8 @@ public enum ErrorCode implements LocalizedError {
 			+ DocumentationReference.MEASURE_IDS + " for valid measure GUIDs.", true),
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
 			+ "Please review the measures section of your file as it cannot be empty."),
-	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "A single aggregate count value is required"),
+	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "The `(Parent element)` has `(number of aggregate counts)` aggregate count values."
+		+ " A single aggregate count value is required. ", true),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Reference and Results is missing a required "
 		+ "Measure Performed child"),
@@ -51,7 +52,9 @@ public enum ErrorCode implements LocalizedError {
 			+ "elements"),
 	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
 			+ "element requires exactly one `(Denominator|Numerator)` element child", true),
-	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter ACT"),
+	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter Act."
+		+ " Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG)."
+		+ " Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
 	CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document element must have at least one child "
 			+ "element of type ACI, IA, or Measure section"),
 	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Clinical Document must have one and only one program name."
@@ -68,7 +71,7 @@ public enum ErrorCode implements LocalizedError {
 	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR(31, "Must have a performance year"),
 	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure Section must have "
 			+ "exactly one Reporting Parameter ACT"),
-	PERFORMANCE_RATE_INVALID_VALUE(33, "Must enter a valid Performance Rate value"),
+	PERFORMANCE_RATE_INVALID_VALUE(33, "The Performance Rate `(supplied value)` is invalid. It must be a decimal between 0 and 1.", true),
 	CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "Must contain a practice site address for CPC+ "
 			+ "conversions"),
 	CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "One and only one Alternative Payment Model (APM) Entity "
@@ -125,7 +128,8 @@ public enum ErrorCode implements LocalizedError {
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
-		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123", true);
+		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123", true),
+	PERFORMANCE_RATE_MISSING(70, "The Performance Rate is missing");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
