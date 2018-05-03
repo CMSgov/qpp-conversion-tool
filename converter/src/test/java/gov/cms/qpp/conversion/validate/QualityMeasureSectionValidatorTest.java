@@ -72,12 +72,11 @@ class QualityMeasureSectionValidatorTest {
 
 	@Test
 	void duplicateEcqMeasure() {
-		LocalizedError localizedError = ErrorCode.MEASURE_GUID_MISSING.format(DUPLICATE_MEASURE_ID, Context.REPORTING_YEAR);
 		List<Detail> errorDetails = manipulatorHandler
 				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V2.name(), "measureId", false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(localizedError);
+				.contains(ErrorCode.MISSING_OR_DUPLICATED_MEASURE_UUID);
 	}
 
 	@Test
@@ -86,7 +85,7 @@ class QualityMeasureSectionValidatorTest {
 		List<Detail> errorDetails = manipulatorHandler.executeScenario(xpath, false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.MEASURE_GUID_MISSING);
+				.contains(ErrorCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_UUID);
 	}
 
 	private Set<Detail> validateQualityMeasureSection() {

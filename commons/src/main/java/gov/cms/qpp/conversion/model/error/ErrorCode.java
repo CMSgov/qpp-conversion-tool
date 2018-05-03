@@ -128,7 +128,12 @@ public enum ErrorCode implements LocalizedError {
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
-		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123", true);
+		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123", true),
+	MISSING_OR_DUPLICATED_MEASURE_UUID(70, "The measure section measure reference and results has an incorrect number of "
+		+ "measure GUID supplied. Please ensure that only one measure GUID is provided per measure."),
+	MEASURES_RNR_WITH_DUPLICATED_MEASURE_UUID(71, "Two or more different measure section measure reference and results have "
+		+ "the same measure UUID. Please ensure that each measure section measure reference and results do not have "
+		+ "the same measure UUID.");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
