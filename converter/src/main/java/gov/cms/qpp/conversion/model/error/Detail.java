@@ -64,8 +64,6 @@ public class Detail implements Serializable {
 		Detail detail = forErrorCode(error);
 
 		if (node != null) {
-			detail.setPath(node.getPath());
-
 			if (node.getLine() != Node.DEFAULT_LOCATION_NUMBER) {
 				detail.setLine(node.getLine());
 			}
@@ -73,9 +71,10 @@ public class Detail implements Serializable {
 			if (node.getColumn() != Node.DEFAULT_LOCATION_NUMBER) {
 				detail.setColumn(node.getColumn());
 			}
+
+			detail.setPath(node.getPath());
+			detail.setLocation(computeLocation(node));
 		}
-		detail.setPath(node.getPath());
-		detail.setLocation(computeLocation(node));
 
 		return detail;
 	}
