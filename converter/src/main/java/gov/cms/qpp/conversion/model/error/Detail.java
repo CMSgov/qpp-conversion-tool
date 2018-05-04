@@ -3,16 +3,13 @@ package gov.cms.qpp.conversion.model.error;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.base.MoreObjects;
-import org.apache.commons.lang3.StringUtils;
 
 import gov.cms.qpp.conversion.model.Node;
-
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Holds the error information from Validators.

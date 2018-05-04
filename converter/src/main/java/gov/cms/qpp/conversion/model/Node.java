@@ -1,9 +1,5 @@
 package gov.cms.qpp.conversion.model;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,6 +14,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import com.google.common.base.MoreObjects;
