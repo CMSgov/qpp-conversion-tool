@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.located.LocatedJDOMFactory;
 
 /**
  * Utility for parsing various input types into a JDom Element.
@@ -54,6 +55,7 @@ public class XmlUtils {
 			saxBuilder.setFeature(DISALLOW_DTD,true);
 			saxBuilder.setFeature(EXT_GENERAL_ENTITIES, false);
 			saxBuilder.setFeature(EXT_PARAM_ENTITIES, false);
+			saxBuilder.setJDOMFactory(new LocatedJDOMFactory());
 
 			return saxBuilder.build(xmlStream).getRootElement();
 		} catch (JDOMException | IOException e) {
