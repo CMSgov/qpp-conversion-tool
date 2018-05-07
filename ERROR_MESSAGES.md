@@ -27,19 +27,11 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 26 : CT - Clinical Document contains duplicate ACI sections
 * 27 : CT - Clinical Document contains duplicate IA sections
 * 28 : CT - Clinical Document contains duplicate Measure sections
-<<<<<<< HEAD
 * 29 : CT - Must have one and only one performance period start. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
 * 30 : CT - Must have one and only one performance period end. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
 * 31 : CT - Must have a performance year. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
 * 32 : CT - The Quality Measure Section must have exactly one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
-* 33 : CT - Must enter a valid Performance Rate value
-=======
-* 29 : CT - Must have one and only one performance start
-* 30 : CT - Must have one and only one performance end
-* 31 : CT - Must have a performance year
-* 32 : CT - The Quality Measure Section must have exactly one Reporting Parameter ACT
 * 33 : CT - The Performance Rate `(supplied value)` is invalid. It must be a decimal between 0 and 1.
->>>>>>> develop
 * 34 : CT - Must contain a practice site address for CPC+ conversions
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified
 * 36 : CT - CPC+ submissions must contain one Measure section
@@ -50,7 +42,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 42 : CT - This `(Numerator or Denominator)` Node Aggregate Value has an invalid value
 * 43 : CT - The IA Section must have at least one Improvement Activity
 * 44 : CT - The IA Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
-* 45 : CT - The IA Section must contain only Improvement Activity and a Reporting Parameter Act
+* 45 : CT - The IA Section must contain only Improvement Activities and a Reporting Parameter Act
 * 46 : CT - Clinical Document Node is required
 * 48 : CT - Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
 * 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`

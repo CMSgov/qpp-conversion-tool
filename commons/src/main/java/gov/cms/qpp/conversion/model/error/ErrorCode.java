@@ -99,7 +99,7 @@ public enum ErrorCode implements LocalizedError {
 	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter Act. "
 			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
 			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
-	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activity and a Reporting Parameter Act"),
+	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activities and a Reporting Parameter Act"),
 	NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT(46, "Clinical Document Node is required"),
 	CPC_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
 			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`", true),
