@@ -39,12 +39,14 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 */
 	private void validateAggregateCount(Node aggregateCountNode) {
 		String aggregateCountValue = aggregateCountNode.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
-		if(aggregateCountValue == null) {
+		if (aggregateCountValue == null) {
 			aggregateCountValue = "empty";
 		}
 		check(aggregateCountNode)
-				.singleValue(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue), AggregateCountDecoder.AGGREGATE_COUNT)
-				.intValue(format(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER, aggregateCountValue), AggregateCountDecoder.AGGREGATE_COUNT)
+				.singleValue(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue),
+					AggregateCountDecoder.AGGREGATE_COUNT)
+				.intValue(format(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER, aggregateCountValue),
+					AggregateCountDecoder.AGGREGATE_COUNT)
 				.greaterThan(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue), -1);
 	}
 
