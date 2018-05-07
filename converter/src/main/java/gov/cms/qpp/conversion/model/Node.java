@@ -1,9 +1,5 @@
 package gov.cms.qpp.conversion.model;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,12 +14,21 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.Lists;
+
 /**
  * Represents a node of data that should be converted. Consists of a key/value
  * Map that holds the data gleaned from an input file.
  * Nodes can contain other nodes as children to create a hierarchy.
  */
 public class Node {
+
+	public static final int DEFAULT_LOCATION_NUMBER = -1;
+
 	private final List<Node> childNodes = new ArrayList<>();
 	private final Map<String, String> data = new HashMap<>();
 	private final Map<String, List<String>> duplicateData = new HashMap<>();
@@ -34,6 +39,8 @@ public class Node {
 
 	private String defaultNsUri;
 	private String path;
+	private int line = DEFAULT_LOCATION_NUMBER;
+	private int column = DEFAULT_LOCATION_NUMBER;
 
 	/**
 	 * Default constructor initializes internal list of Nodes
@@ -272,6 +279,42 @@ public class Node {
 	}
 
 	/**
+	 * setLine sets the line number of the xml element backing the node
+	 *
+	 * @param line Line number
+	 */
+	public void setLine(int line) {
+		this.line = line;
+	}
+
+	/**
+	 * getLine returns the line number of the xml element backing the node
+	 *
+	 * @return line
+	 */
+	public int getLine() {
+		return line;
+	}
+
+	/**
+	 * setColumn sets the column number of the xml element backing the node
+	 *
+	 * @param column Column number
+	 */
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
+	/**
+	 * getColumn returns the column number of the xml element backing the node
+	 *
+	 * @return column
+	 */
+	public int getColumn() {
+		return column;
+	}
+
+	/**
 	 * Returns the path from the original document this {@code Node} is associated with.
 	 *
 	 * @return The path.
@@ -448,6 +491,8 @@ public class Node {
 				.add("validated", validated)
 				.add("defaultNsUri", defaultNsUri)
 				.add("path", path)
+				.add("line", line)
+				.add("column", column)
 				.toString();
 	}
 
@@ -467,17 +512,18 @@ public class Node {
 			return false;
 		}
 
-		final Node node = (Node)o;
+		final Node node = (Node) o;
 
-		boolean halfEquals = isValidated() == node.isValidated()
-			&& Objects.equals(getChildNodes(), node.getChildNodes())
-			&& Objects.equals(data, node.data)
-			&& Objects.equals(duplicateData, node.duplicateData);
-
-		return halfEquals
-			&& getType() == node.getType()
-			&& Objects.equals(getDefaultNsUri(), node.getDefaultNsUri())
-			&& Objects.equals(getPath(), node.getPath());
+		return new EqualsBuilder().append(isValidated(), node.isValidated())
+				.append(getChildNodes(), node.getChildNodes())
+				.append(data, node.data)
+				.append(duplicateData, node.duplicateData)
+				.append(getType(), node.getType())
+				.append(getDefaultNsUri(), node.getDefaultNsUri())
+				.append(getPath(), node.getPath())
+				.append(getLine(), node.getLine())
+				.append(getColumn(), node.getColumn())
+				.isEquals();
 	}
 
 	/**
@@ -487,7 +533,8 @@ public class Node {
 	 */
 	@Override
 	public final int hashCode() {
-		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(), getPath());
+		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(),
+				getPath(), getLine(), getColumn());
 	}
 
 }
