@@ -1,13 +1,15 @@
 package gov.cms.qpp.conversion.model.error;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.common.base.MoreObjects;
-import org.apache.commons.lang3.StringUtils;
-
-import gov.cms.qpp.conversion.model.Node;
-
 import java.io.Serializable;
 import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.base.MoreObjects;
+
+import gov.cms.qpp.conversion.model.Node;
 
 /**
  * Holds the error information from Validators.
@@ -19,6 +21,8 @@ public class Detail implements Serializable {
 	private Integer errorCode;
 	private String message;
 	private String path = "";
+	private Integer line;
+	private Integer column;
 	private String value;
 	private String type;
 	private String location;
@@ -41,6 +45,8 @@ public class Detail implements Serializable {
 		path = detail.path;
 		value = detail.value;
 		type = detail.type;
+		line = detail.line;
+		column = detail.column;
 		location = detail.location;
 	}
 
@@ -52,11 +58,20 @@ public class Detail implements Serializable {
 	 * @return detail for given error
 	 */
 	public static Detail forErrorAndNode(LocalizedError error, Node node) {
-		Objects.requireNonNull(node, "node");
-
 		Detail detail = forErrorCode(error);
-		detail.setPath(node.getPath());
-		detail.setLocation(computeLocation(node));
+
+		if (node != null) {
+			if (node.getLine() != Node.DEFAULT_LOCATION_NUMBER) {
+				detail.setLine(node.getLine());
+			}
+
+			if (node.getColumn() != Node.DEFAULT_LOCATION_NUMBER) {
+				detail.setColumn(node.getColumn());
+			}
+
+			detail.setPath(node.getPath());
+			detail.setLocation(computeLocation(node));
+		}
 
 		return detail;
 	}
@@ -142,6 +157,42 @@ public class Detail implements Serializable {
 	}
 
 	/**
+	 * Gets the line of the submitted document that caused this error
+	 *
+	 * @return The line of the submitted document that caused this error
+	 */
+	public Integer getLine() {
+		return line;
+	}
+
+	/**
+	 * Sets the line of the submitted document that caused this error
+	 *
+	 * @param path The line of the submitted document that caused this error
+	 */
+	public void setLine(Integer line) {
+		this.line = line;
+	}
+
+	/**
+	 * Gets the line of the submitted document that caused this error
+	 *
+	 * @return The line of the submitted document that caused this error
+	 */
+	public Integer getColumn() {
+		return column;
+	}
+
+	/**
+	 * Sets the column of the submitted document that caused this error
+	 *
+	 * @param path The column of the submitted document that caused this error
+	 */
+	public void setColumn(Integer column) {
+		this.column = column;
+	}
+
+	/**
 	 * Gets the value that this error references.
 	 *
 	 * @return The value that this error references.
@@ -196,6 +247,8 @@ public class Detail implements Serializable {
 				.add("path", path)
 				.add("value", value)
 				.add("type", type)
+				.add("line", line)
+				.add("column", column)
 				.toString();
 	}
 
@@ -216,14 +269,16 @@ public class Detail implements Serializable {
 		}
 
 		Detail that = (Detail) o;
-		boolean equals = true; // doing equals this way to avoid making jacoco/sonar unhappy
-		equals &= Objects.equals(errorCode, that.errorCode);
-		equals &= Objects.equals(message, that.message);
-		equals &= Objects.equals(path, that.path);
-		equals &= Objects.equals(value, that.value);
-		equals &= Objects.equals(type, that.type);
-		equals &= Objects.equals(location, that.location);
-		return equals;
+		return new EqualsBuilder()
+				.append(errorCode, that.errorCode)
+				.append(message, that.message)
+				.append(path, that.path)
+				.append(value, that.value)
+				.append(type, that.type)
+				.append(line, that.line)
+				.append(column, that.column)
+				.append(location, that.location)
+				.isEquals();
 	}
 
 	/**
@@ -233,6 +288,6 @@ public class Detail implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(errorCode, message, path, value, type, location);
+		return Objects.hash(errorCode, message, path, value, type, line, column, location);
 	}
 }
