@@ -128,7 +128,7 @@ class CpcPlusAcceptanceTest {
 
 	private boolean messageComparison(String actual, String expected) {
 		return actual.equals(expected) ||
-				actual.replaceAll("[\\[()\\]]", "")
-						.matches(expected.replaceAll("[()]", ""));
+				actual.replaceAll("[\\[()\\]\\+]", "")
+						.matches(expected.replaceAll("[()+]", ""));
 	}
 }

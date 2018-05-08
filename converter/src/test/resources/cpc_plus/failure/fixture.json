@@ -214,6 +214,7 @@
 		"errorData": [
 			{
 				"errorCode": 34,
+				"subs": ["[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
