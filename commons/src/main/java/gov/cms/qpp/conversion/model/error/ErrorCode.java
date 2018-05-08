@@ -33,7 +33,7 @@ public enum ErrorCode implements LocalizedError {
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
 			+ "Please review the measures section of your file as it cannot be empty."),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "The `(Parent element)` has `(number of aggregate counts)` aggregate count values."
-		+ " A single aggregate count value is required. ", true),
+		+ " A single aggregate count value is required.", true),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Reference and Results is missing a required "
 		+ "Measure Performed child"),
@@ -76,7 +76,7 @@ public enum ErrorCode implements LocalizedError {
 		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.PRACTICE_SITE_ADDRESS
 	    + " regarding practice site addresses.", true),
 	CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "One and only one Alternative Payment Model (APM) Entity "
-			+ "Identifier should be specified"),
+			+ "Identifier should be specified. Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
 	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "CPC+ submissions must contain one Measure section"),
 	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "Must contain correct number of performance rate(s). "
 			+ "Correct Number is `(Expected value)`", true),
@@ -114,8 +114,10 @@ public enum ErrorCode implements LocalizedError {
 			+ "a performanceRateId with an incorrect UUID of `(Incorrect UUID)`", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID"),
-	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty"),
-	CPC_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid"),
+	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty. "
+			+ "Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
+	CPC_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid. "
+			+ " Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64, "CPC+ Submissions must have at least `(CPC+ measure group minimum)` "
 			+ "of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`", true),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of "
