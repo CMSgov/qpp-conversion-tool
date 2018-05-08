@@ -96,7 +96,9 @@ public enum ErrorCode implements LocalizedError {
 	CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH(49,"Amount of stratifications `(Current number of "
 			+ "Reporting Stratifiers)` does not meet expectations "
 			+ "`(Number of stratifiers required)` for `(Current subpopulation type)` measure "
-			+ "`(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`", true),
+			+ "`(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`."
+			+ "Please refer to the Implementation Guide for correct stratification UUID's here: "
+			+ DocumentationReference.MEASURE_IDS, true),
 	IA_MEASURE_INCORRECT_CHILDREN_COUNT(50, "Measure performed must have exactly one child."),
 	IA_MEASURE_INVALID_TYPE(51, "A single measure performed value is required and must be either a Y or an N."),
 	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "Measure data must have exactly one Aggregate Count."),

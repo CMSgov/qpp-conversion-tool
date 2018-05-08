@@ -44,7 +44,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 44 : CT - The IA Section must have one Reporting Parameter ACT
 * 45 : CT - The IA Section must contain only Improvement Activity and a reporting parameter Act
 * 48 : CT - Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
-* 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`
+* 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`.Please refer to the Implementation Guide for correct stratification UUID's here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88
 * 50 : CT - Measure performed must have exactly one child.
 * 51 : CT - A single measure performed value is required and must be either a Y or an N.
 * 52 : CT - Measure data must have exactly one Aggregate Count.
