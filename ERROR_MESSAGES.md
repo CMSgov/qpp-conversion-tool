@@ -32,7 +32,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 31 : CT - Must have a performance year. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
 * 32 : CT - The Quality Measure Section must have exactly one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
 * 33 : CT - The Performance Rate `(supplied value)` is invalid. It must be a decimal between 0 and 1.
-* 34 : CT - Must contain a practice site address for CPC+ conversions
+* 34 : CT - CPC+ submissions must contain a practice site address. Please refer to the `(Submission year's)` IG for more details https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=25 regarding practice site addresses.
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified
 * 36 : CT - CPC+ submissions must contain one Measure section
 * 37 : CT - Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
