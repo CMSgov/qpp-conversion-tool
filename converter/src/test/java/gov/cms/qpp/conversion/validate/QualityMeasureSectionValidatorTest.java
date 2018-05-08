@@ -1,12 +1,10 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.MarkupManipulationHandler;
-import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +74,7 @@ class QualityMeasureSectionValidatorTest {
 				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V2.name(), "measureId", false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.MISSING_OR_DUPLICATED_MEASURE_UUID);
+				.contains(ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID);
 	}
 
 	@Test
@@ -85,7 +83,7 @@ class QualityMeasureSectionValidatorTest {
 		List<Detail> errorDetails = manipulatorHandler.executeScenario(xpath, false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(ErrorCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_UUID);
+				.contains(ErrorCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID);
 	}
 
 	private Set<Detail> validateQualityMeasureSection() {

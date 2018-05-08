@@ -58,7 +58,7 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		//the meta data measures-data.json
 		//This should not be an error
 		thoroughlyCheck(node)
-				.singleValue(ErrorCode.MISSING_OR_DUPLICATED_MEASURE_UUID, MeasureConfigHelper.MEASURE_ID)
+				.singleValue(ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID, MeasureConfigHelper.MEASURE_ID)
 				.childMinimum(ErrorCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
