@@ -22,11 +22,11 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 
 	@Override
 	public void encode(Writer writer) {
+		JsonWrapper wrapper = new JsonWrapper();
+		for (Node curNode : nodes) {
+			encode(wrapper, curNode);
+		}
 		try {
-			JsonWrapper wrapper = new JsonWrapper();
-			for (Node curNode : nodes) {
-				encode(wrapper, curNode);
-			}
 			writer.write(wrapper.toString());
 			writer.flush();
 		} catch (IOException exception) {
@@ -60,10 +60,10 @@ public abstract class JsonOutputEncoder implements OutputEncoder {
 			if (mergeMetadata && wrapper.isObject()) {
 				wrapper.attachMetadata(node);
 			}
-		} catch (EncodeException e) {
-			DEV_LOG.warn("Encode error when doing internalEncode, adding a new Detail", e);
-			Detail detail = Detail.forErrorCode(ErrorCode.UNEXPECTED_ENCODE_ERROR);
-			detail.setMessage(e.getMessage());
+		} catch (EncodeException exception) {
+			DEV_LOG.warn("Encode error when doing internalEncode, adding a new Detail", exception);
+			Detail detail = Detail.forErrorAndNode(ErrorCode.UNEXPECTED_ENCODE_ERROR, node);
+			detail.setMessage(exception.getMessage());
 			details.add(detail);
 		}
 	}

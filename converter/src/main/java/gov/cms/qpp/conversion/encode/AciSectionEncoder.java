@@ -72,9 +72,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 					childEncoder.encode(childWrapper, currentChild);
 					measurementsWrapper.putObject(childWrapper);
 				} else {
-					Detail detail = Detail.forErrorCode(ErrorCode.ENCODER_MISSING);
-					detail.setPath(currentChild.getPath());
-					addValidationError(detail);
+					addValidationError(Detail.forErrorAndNode(ErrorCode.ENCODER_MISSING, currentChild));
 				}
 			}
 		}
