@@ -1,7 +1,10 @@
 package gov.cms.qpp.conversion;
 
 public enum DocumentationReference {
+
+	IDENTIFIERS(15),
 	CLINICAL_DOCUMENT(19),
+	PRACTICE_SITE_ADDRESS(25),
 	REPORTING_PARAMETERS_ACT(80),
 	MEASURE_IDS(88);
 
