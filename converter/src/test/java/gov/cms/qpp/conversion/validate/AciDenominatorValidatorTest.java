@@ -122,7 +122,7 @@ class AciDenominatorValidatorTest {
 		assertWithMessage("Invalid Value Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
-						AciDenominatorValidator.DENOMINATOR_NAME));
+						AciDenominatorValidator.DENOMINATOR_NAME, value));
 	}
 
 	@Test
@@ -140,6 +140,6 @@ class AciDenominatorValidatorTest {
 		assertWithMessage("Invalid Value Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
-						AciDenominatorValidator.DENOMINATOR_NAME));
+						AciDenominatorValidator.DENOMINATOR_NAME, value));
 	}
 }

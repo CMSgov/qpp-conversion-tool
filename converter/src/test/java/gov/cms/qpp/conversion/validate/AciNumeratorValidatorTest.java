@@ -122,5 +122,5 @@ class AciNumeratorValidatorTest {
 		assertWithMessage("Invalid Value Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
-						AciNumeratorValidator.NUMERATOR_NAME));
+						AciNumeratorValidator.NUMERATOR_NAME, value));
 	}}

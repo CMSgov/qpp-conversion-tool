@@ -36,10 +36,10 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
 * 36 : CT - CPC+ submissions must contain one Measure section
 * 37 : CT - Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
-* 38 : CT - This `(Numerator or Denominator)` Node does not have any child Nodes
-* 39 : CT - This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node
-* 41 : CT - This `(Numerator or Denominator)` Node Aggregate Value is not an integer
-* 42 : CT - This `(Numerator or Denominator)` Node Aggregate Value has an invalid value
+* 38 : CT - This ACI `(Numerator or Denominator)` element does not have any child elements
+* 39 : CT - This ACI `(Numerator or Denominator)` element must have exactly one Aggregate Count element
+* 41 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer
+* 42 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'
 * 43 : CT - The IA Section must have at least one Improvement Activity
 * 44 : CT - The IA Section must have one Reporting Parameter ACT
 * 45 : CT - The IA Section must contain only Improvement Activity and a reporting parameter Act
