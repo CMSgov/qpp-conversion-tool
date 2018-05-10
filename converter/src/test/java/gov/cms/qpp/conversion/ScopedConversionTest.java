@@ -222,8 +222,8 @@ class ScopedConversionTest {
 						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
 						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
 							.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
-						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
-						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME).getMessage(),
+						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME, "Bob").getMessage(),
+						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME, "empty").getMessage(),
 						ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM.getMessage(),
 						ErrorCode.IA_MEASURE_INVALID_TYPE.getMessage());
 	}
@@ -249,8 +249,8 @@ class ScopedConversionTest {
 						ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT.getMessage(),
 						ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
 							.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
-						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
-						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME).getMessage());
+						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME, "Bob").getMessage(),
+						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME, "empty").getMessage());
 	}
 
 	/**

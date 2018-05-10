@@ -86,16 +86,16 @@ public enum ErrorCode implements LocalizedError {
 	CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "One and only one Alternative Payment Model (APM) Entity "
 			+ "Identifier should be specified. Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
 	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "CPC+ submissions must contain one Measure section"),
-	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "Must contain correct number of performance rate(s). "
-			+ "Correct Number is `(Expected value)`", true),
+	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "CPC+ submissions must contain correct number of performance rate(s). "
+			+ "Correct Number is `(Expected value)` for measure `(Given measure id)`", true),
 	NUMERATOR_DENOMINATOR_MISSING_CHILDREN(38,
-			"This `(Numerator or Denominator)` Node does not have any child Nodes", true),
+			"This ACI `(Numerator or Denominator)` element does not have any child elements", true),
 	NUMERATOR_DENOMINATOR_CHILD_EXACT(39,
-			"This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node", true),
+			"This ACI `(Numerator or Denominator)` element must have exactly one Aggregate Count element", true),
 	NUMERATOR_DENOMINATOR_MUST_BE_INTEGER(41,
-			"This `(Numerator or Denominator)` Node Aggregate Value is not an integer", true),
+			"This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer", true),
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
-			"This `(Numerator or Denominator)` Node Aggregate Value has an invalid value", true),
+			"This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'", true),
 	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one Improvement Activity"),
 	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter Act. "
 			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "

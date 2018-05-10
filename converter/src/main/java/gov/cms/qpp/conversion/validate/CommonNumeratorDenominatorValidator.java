@@ -38,13 +38,23 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 * @param aggregateCountNode aggregate count node
 	 */
 	private void validateAggregateCount(Node aggregateCountNode) {
+		String aggregateCountValue = aggregateCountNode.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+		if (aggregateCountValue == null) {
+			aggregateCountValue = "empty";
+		}
 		check(aggregateCountNode)
-				.singleValue(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE), AggregateCountDecoder.AGGREGATE_COUNT)
-				.intValue(format(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER), AggregateCountDecoder.AGGREGATE_COUNT)
-				.greaterThan(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE), -1);
+				.singleValue(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue),
+					AggregateCountDecoder.AGGREGATE_COUNT)
+				.intValue(format(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER, aggregateCountValue),
+					AggregateCountDecoder.AGGREGATE_COUNT)
+				.greaterThan(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue), -1);
 	}
 
 	private LocalizedError format(ErrorCode error) {
 		return error.format(nodeName);
+	}
+
+	private LocalizedError format(ErrorCode error, String value) {
+		return error.format(nodeName, value);
 	}
 }
