@@ -35,7 +35,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 34 : CT - CPC+ submissions must contain a practice site address. Please refer to the `(Submission year's)` IG for more details https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=25 regarding practice site addresses.
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
 * 36 : CT - CPC+ submissions must contain one Measure section
-* 37 : CT - Must contain correct number of performance rate(s). Correct Number is `(Expected value)`
+* 37 : CT - CPC+ submissions must contain correct number of performance rate(s). Correct Number is `(Expected value)` for measure `(Given measure id)`
 * 38 : CT - This ACI `(Numerator or Denominator)` element does not have any child elements
 * 39 : CT - This ACI `(Numerator or Denominator)` element must have exactly one Aggregate Count element
 * 41 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer
