@@ -10,7 +10,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 5 : CT - The file is not a QRDA-III XML document. Please ensure that the submission complies with the `(Submission year's)` implementation guide. `(Implementation guide link)`
 * 6 : CT - The measure GUID supplied `(Provided measure id)` is invalid. Please see the `(Submission year's)` IG https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88 for valid measure GUIDs.
 * 7 : CT - The measure reference results must have at least one measure. Please review the measures section of your file as it cannot be empty.
-* 8 : CT - The `(Parent element)` has `(number of aggregate counts)` aggregate count values. A single aggregate count value is required. 
+* 8 : CT - The `(Parent element)` has `(number of aggregate counts)` aggregate count values. A single aggregate count value is required.
 * 9 : CT - Aggregate count value must be an integer
 * 11 : CT - This ACI Reference and Results is missing a required Measure Performed child
 * 12 : CT - This ACI Measure Performed Reference and Results requires a single Measure ID
@@ -32,14 +32,14 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 31 : CT - Must have a performance year
 * 32 : CT - The Quality Measure Section must have exactly one Reporting Parameter ACT
 * 33 : CT - The Performance Rate `(supplied value)` is invalid. It must be a decimal between 0 and 1.
-* 34 : CT - Must contain a practice site address for CPC+ conversions
-* 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified
+* 34 : CT - CPC+ submissions must contain a practice site address. Please refer to the `(Submission year's)` IG for more details https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=25 regarding practice site addresses.
+* 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
 * 36 : CT - CPC+ submissions must contain one Measure section
 * 37 : CT - CPC+ submissions must contain correct number of performance rate(s). Correct Number is `(Expected value)` for measure `(Given measure id)`
-* 38 : CT - This `(Numerator or Denominator)` Node does not have any child Nodes
-* 39 : CT - This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node
-* 41 : CT - This `(Numerator or Denominator)` Node Aggregate Value is not an integer
-* 42 : CT - This `(Numerator or Denominator)` Node Aggregate Value has an invalid value
+* 38 : CT - This ACI `(Numerator or Denominator)` element does not have any child elements
+* 39 : CT - This ACI `(Numerator or Denominator)` element must have exactly one Aggregate Count element
+* 41 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer
+* 42 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'
 * 43 : CT - The IA Section must have at least one Improvement Activity
 * 44 : CT - The IA Section must have one Reporting Parameter ACT
 * 45 : CT - The IA Section must contain only Improvement Activity and a reporting parameter Act
@@ -57,8 +57,8 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 59 : CT - The electronic measure id: `(Current eMeasure ID)` requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`
 * 60 : CT - The electronic measure id: `(Current eMeasure ID)` has a performanceRateId with an incorrect UUID of `(Incorrect UUID)`
 * 61 : CT - A Performance Rate must contain a single Performance Rate UUID
-* 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty
-* 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid
+* 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
+* 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid.  Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
 * 64 : CT - CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
 * 65 : CT - CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of the following measures: `(Listing of all CPC+ measure ids)`.
 * 66 : CT - Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`

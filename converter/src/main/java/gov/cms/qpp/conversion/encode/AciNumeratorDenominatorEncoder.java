@@ -61,9 +61,7 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 			if (childEncoder != null) {
 				childEncoder.encode(childWrapper, currentChild);
 			} else {
-				Detail detail = Detail.forErrorCode(ErrorCode.ENCODER_MISSING);
-				detail.setPath(currentChild.getPath());
-				addValidationError(detail);
+				addValidationError(Detail.forErrorAndNode(ErrorCode.ENCODER_MISSING, currentChild));
 			}
 		}
 

@@ -33,7 +33,7 @@ public enum ErrorCode implements LocalizedError {
 	CHILD_MEASURE_MISSING(7, "The measure reference results must have at least one measure. "
 			+ "Please review the measures section of your file as it cannot be empty."),
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "The `(Parent element)` has `(number of aggregate counts)` aggregate count values."
-		+ " A single aggregate count value is required. ", true),
+		+ " A single aggregate count value is required.", true),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
 	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Reference and Results is missing a required "
 		+ "Measure Performed child"),
@@ -72,21 +72,22 @@ public enum ErrorCode implements LocalizedError {
 	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure Section must have "
 			+ "exactly one Reporting Parameter ACT"),
 	PERFORMANCE_RATE_INVALID_VALUE(33, "The Performance Rate `(supplied value)` is invalid. It must be a decimal between 0 and 1.", true),
-	CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "Must contain a practice site address for CPC+ "
-			+ "conversions"),
+	CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "CPC+ submissions must contain a practice site address."
+		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.PRACTICE_SITE_ADDRESS
+	    + " regarding practice site addresses.", true),
 	CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED(35, "One and only one Alternative Payment Model (APM) Entity "
-			+ "Identifier should be specified"),
+			+ "Identifier should be specified. Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
 	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "CPC+ submissions must contain one Measure section"),
 	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "CPC+ submissions must contain correct number of performance rate(s). "
 			+ "Correct Number is `(Expected value)` for measure `(Given measure id)`", true),
 	NUMERATOR_DENOMINATOR_MISSING_CHILDREN(38,
-			"This `(Numerator or Denominator)` Node does not have any child Nodes", true),
+			"This ACI `(Numerator or Denominator)` element does not have any child elements", true),
 	NUMERATOR_DENOMINATOR_CHILD_EXACT(39,
-			"This `(Numerator or Denominator)` Node must have exactly one Aggregate Count node", true),
+			"This ACI `(Numerator or Denominator)` element must have exactly one Aggregate Count element", true),
 	NUMERATOR_DENOMINATOR_MUST_BE_INTEGER(41,
-			"This `(Numerator or Denominator)` Node Aggregate Value is not an integer", true),
+			"This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer", true),
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
-			"This `(Numerator or Denominator)` Node Aggregate Value has an invalid value", true),
+			"This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'", true),
 	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one Improvement Activity"),
 	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter ACT"),
 	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activity and a reporting parameter Act"),
@@ -113,8 +114,10 @@ public enum ErrorCode implements LocalizedError {
 			+ "a performanceRateId with an incorrect UUID of `(Incorrect UUID)`", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID"),
-	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty"),
-	CPC_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid"),
+	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty. "
+			+ "Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
+	CPC_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid. "
+			+ " Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURE_CATEGORY(64, "CPC+ Submissions must have at least `(CPC+ measure group minimum)` "
 			+ "of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`", true),
 	CPC_PLUS_TOO_FEW_QUALITY_MEASURES(65, "CPC+ Submissions must have at least `(Overall CPC+ measure minimum)` of "
