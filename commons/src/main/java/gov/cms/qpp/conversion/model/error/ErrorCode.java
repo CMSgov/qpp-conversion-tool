@@ -65,13 +65,21 @@ public enum ErrorCode implements LocalizedError {
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS(27, "Clinical Document contains duplicate IA sections"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate Measure "
 			+ "sections"),
-	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START(29, "Must have one and only one performance "
-			+ "start"),
-	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END(30, "Must have one and only one performance end"),
-	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR(31, "Must have a performance year"),
+	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START(29, "Must have one and only one performance period "
+			+ "start. Please see the Implementation Guide for information on the performance period here: "
+			+ DocumentationReference.PERFORMANCE_PERIOD),
+	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END(30, "Must have one and only one performance period end. "
+			+ "Please see the Implementation Guide for information on the performance period here: "
+			+ DocumentationReference.PERFORMANCE_PERIOD),
+	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR(31, "Must have a performance year. "
+			+ "Please see the Implementation Guide for information on the performance period here: "
+			+ DocumentationReference.PERFORMANCE_PERIOD),
 	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure Section must have "
-			+ "exactly one Reporting Parameter ACT"),
-	PERFORMANCE_RATE_INVALID_VALUE(33, "The Performance Rate `(supplied value)` is invalid. It must be a decimal between 0 and 1.", true),
+			+ "exactly one Reporting Parameter Act. "
+			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
+			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
+	PERFORMANCE_RATE_INVALID_VALUE(33, "The Performance Rate `(supplied value)` is invalid. "
+		+ "It must be a decimal between 0 and 1.", true),
 	CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "CPC+ submissions must contain a practice site address."
 		+ " Please refer to the `(Submission year's)` IG for more details " + DocumentationReference.PRACTICE_SITE_ADDRESS
 	    + " regarding practice site addresses.", true),
@@ -89,8 +97,11 @@ public enum ErrorCode implements LocalizedError {
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
 			"This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'", true),
 	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one Improvement Activity"),
-	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter ACT"),
-	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activity and a reporting parameter Act"),
+	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter Act. "
+			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
+			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
+	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activities and a Reporting Parameter Act"),
+	NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT(46, "Clinical Document Node is required"),
 	CPC_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
 			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`", true),
 	CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH(49,"Amount of stratifications `(Current number of "
