@@ -41,11 +41,11 @@ class AggregateCountFailureTest {
 		//assert
 		assertWithMessage("The error file flags a aggregate count type error")
 				.that(errorContent)
-				.contains(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format("Numerator").getMessage());
+				.contains(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format("Numerator", "Bob").getMessage());
 
 		assertWithMessage("The error file flags a aggregate count value error")
 				.that(errorContent)
-				.contains(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format("Denominator").getMessage());
+				.contains(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format("Denominator", "empty").getMessage());
 	}
 
 }
