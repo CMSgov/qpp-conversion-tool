@@ -134,7 +134,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 			return new DecodeData(DecodeResult.TREE_ESCAPED, null);
 		}
 
-		childNode.setElementForLocation(parentElement); // TODO should this be element?
+		childNode.setElementForLocation(parentElement);
 
 		addLineAndColumnToNode(element, childNode);
 

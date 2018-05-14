@@ -332,10 +332,20 @@ public class Node {
 		return path;
 	}
 
+	/**
+	 * Returns the element location of the node
+	 *
+	 * @return The element location of the node.
+	 */
 	public Element getElementForLocation() {
 		return elementForLocation;
 	}
 
+	/**
+	 * Sets the element location of the node
+	 *
+	 * @param elementForLocation The element location for the node
+	 */
 	public void setElementForLocation(Element elementForLocation) {
 		this.elementForLocation = elementForLocation;
 	}
