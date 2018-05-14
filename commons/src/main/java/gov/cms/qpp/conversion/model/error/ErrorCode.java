@@ -112,7 +112,8 @@ public enum ErrorCode implements LocalizedError {
 	IA_MEASURE_INVALID_TYPE(51, "A single measure performed value is required and must be either a Y or an N."),
 	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "The measure data with population id '`(population id)`' must have exactly one "
 			+ "Aggregate Count.", true),
-	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data must be a positive integer value"),
+	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
+			+ "must be a whole number greater than or equal to 0", true),
 	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION(54, "Must have at least one NPI/TIN combination"),
 	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "Must be 01/01/2017"),
 	CPC_PERFORMANCE_PERIOD_END_DEC312017(56, "Must be 12/31/2017"),

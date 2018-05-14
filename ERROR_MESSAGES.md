@@ -49,7 +49,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 50 : CT - Measure performed must have exactly one child.
 * 51 : CT - A single measure performed value is required and must be either a Y or an N.
 * 52 : CT - The measure data with population id '`(population id)`' must have exactly one Aggregate Count.
-* 53 : CT - Measure data must be a positive integer value
+* 53 : CT - Measure data with population id '`(population id)`' must be a whole number greater than or equal to 0
 * 54 : CT - Must have at least one NPI/TIN combination
 * 55 : CT - Must be 01/01/2017
 * 56 : CT - Must be 12/31/2017
