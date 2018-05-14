@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -58,13 +57,8 @@ abstract class QualityMeasureIdValidator extends NodeValidator {
 		//It is possible that we have a Measure in the input that we have not defined in
 		//the meta data measures-data.json
 		//This should not be an error
-
-		String value = node.getValue(MeasureConfigHelper.MEASURE_ID);
-		LocalizedError error = ErrorCode.MEASURE_GUID_MISSING.format(
-			Optional.ofNullable(value).orElse(NOT_AVAILABLE), Context.REPORTING_YEAR);
-
 		thoroughlyCheck(node)
-				.singleValue(error, MeasureConfigHelper.MEASURE_ID)
+				.singleValue(ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID, MeasureConfigHelper.MEASURE_ID)
 				.childMinimum(ErrorCode.CHILD_MEASURE_MISSING, 1, TemplateId.MEASURE_DATA_CMS_V2);
 		validateMeasureConfigs(node);
 	}
