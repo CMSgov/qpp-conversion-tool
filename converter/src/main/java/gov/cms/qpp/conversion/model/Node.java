@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.jdom2.Element;
+import org.jdom2.xpath.XPathHelper;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
@@ -37,6 +39,7 @@ public class Node {
 	private Node parent;
 	private boolean validated;
 
+	private Element elementForLocation;
 	private String defaultNsUri;
 	private String path;
 	private int line = DEFAULT_LOCATION_NUMBER;
@@ -319,17 +322,22 @@ public class Node {
 	 *
 	 * @return The path.
 	 */
-	public String getPath() {
+	public String getOrComputePath() {
+		if (path == null) {
+			if (elementForLocation != null) {
+				path = XPathHelper.getAbsolutePath(elementForLocation);
+			}
+		}
+
 		return path;
 	}
 
-	/**
-	 * Sets the path from the original document that this {@code Node} is associated with.
-	 *
-	 * @param newPath The path.
-	 */
-	public void setPath(String newPath) {
-		path = newPath;
+	public Element getElementForLocation() {
+		return elementForLocation;
+	}
+
+	public void setElementForLocation(Element elementForLocation) {
+		this.elementForLocation = elementForLocation;
 	}
 
 	/**
@@ -491,6 +499,7 @@ public class Node {
 				.add("validated", validated)
 				.add("defaultNsUri", defaultNsUri)
 				.add("path", path)
+				.add("elementForLocation", elementForLocation)
 				.add("line", line)
 				.add("column", column)
 				.toString();
@@ -520,7 +529,8 @@ public class Node {
 				.append(duplicateData, node.duplicateData)
 				.append(getType(), node.getType())
 				.append(getDefaultNsUri(), node.getDefaultNsUri())
-				.append(getPath(), node.getPath())
+				.append(path, node.path)
+				.append(getElementForLocation(), node.getElementForLocation())
 				.append(getLine(), node.getLine())
 				.append(getColumn(), node.getColumn())
 				.isEquals();
@@ -534,7 +544,7 @@ public class Node {
 	@Override
 	public final int hashCode() {
 		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(),
-				getPath(), getLine(), getColumn());
+				path, getElementForLocation(), getLine(), getColumn());
 	}
 
 }

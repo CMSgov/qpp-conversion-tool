@@ -38,7 +38,7 @@ class ElementLocationTest {
 
 		Element document = XmlUtils.stringToDom(qrda);
 		Node someChildNode = new QrdaDecoderEngine(new Context()).decode(document).getChildNodes().get(2);
-		XPathExpression<?> xpathLocationOfSomeChildNode = XPathFactory.instance().compile(someChildNode.getPath());
+		XPathExpression<?> xpathLocationOfSomeChildNode = XPathFactory.instance().compile(someChildNode.getOrComputePath());
 		Element element = (Element) xpathLocationOfSomeChildNode.evaluate(document).get(0);
 		Object elementOfNode = element.getChildren()
 			.stream()
