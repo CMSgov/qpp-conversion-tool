@@ -48,7 +48,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`
 * 50 : CT - Measure performed must have exactly one child.
 * 51 : CT - A single measure performed value is required and must be either a Y or an N.
-* 52 : CT - Measure data must have exactly one Aggregate Count.
+* 52 : CT - The measure data with population id '`(population id)`' must have exactly one Aggregate Count.
 * 53 : CT - Measure data must be a positive integer value
 * 54 : CT - Must have at least one NPI/TIN combination
 * 55 : CT - Must be 01/01/2017

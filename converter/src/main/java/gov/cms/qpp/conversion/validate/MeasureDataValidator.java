@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
+import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
@@ -13,6 +14,7 @@ import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
  */
 @Validator(TemplateId.MEASURE_DATA_CMS_V2)
 public class MeasureDataValidator extends NodeValidator {
+	protected static final String EMPTY_POPULATION_ID = "empty population id";
 
 	/**
 	 * Validates a single Measure Data Value {@link Node}.
@@ -27,9 +29,15 @@ public class MeasureDataValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
+		String populationId = node.getValue(MeasureDataDecoder.MEASURE_POPULATION);
+		if (populationId == null) {
+			populationId = EMPTY_POPULATION_ID;
+		}
+
 		check(node)
-				.hasChildren(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT)
-				.childExact(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT, 1, TemplateId.ACI_AGGREGATE_COUNT);
+				.hasChildren(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId))
+				.childExact(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(populationId),
+					1, TemplateId.ACI_AGGREGATE_COUNT);
 
 		if (getDetails().isEmpty()) {
 			Node child = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
