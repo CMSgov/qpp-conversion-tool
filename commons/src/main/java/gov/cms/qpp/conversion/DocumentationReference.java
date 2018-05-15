@@ -6,7 +6,8 @@ public enum DocumentationReference {
 	CLINICAL_DOCUMENT(19),
 	PRACTICE_SITE_ADDRESS(25),
 	REPORTING_PARAMETERS_ACT(80),
-	MEASURE_IDS(88);
+	MEASURE_IDS(88),
+	PERFORMANCE_PERIOD(17);
 
 	private static final String BASE_PATH = "https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=";
 	private final String path;

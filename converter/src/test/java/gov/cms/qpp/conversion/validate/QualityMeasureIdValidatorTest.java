@@ -81,8 +81,7 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void validateMissingMeasureId() {
-		LocalizedError localizedError = ErrorCode.MEASURE_GUID_MISSING.format(
-			QualityMeasureIdValidator.NOT_AVAILABLE, Context.REPORTING_YEAR);
+		LocalizedError localizedError = ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID;
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, true);
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);
@@ -106,8 +105,7 @@ class QualityMeasureIdValidatorTest {
 
 	@Test
 	void validateMissingMeasureIdAndMeasure() {
-		LocalizedError localizedError = ErrorCode.MEASURE_GUID_MISSING.format(
-			QualityMeasureIdValidator.NOT_AVAILABLE, Context.REPORTING_YEAR);
+		LocalizedError localizedError = ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID;
 		Node measureReferenceResultsNode = createMeasureReferenceResultsNode(false, false);
 
 		Set<Detail> details = objectUnderTest.validateSingleNode(measureReferenceResultsNode);

@@ -27,10 +27,10 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 26 : CT - Clinical Document contains duplicate ACI sections
 * 27 : CT - Clinical Document contains duplicate IA sections
 * 28 : CT - Clinical Document contains duplicate Measure sections
-* 29 : CT - Must have one and only one performance start
-* 30 : CT - Must have one and only one performance end
-* 31 : CT - Must have a performance year
-* 32 : CT - The Quality Measure Section must have exactly one Reporting Parameter ACT
+* 29 : CT - Must have one and only one performance period start. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
+* 30 : CT - Must have one and only one performance period end. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
+* 31 : CT - Must have a performance year. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
+* 32 : CT - The Quality Measure Section must have exactly one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
 * 33 : CT - The Performance Rate `(supplied value)` is invalid. It must be a decimal between 0 and 1.
 * 34 : CT - CPC+ submissions must contain a practice site address. Please refer to the `(Submission year's)` IG for more details https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=25 regarding practice site addresses.
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
@@ -41,13 +41,14 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 41 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer
 * 42 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'
 * 43 : CT - The IA Section must have at least one Improvement Activity
-* 44 : CT - The IA Section must have one Reporting Parameter ACT
-* 45 : CT - The IA Section must contain only Improvement Activity and a reporting parameter Act
+* 44 : CT - The IA Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
+* 45 : CT - The IA Section must contain only Improvement Activities and a Reporting Parameter Act
+* 46 : CT - Clinical Document Node is required
 * 48 : CT - Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`
 * 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`
 * 50 : CT - An IA performed measure reference and results must have exactly one measure performed child
 * 51 : CT - A single measure performed value is required and must be either a Y or an N.
-* 52 : CT - Measure data must have exactly one Aggregate Count.
+* 52 : CT - The measure data with population id '`(population id)`' must have exactly one Aggregate Count.
 * 53 : CT - Measure data must be a positive integer value
 * 54 : CT - Must have at least one NPI/TIN combination
 * 55 : CT - Must be 01/01/2017
@@ -65,4 +66,6 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 67 : CT - Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for the measure id `(Measure Id)`
 * 68 : CT - Your CPC+ submission was made after the CPC+ Measure section submission deadline of `(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at `(CPC+ contact email)` for assistance.
 * 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123
-* 70 : CT - The Performance Rate is missing
+* 70 : CT - The measure section measure reference and results has an incorrect number of measure GUID supplied. Please ensure that only one measure GUID is provided per measure.
+* 71 : CT - Two or more different measure section measure reference and results have the same measure GUID. Please ensure that each measure section measure reference and results do not have the same measure GUID.
+* 72 : CT - The Performance Rate is missing

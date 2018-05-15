@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.validate;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static gov.cms.qpp.conversion.validate.MeasureDataValidator.EMPTY_POPULATION_ID;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,7 +43,7 @@ class MeasureDataValidatorTest {
 	}
 
 	@Test
-	void missingAggregateCount() throws Exception {
+	void missingAggregateCount() {
 		Node testNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);
 		MeasureDataValidator validator = new MeasureDataValidator();
 		validator.internalValidateSingleNode(testNode);
@@ -50,7 +51,7 @@ class MeasureDataValidatorTest {
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT);
+				.containsExactly(ErrorCode.MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT.format(EMPTY_POPULATION_ID));
 	}
 
 	@Test
