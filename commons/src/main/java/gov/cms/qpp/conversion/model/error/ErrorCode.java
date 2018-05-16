@@ -108,7 +108,8 @@ public enum ErrorCode implements LocalizedError {
 			+ "Reporting Stratifiers)` does not meet expectations "
 			+ "`(Number of stratifiers required)` for `(Current subpopulation type)` measure "
 			+ "`(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`", true),
-	IA_MEASURE_INCORRECT_CHILDREN_COUNT(50, "Measure performed must have exactly one child."),
+	IA_MEASURE_INCORRECT_CHILDREN_COUNT(50, "An IA performed measure reference and results must "
+			+ "have exactly one measure performed child"),
 	IA_MEASURE_INVALID_TYPE(51, "A single measure performed value is required and must be either a Y or an N."),
 	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "The measure data with population id '`(population id)`' must have exactly one "
 			+ "Aggregate Count.", true),
