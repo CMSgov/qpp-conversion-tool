@@ -323,10 +323,8 @@ public class Node {
 	 * @return The path.
 	 */
 	public String getOrComputePath() {
-		if (path == null) {
-			if (elementForLocation != null) {
-				path = XPathHelper.getAbsolutePath(elementForLocation);
-			}
+		if (path == null && elementForLocation != null) {
+			path = XPathHelper.getAbsolutePath(elementForLocation);
 		}
 
 		return path;
