@@ -114,7 +114,9 @@ public enum ErrorCode implements LocalizedError {
 	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "The measure data with population id '`(population id)`' must have exactly one "
 			+ "Aggregate Count.", true),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data must be a positive integer value"),
-	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION(54, "Must have at least one NPI/TIN combination"),
+	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION(54, "A CPC+ submission must have at least one NPI/TIN combination. "
+			+ "Please refer to the Implementation Guide(IG) for TIN/NPI information here: "
+			+ DocumentationReference.DOCUMENTATION_OF_TIN_NPI),
 	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "Must be 01/01/2017"),
 	CPC_PERFORMANCE_PERIOD_END_DEC312017(56, "Must be 12/31/2017"),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The measure reference results must have a single "

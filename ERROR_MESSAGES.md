@@ -50,7 +50,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 51 : CT - A single measure performed value is required and must be either a Y or an N.
 * 52 : CT - The measure data with population id '`(population id)`' must have exactly one Aggregate Count.
 * 53 : CT - Measure data must be a positive integer value
-* 54 : CT - Must have at least one NPI/TIN combination
+* 54 : CT - A CPC+ submission must have at least one NPI/TIN combination. Please refer to the Implementation Guide(IG) for TIN/NPI information here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=28
 * 55 : CT - Must be 01/01/2017
 * 56 : CT - Must be 12/31/2017
 * 57 : CT - The measure reference results must have a single measure population
