@@ -75,7 +75,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci
       - run: echo host stuff $DOCKER_DEPLOY_HOSTS $DOCKER_DEPLOY_PORT
-      - run: mvn test -DfailIfNoTests=false -Dtest=*ApiAcceptance*
+      - run: mvn --batch-mode test -DfailIfNoTests=false -Dtest=*ApiAcceptance*
 
   ui_test:
     <<: *container_config
