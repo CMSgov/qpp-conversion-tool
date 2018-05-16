@@ -217,7 +217,7 @@ public class Node {
 	 * @param childNode Node
 	 */
 	public void addChildNode(Node childNode) {
-		if (childNode == null || childNode == this) {
+		if (childNode == null || childNode == this) { // checking identity equals on purpose
 			return;
 		}
 		this.childNodes.add(childNode);
@@ -230,7 +230,7 @@ public class Node {
 	 * @return <tt>true</tt> if a child matched such that it was deleted.
 	 */
 	public boolean removeChildNode(Node childNode) {
-		return childNode != null && childNode != this && this.childNodes.remove(childNode);
+		return this.childNodes.remove(childNode);
 	}
 
 	/**
