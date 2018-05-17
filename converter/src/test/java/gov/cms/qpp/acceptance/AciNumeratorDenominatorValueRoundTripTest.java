@@ -35,7 +35,7 @@ class AciNumeratorDenominatorValueRoundTripTest {
 		String xPathExpected = "/*[local-name() = 'root' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'observation'" +
 								" and namespace-uri() = 'urn:hl7-org:v3']";
 		assertWithMessage("The XPath of the aggregate count node is incorrect")
-				.that(numDenomNode.getChildNodes().get(0).getPath())
+				.that(numDenomNode.getChildNodes().get(0).getOrComputePath())
 				.isEqualTo(xPathExpected);
 
 		QppOutputEncoder encoder = new QppOutputEncoder(context);

@@ -1,15 +1,21 @@
 package gov.cms.qpp.conversion.model;
 
-import com.google.common.collect.Lists;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-import org.junit.jupiter.api.Test;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import org.jdom2.Element;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.Lists;
+
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 class NodeTest {
 
@@ -291,6 +297,7 @@ class NodeTest {
 		EqualsVerifier.forClass(Node.class)
 			.withPrefabValues(List.class, Lists.newArrayList(new Node()), Lists.newArrayList(new Node(TemplateId.CLINICAL_DOCUMENT), new Node(TemplateId.ACI_NUMERATOR)))
 			.withPrefabValues(Node.class, new Node(TemplateId.ACI_DENOMINATOR), parent)
+			.withPrefabValues(Element.class, new Element("mock-one"), new Element("mock-two"))
 			.withIgnoredFields("parent")
 			.suppress(Warning.NONFINAL_FIELDS)
 			.verify();
