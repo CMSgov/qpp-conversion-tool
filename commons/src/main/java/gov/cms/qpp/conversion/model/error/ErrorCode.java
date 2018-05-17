@@ -116,9 +116,9 @@ public enum ErrorCode implements LocalizedError {
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data must be a positive integer value"),
 	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION(54, "Must have at least one NPI/TIN combination"),
 	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "A CPC Plus Performance period start must be 01/01/2017. "
-			+ "Please refer to the IG for more information here: " +DocumentationReference.CPC_PLUS_SUBMISSIONS),
+			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
 	CPC_PERFORMANCE_PERIOD_END_DEC312017(56, "A CPC Plus Performance period end must be 12/31/2017. "
-			+ "Please refer to the IG for more information here: " +DocumentationReference.CPC_PLUS_SUBMISSIONS),
+			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The measure reference results must have a single "
 			+ "measure population"),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE(58, "The measure reference results must have a single "
