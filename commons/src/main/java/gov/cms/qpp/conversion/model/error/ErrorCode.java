@@ -103,7 +103,8 @@ public enum ErrorCode implements LocalizedError {
 	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activities and a Reporting Parameter Act"),
 	NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT(46, "Clinical Document Node is required"),
 	CPC_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
-			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`", true),
+			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`. "
+			+ "Here is a link to the IG valid Measure Ids section: " + DocumentationReference.MEASURE_IDS, true),
 	CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH(49,"Amount of stratifications `(Current number of "
 			+ "Reporting Stratifiers)` does not meet expectations "
 			+ "`(Number of stratifiers required)` for `(Current subpopulation type)` measure "
