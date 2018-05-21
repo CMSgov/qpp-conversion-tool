@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -26,6 +27,6 @@ public class AggregateCountEncoder extends QppOutputEncoder {
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 		// simply writes the value in the Node
-		wrapper.putInteger(VALUE, node.getValue("aggregateCount"));
+		wrapper.putInteger(VALUE, node.getValue(AggregateCountDecoder.AGGREGATE_COUNT));
 	}
 }

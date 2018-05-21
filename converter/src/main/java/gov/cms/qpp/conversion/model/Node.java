@@ -14,6 +14,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 
@@ -23,6 +26,9 @@ import com.google.common.collect.Lists;
  * Nodes can contain other nodes as children to create a hierarchy.
  */
 public class Node {
+
+	public static final int DEFAULT_LOCATION_NUMBER = -1;
+
 	private final List<Node> childNodes = new ArrayList<>();
 	private final Map<String, String> data = new HashMap<>();
 	private final Map<String, List<String>> duplicateData = new HashMap<>();
@@ -33,6 +39,8 @@ public class Node {
 
 	private String defaultNsUri;
 	private String path;
+	private int line = DEFAULT_LOCATION_NUMBER;
+	private int column = DEFAULT_LOCATION_NUMBER;
 
 	/**
 	 * Default constructor initializes internal list of Nodes
@@ -271,6 +279,42 @@ public class Node {
 	}
 
 	/**
+	 * setLine sets the line number of the xml element backing the node
+	 *
+	 * @param line Line number
+	 */
+	public void setLine(int line) {
+		this.line = line;
+	}
+
+	/**
+	 * getLine returns the line number of the xml element backing the node
+	 *
+	 * @return line
+	 */
+	public int getLine() {
+		return line;
+	}
+
+	/**
+	 * setColumn sets the column number of the xml element backing the node
+	 *
+	 * @param column Column number
+	 */
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
+	/**
+	 * getColumn returns the column number of the xml element backing the node
+	 *
+	 * @return column
+	 */
+	public int getColumn() {
+		return column;
+	}
+
+	/**
 	 * Returns the path from the original document this {@code Node} is associated with.
 	 *
 	 * @return The path.
@@ -405,6 +449,34 @@ public class Node {
 	}
 
 	/**
+	 * Finds the first parent of this {@code Node} that has a human readable {@link TemplateId}.
+	 *
+	 * @return The parent node.
+	 */
+	public Node findParentNodeWithHumanReadableTemplateId() {
+		return findParentNodeWithHumanReadableTemplateId(this);
+	}
+
+	/**
+	 * Recursively searches for a parent {@code Node} with a human readable {@link TemplateId}.
+	 *
+	 * @param node The {@code Node} to see if it or its parent has a human readable {@link TemplateId}
+	 * @return The passed in {@code Node} if it has a human readable {@link TemplateId}, {@code null} if this {@code Node} is {@code null}, or
+	 * whatever the parent {@code Node} has.
+	 */
+	private Node findParentNodeWithHumanReadableTemplateId(Node node) {
+		if (node == null) {
+			return null;
+		}
+
+		if (!StringUtils.isEmpty(node.getType().getHumanReadableTitle())) {
+			return node;
+		}
+
+		return findParentNodeWithHumanReadableTemplateId(node.getParent());
+	}
+
+	/**
 	 * creates a readable representation of this {@code Node}.
 	 *
 	 * @return A string representation
@@ -419,6 +491,8 @@ public class Node {
 				.add("validated", validated)
 				.add("defaultNsUri", defaultNsUri)
 				.add("path", path)
+				.add("line", line)
+				.add("column", column)
 				.toString();
 	}
 
@@ -438,17 +512,18 @@ public class Node {
 			return false;
 		}
 
-		final Node node = (Node)o;
+		final Node node = (Node) o;
 
-		boolean halfEquals = isValidated() == node.isValidated()
-			&& Objects.equals(getChildNodes(), node.getChildNodes())
-			&& Objects.equals(data, node.data)
-			&& Objects.equals(duplicateData, node.duplicateData);
-
-		return halfEquals
-			&& getType() == node.getType()
-			&& Objects.equals(getDefaultNsUri(), node.getDefaultNsUri())
-			&& Objects.equals(getPath(), node.getPath());
+		return new EqualsBuilder().append(isValidated(), node.isValidated())
+				.append(getChildNodes(), node.getChildNodes())
+				.append(data, node.data)
+				.append(duplicateData, node.duplicateData)
+				.append(getType(), node.getType())
+				.append(getDefaultNsUri(), node.getDefaultNsUri())
+				.append(getPath(), node.getPath())
+				.append(getLine(), node.getLine())
+				.append(getColumn(), node.getColumn())
+				.isEquals();
 	}
 
 	/**
@@ -458,7 +533,8 @@ public class Node {
 	 */
 	@Override
 	public final int hashCode() {
-		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(), getPath());
+		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(),
+				getPath(), getLine(), getColumn());
 	}
 
 }
