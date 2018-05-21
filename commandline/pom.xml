@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.cms.qpp.conversion</groupId>
 		<artifactId>qpp-conversion-tool-parent</artifactId>
-		<version>1.4.2-RELEASE</version>
+		<version>1.4.3-RELEASE</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -93,12 +93,6 @@
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>converter</artifactId>
 			<version>${project.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-					<artifactId>logback-classic</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>

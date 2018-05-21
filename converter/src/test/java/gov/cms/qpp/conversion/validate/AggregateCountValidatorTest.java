@@ -29,6 +29,7 @@ class AggregateCountValidatorTest {
 	@Test
 	void testValueAbsenceFailure() {
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		aggregateCountNode.setParent(new Node(TemplateId.ACI_NUMERATOR));
 
 		AggregateCountValidator validator = new AggregateCountValidator();
 		validator.internalValidateSingleNode( aggregateCountNode );
@@ -36,12 +37,13 @@ class AggregateCountValidatorTest {
 
 		assertWithMessage("Should result in a value error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR);
+				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.ACI_NUMERATOR.name(), 0));
 	}
 
 	@Test
 	void testValueTypeFailure() {
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		aggregateCountNode.setParent(new Node(TemplateId.ACI_NUMERATOR));
 		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "meep");
 
 		AggregateCountValidator validator = new AggregateCountValidator();
@@ -56,6 +58,7 @@ class AggregateCountValidatorTest {
 	@Test
 	void testValueTypeSuccess() {
 		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		aggregateCountNode.setParent(new Node(TemplateId.ACI_NUMERATOR));
 		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "7");
 
 		AggregateCountValidator validator = new AggregateCountValidator();

@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
@@ -10,8 +11,6 @@ import gov.cms.qpp.conversion.model.error.LocalizedError;
  * Factored out common functionality
  */
 public class CommonNumeratorDenominatorValidator extends NodeValidator {
-
-	protected static final String AGGREGATE_COUNT_FIELD = "aggregateCount";
 
 	protected String nodeName;
 
@@ -39,13 +38,23 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 * @param aggregateCountNode aggregate count node
 	 */
 	private void validateAggregateCount(Node aggregateCountNode) {
+		String aggregateCountValue = aggregateCountNode.getValue(AggregateCountDecoder.AGGREGATE_COUNT);
+		if (aggregateCountValue == null) {
+			aggregateCountValue = "empty";
+		}
 		check(aggregateCountNode)
-				.singleValue(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE), AGGREGATE_COUNT_FIELD)
-				.intValue(format(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER), AGGREGATE_COUNT_FIELD)
-				.greaterThan(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE), -1);
+				.singleValue(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue),
+					AggregateCountDecoder.AGGREGATE_COUNT)
+				.intValue(format(ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER, aggregateCountValue),
+					AggregateCountDecoder.AGGREGATE_COUNT)
+				.greaterThan(format(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE, aggregateCountValue), -1);
 	}
 
 	private LocalizedError format(ErrorCode error) {
 		return error.format(nodeName);
+	}
+
+	private LocalizedError format(ErrorCode error, String value) {
+		return error.format(nodeName, value);
 	}
 }

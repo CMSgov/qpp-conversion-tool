@@ -46,7 +46,8 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 			thoroughlyCheck(node)
 					.childExact(
-						ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
+						ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+							.format(requiredPerformanceRateCount, MeasureConfigHelper.getPrioritizedId(node)),
 						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 		}
 	}
