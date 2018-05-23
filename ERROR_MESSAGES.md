@@ -57,7 +57,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 58 : CT - The measure reference results must have a single measure type
 * 59 : CT - The electronic measure id: `(Current eMeasure ID)` requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`
 * 60 : CT - The electronic measure id: `(Current eMeasure ID)` has a performanceRateId with an incorrect UUID of `(Incorrect UUID)`
-* 61 : CT - A Performance Rate must contain a single Performance Rate UUID
+* 61 : CT - A Performance Rate must contain a single Numerator UUID reference.
 * 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
 * 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid.  Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
 * 64 : CT - CPC+ Submissions must have at least `(CPC+ measure group minimum)` of the following `(CPC+ measure group label)` measures: `(Listing of valid measure ids)`
