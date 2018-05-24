@@ -1,17 +1,13 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
-
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,6 +20,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.test.annotations.IntegrationTest;
+
+@IntegrationTest
 class SubmissionIntegrationTest {
 
 	private static HttpClient client;
