@@ -103,7 +103,8 @@ public enum ErrorCode implements LocalizedError {
 	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activities and a Reporting Parameter Act"),
 	NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT(46, "Clinical Document Node is required"),
 	CPC_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
-			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`", true),
+			+ "`(Current subpopulation type)` measure `(Current subpopulation UUID)`. "
+			+ "Here is a link to the IG valid Measure Ids section: " + DocumentationReference.MEASURE_IDS, true),
 	CPC_QUALITY_MEASURE_ID_STRATA_MISMATCH(49,"Amount of stratifications `(Current number of "
 			+ "Reporting Stratifiers)` does not meet expectations "
 			+ "`(Number of stratifiers required)` for `(Current subpopulation type)` measure "
@@ -117,8 +118,10 @@ public enum ErrorCode implements LocalizedError {
 	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION(54, "A CPC+ submission must have at least one NPI/TIN combination. "
 			+ "Please refer to the Implementation Guide(IG) for TIN/NPI information here: "
 			+ DocumentationReference.DOCUMENTATION_OF_TIN_NPI),
-	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "Must be 01/01/2017"),
-	CPC_PERFORMANCE_PERIOD_END_DEC312017(56, "Must be 12/31/2017"),
+	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "A CPC Plus Performance period start must be 01/01/2017. "
+			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
+	CPC_PERFORMANCE_PERIOD_END_DEC312017(56, "A CPC Plus Performance period end must be 12/31/2017. "
+			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The measure reference results must have a single "
 			+ "measure population"),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE(58, "The measure reference results must have a single "

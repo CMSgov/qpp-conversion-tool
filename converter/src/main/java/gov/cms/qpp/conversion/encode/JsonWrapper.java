@@ -600,7 +600,7 @@ public class JsonWrapper {
 		metaMap.put("encodeLabel", encodeLabel);
 		metaMap.put("nsuri", node.getDefaultNsUri());
 		metaMap.put("template", node.getType().name());
-		metaMap.put("path", node.getPath());
+		metaMap.put("path", node.getOrComputePath());
 		if (node.getLine() != Node.DEFAULT_LOCATION_NUMBER) {
 			metaMap.put("line", String.valueOf(node.getLine()));
 		}
