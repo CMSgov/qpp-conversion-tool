@@ -126,8 +126,6 @@ public enum ErrorCode implements LocalizedError {
 			+ "measure type"),
 	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The electronic measure id: `(Current eMeasure ID)` requires a "
 			+ "`(Subpopulation type)` with the correct UUID of `(Correct uuid required)`", true),
-	QUALITY_MEASURE_ID_INCORRECT_PERFORMANCE_UUID(60, "The electronic measure id: `(Current eMeasure ID)` has "
-			+ "a performanceRateId with an incorrect UUID of `(Incorrect UUID)`", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Performance Rate UUID"),
 	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty. "
