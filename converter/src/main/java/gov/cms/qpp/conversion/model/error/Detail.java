@@ -69,7 +69,7 @@ public class Detail implements Serializable {
 				detail.setColumn(node.getColumn());
 			}
 
-			detail.setPath(node.getPath());
+			detail.setPath(node.getOrComputePath());
 			detail.setLocation(computeLocation(node));
 		}
 
