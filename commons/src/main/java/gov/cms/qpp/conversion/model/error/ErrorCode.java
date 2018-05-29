@@ -115,7 +115,9 @@ public enum ErrorCode implements LocalizedError {
 	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "The measure data with population id '`(population id)`' must have exactly one "
 			+ "Aggregate Count.", true),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data must be a positive integer value"),
-	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION(54, "Must have at least one NPI/TIN combination"),
+	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION(54, "A CPC+ submission must have at least one NPI/TIN combination. "
+			+ "Please refer to the Implementation Guide(IG) for TIN/NPI information here: "
+			+ DocumentationReference.DOCUMENTATION_OF_TIN_NPI),
 	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "A CPC Plus Performance period start must be 01/01/2017. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
 	CPC_PERFORMANCE_PERIOD_END_DEC312017(56, "A CPC Plus Performance period end must be 12/31/2017. "
@@ -126,8 +128,6 @@ public enum ErrorCode implements LocalizedError {
 			+ "measure type"),
 	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The electronic measure id: `(Current eMeasure ID)` requires a "
 			+ "`(Subpopulation type)` with the correct UUID of `(Correct uuid required)`", true),
-	QUALITY_MEASURE_ID_INCORRECT_PERFORMANCE_UUID(60, "The electronic measure id: `(Current eMeasure ID)` has "
-			+ "a performanceRateId with an incorrect UUID of `(Incorrect UUID)`", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Numerator UUID reference."),
 	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty. "
