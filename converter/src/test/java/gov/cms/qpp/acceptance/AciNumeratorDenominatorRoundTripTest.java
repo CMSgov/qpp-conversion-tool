@@ -106,7 +106,7 @@ class AciNumeratorDenominatorRoundTripTest {
 		String jsonExpected = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : 600,\n    \"denominator\" : 800\n  }\n}";
 
 		assertWithMessage("The XPath of the numerator denominator node is incorrect")
-				.that(numeratorDenominatorNode.getChildNodes().get(0).getPath())
+				.that(numeratorDenominatorNode.getChildNodes().get(0).getOrComputePath())
 				.isEqualTo(xPathExpected);
 
 		assertWithMessage("expected encoder to return a representation of a measure")
