@@ -45,11 +45,11 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 45 : CT - The IA Section must contain only Improvement Activities and a Reporting Parameter Act
 * 46 : CT - Clinical Document Node is required
 * 48 : CT - Missing strata `(Reporting Stratum UUID)` for `(Current subpopulation type)` measure `(Current subpopulation UUID)`. Here is a link to the IG valid Measure Ids section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88
-* 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`
+* 49 : CT - Amount of stratifications `(Current number of Reporting Stratifiers)` does not meet expectations `(Number of stratifiers required)` for `(Current subpopulation type)` measure `(Current Subpopulation UUID)`. Expected strata: `(Expected strata uuid list)`. Please refer to the Implementation Guide for correct stratification UUID's here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88
 * 50 : CT - An IA performed measure reference and results must have exactly one measure performed child
 * 51 : CT - A single measure performed value is required and must be either a Y or an N.
 * 52 : CT - The measure data with population id '`(population id)`' must have exactly one Aggregate Count.
-* 53 : CT - Measure data must be a positive integer value
+* 53 : CT - Measure data with population id '`(population id)`' must be a whole number greater than or equal to 0
 * 54 : CT - A CPC+ submission must have at least one NPI/TIN combination. Please refer to the Implementation Guide(IG) for TIN/NPI information here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=28
 * 55 : CT - A CPC Plus Performance period start must be 01/01/2017. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=14
 * 56 : CT - A CPC Plus Performance period end must be 12/31/2017. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=14
