@@ -46,7 +46,7 @@ public class MeasureDataValidator extends NodeValidator {
 						DuplicationCheckHelper.calculateDuplications(child, AggregateCountDecoder.AGGREGATE_COUNT)),
 						AggregateCountDecoder.AGGREGATE_COUNT)
 					.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AggregateCountDecoder.AGGREGATE_COUNT)
-					.greaterThan(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER, -1);
+					.greaterThan(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(populationId), -1);
 		}
 	}
 }

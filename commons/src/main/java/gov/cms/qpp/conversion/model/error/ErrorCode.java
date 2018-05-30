@@ -116,7 +116,8 @@ public enum ErrorCode implements LocalizedError {
 	IA_MEASURE_INVALID_TYPE(51, "A single measure performed value is required and must be either a Y or an N."),
 	MEASURE_PERFORMED_MISSING_AGGREGATE_COUNT(52, "The measure data with population id '`(population id)`' must have exactly one "
 			+ "Aggregate Count.", true),
-	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data must be a positive integer value"),
+	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
+			+ "must be a whole number greater than or equal to 0", true),
 	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION(54, "A CPC+ submission must have at least one NPI/TIN combination. "
 			+ "Please refer to the Implementation Guide(IG) for TIN/NPI information here: "
 			+ DocumentationReference.DOCUMENTATION_OF_TIN_NPI),
@@ -130,10 +131,8 @@ public enum ErrorCode implements LocalizedError {
 			+ "measure type"),
 	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The electronic measure id: `(Current eMeasure ID)` requires a "
 			+ "`(Subpopulation type)` with the correct UUID of `(Correct uuid required)`", true),
-	QUALITY_MEASURE_ID_INCORRECT_PERFORMANCE_UUID(60, "The electronic measure id: `(Current eMeasure ID)` has "
-			+ "a performanceRateId with an incorrect UUID of `(Incorrect UUID)`", true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
-			+ "Performance Rate UUID"),
+			+ "Numerator UUID reference."),
 	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty. "
 			+ "Here is a link to the IG section on identifiers: " + DocumentationReference.IDENTIFIERS),
 	CPC_CLINICAL_DOCUMENT_INVALID_APM(63, "The Alternative Payment Model (APM) Entity Identifier is not valid. "
