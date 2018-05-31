@@ -55,7 +55,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 56 : CT - A CPC Plus Performance period end must be 12/31/2017. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=14
 * 57 : CT - The measure reference results must have a single measure population
 * 58 : CT - The measure reference results must have a single measure type
-* 59 : CT - The electronic measure id: `(Current eMeasure ID)` requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`
+* 59 : CT - The electronic measure id: `(Current eMeasure ID)` requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`. Here is a link to the IG containing all the valid measure ids: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88
 * 61 : CT - A Performance Rate must contain a single Numerator UUID reference.
 * 62 : CT - The Alternative Payment Model (APM) Entity Identifier must not be empty. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
 * 63 : CT - The Alternative Payment Model (APM) Entity Identifier is not valid.  Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15

@@ -130,7 +130,8 @@ public enum ErrorCode implements LocalizedError {
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_TYPE(58, "The measure reference results must have a single "
 			+ "measure type"),
 	QUALITY_MEASURE_ID_INCORRECT_UUID(59, "The electronic measure id: `(Current eMeasure ID)` requires a "
-			+ "`(Subpopulation type)` with the correct UUID of `(Correct uuid required)`", true),
+			+ "`(Subpopulation type)` with the correct UUID of `(Correct uuid required)`. Here is a link to the IG "
+			+ "containing all the valid measure ids: " + DocumentationReference.MEASURE_IDS, true),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE(61, "A Performance Rate must contain a single "
 			+ "Numerator UUID reference."),
 	CPC_CLINICAL_DOCUMENT_EMPTY_APM(62, "The Alternative Payment Model (APM) Entity Identifier must not be empty. "
