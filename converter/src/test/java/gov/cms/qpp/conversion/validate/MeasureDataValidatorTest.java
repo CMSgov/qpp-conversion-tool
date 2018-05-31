@@ -97,11 +97,11 @@ class MeasureDataValidatorTest {
 		Set<Detail> errors = validator.getDetails();
 		assertWithMessage("missing error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER);
+				.containsExactly(ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER.format(EMPTY_POPULATION_ID));
 	}
 
 	@Test
-	void multipleNegativeMeasureDataTest() throws Exception {
+	void multipleNegativeMeasureDataTest() {
 		//setup
 		Path path = Paths.get("src/test/resources/negative/angerMeasureDataValidations.xml");
 
@@ -120,7 +120,7 @@ class MeasureDataValidatorTest {
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsAllOf(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER,
 						ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.MEASURE_DATA_CMS_V2.name(), 2),
-						ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER);
+						ErrorCode.MEASURE_DATA_VALUE_NOT_INTEGER.format("58347456-D1F3-4BBB-9B35-5D42825A0AB3"));
 	}
 
 	private List<Detail> getErrors(AllErrors content) {
