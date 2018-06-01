@@ -28,13 +28,13 @@ public class MeasureConfigHelper {
 	}
 
 	/**
-	 * Gets the electronic measure id by uuid or defaults to empty if none exists
+	 * Gets the electronic measure id by uuid or defaults to null if none exists
 	 *
 	 * @param uuid identifier used to fined the electronic measure id
 	 * @return electronic measure id
 	 */
 	public static String getMeasureConfigIdByUuidOrDefault(String uuid) {
-		String electronicMeasureId = "";
+		String electronicMeasureId = null;
 		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(uuid);
 		if (config != null) {
 			electronicMeasureId = config.getElectronicMeasureId();
