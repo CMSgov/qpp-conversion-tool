@@ -88,10 +88,9 @@ public enum ErrorCode implements LocalizedError {
 	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "CPC+ submissions must contain one Measure section"),
 	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "CPC+ submissions must contain correct number of performance rate(s). "
 			+ "Correct Number is `(Expected value)` for measure `(Given measure id)`", true),
-	NUMERATOR_DENOMINATOR_MISSING_CHILDREN(38,
-			"This ACI `(Numerator or Denominator)` element does not have any child elements", true),
 	NUMERATOR_DENOMINATOR_CHILD_EXACT(39,
-			"This ACI `(Numerator or Denominator)` element must have exactly one Aggregate Count element", true),
+			"This ACI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. An ACI "
+			+ "`(Numerator or Denominator)` must have exactly one Aggregate Count element", true),
 	NUMERATOR_DENOMINATOR_MUST_BE_INTEGER(41,
 			"This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer", true),
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
