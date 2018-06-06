@@ -66,13 +66,13 @@ public enum ErrorCode implements LocalizedError {
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate Measure "
 			+ "sections"),
 	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START(29, "Must have one and only one performance period "
-			+ "start. Please see the Implementation Guide for information on the performance period here: "
+			+ "start. Please see the Implementation Guide for information on the performance period here: " //NOSONAR
 			+ DocumentationReference.PERFORMANCE_PERIOD),
 	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END(30, "Must have one and only one performance period end. "
-			+ "Please see the Implementation Guide for information on the performance period here: "
+			+ "Please see the Implementation Guide for information on the performance period here: " //NOSONAR
 			+ DocumentationReference.PERFORMANCE_PERIOD),
 	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR(31, "Must have a performance year. "
-			+ "Please see the Implementation Guide for information on the performance period here: "
+			+ "Please see the Implementation Guide for information on the performance period here: " //NOSONAR
 			+ DocumentationReference.PERFORMANCE_PERIOD),
 	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure Section must have "
 			+ "exactly one Reporting Parameter Act. "
