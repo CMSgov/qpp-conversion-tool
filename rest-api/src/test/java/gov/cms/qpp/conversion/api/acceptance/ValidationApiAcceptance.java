@@ -59,8 +59,8 @@ class ValidationApiAcceptance {
 		}
 	}
 
-	private Object evaluateXpath(String xPath, Filter filter) throws XmlException {
-		XPathExpression<Object> xpath = XPF.compile(xPath, filter);
+	private <T> T evaluateXpath(String xPath, Filter<T> filter) throws XmlException {
+		XPathExpression<T> xpath = XPF.compile(xPath, filter);
 		return xpath.evaluateFirst(XmlUtils.parseXmlStream(NioHelper.fileToStream(PATH)));
 	}
 }
