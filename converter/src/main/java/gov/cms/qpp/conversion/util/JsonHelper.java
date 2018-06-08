@@ -13,6 +13,7 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.Configuration.Defaults;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
+import com.jayway.jsonpath.TypeRef;
 import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.jayway.jsonpath.spi.json.JsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
@@ -145,7 +146,7 @@ public class JsonHelper {
 	 * @param <T> The return type that you want.
 	 * @return The requested return type.
 	 */
-	public static <T> T readJsonAtJsonPath(InputStream jsonStream, String jsonPath, Class<T> returnType) {
+	public static <T> T readJsonAtJsonPath(InputStream jsonStream, String jsonPath, TypeRef<T> returnType) {
 		return JsonPath.parse(jsonStream).read(jsonPath, returnType);
 	}
 
@@ -160,7 +161,7 @@ public class JsonHelper {
 	 * @param <T> The return type that you want.
 	 * @return The requested return type.
 	 */
-	public static <T> T readJsonAtJsonPath(String json, String jsonPath, Class<T> returnType) {
+	public static <T> T readJsonAtJsonPath(String json, String jsonPath, TypeRef<T> returnType) {
 		return JsonPath.parse(json).read(jsonPath, returnType);
 	}
 }
