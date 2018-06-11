@@ -63,7 +63,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 66 : CT - Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`
 * 67 : CT - Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for the measure id `(Measure Id)`
 * 68 : CT - Your CPC+ submission was made after the CPC+ Measure section submission deadline of `(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at `(CPC+ contact email)` for assistance.
-* 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123
+* 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
 * 70 : CT - The measure section measure reference and results has an incorrect number of measure GUID supplied. Please ensure that only one measure GUID is provided per measure.
 * 71 : CT - Two or more different measure section measure reference and results have the same measure GUID. Please ensure that each measure section measure reference and results do not have the same measure GUID.
 * 72 : CT - The Performance Rate is missing
