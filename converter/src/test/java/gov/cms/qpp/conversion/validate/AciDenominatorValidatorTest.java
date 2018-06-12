@@ -48,8 +48,8 @@ class AciDenominatorValidatorTest {
 
 		assertWithMessage("No Children Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_MISSING_CHILDREN.format(
-						AciDenominatorValidator.DENOMINATOR_NAME));
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT
+					.format(AciDenominatorValidator.DENOMINATOR_NAME, AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 
 	@Test
@@ -66,7 +66,7 @@ class AciDenominatorValidatorTest {
 		assertWithMessage("Incorrect child Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
-						AciDenominatorValidator.DENOMINATOR_NAME));
+						AciDenominatorValidator.DENOMINATOR_NAME, AciDenominatorValidator.DENOMINATOR_NAME));
 
 	}
 
@@ -89,7 +89,7 @@ class AciDenominatorValidatorTest {
 		assertWithMessage("Too many children Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
-						AciDenominatorValidator.DENOMINATOR_NAME));
+						AciDenominatorValidator.DENOMINATOR_NAME, AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 
 	@Test
