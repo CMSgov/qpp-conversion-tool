@@ -22,8 +22,7 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		check(node).hasChildren(format(ErrorCode.NUMERATOR_DENOMINATOR_MISSING_CHILDREN))
-				.childExact(format(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT), 1, TemplateId.ACI_AGGREGATE_COUNT);
+		check(node).childExact(format(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT), 1, TemplateId.ACI_AGGREGATE_COUNT);
 		if (getDetails().isEmpty()) {
 			validateAggregateCount(
 					node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT));
@@ -51,7 +50,7 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	}
 
 	private LocalizedError format(ErrorCode error) {
-		return error.format(nodeName);
+		return error.format(nodeName, nodeName);
 	}
 
 	private LocalizedError format(ErrorCode error, String value) {
