@@ -34,12 +34,11 @@ public class MeasureConfigHelper {
 	 * @return electronic measure id
 	 */
 	public static String getMeasureConfigIdByUuidOrDefault(String uuid) {
-		String electronicMeasureId = null;
 		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(uuid);
 		if (config != null) {
-			electronicMeasureId = config.getElectronicMeasureId();
+			return config.getElectronicMeasureId();
 		}
-		return electronicMeasureId;
+		return null;
 	}
 
 
