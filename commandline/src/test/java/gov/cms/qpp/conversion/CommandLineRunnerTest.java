@@ -76,7 +76,7 @@ class CommandLineRunnerTest implements LoggerContract {
 		String path = "src/test/resources/qrda_bad_denominator.xml".replaceAll("/", "\\" + fileSystem.getSeparator());
 		CommandLineRunner runner = new CommandLineRunner(line(path), fileSystem);
 		runner.run();
-		Truth.assertThat(Files.exists(fileSystem.getPath("qrda_bad_denominator.err.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("qrda_bad_denominator-error.json"))).isTrue();
 	}
 
 	@JimfsTest
@@ -85,7 +85,7 @@ class CommandLineRunnerTest implements LoggerContract {
 		CommandLineRunner runner = new CommandLineRunner(line(path,
 				"-" + CommandLineMain.SKIP_VALIDATION), fileSystem);
 		runner.run();
-		Truth.assertThat(Files.exists(fileSystem.getPath("qrda_bad_denominator.qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("qrda_bad_denominator-qpp.json"))).isTrue();
 	}
 
 	@JimfsTest
@@ -93,7 +93,7 @@ class CommandLineRunnerTest implements LoggerContract {
 		Files.copy(fileSystem.getPath(VALID_FILE), fileSystem.getPath("valid-QRDA-III-abridged.xml"));
 		CommandLineRunner runner = new CommandLineRunner(line("*.xml"), fileSystem);
 		runner.run();
-		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged-qpp.json"))).isTrue();
 	}
 
 	@JimfsTest
@@ -101,7 +101,7 @@ class CommandLineRunnerTest implements LoggerContract {
 		Files.copy(fileSystem.getPath(VALID_FILE), fileSystem.getPath("valid-QRDA-III-abridged.xml"));
 		CommandLineRunner runner = new CommandLineRunner(line("valid-QRDA-III-abridged.*"), fileSystem);
 		runner.run();
-		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged-qpp.json"))).isTrue();
 	}
 
 	@JimfsTest
