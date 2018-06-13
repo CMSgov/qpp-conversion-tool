@@ -66,13 +66,13 @@ public enum ErrorCode implements LocalizedError {
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate Measure "
 			+ "sections"),
 	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START(29, "Must have one and only one performance period "
-			+ "start. Please see the Implementation Guide for information on the performance period here: "
+			+ "start. Please see the Implementation Guide for information on the performance period here: " //NOSONAR
 			+ DocumentationReference.PERFORMANCE_PERIOD),
 	REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_END(30, "Must have one and only one performance period end. "
-			+ "Please see the Implementation Guide for information on the performance period here: "
+			+ "Please see the Implementation Guide for information on the performance period here: " //NOSONAR
 			+ DocumentationReference.PERFORMANCE_PERIOD),
 	REPORTING_PARAMETERS_MISSING_PERFORMANCE_YEAR(31, "Must have a performance year. "
-			+ "Please see the Implementation Guide for information on the performance period here: "
+			+ "Please see the Implementation Guide for information on the performance period here: " //NOSONAR
 			+ DocumentationReference.PERFORMANCE_PERIOD),
 	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure Section must have "
 			+ "exactly one Reporting Parameter Act. "
@@ -88,10 +88,9 @@ public enum ErrorCode implements LocalizedError {
 	CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED(36, "CPC+ submissions must contain one Measure section"),
 	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "CPC+ submissions must contain correct number of performance rate(s). "
 			+ "Correct Number is `(Expected value)` for measure `(Given measure id)`", true),
-	NUMERATOR_DENOMINATOR_MISSING_CHILDREN(38,
-			"This ACI `(Numerator or Denominator)` element does not have any child elements", true),
 	NUMERATOR_DENOMINATOR_CHILD_EXACT(39,
-			"This ACI `(Numerator or Denominator)` element must have exactly one Aggregate Count element", true),
+			"This ACI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. An ACI "
+			+ "`(Numerator or Denominator)` must have exactly one Aggregate Count element", true),
 	NUMERATOR_DENOMINATOR_MUST_BE_INTEGER(41,
 			"This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer", true),
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
@@ -148,7 +147,9 @@ public enum ErrorCode implements LocalizedError {
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
-		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123", true),
+		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123. "
+		+ "Please see the Implementation Guide for information on the performance period here: "
+		+ DocumentationReference.PERFORMANCE_PERIOD, true),
 	MISSING_OR_DUPLICATED_MEASURE_GUID(70, "The measure section measure reference and results has an incorrect number of "
 		+ "measure GUID supplied. Please ensure that only one measure GUID is provided per measure."),
 	MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID(71, "Two or more different measure section measure reference and results have "

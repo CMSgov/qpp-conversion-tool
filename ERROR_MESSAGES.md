@@ -36,8 +36,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
 * 36 : CT - CPC+ submissions must contain one Measure section
 * 37 : CT - CPC+ submissions must contain correct number of performance rate(s). Correct Number is `(Expected value)` for measure `(Given measure id)`
-* 38 : CT - This ACI `(Numerator or Denominator)` element does not have any child elements
-* 39 : CT - This ACI `(Numerator or Denominator)` element must have exactly one Aggregate Count element
+* 39 : CT - This ACI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. An ACI `(Numerator or Denominator)` must have exactly one Aggregate Count element
 * 41 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer
 * 42 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'
 * 43 : CT - The IA Section must have at least one Improvement Activity
@@ -63,7 +62,7 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 66 : CT - Missing the `(Supplemental Type)` - `(Type Qualification)` supplemental data for code `(Supplemental Data Code)` for the measure id `(Measure Id)`'s Sub-population `(Sub Population)`
 * 67 : CT - Must have one count for Supplemental Data `(Supplemental Data Code)` on Sub-population `(Sub Population)` for the measure id `(Measure Id)`
 * 68 : CT - Your CPC+ submission was made after the CPC+ Measure section submission deadline of `(Submission end date)`. Your CPC+ QRDA III file has not been processed. Please contact CPC+ Support at `(CPC+ contact email)` for assistance.
-* 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123
+* 69 : CT - `(Performance period start or end date)` is an invalid date format. Please use a standard ISO date format. Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
 * 70 : CT - The measure section measure reference and results has an incorrect number of measure GUID supplied. Please ensure that only one measure GUID is provided per measure.
 * 71 : CT - Two or more different measure section measure reference and results have the same measure GUID. Please ensure that each measure section measure reference and results do not have the same measure GUID.
 * 72 : CT - The Performance Rate is missing
