@@ -68,7 +68,7 @@ class CommandLineRunnerTest implements LoggerContract {
 		String path = VALID_FILE.replaceAll("/", "\\" + fileSystem.getSeparator());
 		CommandLineRunner runner = new CommandLineRunner(line(path), fileSystem);
 		runner.run();
-		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged-qpp.json"))).isTrue();
 	}
 
 	@JimfsTest
@@ -109,8 +109,8 @@ class CommandLineRunnerTest implements LoggerContract {
 		String path = "src/test/resources/*".replaceAll("/", "\\" + fileSystem.getSeparator());
 		CommandLineRunner runner = new CommandLineRunner(line(path), fileSystem);
 		runner.run();
-		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged.qpp.json"))).isTrue();
-		Truth.assertThat(Files.exists(fileSystem.getPath("not-a-QRDA-III-file.err.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("valid-QRDA-III-abridged-qpp.json"))).isTrue();
+		Truth.assertThat(Files.exists(fileSystem.getPath("not-a-QRDA-III-file-error.json"))).isTrue();
 	}
 
 	@Test

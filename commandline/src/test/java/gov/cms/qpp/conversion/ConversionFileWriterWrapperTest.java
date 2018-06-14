@@ -25,10 +25,10 @@ public class ConversionFileWriterWrapperTest {
 
 	@After
 	public void deleteFiles() throws IOException {
-		Files.deleteIfExists(Paths.get("valid-QRDA-III-latest.qpp.json"));
-		Files.deleteIfExists(Paths.get("not-a-QRDA-III-file.err.json"));
-		Files.deleteIfExists(Paths.get("qrda_bad_denominator.qpp.json"));
-		Files.deleteIfExists(Paths.get("qrda_bad_denominator.err.json"));
+		Files.deleteIfExists(Paths.get("valid-QRDA-III-latest-qpp.json"));
+		Files.deleteIfExists(Paths.get("not-a-QRDA-III-file-error.json"));
+		Files.deleteIfExists(Paths.get("qrda_bad_denominator-qpp.json"));
+		Files.deleteIfExists(Paths.get("qrda_bad_denominator-error.json"));
 	}
 
 	@Test
@@ -39,7 +39,7 @@ public class ConversionFileWriterWrapperTest {
 		Context context = new Context();
 		converterWrapper.setContext(context).transform();
 
-		assertFileExists("valid-QRDA-III-latest.qpp.json");
+		assertFileExists("valid-QRDA-III-latest-qpp.json");
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class ConversionFileWriterWrapperTest {
 
 		converterWrapper.transform();
 
-		assertFileExists("not-a-QRDA-III-file.err.json");
+		assertFileExists("not-a-QRDA-III-file-error.json");
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class ConversionFileWriterWrapperTest {
 		context.setDoValidation(false);
 		converterWrapper.setContext(context).transform();
 
-		assertFileExists("qrda_bad_denominator.qpp.json");
+		assertFileExists("qrda_bad_denominator-qpp.json");
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class ConversionFileWriterWrapperTest {
 
 		converterWrapper.transform();
 
-		assertFileDoesNotExists("valid-QRDA-III-latest.qpp.json");
+		assertFileDoesNotExists("valid-QRDA-III-latest-qpp.json");
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class ConversionFileWriterWrapperTest {
 
 		converterWrapper.transform();
 
-		assertFileDoesNotExists("not-a-QRDA-III-file.err.json");
+		assertFileDoesNotExists("not-a-QRDA-III-file-error.json");
 	}
 
 	@Test
@@ -100,7 +100,7 @@ public class ConversionFileWriterWrapperTest {
 		converterWrapper.transform();
 
 		//then
-		String sourceId = JsonTestHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file.err.json"),
+		String sourceId = JsonTestHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file-error.json"),
 				"$.errors[0].sourceIdentifier", String.class);
 
 		assertThat(sourceId)
@@ -114,7 +114,7 @@ public class ConversionFileWriterWrapperTest {
 		//when
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 		converterWrapper.transform();
-		Map<String, String> detail = JsonTestHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file.err.json"),
+		Map<String, String> detail = JsonTestHelper.readJsonAtJsonPath(Paths.get("not-a-QRDA-III-file-error.json"),
 				"$.errors[0].details[0]");
 
 		//then
@@ -134,12 +134,12 @@ public class ConversionFileWriterWrapperTest {
 		//when
 		ConversionFileWriterWrapper converterWrapper = new ConversionFileWriterWrapper(path);
 		converterWrapper.transform();
-		Map<String, String> firstDetail = JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
+		Map<String, String> firstDetail = JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator-error.json"),
 				"$.errors[0].details[0]");
-		Map<String, String> secondDetail = JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"),
+		Map<String, String> secondDetail = JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator-error.json"),
 				"$.errors[0].details[1]");
 
-		JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator.err.json"), "$.errors[0].details");
+		JsonTestHelper.readJsonAtJsonPath(Paths.get("qrda_bad_denominator-error.json"), "$.errors[0].details");
 
 		//then
 		assertThat(firstDetail.get("message")).isEqualTo(firstError.getMessage());
