@@ -214,6 +214,6 @@ class ClinicalDocumentEncoderTest {
 
 	@SuppressWarnings("unchecked")
 	private List<LinkedHashMap<String, Object>> getMeasurementSets(Map clinicalDocumentMap) {
-		return ((List<LinkedHashMap<String, Object>>)clinicalDocumentMap.get("measurementSets"));
+		return ((List<LinkedHashMap<String, Object>>) clinicalDocumentMap.get("measurementSets"));
 	}
 }

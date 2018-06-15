@@ -171,7 +171,7 @@ class Checker {
 			return this; //Short circuit on empty key or empty values
 		}
 		lastAppraised = node.getValue(name);
-		if (lastAppraised == null || values == null) {
+		if (lastAppraised == null || values == null || values.length == 0) {
 			details.add(detail(code));
 			return this; //Short circuit on node doesn't contain key
 		}
