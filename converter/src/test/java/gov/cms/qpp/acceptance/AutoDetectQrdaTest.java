@@ -18,8 +18,6 @@ import gov.cms.qpp.test.logging.LoggerContract;
 
 class AutoDetectQrdaTest implements LoggerContract {
 
-	private static final String EXPECTED_ERROR_1 = "The file is not a QRDA-III XML document";
-
 	@Test
 	void testNoTemplateId() throws IOException, XmlException {
 		//set-up

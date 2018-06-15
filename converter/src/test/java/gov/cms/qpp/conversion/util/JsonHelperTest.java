@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.reflections.util.ClasspathHelper;
 
+import com.jayway.jsonpath.TypeRef;
+
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.test.helper.HelperContract;
 
@@ -37,7 +39,7 @@ class JsonHelperTest implements HelperContract {
 		String measureDataFileName = "measures-data.json";
 		List<MeasureConfig> configurations;
 		InputStream measuresInput = ClasspathHelper.contextClassLoader().getResourceAsStream(measureDataFileName);
-		configurations = JsonHelper.readJsonAtJsonPath(measuresInput, "$", List.class);
+		configurations = JsonHelper.readJsonAtJsonPath(measuresInput, "$", new TypeRef<List<MeasureConfig>>() { });
 
 		assertWithMessage("Expect to get a List of measureConfigs")
 				.that(configurations).isNotEmpty();

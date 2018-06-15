@@ -683,7 +683,7 @@ class CheckerTest {
 		String key = "My Key";
 		Node testNode = makeTestNode(key, null);
 		Checker checker = Checker.check(testNode, details);
-		checker.valueIn(ERROR_MESSAGE, key, null);
+		checker.valueIn(ERROR_MESSAGE, key);
 
 		assertWithMessage("There should be an error")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -695,7 +695,7 @@ class CheckerTest {
 		String value = "My Value";
 		Node testNode = makeTestNode(key, value);
 		Checker checker = Checker.check(testNode, details);
-		checker.valueIn(ERROR_MESSAGE, null, null);
+		checker.valueIn(ERROR_MESSAGE, null);
 
 		assertWithMessage("There should be an error")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -708,7 +708,7 @@ class CheckerTest {
 		String value = "My Value";
 		Node testNode = makeTestNode(key, value);
 		Checker checker = Checker.check(testNode, details);
-		checker.valueIn(ERROR_MESSAGE, key, null);
+		checker.valueIn(ERROR_MESSAGE, key);
 
 		assertWithMessage("There should be an error")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
