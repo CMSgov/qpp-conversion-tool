@@ -1,6 +1,17 @@
 package gov.cms.qpp.acceptance;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
+
+import com.jayway.jsonpath.TypeRef;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
@@ -15,15 +26,6 @@ import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-
 class QualityMeasureIdRoundTripTest {
 	static final Path JUNK_QRDA3_FILE = Paths.get("src/test/resources/negative/junk_in_quality_measure.xml");
 	static final Path INVALID_PERFORMANCE_UUID_FILE =
@@ -37,7 +39,7 @@ class QualityMeasureIdRoundTripTest {
 		JsonWrapper qpp = converter.transform();
 
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-			"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
+			"$.measurementSets[?(@.category=='quality')].measurements[*]", new TypeRef<List<Map<String, ?>>>() { });
 
 		assertThat(qualityMeasures).hasSize(1);
 		assertWithMessage("The measureId in the quality measure should still populate given the junk stuff in the measure.")

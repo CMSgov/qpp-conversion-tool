@@ -18,7 +18,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static gov.cms.qpp.conversion.model.TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2;
 
 class QualityMeasureSectionValidatorTest {
-	private static final String DUPLICATE_MEASURE_ID = "40280381-51f0-825b-0152-22b98cff181a";
+
 	private static MarkupManipulationHandler manipulatorHandler;
 	private Node reportingParameterNode;
 	private Node qualityMeasureSectionNode;

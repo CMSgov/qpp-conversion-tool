@@ -48,11 +48,11 @@ class CpcPlusAcceptanceTest {
 		ApmEntityIds.setApmDataFile(ApmEntityIds.DEFAULT_APM_ENTITY_FILE_NAME);
 	}
 
-	private static Stream<Path> successData() {
+	static Stream<Path> successData() {
 		return getXml(SUCCESS);
 	}
 
-	private static Stream<Path> failureData() {
+	static Stream<Path> failureData() {
 		return getXml(FAILURE);
 	}
 
