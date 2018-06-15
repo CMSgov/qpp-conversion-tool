@@ -16,7 +16,7 @@
 	<description>API end-point for the QRDA3 to QPP conversion</description>
 
 	<properties>
-		<spring-boot.version>2.0.1.RELEASE</spring-boot.version>
+		<spring-boot.version>2.0.3.RELEASE</spring-boot.version>
 		<logback.version>1.2.3</logback.version>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 	</properties>
@@ -103,7 +103,7 @@
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
-			<version>5.0</version>
+			<version>5.1</version>
 		</dependency>
 
 		<dependency>
@@ -145,7 +145,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>5.0.4.RELEASE</version>
+			<version>5.0.7.RELEASE</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -158,7 +158,7 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
-			<version>5.0.3.RELEASE</version>
+			<version>5.0.6.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -209,7 +209,7 @@
 		<dependency>
 			<groupId>org.awaitility</groupId>
 			<artifactId>awaitility</artifactId>
-			<version>3.0.0</version>
+			<version>3.1.0</version>
 			<scope>test</scope>
 		</dependency>
 

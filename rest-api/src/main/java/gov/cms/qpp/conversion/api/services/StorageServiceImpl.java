@@ -54,8 +54,8 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	 */
 	@Override
 	public CompletableFuture<String> store(String keyName, Supplier<InputStream> inStream, long size) {
-		final String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
-		final String kmsKey = environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE);
+		String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
+		String kmsKey = environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE);
 		if (Strings.isNullOrEmpty(bucketName) || Strings.isNullOrEmpty(kmsKey)) {
 			API_LOG.warn("No bucket name is specified or no KMS key specified.");
 			return CompletableFuture.completedFuture("");
@@ -79,7 +79,7 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	 */
 	@Override
 	public InputStream getFileByLocationId(String fileLocationId) {
-		final String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
+		String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
 		if (Strings.isNullOrEmpty(bucketName)) {
 			API_LOG.warn("No bucket name is specified.");
 			return null;
