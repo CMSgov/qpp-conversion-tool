@@ -16,6 +16,8 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.jayway.jsonpath.TypeRef;
+
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,10 +59,12 @@ class QualityMeasureIdMultiRoundTripTest {
 		String json = qpp.toString();
 
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(json,
-				"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
+				"$.measurementSets[?(@.category=='quality')].measurements[*]",
+				new TypeRef<List<Map<String, ?>>>() { });
 
-		List<Map<String, Integer>> subPopulation = JsonHelper.readJsonAtJsonPath(json,
-				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='160')].value.strata[*]", List.class);
+		List<Map<String, ?>> subPopulation = JsonHelper.readJsonAtJsonPath(json,
+				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='160')].value.strata[*]",
+				new TypeRef<List<Map<String, ?>>>() { });
 
 		String message =
 				"The measureId in the quality measure should still populate given the junk stuff in the measure.";
@@ -177,7 +181,7 @@ class QualityMeasureIdMultiRoundTripTest {
 		return details;
 	}
 
-	private void assertFirstSubPopulation(List<Map<String, Integer>> subPopulation) {
+	private void assertFirstSubPopulation(List<Map<String, ?>> subPopulation) {
 		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
 				.that(subPopulation.get(0).get(ELIGIBLE_POPULATION))
 				.isEqualTo(600);
@@ -189,7 +193,7 @@ class QualityMeasureIdMultiRoundTripTest {
 				.isEqualTo(35);
 	}
 
-	private void assertSecondSubPopulation(List<Map<String, Integer>> subPopulation) {
+	private void assertSecondSubPopulation(List<Map<String, ?>> subPopulation) {
 		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
 				.that(subPopulation.get(1)
 				.get(ELIGIBLE_POPULATION))
@@ -202,7 +206,7 @@ class QualityMeasureIdMultiRoundTripTest {
 				.isEqualTo(40);
 	}
 
-	private void assertThirdSubPopulation(List<Map<String, Integer>> subPopulation) {
+	private void assertThirdSubPopulation(List<Map<String, ?>> subPopulation) {
 		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
 				.that(subPopulation.get(2).get(ELIGIBLE_POPULATION))
 				.isEqualTo(580);

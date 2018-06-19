@@ -84,9 +84,8 @@ public class JsonPathToXpathHelper {
 				.isEqualTo(expectedValue);
 	}
 
-	@SuppressWarnings("unchecked")
-	private <T> T evaluateXpath(String xPath, Filter filter) throws XmlException {
-		XPathExpression<Attribute> xpath = xpf.compile(xPath, filter);
-		return (T) xpath.evaluateFirst(XmlUtils.parseXmlStream(NioHelper.fileToStream(path)));
+	private <T> T evaluateXpath(String xPath, Filter<T> filter) throws XmlException {
+		XPathExpression<T> xpath = xpf.compile(xPath, filter);
+		return xpath.evaluateFirst(XmlUtils.parseXmlStream(NioHelper.fileToStream(path)));
 	}
 }

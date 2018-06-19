@@ -11,7 +11,7 @@ import com.google.common.jimfs.Configuration;
 public class JimfsArgumentSource implements ArgumentsProvider {
 
 	@Override
-	public Stream<? extends Arguments> provideArguments(ExtensionContext arg0) throws Exception {
+	public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
 		return Stream.of(Configuration.unix(), Configuration.osX(), Configuration.windows())
 				.map(FileTestHelper::createMockFileSystem)
 				.map(Arguments::of);

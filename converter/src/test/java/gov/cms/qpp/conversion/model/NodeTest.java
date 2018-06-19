@@ -3,7 +3,6 @@ package gov.cms.qpp.conversion.model;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,8 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathSource;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
