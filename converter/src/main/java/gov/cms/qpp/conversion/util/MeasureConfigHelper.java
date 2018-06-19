@@ -28,6 +28,21 @@ public class MeasureConfigHelper {
 	}
 
 	/**
+	 * Gets the electronic measure id by uuid or defaults to null if none exists
+	 *
+	 * @param uuid identifier used to fined the electronic measure id
+	 * @return electronic measure id
+	 */
+	public static String getMeasureConfigIdByUuidOrDefault(String uuid) {
+		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(uuid);
+		if (config != null) {
+			return config.getElectronicMeasureId();
+		}
+		return null;
+	}
+
+
+	/**
 	 * Determine which measure id-ish value should be used for a given node.
 	 *
 	 * @param node a decoded node
