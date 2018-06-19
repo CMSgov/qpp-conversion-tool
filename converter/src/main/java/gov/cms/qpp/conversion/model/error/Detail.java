@@ -109,7 +109,9 @@ public class Detail implements Serializable {
 				location.append(possibleMeasureId);
 				String possibleElectronicMeasureId = MeasureConfigHelper.getMeasureConfigIdByUuidOrDefault(possibleMeasureId);
 				if (!StringUtils.isEmpty(possibleElectronicMeasureId)) {
-					location.append(" (" + possibleElectronicMeasureId + ")");
+					location.append(" (");
+					location.append(possibleElectronicMeasureId);
+					location.append(")");
 				}
 			}
 		}
