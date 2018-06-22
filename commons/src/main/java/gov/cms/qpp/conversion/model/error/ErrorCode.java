@@ -117,9 +117,6 @@ public enum ErrorCode implements LocalizedError {
 			+ "Aggregate Count.", true),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
 			+ "must be a whole number greater than or equal to 0", true),
-	CPC_NPI_TIN_COMBINATION_MISSING_NPI_TIN_COMBINATION(54, "A CPC+ submission must have at least one NPI/TIN combination. "
-			+ "Please refer to the Implementation Guide(IG) for TIN/NPI information here: "
-			+ DocumentationReference.DOCUMENTATION_OF_TIN_NPI),
 	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "A CPC Plus Performance period start must be 01/01/2017. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
 	CPC_PERFORMANCE_PERIOD_END_DEC312017(56, "A CPC Plus Performance period end must be 12/31/2017. "

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -125,12 +124,7 @@ public class Node {
 		if (getValue(name) == null || replace) {
 			data.put(name, value);
 		} else {
-			List<String> duplicates = Optional.ofNullable(duplicateData.get(name))
-					.orElseGet(() -> {
-				duplicateData.put(name, new ArrayList<>());
-				return duplicateData.get(name);
-			});
-			duplicates.add(value);
+			duplicateData.computeIfAbsent(name, ignore -> new ArrayList<>()).add(value);
 		}
 	}
 
