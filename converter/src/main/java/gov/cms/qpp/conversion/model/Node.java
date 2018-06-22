@@ -497,7 +497,7 @@ public class Node {
 				.add("type", type)
 				.add("data", data)
 				.add("childNodesSize", childNodes.size())
-				.add("parent", parent == null ? null : "not null")
+				.add("parent", parent == null ? "null" : "not null")
 				.add("validated", validated)
 				.add("defaultNsUri", defaultNsUri)
 				.add("path", path)
