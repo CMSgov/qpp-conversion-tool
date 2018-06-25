@@ -62,8 +62,8 @@ public class ConversionFileWriterWrapper {
 			Path outFile = getOutputFile(source.getName(), true);
 			DEV_LOG.info("Successful conversion. Writing out QPP to {}", outFile);
 			writeOutQpp(jsonWrapper, outFile);
-		} catch (TransformException exception) {
-			AllErrors allErrors = exception.getDetails();
+		} catch (TransformException ignore) {
+			AllErrors allErrors = ignore.getDetails();
 			Path outFile = getOutputFile(source.getName(), false);
 			DEV_LOG.error("There were errors during conversion. Writing out errors to " + outFile);
 			writeOutErrors(allErrors, outFile);
