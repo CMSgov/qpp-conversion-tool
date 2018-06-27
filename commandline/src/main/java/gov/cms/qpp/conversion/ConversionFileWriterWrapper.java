@@ -60,14 +60,12 @@ public class ConversionFileWriterWrapper {
 		try {
 			JsonWrapper jsonWrapper = converter.transform();
 			Path outFile = getOutputFile(source.getName(), true);
-			DEV_LOG.info("Successful conversion.  Writing out QPP to {}",
-				outFile.toString());
+			DEV_LOG.info("Successful conversion. Writing out QPP to {}", outFile);
 			writeOutQpp(jsonWrapper, outFile);
 		} catch (TransformException exception) {
 			AllErrors allErrors = exception.getDetails();
 			Path outFile = getOutputFile(source.getName(), false);
-			DEV_LOG.warn("There were errors during conversion.  Writing out errors to " + outFile.toString(),
-					exception);
+			DEV_LOG.error("There were errors during conversion. Writing out errors to " + outFile, exception);
 			writeOutErrors(allErrors, outFile);
 		}
 	}
@@ -83,7 +81,7 @@ public class ConversionFileWriterWrapper {
 			writer.write(jsonWrapper.toString());
 			writer.flush();
 		} catch (IOException exception) {
-			DEV_LOG.error("Could not write out QPP JSON to file", exception);
+			DEV_LOG.error("Could not write out QPP JSON to file " + outFile, exception);
 		}
 	}
 
@@ -101,7 +99,7 @@ public class ConversionFileWriterWrapper {
 					.withDefaultPrettyPrinter();
 			jsonObjectWriter.writeValue(writer, allErrors);
 		} catch (IOException exception) {
-			DEV_LOG.error("Could not write out error JSON to file", exception);
+			DEV_LOG.error("Could not write out error JSON to file " + outFile, exception);
 		}
 	}
 
@@ -123,6 +121,6 @@ public class ConversionFileWriterWrapper {
 	 * @return a file extension
 	 */
 	private String getFileExtension(boolean success) {
-		return success ? ".qpp.json" : ".err.json";
+		return success ? "-qpp.json" : "-error.json";
 	}
 }

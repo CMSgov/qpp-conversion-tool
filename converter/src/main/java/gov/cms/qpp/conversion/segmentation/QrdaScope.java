@@ -68,7 +68,7 @@ public enum QrdaScope {
 	}
 
 	public static Set<String> getNames() {
-		return Arrays.stream(QrdaScope.class.getEnumConstants()).map(Enum::name).collect(Collectors.toSet());
+		return Arrays.stream(values()).map(QrdaScope::name).collect(Collectors.toSet());
 	}
 
 	public Set<TemplateId> getValue() {

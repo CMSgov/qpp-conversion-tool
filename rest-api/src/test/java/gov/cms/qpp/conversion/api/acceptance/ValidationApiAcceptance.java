@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(RestExtension.class)
 class ValidationApiAcceptance {
+
 	private static final XPathFactory XPF = XPathFactory.instance();
 	private static final Path PATH = Paths.get("../sample-files/CPCPlus_Validation_API_Errors.xml");
 	private static final int CANNED_VALUE = 1000;
