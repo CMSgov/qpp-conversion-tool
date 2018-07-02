@@ -19,7 +19,7 @@
 		<guava.version>24.1-jre</guava.version>
 		<junit.version>5.2.0</junit.version>
 		<powermock.version>1.7.4</powermock.version>
-		<junit.excludes>integration</junit.excludes>
+		<junit.excludes>integration, acceptance</junit.excludes>
 		<junit.includes></junit.includes>
 	</properties>
 
@@ -368,7 +368,7 @@
 
 			<properties>
 				<jacoco.skip>true</jacoco.skip>
-				<junit.includes>integration</junit.includes>
+				<junit.includes>integration, acceptance</junit.includes>
 				<junit.excludes></junit.excludes>
 			</properties>
 		</profile>
