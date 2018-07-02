@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
 import com.google.common.collect.Lists;
-import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;

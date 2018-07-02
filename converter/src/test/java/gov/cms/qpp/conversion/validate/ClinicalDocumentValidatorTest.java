@@ -26,7 +26,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 class ClinicalDocumentValidatorTest {
 
-	private static final String CLINICAL_DOCUMENT_ERROR_FILE = "angerClinicalDocumentValidations.err.json";
+	private static final String CLINICAL_DOCUMENT_ERROR_FILE = "angerClinicalDocumentValidations-error.json";
 
 	@AfterEach
 	void cleanup() throws IOException {

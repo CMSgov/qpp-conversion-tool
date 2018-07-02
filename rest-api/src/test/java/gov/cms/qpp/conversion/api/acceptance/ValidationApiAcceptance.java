@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(RestExtension.class)
 class ValidationApiAcceptance {
+
 	private static final XPathFactory XPF = XPathFactory.instance();
 	private static final Path PATH = Paths.get("../sample-files/CPCPlus_Validation_API_Errors.xml");
 	private static final int CANNED_VALUE = 1000;
@@ -59,8 +60,8 @@ class ValidationApiAcceptance {
 		}
 	}
 
-	private Object evaluateXpath(String xPath, Filter filter) throws XmlException {
-		XPathExpression<Object> xpath = XPF.compile(xPath, filter);
+	private <T> T evaluateXpath(String xPath, Filter<T> filter) throws XmlException {
+		XPathExpression<T> xpath = XPF.compile(xPath, filter);
 		return xpath.evaluateFirst(XmlUtils.parseXmlStream(NioHelper.fileToStream(PATH)));
 	}
 }

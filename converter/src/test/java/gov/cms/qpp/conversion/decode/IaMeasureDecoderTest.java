@@ -26,7 +26,6 @@ class IaMeasureDecoderTest {
 
 	@Test
 	void internalDecode() throws Exception {
-		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
 		QrdaDecoderEngine engine = new QrdaDecoderEngine(new Context());
 		Node root = engine.decode(XmlUtils.stringToDom(xmlFragment));
 
@@ -45,7 +44,6 @@ class IaMeasureDecoderTest {
 	@Test
 	void missingChildTest() throws Exception {
 		xmlFragment = removeChildFragment(xmlFragment);
-		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
 		QrdaDecoderEngine engine = new QrdaDecoderEngine(new Context());
 
 		Node root = engine.decode(XmlUtils.stringToDom(xmlFragment));
@@ -59,7 +57,6 @@ class IaMeasureDecoderTest {
 
 	@Test
 	void internalDecodeWithExtraXmlPasses() throws Exception {
-		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
 		QrdaDecoderEngine engine = new QrdaDecoderEngine(new Context());
 		xmlFragment = addExtraXml(xmlFragment);
 

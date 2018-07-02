@@ -124,8 +124,8 @@ class ValidationApiFailureAcceptance {
 		};
 	}
 
-	private Object evaluateXpath(String xPath, Filter filter, String xml) throws XmlException {
-		XPathExpression<Object> xpath = XPF.compile(xPath, filter);
+	private <T> T evaluateXpath(String xPath, Filter<T> filter, String xml) throws XmlException {
+		XPathExpression<T> xpath = XPF.compile(xPath, filter);
 		return xpath.evaluateFirst(
 			XmlUtils.parseXmlStream(
 				new ByteArrayInputStream(xml.getBytes())));
