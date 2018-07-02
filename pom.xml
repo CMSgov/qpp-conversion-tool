@@ -19,6 +19,8 @@
 		<guava.version>24.1-jre</guava.version>
 		<junit.version>5.2.0</junit.version>
 		<powermock.version>1.7.4</powermock.version>
+		<junit.excludes>integration</junit.excludes>
+		<junit.includes></junit.includes>
 	</properties>
 
 	<modules>
@@ -189,7 +191,8 @@
 						<trimStackTrace>false</trimStackTrace>
 						<useFile>false</useFile>
 						<properties>
-							<excludeTags>integration</excludeTags>
+							<excludeTags>${junit.excludes}</excludeTags>
+							<includeTags>${junit.includes}</includeTags>
 						</properties>
 					</configuration>
 					<dependencies>
@@ -363,19 +366,11 @@
 		<profile>
 			<id>integration</id>
 
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<configuration>
-							<properties>
-								<includeTags>integration</includeTags>
-							</properties>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
+			<properties>
+				<jacoco.skip>true</jacoco.skip>
+				<junit.includes>integration</junit.includes>
+				<junit.excludes></junit.excludes>
+			</properties>
 		</profile>
 	</profiles>
 
