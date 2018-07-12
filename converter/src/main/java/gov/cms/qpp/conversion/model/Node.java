@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -16,6 +15,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.jdom2.Element;
+import org.jdom2.xpath.XPathHelper;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
@@ -37,6 +38,7 @@ public class Node {
 	private Node parent;
 	private boolean validated;
 
+	private Element elementForLocation;
 	private String defaultNsUri;
 	private String path;
 	private int line = DEFAULT_LOCATION_NUMBER;
@@ -122,12 +124,7 @@ public class Node {
 		if (getValue(name) == null || replace) {
 			data.put(name, value);
 		} else {
-			List<String> duplicates = Optional.ofNullable(duplicateData.get(name))
-					.orElseGet(() -> {
-				duplicateData.put(name, new ArrayList<>());
-				return duplicateData.get(name);
-			});
-			duplicates.add(value);
+			duplicateData.computeIfAbsent(name, ignore -> new ArrayList<>()).add(value);
 		}
 	}
 
@@ -217,7 +214,7 @@ public class Node {
 	 * @param childNode Node
 	 */
 	public void addChildNode(Node childNode) {
-		if (childNode == null || childNode == this) {
+		if (childNode == null || childNode == this) { // checking identity equals on purpose
 			return;
 		}
 		this.childNodes.add(childNode);
@@ -230,7 +227,7 @@ public class Node {
 	 * @return <tt>true</tt> if a child matched such that it was deleted.
 	 */
 	public boolean removeChildNode(Node childNode) {
-		return childNode != null && childNode != this && this.childNodes.remove(childNode);
+		return this.childNodes.remove(childNode);
 	}
 
 	/**
@@ -319,17 +316,30 @@ public class Node {
 	 *
 	 * @return The path.
 	 */
-	public String getPath() {
+	public String getOrComputePath() {
+		if (path == null && elementForLocation != null) {
+			path = XPathHelper.getAbsolutePath(elementForLocation);
+		}
+
 		return path;
 	}
 
 	/**
-	 * Sets the path from the original document that this {@code Node} is associated with.
+	 * Returns the element location of the node
 	 *
-	 * @param newPath The path.
+	 * @return The element location of the node.
 	 */
-	public void setPath(String newPath) {
-		path = newPath;
+	public Element getElementForLocation() {
+		return elementForLocation;
+	}
+
+	/**
+	 * Sets the element location of the node
+	 *
+	 * @param elementForLocation The element location for the node
+	 */
+	public void setElementForLocation(Element elementForLocation) {
+		this.elementForLocation = elementForLocation;
 	}
 
 	/**
@@ -487,10 +497,11 @@ public class Node {
 				.add("type", type)
 				.add("data", data)
 				.add("childNodesSize", childNodes.size())
-				.add("parent", parent == null ? null : "not null")
+				.add("parent", parent == null ? "null" : "not null")
 				.add("validated", validated)
 				.add("defaultNsUri", defaultNsUri)
 				.add("path", path)
+				.add("elementForLocation", elementForLocation)
 				.add("line", line)
 				.add("column", column)
 				.toString();
@@ -520,7 +531,8 @@ public class Node {
 				.append(duplicateData, node.duplicateData)
 				.append(getType(), node.getType())
 				.append(getDefaultNsUri(), node.getDefaultNsUri())
-				.append(getPath(), node.getPath())
+				.append(path, node.path)
+				.append(getElementForLocation(), node.getElementForLocation())
 				.append(getLine(), node.getLine())
 				.append(getColumn(), node.getColumn())
 				.isEquals();
@@ -534,7 +546,7 @@ public class Node {
 	@Override
 	public final int hashCode() {
 		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(),
-				getPath(), getLine(), getColumn());
+				path, getElementForLocation(), getLine(), getColumn());
 	}
 
 }

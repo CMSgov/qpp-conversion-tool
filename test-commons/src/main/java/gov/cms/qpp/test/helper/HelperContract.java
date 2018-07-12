@@ -9,7 +9,7 @@ public interface HelperContract {
 	@Test
 	default void testConstructorWorks() throws Exception {
 		Class<?> type = getHelperClass();
-		Constructor constructor = type.getDeclaredConstructors()[0];
+		Constructor<?> constructor = type.getDeclaredConstructors()[0];
 		constructor.setAccessible(true);
 		constructor.newInstance();
 	}

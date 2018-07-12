@@ -1,17 +1,14 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
-
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,7 +19,11 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.test.net.InternetTest;
 
 class SubmissionIntegrationTest {
 
@@ -31,13 +32,12 @@ class SubmissionIntegrationTest {
 	private JsonWrapper qpp;
 
 	@BeforeAll
-	@SuppressWarnings("unchecked")
 	static void setup() {
 		client = HttpClientBuilder.create().build();
 	}
 
-	private static boolean endpointIsUp(final HttpResponse response) {
-		return response.getStatusLine().getStatusCode() < 500;
+	private static boolean endpointIsUp(HttpResponse response) {
+		return response != null && response.getStatusLine().getStatusCode() < 500;
 	}
 
 	@BeforeEach
@@ -45,7 +45,7 @@ class SubmissionIntegrationTest {
 		qpp = loadQpp();
 	}
 
-	@Test
+	@InternetTest
 	void testSubmissionApiPostSuccess() throws IOException {
 		HttpResponse httpResponse = servicePost(qpp);
 		Assumptions.assumeTrue(endpointIsUp(httpResponse), "Validation api is down");
@@ -53,7 +53,7 @@ class SubmissionIntegrationTest {
 		assertThat(getStatus(httpResponse)).isEqualTo(200);
 	}
 
-	@Test
+	@InternetTest
 	@SuppressWarnings("unchecked")
 	void testSubmissionApiPostFailure() throws IOException {
 		Map<String, Object> obj = (Map<String, Object>) qpp.getObject();
@@ -73,11 +73,15 @@ class SubmissionIntegrationTest {
 	}
 
 	private HttpResponse servicePost(JsonWrapper qpp) throws IOException {
-		HttpEntity entity = new ByteArrayEntity(qpp.toString().getBytes(StandardCharsets.UTF_8));
-		HttpPost request = new HttpPost(SERVICE_URL);
-		request.setHeader("Content-Type", "application/json");
-		request.setEntity(entity);
-		return client.execute(request);
+		try {
+			HttpEntity entity = new ByteArrayEntity(qpp.toString().getBytes(StandardCharsets.UTF_8));
+			HttpPost request = new HttpPost(SERVICE_URL);
+			request.setHeader("Content-Type", "application/json");
+			request.setEntity(entity);
+			return client.execute(request);
+		} catch (UnknownHostException unknownHost) {
+			return null;
+		}
 	}
 
 	private int getStatus(HttpResponse httpResponse) {

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.base.MoreObjects;
 
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 /**
  * Holds the error information from Validators.
@@ -69,7 +70,7 @@ public class Detail implements Serializable {
 				detail.setColumn(node.getColumn());
 			}
 
-			detail.setPath(node.getPath());
+			detail.setPath(node.getOrComputePath());
 			detail.setLocation(computeLocation(node));
 		}
 
@@ -106,6 +107,12 @@ public class Detail implements Serializable {
 			if (!StringUtils.isEmpty(possibleMeasureId)) {
 				location.append(" ");
 				location.append(possibleMeasureId);
+				String possibleElectronicMeasureId = MeasureConfigHelper.getMeasureConfigIdByUuidOrDefault(possibleMeasureId);
+				if (!StringUtils.isEmpty(possibleElectronicMeasureId)) {
+					location.append(" (");
+					location.append(possibleElectronicMeasureId);
+					location.append(")");
+				}
 			}
 		}
 

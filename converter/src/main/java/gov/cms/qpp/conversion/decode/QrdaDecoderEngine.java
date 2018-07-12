@@ -10,7 +10,6 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.segmentation.QrdaScope;
 import org.jdom2.Element;
 import org.jdom2.located.Located;
-import org.jdom2.xpath.XPathHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +61,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 		defaultNs = rootElement.getNamespace();
 
 		rootNode.setType(TemplateId.PLACEHOLDER);
-		rootNode.setPath(XPathHelper.getAbsolutePath(rootElement));
+		rootNode.setElementForLocation(rootElement);
 
 		addLineAndColumnToNode(rootElement, rootNode);
 
@@ -113,7 +112,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 	 * @param parentNode The node add the child decoded {@link Node} to.
 	 * @return The tuple of a {@link DecodeResult} and {@link Node} that was decoded from the {@link Element}.
 	 */
-	private DecodeData decodeSingleElement(final Element element, final Node parentNode) {
+	private DecodeData decodeSingleElement(Element element, Node parentNode) {
 
 		QrdaDecoder decoder = decoderForElement(element);
 
@@ -134,7 +133,7 @@ public class QrdaDecoderEngine extends XmlDecoderEngine {
 			return new DecodeData(DecodeResult.TREE_ESCAPED, null);
 		}
 
-		childNode.setPath(XPathHelper.getAbsolutePath(parentElement));
+		childNode.setElementForLocation(parentElement);
 
 		addLineAndColumnToNode(element, childNode);
 

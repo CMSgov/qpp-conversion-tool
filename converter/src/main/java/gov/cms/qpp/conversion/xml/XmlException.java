@@ -16,11 +16,4 @@ public class XmlException extends RuntimeException {
 		super(message, cause);
 	}
 
-	/**
-	 * Public Constructor
-	 * @param message String reason the exception is occurring
-	 */
-	public XmlException(String message) {
-		super(message);
-	}
 }
