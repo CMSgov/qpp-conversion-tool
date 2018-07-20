@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.api.integration;
 
-import gov.cms.qpp.conversion.api.SpringTest;
+import gov.cms.qpp.conversion.api.SpringIntegrationTest;
 import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
 import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
 
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@SpringTest
+@SpringIntegrationTest
 class CpcRestIntegrationTest {
 
 	private static final String NOT_CPC = "not-CPC+";

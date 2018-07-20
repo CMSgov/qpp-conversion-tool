@@ -1,6 +1,7 @@
 package gov.cms.qpp.test.net;
 
 import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
@@ -14,7 +15,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 @ArgumentsSource(InternetArgumentSource.class)
 @Tag("internet")
 @Retention(RUNTIME)
-@Target(METHOD)
+@Target({ METHOD, ANNOTATION_TYPE})
 public @interface InternetTest {
 
 }

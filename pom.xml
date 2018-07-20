@@ -19,6 +19,8 @@
 		<guava.version>24.1-jre</guava.version>
 		<junit.version>5.2.0</junit.version>
 		<powermock.version>1.7.4</powermock.version>
+		<junit.excludes>integration, acceptance</junit.excludes>
+		<junit.includes></junit.includes>
 	</properties>
 
 	<modules>
@@ -189,7 +191,8 @@
 						<trimStackTrace>false</trimStackTrace>
 						<useFile>false</useFile>
 						<properties>
-							<excludeTags>performance</excludeTags>
+							<excludeTags>${junit.excludes}</excludeTags>
+							<includeTags>${junit.includes}</includeTags>
 						</properties>
 					</configuration>
 					<dependencies>
@@ -358,5 +361,17 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>integration</id>
+
+			<properties>
+				<jacoco.skip>true</jacoco.skip>
+				<junit.includes>integration, acceptance</junit.includes>
+				<junit.excludes></junit.excludes>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>

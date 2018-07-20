@@ -1,6 +1,5 @@
 package gov.cms.qpp.test.annotations;
 
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 
 import java.lang.annotation.Retention;
@@ -15,6 +14,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target(METHOD)
 @ParameterizedTest
-@Tag("acceptance")
+@AcceptanceTest
 public @interface ParameterizedAcceptanceTest {
 }
