@@ -4,6 +4,7 @@ import gov.cms.qpp.conversion.api.exceptions.UncheckedInterruptedException;
 import gov.cms.qpp.conversion.api.model.Constants;
 
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -38,6 +39,10 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	public StorageServiceImpl(TaskExecutor taskExecutor, TransferManager s3TransferManager,
 			Environment environment, AmazonS3 amazonS3) {
 		super(taskExecutor);
+
+		Objects.requireNonNull(s3TransferManager, "s3TransferManager");
+		Objects.requireNonNull(environment, "environment");
+		Objects.requireNonNull(amazonS3, "amazonS3");
 
 		this.s3TransferManager = s3TransferManager;
 		this.environment = environment;
