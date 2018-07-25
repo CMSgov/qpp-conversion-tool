@@ -7,13 +7,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Mark a method as a JUnit 5 acceptance test.
  */
 @Retention(RUNTIME)
-@Target(METHOD)
+@Target({ METHOD, ANNOTATION_TYPE })
 @Test
 @Tag("acceptance")
 public @interface AcceptanceTest {

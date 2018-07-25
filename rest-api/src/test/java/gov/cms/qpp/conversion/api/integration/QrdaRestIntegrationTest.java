@@ -18,11 +18,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import gov.cms.qpp.conversion.api.SpringTest;
+import gov.cms.qpp.conversion.api.SpringIntegrationTest;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.test.net.InternetTest;
 
-@SpringTest
+@SpringIntegrationTest
 public class QrdaRestIntegrationTest {
 
 	@Inject
