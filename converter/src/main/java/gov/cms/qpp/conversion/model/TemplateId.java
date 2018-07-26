@@ -1,13 +1,13 @@
 package gov.cms.qpp.conversion.model;
 
-import com.google.common.base.Strings;
-
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * An enumeration of known templates IDs.
@@ -185,7 +185,7 @@ public enum TemplateId {
 	static String generateTemplateIdString(String root, String extension, Context context) {
 		String templateId = root;
 
-		if (!context.isHistorical() && !Strings.isNullOrEmpty(extension)) {
+		if (!context.isHistorical() && !StringUtils.isEmpty(extension)) {
 			templateId += (":" + extension);
 		}
 		return templateId;

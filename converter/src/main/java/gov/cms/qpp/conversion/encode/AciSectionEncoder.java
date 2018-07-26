@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.encode;
 
-import com.google.common.base.Strings;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
@@ -9,6 +8,8 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,7 +100,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	 */
 	private void encodeEntityId(JsonWrapper wrapper, Node parent) {
 		String entityId = parent.getValue(ClinicalDocumentDecoder.ENTITY_ID);
-		if (!Strings.isNullOrEmpty(entityId)) {
+		if (!StringUtils.isEmpty(entityId)) {
 			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID, entityId);
 		}
 	}
