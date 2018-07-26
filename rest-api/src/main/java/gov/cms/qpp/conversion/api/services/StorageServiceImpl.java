@@ -16,7 +16,8 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.SSEAwsKeyManagementParams;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
-import com.google.common.base.Strings;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -61,7 +62,7 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	public CompletableFuture<String> store(String keyName, Supplier<InputStream> inStream, long size) {
 		String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
 		String kmsKey = environment.getProperty(Constants.KMS_KEY_ENV_VARIABLE);
-		if (Strings.isNullOrEmpty(bucketName) || Strings.isNullOrEmpty(kmsKey)) {
+		if (StringUtils.isEmpty(bucketName) || StringUtils.isEmpty(kmsKey)) {
 			API_LOG.warn("No bucket name is specified or no KMS key specified.");
 			return CompletableFuture.completedFuture("");
 		}
@@ -85,7 +86,7 @@ public class StorageServiceImpl extends AnyOrderActionService<Supplier<PutObject
 	@Override
 	public InputStream getFileByLocationId(String fileLocationId) {
 		String bucketName = environment.getProperty(Constants.BUCKET_NAME_ENV_VARIABLE);
-		if (Strings.isNullOrEmpty(bucketName)) {
+		if (StringUtils.isEmpty(bucketName)) {
 			API_LOG.warn("No bucket name is specified.");
 			return null;
 		}
