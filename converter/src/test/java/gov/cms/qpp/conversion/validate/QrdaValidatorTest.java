@@ -29,7 +29,7 @@ public class QrdaValidatorTest {
 
 	private QrdaValidator objectUnderTest;
 
-	private static final TemplateId TEST_REQUIRED_TEMPLATE_ID = TemplateId.ACI_NUMERATOR_DENOMINATOR;
+	private static final TemplateId TEST_REQUIRED_TEMPLATE_ID = TemplateId.PI_NUMERATOR_DENOMINATOR;
 	private static final TemplateId TEST_OPTIONAL_TEMPLATE_ID = TemplateId.PLACEHOLDER;
 
 	private static final Detail TEST_VALIDATION_ERROR_FOR_SINGLE_NODE;

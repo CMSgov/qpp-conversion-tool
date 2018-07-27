@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 /**
  * Decoder to read XML Data for an ACI Section.
  */
-@Decoder(TemplateId.ACI_SECTION)
+@Decoder(TemplateId.PI_SECTION)
 public class AciSectionDecoder extends SkeletalSectionDecoder {
 
 	public AciSectionDecoder(Context context) {

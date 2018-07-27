@@ -30,20 +30,20 @@ class AciNumeratorDenominatorEncoderTest {
 
 	@BeforeEach
 	void createNode() {
-		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue("aggregateCount", "400");
 
-		denominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		denominatorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		denominatorValueNode.putValue("aggregateCount", "600");
 
-		aciProportionDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
+		aciProportionDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
 		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
 
-		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
+		aciProportionNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
 
 		aciProportionMeasureNode = new Node();
-		aciProportionMeasureNode.setType(TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		aciProportionMeasureNode.setType(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
 		aciProportionMeasureNode.putValue("measureId", MEASURE_ID);

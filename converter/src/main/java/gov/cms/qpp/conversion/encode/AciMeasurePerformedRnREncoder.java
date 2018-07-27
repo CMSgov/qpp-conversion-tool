@@ -5,7 +5,7 @@ import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
-@Encoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
+@Encoder(TemplateId.PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 public class AciMeasurePerformedRnREncoder extends QppOutputEncoder {
 
 	public AciMeasurePerformedRnREncoder(Context context) {
@@ -15,8 +15,8 @@ public class AciMeasurePerformedRnREncoder extends QppOutputEncoder {
 	/**
 	 *  Encodes an ACI measure performed reference and results node into the QPP format
 	 *
-	 * @param wrapper Wrapper representing the {@link TemplateId#ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS} type
-	 * @param node Node that represents the {@link TemplateId#ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS}
+	 * @param wrapper Wrapper representing the {@link TemplateId#PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS} type
+	 * @param node Node that represents the {@link TemplateId#PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS}
 	 */
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {

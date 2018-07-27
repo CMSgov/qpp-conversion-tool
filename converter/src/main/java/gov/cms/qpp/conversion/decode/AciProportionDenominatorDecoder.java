@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * Decoder to parse Advancing Care Information Numerator Denominator Type
  * Measure Denominator Data.
  */
-@Decoder(TemplateId.ACI_DENOMINATOR)
+@Decoder(TemplateId.PI_DENOMINATOR)
 public class AciProportionDenominatorDecoder extends SkeletalNameDecoder {
 
 	public AciProportionDenominatorDecoder(Context context) {

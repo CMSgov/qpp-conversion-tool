@@ -42,19 +42,19 @@ class AciSectionEncoderTest {
 
 	@BeforeEach
 	void createNode() {
-		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue(AGGREGATE_COUNT_ID, "400");
 
-		denominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		denominatorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		denominatorValueNode.putValue(AGGREGATE_COUNT_ID, "600");
 
-		aciProportionDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
+		aciProportionDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
 		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
 
-		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
+		aciProportionNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
 
-		aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		aciNumeratorDenominatorNode.addChildNode(aciProportionNumeratorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciProportionDenominatorNode);
 		aciNumeratorDenominatorNode.putValue(MEASUREMENT_ID, MEASUREMENT_ID_VALUE);
@@ -63,7 +63,7 @@ class AciSectionEncoderTest {
 		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START,"20170101");
 		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END,"20171231");
 
-		aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		aciSectionNode = new Node(TemplateId.PI_SECTION);
 		aciSectionNode.putValue(CATEGORY, ACI);
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 		aciSectionNode.addChildNode(reportingParametersNode);
@@ -104,7 +104,7 @@ class AciSectionEncoderTest {
 
 		Node invalidAciNumeratorDenominatorNode = new Node();
 
-		aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		aciSectionNode = new Node(TemplateId.PI_SECTION);
 		aciSectionNode.putValue(CATEGORY, ACI);
 		aciSectionNode.addChildNode(invalidAciNumeratorDenominatorNode);
 		aciSectionNode.addChildNode(reportingParametersNode);

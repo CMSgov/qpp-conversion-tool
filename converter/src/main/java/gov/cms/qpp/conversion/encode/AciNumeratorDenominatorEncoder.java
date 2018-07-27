@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * Encoder to serialize ACI Numerator Denominator Type Measure.
  */
 
-@Encoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
+@Encoder(TemplateId.PI_NUMERATOR_DENOMINATOR)
 public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 
 	public AciNumeratorDenominatorEncoder(Context context) {

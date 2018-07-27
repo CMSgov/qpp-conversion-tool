@@ -20,7 +20,7 @@ import gov.cms.qpp.conversion.util.JsonHelper;
 
 class AciMeasurePerformedRnREncoderTest {
 
-	private static final String MEASURE_ID = "ACI_INFBLO_1";
+	private static final String MEASURE_ID = "PI_INFBLO_1";
 	private static final String VALUE = "Y";
 
 	private List<Node> nodes;
@@ -29,7 +29,7 @@ class AciMeasurePerformedRnREncoderTest {
 
 	@BeforeEach
 	void createNode() {
-		aciMeasurePerformedRnR = new Node(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS);
+		aciMeasurePerformedRnR = new Node(TemplateId.PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS);
 		aciMeasurePerformedRnR.putValue("measureId", MEASURE_ID);
 
 		measurePerformed = new Node(TemplateId.MEASURE_PERFORMED);

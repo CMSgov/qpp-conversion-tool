@@ -50,7 +50,7 @@ class FormattedErrorCodeTest {
 	@Test
 	void testEqualsDifferentErrorCode() {
 		FormattedErrorCode o1 = new FormattedErrorCode(ErrorCode.UNEXPECTED_ERROR, "Some Message");
-		FormattedErrorCode o2 = new FormattedErrorCode(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID, "Some Message");
+		FormattedErrorCode o2 = new FormattedErrorCode(ErrorCode.PI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID, "Some Message");
 		Truth.assertThat(o1).isNotEqualTo(o2);
 	}
 

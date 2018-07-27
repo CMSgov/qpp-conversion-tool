@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 /**
  * Encoder to serialize numerator data from a Numerator/Denominator Type Measure.
  */
-@Encoder(TemplateId.ACI_NUMERATOR)
+@Encoder(TemplateId.PI_NUMERATOR)
 public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 
 	private static final String ENCODE_LABEL = "numerator";
@@ -27,7 +27,7 @@ public class AciProportionNumeratorEncoder extends QppOutputEncoder {
 	@Override
 	protected void internalEncode(JsonWrapper wrapper, Node node) {
 
-		Node aciNumeratorNode = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciNumeratorNode = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 
 		if (aciNumeratorNode != null) {
 			JsonWrapper numerator = encodeChild(aciNumeratorNode);

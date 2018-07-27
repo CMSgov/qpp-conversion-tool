@@ -18,7 +18,7 @@ import java.util.Optional;
 /**
  * Encoder to serialize ACI Section and it's measures
  */
-@Encoder(TemplateId.ACI_SECTION)
+@Encoder(TemplateId.PI_SECTION)
 public class AciSectionEncoder extends QppOutputEncoder {
 
 	private static final Logger DEV_LOG = LoggerFactory.getLogger(AciSectionEncoder.class);

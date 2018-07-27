@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * Measure Denominator Data.
  */
 
-@Encoder(TemplateId.ACI_DENOMINATOR)
+@Encoder(TemplateId.PI_DENOMINATOR)
 public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 
 	private static final String ENCODE_LABEL = "denominator";
@@ -25,7 +25,7 @@ public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 
 		// the ACI Proportion Denominator Node should have a single child
 		// node that holds the value
-		Node denominatorValueNode = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+		Node denominatorValueNode = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 		if (denominatorValueNode != null) {
 			JsonOutputEncoder denominatorValueEncoder = encoders.get(denominatorValueNode.getType());
 

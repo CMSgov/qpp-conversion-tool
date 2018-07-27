@@ -63,8 +63,8 @@ class ValidationApiFailureAcceptance {
 			Arguments.of("20160101", Collections.singletonMap("performanceStart", "20160101")),
 //TODO: create issue to track this
 //			Arguments.of("20180101", Collections.singletonMap("performanceEnd", "20180101")),
-			Arguments.of("ACI_PEA_42", Collections.singletonMap("aciMeasure", "ACI_PEA_42")),
-			Arguments.of("ACI_PEA_2", new HashMap<String, String>() {{
+			Arguments.of("PI_PEA_42", Collections.singletonMap("aciMeasure", "PI_PEA_42")),
+			Arguments.of("PI_PEA_2", new HashMap<String, String>() {{
 				put("aciDenominator", "600");
 				put("aciNumerator", "800");
 			}}),
@@ -89,7 +89,7 @@ class ValidationApiFailureAcceptance {
 			{
 				put("performanceStart", "20170101");
 				put("performanceEnd", "20171231");
-				put("aciMeasure", "ACI_PEA_2");
+				put("aciMeasure", "PI_PEA_2");
 				put("aciNumerator", "600");
 				put("aciDenominator", "800");
 				put("qualityDenominator", "1000");

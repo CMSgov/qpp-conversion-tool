@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 /**
  * Decoder to parse an ACI Measure Performed Reference and Results.
  */
-@Decoder(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
+@Decoder(TemplateId.PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 public class AciMeasurePerformedRnRDecoder extends QrdaDecoder {
 
 	public static final String MEASURE_ID = "measureId";

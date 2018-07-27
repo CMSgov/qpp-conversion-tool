@@ -61,7 +61,7 @@ class QualityMeasureIdMultiEncoderTest {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue(MEASURE_ID, "test1");
 
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
 
 		eligiblePopulationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);

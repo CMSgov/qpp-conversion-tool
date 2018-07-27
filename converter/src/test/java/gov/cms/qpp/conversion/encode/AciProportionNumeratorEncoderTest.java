@@ -19,10 +19,10 @@ class AciProportionNumeratorEncoderTest {
 	void createNode() {
 		Node ensureChildOrderIsNotProblematic = new Node(TemplateId.CLINICAL_DOCUMENT);
 
-		numeratorDenominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorDenominatorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorDenominatorValueNode.putValue("aggregateCount", "600");
 
-		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
+		aciProportionNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
 		aciProportionNumeratorNode.addChildNode(ensureChildOrderIsNotProblematic);
 		aciProportionNumeratorNode.addChildNode(numeratorDenominatorValueNode);
 

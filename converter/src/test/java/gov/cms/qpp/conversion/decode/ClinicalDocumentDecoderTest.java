@@ -83,14 +83,14 @@ class ClinicalDocumentDecoderTest {
 	void testAciEp1MeasureId() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertThat(aciSectionNode.getChildNodes().get(1).getValue("measureId"))
-				.isEqualTo("ACI_EP_1");
+				.isEqualTo("PI_EP_1");
 	}
 
 	@Test
 	void testAciCctpe3MeasureId() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertThat(aciSectionNode.getChildNodes().get(2).getValue("measureId"))
-				.isEqualTo("ACI_CCTPE_3");
+				.isEqualTo("PI_CCTPE_3");
 	}
 
 	@Test
@@ -346,8 +346,8 @@ class ClinicalDocumentDecoderTest {
 		Element structuredBody = new Element("structuredBody", rootns);
 		Element componentTwo = new Element("component", rootns);
 		Element aciSectionElement = new Element("templateId", rootns);
-		aciSectionElement.setAttribute("root", TemplateId.ACI_SECTION.getRoot());
-		aciSectionElement.setAttribute("extension", TemplateId.ACI_SECTION.getExtension());
+		aciSectionElement.setAttribute("root", TemplateId.PI_SECTION.getRoot());
+		aciSectionElement.setAttribute("extension", TemplateId.PI_SECTION.getExtension());
 
 		componentTwo.addContent(aciSectionElement);
 		structuredBody.addContent(componentTwo);

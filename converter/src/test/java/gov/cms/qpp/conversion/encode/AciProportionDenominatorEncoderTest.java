@@ -23,10 +23,10 @@ class AciProportionDenominatorEncoderTest {
 	void createNode() {
 		Node ensureOrderIsNotOfConcern = new Node(TemplateId.DEFAULT);
 
-		numeratorDenominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorDenominatorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorDenominatorValueNode.putValue("aggregateCount", "600");
 
-		aciProportionDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
+		aciProportionDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
 		aciProportionDenominatorNode.addChildNode(ensureOrderIsNotOfConcern);
 		aciProportionDenominatorNode.addChildNode(numeratorDenominatorValueNode);
 

@@ -16,7 +16,7 @@ import java.io.IOException;
 import static com.google.common.truth.Truth.assertThat;
 
 class AciMeasurePerformedRnRDecoderTest {
-	private static final String MEASURE_ID = "ACI_INFBLO_1";
+	private static final String MEASURE_ID = "PI_INFBLO_1";
 
 	@Test
 	void internalDecodeReturnsTreeContinue() {

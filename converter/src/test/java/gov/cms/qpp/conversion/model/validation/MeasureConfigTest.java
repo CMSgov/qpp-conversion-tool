@@ -69,8 +69,8 @@ class MeasureConfigTest {
 
 	@Test
 	void verifyMeasureConfigMeasureId() {
-		assertWithMessage("measureId should be ACI_EP_1")
-				.that(theConfig.getMeasureId()).isEqualTo("ACI_EP_1");
+		assertWithMessage("measureId should be PI_EP_1")
+				.that(theConfig.getMeasureId()).isEqualTo("PI_EP_1");
 	}
 
 	@Test

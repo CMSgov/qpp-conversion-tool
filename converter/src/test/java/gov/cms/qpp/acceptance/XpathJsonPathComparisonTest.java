@@ -69,13 +69,13 @@ class XpathJsonPathComparisonTest {
 	@Test
 	void compareAciMeasurePerformedMeasureIdAciPea1() throws XmlException {
 		String jsonPath = "measurementSets[1].measurements[0].measureId";
-		helper.executeAttributeTest(jsonPath, EXTENSION, "ACI_PEA_1");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "PI_PEA_1");
 	}
 
 	@Test
 	void compareAciMeasurePerformedMeasureIdAciEp1() throws XmlException {
 		String jsonPath = "measurementSets[1].measurements[1].measureId";
-		helper.executeAttributeTest(jsonPath, EXTENSION, "ACI_EP_1");
+		helper.executeAttributeTest(jsonPath, EXTENSION, "PI_EP_1");
 	}
 	
 	@Test

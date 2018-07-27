@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
 /**
  * Decoder to read XML data for a Numerator Type Measure
  */
-@Decoder(TemplateId.ACI_NUMERATOR)
+@Decoder(TemplateId.PI_NUMERATOR)
 public class AciProportionNumeratorDecoder extends SkeletalNameDecoder {
 
 	public AciProportionNumeratorDecoder(Context context) {

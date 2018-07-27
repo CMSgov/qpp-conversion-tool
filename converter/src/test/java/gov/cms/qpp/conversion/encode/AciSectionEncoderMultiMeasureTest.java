@@ -22,9 +22,9 @@ class AciSectionEncoderMultiMeasureTest {
 			+ "\"measurements\" : [ "
 			+ "{\n    \"measureId\" : \"ACI-PEA-1\",\n    \"value\" : {\n"
 			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }, "
-			+ "{\n    \"measureId\" : \"ACI_EP_1\",\n    \"value\" : {\n"
+			+ "{\n    \"measureId\" : \"PI_EP_1\",\n    \"value\" : {\n"
 			+ "      \"numerator\" : 500,\n      \"denominator\" : 700\n    }\n  }, "
-			+ "{\n    \"measureId\" : \"ACI_CCTPE_3\",\n    \"value\" : {\n"
+			+ "{\n    \"measureId\" : \"PI_CCTPE_3\",\n    \"value\" : {\n"
 			+ "      \"numerator\" : 400,\n      \"denominator\" : 600\n    }\n  }" + " ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
 
 	private Node aciSectionNode;
@@ -48,58 +48,58 @@ class AciSectionEncoderMultiMeasureTest {
 
 	@BeforeEach
 	void createNode() {
-		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue("aggregateCount", "400");
 
-		numeratorValueNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorValueNode2 = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorValueNode2.putValue("aggregateCount", "500");
 
-		numeratorValueNode3 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorValueNode3 = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorValueNode3.putValue("aggregateCount", "400");
 
-		denominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		denominatorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		denominatorValueNode.putValue("aggregateCount", "600");
 
-		denominatorValueNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		denominatorValueNode2 = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		denominatorValueNode2.putValue("aggregateCount", "700");
 
-		denominatorValueNode3 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		denominatorValueNode3 = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		denominatorValueNode3.putValue("aggregateCount", "600");
 
-		aciProportionDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
+		aciProportionDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
 		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
 
-		aciProportionDenominatorNode2 = new Node(TemplateId.ACI_DENOMINATOR);
+		aciProportionDenominatorNode2 = new Node(TemplateId.PI_DENOMINATOR);
 		aciProportionDenominatorNode2.addChildNode(denominatorValueNode2);
 
-		aciProportionDenominatorNode3 = new Node(TemplateId.ACI_DENOMINATOR);
+		aciProportionDenominatorNode3 = new Node(TemplateId.PI_DENOMINATOR);
 		aciProportionDenominatorNode3.addChildNode(denominatorValueNode3);
 
-		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
+		aciProportionNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
 
-		aciProportionNumeratorNode2 = new Node(TemplateId.ACI_NUMERATOR);
+		aciProportionNumeratorNode2 = new Node(TemplateId.PI_NUMERATOR);
 		aciProportionNumeratorNode2.addChildNode(numeratorValueNode2);
 
-		aciProportionNumeratorNode3 = new Node(TemplateId.ACI_NUMERATOR);
+		aciProportionNumeratorNode3 = new Node(TemplateId.PI_NUMERATOR);
 		aciProportionNumeratorNode3.addChildNode(numeratorValueNode3);
 
-		aciProportionMeasureNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		aciProportionMeasureNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
 		aciProportionMeasureNode.putValue("measureId", "ACI-PEA-1");
 
-		aciProportionMeasureNode2 = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		aciProportionMeasureNode2 = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode2.addChildNode(aciProportionNumeratorNode2);
 		aciProportionMeasureNode2.addChildNode(aciProportionDenominatorNode2);
-		aciProportionMeasureNode2.putValue("measureId", "ACI_EP_1");
+		aciProportionMeasureNode2.putValue("measureId", "PI_EP_1");
 
-		aciProportionMeasureNode3 = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		aciProportionMeasureNode3 = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode3.addChildNode(aciProportionNumeratorNode3);
 		aciProportionMeasureNode3.addChildNode(aciProportionDenominatorNode3);
-		aciProportionMeasureNode3.putValue("measureId", "ACI_CCTPE_3");
+		aciProportionMeasureNode3.putValue("measureId", "PI_CCTPE_3");
 
-		aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		aciSectionNode = new Node(TemplateId.PI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);

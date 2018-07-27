@@ -36,10 +36,10 @@ public class ClinicalDocumentValidator extends NodeValidator {
 	protected void internalValidateSingleNode(final Node node) {
 
 		thoroughlyCheck(node)
-			.childMinimum(ErrorCode.CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD, 1, 
-					TemplateId.ACI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)
-			.childMaximum(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS, 1, 
-					TemplateId.ACI_SECTION)
+			.childMinimum(ErrorCode.CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD, 1, 
+					TemplateId.PI_SECTION, TemplateId.IA_SECTION, TemplateId.MEASURE_SECTION_V2)
+			.childMaximum(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_PI_SECTIONS, 1, 
+					TemplateId.PI_SECTION)
 			.childMaximum(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS, 1, 
 					TemplateId.IA_SECTION)
 			.childMaximum(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS, 1, 

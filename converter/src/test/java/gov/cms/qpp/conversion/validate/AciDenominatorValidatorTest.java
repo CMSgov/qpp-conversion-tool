@@ -27,8 +27,8 @@ class AciDenominatorValidatorTest {
 	}
 
 	private void validateDenominatorWithValue(String value) {
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciDenominatorNode.addChildNode(aggregateCountNode);
 
@@ -41,7 +41,7 @@ class AciDenominatorValidatorTest {
 
 	@Test
 	void noChildrenTest() {
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
 
 		AciDenominatorValidator validator = new AciDenominatorValidator();
 		Set<Detail> errors = validator.validateSingleNode(aciDenominatorNode);
@@ -54,8 +54,8 @@ class AciDenominatorValidatorTest {
 
 	@Test
 	void incorrectChildrenTest() {
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_SECTION);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_SECTION);
 		aggregateCountNode.putValue("aggregateCount", "100");
 
 		aciDenominatorNode.addChildNode(aggregateCountNode);
@@ -72,9 +72,9 @@ class AciDenominatorValidatorTest {
 
 	@Test
 	void tooManyChildrenTest() {
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode1 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
-		Node aggregateCountNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode1 = new Node(TemplateId.PI_AGGREGATE_COUNT);
+		Node aggregateCountNode2 = new Node(TemplateId.PI_AGGREGATE_COUNT);
 
 		aggregateCountNode1.putValue("aggregateCount", "100");
 		aggregateCountNode2.putValue("aggregateCount", "200");
@@ -95,8 +95,8 @@ class AciDenominatorValidatorTest {
 	@Test
 	void invalidValueNaNTest() {
 		//Not a number check
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		String value = "not a number";
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciDenominatorNode.addChildNode(aggregateCountNode);
@@ -110,8 +110,8 @@ class AciDenominatorValidatorTest {
 	@Test
 	void invalidValueNegativeNumberTest() {
 		//Not a number check
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		String value = "-500";
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciDenominatorNode.addChildNode(aggregateCountNode);
@@ -128,8 +128,8 @@ class AciDenominatorValidatorTest {
 	@Test
 	void invalidValueDenominatorNumberTest() {
 		//Not a number check
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		String value = "-1";
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciDenominatorNode.addChildNode(aggregateCountNode);

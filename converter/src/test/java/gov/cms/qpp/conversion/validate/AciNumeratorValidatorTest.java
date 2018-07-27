@@ -27,8 +27,8 @@ class AciNumeratorValidatorTest {
 	}
 
 	private void validateNumeratorWithValue(String value) {
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciNumeratorNode.addChildNode(aggregateCountNode);
 
@@ -41,7 +41,7 @@ class AciNumeratorValidatorTest {
 
 	@Test
 	void noChildrenTest() {
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
 
 		AciNumeratorValidator validator = new AciNumeratorValidator();
 		Set<Detail> errors = validator.validateSingleNode(aciNumeratorNode);
@@ -55,8 +55,8 @@ class AciNumeratorValidatorTest {
 
 	@Test
 	void incorrectChildrenTest() {
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_SECTION);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_SECTION);
 		aggregateCountNode.putValue("aggregateCount", "100");
 
 		aciNumeratorNode.addChildNode(aggregateCountNode);
@@ -72,9 +72,9 @@ class AciNumeratorValidatorTest {
 
 	@Test
 	void tooManyChildrenTest() {
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
-		Node aggregateCountNode1 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
-		Node aggregateCountNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
+		Node aggregateCountNode1 = new Node(TemplateId.PI_AGGREGATE_COUNT);
+		Node aggregateCountNode2 = new Node(TemplateId.PI_AGGREGATE_COUNT);
 
 		aggregateCountNode1.putValue("aggregateCount", "100");
 		aggregateCountNode2.putValue("aggregateCount", "200");
@@ -95,8 +95,8 @@ class AciNumeratorValidatorTest {
 	@Test
 	void invalidValueNaNTest() {
 		//Not a number check
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		String value = "not a number";
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciNumeratorNode.addChildNode(aggregateCountNode);
@@ -111,8 +111,8 @@ class AciNumeratorValidatorTest {
 	@Test
 	void invalidValueNegativeNumberTest() {
 		//Not a number check
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		String value = "-500";
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciNumeratorNode.addChildNode(aggregateCountNode);

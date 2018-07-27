@@ -47,7 +47,7 @@ class NodeTest {
 	void testChild() {
 		Node node = new Node(TemplateId.PLACEHOLDER);
 		Node childNode = new Node();
-		childNode.setType(TemplateId.ACI_SECTION);
+		childNode.setType(TemplateId.PI_SECTION);
 		node.addChildNode(childNode);
 
 		assertWithMessage("Did not retrieve expected node")
@@ -255,8 +255,8 @@ class NodeTest {
 	@Test
 	void testFindParentNodeWithHumanReadableTemplateIdTraverse() {
 		Node topLevelNode = new Node(TemplateId.IA_MEASURE);
-		Node middleLevelNode = new Node(TemplateId.ACI_SECTION, topLevelNode);
-		Node bottomLevelNode = new Node(TemplateId.ACI_AGGREGATE_COUNT, middleLevelNode);
+		Node middleLevelNode = new Node(TemplateId.PI_SECTION, topLevelNode);
+		Node bottomLevelNode = new Node(TemplateId.PI_AGGREGATE_COUNT, middleLevelNode);
 
 		Node humanReadableNode = bottomLevelNode.findParentNodeWithHumanReadableTemplateId();
 
@@ -275,7 +275,7 @@ class NodeTest {
 
 	@Test
 	void testFindParentNodeWithHumanReadableTemplateIdNull() {
-		Node node = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node node = new Node(TemplateId.PI_AGGREGATE_COUNT);
 
 		Node humanReadableNode = node.findParentNodeWithHumanReadableTemplateId();
 
@@ -287,13 +287,13 @@ class NodeTest {
 		Node parent = new Node(TemplateId.CLINICAL_DOCUMENT);
 		Node child1 = new Node(TemplateId.IA_SECTION);
 		child1.setParent(parent);
-		Node child2 = new Node(TemplateId.ACI_SECTION);
+		Node child2 = new Node(TemplateId.PI_SECTION);
 		child2.setParent(parent);
 		parent.setChildNodes(child1, child2);
 
 		EqualsVerifier.forClass(Node.class)
-			.withPrefabValues(List.class, Lists.newArrayList(new Node()), Lists.newArrayList(new Node(TemplateId.CLINICAL_DOCUMENT), new Node(TemplateId.ACI_NUMERATOR)))
-			.withPrefabValues(Node.class, new Node(TemplateId.ACI_DENOMINATOR), parent)
+			.withPrefabValues(List.class, Lists.newArrayList(new Node()), Lists.newArrayList(new Node(TemplateId.CLINICAL_DOCUMENT), new Node(TemplateId.PI_NUMERATOR)))
+			.withPrefabValues(Node.class, new Node(TemplateId.PI_DENOMINATOR), parent)
 			.withPrefabValues(Element.class, new Element("mock-one"), new Element("mock-two"))
 			.withIgnoredFields("parent")
 			.suppress(Warning.NONFINAL_FIELDS)

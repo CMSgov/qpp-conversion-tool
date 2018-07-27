@@ -17,7 +17,7 @@ class CpcTest {
 
 	@Test
 	void historicalAciSectionScope() {
-		run("ACI_SECTION");
+		run("PI_SECTION");
 	}
 
 	@Test
