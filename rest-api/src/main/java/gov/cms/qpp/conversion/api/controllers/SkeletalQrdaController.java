@@ -105,7 +105,7 @@ public abstract class SkeletalQrdaController<T> {
 		try {
 			CompletableFuture<Metadata> metadata = auditService.success(conversionReport);
 			return metadata == null ? null : metadata.get();
-		} catch (InterruptedException | ExecutionException exception) {
+		} catch (InterruptedException | ExecutionException exception) { //NOSONAR
 			throw new AuditException(exception);
 		}
 	}
