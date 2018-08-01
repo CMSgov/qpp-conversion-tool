@@ -14,9 +14,9 @@
 		<requiredCodeCoverage>0.95</requiredCodeCoverage>
 		<verificationsPhase>verify</verificationsPhase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<aws.version>1.11.348</aws.version>
-		<jackson.version>2.9.5</jackson.version>
-		<guava.version>24.1-jre</guava.version>
+		<aws.version>1.11.371</aws.version>
+		<jackson.version>2.9.6</jackson.version>
+		<guava.version>25.1-jre</guava.version>
 		<junit.version>5.2.0</junit.version>
 		<powermock.version>1.7.4</powermock.version>
 		<junit.excludes>integration, acceptance</junit.excludes>
@@ -166,7 +166,7 @@
 				<plugin>
 					<groupId>com.github.spotbugs</groupId>
 					<artifactId>spotbugs-maven-plugin</artifactId>
-					<version>3.1.3</version>
+					<version>3.1.6</version>
 					<configuration>
 						<effort>Max</effort>
 						<threshold>Low</threshold>

@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import com.google.common.base.Strings;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -17,6 +16,8 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Validates the Clinical Document level node for the given program: CPC+
@@ -66,7 +67,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	private void validateApmEntityId(Node node) {
 		String apmEntityId = node.getValue(ClinicalDocumentDecoder.ENTITY_ID);
 
-		if (Strings.isNullOrEmpty(apmEntityId)) {
+		if (StringUtils.isEmpty(apmEntityId)) {
 			return;
 		}
 

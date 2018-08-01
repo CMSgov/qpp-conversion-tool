@@ -517,10 +517,14 @@ public class JsonWrapper {
 	@Override
 	public String toString() {
 		try {
-			return ow.writeValueAsString(isObject() ? object : list);
+			return ow.writeValueAsString(toObject());
 		} catch (JsonProcessingException e) {
 			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
 		}
+	}
+
+	public Object toObject() {
+		return isObject() ? object : list;
 	}
 
 	/**

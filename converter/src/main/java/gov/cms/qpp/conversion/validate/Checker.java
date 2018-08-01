@@ -1,6 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
-import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,7 +103,7 @@ class Checker {
 	 */
 	Checker valueIsNotEmpty(LocalizedError code, String name) {
 		lastAppraised = node.getValue(name);
-		if (!shouldShortcut() && Strings.isNullOrEmpty((String) lastAppraised)) {
+		if (!shouldShortcut() && StringUtils.isEmpty((String) lastAppraised)) {
 			details.add(detail(code));
 		}
 		return this;
