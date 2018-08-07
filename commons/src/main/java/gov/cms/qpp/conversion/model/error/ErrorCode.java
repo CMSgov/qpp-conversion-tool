@@ -35,33 +35,33 @@ public enum ErrorCode implements LocalizedError {
 	AGGREGATE_COUNT_VALUE_NOT_SINGULAR(8, "The `(Parent element)` has `(number of aggregate counts)` aggregate count values."
 		+ " A single aggregate count value is required.", true),
 	AGGREGATE_COUNT_VALUE_NOT_INTEGER(9, "Aggregate count value must be an integer"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This ACI Reference and Results is missing a required "
+	ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT(11, "This PI Reference and Results is missing a required "
 		+ "Measure Performed child"),
-	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This ACI Measure Performed Reference and Results requires "
+	ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR(12, "This PI Measure Performed Reference and Results requires "
 		+ "a single Measure ID"),
 	DENOMINATOR_COUNT_INVALID(13, "Denominator count must be less than or equal to Initial Population count "
 			+ "for a measure that is a proportion measure"),
 	POPULATION_CRITERIA_COUNT_INCORRECT(14,
 			"The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` "
 			+ "`(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`", true),
-	ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION(15, "ACI Numerator Denominator element should have an ACI "
+	ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION(15, "PI Numerator Denominator element should have a PI "
 			+ "Section element as a parent"),
-	ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "ACI Numerator Denominator element does not contain a "
+	ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID(16, "PI Numerator Denominator element does not contain a "
 			+ "measure name ID"),
-	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "ACI Numerator Denominator element does not have any child "
+	ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN(17, "PI Numerator Denominator element does not have any child "
 			+ "elements"),
-	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This ACI Numerator Denominator "
+	ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE(18, "This PI Numerator Denominator "
 			+ "element requires exactly one `(Denominator|Numerator)` element child", true),
-	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The ACI Section must have one Reporting Parameter Act."
+	ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT(22, "The PI Section must have one Reporting Parameter Act."
 		+ " Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG)."
 		+ " Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
 	CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD(23, "Clinical Document element must have at least one child "
-			+ "element of type ACI, IA, or Measure section"),
+			+ "element of type PI, IA, or Measure section"),
 	CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME(24, "Clinical Document must have one and only one program name."
 		+ " Valid program names are `(list of valid program names)`", true),
 	CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME(25, "The Clinical Document program name `(program name)` is not recognized. Valid "
 		+ "program names are `(list of valid program names)`.", true),
-	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS(26, "Clinical Document contains duplicate ACI sections"),
+	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS(26, "Clinical Document contains duplicate PI sections"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_IA_SECTIONS(27, "Clinical Document contains duplicate IA sections"),
 	CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ECQM_SECTIONS(28, "Clinical Document contains duplicate Measure "
 			+ "sections"),
@@ -89,12 +89,12 @@ public enum ErrorCode implements LocalizedError {
 	CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT(37, "CPC+ submissions must contain correct number of performance rate(s). "
 			+ "Correct Number is `(Expected value)` for measure `(Given measure id)`", true),
 	NUMERATOR_DENOMINATOR_CHILD_EXACT(39,
-			"This ACI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. An ACI "
+			"This PI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. A PI "
 			+ "`(Numerator or Denominator)` must have exactly one Aggregate Count element", true),
 	NUMERATOR_DENOMINATOR_MUST_BE_INTEGER(41,
-			"This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer", true),
+			"This PI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer", true),
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
-			"This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'", true),
+			"This PI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'", true),
 	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one Improvement Activity"),
 	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter Act. "
 			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "

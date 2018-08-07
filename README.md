@@ -126,7 +126,7 @@ View all commands with `convert.sh`.
 
 ## Sample files
 
-Sample QRDA-III files that cover all of the eCQM, ACI, and IA measures as well as other scenarios
+Sample QRDA-III files that cover all of the eCQM, PI, and IA measures as well as other scenarios
 can be found in the [sample-files](sample-files/README.md) folder.
 
 ## Want to Contribute?

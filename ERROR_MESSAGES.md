@@ -12,19 +12,19 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 7 : CT - The measure reference results must have at least one measure. Please review the measures section of your file as it cannot be empty.
 * 8 : CT - The `(Parent element)` has `(number of aggregate counts)` aggregate count values. A single aggregate count value is required.
 * 9 : CT - Aggregate count value must be an integer
-* 11 : CT - This ACI Reference and Results is missing a required Measure Performed child
-* 12 : CT - This ACI Measure Performed Reference and Results requires a single Measure ID
+* 11 : CT - This PI Reference and Results is missing a required Measure Performed child
+* 12 : CT - This PI Measure Performed Reference and Results requires a single Measure ID
 * 13 : CT - Denominator count must be less than or equal to Initial Population count for a measure that is a proportion measure
 * 14 : CT - The electronic measure id: `(Current eMeasure ID)` requires `(Number of Subpopulations required)` `(Type of Subpopulation required)`(s) but there are `(Number of Subpopulations existing)`
-* 15 : CT - ACI Numerator Denominator element should have an ACI Section element as a parent
-* 16 : CT - ACI Numerator Denominator element does not contain a measure name ID
-* 17 : CT - ACI Numerator Denominator element does not have any child elements
-* 18 : CT - This ACI Numerator Denominator element requires exactly one `(Denominator|Numerator)` element child
-* 22 : CT - The ACI Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
-* 23 : CT - Clinical Document element must have at least one child element of type ACI, IA, or Measure section
+* 15 : CT - PI Numerator Denominator element should have a PI Section element as a parent
+* 16 : CT - PI Numerator Denominator element does not contain a measure name ID
+* 17 : CT - PI Numerator Denominator element does not have any child elements
+* 18 : CT - This PI Numerator Denominator element requires exactly one `(Denominator|Numerator)` element child
+* 22 : CT - The PI Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
+* 23 : CT - Clinical Document element must have at least one child element of type PI, IA, or Measure section
 * 24 : CT - Clinical Document must have one and only one program name. Valid program names are `(list of valid program names)`
 * 25 : CT - The Clinical Document program name `(program name)` is not recognized. Valid program names are `(list of valid program names)`.
-* 26 : CT - Clinical Document contains duplicate ACI sections
+* 26 : CT - Clinical Document contains duplicate PI sections
 * 27 : CT - Clinical Document contains duplicate IA sections
 * 28 : CT - Clinical Document contains duplicate Measure sections
 * 29 : CT - Must have one and only one performance period start. Please see the Implementation Guide for information on the performance period here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=17
@@ -36,9 +36,9 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 35 : CT - One and only one Alternative Payment Model (APM) Entity Identifier should be specified. Here is a link to the IG section on identifiers: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=15
 * 36 : CT - CPC+ submissions must contain one Measure section
 * 37 : CT - CPC+ submissions must contain correct number of performance rate(s). Correct Number is `(Expected value)` for measure `(Given measure id)`
-* 39 : CT - This ACI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. An ACI `(Numerator or Denominator)` must have exactly one Aggregate Count element
-* 41 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer
-* 42 : CT - This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'
+* 39 : CT - This PI `(Numerator or Denominator)` element has an incorrect number of Aggregate Count children. A PI `(Numerator or Denominator)` must have exactly one Aggregate Count element
+* 41 : CT - This PI `(Numerator or Denominator)` element Aggregate Value '`(value)`' is not an integer
+* 42 : CT - This PI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'
 * 43 : CT - The IA Section must have at least one Improvement Activity
 * 44 : CT - The IA Section must have one Reporting Parameter Act. Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). Here is a link to the IG Reporting Parameter Act section: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=80
 * 45 : CT - The IA Section must contain only Improvement Activities and a Reporting Parameter Act
