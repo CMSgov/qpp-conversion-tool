@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.model.TemplateId;
  * Encoder to serialize an Aggregate Count value type.
  *
  */
-@Encoder(TemplateId.ACI_AGGREGATE_COUNT)
+@Encoder(TemplateId.PI_AGGREGATE_COUNT)
 public class AggregateCountEncoder extends QppOutputEncoder {
 
 	public AggregateCountEncoder(Context context) {

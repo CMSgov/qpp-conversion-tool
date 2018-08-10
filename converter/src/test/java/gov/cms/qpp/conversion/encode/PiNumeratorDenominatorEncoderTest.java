@@ -18,38 +18,38 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 
-class AciNumeratorDenominatorEncoderTest {
+class PiNumeratorDenominatorEncoderTest {
 
 	private static final String MEASURE_ID = "ACI-PEA-1";
-	private Node aciProportionMeasureNode;
-	private Node aciProportionNumeratorNode;
-	private Node aciProportionDenominatorNode;
+	private Node piProportionMeasureNode;
+	private Node piProportionNumeratorNode;
+	private Node piProportionDenominatorNode;
 	private Node numeratorValueNode;
 	private Node denominatorValueNode;
 	private List<Node> nodes;
 
 	@BeforeEach
 	void createNode() {
-		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue("aggregateCount", "400");
 
-		denominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		denominatorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		denominatorValueNode.putValue("aggregateCount", "600");
 
-		aciProportionDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
+		piProportionDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		piProportionDenominatorNode.addChildNode(denominatorValueNode);
 
-		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
-		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
+		piProportionNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
+		piProportionNumeratorNode.addChildNode(numeratorValueNode);
 
-		aciProportionMeasureNode = new Node();
-		aciProportionMeasureNode.setType(TemplateId.ACI_NUMERATOR_DENOMINATOR);
-		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
-		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
-		aciProportionMeasureNode.putValue("measureId", MEASURE_ID);
+		piProportionMeasureNode = new Node();
+		piProportionMeasureNode.setType(TemplateId.PI_NUMERATOR_DENOMINATOR);
+		piProportionMeasureNode.addChildNode(piProportionNumeratorNode);
+		piProportionMeasureNode.addChildNode(piProportionDenominatorNode);
+		piProportionMeasureNode.putValue("measureId", MEASURE_ID);
 
 		nodes = new ArrayList<>();
-		nodes.add(aciProportionMeasureNode);
+		nodes.add(piProportionMeasureNode);
 	}
 
 	@Test
@@ -76,10 +76,10 @@ class AciNumeratorDenominatorEncoderTest {
 
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciNumeratorDenominatorEncoder objectUnderTest = new AciNumeratorDenominatorEncoder(new Context());
+		PiNumeratorDenominatorEncoder objectUnderTest = new PiNumeratorDenominatorEncoder(new Context());
 
 		//execute
-		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
+		objectUnderTest.internalEncode(jsonWrapper, piProportionMeasureNode);
 
 		//assert
 		assertThat(jsonWrapper.getString("measureId"))
@@ -95,12 +95,12 @@ class AciNumeratorDenominatorEncoderTest {
 	@Test
 	void testNoChildEncoder() throws EncodeException {
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciNumeratorDenominatorEncoder objectUnderTest = new AciNumeratorDenominatorEncoder(new Context());
+		PiNumeratorDenominatorEncoder objectUnderTest = new PiNumeratorDenominatorEncoder(new Context());
 		Node unknownNode = new Node();
-		aciProportionMeasureNode.addChildNode(unknownNode);
+		piProportionMeasureNode.addChildNode(unknownNode);
 
 		//execute
-		objectUnderTest.internalEncode(jsonWrapper, aciProportionMeasureNode);
+		objectUnderTest.internalEncode(jsonWrapper, piProportionMeasureNode);
 
 		//assert
 		assertThat(objectUnderTest.getDetails())

@@ -103,7 +103,7 @@ class AggregateCountDecoderTest {
 
 		Context context = new Context();
 		Element element = new Element("observation", rootNs);
-		element.addContent(new Element("templateId", rootNs).setAttribute("root", TemplateId.ACI_AGGREGATE_COUNT.getTemplateId(context)));
+		element.addContent(new Element("templateId", rootNs).setAttribute("root", TemplateId.PI_AGGREGATE_COUNT.getTemplateId(context)));
 		element.addContent(new Element("value", rootNs).setAttribute("value", "450").setAttribute("type", "INT", ns));
 		element.addNamespaceDeclaration(ns);
 
@@ -131,7 +131,7 @@ class AggregateCountDecoderTest {
 
 		assertWithMessage("Should have template id")
 				.that(node.getChildNodes().get(0).getType())
-				.isEqualTo(TemplateId.ACI_AGGREGATE_COUNT);
+				.isEqualTo(TemplateId.PI_AGGREGATE_COUNT);
 	}
 
 	@Test
@@ -144,12 +144,12 @@ class AggregateCountDecoderTest {
 				.isEqualTo("400");
 
 		assertWithMessage("Should have template id")
-				.that(root.getType()).isEqualTo(TemplateId.ACI_AGGREGATE_COUNT);
+				.that(root.getType()).isEqualTo(TemplateId.PI_AGGREGATE_COUNT);
 	}
 
 	@Test
 	void testDuplicateAggregateCountDecodesToDuplicateAggregateCount() throws XmlException {
 		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(DUPLICATE_AGGREGATE_COUNT));
-		assertThat(root.getChildNodes().get(0).getChildNodes(TemplateId.ACI_AGGREGATE_COUNT).count()).isEqualTo(2);
+		assertThat(root.getChildNodes().get(0).getChildNodes(TemplateId.PI_AGGREGATE_COUNT).count()).isEqualTo(2);
 	}
 }

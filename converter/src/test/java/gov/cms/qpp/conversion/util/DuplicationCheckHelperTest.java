@@ -12,7 +12,7 @@ public class DuplicationCheckHelperTest {
 
 	@Test
 	void testDuplicateCheckerWithNoDuplicateAggregateCounts() {
-		Node node = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node node = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		node.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "1234", false);
 
 		int duplicationValue = DuplicationCheckHelper.calculateDuplications(node, AggregateCountDecoder.AGGREGATE_COUNT);
@@ -21,7 +21,7 @@ public class DuplicationCheckHelperTest {
 
 	@Test
 	void testDuplicateCheckerWithDuplicateAggregateCounts() {
-		Node node = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node node = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		node.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "1234", false);
 		node.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "1234", false);
 

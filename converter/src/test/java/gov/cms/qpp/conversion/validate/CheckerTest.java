@@ -51,8 +51,8 @@ class CheckerTest {
 		Node meepNode = new Node();
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.hasParent(ERROR_MESSAGE, TemplateId.ACI_DENOMINATOR) //fails
-				.hasParent(ERROR_MESSAGE, TemplateId.ACI_DENOMINATOR); //shortcuts
+		checker.hasParent(ERROR_MESSAGE, TemplateId.PI_DENOMINATOR) //fails
+				.hasParent(ERROR_MESSAGE, TemplateId.PI_DENOMINATOR); //shortcuts
 
 		assertWithMessage("message applied is the message given")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -150,7 +150,7 @@ class CheckerTest {
 				new Node(TemplateId.PLACEHOLDER));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.childMaximum(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+		checker.childMaximum(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.PI_AGGREGATE_COUNT);
 
 		assertWithMessage("There's an error")
 				.that(details).hasSize(1);
@@ -173,11 +173,11 @@ class CheckerTest {
 	void testChildExactFailureTooManyNodes() {
 		Node meepNode = new Node();
 		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER),
-			new Node(TemplateId.ACI_AGGREGATE_COUNT),
+			new Node(TemplateId.PI_AGGREGATE_COUNT),
 			new Node(TemplateId.PLACEHOLDER));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.PI_AGGREGATE_COUNT);
 
 		assertWithMessage("An error exists")
 			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -190,7 +190,7 @@ class CheckerTest {
 		meepNode.addChildNodes(new Node(TemplateId.PLACEHOLDER));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.PI_AGGREGATE_COUNT);
 
 		assertWithMessage("An error exists")
 			.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
@@ -200,11 +200,11 @@ class CheckerTest {
 	@Test
 	void testChildExactSuccessNoMissingType() {
 		Node meepNode = new Node();
-		meepNode.addChildNodes(new Node(TemplateId.ACI_AGGREGATE_COUNT),
+		meepNode.addChildNodes(new Node(TemplateId.PI_AGGREGATE_COUNT),
 			new Node(TemplateId.PLACEHOLDER));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.PI_AGGREGATE_COUNT);
 
 		assertWithMessage("There's no error")
 			.that(details).isEmpty();
@@ -217,7 +217,7 @@ class CheckerTest {
 			new Node(TemplateId.PLACEHOLDER));
 
 		Checker checker = Checker.check(meepNode, details);
-		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.ACI_AGGREGATE_COUNT);
+		checker.childExact(ERROR_MESSAGE, 2, TemplateId.PLACEHOLDER, TemplateId.PI_AGGREGATE_COUNT);
 
 		assertWithMessage("There's no error")
 			.that(details).isEmpty();
@@ -306,7 +306,7 @@ class CheckerTest {
 				new Node(TemplateId.PLACEHOLDER),
 				new Node(TemplateId.PLACEHOLDER),
 				new Node(TemplateId.DEFAULT),
-				new Node(TemplateId.ACI_AGGREGATE_COUNT));
+				new Node(TemplateId.PI_AGGREGATE_COUNT));
 
 		Checker checker = Checker.check(meepNode, details);
 		checker.childMaximum(error("too many children"), 3, TemplateId.PLACEHOLDER, TemplateId.DEFAULT);
@@ -643,7 +643,7 @@ class CheckerTest {
 		Node iaMeasureNode = new Node(TemplateId.IA_MEASURE);
 		iaSectionNode.addChildNode(iaMeasureNode);
 
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		iaSectionNode.addChildNode(aggregateCountNode);
 
 		Checker checker = Checker.check(iaSectionNode, details);

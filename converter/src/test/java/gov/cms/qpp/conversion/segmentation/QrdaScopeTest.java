@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.segmentation;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static gov.cms.qpp.conversion.segmentation.QrdaScope.ACI_AGGREGATE_COUNT;
+import static gov.cms.qpp.conversion.segmentation.QrdaScope.PI_AGGREGATE_COUNT;
 import static gov.cms.qpp.conversion.segmentation.QrdaScope.MEASURE_PERFORMED;
 
 import java.util.HashSet;
@@ -18,7 +18,7 @@ class QrdaScopeTest implements EnumContract {
 	void testGetTemplates() {
 		//when
 		Set<QrdaScope> scopes = new HashSet<>();
-		scopes.add(ACI_AGGREGATE_COUNT);
+		scopes.add(PI_AGGREGATE_COUNT);
 		scopes.add(MEASURE_PERFORMED);
 
 		//then
