@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -39,5 +40,17 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 				wrapper.putObject(VALUE, value.getBoolean(VALUE));
 			}
 		}
+		encodeReportingParameter(wrapper, node);
+	}
+
+	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
+		JsonOutputEncoder reportingParamEncoder = encoders.get(TemplateId.REPORTING_PARAMETERS_ACT);
+		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		if (reportingChild == null) {
+			reportingChild = node.getParent().findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		}
+		reportingParamEncoder.encode(wrapper, reportingChild, false);
+		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_END);
+		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_START);
 	}
 }
