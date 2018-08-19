@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Set;
@@ -80,6 +81,18 @@ class IaSectionValidatorTest {
 		assertWithMessage("Must contain correct children")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
+	}
+
+	@Test
+	void duplicateReportingParametersInChildNodes() {
+		Node invalidParamActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		iaMeasureNode.addChildNode(invalidParamActNode);
+		iaSectionNode.addChildNodes(iaMeasureNode, reportingParamActNode);
+
+		Set<Detail> errors = validatorIaSection();
+
+		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 
 	private Set<Detail> validatorIaSection() {
