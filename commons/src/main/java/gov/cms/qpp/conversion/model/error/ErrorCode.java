@@ -96,7 +96,7 @@ public enum ErrorCode implements LocalizedError {
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
 			"This ACI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'", true),
 	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one Improvement Activity"),
-	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter Act. "
+	IA_SECTION_ONLY_ONE_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter Act. "
 			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
 			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
 	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activities and a Reporting Parameter Act"),
@@ -155,7 +155,27 @@ public enum ErrorCode implements LocalizedError {
 	MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID(71, "Two or more different measure section measure reference and results have "
 		+ "the same measure GUID. Please ensure that each measure section measure reference and results do not have "
 		+ "the same measure GUID."),
-	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing");
+	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing"),
+	IA_SECTION_IA_MEASURE_DUPLICATE_REPORTING_PARAM(73, "A Reporting Parameter Act has been found in both the "
+		+ "IA section and in IA section measures. The IA Section must have one Reporting Parameters Act "
+		+ "or all IA Measures must have one Reporting Parameter Act each.  "
+		+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
+		+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
+	IA_MEASURE_MISSING_REPORTING_PARAM(74, "All IA Measures must have one Reporting Parameter Act each.  "
+		+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
+		+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
+	QUALITY_MEASURE_SECTION_MISSING_MEASURE_RNR(75, "A Quality Measure Section V2 must contain at least one Quality Measure "
+		+ "Reference and Results CMS V2. Please ensure the Quality Measure Section complies with the Implementation Guide (IG) "
+		+ "Here is a link to the IG Quality Measure Section: " + DocumentationReference.QUALITY_MEASURE_SECTION),
+	QUALITY_MEASURE_SECTION_RNR_REQUIRED_REPORTING_PARAM_REQUIREMENT(76, "The Quality Measure Reference and Results must contain "
+		+ "one Reporting Parameter. Please ensure the Quality Measure Reference and results complies with the Implementation "
+		+ "Guide (IG). Here is a link to the IG Quality Measure Reference and Results: "
+		+ DocumentationReference.QUALITY_MEASURE_RNR),
+	QUALITY_MEASURE_SECTION_AND_RNR_DUPLICATE_REPORTING_PARAM_REQUIREMENT(77, "A Reporting Parameter Act has been found in both "
+		+ "the Quality Measure Section and Quality Measure Reference and Results. The Quality Measure Reference and Results "
+		+ "must contain one Reporting Parameter. Please ensure the Quality Measure Reference and results "
+		+ "complies with the Implementation Guide (IG). Here is a link to the IG Quality Measure Reference and Results: "
+		+ DocumentationReference.QUALITY_MEASURE_RNR);
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
