@@ -311,15 +311,4 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				- Integer.parseInt(denomExclusionValue)
 				- Integer.parseInt(denomExceptionValue));
 	}
-
-	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
-		JsonOutputEncoder reportingParamEncoder = encoders.get(TemplateId.REPORTING_PARAMETERS_ACT);
-		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
-		if (reportingChild == null) {
-			reportingChild = node.getParent().findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
-		}
-		reportingParamEncoder.encode(wrapper, reportingChild, false);
-		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_END);
-		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_START);
-	}
 }

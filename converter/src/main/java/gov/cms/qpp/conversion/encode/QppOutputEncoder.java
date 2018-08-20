@@ -1,9 +1,12 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Registry;
+import gov.cms.qpp.conversion.model.TemplateId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +48,23 @@ public class QppOutputEncoder extends JsonOutputEncoder {
 		if (null != encoder) {
 			encoder.encode(wrapper, node);
 		}
+	}
+
+	/**
+	 * Provides a means for Reporting Parameter encoding within measure data encoding
+	 *
+	 * @param wrapper object to encode into
+	 * @param node object to encode
+	 */
+	protected void encodeReportingParameter(JsonWrapper wrapper, Node node) {
+		JsonOutputEncoder reportingParamEncoder = encoders.get(TemplateId.REPORTING_PARAMETERS_ACT);
+		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		if (reportingChild == null) {
+			reportingChild = node.getParent().findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		}
+		reportingParamEncoder.encode(wrapper, reportingChild, false);
+		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_END);
+		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_START);
 	}
 
 	/**
