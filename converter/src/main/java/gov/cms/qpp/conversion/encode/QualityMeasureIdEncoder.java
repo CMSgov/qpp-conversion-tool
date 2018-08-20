@@ -3,6 +3,7 @@ package gov.cms.qpp.conversion.encode;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.decode.MeasureDataDecoder;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Encoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -54,6 +55,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		} else {
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
 		}
+		encodeReportingParameter(wrapper, node);
 	}
 
 	/**
@@ -308,5 +310,16 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 				- Integer.parseInt(numeratorValue)
 				- Integer.parseInt(denomExclusionValue)
 				- Integer.parseInt(denomExceptionValue));
+	}
+
+	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
+		JsonOutputEncoder reportingParamEncoder = encoders.get(TemplateId.REPORTING_PARAMETERS_ACT);
+		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		if (reportingChild == null) {
+			reportingChild = node.getParent().findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
+		}
+		reportingParamEncoder.encode(wrapper, reportingChild, false);
+		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_END);
+		maintainContinuity(wrapper, reportingChild, ReportingParametersActDecoder.PERFORMANCE_START);
 	}
 }
