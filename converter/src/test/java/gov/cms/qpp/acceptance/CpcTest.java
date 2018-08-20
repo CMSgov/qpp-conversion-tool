@@ -16,8 +16,8 @@ class CpcTest {
 	private static final String CPC_FILE = "src/test/resources/cpc1.xml";
 
 	@Test
-	void historicalAciSectionScope() {
-		run("ACI_SECTION");
+	void historicalPiSectionScope() {
+		run("PI_SECTION");
 	}
 
 	@Test

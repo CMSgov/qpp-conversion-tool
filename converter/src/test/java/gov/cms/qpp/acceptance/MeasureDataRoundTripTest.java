@@ -54,7 +54,7 @@ class MeasureDataRoundTripTest {
 		//then
 		assertThat(measure).isNotNull();
 		assertThat(measure.getChildNodes().get(0).getType())
-				.isEquivalentAccordingToCompareTo(TemplateId.ACI_AGGREGATE_COUNT);
+				.isEquivalentAccordingToCompareTo(TemplateId.PI_AGGREGATE_COUNT);
 		assertThat(sw.toString())
 				.isEqualTo(EXPECTED);
 	}

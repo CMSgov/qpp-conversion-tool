@@ -22,16 +22,16 @@ public class CommonNumeratorDenominatorValidator extends NodeValidator {
 	 */
 	@Override
 	protected void internalValidateSingleNode(Node node) {
-		check(node).childExact(format(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT), 1, TemplateId.ACI_AGGREGATE_COUNT);
+		check(node).childExact(format(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT), 1, TemplateId.PI_AGGREGATE_COUNT);
 		if (getDetails().isEmpty()) {
 			validateAggregateCount(
-					node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT));
+					node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT));
 		}
 	}
 
 	/**
 	 * Common ACI numerator denominator validation for aggregate count. Marks the
-	 * {@link TemplateId#ACI_AGGREGATE_COUNT} node as validated to prevent duplicate
+	 * {@link TemplateId#PI_AGGREGATE_COUNT} node as validated to prevent duplicate
 	 * validation by the {@link AggregateCountValidator}
 	 *
 	 * @param aggregateCountNode aggregate count node

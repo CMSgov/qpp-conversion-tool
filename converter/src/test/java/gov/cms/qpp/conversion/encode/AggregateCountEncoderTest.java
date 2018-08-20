@@ -25,7 +25,7 @@ class AggregateCountEncoderTest {
 	 */
 	@BeforeEach
 	void createNode() {
-		numeratorDenominatorNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorDenominatorNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorDenominatorNode.putValue("aggregateCount", "600");
 
 		nodes = new ArrayList<>();

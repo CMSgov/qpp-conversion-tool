@@ -17,23 +17,23 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Encoder to serialize ACI Section and it's measures
+ * Encoder to serialize PI Section and it's measures
  */
-@Encoder(TemplateId.ACI_SECTION)
-public class AciSectionEncoder extends QppOutputEncoder {
+@Encoder(TemplateId.PI_SECTION)
+public class PiSectionEncoder extends QppOutputEncoder {
 
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(AciSectionEncoder.class);
+	private static final Logger DEV_LOG = LoggerFactory.getLogger(PiSectionEncoder.class);
 	public static final String SUBMISSION_METHOD = "submissionMethod";
 
-	public AciSectionEncoder(Context context) {
+	public PiSectionEncoder(Context context) {
 		super(context);
 	}
 
 	/**
-	 *  Encodes an ACI Section into the QPP format
+	 *  Encodes an PI Section into the QPP format
 	 *
-	 * @param wrapper JsonWrapper that will represent the ACI Section
-	 * @param node Node that represents the ACI Section
+	 * @param wrapper JsonWrapper that will represent the PI Section
+	 * @param node Node that represents the PI Section
 	 * @throws EncodeException If an error occurs during encoding
 	 */
 	@Override
@@ -109,13 +109,13 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	 * Encodes the reporting parameter section
 	 *
 	 * @param wrapper wrapper that holds the section
-	 * @param node ACI Section Node
+	 * @param node PI Section Node
 	 */
 	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
 		JsonOutputEncoder reportingParamEncoder = encoders.get(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingChild == null) {
-			DEV_LOG.error("Missing Reporting Parameters from ACI Section");
+			DEV_LOG.error("Missing Reporting Parameters from PI Section");
 			return;
 		}
 		reportingParamEncoder.encode(wrapper, reportingChild, false);

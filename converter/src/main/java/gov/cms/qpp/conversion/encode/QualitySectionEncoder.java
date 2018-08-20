@@ -6,10 +6,10 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
  * Encoder to serialize Quality Section (eCQM) and it's measures.  This class is nearly empty due to the fact that it does the
- * same encoding as its super class {@link gov.cms.qpp.conversion.encode.AciSectionEncoder} but is a different templateId.
+ * same encoding as its super class {@link PiSectionEncoder} but is a different templateId.
  */
 @Encoder(TemplateId.MEASURE_SECTION_V2)
-public class QualitySectionEncoder extends AciSectionEncoder {
+public class QualitySectionEncoder extends PiSectionEncoder {
 
 	public QualitySectionEncoder(Context context) {
 		super(context);

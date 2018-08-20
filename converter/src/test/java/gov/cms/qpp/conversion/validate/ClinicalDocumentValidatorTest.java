@@ -78,7 +78,7 @@ class ClinicalDocumentValidatorTest {
 
 		assertWithMessage("error should be about missing section node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD);
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD);
 	}
 
 	@Test
@@ -93,7 +93,7 @@ class ClinicalDocumentValidatorTest {
 
 		assertWithMessage("error should be about missing section node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD);
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD);
 	}
 
 	@Test
@@ -161,7 +161,7 @@ class ClinicalDocumentValidatorTest {
 
 		assertWithMessage("Should contain one error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS);
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_PI_SECTIONS);
 	}
 
 	@Test
@@ -267,7 +267,7 @@ class ClinicalDocumentValidatorTest {
 	}
 
 	private Node createAciSectionNode(Node clinicalDocumentNode) {
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION, clinicalDocumentNode);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION, clinicalDocumentNode);
 		aciSectionNode.putValue("category", "aci");
 		return aciSectionNode;
 	}

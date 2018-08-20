@@ -49,7 +49,7 @@ class IaSectionValidatorTest {
 
 	@Test
 	void testIncorrectChildValidation() {
-		Node incorrectAggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node incorrectAggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		iaSectionNode.addChildNodes(iaMeasureNode, reportingParamActNode, incorrectAggregateCountNode);
 
 		Set<Detail> errors = validatorIaSection();
