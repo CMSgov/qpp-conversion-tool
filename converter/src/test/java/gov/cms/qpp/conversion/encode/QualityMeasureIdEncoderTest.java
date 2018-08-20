@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
@@ -20,6 +21,7 @@ class QualityMeasureIdEncoderTest {
 	private Node numeratorNode;
 	private Node denominatorNode;
 	private Node aggregateCountNode;
+	private Node qualityReportingSectionNode;
 	private JsonWrapper wrapper;
 	private QualityMeasureIdEncoder encoder;
 	private String type = "type";
@@ -29,6 +31,10 @@ class QualityMeasureIdEncoderTest {
 	void setUp() {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue("measureId", "40280381-51f0-825b-0152-22b98cff181a");
+
+		qualityReportingSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, qualityMeasureId);
+		qualityReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
+		qualityReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
 
 		aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
@@ -124,7 +130,7 @@ class QualityMeasureIdEncoderTest {
 	}
 
 	private void executeInternalEncode() {
-		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode);
+		qualityMeasureId.addChildNodes(populationNode, denomExclusionNode, numeratorNode, denominatorNode, qualityReportingSectionNode);
 		try {
 			encoder.internalEncode(wrapper, qualityMeasureId);
 		} catch (EncodeException e) {

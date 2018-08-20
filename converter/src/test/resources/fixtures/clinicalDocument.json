@@ -33,10 +33,10 @@
     "submissionMethod" : "electronicHealthRecord",
     "measurements" : [ {
       "measureId" : "IA_EPA_1",
-      "value" : true
+      "value" : true,
+      "performanceStart" : "2017-01-01",
+      "performanceEnd" : "2017-12-31"
     } ],
-    "programName" : "mips",
-    "performanceStart" : "2017-01-01",
-    "performanceEnd" : "2017-12-31"
+    "programName" : "mips"
   } ]
 }
