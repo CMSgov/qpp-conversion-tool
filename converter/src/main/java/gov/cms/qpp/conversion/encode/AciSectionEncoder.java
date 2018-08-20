@@ -48,7 +48,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 
 		Optional.ofNullable(node.getParent()).ifPresent(parent -> pilferParent(wrapper, parent));
 		if (node.getType().equals(TemplateId.ACI_SECTION)) {
-			encodeReportingParameter(wrapper, node);
+			encodeAciReportingParameter(wrapper, node);
 		}
 	}
 
@@ -108,12 +108,12 @@ public class AciSectionEncoder extends QppOutputEncoder {
 	}
 
 	/**
-	 * Encodes the reporting parameter section
+	 * Encodes the reporting parameter section for the ACI section
 	 *
 	 * @param wrapper wrapper that holds the section
 	 * @param node ACI Section Node
 	 */
-	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
+	private void encodeAciReportingParameter(JsonWrapper wrapper, Node node) {
 		JsonOutputEncoder reportingParamEncoder = encoders.get(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingChild == null) {
