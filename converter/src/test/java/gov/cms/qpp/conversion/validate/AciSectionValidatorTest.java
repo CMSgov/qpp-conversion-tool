@@ -24,11 +24,11 @@ class AciSectionValidatorTest {
 	@BeforeEach
 	void setUpAciSectionNode() {
 		reportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
-		aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		measureNode = new Node(TemplateId.MEASURE_PERFORMED);
 		measureNode.putValue("measureId", VALID_ACI_MEASURE);
 
-		aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		aciSectionNode = new Node(TemplateId.PI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 	}
 
@@ -42,7 +42,7 @@ class AciSectionValidatorTest {
 
 		assertWithMessage("error should be about missing proportion node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
+				.containsExactly(ErrorCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
 	}
 
 	@Test
@@ -56,6 +56,6 @@ class AciSectionValidatorTest {
 
 		assertWithMessage("error should be about missing required Measure")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
+				.containsExactly(ErrorCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT);
 	}
 }

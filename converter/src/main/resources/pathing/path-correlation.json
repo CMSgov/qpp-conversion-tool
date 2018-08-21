@@ -5,10 +5,10 @@
 			"templateId": "CLINICAL_DOCUMENT",
 			"correlationId": "topLevel"
 		},{
-			"templateId": "ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS",
+			"templateId": "PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS",
 			"correlationId": "measure"
 		},{
-			"templateId": "ACI_NUMERATOR_DENOMINATOR",
+			"templateId": "PI_NUMERATOR_DENOMINATOR",
 			"correlationId": "measure"
 		},{
 			"templateId": "IA_MEASURE",
@@ -17,7 +17,7 @@
 			"templateId": "MEASURE_REFERENCE_RESULTS_CMS_V2",
 			"correlationId": "qualityMeasure"
 		},{
-			"templateId": "ACI_AGGREGATE_COUNT",
+			"templateId": "PI_AGGREGATE_COUNT",
 			"correlationId": "aggregateCount"
 		},{
 			"templateId": "MEASURE_PERFORMED",

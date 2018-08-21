@@ -12,9 +12,9 @@ import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
-class AciProportionDenominatorEncoderTest {
+class PiProportionDenominatorEncoderTest {
 
-	private Node aciProportionDenominatorNode;
+	private Node piProportionDenominatorNode;
 	private Node numeratorDenominatorValueNode;
 	private List<Node> nodes;
 	private JsonWrapper json;
@@ -23,15 +23,15 @@ class AciProportionDenominatorEncoderTest {
 	void createNode() {
 		Node ensureOrderIsNotOfConcern = new Node(TemplateId.DEFAULT);
 
-		numeratorDenominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorDenominatorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorDenominatorValueNode.putValue("aggregateCount", "600");
 
-		aciProportionDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		aciProportionDenominatorNode.addChildNode(ensureOrderIsNotOfConcern);
-		aciProportionDenominatorNode.addChildNode(numeratorDenominatorValueNode);
+		piProportionDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		piProportionDenominatorNode.addChildNode(ensureOrderIsNotOfConcern);
+		piProportionDenominatorNode.addChildNode(numeratorDenominatorValueNode);
 
 		nodes = new ArrayList<>();
-		nodes.add(aciProportionDenominatorNode);
+		nodes.add(piProportionDenominatorNode);
 
 		json = new JsonWrapper();
 	}
@@ -46,7 +46,7 @@ class AciProportionDenominatorEncoderTest {
 
 	@Test
 	void testEncoderWithoutChild() {
-		aciProportionDenominatorNode.getChildNodes().remove(numeratorDenominatorValueNode);
+		piProportionDenominatorNode.getChildNodes().remove(numeratorDenominatorValueNode);
 		runEncoder();
 
 		assertThat(json.getInteger("denominator"))
@@ -63,9 +63,9 @@ class AciProportionDenominatorEncoderTest {
 	}
 
 	private void runEncoder() {
-		AciProportionDenominatorEncoder encoder = new AciProportionDenominatorEncoder(new Context());
+		PiProportionDenominatorEncoder encoder = new PiProportionDenominatorEncoder(new Context());
 		try {
-			encoder.internalEncode(json, aciProportionDenominatorNode);
+			encoder.internalEncode(json, piProportionDenominatorNode);
 		} catch (EncodeException e) {
 			throw new RuntimeException(e);
 		}

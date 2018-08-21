@@ -51,7 +51,7 @@ class DetailTest {
 
 	@Test
 	void testComputeLocationEmpty() {
-		Node node = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node node = new Node(TemplateId.PI_AGGREGATE_COUNT);
 
 		Detail detail = Detail.forErrorAndNode(ErrorCode.UNEXPECTED_ERROR, node);
 

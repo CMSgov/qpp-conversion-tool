@@ -18,27 +18,27 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.util.JsonHelper;
 
-class AciMeasurePerformedRnREncoderTest {
+class PiMeasurePerformedRnREncoderTest {
 
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
 	private static final String VALUE = "Y";
 
 	private List<Node> nodes;
-	private Node aciMeasurePerformedRnR;
+	private Node piMeasurePerformedRnR;
 	private Node measurePerformed;
 
 	@BeforeEach
 	void createNode() {
-		aciMeasurePerformedRnR = new Node(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS);
-		aciMeasurePerformedRnR.putValue("measureId", MEASURE_ID);
+		piMeasurePerformedRnR = new Node(TemplateId.PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS);
+		piMeasurePerformedRnR.putValue("measureId", MEASURE_ID);
 
 		measurePerformed = new Node(TemplateId.MEASURE_PERFORMED);
 		measurePerformed.putValue("measurePerformed", VALUE);
 
-		aciMeasurePerformedRnR.addChildNode(measurePerformed);
+		piMeasurePerformedRnR.addChildNode(measurePerformed);
 
 		nodes = new ArrayList<>();
-		nodes.add(aciMeasurePerformedRnR);
+		nodes.add(piMeasurePerformedRnR);
 	}
 
 	@Test
@@ -67,10 +67,10 @@ class AciMeasurePerformedRnREncoderTest {
 	void testInternalEncode() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(new Context());
+		PiMeasurePerformedRnREncoder objectUnderTest = new PiMeasurePerformedRnREncoder(new Context());
 
 		//execute
-		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
+		objectUnderTest.internalEncode(jsonWrapper, piMeasurePerformedRnR);
 
 		//assert
 		assertThat(jsonWrapper.getString("measureId"))
@@ -83,11 +83,11 @@ class AciMeasurePerformedRnREncoderTest {
 	void testInternalEncodeNoChildNoValue(){
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(new Context());
-		aciMeasurePerformedRnR.setChildNodes();
+		PiMeasurePerformedRnREncoder objectUnderTest = new PiMeasurePerformedRnREncoder(new Context());
+		piMeasurePerformedRnR.setChildNodes();
 
 		//execute
-		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
+		objectUnderTest.internalEncode(jsonWrapper, piMeasurePerformedRnR);
 
 		//assert
 		assertThat(jsonWrapper.getString("measureId"))
@@ -100,10 +100,10 @@ class AciMeasurePerformedRnREncoderTest {
 	void testInternalEncodeBooleanTrueValue() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(new Context());
-		aciMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed", "Y");
+		PiMeasurePerformedRnREncoder objectUnderTest = new PiMeasurePerformedRnREncoder(new Context());
+		piMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed", "Y");
 		//execute
-		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
+		objectUnderTest.internalEncode(jsonWrapper, piMeasurePerformedRnR);
 
 		//assert
 		assertThat(jsonWrapper.getString("measureId"))
@@ -116,10 +116,10 @@ class AciMeasurePerformedRnREncoderTest {
 	void testInternalEncodeBooleanFalseValue() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(new Context());
-		aciMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed","N");
+		PiMeasurePerformedRnREncoder objectUnderTest = new PiMeasurePerformedRnREncoder(new Context());
+		piMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed","N");
 		//execute
-		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
+		objectUnderTest.internalEncode(jsonWrapper, piMeasurePerformedRnR);
 
 		//assert
 		assertThat(jsonWrapper.getString("measureId"))
@@ -132,11 +132,11 @@ class AciMeasurePerformedRnREncoderTest {
 	void testInternalEncodeBooleanStringValue() {
 		//set-up
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciMeasurePerformedRnREncoder objectUnderTest = new AciMeasurePerformedRnREncoder(new Context());
+		PiMeasurePerformedRnREncoder objectUnderTest = new PiMeasurePerformedRnREncoder(new Context());
 		String unknownValue = "Some unknown value";
-		aciMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed",unknownValue);
+		piMeasurePerformedRnR.getChildNodes().get(0).putValue("measurePerformed",unknownValue);
 		//execute
-		objectUnderTest.internalEncode(jsonWrapper, aciMeasurePerformedRnR);
+		objectUnderTest.internalEncode(jsonWrapper, piMeasurePerformedRnR);
 
 		//assert
 		assertThat(jsonWrapper.getString("measureId"))

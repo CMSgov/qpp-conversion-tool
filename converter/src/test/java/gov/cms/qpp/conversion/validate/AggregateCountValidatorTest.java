@@ -18,7 +18,7 @@ class AggregateCountValidatorTest {
 
 	@Test
 	void testIsAggregateCount() {
-			Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+			Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 
 		AggregateCountValidator validator = new AggregateCountValidator();
 
@@ -28,8 +28,8 @@ class AggregateCountValidatorTest {
 
 	@Test
 	void testValueAbsenceFailure() {
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
-		aggregateCountNode.setParent(new Node(TemplateId.ACI_NUMERATOR));
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
+		aggregateCountNode.setParent(new Node(TemplateId.PI_NUMERATOR));
 
 		AggregateCountValidator validator = new AggregateCountValidator();
 		validator.internalValidateSingleNode( aggregateCountNode );
@@ -37,13 +37,13 @@ class AggregateCountValidatorTest {
 
 		assertWithMessage("Should result in a value error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.ACI_NUMERATOR.name(), 0));
+				.containsExactly(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR.format(TemplateId.PI_NUMERATOR.name(), 0));
 	}
 
 	@Test
 	void testValueTypeFailure() {
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
-		aggregateCountNode.setParent(new Node(TemplateId.ACI_NUMERATOR));
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
+		aggregateCountNode.setParent(new Node(TemplateId.PI_NUMERATOR));
 		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "meep");
 
 		AggregateCountValidator validator = new AggregateCountValidator();
@@ -57,8 +57,8 @@ class AggregateCountValidatorTest {
 
 	@Test
 	void testValueTypeSuccess() {
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
-		aggregateCountNode.setParent(new Node(TemplateId.ACI_NUMERATOR));
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
+		aggregateCountNode.setParent(new Node(TemplateId.PI_NUMERATOR));
 		aggregateCountNode.putValue(AggregateCountDecoder.AGGREGATE_COUNT, "7");
 
 		AggregateCountValidator validator = new AggregateCountValidator();

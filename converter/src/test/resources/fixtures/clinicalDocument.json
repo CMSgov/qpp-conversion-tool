@@ -4,7 +4,7 @@
   "taxpayerIdentificationNumber" : "123456789",
   "nationalProviderIdentifier" : "2567891421",
   "measurementSets" : [ {
-    "category" : "aci",
+    "category" : "pi",
     "submissionMethod" : "electronicHealthRecord",
     "measurements" : [ {
       "measureId" : "ACI-PEA-1",

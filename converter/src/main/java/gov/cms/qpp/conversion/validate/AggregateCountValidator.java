@@ -10,7 +10,7 @@ import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
 /**
  * Validates Aggregate Count
  */
-@Validator(TemplateId.ACI_AGGREGATE_COUNT)
+@Validator(TemplateId.PI_AGGREGATE_COUNT)
 public class AggregateCountValidator extends NodeValidator {
 
 	/**

@@ -6,16 +6,16 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
 /**
- * Encoder to serialize Advancing Care Information Numerator Denominator Type
+ * Encoder to serialize Promoting Interoperability Numerator Denominator Type
  * Measure Denominator Data.
  */
 
-@Encoder(TemplateId.ACI_DENOMINATOR)
-public class AciProportionDenominatorEncoder extends QppOutputEncoder {
+@Encoder(TemplateId.PI_DENOMINATOR)
+public class PiProportionDenominatorEncoder extends QppOutputEncoder {
 
 	private static final String ENCODE_LABEL = "denominator";
 
-	public AciProportionDenominatorEncoder(Context context) {
+	public PiProportionDenominatorEncoder(Context context) {
 		super(context);
 	}
 
@@ -25,7 +25,7 @@ public class AciProportionDenominatorEncoder extends QppOutputEncoder {
 
 		// the ACI Proportion Denominator Node should have a single child
 		// node that holds the value
-		Node denominatorValueNode = node.findFirstNode(TemplateId.ACI_AGGREGATE_COUNT);
+		Node denominatorValueNode = node.findFirstNode(TemplateId.PI_AGGREGATE_COUNT);
 		if (denominatorValueNode != null) {
 			JsonOutputEncoder denominatorValueEncoder = encoders.get(denominatorValueNode.getType());
 

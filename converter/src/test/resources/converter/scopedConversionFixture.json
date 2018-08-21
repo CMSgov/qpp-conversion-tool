@@ -1,6 +1,6 @@
 {
-	"ACI_SECTION": {
-		"category" : "aci",
+	"PI_SECTION": {
+		"category" : "pi",
 		"submissionMethod" : "electronicHealthRecord",
 		"measurements" : [ {
 			"measureId" : "ACI_PEA_1",
@@ -36,7 +36,7 @@
 		"performanceStart": "2017-01-01",
 		"performanceEnd": "2017-04-30"
 	},
-	"ACI_AGGREGATE_COUNT": [
+	"PI_AGGREGATE_COUNT": [
 		{
 			"value": 1000
 		},
@@ -578,7 +578,7 @@
 			"performanceStart" : "2017-01-01",
 			"performanceEnd" : "2017-12-31"
 		}, {
-			"category" : "aci",
+			"category" : "pi",
 			"submissionMethod" : "electronicHealthRecord",
 			"measurements" : [ {
 				"measureId" : "ACI_PEA_1",
@@ -611,7 +611,7 @@
 			"performanceEnd" : "2017-04-30"
 		} ]
 	},
-	"ACI_DENOMINATOR": [
+	"PI_DENOMINATOR": [
 		{
 			"denominator": 800
 		},
@@ -619,7 +619,7 @@
 			"denominator": 600
 		}
 	],
-	"ACI_NUMERATOR": [
+	"PI_NUMERATOR": [
 		{
 			"numerator": 600
 		},
@@ -735,7 +735,7 @@
 			} ]
 		}
 	} ],
-	"ACI_NUMERATOR_DENOMINATOR": [
+	"PI_NUMERATOR_DENOMINATOR": [
 		{
 			"measureId": "ACI_PEA_1",
 			"value": {

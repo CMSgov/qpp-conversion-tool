@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 /**
  * Validate the ACI Section.
  */
-@Validator(TemplateId.ACI_SECTION)
+@Validator(TemplateId.PI_SECTION)
 public class AciSectionValidator extends NodeValidator {
 
 	/**
@@ -24,7 +24,7 @@ public class AciSectionValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(final Node node) {
 		thoroughlyCheck(node)
-				.childExact(ErrorCode.ACI_SECTION_MISSING_REPORTING_PARAMETER_ACT,
+				.childExact(ErrorCode.PI_SECTION_MISSING_REPORTING_PARAMETER_ACT,
 					1, TemplateId.REPORTING_PARAMETERS_ACT);
 	}
 }
