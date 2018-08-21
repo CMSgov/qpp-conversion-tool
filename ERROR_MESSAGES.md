@@ -49,8 +49,8 @@ Any text in the following format `(Example)` are considered variables to be fill
 * 51 : CT - A single measure performed value is required and must be either a Y or an N.
 * 52 : CT - The measure data with population id '`(population id)`' must have exactly one Aggregate Count.
 * 53 : CT - Measure data with population id '`(population id)`' must be a whole number greater than or equal to 0
-* 55 : CT - A CPC Plus Performance period start must be 01/01/2017. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=14
-* 56 : CT - A CPC Plus Performance period end must be 12/31/2017. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=14
+* 55 : CT - A CPC Plus Performance period start must be 01/01/2018. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=14
+* 56 : CT - A CPC Plus Performance period end must be 12/31/2018. Please refer to the IG for more information here: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=14
 * 57 : CT - The measure reference results must have a single measure population
 * 58 : CT - The measure reference results must have a single measure type
 * 59 : CT - The electronic measure id: `(Current eMeasure ID)` requires a `(Subpopulation type)` with the correct UUID of `(Correct uuid required)`. Here is a link to the IG containing all the valid measure ids: https://ecqi.healthit.gov/system/files/eCQM_QRDA_EC-508_0.pdf#page=88
