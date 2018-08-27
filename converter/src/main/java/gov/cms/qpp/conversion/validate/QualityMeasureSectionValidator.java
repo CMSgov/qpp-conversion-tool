@@ -28,7 +28,7 @@ public class QualityMeasureSectionValidator extends NodeValidator {
 			.noParentChildDuplications(ErrorCode.QUALITY_MEASURE_SECTION_AND_RNR_DUPLICATE_REPORTING_PARAM_REQUIREMENT,
 				TemplateId.REPORTING_PARAMETERS_ACT, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 
-		if (node.getChildNodes(TemplateId.REPORTING_PARAMETERS_ACT).count() > 0) {
+		if (node.getChildNodes(TemplateId.REPORTING_PARAMETERS_ACT).findAny().isPresent()) {
 			check(node).childExact(
 				ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT,
 				1, TemplateId.REPORTING_PARAMETERS_ACT);

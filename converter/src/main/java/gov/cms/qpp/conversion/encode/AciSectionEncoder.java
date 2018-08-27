@@ -47,7 +47,7 @@ public class AciSectionEncoder extends QppOutputEncoder {
 		wrapper.putObject("measurements", measurementsWrapper);
 
 		Optional.ofNullable(node.getParent()).ifPresent(parent -> pilferParent(wrapper, parent));
-		if (node.getType().equals(TemplateId.ACI_SECTION)) {
+		if (node.getType() == TemplateId.ACI_SECTION) {
 			encodeAciReportingParameter(wrapper, node);
 		}
 	}

@@ -24,7 +24,7 @@ public class IaSectionValidator extends NodeValidator {
 			    .noParentChildDuplications(ErrorCode.IA_SECTION_IA_MEASURE_DUPLICATE_REPORTING_PARAM,
 				    TemplateId.REPORTING_PARAMETERS_ACT, TemplateId.IA_MEASURE);
 
-		if (node.getChildNodes(TemplateId.REPORTING_PARAMETERS_ACT).count() > 0) {
+		if (node.getChildNodes(TemplateId.REPORTING_PARAMETERS_ACT).findAny().isPresent()) {
 			check(node).childExact(
 				ErrorCode.IA_SECTION_ONLY_ONE_REPORTING_PARAM, 1, TemplateId.REPORTING_PARAMETERS_ACT);
 		} else {
