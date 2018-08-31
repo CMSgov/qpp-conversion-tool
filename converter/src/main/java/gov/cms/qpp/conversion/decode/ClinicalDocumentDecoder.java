@@ -28,6 +28,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String RAW_PROGRAM_NAME = "rawProgramName";
 	public static final String ENTITY_TYPE = "entityType";
 	public static final String MIPS_PROGRAM_NAME = "mips";
+	// ad
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
 	public static final String ENTITY_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
