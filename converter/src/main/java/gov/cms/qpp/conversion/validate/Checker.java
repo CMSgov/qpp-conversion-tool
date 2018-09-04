@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
 import gov.cms.qpp.conversion.util.FormatHelper;
