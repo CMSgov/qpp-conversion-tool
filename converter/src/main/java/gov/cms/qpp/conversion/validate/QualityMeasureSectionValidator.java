@@ -20,9 +20,22 @@ public class QualityMeasureSectionValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-			.childExact(ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT, 1,
-				TemplateId.REPORTING_PARAMETERS_ACT)
+			.childMinimum(ErrorCode.QUALITY_MEASURE_SECTION_MISSING_MEASURE_RNR,
+				1, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2)
 		    .oneChildPolicy(ErrorCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2,
-					childNode -> childNode.getValue(QualityMeasureIdDecoder.MEASURE_ID));
+					childNode -> childNode.getValue(QualityMeasureIdDecoder.MEASURE_ID))
+			.noParentChildDuplications(ErrorCode.QUALITY_MEASURE_SECTION_AND_RNR_DUPLICATE_REPORTING_PARAM_REQUIREMENT,
+				TemplateId.REPORTING_PARAMETERS_ACT, TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
+
+		if (node.getChildNodes(TemplateId.REPORTING_PARAMETERS_ACT).findAny().isPresent()) {
+			check(node).childExact(
+				ErrorCode.QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT,
+				1, TemplateId.REPORTING_PARAMETERS_ACT);
+		} else {
+			node.getChildNodes(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2).forEach(qualityMeasureNode ->
+				check(qualityMeasureNode).incompleteValidation().childExact(
+					ErrorCode.QUALITY_MEASURE_SECTION_RNR_REQUIRED_REPORTING_PARAM_REQUIREMENT,
+					1, TemplateId.REPORTING_PARAMETERS_ACT));
+		}
 	}
 }

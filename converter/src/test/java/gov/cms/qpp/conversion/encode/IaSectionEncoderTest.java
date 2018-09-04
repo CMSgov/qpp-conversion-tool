@@ -18,14 +18,18 @@ import gov.cms.qpp.conversion.model.TemplateId;
 
 class IaSectionEncoderTest {
 
-	private static final String EXPECTED = "{\n  \"category\" : \"ia\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ "
-			+ "{\n    \"measureId\" : \"IA_EPA_1\",\n    \"value\" : true\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
+	private static final String EXPECTED = "{\n  \"category\" : \"ia\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n"
+										+ "  \"measurements\" : [ {\n    \"measureId\" : \"IA_EPA_1\",\n    \"value\" : true,\n"
+										+ "    \"performanceStart\" : \"2017-01-01\",\n    \"performanceEnd\" : \"2017-12-31\"\n"
+										+"  } ]\n}";
 
-	private static final String EXPECTED_NO_MEASURE = "{\n  \"category\" : \"ia\",\n  \"submissionMethod\" : \"electronicHealthRecord\",\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
+	private static final String EXPECTED_NO_MEASURE = "{\n  \"category\" : \"ia\",\n  \"submissionMethod\" : \"electronicHealthRecord\"\n}";
 
-	private static final String EXPECTED_NO_MEASURE_VALUE_1 = "{\n  \"category\" : \"ia\",\n  "
-			+ "\"submissionMethod\" : \"electronicHealthRecord\",\n  \"measurements\" : [ "
-			+ "{\n    \"measureId\" : \"IA_EPA_1\"\n  } ],\n  \"performanceStart\" : \"2017-01-01\",\n  \"performanceEnd\" : \"2017-12-31\"\n}";
+	private static final String EXPECTED_NO_MEASURE_VALUE_1 = "{\n  \"category\" : \"ia\",\n"
+															+ "  \"submissionMethod\" : \"electronicHealthRecord\",\n"
+															+ "  \"measurements\" : [ {\n    \"measureId\" : \"IA_EPA_1\",\n"
+															+ "    \"performanceStart\" : \"2017-01-01\",\n"
+															+ "    \"performanceEnd\" : \"2017-12-31\"\n  } ]\n}";
 
 	private Node iaSectionNode;
 	private Node iaMeasureNode;
@@ -35,21 +39,20 @@ class IaSectionEncoderTest {
 
 	@BeforeEach
 	void createNode() {
+		iaSectionNode = new Node(TemplateId.IA_SECTION);
 		iaMeasurePerformedNode = new Node(TemplateId.MEASURE_PERFORMED);
 		iaMeasurePerformedNode.putValue("measurePerformed", "Y");
 
-		iaMeasureNode = new Node(TemplateId.IA_MEASURE);
+		iaMeasureNode = new Node(TemplateId.IA_MEASURE, iaSectionNode);
 		iaMeasureNode.putValue("measureId", "IA_EPA_1");
 		iaMeasureNode.addChildNode(iaMeasurePerformedNode);
 
-		iaSectionNode = new Node(TemplateId.IA_SECTION);
-		iaSectionNode.putValue("category", "ia");
-		iaSectionNode.addChildNode(iaMeasureNode);
-
-		iaReportingSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		iaReportingSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, iaSectionNode);
 		iaReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
 		iaReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
-		iaSectionNode.addChildNode(iaReportingSectionNode);
+
+		iaSectionNode.putValue("category", "ia");
+		iaSectionNode.addChildNodes(iaMeasureNode, iaReportingSectionNode);
 
 		nodes = new ArrayList<>();
 		nodes.add(iaSectionNode);

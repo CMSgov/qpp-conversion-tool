@@ -47,7 +47,9 @@ public class PiSectionEncoder extends QppOutputEncoder {
 		wrapper.putObject("measurements", measurementsWrapper);
 
 		Optional.ofNullable(node.getParent()).ifPresent(parent -> pilferParent(wrapper, parent));
-		encodeReportingParameter(wrapper, node);
+		if (node.getType() == TemplateId.PI_SECTION) {
+			encodeAciReportingParameter(wrapper, node);
+		}
 	}
 
 	private void encodeTopLevelValues(JsonWrapper wrapper, Node node) {
@@ -106,12 +108,12 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	}
 
 	/**
-	 * Encodes the reporting parameter section
+	 * Encodes the reporting parameter section for the ACI section
 	 *
 	 * @param wrapper wrapper that holds the section
 	 * @param node PI Section Node
 	 */
-	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
+	private void encodeAciReportingParameter(JsonWrapper wrapper, Node node) {
 		JsonOutputEncoder reportingParamEncoder = encoders.get(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingChild == null) {
