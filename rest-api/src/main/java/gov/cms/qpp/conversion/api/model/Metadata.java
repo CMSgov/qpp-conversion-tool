@@ -453,7 +453,7 @@ public final class Metadata {
 	 *
 	 * Splits the the processed flag from the date by a {@code #} character.
 	 * The first field must be {@code true} or {@code false} which represents the CPC+ processed boolean.
-	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2017-12-08T18:32:54.846Z}.
+	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2018-12-08T18:32:54.846Z}.
 	 *
 	 * @param combination The combined attribute.
 	 */

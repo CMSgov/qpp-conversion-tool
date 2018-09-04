@@ -523,8 +523,8 @@ CDA Header
 							<effectiveTime>
 								<fake10>wxyz</fake10>
 								1234
-								<low value="20170101"/>
-								<high value="20171231"/>
+								<low value="20180101"/>
+								<high value="20181231"/>
 							</effectiveTime>
 						</act>
 					</entry>
@@ -600,8 +600,8 @@ CDA Header
 							<effectiveTime>
 								<fake10>wxyz</fake10>
 								1234
-								<low value="20170101"/>
-								<high value="20171231"/>
+								<low value="20180101"/>
+								<high value="20181231"/>
 							</effectiveTime>
 						</act>
 					</entry>

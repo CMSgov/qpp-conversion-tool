@@ -29,7 +29,7 @@ public class JwtTestHelper {
 		Map<String, Object> claimMap = new HashMap<>();
 
 		dataMap.put("cmsId", "40000");
-		dataMap.put("programYear", "2017");
+		dataMap.put("programYear", "2018");
 		dataMap.put("id", "random-id");
 
 		if (payload.getName() != null) {
