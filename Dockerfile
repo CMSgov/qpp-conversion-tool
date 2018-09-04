@@ -1,6 +1,4 @@
 FROM maven:3-jdk-8
-# override maven settings
-COPY ./maven /usr/share/maven/ref/
 
 RUN mkdir -p /usr/src/app/
 RUN mkdir -p /usr/src/run/
@@ -9,9 +7,11 @@ COPY ./ /usr/src/app/
 
 WORKDIR /usr/src/app/
 
+RUN cp -r ./tools/docker/docker-artifacts/* /usr/src/run/
+# override default maven settings
+RUN /usr/src/run/nexus/export_template.sh /usr/share/maven/ref/settings.xml
 RUN mvn install -Dmaven.test.skip -Djacoco.skip=true > /dev/null
 RUN cp ./rest-api/target/rest-api.jar /usr/src/run/
-RUN cp -r ./tools/docker/docker-artifacts/* /usr/src/run/
 
 WORKDIR /usr/src/run/
 
