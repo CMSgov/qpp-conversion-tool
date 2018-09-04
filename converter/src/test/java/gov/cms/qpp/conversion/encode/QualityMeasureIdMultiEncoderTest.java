@@ -63,7 +63,7 @@ class QualityMeasureIdMultiEncoderTest {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue(MEASURE_ID, "test1");
 
-cl		qualityReportingSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, qualityMeasureId);
+		qualityReportingSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, qualityMeasureId);
 		qualityReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
 		qualityReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
 
