@@ -44,10 +44,10 @@ class ValidationApiAcceptance {
 	}
 
 	private void verifyDetail(Detail detail) {
-		String xPath = detail.getPath();
+		String xPath = detail.getLocation().getPath();
 		Filter filter = xPath.contains("@") ? Filters.attribute() : Filters.element();
 		try {
-			Object found = evaluateXpath(detail.getPath(), filter);
+			Object found = evaluateXpath(xPath, filter);
 			if (filter.equals(Filters.attribute())) {
 				Attribute attribute = (Attribute) found;
 				assertThat(attribute.getIntValue()).isEqualTo(CANNED_VALUE);
@@ -56,7 +56,7 @@ class ValidationApiAcceptance {
 				assertThat(found).isNotNull();
 			}
 		} catch (XmlException | DataConversionException ex) {
-			fail("This xpath could not be found: " + detail.getPath(), ex);
+			fail("This xpath could not be found: " + xPath, ex);
 		}
 	}
 
