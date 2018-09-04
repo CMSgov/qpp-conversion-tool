@@ -1,7 +1,7 @@
 package gov.cms.qpp.acceptance.helper;
 
 import gov.cms.qpp.conversion.decode.SkeletalSectionDecoder;
-import gov.cms.qpp.conversion.encode.AciSectionEncoder;
+import gov.cms.qpp.conversion.encode.PiSectionEncoder;
 import gov.cms.qpp.conversion.encode.QualityMeasureIdEncoder;
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class JsonPathAggregator {
 	private Set<String> excluded = Sets.newHashSet(
 			QualityMeasureIdEncoder.IS_END_TO_END_REPORTED,
 			SkeletalSectionDecoder.CATEGORY,
-			AciSectionEncoder.SUBMISSION_METHOD
+			PiSectionEncoder.SUBMISSION_METHOD
 	);
 
 	Map<String, String> jsonPaths = new HashMap<>();

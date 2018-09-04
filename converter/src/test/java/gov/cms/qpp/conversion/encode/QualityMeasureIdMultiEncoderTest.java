@@ -63,11 +63,11 @@ class QualityMeasureIdMultiEncoderTest {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue(MEASURE_ID, "test1");
 
-		qualityReportingSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, qualityMeasureId);
+cl		qualityReportingSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, qualityMeasureId);
 		qualityReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
 		qualityReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
 
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
 
 		eligiblePopulationNode = new Node(TemplateId.MEASURE_DATA_CMS_V2);

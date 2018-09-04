@@ -15,13 +15,13 @@ import java.io.IOException;
 
 import static com.google.common.truth.Truth.assertThat;
 
-class AciMeasurePerformedRnRDecoderTest {
+class PiMeasurePerformedRnRDecoderTest {
 	private static final String MEASURE_ID = "ACI_INFBLO_1";
 
 	@Test
 	void internalDecodeReturnsTreeContinue() {
 		//set-up
-		AciMeasurePerformedRnRDecoder objectUnderTest = new AciMeasurePerformedRnRDecoder(new Context());
+		PiMeasurePerformedRnRDecoder objectUnderTest = new PiMeasurePerformedRnRDecoder(new Context());
 		
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -38,17 +38,17 @@ class AciMeasurePerformedRnRDecoderTest {
 		element.addContent(referenceElement);
 		element.addNamespaceDeclaration(ns);
 
-		Node aciMeasurePerformedNode = new Node();
+		Node piMeasurePerformedNode = new Node();
 
 		objectUnderTest.setNamespace(element.getNamespace());
 
 		//execute
-		DecodeResult decodeResult = objectUnderTest.decode(element, aciMeasurePerformedNode);
+		DecodeResult decodeResult = objectUnderTest.decode(element, piMeasurePerformedNode);
 
 		//assert
 		assertThat(decodeResult)
 				.isEqualTo(DecodeResult.TREE_CONTINUE);
-		String actualMeasureId = aciMeasurePerformedNode.getValue("measureId");
+		String actualMeasureId = piMeasurePerformedNode.getValue("measureId");
 		assertThat(actualMeasureId)
 				.isEqualTo(MEASURE_ID);
 	}
@@ -58,12 +58,12 @@ class AciMeasurePerformedRnRDecoderTest {
 		String needsFormattingXml = TestHelper.getFixture("AciMeasurePerformedIsolated.xml");
 		String xml = String.format(needsFormattingXml, MEASURE_ID);
 		Node wrapperNode = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xml));
-		Node aciMeasurePerformedNode = wrapperNode.getChildNodes().get(0);
+		Node piMeasurePerformedNode = wrapperNode.getChildNodes().get(0);
 
-		String actualMeasureId = aciMeasurePerformedNode.getValue("measureId");
+		String actualMeasureId = piMeasurePerformedNode.getValue("measureId");
 
 		assertThat(actualMeasureId).isEqualTo(MEASURE_ID);
-		long measurePerformedCount = aciMeasurePerformedNode.getChildNodes(
+		long measurePerformedCount = piMeasurePerformedNode.getChildNodes(
 			node -> node.getType() == TemplateId.MEASURE_PERFORMED).count();
 		assertThat(measurePerformedCount)
 				.isEqualTo(1L);

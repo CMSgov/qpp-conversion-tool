@@ -69,7 +69,7 @@ class ClinicalDocumentDecoderTest {
 	void testAciCategory() {
 		Node aciSectionNode = clinicalDocument.getChildNodes().get(0);
 		assertThat(aciSectionNode.getValue("category"))
-				.isEqualTo("aci");
+				.isEqualTo("pi");
 	}
 
 	@Test
@@ -346,8 +346,8 @@ class ClinicalDocumentDecoderTest {
 		Element structuredBody = new Element("structuredBody", rootns);
 		Element componentTwo = new Element("component", rootns);
 		Element aciSectionElement = new Element("templateId", rootns);
-		aciSectionElement.setAttribute("root", TemplateId.ACI_SECTION.getRoot());
-		aciSectionElement.setAttribute("extension", TemplateId.ACI_SECTION.getExtension());
+		aciSectionElement.setAttribute("root", TemplateId.PI_SECTION.getRoot());
+		aciSectionElement.setAttribute("extension", TemplateId.PI_SECTION.getExtension());
 
 		componentTwo.addContent(aciSectionElement);
 		structuredBody.addContent(componentTwo);

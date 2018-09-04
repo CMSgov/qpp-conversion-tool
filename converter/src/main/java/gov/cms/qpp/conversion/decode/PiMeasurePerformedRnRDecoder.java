@@ -12,29 +12,27 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.function.Consumer;
 
 /**
- * Decoder to parse ACI Numerator Denominator Type Measure reference and results.
+ * Decoder to parse an PI Measure Performed Reference and Results.
  */
-@Decoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
-public class AciNumeratorDenominatorDecoder extends QrdaDecoder {
+@Decoder(TemplateId.PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
+public class PiMeasurePerformedRnRDecoder extends QrdaDecoder {
 
-	private static final String MEASURE_ID = "measureId";
+	public static final String MEASURE_ID = "measureId";
 
-	public AciNumeratorDenominatorDecoder(Context context) {
+	public PiMeasurePerformedRnRDecoder(Context context) {
 		super(context);
 	}
 
 	/**
-	 * Decodes an ACI Numerator Denominator Type Measure into an intermediate node
+	 * Decodes an PI Measure Performed Reference and Results into an intermediate node
 	 *
-	 * @param element Element XML element that represents the ACI Numerator Denominator Type Measure
-	 * @param thisNode Node that represents the ACI Numerator Denominator Type Measure.
-	 *  It is updated in this method.
-	 * @return DecodeResult
+	 * @param element Element XML element that represents the PI Measure Performed measure
+	 * @param thisNode Node that represents the PI Measure Performed measure.  It is updated in this method.
+	 * @return {@code DecodeResult.TREE_CONTINUE}
 	 */
 	@Override
 	protected DecodeResult decode(Element element, Node thisNode) {
 		setMeasureIdOnNode(element, thisNode);
-
 		return DecodeResult.TREE_CONTINUE;
 	}
 

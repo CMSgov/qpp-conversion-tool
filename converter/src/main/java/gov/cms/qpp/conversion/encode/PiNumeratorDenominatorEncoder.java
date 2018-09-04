@@ -13,21 +13,21 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Encoder to serialize ACI Numerator Denominator Type Measure.
+ * Encoder to serialize PI Numerator Denominator Type Measure.
  */
 
-@Encoder(TemplateId.ACI_NUMERATOR_DENOMINATOR)
-public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
+@Encoder(TemplateId.PI_NUMERATOR_DENOMINATOR)
+public class PiNumeratorDenominatorEncoder extends QppOutputEncoder {
 
-	public AciNumeratorDenominatorEncoder(Context context) {
+	public PiNumeratorDenominatorEncoder(Context context) {
 		super(context);
 	}
 
 	/**
-	 *  Encodes an ACI Numerator Denominator Type Measure into the QPP format
+	 *  Encodes an PI Numerator Denominator Type Measure into the QPP format
 	 *
-	 * @param wrapper Wrapper that will represent the ACI Numerator Denominator Type Measure
-	 * @param node Node that represents the ACI Numerator Denominator Type Measure
+	 * @param wrapper Wrapper that will represent the PI Numerator Denominator Type Measure
+	 * @param node Node that represents the PI Numerator Denominator Type Measure
 	 * @throws EncodeException If an error occurs during encoding
 	 */
 	@Override
@@ -47,7 +47,7 @@ public class AciNumeratorDenominatorEncoder extends QppOutputEncoder {
 	}
 
 	/**
-	 * Encodes ACI Numerator Denominator Children
+	 * Encodes PI Numerator Denominator Children
 	 *
 	 * @param childMapByTemplateId Map of children that will be encoded
 	 * @return JsonWrapper that will represent the encoded children

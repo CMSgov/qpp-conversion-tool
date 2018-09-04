@@ -21,10 +21,10 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 
-class AciSectionEncoderTest {
+class PiSectionEncoderTest {
 
 	private static final String CATEGORY = "category";
-	private static final String ACI = "aci";
+	private static final String PI = "pi";
 	private static final String MEASUREMENTS = "measurements";
 	private static final String SUBMISSION_METHOD = "submissionMethod";
 	private static final String ELECTRONIC_HEALTH_RECORD = "electronicHealthRecord";
@@ -32,53 +32,53 @@ class AciSectionEncoderTest {
 	private static final String MEASUREMENT_ID_VALUE = "ACI-PEA-1";
 	private static final String AGGREGATE_COUNT_ID = "aggregateCount";
 
-	private Node aciSectionNode;
+	private Node piSectionNode;
 	private Node reportingParametersNode;
-	private Node aciNumeratorDenominatorNode;
-	private Node aciProportionNumeratorNode;
-	private Node aciProportionDenominatorNode;
+	private Node piNumeratorDenominatorNode;
+	private Node piProportionNumeratorNode;
+	private Node piProportionDenominatorNode;
 	private Node numeratorValueNode;
 	private Node denominatorValueNode;
 
 	@BeforeEach
 	void createNode() {
-		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorValueNode.putValue(AGGREGATE_COUNT_ID, "400");
 
-		denominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		denominatorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		denominatorValueNode.putValue(AGGREGATE_COUNT_ID, "600");
 
-		aciProportionDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
+		piProportionDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		piProportionDenominatorNode.addChildNode(denominatorValueNode);
 
-		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
-		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
+		piProportionNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
+		piProportionNumeratorNode.addChildNode(numeratorValueNode);
 
-		aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
-		aciNumeratorDenominatorNode.addChildNode(aciProportionNumeratorNode);
-		aciNumeratorDenominatorNode.addChildNode(aciProportionDenominatorNode);
-		aciNumeratorDenominatorNode.putValue(MEASUREMENT_ID, MEASUREMENT_ID_VALUE);
+		piNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
+		piNumeratorDenominatorNode.addChildNode(piProportionNumeratorNode);
+		piNumeratorDenominatorNode.addChildNode(piProportionDenominatorNode);
+		piNumeratorDenominatorNode.putValue(MEASUREMENT_ID, MEASUREMENT_ID_VALUE);
 
 		reportingParametersNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START,"20170101");
 		reportingParametersNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END,"20171231");
 
-		aciSectionNode = new Node(TemplateId.ACI_SECTION);
-		aciSectionNode.putValue(CATEGORY, ACI);
-		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
-		aciSectionNode.addChildNode(reportingParametersNode);
+		piSectionNode = new Node(TemplateId.PI_SECTION);
+		piSectionNode.putValue(CATEGORY, PI);
+		piSectionNode.addChildNode(piNumeratorDenominatorNode);
+		piSectionNode.addChildNode(reportingParametersNode);
 	}
 
 	@Test
 	void testInternalEncode() {
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder(new Context());
-		aciSectionEncoder.internalEncode(jsonWrapper, aciSectionNode);
+		PiSectionEncoder piSectionEncoder = new PiSectionEncoder(new Context());
+		piSectionEncoder.internalEncode(jsonWrapper, piSectionNode);
 
 		Map<?, ?> testMapObject = (Map<?, ?>) jsonWrapper.getObject();
 
 		assertWithMessage("Must have a child node").that(testMapObject).isNotNull();
-		assertWithMessage("Must be category ACI").that(testMapObject.get(CATEGORY)).isEqualTo(ACI);
+		assertWithMessage("Must be category ACI").that(testMapObject.get(CATEGORY)).isEqualTo(PI);
 		assertWithMessage("Must have measurements").that(testMapObject.get(MEASUREMENTS)).isNotNull();
 		assertWithMessage("Must have submissionMethod")
 				.that(testMapObject.get(SUBMISSION_METHOD)).isEqualTo(ELECTRONIC_HEALTH_RECORD);
@@ -87,8 +87,8 @@ class AciSectionEncoderTest {
 	@Test
 	void aboutMetadataHolder() {
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder(new Context());
-		aciSectionEncoder.internalEncode(jsonWrapper, aciSectionNode);
+		PiSectionEncoder piSectionEncoder = new PiSectionEncoder(new Context());
+		piSectionEncoder.internalEncode(jsonWrapper, piSectionNode);
 
 		Map<?, ?> testMapObject = (Map<?, ?>) jsonWrapper.getObject();
 		Stream failed = ((Set) testMapObject.get("metadata_holder")).stream()
@@ -104,27 +104,27 @@ class AciSectionEncoderTest {
 
 		Node invalidAciNumeratorDenominatorNode = new Node();
 
-		aciSectionNode = new Node(TemplateId.ACI_SECTION);
-		aciSectionNode.putValue(CATEGORY, ACI);
-		aciSectionNode.addChildNode(invalidAciNumeratorDenominatorNode);
-		aciSectionNode.addChildNode(reportingParametersNode);
+		piSectionNode = new Node(TemplateId.PI_SECTION);
+		piSectionNode.putValue(CATEGORY, PI);
+		piSectionNode.addChildNode(invalidAciNumeratorDenominatorNode);
+		piSectionNode.addChildNode(reportingParametersNode);
 
-		AciSectionEncoder aciSectionEncoder = new AciSectionEncoder(new Context());
-		aciSectionEncoder.internalEncode(testWrapper, aciSectionNode);
+		PiSectionEncoder piSectionEncoder = new PiSectionEncoder(new Context());
+		piSectionEncoder.internalEncode(testWrapper, piSectionNode);
 
-		assertThat(aciSectionEncoder.getDetails()).isNotNull();
-		assertThat(aciSectionEncoder.getDetails().get(0).getMessage())
+		assertThat(piSectionEncoder.getDetails()).isNotNull();
+		assertThat(piSectionEncoder.getDetails().get(0).getMessage())
 				.isEqualTo(ErrorCode.CT_LABEL + "Failed to find an encoder");
 	}
 
 	@Test
 	void internalEncodeNegativeWithNoReportingParameters() throws EncodeException {
 
-		aciSectionNode.getChildNodes().remove(reportingParametersNode);
+		piSectionNode.getChildNodes().remove(reportingParametersNode);
 
-		AciSectionEncoder encoder = spy(new AciSectionEncoder(new Context()));
+		PiSectionEncoder encoder = spy(new PiSectionEncoder(new Context()));
 		JsonWrapper jsonWrapper = new JsonWrapper();
-		encoder.internalEncode(jsonWrapper, aciSectionNode);
+		encoder.internalEncode(jsonWrapper, piSectionNode);
 
 		verify(encoder, never()).maintainContinuity(any(JsonWrapper.class), any(Node.class), anyString());
 	}

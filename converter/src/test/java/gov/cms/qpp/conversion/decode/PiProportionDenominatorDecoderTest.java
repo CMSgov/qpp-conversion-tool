@@ -8,25 +8,25 @@ import org.junit.jupiter.api.Test;
 import static com.google.common.truth.Truth.assertThat;
 
 /**
- * AciProportionDenominatorDecoderTest JUnit test for
- * AciProportionDenominatorDecoder
+ * PiProportionDenominatorDecoderTest JUnit test for
+ * PiProportionDenominatorDecoder
  */
-class AciProportionDenominatorDecoderTest {
+class PiProportionDenominatorDecoderTest {
 
 	/**
-	 * decodeACIProportionDenominatorAsNode given a well formed xml fragment
+	 * decodePIProportionDenominatorAsNode given a well formed xml fragment
 	 * parses out the appropriate aggregateCount This test calls
 	 * QrdaDecoderEngine.()decode() which in turn calls the only method in this
-	 * class. AciProportionDenominatorDecoder().decode()
+	 * class. PiProportionDenominatorDecoder().decode()
 	 *
 	 * @throws Exception
 	 */
 	@Test
-	void decodeACIProportionDenominatorAsNode() throws Exception {
+	void decodePIProportionDenominatorAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 				+ " <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-				+ "     <!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->\n"
+				+ "     <!-- PI Numerator Denominator Type Measure Denominator Data templateId -->\n"
 				+ "     <templateId root=\"2.16.840.1.113883.10.20.27.3.32\" extension=\"2016-09-01\" />\n"
 				+ "     <!-- Denominator Count -->\n"
 				+ "     <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
@@ -43,23 +43,23 @@ class AciProportionDenominatorDecoderTest {
 				.hasSize(1);
 
 		// This is the child node that is produced by the intended decoder
-		Node aciProportionDenominatorNode = root.getChildNodes().get(0);
+		Node piProportionDenominatorNode = root.getChildNodes().get(0);
 		// Should have a aggregate count node
-		assertThat(aciProportionDenominatorNode.getChildNodes())
+		assertThat(piProportionDenominatorNode.getChildNodes())
 				.hasSize(1);
 		// This is stubbed node with the test value
-		Node target = aciProportionDenominatorNode.getChildNodes().get(0);
+		Node target = piProportionDenominatorNode.getChildNodes().get(0);
 		// Get the test value
 		assertThat(target.getValue("aggregateCount"))
 				.isEqualTo("800");
 	}
 
 	@Test
-	void decodeInvalidACIProportionDenominatorAsNode() throws Exception {
+	void decodeInvalidPIProportionDenominatorAsNode() throws Exception {
 		String xmlFragment = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 			+ "<component xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:hl7-org:v3\">\n"
 			+ " <observation classCode=\"OBS\" moodCode=\"EVN\">\n"
-			+ "     <!-- ACI Numerator Denominator Type Measure Denominator Data templateId -->\n"
+			+ "     <!-- PI Numerator Denominator Type Measure Denominator Data templateId -->\n"
 			+ "     <templateId root=\"2.16.840.1.113883.10.20.27.3.32\" extension=\"2016-09-01\" />\n"
 			+ "     <!-- Denominator Count -->\n"
 			+ "     <entryRelationship typeCode=\"SUBJ\" inversionInd=\"true\">\n"
@@ -81,11 +81,11 @@ class AciProportionDenominatorDecoderTest {
 		// For all decoders this should be either a value or child node
 		assertThat(root.getChildNodes()).hasSize(2);
 		// This is the child node that is produced by the intended decoder
-		Node aciProportionDenominatorNode = root.getChildNodes().get(0);
+		Node piProportionDenominatorNode = root.getChildNodes().get(0);
 		// Should have a aggregate count node
-		assertThat(aciProportionDenominatorNode.getChildNodes()).hasSize(1);
+		assertThat(piProportionDenominatorNode.getChildNodes()).hasSize(1);
 		// This is stubbed node with the test value
-		Node target = aciProportionDenominatorNode.getChildNodes().get(0);
+		Node target = piProportionDenominatorNode.getChildNodes().get(0);
 		// Get the test value
 		assertThat(target.getValue("aggregateCount"))
 				.isEqualTo("800");

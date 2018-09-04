@@ -8,17 +8,17 @@ import gov.cms.qpp.conversion.model.Node;
 
 import static com.google.common.truth.Truth.assertThat;
 
-class AciSectionDecoderTest {
+class PiSectionDecoderTest {
 
 	@Test
 	void testInternalDecode() {
 		Element element = new Element("testElement");
 		Node node = new Node();
 
-		AciSectionDecoder aciSectionDecoder = new AciSectionDecoder(new Context());
-		aciSectionDecoder.decode(element, node);
+		PiSectionDecoder piSectionDecoder = new PiSectionDecoder(new Context());
+		piSectionDecoder.decode(element, node);
 
 		assertThat(node.getValue("category"))
-				.isEqualTo("aci");
+				.isEqualTo("pi");
 	}
 }

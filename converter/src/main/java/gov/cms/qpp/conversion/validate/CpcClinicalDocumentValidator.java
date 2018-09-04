@@ -27,7 +27,6 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 
 	static final String END_DATE_VARIABLE = "CPC_END_DATE";
 	static final DateTimeFormatter END_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-	private static final String NEVER_ENDING = "3000-01-01";
 	static final String DEFAULT_CPC_PLUS_CONTACT_EMAIL = "cpcplus@telligen.com";
 	static final String CPC_PLUS_CONTACT_EMAIL = "CPC_PLUS_CONTACT_EMAIL";
 	// LocalDate.now() creates extra unneeded clock objects before Java 9.
@@ -100,9 +99,13 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	}
 
 	/**
-	 * @return the cpc+ end date, or 3000-01-01 if none is set
+	 * @return the configured cpc+ end date, or {@link LocalDate#MAX} if none is set
 	 */
 	private LocalDate endDate() {
-		return LocalDate.parse(EnvironmentHelper.getOrDefault(END_DATE_VARIABLE, NEVER_ENDING));
+		String endDate = EnvironmentHelper.get(END_DATE_VARIABLE);
+		if (endDate == null) {
+			return LocalDate.MAX;
+		}
+		return LocalDate.parse(endDate);
 	}
 }

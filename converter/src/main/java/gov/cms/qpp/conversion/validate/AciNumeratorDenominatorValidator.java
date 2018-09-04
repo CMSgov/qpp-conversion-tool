@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 /**
  * Validate all ACI Numerator Denominator Type Measures.
  */
-@Validator(TemplateId.ACI_NUMERATOR_DENOMINATOR)
+@Validator(TemplateId.PI_NUMERATOR_DENOMINATOR)
 public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 	/**
@@ -28,7 +28,7 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 
 		//the aci numerator denominator measure node must have an aci section node as parent
 		Checker nodeChecker = check(node).hasParent(
-				ErrorCode.ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION, TemplateId.ACI_SECTION);
+				ErrorCode.PI_NUMERATOR_DENOMINATOR_PARENT_NOT_PI_SECTION, TemplateId.PI_SECTION);
 		//the aci numerator denominator measure node must have a numerator node and a denominator node as children
 		validateChildren(nodeChecker);
 	}
@@ -40,11 +40,11 @@ public class AciNumeratorDenominatorValidator extends NodeValidator {
 	 */
 	private void validateChildren(Checker nodeChecker) {
 		nodeChecker
-			.singleValue(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID, "measureId")
-			.hasChildren(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN)
-			.childExact(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
-					.format(AciDenominatorValidator.DENOMINATOR_NAME), 1, TemplateId.ACI_DENOMINATOR)
-			.childExact(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
-					.format(AciNumeratorValidator.NUMERATOR_NAME), 1, TemplateId.ACI_NUMERATOR);
+			.singleValue(ErrorCode.PI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID, "measureId")
+			.hasChildren(ErrorCode.PI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN)
+			.childExact(ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+					.format(AciDenominatorValidator.DENOMINATOR_NAME), 1, TemplateId.PI_DENOMINATOR)
+			.childExact(ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+					.format(AciNumeratorValidator.NUMERATOR_NAME), 1, TemplateId.PI_NUMERATOR);
 	}
 }
