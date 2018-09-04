@@ -1,6 +1,6 @@
 FROM maven:3-jdk-8
 # override maven settings
-COPY ./maven/* /usr/share/maven/ref/
+COPY ./maven /usr/share/maven/ref/
 
 RUN mkdir -p /usr/src/app/
 RUN mkdir -p /usr/src/run/
