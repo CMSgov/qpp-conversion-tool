@@ -1,5 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.Set;
@@ -17,12 +18,14 @@ class IaSectionValidatorTest {
 
 	private Node iaSectionNode;
 	private Node iaMeasureNode;
+	private Node secondIaMeasureNode;
 	private Node reportingParamActNode;
 
 	@BeforeEach
 	void setUpIaSectionNode() {
 		iaSectionNode = new Node(TemplateId.IA_SECTION);
-		iaMeasureNode = new Node(TemplateId.IA_MEASURE);
+		iaMeasureNode = new Node(TemplateId.IA_MEASURE, iaSectionNode);
+		secondIaMeasureNode = new Node(TemplateId.IA_MEASURE, iaSectionNode);
 		reportingParamActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
 	}
 
@@ -67,7 +70,7 @@ class IaSectionValidatorTest {
 
 		assertWithMessage("Must contain correct children")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
+				.containsExactly(ErrorCode.IA_MEASURE_MISSING_REPORTING_PARAM);
 	}
 
 	@Test
@@ -79,7 +82,49 @@ class IaSectionValidatorTest {
 
 		assertWithMessage("Must contain correct children")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
+				.containsExactly(ErrorCode.IA_SECTION_ONLY_ONE_REPORTING_PARAM);
+	}
+
+	@Test
+	void duplicateReportingParametersInChildNodes() {
+		Node invalidParamActNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT);
+		iaSectionNode.addChildNodes(iaMeasureNode, reportingParamActNode, invalidParamActNode);
+
+		Set<Detail> errors = validatorIaSection();
+
+		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.IA_SECTION_ONLY_ONE_REPORTING_PARAM);
+	}
+
+	@Test
+	void iaSectionMultipleMeasureWithReportingParametersSuccess() {
+		iaMeasureNode.addChildNode(reportingParamActNode);
+		secondIaMeasureNode.addChildNode(reportingParamActNode);
+		iaSectionNode.addChildNodes(iaMeasureNode, secondIaMeasureNode);
+
+		Set<Detail> errors = validatorIaSection();
+		assertThat(errors).isEmpty();
+	}
+
+	@Test
+	void iaSectionMultipleMeasureWithOneMissingReportingParameters() {
+		iaMeasureNode.addChildNode(reportingParamActNode);
+		iaSectionNode.addChildNodes(iaMeasureNode, secondIaMeasureNode);
+
+		Set<Detail> errors = validatorIaSection();
+		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.IA_MEASURE_MISSING_REPORTING_PARAM);
+	}
+
+	@Test
+	void iaSectionAndIaMeasureDuplicateReportingParameters() {
+		iaMeasureNode.addChildNode(reportingParamActNode);
+		secondIaMeasureNode.addChildNode(reportingParamActNode);
+		iaSectionNode.addChildNodes(iaMeasureNode, secondIaMeasureNode, reportingParamActNode);
+
+		Set<Detail> errors = validatorIaSection();
+		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.IA_SECTION_IA_MEASURE_DUPLICATE_REPORTING_PARAM);
 	}
 
 	private Set<Detail> validatorIaSection() {
