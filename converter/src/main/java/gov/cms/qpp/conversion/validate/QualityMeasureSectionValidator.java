@@ -4,7 +4,6 @@ import gov.cms.qpp.conversion.decode.QualityMeasureIdDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
-import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 
 /**
