@@ -54,6 +54,8 @@ public class ClinicalDocumentValidator extends NodeValidator {
 			thoroughlyCheck(node).valueIn(ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME.format(programName, VALID_PROGRAM_NAMES),
 				ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.MIPS_PROGRAM_NAME,
 				ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
+
+
 		}
 	}
 }
