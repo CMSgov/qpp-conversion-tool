@@ -175,7 +175,9 @@ public enum ErrorCode implements LocalizedError {
 		+ "the Quality Measure Section and Quality Measure Reference and Results. The Quality Measure Reference and Results "
 		+ "must contain one Reporting Parameter. Please ensure the Quality Measure Reference and results "
 		+ "complies with the Implementation Guide (IG). Here is a link to the IG Quality Measure Reference and Results: "
-		+ DocumentationReference.QUALITY_MEASURE_RNR);
+		+ DocumentationReference.QUALITY_MEASURE_RNR),
+	VIRTUAL_GROUP_ID_REQUIRED(78, "The Program 'Mips Virtual Group' was found. The required entity id for this "
+		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name.");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
