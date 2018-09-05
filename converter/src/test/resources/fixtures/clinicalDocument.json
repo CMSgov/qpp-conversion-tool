@@ -1,5 +1,5 @@
 {
-  "performanceYear" : 2017,
+  "performanceYear" : 2018,
   "entityType" : "individual",
   "taxpayerIdentificationNumber" : "123456789",
   "nationalProviderIdentifier" : "2567891421",
@@ -26,17 +26,17 @@
       }
     } ],
     "programName" : "mips",
-    "performanceStart" : "2017-01-01",
-    "performanceEnd" : "2017-12-31"
+    "performanceStart" : "2018-01-01",
+    "performanceEnd" : "2018-12-31"
   }, {
     "category" : "ia",
     "submissionMethod" : "electronicHealthRecord",
     "measurements" : [ {
       "measureId" : "IA_EPA_1",
-      "value" : true
+      "value" : true,
+      "performanceStart" : "2018-01-01",
+      "performanceEnd" : "2018-12-31"
     } ],
-    "programName" : "mips",
-    "performanceStart" : "2017-01-01",
-    "performanceEnd" : "2017-12-31"
+    "programName" : "mips"
   } ]
 }

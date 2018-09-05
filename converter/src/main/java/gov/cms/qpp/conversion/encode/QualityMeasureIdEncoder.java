@@ -54,6 +54,7 @@ public class QualityMeasureIdEncoder extends QppOutputEncoder {
 		} else {
 			encodeMultiPerformanceRate(wrapper, node, measureConfig);
 		}
+		encodeReportingParameter(wrapper, node);
 	}
 
 	/**

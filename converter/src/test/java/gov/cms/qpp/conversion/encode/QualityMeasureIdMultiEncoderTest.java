@@ -1,6 +1,7 @@
 package gov.cms.qpp.conversion.encode;
 
 import gov.cms.qpp.conversion.Context;
+import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
@@ -43,6 +44,7 @@ class QualityMeasureIdMultiEncoderTest {
 	private Node numeratorNodeTwo;
 	private Node denominatorNode;
 	private Node denominatorNodeTwo;
+	private Node qualityReportingSectionNode;
 	private JsonWrapper wrapper;
 	private QualityMeasureIdEncoder encoder;
 
@@ -60,6 +62,10 @@ class QualityMeasureIdMultiEncoderTest {
 	void setUp() {
 		qualityMeasureId = new Node(TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2);
 		qualityMeasureId.putValue(MEASURE_ID, "test1");
+
+		qualityReportingSectionNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, qualityMeasureId);
+		qualityReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_START, "20170101");
+		qualityReportingSectionNode.putValue(ReportingParametersActDecoder.PERFORMANCE_END, "20171231");
 
 		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", "600");
@@ -125,7 +131,8 @@ class QualityMeasureIdMultiEncoderTest {
 				eligiblePopulationNode, eligiblePopulationExceptionNode,
 				eligiblePopulationExclusionNode, numeratorNode, denominatorNode,
 				eligiblePopulationNodeTwo, eligiblePopulationExceptionNodeTwo,
-				eligiblePopulationExclusionNodeTwo, numeratorNodeTwo, denominatorNodeTwo);
+				eligiblePopulationExclusionNodeTwo, numeratorNodeTwo, denominatorNodeTwo,
+				qualityReportingSectionNode);
 
 		encoder.internalEncode(wrapper, qualityMeasureId);
 
@@ -140,7 +147,7 @@ class QualityMeasureIdMultiEncoderTest {
 	@Test
 	void testNullSubPopulations() {
 		qualityMeasureId.putValue(MEASURE_ID, "test2");
-		qualityMeasureId.addChildNodes(eligiblePopulationNode, eligiblePopulationExceptionNode,
+		qualityMeasureId.addChildNodes(qualityReportingSectionNode, eligiblePopulationNode, eligiblePopulationExceptionNode,
 				numeratorNode, denominatorNode, eligiblePopulationNodeTwo,
 				eligiblePopulationExceptionNodeTwo, numeratorNodeTwo, denominatorNodeTwo);
 

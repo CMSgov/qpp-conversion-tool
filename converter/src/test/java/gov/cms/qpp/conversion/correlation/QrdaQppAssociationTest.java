@@ -31,7 +31,7 @@ class QrdaQppAssociationTest {
 		mapper.writeAssociations();
 
 		assertWithMessage("registered associations does not match expectation")
-				.that(mapper.getAssociations()).hasSize(62);
+				.that(mapper.getAssociations()).hasSize(70);
 	}
 
 }

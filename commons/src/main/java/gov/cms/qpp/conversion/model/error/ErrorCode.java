@@ -76,8 +76,8 @@ public enum ErrorCode implements LocalizedError {
 			+ DocumentationReference.PERFORMANCE_PERIOD),
 	QUALITY_MEASURE_SECTION_REQUIRED_REPORTING_PARAM_REQUIREMENT(32, "The Quality Measure Section must have "
 			+ "exactly one Reporting Parameter Act. "
-			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
-			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
+			+ ImplementationGuide.ENSURE_REPORTING_PARAM_IG
+			+ ImplementationGuide.REPORTING_PARAM_IG_LINK),
 	PERFORMANCE_RATE_INVALID_VALUE(33, "The Performance Rate `(supplied value)` is invalid. "
 		+ "It must be a decimal between 0 and 1.", true),
 	CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS(34, "CPC+ submissions must contain a practice site address."
@@ -96,9 +96,9 @@ public enum ErrorCode implements LocalizedError {
 	NUMERATOR_DENOMINATOR_INVALID_VALUE(42,
 			"This PI `(Numerator or Denominator)` element Aggregate Value has an invalid value of '`(value)`'", true),
 	IA_SECTION_MISSING_IA_MEASURE(43, "The IA Section must have at least one Improvement Activity"),
-	IA_SECTION_MISSING_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter Act. "
-			+ "Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). "
-			+ "Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT),
+	IA_SECTION_ONLY_ONE_REPORTING_PARAM(44, "The IA Section must have one Reporting Parameter Act. "
+			+ ImplementationGuide.ENSURE_REPORTING_PARAM_IG
+			+ ImplementationGuide.REPORTING_PARAM_IG_LINK),
 	IA_SECTION_WRONG_CHILD(45, "The IA Section must contain only Improvement Activities and a Reporting Parameter Act"),
 	NPI_TIN_COMBINATION_MISSING_CLINICAL_DOCUMENT(46, "Clinical Document Node is required"),
 	CPC_QUALITY_MEASURE_ID_MISSING_STRATA(48, "Missing strata `(Reporting Stratum UUID)` for "
@@ -117,9 +117,9 @@ public enum ErrorCode implements LocalizedError {
 			+ "Aggregate Count.", true),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
 			+ "must be a whole number greater than or equal to 0", true),
-	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "A CPC Plus Performance period start must be 01/01/2017. "
+	CPC_PERFORMANCE_PERIOD_START(55, "A CPC Plus Performance period start must be 01/01/2018. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
-	CPC_PERFORMANCE_PERIOD_END_DEC312017(56, "A CPC Plus Performance period end must be 12/31/2017. "
+	CPC_PERFORMANCE_PERIOD_END(56, "A CPC Plus Performance period end must be 12/31/2018. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The measure reference results must have a single "
 			+ "measure population"),
@@ -147,7 +147,7 @@ public enum ErrorCode implements LocalizedError {
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
-		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123. "
+		+ "Example valid values are 2018-02-26, 2018/02/26T01:45:23, or 2018-02-26T01:45:23.123. "
 		+ "Please see the Implementation Guide for information on the performance period here: "
 		+ DocumentationReference.PERFORMANCE_PERIOD, true),
 	MISSING_OR_DUPLICATED_MEASURE_GUID(70, "The measure section measure reference and results has an incorrect number of "
@@ -155,7 +155,27 @@ public enum ErrorCode implements LocalizedError {
 	MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID(71, "Two or more different measure section measure reference and results have "
 		+ "the same measure GUID. Please ensure that each measure section measure reference and results do not have "
 		+ "the same measure GUID."),
-	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing");
+	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing"),
+	IA_SECTION_IA_MEASURE_DUPLICATE_REPORTING_PARAM(73, "A Reporting Parameter Act has been found in both the "
+		+ "IA section and in IA section measures. The IA Section must have one Reporting Parameters Act "
+		+ "or all IA Measures must have one Reporting Parameter Act each.  "
+		+ ImplementationGuide.ENSURE_REPORTING_PARAM_IG
+		+ ImplementationGuide.REPORTING_PARAM_IG_LINK),
+	IA_MEASURE_MISSING_REPORTING_PARAM(74, "All IA Measures must have one Reporting Parameter Act each.  "
+		+ ImplementationGuide.ENSURE_REPORTING_PARAM_IG
+		+ ImplementationGuide.REPORTING_PARAM_IG_LINK),
+	QUALITY_MEASURE_SECTION_MISSING_MEASURE_RNR(75, "A Quality Measure Section V2 must contain at least one Quality Measure "
+		+ "Reference and Results CMS V2. Please ensure the Quality Measure Section complies with the Implementation Guide (IG) "
+		+ "Here is a link to the IG Quality Measure Section: " + DocumentationReference.QUALITY_MEASURE_SECTION),
+	QUALITY_MEASURE_SECTION_RNR_REQUIRED_REPORTING_PARAM_REQUIREMENT(76, "The Quality Measure Reference and Results must contain "
+		+ "one Reporting Parameter. Please ensure the Quality Measure Reference and results complies with the Implementation "
+		+ "Guide (IG). Here is a link to the IG Quality Measure Reference and Results: "
+		+ DocumentationReference.QUALITY_MEASURE_RNR),
+	QUALITY_MEASURE_SECTION_AND_RNR_DUPLICATE_REPORTING_PARAM_REQUIREMENT(77, "A Reporting Parameter Act has been found in both "
+		+ "the Quality Measure Section and Quality Measure Reference and Results. The Quality Measure Reference and Results "
+		+ "must contain one Reporting Parameter. Please ensure the Quality Measure Reference and results "
+		+ "complies with the Implementation Guide (IG). Here is a link to the IG Quality Measure Reference and Results: "
+		+ DocumentationReference.QUALITY_MEASURE_RNR);
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
@@ -238,5 +258,12 @@ public enum ErrorCode implements LocalizedError {
 	private static final class ServiceCenter {
 		static final String MESSAGE = "Please contact the Service Center for assistance via phone at "
 				+ "1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov";
+	}
+
+	private static final class ImplementationGuide {
+		static final String ENSURE_REPORTING_PARAM_IG =
+			"Please ensure the Reporting Parameters Act complies with the Implementation Guide (IG). ";
+		static final String REPORTING_PARAM_IG_LINK =
+			"Here is a link to the IG Reporting Parameter Act section: " + DocumentationReference.REPORTING_PARAMETERS_ACT;
 	}
 }
