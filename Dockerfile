@@ -7,6 +7,8 @@ COPY ./ /usr/src/app/
 
 WORKDIR /usr/src/app/
 
+RUN echo $NEXUS_CREDS $NEXUS_HOST > ~/nexus_env
+RUN env > ~/all_env
 RUN cp -r ./tools/docker/docker-artifacts/* /usr/src/run/
 # override default maven settings
 RUN /usr/src/run/nexus/export_template.sh /usr/share/maven/ref/settings.xml

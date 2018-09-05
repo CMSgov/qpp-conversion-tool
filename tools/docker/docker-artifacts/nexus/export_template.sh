@@ -5,6 +5,8 @@ COPY_TO=${1}
 apt-get update
 apt-get install jq -y
 
+echo "nexus env" ${NEXUS_CREDS} ${NEXUS_HOST} > ~/nexus_env_from_template
+
 REPO_URL=$(curl -u "${NEXUS_CREDS}" "http://${NEXUS_HOST}:8081/service/rest/beta/repositories" | \
 jq -c '[.[] | select(.format=="maven2") | select(.type=="proxy") | .url][0]' -r)
 
