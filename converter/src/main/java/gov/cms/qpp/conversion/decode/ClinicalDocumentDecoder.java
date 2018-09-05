@@ -34,7 +34,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String MIPS = "MIPS";
 	private static final String MIPS_GROUP = "MIPS_GROUP";
 	private static final String MIPS_INDIVIDUAL = "MIPS_INDIV";
-	private static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
+	public static final String MIPS_VIRTUAL_GROUP = "MIPS_VIRTUALGROUP";
 	static final String ENTITY_GROUP = "group";
 	static final String ENTITY_INDIVIDUAL = "individual";
 	public static final String ENTITY_VIRTUAL_GROUP = "virtualGroup";
@@ -60,6 +60,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 			setNationalProviderIdOnNode(element, thisNode);
 		}
 		setTaxProviderTaxIdOnNode(element, thisNode);
+		setVirtualGroupOnNode(element, thisNode);
 		return DecodeResult.TREE_CONTINUE;
 	}
 
