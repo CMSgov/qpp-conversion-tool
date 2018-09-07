@@ -269,6 +269,21 @@ class ClinicalDocumentDecoderTest {
 				.isEqualTo("testing123");
 	}
 
+	@Test
+	void decodeMipsVirtualGroup() {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_VIRTUAL_GROUP);
+		Node testParentNode = new Node();
+
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
+
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
+			.isEqualTo(ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP))
+			.isEqualTo("x12345");
+	}
+
 	private Element makeClinicalDocument(String programName) {
 		Namespace rootns = Namespace.getNamespace("urn:hl7-org:v3");
 		Namespace ns = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -321,8 +336,12 @@ class ClinicalDocumentDecoderTest {
 		Element nationalProviderIdentifier = new Element("id", rootns)
 				.setAttribute("root", "2.16.840.1.113883.4.6")
 				.setAttribute("extension", "2567891421");
+		Element virtualGroup = new Element("id", rootns)
+			.setAttribute("root", "2.16.840.1.113883.3.249.5.2")
+			.setAttribute("extension", "x12345");
 
 		Element representedOrganization = prepareRepOrgWithTaxPayerId(rootns);
+		representedOrganization.addContent(virtualGroup);
 		assignedEntity.addContent(representedOrganization);
 		assignedEntity.addContent(nationalProviderIdentifier);
 		performer.addContent(assignedEntity);
