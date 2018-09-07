@@ -1,6 +1,10 @@
 #!/bin/bash
 SCRIPTPATH=$(dirname "$(readlink -f "$0")")
 COPY_TO=${1}
+NEXUS_ENV_DIR=${2}
+
+NEXUS_HOST=$(<${NEXUS_ENV_DIR}/NEXUS_HOST)
+NEXUS_CREDS=$(<${NEXUS_ENV_DIR}/NEXUS_CREDS)
 
 apt-get update
 apt-get install jq -y
