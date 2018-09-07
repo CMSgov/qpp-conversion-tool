@@ -430,25 +430,6 @@ class Checker {
 	}
 
 	/**
-	 * Allows for template id duplication checks between a parent and the parent's children
-	 *
-	 * @param code identified error code
-	 * @param suspectedType template id type that can be contain within both parent and child
-	 * @param childTypeToCheck child template id that needs to be checked the suspectedType
-	 * @return The checker, for chaining method calls
-	 */
-	Checker noParentChildDuplications(LocalizedError code, TemplateId suspectedType, TemplateId childTypeToCheck) {
-		if (node.getChildNodes(suspectedType).count() > 0) {
-			node.getChildNodes(childTypeToCheck).forEach(child -> {
-				if (child.findFirstNode(suspectedType) != null) {
-					details.add(detail(code));
-				}
-			});
-		}
-		return this;
-	}
-
-	/**
 	 * Marks the checked node as being incompletely validated.
 	 *
 	 * @return The checker, for chaining method calls.
