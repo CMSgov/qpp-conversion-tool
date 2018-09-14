@@ -26,17 +26,15 @@
 		"measurements": [
 			{
 				"measureId": "IA_EPA_3",
-				"value": true,
-				"performanceStart": "2017-01-01",
-				"performanceEnd": "2017-04-30"
+				"value": true
 			},
 			{
 				"measureId": "IA_CC_10",
-				"value": true,
-				"performanceStart": "2017-01-01",
-				"performanceEnd": "2017-04-30"
+				"value": true
 			}
-		]
+		],
+		"performanceStart": "2017-01-01",
+		"performanceEnd": "2017-04-30"
 	},
 	"PI_AGGREGATE_COUNT": [
 		{
@@ -533,9 +531,7 @@
 					"eligiblePopulationExclusion" : 50,
 					"performanceNotMet" : 150,
 					"eligiblePopulation" : 1000
-				},
-				"performanceStart" : "2017-01-01",
-				"performanceEnd" : "2017-12-31"
+				}
 			}, {
 				"measureId" : "001",
 				"value" : {
@@ -543,9 +539,7 @@
 					"performanceMet" : 900,
 					"performanceNotMet" : 50,
 					"eligiblePopulation" : 950
-				},
-				"performanceStart" : "2017-01-01",
-				"performanceEnd" : "2017-12-31"
+				}
 			}, {
 				"measureId" : "130",
 				"value" : {
@@ -554,9 +548,7 @@
 					"eligiblePopulationException" : 20,
 					"performanceNotMet" : 180,
 					"eligiblePopulation" : 1000
-				},
-				"performanceStart" : "2017-01-01",
-				"performanceEnd" : "2017-12-31"
+				}
 			}, {
 				"measureId" : "371",
 				"value" : {
@@ -580,11 +572,11 @@
 						"eligiblePopulation" : 580,
 						"stratum" : "4MonthsOfStart"
 					} ]
-				},
-				"performanceStart" : "2017-01-01",
-				"performanceEnd" : "2017-12-31"
+				}
 			} ],
-			"programName" : "mips"
+			"programName" : "mips",
+			"performanceStart" : "2017-01-01",
+			"performanceEnd" : "2017-12-31"
 		}, {
 			"category" : "pi",
 			"submissionMethod" : "electronicHealthRecord",
@@ -609,16 +601,14 @@
 			"submissionMethod" : "electronicHealthRecord",
 			"measurements" : [ {
 				"measureId" : "IA_EPA_3",
-				"value" : true,
-				"performanceStart" : "2017-01-01",
-				"performanceEnd" : "2017-04-30"
+				"value" : true
 			}, {
 				"measureId" : "IA_CC_10",
-				"value" : true,
-				"performanceStart" : "2017-01-01",
-				"performanceEnd" : "2017-04-30"
+				"value" : true
 			} ],
-			"programName" : "mips"
+			"programName" : "mips",
+			"performanceStart" : "2017-01-01",
+			"performanceEnd" : "2017-04-30"
 		} ]
 	},
 	"PI_DENOMINATOR": [
@@ -648,9 +638,7 @@
 				"eligiblePopulationExclusion" : 50,
 				"performanceNotMet" : 150,
 				"eligiblePopulation" : 1000
-			},
-			"performanceStart" : "2017-01-01",
-			"performanceEnd" : "2017-12-31"
+			}
 		}, {
 			"measureId" : "001",
 			"value" : {
@@ -658,9 +646,7 @@
 				"performanceMet" : 900,
 				"performanceNotMet" : 50,
 				"eligiblePopulation" : 950
-			},
-			"performanceStart" : "2017-01-01",
-			"performanceEnd" : "2017-12-31"
+			}
 		}, {
 			"measureId" : "130",
 			"value" : {
@@ -669,9 +655,7 @@
 				"eligiblePopulationException" : 20,
 				"performanceNotMet" : 180,
 				"eligiblePopulation" : 1000
-			},
-			"performanceStart" : "2017-01-01",
-			"performanceEnd" : "2017-12-31"
+			}
 		}, {
 			"measureId" : "371",
 			"value" : {
@@ -695,10 +679,10 @@
 					"eligiblePopulation" : 580,
 					"stratum" : "4MonthsOfStart"
 				} ]
-			},
-			"performanceStart" : "2017-01-01",
-			"performanceEnd" : "2017-12-31"
-		} ]
+			}
+		} ],
+		"performanceStart" : "2017-01-01",
+		"performanceEnd" : "2017-12-31"
 	},
 	"MEASURE_REFERENCE_RESULTS_CMS_V2": [ {
 		"measureId" : "236",
@@ -708,9 +692,7 @@
 			"eligiblePopulationExclusion" : 50,
 			"performanceNotMet" : 150,
 			"eligiblePopulation" : 1000
-		},
-		"performanceStart" : "2017-01-01",
-		"performanceEnd" : "2017-12-31"
+		}
 	}, {
 		"measureId" : "001",
 		"value" : {
@@ -718,9 +700,7 @@
 			"performanceMet" : 900,
 			"performanceNotMet" : 50,
 			"eligiblePopulation" : 950
-		},
-		"performanceStart" : "2017-01-01",
-		"performanceEnd" : "2017-12-31"
+		}
 	}, {
 		"measureId" : "130",
 		"value" : {
@@ -729,9 +709,7 @@
 			"eligiblePopulationException" : 20,
 			"performanceNotMet" : 180,
 			"eligiblePopulation" : 1000
-		},
-		"performanceStart" : "2017-01-01",
-		"performanceEnd" : "2017-12-31"
+		}
 	}, {
 		"measureId" : "371",
 		"value" : {
@@ -755,9 +733,7 @@
 				"eligiblePopulation" : 580,
 				"stratum" : "4MonthsOfStart"
 			} ]
-		},
-		"performanceStart" : "2017-01-01",
-		"performanceEnd" : "2017-12-31"
+		}
 	} ],
 	"PI_NUMERATOR_DENOMINATOR": [
 		{
