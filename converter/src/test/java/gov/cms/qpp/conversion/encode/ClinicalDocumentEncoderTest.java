@@ -114,7 +114,7 @@ class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "individual");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "2567891421");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,  "AR000000" );
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,  "AR000000" );
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		nodes = new ArrayList<>();
@@ -166,7 +166,7 @@ class ClinicalDocumentEncoderTest {
 	@Test
 	void testInternalEncodeEmptyEntityId() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,"");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,"");
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
@@ -174,13 +174,13 @@ class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.PRACTICE_ID))
 				.isNull();
 	}
 	@Test
 	void testInternalEncodeNullEntityId() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,null);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,null);
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
@@ -188,7 +188,7 @@ class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.PRACTICE_ID))
 				.isNull();
 	}
 

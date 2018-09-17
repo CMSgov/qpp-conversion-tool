@@ -252,7 +252,7 @@ class ClinicalDocumentDecoderTest {
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
 		objectUnderTest.decode(clinicalDocument, testParentNode);
 		assertWithMessage("Clinical Document contains the Entity Id")
-				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID))
 				.isEqualTo(ENTITY_ID_VALUE);
 	}
 
@@ -280,7 +280,7 @@ class ClinicalDocumentDecoderTest {
 
 		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
 			.isEqualTo(ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
-		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP))
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
 			.isEqualTo("x12345");
 	}
 

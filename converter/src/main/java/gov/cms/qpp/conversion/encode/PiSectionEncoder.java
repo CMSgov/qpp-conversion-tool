@@ -101,9 +101,9 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	 * @param parent holds the decoded node sections of clinical document
 	 */
 	private void encodeEntityId(JsonWrapper wrapper, Node parent) {
-		String entityId = parent.getValue(ClinicalDocumentDecoder.ENTITY_ID);
+		String entityId = parent.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
 		if (!StringUtils.isEmpty(entityId)) {
-			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID, entityId);
+			wrapper.putString(ClinicalDocumentDecoder.PRACTICE_ID, entityId);
 		}
 	}
 

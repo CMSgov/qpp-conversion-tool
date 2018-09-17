@@ -29,7 +29,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	public static final String ENTITY_TYPE = "entityType";
 	public static final String MIPS_PROGRAM_NAME = "mips";
 	public static final String CPCPLUS_PROGRAM_NAME = "cpcPlus";
-	public static final String ENTITY_ID = "practiceId";
+	public static final String PRACTICE_ID = "practiceId";
 	public static final String PRACTICE_SITE_ADDR = "practiceSiteAddr";
 	public static final String MIPS = "MIPS";
 	private static final String MIPS_GROUP = "MIPS_GROUP";
@@ -38,6 +38,7 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	static final String ENTITY_GROUP = "group";
 	static final String ENTITY_INDIVIDUAL = "individual";
 	public static final String ENTITY_VIRTUAL_GROUP = "virtualGroup";
+	public static final String ENTITY_ID = "entityId";
 	public static final String CPCPLUS = "CPCPLUS";
 
 	public ClinicalDocumentDecoder(Context context) {
@@ -75,8 +76,8 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 	private void setEntityIdOnNode(Element element, Node thisNode) {
 		if (Program.isCpc(thisNode)) {
 			Consumer<Attribute> consumer = id ->
-				thisNode.putValue(ENTITY_ID, id.getValue(), false);
-			setOnNode(element, getXpath(ENTITY_ID), consumer, Filters.attribute(), false);
+				thisNode.putValue(PRACTICE_ID, id.getValue(), false);
+			setOnNode(element, getXpath(PRACTICE_ID), consumer, Filters.attribute(), false);
 		}
 	}
 
@@ -140,9 +141,9 @@ public class ClinicalDocumentDecoder extends QrdaDecoder {
 
 	private void setVirtualGroupOnNode(Element element, Node thisNode) {
 		Consumer<? super Attribute> consumer = p ->
-			thisNode.putValue(ENTITY_VIRTUAL_GROUP,
+			thisNode.putValue(ENTITY_ID,
 				p.getValue());
-		setOnNode(element, getXpath(ENTITY_VIRTUAL_GROUP),
+		setOnNode(element, getXpath(ENTITY_ID),
 			consumer, Filters.attribute(), true);
 	}
 
