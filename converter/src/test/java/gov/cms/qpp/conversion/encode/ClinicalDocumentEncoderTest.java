@@ -115,6 +115,7 @@ class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "2567891421");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,  "AR000000" );
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,  "x12345" );
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		nodes = new ArrayList<>();
@@ -177,6 +178,7 @@ class ClinicalDocumentEncoderTest {
 		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.PRACTICE_ID))
 				.isNull();
 	}
+
 	@Test
 	void testInternalEncodeNullEntityId() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
@@ -209,6 +211,21 @@ class ClinicalDocumentEncoderTest {
 
 		assertThat(measurementSets).hasSize(1);
 		assertThat(value).isEqualTo(expectedSection);
+	}
+
+	@Test
+	void testVirtualGroupIdEncode() {
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+			.isEqualTo("x12345");
 	}
 
 
