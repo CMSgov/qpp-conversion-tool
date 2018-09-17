@@ -272,7 +272,7 @@ class ClinicalDocumentValidatorTest {
 	void testSuccessVirtualGroupId() {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP, "x12345");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "x12345");
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
