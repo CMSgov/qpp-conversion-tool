@@ -75,7 +75,7 @@ public class MetadataHelper {
 	 * @return Apm Entity ID value
 	 */
 	private static String findApm(Node node) {
-		return findValue(node, ClinicalDocumentDecoder.ENTITY_ID, TemplateId.CLINICAL_DOCUMENT);
+		return findValue(node, ClinicalDocumentDecoder.PRACTICE_ID, TemplateId.CLINICAL_DOCUMENT);
 	}
 
 	/**

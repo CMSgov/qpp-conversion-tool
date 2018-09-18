@@ -155,7 +155,9 @@ public enum ErrorCode implements LocalizedError {
 	MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID(71, "Two or more different measure section measure reference and results have "
 		+ "the same measure GUID. Please ensure that each measure section measure reference and results do not have "
 		+ "the same measure GUID."),
-	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing");
+	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing"),
+	VIRTUAL_GROUP_ID_REQUIRED(78, "The Program 'Mips Virtual Group' was found. The required entity id for this "
+		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name.");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
@@ -239,4 +241,5 @@ public enum ErrorCode implements LocalizedError {
 		static final String MESSAGE = "Please contact the Service Center for assistance via phone at "
 				+ "1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov";
 	}
+
 }
