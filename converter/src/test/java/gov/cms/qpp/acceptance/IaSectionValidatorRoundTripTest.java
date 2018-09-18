@@ -70,6 +70,6 @@ class IaSectionValidatorRoundTripTest {
 		Integer error = errors.getErrors().get(0).getDetails().get(0).getErrorCode();
 
 		assertThat(ErrorCode.getByCode(error))
-				.isEqualTo(ErrorCode.IA_MEASURE_MISSING_REPORTING_PARAM);
+				.isEqualTo(ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM);
 	}
 }

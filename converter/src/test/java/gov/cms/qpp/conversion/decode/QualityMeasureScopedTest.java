@@ -72,7 +72,6 @@ class QualityMeasureScopedTest {
 		Converter converter = new Converter(new PathSource(Paths.get(path)));
 		converter.getContext().setScope(Sets.newHashSet(testSection));
 		converter.transform();
-		System.out.println(converter.getReport().getReportDetails());
 		return converter.getReport().getDecoded();
 	}
 

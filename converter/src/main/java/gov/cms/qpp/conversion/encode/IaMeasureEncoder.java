@@ -39,6 +39,5 @@ public class IaMeasureEncoder extends QppOutputEncoder {
 				wrapper.putObject(VALUE, value.getBoolean(VALUE));
 			}
 		}
-		encodeReportingParameter(wrapper, node);
 	}
 }

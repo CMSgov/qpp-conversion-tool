@@ -212,9 +212,9 @@ class ScopedConversionTest {
 		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
 
 		//then
-//		assertWithMessage("Error count should be 7")
-//				.that(content.size())
-//				.isEqualTo(7);
+		assertWithMessage("Error count should be 7")
+				.that(content.size())
+				.isEqualTo(7);
 
 		assertWithMessage("Errant %s fails as expected", TemplateId.CLINICAL_DOCUMENT)
 				.that(getErrorMessages(content))
@@ -224,7 +224,7 @@ class ScopedConversionTest {
 							.format(AciNumeratorValidator.NUMERATOR_NAME).getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_MUST_BE_INTEGER.format(AciNumeratorValidator.NUMERATOR_NAME, "Bob").getMessage(),
 						ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(AciDenominatorValidator.DENOMINATOR_NAME, "empty").getMessage(),
-						ErrorCode.IA_MEASURE_MISSING_REPORTING_PARAM.getMessage(),
+						ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM.getMessage(),
 						ErrorCode.IA_MEASURE_INVALID_TYPE.getMessage());
 	}
 
@@ -271,7 +271,7 @@ class ScopedConversionTest {
 		assertWithMessage("Errant %s fails as expected", TemplateId.IA_SECTION)
 				.that(getErrorMessages(content))
 				.containsExactly(
-						ErrorCode.IA_MEASURE_MISSING_REPORTING_PARAM.getMessage(),
+						ErrorCode.IA_SECTION_MISSING_REPORTING_PARAM.getMessage(),
 					ErrorCode.IA_MEASURE_INVALID_TYPE.getMessage());
 	}
 
