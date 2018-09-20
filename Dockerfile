@@ -8,9 +8,8 @@ COPY ./ /usr/src/app/
 WORKDIR /usr/src/app/
 
 RUN cp -r ./tools/docker/docker-artifacts/* /usr/src/run/
-COPY ./Dockerfile ./nexus_env/* /usr/src/run/
 # override default maven settings
-RUN /usr/src/run/nexus/export_template.sh /usr/share/maven/ref/settings.xml /usr/src/run/nexus_env
+RUN /usr/src/run/nexus/export_template.sh /usr/share/maven/ref/settings.xml /usr/src/app/nexus_env
 RUN mvn install -Dmaven.test.skip -Djacoco.skip=true > /dev/null
 RUN cp ./rest-api/target/rest-api.jar /usr/src/run/
 
