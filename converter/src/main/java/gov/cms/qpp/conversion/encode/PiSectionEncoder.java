@@ -47,9 +47,7 @@ public class PiSectionEncoder extends QppOutputEncoder {
 		wrapper.putObject("measurements", measurementsWrapper);
 
 		Optional.ofNullable(node.getParent()).ifPresent(parent -> pilferParent(wrapper, parent));
-		if (node.getType() == TemplateId.PI_SECTION) {
-			encodeAciReportingParameter(wrapper, node);
-		}
+		encodeReportingParameter(wrapper, node);
 	}
 
 	private void encodeTopLevelValues(JsonWrapper wrapper, Node node) {
@@ -101,19 +99,19 @@ public class PiSectionEncoder extends QppOutputEncoder {
 	 * @param parent holds the decoded node sections of clinical document
 	 */
 	private void encodeEntityId(JsonWrapper wrapper, Node parent) {
-		String entityId = parent.getValue(ClinicalDocumentDecoder.ENTITY_ID);
+		String entityId = parent.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
 		if (!StringUtils.isEmpty(entityId)) {
-			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID, entityId);
+			wrapper.putString(ClinicalDocumentDecoder.PRACTICE_ID, entityId);
 		}
 	}
 
 	/**
-	 * Encodes the reporting parameter section for the ACI section
+	 * Encodes the reporting parameter section
 	 *
 	 * @param wrapper wrapper that holds the section
 	 * @param node PI Section Node
 	 */
-	private void encodeAciReportingParameter(JsonWrapper wrapper, Node node) {
+	private void encodeReportingParameter(JsonWrapper wrapper, Node node) {
 		JsonOutputEncoder reportingParamEncoder = encoders.get(TemplateId.REPORTING_PARAMETERS_ACT);
 		Node reportingChild = node.findFirstNode(TemplateId.REPORTING_PARAMETERS_ACT);
 		if (reportingChild == null) {

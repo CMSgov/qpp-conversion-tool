@@ -252,7 +252,7 @@ class ClinicalDocumentDecoderTest {
 		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
 		objectUnderTest.decode(clinicalDocument, testParentNode);
 		assertWithMessage("Clinical Document contains the Entity Id")
-				.that(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
+				.that(testParentNode.getValue(ClinicalDocumentDecoder.PRACTICE_ID))
 				.isEqualTo(ENTITY_ID_VALUE);
 	}
 
@@ -267,6 +267,21 @@ class ClinicalDocumentDecoderTest {
 		assertWithMessage("Clinical Document contains the Entity Id")
 				.that(testParentNode.getValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR))
 				.isEqualTo("testing123");
+	}
+
+	@Test
+	void decodeMipsVirtualGroup() {
+		Element clinicalDocument = makeClinicalDocument(ClinicalDocumentDecoder.MIPS_VIRTUAL_GROUP);
+		Node testParentNode = new Node();
+
+		ClinicalDocumentDecoder objectUnderTest = new ClinicalDocumentDecoder(new Context());
+		objectUnderTest.setNamespace(clinicalDocument.getNamespace());
+		objectUnderTest.decode(clinicalDocument, testParentNode);
+
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE))
+			.isEqualTo(ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+		assertThat(testParentNode.getValue(ClinicalDocumentDecoder.ENTITY_ID))
+			.isEqualTo("x12345");
 	}
 
 	private Element makeClinicalDocument(String programName) {
@@ -321,8 +336,12 @@ class ClinicalDocumentDecoderTest {
 		Element nationalProviderIdentifier = new Element("id", rootns)
 				.setAttribute("root", "2.16.840.1.113883.4.6")
 				.setAttribute("extension", "2567891421");
+		Element virtualGroup = new Element("id", rootns)
+			.setAttribute("root", "2.16.840.1.113883.3.249.5.2")
+			.setAttribute("extension", "x12345");
 
 		Element representedOrganization = prepareRepOrgWithTaxPayerId(rootns);
+		representedOrganization.addContent(virtualGroup);
 		assignedEntity.addContent(representedOrganization);
 		assignedEntity.addContent(nationalProviderIdentifier);
 		performer.addContent(assignedEntity);
