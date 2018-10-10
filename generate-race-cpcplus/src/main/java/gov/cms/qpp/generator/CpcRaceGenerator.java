@@ -1,7 +1,15 @@
 package gov.cms.qpp.generator;
 
 import com.google.common.base.Strings;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
 import gov.cms.qpp.conversion.model.TemplateId;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,12 +20,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.Namespace;
-import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
 
 
 public class CpcRaceGenerator {
@@ -64,10 +66,10 @@ public class CpcRaceGenerator {
 			rootElement.detach();
 			Namespace rootNamespace = rootElement.getNamespace();
 			Element measureSection =
-					rootElement.getChild("component", rootNamespace)
-							.getChild("structuredBody", rootNamespace)
-							.getChild("component", rootNamespace)
-							.getChild("section", rootNamespace);
+				rootElement.getChild("component", rootNamespace)
+					.getChild("structuredBody", rootNamespace)
+					.getChild("component", rootNamespace)
+					.getChild("section", rootNamespace);
 			List<Element> measureEntries = measureSection.getChildren("entry", rootNamespace);
 			Element performancePeriod = measureEntries.remove(0);
 			int index;
@@ -77,19 +79,19 @@ public class CpcRaceGenerator {
 
 				List<Element> components = organizer.getChildren("component", rootNamespace);
 
-				for (Element component: components) {
+				for (Element component : components) {
 					Element observation = component.getChild("observation", rootNamespace);
 
 					List<Element> templateIds = observation.getChildren("templateId", rootNamespace);
 					if (templateIds.stream()
-							.map(element -> element.getAttributeValue("root"))
-							.filter(templateIdRoot ->
-									TemplateId.MEASURE_DATA_CMS_V2.getRoot().equalsIgnoreCase(templateIdRoot))
-							.count() > 0) {
+						.map(element -> element.getAttributeValue("root"))
+						.filter(templateIdRoot ->
+							TemplateId.MEASURE_DATA_CMS_V2.getRoot().equalsIgnoreCase(templateIdRoot))
+						.count() > 0) {
 						observation.addContent(
-								createRaceElement(rootElement.getNamespacesInScope().get(2), "2076-8"));
+							createRaceElement(rootElement.getNamespacesInScope().get(2), "2076-8"));
 						observation.addContent(
-								createRaceElement(rootElement.getNamespacesInScope().get(2),"2131-1"));
+							createRaceElement(rootElement.getNamespacesInScope().get(2), "2131-1"));
 					}
 				}
 			}
@@ -97,7 +99,8 @@ public class CpcRaceGenerator {
 			document.addContent(rootElement);
 
 			return document;
-		} catch (Exception exc) {
+		}
+		catch (Exception exc) {
 			exc.printStackTrace();
 		}
 		return null;
@@ -105,7 +108,7 @@ public class CpcRaceGenerator {
 
 	static Element createRaceElement(Namespace xsiNamespace, String raceCode) {
 		Element entryRelationship = new Element("entryRelationship");
-		entryRelationship.setAttribute("typeCode","COMP");
+		entryRelationship.setAttribute("typeCode", "COMP");
 
 		Element observation = new Element("observation");
 		observation.setAttribute("classCode", "OBS");
@@ -125,7 +128,7 @@ public class CpcRaceGenerator {
 
 		Element raceTemplate = new Element("templateId");
 		raceTemplate.setAttribute("root", "2.16.840.1.113883.10.20.27.3.19");
-		raceTemplate.setAttribute("extension","2016-11-01");
+		raceTemplate.setAttribute("extension", "2016-11-01");
 
 		Element id = new Element("id");
 		id.setAttribute("root", "D5E68231-5760-11E7-1256-09173F13E4C5");
@@ -150,7 +153,7 @@ public class CpcRaceGenerator {
 		effectiveTime.addContent(high);
 
 		Element value = new Element("value");
-		value.setAttribute("type","CD", xsiNamespace);
+		value.setAttribute("type", "CD", xsiNamespace);
 		value.setAttribute("code", raceCode);
 		value.setAttribute("codeSystem", "2.16.840.1.113883.6.238");
 		value.setAttribute("codeSystemName", "Race &amp; Ethnicity - CDC");
@@ -168,23 +171,23 @@ public class CpcRaceGenerator {
 
 	static Element createAggregateCountEntry(Namespace xsiNamespace) {
 		Element aggregateCountEntry = new Element("entryRelationship");
-		aggregateCountEntry.setAttribute("typeCode","SUBJ");
-		aggregateCountEntry.setAttribute("inversionInd","true");
+		aggregateCountEntry.setAttribute("typeCode", "SUBJ");
+		aggregateCountEntry.setAttribute("inversionInd", "true");
 
 		Element observation = new Element("observation");
-		observation.setAttribute("classCode","OBS");
-		observation.setAttribute("moodCode","EVN");
+		observation.setAttribute("classCode", "OBS");
+		observation.setAttribute("moodCode", "EVN");
 
 		Element aggregateCountTemplateId = new Element("templateId");
-		aggregateCountTemplateId.setAttribute("root","2.16.840.1.113883.10.20.27.3.3");
+		aggregateCountTemplateId.setAttribute("root", "2.16.840.1.113883.10.20.27.3.3");
 		Element templateId = new Element("templateId");
-		templateId.setAttribute("root","2.16.840.1.113883.10.20.27.3.24");
+		templateId.setAttribute("root", "2.16.840.1.113883.10.20.27.3.24");
 
 		Element code = new Element("code");
-		code.setAttribute("code","MSRAGG");
-		code.setAttribute("codeSystem","2.16.840.1.113883.5.4");
-		code.setAttribute("codeSystemName","ActCode");
-		code.setAttribute("displayName","rate aggregation");
+		code.setAttribute("code", "MSRAGG");
+		code.setAttribute("codeSystem", "2.16.840.1.113883.5.4");
+		code.setAttribute("codeSystemName", "ActCode");
+		code.setAttribute("displayName", "rate aggregation");
 
 		Element statusCode = new Element("statusCode");
 		statusCode.setAttribute("code", "completed");
@@ -216,7 +219,8 @@ public class CpcRaceGenerator {
 			output.setFormat(Format.getPrettyFormat());
 			output.output(document, writer);
 			writer.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
