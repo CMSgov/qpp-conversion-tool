@@ -1,12 +1,14 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Registry;
 import gov.cms.qpp.conversion.model.TemplateId;
+
 import java.util.EnumSet;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -16,8 +18,8 @@ class DecoderTest {
 			TemplateId.CLINICAL_DOCUMENT,
 			TemplateId.MEASURE_SECTION_V2,
 			TemplateId.IA_SECTION,
-			TemplateId.ACI_SECTION,
-			TemplateId.ACI_AGGREGATE_COUNT,
+			TemplateId.PI_SECTION,
+			TemplateId.PI_AGGREGATE_COUNT,
 			TemplateId.MEASURE_DATA_CMS_V2,
 			TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2,
 			TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2,
@@ -26,20 +28,19 @@ class DecoderTest {
 			TemplateId.SEX_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2,
 			TemplateId.ETHNICITY_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2,
 			TemplateId.REPORTING_PARAMETERS_ACT,
-			TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS,
 			TemplateId.MEASURE_PERFORMED,
-			TemplateId.ACI_NUMERATOR_DENOMINATOR,
-			TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS,
-			TemplateId.ACI_NUMERATOR,
-			TemplateId.ACI_DENOMINATOR,
+			TemplateId.PI_NUMERATOR_DENOMINATOR,
+			TemplateId.PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS,
+			TemplateId.PI_NUMERATOR,
+			TemplateId.PI_DENOMINATOR,
 			TemplateId.IA_MEASURE);
 
 	@Test
 	void decodeTemplateIds() throws Exception {
-		Registry<InputDecoder> registry = new Registry<>(new Context(), Decoder.class);
+		Registry<QrdaDecoder> registry = new Registry<>(new Context(), Decoder.class);
 
 		for (TemplateId templateId : templateIds) {
-			InputDecoder decoder = registry.get(templateId);
+			QrdaDecoder decoder = registry.get(templateId);
 			assertWithMessage("%s returned node should not be null", templateId.name())
 					.that(decoder)
 					.isNotNull();

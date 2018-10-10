@@ -14,7 +14,7 @@ public class PathSource extends SkeletalSource {
 	private final Path path;
 
 	public PathSource(Path path) {
-		super(path != null && path.getFileName() != null ? path.getFileName().toString() : "");
+		super(fileName(path));
 		this.path = path;
 	}
 
@@ -44,5 +44,23 @@ public class PathSource extends SkeletalSource {
 		} catch (IOException exception) {
 			throw new UncheckedIOException(exception);
 		}
+	}
+
+	/**
+	 * Returns null
+	 */
+	@Override
+	public String getPurpose() {
+		return null;
+	}
+
+	private static final String fileName(Path path) {
+		if (path != null) {
+			Path fileName = path.getFileName();
+			if (fileName != null) {
+				return fileName.toString();
+			}
+		}
+		return "";
 	}
 }

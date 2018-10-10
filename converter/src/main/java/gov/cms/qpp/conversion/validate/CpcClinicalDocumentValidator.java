@@ -1,11 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.ZoneId;
-
-import com.google.common.base.Strings;
-
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.Program;
@@ -13,8 +8,16 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
+
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Validates the Clinical Document level node for the given program: CPC+
@@ -23,7 +26,9 @@ import gov.cms.qpp.conversion.util.EnvironmentHelper;
 public class CpcClinicalDocumentValidator extends NodeValidator {
 
 	static final String END_DATE_VARIABLE = "CPC_END_DATE";
-	private static final String NEVER_ENDING = "3000-01-01";
+	static final DateTimeFormatter END_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+	static final String DEFAULT_CPC_PLUS_CONTACT_EMAIL = "cpcplus@telligen.com";
+	static final String CPC_PLUS_CONTACT_EMAIL = "CPC_PLUS_CONTACT_EMAIL";
 	// LocalDate.now() creates extra unneeded clock objects before Java 9.
 	// It also uses the system clock, rather than Eastern Time.
 	private static final Clock CLOCK = Clock.system(ZoneId.of("US/Eastern"));
@@ -37,12 +42,14 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	protected void internalValidateSingleNode(Node node) {
 			validateSubmissionDate(node);
 
+			LocalizedError addressError = ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+				.format(Context.REPORTING_YEAR);
+
 			check(node)
-					.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS,
-							ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
+					.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
 					.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
-							ClinicalDocumentDecoder.ENTITY_ID)
-					.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.ENTITY_ID)
+							ClinicalDocumentDecoder.PRACTICE_ID)
+					.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
 					.childMinimum(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
 							1, TemplateId.MEASURE_SECTION_V2);
 
@@ -57,9 +64,9 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	 * @param node The node to validate
 	 */
 	private void validateApmEntityId(Node node) {
-		String apmEntityId = node.getValue(ClinicalDocumentDecoder.ENTITY_ID);
+		String apmEntityId = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
 
-		if (Strings.isNullOrEmpty(apmEntityId)) {
+		if (StringUtils.isEmpty(apmEntityId)) {
 			return;
 		}
 
@@ -76,7 +83,11 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	private void validateSubmissionDate(Node node) {
 		LocalDate endDate = endDate();
 		if (now().isAfter(endDate)) {
-			addValidationError(Detail.forErrorAndNode(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(endDate), node));
+			String formatted = endDate.format(END_DATE_FORMAT);
+			addValidationError(Detail.forErrorAndNode(
+				ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formatted,
+					EnvironmentHelper.getOrDefault(CPC_PLUS_CONTACT_EMAIL, DEFAULT_CPC_PLUS_CONTACT_EMAIL)),
+				node));
 		}
 	}
 
@@ -88,9 +99,13 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	}
 
 	/**
-	 * @return the cpc+ end date, or 3000-01-01 if none is set
+	 * @return the configured cpc+ end date, or {@link LocalDate#MAX} if none is set
 	 */
 	private LocalDate endDate() {
-		return LocalDate.parse(EnvironmentHelper.getOrDefault(END_DATE_VARIABLE, NEVER_ENDING));
+		String endDate = EnvironmentHelper.get(END_DATE_VARIABLE);
+		if (endDate == null) {
+			return LocalDate.MAX;
+		}
+		return LocalDate.parse(endDate);
 	}
 }

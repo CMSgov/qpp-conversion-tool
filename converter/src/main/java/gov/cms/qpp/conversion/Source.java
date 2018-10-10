@@ -27,4 +27,11 @@ public interface Source {
 	 * @return The source's size.
 	 */
 	long getSize();
+
+	/**
+	 * Gets the purpose of the source creation
+	 *
+	 * @return The purpose of the source creation, for example \"Test\"
+	 */
+	String getPurpose();
 }

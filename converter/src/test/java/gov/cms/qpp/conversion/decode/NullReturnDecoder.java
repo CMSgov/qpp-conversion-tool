@@ -8,14 +8,14 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 
 @Decoder(TemplateId.NULL_RETURN)
-public class NullReturnDecoder extends QrdaXmlDecoder {
+public class NullReturnDecoder extends QrdaDecoder {
 
 	public NullReturnDecoder(Context context) {
 		super(context);
 	}
 
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisnode) {
+	protected DecodeResult decode(Element element, Node thisnode) {
 		return null;
 	}
 }

@@ -1,14 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Set;
-
+import gov.cms.qpp.conversion.Context;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +15,19 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+
 class ClinicalDocumentValidatorTest {
 
-	private static final String CLINICAL_DOCUMENT_ERROR_FILE = "angerClinicalDocumentValidations.err.json";
+	private static final String CLINICAL_DOCUMENT_ERROR_FILE = "angerClinicalDocumentValidations-error.json";
 
 	@AfterEach
 	void cleanup() throws IOException {
@@ -77,7 +79,7 @@ class ClinicalDocumentValidatorTest {
 
 		assertWithMessage("error should be about missing section node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD);
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD);
 	}
 
 	@Test
@@ -92,7 +94,7 @@ class ClinicalDocumentValidatorTest {
 
 		assertWithMessage("error should be about missing section node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_ACI_OR_IA_OR_ECQM_CHILD);
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_PI_OR_IA_OR_ECQM_CHILD);
 	}
 
 	@Test
@@ -110,8 +112,7 @@ class ClinicalDocumentValidatorTest {
 
 		assertWithMessage("error should be about missing missing program name")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME,
-						ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME);
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(ClinicalDocumentValidator.VALID_PROGRAM_NAMES));
 	}
 
 	@Test
@@ -161,7 +162,7 @@ class ClinicalDocumentValidatorTest {
 
 		assertWithMessage("Should contain one error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_ACI_SECTIONS);
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_CONTAINS_DUPLICATE_PI_SECTIONS);
 	}
 
 	@Test
@@ -213,12 +214,13 @@ class ClinicalDocumentValidatorTest {
 	}
 
 	@Test
-	void testClinicalDocumentValidationParsesMultipleErrors() throws IOException {
+	void testClinicalDocumentValidationParsesMultipleErrors() {
 		//setup
 		Path path = Paths.get("src/test/resources/negative/angerClinicalDocumentValidations.xml");
 
 		//execute
-		Converter converter = new Converter(new PathSource(path));
+		Context context = new Context();
+		Converter converter = new Converter(new PathSource(path), context);
 		AllErrors allErrors = new AllErrors();
 		try {
 			converter.transform();
@@ -228,13 +230,13 @@ class ClinicalDocumentValidatorTest {
 
 		List<Detail> errors = getErrors(allErrors);
 
-		assertWithMessage("Must have 5 errors")
-				.that(errors).hasSize(5);
+		assertWithMessage("Must have 3 errors")
+				.that(errors).hasSize(3);
 
 		assertWithMessage("Must contain the correct errors")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsAllOf(ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME,
-						ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME,
+				.containsAllOf(
+						ErrorCode.CLINICAL_DOCUMENT_MISSING_PROGRAM_NAME.format(ClinicalDocumentValidator.VALID_PROGRAM_NAMES),
 						ErrorCode.REPORTING_PARAMETERS_MUST_CONTAIN_SINGLE_PERFORMANCE_START);
 	}
 
@@ -243,14 +245,42 @@ class ClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidClinicalDocumentNode();
 		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
 		clinicalDocumentNode.addChildNodes(aciSectionNode);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME,"Invalid program name");
+		String invalidProgramName = "Invalid program name";
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME,invalidProgramName);
 		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
 		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must contain the error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME);
+				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME.format(invalidProgramName, ClinicalDocumentValidator.VALID_PROGRAM_NAMES));
 	}
+
+	@Test
+	void testMissingVirtualGroupId() {
+		Node clinicalDocumentNode = createValidClinicalDocumentNode();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
+		clinicalDocumentNode.addChildNode(aciSectionNode);
+		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
+		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
+
+		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.VIRTUAL_GROUP_ID_REQUIRED);
+	}
+
+	@Test
+	void testSuccessVirtualGroupId() {
+		Node clinicalDocumentNode = createValidClinicalDocumentNode();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "x12345");
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
+		clinicalDocumentNode.addChildNode(aciSectionNode);
+		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
+		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
+
+		assertThat(errors).isEmpty();
+	}
+
 
 	private List<Detail> getErrors(AllErrors content) {
 		return content.getErrors().get(0).getDetails();
@@ -265,7 +295,7 @@ class ClinicalDocumentValidatorTest {
 	}
 
 	private Node createAciSectionNode(Node clinicalDocumentNode) {
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION, clinicalDocumentNode);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION, clinicalDocumentNode);
 		aciSectionNode.putValue("category", "aci");
 		return aciSectionNode;
 	}

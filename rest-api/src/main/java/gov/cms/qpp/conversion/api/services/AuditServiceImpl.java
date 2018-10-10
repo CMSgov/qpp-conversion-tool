@@ -1,24 +1,23 @@
 package gov.cms.qpp.conversion.api.services;
 
 
-import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper.Outcome;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
+import java.io.InputStream;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-
 /**
- * Service for storing {@link Metadata} by {@link Converter.ConversionReport} outcome
+ * Service for storing {@link Metadata} by {@link ConversionReport} outcome
  */
 @Service
 public class AuditServiceImpl implements AuditService {
@@ -49,7 +48,7 @@ public class AuditServiceImpl implements AuditService {
 	 * @return future
 	 */
 	@Override
-	public CompletableFuture<Void> success(Converter.ConversionReport conversionReport) {
+	public CompletableFuture<Metadata> success(ConversionReport conversionReport) {
 		if (noAudit()) {
 			return null;
 		}
@@ -64,7 +63,7 @@ public class AuditServiceImpl implements AuditService {
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(qrdaSource).thenAccept(metadata::setSubmissionLocator),
 				storeContent(qppSource).thenAccept(metadata::setQppLocator));
-		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
+		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown)).thenApply(ignore -> metadata);
 	}
 
 	/**
@@ -74,7 +73,7 @@ public class AuditServiceImpl implements AuditService {
 	 * @return future
 	 */
 	@Override
-	public CompletableFuture<Void> failConversion(Converter.ConversionReport conversionReport) {
+	public CompletableFuture<Void> failConversion(ConversionReport conversionReport) {
 		if (noAudit()) {
 			return null;
 		}
@@ -89,7 +88,7 @@ public class AuditServiceImpl implements AuditService {
 		CompletableFuture<Void> allWrites = CompletableFuture.allOf(
 				storeContent(validationErrorSource).thenAccept(metadata::setConversionErrorLocator),
 				storeContent(qrdaSource).thenAccept(metadata::setSubmissionLocator));
-		return allWrites.whenComplete((nada, thrown) -> persist(metadata, thrown));
+		return allWrites.whenComplete((ignore, thrown) -> persist(metadata, thrown));
 	}
 
 	/**
@@ -99,7 +98,7 @@ public class AuditServiceImpl implements AuditService {
 	 * @return future
 	 */
 	@Override
-	public CompletableFuture<Void> failValidation(Converter.ConversionReport conversionReport) {
+	public CompletableFuture<Void> failValidation(ConversionReport conversionReport) {
 		if (noAudit()) {
 			return null;
 		}
@@ -137,15 +136,16 @@ public class AuditServiceImpl implements AuditService {
 	}
 
 	/**
-	 * Initializes {@link Metadata} from the {@link Converter.ConversionReport} and conversion outcome
+	 * Initializes {@link Metadata} from the {@link ConversionReport} and conversion outcome
 	 *
 	 * @param report Object containing metadata information
 	 * @param outcome Status of the conversion
 	 * @return Constructed metadata
 	 */
-	private Metadata initMetadata(Converter.ConversionReport report, MetadataHelper.Outcome outcome) {
+	private Metadata initMetadata(ConversionReport report, MetadataHelper.Outcome outcome) {
 		Metadata metadata = MetadataHelper.generateMetadata(report.getDecoded(), outcome);
 		metadata.setFileName(report.getQrdaSource().getName());
+		metadata.setPurpose(report.getPurpose());
 		return metadata;
 	}
 
@@ -157,7 +157,7 @@ public class AuditServiceImpl implements AuditService {
 	 */
 	private CompletableFuture<String> storeContent(Source sourceToStore) {
 		UUID key = UUID.randomUUID();
-		return storageService.store(key.toString(), sourceToStore.toInputStream(), sourceToStore.getSize());
+		return storageService.store(key.toString(), sourceToStore::toInputStream, sourceToStore.getSize());
 	}
 
 	/**

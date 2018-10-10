@@ -1,14 +1,16 @@
 package gov.cms.qpp.conversion.validate;
 
+import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.Validator;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
+import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
 
 /**
  * Validates Aggregate Count
  */
-@Validator(TemplateId.ACI_AGGREGATE_COUNT)
+@Validator(TemplateId.PI_AGGREGATE_COUNT)
 public class AggregateCountValidator extends NodeValidator {
 
 	/**
@@ -24,7 +26,11 @@ public class AggregateCountValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		check(node)
-			.singleValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR, "aggregateCount")
-			.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, "aggregateCount");
+			.singleValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_SINGULAR
+				.format(node.getParent().getType().name(),
+					DuplicationCheckHelper.calculateDuplications(node, AggregateCountDecoder.AGGREGATE_COUNT)),
+				AggregateCountDecoder.AGGREGATE_COUNT)
+			.intValue(ErrorCode.AGGREGATE_COUNT_VALUE_NOT_INTEGER, AggregateCountDecoder.AGGREGATE_COUNT);
+
 	}
 }

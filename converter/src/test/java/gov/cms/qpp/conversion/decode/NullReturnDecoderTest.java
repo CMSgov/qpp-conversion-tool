@@ -20,7 +20,7 @@ class NullReturnDecoderTest {
 				+ "</root>";
 
 		// Get the root wrapper node
-		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		// We get a placeholder when the decoder returns null Node
 		assertWithMessage("root node should have one child node")
 				.that(root.getType())

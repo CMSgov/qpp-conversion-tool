@@ -8,12 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.jdom2.Element;
+import org.jdom2.xpath.XPathHelper;
+
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Lists;
 
 /**
  * Represents a node of data that should be converted. Consists of a key/value
@@ -21,6 +27,9 @@ import com.google.common.base.MoreObjects;
  * Nodes can contain other nodes as children to create a hierarchy.
  */
 public class Node {
+
+	public static final int DEFAULT_LOCATION_NUMBER = -1;
+
 	private final List<Node> childNodes = new ArrayList<>();
 	private final Map<String, String> data = new HashMap<>();
 	private final Map<String, List<String>> duplicateData = new HashMap<>();
@@ -29,8 +38,11 @@ public class Node {
 	private Node parent;
 	private boolean validated;
 
+	private Element elementForLocation;
 	private String defaultNsUri;
 	private String path;
+	private int line = DEFAULT_LOCATION_NUMBER;
+	private int column = DEFAULT_LOCATION_NUMBER;
 
 	/**
 	 * Default constructor initializes internal list of Nodes
@@ -70,6 +82,18 @@ public class Node {
 	}
 
 	/**
+	 * Returns the string value of the xml fragment parsed into this Node or defaults to the passed in value
+	 *
+	 * @param name String key for the value
+	 * @param defaultValue default value if the original value is null
+	 * @return node value or default value
+	 */
+	public String getValueOrDefault(String name, String defaultValue) {
+		String nodeValue = getValue(name);
+		return nodeValue != null ? nodeValue : defaultValue;
+	}
+
+	/**
 	 * getDuplicateValues returns the string value of the xml fragment parsed into this Node
 	 *
 	 * @param name String key for the value
@@ -94,17 +118,13 @@ public class Node {
 	 *
 	 * @param name  String key to store value under
 	 * @param value String that is stored with this xml parsed Node
+	 * @param replace replace existing value
 	 */
 	public void putValue(String name, String value, boolean replace) {
 		if (getValue(name) == null || replace) {
 			data.put(name, value);
 		} else {
-			List<String> duplicates = Optional.ofNullable(duplicateData.get(name))
-					.orElseGet(() -> {
-				duplicateData.put(name, new ArrayList<>());
-				return duplicateData.get(name);
-			});
-			duplicates.add(value);
+			duplicateData.computeIfAbsent(name, ignore -> new ArrayList<>()).add(value);
 		}
 	}
 
@@ -139,6 +159,7 @@ public class Node {
 	/**
 	 * Returns a list of child Nodes for each template id specified
 	 *
+	 * @param templateIds we're looking for these.
 	 * @return List of matching child Nodes.
 	 */
 	public Stream<Node> getChildNodes(TemplateId... templateIds) {
@@ -193,7 +214,7 @@ public class Node {
 	 * @param childNode Node
 	 */
 	public void addChildNode(Node childNode) {
-		if (childNode == null || childNode == this) {
+		if (childNode == null || childNode == this) { // checking identity equals on purpose
 			return;
 		}
 		this.childNodes.add(childNode);
@@ -206,10 +227,6 @@ public class Node {
 	 * @return <tt>true</tt> if a child matched such that it was deleted.
 	 */
 	public boolean removeChildNode(Node childNode) {
-		if (childNode == null || childNode == this) {
-			return false;
-		}
-
 		return this.childNodes.remove(childNode);
 	}
 
@@ -259,21 +276,70 @@ public class Node {
 	}
 
 	/**
+	 * setLine sets the line number of the xml element backing the node
+	 *
+	 * @param line Line number
+	 */
+	public void setLine(int line) {
+		this.line = line;
+	}
+
+	/**
+	 * getLine returns the line number of the xml element backing the node
+	 *
+	 * @return line
+	 */
+	public int getLine() {
+		return line;
+	}
+
+	/**
+	 * setColumn sets the column number of the xml element backing the node
+	 *
+	 * @param column Column number
+	 */
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
+	/**
+	 * getColumn returns the column number of the xml element backing the node
+	 *
+	 * @return column
+	 */
+	public int getColumn() {
+		return column;
+	}
+
+	/**
 	 * Returns the path from the original document this {@code Node} is associated with.
 	 *
 	 * @return The path.
 	 */
-	public String getPath() {
+	public String getOrComputePath() {
+		if (path == null && elementForLocation != null) {
+			path = XPathHelper.getAbsolutePath(elementForLocation);
+		}
+
 		return path;
 	}
 
 	/**
-	 * Sets the path from the original document that this {@code Node} is associated with.
+	 * Returns the element location of the node
 	 *
-	 * @param newPath The path.
+	 * @return The element location of the node.
 	 */
-	public void setPath(String newPath) {
-		path = newPath;
+	public Element getElementForLocation() {
+		return elementForLocation;
+	}
+
+	/**
+	 * Sets the element location of the node
+	 *
+	 * @param elementForLocation The element location for the node
+	 */
+	public void setElementForLocation(Element elementForLocation) {
+		this.elementForLocation = elementForLocation;
 	}
 
 	/**
@@ -315,16 +381,23 @@ public class Node {
 	 */
 	private List<Node> findNode(TemplateId templateId, Predicate<List<Node>> bail) {
 		List<Node> foundNodes = new ArrayList<>();
-		if (this.type == templateId) {
-			foundNodes.add(this);
-		}
-		for (Node childNode : childNodes) {
+		List<Node> toSearch = Lists.newArrayList(childNodes);
+		Consumer<Node> templateCheck = node -> {
+			if (node.getType() == templateId) {
+				foundNodes.add(node);
+			}
+		};
+		templateCheck.accept(this);
+
+		for (int i = 0; i < toSearch.size(); i++) {
 			if (bail != null && bail.test(foundNodes)) {
 				break;
 			}
-			List<Node> matches = childNode.findNode(templateId, bail);
-			foundNodes.addAll(matches);
+			Node childNode = toSearch.get(i);
+			templateCheck.accept(childNode);
+			toSearch.addAll(childNode.getChildNodes());
 		}
+
 		return foundNodes;
 	}
 
@@ -360,7 +433,7 @@ public class Node {
 	 * @see Node#isNotValidated()
 	 * @see Node#setValidated(boolean)
 	 */
-	public boolean isValidated() {
+	boolean isValidated() {
 		return validated;
 	}
 
@@ -386,6 +459,34 @@ public class Node {
 	}
 
 	/**
+	 * Finds the first parent of this {@code Node} that has a human readable {@link TemplateId}.
+	 *
+	 * @return The parent node.
+	 */
+	public Node findParentNodeWithHumanReadableTemplateId() {
+		return findParentNodeWithHumanReadableTemplateId(this);
+	}
+
+	/**
+	 * Recursively searches for a parent {@code Node} with a human readable {@link TemplateId}.
+	 *
+	 * @param node The {@code Node} to see if it or its parent has a human readable {@link TemplateId}
+	 * @return The passed in {@code Node} if it has a human readable {@link TemplateId}, {@code null} if this {@code Node} is {@code null}, or
+	 * whatever the parent {@code Node} has.
+	 */
+	private Node findParentNodeWithHumanReadableTemplateId(Node node) {
+		if (node == null) {
+			return null;
+		}
+
+		if (!StringUtils.isEmpty(node.getType().getHumanReadableTitle())) {
+			return node;
+		}
+
+		return findParentNodeWithHumanReadableTemplateId(node.getParent());
+	}
+
+	/**
 	 * creates a readable representation of this {@code Node}.
 	 *
 	 * @return A string representation
@@ -396,10 +497,13 @@ public class Node {
 				.add("type", type)
 				.add("data", data)
 				.add("childNodesSize", childNodes.size())
-				.add("parent", parent == null ? null : "not null")
+				.add("parent", parent == null ? "null" : "not null")
 				.add("validated", validated)
 				.add("defaultNsUri", defaultNsUri)
 				.add("path", path)
+				.add("elementForLocation", elementForLocation)
+				.add("line", line)
+				.add("column", column)
 				.toString();
 	}
 
@@ -419,17 +523,19 @@ public class Node {
 			return false;
 		}
 
-		final Node node = (Node)o;
+		final Node node = (Node) o;
 
-		boolean halfEquals = isValidated() == node.isValidated()
-			&& Objects.equals(getChildNodes(), node.getChildNodes())
-			&& Objects.equals(data, node.data)
-			&& Objects.equals(duplicateData, node.duplicateData);
-
-		return halfEquals
-			&& getType() == node.getType()
-			&& Objects.equals(getDefaultNsUri(), node.getDefaultNsUri())
-			&& Objects.equals(getPath(), node.getPath());
+		return new EqualsBuilder().append(isValidated(), node.isValidated())
+				.append(getChildNodes(), node.getChildNodes())
+				.append(data, node.data)
+				.append(duplicateData, node.duplicateData)
+				.append(getType(), node.getType())
+				.append(getDefaultNsUri(), node.getDefaultNsUri())
+				.append(path, node.path)
+				.append(getElementForLocation(), node.getElementForLocation())
+				.append(getLine(), node.getLine())
+				.append(getColumn(), node.getColumn())
+				.isEquals();
 	}
 
 	/**
@@ -439,6 +545,8 @@ public class Node {
 	 */
 	@Override
 	public final int hashCode() {
-		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(), getPath());
+		return Objects.hash(getChildNodes(), data, duplicateData, getType(), isValidated(), getDefaultNsUri(),
+				path, getElementForLocation(), getLine(), getColumn());
 	}
+
 }

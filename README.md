@@ -98,6 +98,8 @@ To enable the public submission validation API, modify the `.env` file with
 `VALIDATION_URL=https://qpp.cms.gov/api/submissions/public/validate-submission` and then
 [restart the ReST API endpoint](#starting-the-api-endpoint).
 
+Ensure the environment variable `CPC_END_DATE` is set to a valid date, in the format `YYYY-MM-DD`, or a validation error may be thrown.
+
 ### Command Line
 
 For the examples below, make sure you're in the `qpp-conversion-tool` directory.
@@ -124,7 +126,7 @@ View all commands with `convert.sh`.
 
 ## Sample files
 
-Sample QRDA-III files that cover all of the eCQM, ACI, and IA measures as well as other scenarios
+Sample QRDA-III files that cover all of the eCQM, PI, and IA measures as well as other scenarios
 can be found in the [sample-files](sample-files/README.md) folder.
 
 ## Want to Contribute?

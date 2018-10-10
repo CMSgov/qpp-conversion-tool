@@ -1,6 +1,12 @@
 package gov.cms.qpp.acceptance.cpc;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.model.error.AllErrors;
@@ -8,11 +14,6 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -55,7 +56,7 @@ class CpcPlusAcceptanceTest {
 		return getXml(FAILURE);
 	}
 
-	static Stream<Path> getXml(Path directory) {
+	private static Stream<Path> getXml(Path directory) {
 		try {
 			return Files.list(directory).filter(CpcPlusAcceptanceTest::isXml);
 		} catch (IOException e) {
@@ -63,13 +64,13 @@ class CpcPlusAcceptanceTest {
 		}
 	}
 
-	static boolean isXml(Path path) {
+	private static boolean isXml(Path path) {
 		return path.toString().endsWith(".xml");
 	}
 
 	@ParameterizedTest
 	@MethodSource("successData")
-	void testCpcPlusFileSuccesses(Path entry) throws IOException {
+	void testCpcPlusFileSuccesses(Path entry) {
 		AllErrors errors = null;
 
 		Converter converter = new Converter(new PathSource(entry));
@@ -85,7 +86,7 @@ class CpcPlusAcceptanceTest {
 
 	@ParameterizedTest
 	@MethodSource("failureData")
-	void testCpcPlusFileFailures(Path entry) throws IOException {
+	void testCpcPlusFileFailures(Path entry) {
 		String fileName = entry.getFileName().toString();
 		assertWithMessage("No associated entry in fixture.json for the file %s", fileName).that(fixtureValues).containsKey(fileName);
 
@@ -109,12 +110,12 @@ class CpcPlusAcceptanceTest {
 					.that(details).hasSize(totalErrors);
 		}
 
-		expectedErrors.getErrorData().stream().forEach(expectedError -> {
+		expectedErrors.getErrorData().forEach(expectedError -> {
 			Integer expectedErrorCode = expectedError.getErrorCode();
 			String expectedErrorMessage = expectedError.getMessage();
 
 			long matchingActualErrors = details.stream()
-				.filter(actualError -> actualError.getErrorCode() == expectedErrorCode)
+				.filter(actualError -> actualError.getErrorCode().equals(expectedErrorCode))
 				.filter(actualError -> messageComparison(actualError.getMessage(), expectedErrorMessage))
 				.count();
 
@@ -127,7 +128,7 @@ class CpcPlusAcceptanceTest {
 
 	private boolean messageComparison(String actual, String expected) {
 		return actual.equals(expected) ||
-				actual.replaceAll("[\\[()\\]]", "")
-						.matches(expected.replaceAll("[()]", ""));
+				actual.replaceAll("[\\[()\\]\\+]", "")
+						.matches(expected.replaceAll("[()+]", ""));
 	}
 }

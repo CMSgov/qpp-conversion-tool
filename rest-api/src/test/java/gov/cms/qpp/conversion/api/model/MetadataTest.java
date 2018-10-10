@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.model;
 
-
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,7 +15,7 @@ import static junit.framework.TestCase.fail;
 
 class MetadataTest {
 
-	private final String EXPECTED_DATE = "2017-12-12T08:30:30.285Z";
+	private static final String EXPECTED_DATE = "2018-12-12T08:30:30.285Z";
 
 	@Test
 	void equalsContract() {

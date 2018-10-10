@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
 
 import com.google.common.truth.Truth;
 
@@ -26,23 +25,18 @@ class HealthCheckControllerTest {
 	private VersionService version;
 
 	@Test
-	void testHealthCheckIsResponseStatusOk() {
-		Truth.assertThat(service.health().getStatusCode()).isSameAs(HttpStatus.OK);
-	}
-
-	@Test
 	void testHealthCheckContainsAllSystemProperties() {
 		List<String> systemProperties = System.getProperties().keySet().stream().map(String::valueOf)
 				.collect(Collectors.toList());
 
-		Truth.assertThat(service.health().getBody().getSystemProperties()).containsExactlyElementsIn(systemProperties);
+		Truth.assertThat(service.health().getSystemProperties()).containsExactlyElementsIn(systemProperties);
 	}
 
 	@Test
 	void testHealthCheckContainsAllEnvironmentVariables() {
 		Set<String> environmentVariables = System.getenv().keySet();
 
-		Truth.assertThat(service.health().getBody().getEnvironmentVariables())
+		Truth.assertThat(service.health().getEnvironmentVariables())
 				.containsExactlyElementsIn(environmentVariables);
 	}
 
@@ -50,7 +44,7 @@ class HealthCheckControllerTest {
 	void testHealthCheckContainsImplementationVersion() {
 		Mockito.when(version.getImplementationVersion()).thenReturn("Mock Version");
 
-		Truth.assertThat(service.health().getBody().getImplementationVersion()).isEqualTo("Mock Version");
+		Truth.assertThat(service.health().getImplementationVersion()).isEqualTo("Mock Version");
 	}
 
 }

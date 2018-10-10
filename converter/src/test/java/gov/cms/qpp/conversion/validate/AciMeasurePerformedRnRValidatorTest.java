@@ -22,7 +22,7 @@ class AciMeasurePerformedRnRValidatorTest {
 	void init() {
 		validator = new AciMeasurePerformedRnRValidator();
 
-		aciMeasurePerformedRnRNode = new Node(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS);
+		aciMeasurePerformedRnRNode = new Node(TemplateId.PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS);
 		aciMeasurePerformedRnRNode.putValue("measureId", "ACI_INFBLO_1");
 
 		Node measurePerformed = new Node(TemplateId.MEASURE_PERFORMED);
@@ -30,28 +30,28 @@ class AciMeasurePerformedRnRValidatorTest {
 	}
 
 	@Test
-	void testValidateGoodData() throws Exception {
+	void testValidateGoodData() {
 		Set<Detail> errors = run();
 		assertWithMessage("no errors should be present")
 				.that(errors).isEmpty();
 	}
 
 	@Test
-	void testWithNoMeasureId() throws Exception {
+	void testWithNoMeasureId(){
 		aciMeasurePerformedRnRNode.removeValue("measureId");
 		Set<Detail> errors = run();
 		assertWithMessage("Should result in a MEASURE_ID_IS_REQUIRED error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR);
+				.containsExactly(ErrorCode.PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR);
 	}
 
 	@Test
-	void testWithNoChildren() throws Exception {
+	void testWithNoChildren() {
 		aciMeasurePerformedRnRNode.getChildNodes().clear();
 		Set<Detail> errors = run();
-		assertWithMessage("Validation error size should be 1")
+		assertWithMessage("Validation error size should be 2")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_MISSING);
+				.containsExactly(ErrorCode.PI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT);
 	}
 
 	private Set<Detail> run() {

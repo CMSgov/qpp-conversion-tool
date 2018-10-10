@@ -1,10 +1,6 @@
 package gov.cms.qpp.conversion.encode;
 
 import static com.google.common.truth.Truth.assertWithMessage;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -24,8 +20,8 @@ class EncoderTest {
 			TemplateId.CLINICAL_DOCUMENT,
 			TemplateId.MEASURE_SECTION_V2,
 			TemplateId.IA_SECTION,
-			TemplateId.ACI_SECTION,
-			TemplateId.ACI_AGGREGATE_COUNT,
+			TemplateId.PI_SECTION,
+			TemplateId.PI_AGGREGATE_COUNT,
 			TemplateId.MEASURE_DATA_CMS_V2,
 			TemplateId.MEASURE_REFERENCE_RESULTS_CMS_V2,
 			TemplateId.PAYER_SUPPLEMENTAL_DATA_ELEMENT_CMS_V2,
@@ -36,10 +32,10 @@ class EncoderTest {
 			TemplateId.REPORTING_PARAMETERS_ACT,
 			TemplateId.CONTINUOUS_VARIABLE_MEASURE_VALUE_CMS,
 			TemplateId.MEASURE_PERFORMED,
-			TemplateId.ACI_NUMERATOR_DENOMINATOR,
-			TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS,
-			TemplateId.ACI_NUMERATOR,
-			TemplateId.ACI_DENOMINATOR,
+			TemplateId.PI_NUMERATOR_DENOMINATOR,
+			TemplateId.PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS,
+			TemplateId.PI_NUMERATOR,
+			TemplateId.PI_DENOMINATOR,
 			TemplateId.IA_MEASURE);
 
 	/**

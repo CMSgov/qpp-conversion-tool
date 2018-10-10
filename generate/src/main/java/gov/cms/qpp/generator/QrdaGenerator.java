@@ -5,7 +5,7 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
 import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -57,7 +57,7 @@ public class QrdaGenerator {
 		generator.generate();
 	}
 
-	private QrdaGenerator() throws IOException, TransformerConfigurationException {
+	private QrdaGenerator() {
 		MustacheFactory mf = new DefaultMustacheFactory();
 		submission = mf.compile("submission-template.xml");
 		subpopulation = mf.compile("subpopulation-template.xml");
@@ -68,11 +68,11 @@ public class QrdaGenerator {
 		ia = filterIaMeasures();
 	}
 
-	private List<MeasureConfig> filterQualityMeasures() throws IOException {
+	private List<MeasureConfig> filterQualityMeasures() {
 		return measureConfigs.stream()
-				.filter(measureConfig -> measureConfig.getCategory().equals("quality") &&
-						measureConfig.getElectronicMeasureId() != null &&
-						!measureConfig.getElectronicMeasureId().isEmpty())
+				.filter(measureConfig -> measureConfig.getCategory().equals("quality")
+						&& measureConfig.getElectronicMeasureId() != null
+						&& !measureConfig.getElectronicMeasureId().isEmpty())
 				.collect(Collectors.toList());
 	}
 
@@ -99,19 +99,19 @@ public class QrdaGenerator {
 	private void prettyPrint(StringWriter writer) throws TransformerException, IOException,
 			SAXException, ParserConfigurationException, XPathExpressionException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		DocumentBuilder documentBuilder = dbFactory.newDocumentBuilder();
 		InputSource is = new InputSource(new InputStreamReader(
 				new ByteArrayInputStream(writer.toString().getBytes())));
 
-		Document original = dBuilder.parse(is);
+		Document original = documentBuilder.parse(is);
 		removeWhitespace(original);
 		moreThanMeetsTheEye().transform(new DOMSource(original), getDestination());
 	}
 
 	private void removeWhitespace(Document document) throws XPathExpressionException {
 		document.normalize();
-		XPath xPath = XPathFactory.newInstance().newXPath();
-		NodeList nodeList = (NodeList) xPath.evaluate("//text()[normalize-space()='']",
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nodeList = (NodeList) xpath.evaluate("//text()[normalize-space()='']",
 				document,
 				XPathConstants.NODESET);
 
@@ -140,17 +140,17 @@ public class QrdaGenerator {
 	}
 
 	private enum PopulationValue {
-		IPOP(SubPopulations.IPOP, 100),
-		DENOM(SubPopulations.DENOM, 100),
-		DENEX(SubPopulations.DENEX, 10),
-		DENEXCEP(SubPopulations.DENEXCEP, 10),
-		NUMER(SubPopulations.NUMER, 80);
+		IPOP(SubPopulationLabel.IPOP, 100),
+		DENOM(SubPopulationLabel.DENOM, 100),
+		DENEX(SubPopulationLabel.DENEX, 10),
+		DENEXCEP(SubPopulationLabel.DENEXCEP, 10),
+		NUMER(SubPopulationLabel.NUMER, 80);
 
 		String measure;
 		int value;
 
-		PopulationValue(String measure, int factor) {
-			this.measure = measure;
+		PopulationValue(SubPopulationLabel measure, int factor) {
+			this.measure = measure.name();
 			this.value = factor * getSubPopCount();
 		}
 
@@ -169,7 +169,6 @@ public class QrdaGenerator {
 		Function<String, Object> generateDenexcep = uuid -> generateSubpopulation(uuid, PopulationValue.DENEXCEP);
 		Function<String, Object> generateNumer = uuid -> generateSubpopulation(uuid, PopulationValue.NUMER);
 		Function<String, Object> generatePerformanceRate = this::generatePerformanceRate;
-
 
 		private Context(List<MeasureConfig> quality, List<MeasureConfig> aci, List<MeasureConfig> ia) {
 			this.quality = quality;

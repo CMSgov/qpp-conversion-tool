@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 /**
  * This Validator checks that the Measure ID is present.
  */
-@Validator(TemplateId.ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
+@Validator(TemplateId.PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS)
 public class AciMeasurePerformedRnRValidator extends NodeValidator {
 
 	/**
@@ -19,9 +19,7 @@ public class AciMeasurePerformedRnRValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		thoroughlyCheck(node)
-			.hasChildren(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_MISSING)
-			.childMinimum(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_MISSING, 1, TemplateId.MEASURE_PERFORMED)
-			.childMaximum(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_REPEATED, 1, TemplateId.MEASURE_PERFORMED)
-			.singleValue(ErrorCode.ACI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR, "measureId");
+			.childExact(ErrorCode.PI_MEASURE_PERFORMED_RNR_MEASURE_PERFORMED_EXACT, 1, TemplateId.MEASURE_PERFORMED)
+			.singleValue(ErrorCode.PI_MEASURE_PERFORMED_RNR_MEASURE_ID_NOT_SINGULAR, "measureId");
 	}
 }

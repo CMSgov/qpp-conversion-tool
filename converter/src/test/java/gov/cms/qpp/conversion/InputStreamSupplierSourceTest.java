@@ -2,6 +2,8 @@ package gov.cms.qpp.conversion;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.truth.Truth;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,16 +13,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import com.google.common.base.Supplier;
 
 class InputStreamSupplierSourceTest extends SourceTestSuite {
 
-	private static InputStreamSupplierSource source(String path) throws IOException {
-		return new InputStreamSupplierSource(path, () -> stream(path), Files.size(Paths.get(path)));
+	private static InputStreamSupplierSource source(String path) {
+		return new InputStreamSupplierSource(path, stream(path));
 	}
 
 	private static InputStream stream(String path) {
@@ -31,7 +29,7 @@ class InputStreamSupplierSourceTest extends SourceTestSuite {
 		}
 	}
 
-	InputStreamSupplierSourceTest() throws IOException {
+	InputStreamSupplierSourceTest() {
 		super("src/test/resources/arbitrary.txt", source("src/test/resources/arbitrary.txt"));
 	}
 
@@ -44,24 +42,38 @@ class InputStreamSupplierSourceTest extends SourceTestSuite {
 
 	@Test
 	void testSpecificSize() {
-		long size = 26;
-		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", () -> new ByteArrayInputStream("Moof".getBytes()), size);
+		String text = "mock";
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()));
 
-		assertThat(source.getSize()).isEqualTo(size);
+		assertThat(source.getSize()).isEqualTo(text.length());
 	}
 
 	@Test
 	void testUnspecifiedSize() {
 		byte [] bytes = "Moof".getBytes();
-		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", () -> new ByteArrayInputStream(bytes));
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(bytes));
 
 		assertThat(source.getSize()).isEqualTo(bytes.length);
 	}
 
 	@Test
-	void testSupplierThrowsIOException() {
-		Supplier<InputStream> mock = Mockito.mock(Supplier.class);
-		Mockito.when(mock.get()).thenThrow(IOException.class);
-		Assertions.assertThrows(UncheckedIOException.class, () -> new InputStreamSupplierSource("mock name", mock));
+	void testTestIsTest() {
+		String text = "mock";
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()), "Test");
+		Truth.assertThat(source.getPurpose()).isEqualTo("Test");
+	}
+
+	@Test
+	void testNormalIsNotTest() {
+		String text = "mock";
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()), null);
+		Truth.assertThat(source.getPurpose()).isNull();
+	}
+
+	@Test
+	void testDefaultIsNotTest() {
+		String text = "mock";
+		InputStreamSupplierSource source = new InputStreamSupplierSource("DogCow name", new ByteArrayInputStream(text.getBytes()));
+		Truth.assertThat(source.getPurpose()).isNull();
 	}
 }

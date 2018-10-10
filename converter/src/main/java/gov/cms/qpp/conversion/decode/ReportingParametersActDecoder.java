@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 import java.util.function.Consumer;
 
@@ -14,11 +15,12 @@ import java.util.function.Consumer;
  * Decoder to parse Reporting Parameters Act - CMS (V2).
  */
 @Decoder(TemplateId.REPORTING_PARAMETERS_ACT)
-public class ReportingParametersActDecoder extends QrdaXmlDecoder {
+public class ReportingParametersActDecoder extends QrdaDecoder {
 
 	public static final String PERFORMANCE_START = "performanceStart";
 	public static final String PERFORMANCE_END = "performanceEnd";
 	public static final String PERFORMANCE_YEAR = "performanceYear";
+	private static final int YEAR_LAST_INDEX = 4;
 
 	public ReportingParametersActDecoder(Context context) {
 		super(context);
@@ -33,7 +35,7 @@ public class ReportingParametersActDecoder extends QrdaXmlDecoder {
 	 * @return Finished parsing tree result
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		setPerformanceTimeRangeOnNode(element, thisNode);
 		return DecodeResult.TREE_FINISHED;
 	}
@@ -53,7 +55,7 @@ public class ReportingParametersActDecoder extends QrdaXmlDecoder {
 					String start = p.getValue();
 					thisNode.putValue(PERFORMANCE_START, start, false);
 					//start is formatted as follows: yyyyMMddHHmmss
-					thisNode.putValue(PERFORMANCE_YEAR, start.substring(0, 4));
+					thisNode.putValue(PERFORMANCE_YEAR, start.substring(0, YEAR_LAST_INDEX));
 				};
 		Consumer<? super Attribute> performanceEndConsumer =
 				p -> thisNode.putValue(PERFORMANCE_END, p.getValue(), false);

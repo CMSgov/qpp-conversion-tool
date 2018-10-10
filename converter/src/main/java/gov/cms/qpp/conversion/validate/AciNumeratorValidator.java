@@ -8,7 +8,7 @@ import gov.cms.qpp.conversion.model.Validator;
  * This Validator checks that exactly one Aggregate Count Child exists,
  * and that its aggregate count value is a positive integer value.
  */
-@Validator(TemplateId.ACI_NUMERATOR)
+@Validator(TemplateId.PI_NUMERATOR)
 public class AciNumeratorValidator extends CommonNumeratorDenominatorValidator {
 	public static final String NUMERATOR_NAME = "Numerator";
 

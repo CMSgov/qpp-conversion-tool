@@ -2,12 +2,13 @@ package gov.cms.qpp.acceptance;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import com.jayway.jsonpath.TypeRef;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
@@ -24,11 +25,11 @@ class IaSectionRoundTripTest {
 	}
 
 	@Test
-	void testIaSectionConvertsIaCategory() throws IOException {
+	void testIaSectionConvertsIaCategory() {
 		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaCategory = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-				"$.measurementSets[2].category", String.class);
+				"$.measurementSets[2].category", new TypeRef<String>() { });
 
 		assertWithMessage("Must contain a category")
 				.that(iaCategory)
@@ -36,11 +37,11 @@ class IaSectionRoundTripTest {
 	}
 
 	@Test
-	void testIaSectionConvertsIaMeasureId() throws IOException {
+	void testIaSectionConvertsIaMeasureId() {
 		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		String iaMeasureId = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-				"$.measurementSets[2].measurements[0].measureId", String.class);
+				"$.measurementSets[2].measurements[0].measureId", new TypeRef<String>() { });
 
 		assertWithMessage("Must contain measure id")
 				.that(iaMeasureId)
@@ -48,11 +49,11 @@ class IaSectionRoundTripTest {
 	}
 
 	@Test
-	void testIaSectionConvertsMeasurePerformed() throws IOException {
+	void testIaSectionConvertsMeasurePerformed() {
 		Converter converter = new Converter(new PathSource(file));
 		JsonWrapper qpp = converter.transform();
 		Boolean measurePerformed = JsonHelper.readJsonAtJsonPath(qpp.toString(),
-				"$.measurementSets[2].measurements[0].value", Boolean.class);
+				"$.measurementSets[2].measurements[0].value", new TypeRef<Boolean>() { });
 
 		assertWithMessage("Must contain a measure performed")
 			.that(measurePerformed)

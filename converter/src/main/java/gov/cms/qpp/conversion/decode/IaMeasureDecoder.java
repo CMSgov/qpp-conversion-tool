@@ -1,12 +1,13 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.jdom2.Attribute;
+import org.jdom2.Element;
+import org.jdom2.filter.Filters;
+
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Decoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
-import org.jdom2.Attribute;
-import org.jdom2.Element;
-import org.jdom2.filter.Filters;
 
 import java.util.function.Consumer;
 
@@ -15,7 +16,7 @@ import java.util.function.Consumer;
  *
  */
 @Decoder(TemplateId.IA_MEASURE)
-public class IaMeasureDecoder extends QrdaXmlDecoder {
+public class IaMeasureDecoder extends QrdaDecoder {
 
 	public IaMeasureDecoder(Context context) {
 		super(context);
@@ -29,13 +30,11 @@ public class IaMeasureDecoder extends QrdaXmlDecoder {
 	 * @return result that the decoder is finished for this node
 	 */
 	@Override
-	protected DecodeResult internalDecode(Element element, Node thisNode) {
+	protected DecodeResult decode(Element element, Node thisNode) {
 		String expressionStr = getXpath("measureId");
 		Consumer<? super Attribute> consumer = p -> thisNode.putValue("measureId", p.getValue());
 		setOnNode(element, expressionStr, consumer, Filters.attribute(), true);
 
-		decode(element.getChild("component", defaultNs), thisNode);
-
-		return DecodeResult.TREE_FINISHED;
+		return DecodeResult.TREE_CONTINUE;
 	}
 }

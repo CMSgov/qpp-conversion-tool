@@ -1,8 +1,7 @@
 package gov.cms.qpp.acceptance;
 
 import gov.cms.qpp.conversion.Context;
-import gov.cms.qpp.conversion.decode.QrdaXmlDecoder;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
+import gov.cms.qpp.conversion.decode.QrdaDecoderEngine;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -90,12 +89,11 @@ class AciNumeratorDenominatorRoundTripTest {
 				+ "	</organizer>\n" + "</entry>";
 
 		Context context = new Context();
-		Node numeratorDenominatorNode = new QrdaXmlDecoder(context).decode(XmlUtils.stringToDom(xmlFragment));
+		Node numeratorDenominatorNode = new QrdaDecoderEngine(context).decode(XmlUtils.stringToDom(xmlFragment));
 		// remove default nodes (will fail if defaults change)
-		DefaultDecoder.removeDefaultNode(numeratorDenominatorNode.getChildNodes());
 
 		String xPathExpected = "/*[local-name() = 'entry' and namespace-uri() = 'urn:hl7-org:v3']/*[local-name() = 'organizer' " +
-		                       "and namespace-uri() = 'urn:hl7-org:v3']";
+							"and namespace-uri() = 'urn:hl7-org:v3']";
 
 		QppOutputEncoder encoder = new QppOutputEncoder(context);
 		List<Node> nodes = new ArrayList<>();
@@ -108,7 +106,7 @@ class AciNumeratorDenominatorRoundTripTest {
 		String jsonExpected = "{\n  \"measureId\" : \"ACI-PEA-1\",\n  \"value\" : {\n    \"numerator\" : 600,\n    \"denominator\" : 800\n  }\n}";
 
 		assertWithMessage("The XPath of the numerator denominator node is incorrect")
-				.that(numeratorDenominatorNode.getChildNodes().get(0).getPath())
+				.that(numeratorDenominatorNode.getChildNodes().get(0).getOrComputePath())
 				.isEqualTo(xPathExpected);
 
 		assertWithMessage("expected encoder to return a representation of a measure")

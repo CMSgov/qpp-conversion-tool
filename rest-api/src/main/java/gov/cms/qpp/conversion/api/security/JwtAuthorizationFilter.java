@@ -2,17 +2,18 @@ package gov.cms.qpp.conversion.api.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Filter for checking the Json Web Token (JWT) for the correct Authorization
@@ -67,7 +68,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		Map<String, String> payloadMap = getPayload(tokenHeader);
 		if (isValidCpcPlusOrg(payloadMap)) {
 			UsernamePasswordAuthenticationToken token =
-					new UsernamePasswordAuthenticationToken(payloadMap.get("id"), null , new ArrayList<>());
+					new UsernamePasswordAuthenticationToken(payloadMap.get("id"), null, new ArrayList<>());
 			SecurityContextHolder.getContext().setAuthentication(token);
 		}
 		chain.doFilter(request, response);
@@ -79,6 +80,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	 * @param tokenHeader Object holding the token
 	 * @return data map of the token parsed
 	 */
+	@SuppressWarnings("unchecked")
 	private Map<String, String> getPayload(String tokenHeader) {
 		String tokenWithoutBearer = tokenHeader.replace(TOKEN_PREFIX, "");
 		String tokenWithoutSignatureAndBearer = removeSignature(tokenWithoutBearer);

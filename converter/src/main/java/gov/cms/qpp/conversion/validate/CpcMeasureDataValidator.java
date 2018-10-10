@@ -9,16 +9,17 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SupplementalData;
 import gov.cms.qpp.conversion.model.validation.SupplementalData.SupplementalType;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
+
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static gov.cms.qpp.conversion.decode.SupplementalDataEthnicityDecoder.SUPPLEMENTAL_DATA_KEY;
+import static gov.cms.qpp.conversion.decode.SkeletalSupplementalDataDecoder.SUPPLEMENTAL_DATA_KEY;
 
 /**
  * Validates a Sub Population's Measure Data for the CPC Plus program entity
@@ -63,15 +64,22 @@ public class CpcMeasureDataValidator extends NodeValidator {
 				node.getChildNodes(currSupplementalDataTemplateId).collect(Collectors.toSet());
 		EnumSet<SupplementalData> codes = EnumSet.copyOf(
 				 SupplementalData.getSupplementalDataSetByType(supplementalDataType));
+		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node.getParent());
+		if (measureConfig != null) {
+			String electronicMeasureId = measureConfig.getElectronicMeasureId();
+			for (SupplementalData supplementalData : codes) {
+				Node validatedSupplementalNode = filterCorrectNode(supplementalDataNodes, supplementalData);
 
-		for (SupplementalData supplementalData : codes) {
-			Node validatedSupplementalNode = filterCorrectNode(supplementalDataNodes, supplementalData);
-
-			if (validatedSupplementalNode == null) {
-				addSupplementalValidationError(node, supplementalData);
+				if (validatedSupplementalNode == null) {
+					addSupplementalValidationError(node, supplementalData, electronicMeasureId);
+				} else {
+					LocalizedError error = makeIncorrectCountSizeLocalizedError(node, supplementalData.getCode(),
+						electronicMeasureId);
+					check(validatedSupplementalNode)
+						.childExact(error, 1, TemplateId.PI_AGGREGATE_COUNT);
+				}
 			}
 		}
-		validateSupplementalDataNodeCounts(node, supplementalDataNodes);
 	}
 
 	/**
@@ -79,7 +87,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 *
 	 * @param supplementalDataNodes List of nodes to filter
 	 * @param supplementalData Current Supplemental Data to validate against
-	 * @return
+	 * @return first matching node
 	 */
 	private Node filterCorrectNode(Set<Node> supplementalDataNodes, SupplementalData supplementalData) {
 		return supplementalDataNodes.stream()
@@ -92,7 +100,7 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 * Predicate for filtering the correct Supplemental Data node.
 	 *
 	 * @param code Required code to be validate against
-	 * @return
+	 * @return filtering predicate
 	 */
 	private Predicate<Node> filterDataBySupplementalCode(String code) {
 		return thisNode -> code.equalsIgnoreCase(thisNode.getValue(SUPPLEMENTAL_DATA_KEY));
@@ -103,51 +111,27 @@ public class CpcMeasureDataValidator extends NodeValidator {
 	 *
 	 * @param node Object being validated
 	 * @param supplementalData Object holding the current code that was validated
+	 * @param measureId current electronic measure identification
 	 */
-	private void addSupplementalValidationError(Node node, SupplementalData supplementalData) {
-		MeasureConfig config =
-				MeasureConfigs.getConfigurationMap()
-						.get(node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
-		if (config != null) {
-			LocalizedError error =
-					ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(supplementalData.getCode(),
-							config.getElectronicMeasureId(), node.getValue(MeasureDataDecoder.MEASURE_TYPE));
-			addValidationError(Detail.forErrorAndNode(error, node));
-		}
-	}
-
-	/**
-	 * Validates all Supplemental Data nodes for an Aggregate count
-	 *
-	 * @param node parent node
-	 * @param supplementalDataNodes supplemental nodes to be validated
-	 */
-	private void validateSupplementalDataNodeCounts(Node node, Set<Node> supplementalDataNodes) {
-		supplementalDataNodes.forEach(thisNode -> {
-			LocalizedError error = makeIncorrectCountSizeLocalizedError(node, thisNode);
-			check(thisNode).childMinimum(error, 1, TemplateId.ACI_AGGREGATE_COUNT)
-					.childMaximum(error, 1, TemplateId.ACI_AGGREGATE_COUNT);
-		});
+	private void addSupplementalValidationError(Node node, SupplementalData supplementalData, String measureId) {
+		LocalizedError error =
+				ErrorCode.CPC_PLUS_MISSING_SUPPLEMENTAL_CODE.format(
+					supplementalData.getType(), supplementalData, supplementalData.getCode(),
+						measureId, node.getValue(MeasureDataDecoder.MEASURE_TYPE));
+		addValidationError(Detail.forErrorAndNode(error, node));
 	}
 
 	/**
 	 * Creates a localized error for an invalid number of aggregate counts
 	 *
-	 * @param node parent node
-	 * @param thisNode current supplemental node to be validated
-	 * @return
+	 * @param node holder of the measure type
+	 * @param supplementalCode data code that is missing
+	 * @param measureId electronic measure id
+	 * @return initialized {@link LocalizedError}
 	 */
-	private LocalizedError makeIncorrectCountSizeLocalizedError(Node node, Node thisNode) {
-		MeasureConfig config = MeasureConfigs.getConfigurationMap().get(
-				node.getParent().getValue(QualityMeasureIdValidator.MEASURE_ID));
-		if (config == null) {
-			return ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
-					thisNode.getValue(SUPPLEMENTAL_DATA_KEY), node.getValue(MeasureDataDecoder.MEASURE_TYPE),
-					"Unknown Measure ID");
-		}
-
+	private LocalizedError makeIncorrectCountSizeLocalizedError(Node node, String supplementalCode, String measureId) {
 		return ErrorCode.CPC_PLUS_SUPPLEMENTAL_DATA_MISSING_COUNT.format(
-				thisNode.getValue(SUPPLEMENTAL_DATA_KEY), node.getValue(MeasureDataDecoder.MEASURE_TYPE),
-				config.getElectronicMeasureId());
+			supplementalCode, node.getValue(MeasureDataDecoder.MEASURE_TYPE),
+				measureId);
 	}
 }

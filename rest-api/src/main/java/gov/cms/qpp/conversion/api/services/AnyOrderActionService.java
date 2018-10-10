@@ -7,9 +7,9 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -28,11 +28,19 @@ import java.util.concurrent.CompletableFuture;
  * @param <S> The type of object that is returned from {@link #asynchronousAction(Object)}.
  */
 public abstract class AnyOrderActionService<T, S> {
+	private static final int INITIAL_INTERVAL = 1000;
+	private static final double MULTIPLIER = 2.0;
+	private static final int MAX_INTERVAL = 60000;
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(AnyOrderActionService.class);
 
-	@Inject
-	protected TaskExecutor taskExecutor;
+	protected final TaskExecutor taskExecutor;
+
+	public AnyOrderActionService(TaskExecutor taskExecutor) {
+		Objects.requireNonNull(taskExecutor, "taskExecutor");
+
+		this.taskExecutor = taskExecutor;
+	}
 
 	/**
 	 * The single action that will occur given a call to {@link #actOnItem(Object)}.
@@ -92,9 +100,9 @@ public abstract class AnyOrderActionService<T, S> {
 		retry.setRetryPolicy(retryPolicy);
 
 		ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
-		backOffPolicy.setInitialInterval(1000);
-		backOffPolicy.setMultiplier(2.0);
-		backOffPolicy.setMaxInterval(60000);
+		backOffPolicy.setInitialInterval(INITIAL_INTERVAL);
+		backOffPolicy.setMultiplier(MULTIPLIER);
+		backOffPolicy.setMaxInterval(MAX_INTERVAL);
 		retry.setBackOffPolicy(backOffPolicy);
 
 		return retry;

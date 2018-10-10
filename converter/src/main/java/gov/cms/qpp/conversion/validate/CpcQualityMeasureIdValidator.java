@@ -10,13 +10,12 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
-import gov.cms.qpp.conversion.model.validation.MeasureConfigs;
 import gov.cms.qpp.conversion.model.validation.SubPopulation;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
+import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -41,31 +40,26 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		super.internalValidateSingleNode(node);
-		Map<String, MeasureConfig> configurationMap = MeasureConfigs.getConfigurationMap();
-		String value = node.getValue(MEASURE_ID);
-		MeasureConfig measureConfig = configurationMap.get(value);
-
+		MeasureConfig measureConfig = MeasureConfigHelper.getMeasureConfig(node);
 		if (measureConfig != null) {
 			int requiredPerformanceRateCount = measureConfig.getStrata().size();
 
 			thoroughlyCheck(node)
-					.childMinimum(ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
-							requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
-					.childMaximum(ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT.format(requiredPerformanceRateCount),
-							requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
+					.childExact(
+						ErrorCode.CPC_QUALITY_MEASURE_ID_INVALID_PERFORMANCE_RATE_COUNT
+							.format(requiredPerformanceRateCount, MeasureConfigHelper.getPrioritizedId(node)),
+						requiredPerformanceRateCount, TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE);
 		}
-
 	}
 
 	@Override
 	List<Consumer<Node>> prepValidations(SubPopulation subPopulation) {
 		return Arrays.asList(
-				makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulations.DENEXCEP),
-				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulations.DENEX),
-				makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulations.NUMER),
-				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulations.DENOM),
-				makeValidator(subPopulation, subPopulation::getInitialPopulationUuid,
-						SubPopulations.IPOP, SubPopulations.IPP),
+				makeValidator(subPopulation, subPopulation::getDenominatorExceptionsUuid, SubPopulationLabel.DENEXCEP),
+				makeValidator(subPopulation, subPopulation::getDenominatorExclusionsUuid, SubPopulationLabel.DENEX),
+				makeValidator(subPopulation, subPopulation::getNumeratorUuid, SubPopulationLabel.NUMER),
+				makeValidator(subPopulation, subPopulation::getDenominatorUuid, SubPopulationLabel.DENOM),
+				makeValidator(subPopulation, subPopulation::getInitialPopulationUuid, SubPopulationLabel.IPOP),
 				makePerformanceRateUuidValidator(subPopulation::getNumeratorUuid, PERFORMANCE_RATE_ID));
 	}
 
@@ -81,7 +75,8 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 		return node -> {
 			if (check.get() != null) {
 				Predicate<Node> childUuidFinder =
-						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE, PERFORMANCE_RATE_ID);
+						makeUuidChildFinder(check, ErrorCode.QUALITY_MEASURE_ID_MISSING_SINGLE_PERFORMANCE_RATE,
+								PERFORMANCE_RATE_ID);
 
 				Node existingUuidChild = node
 						.getChildNodes(TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE)
@@ -118,7 +113,7 @@ public class CpcQualityMeasureIdValidator extends QualityMeasureIdValidator {
 
 		sub.getStrata().forEach(stratum -> {
 			Predicate<Node> seek = child ->
-					child.getValue(StratifierDecoder.STRATIFIER_ID).equals(stratum);
+					child.getValue(StratifierDecoder.STRATIFIER_ID).equalsIgnoreCase(stratum);
 
 			if (strataNodes.stream().noneMatch(seek)) {
 				LocalizedError error = ErrorCode.CPC_QUALITY_MEASURE_ID_MISSING_STRATA.format(stratum,

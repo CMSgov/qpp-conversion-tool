@@ -42,7 +42,7 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 
 		JsonWrapper measurementSets =
 			encodeMeasurementSets(childMapByTemplateId);
-			wrapper.putObject(MEASUREMENT_SETS, measurementSets);
+		wrapper.putObject(MEASUREMENT_SETS, measurementSets);
 	}
 
 	/**
@@ -52,13 +52,18 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 	 * @param thisNode holds the decoded node sections of clinical document
 	 */
 	private void encodeToplevel(JsonWrapper wrapper, Node thisNode) {
+		String entityType = thisNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE);
+
 		encodePerformanceYear(wrapper, thisNode);
-		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE,
-				thisNode.getValue(ClinicalDocumentDecoder.ENTITY_TYPE));
+		wrapper.putString(ClinicalDocumentDecoder.ENTITY_TYPE, entityType);
 		wrapper.putString(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER,
 				thisNode.getValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER));
 		wrapper.putString(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER,
 				thisNode.getValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER));
+		if (ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP.equals(entityType)) {
+			wrapper.putString(ClinicalDocumentDecoder.ENTITY_ID,
+				thisNode.getValue(ClinicalDocumentDecoder.ENTITY_ID));
+		}
 	}
 
 	/**
@@ -90,13 +95,14 @@ public class ClinicalDocumentEncoder extends QppOutputEncoder {
 		JsonOutputEncoder sectionEncoder;
 
 		for (Node child : childMapByTemplateId.values()) {
-			childWrapper = new JsonWrapper();
-			sectionEncoder = encoders.get(child.getType());
+			TemplateId childType = child.getType();
 			try {
+				childWrapper = new JsonWrapper();
+				sectionEncoder = encoders.get(childType);
 				sectionEncoder.encode(childWrapper, child);
 				measurementSetsWrapper.putObject(childWrapper);
 			} catch (NullPointerException exc) {
-				String message = "No encoder for decoder : " + child.getType();
+				String message = "An unexpected error occured for " + child.getType();
 				throw new EncodeException(message, exc);
 			}
 		}

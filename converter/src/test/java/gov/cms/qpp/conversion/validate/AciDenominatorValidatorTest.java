@@ -17,18 +17,18 @@ import static com.google.common.truth.Truth.assertWithMessage;
 class AciDenominatorValidatorTest {
 
 	@Test
-	void internalValidateSingleNodeWithGreaterThanZeroValue() throws Exception {
+	void internalValidateSingleNodeWithGreaterThanZeroValue() {
 		validateDenominatorWithValue("100");
 	}
 
 	@Test
-	void internalValidateSingleNodeWithZeroValue() throws Exception {
+	void internalValidateSingleNodeWithZeroValue() {
 		validateDenominatorWithValue("0");
 	}
 
 	private void validateDenominatorWithValue(String value) {
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciDenominatorNode.addChildNode(aggregateCountNode);
 
@@ -40,22 +40,22 @@ class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	void noChildrenTest() throws Exception {
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
+	void noChildrenTest() {
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
 
 		AciDenominatorValidator validator = new AciDenominatorValidator();
 		Set<Detail> errors = validator.validateSingleNode(aciDenominatorNode);
 
 		assertWithMessage("No Children Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_MISSING_CHILDREN.format(
-						AciDenominatorValidator.DENOMINATOR_NAME));
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT
+					.format(AciDenominatorValidator.DENOMINATOR_NAME, AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 
 	@Test
-	void incorrectChildrenTest() throws Exception {
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_SECTION);
+	void incorrectChildrenTest() {
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_SECTION);
 		aggregateCountNode.putValue("aggregateCount", "100");
 
 		aciDenominatorNode.addChildNode(aggregateCountNode);
@@ -65,16 +65,16 @@ class AciDenominatorValidatorTest {
 
 		assertWithMessage("Incorrect child Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INCORRECT_CHILD.format(
-						AciDenominatorValidator.DENOMINATOR_NAME));
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
+						AciDenominatorValidator.DENOMINATOR_NAME, AciDenominatorValidator.DENOMINATOR_NAME));
 
 	}
 
 	@Test
-	void tooManyChildrenTest() throws Exception {
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode1 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
-		Node aggregateCountNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+	void tooManyChildrenTest() {
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode1 = new Node(TemplateId.PI_AGGREGATE_COUNT);
+		Node aggregateCountNode2 = new Node(TemplateId.PI_AGGREGATE_COUNT);
 
 		aggregateCountNode1.putValue("aggregateCount", "100");
 		aggregateCountNode2.putValue("aggregateCount", "200");
@@ -88,15 +88,15 @@ class AciDenominatorValidatorTest {
 
 		assertWithMessage("Too many children Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_TOO_MANY_CHILDREN.format(
-						AciDenominatorValidator.DENOMINATOR_NAME));
+				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_CHILD_EXACT.format(
+						AciDenominatorValidator.DENOMINATOR_NAME, AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 
 	@Test
-	void invalidValueNaNTest() throws Exception {
+	void invalidValueNaNTest() {
 		//Not a number check
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		String value = "not a number";
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciDenominatorNode.addChildNode(aggregateCountNode);
@@ -108,10 +108,10 @@ class AciDenominatorValidatorTest {
 	}
 
 	@Test
-	void invalidValueNegativeNumberTest() throws Exception {
+	void invalidValueNegativeNumberTest() {
 		//Not a number check
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		String value = "-500";
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciDenominatorNode.addChildNode(aggregateCountNode);
@@ -122,14 +122,14 @@ class AciDenominatorValidatorTest {
 		assertWithMessage("Invalid Value Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
-						AciDenominatorValidator.DENOMINATOR_NAME));
+						AciDenominatorValidator.DENOMINATOR_NAME, value));
 	}
 
 	@Test
-	void invalidValueDenominatorNumberTest() throws Exception {
+	void invalidValueDenominatorNumberTest() {
 		//Not a number check
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
-		Node aggregateCountNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
+		Node aggregateCountNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		String value = "-1";
 		aggregateCountNode.putValue("aggregateCount", value);
 		aciDenominatorNode.addChildNode(aggregateCountNode);
@@ -140,6 +140,6 @@ class AciDenominatorValidatorTest {
 		assertWithMessage("Invalid Value Validation Error not issued")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.NUMERATOR_DENOMINATOR_INVALID_VALUE.format(
-						AciDenominatorValidator.DENOMINATOR_NAME));
+						AciDenominatorValidator.DENOMINATOR_NAME, value));
 	}
 }

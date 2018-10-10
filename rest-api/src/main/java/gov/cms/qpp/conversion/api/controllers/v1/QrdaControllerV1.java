@@ -1,97 +1,29 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.InputStreamSupplierSource;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import gov.cms.qpp.conversion.ConversionReport;
+import gov.cms.qpp.conversion.api.controllers.SkeletalQrdaController;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.api.services.QrdaService;
 import gov.cms.qpp.conversion.api.services.ValidationService;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.util.function.Supplier;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 /**
  * Controller to handle uploading files for QRDA-III Conversion
  */
 @RestController
-@RequestMapping("/")
-@CrossOrigin
-public class QrdaControllerV1 {
-	private static final Logger API_LOG = LoggerFactory.getLogger(QrdaControllerV1.class);
+@RequestMapping(path = "/", headers = {"Accept=" + Constants.V1_API_ACCEPT})
+public class QrdaControllerV1 extends SkeletalQrdaController<String> {
 
-	private QrdaService qrdaService;
-	private ValidationService validationService;
-	private AuditService auditService;
-
-	/**
-	 * init dependencies
-	 *
-	 * @param qrdaService {@link QrdaService} to perform QRDA -> QPP conversion
-	 * @param validationService {@link ValidationService} to perform post conversion validation
-	 * @param auditService {@link AuditService} to persist audit information
-	 */
-	public QrdaControllerV1(final QrdaService qrdaService, final ValidationService validationService,
-							final AuditService auditService) {
-		this.qrdaService = qrdaService;
-		this.validationService = validationService;
-		this.auditService = auditService;
+	public QrdaControllerV1(QrdaService qrdaService, ValidationService validationService, AuditService auditService) {
+		super(qrdaService, validationService, auditService);
 	}
 
-	/**
-	 * Endpoint to transform an uploaded file into a valid or error json response
-	 *
-	 * @param file Uploaded file
-	 * @return Valid json or error json content
-	 * @throws IOException If errors occur during file upload or conversion
-	 */
-	@PostMapping(headers = {"Accept=" + Constants.V1_API_ACCEPT})
-	public ResponseEntity<String> uploadQrdaFile(@RequestParam MultipartFile file) throws IOException {
-		String originalFilename = file.getOriginalFilename();
-		API_LOG.info("Conversion request received");
-
-		Converter.ConversionReport conversionReport = qrdaService.convertQrda3ToQpp(
-				new InputStreamSupplierSource(originalFilename, inputStreamSupplier(file), file.getSize()));
-
-		validationService.validateQpp(conversionReport);
-
-		auditService.success(conversionReport);
-
-		API_LOG.info("Conversion request succeeded");
-
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-
-		return new ResponseEntity<>(conversionReport.getEncoded().toString(), httpHeaders, HttpStatus.CREATED);
+	@Override
+	protected String respond(ConversionReport report) {
+		return report.getEncoded().toString();
 	}
 
-	/**
-	 * Supplier for file input
-	 *
-	 * @param file the attachment
-	 * @return a supplier that wraps the attachment's input stream retrieval
-	 */
-	Supplier<InputStream> inputStreamSupplier(MultipartFile file) {
-		return () -> {
-			try {
-				return file.getInputStream();
-			} catch (IOException ex) {
-				throw new UncheckedIOException(ex);
-			}
-		};
-	}
 }

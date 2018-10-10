@@ -5,10 +5,10 @@
 			"templateId": "CLINICAL_DOCUMENT",
 			"correlationId": "topLevel"
 		},{
-			"templateId": "ACI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS",
+			"templateId": "PI_MEASURE_PERFORMED_REFERENCE_AND_RESULTS",
 			"correlationId": "measure"
 		},{
-			"templateId": "ACI_NUMERATOR_DENOMINATOR",
+			"templateId": "PI_NUMERATOR_DENOMINATOR",
 			"correlationId": "measure"
 		},{
 			"templateId": "IA_MEASURE",
@@ -17,7 +17,7 @@
 			"templateId": "MEASURE_REFERENCE_RESULTS_CMS_V2",
 			"correlationId": "qualityMeasure"
 		},{
-			"templateId": "ACI_AGGREGATE_COUNT",
+			"templateId": "PI_AGGREGATE_COUNT",
 			"correlationId": "aggregateCount"
 		},{
 			"templateId": "MEASURE_PERFORMED",
@@ -112,18 +112,22 @@
 					}
 				},
 				{
-					"decodeLabel": "components",
-					"goods": {
-						"relativeXPath": "./*[local-name() = 'component' and namespace-uri() = '<nsuri>']/*[local-name() = 'structuredBody' and namespace-uri() = '<nsuri>']/*[local-name() = 'component' and namespace-uri() = '<nsuri>']",
-						"xmltype": "element"
-					}
-				},{
 					"decodeLabel": "performanceYear",
 					"encodeLabels": [
 						"performanceYear"
 					],
 					"goods": {
 						"relativeXPath": "./*[local-name() = 'effectiveTime' and namespace-uri() = '<nsuri>']/@value",
+						"xmltype": "attribute"
+					}
+				},
+				{
+					"decodeLabel": "entityId",
+					"encodeLabels": [
+						"entityId"
+					],
+					"goods": {
+						"relativeXPath": "./*[local-name() = 'documentationOf' and namespace-uri() = '<nsuri>']/*[local-name() = 'serviceEvent' and namespace-uri() = '<nsuri>']/*[local-name() = 'performer' and namespace-uri() = '<nsuri>']/*[local-name() = 'assignedEntity' and namespace-uri() = '<nsuri>']/*[local-name() = 'representedOrganization' and namespace-uri() = '<nsuri>']/*[local-name() = 'id' and namespace-uri() = '<nsuri>'][@root='2.16.840.1.113883.3.249.5.2']/@extension",
 						"xmltype": "attribute"
 					}
 				}

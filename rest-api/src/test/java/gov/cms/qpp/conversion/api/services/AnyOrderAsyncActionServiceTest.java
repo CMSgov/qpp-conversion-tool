@@ -35,7 +35,7 @@ class AnyOrderAsyncActionServiceTest {
 	private TaskExecutor taskExecutor;
 
 	@BeforeEach
-	void runBeforeEachTest() throws InterruptedException {
+	void runBeforeEachTest() {
 		doAnswer(invocationOnMock -> {
 			Runnable method = invocationOnMock.getArgument(0);
 			CompletableFuture.runAsync(method);
@@ -153,6 +153,11 @@ class AnyOrderAsyncActionServiceTest {
 	}
 
 	private static class TestAnyOrderService extends AnyOrderActionService<Object, Object> {
+
+		public TestAnyOrderService(TaskExecutor taskExecutor) {
+			super(taskExecutor);
+		}
+
 		AtomicBoolean asynchronousActionCalled = new AtomicBoolean(false);
 		AtomicInteger timesAsynchronousActionCalled = new AtomicInteger(0);
 		AtomicReference<Object> objectThatWasActedOn = new AtomicReference<>(null);
@@ -195,9 +200,7 @@ class AnyOrderAsyncActionServiceTest {
 				if(failWithInterruptException.get()) {
 					throw new UncheckedInterruptedException(new InterruptedException());
 				}
-				else {
-					throw new RuntimeException();
-				}
+				throw new RuntimeException();
 			}
 
 			failuresUntilSuccess.set(failuresUntilSuccessTemplate);

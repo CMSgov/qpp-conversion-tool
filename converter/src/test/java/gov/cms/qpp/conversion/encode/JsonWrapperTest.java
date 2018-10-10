@@ -1,28 +1,34 @@
 package gov.cms.qpp.conversion.encode;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 class JsonWrapperTest {
 
-	private ObjectWriter ow = JsonWrapper.getObjectWriter(true);
+	private ObjectWriter ow = JsonWrapper.getObjectWriterWithoutMeta();
 	private JsonWrapper objectObjWrapper;
 	private JsonWrapper objectStrWrapper;
 	private JsonWrapper listObjWrapper;
@@ -139,11 +145,94 @@ class JsonWrapperTest {
 	}
 
 	@Test
-	void testValidDate() throws Exception {
-		objectObjWrapper.putDate("19690720");
+	@DisplayName("should validate and fail null passed as integer")
+	void testValidInterIsNull() {
+		Throwable exception = assertThrows(EncodeException.class, () -> {
+			objectObjWrapper.validInteger(null);
+		});
+		assertThat(exception).hasCauseThat().isInstanceOf(NumberFormatException.class);
+	}
+
+	@Test
+	@DisplayName("should validate and fail non-numeric string passed as integer")
+	void testValidInterIsNotNumber() {
+		Throwable exception = assertThrows(EncodeException.class, () -> {
+			objectObjWrapper.validInteger("meep");
+		});
+		assertThat(exception).hasCauseThat().isInstanceOf(NumberFormatException.class);
+	}
+
+	@Test
+	void testValidDateYyyyMmDd() throws Exception {
+		ensureDateIsValid("19690720");
+	}
+
+	@Test
+	void testValidDateYyyySlashMmSlashDd() throws Exception {
+		ensureDateIsValid("1969/07/20");
+	}
+
+	@Test
+	void testValidDateYyyyDashMmDashDd() throws Exception {
+		ensureDateIsValid("1969-07-20");
+	}
+
+	@Test
+	void testValidDateYyyyDashMmDashDdThhColonMmColonSsZ() {
+		ensureDateIsValid("2018-01-26T15:35:30.685Z");
+	}
+
+	@Test
+	void testValidDateFromInstant() throws Exception {
+		ensureDateIsValid(Instant.now().toString());
+	}
+
+	@Test
+	void testValidDateFromLocalDate() throws Exception {
+		ensureDateIsValid(LocalDate.now().toString());
+	}
+
+	@Test
+	void testValidDateFromLocalDateTime() throws Exception {
+		ensureDateIsValid(LocalDateTime.now().toString());
+	}
+
+	@Test
+	void testValidDateWithSeconds1() throws Exception {
+		ensureDateIsValid("20170101000000");
+	}
+
+	@Test
+	void testValidDateWithSeconds2() throws Exception {
+		ensureDateIsValid("20171231235959");
+	}
+
+	@Test
+	void testValidDateFullyQualified() {
+		ensureDateIsValid("2018-01-22T20:09:39.949Z");
+	}
+
+	private void ensureDateIsValid(String date) {
+		objectObjWrapper.putDate(date);
 		assertWithMessage("should be an object container")
 				.that(((List<?>) objectObjWrapper.getObject()))
 				.isNotEmpty();
+	}
+
+	@Test
+	@DisplayName("should invalidate null value for date")
+	void testValidDateNullInvalid() throws Exception {
+		Assertions.assertThrows(EncodeException.class, () -> objectObjWrapper.putDate(null));
+	}
+
+	@Test
+	void testValidDateYyMmDdIsInvalid() throws Exception {
+		Assertions.assertThrows(EncodeException.class, () -> objectObjWrapper.putDate("690720"));
+	}
+
+	@Test
+	void testValidDateRandomStringIsInvalid() throws Exception {
+		Assertions.assertThrows(EncodeException.class, () -> objectObjWrapper.putDate(UUID.randomUUID().toString()));
 	}
 
 	@Test
@@ -354,11 +443,6 @@ class JsonWrapperTest {
 		assertThat(objectStrWrapper.validBoolean("false")).isFalse();
 		assertThat(objectStrWrapper.validBoolean("no")).isFalse();
 		assertThat(objectStrWrapper.validBoolean("N")).isFalse();
-	}
-
-	@Test
-	void testCleanString_null() throws Exception {
-		assertThat(objectStrWrapper.cleanString(null)).isNotNull();
 	}
 
 	@Test
@@ -597,8 +681,8 @@ class JsonWrapperTest {
 	@Test
 	void testListStreamMap() {
 		JsonWrapper listWrapper = new JsonWrapper();
-		listWrapper.putObject(new HashMap());
-		listWrapper.putObject(new HashMap());
+		listWrapper.putObject(new HashMap<>());
+		listWrapper.putObject(new HashMap<>());
 		assertThat(listWrapper.stream().count())
 				.isEqualTo(2);
 	}

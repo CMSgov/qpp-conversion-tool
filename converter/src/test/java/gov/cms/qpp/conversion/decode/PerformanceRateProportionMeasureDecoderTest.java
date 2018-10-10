@@ -1,15 +1,17 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+
 import java.io.IOException;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -57,7 +59,8 @@ class PerformanceRateProportionMeasureDecoderTest {
 	private void decodeNodeFromFile(String filename) throws XmlException {
 		context = new Context();
 		PerformanceRateProportionMeasureDecoder decoder = new PerformanceRateProportionMeasureDecoder(context);
-		placeholder = decoder.decode(XmlUtils.stringToDom(filename));
+		QrdaDecoderEngine engine = new QrdaDecoderEngine(context);
+		placeholder = engine.decode(XmlUtils.stringToDom(filename));
 	}
 
 	private Node getNode() {

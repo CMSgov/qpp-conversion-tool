@@ -4,7 +4,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -14,7 +14,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -24,7 +24,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -34,7 +34,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -44,7 +44,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -54,7 +54,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -64,7 +64,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -74,7 +74,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -84,7 +84,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -94,7 +94,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{16}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{16}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -104,7 +104,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -114,7 +114,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -124,7 +124,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -134,7 +134,7 @@
 		"errorData": [
 			{
 				"errorCode": 6,
-				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", ".*"],
+				"subs": ["[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}", "[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -144,6 +144,7 @@
 		"errorData": [
 			{
 				"errorCode": 25,
+				"subs": ["cpci", "[a-zA-Z, _]*"],
 				"occurrences": 1
 			}
 		]
@@ -183,12 +184,12 @@
 			},
 			{
 				"errorCode": 37,
-				"subs": [1],
+				"subs": [1, "CMS\\d{2,3}v\\d{1}"],
 				"occurrences": 2
 			},
 			{
 				"errorCode": 37,
-				"subs": [2],
+				"subs": [2, "CMS\\d{2,3}v\\d{1}"],
 				"occurrences": 1
 			}
 		]
@@ -198,7 +199,13 @@
 		"errorData": [
 			{
 				"errorCode": 33,
-				"occurrences": 2
+				"subs": ["2.2"],
+				"occurrences": 1
+			},
+			{
+				"errorCode": 33,
+				"subs": ["String"],
+				"occurrences": 1
 			}
 		]
 	},
@@ -207,6 +214,7 @@
 		"errorData": [
 			{
 				"errorCode": 34,
+				"subs": ["[0-9]{4}"],
 				"occurrences": 1
 			}
 		]
@@ -325,7 +333,7 @@
 		"strict": true,
 		"errorData": [
 			{
-				"errorCode": 33,
+				"errorCode": 72,
 				"occurrences": 1
 			}
 		]
@@ -352,13 +360,13 @@
 			{
 				"errorCode": 59,
 				"subs": ["CMS\\d{2,3}v\\d{1}",
-					"IPOP,IPP",
+					"IPP,IPOP",
 					"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"],
 				"occurrences": 1
 			},
 			{
 				"errorCode": 66,
-				"subs": [".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
+				"subs": [".*", ".*", ".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
 				"occurrences": 14
 			}
 		]
@@ -368,6 +376,7 @@
 		"errorData": [
 			{
 				"errorCode": 33,
+				"subs": ["1.888889"],
 				"occurrences": 1
 			}
 		]
@@ -377,7 +386,7 @@
 		"errorData": [
 			{
 				"errorCode": 37,
-				"subs": [2],
+				"subs": [2, "CMS\\d{2,3}v\\d{1}"],
 				"occurrences": 1
 			},
 			{
@@ -406,6 +415,7 @@
 		"errorData": [
 			{
 				"errorCode": 33,
+				"subs": ["-.888889"],
 				"occurrences": 1
 			}
 		]
@@ -415,6 +425,7 @@
 		"errorData": [
 			{
 				"errorCode": 33,
+				"subs": ["true"],
 				"occurrences": 1
 			}
 		]
@@ -434,7 +445,7 @@
 		"errorData": [
 			{
 				"errorCode": 37,
-				"subs": [1],
+				"subs": [1, "CMS\\d{2,3}v\\d{1}"],
 				"occurrences": 1
 			},
 			{
@@ -469,8 +480,13 @@
 		"errorData": [
 			{
 				"errorCode": 14,
+				"subs": ["CMS137v5", 2, "IPP or IPOP", 3],
+				"occurrences": 1
+			},
+			{
+				"errorCode": 14,
 				"subs": ["CMS137v5", 2, "[A-Z]{3,8}", 3],
-				"occurrences": 4
+				"occurrences": 3
 			},
 			{
 				"errorCode": 59,
@@ -573,7 +589,7 @@
 			},
 			{
 				"errorCode": 66,
-				"subs": [".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
+				"subs": [".*", ".*", ".*", "CMS\\d{2,3}v\\d{1}", "[A-Z]{3,10}"],
 				"occurrences": 119
 			}
 		]

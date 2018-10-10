@@ -1,11 +1,14 @@
 package gov.cms.qpp.conversion.api.controllers.v1;
 
 import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
+import gov.cms.qpp.conversion.api.exceptions.InvalidPurposeException;
 import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.services.AuditService;
 import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.model.error.TransformException;
+
+import com.amazonaws.AmazonServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -98,7 +101,27 @@ public class ExceptionHandlerControllerV1 extends ResponseEntityExceptionHandler
 
 		return new ResponseEntity<>(exception.getMessage(), httpHeaders, HttpStatus.NOT_FOUND);
 	}
-	
+
+	@ExceptionHandler(AmazonServiceException.class)
+	@ResponseBody
+	ResponseEntity<String> handleAmazonException(AmazonServiceException exception) {
+		API_LOG.error("An AWS error occured", exception);
+
+		return ResponseEntity.status(exception.getStatusCode())
+			.contentType(MediaType.TEXT_PLAIN)
+			.body(exception.getMessage());
+	}
+
+	@ExceptionHandler(InvalidPurposeException.class)
+	@ResponseBody
+	ResponseEntity<String> handleInvalidPurposeException(InvalidPurposeException exception) {
+		API_LOG.error("An invalid purpose error occured", exception);
+
+		return ResponseEntity.badRequest()
+			.contentType(MediaType.TEXT_PLAIN)
+			.body(exception.getMessage());
+	}
+
 	private ResponseEntity<AllErrors> cope(TransformException exception) {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);

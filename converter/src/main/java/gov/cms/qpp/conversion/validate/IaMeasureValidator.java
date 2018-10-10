@@ -25,7 +25,6 @@ public class IaMeasureValidator extends NodeValidator {
 	@Override
 	protected void internalValidateSingleNode(Node node) {
 		Checker.check(node, getDetails())
-				.childMinimum(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED)
-				.childMaximum(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED);
+				.childExact(ErrorCode.IA_MEASURE_INCORRECT_CHILDREN_COUNT, 1, TemplateId.MEASURE_PERFORMED);
 	}
 }

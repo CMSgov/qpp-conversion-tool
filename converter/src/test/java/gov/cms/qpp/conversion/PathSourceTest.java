@@ -17,10 +17,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import gov.cms.qpp.test.jimfs.JimfsContract;
 import gov.cms.qpp.test.jimfs.JimfsTest;
 
-class PathSourceTest extends SourceTestSuite implements JimfsContract {
+class PathSourceTest extends SourceTestSuite {
 
 	PathSourceTest() {
 		super("arbitrary.txt", new PathSource(Paths.get("src/test/resources/arbitrary.txt")));
@@ -66,5 +65,10 @@ class PathSourceTest extends SourceTestSuite implements JimfsContract {
 	@Test
 	void testSize() throws IOException {
 		assertThat(source.getSize()).isEqualTo(IOUtils.toByteArray(source.toInputStream()).length);
+	}
+
+	@Test
+	void testIsTest() {
+		assertThat(source.getPurpose()).isNull();
 	}
 }

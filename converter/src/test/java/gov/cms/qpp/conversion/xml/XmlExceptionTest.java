@@ -10,14 +10,6 @@ import org.junit.jupiter.api.Test;
 class XmlExceptionTest {
 
 	@Test
-	void xmlExceptionTest() {
-		String reason = "because I said so";
-		XmlException e = new XmlException(reason);
-		assertWithMessage("Expect the message to be the same")
-				.that(e.getMessage()).isSameAs(reason);
-	}
-
-	@Test
 	void xmlExceptionFromExceptionTest() {
 		String reason = "a reason";
 		XmlException xmlException = new XmlException("meep", new Exception(reason));

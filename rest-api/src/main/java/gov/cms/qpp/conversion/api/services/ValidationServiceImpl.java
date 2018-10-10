@@ -1,7 +1,7 @@
 package gov.cms.qpp.conversion.api.services;
 
-
-import gov.cms.qpp.conversion.Converter;
+import com.jayway.jsonpath.JsonPathException;
+import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.ErrorMessage;
 import gov.cms.qpp.conversion.correlation.PathCorrelator;
@@ -10,6 +10,7 @@ import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.QppValidationException;
 import gov.cms.qpp.conversion.util.JsonHelper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -24,8 +25,8 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -36,9 +37,11 @@ public class ValidationServiceImpl implements ValidationService {
 
 	private static final Logger API_LOG = LoggerFactory.getLogger(ValidationServiceImpl.class);
 	static final String CONTENT_TYPE = "application/json";
+	public static final String SV_LABEL = "SV - ";
 
 	private Environment environment;
 	private RestTemplate restTemplate;
+	protected static final String UNABLE_PROVIDE_XPATH = "Unable to provide an XPath.";
 
 	/**
 	 * init ValidationServiceImpl instances
@@ -78,17 +81,17 @@ public class ValidationServiceImpl implements ValidationService {
 	 * @param conversionReport A report on the status of the conversion.
 	 */
 	@Override
-	public void validateQpp(final Converter.ConversionReport conversionReport) {
+	public void validateQpp(final ConversionReport conversionReport) {
 		String validationUrl = environment.getProperty(Constants.VALIDATION_URL_ENV_VARIABLE);
 
-		if (validationUrl == null || validationUrl.isEmpty()) {
+		if (StringUtils.isEmpty(validationUrl)) {
 			return;
 		}
 
 		conversionReport.getEncoded().stream().forEach(wrapper -> {
 			ResponseEntity<String> validationResponse = callValidationEndpoint(validationUrl, wrapper);
 
-			if (HttpStatus.UNPROCESSABLE_ENTITY.equals(validationResponse.getStatusCode())) {
+			if (HttpStatus.UNPROCESSABLE_ENTITY == validationResponse.getStatusCode()) {
 
 				API_LOG.warn("Failed QPP validation");
 
@@ -146,10 +149,20 @@ public class ValidationServiceImpl implements ValidationService {
 	 */
 	AllErrors convertQppValidationErrorsToQrda(String validationResponse, JsonWrapper wrapper) {
 		AllErrors errors = new AllErrors();
+		if (validationResponse == null) {
+			return errors;
+		}
+
 		Error error = getError(validationResponse);
 
 		error.getDetails().forEach(detail -> {
-			String newPath = PathCorrelator.prepPath(detail.getPath(), wrapper);
+			detail.setMessage(SV_LABEL + detail.getMessage());
+			String newPath = UNABLE_PROVIDE_XPATH;
+			try {
+				newPath = PathCorrelator.prepPath(detail.getPath(), wrapper);
+			} catch (ClassCastException | JsonPathException exc) {
+				API_LOG.warn("Failed to convert from json path to an XPath.", exc);
+			}
 			detail.setPath(newPath);
 		});
 
@@ -178,10 +191,9 @@ public class ValidationServiceImpl implements ValidationService {
 		 * Empty so it doesn't throw an exception.
 		 *
 		 * @param response The ClientHttpResponse.
-		 * @throws IOException An IOException.
 		 */
 		@Override
-		public void handleError(final ClientHttpResponse response) throws IOException {
+		public void handleError(final ClientHttpResponse response) {
 			//do nothing
 		}
 	}

@@ -1,8 +1,15 @@
 package gov.cms.qpp.acceptance;
 
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -14,14 +21,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.test.net.InternetIntegrationTest;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-
+@InternetIntegrationTest
 class SubmissionIntegrationTest {
 
 	private static HttpClient client;
@@ -29,13 +34,12 @@ class SubmissionIntegrationTest {
 	private JsonWrapper qpp;
 
 	@BeforeAll
-	@SuppressWarnings("unchecked")
 	static void setup() {
 		client = HttpClientBuilder.create().build();
 	}
 
-	private static boolean endpointIsUp(final HttpResponse response) {
-		return response.getStatusLine().getStatusCode() < 500;
+	private static boolean endpointIsUp(HttpResponse response) {
+		return response != null && response.getStatusLine().getStatusCode() < 500;
 	}
 
 	@BeforeEach
@@ -71,11 +75,15 @@ class SubmissionIntegrationTest {
 	}
 
 	private HttpResponse servicePost(JsonWrapper qpp) throws IOException {
-		HttpEntity entity = new ByteArrayEntity(qpp.toString().getBytes("UTF-8"));
-		HttpPost request = new HttpPost(SERVICE_URL);
-		request.setHeader("Content-Type", "application/json");
-		request.setEntity(entity);
-		return client.execute(request);
+		try {
+			HttpEntity entity = new ByteArrayEntity(qpp.toString().getBytes(StandardCharsets.UTF_8));
+			HttpPost request = new HttpPost(SERVICE_URL);
+			request.setHeader("Content-Type", "application/json");
+			request.setEntity(entity);
+			return client.execute(request);
+		} catch (UnknownHostException unknownHost) {
+			return null;
+		}
 	}
 
 	private int getStatus(HttpResponse httpResponse) {

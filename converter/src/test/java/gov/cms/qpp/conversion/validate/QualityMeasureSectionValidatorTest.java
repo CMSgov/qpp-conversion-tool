@@ -5,15 +5,11 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
-import gov.cms.qpp.conversion.model.error.FormattedErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +25,7 @@ class QualityMeasureSectionValidatorTest {
 
 
 	@BeforeAll
-	static void setup() throws ParserConfigurationException, SAXException, IOException {
+	static void setup() {
 		manipulatorHandler = new MarkupManipulationHandler("../qrda-files/valid-QRDA-III-latest.xml");
 	}
 
@@ -78,18 +74,16 @@ class QualityMeasureSectionValidatorTest {
 				.executeScenario(MEASURE_REFERENCE_RESULTS_CMS_V2.name(), "measureId", false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(new FormattedErrorCode(ErrorCode.MEASURE_GUID_MISSING,
-						ErrorCode.MEASURE_GUID_MISSING.getMessage()));
+				.contains(ErrorCode.MISSING_OR_DUPLICATED_MEASURE_GUID);
 	}
 
 	@Test
 	void duplicateEcqMeasureLevelUp() {
-		String xPath = manipulatorHandler.getCannedPath(MarkupManipulationHandler.CannedPath.ECQM_PARENT);
-		List<Detail> errorDetails = manipulatorHandler.executeScenario(xPath, false);
+		String xpath = manipulatorHandler.getCannedPath(MarkupManipulationHandler.CannedPath.ECQM_PARENT);
+		List<Detail> errorDetails = manipulatorHandler.executeScenario(xpath, false);
 		assertThat(errorDetails)
 				.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.contains(new FormattedErrorCode(ErrorCode.MEASURE_GUID_MISSING,
-						ErrorCode.MEASURE_GUID_MISSING.getMessage()));
+				.contains(ErrorCode.MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID);
 	}
 
 	private Set<Detail> validateQualityMeasureSection() {

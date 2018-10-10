@@ -1,12 +1,5 @@
 package gov.cms.qpp.conversion.encode;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +8,13 @@ import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.decode.ReportingParametersActDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.google.common.truth.Truth.assertThat;
 
 class ClinicalDocumentEncoderTest {
 
@@ -45,59 +45,59 @@ class ClinicalDocumentEncoderTest {
 	@BeforeEach
 	void createNode() {
 
-		numeratorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 
 		numeratorValueNode.putValue(AGGREGATE_COUNT, "400");
 
-		numeratorValueNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorValueNode2 = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorValueNode2.putValue(AGGREGATE_COUNT, "500");
 
-		numeratorValueNode3 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		numeratorValueNode3 = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		numeratorValueNode3.putValue(AGGREGATE_COUNT, "400");
 
-		denominatorValueNode = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		denominatorValueNode = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		denominatorValueNode.putValue(AGGREGATE_COUNT, "600");
 
-		denominatorValueNode2 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		denominatorValueNode2 = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		denominatorValueNode2.putValue(AGGREGATE_COUNT, "700");
 
-		denominatorValueNode3 = new Node(TemplateId.ACI_AGGREGATE_COUNT);
+		denominatorValueNode3 = new Node(TemplateId.PI_AGGREGATE_COUNT);
 		denominatorValueNode3.putValue(AGGREGATE_COUNT, "600");
 
-		aciProportionDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR);
+		aciProportionDenominatorNode = new Node(TemplateId.PI_DENOMINATOR);
 		aciProportionDenominatorNode.addChildNode(denominatorValueNode);
 
-		aciProportionDenominatorNode2 = new Node(TemplateId.ACI_DENOMINATOR);
+		aciProportionDenominatorNode2 = new Node(TemplateId.PI_DENOMINATOR);
 		aciProportionDenominatorNode2.addChildNode(denominatorValueNode2);
 
-		aciProportionDenominatorNode3 = new Node(TemplateId.ACI_DENOMINATOR);
+		aciProportionDenominatorNode3 = new Node(TemplateId.PI_DENOMINATOR);
 		aciProportionDenominatorNode3.addChildNode(denominatorValueNode3);
 
-		aciProportionNumeratorNode = new Node(TemplateId.ACI_NUMERATOR);
+		aciProportionNumeratorNode = new Node(TemplateId.PI_NUMERATOR);
 		aciProportionNumeratorNode.addChildNode(numeratorValueNode);
 
-		aciProportionNumeratorNode2 = new Node(TemplateId.ACI_NUMERATOR);
+		aciProportionNumeratorNode2 = new Node(TemplateId.PI_NUMERATOR);
 		aciProportionNumeratorNode2.addChildNode(numeratorValueNode2);
 
-		aciProportionNumeratorNode3 = new Node(TemplateId.ACI_NUMERATOR);
+		aciProportionNumeratorNode3 = new Node(TemplateId.PI_NUMERATOR);
 		aciProportionNumeratorNode3.addChildNode(numeratorValueNode3);
 
-		aciProportionMeasureNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		aciProportionMeasureNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode.addChildNode(aciProportionNumeratorNode);
 		aciProportionMeasureNode.addChildNode(aciProportionDenominatorNode);
 		aciProportionMeasureNode.putValue(MEASURE_ID, "ACI-PEA-1");
 
-		aciProportionMeasureNode2 = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		aciProportionMeasureNode2 = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode2.addChildNode(aciProportionNumeratorNode2);
 		aciProportionMeasureNode2.addChildNode(aciProportionDenominatorNode2);
 		aciProportionMeasureNode2.putValue(MEASURE_ID, "ACI_EP_1");
 
-		aciProportionMeasureNode3 = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR);
+		aciProportionMeasureNode3 = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR);
 		aciProportionMeasureNode3.addChildNode(aciProportionNumeratorNode3);
 		aciProportionMeasureNode3.addChildNode(aciProportionDenominatorNode3);
 		aciProportionMeasureNode3.putValue(MEASURE_ID, "ACI_CCTPE_3");
 
-		aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		aciSectionNode = new Node(TemplateId.PI_SECTION);
 		aciSectionNode.putValue(CATEGORY, "aci");
 		aciSectionNode.addChildNode(aciProportionMeasureNode);
 		aciSectionNode.addChildNode(aciProportionMeasureNode2);
@@ -114,7 +114,8 @@ class ClinicalDocumentEncoderTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "individual");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.TAX_PAYER_IDENTIFICATION_NUMBER, "123456789");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.NATIONAL_PROVIDER_IDENTIFIER, "2567891421");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,  "AR000000" );
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,  "AR000000" );
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,  "x12345" );
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
 		nodes = new ArrayList<>();
@@ -150,17 +151,6 @@ class ClinicalDocumentEncoderTest {
 	}
 
 	@Test
-	void testInternalEncodeNegative() throws EncodeException {
-		Assertions.assertThrows(EncodeException.class, () -> {
-			JsonWrapper testJsonWrapper = new JsonWrapper();
-
-			ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
-			clinicalDocumentNode.addChildNode(new Node());
-			clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
-		});
-	}
-
-	@Test
 	void testInternalEncodeWithoutMeasures() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
 		JsonWrapper testJsonWrapper = new JsonWrapper();
@@ -177,7 +167,7 @@ class ClinicalDocumentEncoderTest {
 	@Test
 	void testInternalEncodeEmptyEntityId() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,"");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,"");
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
@@ -185,13 +175,48 @@ class ClinicalDocumentEncoderTest {
 
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
-		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.PRACTICE_ID))
 				.isNull();
 	}
+
 	@Test
 	void testInternalEncodeNullEntityId() throws EncodeException {
 		clinicalDocumentNode.getChildNodes().remove(aciSectionNode);
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID,null);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID,null);
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+
+		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.PRACTICE_ID))
+				.isNull();
+	}
+
+	@Test
+	void testClinicalDocumentEncoderIgnoresInvalidMeasurementSection() {
+		Node reportingParamNode = new Node(TemplateId.REPORTING_PARAMETERS_ACT, clinicalDocumentNode);
+		reportingParamNode.putValue(ReportingParametersActEncoder.PERFORMANCE_START,"20170101");
+		reportingParamNode.putValue(ReportingParametersActEncoder.PERFORMANCE_END,"20171231");
+		JsonWrapper testJsonWrapper = new JsonWrapper();
+		String expectedSection = "aci";
+
+		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
+		clinicalDocumentEncoder.internalEncode(testJsonWrapper, clinicalDocumentNode);
+
+		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
+		List<LinkedHashMap<String, Object>> measurementSets = getMeasurementSets(clinicalDocMap);
+		String value = (String)measurementSets.get(0).get("category");
+
+		assertThat(measurementSets).hasSize(1);
+		assertThat(value).isEqualTo(expectedSection);
+	}
+
+	@Test
+	void testVirtualGroupIdEncode() {
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+
 		JsonWrapper testJsonWrapper = new JsonWrapper();
 
 		ClinicalDocumentEncoder clinicalDocumentEncoder = new ClinicalDocumentEncoder(new Context());
@@ -200,6 +225,12 @@ class ClinicalDocumentEncoderTest {
 		Map<?, ?> clinicalDocMap = ((Map<?, ?>) testJsonWrapper.getObject());
 
 		assertThat(clinicalDocMap.get(ClinicalDocumentDecoder.ENTITY_ID))
-				.isNull();
+			.isEqualTo("x12345");
+	}
+
+
+	@SuppressWarnings("unchecked")
+	private List<LinkedHashMap<String, Object>> getMeasurementSets(Map clinicalDocumentMap) {
+		return ((List<LinkedHashMap<String, Object>>) clinicalDocumentMap.get("measurementSets"));
 	}
 }

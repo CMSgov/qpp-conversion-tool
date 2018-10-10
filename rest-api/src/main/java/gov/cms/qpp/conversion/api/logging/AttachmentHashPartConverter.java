@@ -1,21 +1,21 @@
 package gov.cms.qpp.conversion.api.logging;
 
-import ch.qos.logback.classic.pattern.ClassicConverter;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
+
 import java.io.IOException;
+import java.util.Collection;
+
+import ch.qos.logback.classic.pattern.ClassicConverter;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * Adds a logging field that identifies the uploaded file as part of an current request.
  */
 public class AttachmentHashPartConverter extends ClassicConverter {
-	private static final Logger DEV_LOG = LoggerFactory.getLogger(AttachmentHashPartConverter.class);
 
 	/**
 	 * Given the logging event, spits out an object hashcode string associated with the file that was uploaded for the current request.
@@ -30,7 +30,8 @@ public class AttachmentHashPartConverter extends ClassicConverter {
 		try {
 			hashPart = getHashPart();
 		} catch (IOException | ServletException e) {
-			DEV_LOG.trace("No part to associate with log output.", e);
+			//don't log because the logging will not show up, nor log manually because
+			//it will ruin the format and become hard to understand
 		}
 
 		return hashPart;
@@ -60,6 +61,16 @@ public class AttachmentHashPartConverter extends ClassicConverter {
 	 */
 	Part getPart() throws IOException, ServletException {
 		ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		return attrs.getRequest().getParts().iterator().next();
+
+		if (attrs == null) {
+			return null;
+		}
+
+		Collection<Part> parts = attrs.getRequest().getParts();
+		if (CollectionUtils.isEmpty(parts)) {
+			return null;
+		}
+
+		return parts.iterator().next();
 	}
 }

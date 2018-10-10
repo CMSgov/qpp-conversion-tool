@@ -1,9 +1,5 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.model.Node;
@@ -11,6 +7,10 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
+
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class AciNumeratorDenominatorValidatorTest {
 
@@ -23,18 +23,18 @@ class AciNumeratorDenominatorValidatorTest {
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION, clinicalDocumentNode);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION, clinicalDocumentNode);
 		aciSectionNode.putValue("category", "aci");
 
 		clinicalDocumentNode.addChildNode(aciSectionNode);
 
-		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
@@ -48,10 +48,10 @@ class AciNumeratorDenominatorValidatorTest {
 
 	@Test
 	void testNumerateDenominatorMissingMeasureId() {
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
-		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
@@ -65,7 +65,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about missing numerator denominator measure name")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID);
+				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_MISSING_MEASURE_ID);
 	}
 
 	@Test
@@ -77,13 +77,13 @@ class AciNumeratorDenominatorValidatorTest {
 		clinicalDocumentNode.putValue("performanceStart", "20170101");
 		clinicalDocumentNode.putValue("performanceEnd", "20171231");
 
-		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, clinicalDocumentNode);
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, clinicalDocumentNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		clinicalDocumentNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
@@ -93,16 +93,16 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about invalid parent node")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_PARENT_NOT_ACI_SECTION);
+				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_PARENT_NOT_PI_SECTION);
 	}
 
 	@Test
 	void testNoChildNodes() {
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
@@ -112,21 +112,21 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about no child nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN);
+				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_MISSING_CHILDREN);
 	}
 
 	@Test
 	void testNoNumerator() {
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR, aciNumeratorDenominatorNode);
 		Node aciNumeratorPlaceholder = new Node(TemplateId.PLACEHOLDER, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
@@ -135,24 +135,25 @@ class AciNumeratorDenominatorValidatorTest {
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertWithMessage("error should be about missing Numerator node")
+		assertWithMessage("error should be about missing Numerator element")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_NUMERATOR_CHILD_NODE);
+				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+					.format(AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
 	@Test
 	void testNoDenominator() {
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
 		Node aciDenominatorPlaceholder = new Node(TemplateId.PLACEHOLDER, aciNumeratorDenominatorNode);
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorPlaceholder);
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
@@ -160,25 +161,26 @@ class AciNumeratorDenominatorValidatorTest {
 		AciNumeratorDenominatorValidator measureval = new AciNumeratorDenominatorValidator();
 		Set<Detail> errors = measureval.validateSingleNode(aciNumeratorDenominatorNode);
 
-		assertWithMessage("error should be about missing Denominator node")
+		assertWithMessage("error should be about missing Denominator element")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_MISSING_DENOMINATOR_CHILD_NODE);
+				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+					.format(AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 
 	@Test
 	void testTooManyNumerators() {
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
-		Node aciNumeratorNode2 = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode2 = new Node(TemplateId.PI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciNumeratorNode);
@@ -189,23 +191,24 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about too many Numerator nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_NUMERATORS);
+				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+					.format(AciNumeratorValidator.NUMERATOR_NAME));
 	}
 
 	@Test
 	void testTooManyDenominators() {
 
-		Node aciSectionNode = new Node(TemplateId.ACI_SECTION);
+		Node aciSectionNode = new Node(TemplateId.PI_SECTION);
 		aciSectionNode.putValue("category", "aci");
 
-		Node aciNumeratorDenominatorNode = new Node(TemplateId.ACI_NUMERATOR_DENOMINATOR, aciSectionNode);
+		Node aciNumeratorDenominatorNode = new Node(TemplateId.PI_NUMERATOR_DENOMINATOR, aciSectionNode);
 		aciNumeratorDenominatorNode.putValue("measureId", "ACI_EP_1");
 
 		aciSectionNode.addChildNode(aciNumeratorDenominatorNode);
 
-		Node aciDenominatorNode = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
-		Node aciDenominatorNode2 = new Node(TemplateId.ACI_DENOMINATOR, aciNumeratorDenominatorNode);
-		Node aciNumeratorNode = new Node(TemplateId.ACI_NUMERATOR, aciNumeratorDenominatorNode);
+		Node aciDenominatorNode = new Node(TemplateId.PI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciDenominatorNode2 = new Node(TemplateId.PI_DENOMINATOR, aciNumeratorDenominatorNode);
+		Node aciNumeratorNode = new Node(TemplateId.PI_NUMERATOR, aciNumeratorDenominatorNode);
 
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode);
 		aciNumeratorDenominatorNode.addChildNode(aciDenominatorNode2);
@@ -216,6 +219,7 @@ class AciNumeratorDenominatorValidatorTest {
 
 		assertWithMessage("error should be about too many Denominator nodes")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.ACI_NUMERATOR_DENOMINATOR_VALIDATOR_TOO_MANY_DENOMINATORS);
+				.containsExactly(ErrorCode.PI_NUMERATOR_DENOMINATOR_VALIDATOR_EXACTLY_ONE_NUMERATOR_OR_DENOMINATOR_CHILD_NODE
+					.format(AciDenominatorValidator.DENOMINATOR_NAME));
 	}
 }

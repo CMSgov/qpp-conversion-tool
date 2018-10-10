@@ -36,9 +36,9 @@ public final class Metadata {
 	private String conversionErrorLocator;
 	private String validationErrorLocator;
 	private String rawValidationErrorLocator;
-
 	private Instant createdDate;
 	private Boolean cpcProcessed;
+	private String purpose;
 
 	/**
 	 * Constructs a new {@code Metadata} with the {@code createdDate} filled in upon construction.
@@ -256,6 +256,26 @@ public final class Metadata {
 	}
 
 	/**
+	 * The purpose of the conversion, or null if it's a standard conversion
+	 *
+	 * @return The purpose of the conversion, for example \"Test\"
+	 */
+	@DoNotEncrypt
+	@DynamoDBAttribute(attributeName = "Purpose")
+	public String getPurpose() {
+		return purpose;
+	}
+
+	/**
+	 * Sets the purpose of the conversion
+	 *
+	 * @param purpose The purpose of the conversion
+	 */
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
+	}
+
+	/**
 	 * The success or failure of only the conversion.
 	 *
 	 * @return Success or failure.
@@ -433,7 +453,7 @@ public final class Metadata {
 	 *
 	 * Splits the the processed flag from the date by a {@code #} character.
 	 * The first field must be {@code true} or {@code false} which represents the CPC+ processed boolean.
-	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2017-12-08T18:32:54.846Z}.
+	 * The second field must be an ISO 8601 timestamp string.  For example, {@code 2018-12-08T18:32:54.846Z}.
 	 *
 	 * @param combination The combined attribute.
 	 */
@@ -488,6 +508,7 @@ public final class Metadata {
 		equals &= Objects.equals(validationErrorLocator, that.validationErrorLocator);
 		equals &= Objects.equals(rawValidationErrorLocator, that.rawValidationErrorLocator);
 		equals &= Objects.equals(cpcProcessed, that.cpcProcessed);
+		equals &= Objects.equals(purpose, that.purpose);
 		return equals;
 	}
 
@@ -524,8 +545,8 @@ public final class Metadata {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(uuid, tin, npi, createdDate, apm, submissionYear,
-				submissionLocator, qppLocator, fileName, overallStatus, conversionStatus, validationStatus,
-				cpc, conversionErrorLocator, validationErrorLocator, rawValidationErrorLocator, cpcProcessed);
+		return Objects.hash(uuid, tin, npi, createdDate, apm, submissionYear, submissionLocator, qppLocator, fileName,
+				overallStatus, conversionStatus, validationStatus, cpc, conversionErrorLocator, validationErrorLocator,
+				rawValidationErrorLocator, cpcProcessed, purpose);
 	}
 }

@@ -3,7 +3,7 @@
 	<conversionRule conversionWord="attachment" converterClass="gov.cms.qpp.conversion.api.logging.AttachmentHashPartConverter"/>
 
 	<property name="defaultPattern"
-			  value='{"timestamp": "%d{HH:mm:ss.SSS}", "thread": "%thread", "attachment": "%attachment", "level": "%-5level", "logger": "%logger{36}", "message": "%msg"}'/>
+			  value='{"timestamp": "%d{yyyy-MM-dd HH:mm:ss.SSS}", "thread": "%thread", "attachment": "%attachment", "level": "%-5level", "logger": "%logger{36}", "message": "%msg"}'/>
 
 	<appender name="STDOUT_DETAIL" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
@@ -17,7 +17,7 @@
 			</providers>
 		</encoder>
 	</appender>
-	<root name="gov.cms" level="INFO">
+	<root level="INFO">
 		<appender-ref ref="STDOUT_DETAIL"/>
 	</root>
 </configuration>

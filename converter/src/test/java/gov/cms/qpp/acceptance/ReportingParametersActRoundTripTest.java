@@ -1,18 +1,19 @@
 package gov.cms.qpp.acceptance;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import com.jayway.jsonpath.TypeRef;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.util.JsonHelper;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import static com.google.common.truth.Truth.assertThat;
 
 class ReportingParametersActRoundTripTest {
 
@@ -28,49 +29,49 @@ class ReportingParametersActRoundTripTest {
 	}
 
 	@Test
-	void testQualityMeasuresContainsPerformanceStart() throws IOException {
+	void testQualityMeasuresContainsPerformanceStart() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
-		"$.measurementSets[0].performanceStart", String.class);
+		"$.measurementSets[0].performanceStart", new TypeRef<String>() { });
 
 		assertThat(performanceStart).isEqualTo("2017-01-01");
 	}
 
 	@Test
-	void testQualityMeasuresContainsPerformanceEnd() throws IOException {
+	void testQualityMeasuresContainsPerformanceEnd() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
-				"$.measurementSets[0].performanceEnd", String.class);
+				"$.measurementSets[0].performanceEnd", new TypeRef<String>() { });
 
 		assertThat(performanceStart).isEqualTo("2017-12-31");
 	}
 
 	@Test
-	void testAciSectionContainsPerformanceStart() throws IOException {
+	void testAciSectionContainsPerformanceStart() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
-				"$.measurementSets[1].performanceStart", String.class);
+				"$.measurementSets[1].performanceStart", new TypeRef<String>() { });
 
 		assertThat(performanceStart).isEqualTo("2017-02-01");
 	}
 
 	@Test
-	void testAciSectionContainsPerformanceEnd() throws IOException {
+	void testAciSectionContainsPerformanceEnd() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
-				"$.measurementSets[1].performanceEnd", String.class);
+				"$.measurementSets[1].performanceEnd", new TypeRef<String>() { });
 
 		assertThat(performanceStart).isEqualTo("2017-05-31");
 	}
 
 	@Test
-	void testIaContainsPerformanceStart() throws IOException {
+	void testIaContainsPerformanceStart() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
-				"$.measurementSets[2].performanceStart", String.class);
+				"$.measurementSets[2].performanceStart", new TypeRef<String>() { });
 
 		assertThat(performanceStart).isEqualTo("2017-01-01");
 	}
 
 	@Test
-	void testIaContainsPerformanceEnd() throws IOException {
+	void testIaContainsPerformanceEnd() {
 		String performanceStart = JsonHelper.readJsonAtJsonPath(json,
-				"$.measurementSets[2].performanceEnd", String.class);
+				"$.measurementSets[2].performanceEnd", new TypeRef<String>() { });
 
 		assertThat(performanceStart).isEqualTo("2017-04-30");
 	}

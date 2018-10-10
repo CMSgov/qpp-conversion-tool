@@ -2,7 +2,7 @@ package gov.cms.qpp.conversion.correlation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import gov.cms.qpp.conversion.correlation.model.Config;
+import gov.cms.qpp.conversion.correlation.model.CorrelationConfig;
 import gov.cms.qpp.conversion.correlation.model.Correlation;
 import gov.cms.qpp.conversion.correlation.model.Goods;
 import gov.cms.qpp.conversion.correlation.model.PathCorrelation;
@@ -39,6 +39,8 @@ public class PathCorrelator {
 
 	/**
 	 * Initializes correlations between json paths and xpaths
+	 *
+	 * @return a holder for path correlations
 	 */
 	private static PathCorrelation loadPathCorrelation() {
 		PathCorrelation pathCorrelation;
@@ -64,10 +66,10 @@ public class PathCorrelator {
 	 * @param pathCorrelation deserialized representation of the aforementioned correlation configuration
 	 */
 	private static void flattenCorrelations(PathCorrelation pathCorrelation) {
-		Map<String, List<Config>> config = pathCorrelation.getCorrelations().stream()
+		Map<String, List<CorrelationConfig>> config = pathCorrelation.getCorrelations().stream()
 				.collect(Collectors.toMap(Correlation::getCorrelationId, Correlation::getConfig));
 		pathCorrelation.getTemplates().forEach(template -> {
-			List<Config> configs = config.get(template.getCorrelationId());
+			List<CorrelationConfig> configs = config.get(template.getCorrelationId());
 			configs.forEach(conf -> {
 				if (null != conf.getDecodeLabel()) {
 					pathCorrelationMap.put(
@@ -160,9 +162,8 @@ public class PathCorrelator {
 					if (encodeLabel.equals(leaf)) {
 						return leaf.isEmpty()
 								|| PathCorrelator.getXpath(entry.get("template"), leaf, entry.get("nsuri")) != null;
-					} else {
-						return encodeLabel.isEmpty();
 					}
+					return encodeLabel.isEmpty();
 				})
 				.findFirst()
 				.orElse(null);

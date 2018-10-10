@@ -1,22 +1,16 @@
 package gov.cms.qpp.conversion;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cms.qpp.conversion.decode.XmlInputDecoder;
+import gov.cms.qpp.conversion.decode.XmlDecoderEngine;
 import gov.cms.qpp.conversion.decode.XmlInputFileException;
-import gov.cms.qpp.conversion.decode.placeholder.DefaultDecoder;
 import gov.cms.qpp.conversion.encode.EncodeException;
 import gov.cms.qpp.conversion.encode.JsonOutputEncoder;
 import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.conversion.encode.QppOutputEncoder;
 import gov.cms.qpp.conversion.encode.ScopedQppOutputEncoder;
 import gov.cms.qpp.conversion.model.Node;
-import gov.cms.qpp.conversion.model.error.AllErrors;
 import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.Error;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.conversion.util.CloneHelper;
 import gov.cms.qpp.conversion.validate.QrdaValidator;
 import gov.cms.qpp.conversion.xml.XmlException;
 import gov.cms.qpp.conversion.xml.XmlUtils;
@@ -24,9 +18,7 @@ import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -107,16 +99,12 @@ public class Converter {
 	 * @return a transformed representation of the source content
 	 * @throws XmlException during transform
 	 */
-	private JsonWrapper transform(InputStream inStream) throws XmlException {
+	private JsonWrapper transform(InputStream inStream) {
 		Element doc = XmlUtils.parseXmlStream(inStream);
-		decoded = XmlInputDecoder.decodeXml(context, doc);
+		decoded = XmlDecoderEngine.decodeXml(context, doc);
 		JsonWrapper qpp = null;
 		if (null != decoded) {
 			DEV_LOG.info("Decoded template ID {}", decoded.getType());
-
-			if (!context.isDoDefaults()) {
-				DefaultDecoder.removeDefaultNode(decoded.getChildNodes());
-			}
 
 			if (context.isDoValidation()) {
 				QrdaValidator validator = new QrdaValidator(context);
@@ -127,7 +115,8 @@ public class Converter {
 				qpp = encode();
 			}
 		} else {
-			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_QRDA_DOCUMENT);
+			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_QRDA_DOCUMENT.format(
+				Context.REPORTING_YEAR, DocumentationReference.CLINICAL_DOCUMENT));
 			details.add(detail);
 		}
 
@@ -169,137 +158,7 @@ public class Converter {
 	 * @return the conversion report
 	 */
 	public ConversionReport getReport() {
-		return new ConversionReport();
+		return new ConversionReport(source, details, decoded, encoded);
 	}
 
-
-	/**
-	 * Report on the stat of a conversion.
-	 */
-	public class ConversionReport {
-		private final ObjectMapper mapper = new ObjectMapper();
-		private AllErrors reportDetails;
-		private String qppValidationDetails;
-
-		/**
-		 * Construct a con version report
-		 */
-		ConversionReport() {
-			reportDetails = constructErrorHierarchy(source.getName(), details);
-		}
-
-		/**
-		 * Constructs an {@link AllErrors} from all the validation errors.
-		 *
-		 * Currently consists of only a single {@link Error}.
-		 *
-		 * @param inputIdentifier An identifier for a source of QRDA3 XML.
-		 * @param details A list of validation errors.
-		 * @return All the errors.
-		 */
-		private AllErrors constructErrorHierarchy(final String inputIdentifier, final List<Detail> details) {
-			AllErrors errors = new AllErrors();
-			errors.addError(constructErrorSource(inputIdentifier, details));
-			return errors;
-		}
-
-		/**
-		 * Constructs an {@link Error} for the given {@code inputIdentifier} from the passed in validation errors.
-		 *
-		 * @param inputIdentifier An identifier for a source of QRDA3 XML.
-		 * @param details A list of validation errors.
-		 * @return A single source of validation errors.
-		 */
-		private Error constructErrorSource(final String inputIdentifier, final List<Detail> details) {
-			return new Error(inputIdentifier, details);
-		}
-
-		/**
-		 * Defensive copy of decoded submission
-		 *
-		 * @return decoded {@link Node}
-		 */
-		public Node getDecoded() {
-			return CloneHelper.deepClone(decoded);
-		}
-
-		/**
-		 * Defensive copy of the result of the conversion
-		 *
-		 * @return encoded {@link JsonWrapper}
-		 */
-		public JsonWrapper getEncoded() {
-			return CloneHelper.deepClone(encoded);
-		}
-
-		/**
-		 * Retrieve information pertaining to errors generated during the conversion.
-		 *
-		 * @return all errors registered during conversion
-		 */
-		public AllErrors getReportDetails() {
-			return reportDetails;
-		}
-
-		/**
-		 * Mutator for reportDetails
-		 *
-		 * @param details updated errors
-		 */
-		public void setReportDetails(AllErrors details) {
-			reportDetails = details;
-		}
-
-		/**
-		 * Mutator for QPP validation details
-		 *
-		 * @param details QPP validation details
-		 */
-		public void setRawValidationDetails(String details) {
-			qppValidationDetails = details;
-		}
-
-		/**
-		 * Get the {@link Source} for the input to the converter.
-		 *
-		 * @return {@link Source} for the input.
-		 */
-		public Source getQrdaSource() {
-			return source;
-		}
-
-		/**
-		 * Get the {@link Source} for the output.
-		 *
-		 * @return {@link Source} for the output.
-		 */
-		public Source getQppSource() {
-			return getEncoded().toSource();
-		}
-
-		/**
-		 * Get the {@link Source} for the conversion validation errors.
-		 *
-		 * @return {@link Source} for the validation errors.
-		 */
-		public Source getValidationErrorsSource() {
-			try {
-				byte[] validationErrorBytes = mapper.writeValueAsBytes(reportDetails);
-				return new InputStreamSupplierSource("ValidationErrors", () -> new ByteArrayInputStream(validationErrorBytes), validationErrorBytes.length);
-			} catch (JsonProcessingException e) {
-				throw new EncodeException("Issue serializing error report details", e);
-			}
-		}
-
-		/**
-		 * Get the {@link Source} for the raw QPP validation errors (if any).
-		 *
-		 * @return {@link Source} for the raw QPP validation errors.
-		 */
-		public Source getRawValidationErrorsOrEmptySource() {
-			String raw = (qppValidationDetails != null) ? qppValidationDetails : "";
-			byte[] rawValidationErrorBytes = raw.getBytes(StandardCharsets.UTF_8);
-			return new InputStreamSupplierSource("RawValidationErrors", () -> new ByteArrayInputStream(rawValidationErrorBytes), rawValidationErrorBytes.length);
-		}
-	}
 }

@@ -1,6 +1,5 @@
 package gov.cms.qpp.acceptance;
 
-
 import gov.cms.qpp.acceptance.helper.MarkupManipulator;
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
@@ -12,14 +11,13 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
 import gov.cms.qpp.conversion.model.error.TransformException;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
-import gov.cms.qpp.conversion.model.validation.SubPopulations;
+import gov.cms.qpp.conversion.model.validation.SubPopulationLabel;
 import gov.cms.qpp.conversion.util.JsonHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
+import com.jayway.jsonpath.TypeRef;
+
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,7 +27,6 @@ import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
-
 
 class QualityMeasureIdMultiRoundTripTest {
 
@@ -49,23 +46,25 @@ class QualityMeasureIdMultiRoundTripTest {
 	private static MarkupManipulator manipulator;
 
 	@BeforeAll
-	static void setup() throws ParserConfigurationException, SAXException, IOException {
+	static void setup() {
 		manipulator = new MarkupManipulator.MarkupManipulatorBuilder()
 			.setPathname(JUNK_QRDA3_FILE).build();
 	}
 
 	@Test
-	void testRoundTripForQualityMeasureId() throws IOException {
+	void testRoundTripForQualityMeasureId() {
 		Converter converter = new Converter(new PathSource(JUNK_QRDA3_FILE));
 
 		JsonWrapper qpp = converter.transform();
 		String json = qpp.toString();
 
 		List<Map<String, ?>> qualityMeasures = JsonHelper.readJsonAtJsonPath(json,
-				"$.measurementSets[?(@.category=='quality')].measurements[*]", List.class);
+				"$.measurementSets[?(@.category=='quality')].measurements[*]",
+				new TypeRef<List<Map<String, ?>>>() { });
 
-		List<Map<String, Integer>> subPopulation = JsonHelper.readJsonAtJsonPath(json,
-				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='160')].value.strata[*]", List.class);
+		List<Map<String, ?>> subPopulation = JsonHelper.readJsonAtJsonPath(json,
+				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='160')].value.strata[*]",
+				new TypeRef<List<Map<String, ?>>>() { });
 
 		String message =
 				"The measureId in the quality measure should still populate given the junk stuff in the measure.";
@@ -106,7 +105,8 @@ class QualityMeasureIdMultiRoundTripTest {
 
 	@Test
 	void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
-		LocalizedError error = ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulations.DENOM, 2);
+		LocalizedError error =
+			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulationLabel.DENOM.name(), 2);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
@@ -170,7 +170,7 @@ class QualityMeasureIdMultiRoundTripTest {
 	private List<Detail> executeScenario(String path, boolean remove) {
 		InputStream modified = manipulator.upsetTheNorm(path, remove);
 		Converter converter = new Converter(
-				new InputStreamSupplierSource(JUNK_QRDA3_FILE.toString(), () -> modified));
+				new InputStreamSupplierSource(JUNK_QRDA3_FILE.toString(), modified));
 		List<Detail> details = new ArrayList<>();
 		try {
 			converter.transform();
@@ -181,7 +181,7 @@ class QualityMeasureIdMultiRoundTripTest {
 		return details;
 	}
 
-	private void assertFirstSubPopulation(List<Map<String, Integer>> subPopulation) {
+	private void assertFirstSubPopulation(List<Map<String, ?>> subPopulation) {
 		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
 				.that(subPopulation.get(0).get(ELIGIBLE_POPULATION))
 				.isEqualTo(600);
@@ -193,7 +193,7 @@ class QualityMeasureIdMultiRoundTripTest {
 				.isEqualTo(35);
 	}
 
-	private void assertSecondSubPopulation(List<Map<String, Integer>> subPopulation) {
+	private void assertSecondSubPopulation(List<Map<String, ?>> subPopulation) {
 		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
 				.that(subPopulation.get(1)
 				.get(ELIGIBLE_POPULATION))
@@ -206,7 +206,7 @@ class QualityMeasureIdMultiRoundTripTest {
 				.isEqualTo(40);
 	}
 
-	private void assertThirdSubPopulation(List<Map<String, Integer>> subPopulation) {
+	private void assertThirdSubPopulation(List<Map<String, ?>> subPopulation) {
 		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
 				.that(subPopulation.get(2).get(ELIGIBLE_POPULATION))
 				.isEqualTo(580);

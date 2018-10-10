@@ -7,7 +7,7 @@ import gov.cms.qpp.conversion.model.Validator;
  * This Validator checks that exactly one Aggregate Count Child exists,
  * and that its aggregate count value is a positive integer value greater than zero.
  */
-@Validator(TemplateId.ACI_DENOMINATOR)
+@Validator(TemplateId.PI_DENOMINATOR)
 public class AciDenominatorValidator extends CommonNumeratorDenominatorValidator {
 	public static final String DENOMINATOR_NAME = "Denominator";
 

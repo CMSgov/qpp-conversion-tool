@@ -1,19 +1,9 @@
 package gov.cms.qpp.conversion.encode;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
-import com.fasterxml.jackson.databind.ser.PropertyWriter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import gov.cms.qpp.conversion.InputStreamSupplierSource;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.model.Node;
+import gov.cms.qpp.conversion.util.FormatHelper;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -28,6 +18,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.introspect.Annotated;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
+import com.fasterxml.jackson.databind.ser.PropertyWriter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+
 /**
  * Manages building a "simple" object of JSON conversion.
  * JSON renderers can convert maps and list into JSON Strings.
@@ -35,6 +37,7 @@ import java.util.stream.Stream;
  */
 public class JsonWrapper {
 	private static final String METADATA_HOLDER = "metadata_holder";
+	private static final String METADATA_FILTER_LABEL = "exclude-metadata";
 	private ObjectWriter ow;
 	private Map<String, Object> object;
 	private List<Object> list;
@@ -44,16 +47,14 @@ public class JsonWrapper {
 	}
 
 	public JsonWrapper(boolean filterMeta) {
-		ow = getObjectWriter(filterMeta);
+		ow = filterMeta ? getObjectWriter() : getObjectWriterWithoutMeta();
 	}
 
 	public JsonWrapper(JsonWrapper wrapper, boolean filterMeta) {
 		this(filterMeta);
 		if (wrapper.isObject()) {
-			this.initAsObject();
 			this.object = new LinkedHashMap<>(wrapper.object);
 		} else {
-			this.initAsList();
 			this.list = new LinkedList<>(wrapper.list);
 		}
 	}
@@ -67,17 +68,20 @@ public class JsonWrapper {
 	 *
 	 * @return utility that will allow client to serialize wrapper contents as json
 	 */
-	public static ObjectWriter getObjectWriter(boolean filterMeta) {
-		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
-		DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
-		printer.indentObjectsWith(withLinefeed);
+	static ObjectWriter getObjectWriter() {
 		ObjectMapper om = new ObjectMapper();
+		outfitMetadataFilter(om);
 
-		if (filterMeta) {
-			outfitMetadataFilter(om);
-		}
+		return om.writer().with(getPrinter());
+	}
 
-		return om.writer().with(printer);
+	/**
+	 * Static factory that creates {@link com.fasterxml.jackson.databind.ObjectWriter}s removing metadata.
+	 *
+	 * @return utility that will allow client to serialize wrapper contents as json
+	 */
+	static ObjectWriter getObjectWriterWithoutMeta() {
+		return new ObjectMapper().writer().with(getPrinter());
 	}
 
 	/**
@@ -86,11 +90,17 @@ public class JsonWrapper {
 	 * @param om object mapper to modify
 	 */
 	private static void outfitMetadataFilter(ObjectMapper om) {
-		final String filterName = "exclude-metadata";
 		SimpleFilterProvider filters = new SimpleFilterProvider();
-		filters.addFilter(filterName, new MetadataPropertyFilter());
-		om.setAnnotationIntrospector(new JsonWrapperIntrospector(filterName));
+		filters.addFilter(METADATA_FILTER_LABEL, new MetadataPropertyFilter());
+		om.setAnnotationIntrospector(new JsonWrapperIntrospector(METADATA_FILTER_LABEL));
 		om.setFilterProvider(filters);
+	}
+
+	private static DefaultPrettyPrinter getPrinter() {
+		DefaultIndenter withLinefeed = new DefaultIndenter("  ", "\n");
+		DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
+		printer.indentObjectsWith(withLinefeed);
+		return printer;
 	}
 
 	/**
@@ -365,19 +375,6 @@ public class JsonWrapper {
 	}
 
 	/**
-	 * Enforces uniform {@link String} presentation.
-	 *
-	 * @param value potentially dirty value
-	 * @return cleaned
-	 */
-	protected String cleanString(String value) {
-		if (value == null) {
-			return "";
-		}
-		return value.trim().toLowerCase();
-	}
-
-	/**
 	 * Validates that the given value is an parsable integer.
 	 *
 	 * @param value to validate
@@ -386,14 +383,15 @@ public class JsonWrapper {
 	 */
 	protected int validInteger(String value) {
 		try {
-			return Integer.parseInt(cleanString(value));
-		} catch (Exception e) {
+			return Integer.parseInt(FormatHelper.cleanString(value));
+		} catch (RuntimeException e) {
 			throw new EncodeException(value + " is not an integer.", e);
 		}
 	}
 
 	/**
-	 * Validates that the given value conforms to expected date formatting (i.e. yyyyMMdd).
+	 * Validates that the given value conforms to an ISO date with or without separators.
+	 * It can include a time but is unnecessary.
 	 *
 	 * @param value to validate
 	 * @return valid date String
@@ -401,9 +399,9 @@ public class JsonWrapper {
 	 */
 	protected String validDate(String value) {
 		try {
-			LocalDate thisDate = LocalDate.parse(cleanString(value),  DateTimeFormatter.ofPattern("yyyyMMdd"));
+			LocalDate thisDate = FormatHelper.formattedDateParse(value);
 			return thisDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			throw new EncodeException(value + " is not an date of format YYYYMMDD.", e);
 		}
 	}
@@ -417,8 +415,8 @@ public class JsonWrapper {
 	 */
 	protected float validFloat(String value) {
 		try {
-			return Float.parseFloat(cleanString(value));
-		} catch (Exception e) {
+			return Float.parseFloat(FormatHelper.cleanString(value));
+		} catch (RuntimeException e) {
 			throw new EncodeException(value + " is not a number.", e);
 		}
 	}
@@ -431,7 +429,7 @@ public class JsonWrapper {
 	 * @throws EncodeException
 	 */
 	protected boolean validBoolean(String value) {
-		String cleanedValueString = cleanString(value);
+		String cleanedValueString = FormatHelper.cleanString(value);
 		
 		if ("true".equals(cleanedValueString) || "yes".equals(cleanedValueString) || "y".equals(cleanedValueString)) {
 			return true;
@@ -519,10 +517,14 @@ public class JsonWrapper {
 	@Override
 	public String toString() {
 		try {
-			return ow.writeValueAsString(isObject() ? object : list);
+			return ow.writeValueAsString(toObject());
 		} catch (JsonProcessingException e) {
 			throw new EncodeException("Issue rendering JSON from JsonWrapper Map", e);
 		}
+	}
+
+	public Object toObject() {
+		return isObject() ? object : list;
 	}
 
 	/**
@@ -532,7 +534,7 @@ public class JsonWrapper {
 	 */
 	public Source toSource() {
 		byte[] qppBytes = toString().getBytes(StandardCharsets.UTF_8);
-		return new InputStreamSupplierSource("QPP", () -> new ByteArrayInputStream(qppBytes), qppBytes.length);
+		return new InputStreamSupplierSource("QPP", new ByteArrayInputStream(qppBytes));
 	}
 
 	/**
@@ -602,7 +604,13 @@ public class JsonWrapper {
 		metaMap.put("encodeLabel", encodeLabel);
 		metaMap.put("nsuri", node.getDefaultNsUri());
 		metaMap.put("template", node.getType().name());
-		metaMap.put("path", node.getPath());
+		metaMap.put("path", node.getOrComputePath());
+		if (node.getLine() != Node.DEFAULT_LOCATION_NUMBER) {
+			metaMap.put("line", String.valueOf(node.getLine()));
+		}
+		if (node.getColumn() != Node.DEFAULT_LOCATION_NUMBER) {
+			metaMap.put("column", String.valueOf(node.getColumn()));
+		}
 		return metaMap;
 	}
 
@@ -632,4 +640,5 @@ public class JsonWrapper {
 	void mergeMetadata(Map<String, String> otherMeta) {
 		this.getMetadataHolder().add(otherMeta);
 	}
+
 }

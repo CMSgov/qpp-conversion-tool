@@ -1,39 +1,31 @@
 package gov.cms.qpp.conversion.model;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-
-import java.io.PrintStream;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.jdom2.Element;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.AggregateCountDecoder;
-import gov.cms.qpp.conversion.decode.InputDecoder;
+import gov.cms.qpp.conversion.decode.DecodeResult;
+import gov.cms.qpp.conversion.decode.QrdaDecoder;
 import gov.cms.qpp.conversion.encode.AggregateCountEncoder;
+
+import java.util.Iterator;
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class RegistryTest {
 
 	private Context context;
-	private Registry<InputDecoder> registry;
-	private PrintStream err;
+	private Registry<QrdaDecoder> registry;
 
 	@BeforeEach
 	void before() {
 		context = new Context();
 		registry = context.getRegistry(Decoder.class);
-		err = System.err;
-	}
-
-	@AfterEach
-	void tearDown() {
-		System.setErr(err);
 	}
 
 	@Test
@@ -49,7 +41,7 @@ class RegistryTest {
 	void testRegistryGetDefaultConverterHandler() {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
-		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		QrdaDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 
 		assertWithMessage("Registry should return %s instance.", Placeholder.class.getName())
 				.that(decoder).isInstanceOf(Placeholder.class);
@@ -60,7 +52,7 @@ class RegistryTest {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
-		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		QrdaDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 
 		assertWithMessage("Registry should return %s instance.", AnotherPlaceholder.class.getName())
 				.that(decoder).isInstanceOf(AnotherPlaceholder.class);
@@ -70,7 +62,7 @@ class RegistryTest {
 	void testRegistryInclusiveGetDefaultConverterHandler() {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
-		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
+		Set<QrdaDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
 
 		assertWithMessage("Registry should return %s instance.", Placeholder.class.getName())
 				.that(decoders.iterator().next()).isInstanceOf(Placeholder.class);
@@ -81,7 +73,7 @@ class RegistryTest {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
-		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
+		Set<QrdaDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
 
 		assertWithMessage("Should return two decoders")
 				.that(decoders).hasSize(2);
@@ -92,8 +84,8 @@ class RegistryTest {
 		context.setProgram(Program.CPC);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.CPC), AnotherPlaceholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
-		Set<InputDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
-		Iterator<InputDecoder> iterator = decoders.iterator();
+		Set<QrdaDecoder> decoders = registry.inclusiveGet(TemplateId.PLACEHOLDER);
+		Iterator<QrdaDecoder> iterator = decoders.iterator();
 
 		assertWithMessage("First Registry entry should be a %s instance.", Placeholder.class.getName())
 				.that(iterator.next()).isInstanceOf(Placeholder.class);
@@ -109,7 +101,7 @@ class RegistryTest {
 
 		assertThat(componentKeys).hasSize(1);
 		for (ComponentKey componentKey : componentKeys) {
-			InputDecoder decoder = registry.get(componentKey.getTemplate());
+			QrdaDecoder decoder = registry.get(componentKey.getTemplate());
 
 			assertWithMessage("A handler is expected")
 					.that(decoder).isNotNull();
@@ -125,7 +117,7 @@ class RegistryTest {
 				.that(componentKeys).hasSize(1);
 		for (ComponentKey componentKey : componentKeys) {
 			assertWithMessage("The templateId should be")
-					.that(componentKey.getTemplate()).isSameAs(TemplateId.ACI_AGGREGATE_COUNT);
+					.that(componentKey.getTemplate()).isSameAs(TemplateId.PI_AGGREGATE_COUNT);
 		}
 
 		componentKeys = context.getRegistry(Encoder.class).getComponentKeys(AggregateCountEncoder.class);
@@ -133,7 +125,7 @@ class RegistryTest {
 				.that(componentKeys).hasSize(1);
 		for (ComponentKey componentKey : componentKeys) {
 			assertWithMessage("The templateId should be")
-					.that(componentKey.getTemplate()).isSameAs(TemplateId.ACI_AGGREGATE_COUNT);
+					.that(componentKey.getTemplate()).isSameAs(TemplateId.PI_AGGREGATE_COUNT);
 		}
 	}
 
@@ -147,7 +139,7 @@ class RegistryTest {
 	@Test
 	void testRegistryGetHandlerThatFailsConstruction() {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), PrivateConstructor.class);
-		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		QrdaDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertWithMessage("Registry with a private constructor should be constructable")
 				.that(decoder).isNotNull();
 	}
@@ -155,7 +147,7 @@ class RegistryTest {
 	@Test
 	void testRegistryGetHandlerWithNoDefaultConstructor() {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), NoDefaultConstructor.class);
-		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		QrdaDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertWithMessage("Registry without a default constructor should not be constructable")
 				.that(decoder).isNull();
 	}
@@ -163,7 +155,7 @@ class RegistryTest {
 	@Test
 	void testRegistryGetHandlerWithMalcontentedConstructor() {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), MalcontentedConstructor.class);
-		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		QrdaDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertThat(decoder).isNull();
 	}
 
@@ -178,7 +170,7 @@ class RegistryTest {
 	@Test
 	void testRegistryGetHandlerWithNoArgMalcontentedConstructor() {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), NoArgMalcontentedConstructor.class);
-		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		QrdaDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertThat(decoder).isNull();
 	}
 
@@ -194,7 +186,7 @@ class RegistryTest {
 	void testRegistryAddDuplicate() {
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), Placeholder.class);
 		registry.register(new ComponentKey(TemplateId.PLACEHOLDER, Program.ALL), AnotherPlaceholder.class);
-		InputDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
+		QrdaDecoder decoder = registry.get(TemplateId.PLACEHOLDER);
 		assertWithMessage("Registry should have overwritten id with the second one.")
 				.that(decoder).isInstanceOf(AnotherPlaceholder.class);
 	}
@@ -206,101 +198,107 @@ class RegistryTest {
 }
 
 @SuppressWarnings("unused") // this is here for a the annotation tests
-class Placeholder implements InputDecoder {
+class Placeholder extends QrdaDecoder {
 
 	private String unused;
 
 	public Placeholder() {
+		super(null);
 	}
 
 	@Override
-	public Node decode(Element xmlDoc) {
+	public DecodeResult decode(Element xmlDoc, Node node) {
 		return null;
 	}
 }
 
 @SuppressWarnings("unused") // this is here for a the annotation tests
-class AnotherPlaceholder implements InputDecoder {
+class AnotherPlaceholder extends QrdaDecoder {
 
 	private String unused;
 
 	public AnotherPlaceholder() {
+		super(null);
 	}
 
 	@Override
-	public Node decode(Element xmlDoc) {
+	public DecodeResult decode(Element xmlDoc, Node node) {
 		return null;
 	}
 }
 
-class PrivateConstructor implements InputDecoder {
+class PrivateConstructor extends QrdaDecoder {
 
 	private PrivateConstructor() {
+		super(null);
 	}
 
 	@Override
-	public Node decode(Element xmlDoc) {
+	public DecodeResult decode(Element xmlDoc, Node node) {
 		return null;
 	}
 }
 
-class NoDefaultConstructor implements InputDecoder {
+class NoDefaultConstructor extends QrdaDecoder {
 
 	public NoDefaultConstructor(String meep) {
+		super(null);
 	}
 
 	@Override
-	public Node decode(Element xmlDoc) {
+	public DecodeResult decode(Element xmlDoc, Node node) {
 		return null;
 	}
 }
 
-class MalcontentedConstructor implements InputDecoder {
+class MalcontentedConstructor extends QrdaDecoder {
 
 	public MalcontentedConstructor(Context meep) {
+		super(null);
 		throw new RuntimeException("just cause");
 	}
 
 	@Override
-	public Node decode(Element xmlDoc) {
+	public DecodeResult decode(Element xmlDoc, Node node) {
 		return null;
 	}
 }
 
-class ThrowableConstructor implements InputDecoder {
+class ThrowableConstructor extends QrdaDecoder {
 
-	public ThrowableConstructor(Context meep) throws Throwable{
+	public ThrowableConstructor(Context meep) throws Throwable {
+		super(null);
 		throw new Throwable("just cause");
 	}
 
 	@Override
-	public Node decode(Element xmlDoc) {
+	public DecodeResult decode(Element xmlDoc, Node node) {
 		return null;
 	}
 }
 
-class NoArgMalcontentedConstructor implements InputDecoder {
+class NoArgMalcontentedConstructor extends QrdaDecoder {
 
 	public NoArgMalcontentedConstructor() {
+		super(null);
 		throw new RuntimeException("just cause");
 	}
 
 	@Override
-	public Node decode(Element xmlDoc) {
+	public DecodeResult decode(Element xmlDoc, Node node) {
 		return null;
 	}
 }
 
-class NoArgThrowableConstructor implements InputDecoder {
+class NoArgThrowableConstructor extends QrdaDecoder {
 
-	public NoArgThrowableConstructor() throws Throwable{
+	public NoArgThrowableConstructor() throws Throwable {
+		super(null);
 		throw new Throwable("just cause");
 	}
 
 	@Override
-	public Node decode(Element xmlDoc) {
+	public DecodeResult decode(Element xmlDoc, Node node) {
 		return null;
 	}
 }
-
-

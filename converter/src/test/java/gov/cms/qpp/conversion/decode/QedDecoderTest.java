@@ -19,7 +19,7 @@ class QedDecoderTest {
 				+ "</root>";
 	
 		// Get the root wrapper node
-		Node root = new QrdaXmlDecoder(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = new QrdaDecoderEngine(new Context()).decode(XmlUtils.stringToDom(xmlFragment));
 		assertThat(root.getChildNodes()).hasSize(1);
 
 		Node target = root.getChildNodes().get(0);

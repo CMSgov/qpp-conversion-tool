@@ -1,13 +1,11 @@
 package gov.cms.qpp.conversion;
 
-import org.apache.commons.io.IOUtils;
+import gov.cms.qpp.conversion.util.MeasuredInputStreamSupplier;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.function.Supplier;
+
 
 /**
  * A {@link Source} represented by a {@link Supplier} of an {@link InputStream}.
@@ -17,8 +15,9 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	/**
 	 * The intent is that the supplier will provide a new {@link InputStream} each time it is invoked.
 	 */
-	private final Supplier<InputStream> streamSupplier;
-	private final long size;
+	private final MeasuredInputStreamSupplier stream;
+
+	private final String purpose;
 
 	/**
 	 * Creates a new Source with the given name and {@link Supplier}.
@@ -26,38 +25,28 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 * Because the size is not specified, this constructor loads the {@link InputStream} into memory to calculate the size.
 	 *
 	 * @param name The name of the source.
-	 * @param supplier The supplier of an {@link InputStream}.
+	 * @param source an {@link InputStream}.
 	 */
-	public InputStreamSupplierSource(String name, Supplier<InputStream> supplier) {
-		super(name);
-
-		Objects.requireNonNull(supplier, "supplier");
-
-		try {
-			final byte[] byteArray = IOUtils.toByteArray(supplier.get());
-			streamSupplier = () -> new ByteArrayInputStream(byteArray);
-			this.size = byteArray.length;
-		} catch (IOException exception) {
-			throw new UncheckedIOException(exception);
-		}
+	public InputStreamSupplierSource(String name, InputStream source) {
+		this(name, source, null);
 	}
 
 	/**
-	 * Creates a new Source with the given name, {@link Supplier}, and size.
+	 * Creates a new Source with the given name and {@link Supplier}.
 	 *
-	 * The size doesn't need to be the actual size of the data inside the {@link InputStream}, but this will cause inconsistent
-	 * results down the line.
+	 * Because the size is not specified, this constructor loads the {@link InputStream} into memory to calculate the size.
 	 *
 	 * @param name The name of the source.
-	 * @param supplier The supplier of an {@link InputStream}.
-	 * @param size The size of the data inside the {@link InputStream}.
+	 * @param source an {@link InputStream}.
+	 * @param test Whether the source is a test
 	 */
-	public InputStreamSupplierSource(String name, Supplier<InputStream> supplier, long size) {
+	public InputStreamSupplierSource(String name, InputStream source, String purpose) {
 		super(name);
 
-		Objects.requireNonNull(supplier, "supplier");
-		streamSupplier = supplier;
-		this.size = size;
+		Objects.requireNonNull(source, "source");
+
+		this.stream = MeasuredInputStreamSupplier.terminallyTransformInputStream(source);
+		this.purpose = purpose;
 	}
 
 	/**
@@ -67,7 +56,7 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 */
 	@Override
 	public InputStream toInputStream() {
-		return streamSupplier.get();
+		return stream.get();
 	}
 
 	/**
@@ -77,6 +66,14 @@ public class InputStreamSupplierSource extends SkeletalSource {
 	 */
 	@Override
 	public long getSize() {
-		return size;
+		return stream.size();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getPurpose() {
+		return purpose;
 	}
 }

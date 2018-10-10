@@ -1,16 +1,6 @@
 package gov.cms.qpp.conversion.validate;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static com.google.common.truth.Truth.assertThat;
-
-import java.time.LocalDate;
-import java.util.Set;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
+import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
@@ -18,6 +8,19 @@ import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.correspondence.DetailsErrorEquals;
 import gov.cms.qpp.conversion.model.validation.ApmEntityIds;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+import java.time.LocalDate;
+import java.util.Set;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 class CpcClinicalDocumentValidatorTest {
 
@@ -36,6 +39,12 @@ class CpcClinicalDocumentValidatorTest {
 	@BeforeEach
 	void createNewValidator() {
 		cpcValidator = new CpcClinicalDocumentValidator();
+	}
+
+	@AfterEach
+	void cleanUp() {
+		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
+		System.clearProperty(CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL);
 	}
 
 	@Test
@@ -57,7 +66,8 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must contain error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS);
+				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+					.format(Context.REPORTING_YEAR));
 	}
 
 	@Test
@@ -70,7 +80,8 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertWithMessage("Must contain error")
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS);
+				.containsExactly(ErrorCode.CPC_CLINICAL_DOCUMENT_MISSING_PRACTICE_SITE_ADDRESS
+					.format(Context.REPORTING_YEAR));
 	}
 
 	@Test
@@ -78,7 +89,7 @@ class CpcClinicalDocumentValidatorTest {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
 
 		// extra APM
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "1234567", false);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "1234567", false);
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must validate with the correct error")
@@ -89,7 +100,7 @@ class CpcClinicalDocumentValidatorTest {
 	@Test
 	void testCpcPlusNoApm() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.ENTITY_ID);
+		clinicalDocumentNode.removeValue(ClinicalDocumentDecoder.PRACTICE_ID);
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must validate with the correct error")
@@ -100,7 +111,7 @@ class CpcClinicalDocumentValidatorTest {
 	@Test
 	void testCpcPlusEmptyApm() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "");
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must validate with the correct error")
@@ -111,7 +122,7 @@ class CpcClinicalDocumentValidatorTest {
 	@Test
 	void testCpcPlusInvalidApm() {
 		Node clinicalDocumentNode = createValidCpcPlusClinicalDocument();
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "PropertyTaxes");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "PropertyTaxes");
 		cpcValidator.internalValidateSingleNode(clinicalDocumentNode);
 
 		assertWithMessage("Must validate with the correct error")
@@ -137,20 +148,24 @@ class CpcClinicalDocumentValidatorTest {
 
 		assertThat(cpcValidator.getDetails())
 			.isEmpty();
-		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
 	}
 
-	@Test
-	void testCpcPlusSubmissionAfterEndDate() {
+	@ParameterizedTest
+	@CsvSource({"meep@mawp.blah, meep@mawp.blah", ", cpcplus@telligen.com"})
+	void testCpcPlusSubmissionAfterEndDate(String systemValue, String expected) {
 		LocalDate endDate = LocalDate.now().minusYears(3);
+		String formattedDate = endDate.format(CpcClinicalDocumentValidator.END_DATE_FORMAT);
+		if (systemValue != null) {
+			System.setProperty(CpcClinicalDocumentValidator.CPC_PLUS_CONTACT_EMAIL, systemValue);
+		}
 		System.setProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE, endDate.toString());
 		Node clinicalDocument = createValidCpcPlusClinicalDocument();
+
 		cpcValidator.internalValidateSingleNode(clinicalDocument);
 
 		assertThat(cpcValidator.getDetails())
 			.comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-			.containsExactly(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(endDate));
-		System.clearProperty(CpcClinicalDocumentValidator.END_DATE_VARIABLE);
+			.containsExactly(ErrorCode.CPC_PLUS_SUBMISSION_ENDED.format(formattedDate, expected));
 	}
 
 	private Node createValidCpcPlusClinicalDocument() {
@@ -164,7 +179,7 @@ class CpcClinicalDocumentValidatorTest {
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PROGRAM_NAME, ClinicalDocumentDecoder.CPCPLUS_PROGRAM_NAME);
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, "");
 		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_SITE_ADDR, "test");
-		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "DogCow");
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.PRACTICE_ID, "DogCow");
 
 		return clinicalDocumentNode;
 	}

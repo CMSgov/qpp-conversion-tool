@@ -1,14 +1,17 @@
 package gov.cms.qpp.conversion.validate;
 
-import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.error.Detail;
 import gov.cms.qpp.conversion.model.error.LocalizedError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import gov.cms.qpp.conversion.util.DuplicationCheckHelper;
+import gov.cms.qpp.conversion.util.FormatHelper;
 
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -100,7 +103,7 @@ class Checker {
 	 */
 	Checker valueIsNotEmpty(LocalizedError code, String name) {
 		lastAppraised = node.getValue(name);
-		if (!shouldShortcut() && Strings.isNullOrEmpty((String) lastAppraised)) {
+		if (!shouldShortcut() && StringUtils.isEmpty((String) lastAppraised)) {
 			details.add(detail(code));
 		}
 		return this;
@@ -115,9 +118,26 @@ class Checker {
 	 */
 	public Checker singleValue(LocalizedError code, String name) {
 		value(code, name);
-		List<String> duplicates = node.getDuplicateValues(name);
-		if (!isEmpty(duplicates)) {
+		if (DuplicationCheckHelper.calculateDuplications(node, name) != 0) {
 			details.add(detail(code));
+		}
+		return this;
+	}
+
+	/**
+	 * checks target node for a date that is properly formatted.
+	 *
+	 * @param code that identifies the error
+	 * @param name key of the expected value
+	 * @return The checker, for chaining method calls
+	 */
+	public Checker isValidDate(LocalizedError code, String name) {
+		if (!shouldShortcut()) {
+			try {
+				FormatHelper.formattedDateParse(node.getValue(name));
+			} catch (DateTimeParseException e) {
+				details.add(detail(code));
+			}
 		}
 		return this;
 	}
@@ -151,7 +171,7 @@ class Checker {
 			return this; //Short circuit on empty key or empty values
 		}
 		lastAppraised = node.getValue(name);
-		if (lastAppraised == null || values == null) {
+		if (lastAppraised == null || values == null || values.length == 0) {
 			details.add(detail(code));
 			return this; //Short circuit on node doesn't contain key
 		}
@@ -236,7 +256,7 @@ class Checker {
 						|| ((Comparable<Float>) lastAppraised).compareTo(endValue) > 0) {
 					details.add(detail(code));
 				}
-			} catch (NumberFormatException | NullPointerException exc) {
+			} catch (RuntimeException exc) {
 				DEV_LOG.warn("Problem with non float value: " + node.getValue(name), exc);
 				details.add(detail(code));
 			}
@@ -248,6 +268,7 @@ class Checker {
 	 * Checks target node for the existence of a specified parent.
 	 *
 	 * @param code that identifies the error
+	 * @param type parent template id for which to search.
 	 * @return The checker, for chaining method calls.
 	 */
 	Checker hasParent(LocalizedError code, TemplateId type) {
@@ -304,6 +325,24 @@ class Checker {
 		if (!shouldShortcut()) {
 			int count = tallyNodes(types);
 			if (count > maximum) {
+				details.add(detail(code));
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * Verifies that the target node has the exact amount total sum of all the {@link TemplateId}s types
+	 *
+	 * @param code that identifies the error
+	 * @param exactCount exact number required children of specified type(s)
+	 * @param types types of children to filter by
+	 * @return The checker, for chaining method calls.
+	 */
+	public Checker childExact(LocalizedError code, int exactCount, TemplateId... types) {
+		if (!shouldShortcut()) {
+			int count = tallyNodes(types);
+			if (count != exactCount) {
 				details.add(detail(code));
 			}
 		}

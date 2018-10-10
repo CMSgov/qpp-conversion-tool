@@ -15,10 +15,11 @@ if you'd like to contribute to qpp-conversion-tool.
 
 ## Additional Prerequisite Software
 
-The only additional prerequisite that was not already outlined in the
-[main README][readme] is the
-[Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 1.8`). The Java Runtime
+The additional prerequisites that were not already outlined in the
+[main README][readme] are...
+- [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (version `>= 1.8`). The Java Runtime
 will not suffice.
+- [Maven](https://maven.apache.org).
 
 ## Building
 
@@ -69,7 +70,6 @@ environment variables are for.
 ### Amazon Web Services
 
 The ReST API depends on AWS for some of the additional functionality. Currently, a real account with AWS must be used.
-[Localstack](https://github.com/localstack/localstack) is used in tests.
 
 Ensure that credentials are set such that the
 [Default Credential Provider Chain](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) can find them.

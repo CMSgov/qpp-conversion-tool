@@ -18,7 +18,6 @@ class MeasureConfigsTest {
 	@AfterAll
 	static void resetMeasureConfiguration() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
-		MeasureIndexInit.reinitMeasureConfigs(false);
 	}
 
 	@Test
@@ -64,17 +63,6 @@ class MeasureConfigsTest {
 		List<MeasureConfig> configurations = MeasureConfigs.getMeasureConfigs();
 		assertWithMessage("Expect the configurations to be a not empty list")
 				.that(configurations).isNotEmpty();
-	}
-
-	@Test
-	void missingMeasureSuggestion() throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-		MeasureIndexInit.reinitMeasureConfigs(true);
-		String measureId = "IA_PCMG";
-		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
-		List<String> suggestions = MeasureConfigs.getMeasureSuggestions(measureId);
-
-		assertThat(suggestions).hasSize(MeasureConfigs.SUGGESTION_COUNT);
-		assertThat(suggestions).contains("IA_PCMH");
 	}
 
 	@Test

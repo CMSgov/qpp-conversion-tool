@@ -12,10 +12,12 @@ public class Constants {
 	public static final String VALIDATION_URL_ENV_VARIABLE = "VALIDATION_URL";
 	public static final String NO_CPC_PLUS_API_ENV_VARIABLE = "NO_CPC_PLUS_API";
 	public static final String V1_API_ACCEPT = "application/vnd.qpp.cms.gov.v1+json";
+	public static final String V2_API_ACCEPT = "application/vnd.qpp.cms.gov.v2+json";
 	public static final Integer CPC_DYNAMO_PARTITIONS = 32;
 	public static final String CPC_DYNAMO_PARTITION_START = "CPC_";
 	public static final String DYNAMO_CPC_ATTRIBUTE = "Cpc";
 	public static final String DYNAMO_CPC_PROCESSED_CREATE_DATE_ATTRIBUTE = "CpcProcessed_CreateDate";
+	public static final String DYNAMO_CREATE_DATE_ATTRIBUTE = "CreateDate";
 
 	/**
 	 * Library utility class so the constructor is private and empty.

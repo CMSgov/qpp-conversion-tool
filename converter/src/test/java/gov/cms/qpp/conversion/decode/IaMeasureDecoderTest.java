@@ -1,13 +1,15 @@
 package gov.cms.qpp.conversion.decode;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import gov.cms.qpp.TestHelper;
 import gov.cms.qpp.conversion.Context;
 import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.xml.XmlUtils;
+
 import java.io.IOException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -24,8 +26,8 @@ class IaMeasureDecoderTest {
 
 	@Test
 	void internalDecode() throws Exception {
-		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
-		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
+		QrdaDecoderEngine engine = new QrdaDecoderEngine(new Context());
+		Node root = engine.decode(XmlUtils.stringToDom(xmlFragment));
 
 		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
 		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED);
@@ -42,9 +44,9 @@ class IaMeasureDecoderTest {
 	@Test
 	void missingChildTest() throws Exception {
 		xmlFragment = removeChildFragment(xmlFragment);
-		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
+		QrdaDecoderEngine engine = new QrdaDecoderEngine(new Context());
 
-		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
+		Node root = engine.decode(XmlUtils.stringToDom(xmlFragment));
 		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
 
 		assertThat(iaMeasure.getType())
@@ -55,9 +57,10 @@ class IaMeasureDecoderTest {
 
 	@Test
 	void internalDecodeWithExtraXmlPasses() throws Exception {
-		IaMeasureDecoder decoder = new IaMeasureDecoder(new Context());
+		QrdaDecoderEngine engine = new QrdaDecoderEngine(new Context());
 		xmlFragment = addExtraXml(xmlFragment);
-		Node root = decoder.decode(XmlUtils.stringToDom(xmlFragment));
+
+		Node root = engine.decode(XmlUtils.stringToDom(xmlFragment));
 
 		Node iaMeasure = root.findFirstNode(TemplateId.IA_MEASURE);
 		Node measurePerformed = root.findFirstNode(TemplateId.MEASURE_PERFORMED);
