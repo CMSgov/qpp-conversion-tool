@@ -117,6 +117,11 @@ public class QrdaUpdater {
 						MeasureConfig currentYearMeasureConfig =
 							(MeasureConfig)currentYearMeasureConfigMap.get(updatedElectronicMeasureId);
 
+						measureEntryOrganizer.getChild("reference", rootNamespace)
+							.getChild("externalObservation", rootNamespace)
+							.getChild("id", rootNamespace)
+							.getAttribute("root").setValue(currentYearMeasureConfig.getElectronicMeasureVerUuid());
+
 						List<Element> subpopulationComponents = measureEntryOrganizer.getChildren("component", rootNamespace);
 						Long numberOfPerformanceRates = subpopulationComponents.stream().filter(
 							subpopulationElement -> subpopulationElement.getChild("observation", rootNamespace)
