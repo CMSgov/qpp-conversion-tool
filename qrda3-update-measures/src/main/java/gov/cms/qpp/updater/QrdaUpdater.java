@@ -26,8 +26,8 @@ import java.util.Map;
 
 public class QrdaUpdater {
 	private static FileSystem fileSystem = FileSystems.getDefault();
-	private static final String MEASURE_DATA_FILE_NAME_2017 = "measures-data-2017.json";
-	private static final String MEASURE_DATA_FILE_NAME = "measures-data.json";
+	private static final String MEASURE_DATA_FILE_NAME_2017 = "/measures-data-2017.json";
+	private static final String MEASURE_DATA_FILE_NAME = "/measures-data.json";
 	private static Map previousYearMeasureConfigMap =
 		new MeasureConfigLoader(MEASURE_DATA_FILE_NAME_2017, false).getConfigurationMap();
 	private static Map currentYearMeasureConfigMap =

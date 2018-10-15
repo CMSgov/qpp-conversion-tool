@@ -34,10 +34,11 @@ public class MeasureConfigLoader {
 				config.getCpcPlusGroup(), key -> new ArrayList<>()).add(config));
 	}
 
-	private Map<String, MeasureConfig> grabConfiguration(String fileName, Boolean useElectronicMeasureId) {
+	private Map<String, MeasureConfig> grabConfiguration(String filename, Boolean useElectronicMeasureId) {
 		ObjectMapper mapper = new ObjectMapper();
+		System.out.println("Filename : " + filename);
 
-		InputStream measuresInput = this.getClass().getResourceAsStream(fileName);
+		InputStream measuresInput = this.getClass().getResourceAsStream(filename);
 
 		try {
 			TypeReference<List<MeasureConfig>> measureConfigType = new TypeReference<List<MeasureConfig>>() {};
