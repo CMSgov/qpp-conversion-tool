@@ -1,4 +1,4 @@
-package gov.cms.qpp.updator;
+package gov.cms.qpp.updater;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

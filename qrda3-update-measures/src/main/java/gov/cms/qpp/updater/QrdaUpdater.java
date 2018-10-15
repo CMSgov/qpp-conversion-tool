@@ -1,7 +1,6 @@
-package gov.cms.qpp.updator;
+package gov.cms.qpp.updater;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
