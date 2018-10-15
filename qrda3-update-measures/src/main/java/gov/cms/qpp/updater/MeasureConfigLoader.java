@@ -36,7 +36,6 @@ public class MeasureConfigLoader {
 
 	private Map<String, MeasureConfig> grabConfiguration(String filename, Boolean useElectronicMeasureId) {
 		ObjectMapper mapper = new ObjectMapper();
-		System.out.println("Filename : " + filename);
 
 		InputStream measuresInput = this.getClass().getResourceAsStream(filename);
 
