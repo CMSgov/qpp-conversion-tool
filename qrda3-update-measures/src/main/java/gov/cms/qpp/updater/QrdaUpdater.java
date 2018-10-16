@@ -11,6 +11,7 @@ import org.jdom2.output.XMLOutputter;
 
 import gov.cms.qpp.conversion.model.TemplateId;
 import gov.cms.qpp.conversion.model.validation.MeasureConfig;
+import gov.cms.qpp.conversion.model.validation.SubPopulation;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -117,10 +118,9 @@ public class QrdaUpdater {
 						MeasureConfig currentYearMeasureConfig =
 							(MeasureConfig)currentYearMeasureConfigMap.get(updatedElectronicMeasureId);
 
-						measureEntryOrganizer.getChild("reference", rootNamespace)
-							.getChild("externalObservation", rootNamespace)
-							.getChild("id", rootNamespace)
-							.getAttribute("root").setValue(currentYearMeasureConfig.getElectronicMeasureVerUuid());
+						System.out.println("Updating to current year uuid : " +
+							currentYearMeasureConfig.getElectronicMeasureVerUuid());
+						updateMeasureUuid(rootNamespace, currentYearMeasureConfig, measureEntryOrganizer);
 
 						List<Element> subpopulationComponents = measureEntryOrganizer.getChildren("component", rootNamespace);
 						Long numberOfPerformanceRates = subpopulationComponents.stream().filter(
@@ -144,35 +144,32 @@ public class QrdaUpdater {
 									String currentSubpopulationType = componentObservation.getChild("value", rootNamespace)
 										.getAttribute("code")
 										.getValue();
+									SubPopulation subPopulationUuids = currentYearMeasureConfig.getStrata()
+										.get(0).getElectronicMeasureUuids();
 									if ("IPOP".equals(currentSubpopulationType) || "IPP".equals(currentSubpopulationType) &&
 										currentYearMeasureConfig.getStrata().get(0).getElectronicMeasureUuids()
 											.getInitialPopulationUuid() != null) {
-										subpopulationGuidAttribute.setValue(currentYearMeasureConfig.getStrata()
-											.get(0).getElectronicMeasureUuids().getInitialPopulationUuid());
+										subpopulationGuidAttribute.setValue(subPopulationUuids.getInitialPopulationUuid());
 									}
 									else if ("DENOM".equals(currentSubpopulationType) &&
 										currentYearMeasureConfig.getStrata().get(0).getElectronicMeasureUuids()
 											.getDenominatorUuid() != null) {
-										subpopulationGuidAttribute.setValue(currentYearMeasureConfig.getStrata()
-											.get(0).getElectronicMeasureUuids().getDenominatorUuid());
+										subpopulationGuidAttribute.setValue(subPopulationUuids.getDenominatorUuid());
 									}
 									else if ("NUMER".equals(currentSubpopulationType) &&
 										currentYearMeasureConfig.getStrata().get(0).getElectronicMeasureUuids()
 											.getNumeratorUuid() != null) {
-										subpopulationGuidAttribute.setValue(currentYearMeasureConfig.getStrata()
-											.get(0).getElectronicMeasureUuids().getNumeratorUuid());
+										subpopulationGuidAttribute.setValue(subPopulationUuids.getNumeratorUuid());
 									}
 									else if ("DENEXCEP".equals(currentSubpopulationType) &&
 										currentYearMeasureConfig.getStrata().get(0).getElectronicMeasureUuids()
 											.getDenominatorExceptionsUuid() != null) {
-										subpopulationGuidAttribute.setValue(currentYearMeasureConfig.getStrata()
-											.get(0).getElectronicMeasureUuids().getDenominatorExceptionsUuid());
+										subpopulationGuidAttribute.setValue(subPopulationUuids.getDenominatorExceptionsUuid());
 									}
 									else if ("DENEX".equals(currentSubpopulationType) &&
 										currentYearMeasureConfig.getStrata().get(0).getElectronicMeasureUuids()
 											.getDenominatorExclusionsUuid() != null) {
-										subpopulationGuidAttribute.setValue(currentYearMeasureConfig.getStrata()
-											.get(0).getElectronicMeasureUuids().getDenominatorExclusionsUuid());
+										subpopulationGuidAttribute.setValue(subPopulationUuids.getDenominatorExclusionsUuid());
 									}
 								}
 							});
@@ -190,12 +187,6 @@ public class QrdaUpdater {
 		return null;
 	}
 
-	private static boolean isPerformanceRate(Element componentObservation, Namespace rootNamespace) {
-		return componentObservation.getChildren("templateId", rootNamespace).stream()
-			.anyMatch(templateElements -> TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE.getRoot()
-				.equals(templateElements.getAttribute("root").getValue()));
-	}
-
 	private static String updateElectronicMeasureId(String previousYearId) {
 		String updatedId;
 		if (previousYearId.endsWith("6"))
@@ -203,6 +194,20 @@ public class QrdaUpdater {
 		else
 			updatedId = previousYearId.substring(0, previousYearId.length() - 1) + "6";
 		return  updatedId;
+	}
+
+	private static void updateMeasureUuid(final Namespace rootNamespace, final MeasureConfig currentYearMeasureConfig,
+		final Element entryOrganizer) {
+		entryOrganizer.getChild("reference", rootNamespace)
+			.getChild("externalDocument", rootNamespace)
+			.getChild("id", rootNamespace)
+			.getAttribute("extension").setValue(currentYearMeasureConfig.getElectronicMeasureVerUuid());
+	}
+
+	private static boolean isPerformanceRate(Element componentObservation, Namespace rootNamespace) {
+		return componentObservation.getChildren("templateId", rootNamespace).stream()
+			.anyMatch(templateElements -> TemplateId.PERFORMANCE_RATE_PROPORTION_MEASURE.getRoot()
+				.equals(templateElements.getAttribute("root").getValue()));
 	}
 
 	static void writeFile(Document document) {

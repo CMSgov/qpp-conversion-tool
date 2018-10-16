@@ -76,8 +76,8 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	 * A holder of CPC+ group specific configuration information.
 	 */
 	enum CpcGroupMinimum {
-		A("outcome", 2),
-		B("complex process", 2);
+		Outcome_Measure("outcome", 2),
+		Other_Measure("complex process", 2);
 
 		private static final int NUMBER_OF_MEASURES_REQUIRED = 9;
 		private String label;
