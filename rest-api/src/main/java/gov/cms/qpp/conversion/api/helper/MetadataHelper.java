@@ -1,6 +1,5 @@
 package gov.cms.qpp.conversion.api.helper;
 
-import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.conversion.decode.ClinicalDocumentDecoder;
 import gov.cms.qpp.conversion.model.Node;
@@ -10,14 +9,11 @@ import gov.cms.qpp.conversion.model.TemplateId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Utilities for working with Metadata beans
  */
 public class MetadataHelper {
-
-	private static final ThreadLocalRandom RANDOM_HASH = ThreadLocalRandom.current();
 
 	/**
 	 * No need for constructor in this utility class
@@ -43,29 +39,13 @@ public class MetadataHelper {
 			metadata.setApm(findApm(node));
 			metadata.setTin(findTin(node));
 			metadata.setNpi(findNpi(node));
-			metadata.setCpc(deriveCpcHash(node));
+			metadata.setCpc(isCpc(node));
 			metadata.setCpcProcessed(false);
 		}
 
 		outcome.setStatus(metadata);
 
 		return metadata;
-	}
-
-	/**
-	 * Retrieves the random hash for the Cpc field if this is a CPC+ conversion.
-	 *
-	 * @param node to ensure it's a CPC+ node
-	 * @return Cpc field randomly hashed or null if this isn't a CPC+ conversion
-	 */
-	private static String deriveCpcHash(Node node) {
-		String cpcHash = null;
-
-		if (isCpc(node)) {
-			cpcHash = Constants.CPC_DYNAMO_PARTITION_START + RANDOM_HASH.nextInt(Constants.CPC_DYNAMO_PARTITIONS);
-		}
-
-		return cpcHash;
 	}
 
 	/**

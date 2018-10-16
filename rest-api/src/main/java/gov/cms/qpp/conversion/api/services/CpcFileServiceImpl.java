@@ -127,7 +127,7 @@ public class CpcFileServiceImpl implements CpcFileService {
 	/**
 	 * Service to transform a {@link Metadata} list into the {@link UnprocessedCpcFileData}
 	 *
-	 * @param metadataList object to hold the list of {@link Metadata} from DynamoDb
+	 * @param metadataList object to hold the list of {@link Metadata} from the database.
 	 * @return transformed list of {@link UnprocessedCpcFileData}
 	 */
 	private List<UnprocessedCpcFileData> transformMetaDataToUnprocessedCpcFileData(List<Metadata> metadataList) {

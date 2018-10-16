@@ -16,7 +16,7 @@
 	<description>API end-point for the QRDA3 to QPP conversion</description>
 
 	<properties>
-		<spring-boot.version>2.0.3.RELEASE</spring-boot.version>
+		<spring-boot.version>2.0.5.RELEASE</spring-boot.version>
 		<logback.version>1.2.3</logback.version>
 		<requiredCodeCoverage>0.90</requiredCodeCoverage>
 	</properties>
@@ -130,6 +130,28 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>gov.cms.qpp.conversion</groupId>
 			<artifactId>converter</artifactId>
 			<version>${project.version}</version>
@@ -145,7 +167,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>5.0.7.RELEASE</version>
+			<version>5.1.0.RELEASE</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -158,27 +180,8 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
-			<version>5.0.6.RELEASE</version>
+			<version>5.1.0.RELEASE</version>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-test</artifactId>
-			<version>${spring-boot.version}</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-			<version>${spring-boot.version}</version>
 		</dependency>
 
 		<dependency>
@@ -209,7 +212,7 @@
 		<dependency>
 			<groupId>org.awaitility</groupId>
 			<artifactId>awaitility</artifactId>
-			<version>3.1.0</version>
+			<version>3.1.2</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -241,20 +244,21 @@
 
 		<dependency>
 			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-kms</artifactId>
+			<artifactId>aws-java-sdk-rds</artifactId>
 			<version>${aws.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-dynamodb</artifactId>
-			<version>${aws.version}</version>
+		    <groupId>com.zaxxer</groupId>
+		    <artifactId>HikariCP</artifactId>
+		    <version>3.2.0</version>
+    		<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-dynamodb-encryption-java</artifactId>
-			<version>1.11.0</version>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+    		<scope>runtime</scope>
 		</dependency>
 
 		<dependency>

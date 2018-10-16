@@ -1,33 +1,5 @@
 package gov.cms.qpp.conversion.api.acceptance;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.AttributeEncryptor;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.DirectKmsMaterialProvider;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import gov.cms.qpp.conversion.api.config.DynamoDbConfigFactory;
-import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
-import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
-import gov.cms.qpp.conversion.api.model.Metadata;
-import gov.cms.qpp.conversion.api.services.DbServiceImpl;
-import gov.cms.qpp.conversion.util.EnvironmentHelper;
-import gov.cms.qpp.test.annotations.AcceptanceTest;
-import gov.cms.qpp.test.helper.AwsTestHelper;
-import org.hamcrest.Matcher;
-import org.hamcrest.StringDescription;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.spotify.hamcrest.jackson.IsJsonArray.jsonArray;
@@ -40,7 +12,37 @@ import static io.restassured.RestAssured.put;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.hamcrest.xml.HasXPath.hasXPath;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.hamcrest.Matcher;
+import org.hamcrest.StringDescription;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import gov.cms.qpp.conversion.api.helper.JwtPayloadHelper;
+import gov.cms.qpp.conversion.api.helper.JwtTestHelper;
+import gov.cms.qpp.conversion.api.model.CpcFileStatusUpdateRequest;
+import gov.cms.qpp.conversion.api.model.Metadata;
+import gov.cms.qpp.conversion.api.services.DbServiceImpl;
+import gov.cms.qpp.conversion.api.services.MetadataRepository;
+import gov.cms.qpp.test.annotations.AcceptanceTest;
+
 @ExtendWith(RestExtension.class)
+@ExtendWith(SpringExtension.class)
 class CpcApiAcceptance {
 	private static final String CPC_UNPROCESSED_FILES_API_PATH = "/cpc/unprocessed-files";
 	private static final String CPC_FILE_API_PATH = "/cpc/file/";
@@ -50,22 +52,26 @@ class CpcApiAcceptance {
 		+ "/*[local-name() = 'intendedRecipient' and namespace-uri() = 'urn:hl7-org:v3']"
 		+ "/*[local-name() = 'id' and namespace-uri() = 'urn:hl7-org:v3'][@root='2.16.840.1.113883.3.249.7']/@extension";
 	private static final String CPC_PLUS_PROGRAM_NAME = "CPCPLUS";
-	private static DynamoDBMapper mapper;
-	private static final String TEST_KMS_KEY_ENV_VARIABLE = "TEST_KMS_KEY";
-	private static final String DEFAULT_KMS_ARN = "arn:aws:kms:us-east-1:850094054452:key/8b19f7e9-b58c-4b7a-8162-e01809a8a2e9";
 
 	@BeforeAll
 	static void setUp() {
-		String kmsKey = EnvironmentHelper.getOrDefault(TEST_KMS_KEY_ENV_VARIABLE, DEFAULT_KMS_ARN);
-		mapper = DynamoDbConfigFactory
-			.createDynamoDbMapper(AwsTestHelper.getDynamoClient(), DynamoDBMapperConfig.builder()
-				.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(AwsTestHelper.TEST_DYNAMO_TABLE_NAME))
-				.build(), new AttributeEncryptor(new DirectKmsMaterialProvider(AwsTestHelper.getKmsClient(), kmsKey)));
-
 		given()
 			.multiPart("file", Paths.get("../sample-files/CPCPlus_Success_PreProd.xml").toFile())
 			.when()
 			.post("/");
+	}
+
+	@Inject
+	private MetadataRepository database;
+
+	@BeforeEach
+	private void setUpEach() {
+		database.deleteAll();
+	}
+
+	@AfterEach
+	private void tearDownEach() {
+		database.deleteAll();
 	}
 
 	@AcceptanceTest
@@ -91,17 +97,17 @@ class CpcApiAcceptance {
 	@AcceptanceTest
 	void testUnprocessedFilesDates() {
 		Metadata afterJanuarySecondMetadata = createDatedCpcMetadata("2018-01-02T05:00:00.000Z");
-		Metadata beforeJanuarySecondMetadata = createDatedCpcMetadata(DbServiceImpl.START_OF_UNALLOWED_CONVERSION_TIME);
+		Metadata beforeJanuarySecondMetadata = createDatedCpcMetadata(Instant.ofEpochMilli(DbServiceImpl.START_OF_UNALLOWED_CONVERSION_TIME).toString());
 		Metadata anotherAllowedMetadata = createDatedCpcMetadata("2018-02-26T14:36:43.723Z");
 		Metadata anotherUnallowedMetadata = createDatedCpcMetadata("2017-12-25T00:00:00.000Z");
 
-		mapper.batchSave(afterJanuarySecondMetadata, beforeJanuarySecondMetadata, anotherAllowedMetadata, anotherUnallowedMetadata);
+		database.saveAll(Arrays.asList(afterJanuarySecondMetadata, beforeJanuarySecondMetadata, anotherAllowedMetadata, anotherUnallowedMetadata));
 
 		List<Map> responseBody = getUnprocessedFiles();
 
 		responseBody.stream().forEach(map ->
 			assertThat(Instant.parse((String)map.get("conversionDate")))
-				.isGreaterThan(Instant.parse(DbServiceImpl.START_OF_UNALLOWED_CONVERSION_TIME)));
+				.isGreaterThan(Instant.ofEpochMilli(DbServiceImpl.START_OF_UNALLOWED_CONVERSION_TIME)));
 	}
 
 	@AcceptanceTest
@@ -193,7 +199,7 @@ class CpcApiAcceptance {
 	void testMarkFileProcessedNotCPC() {
 		Metadata metadata = createDatedCpcMetadata("2018-01-02T05:00:00.000Z");
 		metadata.setCpc(null);
-		mapper.save(metadata);
+		database.save(metadata);
 
 		String responseBody = markFileAsProcessed(metadata.getUuid(), 404);
 		assertThat(responseBody).isEqualTo("The file was not a CPC+ file.");
@@ -272,7 +278,7 @@ class CpcApiAcceptance {
 		metadata.setApm("T3STV47U3");
 		metadata.setTin("0001233212");
 		metadata.setNpi("012123123");
-		metadata.setCpc(Constants.CPC_DYNAMO_PARTITION_START + "15");
+		metadata.setCpc(true);
 		metadata.setCpcProcessed(false);
 		metadata.setFileName("acceptance_test.xml");
 		metadata.setConversionStatus(true);
@@ -281,7 +287,7 @@ class CpcApiAcceptance {
 		metadata.setQppLocator("not-here?");
 		metadata.setValidationErrorLocator("not-there?");
 		metadata.setConversionErrorLocator("not-anywhere?");
-		metadata.setCreatedDate(Instant.parse(parsableDate));
+		metadata.setCreatedDate(Instant.parse(parsableDate).toEpochMilli());
 
 		return metadata;
 	}

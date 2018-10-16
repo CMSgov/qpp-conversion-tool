@@ -7,6 +7,7 @@ import gov.cms.qpp.test.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,17 +15,12 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +34,7 @@ class DbServiceImplTest {
 	private DbServiceImpl underTest;
 
 	@Mock
-	private DynamoDBMapper dbMapper;
+	private MetadataRepository metadataRepo;
 
 	@Mock
 	private TaskExecutor taskExecutor;
@@ -48,8 +44,7 @@ class DbServiceImplTest {
 
 	@BeforeEach
 	void before() {
-		Optional<DynamoDBMapper> dbMapperWrapper = Optional.of(dbMapper);
-		underTest = new DbServiceImpl(taskExecutor, dbMapperWrapper, environment);
+		underTest = new DbServiceImpl(taskExecutor, environment, metadataRepo);
 		doAnswer(invocationOnMock -> {
 			Runnable method = invocationOnMock.getArgument(0);
 			CompletableFuture.runAsync(method);
@@ -64,7 +59,7 @@ class DbServiceImplTest {
 		Metadata meta = writeMeta();
 
 		assertThat(meta).isNotNull();
-		verify(dbMapper, times(1)).save(any(Metadata.class));
+		verify(metadataRepo, times(1)).save(any(Metadata.class));
 	}
 
 	@Test
@@ -74,7 +69,7 @@ class DbServiceImplTest {
 		Metadata meta = writeMeta();
 
 		assertThat(meta).isNotNull();
-		verify(dbMapper, times(1)).save(any(Metadata.class));
+		verify(metadataRepo, times(1)).save(any(Metadata.class));
 	}
 
 	@Test
@@ -86,35 +81,30 @@ class DbServiceImplTest {
 
 		Metadata metadataOut = writeMeta(metadataIn);
 
-		verifyZeroInteractions(dbMapper);
+		verifyZeroInteractions(metadataRepo);
 		assertWithMessage("The returned metadata must be an empty metadata.")
 				.that(metadataOut.getUuid()).isNull();
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	void testGetUnprocessedCpcPlusMetaData() {
-		int itemsPerPartition = 2;
-
-		QueryResultPage<Metadata> mockMetadataPage = mock(QueryResultPage.class);
-		when(mockMetadataPage.getResults()).thenReturn(Stream.generate(Metadata::new).limit(itemsPerPartition).collect(Collectors.toList()));
-		when(dbMapper.queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class))).thenReturn(mockMetadataPage);
+		int size = ThreadLocalRandom.current().nextInt(10, 20);
+		when(metadataRepo.getUnprocessedCpcPlusMetadata(any())).thenReturn(Stream.generate(Metadata::new).limit(size).collect(Collectors.toList()));
 
 		List<Metadata> metaDataList = underTest.getUnprocessedCpcPlusMetaData();
 
-		verify(dbMapper, times(Constants.CPC_DYNAMO_PARTITIONS)).queryPage(eq(Metadata.class), any(DynamoDBQueryExpression.class));
-		assertThat(metaDataList).hasSize(itemsPerPartition * Constants.CPC_DYNAMO_PARTITIONS);
+		assertThat(metaDataList).hasSize(size);
 	}
 
 	@Test
 	void testGetMetadataById() {
 		String fakeUuid = "1337-f4ke-uuid";
 
-		when(dbMapper.load(eq(Metadata.class), anyString())).thenReturn(new Metadata());
+		when(metadataRepo.findById(anyString())).thenReturn(Optional.of(new Metadata()));
 
 		Metadata fakeMetadata = underTest.getMetadataById(fakeUuid);
 
-		verify(dbMapper, times(1)).load(eq(Metadata.class), anyString());
+		verify(metadataRepo, times(1)).findById(anyString());
 
 		assertThat(fakeMetadata).isNotNull();
 	}

@@ -24,9 +24,9 @@ class UnprocessedCpcFileDataTest {
 		return Stream.of("T02789", "KF5RGI");
 	}
 
-	private static Stream<Instant> createdDateProvider() {
-		Instant firstDateInstant = Instant.parse("2017-01-01T08:00:00.846Z");
-		Instant secondDateInstant = Instant.parse("2018-01-01T08:00:00.846Z");
+	private static Stream<Long> createdDateProvider() {
+		Long firstDateInstant = Instant.parse("2017-01-01T08:00:00.846Z").toEpochMilli();
+		Long secondDateInstant = Instant.parse("2018-01-01T08:00:00.846Z").toEpochMilli();
 		return Stream.of(firstDateInstant, secondDateInstant);
 	}
 
@@ -34,7 +34,7 @@ class UnprocessedCpcFileDataTest {
 		return Stream.of(Boolean.TRUE, Boolean.FALSE);
 	}
 
-	private static Stream<Metadata> metadataProvider() {
+	static Stream<Metadata> metadataProvider() {
 		return uuidProvider()
 			.flatMap(uuidLocator -> fileNameProvider()
 				.flatMap(fileName -> apmIdProvider()

@@ -35,7 +35,6 @@ public class RestExtension implements BeforeAllCallback, AfterAllCallback {
 	@Override
 	public void afterAll(ExtensionContext context) {
 		RestAssured.reset();
-		AwsTestHelper.cleanDynamoDb();
 		AwsTestHelper.cleanS3();
 	}
 

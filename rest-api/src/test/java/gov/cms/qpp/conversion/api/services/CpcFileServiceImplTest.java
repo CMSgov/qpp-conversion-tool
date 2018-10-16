@@ -1,7 +1,6 @@
 package gov.cms.qpp.conversion.api.services;
 
 import gov.cms.qpp.conversion.api.exceptions.InvalidFileTypeException;
-import gov.cms.qpp.conversion.api.exceptions.NoFileInDatabaseException;
 import gov.cms.qpp.conversion.api.model.Metadata;
 import gov.cms.qpp.test.MockitoExtension;
 import java.io.ByteArrayInputStream;
@@ -42,7 +41,7 @@ class CpcFileServiceImplTest {
 	@Mock
 	private StorageService storageService;
 
-	private static Stream<Integer> numberOfMetadata() {
+	static Stream<Integer> numberOfMetadata() {
 		return Stream.of(1, 4, 26);
 	}
 
@@ -265,7 +264,7 @@ class CpcFileServiceImplTest {
 
 	Metadata buildFakeMetadata(boolean isCpc, boolean isCpcProcessed) {
 		Metadata metadata = new Metadata();
-		metadata.setCpc(isCpc ? "CPC_26" : null);
+		metadata.setCpc(isCpc);
 		metadata.setCpcProcessed(isCpcProcessed);
 		metadata.setSubmissionLocator("test");
 		metadata.setQppLocator("test");

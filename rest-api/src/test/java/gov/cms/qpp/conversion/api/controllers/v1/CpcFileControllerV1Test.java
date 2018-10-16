@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,7 +191,7 @@ class CpcFileControllerV1Test {
 		metadata.setSubmissionLocator("Test");
 		metadata.setFileName("TestFile.xml");
 		metadata.setApm("TestApmEntity");
-		metadata.setCreatedDate(Instant.now());
+		metadata.setCreatedDate(System.currentTimeMillis());
 		metadata.setOverallStatus(true);
 
 		UnprocessedCpcFileData unprocessedCpcFileData = new UnprocessedCpcFileData(metadata);
