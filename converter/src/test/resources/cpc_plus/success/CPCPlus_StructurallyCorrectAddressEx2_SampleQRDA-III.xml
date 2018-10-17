@@ -21845,6 +21845,7 @@ QRDA Category III Measure Section (CMS EP)
                 </observation>
               </component>
             </organizer>
+          </entry>
           <!--Measure Entry for NQF Not Applicable / CMS149-->
           <entry>
             <organizer classCode="CLUSTER" moodCode="EVN">
