@@ -22,7 +22,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /home/circleci
-      - run: wget -O sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.1.0.1141.zip
+      - run: wget -O sonarscanner.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.1.0.1141/sonar-scanner-cli-3.1.0.1141.zip
       - run: unzip -d . sonarscanner.zip
       - run: cp ./sonar-scanner.properties sonar-scanner-3.1.0.1141/conf/sonar-scanner.properties
       - run: mvn --batch-mode verify
