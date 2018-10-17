@@ -29923,7 +29923,8 @@
 					"denominatorUuid": "3F6350CA-654C-4B00-8B62-EC810D1CA790",
 					"numeratorUuid": "6F8814A6-A26A-4FCB-8A41-902971713FCB",
 					"denominatorExclusionUuid": "9242AAE1-D2C4-44A4-AF6B-7DF4C5C9BE31"
-				}
+				},
+				"name" : "14DaysOfDiagnosis"
 			},
 			{
 				"description": "Patients who initiated treatment and who had two or more additional services with an AOD diagnosis within 30 days of the initiation visit",
@@ -29932,7 +29933,8 @@
 					"denominatorUuid": "417055BD-AECD-49D5-8FA7-764FF1544611",
 					"numeratorUuid": "431A7185-548C-4F05-B0D3-90108E4AAD57",
 					"denominatorExclusionUuid": "F1AA2B4F-003E-4770-9394-8D465715CC4D"
-				}
+				},
+				"name" : "30DaysOfVisit"
 			}
 		],
 		"cpcPlusGroup": "Other_Measure",
