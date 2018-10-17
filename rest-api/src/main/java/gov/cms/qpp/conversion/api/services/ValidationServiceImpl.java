@@ -159,11 +159,11 @@ public class ValidationServiceImpl implements ValidationService {
 			detail.setMessage(SV_LABEL + detail.getMessage());
 			String newPath = UNABLE_PROVIDE_XPATH;
 			try {
-				newPath = PathCorrelator.prepPath(detail.getPath(), wrapper);
+				newPath = PathCorrelator.prepPath(detail.getLocation().getPath(), wrapper);
 			} catch (ClassCastException | JsonPathException exc) {
 				API_LOG.warn("Failed to convert from json path to an XPath.", exc);
 			}
-			detail.setPath(newPath);
+			detail.getLocation().setPath(newPath);
 		});
 
 		errors.addError(error);
