@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 class ClinicalDocumentValidatorTest {
@@ -253,6 +254,33 @@ class ClinicalDocumentValidatorTest {
 				.that(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(ErrorCode.CLINICAL_DOCUMENT_INCORRECT_PROGRAM_NAME.format(invalidProgramName, ClinicalDocumentValidator.VALID_PROGRAM_NAMES));
 	}
+
+	@Test
+	void testMissingVirtualGroupId() {
+		Node clinicalDocumentNode = createValidClinicalDocumentNode();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
+		clinicalDocumentNode.addChildNode(aciSectionNode);
+		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
+		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
+
+		assertThat(errors).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
+			.containsExactly(ErrorCode.VIRTUAL_GROUP_ID_REQUIRED);
+	}
+
+	@Test
+	void testSuccessVirtualGroupId() {
+		Node clinicalDocumentNode = createValidClinicalDocumentNode();
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_TYPE, ClinicalDocumentDecoder.ENTITY_VIRTUAL_GROUP);
+		clinicalDocumentNode.putValue(ClinicalDocumentDecoder.ENTITY_ID, "x12345");
+		Node aciSectionNode = createAciSectionNode(clinicalDocumentNode);
+		clinicalDocumentNode.addChildNode(aciSectionNode);
+		ClinicalDocumentValidator validator = new ClinicalDocumentValidator();
+		Set<Detail> errors = validator.validateSingleNode(clinicalDocumentNode);
+
+		assertThat(errors).isEmpty();
+	}
+
 
 	private List<Detail> getErrors(AllErrors content) {
 		return content.getErrors().get(0).getDetails();
