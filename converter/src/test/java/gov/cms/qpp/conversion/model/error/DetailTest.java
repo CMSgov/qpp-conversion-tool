@@ -19,11 +19,10 @@ class DetailTest {
 	@Test
 	void testSetters() {
 		Detail detail = new Detail();
-		detail.setPath("path");
 		detail.setMessage("message");
 		detail.setType("type");
 		detail.setValue("value");
-		detail.setLocation("location");
+		detail.setLocation(new Location());
 		Detail otherDetail = new Detail(detail);
 
 		assertThat(detail).isEqualTo(otherDetail);
@@ -35,7 +34,7 @@ class DetailTest {
 
 		Detail detail = Detail.forErrorAndNode(ErrorCode.UNEXPECTED_ERROR, node);
 
-		assertThat(detail.getLocation()).isEqualTo(node.getType().getHumanReadableTitle());
+		assertThat(detail.getLocation().getLocation()).isEqualTo(node.getType().getHumanReadableTitle());
 	}
 
 	@Test
@@ -46,7 +45,7 @@ class DetailTest {
 
 		Detail detail = Detail.forErrorAndNode(ErrorCode.UNEXPECTED_ERROR, node);
 
-		assertThat(detail.getLocation()).isEqualTo(node.getType().getHumanReadableTitle() + " " + measureId);
+		assertThat(detail.getLocation().getLocation()).isEqualTo(node.getType().getHumanReadableTitle() + " " + measureId);
 	}
 
 	@Test
@@ -55,6 +54,6 @@ class DetailTest {
 
 		Detail detail = Detail.forErrorAndNode(ErrorCode.UNEXPECTED_ERROR, node);
 
-		assertThat(detail.getLocation()).isEmpty();
+		assertThat(detail.getLocation().getLocation()).isEmpty();
 	}
 }

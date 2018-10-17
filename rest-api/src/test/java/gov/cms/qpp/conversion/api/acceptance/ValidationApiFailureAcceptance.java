@@ -108,10 +108,10 @@ class ValidationApiFailureAcceptance {
 
 	private Consumer<Detail> verifyDetail(String comparison, String xml) {
 		return detail -> {
-			String xPath = detail.getPath();
+			String xPath = detail.getLocation().getPath();
 			Filter filter = xPath.contains("@") ? Filters.attribute() : Filters.element();
 			try {
-				Object found = evaluateXpath(detail.getPath(), filter, xml);
+				Object found = evaluateXpath(xPath, filter, xml);
 				if (filter.equals(Filters.attribute())) {
 					Attribute attribute = (Attribute) found;
 					assertThat(attribute.getValue()).isEqualTo(comparison);
@@ -119,7 +119,7 @@ class ValidationApiFailureAcceptance {
 					assertThat(found).isNotNull();
 				}
 			} catch (XmlException ex) {
-				fail("This xpath could not be found: " + detail.getPath(), ex);
+				fail("This xpath could not be found: " + xPath, ex);
 			}
 		};
 	}
