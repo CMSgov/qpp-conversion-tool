@@ -1,6 +1,6 @@
 {
 	"CPCPlus_CMS122v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 6,
@@ -110,7 +110,7 @@
 		]
 	},
 	"CPCPlus_CMS165v5IncUUID_SampleQRDA-III.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 6,
@@ -518,17 +518,17 @@
 		"errorData": [
 			{
 				"errorCode": 64,
-				"subs": [2, "outcome", "40280381-51f0-825b-0152-22b98cff181a,40280381-51f0-825b-0152-229afff616ee,40280381-5118-2f4e-0151-3a9382cd09ba"],
+				"subs": [2, "outcome", "40280382-5abd-fa46-015b-49abb28d38b2,40280382-5abd-fa46-015b-4981e40b37e6"],
 				"occurrences": 1
 			}
 		]
 	},
 	"CPCPlus_IncNumofGroup2Measures_SampleQRDA-III.xml": {
-		"strict": true,
+		"strict": false,
 		"errorData": [
 			{
 				"errorCode": 64,
-				"subs": [2, "complex process", "40280381-51f0-825b-0152-22aae8a21778,40280381-52fc-3a32-0153-1a401cc10b57,40280381-528a-60ff-0152-8e089ed20376,40280381-52fc-3a32-0153-56d2b4f01ae5"],
+				"subs": [2, "outcome", "40280382-5abd-fa46-015b-49abb28d38b2,40280382-5abd-fa46-015b-4981e40b37e6"],
 				"occurrences": 1
 			}
 		]
