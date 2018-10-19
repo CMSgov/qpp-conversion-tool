@@ -41,6 +41,7 @@
 		"eMeasureUuid": "40280382-5abd-fa46-015b-4981e40b37e6",
 		"strata": [
 			{
+				"name": "A1c>9.0%",
 				"description": "Patients whose most recent HbA1c level (performed during the measurement period) is >9.0%",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "B7D491B3-358C-41A3-94F8-B986E65D99B6",
@@ -773,6 +774,7 @@
 		"eMeasureUuid": "40280382-5971-4eed-015a-05b564b82eda",
 		"strata": [
 			{
+				"name": "HF",
 				"description": "Patients who were prescribed beta-blocker therapy either within a 12 month period when seen in the outpatient setting OR at each hospital discharge",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "1E7F92C1-58C7-494D-A370-8003D0CE2EFD",
@@ -17763,6 +17765,7 @@
 		"eMeasureUuid": "40280382-5b4d-eebc-015b-5d99505001ea",
 		"strata": [
 			{
+				"name": "influenza",
 				"description": "Patients who received an influenza immunization OR who reported previous receipt of an influenza immunization",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "6011EBDD-A997-41C6-A58C-A8CD568AAE63",
@@ -18358,6 +18361,7 @@
 		"eMeasureUuid": "40280382-5abd-fa46-015b-498df1243816",
 		"strata": [
 			{
+				"name": "pneumococcal",
 				"description": "Patients who have ever received a pneumococcal vaccination",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "023E42E9-AEA8-4135-A64A-5EA1C46D4510",
@@ -18519,6 +18523,7 @@
 		"eMeasureUuid": "40280382-5b4d-eebc-015b-5ea9efcc02ac",
 		"strata": [
 			{
+				"name": "mammogram",
 				"description": "Women with one or more mammograms during the measurement period or the 15 months prior to the measurement period",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "C4BF72E5-8BF7-46A7-BD7B-6350F901FF54",
@@ -18684,6 +18689,7 @@
 		"strata": [
 			{
 				"description": "Patients with one or more screenings for colorectal cancer. Appropriate screenings are defined by any one of the following criteria: \n- Fecal occult blood test (FOBT) during the measurement period \n- Flexible sigmoidoscopy during the measurement period or the four years prior to the measurement period \n- Colonoscopy during the measurement period or the nine years prior to the measurement period\n- FIT-DNA during the measurement period or the two years prior to the measurement period \n- CT Colonography during the measurement period or the four years prior to the measurement period",
+				"name": "colorectalCancer",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "FA04C05D-FABF-4ED8-BC56-5E1C9E7F4170",
 					"denominatorUuid": "65F9718A-2BE8-4FE7-801C-2FEB861C55D2",
@@ -20113,6 +20119,7 @@
 		"strata": [
 			{
 				"description": "Eligible professional or eligible clinician attests to documenting, updating or reviewing the patient's current medications using all immediate resources available on the date of the encounter. This list must include ALL known prescriptions, over-the-counters, herbals and vitamin/mineral/dietary (nutritional) supplements AND must contain the medications' name, dosages, frequency and route of administration",
+				"name": "document",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "90D784F1-D627-4ECB-8E51-96B915801B6E",
 					"denominatorUuid": "2EE93A8D-BBC0-4D5F-B9AB-8471AB1C0206",
@@ -27741,6 +27748,7 @@
 		"eMeasureUuid": "40280382-5abd-fa46-015b-49abb28d38b2",
 		"strata": [
 			{
+				"name": "hypertension",
 				"description": "Patients whose blood pressure at the most recent visit is adequately controlled (systolic blood pressure < 140 mmHg and diastolic blood pressure < 90 mmHg) during the measurement period",
 				"eMeasureUuids": {
 					"initialPopulationUuid": "5C206C23-4CF9-4390-9E76-0F243FE59DCF",
@@ -30490,7 +30498,8 @@
 					"denominatorUuid": "DEEEB2CC-75E7-487B-895C-1102042B7C97",
 					"numeratorUuid": "714CCB1D-9F3F-403E-B636-2F2A38258D31",
 					"denominatorExclusionUuid": "D97B59F6-89D4-4635-8F38-4C8369D1776E"
-				}
+				},
+				"name": "screenedForFallRisk"
 			}
 		]
 	},
@@ -32229,7 +32238,8 @@
 					"denominatorUuid": "7872B69D-A1EB-42B3-8ED8-3BF847CC1B0C",
 					"numeratorUuid": "40ADC4A8-3EF2-4672-B287-A5C70C125709",
 					"denominatorExclusionUuid": "0A5E78D7-074C-46C6-9529-56E06681EABA"
-				}
+				},
+				"name": "visitWithin30Days"
 			},
 			{
 				"description": "Patients who had at least one face-to-face visit with a practitioner with prescribing authority during the Initiation Phase, and at least two follow-up visits during the Continuation and Maintenance Phase. One of the two visits during the Continuation and Maintenance Phase may be a telephone visit with a practitioner.",
@@ -32238,7 +32248,8 @@
 					"denominatorUuid": "787F0CCC-18DA-4F36-B8DA-F24FB75B0E1C",
 					"numeratorUuid": "B8E236A4-1AE9-44F9-8664-28A6BED54CF8",
 					"denominatorExclusionUuid": "37CC8B9D-0299-4221-8AD6-5B4EC842959B"
-				}
+				},
+				"name": "visitAndFollowups"
 			}
 		],
 		"eMeasureUuid": "40280382-5abd-fa46-015b-499a7b553852"
