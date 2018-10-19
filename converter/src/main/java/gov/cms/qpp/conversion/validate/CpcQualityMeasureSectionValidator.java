@@ -52,7 +52,7 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	String[] grabGroupMeasures(CpcGroupMinimum groupMinimum) {
 		Map<String, List<MeasureConfig>> cpcPlusGroups = MeasureConfigs.getCpcPlusGroups();
 
-		return cpcPlusGroups.get(groupMinimum.name()).stream()
+		return cpcPlusGroups.get(groupMinimum.getMapName()).stream()
 				.map(MeasureConfig::getElectronicMeasureVerUuid)
 				.toArray(String[]::new);
 	}
@@ -76,16 +76,22 @@ public class CpcQualityMeasureSectionValidator extends NodeValidator {
 	 * A holder of CPC+ group specific configuration information.
 	 */
 	enum CpcGroupMinimum {
-		Outcome_Measure("outcome", 2),
-		Other_Measure("complex process", 2);
+		OUTCOME_MEASURE("Outcome_Measure", "outcome", 2),
+		OTHER_MEASURE("Other_Measure", "complex process", 2);
 
 		private static final int NUMBER_OF_MEASURES_REQUIRED = 9;
+		private String mapName;
 		private String label;
 		private int minimum;
 
-		CpcGroupMinimum(String label, int minimum) {
+		CpcGroupMinimum(String mapName, String label, int minimum) {
 			this.label = label;
 			this.minimum = minimum;
+			this.mapName = mapName;
+		}
+
+		public String getMapName() {
+			return mapName;
 		}
 
 		static LocalizedError makeOverallError(String... measureIds) {

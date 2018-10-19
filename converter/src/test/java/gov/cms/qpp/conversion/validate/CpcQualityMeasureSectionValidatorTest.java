@@ -57,7 +57,7 @@ class CpcQualityMeasureSectionValidatorTest {
 	@Test
 	void missingGroupAmeasures() {
 		Node node = new Node();
-		LocalizedError message = CpcGroupMinimum.Outcome_Measure.makeError(groupAmeasures);
+		LocalizedError message = CpcGroupMinimum.OUTCOME_MEASURE.makeError(groupAmeasures);
 		validator.internalValidateSingleNode(node);
 		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);
@@ -66,7 +66,7 @@ class CpcQualityMeasureSectionValidatorTest {
 	@Test
 	void tooFewGroupAmeasures() {
 		Node node = setupMeasures(new String[] {groupAmeasures[0]});
-		LocalizedError message = CpcGroupMinimum.Outcome_Measure.makeError(groupAmeasures);
+		LocalizedError message = CpcGroupMinimum.OUTCOME_MEASURE.makeError(groupAmeasures);
 		validator.internalValidateSingleNode(node);
 		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(message);
@@ -75,7 +75,7 @@ class CpcQualityMeasureSectionValidatorTest {
 	@Test
 	void missingGroupBmeasures() {
 		Node node = setupMeasures(groupAmeasures);
-		LocalizedError message = CpcGroupMinimum.Other_Measure.makeError(groupBmeasures);
+		LocalizedError message = CpcGroupMinimum.OTHER_MEASURE.makeError(groupBmeasures);
 		validator.internalValidateSingleNode(node);
 		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(message);
@@ -84,7 +84,7 @@ class CpcQualityMeasureSectionValidatorTest {
 	@Test
 	void tooFewBmeasures() {
 		Node node = setupMeasures(groupAmeasures, new String[] {groupBmeasures[0]});
-		LocalizedError message = CpcGroupMinimum.Other_Measure.makeError(groupBmeasures);
+		LocalizedError message = CpcGroupMinimum.OTHER_MEASURE.makeError(groupBmeasures);
 		validator.internalValidateSingleNode(node);
 		assertThat(validator.getDetails()).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.containsExactly(message);
