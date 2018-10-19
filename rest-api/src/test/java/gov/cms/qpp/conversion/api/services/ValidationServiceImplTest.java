@@ -1,17 +1,23 @@
 package gov.cms.qpp.conversion.api.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cms.qpp.conversion.ConversionReport;
-import gov.cms.qpp.conversion.Converter;
-import gov.cms.qpp.conversion.PathSource;
-import gov.cms.qpp.conversion.api.model.Constants;
-import gov.cms.qpp.conversion.api.model.ErrorMessage;
-import gov.cms.qpp.conversion.encode.JsonWrapper;
-import gov.cms.qpp.conversion.model.error.AllErrors;
-import gov.cms.qpp.conversion.model.error.Detail;
-import gov.cms.qpp.conversion.model.error.TransformException;
-import gov.cms.qpp.test.MockitoExtension;
-import gov.cms.qpp.test.helper.JsonTestHelper;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,24 +33,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import gov.cms.qpp.conversion.ConversionReport;
+import gov.cms.qpp.conversion.Converter;
+import gov.cms.qpp.conversion.PathSource;
+import gov.cms.qpp.conversion.api.model.Constants;
+import gov.cms.qpp.conversion.api.model.ErrorMessage;
+import gov.cms.qpp.conversion.encode.JsonWrapper;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.Location;
+import gov.cms.qpp.conversion.model.error.TransformException;
+import gov.cms.qpp.test.MockitoExtension;
+import gov.cms.qpp.test.helper.JsonTestHelper;
 
 @ExtendWith(MockitoExtension.class)
 class ValidationServiceImplTest {
@@ -199,8 +201,8 @@ class ValidationServiceImplTest {
 		Detail mappedDetails = convertedErrors.getErrors().get(0).getDetails().get(0);
 
 		assertWithMessage("Json path should be converted to xpath")
-				.that(detail.getPath())
-				.isNotEqualTo(mappedDetails.getPath());
+				.that(detail.getLocation().getPath())
+				.isNotEqualTo(mappedDetails.getLocation().getPath());
 	}
 
 	@Test
@@ -223,6 +225,6 @@ class ValidationServiceImplTest {
 		convertedErrors = service.convertQppValidationErrorsToQrda(errorJson, qppWrapper);
 
 		convertedErrors.getErrors().stream().flatMap(error -> error.getDetails().stream())
-			.map(Detail::getPath).forEach(path -> assertThat(path).isEqualTo(ValidationServiceImpl.UNABLE_PROVIDE_XPATH));
+			.map(Detail::getLocation).map(Location::getPath).forEach(path -> assertThat(path).isEqualTo(ValidationServiceImpl.UNABLE_PROVIDE_XPATH));
 	}
 }
