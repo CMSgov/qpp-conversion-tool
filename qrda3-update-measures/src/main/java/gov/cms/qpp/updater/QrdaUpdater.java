@@ -108,7 +108,6 @@ public class QrdaUpdater {
 
 						MeasureConfig previousYearMeasureConfig =
 							(MeasureConfig)previousYearMeasureConfigMap.get(currentMeasureUuid);
-						System.out.println(previousYearMeasureConfig.getElectronicMeasureId());
 						if ("CMS166v6".equals(previousYearMeasureConfig.getElectronicMeasureId()))
 							break;
 
@@ -118,8 +117,6 @@ public class QrdaUpdater {
 						MeasureConfig currentYearMeasureConfig =
 							(MeasureConfig)currentYearMeasureConfigMap.get(updatedElectronicMeasureId);
 
-						System.out.println("Updating to current year uuid : " +
-							currentYearMeasureConfig.getElectronicMeasureVerUuid());
 						updateMeasureUuid(rootNamespace, currentYearMeasureConfig, measureEntryOrganizer);
 
 						List<Element> subpopulationComponents = measureEntryOrganizer.getChildren("component", rootNamespace);

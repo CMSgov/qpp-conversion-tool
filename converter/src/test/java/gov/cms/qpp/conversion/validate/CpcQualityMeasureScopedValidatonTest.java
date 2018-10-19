@@ -44,7 +44,6 @@ class CpcQualityMeasureScopedValidatonTest {
 		Set<Detail> details = validateNode(result);
 		LocalizedError message = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS137v6", "IPP,IPOP", "E6569B35-D2C5-464B-A608-BDB2F082FE57");
 
-		details.forEach(detail -> System.out.println(detail.getMessage()));
 		assertWithMessage("Missing CMS137v6 IPOP strata should result in errors")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
 				.contains(message);

@@ -80,7 +80,6 @@ public class Converter {
 			Detail detail = Detail.forErrorCode(ErrorCode.NOT_VALID_XML_DOCUMENT);
 			details.add(detail);
 		} catch (Exception exception) {
-			exception.printStackTrace();
 			DEV_LOG.error(ErrorCode.UNEXPECTED_ERROR.getMessage(), exception);
 			Detail detail = Detail.forErrorCode(ErrorCode.UNEXPECTED_ERROR);
 			details.add(detail);
