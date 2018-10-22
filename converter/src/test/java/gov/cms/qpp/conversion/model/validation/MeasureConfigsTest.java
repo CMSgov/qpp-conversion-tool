@@ -68,7 +68,7 @@ class MeasureConfigsTest {
 	@Test
 	void requiredMeasuresForSectionTest() {
 		MeasureConfigs.setMeasureDataFile(MeasureConfigs.DEFAULT_MEASURE_DATA_FILE_NAME);
-		List<String>requiredMeasures = MeasureConfigs.requiredMeasuresForSection("aci");
+		List<String>requiredMeasures = MeasureConfigs.requiredMeasuresForSection("pi");
 		List<String>notRequiredMeasures = MeasureConfigs.requiredMeasuresForSection("quality");
 
 		assertWithMessage("Expect the requiredMeasures to be a not empty list")

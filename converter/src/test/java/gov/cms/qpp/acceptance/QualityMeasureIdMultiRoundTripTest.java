@@ -63,7 +63,7 @@ class QualityMeasureIdMultiRoundTripTest {
 				new TypeRef<List<Map<String, ?>>>() { });
 
 		List<Map<String, ?>> subPopulation = JsonHelper.readJsonAtJsonPath(json,
-				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='160')].value.strata[*]",
+				"$.measurementSets[?(@.category=='quality')].measurements[?(@.measureId=='007')].value.strata[*]",
 				new TypeRef<List<Map<String, ?>>>() { });
 
 		String message =
@@ -71,13 +71,11 @@ class QualityMeasureIdMultiRoundTripTest {
 
 		assertWithMessage(message)
 				.that(qualityMeasures.get(0).get("measureId"))
-				.isEqualTo("160");
+				.isEqualTo("007");
 
 		assertFirstSubPopulation(subPopulation);
 
 		assertSecondSubPopulation(subPopulation);
-
-		assertThirdSubPopulation(subPopulation);
 	}
 
 	@Test
@@ -104,9 +102,9 @@ class QualityMeasureIdMultiRoundTripTest {
 	}
 
 	@Test
-	void testRoundTripForQualityMeasureIdWithNoDenomMeasureType() {
+	void testRoundTripForQualityMeasureIdWithNoDenexcepMeasureType() {
 		LocalizedError error =
-			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS52v5", 3, SubPopulationLabel.DENOM.name(), 2);
+			ErrorCode.POPULATION_CRITERIA_COUNT_INCORRECT.format("CMS145v6", 2, SubPopulationLabel.DENEXCEP.name(), 1);
 		String path = "/ClinicalDocument/component/structuredBody/component/section/entry/organizer/" +
 				"component[5]/observation/value/@code";
 
@@ -204,14 +202,5 @@ class QualityMeasureIdMultiRoundTripTest {
 		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_EXCEPTIONS)
 				.that(subPopulation.get(1).get(ELIGIBLE_POPULATION_EXCEPTION))
 				.isEqualTo(40);
-	}
-
-	private void assertThirdSubPopulation(List<Map<String, ?>> subPopulation) {
-		assertWithMessage(REQUIRE_ELIGIBLE_POPULATION_TOTAL)
-				.that(subPopulation.get(2).get(ELIGIBLE_POPULATION))
-				.isEqualTo(580);
-		assertWithMessage(REQUIRE_PERFORMANCE_MET)
-				.that(subPopulation.get(2).get(PERFORMANCE_MET))
-				.isEqualTo(520);
 	}
 }

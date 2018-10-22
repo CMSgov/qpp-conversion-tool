@@ -128,7 +128,7 @@ class ScopedConversionTest {
 	 * Verify ACI Aggregate Count conversion
 	 */
 	@Test
-	void testScopedAciAggregateCountConversion() {
+	void testScopedPiAggregateCountConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_AGGREGATE_COUNT.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -143,7 +143,7 @@ class ScopedConversionTest {
 	 * Verify ACI Numerator conversion
 	 */
 	@Test
-	void testScopedAciNumeratorConversion() {
+	void testScopedPiNumeratorConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_NUMERATOR.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -155,10 +155,10 @@ class ScopedConversionTest {
 	}
 
 	/**
-	 * Verify ACI Denominator conversion
+	 * Verify PI Denominator conversion
 	 */
 	@Test
-	void testScopedAciDenominatorConversion() {
+	void testScopedPiDenominatorConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_DENOMINATOR.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -170,10 +170,10 @@ class ScopedConversionTest {
 	}
 
 	/**
-	 * Verify ACI Numerator Denominator conversion
+	 * Verify PI Numerator Denominator conversion
 	 */
 	@Test
-	void testScopedAciNumeratorDenominatorConversion() {
+	void testScopedPiNumeratorDenominatorConversion() {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_NUMERATOR_DENOMINATOR.name());
 		Map<String, Object> content = scopedConversion(testSection);
@@ -233,7 +233,7 @@ class ScopedConversionTest {
 	 * @throws JsonProcessingException 
 	 */
 	@Test
-	void testNegativeAciNumeratorDenominatorConversion() throws JsonProcessingException {
+	void testNegativePiNumeratorDenominatorConversion() throws JsonProcessingException {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_NUMERATOR_DENOMINATOR.name());
 		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
@@ -280,7 +280,7 @@ class ScopedConversionTest {
 	 * @throws JsonProcessingException 
 	 */
 	@Test
-	void testNegativeAciAggregateCountConversion() throws JsonProcessingException {
+	void testNegativePiAggregateCountConversion() throws JsonProcessingException {
 		//when
 		QrdaScope testSection = QrdaScope.getInstanceByName(TemplateId.PI_AGGREGATE_COUNT.name());
 		List<Map<String, String>> content = getErrors(errantScopedConversion(testSection));
