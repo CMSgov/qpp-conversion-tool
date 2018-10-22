@@ -13,46 +13,40 @@ import gov.cms.qpp.conversion.model.Node;
 import gov.cms.qpp.conversion.util.MeasureConfigHelper;
 
 /**
- * Holds the error information from Validators.
+ * Holds the error information from {@link Validator}s.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Detail implements Serializable {
-	private static final long serialVersionUID = 8818544157552590676L;
+	private static final long serialVersionUID = 8818544157552590677L;
 
 	private Integer errorCode;
 	private String message;
-	private String path = "";
-	private Integer line;
-	private Integer column;
 	private String value;
 	private String type;
-	private String location;
+	private Location location = new Location();
 
 	/**
-	 * Dummy constructor for ORM
+	 * Default constructor to support ORM and the copy constructor
 	 */
 	public Detail() {
-		//Dummy constructor for jackson mapping
+		// Dummy constructor for jackson mapping and to support copy constructor
 	}
 
 	/**
 	 * Copy constructor
 	 *
-	 * @param detail object from which to copy
+	 * @param copy object to copy
 	 */
-	public Detail(Detail detail) {
-		errorCode = detail.errorCode;
-		message = detail.message;
-		path = detail.path;
-		value = detail.value;
-		type = detail.type;
-		line = detail.line;
-		column = detail.column;
-		location = detail.location;
+	public Detail(Detail copy) {
+		errorCode = copy.errorCode;
+		message = copy.message;
+		value = copy.value;
+		type = copy.type;
+		location = new Location(copy.location);
 	}
 
 	/**
-	 * Creates a mutable Detail based on the given error and node
+	 * Creates a mutable {@link Detail} based on the given {@link LocalizedError} and {@link Node}
 	 *
 	 * @param error error to be added
 	 * @param node node that gives the error context
@@ -62,23 +56,24 @@ public class Detail implements Serializable {
 		Detail detail = forErrorCode(error);
 
 		if (node != null) {
+			Location location = detail.getLocation();
 			if (node.getLine() != Node.DEFAULT_LOCATION_NUMBER) {
-				detail.setLine(node.getLine());
+				location.setLine(node.getLine());
 			}
 
 			if (node.getColumn() != Node.DEFAULT_LOCATION_NUMBER) {
-				detail.setColumn(node.getColumn());
+				location.setColumn(node.getColumn());
 			}
 
-			detail.setPath(node.getOrComputePath());
-			detail.setLocation(computeLocation(node));
+			location.setPath(node.getOrComputePath());
+			location.setLocation(computeLocation(node));
 		}
 
 		return detail;
 	}
 
 	/**
-	 * Creates a mutable Detail based on the given error
+	 * Creates a mutable {@link Detail} based on the given {@link LocalizedError}
 	 *
 	 * @param error error to be added
 	 * @return detail for given error
@@ -93,7 +88,6 @@ public class Detail implements Serializable {
 	}
 
 	private static String computeLocation(Node node) {
-
 		StringBuilder location = new StringBuilder();
 
 		Node importantParentNode = node.findParentNodeWithHumanReadableTemplateId();
@@ -146,60 +140,6 @@ public class Detail implements Serializable {
 	}
 
 	/**
-	 * Gets the path that this error references.
-	 *
-	 * @return The path that this error references.
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * Sets the path that this error references.
-	 *
-	 * @param path The path that this error references.
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	/**
-	 * Gets the line of the submitted document that caused this error
-	 *
-	 * @return The line of the submitted document that caused this error
-	 */
-	public Integer getLine() {
-		return line;
-	}
-
-	/**
-	 * Sets the line of the submitted document that caused this error
-	 *
-	 * @param path The line of the submitted document that caused this error
-	 */
-	public void setLine(Integer line) {
-		this.line = line;
-	}
-
-	/**
-	 * Gets the line of the submitted document that caused this error
-	 *
-	 * @return The line of the submitted document that caused this error
-	 */
-	public Integer getColumn() {
-		return column;
-	}
-
-	/**
-	 * Sets the column of the submitted document that caused this error
-	 *
-	 * @param path The column of the submitted document that caused this error
-	 */
-	public void setColumn(Integer column) {
-		this.column = column;
-	}
-
-	/**
 	 * Gets the value that this error references.
 	 *
 	 * @return The value that this error references.
@@ -226,45 +166,34 @@ public class Detail implements Serializable {
 	}
 
 	/**
-	 * The human readable location where this error occurred.
+	 * The {@link Location} object containing human-readable location data such as line and column numbers
 	 *
 	 * @return The location.
 	 */
-	public String getLocation() {
+	public Location getLocation() {
 		return location;
 	}
 
 	/**
-	 * Sets the human readable location where this error occurred.
+	 * Sets the {@link Location} object where this error occurred.
 	 *
 	 * @param location The location.
 	 */
-	public void setLocation(final String location) {
+	public void setLocation(Location location) {
 		this.location = location;
 	}
 
-	/**
-	 * @return A string representation.
-	 */
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
 				.add("errorCode", errorCode)
 				.add("message", message)
-				.add("path", path)
 				.add("value", value)
 				.add("type", type)
-				.add("line", line)
-				.add("column", column)
+				.add("location", location)
 				.toString();
 	}
 
-	/**
-	 * Evaluate equality of state.
-	 *
-	 * @param o Object to compare against
-	 * @return evaluation
-	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -279,22 +208,14 @@ public class Detail implements Serializable {
 		return new EqualsBuilder()
 				.append(errorCode, that.errorCode)
 				.append(message, that.message)
-				.append(path, that.path)
 				.append(value, that.value)
 				.append(type, that.type)
-				.append(line, that.line)
-				.append(column, that.column)
 				.append(location, that.location)
 				.isEquals();
 	}
 
-	/**
-	 * get object hash code
-	 *
-	 * @return hash code
-	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(errorCode, message, path, value, type, line, column, location);
+		return Objects.hash(errorCode, message, value, type, location);
 	}
 }
