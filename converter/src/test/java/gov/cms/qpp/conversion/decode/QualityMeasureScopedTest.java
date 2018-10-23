@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import static com.google.common.truth.Truth.assertThat;
 
 class QualityMeasureScopedTest {
-	private static String location = "src/test/resources/fixtures/qppct298/cms137v5.xml";
+	private static String location = "src/test/resources/fixtures/qppct298/cms137v6.xml";
 
 
 	@Test
