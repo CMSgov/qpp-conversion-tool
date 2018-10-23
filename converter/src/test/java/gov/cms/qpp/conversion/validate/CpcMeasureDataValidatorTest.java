@@ -24,7 +24,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 class CpcMeasureDataValidatorTest {
 
-	private static final String MEASURE_ID = "CMS122v5";
+	private static final String MEASURE_ID = "CMS122v6";
 	private static final String MISSING_SUPPLEMENTAL_CODES_FILE = "missingSupplementalCodeFile.xml";
 
 	@Test
