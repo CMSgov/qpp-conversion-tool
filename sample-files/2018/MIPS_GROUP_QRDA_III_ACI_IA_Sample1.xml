@@ -112,7 +112,7 @@ CDA Header
 				codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>
 		</associatedEntity>
 	</participant>
-		<documentationOf typeCode="DOC">
+	<documentationOf typeCode="DOC">
 		<serviceEvent classCode="PCPR">
 			<effectiveTime>
 				<low value="20170101"/>
