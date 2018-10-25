@@ -1,23 +1,26 @@
 package gov.cms.qpp.conversion.api.acceptance;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.model.ScanRequest;
-import com.amazonaws.services.dynamodbv2.model.ScanResult;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectListing;
-import com.google.common.collect.Lists;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import gov.cms.qpp.test.annotations.AcceptanceTest;
-import gov.cms.qpp.test.helper.AwsTestHelper;
-
-import java.nio.file.Paths;
-
 import static com.google.common.truth.Truth.assertThat;
 import static io.restassured.RestAssured.given;
 
+import java.nio.file.Paths;
+
+import javax.inject.Inject;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectListing;
+
+import gov.cms.qpp.conversion.api.services.MetadataRepository;
+import gov.cms.qpp.test.annotations.AcceptanceTest;
+import gov.cms.qpp.test.helper.AwsTestHelper;
+
 @ExtendWith(RestExtension.class)
+@ExtendWith(SpringExtension.class)
 class QrdaApiAcceptance {
 
 	private static final String QRDA_API_PATH = "/";
@@ -27,10 +30,20 @@ class QrdaApiAcceptance {
 	private long beforeObjectCount;
 	private long beforeDynamoCount;
 
+	@Inject
+	private MetadataRepository repository;
+
 	@BeforeEach
 	void beforeCounts() {
+		repository.deleteAll();
+
 		beforeObjectCount = getS3ObjectCount();
-		beforeDynamoCount = getDynamoItemCount();
+		beforeDynamoCount = getDatabaseItemCount();
+	}
+
+	@AfterEach
+	void after() {
+		repository.deleteAll();
 	}
 
 	@AcceptanceTest
@@ -43,7 +56,7 @@ class QrdaApiAcceptance {
 			.statusCode(201);
 
 		long afterObjectCount = getS3ObjectCount();
-		long afterDynamoCount = getDynamoItemCount();
+		long afterDynamoCount = getDatabaseItemCount();
 
 		assertThat(afterObjectCount).isEqualTo(beforeObjectCount + 2);
 		assertThat(afterDynamoCount).isEqualTo(beforeDynamoCount + 1);
@@ -59,7 +72,7 @@ class QrdaApiAcceptance {
 			.statusCode(422);
 
 		long afterObjectCount = getS3ObjectCount();
-		long afterDynamoCount = getDynamoItemCount();
+		long afterDynamoCount = getDatabaseItemCount();
 
 		assertThat(afterObjectCount).isEqualTo(beforeObjectCount + 2);
 		assertThat(afterDynamoCount).isEqualTo(beforeDynamoCount + 1);
@@ -75,7 +88,7 @@ class QrdaApiAcceptance {
 			.statusCode(422);
 
 		long afterObjectCount = getS3ObjectCount();
-		long afterDynamoCount = getDynamoItemCount();
+		long afterDynamoCount = getDatabaseItemCount();
 
 		assertThat(afterObjectCount).isEqualTo(beforeObjectCount + 4);
 		assertThat(afterDynamoCount).isEqualTo(beforeDynamoCount + 1);
@@ -95,17 +108,7 @@ class QrdaApiAcceptance {
 		return objectCount;
 	}
 
-	private long getDynamoItemCount() {
-		AmazonDynamoDB dynamoClient = AwsTestHelper.getDynamoClient();
-
-		ScanResult scanResult = dynamoClient.scan(AwsTestHelper.TEST_DYNAMO_TABLE_NAME, Lists.newArrayList("Uuid"));
-		long itemCount = scanResult.getCount();
-
-		while(scanResult.getLastEvaluatedKey() != null && !scanResult.getLastEvaluatedKey().isEmpty()) {
-			scanResult = dynamoClient.scan(new ScanRequest().withTableName(AwsTestHelper.TEST_DYNAMO_TABLE_NAME).withAttributesToGet("Uuid").withExclusiveStartKey(scanResult.getLastEvaluatedKey()));
-			itemCount += scanResult.getCount();
-		}
-
-		return itemCount;
+	private long getDatabaseItemCount() {
+		return repository.count();
 	}
 }

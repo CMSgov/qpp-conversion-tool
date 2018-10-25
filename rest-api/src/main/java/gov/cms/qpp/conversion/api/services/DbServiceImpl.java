@@ -49,7 +49,8 @@ public class DbServiceImpl extends AnyOrderActionService<Metadata, Metadata>
 		String noAudit = environment.getProperty(Constants.NO_AUDIT_ENV_VARIABLE);
 
 		if (!StringUtils.isEmpty(noAudit)) {
-			API_LOG.warn("Not writing metadata item '{}' because auditing is disabled with the '{}' property", meta.getUuid(), Constants.NO_AUDIT_ENV_VARIABLE);
+			API_LOG.warn("Not writing metadata item '{}' because auditing is disabled with the '{}' property",
+					meta.getUuid(), Constants.NO_AUDIT_ENV_VARIABLE);
 			return CompletableFuture.completedFuture(new Metadata());
 		}
 

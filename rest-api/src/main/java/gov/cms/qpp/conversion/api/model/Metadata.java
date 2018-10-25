@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 /**
@@ -42,15 +41,8 @@ public final class Metadata {
 	private Boolean cpcProcessed;
 	private String purpose;
 
-	@PrePersist
-	public void prepareForPersist() {
-		ensureHasCreatedDate();
-	}
-
-	private void ensureHasCreatedDate() {
-		if (getCreatedDate() == null) {
-			setCreatedDate(System.currentTimeMillis());
-		}
+	public Metadata() {
+		setCreatedDate(System.currentTimeMillis());
 	}
 
 	/**
@@ -399,7 +391,6 @@ public final class Metadata {
 	 */
 	public String getCpcProcessedCreateDate() {
 		if (cpcProcessed != null) {
-			ensureHasCreatedDate();
 			DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
 			return cpcProcessed.toString() + "#" + formatter.format(Instant.ofEpochMilli(createdDate));
 		}
