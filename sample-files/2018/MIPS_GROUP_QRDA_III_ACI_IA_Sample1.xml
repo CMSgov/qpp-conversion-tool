@@ -29118,7 +29118,7 @@ CDA Header
 							<statusCode code="completed"/>
 							<reference typeCode="REFR">
 								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.3.7031" extension="PI_TRANS_HIE_1"/>
+									<id root="2.16.840.1.113883.3.7031" extension="PI_TRANS_MR_1"/>
 									<text>Medication Reconciliation</text>
 								</externalDocument>
 							</reference>
@@ -30450,34 +30450,6 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					<!-- improvement activity: IA_CC_1 -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-								extension="2016-09-01"/>
-							<id root="ae58d929-3574-47ae-87b8-438d2eac86d9"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.3.7034" extension="IA_CC_1"/>
-									<text>Implementation of use of specialist reports back to referring clinician or group to close referral loop</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<templateId root="2.16.840.1.113883.10.20.27.3.27"
-										extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="Y" displayName="Yes"
-										codeSystemName="Yes/no indicator (HL7 Table 0136)"
-										codeSystem="2.16.840.1.113883.12.136"/>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
 					<!-- improvement activity: IA_CC_2 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -30546,34 +30518,6 @@ CDA Header
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.3.7034" extension="IA_CC_4"/>
 									<text>TCPI participation</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<templateId root="2.16.840.1.113883.10.20.27.3.27"
-										extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="Y" displayName="Yes"
-										codeSystemName="Yes/no indicator (HL7 Table 0136)"
-										codeSystem="2.16.840.1.113883.12.136"/>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
-					<!-- improvement activity: IA_CC_4 -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-								extension="2016-09-01"/>
-							<id root="ae58d929-3574-47ae-87b8-438d2eac86d9"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.3.7034" extension="IA_CC_4"/>
-									<text>CMS partner in Patients Hospital</text>
 								</externalDocument>
 							</reference>
 							<component>
@@ -30714,34 +30658,6 @@ CDA Header
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.3.7034" extension="IA_CC_9"/>
 									<text>Implementation of practices/processes for developing regular individual care plans</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<templateId root="2.16.840.1.113883.10.20.27.3.27"
-										extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="Y" displayName="Yes"
-										codeSystemName="Yes/no indicator (HL7 Table 0136)"
-										codeSystem="2.16.840.1.113883.12.136"/>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
-					<!-- improvement activity: IA_CC_10 -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-								extension="2016-09-01"/>
-							<id root="ae58d929-3574-47ae-87b8-438d2eac86d9"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.3.7034" extension="IA_CC_10"/>
-									<text>Care transition documentation practice improvements</text>
 								</externalDocument>
 							</reference>
 							<component>
@@ -31402,34 +31318,6 @@ CDA Header
 							</component>
 						</organizer>
 					</entry>
-					<!-- improvement activity: IA_BE_18 -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-								extension="2016-09-01"/>
-							<id root="ae58d929-3574-47ae-87b8-438d2eac86d9"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.3.7034" extension="IA_BE_18"/>
-									<text>Provide peer-led support for self-management.</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<templateId root="2.16.840.1.113883.10.20.27.3.27"
-										extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="Y" displayName="Yes"
-										codeSystemName="Yes/no indicator (HL7 Table 0136)"
-										codeSystem="2.16.840.1.113883.12.136"/>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
 					<!-- improvement activity: IA_BE_19 -->
 					<entry>
 						<organizer classCode="CLUSTER" moodCode="EVN">
@@ -31442,34 +31330,6 @@ CDA Header
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.3.7034" extension="IA_BE_19"/>
 									<text>Use group visits for common chronic conditions (e.g., diabetes).</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<templateId root="2.16.840.1.113883.10.20.27.3.27"
-										extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="Y" displayName="Yes"
-										codeSystemName="Yes/no indicator (HL7 Table 0136)"
-										codeSystem="2.16.840.1.113883.12.136"/>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
-					<!-- improvement activity: IA_BE_20 -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-								extension="2016-09-01"/>
-							<id root="ae58d929-3574-47ae-87b8-438d2eac86d9"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.3.7034" extension="IA_BE_20"/>
-									<text>Implementation of condition-specific chronic disease self-management support programs</text>
 								</externalDocument>
 							</reference>
 							<component>
@@ -31722,34 +31582,6 @@ CDA Header
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.3.7034" extension="IA_PSPA_5"/>
 									<text>Annual registration in the Prescription Drug Monitoring Program</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<templateId root="2.16.840.1.113883.10.20.27.3.27"
-										extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="Y" displayName="Yes"
-										codeSystemName="Yes/no indicator (HL7 Table 0136)"
-										codeSystem="2.16.840.1.113883.12.136"/>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
-					<!-- improvement activity: IA_PSPA_6 -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-								extension="2016-09-01"/>
-							<id root="ae58d929-3574-47ae-87b8-438d2eac86d9"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.3.7034" extension="IA_PSPA_6"/>
-									<text>Consultation of the Prescription Drug Monitoring program</text>
 								</externalDocument>
 							</reference>
 							<component>
@@ -32338,34 +32170,6 @@ CDA Header
 								<externalDocument classCode="DOC" moodCode="EVN">
 									<id root="2.16.840.1.113883.3.7034" extension="IA_ERP_1"/>
 									<text>Participation on Disaster Medical Assistance Team, registered for 6 months.</text>
-								</externalDocument>
-							</reference>
-							<component>
-								<observation classCode="OBS" moodCode="EVN">
-									<templateId root="2.16.840.1.113883.10.20.27.3.27"
-										extension="2016-09-01"/>
-									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
-										codeSystemName="ActCode" displayName="Assertion"/>
-									<statusCode code="completed"/>
-									<value xsi:type="CD" code="Y" displayName="Yes"
-										codeSystemName="Yes/no indicator (HL7 Table 0136)"
-										codeSystem="2.16.840.1.113883.12.136"/>
-								</observation>
-							</component>
-						</organizer>
-					</entry>
-					<!-- improvement activity: IA_ERP_2 -->
-					<entry>
-						<organizer classCode="CLUSTER" moodCode="EVN">
-							<templateId root="2.16.840.1.113883.10.20.24.3.98"/>
-							<templateId root="2.16.840.1.113883.10.20.27.3.33"
-								extension="2016-09-01"/>
-							<id root="ae58d929-3574-47ae-87b8-438d2eac86d9"/>
-							<statusCode code="completed"/>
-							<reference typeCode="REFR">
-								<externalDocument classCode="DOC" moodCode="EVN">
-									<id root="2.16.840.1.113883.3.7034" extension="IA_ERP_2"/>
-									<text>Participation in a 60-day or greater effort to support domestic or international humanitarian needs.</text>
 								</externalDocument>
 							</reference>
 							<component>
