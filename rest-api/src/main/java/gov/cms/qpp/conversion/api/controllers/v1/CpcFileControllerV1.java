@@ -25,6 +25,7 @@ import gov.cms.qpp.conversion.api.model.Report;
 import gov.cms.qpp.conversion.api.model.Status;
 import gov.cms.qpp.conversion.api.model.UnprocessedCpcFileData;
 import gov.cms.qpp.conversion.api.services.CpcFileService;
+import gov.cms.qpp.conversion.api.services.DbService;
 import gov.cms.qpp.conversion.util.EnvironmentHelper;
 
 /**
@@ -46,7 +47,7 @@ public class CpcFileControllerV1 {
 	 *
 	 * @param cpcFileService service for processing cpc+ files
 	 */
-	public CpcFileControllerV1(final CpcFileService cpcFileService) {
+	public CpcFileControllerV1(CpcFileService cpcFileService) {
 		this.cpcFileService = cpcFileService;
 	}
 
@@ -163,18 +164,15 @@ public class CpcFileControllerV1 {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		//cpcFileService.getFileById(fileId)
-		//InputStreamResource content = cpcFileService.getFileById(fileId);
-
-		Metadata m = null; // TODO
+		Metadata metadata = cpcFileService.getMetadataById(fileId); // TODO
 
 		Report report = new Report();
-		report.setErrors(m.getErrors());
-		report.setPracticeSiteId(m.getApm());
-		report.setTimestamp(m.getCreatedDate().toEpochMilli());
-		report.setWarnings(m.getWarnings());
+		report.setErrors(metadata.getErrors());
+		report.setPracticeSiteId(metadata.getApm());
+		report.setTimestamp(metadata.getCreatedDate().toEpochMilli());
+		report.setWarnings(metadata.getWarnings());
 		boolean hasWarnings = report.getWarnings() != null && !report.getWarnings().isEmpty();
-		report.setStatus(BooleanUtils.isTrue(m.getConversionStatus()) ? (hasWarnings ? Status.ACCEPTED_WITH_WARNINGS : Status.ACCEPTED) : Status.REJECTED);
+		report.setStatus(BooleanUtils.isTrue(metadata.getConversionStatus()) ? (hasWarnings ? Status.ACCEPTED_WITH_WARNINGS : Status.ACCEPTED) : Status.REJECTED);
 		API_LOG.info("CPC+ report request succeeded");
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(report);
