@@ -1,6 +1,17 @@
 package gov.cms.qpp.conversion.api.services;
 
 
+import java.io.InputStream;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
+
 import gov.cms.qpp.conversion.ConversionReport;
 import gov.cms.qpp.conversion.Source;
 import gov.cms.qpp.conversion.api.exceptions.AuditException;
@@ -8,13 +19,9 @@ import gov.cms.qpp.conversion.api.helper.MetadataHelper;
 import gov.cms.qpp.conversion.api.helper.MetadataHelper.Outcome;
 import gov.cms.qpp.conversion.api.model.Constants;
 import gov.cms.qpp.conversion.api.model.Metadata;
-import java.io.InputStream;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Service;
+import gov.cms.qpp.conversion.model.error.AllErrors;
+import gov.cms.qpp.conversion.model.error.Detail;
+import gov.cms.qpp.conversion.model.error.Error;
 
 /**
  * Service for storing {@link Metadata} by {@link ConversionReport} outcome
@@ -146,7 +153,25 @@ public class AuditServiceImpl implements AuditService {
 		Metadata metadata = MetadataHelper.generateMetadata(report.getDecoded(), outcome);
 		metadata.setFileName(report.getQrdaSource().getName());
 		metadata.setPurpose(report.getPurpose());
+		metadata.setErrors(getDetailsFromAllErrors(report.getReportDetails()));
 		return metadata;
+	}
+
+	private List<Detail> getDetailsFromAllErrors(AllErrors allErrors) {
+		if (allErrors == null) {
+			return null;
+		}
+
+		if (allErrors.getErrors() == null) {
+			return null;
+		}
+
+		List<Detail> details = allErrors.getErrors().stream().map(Error::getDetails).flatMap(List::stream).collect(Collectors.toList());
+		if (details.isEmpty()) {
+			return null;
+		}
+
+		return details;
 	}
 
 	/**
