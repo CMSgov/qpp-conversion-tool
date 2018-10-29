@@ -25,7 +25,7 @@ jobs:
       - run: wget -O sonarscanner.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.1.0.1141/sonar-scanner-cli-3.1.0.1141.zip
       - run: unzip -d . sonarscanner.zip
       - run: cp ./sonar-scanner.properties sonar-scanner-3.1.0.1141/conf/sonar-scanner.properties
-      - run: mvn -Xc --batch-mode verify
+      - run: mvn -X --batch-mode verify
       - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
       - run: sudo apt-get install -y nodejs
       - run: ./tools/bin/sonarqube.sh
