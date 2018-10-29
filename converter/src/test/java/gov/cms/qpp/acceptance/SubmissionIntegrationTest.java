@@ -15,11 +15,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;;
 
 import gov.cms.qpp.conversion.Converter;
 import gov.cms.qpp.conversion.PathSource;
@@ -27,15 +30,16 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.test.net.InternetIntegrationTest;
 
 @InternetIntegrationTest
+@EnabledIfEnvironmentVariable(named = "COOKIE", matches = "*")
 class SubmissionIntegrationTest {
 
 	private static HttpClient client;
-	private static final String SERVICE_URL = "https://qpp-submissions-sandbox.navapbc.com/public/validate-submission";
+	private static final String SERVICE_URL = "https://imp.qpp.cms.gov/api/submissions/public/validate-submission";
 	private JsonWrapper qpp;
 
 	@BeforeAll
 	static void setup() {
-		client = HttpClientBuilder.create().build();
+		client = HttpClientBuilder.create().setDefaultCookieStore(setCookieStore()).build();
 	}
 
 	private static boolean endpointIsUp(HttpResponse response) {
@@ -84,6 +88,16 @@ class SubmissionIntegrationTest {
 		} catch (UnknownHostException unknownHost) {
 			return null;
 		}
+	}
+
+	static private BasicCookieStore setCookieStore() {
+		BasicCookieStore cookieStore = new BasicCookieStore();
+		BasicClientCookie cookie = new BasicClientCookie("ACA", System.getenv("COOKIE"));
+		cookie.setDomain("imp.qpp.cms.gov");
+		cookie.setPath("/");
+		cookieStore.addCookie(cookie);
+
+		return cookieStore;
 	}
 
 	private int getStatus(HttpResponse httpResponse) {
