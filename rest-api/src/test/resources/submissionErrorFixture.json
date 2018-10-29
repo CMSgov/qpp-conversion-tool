@@ -4,10 +4,12 @@
 		"message": "Found errors while validating Submission object",
 		"details": [
 			{
-				"path": "measurementSets[0].measurements[0].measureId",
+				"message": "invalid measureId, see mips-data-format for list of valid measureIds.",
 				"value": "IA_EPA_00",
 				"type": "InvalidValue",
-				"message": "invalid measureId, see mips-data-format for list of valid measureIds."
+				"location": {
+					"path": "measurementSets[0].measurements[0].measureId"
+				}
 			}
 		]
 	}

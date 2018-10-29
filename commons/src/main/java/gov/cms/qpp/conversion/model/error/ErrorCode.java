@@ -117,9 +117,9 @@ public enum ErrorCode implements LocalizedError {
 			+ "Aggregate Count.", true),
 	MEASURE_DATA_VALUE_NOT_INTEGER(53, "Measure data with population id '`(population id)`' "
 			+ "must be a whole number greater than or equal to 0", true),
-	CPC_PERFORMANCE_PERIOD_START_JAN12017(55, "A CPC Plus Performance period start must be 01/01/2017. "
+	CPC_PERFORMANCE_PERIOD_START(55, "A CPC Plus Performance period start must be 01/01/2018. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
-	CPC_PERFORMANCE_PERIOD_END_DEC312017(56, "A CPC Plus Performance period end must be 12/31/2017. "
+	CPC_PERFORMANCE_PERIOD_END(56, "A CPC Plus Performance period end must be 12/31/2018. "
 			+ "Please refer to the IG for more information here: " + DocumentationReference.CPC_PLUS_SUBMISSIONS),
 	QUALITY_MEASURE_ID_MISSING_SINGLE_MEASURE_POPULATION(57, "The measure reference results must have a single "
 			+ "measure population"),
@@ -147,7 +147,7 @@ public enum ErrorCode implements LocalizedError {
 		+ "`(CPC+ contact email)` for assistance.", true),
 	INVALID_PERFORMANCE_PERIOD_FORMAT(69, "`(Performance period start or end date)` is an invalid date format. "
 		+ "Please use a standard ISO date format. "
-		+ "Example valid values are 2017-02-26, 2017/02/26T01:45:23, or 2017-02-26T01:45:23.123. "
+		+ "Example valid values are 2018-02-26, 2018/02/26T01:45:23, or 2018-02-26T01:45:23.123. "
 		+ "Please see the Implementation Guide for information on the performance period here: "
 		+ DocumentationReference.PERFORMANCE_PERIOD, true),
 	MISSING_OR_DUPLICATED_MEASURE_GUID(70, "The measure section measure reference and results has an incorrect number of "
@@ -155,7 +155,9 @@ public enum ErrorCode implements LocalizedError {
 	MEASURES_RNR_WITH_DUPLICATED_MEASURE_GUID(71, "Two or more different measure section measure reference and results have "
 		+ "the same measure GUID. Please ensure that each measure section measure reference and results do not have "
 		+ "the same measure GUID."),
-	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing");
+	PERFORMANCE_RATE_MISSING(72, "The Performance Rate is missing"),
+	VIRTUAL_GROUP_ID_REQUIRED(78, "The Program 'Mips Virtual Group' was found. The required entity id for this "
+		+ "program name was missing. Please provide a virtual group identifier with the 'Mips Virtual Group' program name.");
 
 	private static final Map<Integer, ErrorCode> CODE_TO_VALUE = Arrays.stream(values())
 			.collect(Collectors.toMap(ErrorCode::getCode, Function.identity()));
@@ -239,4 +241,5 @@ public enum ErrorCode implements LocalizedError {
 		static final String MESSAGE = "Please contact the Service Center for assistance via phone at "
 				+ "1-866-288-8292 or TTY: 1-877-715-6222, or by emailing QPP@cms.hhs.gov";
 	}
+
 }

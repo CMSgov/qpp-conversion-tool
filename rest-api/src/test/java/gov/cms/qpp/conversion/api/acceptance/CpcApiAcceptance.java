@@ -144,7 +144,7 @@ class CpcApiAcceptance {
 			.asString();
 
 		verifyJson(payload, jsonObject()
-			.where("performanceYear", jsonInt(2017))
+			.where("performanceYear", jsonInt(2018))
 			.where("taxpayerIdentificationNumber", jsonText("000000099"))
 			.where("nationalProviderIdentifier", jsonText("0007891421"))
 			.where("measurementSets", jsonArray()));

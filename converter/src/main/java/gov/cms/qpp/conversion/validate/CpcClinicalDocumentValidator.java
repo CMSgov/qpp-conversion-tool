@@ -48,8 +48,8 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 			check(node)
 					.valueIsNotEmpty(addressError, ClinicalDocumentDecoder.PRACTICE_SITE_ADDR)
 					.singleValue(ErrorCode.CPC_CLINICAL_DOCUMENT_ONLY_ONE_APM_ALLOWED,
-							ClinicalDocumentDecoder.ENTITY_ID)
-					.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.ENTITY_ID)
+							ClinicalDocumentDecoder.PRACTICE_ID)
+					.valueIsNotEmpty(ErrorCode.CPC_CLINICAL_DOCUMENT_EMPTY_APM, ClinicalDocumentDecoder.PRACTICE_ID)
 					.childMinimum(ErrorCode.CPC_CLINICAL_DOCUMENT_ONE_MEASURE_SECTION_REQUIRED,
 							1, TemplateId.MEASURE_SECTION_V2);
 
@@ -64,7 +64,7 @@ public class CpcClinicalDocumentValidator extends NodeValidator {
 	 * @param node The node to validate
 	 */
 	private void validateApmEntityId(Node node) {
-		String apmEntityId = node.getValue(ClinicalDocumentDecoder.ENTITY_ID);
+		String apmEntityId = node.getValue(ClinicalDocumentDecoder.PRACTICE_ID);
 
 		if (StringUtils.isEmpty(apmEntityId)) {
 			return;

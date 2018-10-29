@@ -31,7 +31,7 @@ class CpcQualityMeasureScopedValidatonTest {
 
 	@Test
 	void validateCms137V5() {
-		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
+		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v6.xml");
 		Set<Detail> details = validateNode(result);
 
 		assertWithMessage("Valid CMS137v5 markup should not result in errors")
@@ -39,74 +39,14 @@ class CpcQualityMeasureScopedValidatonTest {
 	}
 
 	@Test
-	void validateCms137V5FailMissingDenomStrata() {
-		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, SubPopulationLabel.DENOM.name());
+	void validateCms137V6FailMissingMeasure() {
+		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v6_MissingMeasure.xml");
 		Set<Detail> details = validateNode(result);
+		LocalizedError message = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS137v6", "IPP,IPOP", "E6569B35-D2C5-464B-A608-BDB2F082FE57");
 
-		assertWithMessage("Missing CMS137v5 DENOM strata should result in errors")
+		assertWithMessage("Missing CMS137v6 IPOP strata should result in errors")
 				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(getMessages(SubPopulationLabel.DENOM.name(),
-						"BC948E65-B908-493B-B48B-04AC342D3E6C",
-						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
-	}
-
-	@Test
-	void validateCms137V5FailMissingDenexStrata() {
-		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, SubPopulationLabel.DENEX.name());
-		Set<Detail> details = validateNode(result);
-
-		assertWithMessage("Missing CMS137v5 DENEX strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(getMessages(SubPopulationLabel.DENEX.name(),
-						"56BC7FA2-C22A-4440-8652-2D3568852C60",
-						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
-	}
-
-	@Test
-	void validateCms137V5FailMissingNumerStrata() {
-		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, SubPopulationLabel.NUMER.name());
-		Set<Detail> details = validateNode(result);
-
-		assertWithMessage("Missing CMS137v5 NUMER strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(getMessages(SubPopulationLabel.NUMER.name(),
-						"0BBF8596-4CFE-47F4-A0D7-9BEAB94BA4CD",
-						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
-	}
-
-	@Test
-	void validateCms137V5FailMissingIpopStrata() {
-		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5.xml");
-		removeMeasureStrata(result, "IPOP");
-		Set<Detail> details = validateNode(result);
-
-		assertWithMessage("Missing CMS137v5 IPOP strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(getMessages("IPOP",
-						"EC2C5F63-AF76-4D3C-85F0-5423F8C28541",
-						"EFB5B088-CE10-43DE-ACCD-9913B7AC12A2", "94B9555F-8700-45EF-B69F-433EBEDE8051"));
-	}
-
-	@Test
-	void validateCms137V5FailMissingMeasure() {
-		Node result = scopedConversion(QrdaScope.MEASURE_REFERENCE_RESULTS_CMS_V2, "cms137v5_MissingMeasure.xml");
-		Set<Detail> details = validateNode(result);
-		LocalizedError message = ErrorCode.QUALITY_MEASURE_ID_INCORRECT_UUID.format("CMS137v5", "IPP,IPOP", "EC2C5F63-AF76-4D3C-85F0-5423F8C28541");
-
-		assertWithMessage("Missing CMS137v5 IPOP strata should result in errors")
-				.that(details).comparingElementsUsing(DetailsErrorEquals.INSTANCE)
-				.containsExactly(message);
-	}
-
-	private void removeMeasureStrata(Node parent, String type) {
-		Node measure = parent.findNode(TemplateId.MEASURE_DATA_CMS_V2)
-				.stream().filter(prepFilter(type)).findFirst().get();
-		List<Node> strata = measure.getChildNodes(TemplateId.REPORTING_STRATUM_CMS)
-				.collect(Collectors.toList());
-		strata.forEach(measure::removeChildNode);
+				.contains(message);
 	}
 
 	private Predicate<Node> prepFilter(final String type) {

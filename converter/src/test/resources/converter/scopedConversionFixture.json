@@ -3,22 +3,15 @@
 		"category" : "pi",
 		"submissionMethod" : "electronicHealthRecord",
 		"measurements" : [ {
-			"measureId" : "ACI_PEA_1",
+			"measureId" : "PI_PEA_1",
 			"value" : {
 				"numerator" : 600,
 				"denominator" : 800
 			}
-		},
-			{
-				"measureId": "ACI_EP_1",
-				"value": {
-					"numerator": 400,
-					"denominator": 600
-				}
-			}
+		}
 		],
-		"performanceStart": "2017-02-01",
-		"performanceEnd": "2017-05-31"
+		"performanceStart": "2018-02-01",
+		"performanceEnd": "2018-05-31"
 	},
 	"IA_SECTION": {
 		"category": "ia",
@@ -33,8 +26,8 @@
 				"value": true
 			}
 		],
-		"performanceStart": "2017-01-01",
-		"performanceEnd": "2017-04-30"
+		"performanceStart": "2018-01-01",
+		"performanceEnd": "2018-04-30"
 	},
 	"PI_AGGREGATE_COUNT": [
 		{
@@ -311,6 +304,45 @@
 			"value": 50
 		},
 		{
+			"value": 50
+		},
+		{
+			"value": 30
+		},
+		{
+			"value": 20
+		},
+		{
+			"value": 40
+		},
+		{
+			"value": 10
+		},
+		{
+			"value": 10
+		},
+		{
+			"value": 20
+		},
+		{
+			"value": 20
+		},
+		{
+			"value": 0
+		},
+		{
+			"value": 15
+		},
+		{
+			"value": 10
+		},
+		{
+			"value": 15
+		},
+		{
+			"value": 10
+		},
+		{
 			"value": 1000
 		},
 		{
@@ -507,16 +539,12 @@
 		},
 		{
 			"value": 800
-		},
-		{
-			"value": 400
-		},
-		{
-			"value": 600
 		}
+
+
 	],
 	"CLINICAL_DOCUMENT": {
-		"performanceYear" : 2017,
+		"performanceYear" : 2018,
 		"entityType" : "individual",
 		"taxpayerIdentificationNumber" : "000777777",
 		"nationalProviderIdentifier" : "0777777777",
@@ -537,7 +565,8 @@
 				"value" : {
 					"isEndToEndReported" : true,
 					"performanceMet" : 900,
-					"performanceNotMet" : 50,
+					"eligiblePopulationExclusion" : 50,
+					"performanceNotMet" : 0,
 					"eligiblePopulation" : 950
 				}
 			}, {
@@ -575,27 +604,21 @@
 				}
 			} ],
 			"programName" : "mips",
-			"performanceStart" : "2017-01-01",
-			"performanceEnd" : "2017-12-31"
+			"performanceStart" : "2018-01-01",
+			"performanceEnd" : "2018-12-31"
 		}, {
 			"category" : "pi",
 			"submissionMethod" : "electronicHealthRecord",
 			"measurements" : [ {
-				"measureId" : "ACI_PEA_1",
+				"measureId" : "PI_PEA_1",
 				"value" : {
 					"numerator" : 600,
 					"denominator" : 800
 				}
-			}, {
-				"measureId" : "ACI_EP_1",
-				"value" : {
-					"numerator" : 400,
-					"denominator" : 600
-				}
 			} ],
 			"programName" : "mips",
-			"performanceStart" : "2017-02-01",
-			"performanceEnd" : "2017-05-31"
+			"performanceStart" : "2018-02-01",
+			"performanceEnd" : "2018-05-31"
 		}, {
 			"category" : "ia",
 			"submissionMethod" : "electronicHealthRecord",
@@ -607,24 +630,18 @@
 				"value" : true
 			} ],
 			"programName" : "mips",
-			"performanceStart" : "2017-01-01",
-			"performanceEnd" : "2017-04-30"
+			"performanceStart" : "2018-01-01",
+			"performanceEnd" : "2018-04-30"
 		} ]
 	},
 	"PI_DENOMINATOR": [
 		{
 			"denominator": 800
-		},
-		{
-			"denominator": 600
 		}
 	],
 	"PI_NUMERATOR": [
 		{
 			"numerator": 600
-		},
-		{
-			"numerator": 400
 		}
 	],
 	"MEASURE_SECTION_V2": {
@@ -644,7 +661,8 @@
 			"value" : {
 				"isEndToEndReported" : true,
 				"performanceMet" : 900,
-				"performanceNotMet" : 50,
+				"eligiblePopulationExclusion": 50,
+				"performanceNotMet" : 0,
 				"eligiblePopulation" : 950
 			}
 		}, {
@@ -681,8 +699,8 @@
 				} ]
 			}
 		} ],
-		"performanceStart" : "2017-01-01",
-		"performanceEnd" : "2017-12-31"
+		"performanceStart" : "2018-01-01",
+		"performanceEnd" : "2018-12-31"
 	},
 	"MEASURE_REFERENCE_RESULTS_CMS_V2": [ {
 		"measureId" : "236",
@@ -698,7 +716,8 @@
 		"value" : {
 			"isEndToEndReported" : true,
 			"performanceMet" : 900,
-			"performanceNotMet" : 50,
+			"eligiblePopulationExclusion": 50,
+			"performanceNotMet" : 0,
 			"eligiblePopulation" : 950
 		}
 	}, {
@@ -737,17 +756,10 @@
 	} ],
 	"PI_NUMERATOR_DENOMINATOR": [
 		{
-			"measureId": "ACI_PEA_1",
+			"measureId": "PI_PEA_1",
 			"value": {
 				"numerator": 600,
 				"denominator": 800
-			}
-		},
-		{
-			"measureId": "ACI_EP_1",
-			"value": {
-				"numerator": 400,
-				"denominator": 600
 			}
 		}
 	],
@@ -762,6 +774,8 @@
 	}, {
 		"performanceMet" : 900
 	}, {
+		"eligiblePopulationExclusion" : 50
+	},	{
 		"eligiblePopulationException" : 20
 	}, {
 		"eligiblePopulation" : 1000
