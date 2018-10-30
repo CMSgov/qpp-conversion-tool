@@ -16,6 +16,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,7 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.test.net.InternetIntegrationTest;
 
 @InternetIntegrationTest
+@Ignore
 class SubmissionIntegrationTest {
 
 	private static HttpClient client;
