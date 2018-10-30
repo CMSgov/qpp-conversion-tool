@@ -28,7 +28,6 @@ import gov.cms.qpp.conversion.encode.JsonWrapper;
 import gov.cms.qpp.test.net.InternetIntegrationTest;
 
 @InternetIntegrationTest
-@Ignore
 class SubmissionIntegrationTest {
 
 	private static HttpClient client;
