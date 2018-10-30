@@ -7,10 +7,13 @@ import java.util.Properties;
 import java.util.UUID;
 
 import gov.cms.qpp.test.logging.LoggerContract;
+
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+@Ignore
 class EnvironmentHelperTest implements LoggerContract {
 
 	private static Properties properties;

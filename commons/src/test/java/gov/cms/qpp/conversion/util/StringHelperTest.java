@@ -1,11 +1,13 @@
 package gov.cms.qpp.conversion.util;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
 import static com.google.common.truth.Truth.assertThat;
 
+@Ignore
 class StringHelperTest {
 
 	@Test

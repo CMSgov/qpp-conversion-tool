@@ -4,8 +4,10 @@ import gov.cms.qpp.conversion.model.error.ErrorCode;
 import gov.cms.qpp.conversion.model.error.FormattedErrorCode;
 
 import com.google.common.truth.Truth;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
+@Ignore
 class FormattedErrorCodeTest {
 
 	@Test

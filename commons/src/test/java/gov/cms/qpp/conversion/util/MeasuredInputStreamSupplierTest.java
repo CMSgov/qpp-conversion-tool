@@ -7,8 +7,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
 import com.google.common.truth.Truth;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
+@Ignore
 class MeasuredInputStreamSupplierTest {
 
 	@Test
