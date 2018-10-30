@@ -164,7 +164,7 @@ public class CpcFileControllerV1 {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
 
-		Metadata metadata = cpcFileService.getMetadataById(fileId); // TODO
+		Metadata metadata = cpcFileService.getMetadataById(fileId);
 
 		Report report = new Report();
 		report.setErrors(metadata.getErrors());
