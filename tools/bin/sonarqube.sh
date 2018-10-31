@@ -24,6 +24,7 @@ elif [[ ! -z $CIRCLE_PULL_REQUESTS ]]; then
 	#This build could be on multiple PRs
 	echo "Verifying PR"
 	echo "CIRCLE_PULL_REQUESTS $CIRCLE_PULL_REQUESTS"
+	echo "CIRCLE_BRANCH: $CIRCLE_BRANCH"
 	IFS=","
 	for PULL_REQUEST_URL in $CIRCLE_PULL_REQUESTS
 	do
@@ -35,8 +36,14 @@ elif [[ ! -z $CIRCLE_PULL_REQUESTS ]]; then
 		                                            -Dsonar.github.pullRequest=${PR_NUMBER} \
 		                                            -Dsonar.github.repository=CMSgov/qpp-conversion-tool \
 		                                            -Dsonar.github.oauth=${SONAR_PR_KEY} \
-													-Dsonar.organization=${ORG_KEY} \
-		                                            -Dsonar.login=${SONAR_KEY_NEW}
+		                                            -Dsonar.organization=${ORG_KEY} \
+		                                            -Dsonar.login=${SONAR_KEY_NEW} \
+		                                            -Dsonar.pullrequest.base=develop \
+		                                            -Dsonar.pullrequest.key=5 \
+		                                            -Dsonar.pullrequest.provider=GitHub \
+		                                            -Dsonar.pullrequest.github.repository=CMSgov/qpp-conversion-tool \
+		                                            -Dsonar.pullrequest.branch=${CIRCLE_BRANCH}
+
 	done
 else
 	echo "Not on master nor in a pull request."
