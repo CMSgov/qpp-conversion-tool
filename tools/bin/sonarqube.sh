@@ -7,7 +7,7 @@ ORG_KEY=cmsgov
 if [[ "$CIRCLE_BRANCH" == "develop" || ( ! -z $SONAR_OTHER_BRANCH && "$CIRCLE_BRANCH" == "$SONAR_OTHER_BRANCH" ) ]]; then
 	#Do a full SonarQube run
 	echo "Doing full SonarQube run"
-	./sonar-scanner-3.1.0.1141/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST} \
+	./sonar-scanner-3.2.0.1227/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST} \
     																					-Dsonar.organization=${ORG_KEY} \
     																					-Dsonar.login=${SONAR_KEY_NEW}
 	sleep 3
@@ -24,6 +24,7 @@ elif [[ ! -z $CIRCLE_PULL_REQUESTS ]]; then
 	#This build could be on multiple PRs
 	echo "Verifying PR"
 	echo "CIRCLE_PULL_REQUESTS $CIRCLE_PULL_REQUESTS"
+	echo "CIRCLE_BRANCH: $CIRCLE_BRANCH"
 	IFS=","
 	for PULL_REQUEST_URL in $CIRCLE_PULL_REQUESTS
 	do
@@ -31,12 +32,18 @@ elif [[ ! -z $CIRCLE_PULL_REQUESTS ]]; then
         echo "PULL_REQUEST_URL $PULL_REQUEST_URL"
 		PR_NUMBER=${PULL_REQUEST_URL##*/}
 		echo "Doing preview SonarQube run on PR $PR_NUMBER"
-		./sonar-scanner-3.1.0.1141/bin/sonar-scanner -Dsonar.analysis.mode=preview \
+		./sonar-scanner-3.2.0.1227/bin/sonar-scanner -Dsonar.analysis.mode=preview \
 		                                            -Dsonar.github.pullRequest=${PR_NUMBER} \
 		                                            -Dsonar.github.repository=CMSgov/qpp-conversion-tool \
 		                                            -Dsonar.github.oauth=${SONAR_PR_KEY} \
-													-Dsonar.organization=${ORG_KEY} \
-		                                            -Dsonar.login=${SONAR_KEY_NEW}
+		                                            -Dsonar.organization=${ORG_KEY} \
+		                                            -Dsonar.login=${SONAR_KEY_NEW} \
+		                                            -Dsonar.pullrequest.base=develop \
+		                                            -Dsonar.pullrequest.key=5 \
+		                                            -Dsonar.pullrequest.provider=GitHub \
+		                                            -Dsonar.pullrequest.github.repository=CMSgov/qpp-conversion-tool \
+		                                            -Dsonar.pullrequest.branch=${CIRCLE_BRANCH}
+
 	done
 else
 	echo "Not on master nor in a pull request."
