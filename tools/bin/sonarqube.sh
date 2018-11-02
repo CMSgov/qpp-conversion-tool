@@ -25,7 +25,6 @@ elif [[ ! -z $CIRCLE_PULL_REQUESTS ]]; then
 	echo "Verifying PR"
 	echo "CIRCLE_PULL_REQUESTS $CIRCLE_PULL_REQUESTS"
 	echo "CIRCLE_BRANCH: $CIRCLE_BRANCH"
-	echo "CIRCLE_PR_NUMBER: $CIRCLE_PR_NUMBER"
 	IFS=","
 	for PULL_REQUEST_URL in $CIRCLE_PULL_REQUESTS
 	do
@@ -34,8 +33,9 @@ elif [[ ! -z $CIRCLE_PULL_REQUESTS ]]; then
 		PR_NUMBER=${PULL_REQUEST_URL##*/}
 		echo "Doing preview SonarQube run on PR $PR_NUMBER"
 
-		./sonar-scanner-3.2.0.1227/bin/sonar-scanner -Dsonar.pullrequest.base=develop \
-			-Dsonar.pullrequest.key=${CIRCLE_PR_NUMBER} \
+		./sonar-scanner-3.2.0.1227/bin/sonar-scanner \
+			-Dsonar.pullrequest.base=develop \
+			-Dsonar.pullrequest.key=${PR_NUMBER} \
 			-Dsonar.pullrequest.provider=GitHub \
 			-Dsonar.pullrequest.github.repository=CMSgov/qpp-conversion-tool \
 			-Dsonar.pullrequest.branch=${CIRCLE_BRANCH} \
