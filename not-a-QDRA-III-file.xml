@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="qrda.xsl"?>
-<ClinicalDocument>
-    <!-- CHANGED FIRST DIGIT FROM 2 TO 3 -->
-    <templateId root="3.16.840.1.113883.10.20.27.1.2"/>
-</ClinicalDocument>
