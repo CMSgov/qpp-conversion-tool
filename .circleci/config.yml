@@ -22,9 +22,9 @@ jobs:
     steps:
       - attach_workspace:
           at: /home/circleci
-      - run: wget -O sonarscanner.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.1.0.1141/sonar-scanner-cli-3.1.0.1141.zip
+      - run: wget -O sonarscanner.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.2.0.1227/sonar-scanner-cli-3.2.0.1227.zip
       - run: unzip -d . sonarscanner.zip
-      - run: cp ./sonar-scanner.properties sonar-scanner-3.1.0.1141/conf/sonar-scanner.properties
+      - run: cp ./sonar-scanner.properties sonar-scanner-3.2.0.1227/conf/sonar-scanner.properties
       - run: mvn --batch-mode verify
       - run: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
       - run: sudo apt-get install -y nodejs
